@@ -1,7 +1,9 @@
 import fs from 'fs';
+
 import { Page, expect, TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHtmlReport } from 'axe-html-reporter';
+
 import CONSTANTS from '../constants';
 
 interface Accessibility {

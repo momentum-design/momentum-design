@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import path from 'path';
+
 import { ActionType } from 'plop';
+
 import { folders, componentName } from '../constants';
 
 export const AddToComponentImports: ActionType = {

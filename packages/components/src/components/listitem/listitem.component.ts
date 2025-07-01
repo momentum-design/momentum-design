@@ -108,6 +108,19 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
   /**
+   * Indicates whether the element is soft disabled.
+   * When set to `true`, the element appears visually disabled but still allows
+   * focus, click, and keyboard actions to be passed through.
+   *
+   * **Important:** When using soft disabled, consumers must ensure that
+   * the element behaves like a disabled element, allowing only focus and
+   * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
+   * @default undefined
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
+  softDisabled?: boolean;
+
+  /**
    * The tooltip text is displayed on hover of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
@@ -125,7 +138,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('mouseenter', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
     this.addEventListener('mouseout', this.hideTooltipOnLeave);
     this.addEventListener('click', this.handleClick);
@@ -237,7 +250,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * This is useful when the list item is disabled, to prevent the user from interacting with the controls.
    * @param disabled - Whether to disable or enable the controls.
    */
-  private disableSlottedChildren(disabled: boolean): void {
+  private disableSlottedChildren(disabled: boolean = false): void {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
@@ -245,6 +258,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
         element.removeAttribute('disabled');
       }
     });
+    // Set the aria-disabled attribute to indicate that the list item is disabled.
+    this.setAttribute('aria-disabled', `${disabled}`);
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -253,7 +268,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
-      this.setAttribute('aria-disabled', `${this.disabled}`);
+    }
+
+    if (changedProperties.has('softDisabled')) {
+      this.disableSlottedChildren(this.softDisabled);
     }
   }
 

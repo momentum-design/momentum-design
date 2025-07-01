@@ -85,7 +85,6 @@ class MenuItem extends ListItem {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEM;
-
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
   }
 

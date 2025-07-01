@@ -4,13 +4,13 @@ Feature: Vertical Menubar Accessibility and User Interaction
     Given the Vertical Menubar component is rendered on the page
     And the Menubar container has role="menubar" with aria-orientation="vertical"
     And the Menubar contains the following menuitems:
-      | Menuitem      | Has Submenu   | State      |
-      | ------------- | ------------- | ---------- |
-      | File          | No            | Normal     |
-      | Edit          | Yes           | Normal     |
-      | View          | Yes           | Normal     |
-      | Preferences   | No            | Disabled   |
-      | Help          | No            | Normal     |
+      | Menuitem      | Has Submenu   | State            |
+      | ------------- | ------------- | ---------------- |
+      | File          | No            | Normal           |
+      | Edit          | Yes           | Normal           |
+      | View          | Yes           | Normal           |
+      | Preferences   | No            | Soft-Disabled    |
+      | Help          | No            | Normal           |
     And each item uses role="menuitem"
     And focus is managed using Roving tabindex
     And in RTL layouts, horizontal arrow keys behave reversed: ArrowRight and ArrowLeft swap functionality
@@ -29,10 +29,9 @@ Feature: Vertical Menubar Accessibility and User Interaction
       Then its submenu opens
       And menuitem has aria-expanded="true"
 
-    Scenario: Clicking disabled menubar menuitem
-      Given the menubar menuitem is disabled
-      When I click the disabled menubar menuitem (Preferences)
-      Then no action is triggered
+    Scenario: Clicking soft-disabled menubar menuitem
+      Given the menubar menuitem is soft-disabled
+      When I click the soft-disabled menubar menuitem (Preferences)
       And no submenu opens
 
     Scenario: Switch submenu by clicking another menubar menuitem that has a submenu
@@ -71,14 +70,13 @@ Feature: Vertical Menubar Accessibility and User Interaction
       Then its submenu opens
       And focus moves to the first focusable menuitem inside the submenu
 
-    Scenario: Navigate disabled menubar menuitems
+    Scenario: Navigate soft-disabled menubar menuitems
       Given the keyboard focus is on a View menuitem
       And Preferences menuitem is the next menuitem
       When I press `Down Arrow`
-      Then focus moves to the Preferences menuitem which is disabled
-      When I press `Enter` or `Space`
-      Then no action is triggered
-      And no submenu opens
+      Then focus moves to the Preferences menuitem which is soft-disabled
+      When I press `Enter` or `Space` or `ArrowRight` (LTR) or `ArrowLeft` (RTL)
+      Then no submenu opens
 
     Scenario: Home and End keys navigate vertical menubar
       Given the keyboard focus is on one of the menubar menuitem
@@ -105,12 +103,6 @@ Feature: Vertical Menubar Accessibility and User Interaction
       Then focus moves to the next submenu menuitem (loops if at end)
       When I press `Up Arrow`
       Then focus moves to the previous submenu menuitem (loops if at beginning)
-
-    Scenario: Close nested submenu using ArrowLeft (LTR)/ ArrowRight (RTL)
-      Given the keyboard focus is inside a nested submenu
-      When I press `ArrowLeft` (LTR) or `ArrowRight` (RTL)
-      Then nested submenu closes
-      And focus returns to its parent menuitem
 
     Scenario: Close submenu using Escape
       Given the keyboard focus is on a menuitem within an opened submenu
