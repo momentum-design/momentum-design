@@ -9,8 +9,8 @@ Feature: Select component
       | london  | London UK   |
       | newyork | New York NY |
       | tokyo   | Tokyo HQ    |
-    # Interactions using the mouse
 
+  # Interactions using the mouse
   Scenario: User opens the select dropdown using the mouse
     Given that I see the select component with the label "Headquarters Location"
     When I click on the select dropdown with placeholder "Select your headquarters" using the mouse
@@ -37,8 +37,8 @@ Feature: Select component
     When I click on the select component again
     Then I should see the options "London UK", "New York NY", and "Tokyo HQ"
     And there should be a checkmark next to "New York NY" indicating it is selected
-    # Interactions using the keyboard
 
+  # Interactions using the keyboard
   Scenario: User opens the select dropdown using the keyboard
     Given I see the select component with the label "Headquarters Location" and placeholder "Select your headquarters"
     When I focus on the select component using the Tab key
@@ -79,7 +79,14 @@ Feature: Select component
     Then I should see the options "London UK", "New York NY", and "Tokyo HQ"
     And the focus should be on the selected option "London UK"
     And there should be a checkmark next to "London UK" indicating it is selected
-    # Other attributes and behaviors
+
+  # Other attributes and behaviors
+  Scenario: Select component has a default/initial value
+    Given the Select component has a default/initial value "london"
+    When I see the Select component with value "london"
+    Then the Select component should have "London UK" selected
+    When I click on the Select component
+    Then I should see the focus on the first option "London UK"
 
   Scenario: Select component has a been marked as required
     Given the select component has been marked as required
@@ -125,7 +132,8 @@ Feature: Select component
     And I try to interact with the select component using the mouse or keyboard
     Then the select component should be visually styled as disabled
     And I will not be able to open the select dropdown
-# Screen reader interactions
+
+  # Screen reader interactions
 
   Scenario: Screen reader reads the select component
     Given I am using a screen reader
@@ -172,8 +180,8 @@ Feature: Select component
     And the screen reader focus should return to the select component
     And the screen reader should announce "Headquarters Location, Select your headquarters"
     And the screen reader should not announce any options
-  # Accessibility checks
 
+  # Accessibility checks
   Scenario: Accessibility check for select component
     Given I have opened the page with the select component
     Then the select container should have the role of "combobox"

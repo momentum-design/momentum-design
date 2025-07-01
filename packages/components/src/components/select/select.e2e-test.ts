@@ -9,14 +9,15 @@ type SetupOptions = {
   children: string;
   placeholder?: string;
   height?: string;
+  value?: string;
 };
 
 const label = 'Select an option';
 const defaultPlaceholder = 'Select placeholder';
 const defaultChildren = (selected?: boolean) => `
-  <mdc-option>Option Label 1</mdc-option>
-  <mdc-option ${selected ? 'selected' : ''}>Option Label 2</mdc-option>
-  <mdc-option>Option Label 3</mdc-option>
+  <mdc-option value="option1">Option Label 1</mdc-option>
+  <mdc-option value="option2" ${selected ? 'selected' : ''}>Option Label 2</mdc-option>
+  <mdc-option value="option3">Option Label 3</mdc-option>
 `;
 
 const setup = async (args: SetupOptions) => {
@@ -26,6 +27,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-select
         ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
         ${restArgs.height ? `height="${restArgs.height}"` : ''}
+        ${restArgs.value ? `value="${restArgs.value}"` : ''}
       >
         ${restArgs.children}
       </mdc-select>
@@ -116,6 +118,7 @@ test('mdc-select', async ({ componentsPage }) => {
     await test.step('should have default attributes', async () => {
       const select = await setup({ componentsPage, children: defaultChildren() });
       await expect(select).toHaveAttribute('help-text-type', 'default');
+      await expect(select).toHaveAttribute('value', 'option1');
       const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
       const textContent = await mdcTextElement.textContent();
       // The first option should be visible by default when no option is selected and placeholder is not defined.
@@ -123,6 +126,20 @@ test('mdc-select', async ({ componentsPage }) => {
       const arrowIcon = select.locator('mdc-icon[name="arrow-down-bold"]');
       await arrowIcon.waitFor();
       expect(arrowIcon).toBeDefined();
+    });
+
+    await test.step('set default/initial value', async () => {
+      const select = await setup({
+        componentsPage,
+        children: defaultChildren(),
+        placeholder: defaultPlaceholder,
+        value: 'option2',
+      });
+      await expect(select).toHaveAttribute('value', 'option2');
+
+      const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe('Option Label 2');
     });
 
     await test.step('should set the height of the select dropdown to be fixed', async () => {
@@ -174,6 +191,15 @@ test('mdc-select', async ({ componentsPage }) => {
         await select.locator('mdc-option').nth(1).click();
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
       });
+    });
+
+    await test.step('component should reflect selected value in querySelector and value attribute', async () => {
+      const select = await setup({ componentsPage, children: defaultChildren(true) });
+      const selectedValue = await componentsPage.page.evaluate(() => document.querySelector('mdc-select')?.value || '');
+
+      await expect(selectedValue).toBe('option2');
+      await expect(select).toHaveAttribute('value', 'option2');
+      await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('selected');
     });
 
     await test.step('keyboard', async () => {
