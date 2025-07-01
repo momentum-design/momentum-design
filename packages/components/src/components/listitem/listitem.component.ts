@@ -140,7 +140,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseenter', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
-    this.addEventListener('mouseleave', this.hideTooltipOnLeave);
+    this.addEventListener('mouseout', this.hideTooltipOnLeave);
     this.addEventListener('click', this.handleClick);
   }
 
@@ -271,11 +271,6 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
 
     if (changedProperties.has('softDisabled')) {
-      this.disableSlottedChildren(this.softDisabled);
-    }
-
-    if (changedProperties.has('softDisabled')) {
-      this.setAttribute('aria-disabled', `${this.softDisabled}`);
       this.disableSlottedChildren(this.softDisabled);
     }
   }
