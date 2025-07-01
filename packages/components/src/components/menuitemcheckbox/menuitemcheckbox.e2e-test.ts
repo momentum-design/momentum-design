@@ -44,6 +44,7 @@ const setup = async (args: SetupOptions) => {
   return menuitemcheckbox;
 };
 
+test.use({ viewport: { width: 1200, height: 1280 } });
 test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
   /**
    * BASIC FUNCTIONALITY
