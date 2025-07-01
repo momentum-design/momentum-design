@@ -17,7 +17,7 @@ const render = () => html`
   <div style="width: 100%; display: flex;" class="root">
     <mdc-menubar @click="${action('onclick')}">
       <mdc-menuitem label="Home"></mdc-menuitem>
-      <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
+      <mdc-menuitem id="file-id" label="File" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="file-id">
         <mdc-menuitem label="New File"></mdc-menuitem>
         <mdc-menuitem label="New Window"></mdc-menuitem>
@@ -49,7 +49,7 @@ const render = () => html`
           <mdc-menuitem label="Reminders"></mdc-menuitem>
         </mdc-menupopover>
       </mdc-menupopover>
-      <mdc-menuitem id="edit-id" label="Edit"></mdc-menuitem>
+      <mdc-menuitem id="edit-id" label="Edit" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="edit-id">
         <mdc-menuitem label="Undo"></mdc-menuitem>
         <mdc-menuitem label="Redo"></mdc-menuitem>
@@ -58,13 +58,13 @@ const render = () => html`
         <mdc-menuitem label="Copy"></mdc-menuitem>
         <mdc-menuitem label="Paste"></mdc-menuitem>
       </mdc-menupopover>
-      <mdc-menuitem id="view-id" label="View"></mdc-menuitem>
+      <mdc-menuitem id="view-id" label="View" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="view-id">
         <mdc-menuitem label="Zoom In"></mdc-menuitem>
         <mdc-menuitem label="Zoom Out"></mdc-menuitem>
       </mdc-menupopover>
       <mdc-menuitem label="Tools"></mdc-menuitem>
-      <mdc-menuitem id="terminal-id" label="Terminal" soft-disabled></mdc-menuitem>
+      <mdc-menuitem id="terminal-id" label="Terminal" soft-disabled arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="terminal-id">
         <mdc-menuitem label="New Terminal"></mdc-menuitem>
         <mdc-menuitem label="Open Terminal"></mdc-menuitem>
@@ -157,7 +157,7 @@ export const EditorMenubar: StoryObj = {
   render: () => html`
     <div style="display:flex">
       <mdc-menubar style="width: 8rem; margin: 1rem 0;">
-        <mdc-menuitem id="style-id" label="Style"></mdc-menuitem>
+        <mdc-menuitem id="style-id" label="Style" arrow-position="trailing"></mdc-menuitem>
         <mdc-menupopover triggerid="style-id">
           <mdc-menusection>
             <mdc-menuitemcheckbox label="Bold"></mdc-menuitemcheckbox>
@@ -173,7 +173,7 @@ export const EditorMenubar: StoryObj = {
             <mdc-menuitemradio disabled label="Black"></mdc-menuitemradio>
           </mdc-menusection>
         </mdc-menupopover>
-        <mdc-menuitem id="align-id" label="Align"></mdc-menuitem>
+        <mdc-menuitem id="align-id" label="Align" arrow-position="trailing"></mdc-menuitem>
         <mdc-menupopover triggerid="align-id">
           <mdc-menusection>
             <mdc-menuitemradio label="Left"></mdc-menuitemradio>
@@ -182,7 +182,7 @@ export const EditorMenubar: StoryObj = {
             <mdc-menuitemradio label="Justify"></mdc-menuitemradio>
           </mdc-menusection>
         </mdc-menupopover>
-        <mdc-menuitem id="size-id" label="Size"></mdc-menuitem>
+        <mdc-menuitem id="size-id" label="Size" arrow-position="trailing"></mdc-menuitem>
         <mdc-menupopover triggerid="size-id">
           <mdc-menusection>
             <mdc-menuitem label="Small"></mdc-menuitem>

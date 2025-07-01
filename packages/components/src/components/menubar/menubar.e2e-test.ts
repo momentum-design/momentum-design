@@ -70,7 +70,7 @@ const renderMenuItems = (items: MenuItemConfig[]): string =>
     .map(item => {
       const disabled = item.disabled ? 'disabled' : '';
       const softDisabled = item.softDisabled ? 'soft-disabled' : '';
-      let html = `<mdc-menuitem id="${item.id}" ${disabled} ${softDisabled} label="${item.label}"></mdc-menuitem>`;
+      let html = `<mdc-menuitem id="${item.id}" ${disabled} ${softDisabled} label="${item.label}" ${item.hasSubmenu ? 'arrow-position="trailing"' : ''}></mdc-menuitem>`;
       if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
         html += `
           <mdc-menupopover id="${item.submenuPopoverId}" triggerid="${item.id}">
@@ -88,7 +88,7 @@ const setup = async (options: SetupOptions): Promise<{ menubar: Locator } & Reco
   const menuHtml = renderMenuItems(menuItems);
   await componentsPage.mount({
     html: `
-      <div id="test-root" style="width: 100px; margin: 0 1rem;" ${dir}>
+      <div id="test-root" style="width: 150px; margin: 0 1rem;" ${dir}>
         <mdc-menubar>
           ${menuHtml}
         </mdc-menubar>
