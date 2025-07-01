@@ -18,7 +18,7 @@ import styles from './menubar.styles';
  * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
  * with support for nested submenus and keyboard navigation. It serves as a container
  * for menu items and manages their interaction patterns, including:
- * - Keyboard navigation (arrow keys, Home, End)
+ * - Keyboard navigation (Arrow keys, Home, End)
  * - Menu item activation (Enter/Space)
  * - Submenu toggling (Right/Left arrow keys)
  * - Focus management
