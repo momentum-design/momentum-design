@@ -258,7 +258,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         await triggerButton.hover();
         await expect(tooltip).toBeVisible();
       });
-      await test.step('mouseleave out the trigger button should hide the tooltip', async () => {
+      await test.step('mouseout out the trigger button should hide the tooltip', async () => {
         await componentsPage.page.mouse.move(1000, 1000);
         await expect(triggerButton).not.toBeFocused();
         await expect(tooltip).not.toBeVisible();

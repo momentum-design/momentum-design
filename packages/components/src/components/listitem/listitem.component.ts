@@ -258,6 +258,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
         element.removeAttribute('disabled');
       }
     });
+    // Set the aria-disabled attribute to indicate that the list item is disabled.
+    this.setAttribute('aria-disabled', `${disabled}`);
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -266,7 +268,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
-      this.setAttribute('aria-disabled', `${this.disabled}`);
+    }
+
+    if (changedProperties.has('softDisabled')) {
+      this.disableSlottedChildren(this.softDisabled);
     }
 
     if (changedProperties.has('softDisabled')) {

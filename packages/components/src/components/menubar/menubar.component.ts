@@ -18,7 +18,7 @@ import styles from './menubar.styles';
  * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
  * with support for nested submenus and keyboard navigation. It serves as a container
  * for menu items and manages their interaction patterns, including:
- * - Keyboard navigation (arrow keys, Home, End)
+ * - Keyboard navigation (Arrow keys, Home, End)
  * - Menu item activation (Enter/Space)
  * - Submenu toggling (Right/Left arrow keys)
  * - Focus management
@@ -29,6 +29,10 @@ import styles from './menubar.styles';
  *
  * The component automatically handles ARIA attributes and follows WAI-ARIA menu design patterns.
  * It works in conjunction with `mdc-menuitem` and `mdc-menupopover` to create accessible menu structures.
+ *
+ * **Note:** A menubar contains three types of menu items, including menuitem, menuitemradio and menuitemcheckbox. These menu items may optionally be nested in one or more group containers. Groups or items may optionally by separated with separator elements.
+ *
+ * `mdc-menubar` contains a group that wraps all its chilren passed within the default slot. This has been added to ensure the right accessibility behavior while using screen readers.
  *
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
@@ -250,7 +254,7 @@ class MenuBar extends Component {
   }
 
   public override render() {
-    return html`<slot role="group"></slot>`;
+    return html`<slot role="${ROLE.GROUP}"></slot>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
