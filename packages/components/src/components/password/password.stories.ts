@@ -9,9 +9,8 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
-const render = (args: Args) => {
-  const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
-  return html` <mdc-password
+const render = (args: Args) =>
+  html` <mdc-password
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -23,7 +22,7 @@ const render = (args: Args) => {
     toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
-    value="${value}"
+    value="${args.value}"
     id="${args.id}"
     class="${args.class}"
     style="${args.style}"
@@ -31,7 +30,6 @@ const render = (args: Args) => {
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
     placeholder="${args.placeholder}"
-    ?trailing-button="${args['trailing-button']}"
     validation-message="${args['validation-message']}"
     prefix-text="${args['prefix-text']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
@@ -39,22 +37,20 @@ const render = (args: Args) => {
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     ?autofocus="${args.autofocus}"
-    autocomplete="${args.autocomplete}"
+    autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     show-hide-button-aria-label="${args['show-hide-button-aria-label']}"
   ></mdc-password>`;
-};
-
 const meta: Meta = {
-  title: 'Work In Progress/password',
+  title: 'Components/password',
   tags: ['autodocs'],
   component: 'mdc-password',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   args: {
     name: 'password',
@@ -102,10 +98,6 @@ const meta: Meta = {
     'leading-icon': {
       control: 'text',
       description: 'The leading icon that is displayed before the password field.',
-    },
-    'trailing-button': {
-      control: 'boolean',
-      description: 'The trailing button when set to true, shows a clear button that clears the password field.',
     },
     minlength: {
       control: 'number',
@@ -169,7 +161,7 @@ const meta: Meta = {
       '--mdc-input-success-border-color',
       '--mdc-input-primary-border-color',
     ]),
-    ...hideControls(['autocapitalize', 'autocomplete', 'clear-aria-label', 'list', 'showPassword']),
+    ...hideControls(['autocapitalize', 'autocomplete', 'clear-aria-label', 'list', 'showPassword', 'trailing-button']),
   },
 };
 
@@ -189,15 +181,15 @@ export const Example: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
-    'trailing-button': true,
   },
 };
 
 export const FormFieldPassword: StoryObj = {
-  render: () => {
+  render: (args: any) => {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
-      const formData = new FormData(event.target as HTMLFormElement);
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
       const selectedValue = formData.get('password');
       action('Form Submitted')({ value: selectedValue });
     };
@@ -206,14 +198,7 @@ export const FormFieldPassword: StoryObj = {
       <form @submit=${handleSubmit}>
         <fieldset>
           <legend>Form Example</legend>
-          <mdc-password
-            name="password"
-            label="Password"
-            required
-            placeholder="Enter your password"
-            trailing-button
-            validation-message="Password is required"
-          ></mdc-password>
+          ${render(args)}
           <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
@@ -221,6 +206,22 @@ export const FormFieldPassword: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+  args: {
+    class: 'custom-classname',
+    label: 'Password',
+    name: 'password',
+    placeholder: 'Placeholder',
+    readonly: false,
+    disabled: false,
+    required: true,
+    'help-text': 'Enter a strong password',
+    'help-text-type': 'default',
+    'prefix-text': '',
+    'leading-icon': '',
+    'show-hide-button-aria-label': 'Show or hide password',
+    minlength: 5,
+    maxlength: 10,
   },
 };
 
@@ -231,7 +232,6 @@ export const DefaultValidation: StoryObj = {
     'help-text-type': 'default',
     placeholder: 'Enter password',
     value: 'default_password123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -243,7 +243,6 @@ export const ErrorValidation: StoryObj = {
     'help-text-type': 'error',
     placeholder: 'Enter password',
     value: 'error_password123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -255,7 +254,6 @@ export const WarningValidation: StoryObj = {
     'help-text-type': 'warning',
     placeholder: 'Enter password',
     value: 'warning_password123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -267,7 +265,6 @@ export const SuccessValidation: StoryObj = {
     'help-text-type': 'success',
     placeholder: 'Enter password',
     value: 'success_password123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -279,7 +276,6 @@ export const PriorityValidation: StoryObj = {
     'help-text-type': 'priority',
     placeholder: 'Enter password',
     value: 'priority_password123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -291,7 +287,6 @@ export const RequiredPassword: StoryObj = {
     'help-text-type': 'default',
     required: true,
     placeholder: 'Password is required',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -305,7 +300,6 @@ export const ReadonlyPassword: StoryObj = {
     placeholder: 'Enter password',
     'leading-icon': 'secure-lock-bold',
     value: 'ReadonlyPassword123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -318,7 +312,6 @@ export const DisabledPassword: StoryObj = {
     disabled: true,
     placeholder: 'Enter password',
     value: 'DisabledPassword123',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -330,7 +323,6 @@ export const WithPrefixText: StoryObj = {
     'help-text-type': 'default',
     placeholder: 'Enter password',
     'prefix-text': '🔒',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -342,7 +334,6 @@ export const WithLeadingIcon: StoryObj = {
     'help-text-type': 'default',
     placeholder: 'Enter password',
     'leading-icon': 'secure-lock-bold',
-    'trailing-button': true,
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };
@@ -354,7 +345,6 @@ export const PasswordInSmallContainer: StoryObj = {
         label="This is a large label text which is truncated into an ellipsis"
         required
         placeholder="Enter password"
-        trailing-button
         show-hide-button-aria-label="Toggle password visibility"
       >
       </mdc-password>

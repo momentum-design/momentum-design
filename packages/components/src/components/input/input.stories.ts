@@ -11,9 +11,8 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { AUTO_CAPITALIZE } from './input.constants';
 
-const render = (args: Args) => {
-  const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
-  return html` <mdc-input
+const render = (args: Args) =>
+  html`<mdc-input
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -26,7 +25,7 @@ const render = (args: Args) => {
     toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
-    value="${value}"
+    value="${args.value}"
     id="${args.id}"
     class="${args.class}"
     style="${args.style}"
@@ -41,14 +40,13 @@ const render = (args: Args) => {
     minlength="${ifDefined(args.minlength)}"
     autocapitalize="${args.autocapitalize}"
     ?autofocus="${args.autofocus}"
-    autocomplete="${args.autocomplete}"
+    autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}"
   ></mdc-input>`;
-};
 
 const meta: Meta = {
   title: 'Components/input',

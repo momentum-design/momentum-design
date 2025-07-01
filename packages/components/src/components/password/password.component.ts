@@ -18,7 +18,6 @@ import styles from './password.styles';
  * - `label` field - describe the password field.
  * - `password` field - contains the value
  * - `help-text` or `validation-message` - displayed below the password field.
- * - `trailing-button` - it displays a show-hide button in the password field.
  * - `prefix-text` - displayed before the password field.
  * - `show-hide-button-aria-label` - aria label for the trailing button.
  * - all the attributes of the password field.
@@ -69,6 +68,20 @@ class Password extends Input {
   override helpTextType: ValidationType = 'default';
 
   /**
+   * The trailing button is always true, showing a "show/hide" button that shows / hides the password.
+   * This one can't be overridden to false, as it is a core feature of the password input.
+   * @default true
+   */
+  @property({ type: Boolean, attribute: 'trailing-button' })
+  override trailingButton = true;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Ensure the trailing button is always true for password inputs
+    this.trailingButton = true;
+  }
+
+  /**
    * Internal state to track whether the password is visible (shown as text) or hidden (shown as password).
    */
   @state()
@@ -79,7 +92,7 @@ class Password extends Input {
   }
 
   protected override renderTrailingButton(show = false) {
-    const showBtn = show || (this.value && this.trailingButton);
+    const showBtn = show || this.value;
     if (!showBtn) {
       return nothing;
     }
