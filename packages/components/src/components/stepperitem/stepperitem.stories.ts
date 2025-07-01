@@ -2,19 +2,21 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+
 import { STATUS, VARIANT } from './stepperitem.constants';
 
-const render = (args: Args) => html`
-  <mdc-stepperitem 
-  @focus=${action('onFocus')}
-  variant=${args.variant}
-  status=${args.status}
-  optional-label=${args['optional-label']}
-  label=${args.label}
-  step-number=${args.stepNumber}
-  class=${args.class}
-  style=${args.style}
+const render = (args: Args) =>
+  html` <mdc-stepperitem
+    @focus=${action('onFocus')}
+    variant=${args.variant}
+    status=${args.status}
+    optional-label=${args['optional-label']}
+    label=${args.label}
+    step-number=${args.stepNumber}
+    class=${args.class}
+    style=${args.style}
   ></mdc-stepperitem>`;
 
 const meta: Meta = {
@@ -40,7 +42,7 @@ const meta: Meta = {
     label: {
       control: { type: 'text' },
     },
-    stepNumber: {
+    'step-number': {
       control: { type: 'number' },
     },
     ...classArgType,
@@ -86,4 +88,12 @@ export const Error: StoryObj = {
     label: 'Label',
     stepNumber: '1',
   },
+};
+
+export const Test: StoryObj = {
+  render: () => html`
+    <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
+    <mdc-stepperitem label="Step 2" status="future-disabled" step-number="2"></mdc-stepperitem>
+    <mdc-stepperitem label="Step 3" status="error" optional-label="Error"></mdc-stepperitem>
+  `,
 };

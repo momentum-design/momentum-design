@@ -148,6 +148,8 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  Stepper,
+  Stepperitem,
   Tab,
   TabList,
   Text,

@@ -1,11 +1,14 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './stepperitem.styles';
+
 import { Component } from '../../models';
-import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
-import { StatusType, VariantType } from './stepperitem.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { ROLE } from '../../utils/roles';
+
+import styles from './stepperitem.styles';
+import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
+import { StatusType, VariantType } from './stepperitem.types';
 
 /**
  * stepperitem component, which ...
@@ -42,28 +45,48 @@ class StepperItem extends TabIndexMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'step-number' })
   stepNumber?: string;
 
-  private setTabIndexValue(status: StatusType) {
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = ROLE.LISTITEM;
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this.dispatchEvent(new FocusEvent('focus', { bubbles: true, composed: true }));
+      }
+    });
+  }
+
+  private updateStatus(status: StatusType) {
     this.tabIndex = status === STATUS.FUTURE_DISABLED ? -1 : 0;
+    this.ariaDisabled = `${status === STATUS.FUTURE_DISABLED}`;
+    if (status === STATUS.CURRENT) {
+      this.setAttribute('aria-current', 'step');
+    } else {
+      this.removeAttribute('aria-current');
+    }
   }
 
   protected override updated(changedProperties: PropertyValueMap<StepperItem>): void {
     super.updated(changedProperties);
     if (changedProperties.has('status')) {
-      this.setTabIndexValue(this.status);
+      this.updateStatus(this.status);
     }
   }
 
   private renderStatusIcon() {
     if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR) {
       const iconName = this.status === STATUS.COMPLETED ? STATUS_ICON.COMPLETED : STATUS_ICON.ERROR;
-      return html`<mdc-icon part="status-icon" name=${iconName}
-      length-unit="rem" size="1"></mdc-icon>`;
+      return html`<mdc-icon part="status-icon" name=${iconName} length-unit="rem" size="1"></mdc-icon>`;
     }
 
     if (this.stepNumber) {
-      return html`<mdc-text part="step-number" 
-      tagname=${VALID_TEXT_TAGS.SPAN} 
-      type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.stepNumber}</mdc-text>`;
+      return html`<mdc-text part="step-number" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
+        >${this.stepNumber}</mdc-text
+      >`;
     }
 
     return nothing;
@@ -74,24 +97,20 @@ class StepperItem extends TabIndexMixin(Component) {
       return nothing;
     }
     const content = this.status === STATUS.ERROR ? this.optionalLabel : `(${this.optionalLabel})`;
-    return html`<mdc-text 
-        part="optional-label"
-        tagname=${VALID_TEXT_TAGS.SPAN} 
-        type=${TYPE.BODY_MIDSIZE_REGULAR}>${content}</mdc-text>`;
+    return html`<mdc-text part="optional-label" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
+      >${content}</mdc-text
+    >`;
   }
 
   public override render() {
-    return html`
-      <div part="status-container">
-        ${this.renderStatusIcon()}
-      </div>
+    return html` <div part="status-container">${this.renderStatusIcon()}</div>
       <div part="label-container">
-        ${this.label ? html`<mdc-text 
-        part="label"
-        tagname=${VALID_TEXT_TAGS.SPAN} 
-        type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.label}</mdc-text>`
-    : nothing}
-      ${this.renderOptionalLabel()}
+        ${this.label
+          ? html`<mdc-text part="label" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
+              >${this.label}</mdc-text
+            >`
+          : nothing}
+        ${this.renderOptionalLabel()}
       </div>`;
   }
 
