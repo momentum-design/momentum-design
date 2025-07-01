@@ -164,7 +164,7 @@ const defaultMenuContent = html`
 
 const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
   <mdc-divider></mdc-divider>
-  <mdc-menusection label="Preferences">
+  <mdc-menusection headerText="Preferences">
     <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
     <mdc-menuitemradio name="theme" label="Light" ?checked="${true}"></mdc-menuitemradio>
@@ -193,7 +193,7 @@ const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profil
   <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
   <mdc-menuitem label="Notifications"></mdc-menuitem>
   <mdc-menuitem label="Logout" disabled></mdc-menuitem>
-  <mdc-menusection label="Preferences">
+  <mdc-menusection headerText="Preferences">
     <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}" name="enableFeature"></mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}" name="betaMode"></mdc-menuitemcheckbox>
     <mdc-menuitemradio name="theme" value="light" label="Light" ?checked="${true}"></mdc-menuitemradio>
@@ -205,7 +205,7 @@ const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profil
       <mdc-menuitem label="Change Password"></mdc-menuitem>
       <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
       <mdc-menuitem label="Security Questions"></mdc-menuitem>
-      <mdc-menusection label="Virtual background">
+      <mdc-menusection headerText="Virtual background">
         <mdc-menuitemradio name="virtualbg" value="none" label="Off" ?checked="${true}"></mdc-menuitemradio>
         <mdc-menuitemradio name="virtualbg" value="office" label="Office" ?checked="${false}"></mdc-menuitemradio>
         <mdc-menuitemradio name="virtualbg" value="custom" label="Custom" ?checked="${false}"></mdc-menuitemradio>
@@ -386,7 +386,7 @@ export const CustomMenu: StoryObj = {
     </style>
     ${createPopover(
       args,
-      html` <mdc-menusection label="Layout" class="layout-section">
+      html` <mdc-menusection headerText="Layout" class="layout-section">
           <mdc-menuitemradio name="layout" label="Grid" ?checked="${true}" indicator="none">
             <mdc-icon name="video-layout-equal-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
           </mdc-menuitemradio>
@@ -403,7 +403,7 @@ export const CustomMenu: StoryObj = {
           </mdc-menuitemradio>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
-        <mdc-menusection label="Preferences">
+        <mdc-menusection headerText="Preferences">
           <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
         </mdc-menusection>

@@ -140,13 +140,13 @@ export const AllVariants: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <div role="menu">
-        <mdc-menusection label="Menu Item Checkboxes">
+        <mdc-menusection headerText="Menu Item Checkboxes">
           <mdc-menuitemcheckbox checked="true" label="Selected Checkbox"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox disabled checked="true" label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox checked="false" label="Unselected Checkbox"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox disabled checked="false" label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
         </mdc-menusection>
-        <mdc-menusection label="Menu Item Toggles">
+        <mdc-menusection headerText="Menu Item Toggles">
           <mdc-menuitemcheckbox checked="true" indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox disabled checked="true" indicator="toggle" label="Disabled Selected Toggle">
           </mdc-menuitemcheckbox>
@@ -154,7 +154,7 @@ export const AllVariants: StoryObj = {
           <mdc-menuitemcheckbox disabled checked="false" indicator="toggle" label="Disabled Unselected Toggle">
           </mdc-menuitemcheckbox>
         </mdc-menusection>
-        <mdc-menusection label="Menu Item Checkmarks">
+        <mdc-menusection headerText="Menu Item Checkmarks">
           <mdc-menuitemcheckbox checked="true" indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox disabled checked="true" indicator="checkmark" label="Disabled Selected Checkmark">
           </mdc-menuitemcheckbox>
@@ -163,7 +163,7 @@ export const AllVariants: StoryObj = {
           <mdc-menuitemcheckbox disabled checked="false" indicator="checkmark" label="Disabled Unselected Checkmark">
           </mdc-menuitemcheckbox>
         </mdc-menusection>
-        <mdc-menusection label="Menu Item Checkbox with custom indicator">
+        <mdc-menusection headerText="Menu Item Checkbox with custom indicator">
           <style>
             mdc-menuitemcheckbox[indicator='none'] mdc-icon {
               width: 5rem;
@@ -195,7 +195,7 @@ export const AllVariants: StoryObj = {
           </mdc-menuitemcheckbox>
         </mdc-menusection>
 
-        <mdc-menusection label="Menu Item Checkboxes with secondary label">
+        <mdc-menusection headerText="Menu Item Checkboxes with secondary label">
           <mdc-menuitemcheckbox
             checked="true"
             label="Selected Menu Item With Secondary Label"

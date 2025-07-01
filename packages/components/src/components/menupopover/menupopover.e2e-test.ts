@@ -46,7 +46,7 @@ const groupHTML = `
       <mdc-menupopover triggerid="trigger-btn">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-divider></mdc-divider>
-        <mdc-menusection label="Preferences">
+        <mdc-menusection headerText="Preferences">
           <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
           <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
