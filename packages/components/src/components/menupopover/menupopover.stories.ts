@@ -167,6 +167,7 @@ const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
   <mdc-menusection headerText="Preferences">
     <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
+    <mdc-divider></mdc-divider>
     <mdc-menuitemradio name="theme" label="Light" ?checked="${true}"></mdc-menuitemradio>
     <mdc-menuitemradio name="theme" label="Dark" ?checked="${false}"></mdc-menuitemradio>
     <mdc-menuitemradio name="theme" label="System" ?checked="${false}"></mdc-menuitemradio>
@@ -354,7 +355,7 @@ export const CustomMenu: StoryObj = {
         width: 21rem;
       }
 
-      .layout-section::part(section-label) {
+      .layout-section::part(header-text) {
         width: 100%;
       }
 

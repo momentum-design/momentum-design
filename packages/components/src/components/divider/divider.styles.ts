@@ -70,14 +70,12 @@ const styles = [
       flex-direction: row;
       height: var(--mdc-divider-width);
       width: 100%;
-      margin-block: 0.25rem;
     }
 
     :host([orientation='vertical']:not([data-type='mdc-text-divider'])) {
       flex-direction: column;
       height: 100%;
       width: var(--mdc-divider-width);
-      margin-inline: 0.25rem;
     }
 
     /* Gradient styles for primary and grabber dividers */
