@@ -13,13 +13,13 @@ const ICON_NAME = {
   UNCHECKED: 'cancel-bold' as Extract<IconNames, 'cancel-bold'>,
 } as const;
 
-const ICON_SIZE_IN_REM = {
-  compact: 0.75,
-  default: 1.25,
+const ICON_SIZE_IN_PX = {
+  compact: 12,
+  default: 20,
 } as const;
 
 const DEFAULTS = {
   SIZE: TOGGLE_SIZE.DEFAULT,
 };
 
-export { TAG_NAME, ICON_SIZE_IN_REM, DEFAULTS, TOGGLE_SIZE, ICON_NAME };
+export { TAG_NAME, ICON_SIZE_IN_PX, DEFAULTS, TOGGLE_SIZE, ICON_NAME };
