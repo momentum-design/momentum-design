@@ -173,38 +173,24 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
     menuitemcheckboxSheet.setAttributes({ label, checked: true, disabled: true });
     await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, checked: true, indicator: INDICATOR.CHECKMARK });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, disabled: true, indicator: INDICATOR.CHECKMARK });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, checked: true, disabled: true, indicator: INDICATOR.CHECKMARK });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
+    menuitemcheckboxSheet.setAttributes({ label, checked: true });
+    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
     menuitemcheckboxSheet.setAttributes({
       label: 'Selected Checkbox With Secondary Label',
       checked: true,
       'secondary-label': 'Secondary Label',
     });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
+    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
     menuitemcheckboxSheet.setAttributes({
       label: 'Unselected Checkbox With Secondary Label',
       'secondary-label': 'Secondary Label',
     });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({
-      label: 'Selected Checkmark With Secondary Label',
-      checked: true,
-      indicator: INDICATOR.CHECKMARK,
-      'secondary-label': 'Secondary Label',
-    });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({
-      label: 'Unselected Checkmark With Secondary Label',
-      indicator: INDICATOR.CHECKMARK,
-      'secondary-label': 'Secondary Label',
-    });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
+    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
 
-    await menuitemcheckboxSheet.mountStickerSheet({ role: ROLE.MENU });
+    await menuitemcheckboxSheet.mountStickerSheet({
+      role: ROLE.MENU,
+      wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
+    });
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox', {
         element: menuitemcheckboxSheet.getWrapperContainer(),
