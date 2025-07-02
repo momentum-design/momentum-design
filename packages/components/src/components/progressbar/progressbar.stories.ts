@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, VARIANT } from './progressbar.constants';
 
@@ -56,7 +56,7 @@ const meta: Meta = {
       'toggletip-placement',
       'info-icon-aria-label',
     ]),
-    ...disableControls([
+    ...textControls([
       '--mdc-progressbar-default-background-color',
       '--mdc-progressbar-default-active-background-color',
       '--mdc-progressbar-success-background-color',
