@@ -67,14 +67,6 @@ class Password extends Input {
   @property({ type: String, attribute: 'help-text-type' })
   override helpTextType: ValidationType = 'default';
 
-  /**
-   * The trailing button is always true, showing a "show/hide" button that shows / hides the password.
-   * This one can't be overridden to false, as it is a core feature of the password input.
-   * @default true
-   */
-  @property({ type: Boolean, attribute: 'trailing-button' })
-  override trailingButton = true;
-
   override connectedCallback(): void {
     super.connectedCallback();
     // Ensure the trailing button is always true for password inputs

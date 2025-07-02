@@ -180,8 +180,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     const { required } = this.inputElement;
     const isEmpty = !this.inputElement.value.trim();
 
-    console.debug('nativeValidity', nativeValidity.valid);
-
     // If field is not required and empty, it should be valid regardless of other constraints
     if (!required && isEmpty) {
       // Clear any validation and mark as valid
@@ -191,17 +189,15 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       this.inputElement.setCustomValidity(this.validationMessage);
     }
 
-    const finalIsValid = this.inputElement.checkValidity();
-    const { validationMessage, validity } = this.inputElement;
+    const isValid = this.inputElement.checkValidity();
 
-    if (!finalIsValid) {
-      this.internals.setValidity(validity, validationMessage, this.inputElement);
+    if (!isValid) {
+      super.setValidity();
     } else {
       this.internals.setValidity({});
     }
 
     this.internals.setFormValue(this.inputElement.value);
-    super.setValidity();
   }
 
   /**
