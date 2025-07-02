@@ -107,29 +107,18 @@ export const Example: StoryObj = {
 export const AllVariants: StoryObj = {
   render: () =>
     wrapWithDiv(html`
-      <div role="menu">
+      <div role="menu" style="display: flex; gap: 0.5rem;">
         <mdc-menusection headerText="Menu Item Radios">
-          <mdc-menuitemradio name="group1" checked="true" label="Selected radio"></mdc-menuitemradio>
-          <mdc-menuitemradio name="group1" disabled checked="true" label="Disabled Selected radio"></mdc-menuitemradio>
+          <mdc-menuitemradio name="group1" checked label="Selected radio"></mdc-menuitemradio>
+          <mdc-menuitemradio name="group1" disabled checked label="Disabled Selected radio"></mdc-menuitemradio>
           <mdc-menuitemradio name="group1" label="Unselected radio"></mdc-menuitemradio>
           <mdc-menuitemradio name="group1" disabled label="Disabled Unselected radio"></mdc-menuitemradio>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
         <mdc-divider></mdc-divider>
         <mdc-menusection headerText="Menu Item Radios with checkmark indicator">
-          <mdc-menuitemradio
-            name="group2"
-            checked="true"
-            indicator="checkmark"
-            label="Selected Checkmark"
-          ></mdc-menuitemradio>
-          <mdc-menuitemradio
-            name="group2"
-            disabled
-            checked="true"
-            indicator="checkmark"
-            label="Disabled Selected Checkmark"
-          >
+          <mdc-menuitemradio name="group2" checked indicator="checkmark" label="Selected Checkmark"></mdc-menuitemradio>
+          <mdc-menuitemradio name="group2" disabled checked indicator="checkmark" label="Disabled Selected Checkmark">
           </mdc-menuitemradio>
           <mdc-menuitemradio name="group2" indicator="checkmark" label="Unselected Checkmark"> </mdc-menuitemradio>
           <mdc-menuitemradio name="group2" disabled indicator="checkmark" label="Disabled Unselected Checkmark">
@@ -148,16 +137,10 @@ export const AllVariants: StoryObj = {
               background: var(--mdc-listitem-background-color-active);
             }
           </style>
-          <mdc-menuitemradio name="group3" checked="true" indicator="none" label="Selected No indicator">
+          <mdc-menuitemradio name="group3" checked indicator="none" label="Selected No indicator">
             <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
           </mdc-menuitemradio>
-          <mdc-menuitemradio
-            name="group3"
-            disabled
-            checked="true"
-            indicator="none"
-            label="Disabled Selected No indicator"
-          >
+          <mdc-menuitemradio name="group3" disabled checked indicator="none" label="Disabled Selected No indicator">
             <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
           </mdc-menuitemradio>
           <mdc-menuitemradio name="group3" indicator="none" label="Unselected No indicator">
@@ -171,7 +154,7 @@ export const AllVariants: StoryObj = {
         <mdc-menusection headerText="Menu Item Radios with secondary label">
           <mdc-menuitemradio
             name="group4"
-            checked="true"
+            checked
             label="Selected Menu Item With Secondary Label"
             secondary-label="Secondary Label"
           ></mdc-menuitemradio>
@@ -182,7 +165,7 @@ export const AllVariants: StoryObj = {
           ></mdc-menuitemradio>
           <mdc-menuitemradio
             name="group4"
-            checked="true"
+            checked
             indicator="checkmark"
             label="Selected Menu Item With Secondary Label"
             secondary-label="Secondary Label"

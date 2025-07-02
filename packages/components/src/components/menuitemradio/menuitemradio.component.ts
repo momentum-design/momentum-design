@@ -5,7 +5,7 @@ import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
-import { ARIA_CHECKED_STATES, TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
+import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 
 import { Indicator } from './menuitemradio.types';
@@ -52,7 +52,7 @@ class MenuItemRadio extends MenuItem {
 
   /**
    * The indicator attribute is used to differentiate between <b>radio</b>, <b>checkmark</b> and <b>card</b>.
-   * @default 'checkbox'
+   * @default 'radio'
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
@@ -75,6 +75,11 @@ class MenuItemRadio extends MenuItem {
     return Array.from(container.querySelectorAll(`${this.tagName}[name="${this.name}"]`)) as MenuItemRadio[];
   }
 
+  /**
+   * Updates the checked state of all other radios in the same group.
+   * This method is called when a radio is clicked to ensure that only one radio in the group can be checked at a time.
+   * It sets the `checked` property of all other radios in the same group to `false`.
+   */
   private updateOtherRadiosCheckedState(): void {
     const radios = this.getAllRadiosWithinSameGroup();
     radios.forEach(radio => {
@@ -102,7 +107,7 @@ class MenuItemRadio extends MenuItem {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('checked')) {
-      this.ariaChecked = this.checked ? ARIA_CHECKED_STATES.TRUE : ARIA_CHECKED_STATES.FALSE;
+      this.ariaChecked = `${this.checked}`;
       if (changedProperties.get('checked') === false && this.checked) {
         this.updateOtherRadiosCheckedState();
       }

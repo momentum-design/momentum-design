@@ -6,7 +6,6 @@ import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
@@ -92,7 +91,7 @@ class MenuItemCheckbox extends MenuItem {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('checked')) {
-      this.ariaChecked = this.checked ? ARIA_CHECKED_STATES.TRUE : ARIA_CHECKED_STATES.FALSE;
+      this.ariaChecked = `${this.checked}`;
     }
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 export type ValueOf<T> = T[keyof T];
 
 /**

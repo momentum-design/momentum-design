@@ -139,28 +139,26 @@ export const CheckmarkWithMenuItem: StoryObj = {
 export const AllVariants: StoryObj = {
   render: () =>
     wrapWithDiv(html`
-      <div role="menu">
+      <div role="menu" style="display: flex; gap: 1rem;">
         <mdc-menusection headerText="Menu Item Checkboxes">
-          <mdc-menuitemcheckbox checked="true" label="Selected Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="true" label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked="false" label="Unselected Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="false" label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked label="Selected Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled checked label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Unselected Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
         </mdc-menusection>
         <mdc-menusection headerText="Menu Item Toggles">
-          <mdc-menuitemcheckbox checked="true" indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="true" indicator="toggle" label="Disabled Selected Toggle">
+          <mdc-menuitemcheckbox checked indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled checked indicator="toggle" label="Disabled Selected Toggle">
           </mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked="false" indicator="toggle" label="Unselected Toggle"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="false" indicator="toggle" label="Disabled Unselected Toggle">
-          </mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="toggle" label="Unselected Toggle"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled indicator="toggle" label="Disabled Unselected Toggle"> </mdc-menuitemcheckbox>
         </mdc-menusection>
         <mdc-menusection headerText="Menu Item Checkmarks">
-          <mdc-menuitemcheckbox checked="true" indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="true" indicator="checkmark" label="Disabled Selected Checkmark">
+          <mdc-menuitemcheckbox checked indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled checked indicator="checkmark" label="Disabled Selected Checkmark">
           </mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked="false" indicator="checkmark" label="Unselected Checkmark">
-          </mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled checked="false" indicator="checkmark" label="Disabled Unselected Checkmark">
+          <mdc-menuitemcheckbox indicator="checkmark" label="Unselected Checkmark"> </mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled indicator="checkmark" label="Disabled Unselected Checkmark">
           </mdc-menuitemcheckbox>
         </mdc-menusection>
         <mdc-menusection headerText="Menu Item Checkbox with custom indicator">
@@ -175,16 +173,10 @@ export const AllVariants: StoryObj = {
               background: var(--mdc-listitem-background-color-active);
             }
           </style>
-          <mdc-menuitemcheckbox name="group3" checked="true" indicator="none" label="Selected No indicator">
+          <mdc-menuitemcheckbox name="group3" checked indicator="none" label="Selected No indicator">
             <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
           </mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox
-            name="group3"
-            disabled
-            checked="true"
-            indicator="none"
-            label="Disabled Selected No indicator"
-          >
+          <mdc-menuitemcheckbox name="group3" disabled checked indicator="none" label="Disabled Selected No indicator">
             <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
           </mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox name="group3" indicator="none" label="Unselected No indicator">
@@ -197,23 +189,21 @@ export const AllVariants: StoryObj = {
 
         <mdc-menusection headerText="Menu Item Checkboxes with secondary label">
           <mdc-menuitemcheckbox
-            checked="true"
+            checked
             label="Selected Menu Item With Secondary Label"
             secondary-label="Secondary Label"
           ></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox
-            checked="false"
             label="Unselected Menu Item With Secondary Label"
             secondary-label="Secondary Label"
           ></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox
-            checked="true"
+            checked
             indicator="toggle"
             label="Selected Menu Item With Secondary Label"
             secondary-label="Secondary Label"
           ></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox
-            checked="false"
             indicator="toggle"
             label="Unselected Menu Item With Secondary Label"
             secondary-label="Secondary Label"

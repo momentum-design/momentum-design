@@ -165,12 +165,12 @@ const defaultMenuContent = html`
 const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
   <mdc-divider></mdc-divider>
   <mdc-menusection headerText="Preferences">
-    <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
     <mdc-divider></mdc-divider>
-    <mdc-menuitemradio name="theme" label="Light" ?checked="${true}"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="Dark" ?checked="${false}"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="System" ?checked="${false}"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="Light" checked></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="Dark"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="System"></mdc-menuitemradio>
   </mdc-menusection>
   <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
@@ -195,11 +195,11 @@ const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profil
   <mdc-menuitem label="Notifications"></mdc-menuitem>
   <mdc-menuitem label="Logout" disabled></mdc-menuitem>
   <mdc-menusection headerText="Preferences">
-    <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}" name="enableFeature"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}" name="betaMode"></mdc-menuitemcheckbox>
-    <mdc-menuitemradio name="theme" value="light" label="Light" ?checked="${true}"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" value="dark" label="Dark" ?checked="${false}"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" value="system" label="System" ?checked="${false}"></mdc-menuitemradio>
+    <mdc-menuitemcheckbox label="Enable feature" name="enableFeature"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" checked name="betaMode"></mdc-menuitemcheckbox>
+    <mdc-menuitemradio name="theme" value="light" label="Light" checked></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="dark" label="Dark"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="system" label="System"></mdc-menuitemradio>
   </mdc-menusection>
   <mdc-menupopover triggerID="submenu-trigger" placement="right">
     <mdc-menupopover triggerID="security-id" placement="right-start">
@@ -207,9 +207,9 @@ const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profil
       <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
       <mdc-menuitem label="Security Questions"></mdc-menuitem>
       <mdc-menusection headerText="Virtual background">
-        <mdc-menuitemradio name="virtualbg" value="none" label="Off" ?checked="${true}"></mdc-menuitemradio>
-        <mdc-menuitemradio name="virtualbg" value="office" label="Office" ?checked="${false}"></mdc-menuitemradio>
-        <mdc-menuitemradio name="virtualbg" value="custom" label="Custom" ?checked="${false}"></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="none" label="Off" checked></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="office" label="Office"></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="custom" label="Custom"></mdc-menuitemradio>
       </mdc-menusection>
     </mdc-menupopover>
     <mdc-menuitem label="Account"></mdc-menuitem>
@@ -388,13 +388,13 @@ export const CustomMenu: StoryObj = {
     ${createPopover(
       args,
       html` <mdc-menusection headerText="Layout" class="layout-section">
-          <mdc-menuitemradio name="layout" label="Grid" ?checked="${true}" indicator="none">
+          <mdc-menuitemradio name="layout" label="Grid" checked indicator="none">
             <mdc-icon name="video-layout-equal-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
           </mdc-menuitemradio>
-          <mdc-menuitemradio name="layout" label="Stack" ?checked="${false}" indicator="none">
+          <mdc-menuitemradio name="layout" label="Stack" indicator="none">
             <mdc-icon name="video-layout-stack-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
           </mdc-menuitemradio>
-          <mdc-menuitemradio name="layout" label="Side by side" ?checked="${false}" indicator="none">
+          <mdc-menuitemradio name="layout" label="Side by side" indicator="none">
             <mdc-icon
               name="layout-side-by-side-vertical-light"
               size="2"
@@ -405,8 +405,8 @@ export const CustomMenu: StoryObj = {
         </mdc-menusection>
         <mdc-divider></mdc-divider>
         <mdc-menusection headerText="Preferences">
-          <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
         <mdc-menuitem label="Notifications"></mdc-menuitem>`,
