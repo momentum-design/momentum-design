@@ -9,8 +9,6 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
-import styles from './password.styles';
-
 /**
  * `mdc-password` is a component that allows users to input their password.
  *  It extends the `mdc-input` component and provides additional features specific to password fields.
@@ -18,7 +16,6 @@ import styles from './password.styles';
  * - `label` field - describe the password field.
  * - `password` field - contains the value
  * - `help-text` or `validation-message` - displayed below the password field.
- * - `prefix-text` - displayed before the password field.
  * - `show-hide-button-aria-label` - aria label for the trailing button.
  * - all the attributes of the password field.
  *
@@ -107,7 +104,7 @@ class Password extends Input {
     return super.renderInputElement(inputType, hidePlaceholder);
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles];
 }
 
 export default Password;

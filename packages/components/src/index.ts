@@ -130,6 +130,7 @@ export {
   NavItemList,
   OptGroup,
   Option,
+  Password,
   Popover,
   Presence,
   Progressbar,
@@ -154,7 +155,6 @@ export {
   ToggleTip,
   Tooltip,
   VirtualizedList,
-  Password,
 };
 
 // Types Exports

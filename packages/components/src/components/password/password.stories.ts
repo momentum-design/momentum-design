@@ -186,8 +186,6 @@ export const Example: StoryObj = {
     readonly: false,
     disabled: false,
     required: true,
-    'help-text': 'Enter a strong password',
-    'help-text-type': 'default',
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
