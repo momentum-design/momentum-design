@@ -5,7 +5,6 @@ import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
@@ -57,7 +56,7 @@ class MenuBar extends Component {
     const assigned = slot?.assignedElements({ flatten: true }) ?? [];
     const items: HTMLElement[] = [];
     const collect = (el: Element) => {
-      if (el.tagName.toLowerCase() === MENUITEM_TAGNAME) {
+      if (el.role === ROLE.MENUITEM) {
         items.push(el as HTMLElement);
       } else if (el.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
         Array.from(el.children).forEach(collect);
@@ -156,14 +155,14 @@ class MenuBar extends Component {
   private isTopLevelMenuItem(element: HTMLElement): boolean {
     const parent = element.parentElement;
     if (!parent) return false;
-    if (parent.tagName.toLowerCase() === MENUBAR_TAGNAME && element.tagName.toLowerCase() === MENUITEM_TAGNAME) {
+    if (parent.tagName.toLowerCase() === MENUBAR_TAGNAME && element.role === ROLE.MENUITEM) {
       return true;
     }
     // If parent is menusection and its parent is menubar
     if (
       parent.tagName.toLowerCase() === MENUSECTION_TAGNAME &&
       parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME &&
-      element.tagName.toLowerCase() === MENUITEM_TAGNAME
+      element.role === ROLE.MENUITEM
     ) {
       return true;
     }
@@ -171,7 +170,7 @@ class MenuBar extends Component {
   }
 
   private isNestedMenuItem(element: HTMLElement): boolean {
-    return !!element.closest(MENUPOPOVER_TAGNAME) && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+    return !!element.closest(MENUPOPOVER_TAGNAME) && element.role === ROLE.MENUITEM;
   }
 
   private async closeAllMenuPopovers() {
@@ -188,7 +187,7 @@ class MenuBar extends Component {
   }
 
   private async crossMenubarNavigationOnLeft(element: HTMLElement): Promise<void> {
-    const isMenuItem = element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+    const isMenuItem = element.role === ROLE.MENUITEM;
     if (isMenuItem) {
       const parentPopover = element.closest(MENUPOPOVER_TAGNAME);
       const triggerId = parentPopover?.getAttribute('triggerid');
