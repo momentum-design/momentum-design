@@ -258,25 +258,19 @@ export const AllVariants: StoryObj = {
 };
 
 export const FormFieldInput: StoryObj = {
-  render: () => {
+  render: args => {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
       const selectedValue = formData.get('user-name');
       action('Form Submitted')({ value: selectedValue });
     };
-
+    console.log('args.required', args.required);
     return html`
       <form @submit=${handleSubmit}>
         <fieldset>
           <legend>Form Example</legend>
-          <mdc-input
-            name="user-name"
-            label="First Name"
-            required
-            placeholder="Enter your name"
-            validation-message="Name is required"
-          ></mdc-input>
+          ${render(args)}
           <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
@@ -284,5 +278,21 @@ export const FormFieldInput: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+  args: {
+    class: 'custom-classname',
+    label: 'First Name',
+    name: 'user-name',
+    placeholder: 'Enter your name',
+    readonly: false,
+    disabled: false,
+    required: true,
+    'help-text': 'Please provide a valid name',
+    'help-text-type': 'default',
+    'prefix-text': '',
+    'leading-icon': '',
+    'show-hide-button-aria-label': 'Show or hide password',
+    minlength: 5,
+    maxlength: 10,
   },
 };

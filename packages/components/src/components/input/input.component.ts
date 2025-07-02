@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -170,37 +170,38 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.value = state;
   }
 
-  /**
-   * Handles the value change of the input field.
-   * Sets the form value and updates the validity of the input field.
-   * @returns void
-   */
-  handleValueChange() {
-    this.updateComplete
-      .then(() => {
-        this.setInputValidity();
-      })
-      .catch(error => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
-  }
-
-  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.updated(changedProperties);
-    if (changedProperties.has('value')) {
-      this.handleValueChange();
-    }
-  }
-
   private setInputValidity() {
-    if (this.required && this.validationMessage && this.value === '') {
-      this.inputElement.setCustomValidity(this.validationMessage);
-    } else {
-      this.inputElement.setCustomValidity('');
+    if (!this.inputElement) {
+      return;
     }
-    this.setValidity();
+
+    this.inputElement.setCustomValidity('');
+    const nativeValidity = this.inputElement.validity;
+    const { required } = this.inputElement;
+    const isEmpty = !this.inputElement.value.trim();
+
+    console.debug('nativeValidity', nativeValidity.valid);
+
+    // If field is not required and empty, it should be valid regardless of other constraints
+    if (!required && isEmpty) {
+      // Clear any validation and mark as valid
+      this.inputElement.setCustomValidity('');
+    } else if (this.validationMessage && !nativeValidity.valid) {
+      // If there's a validation message and validation fails, use custom message
+      this.inputElement.setCustomValidity(this.validationMessage);
+    }
+
+    const finalIsValid = this.inputElement.checkValidity();
+    const { validationMessage, validity } = this.inputElement;
+
+    if (!finalIsValid) {
+      this.internals.setValidity(validity, validationMessage, this.inputElement);
+    } else {
+      this.internals.setValidity({});
+    }
+
+    this.internals.setFormValue(this.inputElement.value);
+    super.setValidity();
   }
 
   /**
@@ -261,7 +262,8 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
-    this.setInputValidity();
+    // Don't call setInputValidity on change as it's interfering with validation
+    // Validation should be handled primarily on input and blur events
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
