@@ -124,20 +124,19 @@ class NavItem extends IconNameMixin(MenuItem) {
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleClickEvent);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
     this.tooltipPlacement = undefined as unknown as PopoverPlacement;
-    this.addEventListener('click', this.handleClickEvent);
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navitem] navId is required and was not provided.');
     }
-  }
-
-  public override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClickEvent);
   }
 
   protected override updated(): void {

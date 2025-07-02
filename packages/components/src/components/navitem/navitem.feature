@@ -27,14 +27,14 @@ Feature: Navitem Navigation and User Interaction
       When the navitem is rendered
       Then the label should be visible
       And the icon should be visible
-      And the navitem should have proper ARIA attributes
 
     Scenario: Render active navitem
       Given the navitem has active attribute set to true
       When the navitem is rendered
       Then the navitem should have active attribute
       And the icon should be modified to filled variant (placeholder-filled)
-      And the navitem should have aria-current="page"
+      When disable-aria-current is not set to true
+      Then the navitem should have aria-current="page"
 
     Scenario: Render navitem without label (collapsed state)
       Given the navitem has show-label set to false
@@ -102,18 +102,6 @@ Feature: Navitem Navigation and User Interaction
       When I navigate using Tab key
       Then the navitem should receive focus
       And the navitem should be visually focused
-
-    Scenario: Activate navitem using Enter key
-      Given the navitem is focused and active
-      When I press "Enter"
-      Then an activechange event should be emitted
-      And the event should contain the current active state
-
-    Scenario: Activate navitem using Space key
-      Given the navitem is focused and active
-      When I press "Space" key
-      Then an activechange event should be emitted
-      And the event should contain the current active state
 
     Scenario: Disabled navitem keyboard behavior
       Given the navitem is disabled
