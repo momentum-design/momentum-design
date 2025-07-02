@@ -1,10 +1,6 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host {
-    gap: 0.25rem;
-  }
-
   :host(:not([show-label])) ::slotted(mdc-text) {
     display: none;
   }

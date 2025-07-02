@@ -4,13 +4,16 @@ import { property, state } from 'lit/decorators.js';
 import { Component, Provider } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
+import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
+import NavItem from '../navitem';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
+
 
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
@@ -20,7 +23,7 @@ import styles from './sidenavigation.styles';
  * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
- * - Serves as a context provider for descendant components - `mdc-navitemlist` and `mdc-navitem`
+ * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navitem`
  *
  * ### Usage:
  * In a sidenavigation, navitems can be used in the following ways:
@@ -43,13 +46,14 @@ import styles from './sidenavigation.styles';
  * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
  *
  * #### Accessibility Notes:
- * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-navitemlist`
+ * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-menubar`
  * to ensure screen reader support
  * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
  *
  * @dependency mdc-text
  * @dependency mdc-button
  * @dependency mdc-divider
+ * @dependency mdc-menubar
  *
  * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
  *
@@ -68,6 +72,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
       context: SideNavigationContext.context,
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
     });
+
+    this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
   }
 
   override connectedCallback(): void {
@@ -175,6 +181,33 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   /**
+   * Handle the navItem active change event fired from the nested navItem.
+   * @internal
+   * @param event - Custom Event fired from the nested navItem.
+   */
+  private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
+    const newNavItem = this.findNav((this.navItems as NavItem[]) || [], event.detail.navId);
+    if (this.context?.value) {
+      this.context.value.setCurrentActiveNavItem(newNavItem);
+    }
+  };
+
+  /**
+   * Matches new navItem with navId.
+   * @param NavItem - The new active navItem.
+   *
+   * @internal
+   */
+  private findNav = (navs: NavItem[], navId: string): NavItem | undefined => navs.find(nav => nav.navId === navId);
+
+  /**
+   * Returns all nested, non-disabled mdc-navitem elements inside this component.
+   */
+  private get navItems(): NavItem[] {
+    return Array.from(this.querySelectorAll(`${NAVITEM_TAGNAME}:not([disabled])`));
+  }
+
+  /**
    * Syncs `expanded` and `aria-expanded` based on `variant` and `flexibleExpanded`.
    *
    * @internal
@@ -226,11 +259,19 @@ class SideNavigation extends Provider<SideNavigationContext> {
     return html`
       <div part="side-navigation-container" id="side-nav-container">
         <div part="scrollable-section">
-          <slot name="scrollable-section"></slot>
+          <slot name="scrollable-section">
+            <mdc-menubar>
+              <slot name="scrollable-menubar"></slot>
+            </mdc-menubar> 
+          </slot>
         </div>
         <mdc-divider variant="gradient" part="separator"></mdc-divider>
         <div part="fixed-section">
-          <slot name="fixed-section"></slot>
+          <slot name="fixed-section">
+            <mdc-menubar>
+              <slot name="fixed-menubar"></slot>
+            </mdc-menubar> 
+          </slot>
           <div part="brand-logo-container">
             <slot name="brand-logo"></slot>
             ${this.expanded

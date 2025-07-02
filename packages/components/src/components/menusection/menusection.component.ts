@@ -1,7 +1,12 @@
 import { CSSResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
 
+import providerUtils from '../../utils/provider';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
+
+import styles from './menusection.styles';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -26,11 +31,32 @@ class MenuSection extends Component {
     super.disconnectedCallback();
   }
 
+  /**
+   * Shows or hides the section headers based on the expanded state of the side navigation.
+   *
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
+  showLabel?: boolean;
+
+  /**
+   * @internal
+   */
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
+
+  protected override updated(): void {
+    const context = this.sideNavigationContext?.value;
+    if (!context) return;
+
+    const { expanded } = context;
+    this.showLabel = expanded;
+  }
+
   public override render() {
     return html`<slot></slot>`;
   }
 
-  public static override styles: CSSResult[] = [...Component.styles];
+  public static override styles: CSSResult[] = [...Component.styles, ...styles];
 }
 
 export default MenuSection;

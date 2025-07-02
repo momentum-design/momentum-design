@@ -38,7 +38,6 @@ import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
 import MenuSection from './components/menusection';
 import NavItem from './components/navitem';
-import NavItemList from './components/navitemlist';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -124,7 +123,6 @@ export {
   MenuPopover,
   MenuSection,
   NavItem,
-  NavItemList,
   OptGroup,
   Option,
   Popover,
