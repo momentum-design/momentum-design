@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
 
 import { SPINNER_SIZES, SPINNER_VARIANT } from './spinner.constants';
 
@@ -37,6 +38,12 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(SPINNER_VARIANT),
     },
+    ...textControls([
+      '--mdc-spinner-default-color',
+      '--mdc-spinner-inverted-color',
+      '--mdc-spinner-button-variant-color',
+      '--mdc-spinner-size',
+    ]),
   },
 };
 
