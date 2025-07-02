@@ -56,7 +56,7 @@ class MenuBar extends Component {
     const assigned = slot?.assignedElements({ flatten: true }) ?? [];
     const items: HTMLElement[] = [];
     const collect = (el: Element) => {
-      if (el.role === ROLE.MENUITEM) {
+      if (el.role === ROLE.MENUITEM && !el.hasAttribute('disabled')) {
         items.push(el as HTMLElement);
       } else if (el.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
         Array.from(el.children).forEach(collect);
