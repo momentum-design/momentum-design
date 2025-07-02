@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
+import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
 import { popoverStack } from '../popover/popover.stack';
@@ -49,8 +49,23 @@ class MenuBar extends Component {
     this.ariaOrientation = DEFAULTS.ORIENTATION;
   }
 
-  @queryAssignedElements({ selector: `${MENUITEM_TAGNAME}:not([disabled])` })
-  menuItems!: Array<HTMLElement>;
+  /**
+   * Returns all menuitem elements, including those nested inside menusection.
+   */
+  get menuItems(): Array<HTMLElement> {
+    const slot = this.shadowRoot?.querySelector('slot');
+    const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+    const items: HTMLElement[] = [];
+    const collect = (el: Element) => {
+      if (el.tagName.toLowerCase() === MENUITEM_TAGNAME) {
+        items.push(el as HTMLElement);
+      } else if (el.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
+        Array.from(el.children).forEach(collect);
+      }
+    };
+    assigned.forEach(collect);
+    return items;
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -135,11 +150,24 @@ class MenuBar extends Component {
     return originalKey;
   }
 
+  /**
+   * Determines if a menuitem is a top-level menuitem (direct child of menubar or child of menusection whose parent is menubar)
+   */
   private isTopLevelMenuItem(element: HTMLElement): boolean {
-    return (
-      element.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME &&
+    const parent = element.parentElement;
+    if (!parent) return false;
+    if (parent.tagName.toLowerCase() === MENUBAR_TAGNAME && element.tagName.toLowerCase() === MENUITEM_TAGNAME) {
+      return true;
+    }
+    // If parent is menusection and its parent is menubar
+    if (
+      parent.tagName.toLowerCase() === MENUSECTION_TAGNAME &&
+      parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME &&
       element.tagName.toLowerCase() === MENUITEM_TAGNAME
-    );
+    ) {
+      return true;
+    }
+    return false;
   }
 
   private isNestedMenuItem(element: HTMLElement): boolean {
