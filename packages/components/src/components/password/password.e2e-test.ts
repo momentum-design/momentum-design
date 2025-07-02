@@ -86,8 +86,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     maxlength: 10,
     minlength: 5,
     prefixText: 'Prefix',
-    dataAriaLabel: 'prefix', // aria-label for prefix text to be read by screen reader
-    showHideButtonAriaLabel: 'show-hide button aria-label', // aria-label for show/hide button to be read by screen reader
+    dataAriaLabel: 'prefix',
+    showHideButtonAriaLabel: 'show-hide button aria-label',
     leadingIcon: 'placeholder-bold',
     label: 'Label',
     helpText: 'Help Text',
@@ -223,7 +223,13 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).toBeFocused();
       await passwordEl.fill('test');
       await expect(passwordEl).toHaveValue('test');
+      const showHideButton = password.locator('mdc-button[part="trailing-button"]');
+      const isShowHideButtonVisible = await showHideButton.isVisible();      
       await componentsPage.actionability.pressTab();
+      if (isShowHideButtonVisible) {
+        await expect(showHideButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+      }
       await expect(password).not.toBeFocused();
     });
 
@@ -287,7 +293,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
       await componentsPage.actionability.pressTab();
-      // disabled when Password is in readonly state
       await expect(trailingButton).not.toBeFocused();
       await componentsPage.removeAttribute(password, 'readonly');
       await componentsPage.removeAttribute(password, 'trailing-buton');
@@ -314,7 +319,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       );
 
       const mdcpassword = form.locator('mdc-password');
-      const submitButton = form.locator('mdc-button');
+      const submitButton = form.locator('mdc-button[type="submit"]');
       const passwordEl = mdcpassword.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcpassword).toBeFocused();
@@ -331,7 +336,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         ).toBeTruthy();
       }
       await passwordEl.fill('This is a long text');
-      await expect(passwordEl).toHaveValue('This is a '); // maxlength is 10; truncates rest of the value.
+      await expect(passwordEl).toHaveValue('This is a ');
       await submitButton.click();
     });
   });
@@ -345,6 +350,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       placeholder: 'Placeholder',
       label: 'Label',
       'help-text': 'Help Text',
+      'show-hide-button-aria-label': 'show/hide password',
     };
     const inputStickerSheet = new StickerSheet(componentsPage, 'mdc-password');
 
@@ -353,37 +359,37 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       'help-text-type': VALIDATION,
     });
 
-    // disabled password field with value
     inputStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: true });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // password with value and leading icon
     inputStickerSheet.setAttributes({ ...attributes, value: 'Leading Icon', 'leading-icon': 'placeholder-bold' });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // password with value and prefix text
     inputStickerSheet.setAttributes({ ...attributes, value: 'Text Content', 'prefix-text': 'Prefix' });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // password with value and trailing button
     inputStickerSheet.setAttributes({
       ...attributes,
       value: 'Show/Hide button',
-      'trailing-button': true,
-      'show-hide-button-aria-label': 'show/hide password',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // readonly password field with value
-    inputStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: true });
+    inputStickerSheet.setAttributes({ 
+      ...attributes, 
+      value: 'Readonly value', 
+      readonly: true,
+    });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // password that is marked required
-    inputStickerSheet.setAttributes({ ...attributes, required: '', placeholder: 'Password is required' });
+    inputStickerSheet.setAttributes({ 
+      ...attributes, 
+      required: '', 
+      placeholder: 'Password is required',
+    });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // Long text label that is truncated in a small container
     inputStickerSheet.setAttributes({
+      ...attributes,
       label: 'This is a large label text',
       required: '',
       placeholder: 'placeholder',
@@ -393,7 +399,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
 
     await inputStickerSheet.mountStickerSheet();
     const container = inputStickerSheet.getWrapperContainer();
-    // Fix for not capturing snapshot while hovering on the input container.
     await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-password', { element: container });

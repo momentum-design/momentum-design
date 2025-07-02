@@ -180,12 +180,9 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     const { required } = this.inputElement;
     const isEmpty = !this.inputElement.value.trim();
 
-    // If field is not required and empty, it should be valid regardless of other constraints
     if (!required && isEmpty) {
-      // Clear any validation and mark as valid
       this.inputElement.setCustomValidity('');
     } else if (this.validationMessage && !nativeValidity.valid) {
-      // If there's a validation message and validation fails, use custom message
       this.inputElement.setCustomValidity(this.validationMessage);
     }
 
@@ -258,8 +255,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
-    // Don't call setInputValidity on change as it's interfering with validation
-    // Validation should be handled primarily on input and blur events
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }

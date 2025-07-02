@@ -21,6 +21,7 @@ const render = (args: Args) => {
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
+    validation-message="${args['validation-message']}"
     placeholder="${args.placeholder}"
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
@@ -141,6 +142,9 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'validation-message': {
+      control: 'text',
     },
     'info-icon-aria-label': {
       control: 'text',
@@ -293,6 +297,7 @@ export const FormFieldInput: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
+    'validation-message': 'Please enter a valid name',
     minlength: 5,
     maxlength: 10,
   },

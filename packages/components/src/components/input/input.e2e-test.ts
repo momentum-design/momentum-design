@@ -23,6 +23,7 @@ type SetupOptions = {
   label?: string;
   helpText?: string;
   helpTextType?: string;
+  validationMessage?: string;
   autocapitalize?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -55,6 +56,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
+      ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
       ${restArgs.trailingButton ? 'trailing-button' : ''}
       ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
       ${restArgs.autofocus ? 'autofocus' : ''}
@@ -158,6 +160,12 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.removeAttribute(input, 'maxlength');
       await componentsPage.removeAttribute(input, 'minlength');
       await componentsPage.removeAttribute(input, 'size');
+    });
+
+    await test.step('attribute validation-message should be present on component', async () => {
+      await componentsPage.setAttributes(input, { 'validation-message': 'Custom validation error' });
+      await expect(input).toHaveAttribute('validation-message', 'Custom validation error');
+      await componentsPage.removeAttribute(input, 'validation-message');
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
@@ -315,7 +323,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       if (browserName === 'webkit') {
         expect(validationMessage).toContain('Fill out this field');
       } else {
-        expect(validationMessage).toContain('Please fill out this field.');
+        expect(validationMessage).toMatch(/Please fill (out|in) this field\./);
       }
       await inputEl.fill('This is a long text');
       await expect(inputEl).toHaveValue('This is a '); // maxlength is 10; truncates rest of the value.

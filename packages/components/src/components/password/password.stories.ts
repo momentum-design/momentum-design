@@ -9,8 +9,9 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
-const render = (args: Args) =>
-  html` <mdc-password
+const render = (args: Args) => {
+  const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
+  return html` <mdc-password
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -22,7 +23,7 @@ const render = (args: Args) =>
     toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
-    value="${args.value}"
+    value="${value}"
     id="${args.id}"
     class="${args.class}"
     style="${args.style}"
@@ -44,6 +45,7 @@ const render = (args: Args) =>
     size="${ifDefined(args.size)}"
     show-hide-button-aria-label="${args['show-hide-button-aria-label']}"
   ></mdc-password>`;
+}
 const meta: Meta = {
   title: 'Components/password',
   tags: ['autodocs'],
@@ -61,6 +63,10 @@ const meta: Meta = {
     id: {
       control: 'text',
       description: 'The unique id of the password field. It is used to link the password field with the label.',
+    },
+    placeholder: {
+      control: 'text',
+      description: 'The placeholder text that is displayed when the password field is empty.',
     },
     name: {
       control: 'text',
@@ -80,6 +86,10 @@ const meta: Meta = {
     'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
+    },
+    'validation-message': {
+      control: 'text',
+      description: 'Custom validation message that will override the default message and displayed when the password is invalid.'
     },
     readonly: {
       control: 'boolean',
@@ -181,6 +191,7 @@ export const Example: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
+    'validation-message': ''
   },
 };
 
@@ -199,7 +210,7 @@ export const FormFieldPassword: StoryObj = {
         <fieldset>
           <legend>Form Example</legend>
           ${render(args)}
-          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
@@ -220,6 +231,7 @@ export const FormFieldPassword: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
+    'validation-message': 'Password must be between 5 and 10 characters.',
     minlength: 5,
     maxlength: 10,
   },
@@ -247,17 +259,6 @@ export const ErrorValidation: StoryObj = {
   },
 };
 
-export const WarningValidation: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'Password should contain special characters',
-    'help-text-type': 'warning',
-    placeholder: 'Enter password',
-    value: 'warning_password123',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
 export const SuccessValidation: StoryObj = {
   args: {
     label: 'Password',
@@ -267,87 +268,4 @@ export const SuccessValidation: StoryObj = {
     value: 'success_password123',
     'show-hide-button-aria-label': 'Toggle password visibility',
   },
-};
-
-export const PriorityValidation: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'Password expires soon',
-    'help-text-type': 'priority',
-    placeholder: 'Enter password',
-    value: 'priority_password123',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const RequiredPassword: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'Password is required',
-    'help-text-type': 'default',
-    required: true,
-    placeholder: 'Password is required',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const ReadonlyPassword: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'This password field is readonly',
-    'help-text-type': 'default',
-    readonly: true,
-    placeholder: 'Enter password',
-    'leading-icon': 'secure-lock-bold',
-    value: 'ReadonlyPassword123',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const DisabledPassword: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'This password field is disabled',
-    'help-text-type': 'default',
-    disabled: true,
-    placeholder: 'Enter password',
-    value: 'DisabledPassword123',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const WithPrefixText: StoryObj = {
-  args: {
-    label: 'Secure Password',
-    'help-text': 'Enter your secure password',
-    'help-text-type': 'default',
-    placeholder: 'Enter password',
-    'prefix-text': '🔒',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const WithLeadingIcon: StoryObj = {
-  args: {
-    label: 'Password',
-    'help-text': 'Password with security icon',
-    'help-text-type': 'default',
-    placeholder: 'Enter password',
-    'leading-icon': 'secure-lock-bold',
-    'show-hide-button-aria-label': 'Toggle password visibility',
-  },
-};
-
-export const PasswordInSmallContainer: StoryObj = {
-  render: () => html`
-    <div style="width: 200px;">
-      <mdc-password
-        label="This is a large label text which is truncated into an ellipsis"
-        required
-        placeholder="Enter password"
-        show-hide-button-aria-label="Toggle password visibility"
-      >
-      </mdc-password>
-    </div>
-  `,
 };
