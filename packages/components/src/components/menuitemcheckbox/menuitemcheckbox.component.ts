@@ -54,7 +54,7 @@ import styles from './menuitemcheckbox.styles';
 class MenuItemCheckbox extends MenuItem {
   /**
    * The checked attribute is used to indicate that the menuitemcheckbox is checked or not.
-   * @default 'false'
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   checked: boolean = false;

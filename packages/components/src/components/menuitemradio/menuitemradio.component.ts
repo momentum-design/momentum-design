@@ -45,7 +45,7 @@ import styles from './menuitemradio.styles';
 class MenuItemRadio extends MenuItem {
   /**
    * The aria-checked attribute is used to indicate that the menuitemradio is checked or not.
-   * @default 'false'
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   checked: boolean = false;

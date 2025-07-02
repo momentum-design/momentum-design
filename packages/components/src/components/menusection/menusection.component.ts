@@ -27,6 +27,12 @@ class MenuSection extends Component {
    * The primary headerText of the list item.
    * This appears on the leading side of the list item.
    */
+  @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
+
+  /**
+   * The primary headerText of the list item.
+   * This appears on the leading side of the list item.
+   */
   @property({ type: String, reflect: true }) headerText: string | null = null;
 
   override connectedCallback(): void {
@@ -36,12 +42,15 @@ class MenuSection extends Component {
 
   override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    if (changedProperties.has('headerText')) {
+    if (
+      (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
+      (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
+    ) {
       // Because IDREF attribute reflection does not work across light and shadow DOM, we either set the
       // `aria-label` directly or use the `ariaLabelledByElements`.
       // Since the later one just released in the major browsers, we do the first one for now.
       // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
-      this.ariaLabel = this.headerText;
+      this.ariaLabel = this.headerText || '';
     }
   }
 

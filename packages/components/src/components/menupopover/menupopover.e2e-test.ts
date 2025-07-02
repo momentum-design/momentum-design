@@ -253,9 +253,10 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         // Select Logout (index 3, skips Settings which is disabled)
         const submenuItem = menupopover.locator(menuItemSelector).nth(3);
-        const waitForClick = componentsPage.waitForEvent(submenuItem, 'click');
+        const waitForClick = await componentsPage.waitForEvent(submenuItem, 'click');
+        const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
         await submenuItem.click();
-        await waitForClick;
+        await Promise.all([waitForClick(), waitForAction()]);
         await expect(menupopover).not.toBeVisible();
       });
 
@@ -263,11 +264,12 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await setup({ componentsPage, html: defaultHTML });
         await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
         const submenuItems = menupopover.locator(menuItemSelector);
-        const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        const waitForClick = await componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Enter');
-        await waitForClick;
+        await Promise.all([waitForClick(), waitForAction()]);
         await expect(menupopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
       });
@@ -276,11 +278,12 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await setup({ componentsPage, html: defaultHTML });
         await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
         const submenuItems = menupopover.locator(menuItemSelector);
-        const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        const waitForClick = await componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Space');
-        await waitForClick;
+        await Promise.all([waitForClick(), waitForAction()]);
         await expect(menupopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
       });
@@ -538,10 +541,16 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('ArrowDown');
         const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
         await expect(checkboxes.first()).toBeFocused();
+        const waitForChangeAfterSpace = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Space');
+        // await checkboxes.first().click();
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'true');
+        await waitForChangeAfterSpace();
+        const waitForChangeAfterEnter = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Enter');
+        // await checkboxes.first().click();
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'false');
+        await waitForChangeAfterEnter();
         await componentsPage.page.keyboard.press('Escape');
       });
 
@@ -559,13 +568,18 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         const radios = menupopover.locator('[role="menuitemradio"]');
         await expect(radios.nth(0)).toBeFocused();
         await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(radios.nth(1)).toBeFocused();
+        const waitForChangeAfterSpace = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Space');
+        await waitForChangeAfterSpace();
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
         await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'false');
         await componentsPage.page.keyboard.press('ArrowDown');
         await expect(radios.nth(2)).toBeFocused();
+        const waitForChangeAfterEnter = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Enter');
+        await waitForChangeAfterEnter();
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'true');

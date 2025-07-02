@@ -14,7 +14,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menubar" sty
 
 const render = (args: Args) =>
   wrapWithDiv(
-    html` <mdc-menusection headerText="${args.label}">
+    html` <mdc-menusection headerText="${args.headerText}" aria-label="${args['aria-label']}">
       <mdc-menuitem label="Menu item 1"></mdc-menuitem>
       <mdc-menuitem label="Menu item 2"></mdc-menuitem>
       <mdc-menuitem label="Menu item 3"></mdc-menuitem>
@@ -29,7 +29,10 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    label: {
+    headerText: {
+      control: 'text',
+    },
+    'aria-label': {
       control: 'text',
     },
     ...classArgType,
@@ -42,7 +45,7 @@ export default meta;
 export const Example: StoryObj = {
   render,
   args: {
-    label: 'Section label',
+    headerText: 'Section label',
   },
   ...hideAllControls(),
 };
