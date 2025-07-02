@@ -3,7 +3,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
 import '.';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
 import '../option';
@@ -312,7 +312,7 @@ const meta: Meta = {
     'disable-aria-haspopup': {
       control: 'boolean',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-popover-arrow-border-radius',
       '--mdc-popover-arrow-border',
       '--mdc-popover-primary-background-color',
