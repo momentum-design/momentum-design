@@ -277,12 +277,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       }
       case KEYS.SPACE:
-        this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
         event.preventDefault();
         break;
       case KEYS.ENTER:
-        this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
         event.preventDefault();
         // if the popover is closed, then we submit the form.
