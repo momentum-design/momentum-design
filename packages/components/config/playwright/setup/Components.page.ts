@@ -170,7 +170,7 @@ class ComponentsPage {
         // @ts-ignore
         id => (window.$$eventListeners$$?.[id] > 0) as any,
         id,
-        { timeout: options?.timeout ?? 5000 },
+        { timeout: options?.timeout },
       );
   }
 
