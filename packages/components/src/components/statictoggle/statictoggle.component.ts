@@ -59,7 +59,7 @@ class StaticToggle extends DisabledMixin(Component) {
           name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
           class="icon"
           length-unit="rem"
-          size="${ICON_SIZE_IN_REM[this.size].toString()}"
+          size="${ICON_SIZE_IN_REM[this.size]}"
         ></mdc-icon>
       </div>
     `;

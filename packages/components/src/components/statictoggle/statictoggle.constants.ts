@@ -14,8 +14,8 @@ const ICON_NAME = {
 } as const;
 
 const ICON_SIZE_IN_REM = {
-  compact: 0.75,
-  default: 1.25,
+  compact: '0.75',
+  default: '1.25',
 } as const;
 
 const DEFAULTS = {
