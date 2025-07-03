@@ -4,7 +4,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 import '../option';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
@@ -40,7 +40,7 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls(['--mdc-optgroup-disabled-color']),
+    ...textControls(['--mdc-optgroup-disabled-color']),
     ...disableControls(['default']),
     ...classArgType,
     ...styleArgType,

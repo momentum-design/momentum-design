@@ -46,6 +46,12 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
  *  Allows customization of the loading indicator foreground color.
  * @cssproperty --mdc-avatar-loading-overlay-background-color -
  *  Allows customization of the loading overlay background color.
+ *
+ * @csspart content - The main content of the avatar.
+ * @csspart photo - The photo of the avatar.
+ * @csspart presence - The presence indicator of the avatar.
+ * @csspart loading-wrapper - The wrapper for the loading indicator.
+ * @csspart loader - The loading indicator of the avatar.
  */
 class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   /**

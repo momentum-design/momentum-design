@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-inputchip
@@ -41,6 +42,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
+    ...textControls(['--mdc-chip-color', '--mdc-chip-border-color', '--mdc-chip-background-color']),
   },
 };
 

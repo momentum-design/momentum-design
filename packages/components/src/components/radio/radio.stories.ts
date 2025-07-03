@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
@@ -78,7 +78,7 @@ const meta: Meta = {
       control: { type: 'text' },
     },
     ...hideControls(['help-text-type']),
-    ...disableControls([
+    ...textControls([
       '--mdc-radio-text-disabled-color',
       '--mdc-radio-control-inactive-hover',
       '--mdc-radio-control-inactive-pressed-color',

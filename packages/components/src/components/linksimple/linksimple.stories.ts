@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
-import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { hideControls, readOnlyControls, textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html`<mdc-linksimple
@@ -61,7 +61,7 @@ const meta: Meta = {
       control: 'number',
     },
     ...hideControls(['handleNavigation']),
-    ...disableControls([
+    ...textControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
       '--mdc-link-color-disabled',

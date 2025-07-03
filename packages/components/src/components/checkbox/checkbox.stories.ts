@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
@@ -77,7 +77,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['help-text-type', 'id', 'internals']),
-    ...disableControls([
+    ...textControls([
       '--mdc-checkbox-background-color-hover',
       '--mdc-checkbox-checked-background-color-hover',
       '--mdc-checkbox-checked-pressed-icon-color',
