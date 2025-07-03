@@ -263,3 +263,36 @@ export const EditorMenubar: StoryObj = {
     </script>
   `,
 };
+
+export const WithMenuSections: StoryObj = {
+  render: () =>
+    html` <mdc-menubar style="width: 8rem; margin: 1rem 0;">
+      <mdc-menusection>
+        <mdc-menuitem id="temp-id1" label="Style1"></mdc-menuitem>
+        <mdc-menuitem id="temp-id2" label="Style2"></mdc-menuitem>
+        <mdc-menuitem id="temp-id3" label="Style3"></mdc-menuitem>
+        <mdc-menuitem id="temp-id4" label="Style4" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="temp-id4">
+          <mdc-menusection>
+            <mdc-menuitem label="Small"></mdc-menuitem>
+            <mdc-menuitem label="Medium"></mdc-menuitem>
+            <mdc-menuitem label="Large"></mdc-menuitem>
+          </mdc-menusection>
+        </mdc-menupopover>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+      <mdc-menusection>
+        <mdc-menuitem id="align-id1" label="Align1" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menuitem id="align-id2" label="Align2"></mdc-menuitem>
+        <mdc-menuitem id="align-id3" label="Align3"></mdc-menuitem>
+        <mdc-menuitem id="align-id4" label="Align4"></mdc-menuitem>
+        <mdc-menupopover triggerid="align-id1">
+          <mdc-menusection>
+            <mdc-menuitem label="Left"></mdc-menuitem>
+            <mdc-menuitem label="Center"></mdc-menuitem>
+            <mdc-menuitem label="Right"></mdc-menuitem>
+          </mdc-menusection>
+        </mdc-menupopover>
+      </mdc-menusection>
+    </mdc-menubar>`,
+};
