@@ -5,7 +5,7 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
-import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_PX } from './statictoggle.constants';
+import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM } from './statictoggle.constants';
 import styles from './statictoggle.styles';
 import type { ToggleSize } from './statictoggle.types';
 
@@ -58,8 +58,8 @@ class StaticToggle extends DisabledMixin(Component) {
         <mdc-icon
           name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
           class="icon"
-          length-unit="px"
-          size="${ICON_SIZE_IN_PX[this.size]}"
+          length-unit="rem"
+          size="${ICON_SIZE_IN_REM[this.size].toString()}"
         ></mdc-icon>
       </div>
     `;
