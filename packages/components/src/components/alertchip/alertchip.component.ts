@@ -27,6 +27,8 @@ import type { VariantType } from './alertchip.types';
  * @cssproperty --mdc-chip-border-color - The border color of the alertchip
  * @cssproperty --mdc-chip-background-color - The background color of the alertchip
  *
+ * @csspart icon - The alert icon
+ * @csspart label - The text label of the alertchip
  */
 class AlertChip extends Buttonsimple {
   /**

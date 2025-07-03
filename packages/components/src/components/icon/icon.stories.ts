@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, readOnlyControls } from '../../../config/storybook/utils';
+import { hideControls, readOnlyControls, textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-icon
@@ -26,16 +26,15 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    ...disableControls([
+    ...hideControls([
       'iconData',
       'lengthUnitFromContext',
       'sizeFromContext',
       'iconProviderContext',
       'computedIconSize',
-      '--mdc-icon-fill-color',
-      '--mdc-icon-size',
-      '--mdc-icon-border-radius',
+      'abortController',
     ]),
+    ...textControls(['--mdc-icon-fill-color', '--mdc-icon-size', '--mdc-icon-border-radius']),
     ...readOnlyControls(['tabindex']),
     ...classArgType,
     ...styleArgType,

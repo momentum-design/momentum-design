@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { textControls } from '../../../config/storybook/utils';
 
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
@@ -320,7 +320,7 @@ const meta: Meta = {
     visible: {
       control: 'boolean',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-dialog-primary-background-color',
       '--mdc-dialog-border-color',
       '--mdc-dialog-header-text-color',

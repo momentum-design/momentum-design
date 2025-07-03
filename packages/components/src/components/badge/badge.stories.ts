@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { textControls } from '../../../config/storybook/utils';
 
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
@@ -83,7 +83,7 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-badge-primary-foreground-color',
       '--mdc-badge-primary-background-color',
       '--mdc-badge-secondary-foreground-color',

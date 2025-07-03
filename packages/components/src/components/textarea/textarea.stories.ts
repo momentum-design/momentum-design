@@ -5,7 +5,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, textControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -138,7 +138,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['characterLimitExceedingFired', 'textarea', 'validity', 'willValidate']),
-    ...disableControls([
+    ...textControls([
       '--mdc-textarea-disabled-border-color',
       '--mdc-textarea-disabled-text-color',
       '--mdc-textarea-disabled-background-color',

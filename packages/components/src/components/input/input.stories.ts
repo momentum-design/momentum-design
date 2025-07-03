@@ -6,7 +6,7 @@ import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { AUTO_CAPITALIZE } from './input.constants';
@@ -145,7 +145,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
       '--mdc-input-disabled-background-color',

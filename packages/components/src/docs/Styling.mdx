@@ -1,0 +1,89 @@
+# Styling
+
+This guide explains how to override the styling of Momentum Design System
+components using CSS. It covers the use of CSS parts, CSS custom properties
+(variables), and how to pass classes and inline styles to components and slots.
+
+## Passing `class` and `style` to Components
+
+You can pass a `class` or `style` attribute directly to a Momentum component.
+These will be applied to the host element.
+
+**Example:**
+
+```html
+<mdc-button
+  class="my-custom-class"
+  style="margin: 16px; border-radius: 8px;"
+></mdc-button>
+```
+
+- The `class` attribute can be used for global or scoped CSS selectors.
+- The `style` attribute allows for quick inline overrides.
+
+## Using CSS Custom Properties (Variables)
+
+Many component-specific values are exposed as
+[CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) on
+the component host. You can override these variables in your CSS to change the
+values.
+
+**Example:**
+
+```css
+mdc-input {
+  --mdc-input-background-color: #0070d2;
+  --mdc-input-text-color: #fff;
+}
+```
+
+- Refer to the component documentation for a list of supported custom properties
+  (see Storybook controls).
+
+## Using CSS Parts
+
+Momentum components expose
+[CSS parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) for
+targeting internal elements. You can style these parts from outside the
+component using the `::part` selector.
+
+**Example:**
+
+```css
+mdc-input::part(input) {
+  color: red;
+  font-weight: bold;
+}
+```
+
+- Check the component documentation for available part names (e.g., `label`,
+  `icon`, etc.).
+
+## Styling Slotted Content
+
+When using slots, you can style the content you place inside a component as you
+would any regular HTML element. However, to style the slot itself or its
+container, use CSS parts or custom properties if exposed.
+
+**Example:**
+
+```html
+<mdc-dialog>
+  <div slot="dialog-body" class="body-dialog">Content passed to Dialog</div>
+</mdc-dialog>
+```
+
+```css
+.body-dialog {
+  font-size: 1.25rem;
+  color: #333;
+}
+```
+
+## Best Practices
+
+- Prefer using CSS custom properties and parts for deep customization.
+- Use `class` and `style` for layout and host-level tweaks.
+- Always check the component documentation for available styling hooks.
+- Avoid using deep selectors (e.g., `mdc-button > .internal-class`) as they may
+  break with component updates or may not work at all.

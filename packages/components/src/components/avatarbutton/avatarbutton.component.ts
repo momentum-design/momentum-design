@@ -19,6 +19,8 @@ import styles from './avatarbutton.styles';
  * This component is made by extending `buttonsimple` class.
  * The button component acts as a wrapper for the avatar component.
  *
+ * To override styles of the avatar inside, use the specified css parts.
+ *
  * @dependency mdc-avatar
  *
  * @event click - (React: onClick) This event is dispatched when the avatarbutton is clicked.
@@ -31,6 +33,13 @@ import styles from './avatarbutton.styles';
  * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state
  * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state
  * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state
+ *
+ * @csspart overlay - The overlay part of the avatar button.
+ * @csspart content - The main content of the avatar.
+ * @csspart photo - The photo part of the avatar.
+ * @csspart presence - The presence indicator part of the avatar.
+ * @csspart loading-wrapper - The wrapper for the loading indicator of the avatar.
+ * @csspart loader - The loading indicator part of the avatar.
  */
 class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
   /**
@@ -64,6 +73,7 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
     return html`
       <div part="overlay" aria-hidden="true"></div>
       <mdc-avatar
+        exportparts="content, photo, presence, loading-wrapper, loader"
         ?is-typing="${this.isTyping}"
         counter="${ifDefined(this.counter)}"
         icon-name="${ifDefined(this.iconName)}"

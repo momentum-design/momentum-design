@@ -5,7 +5,7 @@ import { html, nothing } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { textControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 import { TAB_VARIANTS } from './tab.constants';
 
@@ -63,7 +63,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(TAB_VARIANTS),
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-tab-content-gap',
       '--mdc-tab-height',
       '--mdc-tab-glass-active-background-color-disabled',

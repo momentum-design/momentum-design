@@ -378,5 +378,76 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(undo).toBeFocused();
       await componentsPage.visualRegression.takeScreenshot('mdc-menubar-edit-popover');
     });
+
+    // Menubar with menusection and divider
+    await test.step('menubar with menusection groups and dividers', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-menubar style="width: 8rem; margin: 1rem 0;">
+            <mdc-menusection>
+              <mdc-menuitem id="temp-id1" label="Style1"></mdc-menuitem>
+              <mdc-menuitem id="temp-id2" label="Style2"></mdc-menuitem>
+              <mdc-menuitem id="temp-id3" label="Style3"></mdc-menuitem>
+              <mdc-menuitem id="temp-id4" label="Style4" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menupopover triggerid="temp-id4">
+                <mdc-menusection>
+                  <mdc-menuitem id="submenu-small" label="Small"></mdc-menuitem>
+                  <mdc-menuitem label="Medium"></mdc-menuitem>
+                  <mdc-menuitem label="Large"></mdc-menuitem>
+                </mdc-menusection>
+              </mdc-menupopover>
+            </mdc-menusection>
+            <mdc-divider></mdc-divider>
+            <mdc-menusection>
+              <mdc-menuitem id="align-id1" label="Align1" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menuitem id="align-id2" label="Align2"></mdc-menuitem>
+              <mdc-menuitem id="align-id3" label="Align3"></mdc-menuitem>
+              <mdc-menuitem id="align-id4" label="Align4"></mdc-menuitem>
+              <mdc-menupopover triggerid="align-id1">
+                <mdc-menusection>
+                  <mdc-menuitem id="submenu-left" label="Left"></mdc-menuitem>
+                  <mdc-menuitem label="Center"></mdc-menuitem>
+                  <mdc-menuitem label="Right"></mdc-menuitem>
+                </mdc-menusection>
+              </mdc-menupopover>
+            </mdc-menusection>
+          </mdc-menubar>
+        `,
+        clearDocument: true,
+      });
+      const style1 = componentsPage.page.locator('#temp-id1');
+      const style2 = componentsPage.page.locator('#temp-id2');
+      const style3 = componentsPage.page.locator('#temp-id3');
+      const style4 = componentsPage.page.locator('#temp-id4');
+      const align1 = componentsPage.page.locator('#align-id1');
+      const styleSubmenu = componentsPage.page.locator('mdc-menupopover[triggerid="temp-id4"]');
+      const alignSubmenu = componentsPage.page.locator('mdc-menupopover[triggerid="align-id1"]');
+
+      await test.step('Keyboard navigation through menubar with menusection', async () => {
+        await componentsPage.actionability.pressTab();
+        await expect(style1).toBeFocused();
+        // Down Arrow moves to next
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [style2, style3, style4, align1]);
+        // Up Arrow moves back
+        await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [style4, style3, style2, style1]);
+      });
+
+      await test.step('Open submenu from menuitem inside menusection', async () => {
+        await style4.focus();
+        await componentsPage.page.keyboard.press('ArrowRight');
+        await expect(styleSubmenu).toBeVisible();
+        const submenuSmall = componentsPage.page.locator('#submenu-small');
+        await expect(submenuSmall).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowRight');
+        await expect(styleSubmenu).not.toBeVisible();
+        await expect(alignSubmenu).toBeVisible();
+        const submenuLeft = componentsPage.page.locator('#submenu-left');
+        await expect(submenuLeft).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowLeft');
+        await expect(alignSubmenu).not.toBeVisible();
+        await expect(styleSubmenu).toBeVisible();
+        await expect(submenuSmall).toBeFocused();
+      });
+    });
   });
 });

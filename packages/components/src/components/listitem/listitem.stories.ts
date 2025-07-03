@@ -4,7 +4,7 @@ import { html, TemplateResult } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import '../avatar';
 import '../badge';
 import '../button';
@@ -100,6 +100,8 @@ const meta: Meta = {
       'trailing-text-side-header',
       'trailing-text-subline',
       'trailing-controls',
+    ]),
+    ...textControls([
       '--mdc-listitem-background-color-active',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-default-background-color',

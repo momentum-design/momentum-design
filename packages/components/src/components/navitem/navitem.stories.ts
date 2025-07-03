@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
 
@@ -75,7 +75,7 @@ const meta: Meta = {
     'disable-aria-current': {
       control: 'boolean',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-navitem-color',
       '--mdc-navitem-border-color',
       '--mdc-navitem-disabled-color',

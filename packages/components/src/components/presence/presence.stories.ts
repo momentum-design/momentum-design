@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 
 import { TYPE, SIZE, DEFAULTS } from './presence.constants';
 
@@ -25,9 +25,8 @@ const meta: Meta = {
       options: Object.values(SIZE),
       control: { type: 'select' },
     },
-    ...disableControls([
-      'icon',
-      'iconSize',
+    ...disableControls(['icon', 'iconSize']),
+    ...textControls([
       '--mdc-presence-active-background-color',
       '--mdc-presence-away-background-color',
       '--mdc-presence-away-calling-background-color',
