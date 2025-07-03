@@ -35,7 +35,7 @@ import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover
  * @slot - Default slot for the menu popover content
  *
  * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
- * @event action - (React: onAction) This event is dispatched menuItem selected and the menu closes.
+ * @event action - (React: onAction) This event is dispatched when a menuItem selected and the menu closes.
  *
  * @slot default - Contains the menu items to be displayed in the popover
  */
@@ -139,7 +139,7 @@ class MenuPopover extends Popover {
    *
    * @param until - The popover to close until.
    */
-  private closeAllMenuPopovers(until: Element | undefined = undefined): void {
+  private closeAllMenuPopovers(until?: Element): void {
     while (popoverStack.peek() !== until) {
       const popover = popoverStack.pop();
       if (popover) {

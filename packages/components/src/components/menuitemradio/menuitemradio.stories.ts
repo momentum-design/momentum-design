@@ -133,8 +133,16 @@ export const AllVariants: StoryObj = {
               aspect-ratio: 16/9;
               padding: 0.75rem;
             }
-            mdc-menuitemradio[indicator='none'][checked] mdc-icon {
+            mdc-menuitemradio[indicator='none'][checked]:not([disabled]) mdc-icon {
+              color: var(--mds-color-theme-text-accent-normal);
               background: var(--mdc-listitem-background-color-active);
+            }
+            mdc-menuitemradio[indicator='none'][checked][disabled] mdc-icon {
+              background: var(--mdc-listitem-background-color-hover);
+            }
+            mdc-menuitemradio[indicator='none'][checked]::part(leading-text-primary-label) {
+              font-weight: bold;
+              color: inherit;
             }
           </style>
           <mdc-menuitemradio name="group3" checked indicator="none" label="Selected No indicator">

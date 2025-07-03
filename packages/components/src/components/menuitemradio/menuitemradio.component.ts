@@ -23,7 +23,20 @@ import styles from './menuitemradio.styles';
  *
  * If you want more than one item in a group to be checked, consider using menuitemcheckbox component.
  *
- * If a menuitemradio is disabled, then the `aria-disabled` attribute is set to `true`.
+ * The `indicator` attribute is used to differentiate between <b>radio</b>, <b>checkmark</b> and <b>none</b>.
+ * By default, the `indicator` is set to <b>radio</b>.<br/>
+ *
+ * The checkbox will always be positioned on the leading side of the menuitem label and
+ * the checkmark will always be positioned on the trailing side.
+ *
+ * The radio will have the possible states of `true` or `false`.
+ * If the indicator is set to <b>checkmark</b> and if the `checked` attribute is set to `true`,
+ * then the checkmark will be displayed. if not, then no indicator will be displayed.
+ *
+ * The third options for the `indicator` is <b>none</b>, which will not display any indicator at all.
+ * It is intended to be used for customised menu items where the indicator is implemented differently.
+ * For example, you can use a custom icon or a different visual element to indicate the state of the menu item.
+ * Make sure the new indicator is accessible.
  *
  * @dependency mdc-staticradio
  * @dependency mdc-text
@@ -51,7 +64,7 @@ class MenuItemRadio extends MenuItem {
   checked: boolean = false;
 
   /**
-   * The indicator attribute is used to differentiate between <b>radio</b>, <b>checkmark</b> and <b>card</b>.
+   * The indicator attribute is used to differentiate between <b>radio</b>, <b>checkmark</b> and <b>none</b>.
    * @default 'radio'
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;

@@ -19,7 +19,7 @@ import styles from './menuitemcheckbox.styles';
  *
  * Menu item checkbox has `name` and `value` attribute that can be used to identify the menu item when it is selected.
  *
- * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
+ * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b>, <b>toggle</b> and <b>none</b>.
  * By default, the `indicator` is set to <b>checkbox</b>.<br/>
  *
  * The checkbox will always be positioned on the leading side of the menuitem label and
@@ -29,9 +29,12 @@ import styles from './menuitemcheckbox.styles';
  * If the indicator is set to <b>checkmark</b> and if the `checked` attribute is set to `true`,
  * then the checkmark will be displayed. if not, then no indicator will be displayed.
  *
- * If you want only one item in a group to be checked, consider using menuitemradio component.
+ * The forth options for the `indicator` is <b>none</b>, which will not display any indicator at all.
+ * It is intended to be used for customised menu items where the indicator is implemented differently.
+ * For example, you can use a custom icon or a different visual element to indicate the state of the menu item.
+ * Make sure the new indicator is accessible.
  *
- * If a menuitemcheckbox is disabled, then the `disabled` attribute is set to `true`.
+ * If you want only one item in a group to be checked, consider using menuitemradio component.
  *
  * @dependency mdc-staticcheckbox
  * @dependency mdc-statictoggle
