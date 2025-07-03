@@ -32,9 +32,7 @@ const render = (args: Args) => {
     ?readonly="${args.readonly}"
     placeholder="${args.placeholder}"
     validation-message="${args['validation-message']}"
-    prefix-text="${args['prefix-text']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
-    leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     ?autofocus="${args.autofocus}"
@@ -45,7 +43,7 @@ const render = (args: Args) => {
     size="${ifDefined(args.size)}"
     show-hide-button-aria-label="${args['show-hide-button-aria-label']}"
   ></mdc-password>`;
-}
+};
 const meta: Meta = {
   title: 'Components/password',
   tags: ['autodocs'],
@@ -89,7 +87,8 @@ const meta: Meta = {
     },
     'validation-message': {
       control: 'text',
-      description: 'Custom validation message that will override the default message and displayed when the password is invalid.'
+      description:
+        'Custom validation message that will override the default message and displayed when the password is invalid.',
     },
     readonly: {
       control: 'boolean',
@@ -97,17 +96,6 @@ const meta: Meta = {
     },
     disabled: {
       control: 'boolean',
-    },
-    'prefix-text': {
-      control: 'text',
-      description:
-        'The prefix text that is displayed before the password field. It has a max length of 10 characters.' +
-        'When the prefix text is set, make sure to set the "data-aria-label" attribute' +
-        'with the appropriate value for accessibility.',
-    },
-    'leading-icon': {
-      control: 'text',
-      description: 'The leading icon that is displayed before the password field.',
     },
     minlength: {
       control: 'number',
@@ -186,10 +174,8 @@ export const Example: StoryObj = {
     readonly: false,
     disabled: false,
     required: true,
-    'prefix-text': '',
-    'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
-    'validation-message': ''
+    'validation-message': '',
   },
 };
 
@@ -226,8 +212,6 @@ export const FormFieldPassword: StoryObj = {
     required: true,
     'help-text': 'Enter a strong password',
     'help-text-type': 'default',
-    'prefix-text': '',
-    'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
     'validation-message': 'Password must be between 5 and 10 characters.',
     minlength: 5,

@@ -9,6 +9,8 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
+import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
+
 /**
  * `mdc-password` is a component that allows users to input their password.
  *  It extends the `mdc-input` component and provides additional features specific to password fields.
@@ -62,7 +64,7 @@ class Password extends Input {
    * @override
    */
   @property({ type: String, attribute: 'help-text-type' })
-  override helpTextType: ValidationType = 'default';
+  override helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -94,7 +96,7 @@ class Password extends Input {
         size="${DEFAULTS.ICON_SIZE}"
         @click=${this.toggleShowPassword}
         aria-label=${this.showHideButtonAriaLabel}
-        prefix-icon=${this.showPassword ? 'hide-bold' : 'show-bold'}
+        prefix-icon=${this.showPassword ? PASSWORD_VISIBILITY_ICONS.HIDE_BOLD : PASSWORD_VISIBILITY_ICONS.SHOW_BOLD}
       ></mdc-button>
     `;
   }

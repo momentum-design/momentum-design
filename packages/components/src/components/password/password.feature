@@ -16,8 +16,8 @@ Feature: Password Component
     Given the password component is rendered
     When I click the trailing show/hide button
     Then the input type should toggle between "text" and "password"
-    And the icon should switch between "show-bold" and "hide-bold" by setting the prefix-icon attribute on the button
-  
+    And the icon should switch between "show-bold" and "hide-bold"
+
   Scenario: Password component validation with custom error messages
     Given the password component is rendered with custom error messages for minlength, maxlength, and pattern
     When I enter a password that does not meet the minlength requirement
