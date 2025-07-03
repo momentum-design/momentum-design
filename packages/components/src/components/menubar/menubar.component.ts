@@ -154,15 +154,15 @@ class MenuBar extends Component {
    */
   private isTopLevelMenuItem(element: HTMLElement): boolean {
     const parent = element.parentElement;
-    if (!parent) return false;
-    if (parent.tagName.toLowerCase() === MENUBAR_TAGNAME && element.role === ROLE.MENUITEM) {
+    if (!parent || element.role !== ROLE.MENUITEM) return false;
+    
+    const parentTag = parent.tagName.toLowerCase();
+    if (parentTag === MENUBAR_TAGNAME) {
       return true;
     }
-    // If parent is menusection and its parent is menubar
     if (
-      parent.tagName.toLowerCase() === MENUSECTION_TAGNAME &&
-      parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME &&
-      element.role === ROLE.MENUITEM
+      parentTag === MENUSECTION_TAGNAME &&
+      parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME
     ) {
       return true;
     }
