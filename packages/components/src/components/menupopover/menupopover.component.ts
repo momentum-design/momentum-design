@@ -62,16 +62,17 @@ class MenuPopover extends Popover {
   /** @internal */
   get menuItems(): Array<HTMLElement> {
     const slot = this.shadowRoot?.querySelector('slot');
-    const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-    return allAssignedElements
-      .map(node => {
-        if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
-          return Array.from(node.children).filter(child => isValidMenuItem(child)) as Array<HTMLElement>;
-        }
-        return isValidMenuItem(node) ? node : [];
-      })
-      .flat()
-      .filter(node => !!node && !node.hasAttribute('disabled'));
+    const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+    const items: HTMLElement[] = [];
+    const collect = (el: Element) => {
+      if (isValidMenuItem(el) && !el.hasAttribute('disabled')) {
+        items.push(el as HTMLElement);
+      } else if (el.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
+        Array.from(el.children).forEach(collect);
+      }
+    };
+    assigned.forEach(collect);
+    return items;
   }
 
   override connectedCallback() {

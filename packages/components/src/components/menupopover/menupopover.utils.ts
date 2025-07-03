@@ -1,6 +1,4 @@
-import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
+import { ROLE } from '../../utils/roles';
 
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
 
@@ -9,13 +7,18 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
  * @param menuItem - The menu item to check.
  * @returns True if the menu item is a valid menu item, false otherwise.
  */
-const isValidMenuItem = (menuItem: Element | null): boolean =>
-  [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME].includes(
-    menuItem?.tagName?.toLowerCase?.() as typeof MENUITEM_TAGNAME,
-  );
+const isValidMenuItem = (el: Element | null): boolean => {
+  if (!el) return false;
+  const role = el.getAttribute('role')?.toLowerCase();
+  return role === ROLE.MENUITEM || role === ROLE.MENUITEMCHECKBOX || role === ROLE.MENUITEMRADIO;
+};
 
 const isValidPopover = (menuItem: Element | null): boolean => menuItem?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
-const isActiveMenuItem = (menuItem: Element | null): boolean =>
-  menuItem?.tagName?.toLowerCase?.() === MENUITEM_TAGNAME && !menuItem.hasAttribute('disabled');
+const isActiveMenuItem = (el: Element | null): boolean => {
+  const role = el?.getAttribute('role')?.toLowerCase();
+  return !!el && (role === ROLE.MENUITEM) && !el.hasAttribute('disabled');
+};
+
 export { isValidMenuItem, isValidPopover, isActiveMenuItem };
+

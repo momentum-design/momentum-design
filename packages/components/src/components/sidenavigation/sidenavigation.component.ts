@@ -7,7 +7,7 @@ import type { Directions } from '../divider/divider.types';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
-import NavItem from '../navitem';
+import type NavItem from '../navitem';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';

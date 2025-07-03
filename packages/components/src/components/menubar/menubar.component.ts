@@ -6,6 +6,7 @@ import { ROLE } from '../../utils/roles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
+import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
 import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
 import { popoverStack } from '../popover/popover.stack';
@@ -66,6 +67,37 @@ class MenuBar extends Component {
     return items;
   }
 
+  /**
+   * Returns all menupopovers, including direct and slotted ones .
+   */
+  get allPopovers(): Element[] {
+    const sidenav = this.menuItems[0].closest(SIDENAV_TAGNAME);
+    const menubar = this.menuItems[0].closest(MENUBAR_TAGNAME);
+    const root = sidenav || menubar;
+    if (!root) return [];
+
+    const popovers: Element[] = [];
+
+    const searchPopovers = (node: Element | ShadowRoot) => {
+      // Check direct popovers
+      node.querySelectorAll(`${MENUPOPOVER_TAGNAME}`).forEach(el => {
+        popovers.push(el);
+      });
+
+      // Handle slots
+      node.querySelectorAll('slot').forEach(slot => {
+        const assigned = (slot as HTMLSlotElement).assignedElements({ flatten: true });
+        assigned.forEach(assignedEl => {
+          searchPopovers(assignedEl);
+        });
+      });
+    };
+
+    searchPopovers(root);
+
+    return popovers;
+  }
+
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     this.updatePopoverPlacement();
@@ -94,11 +126,31 @@ class MenuBar extends Component {
     return this.menuItems.findIndex(item => item === target || item === (target as HTMLElement).parentElement);
   }
 
-  private updatePopoverPlacement(): void {
-    const allPopovers = this.querySelectorAll(`${MENUPOPOVER_TAGNAME}:not([disabled])`);
-    const placement = POPOVER_PLACEMENT.RIGHT_START;
+  private hasSubmenu(triggerId: string | null): boolean {
+    if (!triggerId) return false;
+    const popovers = this.allPopovers;
+    return popovers.some(popover => popover.getAttribute('triggerid') === triggerId);
+  }
 
-    allPopovers.forEach(popover => popover.setAttribute('placement', placement));
+  private showSubmenu(triggerId: string | null): void {
+    if (!triggerId) return;
+
+    const triggerElement = this.menuItems.find(item => item.getAttribute('id') === triggerId);
+    if (!triggerElement) return;
+
+    const popovers = this.allPopovers;
+    const submenu = popovers.find(popover => popover.getAttribute('triggerid') === triggerId) as MenuPopover | undefined;
+    if (submenu) submenu.showPopover();
+  }
+
+  private updatePopoverPlacement(): void {
+    const placement = POPOVER_PLACEMENT.RIGHT_START;
+    const popovers = this.allPopovers;
+    popovers.forEach(popover => {
+      if (!popover.hasAttribute('disabled')) {
+        popover.setAttribute('placement', placement);
+      }
+    });
   }
 
   private updateTabIndexAndFocus(menuItems: HTMLElement[], currentIndex: number, newIndex: number): void {
@@ -118,12 +170,7 @@ class MenuBar extends Component {
 
     let newIndex = currentIndex;
 
-    if (direction === 'prev') {
-      newIndex = (currentIndex - 1 + length) % length;
-    } else {
-      newIndex = (currentIndex + 1) % length;
-    }
-
+    newIndex = direction === 'prev' ? (currentIndex - 1 + length) % length : (currentIndex + 1) % length;
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');
@@ -133,19 +180,11 @@ class MenuBar extends Component {
     }
   }
 
-  private showSubmenu(triggerId: string | null): void {
-    const submenu = this.querySelector(`${MENUPOPOVER_TAGNAME}[triggerid="${triggerId}"]`) as MenuPopover | null;
-    submenu?.showPopover();
-  }
-
   private getKeyWithDirectionFix(originalKey: string): string {
     const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
     if (!isRtl) return originalKey;
-
     if (originalKey === KEYS.ARROW_LEFT) return KEYS.ARROW_RIGHT;
     if (originalKey === KEYS.ARROW_RIGHT) return KEYS.ARROW_LEFT;
-
     return originalKey;
   }
 
@@ -155,17 +194,9 @@ class MenuBar extends Component {
   private isTopLevelMenuItem(element: HTMLElement): boolean {
     const parent = element.parentElement;
     if (!parent || element.role !== ROLE.MENUITEM) return false;
-    
     const parentTag = parent.tagName.toLowerCase();
-    if (parentTag === MENUBAR_TAGNAME) {
-      return true;
-    }
-    if (
-      parentTag === MENUSECTION_TAGNAME &&
-      parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME
-    ) {
-      return true;
-    }
+    if (parentTag === MENUBAR_TAGNAME || parentTag === SIDENAV_TAGNAME) return true;
+    if (parentTag === MENUSECTION_TAGNAME && (parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME || parent.parentElement?.tagName.toLowerCase() === SIDENAV_TAGNAME)) return true;
     return false;
   }
 
@@ -213,13 +244,8 @@ class MenuBar extends Component {
     }
   }
 
-  private hasSubmenu(triggerId: string | null): boolean {
-    return !!this.querySelector(`${MENUPOPOVER_TAGNAME}[triggerid="${triggerId}"]`);
-  }
-
   private getParentMenuItemIndex(element: HTMLElement): number {
     let parent = element.parentElement;
-
     while (parent) {
       if (parent.tagName.toLowerCase() === MENUPOPOVER_TAGNAME) {
         const triggerId = parent.getAttribute('triggerid');
