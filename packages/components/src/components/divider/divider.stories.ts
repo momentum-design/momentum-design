@@ -5,7 +5,7 @@ import '../text';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 
@@ -63,7 +63,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(DIRECTIONS),
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-divider-background-color',
       '--mdc-divider-width',
       '--mdc-divider-horizontal-gradient',

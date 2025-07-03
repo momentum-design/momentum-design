@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
@@ -54,7 +54,7 @@ const meta: Meta = {
     counter: {
       control: 'number',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-avatar-default-background-color',
       '--mdc-avatar-default-foreground-color',
       '--mdc-avatar-loading-indicator-background-color',

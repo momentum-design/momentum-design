@@ -3,7 +3,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 
 import '.';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
 import '../list';
 import '../listitem';
@@ -74,7 +74,7 @@ const meta: Meta = {
     triggerID: {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-tooltip-max-width',
       '--mdc-tooltip-padding',
       '--mdc-tooltip-text-color',

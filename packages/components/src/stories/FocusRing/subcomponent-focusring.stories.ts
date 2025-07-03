@@ -14,7 +14,7 @@ import '../../components/checkbox';
 import '../../components/toggle';
 
 const meta: Meta = {
-  title: 'Styling/Focus Ring',
+  title: 'Internal/focusring',
   parameters: {
     badges: ['stable'],
     controls: {
