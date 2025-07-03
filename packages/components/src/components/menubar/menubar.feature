@@ -150,6 +150,24 @@ Feature: Vertical Menubar Accessibility and User Interaction
       And its submenu opens
       And focus moves to the first focusable menuitem inside the submenu
 
+  Rule: ✅ Menubar with MenuSections
+
+    Scenario: Keyboard navigation with menusection groups
+      Given the Menubar contains menusection groups, each with multiple menuitems
+      When I press `Down Arrow` or `Up Arrow`
+      Then focus moves between menuitems across menusections in the correct order
+
+    Scenario: Open submenu from menuitem inside menusection
+      Given a menuitem inside a menusection has a submenu
+      When I focus the menuitem and press `ArrowRight`
+      Then its submenu opens
+      And focus moves to the first menuitem in the submenu
+
+    Scenario: All menubar keyboard and mouse interactions work with menusection structure
+      Given the Menubar is structured with menusection elements
+      When I interact with the menubar using keyboard or mouse
+      Then all navigation, submenu opening, and accessibility behaviors match those of a flat menubar
+
   Rule: ✅ ScreenReader Accessibility (VoiceOver on macOS)
 
     Scenario: VoiceOver moves focus to Menubar
