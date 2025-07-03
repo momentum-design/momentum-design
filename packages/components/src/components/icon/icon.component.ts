@@ -76,8 +76,8 @@ class Icon extends Component {
   /**
    * Size of the icon (works in combination with length unit)
    */
-  @property({ type: Number })
-  size?: number;
+  @property({ type: String })
+  size?: string;
 
   /**
    * Length unit attribute for overriding length-unit from `IconProvider`
@@ -217,8 +217,9 @@ class Icon extends Component {
    * Updates the size by setting the width and height
    */
   private updateSize() {
-    if (this.computedIconSize && (this.lengthUnit || this.lengthUnitFromContext)) {
-      const value = `${this.computedIconSize}${this.lengthUnit ?? this.lengthUnitFromContext}`;
+    const size = this.computedIconSize;
+    if (size && (this.lengthUnit || this.lengthUnitFromContext)) {
+      const value = `${size}${this.lengthUnit ?? this.lengthUnitFromContext}`;
       // set the computed icon size as a css variable to be used in the icon styles
       this.style.setProperty('--computed-icon-size', value);
     }
