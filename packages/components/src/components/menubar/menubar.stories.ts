@@ -157,6 +157,19 @@ export const EditorMenubar: StoryObj = {
   render: () => html`
     <div style="display:flex">
       <mdc-menubar style="width: 8rem; margin: 1rem 0;">
+        <mdc-menusection>
+          <mdc-menuitem id="temp-id1" label="Style1"></mdc-menuitem>
+          <mdc-menuitem id="temp-id2" label="Style2"></mdc-menuitem>
+          <mdc-menuitem id="temp-id3" label="Style3"></mdc-menuitem>
+          <mdc-menuitem id="temp-id4" label="Style4" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="temp-id4">
+            <mdc-menusection>
+              <mdc-menuitem label="Small"></mdc-menuitem>
+              <mdc-menuitem label="Medium"></mdc-menuitem>
+              <mdc-menuitem label="Large"></mdc-menuitem>
+            </mdc-menusection>
+          </mdc-menupopover>
+        </mdc-menusection>
         <mdc-menuitem id="style-id" label="Style" arrow-position="trailing"></mdc-menuitem>
         <mdc-menupopover triggerid="style-id">
           <mdc-menusection>

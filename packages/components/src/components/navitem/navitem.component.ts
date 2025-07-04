@@ -22,7 +22,7 @@ import styles from './navitem.styles';
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * Note: `mdc-navitem` is intended to be used inside `mdc-navitemlist` as part of the sideNavigation
+ * Note: `mdc-navitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
  *
@@ -83,7 +83,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   /**
-   * Id of the navItem (used as a identificator when used in the navItemList)
+   * Id of the navItem (used as a identificator when used in the menubar)
    * Note: It has to be unique.
    *
    * @default undefined
@@ -124,20 +124,19 @@ class NavItem extends IconNameMixin(MenuItem) {
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleClickEvent);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
     this.tooltipPlacement = undefined as unknown as PopoverPlacement;
-    this.addEventListener('click', this.handleClickEvent);
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navitem] navId is required and was not provided.');
     }
-  }
-
-  public override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClickEvent);
   }
 
   protected override updated(): void {

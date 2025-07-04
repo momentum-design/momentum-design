@@ -7,7 +7,6 @@ import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
-import { TAG_NAME as NAVITEMLIST_TAG_NAME } from '../navitemlist/navitemlist.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
@@ -207,13 +206,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 
-    // The navitem follows a different pattern to attach the tooltip.
-    if (this.parentElement?.tagName?.toLowerCase() === NAVITEMLIST_TAG_NAME) {
-      this.before(tooltip);
-    } else {
-      // Add tooltip programmatically after the parent element.
-      this.parentElement?.after(tooltip);
-    }
+    // Add tooltip programmatically after the parent element.
+    this.parentElement?.after(tooltip);
   }
 
   /**

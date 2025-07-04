@@ -66,7 +66,7 @@ class SideNavigationContext {
 
   public setCurrentActiveNavItem(navItem: NavItem | undefined) {
     const isSameItem = this.currentActiveNavItem?.navId === navItem?.navId;
-    const shouldSkip = navItem?.disableAriaCurrent || this.hasSiblingWithTriggerId(navItem);
+    const shouldSkip = navItem?.disableAriaCurrent || this.hasSiblingWithTriggerId(navItem) || navItem?.softDisabled;
 
     if (isSameItem || shouldSkip) return;
 
