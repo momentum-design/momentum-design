@@ -31,6 +31,12 @@ import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover
  * The orientation of the menu popover is always set to `vertical`.
  *
  * @tagname mdc-menupopover
+ *
+ * @slot - Default slot for the menu popover content
+ *
+ * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
+ * @event action - (React: onAction) This event is dispatched when a menuItem selected and the menu closes.
+ *
  * @slot default - Contains the menu items to be displayed in the popover
  */
 class MenuPopover extends Popover {
@@ -133,7 +139,7 @@ class MenuPopover extends Popover {
    *
    * @param until - The popover to close until.
    */
-  private closeAllMenuPopovers(until?: Element) {
+  private closeAllMenuPopovers(until?: Element): void {
     while (popoverStack.peek() !== until) {
       const popover = popoverStack.pop();
       if (popover) {
@@ -161,9 +167,8 @@ class MenuPopover extends Popover {
       return;
     }
 
-    let insidePopoverClick = false;
     const path = event.composedPath();
-    insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    const insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
@@ -204,9 +209,12 @@ class MenuPopover extends Popover {
     const triggerId = target.getAttribute('id');
     if (
       isActiveMenuItem(target) && // menuitemcheckbox and menuitemradio are not supposed to close the popover
-      !this.hasSubmenuWithTriggerId(triggerId)
+      !this.hasSubmenuWithTriggerId(triggerId) &&
+      this === target.closest(MENU_POPOVER) // Ensure close all popover called only once
     ) {
       this.closeAllMenuPopovers();
+
+      target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
     }
   }
 

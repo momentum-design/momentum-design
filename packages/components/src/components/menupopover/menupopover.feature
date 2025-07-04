@@ -54,6 +54,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is open
       When I click on a menuitem
       Then the action associated with the menuitem should execute
+      And action event should dispatch
       And the MenuPopover should close
 
     Scenario: Select menuitem using keyboard
@@ -61,6 +62,7 @@ Feature: MenuPopover Accessibility and User Interaction
       And focus is on a menuitem
       When I press "Enter" or "Space"
       Then the action associated with the menuitem should execute
+      And action event should dispatch
       And the MenuPopover should close
 
     Scenario: Disabled menuitems are non-interactive using mouse
@@ -154,7 +156,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Then the nested submenu should appear adjacent to the parent menuitem
       And it should open on the correct side (right in LTR, left in RTL)
 
-    Scenario: Open nested submenu using keyboard
+    Scenario Outline: Scenario: Open nested submenu using keyboard
       Given the focus is on Settings menuitem
       When I press <key> in <dir>
       Then the nested submenu should open
@@ -169,7 +171,7 @@ Feature: MenuPopover Accessibility and User Interaction
         | Space      | RTL |
         | ArrowLeft  | RTL |
 
-    Scenario: Navigate back from nested submenu using keyboard
+    Scenario Outline: Navigate back from nested submenu using keyboard
       Given a nested submenu is open from Settings menuitem
       And focus is on the first menuitem in the nested submenu
       When I press <key> in <dir>
@@ -191,6 +193,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Then the nested item's action is executed
       And the nested submenu closes
       And all parent MenuPopovers close
+      And action event should dispatch
       And focus returns to the trigger element
 
     Scenario: Selecting a nested menuitem using mouse
@@ -199,6 +202,7 @@ Feature: MenuPopover Accessibility and User Interaction
       When I click on a nested menuitem
       Then the nested item's action is executed
       And the nested submenu closes
+      And action event should dispatch
       And all parent MenuPopovers close
 
     Scenario: Escape key closes nested submenus step-by-step
@@ -212,6 +216,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Given I have navigated into a nested submenu
       When I click anywhere outside the MenuPopover
       Then all the MenuPopover should close at once
+      And no action event should dispatch
 
     Scenario: Close all children submenu and open the parent submenu using mouse
       Given I have navigated into multiple nested submenus
@@ -227,6 +232,7 @@ Feature: MenuPopover Accessibility and User Interaction
       When I click on the menuitem
       Then its checked state toggles
       And the visual indicator reflects the state
+      And change event should dispatch
       And the MenuPopover remains open
 
     Scenario: Toggle menuitemcheckbox using keyboard
@@ -235,6 +241,7 @@ Feature: MenuPopover Accessibility and User Interaction
       When I press "Enter" or "Space"
       Then its checked state toggles
       And the visual indicator reflects the state
+      And change event should dispatch
       And the MenuPopover remains open
 
     Scenario: Select one menuitemradio from a group using mouse
@@ -242,6 +249,7 @@ Feature: MenuPopover Accessibility and User Interaction
       And a group of "menuitemradio" is present
       When I click on one radio item
       Then it becomes selected
+      And change event should dispatch
       And other items in the group become deselected
       And the MenuPopover remains open
 
@@ -250,6 +258,7 @@ Feature: MenuPopover Accessibility and User Interaction
       And focus is on a "menuitemradio" in a group
       When I press "Enter" or "Space"
       Then it becomes selected
+      And change event should dispatch
       And other items in the group become deselected
       And the MenuPopover remains open
 

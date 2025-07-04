@@ -149,9 +149,9 @@ test.describe.parallel('mdc-card', () => {
       });
 
       const testClickEvent = async (button: Locator) => {
-        const eventResolve = componentsPage.waitForEvent(button, 'click');
+        const eventResolve = await componentsPage.waitForEvent(button, 'click');
         await button.click();
-        await eventResolve;
+        await eventResolve();
       };
 
       await test.step('mouse/pointer', async () => {
@@ -172,13 +172,15 @@ test.describe.parallel('mdc-card', () => {
       });
 
       const testOnEnterSpace = async (button: Locator) => {
-        const eventResolve = componentsPage.waitForEvent(button, 'click');
+        const eventResolveAfterEnter = await componentsPage.waitForEvent(button, 'click');
         await button.focus();
         await expect(button).toBeFocused();
         await componentsPage.page.keyboard.press('Enter');
-        await eventResolve;
+        await eventResolveAfterEnter();
+
+        const eventResolveAfterSpace = await componentsPage.waitForEvent(button, 'click');
         await componentsPage.page.keyboard.press('Space');
-        await eventResolve;
+        await eventResolveAfterSpace();
       };
 
       await test.step('keyboard', async () => {
