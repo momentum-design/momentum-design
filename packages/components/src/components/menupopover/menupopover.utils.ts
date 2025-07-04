@@ -1,8 +1,10 @@
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
+import type MenuItem from '../menuitem';
 
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
+import type MenuPopover from './menupopover.component';
 
 /**
  * Checks if the given menu item is a valid menu item.
@@ -14,8 +16,9 @@ const isValidMenuItem = (menuItem: Element | null): boolean =>
     menuItem?.tagName?.toLowerCase?.() as typeof MENUITEM_TAGNAME,
   );
 
-const isValidPopover = (menuItem: Element | null): boolean => menuItem?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
+const isValidPopover = (el: Element | null): el is MenuPopover => el?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
-const isActiveMenuItem = (menuItem: Element | null): boolean =>
+const isActiveMenuItem = (menuItem: Element | null): menuItem is MenuItem =>
   menuItem?.tagName?.toLowerCase?.() === MENUITEM_TAGNAME && !menuItem.hasAttribute('disabled');
+
 export { isValidMenuItem, isValidPopover, isActiveMenuItem };

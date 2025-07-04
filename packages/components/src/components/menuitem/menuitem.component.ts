@@ -18,13 +18,24 @@ import styles from './menuitem.styles';
  * The leading and trailing slots can be used to display controls and text.<br/>
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted.
  *
- * Please use mdc-menu as a parent element even when there is only menuitem for a11y purpose.
+ * Please use element with role=menu as a parent element even when there is only menuitem for a11y purpose.
+ * For example mdc-menupopover or mdc-menubar.
+ *
+ * Menu item has `name` and `value` attribute that can be used to identify the menu item when it is selected.
  *
  * @dependency mdc-text
  * @dependency mdc-icon
  * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitem
+ *
+ * @slot leading-controls - slot for menu item controls to appear of leading end.
+ * @slot leading-text-primary-label - slot for menu item primary label.
+ * @slot leading-text-secondary-label - slot for menu item secondary label.
+ * @slot leading-text-tertiary-label - slot for menu item tertiary label.
+ * @slot trailing-text-side-header - slot for menu item side header text.
+ * @slot trailing-text-subline - slot for menu item subline text.
+ * @slot trailing-controls - slot for menu item controls to appear of trailing end.
  *
  * @event click - (React: onClick) This event is dispatched when the menuitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the menuitem.
@@ -49,6 +60,17 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true, attribute: 'arrow-direction' })
   arrowDirection?: ArrowDirections;
+
+  /**
+   * The name attribute is used to identify the menu item when it is selected.
+   */
+  @property({ type: String, reflect: true }) name?: undefined | string = undefined;
+
+  /**
+   * The value attribute is used to represent a value when the menu item is selected.
+   * It is typically used with checkbox and radio menu items, but can be handy for any menu item.
+   */
+  @property({ type: String, reflect: true }) value?: undefined | string = undefined;
 
   constructor() {
     super();

@@ -1,8 +1,8 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host::part(popover-content) {
-    padding: 0.75rem 0.5rem;
+  :host > .mdc-menusection__label {
+    padding: 0.5rem 0.75rem;
   }
 
   ::slotted(mdc-divider) {

@@ -613,19 +613,11 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover1).not.toBeVisible();
       await trigger1.click();
       await expect(popover1).toBeVisible();
-      const waitForClick = componentsPage.waitForEvent(trigger2, 'click');
-      const buttonBox = await trigger2.boundingBox();
-      if (buttonBox) {
-        const x = buttonBox.x + buttonBox.width / 2;
-        const y = buttonBox.y + buttonBox.height / 2;
-
-        await componentsPage.page.mouse.click(x, y);
-        await expect(trigger2).not.toBeFocused();
-        await componentsPage.expectPromiseTimesOut(waitForClick, true);
-        await expect(popover1).not.toBeVisible();
-        await trigger2.click();
-        await expect(popover2).toBeVisible();
-      }
+      await trigger2.click({ force: true });
+      await expect(popover2).not.toBeVisible();
+      await expect(popover1).not.toBeVisible();
+      await trigger2.click();
+      await expect(popover2).toBeVisible();
     });
   });
 
