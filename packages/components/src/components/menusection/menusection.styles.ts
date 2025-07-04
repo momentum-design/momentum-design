@@ -1,20 +1,12 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host(:not([show-label])) ::slotted(mdc-text) {
-    display: none;
-  }
-
-  :host(:dir(ltr)) ::slotted(mdc-text) {
-    padding-left: 1.75rem;
-  }
-
-  :host(:dir(rtl)) ::slotted(mdc-text) {
-    padding-right: 1.75rem;
+  :host > .mdc-menusection__label {
+    padding: 0.5rem 0.75rem;
   }
 
   ::slotted(mdc-divider) {
-    margin: 0.75rem 0;
+    margin-block: 0.25rem;
   }
 `;
 

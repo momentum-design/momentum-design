@@ -143,22 +143,24 @@ test.describe.parallel('mdc-cardbutton', () => {
       await test.step('mouse/pointer', async () => {
         await test.step('component should toggle checked state when clicked using mouse', async () => {
           await setup(setupArgs);
-          const eventResolve = componentsPage.waitForEvent(cardbutton, 'click');
+          const eventResolve = await componentsPage.waitForEvent(cardbutton, 'click');
           await cardbutton.click();
-          await eventResolve;
+          await eventResolve();
         });
       });
 
       await test.step('keyboard & focus', async () => {
         await test.step('component should toggle checked state when pressed enter/space', async () => {
           await setup(setupArgs);
-          const eventResolve = componentsPage.waitForEvent(cardbutton, 'click');
+          const eventResolveAfterEnter = await componentsPage.waitForEvent(cardbutton, 'click');
           await componentsPage.actionability.pressTab();
           await expect(cardbutton).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
-          await eventResolve;
+          await eventResolveAfterEnter();
+
+          const eventResolveAfterSpace = await componentsPage.waitForEvent(cardbutton, 'click');
           await componentsPage.page.keyboard.press('Space');
-          await eventResolve;
+          await eventResolveAfterSpace();
         });
 
         await test.step('component should not be focused in disabled state', async () => {

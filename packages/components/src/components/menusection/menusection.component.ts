@@ -1,9 +1,10 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, PropertyValues, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import providerUtils from '../../utils/provider';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
@@ -20,15 +21,48 @@ import styles from './menusection.styles';
  * @tagname mdc-menusection
  *
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
+ *
+ * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
  */
 class MenuSection extends Component {
+  /**
+   * The primary headerText of the list item.
+   * This appears on the leading side of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
+
+  /**
+   * The primary headerText of the list item.
+   * This appears on the leading side of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
+  override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (
+      (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
+      (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
+    ) {
+      // Because IDREF attribute reflection does not work across light and shadow DOM, we either set the
+      // `aria-label` directly or use the `ariaLabelledByElements`.
+      // Since the later one just released in the major browsers, we do the first one for now.
+      // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
+      this.ariaLabel = this.headerText || '';
+    }
+  }
+
+  private renderLabel() {
+    if (this.headerText) {
+      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
+        ${this.headerText}
+      </mdc-text> `;
+    }
+    return null;
   }
 
   /**
@@ -36,8 +70,8 @@ class MenuSection extends Component {
    *
    * @internal
    */
-  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
-  showLabel?: boolean;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-header-text' })
+  hideHeaderText?: boolean;
 
   /**
    * @internal
@@ -49,11 +83,14 @@ class MenuSection extends Component {
     if (!context) return;
 
     const { expanded } = context;
-    this.showLabel = expanded;
+    this.hideHeaderText = !expanded;
   }
 
   public override render() {
-    return html`<slot></slot>`;
+    return html`
+      ${!this.hideHeaderText ? this.renderLabel() : null}
+      <slot></slot>
+    `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];

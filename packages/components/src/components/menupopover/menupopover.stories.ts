@@ -1,5 +1,5 @@
-import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
 import { html, TemplateResult } from 'lit';
 
 import '.';
@@ -32,6 +32,8 @@ const createPopover = (args: Args, content: TemplateResult = html``) => html`
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
     @destroyed="${action('ondestroyed')}"
+    @action="${action('onaction')}"
+    @change="${action('onchange')}"
   >
     ${content}
   </mdc-menupopover>
@@ -162,12 +164,13 @@ const defaultMenuContent = html`
 
 const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
   <mdc-divider></mdc-divider>
-  <mdc-menusection label="Preferences">
-    <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
-    <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
+  <mdc-menusection headerText="Preferences">
+    <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
+    <mdc-divider></mdc-divider>
+    <mdc-menuitemradio name="theme" label="Light" checked></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="Dark"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="System"></mdc-menuitemradio>
   </mdc-menusection>
   <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
@@ -180,6 +183,34 @@ const nestedSubmenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem label="Change Password"></mdc-menuitem>
       <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
       <mdc-menuitem label="Security Questions"></mdc-menuitem>
+    </mdc-menupopover>
+    <mdc-menuitem label="Account"></mdc-menuitem>
+    <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+    <mdc-menuitem label="Security" id="security-id" arrow-position="trailing"></mdc-menuitem>
+    <mdc-menuitem label="Advanced"></mdc-menuitem>
+  </mdc-menupopover>`;
+
+const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profile"></mdc-menuitem>
+  <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+  <mdc-menuitem label="Notifications"></mdc-menuitem>
+  <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+  <mdc-menusection headerText="Preferences">
+    <mdc-menuitemcheckbox label="Enable feature" name="enableFeature"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" checked name="betaMode"></mdc-menuitemcheckbox>
+    <mdc-menuitemradio name="theme" value="light" label="Light" checked></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="dark" label="Dark"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="system" label="System"></mdc-menuitemradio>
+  </mdc-menusection>
+  <mdc-menupopover triggerID="submenu-trigger" placement="right">
+    <mdc-menupopover triggerID="security-id" placement="right-start">
+      <mdc-menuitem label="Change Password"></mdc-menuitem>
+      <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+      <mdc-menuitem label="Security Questions"></mdc-menuitem>
+      <mdc-menusection headerText="Virtual background">
+        <mdc-menuitemradio name="virtualbg" value="none" label="Off" checked></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="office" label="Office"></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="custom" label="Custom"></mdc-menuitemradio>
+      </mdc-menusection>
     </mdc-menupopover>
     <mdc-menuitem label="Account"></mdc-menuitem>
     <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
@@ -253,6 +284,18 @@ export const WithNestedSubmenus: StoryObj = {
     </div>
   `,
 };
+export const WithNestedSubmenuContentAndSelectMenuItems: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_END, triggerID: 'trigger-btn' },
+  render: (args: Args) => html`
+    <div
+      id="menupopover-test-wrapper"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;"
+    >
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      ${createPopover(args, nestedSubmenuContentAndSelectMenuItems)}
+    </div>
+  `,
+};
 
 export const MixedUsage: StoryObj = {
   render: () => html`
@@ -296,5 +339,77 @@ export const MixedUsage: StoryObj = {
         <mdc-menuitem label="Reset Zoom"></mdc-menuitem>
       </mdc-menupopover>
     </div>
+  `,
+};
+
+export const CustomMenu: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: args => html`
+    <mdc-button id="button-trigger">Menu</mdc-button>
+
+    <style>
+      .layout-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        width: 21rem;
+      }
+
+      .layout-section::part(header-text) {
+        width: 100%;
+      }
+
+      .layout-section mdc-menuitemradio {
+        flex-basis: 1rem;
+        flex-grow: 1;
+        margin-block-end: 0.5rem;
+        padding-inline: 0;
+        padding-block: 0.65rem;
+      }
+
+      .layout-section mdc-menuitemradio::part(leading) {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .layout-section mdc-menuitemradio::part(trailing) {
+        display: none;
+      }
+
+      .layout-section mdc-menuitemradio[checked] {
+        color: var(--mds-color-theme-text-accent-normal);
+        background-color: var(--mds-color-theme-button-secondary-active-normal);
+      }
+
+      .layout-section mdc-menuitemradio[checked]::part(leading-text-primary-label) {
+        color: inherit;
+      }
+    </style>
+    ${createPopover(
+      args,
+      html` <mdc-menusection headerText="Layout" class="layout-section">
+          <mdc-menuitemradio name="layout" label="Grid" checked indicator="none">
+            <mdc-icon name="video-layout-equal-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitemradio>
+          <mdc-menuitemradio name="layout" label="Stack" indicator="none">
+            <mdc-icon name="video-layout-stack-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitemradio>
+          <mdc-menuitemradio name="layout" label="Side by side" indicator="none">
+            <mdc-icon
+              name="layout-side-by-side-vertical-light"
+              size="2"
+              slot="leading-controls"
+              length-unit="rem"
+            ></mdc-icon>
+          </mdc-menuitemradio>
+        </mdc-menusection>
+        <mdc-divider></mdc-divider>
+        <mdc-menusection headerText="Preferences">
+          <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
+        </mdc-menusection>
+        <mdc-divider></mdc-divider>
+        <mdc-menuitem label="Notifications"></mdc-menuitem>`,
+    )}
   `,
 };
