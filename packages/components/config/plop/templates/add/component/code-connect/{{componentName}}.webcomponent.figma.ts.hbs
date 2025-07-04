@@ -1,0 +1,8 @@
+// @ts-ignore
+import figma, { html } from '@figma/code-connect/html';
+
+figma.connect('<FIGMA_{{upperCase componentName}}_URL>', {
+  props: {},
+  example: () => html`<{{prefix}}{{separator}}{{componentName}}></{{prefix}}{{separator}}{{componentName}}>`,
+  imports: ["import '@momentum-design/components/components/{{componentName}}';"],
+});

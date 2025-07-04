@@ -1762,9 +1762,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@figma/code-connect@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@figma/code-connect@npm:1.3.3"
+"@figma/code-connect@npm:1.3.4":
+  version: 1.3.4
+  resolution: "@figma/code-connect@npm:1.3.4"
   dependencies:
     boxen: 5.1.1
     chalk: ^4.1.2
@@ -1786,11 +1786,11 @@ __metadata:
     ts-morph: ^23.0.0
     typescript: 5.5.4
     undici: ^5.29.0
-    zod: 3.23.8
-    zod-validation-error: 3.4.0
+    zod: 3.25.58
+    zod-validation-error: ^3.2.0
   bin:
     figma: bin/figma
-  checksum: d1e4902c0147500c14720ad096bad29a0eaabc815d8006c670fb1cd9761c24767ac7d4a09763ce18f2c7808675556362fa35dafe5a756e5e2019aa48cc4c1e49
+  checksum: a1fc308edd699a9af9f357607607741e2fb589a94e566606deb41fbcdcc3d7018caa9befd3524fd953a04436511f69c71065f88b00c9bddc9515c84bbdb2f434
   languageName: node
   linkType: hard
 
@@ -2497,7 +2497,7 @@ __metadata:
     "@axe-core/playwright": ^4.9.1
     "@custom-elements-manifest/analyzer": ^0.10.3
     "@estruyf/github-actions-reporter": ^1.9.2
-    "@figma/code-connect": 1.3.3
+    "@figma/code-connect": 1.3.4
     "@floating-ui/dom": ^1.6.12
     "@geometricpanda/storybook-addon-badges": ^2.0.4
     "@lit/context": ^1.1.2
@@ -17697,16 +17697,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-validation-error@npm:3.4.0":
-  version: 3.4.0
-  resolution: "zod-validation-error@npm:3.4.0"
+"zod-validation-error@npm:^3.2.0":
+  version: 3.5.2
+  resolution: "zod-validation-error@npm:3.5.2"
   peerDependencies:
-    zod: ^3.18.0
-  checksum: b07fbfc39582dbdf6972f5f5f0c3bac9e6b5e6d2e55ef3dd891fd08f1966ebf1023a4bc270e9b569eaa48ed1684ac2252c9f260b0bd07b167671596e6e4d0fa8
+    zod: ^3.25.0
+  checksum: fe11357ea821dfcd92c5aa44a9ed0fd7f438dd103970e9a14a0c3219d13d97e8d9d67035d5fc7cb807288227254e5a85d326c16d86244015afe2e5360d312053
   languageName: node
   linkType: hard
 
-"zod@npm:3.23.8, zod@npm:^3.17.3":
+"zod@npm:3.25.58":
+  version: 3.25.58
+  resolution: "zod@npm:3.25.58"
+  checksum: c81143cb96a3bab0035e387bbde11fa21963c61d3e9ae48b0a7a30232d4b15a23cdcf4cd6009b1c9de989f431c2a82066f5cbdcb79315ea9ebf1c6efc050aac1
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.17.3":
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c
