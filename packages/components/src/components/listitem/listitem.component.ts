@@ -208,13 +208,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 
-    // The navitem follows a different pattern to attach the tooltip.
-    if (this.parentElement?.tagName?.toLowerCase() === MENUBAR_TAG_NAME || this.parentElement?.tagName?.toLowerCase() === MENUSECTION_TAG_NAME) {
-      this.before(tooltip);
-    } else {
-      // Add tooltip programmatically after the parent element.
-      this.parentElement?.after(tooltip);
-    }
+    // Add tooltip programmatically after the parent element.
+    this.parentElement?.after(tooltip);
   }
 
   /**
