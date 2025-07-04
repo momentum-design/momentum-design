@@ -5,7 +5,7 @@ const styles = css`
     padding: 0.5rem 0.75rem;
   }
 
-  ::slotted(mdc-divider) {
+  :host::part(divider) {
     margin-block: 0.25rem;
   }
 `;

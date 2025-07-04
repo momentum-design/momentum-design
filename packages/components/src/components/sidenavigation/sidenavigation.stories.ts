@@ -23,7 +23,7 @@ const render = (args: Args) => html`
       @activechange="${action('onactivechange')}"
     >
       <!-- Upper Nav (scrollable section) -->
-        <mdc-menusection slot="scrollable-menubar">
+        <mdc-menusection slot="scrollable-menubar" show-divider>
           <mdc-navitem
             badge-type="counter"
             counter="2"
@@ -34,10 +34,9 @@ const render = (args: Args) => html`
           ></mdc-navitem>
           <mdc-navitem icon-name="meetings-bold" nav-id="2" label="Meetings" disabled></mdc-navitem>
           <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="3" label="Calling"></mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-        <mdc-menusection slot="scrollable-menubar" header-text="Section 1">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 1">
           <mdc-navitem icon-name="chat-bold" nav-id="4" label="Messaging"></mdc-navitem>
           <mdc-navitem
             icon-name="meetings-bold"
@@ -48,10 +47,9 @@ const render = (args: Args) => html`
             max-counter="66"
           ></mdc-navitem>
           <mdc-navitem icon-name="audio-call-bold" nav-id="6" label="Calling"></mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-       <mdc-menusection slot="scrollable-menubar" header-text="Section 2">
+       <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 2">
           <mdc-navitem
             badge-type="counter"
             counter="2"
@@ -62,10 +60,9 @@ const render = (args: Args) => html`
           ></mdc-navitem>
           <mdc-navitem icon-name="meetings-bold" nav-id="9" label="Meetings"> </mdc-navitem>
           <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="10" label="Calling"> </mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-        <mdc-menusection slot="scrollable-menubar" header-text="Section 3">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 3">
           <mdc-navitem icon-name="chat-bold" nav-id="11" label="Messaging"></mdc-navitem>
           <mdc-navitem
             badge-type="counter"
@@ -86,7 +83,6 @@ const render = (args: Args) => html`
             label="Contacts"
           ></mdc-navitem>
           <mdc-navitem icon-name="placeholder-bold" nav-id="16" label="Whiteboards"></mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
  
         <mdc-menusection slot="scrollable-menubar" header-text="Section 4">
@@ -146,7 +142,7 @@ const renderNestedSideNavigation = (args: Args) => {
           <mdc-navitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navitem>
           <mdc-navitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navitem>
         </mdc-menupopover>
-        <mdc-menusection slot="scrollable-menubar">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section1">
           <mdc-navitem
             badge-type="counter"
             counter="2"
@@ -199,10 +195,9 @@ const renderNestedSideNavigation = (args: Args) => {
               </mdc-menusection>
             </mdc-menupopover>
           </mdc-menupopover>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-        <mdc-menusection slot="scrollable-menubar" header-text="Section 1">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 2">
           <mdc-navitem
             badge-type="counter"
             counter="2"
@@ -213,10 +208,9 @@ const renderNestedSideNavigation = (args: Args) => {
           ></mdc-navitem>
           <mdc-navitem icon-name="meetings-bold" nav-id="10" label="Meetings"></mdc-navitem>
           <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="11" label="Calling"></mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-        <mdc-menusection slot="scrollable-menubar" header-text="Section 2">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 3">
           <mdc-navitem
             badge-type="counter"
             counter="2"
@@ -227,10 +221,9 @@ const renderNestedSideNavigation = (args: Args) => {
           ></mdc-navitem>
           <mdc-navitem icon-name="meetings-bold" nav-id="13" label="Meetings"></mdc-navitem>
           <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="14" label="Calling"></mdc-navitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
 
-        <mdc-menusection slot="scrollable-menubar" header-text="Section 3">
+        <mdc-menusection slot="scrollable-menubar" header-text="Section 4">
           <mdc-navitem
             badge-type="counter"
             counter="2"

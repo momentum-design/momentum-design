@@ -71,6 +71,7 @@ class MenuBar extends Component {
    * Returns all menupopovers, including direct and slotted ones .
    */
   get allPopovers(): Element[] {
+    if (!this.menuItems.length) return []; 
     const sidenav = this.menuItems[0].closest(SIDENAV_TAGNAME);
     const menubar = this.menuItems[0].closest(MENUBAR_TAGNAME);
     const root = sidenav || menubar;

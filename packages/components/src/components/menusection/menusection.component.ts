@@ -37,6 +37,13 @@ class MenuSection extends Component {
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
 
+  /**
+   * Whether to show a divider below the section header.
+   * This is useful for visually separating sections in the menu.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
+  showDivider = false;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
@@ -87,10 +94,11 @@ class MenuSection extends Component {
   }
 
   public override render() {
-    return html`
-      ${!this.hideHeaderText ? this.renderLabel() : null}
-      <slot></slot>
-    `;
+      return html`
+        ${!this.hideHeaderText ? this.renderLabel() : null}
+        <slot></slot>
+        ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
+      `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];
