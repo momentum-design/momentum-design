@@ -1,529 +1,300 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import type { SideNavigationVariant } from './sidenavigation.types';
-import { VARIANTS } from './sidenavigation.constants';
-
-type SetupOptions = {
-  componentsPage: ComponentsPage;
-  variant?: SideNavigationVariant;
-  customerName?: string;
-  expanded?: boolean;
-  ariaLabel?: string;
+// Helper to press Tab multiple times (sequentially, as a user would)
+const pressTabMultiple = async (componentsPage: ComponentsPage, count: number) => {
+  for (let i = 0; i < count; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await componentsPage.actionability.pressTab();
+  }
 };
 
-const renderChildren = (expanded: boolean) =>
-  ` <!-- Upper Nav (scrollable section) -->
-    <div slot="scrollable-menubar" aria-label='menubar label' ?expanded=${expanded}>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="1" aria-label='navItem label' ?expanded=${expanded} label="Messaging"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold"
-      nav-id="2" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="dot" icon-name="placeholder-bold" nav-id="3" aria-label='navItem label' 
-      disabled ?expanded=${expanded} label="Calling"></mdc-navitem>
-      <mdc-divider variant="gradient"></mdc-divider>
-      <mdc-text>Section 1</mdc-text>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"
-      nav-id="4" aria-label='navItem label' ?expanded=${expanded} label="Messaging"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="5" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem" icon-name="placeholder-bold" aria-label='navItem label' 
-      ?expanded=${expanded} label="Calling"></mdc-navitem>
-      <mdc-divider variant="gradient" nav-id="6"></mdc-divider>
-      <mdc-text>Section 2</mdc-text>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="7" aria-label='navItem label' ?expanded=${expanded} label="Messaging"></mdc-navitem>
-      <mdc-navitem role="menuitem" icon-name="placeholder-bold" nav-id="8"
-      aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="dot" icon-name="placeholder-bold" nav-id="9" 
-      aria-label='navItem label' ?expanded=${expanded} label="Calling"></mdc-navitem>
-      <mdc-divider variant="gradient"></mdc-divider>
-      <mdc-text>Section 3</mdc-text>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="10" aria-label='navItem label' ?expanded=${expanded} label="Messaging"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="11" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem"badge-type="dot" icon-name="placeholder-bold" nav-id="12" 
-      aria-label='navItem label' ?expanded=${expanded} label="Calling"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="13" aria-label='navItem label' ?expanded=${expanded} label="Messaging"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="14" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem" icon-name="placeholder-bold" nav-id="15" 
-      aria-label='navItem label' label="Calling"></mdc-navitem>
-    </div>
-
-    <!-- Lower Nav (Fixed section) -->
-    <div slot="fixed-menubar" aria-label='menubar label'>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="1" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-      <mdc-navitem role="menuitem" badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" 
-      nav-id="2" aria-label='navItem label' ?expanded=${expanded} label="Meetings"></mdc-navitem>
-    </div>
-
-    <!-- Brand Logo (Fixed section) -->
-    <mdc-icon 
-      slot="brand-logo"
-      aria-label="This is the brand logo icon" 
-      name="apple-bold">
-    </mdc-icon>
-  `;
-
-const setup = async (args: SetupOptions) => {
-  const { componentsPage, ...restArgs } = args;
-
+// Setup function to mount sidenavigation and return locators
+const setup = async (componentsPage: ComponentsPage, variant: string) => {
+  const expanded = variant !== 'fixed-collapsed';
   const html = `
+    <div style="height: 90vh; margin: 1rem">
       <mdc-sidenavigation
-        ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}>
-        ${restArgs.customerName ? `customer-name="${restArgs.customerName}"` : ''}
-        ${restArgs.expanded ? `expanded="${restArgs.expanded}"` : ''}
+        variant="${variant}"
+        expanded="${expanded}"
+        customer-name="%Customer Name%"
+        grabber-btn-aria-label="Toggle Side navigation"
+        parent-nav-tooltip-text="Contains active navitem"
       >
-        ${renderChildren(restArgs.expanded ?? true)}
+        <mdc-navitem icon-name="meetings-bold" nav-id="verify1" label="Meetings" slot="scrollable-menubar"></mdc-navitem>
+        <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp"></mdc-navitem>
+        <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
+          <mdc-navitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+          <mdc-navitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navitem>
+          <mdc-navitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navitem>
+          <mdc-navitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navitem>
+        </mdc-menupopover>
+        <mdc-menusection slot="scrollable-menubar">
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1" label="Messaging"></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled></mdc-navitem>
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3" label="Callings"></mdc-navitem>
+          <mdc-navitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger"></mdc-navitem>
+          <mdc-menupopover triggerid="menu-button-trigger">
+            <mdc-navitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+            <mdc-navitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navitem>
+            <mdc-navitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navitem>
+            <mdc-navitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id"></mdc-navitem>
+            <mdc-menupopover triggerid="share-id">
+              <mdc-navitem label="Webex App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Team Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navitem>
+            </mdc-menupopover>
+          </mdc-menupopover>
+          <mdc-divider variant="gradient"></mdc-divider>
+        </mdc-menusection>
+        <mdc-menusection slot="scrollable-menubar" label="Section 1">
+          <mdc-text>Section 1</mdc-text>
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="9" label="Messaging"></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="10" label="Meetings"></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="11" label="Calling"></mdc-navitem>
+          <mdc-divider variant="gradient"></mdc-divider>
+        </mdc-menusection>
+        <mdc-menusection slot="scrollable-menubar" label="Section 2">
+          <mdc-text>Section 2</mdc-text>
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="12" label="Messaging"></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="13" label="Meetings"></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="14" label="Calling"></mdc-navitem>
+          <mdc-divider variant="gradient"></mdc-divider>
+        </mdc-menusection>
+        <mdc-menusection slot="scrollable-menubar" label="Section 3">
+          <mdc-text>Section 3</mdc-text>
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="15" label="Messaging"></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="16" label="Meetings"></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="17" label="Calling"></mdc-navitem>
+        </mdc-menusection>
+        <mdc-menusection slot="fixed-menubar">
+          <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="settings-bold" nav-id="18" label="Settings"></mdc-navitem>
+          <mdc-navitem icon-name="help-circle-bold" nav-id="19" label="Help" disable-aria-current></mdc-navitem>
+        </mdc-menusection>
+        <mdc-icon slot="brand-logo" aria-label="This is the brand logo icon" name="apple-bold"></mdc-icon>
       </mdc-sidenavigation>
+    </div>
   `;
-
   await componentsPage.mount({ html, clearDocument: true });
-
-  const sideNavigation = componentsPage.page.locator('mdc-sidenavigation');
-  await sideNavigation.waitFor();
-  return sideNavigation;
+  const sidenav = componentsPage.page.locator('mdc-sidenavigation');
+  await sidenav.waitFor();
+  const toggleButton = sidenav.locator('[grabber-btn-aria-label], [aria-label="Toggle Side navigation"], mdc-button');
+  const fixedNavlist = sidenav.locator('[slot="fixed-menubar"]');
+  const navItems = sidenav.locator('mdc-navitem');
+  const mainMenuNavItem = sidenav.locator('mdc-navitem#menu-button-trigger');
+  const mainMenuPopover = sidenav.locator('mdc-menupopover[triggerid="menu-button-trigger"]');
+  const callingNavItem = sidenav.locator('mdc-navitem#temp');
+  const callingPopover = sidenav.locator('mdc-menupopover[triggerid="temp"]');
+  return { sidenav, toggleButton, fixedNavlist, navItems, mainMenuNavItem, mainMenuPopover, callingNavItem, callingPopover };
 };
 
-test.describe.parallel('mdc-sidenavigation', () => {
-  test.skip('attributes and interactions', async ({ componentsPage }) => {
-    /**
-     * ADDITIONAL LOCATORS
-     */
-    const sideNavigation = await setup({ componentsPage });
-    const toggleButton = sideNavigation.locator('mdc-button');
-    const scrollableNavlist = sideNavigation.locator('[slot="scrollable-menubar"]');
-    // const fixedNavlist = sideNavigation.locator('[slot="fixed-menubar"]');
-    const navItems = scrollableNavlist.locator('mdc-navitem');
-    const scrollableFirstNavItem = scrollableNavlist.locator('mdc-navitem').nth(0);
-    // const scrollableLastNavItem = scrollableNavlist.locator('mdc-navitem').nth(-1);
-    // const fixedFirstNavItem = fixedNavlist.locator('mdc-navitem').nth(0);
-    // const fixedLastNavItem = fixedNavlist.locator('mdc-navitem').nth(-1);
+const variants = ['flexible', 'fixed-expanded', 'fixed-collapsed'];
 
-    /**
-     * ATTRIBUTES
-     */
-    await test.step('attributes', async () => {
-      await test.step('default attributes', async () => {
-        await expect(sideNavigation).toHaveRole('navigation');
-        await expect(sideNavigation).toHaveAttribute('variant', 'flexible');
-        await expect(sideNavigation).toHaveAttribute('customer-name', '');
-        await expect(sideNavigation).toHaveAttribute('expanded');
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-        await expect(navItems.locator('[aria-current]')).toHaveCount(0);
-      });
+test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
+  variants.forEach((variant) => {
+    test.describe(`${variant} variant`, () => {
+      test.skip(`all user scenarios for ${variant}`, async ({ componentsPage }) => {
+        const { sidenav, toggleButton, fixedNavlist, navItems, mainMenuNavItem, mainMenuPopover, callingNavItem, callingPopover } = await setup(componentsPage, variant);
 
-      const attributeTests: [string, Record<string, string | ''>][] = [
-        ['variant', { variant: 'fixed-expanded' }],
-        ['customer-name', { 'customer-name': '%Customer Name%' }],
-        ['aria-label', { 'aria-label': 'Primary side navigation' }],
-      ];
+        // --- Expand/Collapse (flexible only) ---
+        if (variant === 'flexible') {
+          await test.step('Collapse and expand sidenavigation using mouse', async () => {
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            await toggleButton.click();
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+            await toggleButton.click();
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+          });
+          await test.step('Collapse and expand sidenavigation using keyboard', async () => {
+            await pressTabMultiple(componentsPage, 4);
+            await expect(toggleButton).toBeFocused();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+            await componentsPage.page.keyboard.press('Space');
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+          });
+        }
 
-      for (const [label, attrs] of attributeTests) {
-        await test.step(`attribute ${label} should be present`, async () => {
-          await componentsPage.setAttributes(sideNavigation, attrs);
-          const [attr] = Object.keys(attrs);
-          await expect(sideNavigation).toHaveAttribute(attr);
-          await componentsPage.removeAttribute(sideNavigation, attr);
-        });
-      }
-    });
-
-    /**
-     * INTERACTIONS
-     */
-    await test.step('interactions', async () => {
-      /**
-       * POINTER / MOUSE INTERACTIONS
-       */
-      await test.step('mouse: clicking the toggle button should toggle the expanded/collapsed state', async () => {
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-        await toggleButton.click();
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-        await toggleButton.click();
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-      });
-
-      await test.step('mouse: hovering over a nav item should not activate it', async () => {
-        await scrollableFirstNavItem.hover();
-        await expect(scrollableFirstNavItem).not.toHaveAttribute('aria-current', 'page');
-      });
-
-      await test.step('mouse: clicking an enabled nav item should activate it', async () => {
-        await scrollableFirstNavItem.click();
-        await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
-      });
-
-      await test.step('mouse: clicking a disabled nav item should not trigger any action', async () => {
-        const disabledNavItem = navItems.nth(2); // Assuming it's the "Calling" disabled item
-        await expect(disabledNavItem).toBeDisabled();
-        await disabledNavItem.click({ force: true }); // Attempt to click it
-        await expect(disabledNavItem).not.toHaveAttribute('aria-current', 'page');
-      });
-
-      /**
-       * KEYBOARD INTERACTIONS
-       */
-      await test.step('keyboard: pressing Space or Enter should toggle the expanded/collapsed state', async () => {
-        await toggleButton.focus();
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-        // Collapse the sideNavigation using Enter
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-        // Expand the sideNavigation using Space
-        await componentsPage.page.keyboard.press('Space');
-        await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-      });
-
-      await test.step('keyboard: pressing Space or Enter on a nav item should activate it', async () => {
-        const first = navItems.nth(0);
-        const second = navItems.nth(1);
-
-        // Activate second item using Enter
-        await second.focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(second).toBeFocused();
-        await expect(second).toHaveAttribute('aria-current', 'page');
-        await expect(first).not.toHaveAttribute('aria-current', 'page');
-
-        // Activate first item using Space
-        await first.focus();
-        await componentsPage.page.keyboard.press('Space');
-        await expect(first).toBeFocused();
-        await expect(first).toHaveAttribute('aria-current', 'page');
-        await expect(second).not.toHaveAttribute('aria-current', 'page');
-      });
-
-      await test.step('keyboard: disabled nav item should remain inactive on keydown', async () => {
-        const disabledNavItem = navItems.nth(2);
-        await expect(disabledNavItem).toBeDisabled();
-        await disabledNavItem.focus();
-        await componentsPage.page.keyboard.press('Space'); // or Enter
-        await expect(disabledNavItem).not.toHaveAttribute('aria-current', 'page');
-      });
-    });
-  });
-
-  /**
-   * USER STORIES
-   */
-  test.skip('user stories', async ({ componentsPage }) => {
-    async function getLocators(sideNavigation: any) {
-      const toggleButton = sideNavigation.locator('mdc-button');
-      const scrollableNavlist = sideNavigation.locator('[slot="scrollable-menubar"]');
-      const fixedNavlist = sideNavigation.locator('[slot="fixed-menubar"]');
-      const navItems = scrollableNavlist.locator('mdc-navitem');
-      const scrollableFirstNavItem = navItems.nth(0);
-      const scrollableLastNavItem = navItems.nth(-1);
-      const fixedFirstNavItem = fixedNavlist.locator('mdc-navitem').nth(0);
-      // const fixedLastNavItem = fixedNavlist.locator('mdc-navitem').nth(-1);
-
-      return {
-        toggleButton,
-        scrollableNavlist,
-        fixedNavlist,
-        navItems,
-        scrollableFirstNavItem,
-        scrollableLastNavItem,
-        fixedFirstNavItem,
-      };
-    }
-
-    async function toggleSideNavigationState(source: string, sideNavigation: any) {
-      const locators = await getLocators(sideNavigation);
-      const { toggleButton } = locators;
-
-      switch (source) {
-        case 'mouse':
-          await toggleButton.click();
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-
-          // User clicks the toggle button again to expand the side navigation
-          await toggleButton.click();
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          break;
-
-        case 'keyboard':
-          // User presses tab twice to focus toggle button and collapse the sideNavigation state
-          await componentsPage.page.keyboard.press('Tab');
-          await componentsPage.page.keyboard.press('Tab');
-          await componentsPage.page.keyboard.press('Enter'); // or Space
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-
-          // User presses tab twice to focus toggle button and collapse the sideNavigation state
-          await componentsPage.page.keyboard.press('Space'); // or Enter
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          break;
-
-        default:
-          throw new Error(`Unsupported interaction source: ${source}`);
-      }
-    }
-
-    async function navigationFlow(source: string, sideNavigation: any) {
-      const locators = await getLocators(sideNavigation);
-      const { scrollableFirstNavItem, scrollableLastNavItem, fixedNavlist, navItems } = locators;
-
-      switch (source) {
-        case 'mouse':
-          // User scrolls to the last item in the scrollable navigation section
-          await scrollableLastNavItem.scrollIntoViewIfNeeded();
-          await expect(scrollableLastNavItem).toBeVisible();
+        // --- Scroll Behavior ---
+        await test.step('Scroll to reveal more top menuitems and keep fixed section pinned', async () => {
+          const lastNavItem = navItems.last();
+          await lastNavItem.scrollIntoViewIfNeeded();
+          await expect(lastNavItem).toBeVisible();
           await expect(fixedNavlist).toBeVisible();
+        });
 
-          // User clicks on the last nav item of scrollable navigation section
-          await scrollableLastNavItem.click();
-          await expect(scrollableLastNavItem).toHaveAttribute('aria-current', 'page');
-          await expect(scrollableFirstNavItem).not.toHaveAttribute('aria-current', 'page');
-
-          // User scrolls to the first item in the scrollable navigation section
-          await scrollableFirstNavItem.scrollIntoViewIfNeeded();
-          await expect(scrollableFirstNavItem).toBeVisible();
-          await expect(fixedNavlist).toBeVisible();
-
-          // User clicks on the first nav item of scrollable section to activate it again
-          await scrollableFirstNavItem.click();
-          await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
-          await expect(scrollableLastNavItem).not.toHaveAttribute('aria-current', 'page');
-          break;
-
-        case 'keyboard':
-          // User presses Shift+tab to focus first nav item of scrollable section
-          await componentsPage.page.keyboard.press('Shift+Tab');
-          await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
-
-          // User presses ArrowDown which should move the focus to next nav item skipping disabled one
-          await componentsPage.page.keyboard.press('ArrowDown');
-          await expect(navItems.nth(1)).toBeFocused();
-          await componentsPage.page.keyboard.press('ArrowDown');
-          await expect(navItems.nth(3)).toBeFocused();
-
-          // User presses ArrowUp which should move the focus to previous nav item skipping disabled one
-          await componentsPage.page.keyboard.press('ArrowUp');
-          await expect(navItems.nth(1)).toBeFocused();
-          await componentsPage.page.keyboard.press('ArrowUp');
-          await expect(scrollableFirstNavItem).toBeFocused(); // focus reaches back to 1st navItem
-
-          // User presses ArrowUp which should move the focus to last nav item in scrollable section and activate it
-          await componentsPage.page.keyboard.press('ArrowUp');
-          await expect(scrollableLastNavItem).toBeFocused();
+        // --- Top-level menuitem selection ---
+        await test.step('Select a top level menuitem by mouse', async () => {
+          await navItems.first().click();
+          await expect(navItems.first()).toHaveAttribute('aria-current', 'page');
+        });
+        await test.step('Select a top level menuitem by keyboard', async () => {
+          await setup(componentsPage, variant);
+          await componentsPage.actionability.pressTab();
+          await expect(navItems.first()).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
-          await expect(scrollableLastNavItem).toHaveAttribute('aria-current', 'page');
-          await expect(scrollableFirstNavItem).not.toHaveAttribute('aria-current', 'page');
+          await expect(navItems.first()).toHaveAttribute('aria-current', 'page');
+        });
 
-          // User presses ArrowDown to the top and activate first nav item of the scrollable section again
-          await componentsPage.page.keyboard.press('ArrowDown');
-          await expect(scrollableFirstNavItem).toBeFocused();
+        // --- Actionable/soft-disabled menuitem ---
+        await test.step('Clicking a soft-disabled menuitem should not trigger any action', async () => {
+          const softDisabled = sidenav.locator('mdc-navitem[soft-disabled]').first();
+          await expect(softDisabled).toHaveAttribute('soft-disabled');
+          await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
+          await softDisabled.click({ force: true });
+          await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
+        });
+        await test.step('Keyboard activation on soft-disabled menuitem should not trigger any action', async () => {
+          await setup(componentsPage, variant);
+          await componentsPage.actionability.pressTab();
+          const firstMenuSectionNavItem = sidenav.locator('mdc-menusection').first().locator('mdc-navitem').first();
+          const secondMenuSectionNavItem = sidenav.locator('mdc-menusection').first().locator('mdc-navitem').nth(1);
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [navItems.nth(1), firstMenuSectionNavItem, secondMenuSectionNavItem]);
+          const softDisabled = secondMenuSectionNavItem;
+          await expect(softDisabled).toHaveAttribute('soft-disabled');
+          await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
           await componentsPage.page.keyboard.press('Enter');
-          await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
-          await expect(scrollableLastNavItem).not.toHaveAttribute('aria-current', 'page');
+          await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
+        });
 
-          // User scrolls/navigates using Home and End to focus first and last nav item of the scrollable section
-          await componentsPage.page.keyboard.press('End');
-          await expect(scrollableLastNavItem).toBeFocused();
-          await componentsPage.page.keyboard.press('Home');
-          await expect(scrollableFirstNavItem).toBeFocused();
-          break;
+        // --- Nested menuitem: open submenu ---
+        await test.step('Open/close submenu to reveal/hide nested menuitems (mouse)', async () => {
+          // check for main menu item
+          await mainMenuNavItem.click();
+          await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(mainMenuPopover).toBeVisible();
+          await mainMenuNavItem.click();
+          await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'false');
+          await expect(mainMenuPopover).not.toBeVisible();
 
-        default:
-          throw new Error(`Unsupported interaction source: ${source}`);
-      }
-    }
-
-    async function activateFirstNavItem(source: string, sideNavigation: any) {
-      const locators = await getLocators(sideNavigation);
-      const { scrollableFirstNavItem, fixedFirstNavItem } = locators;
-
-      switch (source) {
-        case 'mouse':
-          // User clicks on the first nav item of scrollable section to activate it
-          await scrollableFirstNavItem.click();
-          await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
-
-          // User clicks on the first nav item of fixed section to activate it
-          await fixedFirstNavItem.click();
-          await componentsPage.page.pause();
-          await expect(fixedFirstNavItem).toHaveAttribute('aria-current', 'page');
-          break;
-
-        case 'keyboard':
-          // User presses tab to focus first nav item of scrollable section and activate it
-          await scrollableFirstNavItem.focus();
-          await expect(scrollableFirstNavItem).toBeFocused();
+          // check for calling menu item
+          await callingNavItem.click();
+          await expect(callingNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(callingPopover).toBeVisible();
+          await callingNavItem.click();
+          await expect(callingNavItem).toHaveAttribute('aria-expanded', 'false');
+          await expect(callingPopover).not.toBeVisible();
+        });
+        await test.step('Open submenu to reveal nested menuitems (keyboard)', async () => {
+          // check for main menu item
+          await setup(componentsPage, variant);
+          await mainMenuNavItem.focus();
           await componentsPage.page.keyboard.press('Enter');
-          await expect(scrollableFirstNavItem).toHaveAttribute('aria-current', 'page');
+          await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(mainMenuPopover).toBeVisible();
 
-          // User presses tab to focus first nav item of fixed section and activate it
-          await componentsPage.page.keyboard.press('Tab');
+          // check for calling menu item
+          await setup(componentsPage, variant);
+          await componentsPage.actionability.pressTab();
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [callingNavItem]);
           await componentsPage.page.keyboard.press('Enter');
-          await expect(fixedFirstNavItem).toHaveAttribute('aria-current', 'page');
-          break;
+          await expect(callingNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(callingPopover).toBeVisible();
+        });
 
-        default:
-          throw new Error(`Unsupported interaction source: ${source}`);
-      }
-    }
+        // --- Nested menuitem: select nested menuitem ---
+        await test.step('Select nested menuitem with mouse and parent menuitem reflects active state due to selected child', async () => {
+          await setup(componentsPage, variant);
+          await mainMenuNavItem.click();
+          await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(mainMenuPopover).toBeVisible();
+          const nestedItem = mainMenuPopover.locator('mdc-navitem').first();
+          await nestedItem.click();
+          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+          await expect(mainMenuPopover).not.toBeVisible();
+          await expect(mainMenuNavItem).toHaveAttribute('active', '');
+          // await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'false'); -- doubt
+        });
+        await test.step('Select nested menuitem with keyboard, return focus to its parent and parent menuitem reflects active state due to selected child', async () => {
+          await setup(componentsPage, variant);
+          await mainMenuNavItem.focus();
+          await componentsPage.page.keyboard.press('Enter');
+          await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(mainMenuPopover).toBeVisible();
+          const nestedItem = mainMenuPopover.locator('mdc-navitem').first();
+          await expect(nestedItem).toBeFocused();
+          await componentsPage.page.keyboard.press('Enter');
+          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+          await expect(mainMenuPopover).not.toBeVisible();
+          await expect(mainMenuNavItem).toBeFocused();
+          await expect(mainMenuNavItem).toHaveAttribute('active', '');
+          // await expect(mainMenuNavItem).toHaveAttribute('aria-expanded', 'false'); -- doubt
+        });
 
-    async function runMouseFlow(variant: SideNavigationVariant, sideNavigation: any) {
-      const locators = await getLocators(sideNavigation);
-      const { toggleButton } = locators;
+        // --- Tooltip on parent when child is active ---
+        await test.step('Hovering or focusing over parent menuitem shows tooltip and reopen submenu from active parent menuitem', async () => {
+          await mainMenuNavItem.hover();
+          // Tooltip should appear -- pending
 
-      switch (variant) {
-        case VARIANTS.FIXED_EXPANDED:
-          await activateFirstNavItem('mouse', sideNavigation);
-          await navigationFlow('mouse', sideNavigation);
-          break;
+          // using keyboard
+          await mainMenuNavItem.focus();
+          await componentsPage.page.keyboard.press('Enter');
+          await expect(mainMenuPopover).toBeVisible();
+          const nestedItem2 = mainMenuPopover.locator('mdc-navitem').first();
+          await expect(nestedItem2).toHaveAttribute('aria-current', 'page');
+          // closes submenu for next step
+          await componentsPage.page.keyboard.press('Enter');
+          await expect(mainMenuPopover).not.toBeVisible();
 
-        case VARIANTS.FIXED_COLLAPSED:
-          await activateFirstNavItem('mouse', sideNavigation);
-          await navigationFlow('mouse', sideNavigation);
-          break;
+          // using mouse
+          await mainMenuNavItem.click();
+          await expect(mainMenuPopover).toBeVisible();
+          const nestedItem = mainMenuPopover.locator('mdc-navitem').first();
+          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+        });
 
-        case VARIANTS.FLEXIBLE:
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          await activateFirstNavItem('mouse', sideNavigation);
-          await navigationFlow('mouse', sideNavigation);
-          await toggleSideNavigationState('mouse', sideNavigation);
-          break;
+        // --- Focus Management and Tab Behavior ---
+        await test.step('Tabbing into, through, and out of the SideNavigation', async () => {
+          await setup(componentsPage, variant);
+          // Tab to first navitem in scrollable slot
+          await componentsPage.actionability.pressTab();
+          const firstScrollableNav = sidenav.locator('mdc-navitem[slot="scrollable-menubar"]').first();
+          await expect(firstScrollableNav).toBeFocused();
+          // Tab to first navitem in fixed slot
+          await componentsPage.actionability.pressTab();
+          const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navitem').first();
+          await expect(firstFixedNav).toBeFocused();
+          // If flexible, Tab to toggle button
+          if (variant === 'flexible') {
+            await componentsPage.actionability.pressTab();
+            await expect(toggleButton).toBeFocused();
+          }
+        });
+        await test.step('Shift+Tab moves backward through focusable elements', async () => {
+          await setup(componentsPage, variant);
+          // First, tab through to the end of the focusable elements
+          await componentsPage.actionability.pressTab(); // scrollable navitem
+          await componentsPage.actionability.pressTab(); // fixed navitem
+          if (variant === 'flexible') {
+            await componentsPage.actionability.pressTab(); // toggle button
+            // Now shift+tab: toggle button -> fixed navitem -> scrollable navitem
+            await expect(toggleButton).toBeFocused();
+            await componentsPage.actionability.pressShiftTab();
+            const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navitem').first();
+            await expect(firstFixedNav).toBeFocused();
+            await componentsPage.actionability.pressShiftTab();
+            const firstScrollableNav = sidenav.locator('mdc-navitem[slot="scrollable-menubar"]').first();
+            await expect(firstScrollableNav).toBeFocused();
+          } else {
+            // Not flexible: shift+tab from fixed navitem -> scrollable navitem
+            const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navitem').first();
+            await expect(firstFixedNav).toBeFocused();
+            await componentsPage.actionability.pressShiftTab();
+            const firstScrollableNav = sidenav.locator('mdc-navitem[slot="scrollable-menubar"]').first();
+            await expect(firstScrollableNav).toBeFocused();
+          }
+        });
 
-        default:
-          throw new Error(`Unknown variant: ${variant}`);
-      }
-    }
-
-    async function runKeyboardFlow(variant: SideNavigationVariant, sideNavigation: any) {
-      const locators = await getLocators(sideNavigation);
-      const { toggleButton } = locators;
-      
-      switch (variant) {
-        case VARIANTS.FIXED_EXPANDED:
-          await activateFirstNavItem('keyboard', sideNavigation);
-          await navigationFlow('keyboard', sideNavigation);
-          break;
-
-        case VARIANTS.FIXED_COLLAPSED:
-          await activateFirstNavItem('keyboard', sideNavigation);
-          await navigationFlow('keyboard', sideNavigation);
-          break;
-
-        case VARIANTS.FLEXIBLE:
-          await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          await activateFirstNavItem('keyboard', sideNavigation);
-          await navigationFlow('keyboard', sideNavigation);
-          await toggleSideNavigationState('keyboard', sideNavigation);
-          break;
-
-        default:
-          throw new Error(`Unknown variant: ${variant}`);
-      }
-    }
-
-    const SUPPORTED_VARIANTS = [VARIANTS.FIXED_EXPANDED, VARIANTS.FIXED_COLLAPSED, VARIANTS.FLEXIBLE];
-    for (const variant of SUPPORTED_VARIANTS) {
-      const sideNavigation = await setup({ componentsPage, variant, customerName: '%Customer Name%' });
-
-      await test.step(`Variant: ${variant}`, async () => {
-        await runMouseFlow(variant, sideNavigation);
-        await runKeyboardFlow(variant, sideNavigation);
-      });
-    }
-  });
-
-  /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
-  // test.use({ viewport: { width: 800, height: 1200 } });
-  test.skip('visual-regression & accessibility', async ({ componentsPage }) => {
-    /**
-     * ADDITIONAL LOCATORS
-     */
-    const sideNavigation = await setup({ componentsPage });
-    const toggleButton = sideNavigation.locator('mdc-button');
-
-    /**
-     * VISUAL REGRESSION
-     */
-    await test.step('visual-regression', async () => {
-      const stickerSheet = new StickerSheet(componentsPage, 'mdc-sidenavigation');
-      stickerSheet.setAttributes({ variant: 'flexible', 'customer-name': '%Customer Name%' });
-
-      await test.step('mdc-sidenavigation with flexible variant and is expanded', async () => {
-        // default variant (Flexible and expanded)
-        stickerSheet.setChildren(renderChildren(true));
-        await stickerSheet.createMarkupWithCombination({});
-
-        await stickerSheet.mountStickerSheet({ wrapperStyle: 'height: 90%;' });
-        const container = stickerSheet.getWrapperContainer();
-
-        await test.step('matches screenshot of the element', async () => {
-          await componentsPage.visualRegression.takeScreenshot('mdc-sidenavigation-flexible-expanded', {
-            element: container,
-          });
+        // --- Close submenu using Escape ---
+        await test.step('Close submenu using Escape', async () => {
+          await mainMenuNavItem.click();
+          await expect(mainMenuPopover).toBeVisible();
+          await componentsPage.page.keyboard.press('Escape');
+          await expect(mainMenuPopover).not.toBeVisible();
         });
       });
-
-      await test.step('mdc-sidenavigation with flexible variant and is collapsed', async () => {
-        // Flexible and not expanded
-        stickerSheet.setChildren(renderChildren(false));
-        await stickerSheet.createMarkupWithCombination({});
-
-        await stickerSheet.mountStickerSheet({ wrapperStyle: 'height: 90%;' });
-        const container = stickerSheet.getWrapperContainer();
-
-        await test.step('matches screenshot of the element', async () => {
-          await toggleButton.click();
-          await componentsPage.visualRegression.takeScreenshot('mdc-sidenavigation-flexible-collapsed', {
-            element: container,
-          });
-        });
-      });
-
-      await test.step('mdc-sidenavigation with fixed-expanded variant', async () => {
-        // fixed-expanded
-        stickerSheet.setAttributes({ variant: 'fixed-expanded', 'customer-name': '%Customer Name%' });
-        stickerSheet.setChildren(renderChildren(true));
-        await stickerSheet.createMarkupWithCombination({});
-
-        await stickerSheet.mountStickerSheet({ wrapperStyle: 'height: 90%;' });
-        const container = stickerSheet.getWrapperContainer();
-        await test.step('matches screenshot of the element', async () => {
-          await componentsPage.visualRegression.takeScreenshot('mdc-sidenavigation-fixed-expanded', {
-            element: container,
-          });
-        });
-      });
-
-      await test.step('mdc-sidenavigation with fixed-collapsed variant', async () => {
-        // fixed-collapsed
-        stickerSheet.setAttributes({ variant: 'fixed-collapsed', 'customer-name': '%Customer Name%' });
-        stickerSheet.setChildren(renderChildren(false));
-        await stickerSheet.createMarkupWithCombination({});
-
-        await stickerSheet.mountStickerSheet({ wrapperStyle: 'height: 90%;' });
-        const container = stickerSheet.getWrapperContainer();
-
-        await test.step('matches screenshot of the element', async () => {
-          await componentsPage.visualRegression.takeScreenshot('mdc-sidenavigation-fixed-collapsed', {
-            element: container,
-          });
-        });
-      });
-    });
-
-    /**
-     * ACCESSIBILITY
-     */
-    await test.step('accessibility', async () => {
-      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-default');
     });
   });
 });

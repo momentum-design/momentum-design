@@ -151,7 +151,7 @@ const renderNestedSideNavigation = (args: Args) => {
             nav-id="1"
             label="Messaging"
           ></mdc-navitem>
-          <mdc-navitem icon-name="meetings-bold" nav-id="2" label="Meetings" disabled></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled></mdc-navitem>
           <mdc-navitem
             badge-type="counter"
             counter="2"
