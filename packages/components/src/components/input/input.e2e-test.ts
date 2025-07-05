@@ -299,6 +299,11 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('component in form should be validated for required and maxlength when submitted', async () => {
+      componentsPage.page.on('console', msg => {
+        if (msg.type() === 'log') {
+          console.log('Browser console:', msg.text());
+        }
+      });
       const form = await setup(
         {
           componentsPage,
@@ -328,6 +333,69 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await inputEl.fill('This is a long text');
       await expect(inputEl).toHaveValue('This is a '); // maxlength is 10; truncates rest of the value.
       await submitButton.click();
+    });
+
+    await test.step('component in form should be validated for required and minlength when submitted', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Enter your name',
+          required: true,
+          minlength: 3,
+          maxlength: 10,
+          validationMessage: 'Name must be between 3 and 10 characters.',
+        },
+        true,
+      );
+
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+
+      const mdcInput = form.locator('mdc-input');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const inputEl = mdcInput.locator('input');
+      await componentsPage.actionability.pressTab();
+      await expect(mdcInput).toBeFocused();
+      await inputEl.fill('He');
+      await expect(inputEl).toHaveValue('He');
+      await submitButton.click();
+
+      const validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage).toBe('Name must be between 3 and 10 characters.');
+    });
+
+    await test.step('form component should show the native browser validation message when the minlength requirement is not satisfied and validationMessage is not passed', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Enter your name',
+          required: true,
+          minlength: 5,
+          maxlength: 10,
+        },
+        true,
+      );
+      const mdcInput = form.locator('mdc-input');
+      const inputEl = mdcInput.locator('input');
+
+      await componentsPage.actionability.pressTab();
+      await expect(mdcInput).toBeFocused();
+      await inputEl.fill('Hell');
+      await expect(inputEl).toHaveValue('Hell');
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+      await componentsPage.page.keyboard.press('Enter');
+
+      const validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect([
+        'Please lengthen this text to 5 characters or more (you are currently using 4 characters).',
+        'Please use at least 5 characters (you are currently using 4 characters).',
+        'Use at least 5 characters',
+      ]).toContain(validationMessage);
     });
   });
 

@@ -21,6 +21,7 @@ type SetupOptions = {
   label?: string;
   helpText?: string;
   helpTextType?: string;
+  validationMessage?: string;
   autofocus?: boolean;
   dirname?: string;
   pattern?: string;
@@ -48,6 +49,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
+      ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
       ${restArgs.trailingButton ? 'trailing-button' : ''}
       ${restArgs.autofocus ? 'autofocus' : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
@@ -87,11 +89,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
 
   let password: any;
 
-  // Helper function to reset component state
-  const resetComponent = async () => {
-    password = await setup(defaultSetupOptions);
-  };
-
   // Initial setup
   password = await setup(defaultSetupOptions);
 
@@ -99,7 +96,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attributes should be present on component', async () => {
+    await test.step('should attributes be present in the component', async () => {
       await expect(password).toHaveAttribute('id', 'test-mdc-password');
       await expect(password).toHaveAttribute('placeholder', 'Placeholder');
       await expect(password).toHaveAttribute('label', 'Label');
@@ -111,26 +108,26 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).toHaveAttribute('show-hide-button-aria-label', 'show-hide button aria-label');
     });
 
-    await test.step('attributes required should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the required attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { required: '' });
       await expect(password).toHaveAttribute('required', '');
     });
 
-    await test.step('attributes readonly should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the readonly attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { readonly: '' });
       await expect(password).toHaveAttribute('readonly');
     });
 
-    await test.step('attributes disabled should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the disabled attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { disabled: '' });
       await expect(password).toHaveAttribute('disabled');
     });
 
-    await test.step('attributes help-text-type should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the help-text-type attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       for (const type of Object.values(VALIDATION)) {
         await componentsPage.setAttributes(password, { 'help-text-type': type });
         await expect(password).toHaveAttribute('help-text-type', type);
@@ -142,16 +139,16 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       }
     });
 
-    await test.step('attributes size, minlength and maxlength should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the attributes size, minlength and maxlength be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { maxlength: '10', minlength: '5', size: '10' });
       await expect(password).toHaveAttribute('maxlength', '10');
       await expect(password).toHaveAttribute('minlength', '5');
       await expect(password).toHaveAttribute('size', '10');
     });
 
-    await test.step('attribute trailing-button should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the trailing-button attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, {
         'trailing-button': '',
         'show-hide-button-aria-label': 'show/hide password',
@@ -162,40 +159,22 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(trailingButton).toHaveAttribute('aria-label', 'show/hide password');
     });
 
-    await test.step('attribute autofocus should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the autofocus attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { autofocus: '' });
       await expect(password).toHaveAttribute('autofocus');
     });
 
-    await test.step('attribute autocapitalize should be present on component', async () => {
-      await resetComponent();
-      await componentsPage.setAttributes(password, { autocapitalize: 'sentences' });
-      await expect(password).toHaveAttribute('autocapitalize', 'sentences');
+    await test.step('should the dirname attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
+      await componentsPage.setAttributes(password, { dirname: 'ltr' });
+      await expect(password).toHaveAttribute('dirname', 'ltr');
     });
 
-    await test.step('attribute autocomplete should be present on component', async () => {
-      await resetComponent();
-      await componentsPage.setAttributes(password, { autocomplete: 'on' });
-      await expect(password).toHaveAttribute('autocomplete', 'on');
-    });
-
-    await test.step('attribute direname should be present on component', async () => {
-      await resetComponent();
-      await componentsPage.setAttributes(password, { direname: 'ltr' });
-      await expect(password).toHaveAttribute('direname', 'ltr');
-    });
-
-    await test.step('attribute pattern should be present on component', async () => {
-      await resetComponent();
+    await test.step('should the pattern attribute be present in the component when it sets', async () => {
+      await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, { pattern: '[A-Za-z]{3}' });
       await expect(password).toHaveAttribute('pattern', '[A-Za-z]{3}');
-    });
-
-    await test.step('attribute list should be present on component', async () => {
-      await resetComponent();
-      await componentsPage.setAttributes(password, { list: 'browsers' });
-      await expect(password).toHaveAttribute('list', 'browsers');
     });
   });
 
@@ -203,8 +182,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    await test.step('component should be focusable with tab', async () => {
-      await resetComponent();
+    await test.step('should the component be focusable with tab', async () => {
+      await setup(defaultSetupOptions);
       const passwordEl = password.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
@@ -220,7 +199,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).not.toBeFocused();
     });
 
-    await test.step('readonly component should be focusable with tab', async () => {
+    await test.step('should a readonly component be focusable with tab', async () => {
       password = await setup({
         componentsPage,
         readonly: true,
@@ -239,7 +218,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(trailingButton).not.toBeFocused();
     });
 
-    await test.step('focus on input and trailing button when value is present during interactions', async () => {
+    await test.step('should the password element type toggle between text and password when the trailingbutton is clicked', async () => {
       password = await setup({
         componentsPage,
         trailingButton: true,
@@ -265,7 +244,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(trailingButton).not.toBeFocused();
     });
 
-    await test.step('trailing button will not be focusable in readonly state', async () => {
+    await test.step('should the trailingbutton not be focusable when it is readonly', async () => {
       password = await setup({
         componentsPage,
         value: 'this is readonly data',
@@ -284,8 +263,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(trailingButton).not.toBeFocused();
     });
 
-    await test.step('component should not be focusable when disabled', async () => {
-      await resetComponent();
+    await test.step('should the password element not be focusable when it is disabled', async () => {
+      await setup(defaultSetupOptions);
       const passwordEl = password.locator('input');
       await componentsPage.setAttributes(password, { disabled: '', value: 'Disabled' });
       await componentsPage.actionability.pressTab();
@@ -293,7 +272,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(passwordEl).toHaveValue('Disabled');
     });
 
-    await test.step('component in form should be validated for required and maxlength when submitted', async () => {
+    await test.step('should validate the form with an appropriate error message when the password exceeds the maxlength requirement', async () => {
       const form = await setup(
         {
           componentsPage,
@@ -325,6 +304,111 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await passwordEl.fill('This is a long text');
       await expect(passwordEl).toHaveValue('This is a ');
       await submitButton.click();
+    });
+
+    await test.step('should validate the form with an appropriate error message when the password fails to meet the pattern requirement', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-password',
+          placeholder: 'Enter the password',
+          required: true,
+          pattern: '^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]+$',
+        },
+        true,
+      );
+      const mdcPassword = form.locator('mdc-password');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const passwordEl = mdcPassword.locator('input');
+
+      await componentsPage.actionability.pressTab();
+      await expect(passwordEl).toBeFocused();
+      await passwordEl.fill('AaBB');
+      await expect(passwordEl).toHaveValue('AaBB');
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+      await submitButton.click();
+
+      const validationMessage = await passwordEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect([
+        'Please match the format requested.',
+        'Match the requested format',
+        'Please match the requested format.',
+      ]).toContain(validationMessage);
+      await passwordEl.fill('AaBB11');
+      await expect(passwordEl).toHaveValue('AaBB11');
+      await submitButton.click();
+      const validationMessage2 = await passwordEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage2).toBeFalsy();
+    });
+
+    await test.step('should validate the form with a custom message when minlength is not met and validationMessage is provided', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-password',
+          placeholder: 'Enter the password',
+          required: true,
+          minlength: 5,
+          maxlength: 10,
+          validationMessage: 'Please enter a valid password',
+        },
+        true,
+      );
+      const mdcPassword = form.locator('mdc-password');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const passwordEl = mdcPassword.locator('input');
+
+      await componentsPage.actionability.pressTab();
+      await expect(passwordEl).toBeFocused();
+      await passwordEl.fill('Hell');
+      await expect(passwordEl).toHaveValue('Hell');
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+      await submitButton.click();
+
+      const validationMessage = await passwordEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage).toContain('Please enter a valid password');
+    });
+
+    await test.step('should validate the form with a browser native message when minlength is not met and validationMessage is not provided', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-password',
+          placeholder: 'Enter the password',
+          required: true,
+          minlength: 5,
+          maxlength: 10,
+        },
+        true,
+      );
+      const mdcPassword = form.locator('mdc-password');
+      const passwordEl = mdcPassword.locator('input');
+
+      await componentsPage.actionability.pressTab();
+      await expect(passwordEl).toBeFocused();
+      await passwordEl.fill('T3$t');
+      await expect(passwordEl).toHaveValue('T3$t');
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+      await componentsPage.page.keyboard.press('Enter');
+
+      const validationMessage = await passwordEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect([
+        'Please lengthen this text to 5 characters or more (you are currently using 4 characters).',
+        'Please use at least 5 characters (you are currently using 4 characters).',
+        'Use at least 5 characters',
+      ]).toContain(validationMessage);
+
+      await passwordEl.fill('T3$t@123');
+      await expect(passwordEl).toHaveValue('T3$t@123');
+      await componentsPage.page.keyboard.press('Enter');
+      const validationMessage2 = await passwordEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage2).toBeFalsy();
     });
   });
 

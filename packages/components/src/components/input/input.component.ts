@@ -163,6 +163,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   formResetCallback(): void {
     this.value = '';
     this.requestUpdate();
+    if (this.inputElement) {
+      this.inputElement.value = '';
+    }
+    this.setInputValidity();
   }
 
   /** @internal */
@@ -174,27 +178,12 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     if (!this.inputElement) {
       return;
     }
-
     this.inputElement.setCustomValidity('');
-    const nativeValidity = this.inputElement.validity;
-    const { required } = this.inputElement;
-    const isEmpty = !this.inputElement.value.trim();
-
-    if (!required && isEmpty) {
-      this.inputElement.setCustomValidity('');
-    } else if (this.validationMessage && !nativeValidity.valid) {
-      this.inputElement.setCustomValidity(this.validationMessage);
+    if (!this.inputElement.validity.valid) {
+      console.log(this.validationMessage, this.inputElement.validationMessage);
+      this.inputElement.setCustomValidity(this.validationMessage ?? this.inputElement.validationMessage);
     }
-
-    const isValid = this.inputElement.checkValidity();
-
-    if (!isValid) {
-      super.setValidity();
-    } else {
-      this.internals.setValidity({});
-    }
-
-    this.internals.setFormValue(this.inputElement.value);
+    this.setValidity();
   }
 
   /**
