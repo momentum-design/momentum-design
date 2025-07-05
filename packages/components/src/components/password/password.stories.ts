@@ -5,24 +5,20 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import { disableControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-
-import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
-  return html`<mdc-input
+  return html` <mdc-password
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     label="${args.label}"
-    help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
-    validation-message="${args['validation-message']}"
-    placeholder="${args.placeholder}"
+    help-text-type="${args['help-text-type']}"
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
@@ -34,104 +30,103 @@ const render = (args: Args) => {
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    ?trailing-button="${args['trailing-button']}"
-    prefix-text="${args['prefix-text']}"
+    placeholder="${args.placeholder}"
+    validation-message="${args['validation-message']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
-    leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
-    autocapitalize="${args.autocapitalize}"
     ?autofocus="${args.autofocus}"
     autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
-    clear-aria-label="${ifDefined(args['clear-aria-label'])}"
-  ></mdc-input>`;
+    show-hide-button-aria-label="${args['show-hide-button-aria-label']}"
+  ></mdc-password>`;
 };
-
 const meta: Meta = {
-  title: 'Components/input',
+  title: 'Components/password',
   tags: ['autodocs'],
-  component: 'mdc-input',
+  component: 'mdc-password',
   render,
   parameters: {
     badges: ['stable'],
   },
+  args: {
+    name: 'password',
+  },
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    'help-text-type': {
-      control: 'select',
-      options: Object.values(VALIDATION),
+    id: {
+      control: 'text',
+      description: 'The unique id of the password field. It is used to link the password field with the label.',
+    },
+    placeholder: {
+      control: 'text',
+      description: 'The placeholder text that is displayed when the password field is empty.',
     },
     name: {
       control: 'text',
+      description: 'The name of the password field. It is used to identify the password field in a form.',
     },
-    id: {
-      control: 'text',
-    },
-    value: {
-      control: 'text',
-    },
-    placeholder: {
+    'show-hide-button-aria-label': {
       control: 'text',
     },
     label: {
       control: 'text',
-    },
-    required: {
-      control: 'boolean',
+      description: 'The label of the password field. It is linked to the password field using the for attribute.',
     },
     'help-text': {
       control: 'text',
+      description: 'Helper text for the password',
+    },
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
+    },
+    'validation-message': {
+      control: 'text',
+      description:
+        'Custom validation message that will override the default message and displayed when the password is invalid.',
     },
     readonly: {
       control: 'boolean',
+      description: 'readonly attribute of the password field. If true, the password field is read-only.',
     },
     disabled: {
       control: 'boolean',
     },
-    'prefix-text': {
-      control: 'text',
-    },
-    'leading-icon': {
-      control: 'text',
-    },
-    'trailing-button': {
-      control: 'boolean',
-    },
     minlength: {
       control: 'number',
+      description: 'The minimum number of characters that the password field can accept.',
     },
     maxlength: {
       control: 'number',
-    },
-    autocapitalize: {
-      control: 'select',
-      options: Object.values(AUTO_CAPITALIZE),
+      description: 'The maximum number of characters that the password field can accept.',
     },
     autofocus: {
       control: 'boolean',
-    },
-    autocomplete: {
-      control: 'text',
+      description: 'If true, the password field is focused when the component is rendered.',
     },
     dirname: {
       control: 'text',
     },
     pattern: {
       control: 'text',
+      description:
+        'The pattern attribute of the password field. Specifies a regular expression that the password ' +
+        'value must match for validation purposes.',
     },
-    list: {
-      control: 'text',
+    required: {
+      control: 'boolean',
+      description:
+        'The required attribute to indicate that the password field is required. ' +
+        'It is used to append a required indicator (*) to the label.',
     },
     size: {
       control: 'number',
-    },
-    'clear-aria-label': {
-      control: 'text',
+      description: 'The size attribute of the password field. Specifies the width of the password field.',
     },
     'data-aria-label': {
       control: 'text',
@@ -143,13 +138,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
-    'validation-message': {
-      control: 'text',
-    },
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...textControls([
+    ...disableControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
       '--mdc-input-disabled-background-color',
@@ -167,6 +159,7 @@ const meta: Meta = {
       '--mdc-input-success-border-color',
       '--mdc-input-primary-border-color',
     ]),
+    ...hideControls(['autocapitalize', 'autocomplete', 'clear-aria-label', 'list', 'showPassword', 'trailing-button']),
   },
 };
 
@@ -174,109 +167,34 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    name: 'input',
-    label: 'Label',
-    required: true,
+    class: 'custom-classname',
+    label: 'Password',
+    name: 'password',
     placeholder: 'Placeholder',
-    value: '',
-    'help-text': 'Helper text',
-    'help-text-type': 'default',
     readonly: false,
     disabled: false,
-    'prefix-text': '',
-    'leading-icon': '',
-    'trailing-button': false,
-    autocapitalize: 'off',
-    autofocus: false,
-    'clear-aria-label': 'clear input',
-    'data-aria-label': '',
+    required: true,
+    'show-hide-button-aria-label': 'Show or hide password',
+    'validation-message': '',
   },
 };
 
-export const InputInSmallContainer: StoryObj = {
-  render: () => html`
-    <div style="width: 200px;">
-      <mdc-input
-        label="This is a large label text which is truncated into an ellipsis"
-        required
-        placeholder="placeholder"
-      >
-      </mdc-input>
-    </div>
-  `,
-};
-
-export const AllVariants: StoryObj = {
-  argTypes: {
-    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
-  },
-  render: () =>
-    html` <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-      ${Object.values(VALIDATION).map(
-        validation =>
-          html`<mdc-input
-            help-text-type="${validation}"
-            label="Label"
-            help-text="Helper text"
-            placeholder="Placeholder"
-            value="${validation}_value"
-          ></mdc-input>`,
-      )}
-      <mdc-input
-        label="Label"
-        help-text="Helper text"
-        help-text-type="default"
-        required
-        placeholder="Input is required"
-      ></mdc-input>
-      <mdc-input
-        label="Label"
-        help-text="Helper text"
-        help-text-type="default"
-        readonly
-        placeholder="Placeholder"
-        leading-icon="placeholder-bold"
-        value="This is readonly"
-      ></mdc-input>
-      <mdc-input
-        label="Label"
-        help-text="Helper text"
-        help-text-type="default"
-        disabled
-        placeholder="Placeholder"
-        value="Text disabled"
-      ></mdc-input>
-      <mdc-input
-        label="Label"
-        help-text="Helper text"
-        help-text-type="default"
-        placeholder="Placeholder"
-        prefix-text="https://"
-      ></mdc-input>
-      <mdc-input
-        label="Label"
-        help-text="Helper text"
-        help-text-type="default"
-        placeholder="Placeholder"
-        leading-icon="placeholder-bold"
-      ></mdc-input>
-    </div>`,
-};
-
-export const FormFieldInput: StoryObj = {
-  render: args => {
+export const FormFieldPassword: StoryObj = {
+  render: (args: any) => {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
-      const formData = new FormData(event.target as HTMLFormElement);
-      const selectedValue = formData.get('user-name');
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+      const selectedValue = formData.get('password');
       action('Form Submitted')({ value: selectedValue });
     };
+
     return html`
       <form @submit=${handleSubmit}>
         <fieldset>
           <legend>Form Example</legend>
           ${render(args)}
-          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
@@ -286,19 +204,50 @@ export const FormFieldInput: StoryObj = {
   },
   args: {
     class: 'custom-classname',
-    label: 'First Name',
-    name: 'user-name',
-    placeholder: 'Enter your name',
+    label: 'Password',
+    name: 'password',
+    placeholder: 'Placeholder',
     readonly: false,
     disabled: false,
     required: true,
-    'help-text': 'Please provide a valid name',
+    'help-text': 'Enter a strong password',
     'help-text-type': 'default',
-    'prefix-text': '',
-    'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
-    'validation-message': 'Please enter a valid name',
+    'validation-message': 'Password must be between 5 and 10 characters.',
     minlength: 5,
     maxlength: 10,
+  },
+};
+
+export const DefaultValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Enter a strong password',
+    'help-text-type': 'default',
+    placeholder: 'Enter password',
+    value: 'default_password123',
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const ErrorValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password is too weak',
+    'help-text-type': 'error',
+    placeholder: 'Enter password',
+    value: 'error_password123',
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const SuccessValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Strong password!',
+    'help-text-type': 'success',
+    placeholder: 'Enter password',
+    value: 'success_password123',
+    'show-hide-button-aria-label': 'Toggle password visibility',
   },
 };

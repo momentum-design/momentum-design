@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -163,6 +163,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   formResetCallback(): void {
     this.value = '';
     this.requestUpdate();
+    if (this.inputElement) {
+      this.inputElement.value = '';
+    }
+    this.setInputValidity();
   }
 
   /** @internal */
@@ -170,35 +174,14 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.value = state;
   }
 
-  /**
-   * Handles the value change of the input field.
-   * Sets the form value and updates the validity of the input field.
-   * @returns void
-   */
-  handleValueChange() {
-    this.updateComplete
-      .then(() => {
-        this.setInputValidity();
-      })
-      .catch(error => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
-  }
-
-  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.updated(changedProperties);
-    if (changedProperties.has('value')) {
-      this.handleValueChange();
-    }
-  }
-
   private setInputValidity() {
-    if (this.required && this.validationMessage && this.value === '') {
-      this.inputElement.setCustomValidity(this.validationMessage);
-    } else {
-      this.inputElement.setCustomValidity('');
+    if (!this.inputElement) {
+      return;
+    }
+    this.inputElement.setCustomValidity('');
+    if (!this.inputElement.validity.valid) {
+      console.log(this.validationMessage, this.inputElement.validationMessage);
+      this.inputElement.setCustomValidity(this.validationMessage ?? this.inputElement.validationMessage);
     }
     this.setValidity();
   }
@@ -261,7 +244,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
-    this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
