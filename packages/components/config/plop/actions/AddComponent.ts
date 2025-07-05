@@ -1,5 +1,7 @@
 import path from 'path';
+
 import { ActionType } from 'plop';
+
 import { folders, ACTION, TYPE, componentName, componentNamePrefix, componentNameSeparator } from '../constants';
 
 const base = `${path.posix.join(`${folders.templates}`, `${ACTION.ADD}`, `${TYPE.COMPONENT}`)}`;
