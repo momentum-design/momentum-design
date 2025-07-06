@@ -8,13 +8,14 @@ const styles = css`
     --mdc-dialog-description-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-dialog-elevation-3: var(--mds-elevation-3);
     --mdc-dialog-width: 27rem; /* Default to small */
+    --mdc-dialog-padding: 1.5rem;
 
     background-color: var(--mdc-dialog-primary-background-color);
     border: 0.0625rem solid var(--mdc-dialog-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-dialog-elevation-3);
     display: none;
-    padding: 1rem;
+    padding: var(--mdc-dialog-padding);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -39,6 +40,23 @@ const styles = css`
 
   :host([size='large']) {
     --mdc-dialog-width: 62rem;
+  }
+
+  :host([size='xlarge']) {
+    --mdc-dialog-width: 90%;
+  }
+
+  @media (max-width: 62rem) {
+    :host([size='xlarge']) {
+      --mdc-dialog-width: 100%;
+    }
+  }
+
+  :host([size='fullscreen']) {
+    --mdc-dialog-width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
   }
 
   :host {
@@ -92,14 +110,13 @@ const styles = css`
 
   :host::part(dialog-close-btn) {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    cursor: pointer;
+    top: var(--mdc-dialog-padding);
+    right: var(--mdc-dialog-padding);
   }
 
   :host(:dir(rtl))::part(dialog-close-btn) {
     right: auto;
-    left: 1rem;
+    left: var(--mdc-dialog-padding);
   }
 
   mdc-text::part(text) {
