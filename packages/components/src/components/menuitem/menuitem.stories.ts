@@ -37,12 +37,12 @@ const render = (args: Args) =>
   );
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menuitem',
+  title: 'Components/menupopover/menuitem',
   tags: ['autodocs'],
   component: 'mdc-menuitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {

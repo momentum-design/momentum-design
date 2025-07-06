@@ -22,11 +22,11 @@ const render = (args: Args) =>
   );
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menusection',
+  title: 'Components/menupopover/menusection',
   tags: ['autodocs'],
   component: 'mdc-menusection',
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'header-text': {

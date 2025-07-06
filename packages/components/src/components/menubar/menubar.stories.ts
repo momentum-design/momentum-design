@@ -112,12 +112,12 @@ const render = () => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menubar',
+  title: 'Internal/menubar',
   tags: ['autodocs'],
   component: 'mdc-menubar',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
     docs: {
       source: {
         format: 'html',
