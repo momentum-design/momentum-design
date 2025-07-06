@@ -21,7 +21,7 @@ const DEFAULTS = {
   FOCUS_TRAP: true,
 } as const;
 
-const DIALOG_SIZE = ['small', 'medium', 'large'] as const;
+const DIALOG_SIZE = ['small', 'medium', 'large', 'xlarge', 'fullscreen'] as const;
 
 const DIALOG_ROLE = ['dialog', 'alertdialog'] as const;
 

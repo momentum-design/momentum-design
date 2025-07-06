@@ -17,7 +17,7 @@ import styles from './dialog.styles';
 /**
  * Dialog component is a modal dialog that can be used to display information or prompt the user for input.
  * It can be used to create custom dialogs where content for the body and footer actions is provided by the consumer.
- * The dialog is available in three sizes: small, medium, and large. It may also receive custom styling/sizing.
+ * The dialog is available in 5 sizes: small, medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
  * The dialog can be controlled solely through the `visible` property, no trigger element is required.
@@ -101,7 +101,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
-   * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), or 'large' (992px width)
+   * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), 'large' (992px width), 'xlarge' (90% width) or 'fullscreen' (100% width).
    * @default small
    */
   @property({ type: String, reflect: true })
