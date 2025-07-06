@@ -38,6 +38,7 @@ import styles from './menuitemradio.styles';
  * For example, you can use a custom icon or a different visual element to indicate the state of the menu item.
  * Make sure the new indicator is accessible.
  *
+ * @dependency mdc-icon
  * @dependency mdc-staticradio
  * @dependency mdc-text
  *
@@ -71,7 +72,7 @@ class MenuItemRadio extends MenuItem {
 
   constructor() {
     super();
-    this.addEventListener('click', this.radioHandleClick);
+    this.addEventListener('click', this.handleMouseClick);
   }
 
   override connectedCallback(): void {
@@ -96,8 +97,9 @@ class MenuItemRadio extends MenuItem {
   private updateOtherRadiosCheckedState(): void {
     const radios = this.getAllRadiosWithinSameGroup();
     radios.forEach(radio => {
-      // eslint-disable-next-line no-param-reassign
-      if (radio !== this) radio.checked = false;
+      if (radio !== this) {
+        radio.removeAttribute('checked');
+      }
     });
   }
 
@@ -106,7 +108,7 @@ class MenuItemRadio extends MenuItem {
    * If the menuitemradio is not checked, it sets its checked state to `true`
    * and sets all other menuitemradio elements of the same group with checked state to `false`.
    */
-  private radioHandleClick = (event: Event) => {
+  private handleMouseClick = (event: Event) => {
     event.stopPropagation();
 
     if (this.disabled || this.checked) return;
@@ -133,16 +135,16 @@ class MenuItemRadio extends MenuItem {
    * @returns TemplateResult | typeof nothing
    */
   private renderStaticRadio(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.RADIO) {
-      return nothing;
+    if (this.indicator === INDICATOR.RADIO) {
+      return html`
+        <mdc-staticradio
+          slot="leading-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+        ></mdc-staticradio>
+      `;
     }
-    return html`
-      <mdc-staticradio
-        slot="leading-controls"
-        ?checked="${this.checked}"
-        ?disabled="${this.disabled}"
-      ></mdc-staticradio>
-    `;
+    return nothing;
   }
 
   /**

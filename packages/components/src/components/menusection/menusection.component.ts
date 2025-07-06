@@ -33,7 +33,7 @@ class MenuSection extends Component {
    * The primary headerText of the list item.
    * This appears on the leading side of the list item.
    */
-  @property({ type: String, reflect: true }) headerText: string | null = null;
+  @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();

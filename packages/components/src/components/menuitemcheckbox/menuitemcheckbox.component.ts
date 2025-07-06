@@ -70,7 +70,7 @@ class MenuItemCheckbox extends MenuItem {
 
   constructor() {
     super();
-    this.addEventListener('click', this.menuitemcheckboxHandleClick);
+    this.addEventListener('click', this.handleMouseClick);
   }
 
   override connectedCallback(): void {
@@ -83,7 +83,7 @@ class MenuItemCheckbox extends MenuItem {
    * If the menuitemcheckbox is disabled, it does nothing.
    * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
    */
-  private menuitemcheckboxHandleClick = (event: Event) => {
+  private handleMouseClick = (event: Event) => {
     event.stopPropagation();
     if (this.disabled) return;
     this.checked = !this.checked;
@@ -104,16 +104,16 @@ class MenuItemCheckbox extends MenuItem {
    * @returns TemplateResult | typeof nothing
    */
   private staticCheckbox(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.CHECKBOX) {
-      return nothing;
+    if (this.indicator === INDICATOR.CHECKBOX) {
+      return html`
+        <mdc-staticcheckbox
+          slot="leading-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+        ></mdc-staticcheckbox>
+      `;
     }
-    return html`
-      <mdc-staticcheckbox
-        slot="leading-controls"
-        ?checked="${this.checked}"
-        ?disabled="${this.disabled}"
-      ></mdc-staticcheckbox>
-    `;
+    return nothing;
   }
 
   /**
@@ -124,17 +124,17 @@ class MenuItemCheckbox extends MenuItem {
    * @returns TemplateResult | typeof nothing
    */
   private staticToggle(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.TOGGLE) {
-      return nothing;
+    if (this.indicator === INDICATOR.TOGGLE) {
+      return html`
+        <mdc-statictoggle
+          slot="trailing-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          size="${TOGGLE_SIZE.COMPACT}"
+        ></mdc-statictoggle>
+      `;
     }
-    return html`
-      <mdc-statictoggle
-        slot="trailing-controls"
-        ?checked="${this.checked}"
-        ?disabled="${this.disabled}"
-        size="${TOGGLE_SIZE.COMPACT}"
-      ></mdc-statictoggle>
-    `;
+    return nothing;
   }
 
   /**

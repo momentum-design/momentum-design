@@ -14,7 +14,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menubar" sty
 
 const render = (args: Args) =>
   wrapWithDiv(
-    html` <mdc-menusection headerText="${args.headerText}" aria-label="${args['aria-label']}">
+    html` <mdc-menusection header-text="${args['header-text']}" aria-label="${args['aria-label']}">
       <mdc-menuitem label="Menu item 1"></mdc-menuitem>
       <mdc-menuitem label="Menu item 2"></mdc-menuitem>
       <mdc-menuitem label="Menu item 3"></mdc-menuitem>
@@ -29,7 +29,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    headerText: {
+    'header-text': {
       control: 'text',
     },
     'aria-label': {
@@ -45,7 +45,7 @@ export default meta;
 export const Example: StoryObj = {
   render,
   args: {
-    headerText: 'Section label',
+    'header-text': 'Menu Section label',
   },
   ...hideAllControls(),
 };
@@ -68,12 +68,12 @@ export const MultipleMenuSections: StoryObj = {
           <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
-        <mdc-menusection headerText="Section with menu items">
+        <mdc-menusection header-text="Section with menu items">
           <mdc-menuitem label="MenuItem1"></mdc-menuitem>
           <mdc-menuitem label="MenuItem2"></mdc-menuitem>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
-        <mdc-menusection headerText="Section with checkboxes and radio buttons">
+        <mdc-menusection header-text="Section with checkboxes and radio buttons">
           <mdc-menuitemcheckbox label="Toggle6" indicator="toggle"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox label="Checkmark7" indicator="checkmark" aria-label="Checkbox 7"></mdc-menuitemcheckbox>
         </mdc-menusection>`,
