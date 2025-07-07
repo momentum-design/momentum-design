@@ -43,7 +43,7 @@ module.exports = {
     '*.mdx',
     '*.md',
     '*.html',
-    //
+    '*.figma*',
     'jest.config.js',
   ],
 };
