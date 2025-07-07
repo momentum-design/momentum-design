@@ -161,6 +161,8 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   /** @internal */
   formResetCallback(): void {
     this.value = '';
+    this.inputElement.value = '';
+    this.setInputValidity();
     this.requestUpdate();
   }
 
@@ -236,7 +238,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   private onChange(event: Event) {
     this.updateValue();
     this.setInputValidity();
-    // this.reportValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
