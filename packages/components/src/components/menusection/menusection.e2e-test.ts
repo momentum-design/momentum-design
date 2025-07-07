@@ -58,12 +58,15 @@ const setupMultipleSections = async (componentsPage: ComponentsPage) => {
   };
 };
 
-test.use({ viewport: { width: 1200, height: 1000 } });
 test('mdc-menusection', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
+      await componentsPage.page.setViewportSize({ width: 1200, height: 1000 });
+    }
     const menusectionSheet = new StickerSheet(componentsPage, 'mdc-menusection', 'margin: 0.25rem 0;');
     const options = { createNewRow: true };
 
