@@ -311,7 +311,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       );
 
       const mdcInput = form.locator('mdc-input');
-      const submitButton = form.locator('mdc-button');
+      const submitButton = form.locator('mdc-button[type="submit"]');
       const inputEl = mdcInput.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();

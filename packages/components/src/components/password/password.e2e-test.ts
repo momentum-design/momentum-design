@@ -298,9 +298,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       if (browserName === 'webkit') {
         expect(validationMessage).toContain('Fill out this field');
       } else {
-        expect(
-          validationMessage === 'Please fill out this field.' || validationMessage === 'Please fill in this field.',
-        ).toBeTruthy();
+        expect(validationMessage).toMatch(/Please fill (out|in) this field\./);
       }
       await passwordEl.fill('This is a long text');
       await expect(passwordEl).toHaveValue('This is a ');
