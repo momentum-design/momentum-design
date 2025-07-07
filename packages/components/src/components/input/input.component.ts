@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -143,11 +144,9 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
 
   override connectedCallback(): void {
     super.connectedCallback();
-
     this.updateComplete
       .then(() => {
         if (this.inputElement) {
-          this.inputElement.checkValidity();
           this.setInputValidity();
           this.internals.setFormValue(this.inputElement.value);
         }
@@ -197,7 +196,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   private setInputValidity() {
     if (!this.inputElement.validity.valid && this.validationMessage) {
       this.inputElement.setCustomValidity(this.validationMessage);
-    } else if (this.inputElement.validity.valid) {
+    } else {
       this.inputElement.setCustomValidity('');
     }
     this.setValidity();
@@ -221,6 +220,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   private onInput() {
     this.updateValue();
     this.setInputValidity();
+    this.checkValidity();
   }
 
   /**
@@ -235,6 +235,8 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
+    this.setInputValidity();
+    this.reportValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
@@ -336,10 +338,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
       class="input"
-      part="input"
+      part="mdc-input"
       id="${this.id}"
       name="${this.name}"
-      .value="${this.value}"
+      .value="${live(this.value)}"
       ?disabled="${this.disabled}"
       ?readonly="${this.readonly}"
       ?required="${this.required}"

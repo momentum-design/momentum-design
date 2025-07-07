@@ -449,7 +449,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(inputEl).toHaveValue('Hell');
       await submitButton.click();
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
-      console.log('Turbo 🚀  ~ awaittest.step ~ validationMessage:', validationMessage);
 
       expect([
         'Please lengthen this text to 5 characters or more (you are currently using 4 characters).',
