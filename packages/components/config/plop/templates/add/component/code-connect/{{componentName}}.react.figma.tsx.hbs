@@ -1,0 +1,12 @@
+import { {{sentenceCase componentName}} } from "../../../../dist/react";
+import figma from "@figma/code-connect";
+
+figma.connect(
+  '<FIGMA_{{upperCase componentName}}_URL>',
+  {
+    props: {},
+    example: (props) => {
+      return <{{sentenceCase componentName}} {...props}/>
+    },
+  },
+)
