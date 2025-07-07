@@ -359,6 +359,7 @@ export const Example: StoryObj = {
 };
 
 export const small: StoryObj = {
+  name: 'Size: Small',
   args: {
     size: DIALOG_SIZE[0],
     ...commonProperties,
@@ -367,6 +368,7 @@ export const small: StoryObj = {
 };
 
 export const medium: StoryObj = {
+  name: 'Size: Medium',
   args: {
     size: DIALOG_SIZE[1],
     ...commonProperties,
@@ -375,8 +377,27 @@ export const medium: StoryObj = {
 };
 
 export const large: StoryObj = {
+  name: 'Size: Large',
   args: {
     size: DIALOG_SIZE[2],
+    ...commonProperties,
+    ...headerDescriptionProperties,
+  },
+};
+
+export const xlarge: StoryObj = {
+  name: 'Size: XLarge',
+  args: {
+    size: DIALOG_SIZE[3],
+    ...commonProperties,
+    ...headerDescriptionProperties,
+  },
+};
+
+export const fullscreen: StoryObj = {
+  name: 'Size: Fullscreen',
+  args: {
+    size: DIALOG_SIZE[4],
     ...commonProperties,
     ...headerDescriptionProperties,
   },
