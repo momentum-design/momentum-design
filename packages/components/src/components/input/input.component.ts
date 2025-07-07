@@ -163,26 +163,11 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   formResetCallback(): void {
     this.value = '';
     this.requestUpdate();
-    if (this.inputElement) {
-      this.inputElement.value = '';
-    }
-    this.setInputValidity();
   }
 
   /** @internal */
   formStateRestoreCallback(state: string): void {
     this.value = state;
-  }
-
-  private setInputValidity() {
-    if (!this.inputElement) {
-      return;
-    }
-    this.inputElement.setCustomValidity('');
-    if (!this.inputElement.validity.valid) {
-      this.inputElement.setCustomValidity(this.validationMessage ?? this.inputElement.validationMessage);
-    }
-    this.setValidity();
   }
 
   /**
@@ -196,9 +181,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
     super.attributeChangedCallback(name, old, value);
 
-    const validationRelatedAttributes = ['maxlength', 'minlength', 'pattern', 'required'];
-
-    if (validationRelatedAttributes.includes(name)) {
+    if (name === 'validation-message') {
       this.updateComplete
         .then(() => {
           this.setInputValidity();
@@ -209,6 +192,15 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           }
         });
     }
+  }
+
+  private setInputValidity() {
+    if (!this.inputElement.validity.valid && this.validationMessage) {
+      this.inputElement.setCustomValidity(this.validationMessage);
+    } else if (this.inputElement.validity.valid) {
+      this.inputElement.setCustomValidity('');
+    }
+    this.setValidity();
   }
 
   /**

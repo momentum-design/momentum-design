@@ -361,6 +361,59 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       expect(validationMessage).toBe('Name must be between 3 and 10 characters.');
     });
 
+    await test.step('component in form should show custom validation messages on input and erase', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Enter your name',
+          validationMessage: 'Please enter a valid name',
+          required: true,
+          minlength: 5,
+          maxlength: 10,
+        },
+        true,
+      );
+
+      await form.evaluate((formEl: HTMLFormElement) => {
+        const input = formEl.querySelector('mdc-input');
+        if (!input) return;
+        input.addEventListener('input', event => {
+          const el = event.target as HTMLInputElement;
+          if (el.validity.valueMissing) {
+            el.setAttribute('validation-message', 'Please enter a name');
+          } else if (el.validity.tooShort) {
+            el.setAttribute('validation-message', 'Please enter a name with at least 5 characters');
+          } else {
+            el.setAttribute('validation-message', '');
+          }
+        });
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+
+      const mdcInput = form.locator('mdc-input');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const inputEl = mdcInput.locator('input');
+
+      // 1. Submit with empty input: should show 'Please enter a valid name'
+      await submitButton.click();
+
+      let validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage).toBe('Please enter a valid name');
+
+      // 2. Type less than minlength: should show 'Please enter a name with at least 5 characters'
+      await inputEl.fill('abc');
+      await submitButton.click();
+      validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage).toBe('Please enter a name with at least 5 characters');
+
+      // 3. Erase all: should show 'Please enter a name'
+      await inputEl.fill('');
+      await submitButton.click();
+      validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      expect(validationMessage).toBe('Please enter a name');
+    });
+
     await test.step('form component should show the native browser validation message when the minlength requirement is not satisfied and validationMessage is not passed', async () => {
       const form = await setup(
         {
@@ -373,19 +426,31 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         },
         true,
       );
-      const mdcInput = form.locator('mdc-input');
-      const inputEl = mdcInput.locator('input');
 
-      await componentsPage.actionability.pressTab();
-      await expect(mdcInput).toBeFocused();
-      await inputEl.fill('Hell');
-      await expect(inputEl).toHaveValue('Hell');
       await form.evaluate((formEl: HTMLFormElement) => {
         formEl.addEventListener('submit', e => e.preventDefault());
       });
-      await componentsPage.page.keyboard.press('Enter');
 
-      const validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      const mdcInput = form.locator('mdc-input');
+      const submitButton = form.locator('mdc-button');
+      const inputEl = mdcInput.locator('input');
+
+      let validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+
+      // 1. Submit with empty input: should show native browser validation message
+      await submitButton.click();
+      if (browserName === 'webkit') {
+        expect(validationMessage).toContain('Fill out this field');
+      } else {
+        expect(validationMessage).toMatch(/Please fill (out|in) this field\./);
+      }
+
+      await inputEl.fill('Hell');
+      await expect(inputEl).toHaveValue('Hell');
+      await submitButton.click();
+      validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
+      console.log('Turbo 🚀  ~ awaittest.step ~ validationMessage:', validationMessage);
+
       expect([
         'Please lengthen this text to 5 characters or more (you are currently using 4 characters).',
         'Please use at least 5 characters (you are currently using 4 characters).',

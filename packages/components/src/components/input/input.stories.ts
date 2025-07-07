@@ -297,8 +297,49 @@ export const FormFieldInput: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'show-hide-button-aria-label': 'Show or hide password',
-    'validation-message': 'Please enter a valid name',
     minlength: 5,
     maxlength: 10,
+  },
+};
+
+export const FormFieldInputWithCustomValidationMessage: StoryObj = {
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValue = formData.get('user-name');
+      action('Form Submitted')({ value: selectedValue });
+    };
+    const handleInput = (event: Event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.validity.valueMissing) {
+        input.setAttribute('validation-message', 'Please enter a name');
+      }
+      if (input.validity.tooShort) {
+        input.setAttribute('validation-message', 'Please enter a name with at least 5 characters');
+      }
+    };
+    return html`
+      <form @submit=${handleSubmit}>
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-input
+            placeholder="Enter your name"
+            label="First Name"
+            name="user-name"
+            required
+            minlength="5"
+            maxlength="10"
+            show-hide-button-aria-label="Show or hide password"
+            validation-message="Please enter a valid name"
+            @input=${handleInput}
+          ></mdc-input>
+          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
   },
 };

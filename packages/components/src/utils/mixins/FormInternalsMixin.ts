@@ -73,6 +73,12 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
 
     /**
      * Custom validation message that will override the default message and displayed when the input is invalid.
+     *
+     * To display custom validation messages, you must listen for input events (or other relevant events)
+     * on your component and update the `validationMessage` property with the desired message string.
+     * Updating this property will ensure that new validation messages are shown to the user.
+     * - The `validationMessage` property overrides the default browser validation message when set.
+     * - Consumers are responsible for updating `validationMessage` in response to input or validation state changes.
      */
     @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
 
@@ -104,6 +110,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
 
     /**
      * Sets the validity of the input field based on the input field's validity.
+     * **Note**: Consumers would need to update this attribute manually within the event listener to set custom validation messages based on different validity states.
      * @returns void
      */
     setValidity() {
