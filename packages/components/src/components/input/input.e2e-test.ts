@@ -299,11 +299,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('component in form should be validated for required and maxlength when submitted', async () => {
-      componentsPage.page.on('console', msg => {
-        if (msg.type() === 'log') {
-          console.log('Browser console:', msg.text());
-        }
-      });
       const form = await setup(
         {
           componentsPage,

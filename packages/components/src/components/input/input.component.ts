@@ -180,7 +180,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     }
     this.inputElement.setCustomValidity('');
     if (!this.inputElement.validity.valid) {
-      console.log(this.validationMessage, this.inputElement.validationMessage);
       this.inputElement.setCustomValidity(this.validationMessage ?? this.inputElement.validationMessage);
     }
     this.setValidity();
