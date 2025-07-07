@@ -147,15 +147,14 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).toHaveAttribute('size', '10');
     });
 
-    await test.step('should the trailing-button attribute be present in the component when it sets', async () => {
+    await test.step('should the show-hide-button-aria-label attribute be present in the component when it sets', async () => {
       await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, {
-        'trailing-button': '',
         'show-hide-button-aria-label': 'show/hide password',
         value: 'test',
       });
-      await expect(password).toHaveAttribute('trailing-button');
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
+      await expect(trailingButton).toBeVisible();
       await expect(trailingButton).toHaveAttribute('aria-label', 'show/hide password');
     });
 
@@ -190,12 +189,9 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await passwordEl.fill('test');
       await expect(passwordEl).toHaveValue('test');
       const showHideButton = password.locator('mdc-button[part="trailing-button"]');
-      const isShowHideButtonVisible = await showHideButton.isVisible();
       await componentsPage.actionability.pressTab();
-      if (isShowHideButtonVisible) {
-        await expect(showHideButton).toBeFocused();
-        await componentsPage.actionability.pressTab();
-      }
+      await expect(showHideButton).toBeFocused();
+      await componentsPage.actionability.pressTab();
       await expect(password).not.toBeFocused();
     });
 
@@ -208,7 +204,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         showHideButtonAriaLabel: 'show/hide password',
         secondButtonForFocus: true,
       });
-      const trailingButton = password.locator('mdc-button').first();
+      const trailingButton = password.locator('mdc-button[part="trailing-button"]');
       const passwordEl = password.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();

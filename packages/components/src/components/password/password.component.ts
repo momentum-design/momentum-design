@@ -18,8 +18,9 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  * - `label` field - describe the password field.
  * - `password` field - contains the value
  * - `help-text` or `validation-message` - displayed below the password field.
- * - `show-hide-button-aria-label` - aria label for the trailing button.
- * - all the attributes of the password field.
+ * - `help-text-type` - type of the help text, can be 'default', 'error', 'warning', 'success', 'priority'.
+ * - `show-hide-button-aria-label` - aria label for the trailing show/hide button.
+ * - all the attributes of the native password field.
  *
  * @tagname mdc-password
  *
@@ -28,7 +29,6 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  * @event focus - (React: onFocus) This event is dispatched when the password receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the password loses focus.
  *
- * @dependency mdc-input
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
@@ -78,10 +78,16 @@ class Password extends Input {
   @state()
   private showPassword = false;
 
+  /**
+   * Toggles the visibility of the password.
+   */
   private toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
 
+  /**
+   * Renders the trailing button for showing or hiding the password.
+   */
   protected override renderTrailingButton(show = false) {
     const showBtn = show || this.value;
     if (!showBtn) {
@@ -101,6 +107,9 @@ class Password extends Input {
     `;
   }
 
+  /**
+   * Renders the input element for the password field.
+   */
   protected override renderInputElement(_: InputType, hidePlaceholder?: boolean) {
     const inputType = this.showPassword ? INPUT_TYPE.TEXT : INPUT_TYPE.PASSWORD;
     return super.renderInputElement(inputType, hidePlaceholder);
