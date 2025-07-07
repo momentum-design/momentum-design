@@ -236,7 +236,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   private onChange(event: Event) {
     this.updateValue();
     this.setInputValidity();
-    this.reportValidity();
+    // this.reportValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }

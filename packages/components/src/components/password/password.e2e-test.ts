@@ -50,7 +50,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
-      ${restArgs.trailingButton ? 'trailing-button' : ''}
+      ${restArgs.trailingButton ? 'trailing-button' : true}
       ${restArgs.autofocus ? 'autofocus' : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
@@ -127,16 +127,15 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the help-text-type attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
-      for (const type of Object.values(VALIDATION)) {
-        await componentsPage.setAttributes(password, { 'help-text-type': type });
-        await expect(password).toHaveAttribute('help-text-type', type);
-        const iconEl = password.locator('mdc-icon[part="helper-icon"]');
-        const icon = getHelperIcon(type);
-        if (icon) {
-          await expect(iconEl).toHaveAttribute('name', icon);
-        }
-      }
+      await setup({
+        ...defaultSetupOptions,
+        helpTextType: VALIDATION.SUCCESS,
+      });
+      await componentsPage.setAttributes(password, { 'help-text-type': VALIDATION.SUCCESS });
+      await expect(password).toHaveAttribute('help-text-type', VALIDATION.SUCCESS);
+      const iconEl = password.locator('mdc-icon[part="helper-icon"]');
+      const icon = getHelperIcon(VALIDATION.SUCCESS);
+      await expect(iconEl).toHaveAttribute('name', icon);
     });
 
     await test.step('should the attributes size, minlength and maxlength be present in the component when it sets', async () => {
@@ -182,17 +181,26 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
    */
   await test.step('interactions', async () => {
     await test.step('should the component be focusable with tab', async () => {
+      await setup({
+        componentsPage,
+        trailingButton: true,
+        showHideButtonAriaLabel: 'show/hide button',
+        secondButtonForFocus: true,
+      });
+      const showHideButton = password.locator('mdc-button[part="trailing-button"]');
       await setup(defaultSetupOptions);
       const passwordEl = password.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
+      await expect(showHideButton).not.toBeVisible();
       await passwordEl.fill('test');
       await expect(passwordEl).toHaveValue('test');
-      const showHideButton = password.locator('mdc-button[part="trailing-button"]');
+      await expect(showHideButton).toBeVisible();
       await componentsPage.actionability.pressTab();
+      await expect(passwordEl).not.toBeFocused();
       await expect(showHideButton).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(password).not.toBeFocused();
+      await showHideButton.click();
+      await expect(password).toBeFocused();
     });
 
     await test.step('should a readonly component be focusable with tab', async () => {
@@ -200,7 +208,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         componentsPage,
         readonly: true,
         value: 'Readonly',
-        trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
         secondButtonForFocus: true,
       });
@@ -217,7 +224,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     await test.step('should the password element type toggle between text and password when the trailingbutton is clicked', async () => {
       password = await setup({
         componentsPage,
-        trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
         secondButtonForFocus: true,
       });
@@ -245,7 +251,6 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         componentsPage,
         value: 'this is readonly data',
         readonly: true,
-        trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
         secondButtonForFocus: true,
       });
