@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 
@@ -14,6 +13,7 @@ type SetupOptions = {
   value?: string;
   checked?: boolean;
   disabled?: boolean;
+  softDisabled?: boolean;
   indicator?: Indicator;
   label?: string;
   secondaryLabel?: string;
@@ -29,6 +29,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.value ? `value="${restArgs.value}"` : 'test-value'}
           ${restArgs.checked ? 'checked' : ''}
           ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.indicator ? `indicator="${restArgs.indicator}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : 'Checkbox Label'}
           ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
@@ -74,6 +75,15 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
       await checkbox.click({ force: true });
       await expect(checkbox).toHaveAttribute('aria-checked', 'false');
       await expect(checkbox).not.toHaveAttribute('checked', '');
+    });
+
+    // Soft Disabled state
+    await test.step('soft disabled state', async () => {
+      const checkbox = await setup({ componentsPage, softDisabled: true });
+      await expect(checkbox).toHaveAttribute('soft-disabled');
+      await checkbox.focus();
+      await expect(checkbox).toBeFocused();
+      await expect(checkbox).toHaveAttribute('aria-disabled', 'true');
     });
   });
 
@@ -162,44 +172,62 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDesktop) {
-      await componentsPage.page.setViewportSize({ width: 1200, height: 1200 });
-    }
-    const menuitemcheckboxSheet = new StickerSheet(componentsPage, 'mdc-menuitemcheckbox', 'margin: 0.25rem 0;');
-    const options = { createNewRow: true };
-    const label = 'Menu Item Checkbox';
-    menuitemcheckboxSheet.setAttributes({ label });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, checked: true });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, disabled: true });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, checked: true, disabled: true });
-    await menuitemcheckboxSheet.createMarkupWithCombination({}, options);
-    menuitemcheckboxSheet.setAttributes({ label, checked: true });
-    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
-    menuitemcheckboxSheet.setAttributes({
-      label: 'Selected Checkbox With Secondary Label',
-      checked: true,
-      'secondary-label': 'Secondary Label',
+    await componentsPage.mount({
+      html: `
+        <div role="${ROLE.MENU}" style="display: flex; flex-direction: column; gap: 0.5rem">
+          <mdc-menuitemcheckbox label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox soft-disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked soft-disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" soft-disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked soft-disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+        </div>
+      `,
+      clearDocument: true,
     });
-    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
-    menuitemcheckboxSheet.setAttributes({
-      label: 'Unselected Checkbox With Secondary Label',
-      'secondary-label': 'Secondary Label',
+    await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-default-and-toggle');
+    await componentsPage.mount({
+      html: `
+        <div role="${ROLE.MENU}" style="display: flex; flex-direction: column; gap: 0.25rem">
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" soft-disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked soft-disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" soft-disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked soft-disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+        </div>
+      `,
+      clearDocument: true,
     });
-    await menuitemcheckboxSheet.createMarkupWithCombination({ indicator: INDICATOR }, options);
-
-    await menuitemcheckboxSheet.mountStickerSheet({
-      role: ROLE.MENU,
-      wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
+    await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-none-and-checkmark');
+    await componentsPage.mount({
+      html: `
+        <div role="${ROLE.MENU}" style="display: flex; flex-direction: column; gap: 0.25rem">
+          <mdc-menuitemcheckbox label="Selected Checkbox With Default Indicator" secondary-label="Optional secondary label for more info" checked></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Unselected Checkbox With Default Indicator" secondary-label="Optional secondary label for more info"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" label="Selected Checkbox With Toggle Indicator" secondary-label="Optional secondary label for more info" checked></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" label="Unselected Checkbox With Toggle Indicator" secondary-label="Optional secondary label for more info"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" label="Selected Checkbox With Checkmark Indicator" secondary-label="Optional secondary label for more info" checked></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" label="Unselected Checkbox With Checkmark Indicator" secondary-label="Optional secondary label for more info"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" label="Selected Checkbox With No Indicator" secondary-label="Optional secondary label for more info" checked></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" label="Unselected Checkbox With No Indicator" secondary-label="Optional secondary label for more info"></mdc-menuitemcheckbox>
+        </div>
+      `,
+      clearDocument: true,
     });
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox', {
-        element: menuitemcheckboxSheet.getWrapperContainer(),
-      });
-    });
+    await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-secondary-label');
   });
 
   /**
