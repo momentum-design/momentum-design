@@ -159,7 +159,14 @@ const meta: Meta = {
       '--mdc-input-success-border-color',
       '--mdc-input-primary-border-color',
     ]),
-    ...hideControls(['autocapitalize', 'autocomplete', 'clear-aria-label', 'list', 'showPassword', 'trailing-button']),
+    ...hideControls([
+      'autocapitalize',
+      'clear-aria-label',
+      'showPassword',
+      'trailing-button',
+      'prefix-text',
+      'leading-icon',
+    ]),
   },
 };
 

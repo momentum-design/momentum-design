@@ -54,7 +54,7 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  */
 class Password extends Input {
   /**
-   * Aria label for the trailing button. If trailing button is set to true, this label is used for the show-hide button.
+   * Aria label for the show or hide password icon button.
    */
   @property({ type: String, attribute: 'show-hide-button-aria-label' })
   showHideButtonAriaLabel = '';
