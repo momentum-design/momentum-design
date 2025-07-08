@@ -2,14 +2,6 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-// Helper to press Tab multiple times (sequentially, as a user would)
-const pressTabMultiple = async (componentsPage: ComponentsPage, count: number) => {
-  for (let i = 0; i < count; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await componentsPage.actionability.pressTab();
-  }
-};
-
 // Setup function to mount sidenavigation and return locators
 const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const expanded = variant !== 'fixed-collapsed';
@@ -87,16 +79,34 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const mainMenuPopover = sidenav.locator('mdc-menupopover[triggerid="menu-button-trigger"]');
   const callingNavItem = sidenav.locator('mdc-navitem#temp');
   const callingPopover = sidenav.locator('mdc-menupopover[triggerid="temp"]');
-  return { sidenav, toggleButton, fixedNavlist, navItems, mainMenuNavItem, mainMenuPopover, callingNavItem, callingPopover };
+  return {
+    sidenav,
+    toggleButton,
+    fixedNavlist,
+    navItems,
+    mainMenuNavItem,
+    mainMenuPopover,
+    callingNavItem,
+    callingPopover,
+  };
 };
 
 const variants = ['flexible', 'fixed-expanded', 'fixed-collapsed'];
 
 test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
-  variants.forEach((variant) => {
+  variants.forEach(variant => {
     test.describe(`${variant} variant`, () => {
-      test.skip(`all user scenarios for ${variant}`, async ({ componentsPage }) => {
-        const { sidenav, toggleButton, fixedNavlist, navItems, mainMenuNavItem, mainMenuPopover, callingNavItem, callingPopover } = await setup(componentsPage, variant);
+      test(`all user scenarios for ${variant}`, async ({ componentsPage }) => {
+        const {
+          sidenav,
+          toggleButton,
+          fixedNavlist,
+          navItems,
+          mainMenuNavItem,
+          mainMenuPopover,
+          callingNavItem,
+          callingPopover,
+        } = await setup(componentsPage, variant);
 
         // --- Expand/Collapse (flexible only) ---
         if (variant === 'flexible') {
@@ -108,8 +118,13 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
           });
           await test.step('Collapse and expand sidenavigation using keyboard', async () => {
-            await pressTabMultiple(componentsPage, 4);
-            await expect(toggleButton).toBeFocused();
+            const firstNavItem = navItems.first();
+            const firstNavItemInFixedBar = fixedNavlist.locator('mdc-navitem').first();
+            await componentsPage.actionability.pressAndCheckFocus('Tab', [
+              firstNavItem,
+              firstNavItemInFixedBar,
+              toggleButton,
+            ]);
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await componentsPage.page.keyboard.press('Space');
@@ -151,7 +166,11 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           await componentsPage.actionability.pressTab();
           const firstMenuSectionNavItem = sidenav.locator('mdc-menusection').first().locator('mdc-navitem').first();
           const secondMenuSectionNavItem = sidenav.locator('mdc-menusection').first().locator('mdc-navitem').nth(1);
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [navItems.nth(1), firstMenuSectionNavItem, secondMenuSectionNavItem]);
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+            navItems.nth(1),
+            firstMenuSectionNavItem,
+            secondMenuSectionNavItem,
+          ]);
           const softDisabled = secondMenuSectionNavItem;
           await expect(softDisabled).toHaveAttribute('soft-disabled');
           await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
