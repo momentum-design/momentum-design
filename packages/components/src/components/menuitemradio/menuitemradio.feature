@@ -50,9 +50,10 @@ Feature: MenuItemRadio Accessibility and User Interaction
       And it should dispatch a change event
 
       Examples:
-        | input_method | action                   |
-        | mouse        | click                    |
-        | keyboard     | press "Space" or "Enter" |
+        | input_method | action  |
+        | mouse        | click   |
+        | keyboard     | "Space" |
+        | keyboard     | "Enter" |
 
   Rule: ✅ Grouping and Naming
 
@@ -71,3 +72,4 @@ Feature: MenuItemRadio Accessibility and User Interaction
         | indicator | expected_indicator |
         | radio     | radio button       |
         | checkmark | checkmark          |
+        | none      | nothing            |

@@ -41,8 +41,13 @@ Feature: MenuItemCheckbox Accessibility and User Interaction
         | interact | indicator | checked_result    |
         | click    | checkbox  | checkbox checked  |
         | space    | checkbox  | checkbox checked  |
+        | enter    | checkbox  | checkbox checked  |
+        | click    | none      | checked           |
+        | space    | none      | checked           |
+        | enter    | none      | checked           |
         | click    | checkmark | checkmark checked |
         | space    | checkmark | checkmark checked |
+        | enter    | checkmark | checkmark checked |
         | click    | toggle    | toggle on         |
         | space    | toggle    | toggle on         |
 
@@ -57,10 +62,16 @@ Feature: MenuItemCheckbox Accessibility and User Interaction
         | interact | indicator | unchecked_result    |
         | click    | checkbox  | checkbox unchecked  |
         | space    | checkbox  | checkbox unchecked  |
+        | enter    | checkbox  | checkbox unchecked  |
+        | click    | none      | unchecked           |
+        | space    | none      | unchecked           |
+        | enter    | none      | unchecked           |
         | click    | checkmark | checkmark unchecked |
         | space    | checkmark | checkmark unchecked |
+        | enter    | checkmark | checkmark unchecked |
         | click    | toggle    | toggle off          |
         | space    | toggle    | toggle off          |
+        | enter    | toggle    | toggle off          |
 
   Rule: ✅ Accessibility
 
