@@ -34,6 +34,7 @@ Feature: Select component
     Then the select component should have "New York NY" selected
     And the select dropdown should be closed
     And I should see the selected option "New York NY"
+    And the value of selected option should be reflected on the select component itself.
     When I click on the select component again
     Then I should see the options "London UK", "New York NY", and "Tokyo HQ"
     And there should be a checkmark next to "New York NY" indicating it is selected
@@ -75,6 +76,7 @@ Feature: Select component
     Then the select component should have "London UK" selected
     And the select dropdown should be closed
     And I should see the selected option "London UK"
+    And the value of selected option should be reflected on the select component itself.
     When I click on the select component again
     Then I should see the options "London UK", "New York NY", and "Tokyo HQ"
     And the focus should be on the selected option "London UK"
