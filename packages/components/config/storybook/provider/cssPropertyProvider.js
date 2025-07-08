@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import '../../../src/components/iconprovider';
 
 export const withCssPropertyProvider = cssProperties => (story, context) => {
   // filter every key value pair of context.args that is not in cssProperties
