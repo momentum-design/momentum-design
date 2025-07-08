@@ -62,14 +62,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   @property({ type: String }) height = 'auto';
 
-  /**
-   * Indicates the current selected value of the select component,
-   * which is same as the `value` attribute of the selected `mdc-option`.
-   *
-   * @default ''
-   */
-  @property({ reflect: true, type: String }) override value = '';
-
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
 
