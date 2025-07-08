@@ -110,7 +110,6 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
 
     /**
      * Sets the validity of the input field based on the input field's validity.
-     * **Note**: Consumers would need to update this attribute manually within the event listener to set custom validation messages based on different validity states.
      * @returns void
      */
     setValidity() {
