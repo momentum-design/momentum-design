@@ -85,7 +85,8 @@ class MenuSection extends Component {
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
-  protected override updated(): void {
+  protected override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
     const context = this.sideNavigationContext?.value;
     if (!context) return;
 
@@ -94,11 +95,11 @@ class MenuSection extends Component {
   }
 
   public override render() {
-      return html`
-        ${!this.hideHeaderText ? this.renderLabel() : null}
-        <slot></slot>
-        ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
-      `;
+    return html`
+      ${!this.hideHeaderText ? this.renderLabel() : null}
+      <slot></slot>
+      ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
+    `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];
