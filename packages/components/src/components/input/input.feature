@@ -63,8 +63,8 @@ Feature: Input Component
     Then the component should show the native required error message
     When I enter a value shorter than minlength
     Then the component should show the native minlength error message
-    When I enter a value longer than maxlength
-    Then the component should show the native maxlength error message
+    When I try to enter a value longer than maxlength
+    Then the component should truncate the input value to maxlength
 
   Rule: ✅ Accessibility and Screen Reader Support
 
