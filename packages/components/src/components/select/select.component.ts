@@ -25,9 +25,7 @@ import type { ArrowIcon } from './select.types';
  * The component ensures accessibility and usability while handling various use cases,
  * including long text truncation with tooltip support.
  *
- * To set a default option, do either of the following:
- * - use the `value` attribute on the `mdc-select` element.
- * - use the `selected` attribute on the `mdc-option` element.
+ * To set a default option, use the `selected` attribute on the `mdc-option` element.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -67,13 +65,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /**
    * Indicates the current selected value of the select component,
    * which is same as the `value` attribute of the selected `mdc-option`.
-   *
-   * This attribute can also be used to set the initial selected option.
-   *
-   * Note:
-   * - If mdc-option has a `selected` attribute initially, it will override this value.
-   * - `mdc-option` elements within the `mdc-select` component should have a `value` attribute set,
-   * for this attribute to reflect the correct selected value.
    *
    * @default ''
    */
@@ -446,16 +437,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   public override firstUpdated() {
     const options = this.getAllValidOptions();
     const selectedOptionIndex = options.findIndex(option => option?.hasAttribute('selected'));
-    const selectedOptionIndexWithInitialValue = options.findIndex(
-      option => option.getAttribute('value') === this.value,
-    );
 
     if (selectedOptionIndex !== -1) {
       this.setSelectedValue(options[selectedOptionIndex]);
       this.updateTabIndexForAllOptions(options[selectedOptionIndex]);
-    } else if (selectedOptionIndexWithInitialValue !== -1) {
-      this.setSelectedValue(options[selectedOptionIndexWithInitialValue]);
-      this.updateTabIndexForAllOptions(options[selectedOptionIndexWithInitialValue]);
     } else if (!this.placeholder) {
       // We will show the first option as selected.
       this.setSelectedValue(options[0]);

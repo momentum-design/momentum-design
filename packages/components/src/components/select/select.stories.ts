@@ -39,7 +39,6 @@ const render = (args: Args) =>
       placeholder="${args.placeholder}"
       ?disabled="${args.disabled}"
       ?readonly="${args.readonly}"
-      value="${args.value}"
     >
       <mdc-option>London, UK</mdc-option>
       <mdc-option>Los Angeles, CA</mdc-option>
@@ -97,13 +96,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
-    value: {
-      control: 'text',
-    },
     height: {
       control: 'text',
     },
-    ...hideControls(['id', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
   },

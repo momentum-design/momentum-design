@@ -27,7 +27,6 @@ const setup = async (args: SetupOptions) => {
       <mdc-select
         ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
         ${restArgs.height ? `height="${restArgs.height}"` : ''}
-        ${restArgs.value ? `value="${restArgs.value}"` : ''}
       >
         ${restArgs.children}
       </mdc-select>
@@ -126,20 +125,6 @@ test('mdc-select', async ({ componentsPage }) => {
       const arrowIcon = select.locator('mdc-icon[name="arrow-down-bold"]');
       await arrowIcon.waitFor();
       expect(arrowIcon).toBeDefined();
-    });
-
-    await test.step('set default/initial value', async () => {
-      const select = await setup({
-        componentsPage,
-        children: defaultChildren(),
-        placeholder: defaultPlaceholder,
-        value: 'option2',
-      });
-      await expect(select).toHaveAttribute('value', 'option2');
-
-      const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
-      const textContent = await mdcTextElement.textContent();
-      expect(textContent?.trim()).toBe('Option Label 2');
     });
 
     await test.step('should set the height of the select dropdown to be fixed', async () => {

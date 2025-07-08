@@ -81,13 +81,6 @@ Feature: Select component
     And there should be a checkmark next to "London UK" indicating it is selected
 
   # Other attributes and behaviors
-  Scenario: Select component has a default/initial value
-    Given the Select component has a default/initial value "london"
-    When I see the Select component with value "london"
-    Then the Select component should have "London UK" selected
-    When I click on the Select component
-    Then I should see the focus on the first option "London UK"
-
   Scenario: Select component has a been marked as required
     Given the select component has been marked as required
     When I see the select component with the label "Headquarters Location"
@@ -134,7 +127,6 @@ Feature: Select component
     And I will not be able to open the select dropdown
 
   # Screen reader interactions
-
   Scenario: Screen reader reads the select component
     Given I am using a screen reader
     When I focus on the select component with the label "Headquarters Location"
