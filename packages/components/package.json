@@ -1,6 +1,7 @@
 {
   "name": "@momentum-design/components",
   "packageManager": "yarn@3.2.4",
+  "version": "0.0.0",
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=8.0.0"
@@ -24,7 +25,7 @@
     "./dist/components/*": "./dist/components/*"
   },
   "files": [
-    "./dist/",
+    "/dist/",
     "!**/*.tsbuildinfo"
   ],
   "scripts": {
