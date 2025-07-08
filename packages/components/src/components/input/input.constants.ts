@@ -21,6 +21,7 @@ const AUTO_COMPLETE = {
 } as const;
 
 const INPUT_TYPE = {
+  PASSWORD: 'password',
   TEXT: 'text',
   SEARCH: 'search',
 } as const;
