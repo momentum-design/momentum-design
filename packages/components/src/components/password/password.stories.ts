@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
@@ -141,7 +141,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
       '--mdc-input-disabled-background-color',

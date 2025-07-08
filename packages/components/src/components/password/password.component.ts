@@ -5,7 +5,6 @@ import Input from '../input/input.component';
 import { INPUT_TYPE } from '../input/input.constants';
 import type { InputType } from '../input/input.types';
 import { BUTTON_VARIANTS } from '../button/button.constants';
-import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
@@ -115,7 +114,7 @@ class Password extends Input {
     return super.renderInputElement(inputType, hidePlaceholder);
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles];
+  public static override styles: Array<CSSResult> = [...Input.styles];
 }
 
 export default Password;
