@@ -236,9 +236,9 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(passwordEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
-      await trailingButton.click();
+       await componentsPage.page.keyboard.down('Enter');
       await expect(passwordEl).toHaveAttribute('type', 'text');
-      await trailingButton.click();
+       await componentsPage.page.keyboard.down('Space');
       await expect(passwordEl).toHaveAttribute('type', 'password');
       await componentsPage.actionability.pressTab();
       await expect(trailingButton).not.toBeFocused();
