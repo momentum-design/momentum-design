@@ -28,12 +28,12 @@ const render = (args: Args) =>
   );
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menuitemcheckbox',
+  title: 'Components/menupopover/menuitemcheckbox',
   tags: ['autodocs'],
   component: 'mdc-menuitemcheckbox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     checked: {
