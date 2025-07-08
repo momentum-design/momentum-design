@@ -13,56 +13,54 @@ Feature: MenuItemCheckbox Accessibility and User Interaction
       And it should have aria-checked="false"
 
     Scenario: Checked state
-      Given a MenuItemCheckbox is rendered with checked="true"
+      Given a MenuItemCheckbox is rendered with checked is true
       Then it should be visually checked
       And it should have aria-checked="true"
 
     Scenario: Disabled state
-      Given a MenuItemCheckbox is rendered with disabled="true"
+      Given a MenuItemCheckbox is rendered with disabled set to true
       Then it should not be clickable
       And it should have aria-disabled="true"
 
-  Rule: ✅ Selection Behavior
+    Scenario: Soft disabled state
+      Given a MenuItemCheckbox is rendered with softDisabled set to true
+      Then it should not be clickable
+      And it should have aria-disabled="true"
+      And it should be focusable
 
-    Scenario: Toggle MenuItemCheckbox using mouse
-      Given a MenuItemCheckbox is rendered
-      When I click on an unchecked MenuItemCheckbox
+  Rule: ✅ Indicator Types & Selection Behavior
+
+    Scenario Outline: Check MenuItemCheckbox with indicator
+      Given a MenuItemCheckbox is rendered with <indicator>
+      When I <interact> on an unchecked MenuItemCheckbox
       Then it should become checked
+      And the indicator should be <checked_result>
       And it should dispatch a change event
-      When I click on the checked MenuItemCheckbox
+
+      Examples:
+        | interact | indicator | checked_result    |
+        | click    | checkbox  | checkbox checked  |
+        | space    | checkbox  | checkbox checked  |
+        | click    | checkmark | checkmark checked |
+        | space    | checkmark | checkmark checked |
+        | click    | toggle    | toggle on         |
+        | space    | toggle    | toggle on         |
+
+    Scenario Outline: Uncheck MenuItemCheckbox with indicator
+      Given a MenuItemCheckbox is rendered with <indicator> and is checked
+      When I <interact> on a checked MenuItemCheckbox
       Then it should become unchecked
+      And the indicator should be <unchecked_result>
       And it should dispatch a change event
 
-    Scenario: Toggle MenuItemCheckbox using keyboard
-      Given a MenuItemCheckbox is rendered
-      When focus is on the MenuItemCheckbox
-      And I press "Space"
-      Then it should become checked
-      And it should dispatch a change event
-      When I press "Space" again
-      Then it should become unchecked
-      And it should dispatch a change event
-
-  Rule: ✅ Indicator Types
-
-    Scenario: Checkbox indicator
-      Given a MenuItemCheckbox with indicator="checkbox"
-      Then it should display a checkbox indicator
-      When it is checked
-      Then the checkbox should be checked
-
-    Scenario: Checkmark indicator
-      Given a MenuItemCheckbox with indicator="checkmark"
-      Then it should display a checkmark indicator when checked
-      And it should not display a checkmark when unchecked
-
-    Scenario: Toggle indicator
-      Given a MenuItemCheckbox with indicator="toggle"
-      Then it should display a toggle switch indicator
-      When it is checked
-      Then the toggle switch should be in the "on" position
-      When it is unchecked
-      Then the toggle switch should be in the "off" position
+      Examples:
+        | interact | indicator | unchecked_result    |
+        | click    | checkbox  | checkbox unchecked  |
+        | space    | checkbox  | checkbox unchecked  |
+        | click    | checkmark | checkmark unchecked |
+        | space    | checkmark | checkmark unchecked |
+        | click    | toggle    | toggle off          |
+        | space    | toggle    | toggle off          |
 
   Rule: ✅ Accessibility
 

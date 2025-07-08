@@ -17,7 +17,6 @@ Feature: MenuSection Accessibility and Grouping
       Given a MenuSection is rendered with header-text="Section Title"
       Then it should display "Section Title" as the header
       And the header should have appropriate styling
-      And it should set aria-label to "Section Title"
 
   Rule: ✅ Grouping Behavior
 
@@ -47,6 +46,6 @@ Feature: MenuSection Accessibility and Grouping
 
     Scenario: Keyboard navigation
       Given a MenuSection containing multiple focusable menu items
-      When navigating with keyboard
+      When navigating with keyboard (up/down keys)
       Then focus should move sequentially through all items in the section
       And the section header should not be focusable

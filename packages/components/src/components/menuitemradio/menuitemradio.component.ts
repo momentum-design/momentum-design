@@ -41,6 +41,7 @@ import styles from './menuitemradio.styles';
  * @dependency mdc-icon
  * @dependency mdc-staticradio
  * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitemradio
  *

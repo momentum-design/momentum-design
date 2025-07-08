@@ -109,7 +109,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     // Toggle using keyboard
     await test.step('toggle using keyboard', async () => {
       const checkbox = await setup({ componentsPage });
-      await checkbox.focus();
+
+      await componentsPage.actionability.pressTab();
+      await expect(checkbox).toBeFocused();
 
       // Toggle on with Space
       await componentsPage.page.keyboard.press(KEYS.SPACE);

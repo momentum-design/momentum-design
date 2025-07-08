@@ -14,6 +14,7 @@ type SetupOptions = {
   value?: string;
   checked?: boolean;
   disabled?: boolean;
+  softDisabled?: boolean;
   indicator?: Indicator;
   label?: string;
   secondaryLabel?: string;
@@ -29,6 +30,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.value ? `value="${restArgs.value}"` : 'test-radio'}
           ${restArgs.checked ? 'checked' : ''}
           ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.indicator ? `indicator="${restArgs.indicator}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
           ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
@@ -100,6 +102,13 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expect(radio).toHaveAttribute('aria-checked', 'false');
       await expect(radio).not.toHaveAttribute('checked', '');
     });
+
+    // Soft disabled state
+    await test.step('soft disabled state', async () => {
+      const radio = await setup({ componentsPage, softDisabled: true });
+      await expect(radio).toHaveAttribute('aria-disabled', 'true');
+      await expect(radio).toHaveAttribute('soft-disabled', '');
+    });
   });
 
   /**
@@ -121,7 +130,8 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('keyboard selection with Enter', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage);
 
-      await lightRadio.focus();
+      await componentsPage.actionability.pressTab();
+      await expect(lightRadio).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.ENTER);
 
       await expect(lightRadio).toHaveAttribute('checked', '');
@@ -131,8 +141,8 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     // Keyboard selection with Space
     await test.step('keyboard selection with Space', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage);
-
-      await lightRadio.focus();
+      await componentsPage.actionability.pressTab();
+      await expect(lightRadio).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
 
       await expect(lightRadio).toHaveAttribute('checked', '');

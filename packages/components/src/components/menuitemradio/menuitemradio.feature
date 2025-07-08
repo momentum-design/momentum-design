@@ -13,15 +13,21 @@ Feature: MenuItemRadio Accessibility and User Interaction
       And it should have aria-checked="false"
 
     Scenario: Checked state
-      Given a MenuItemRadio is rendered with checked="true"
+      Given a MenuItemRadio is rendered with checked set to true
       Then it should be visually checked
       And it should have aria-checked="true"
 
     Scenario: Disabled state
-      Given a MenuItemRadio is rendered with disabled="true"
+      Given a MenuItemRadio is rendered with disabled set to true
       Then it should not be clickable
       And it should have aria-disabled="true"
       And it should have appropriate visual styling for disabled state
+
+    Scenario: Soft disabled state
+      Given a MenuItemRadio is rendered with softDisabled set to true
+      Then it should not be clickable
+      And it should have aria-disabled="true"
+      And it should be focusable
 
     Scenario: Default state with checkmark indicator
       Given a MenuItemRadio is rendered
@@ -29,25 +35,24 @@ Feature: MenuItemRadio Accessibility and User Interaction
       And it should have aria-checked="false"
 
     Scenario: Checked state with checkmark indicator
-      Given a MenuItemRadio is rendered with checked="true" and indicator="checkmark"
+      Given a MenuItemRadio is rendered with checked and indicator="checkmark"
       Then it should display a checkmark indicator
       And it should have aria-checked="true"
 
   Rule: ✅ Selection Behavior
 
-    Scenario: Select MenuItemRadio using mouse
+    Scenario Outline: Select MenuItemRadio using <input_method>
       Given a group of MenuItemRadio components with the same name
-      When I click on an unchecked MenuItemRadio
-      Then it should become checked
+      And focus is on the first MenuItemRadio
+      When I <action> on an unchecked MenuItemRadio
+      Then the selected MenuItemRadio should become checked
       And other MenuItemRadio components in the same group should become unchecked
       And it should dispatch a change event
 
-    Scenario: Select MenuItemRadio using keyboard
-      Given a group of MenuItemRadio components with the same name
-      And focus is on the first MenuItemRadio
-      When I press "Space" or "Enter"
-      Then the focused MenuItemRadio should become checked
-      And other MenuItemRadio components in the same group should become unchecked
+      Examples:
+        | input_method | action                   |
+        | mouse        | click                    |
+        | keyboard     | press "Space" or "Enter" |
 
   Rule: ✅ Grouping and Naming
 
@@ -57,8 +62,12 @@ Feature: MenuItemRadio Accessibility and User Interaction
       Then only MenuItemRadio items with the same name should be affected
       And MenuItemRadio items with different names should maintain their state
 
-    Scenario: Indicator types
-      Given a MenuItemRadio with checked="true" and indicator="radio"
-      Then it should display a radio button indicator
-      When the indicator is set to "checkmark"
-      Then it should display a checkmark indicator instead
+    Scenario Outline: MenuItemRadio indicator types
+      Given a MenuItemRadio is rendered with checked and indicator="<indicator>"
+      Then it should display a <expected_indicator> indicator
+      And it should have aria-checked="true"
+
+      Examples:
+        | indicator | expected_indicator |
+        | radio     | radio button       |
+        | checkmark | checkmark          |
