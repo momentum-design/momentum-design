@@ -95,6 +95,8 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
 
   /**
    * The z-index of the dialog
+   *
+   * The backdrop will have z-index of `zIndex - 1`
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
@@ -242,6 +244,17 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
     DialogEventManager.onDestroyedDialog(this);
   }
 
+  /**
+   * Applies the z-index to the dialog and backdrop elements.
+   * The dialog will have a z-index of `zIndex` and the backdrop will have a z-index of `zIndex - 1`.
+   *
+   * @internal
+   */
+  private applyZIndex() {
+    this.style.setProperty('z-index', `${this.zIndex}`);
+    this.backdropElement?.style.setProperty('z-index', `${this.zIndex - 1}`);
+  }
+
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
 
@@ -249,7 +262,8 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
 
     this.setupAriaLabelledDescribedBy();
 
-    this.style.zIndex = `${this.zIndex}`;
+    this.applyZIndex();
+
     DialogEventManager.onCreatedDialog(this);
   }
 
@@ -265,12 +279,20 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
       const oldValue = changedProperties.get('visible') as boolean | undefined;
       await this.isOpenUpdated(oldValue, this.visible);
     }
+
     if (changedProperties.has('zIndex')) {
-      this.setAttribute('z-index', `${this.zIndex}`);
+      // If zIndex is not set, use the default value
+      // This is to ensure that the dialog has always a z-index set even if not explicitly defined
+      if (this.zIndex === null) {
+        this.zIndex = DEFAULTS.Z_INDEX;
+      }
+      this.applyZIndex();
     }
+
     if (changedProperties.has('variant')) {
       this.updateFooterButtonColors(this.variant);
     }
+
     if (
       changedProperties.has('ariaLabel') ||
       changedProperties.has('ariaLabelledBy') ||
