@@ -22,7 +22,7 @@
     "prepare:components": "yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build",
     "postinstall": "husky ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
-    "components:yalc:publish": "yalc publish ./packages/components --no-scripts --pure",
+    "components:yalc:publish": "yarn dlx yalc publish ./packages/components --no-scripts --pure",
     "clean:plop": "rimraf ./config/plop/dist",
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate": "yarn generate:plop && yarn install",
@@ -70,7 +70,6 @@
     "rimraf": "^6.0.1",
     "syncpack": "^12.4.0",
     "typescript": "^4.8.4",
-    "yalc": "^1.0.0-pre.53",
     "yargs": "^17.7.2"
   }
 }
