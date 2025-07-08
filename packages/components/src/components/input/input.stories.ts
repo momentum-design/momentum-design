@@ -13,7 +13,7 @@ import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
-  return html` <mdc-input
+  return html`<mdc-input
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -21,6 +21,7 @@ const render = (args: Args) => {
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
+    validation-message="${args['validation-message']}"
     placeholder="${args.placeholder}"
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
@@ -41,7 +42,7 @@ const render = (args: Args) => {
     minlength="${ifDefined(args.minlength)}"
     autocapitalize="${args.autocapitalize}"
     ?autofocus="${args.autofocus}"
-    autocomplete="${args.autocomplete}"
+    autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
@@ -141,6 +142,9 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'validation-message': {
+      control: 'text',
     },
     'info-icon-aria-label': {
       control: 'text',
@@ -260,6 +264,45 @@ export const AllVariants: StoryObj = {
 };
 
 export const FormFieldInput: StoryObj = {
+  render: args => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValue = formData.get('user-name');
+      action('Form Submitted')({ value: selectedValue });
+    };
+    return html`
+      <form @submit=${handleSubmit}>
+        <fieldset>
+          <legend>Form Example</legend>
+          ${render(args)}
+          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  args: {
+    class: 'custom-classname',
+    label: 'First Name',
+    name: 'user-name',
+    placeholder: 'Enter your name',
+    readonly: false,
+    disabled: false,
+    required: true,
+    'help-text': 'Please provide a valid name',
+    'help-text-type': 'default',
+    'prefix-text': '',
+    'leading-icon': '',
+    'show-hide-button-aria-label': 'Show or hide password',
+    minlength: 5,
+    maxlength: 10,
+  },
+};
+
+export const FormFieldInputWithCustomValidationMessage: StoryObj = {
   render: () => {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
@@ -267,17 +310,29 @@ export const FormFieldInput: StoryObj = {
       const selectedValue = formData.get('user-name');
       action('Form Submitted')({ value: selectedValue });
     };
-
+    const handleInput = (event: Event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.validity.valueMissing) {
+        input.setAttribute('validation-message', 'Please enter a name');
+      }
+      if (input.validity.tooShort) {
+        input.setAttribute('validation-message', 'Please enter a name with at least 5 characters');
+      }
+    };
     return html`
       <form @submit=${handleSubmit}>
         <fieldset>
           <legend>Form Example</legend>
           <mdc-input
-            name="user-name"
-            label="First Name"
-            required
             placeholder="Enter your name"
-            validation-message="Name is required"
+            label="First Name"
+            name="user-name"
+            required
+            minlength="5"
+            maxlength="10"
+            show-hide-button-aria-label="Show or hide password"
+            validation-message="Please enter a valid name"
+            @input=${handleInput}
           ></mdc-input>
           <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>

@@ -48,6 +48,7 @@ class VisualRegression {
 
   /**
    * Takes a screenshot of the whole page, with the passed in options
+   * If options.element is provided, it will take a screenshot of that element instead of the whole page.
    *
    * @param name - name of the screenshot, file extension will be appended automatically!
    * @param options - description
