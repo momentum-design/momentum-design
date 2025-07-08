@@ -395,21 +395,31 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const submitButton = form.locator('mdc-button[type="submit"]');
       const inputEl = mdcInput.locator('input');
 
+      await componentsPage.actionability.pressTab();
+      await expect(mdcInput).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
       // 1. Submit with empty input: should show 'Please enter a valid name'
-      await submitButton.click();
+      await componentsPage.page.keyboard.down('Enter');
 
       let validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a valid name');
 
       // 2. Type less than minlength: should show 'Please enter a name with at least 5 characters'
       await inputEl.fill('abc');
-      await submitButton.click();
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
+      await componentsPage.page.keyboard.down('Enter');
+
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a name with at least 5 characters');
 
       // 3. Erase all: should show 'Please enter a name'
       await inputEl.fill('');
-      await submitButton.click();
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
+      await componentsPage.page.keyboard.down('Enter');
+
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a name');
     });
@@ -438,7 +448,12 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       let validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
 
       // 1. Submit with empty input: should show native browser validation message
-      await submitButton.click();
+      await componentsPage.actionability.pressTab();
+      await expect(mdcInput).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
+      await componentsPage.page.keyboard.down('Enter');
+
       if (browserName === 'webkit') {
         expect(validationMessage).toContain('Fill out this field');
       } else {
@@ -447,7 +462,11 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
 
       await inputEl.fill('Hell');
       await expect(inputEl).toHaveValue('Hell');
-      await submitButton.click();
+
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
+      await componentsPage.page.keyboard.down('Enter');
+
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
 
       expect([
