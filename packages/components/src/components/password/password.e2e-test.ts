@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -125,15 +127,17 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the help-text-type attribute be present in the component when it sets', async () => {
-      await setup({
-        ...defaultSetupOptions,
-        helpTextType: VALIDATION.SUCCESS,
-      });
-      await componentsPage.setAttributes(password, { 'help-text-type': VALIDATION.SUCCESS });
-      await expect(password).toHaveAttribute('help-text-type', VALIDATION.SUCCESS);
-      const iconEl = password.locator('mdc-icon[part="helper-icon"]');
-      const icon = getHelperIcon(VALIDATION.SUCCESS);
-      await expect(iconEl).toHaveAttribute('name', icon);
+      await setup(defaultSetupOptions);
+      for (const type of Object.values(VALIDATION)) {
+        await componentsPage.setAttributes(password, { 'help-text-type': type });
+        await expect(password).toHaveAttribute('help-text-type', type);
+        const iconEl = password.locator('mdc-icon[part="helper-icon"]');
+        const icon = getHelperIcon(type);
+        if (icon) {
+          await expect(iconEl).toHaveAttribute('name', icon);
+        }
+      }
+      await componentsPage.removeAttribute(password, 'help-text-type');
     });
 
     await test.step('should the attributes size, minlength and maxlength be present in the component when it sets', async () => {
@@ -236,9 +240,9 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(passwordEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
-       await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Space');
       await expect(passwordEl).toHaveAttribute('type', 'text');
-       await componentsPage.page.keyboard.down('Space');
+      await componentsPage.page.keyboard.press('Enter');
       await expect(passwordEl).toHaveAttribute('type', 'password');
       await componentsPage.actionability.pressTab();
       await expect(trailingButton).not.toBeFocused();

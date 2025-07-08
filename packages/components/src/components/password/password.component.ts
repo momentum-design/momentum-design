@@ -95,7 +95,7 @@ class Password extends Input {
     return html`
       <mdc-button
         part="trailing-button"
-        class="${!showBtn ? 'hidden' : ''}"
+        class="own-focus-ring ${!showBtn ? 'hidden' : ''}"
         variant=${BUTTON_VARIANTS.TERTIARY}
         ?disabled=${this.disabled || this.readonly || !showBtn}
         size="${DEFAULTS.ICON_SIZE}"
