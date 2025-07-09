@@ -77,8 +77,13 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const navMenuItems = sidenav.locator('mdc-navmenuitem');
   const mainMenuNavMenuItem = sidenav.locator('mdc-navmenuitem#menu-button-trigger');
   const mainMenuPopover = sidenav.locator('mdc-menupopover[triggerid="menu-button-trigger"]');
+  const toolsMenuItem = sidenav.locator('mdc-navmenuitem#share-id');
+  const toolsMenuPopover = sidenav.locator('mdc-menupopover[triggerid="share-id"]');
   const callingNavMenuItem = sidenav.locator('mdc-navmenuitem#temp');
   const callingPopover = sidenav.locator('mdc-menupopover[triggerid="temp"]');
+  const mainMenuTooltip = componentsPage.page.locator('mdc-tooltip[triggerid="menu-button-trigger"]');
+  const toolsTooltip = componentsPage.page.locator('mdc-tooltip[triggerid="share-id"]');
+
   return {
     sidenav,
     toggleButton,
@@ -86,8 +91,12 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
     navMenuItems,
     mainMenuNavMenuItem,
     mainMenuPopover,
+    toolsMenuItem,
+    toolsMenuPopover,
     callingNavMenuItem,
     callingPopover,
+    mainMenuTooltip,
+    toolsTooltip,
   };
 };
 
@@ -104,8 +113,12 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           navMenuItems,
           mainMenuNavMenuItem,
           mainMenuPopover,
+          toolsMenuItem,
+          toolsMenuPopover,
           callingNavMenuItem,
           callingPopover,
+          mainMenuTooltip,
+          toolsTooltip,
         } = await setup(componentsPage, variant);
 
         // --- Expand/Collapse (flexible only) ---
@@ -221,8 +234,8 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           await expect(callingPopover).toBeVisible();
         });
 
-        // --- Nested menuitem: select nested menuitem ---
-        await test.step('Select nested menuitem with mouse and parent menuitem reflects active state due to selected child', async () => {
+        // --- Nested menuitem: select nested menuitem (1st level submenu) ---
+        await test.step('Select nested menuitem with mouse inside 1st level submenu', async () => {
           await setup(componentsPage, variant);
           await mainMenuNavMenuItem.click();
           await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
@@ -232,9 +245,10 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
           await expect(mainMenuPopover).not.toBeVisible();
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          // await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false'); -- doubt
+          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
         });
-        await test.step('Select nested menuitem with keyboard, return focus to its parent and parent menuitem reflects active state due to selected child', async () => {
+
+        await test.step('Select nested menuitem with keyboard inside 1st level submenu', async () => {
           await setup(componentsPage, variant);
           await mainMenuNavMenuItem.focus();
           await componentsPage.page.keyboard.press('Enter');
@@ -247,29 +261,82 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           await expect(mainMenuPopover).not.toBeVisible();
           await expect(mainMenuNavMenuItem).toBeFocused();
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          // await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false'); -- doubt
+          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
         });
 
-        // --- Tooltip on parent when child is active ---
-        await test.step('Hovering or focusing over parent menuitem shows tooltip and reopen submenu from active parent menuitem', async () => {
-          await mainMenuNavMenuItem.hover();
-          // Tooltip should appear -- pending
+        // --- Nested menuitem: select nested menuitem (2nd level submenu) ---
+        await test.step('Select nested menuitem with mouse inside 2nd level submenu', async () => {
+          await setup(componentsPage, variant);
+          await mainMenuNavMenuItem.click();
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(mainMenuPopover).toBeVisible();
+          await toolsMenuItem.click();
+          await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(toolsMenuPopover).toBeVisible();
+          const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
+          await nestedItem.click();
+          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+          await expect(toolsMenuPopover).not.toBeVisible();
+          await expect(mainMenuPopover).not.toBeVisible();
+          await expect(toolsMenuItem).toHaveAttribute('active', '');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+          await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+        });
 
-          // using keyboard
+        await test.step('Select nested menuitem with keyboard inside 2nd level submenu', async () => {
+          await setup(componentsPage, variant);
           await mainMenuNavMenuItem.focus();
           await componentsPage.page.keyboard.press('Enter');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(mainMenuPopover).toBeVisible();
-          const nestedItem2 = mainMenuPopover.locator('mdc-navmenuitem').first();
-          await expect(nestedItem2).toHaveAttribute('aria-current', 'page');
-          // closes submenu for next step
+          const toolsMenuItem = mainMenuPopover.locator('mdc-navmenuitem#share-id');
+          await toolsMenuItem.focus();
           await componentsPage.page.keyboard.press('Enter');
-          await expect(mainMenuPopover).not.toBeVisible();
-
-          // using mouse
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuPopover).toBeVisible();
-          const nestedItem = mainMenuPopover.locator('mdc-navmenuitem').first();
+          await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
+          await expect(toolsMenuPopover).toBeVisible();
+          const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
+          await expect(nestedItem).toBeFocused();
+          await componentsPage.page.keyboard.press('Enter');
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+          await expect(toolsMenuPopover).not.toBeVisible();
+          await expect(mainMenuPopover).not.toBeVisible();
+          await expect(mainMenuNavMenuItem).toBeFocused();
+          await expect(toolsMenuItem).toHaveAttribute('active', '');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+          await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+        });
+
+        // --- Re-engaging with previously selected parent ---
+        await test.step('Hovering with mouse over activated parent menuitem shows tooltip', async () => {
+          // top level
+          await mainMenuNavMenuItem.hover();
+          await expect(mainMenuTooltip).toBeVisible();      
+          const text1 = await mainMenuTooltip.textContent();
+          expect(text1?.trim()).toBe('Contains active navmenuitem');
+          // nested level
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await componentsPage.page.mouse.move(0, 0);
+          await toolsMenuItem.hover();
+          await expect(toolsTooltip).toBeVisible();
+          const text2 = await toolsTooltip.textContent();
+          expect(text2?.trim()).toBe('Contains active navmenuitem');
+        });
+
+        await test.step('Focusing with keyboard over activated parent menuitem shows tooltip', async () => {
+          // clear previous state
+          await componentsPage.page.keyboard.press('ArrowLeft');
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [mainMenuNavMenuItem]);
+          // top level
+          await expect(mainMenuTooltip).toBeVisible();
+          const text1 = await mainMenuTooltip.textContent();
+          expect(text1?.trim()).toBe('Contains active navmenuitem');
+          // nested level
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(toolsTooltip).toBeVisible();
+          const text2 = await toolsTooltip.textContent();
+          expect(text2?.trim()).toBe('Contains active navmenuitem');
         });
 
         // --- Focus Management and Tab Behavior ---
