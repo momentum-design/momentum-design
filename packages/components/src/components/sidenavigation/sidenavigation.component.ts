@@ -14,7 +14,6 @@ import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
 
-
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
  * typically used in layouts with persistent or collapsible sidebars.
@@ -258,11 +257,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
     return html`
       <div part="side-navigation-container" id="side-nav-container">
-        <div part="scrollable-section">
+        <div part="scrollable-section" tabindex="-1">
           <slot name="scrollable-section">
             <mdc-menubar>
               <slot name="scrollable-menubar"></slot>
-            </mdc-menubar> 
+            </mdc-menubar>
           </slot>
         </div>
         <mdc-divider variant="gradient" part="separator"></mdc-divider>
@@ -270,7 +269,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           <slot name="fixed-section">
             <mdc-menubar>
               <slot name="fixed-menubar"></slot>
-            </mdc-menubar> 
+            </mdc-menubar>
           </slot>
           <div part="brand-logo-container">
             <slot name="brand-logo"></slot>
