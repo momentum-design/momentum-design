@@ -1,6 +1,7 @@
-import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -143,11 +144,9 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
 
   override connectedCallback(): void {
     super.connectedCallback();
-
     this.updateComplete
       .then(() => {
         if (this.inputElement) {
-          this.inputElement.checkValidity();
           this.setInputValidity();
           this.internals.setFormValue(this.inputElement.value);
         }
@@ -162,45 +161,14 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   /** @internal */
   formResetCallback(): void {
     this.value = '';
+    this.inputElement.value = '';
+    this.setInputValidity();
     this.requestUpdate();
   }
 
   /** @internal */
   formStateRestoreCallback(state: string): void {
     this.value = state;
-  }
-
-  /**
-   * Handles the value change of the input field.
-   * Sets the form value and updates the validity of the input field.
-   * @returns void
-   */
-  handleValueChange() {
-    this.updateComplete
-      .then(() => {
-        this.setInputValidity();
-      })
-      .catch(error => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
-  }
-
-  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.updated(changedProperties);
-    if (changedProperties.has('value')) {
-      this.handleValueChange();
-    }
-  }
-
-  private setInputValidity() {
-    if (this.required && this.validationMessage && this.value === '') {
-      this.inputElement.setCustomValidity(this.validationMessage);
-    } else {
-      this.inputElement.setCustomValidity('');
-    }
-    this.setValidity();
   }
 
   /**
@@ -214,9 +182,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
     super.attributeChangedCallback(name, old, value);
 
-    const validationRelatedAttributes = ['maxlength', 'minlength', 'pattern', 'required'];
-
-    if (validationRelatedAttributes.includes(name)) {
+    if (name === 'validation-message') {
       this.updateComplete
         .then(() => {
           this.setInputValidity();
@@ -227,6 +193,14 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           }
         });
     }
+  }
+
+  private setInputValidity() {
+    this.inputElement.setCustomValidity('');
+    if (!this.inputElement.validity.valid && this.validationMessage) {
+      this.inputElement.setCustomValidity(this.validationMessage);
+    }
+    this.setValidity();
   }
 
   /**
@@ -247,6 +221,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   private onInput() {
     this.updateValue();
     this.setInputValidity();
+    this.checkValidity();
   }
 
   /**
@@ -363,10 +338,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
       class="input"
-      part="input"
+      part="mdc-input"
       id="${this.id}"
       name="${this.name}"
-      .value="${this.value}"
+      .value="${live(this.value)}"
       ?disabled="${this.disabled}"
       ?readonly="${this.readonly}"
       ?required="${this.required}"

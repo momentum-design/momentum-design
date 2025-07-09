@@ -40,6 +40,7 @@ import MenuSection from './components/menusection';
 import NavItem from './components/navitem';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
+import Password from './components/password';
 import Popover from './components/popover';
 import Presence from './components/presence';
 import Progressbar from './components/progressbar';
@@ -127,6 +128,7 @@ export {
   NavItem,
   OptGroup,
   Option,
+  Password,
   Popover,
   Presence,
   Progressbar,
@@ -172,11 +174,11 @@ export type {
 
 // Constants / Utils Exports
 export {
-  inMemoryCache,
-  webAPIIconsCache,
   BUTTON_COLORS,
   BUTTON_VARIANTS,
   ICON_BUTTON_SIZES,
+  inMemoryCache,
   PILL_BUTTON_SIZES,
   SKELETON_VARIANTS,
+  webAPIIconsCache,
 };

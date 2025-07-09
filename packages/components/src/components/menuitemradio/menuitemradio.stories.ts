@@ -27,12 +27,12 @@ const render = (args: Args) =>
   );
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menuitemradio',
+  title: 'Components/menupopover/menuitemradio',
   tags: ['autodocs'],
   component: 'mdc-menuitemradio',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     checked: {

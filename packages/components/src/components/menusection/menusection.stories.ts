@@ -22,11 +22,11 @@ const render = (args: Args) =>
   );
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menusection',
+  title: 'Components/menupopover/menusection',
   tags: ['autodocs'],
   component: 'mdc-menusection',
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'header-text': {
@@ -45,38 +45,57 @@ export default meta;
 export const Example: StoryObj = {
   render,
   args: {
-    headerText: 'Section label',
+    'header-text': 'Menu Section label',
   },
   ...hideAllControls(),
 };
 
 export const MultipleMenuSections: StoryObj = {
   render: () =>
-    wrapWithDiv(
-      html` <mdc-menusection>
-          <mdc-menuitemcheckbox label="Checkbox1"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Checkbox2"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Checkbox3"></mdc-menuitemcheckbox>
-          <mdc-menuitemradio label="Radio1"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Radio2"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
-        </mdc-menusection>
-        <mdc-divider></mdc-divider>
-        <mdc-menusection>
-          <mdc-menuitemradio label="Radio1"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Radio2"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
-        </mdc-menusection>
-        <mdc-divider></mdc-divider>
-        <mdc-menusection header-text="Section with menu items">
-          <mdc-menuitem label="MenuItem1"></mdc-menuitem>
-          <mdc-menuitem label="MenuItem2"></mdc-menuitem>
-        </mdc-menusection>
-        <mdc-divider></mdc-divider>
-        <mdc-menusection header-text="Section with checkboxes and radio buttons">
-          <mdc-menuitemcheckbox label="Toggle6" indicator="toggle"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Checkmark7" indicator="checkmark" aria-label="Checkbox 7"></mdc-menuitemcheckbox>
-        </mdc-menusection>`,
-    ),
+    wrapWithDiv(html`
+      <mdc-menusection>
+        <mdc-menuitemcheckbox label="Checkbox1"></mdc-menuitemcheckbox>
+        <mdc-menuitemcheckbox label="Checkbox2"></mdc-menuitemcheckbox>
+        <mdc-menuitemcheckbox label="Checkbox3"></mdc-menuitemcheckbox>
+        <mdc-menuitemradio label="Radio1"></mdc-menuitemradio>
+        <mdc-menuitemradio label="Radio2"></mdc-menuitemradio>
+        <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+      <mdc-menusection>
+        <mdc-menuitemradio label="Radio1"></mdc-menuitemradio>
+        <mdc-menuitemradio label="Radio2"></mdc-menuitemradio>
+        <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+      <mdc-menusection header-text="Section with menu items">
+        <mdc-menuitem label="MenuItem1"></mdc-menuitem>
+        <mdc-menuitem label="MenuItem2"></mdc-menuitem>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+      <mdc-menusection header-text="Section with checkboxes and radio buttons">
+        <mdc-menuitemcheckbox label="Toggle6" indicator="toggle"></mdc-menuitemcheckbox>
+        <mdc-menuitemcheckbox
+          label="Checkmark7"
+          indicator="checkmark"
+          aria-label="Checkbox 7"
+        ></mdc-menuitemcheckbox> </mdc-menusection
+      ><mdc-divider></mdc-divider
+      ><mdc-menusection>
+        <mdc-menuitemcheckbox name="checkbox" label="Checkbox1"></mdc-menuitemcheckbox>
+        <mdc-menuitemcheckbox name="checkbox" label="Checkbox2"></mdc-menuitemcheckbox>
+        <mdc-menuitemcheckbox name="checkbox" label="Checkbox3"></mdc-menuitemcheckbox>
+        <mdc-menuitemradio name="radio" label="Radio1"></mdc-menuitemradio>
+        <mdc-menuitemradio name="radio" label="Radio2"></mdc-menuitemradio>
+        <mdc-menuitemradio name="radio" label="Radio3"></mdc-menuitemradio>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+      <mdc-menusection>
+        <mdc-menuitemradio name="radio" label="Radio1"></mdc-menuitemradio>
+        <mdc-menuitemradio name="radio" label="Radio2"></mdc-menuitemradio>
+        <mdc-menuitemradio name="radio" label="Radio3"></mdc-menuitemradio>
+      </mdc-menusection>
+      <mdc-divider></mdc-divider>
+    `),
   ...hideAllControls(),
 };

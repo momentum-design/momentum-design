@@ -40,7 +40,7 @@ const createPopover = (args: Args, content: TemplateResult = html``) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menupopover',
+  title: 'Components/menupopover/menupopover',
   tags: ['autodocs'],
   component: 'mdc-menupopover',
   parameters: {

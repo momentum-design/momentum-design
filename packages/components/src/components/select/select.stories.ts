@@ -23,6 +23,7 @@ const render = (args: Args) =>
     <mdc-select
       @change="${action('onchange')}"
       @click="${action('onclick')}"
+      @input="${action('oninput')}"
       @keydown="${action('onkeydown')}"
       @focus="${action('onfocus')}"
       label="${args.label}"

@@ -112,12 +112,12 @@ const render = () => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/menu/menubar',
+  title: 'Internal/menubar',
   tags: ['autodocs'],
   component: 'mdc-menubar',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
     docs: {
       source: {
         format: 'html',
@@ -154,127 +154,118 @@ export const Example: StoryObj = {
 };
 
 export const EditorMenubar: StoryObj = {
-  render: () => html`
-    <div style="display:flex">
-      <mdc-menubar style="width: 8rem; margin: 1rem 0;">
-        <mdc-menusection>
-          <mdc-menuitem id="temp-id1" label="Style1"></mdc-menuitem>
-          <mdc-menuitem id="temp-id2" label="Style2"></mdc-menuitem>
-          <mdc-menuitem id="temp-id3" label="Style3"></mdc-menuitem>
-          <mdc-menuitem id="temp-id4" label="Style4" arrow-position="trailing"></mdc-menuitem>
-          <mdc-menupopover triggerid="temp-id4">
+  render: () => {
+    const handleEditorClick = (event: any) => {
+      const isDisabled = event.target.hasAttribute('disabled');
+      const action = event.target.getAttribute('label');
+      const isChecked = event.target.getAttribute('aria-checked');
+      const textarea = document.getElementById('textarea');
+      if (isDisabled || !action || !textarea) return;
+      switch (action) {
+        case 'Bold':
+          textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
+          break;
+        case 'Italic':
+          textarea.style.fontStyle = isChecked === 'true' ? 'italic' : 'unset';
+          break;
+        case 'Underline':
+          textarea.style.textDecoration = isChecked === 'true' ? 'underline' : 'unset';
+          break;
+        case 'Strikethrough':
+          textarea.style.textDecoration = isChecked === 'true' ? 'line-through' : 'unset';
+          break;
+        case 'Red':
+          textarea.style.color = 'red';
+          break;
+        case 'Green':
+          textarea.style.color = 'green';
+          break;
+        case 'Blue':
+          textarea.style.color = 'blue';
+          break;
+        case 'Left':
+          textarea.style.textAlign = 'left';
+          break;
+        case 'Center':
+          textarea.style.textAlign = 'center';
+          break;
+        case 'Right':
+          textarea.style.textAlign = 'right';
+          break;
+        case 'Justify':
+          textarea.style.textAlign = 'justify';
+          break;
+        case 'Small':
+          textarea.style.fontSize = 'small';
+          break;
+        case 'Medium':
+          textarea.style.fontSize = 'medium';
+          break;
+        case 'Large':
+          textarea.style.fontSize = 'large';
+          break;
+        default:
+          break;
+      }
+    };
+    return html`
+      <div style="display:flex">
+        <mdc-menubar style="width: 8rem; margin: 1rem 0;">
+          <mdc-menuitem id="style-id" label="Style" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="style-id">
             <mdc-menusection>
-              <mdc-menuitem label="Small"></mdc-menuitem>
-              <mdc-menuitem label="Medium"></mdc-menuitem>
-              <mdc-menuitem label="Large"></mdc-menuitem>
+              <mdc-menuitemcheckbox name="style" @click="${handleEditorClick}" label="Bold"></mdc-menuitemcheckbox>
+              <mdc-menuitemcheckbox name="style" @click="${handleEditorClick}" label="Italic"></mdc-menuitemcheckbox>
+              <mdc-menuitemcheckbox name="style" @click="${handleEditorClick}" label="Underline"></mdc-menuitemcheckbox>
+              <mdc-menuitemcheckbox
+                name="style"
+                @click="${handleEditorClick}"
+                label="Strikethrough"
+              ></mdc-menuitemcheckbox>
+            </mdc-menusection>
+            <mdc-divider></mdc-divider>
+            <mdc-menusection>
+              <mdc-menuitemradio name="color" @click="${handleEditorClick}" label="Red"></mdc-menuitemradio>
+              <mdc-menuitemradio name="color" @click="${handleEditorClick}" label="Green"></mdc-menuitemradio>
+              <mdc-menuitemradio name="color" @click="${handleEditorClick}" label="Blue"></mdc-menuitemradio>
+              <mdc-menuitemradio name="color" disabled label="Black"></mdc-menuitemradio>
             </mdc-menusection>
           </mdc-menupopover>
-        </mdc-menusection>
-        <mdc-menuitem id="style-id" label="Style" arrow-position="trailing"></mdc-menuitem>
-        <mdc-menupopover triggerid="style-id">
-          <mdc-menusection>
-            <mdc-menuitemcheckbox label="Bold"></mdc-menuitemcheckbox>
-            <mdc-menuitemcheckbox label="Italic"></mdc-menuitemcheckbox>
-            <mdc-menuitemcheckbox label="Underline"></mdc-menuitemcheckbox>
-            <mdc-menuitemcheckbox label="Strikethrough"></mdc-menuitemcheckbox>
-          </mdc-menusection>
-          <mdc-divider></mdc-divider>
-          <mdc-menusection>
-            <mdc-menuitemradio label="Red"></mdc-menuitemradio>
-            <mdc-menuitemradio label="Green"></mdc-menuitemradio>
-            <mdc-menuitemradio label="Blue"></mdc-menuitemradio>
-            <mdc-menuitemradio disabled label="Black"></mdc-menuitemradio>
-          </mdc-menusection>
-        </mdc-menupopover>
-        <mdc-menuitem id="align-id" label="Align" arrow-position="trailing"></mdc-menuitem>
-        <mdc-menupopover triggerid="align-id">
-          <mdc-menusection>
-            <mdc-menuitemradio label="Left"></mdc-menuitemradio>
-            <mdc-menuitemradio label="Center"></mdc-menuitemradio>
-            <mdc-menuitemradio label="Right"></mdc-menuitemradio>
-            <mdc-menuitemradio label="Justify"></mdc-menuitemradio>
-          </mdc-menusection>
-        </mdc-menupopover>
-        <mdc-menuitem id="size-id" label="Size" arrow-position="trailing"></mdc-menuitem>
-        <mdc-menupopover triggerid="size-id">
-          <mdc-menusection>
-            <mdc-menuitem label="Small"></mdc-menuitem>
-            <mdc-menuitem label="Medium"></mdc-menuitem>
-            <mdc-menuitem label="Large"></mdc-menuitem>
-          </mdc-menusection>
-        </mdc-menupopover>
-      </mdc-menubar>
-      <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi. Nam in nisl
-        at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum. Nulla non sapien volutpat,
-        ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo. Praesent pharetra enim
-        vitae felis egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci quis est dictum,
-        vitae efficitur metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus ante mollis
-        dignissim. Nullam varius a libero quis elementum. In et arcu mi.
-        <br /><br />
-        Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor. Nulla
-        pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra. Fusce sit amet lobortis
-        lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida. Vivamus molestie leo non
-        lobortis tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris pellentesque lorem, a tempus massa
-        tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
-      </p>
-    </div>
-    <script>
-      var handleEditorClick = event => {
-        const isDisabled = event.target.hasAttribute('disabled');
-        const action = event.target.getAttribute('label');
-        const isChecked = event.target.getAttribute('aria-checked');
-        const textarea = document.getElementById('textarea');
-        if (isDisabled || !action || !textarea) return;
-        switch (action) {
-          case 'Bold':
-            textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
-            break;
-          case 'Italic':
-            textarea.style.fontStyle = isChecked === 'true' ? 'italic' : 'unset';
-            break;
-          case 'Underline':
-            textarea.style.textDecoration = isChecked === 'true' ? 'underline' : 'unset';
-            break;
-          case 'Strikethrough':
-            textarea.style.textDecoration = isChecked === 'true' ? 'line-through' : 'unset';
-            break;
-          case 'Red':
-            textarea.style.color = 'red';
-            break;
-          case 'Green':
-            textarea.style.color = 'green';
-            break;
-          case 'Blue':
-            textarea.style.color = 'blue';
-            break;
-          case 'Left':
-            textarea.style.textAlign = 'left';
-            break;
-          case 'Center':
-            textarea.style.textAlign = 'center';
-            break;
-          case 'Right':
-            textarea.style.textAlign = 'right';
-            break;
-          case 'Justify':
-            textarea.style.textAlign = 'justify';
-            break;
-          case 'Small':
-            console.log('Turbo set small');
-            textarea.style.fontSize = 'small';
-            break;
-          case 'Medium':
-            textarea.style.fontSize = 'medium';
-            break;
-          case 'Large':
-            textarea.style.fontSize = 'large';
-            break;
-        }
-      };
-      document.addEventListener('click', handleEditorClick);
-    </script>
-  `,
+          <mdc-menuitem id="align-id" label="Align" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="align-id">
+            <mdc-menusection>
+              <mdc-menuitemradio name="align" @click="${handleEditorClick}" label="Left"></mdc-menuitemradio>
+              <mdc-menuitemradio name="align" @click="${handleEditorClick}" label="Center"></mdc-menuitemradio>
+              <mdc-menuitemradio name="align" @click="${handleEditorClick}" label="Right"></mdc-menuitemradio>
+              <mdc-menuitemradio name="align" @click="${handleEditorClick}" label="Justify"></mdc-menuitemradio>
+            </mdc-menusection>
+          </mdc-menupopover>
+          <mdc-menuitem id="size-id" label="Size" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="size-id">
+            <mdc-menusection>
+              <mdc-menuitem name="size" @click="${handleEditorClick}" label="Small"></mdc-menuitem>
+              <mdc-menuitem name="size" @click="${handleEditorClick}" label="Medium"></mdc-menuitem>
+              <mdc-menuitem name="size" @click="${handleEditorClick}" label="Large"></mdc-menuitem>
+            </mdc-menusection>
+          </mdc-menupopover>
+        </mdc-menubar>
+        <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi. Nam in nisl
+          at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum. Nulla non sapien volutpat,
+          ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo. Praesent pharetra enim
+          vitae felis egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci quis est dictum,
+          vitae efficitur metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus ante mollis
+          dignissim. Nullam varius a libero quis elementum. In et arcu mi.
+          <br /><br />
+          Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor. Nulla
+          pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra. Fusce sit amet
+          lobortis lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida. Vivamus molestie leo
+          non lobortis tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris pellentesque lorem, a tempus
+          massa tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
+        </p>
+      </div>
+    `;
+  },
 };
 
 export const WithMenuSections: StoryObj = {
