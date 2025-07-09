@@ -1108,6 +1108,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "legacy": {
+            "value": "{color.core.white-alpha.60}",
+            "type": "color",
+            "description": "Used for glass background for Agent & Supervisor."
+          },
           "overlay": {
             "normal": {
               "value": "{color.core.white-alpha.80}",
