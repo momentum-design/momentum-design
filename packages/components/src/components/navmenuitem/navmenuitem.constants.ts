@@ -5,7 +5,7 @@ import { TYPE as BADGE_TYPE } from '../badge/badge.constants';
 import { VARIANTS } from '../sidenavigation/sidenavigation.constants';
 import type { IconNames } from '../icon/icon.types';
 
-const TAG_NAME = utils.constructTagName('navitem');
+const TAG_NAME = utils.constructTagName('navmenuitem');
 
 const ALLOWED_BADGE_TYPES = {
   DOT: BADGE_TYPE.DOT,

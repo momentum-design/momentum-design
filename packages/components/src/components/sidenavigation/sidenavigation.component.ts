@@ -4,10 +4,10 @@ import { property, state } from 'lit/decorators.js';
 import { Component, Provider } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
-import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
+import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
-import type NavItem from '../navitem';
+import type NavMenuItem from '../navmenuitem';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
@@ -22,20 +22,20 @@ import styles from './sidenavigation.styles';
  * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
- * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navitem`
+ * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
  *
  * ### Usage:
- * In a sidenavigation, navitems can be used in the following ways:
+ * In a sidenavigation, navmenuitems can be used in the following ways:
  *
- * 1. **Simple navitem** – No submenu or interaction beyond selection.
+ * 1. **Simple navmenuitem** – No submenu or interaction beyond selection.
  *
- * 2. **Navitem with submenu**:
- *    - Provide an `id` on the `mdc-navitem`
- *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navitem's `id`
+ * 2. **NavMenuItem with submenu**:
+ *    - Provide an `id` on the `mdc-navmenuitem`
+ *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navmenuitem's `id`
  *    - Set `parent-nav-tooltip-text` with appropriate text that will display when a child menu item
  *      inside the nested menupopover is active, conveying which submenu item is currently selected
  *
- * 3. **Actionable navitem (no submenu)**:
+ * 3. **Actionable navmenuitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger
  *    - Set `disable-aria-current="true"` to maintain visual active state without navigation behavior
  *
@@ -45,7 +45,7 @@ import styles from './sidenavigation.styles';
  * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
  *
  * #### Accessibility Notes:
- * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-menubar`
+ * - Always provide meaningful `aria-label` attributes for both `mdc-navmenuitem` and `mdc-menubar`
  * to ensure screen reader support
  * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
  *
@@ -54,7 +54,7 @@ import styles from './sidenavigation.styles';
  * @dependency mdc-divider
  * @dependency mdc-menubar
  *
- * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navmenuitem changes.
  *
  * @tagname mdc-sidenavigation
  *
@@ -72,7 +72,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
     });
 
-    this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
+    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange as EventListener);
   }
 
   override connectedCallback(): void {
@@ -180,30 +180,31 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   /**
-   * Handle the navItem active change event fired from the nested navItem.
+   * Handle the navMenuItem active change event fired from the nested navMenuItem.
    * @internal
-   * @param event - Custom Event fired from the nested navItem.
+   * @param event - Custom Event fired from the nested navMenuItem.
    */
-  private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
-    const newNavItem = this.findNav((this.navItems as NavItem[]) || [], event.detail.navId);
+  private handleNestedNavMenuItemActiveChange = (event: CustomEvent<any>): void => {
+    const newNavMenuItem = this.findNav((this.navMenuItems as NavMenuItem[]) || [], event.detail.navId);
     if (this.context?.value) {
-      this.context.value.setCurrentActiveNavItem(newNavItem);
+      this.context.value.setCurrentActiveNavMenuItem(newNavMenuItem);
     }
   };
 
   /**
-   * Matches new navItem with navId.
-   * @param NavItem - The new active navItem.
+   * Matches new navMenuItem with navId.
+   * @param NavMenuItem - The new active navMenuItem.
    *
    * @internal
    */
-  private findNav = (navs: NavItem[], navId: string): NavItem | undefined => navs.find(nav => nav.navId === navId);
+  private findNav = (navs: NavMenuItem[], navId: string): NavMenuItem | undefined =>
+    navs.find(nav => nav.navId === navId);
 
   /**
-   * Returns all nested, non-disabled mdc-navitem elements inside this component.
+   * Returns all nested, non-disabled mdc-navmenuitem elements inside this component.
    */
-  private get navItems(): NavItem[] {
-    return Array.from(this.querySelectorAll(`${NAVITEM_TAGNAME}:not([disabled])`));
+  private get navMenuItems(): NavMenuItem[] {
+    return Array.from(this.querySelectorAll(`${NAVMENUITEM_TAGNAME}:not([disabled])`));
   }
 
   /**

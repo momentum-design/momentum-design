@@ -29,7 +29,7 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-navitem
+      <mdc-navmenuitem
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['icon-name'] ? `icon-name="${restArgs['icon-name']}"` : ''}
         ${restArgs.active ? 'active' : ''}
@@ -44,63 +44,63 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['disable-aria-current'] ? 'disable-aria-current' : ''}
       >
         ${restArgs.children ?? ''}
-      </mdc-navitem>
+      </mdc-navmenuitem>
     `,
     clearDocument: true,
   });
-  const navitem = componentsPage.page.locator('mdc-navitem');
-  await navitem.waitFor();
-  return navitem;
+  const navmenuitem = componentsPage.page.locator('mdc-navmenuitem');
+  await navmenuitem.waitFor();
+  return navmenuitem;
 };
 
-test.describe('Navitem Feature Scenarios', () => {
-  test('mdc-navitem', async ({ componentsPage }) => {
+test.describe('NavMenuItem Feature Scenarios', () => {
+  test('mdc-navmenuitem', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION
      */
     await test.step('visual-regression', async () => {
-      const navitemSheet = new StickerSheet(componentsPage, 'mdc-navitem', 'margin: 0.25rem 0;');
+      const navmenuitemSheet = new StickerSheet(componentsPage, 'mdc-navmenuitem', 'margin: 0.25rem 0;');
       const options = { createNewRow: true };
 
-      // Basic navitem with label and icon
-      navitemSheet.setAttributes({
+      // Basic navmenuitem with label and icon
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
         'show-label': true,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Active navitem
-      navitemSheet.setAttributes({
+      // Active navmenuitem
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
         'show-label': true,
         active: true,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Navitem without label (collapsed state)
-      navitemSheet.setAttributes({
+      // NavMenuItem without label (collapsed state)
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Navitem with dot badge
-      navitemSheet.setAttributes({
+      // NavMenuItem with dot badge
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
         'show-label': true,
         'badge-type': 'dot',
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Navitem with counter badge
-      navitemSheet.setAttributes({
+      // NavMenuItem with counter badge
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
@@ -108,10 +108,10 @@ test.describe('Navitem Feature Scenarios', () => {
         'badge-type': 'counter',
         counter: 5,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Navitem with high counter badge
-      navitemSheet.setAttributes({
+      // NavMenuItem with high counter badge
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
@@ -120,30 +120,30 @@ test.describe('Navitem Feature Scenarios', () => {
         counter: 150,
         'max-counter': 99,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Disabled navitem
-      navitemSheet.setAttributes({
+      // Disabled navmenuitem
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
         'show-label': true,
         disabled: true,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Soft-disabled navitem
-      navitemSheet.setAttributes({
+      // Soft-disabled navmenuitem
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
         'show-label': true,
         'soft-disabled': true,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      // Active navitem with badge (collapsed)
-      navitemSheet.setAttributes({
+      // Active navmenuitem with badge (collapsed)
+      navmenuitemSheet.setAttributes({
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
@@ -151,12 +151,12 @@ test.describe('Navitem Feature Scenarios', () => {
         'badge-type': 'counter',
         counter: 3,
       });
-      await navitemSheet.createMarkupWithCombination({}, options);
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
 
-      await navitemSheet.mountStickerSheet({ role: 'navigation' });
+      await navmenuitemSheet.mountStickerSheet({ role: 'navigation' });
       await test.step('matches screenshot of element', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-navitem', {
-          element: navitemSheet.getWrapperContainer(),
+        await componentsPage.visualRegression.takeScreenshot('mdc-navmenuitem', {
+          element: navmenuitemSheet.getWrapperContainer(),
         });
       });
     });
@@ -172,14 +172,14 @@ test.describe('Navitem Feature Scenarios', () => {
         'nav-id': navId,
         'show-label': true,
       });
-      // await componentsPage.accessibility.checkForA11yViolations('navitem-default');
+      // await componentsPage.accessibility.checkForA11yViolations('navmenuitem-default');
     });
 
     /**
      * RENDERING AND VISUAL STATES
      */
     await test.step('rendering and visual states', async () => {
-      await test.step('render navitem with label and icon', async () => {
+      await test.step('render navmenuitem with label and icon', async () => {
         await setup({
           componentsPage,
           label: primaryLabel,
@@ -205,8 +205,8 @@ test.describe('Navitem Feature Scenarios', () => {
         });
       });
 
-      await test.step('render active navitem', async () => {
-        const navitem = await setup({
+      await test.step('render active navmenuitem', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -216,7 +216,7 @@ test.describe('Navitem Feature Scenarios', () => {
         });
 
         await test.step('should have active attribute', async () => {
-          await expect(navitem).toHaveAttribute('active');
+          await expect(navmenuitem).toHaveAttribute('active');
         });
 
         await test.step('should modify icon to filled variant when active', async () => {
@@ -226,8 +226,8 @@ test.describe('Navitem Feature Scenarios', () => {
         });
       });
 
-      await test.step('render navitem without label (collapsed)', async () => {
-        const navitem = await setup({
+      await test.step('render navmenuitem without label (collapsed)', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -246,11 +246,11 @@ test.describe('Navitem Feature Scenarios', () => {
         });
 
         await test.step('should have aria-label for accessibility', async () => {
-          await expect(navitem).toHaveAttribute('aria-label', primaryLabel);
+          await expect(navmenuitem).toHaveAttribute('aria-label', primaryLabel);
         });
       });
 
-      await test.step('render navitem with badges', async () => {
+      await test.step('render navmenuitem with badges', async () => {
         await test.step('render with dot badge', async () => {
           await setup({
             componentsPage,
@@ -289,8 +289,8 @@ test.describe('Navitem Feature Scenarios', () => {
         });
       });
 
-      await test.step('render disabled navitem', async () => {
-        const navitem = await setup({
+      await test.step('render disabled navmenuitem', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -300,11 +300,11 @@ test.describe('Navitem Feature Scenarios', () => {
         });
 
         await test.step('should have disabled attribute', async () => {
-          await expect(navitem).toHaveAttribute('disabled');
+          await expect(navmenuitem).toHaveAttribute('disabled');
         });
 
         await test.step('should have aria-disabled', async () => {
-          await expect(navitem).toHaveAttribute('aria-disabled', 'true');
+          await expect(navmenuitem).toHaveAttribute('aria-disabled', 'true');
         });
       });
     });
@@ -313,8 +313,8 @@ test.describe('Navitem Feature Scenarios', () => {
      * MOUSE INTERACTIONS
      */
     await test.step('mouse interactions', async () => {
-      await test.step('click on normal navitem', async () => {
-        const navitem = await setup({
+      await test.step('click on normal navmenuitem', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -323,14 +323,14 @@ test.describe('Navitem Feature Scenarios', () => {
           active: true,
         });
 
-        const eventPromise = componentsPage.waitForEvent(navitem, 'activechange');
-        await navitem.click();
+        const eventPromise = componentsPage.waitForEvent(navmenuitem, 'activechange');
+        await navmenuitem.click();
 
         await eventPromise;
       });
 
-      await test.step('click on disabled navitem', async () => {
-        const navitem = await setup({
+      await test.step('click on disabled navmenuitem', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -338,8 +338,8 @@ test.describe('Navitem Feature Scenarios', () => {
           'show-label': true,
           disabled: true,
         });
-        await expect(navitem).toBeDisabled();
-        await expect(navitem).toHaveAttribute('disabled');
+        await expect(navmenuitem).toBeDisabled();
+        await expect(navmenuitem).toHaveAttribute('disabled');
       });
     });
 
@@ -347,8 +347,8 @@ test.describe('Navitem Feature Scenarios', () => {
      * KEYBOARD INTERACTIONS
      */
     await test.step('keyboard interactions', async () => {
-      await test.step('focus navitem using Tab navigation', async () => {
-        const navitem = await setup({
+      await test.step('focus navmenuitem using Tab navigation', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -357,11 +357,11 @@ test.describe('Navitem Feature Scenarios', () => {
         });
 
         await componentsPage.actionability.pressTab();
-        await expect(navitem).toBeFocused();
+        await expect(navmenuitem).toBeFocused();
       });
 
-      await test.step('disabled navitem keyboard behavior', async () => {
-        const navitem = await setup({
+      await test.step('disabled navmenuitem keyboard behavior', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -372,12 +372,12 @@ test.describe('Navitem Feature Scenarios', () => {
 
         await test.step('should not be focusable', async () => {
           await componentsPage.actionability.pressTab();
-          await expect(navitem).not.toBeFocused();
+          await expect(navmenuitem).not.toBeFocused();
         });
       });
 
-      await test.step('soft-disabled navitem keyboard behavior', async () => {
-        const navitem = await setup({
+      await test.step('soft-disabled navmenuitem keyboard behavior', async () => {
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -388,7 +388,7 @@ test.describe('Navitem Feature Scenarios', () => {
 
         await test.step('should be focusable', async () => {
           await componentsPage.actionability.pressTab();
-          await expect(navitem).toBeFocused();
+          await expect(navmenuitem).toBeFocused();
         });
       });
     });
@@ -398,7 +398,7 @@ test.describe('Navitem Feature Scenarios', () => {
      */
     await test.step('ARIA and accessibility attributes', async () => {
       await test.step('default ARIA attributes', async () => {
-        const navitem = await setup({
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -406,12 +406,12 @@ test.describe('Navitem Feature Scenarios', () => {
           'show-label': true,
         });
 
-        await expect(navitem).toHaveAttribute('role', 'menuitem');
-        await expect(navitem).toHaveAttribute('tabindex', '0');
+        await expect(navmenuitem).toHaveAttribute('role', 'menuitem');
+        await expect(navmenuitem).toHaveAttribute('tabindex', '0');
       });
 
       await test.step('disabled state ARIA attributes', async () => {
-        const navitem = await setup({
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -420,11 +420,11 @@ test.describe('Navitem Feature Scenarios', () => {
           disabled: true,
         });
 
-        await expect(navitem).toHaveAttribute('aria-disabled', 'true');
+        await expect(navmenuitem).toHaveAttribute('aria-disabled', 'true');
       });
 
       await test.step('soft-disabled state ARIA attributes', async () => {
-        const navitem = await setup({
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -433,12 +433,12 @@ test.describe('Navitem Feature Scenarios', () => {
           'soft-disabled': true,
         });
 
-        await expect(navitem).toHaveAttribute('aria-disabled', 'true');
-        await expect(navitem).toHaveAttribute('tabindex', '0');
+        await expect(navmenuitem).toHaveAttribute('aria-disabled', 'true');
+        await expect(navmenuitem).toHaveAttribute('tabindex', '0');
       });
 
       await test.step('collapsed state with aria-label', async () => {
-        const navitem = await setup({
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -447,7 +447,7 @@ test.describe('Navitem Feature Scenarios', () => {
           'aria-label': primaryLabel,
         });
 
-        await expect(navitem).toHaveAttribute('aria-label', primaryLabel);
+        await expect(navmenuitem).toHaveAttribute('aria-label', primaryLabel);
       });
     });
 
@@ -456,7 +456,7 @@ test.describe('Navitem Feature Scenarios', () => {
      */
     await test.step('event handling', async () => {
       await test.step('activechange event details', async () => {
-        const navitem = await setup({
+        const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
@@ -467,13 +467,13 @@ test.describe('Navitem Feature Scenarios', () => {
 
         // Use evaluate to capture event details since waitForEvent doesn't return event data
         let eventDetails: any = null;
-        await navitem.evaluate((element: HTMLElement) => {
+        await navmenuitem.evaluate((element: HTMLElement) => {
           element.addEventListener('activechange', (e: any) => {
             (window as any).eventDetails = e.detail;
           });
         });
 
-        await navitem.click();
+        await navmenuitem.click();
 
         eventDetails = await componentsPage.page.evaluate(() => (window as any).eventDetails);
         expect(eventDetails).toBeTruthy();

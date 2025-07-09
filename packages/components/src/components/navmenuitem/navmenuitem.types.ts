@@ -1,6 +1,6 @@
 import { ValueOf } from '../../utils/types';
 
-import { ALLOWED_BADGE_TYPES } from './navitem.constants';
+import { ALLOWED_BADGE_TYPES } from './navmenuitem.constants';
 
 type BadgeType = ValueOf<typeof ALLOWED_BADGE_TYPES>;
 interface Events {

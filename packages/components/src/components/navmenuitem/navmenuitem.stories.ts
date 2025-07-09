@@ -6,11 +6,11 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 
-import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
+import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navmenuitem.constants';
 
 const render = (args: Args) => html`
   <div role="menubar">
-    <mdc-navitem
+    <mdc-navmenuitem
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
       @keyup="${action('onkeyup')}"
@@ -27,14 +27,14 @@ const render = (args: Args) => html`
       ?show-label=${args['show-label']}
       ?disable-aria-current=${args['disable-aria-current']}
       aria-label=${args['aria-label']}
-    ></mdc-navitem>
+    ></mdc-navmenuitem>
   </div>
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/sidenavigation/navitem',
+  title: 'Work In Progress/sidenavigation/navmenuitem',
   tags: ['autodocs'],
-  component: 'mdc-navitem',
+  component: 'mdc-navmenuitem',
   render,
   parameters: {
     badges: ['wip'],
@@ -76,17 +76,17 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...textControls([
-      '--mdc-navitem-color',
-      '--mdc-navitem-border-color',
-      '--mdc-navitem-disabled-color',
-      '--mdc-navitem-expanded-width',
-      '--mdc-navitem-hover-background-color',
-      '--mdc-navitem-hover-active-background-color',
-      '--mdc-navitem-pressed-background-color',
-      '--mdc-navitem-pressed-active-background-color',
-      '--mdc-navitem-disabled-background-color',
-      '--mdc-navitem-disabled-active-background-color',
-      '--mdc-navitem-rest-active-background-color',
+      '--mdc-navmenuitem-color',
+      '--mdc-navmenuitem-border-color',
+      '--mdc-navmenuitem-disabled-color',
+      '--mdc-navmenuitem-expanded-width',
+      '--mdc-navmenuitem-hover-background-color',
+      '--mdc-navmenuitem-hover-active-background-color',
+      '--mdc-navmenuitem-pressed-background-color',
+      '--mdc-navmenuitem-pressed-active-background-color',
+      '--mdc-navmenuitem-disabled-background-color',
+      '--mdc-navmenuitem-disabled-active-background-color',
+      '--mdc-navmenuitem-rest-active-background-color',
     ]),
     ...hideControls([
       '--mdc-listitem-default-background-color',
@@ -136,7 +136,7 @@ export const Example: StoryObj = {
   },
 };
 
-export const collapsedNavItem: StoryObj = {
+export const collapsedNavMenuItem: StoryObj = {
   args: {
     'nav-id': '1',
     'icon-name': 'placeholder-bold',
@@ -144,7 +144,7 @@ export const collapsedNavItem: StoryObj = {
     counter: 3,
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
-    'aria-label': 'This is a navitem.',
+    'aria-label': 'This is a navmenuitem.',
     active: false,
     'show-label': false,
   },

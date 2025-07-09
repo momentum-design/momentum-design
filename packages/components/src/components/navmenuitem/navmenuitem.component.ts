@@ -14,48 +14,48 @@ import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { ListItemVariants } from '../listitem/listitem.types';
 import type { PopoverPlacement } from '../popover/popover.types';
 
-import type { BadgeType } from './navitem.types';
-import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
-import styles from './navitem.styles';
+import type { BadgeType } from './navmenuitem.types';
+import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navmenuitem.constants';
+import styles from './navmenuitem.styles';
 
 /**
- * `mdc-navitem` is a menuitem styled to work as a navigation tab.
+ * `mdc-navmenuitem` is a menuitem styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * Note: `mdc-navitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
+ * Note: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
  *
- * @tagname mdc-navitem
+ * @tagname mdc-navmenuitem
  *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-badge
  * @dependency mdc-tooltip
  *
- * @event click - (React: onClick) This event is dispatched when the navitem is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navitem.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navitem.
- * @event focus - (React: onFocus) This event is dispatched when the navitem receives focus.
- * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
+ * @event click - (React: onClick) This event is dispatched when the navmenuitem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navmenuitem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navmenuitem.
+ * @event focus - (React: onFocus) This event is dispatched when the navmenuitem receives focus.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navmenuitem changes.
  *
- * @cssproperty --mdc-navitem-color - Text color of the navitem in its normal state.
- * @cssproperty --mdc-navitem-border-color - Border color of the navitem in its normal state.
- * @cssproperty --mdc-navitem-disabled-color - Text color of the navitem when disabled.
- * @cssproperty --mdc-navitem-expanded-width - Width of the navItem when expanded.
- * @cssproperty --mdc-navitem-hover-background-color - Background color of the navitem when hovered.
- * @cssproperty --mdc-navitem-hover-active-background-color - Background color of the active navitem when hovered.
- * @cssproperty --mdc-navitem-pressed-background-color - Background color of the navitem when pressed.
- * @cssproperty --mdc-navitem-pressed-active-background-color - Background color of the active navitem when pressed.
- * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navitem when disabled.
- * @cssproperty --mdc-navitem-disabled-active-background-color - Background color of the active navitem when disabled.
- * @cssproperty --mdc-navitem-rest-active-background-color - Background color of the active nav item in its rest state.
+ * @cssproperty --mdc-navmenuitem-color - Text color of the navmenuitem in its normal state.
+ * @cssproperty --mdc-navmenuitem-border-color - Border color of the navmenuitem in its normal state.
+ * @cssproperty --mdc-navmenuitem-disabled-color - Text color of the navmenuitem when disabled.
+ * @cssproperty --mdc-navmenuitem-expanded-width - Width of the navMenuItem when expanded.
+ * @cssproperty --mdc-navmenuitem-hover-background-color - Background color of the navmenuitem when hovered.
+ * @cssproperty --mdc-navmenuitem-hover-active-background-color - Background color of the active navmenuitem when hovered.
+ * @cssproperty --mdc-navmenuitem-pressed-background-color - Background color of the navmenuitem when pressed.
+ * @cssproperty --mdc-navmenuitem-pressed-active-background-color - Background color of the active navmenuitem when pressed.
+ * @cssproperty --mdc-navmenuitem-disabled-background-color - Background color of the navmenuitem when disabled.
+ * @cssproperty --mdc-navmenuitem-disabled-active-background-color - Background color of the active navmenuitem when disabled.
+ * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
  */
-class NavItem extends IconNameMixin(MenuItem) {
+class NavMenuItem extends IconNameMixin(MenuItem) {
   /**
-   * The navitem's active state indicates whether it is currently toggled on (active) or off (inactive).
-   * When the active state is true, the navitem is considered to be in an active state, meaning it is toggled on.
-   * Conversely, when the active state is false, the navitem is in an inactive state, indicating it is toggled off.
+   * The navmenuitem's active state indicates whether it is currently toggled on (active) or off (inactive).
+   * When the active state is true, the navmenuitem is considered to be in an active state, meaning it is toggled on.
+   * Conversely, when the active state is false, the navmenuitem is in an inactive state, indicating it is toggled off.
    * @default undefined
    */
   @property({ type: Boolean, reflect: true })
@@ -83,7 +83,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   /**
-   * Id of the navItem (used as a identificator when used in the menubar)
+   * Id of the navMenuItem (used as a identificator when used in the menubar)
    * Note: It has to be unique.
    *
    * @default undefined
@@ -92,7 +92,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   navId?: string;
 
   /**
-   * Determines whether the navItem is expanded or not.
+   * Determines whether the navMenuItem is expanded or not.
    *
    * @internal
    */
@@ -106,7 +106,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   override ariaLabel: string | null = null;
 
   /**
-   * When set to true, prevents the automatic setting of the `aria-current` attribute on the navitem
+   * When set to true, prevents the automatic setting of the `aria-current` attribute on the navmenuitem
    * when it becomes active. This is useful for cases where you want to maintain the visual active styling
    * but need to handle aria-current attribute differently or not at all.
    * The active button styling will still be applied regardless of this setting.
@@ -135,7 +135,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     this.tooltipPlacement = undefined as unknown as PopoverPlacement;
 
     if (!this.navId && this.onerror) {
-      this.onerror('[mdc-navitem] navId is required and was not provided.');
+      this.onerror('[mdc-navmenuitem] navId is required and was not provided.');
     }
   }
 
@@ -157,7 +157,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   }
 
   /**
-   * Check whether the navitem is inside a nested nav structure.
+   * Check whether the navmenuitem is inside a nested nav structure.
    * Returns `true` if there is a parent `mdc-menupopover`
    * This method assumes nesting implies deeper levels of nav hierarchy.
    */
@@ -174,8 +174,8 @@ class NavItem extends IconNameMixin(MenuItem) {
 
   /**
    * Modifies the icon name based on the active state.
-   * If the navItem is active, the icon name is suffixed with '-filled'.
-   * If the navItem is inactive, the icon name is restored to its original value.
+   * If the navMenuItem is active, the icon name is suffixed with '-filled'.
+   * If the navMenuItem is inactive, the icon name is restored to its original value.
    * If '-filled' icon is not available, the icon name remains unchanged.
    * @internal
    * @param active - The active state.
@@ -200,9 +200,9 @@ class NavItem extends IconNameMixin(MenuItem) {
   /**
    * Dispatch the activechange event.
    * @internal
-   * @param active - The active state of the navItem.
+   * @param active - The active state of the navMenuItem.
    */
-  private emitNavItemActiveChange = (active: boolean): void => {
+  private emitNavMenuItemActiveChange = (active: boolean): void => {
     const event = new CustomEvent('activechange', {
       detail: { navId: this.navId, active },
       bubbles: true,
@@ -212,7 +212,7 @@ class NavItem extends IconNameMixin(MenuItem) {
 
   private handleClickEvent(): void {
     if (this.disabled) return;
-    this.emitNavItemActiveChange(this.active as boolean);
+    this.emitNavMenuItemActiveChange(this.active as boolean);
   }
 
   public override update(changedProperties: PropertyValues) {
@@ -275,4 +275,4 @@ class NavItem extends IconNameMixin(MenuItem) {
   public static override styles: Array<CSSResult> = [...MenuItem.styles, ...styles];
 }
 
-export default NavItem;
+export default NavMenuItem;
