@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -63,7 +63,11 @@ class AlertChip extends Buttonsimple {
   public override render() {
     return html`
       <mdc-icon part="icon" name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
-      <mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+      ${this.label
+        ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
+            >${this.label}</mdc-text
+          >`
+        : nothing}
     `;
   }
 
