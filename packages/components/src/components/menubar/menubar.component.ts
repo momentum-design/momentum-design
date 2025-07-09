@@ -71,7 +71,7 @@ class MenuBar extends Component {
    * Returns all menupopovers, including direct and slotted ones .
    */
   get allPopovers(): Element[] {
-    if (!this.menuItems.length) return []; 
+    if (!this.menuItems.length) return [];
     const sidenav = this.menuItems[0].closest(SIDENAV_TAGNAME);
     const menubar = this.menuItems[0].closest(MENUBAR_TAGNAME);
     const root = sidenav || menubar;
@@ -140,17 +140,16 @@ class MenuBar extends Component {
     if (!triggerElement) return;
 
     const popovers = this.allPopovers;
-    const submenu = popovers.find(popover => popover.getAttribute('triggerid') === triggerId) as MenuPopover | undefined;
+    const submenu = popovers.find(popover => popover.getAttribute('triggerid') === triggerId) as
+      | MenuPopover
+      | undefined;
     if (submenu) submenu.showPopover();
   }
 
   private updatePopoverPlacement(): void {
     const placement = POPOVER_PLACEMENT.RIGHT_START;
-    const popovers = this.allPopovers;
-    popovers.forEach(popover => {
-      if (!popover.hasAttribute('disabled')) {
-        popover.setAttribute('placement', placement);
-      }
+    this.allPopovers.forEach(popover => {
+      popover.setAttribute('placement', placement);
     });
   }
 
@@ -197,7 +196,12 @@ class MenuBar extends Component {
     if (!parent || element.role !== ROLE.MENUITEM) return false;
     const parentTag = parent.tagName.toLowerCase();
     if (parentTag === MENUBAR_TAGNAME || parentTag === SIDENAV_TAGNAME) return true;
-    if (parentTag === MENUSECTION_TAGNAME && (parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME || parent.parentElement?.tagName.toLowerCase() === SIDENAV_TAGNAME)) return true;
+    if (
+      parentTag === MENUSECTION_TAGNAME &&
+      (parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME ||
+        parent.parentElement?.tagName.toLowerCase() === SIDENAV_TAGNAME)
+    )
+      return true;
     return false;
   }
 
