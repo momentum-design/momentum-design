@@ -63,9 +63,20 @@ class MenuSection extends Component {
     }
   }
 
+  /**
+   * Renders the header text of the menu section.
+   * If the menu section header text is placed inside the side navigation,
+   * then the header text is aligned to the left of 1.75rem.
+   *
+   * @returns header text
+   */
   private renderLabel() {
     if (this.headerText) {
-      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
+      return html`<mdc-text
+        part="${this.sideNavigationContext?.value?.expanded ? 'align-left' : ''}"
+        type=${TYPE.BODY_MIDSIZE_BOLD}
+        tagname=${VALID_TEXT_TAGS.DIV}
+      >
         ${this.headerText}
       </mdc-text> `;
     }
