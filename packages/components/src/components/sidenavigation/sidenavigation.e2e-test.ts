@@ -110,13 +110,6 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
 
         // --- Expand/Collapse (flexible only) ---
         if (variant === 'flexible') {
-          await test.step('Collapse and expand sidenavigation using mouse', async () => {
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-            await toggleButton.click();
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-            await toggleButton.click();
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          });
           await test.step('Collapse and expand sidenavigation using keyboard', async () => {
             const firstNavItem = navItems.first();
             const firstNavItemInFixedBar = fixedNavlist.locator('mdc-navitem').first();
@@ -128,6 +121,13 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await componentsPage.page.keyboard.press('Space');
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+          });
+          await test.step('Collapse and expand sidenavigation using mouse', async () => {
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            await toggleButton.click();
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+            await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
           });
         }
