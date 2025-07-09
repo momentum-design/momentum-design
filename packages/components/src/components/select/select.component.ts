@@ -25,6 +25,8 @@ import type { ArrowIcon } from './select.types';
  * The component ensures accessibility and usability while handling various use cases,
  * including long text truncation with tooltip support.
  *
+ * To set a default option, use the `selected` attribute on the `mdc-option` element.
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-popover
@@ -37,6 +39,7 @@ import type { ArrowIcon } from './select.types';
  *
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
  * @event change - (React: onChange) This event is dispatched when the select is changed.
+ * @event input - (React: onInput) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
@@ -85,12 +88,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * The native select element
    */
   @query('select') override inputElement!: HTMLInputElement;
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-    // select will only contain name and value will be defined in the options.
-    this.value = undefined as unknown as string;
-  }
 
   /**
    * A helper function which returns a flattened array of all valid options from the assigned slot.
@@ -170,11 +167,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.selectedIcon = option?.getAttribute('prefix-icon') as IconNames | null;
     this.selectedValue = option?.getAttribute('value') ?? option?.textContent ?? '';
 
+    this.value = this.selectedValue;
     // Set form value
     this.internals.setFormValue(this.selectedValue);
     this.manageRequired();
 
     // dispatch a change event when a value is selected
+    this.dispatchInput(this.selectedValue);
     this.dispatchChange(this.selectedValue);
   }
 
@@ -230,6 +229,19 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     );
   }
 
+  private dispatchInput(value: string): void {
+    if (!value) {
+      return;
+    }
+    this.dispatchEvent(
+      new CustomEvent('input', {
+        detail: { value },
+        composed: true,
+        bubbles: true,
+      }),
+    );
+  }
+
   /**
    * Handles the keydown event on the select element when the popover is open.
    * The options are as follows:
@@ -248,12 +260,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       }
       case KEYS.SPACE:
-        this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
         event.preventDefault();
         break;
       case KEYS.ENTER:
-        this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
         event.preventDefault();
         // if the popover is closed, then we submit the form.
@@ -419,6 +429,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   public override firstUpdated() {
     const options = this.getAllValidOptions();
     const selectedOptionIndex = options.findIndex(option => option?.hasAttribute('selected'));
+
     if (selectedOptionIndex !== -1) {
       this.setSelectedValue(options[selectedOptionIndex]);
       this.updateTabIndexForAllOptions(options[selectedOptionIndex]);
