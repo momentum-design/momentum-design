@@ -423,6 +423,37 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
             await expect(mainMenuPopover).not.toBeVisible();
           });
         }); 
+        await test.step('visual regression and accessibility', async () => {
+          await test.step('visual regression: default sidenavigation', async () => {
+            await setup(componentsPage, variant);
+            await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-default`);
+            await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-default`);
+          });
+          await test.step('visual regression: main menu popover open', async () => {
+            const { mainMenuNavMenuItem, mainMenuPopover } = await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuPopover).toBeVisible();
+            await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-mainmenu-popover`);
+            await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-mainmenu-popover`);
+          });
+          await test.step('visual regression: tools submenu open', async () => {
+            const { mainMenuNavMenuItem, mainMenuPopover, toolsMenuItem, toolsMenuPopover } = await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuPopover).toBeVisible();
+            await toolsMenuItem.click();
+            await expect(toolsMenuPopover).toBeVisible();
+            await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-tools-popover`);
+            await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-tools-popover`);
+          });
+          if (variant === 'flexible') {
+            await test.step('visual regression: collapsed sidenavigation', async () => {
+              const { toggleButton } = await setup(componentsPage, variant);
+              await toggleButton.click();
+              await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-collapsed`);
+              await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-collapsed`);
+            });
+          }
+        });
       });
     });
   });
