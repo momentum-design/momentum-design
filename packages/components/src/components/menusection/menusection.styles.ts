@@ -9,8 +9,12 @@ const styles = css`
     margin-block: 0.25rem;
   }
 
-  :host::part(align-left) {
+  :host(:dir(ltr))::part(align-header) {
     padding-left: 1.75rem;
+  }
+
+  :host(:dir(rtl))::part(align-header) {
+    padding-right: 1.75rem;
   }
 `;
 
