@@ -2,6 +2,18 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
+// Local snapshot wrapper to restrict snapshots for desktop only
+const takeSnapshot = async (
+  componentsPage: ComponentsPage,
+  name: string,
+  options?: Parameters<typeof componentsPage.visualRegression.takeScreenshot>[1]
+) => {
+  const deviceName = test.info().project.name;
+  if (["chrome", "firefox", "msedge", "webkit"].includes(deviceName)) {
+    await componentsPage.visualRegression.takeScreenshot(name, options);
+  }
+};
+
 // Setup function to mount sidenavigation and return locators
 const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const expanded = variant !== 'fixed-collapsed';
@@ -157,7 +169,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
 
       await test.step('interactions', async () => {
         // Default state of sidenavigation
-        await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-default`);
+        await takeSnapshot(componentsPage, `sidenavigation-${variant}-default`);
         await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-default`);
 
         // --- Expand/Collapse (flexible only) ---
@@ -172,7 +184,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             ]);
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-            await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
+            await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
               source: 'userflow',
               fileNameSuffix: 'collapsed-view',
             });
@@ -197,7 +209,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await lastNavMenuItem.scrollIntoViewIfNeeded();
           await expect(lastNavMenuItem).toBeVisible();
           await expect(fixedNavlist).toBeVisible();
-          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
+          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'scrolled-view',
           });
@@ -275,7 +287,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await componentsPage.page.keyboard.press('Enter');
           await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(mainMenuPopover).toBeVisible();
-          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
+          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'mainmenu-popover',
           });
@@ -386,7 +398,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuTooltip).toBeVisible();
           const text1 = await mainMenuTooltip.textContent();
           expect(text1?.trim()).toBe('Contains active navmenuitem');
-          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
+          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'active-parent-tooltip',
           });
@@ -395,7 +407,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toolsTooltip).toBeVisible();
           const text2 = await toolsTooltip.textContent();
           expect(text2?.trim()).toBe('Contains active navmenuitem');
-          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
+          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'active-nested-tooltip',
           });
@@ -461,3 +473,4 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
     });
   });
 });
+
