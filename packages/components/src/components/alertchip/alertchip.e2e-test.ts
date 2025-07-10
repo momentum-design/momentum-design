@@ -46,8 +46,13 @@ test('mdc-alertchip', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const alertchipStickerSheet = new StickerSheet(componentsPage, 'mdc-alertchip');
+
     alertchipStickerSheet.setAttributes({ label: 'Alert' });
     await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
+
+    alertchipStickerSheet.setAttributes({ 'aria-label': 'Icon Only' });
+    await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
+
     await alertchipStickerSheet.mountStickerSheet();
     const container = alertchipStickerSheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
