@@ -17,8 +17,8 @@ const isValidMenuItem = (menuItem: Element | null): boolean => {
 const isValidPopover = (el: Element | null): el is MenuPopover => el?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
 const isActiveMenuItem = (menuItem: Element | null): boolean => {
-  const role = menuItem?.getAttribute('role')?.toLowerCase();
-  return !!menuItem && role === ROLE.MENUITEM && !menuItem.hasAttribute('disabled');
+  if (!menuItem) return false;
+  return isValidMenuItem(menuItem) && !menuItem.hasAttribute('disabled');
 };
 
 export { isValidMenuItem, isValidPopover, isActiveMenuItem };
