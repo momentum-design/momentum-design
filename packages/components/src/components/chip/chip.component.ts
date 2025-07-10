@@ -76,7 +76,11 @@ class Chip extends IconNameMixin(Buttonsimple) {
   public override render() {
     return html`
       ${this.renderIcon()}
-      <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+      ${this.label
+        ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
+            >${this.label}</mdc-text
+          >`
+        : nothing}
     `;
   }
 

@@ -48,10 +48,20 @@ test('mdc-inputchip', async ({ componentsPage }) => {
     const inputchipStickerSheet = new StickerSheet(componentsPage, 'mdc-inputchip');
     inputchipStickerSheet.setAttributes({ label: 'Label', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setAttributes({
+      'icon-name': 'placeholder-bold',
+      'aria-label': 'Icon Only',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
     inputchipStickerSheet.setAttributes({ label: 'Error', error: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
     inputchipStickerSheet.setAttributes({ label: 'Disabled', disabled: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
     inputchipStickerSheet.setAttributes({
       label: 'Error Disabled',
       error: '',
