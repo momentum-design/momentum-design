@@ -34,7 +34,7 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
           <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
           <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navmenuitem>
         </mdc-menupopover>
-        <mdc-menusection slot="scrollable-menubar">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section1">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1" label="Messaging"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled></mdc-navmenuitem>
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3" label="Callings"></mdc-navmenuitem>
@@ -51,24 +51,18 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
               <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navmenuitem>
             </mdc-menupopover>
           </mdc-menupopover>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
-        <mdc-menusection slot="scrollable-menubar" label="Section 1">
-          <mdc-text>Section 1</mdc-text>
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 2">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="9" label="Messaging"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="meetings-bold" nav-id="10" label="Meetings"></mdc-navmenuitem>
           <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="11" label="Calling"></mdc-navmenuitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
-        <mdc-menusection slot="scrollable-menubar" label="Section 2">
-          <mdc-text>Section 2</mdc-text>
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 3">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="12" label="Messaging"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="meetings-bold" nav-id="13" label="Meetings"></mdc-navmenuitem>
           <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="14" label="Calling"></mdc-navmenuitem>
-          <mdc-divider variant="gradient"></mdc-divider>
         </mdc-menusection>
-        <mdc-menusection slot="scrollable-menubar" label="Section 3">
-          <mdc-text>Section 3</mdc-text>
+        <mdc-menusection slot="scrollable-menubar" header-text="Section 4">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="15" label="Messaging"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="meetings-bold" nav-id="16" label="Meetings"></mdc-navmenuitem>
           <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="17" label="Calling"></mdc-navmenuitem>
