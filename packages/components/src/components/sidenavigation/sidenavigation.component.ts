@@ -252,13 +252,20 @@ class SideNavigation extends Provider<SideNavigationContext> {
     this.updateExpansionState();
   }
 
+  private preventScrollOnSpace(event: KeyboardEvent): void {
+    // Prevent default space key behavior to avoid scrolling the page
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
   public override render() {
     if (this.variant === VARIANTS.HIDDEN) {
       return html``;
     }
     return html`
       <div part="side-navigation-container" id="side-nav-container">
-        <div part="scrollable-section" tabindex="-1">
+        <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
           <slot name="scrollable-section">
             <mdc-menubar>
               <slot name="scrollable-menubar"></slot>

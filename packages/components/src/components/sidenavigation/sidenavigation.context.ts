@@ -79,6 +79,7 @@ class SideNavigationContext {
       const previousParents = this.getParentNavMenuItems(this.currentActiveNavMenuItem);
       previousParents.forEach(parent => {
         parent.removeAttribute('tooltip-text');
+        parent.removeAttribute('tooltip-placement');
         parent.removeAttribute('active');
       });
     }

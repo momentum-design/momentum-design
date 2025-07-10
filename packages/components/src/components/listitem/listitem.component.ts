@@ -206,12 +206,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 
-
-    // Attach the tooltip programmatically after the nearest parent element.
+    // Set the slot attribute if the parent element has a slot.
     if (this.parentElement && this.parentElement.hasAttribute('slot')) {
       tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
     }
 
+    // Attach the tooltip programmatically after the nearest parent element.
     this.parentElement?.after(tooltip);
   }
 
