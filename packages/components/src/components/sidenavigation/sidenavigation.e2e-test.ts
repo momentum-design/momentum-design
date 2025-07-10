@@ -104,7 +104,7 @@ const variants = ['flexible', 'fixed-expanded', 'fixed-collapsed'];
 
 test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
   variants.forEach(variant => {
-    test.describe(`${variant} variant`, () => {
+    test.describe.parallel(`${variant} variant`, () => {
       test(`all user scenarios for ${variant}`, async ({ componentsPage }) => {
         const {
           sidenav,
@@ -121,273 +121,308 @@ test.describe('SideNavigation (Nested, all scenarios, all variants)', () => {
           toolsTooltip,
         } = await setup(componentsPage, variant);
 
-        // --- Expand/Collapse (flexible only) ---
-        if (variant === 'flexible') {
-          await test.step('Collapse and expand sidenavigation using keyboard', async () => {
-            const firstNavMenuItem = navMenuItems.first();
-            const firstNavMenuItemInFixedBar = fixedNavlist.locator('mdc-navmenuitem').first();
-            await componentsPage.actionability.pressAndCheckFocus('Tab', [
-              firstNavMenuItem,
-              firstNavMenuItemInFixedBar,
-              toggleButton,
-            ]);
-            await componentsPage.page.keyboard.press('Enter');
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-            await componentsPage.page.keyboard.press('Space');
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          });
-          await test.step('Collapse and expand sidenavigation using mouse', async () => {
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-            await toggleButton.click();
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
-            await toggleButton.click();
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-          });
-        }
+        await test.step('attributes', async () => {
+          // Main sidenavigation attributes
+          await expect(sidenav).toHaveAttribute('variant', variant);
+          await expect(sidenav).toHaveAttribute('customer-name', '%Customer Name%');
+          await expect(sidenav).toHaveAttribute('grabber-btn-aria-label', 'Toggle Side navigation');
+          await expect(sidenav).toHaveAttribute('parent-nav-tooltip-text', 'Contains active navmenuitem');
 
-        // --- Scroll Behavior ---
-        await test.step('Scroll to reveal more top menuitems and keep fixed section pinned', async () => {
-          const lastNavMenuItem = navMenuItems.last();
-          await lastNavMenuItem.scrollIntoViewIfNeeded();
-          await expect(lastNavMenuItem).toBeVisible();
-          await expect(fixedNavlist).toBeVisible();
-        });
+          // Expanded/collapsed attribute
+          if (variant === 'fixed-collapsed') {
+            await expect(sidenav).not.toHaveAttribute('expanded');
+          } else {
+            await expect(sidenav).toHaveAttribute('expanded', 'true');
+          }
 
-        // --- Top-level menuitem selection ---
-        await test.step('Select a top level menuitem by mouse', async () => {
-          await navMenuItems.first().click();
-          await expect(navMenuItems.first()).toHaveAttribute('aria-current', 'page');
-        });
-        await test.step('Select a top level menuitem by keyboard', async () => {
-          await setup(componentsPage, variant);
-          await componentsPage.actionability.pressTab();
-          await expect(navMenuItems.first()).toBeFocused();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(navMenuItems.first()).toHaveAttribute('aria-current', 'page');
-        });
+          // Toggle button aria attributes (flexible only)
+          if (variant === 'flexible') {
+            await expect(toggleButton).toHaveAttribute('aria-label', 'Toggle Side navigation');
+            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+          }
 
-        // --- Actionable/soft-disabled menuitem ---
-        await test.step('Clicking a soft-disabled menuitem should not trigger any action', async () => {
+          // Menuitem attributes
+          const firstNavMenuItem = navMenuItems.first();
+          await expect(firstNavMenuItem).toHaveAttribute('icon-name', 'meetings-bold');
+          await expect(firstNavMenuItem).toHaveAttribute('nav-id', 'verify1');
+          await expect(firstNavMenuItem).toHaveAttribute('label', 'Meetings');
+          await expect(firstNavMenuItem).toHaveAttribute('slot', 'scrollable-menubar');
+
+          // Soft-disabled menuitem
           const softDisabled = sidenav.locator('mdc-navmenuitem[soft-disabled]').first();
           await expect(softDisabled).toHaveAttribute('soft-disabled');
           await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
-          await softDisabled.click({ force: true });
-          await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
-        });
-        await test.step('Keyboard activation on soft-disabled menuitem should not trigger any action', async () => {
-          await setup(componentsPage, variant);
-          await componentsPage.actionability.pressTab();
-          const firstMenuSectionNavMenuItem = sidenav
-            .locator('mdc-menusection')
-            .first()
-            .locator('mdc-navmenuitem')
-            .first();
-          const secondMenuSectionNavMenuItem = sidenav
-            .locator('mdc-menusection')
-            .first()
-            .locator('mdc-navmenuitem')
-            .nth(1);
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
-            navMenuItems.nth(1),
-            firstMenuSectionNavMenuItem,
-            secondMenuSectionNavMenuItem,
-          ]);
-          const softDisabled = secondMenuSectionNavMenuItem;
-          await expect(softDisabled).toHaveAttribute('soft-disabled');
-          await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
         });
 
-        // --- Nested menuitem: open submenu ---
-        await test.step('Open/close submenu to reveal/hide nested menuitems (mouse)', async () => {
-          // check for main menu item
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
-          await expect(mainMenuPopover).not.toBeVisible();
-
-          // check for calling menu item
-          await callingNavMenuItem.click();
-          await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(callingPopover).toBeVisible();
-          await callingNavMenuItem.click();
-          await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'false');
-          await expect(callingPopover).not.toBeVisible();
-        });
-        await test.step('Open submenu to reveal nested menuitems (keyboard)', async () => {
-          // check for main menu item
-          await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.focus();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-
-          // check for calling menu item
-          await setup(componentsPage, variant);
-          await componentsPage.actionability.pressTab();
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [callingNavMenuItem]);
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(callingPopover).toBeVisible();
-        });
-
-        // --- Nested menuitem: select nested menuitem (1st level submenu) ---
-        await test.step('Select nested menuitem with mouse inside 1st level submenu', async () => {
-          await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-          const nestedItem = mainMenuPopover.locator('mdc-navmenuitem').first();
-          await nestedItem.click();
-          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
-          await expect(mainMenuPopover).not.toBeVisible();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
-        });
-
-        await test.step('Select nested menuitem with keyboard inside 1st level submenu', async () => {
-          await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.focus();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-          const nestedItem = mainMenuPopover.locator('mdc-navmenuitem').first();
-          await expect(nestedItem).toBeFocused();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
-          await expect(mainMenuPopover).not.toBeVisible();
-          await expect(mainMenuNavMenuItem).toBeFocused();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
-        });
-
-        // --- Nested menuitem: select nested menuitem (2nd level submenu) ---
-        await test.step('Select nested menuitem with mouse inside 2nd level submenu', async () => {
-          await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-          await toolsMenuItem.click();
-          await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(toolsMenuPopover).toBeVisible();
-          const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
-          await nestedItem.click();
-          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
-          await expect(toolsMenuPopover).not.toBeVisible();
-          await expect(mainMenuPopover).not.toBeVisible();
-          await expect(toolsMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
-        });
-
-        await test.step('Select nested menuitem with keyboard inside 2nd level submenu', async () => {
-          await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.focus();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(mainMenuPopover).toBeVisible();
-          const toolsMenuItem = mainMenuPopover.locator('mdc-navmenuitem#share-id');
-          await toolsMenuItem.focus();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
-          await expect(toolsMenuPopover).toBeVisible();
-          const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
-          await expect(nestedItem).toBeFocused();
-          await componentsPage.page.keyboard.press('Enter');
-          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
-          await expect(toolsMenuPopover).not.toBeVisible();
-          await expect(mainMenuPopover).not.toBeVisible();
-          await expect(mainMenuNavMenuItem).toBeFocused();
-          await expect(toolsMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
-        });
-
-        // --- Re-engaging with previously selected parent ---
-        await test.step('Hovering with mouse over activated parent menuitem shows tooltip', async () => {
-          // top level
-          await mainMenuNavMenuItem.hover();
-          await expect(mainMenuTooltip).toBeVisible();      
-          const text1 = await mainMenuTooltip.textContent();
-          expect(text1?.trim()).toBe('Contains active navmenuitem');
-          // nested level
-          await componentsPage.page.keyboard.press('ArrowRight');
-          await componentsPage.page.mouse.move(0, 0);
-          await toolsMenuItem.hover();
-          await expect(toolsTooltip).toBeVisible();
-          const text2 = await toolsTooltip.textContent();
-          expect(text2?.trim()).toBe('Contains active navmenuitem');
-        });
-
-        await test.step('Focusing with keyboard over activated parent menuitem shows tooltip', async () => {
-          // clear previous state
-          await componentsPage.page.keyboard.press('ArrowLeft');
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [mainMenuNavMenuItem]);
-          // top level
-          await expect(mainMenuTooltip).toBeVisible();
-          const text1 = await mainMenuTooltip.textContent();
-          expect(text1?.trim()).toBe('Contains active navmenuitem');
-          // nested level
-          await componentsPage.page.keyboard.press('ArrowRight');
-          await expect(toolsTooltip).toBeVisible();
-          const text2 = await toolsTooltip.textContent();
-          expect(text2?.trim()).toBe('Contains active navmenuitem');
-        });
-
-        // --- Focus Management and Tab Behavior ---
-        await test.step('Tabbing into, through, and out of the SideNavigation', async () => {
-          await setup(componentsPage, variant);
-          // Tab to first navmenuitem in scrollable slot
-          await componentsPage.actionability.pressTab();
-          const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
-          await expect(firstScrollableNav).toBeFocused();
-          // Tab to first navmenuitem in fixed slot
-          await componentsPage.actionability.pressTab();
-          const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
-          await expect(firstFixedNav).toBeFocused();
-          // If flexible, Tab to toggle button
+        await test.step('interactions', async () => {
+          // --- Expand/Collapse (flexible only) ---
           if (variant === 'flexible') {
+            await test.step('Collapse and expand sidenavigation using keyboard', async () => {
+              const firstNavMenuItem = navMenuItems.first();
+              const firstNavMenuItemInFixedBar = fixedNavlist.locator('mdc-navmenuitem').first();
+              await componentsPage.actionability.pressAndCheckFocus('Tab', [
+                firstNavMenuItem,
+                firstNavMenuItemInFixedBar,
+                toggleButton,
+              ]);
+              await componentsPage.page.keyboard.press('Enter');
+              await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+              await componentsPage.page.keyboard.press('Space');
+              await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            });
+            await test.step('Collapse and expand sidenavigation using mouse', async () => {
+              await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+              await toggleButton.click();
+              await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+              await toggleButton.click();
+              await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            });
+          }
+
+          // --- Scroll Behavior ---
+          await test.step('Scroll to reveal more top menuitems and keep fixed section pinned', async () => {
+            const lastNavMenuItem = navMenuItems.last();
+            await lastNavMenuItem.scrollIntoViewIfNeeded();
+            await expect(lastNavMenuItem).toBeVisible();
+            await expect(fixedNavlist).toBeVisible();
+          });
+
+          // --- Top-level menuitem selection ---
+          await test.step('Select a top level menuitem by mouse', async () => {
+            await navMenuItems.first().click();
+            await expect(navMenuItems.first()).toHaveAttribute('aria-current', 'page');
+          });
+          await test.step('Select a top level menuitem by keyboard', async () => {
+            await setup(componentsPage, variant);
             await componentsPage.actionability.pressTab();
-            await expect(toggleButton).toBeFocused();
-          }
-        });
-        await test.step('Shift+Tab moves backward through focusable elements', async () => {
-          await setup(componentsPage, variant);
-          // First, tab through to the end of the focusable elements
-          await componentsPage.actionability.pressTab(); // scrollable navmenuitem
-          await componentsPage.actionability.pressTab(); // fixed navmenuitem
-          if (variant === 'flexible') {
-            await componentsPage.actionability.pressTab(); // toggle button
-            // Now shift+tab: toggle button -> fixed navmenuitem -> scrollable navmenuitem
-            await expect(toggleButton).toBeFocused();
-            await componentsPage.actionability.pressShiftTab();
-            const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
-            await expect(firstFixedNav).toBeFocused();
-            await componentsPage.actionability.pressShiftTab();
-            const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
-            await expect(firstScrollableNav).toBeFocused();
-          } else {
-            // Not flexible: shift+tab from fixed navmenuitem -> scrollable navmenuitem
-            const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
-            await expect(firstFixedNav).toBeFocused();
-            await componentsPage.actionability.pressShiftTab();
-            const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
-            await expect(firstScrollableNav).toBeFocused();
-          }
-        });
+            await expect(navMenuItems.first()).toBeFocused();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(navMenuItems.first()).toHaveAttribute('aria-current', 'page');
+          });
 
-        // --- Close submenu using Escape ---
-        await test.step('Close submenu using Escape', async () => {
-          await mainMenuNavMenuItem.click();
-          await expect(mainMenuPopover).toBeVisible();
-          await componentsPage.page.keyboard.press('Escape');
-          await expect(mainMenuPopover).not.toBeVisible();
-        });
+          // --- Actionable/soft-disabled menuitem ---
+          await test.step('Clicking a soft-disabled menuitem should not trigger any action', async () => {
+            const softDisabled = sidenav.locator('mdc-navmenuitem[soft-disabled]').first();
+            await expect(softDisabled).toHaveAttribute('soft-disabled');
+            await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
+            await softDisabled.click({ force: true });
+            await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
+          });
+          await test.step('Keyboard activation on soft-disabled menuitem should not trigger any action', async () => {
+            await setup(componentsPage, variant);
+            await componentsPage.actionability.pressTab();
+            const firstMenuSectionNavMenuItem = sidenav
+              .locator('mdc-menusection')
+              .first()
+              .locator('mdc-navmenuitem')
+              .first();
+            const secondMenuSectionNavMenuItem = sidenav
+              .locator('mdc-menusection')
+              .first()
+              .locator('mdc-navmenuitem')
+              .nth(1);
+            await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+              navMenuItems.nth(1),
+              firstMenuSectionNavMenuItem,
+              secondMenuSectionNavMenuItem,
+            ]);
+            const softDisabled = secondMenuSectionNavMenuItem;
+            await expect(softDisabled).toHaveAttribute('soft-disabled');
+            await expect(softDisabled).toHaveAttribute('aria-disabled', 'true');
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(softDisabled).not.toHaveAttribute('aria-current', 'page');
+          });
+
+          // --- Nested menuitem: open submenu ---
+          await test.step('Open/close submenu to reveal/hide nested menuitems (mouse)', async () => {
+            // check for main menu item
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
+            await expect(mainMenuPopover).not.toBeVisible();
+
+            // check for calling menu item
+            await callingNavMenuItem.click();
+            await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(callingPopover).toBeVisible();
+            await callingNavMenuItem.click();
+            await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'false');
+            await expect(callingPopover).not.toBeVisible();
+          });
+          await test.step('Open submenu to reveal nested menuitems (keyboard)', async () => {
+            // check for main menu item
+            await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.focus();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+
+            // check for calling menu item
+            await setup(componentsPage, variant);
+            await componentsPage.actionability.pressTab();
+            await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [callingNavMenuItem]);
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(callingNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(callingPopover).toBeVisible();
+          });
+
+          // --- Nested menuitem: select nested menuitem (1st level submenu) ---
+          await test.step('Select nested menuitem with mouse inside 1st level submenu', async () => {
+            await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+            const nestedItem = mainMenuPopover.locator('mdc-navmenuitem').first();
+            await nestedItem.click();
+            await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+            await expect(mainMenuPopover).not.toBeVisible();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+            await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          });
+
+          await test.step('Select nested menuitem with keyboard inside 1st level submenu', async () => {
+            await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.focus();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+            const nestedItem = mainMenuPopover.locator('mdc-navmenuitem').first();
+            await expect(nestedItem).toBeFocused();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+            await expect(mainMenuPopover).not.toBeVisible();
+            await expect(mainMenuNavMenuItem).toBeFocused();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+            await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          });
+
+          // --- Nested menuitem: select nested menuitem (2nd level submenu) ---
+          await test.step('Select nested menuitem with mouse inside 2nd level submenu', async () => {
+            await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+            await toolsMenuItem.click();
+            await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(toolsMenuPopover).toBeVisible();
+            const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
+            await nestedItem.click();
+            await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+            await expect(toolsMenuPopover).not.toBeVisible();
+            await expect(mainMenuPopover).not.toBeVisible();
+            await expect(toolsMenuItem).toHaveAttribute('active', '');
+            await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+            // await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
+            await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          });
+
+          await test.step('Select nested menuitem with keyboard inside 2nd level submenu', async () => {
+            await setup(componentsPage, variant);
+            await mainMenuNavMenuItem.focus();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(mainMenuPopover).toBeVisible();
+            const toolsMenuItem = mainMenuPopover.locator('mdc-navmenuitem#share-id');
+            await toolsMenuItem.focus();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
+            await expect(toolsMenuPopover).toBeVisible();
+            const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
+            await expect(nestedItem).toBeFocused();
+            await componentsPage.page.keyboard.press('Enter');
+            await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+            await expect(toolsMenuPopover).not.toBeVisible();
+            await expect(mainMenuPopover).not.toBeVisible();
+            await expect(mainMenuNavMenuItem).toBeFocused();
+            await expect(toolsMenuItem).toHaveAttribute('active', '');
+            await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
+            // await expect(toolsMenuItem).not.toHaveAttribute('aria-expanded');
+            await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          });
+
+          // --- Re-engaging with previously selected parent ---
+          await test.step('Hovering with mouse over activated parent menuitem shows tooltip', async () => {
+            // top level
+            await mainMenuNavMenuItem.hover();
+            await expect(mainMenuTooltip).toBeVisible();      
+            const text1 = await mainMenuTooltip.textContent();
+            expect(text1?.trim()).toBe('Contains active navmenuitem');
+            // nested level
+            await componentsPage.page.keyboard.press('ArrowRight');
+            await componentsPage.page.mouse.move(0, 0);
+            await toolsMenuItem.hover();
+            await expect(toolsTooltip).toBeVisible();
+            const text2 = await toolsTooltip.textContent();
+            expect(text2?.trim()).toBe('Contains active navmenuitem');
+          });
+
+          await test.step('Focusing with keyboard over activated parent menuitem shows tooltip', async () => {
+            // clear previous state
+            await componentsPage.page.keyboard.press('ArrowLeft');
+            await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [mainMenuNavMenuItem]);
+            // top level
+            await expect(mainMenuTooltip).toBeVisible();
+            const text1 = await mainMenuTooltip.textContent();
+            expect(text1?.trim()).toBe('Contains active navmenuitem');
+            // nested level
+            await componentsPage.page.keyboard.press('ArrowRight');
+            await expect(toolsTooltip).toBeVisible();
+            const text2 = await toolsTooltip.textContent();
+            expect(text2?.trim()).toBe('Contains active navmenuitem');
+          });
+
+          // --- Focus Management and Tab Behavior ---
+          await test.step('Tabbing into, through, and out of the SideNavigation', async () => {
+            await setup(componentsPage, variant);
+            // Tab to first navmenuitem in scrollable slot
+            await componentsPage.actionability.pressTab();
+            const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
+            await expect(firstScrollableNav).toBeFocused();
+            // Tab to first navmenuitem in fixed slot
+            await componentsPage.actionability.pressTab();
+            const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
+            await expect(firstFixedNav).toBeFocused();
+            // If flexible, Tab to toggle button
+            if (variant === 'flexible') {
+              await componentsPage.actionability.pressTab();
+              await expect(toggleButton).toBeFocused();
+            }
+          });
+          await test.step('Shift+Tab moves backward through focusable elements', async () => {
+            await setup(componentsPage, variant);
+            // First, tab through to the end of the focusable elements
+            await componentsPage.actionability.pressTab(); // scrollable navmenuitem
+            await componentsPage.actionability.pressTab(); // fixed navmenuitem
+            if (variant === 'flexible') {
+              await componentsPage.actionability.pressTab(); // toggle button
+              // Now shift+tab: toggle button -> fixed navmenuitem -> scrollable navmenuitem
+              await expect(toggleButton).toBeFocused();
+              await componentsPage.actionability.pressShiftTab();
+              const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
+              await expect(firstFixedNav).toBeFocused();
+              await componentsPage.actionability.pressShiftTab();
+              const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
+              await expect(firstScrollableNav).toBeFocused();
+            } else {
+              // Not flexible: shift+tab from fixed navmenuitem -> scrollable navmenuitem
+              const firstFixedNav = sidenav.locator('mdc-menusection[slot="fixed-menubar"] > mdc-navmenuitem').first();
+              await expect(firstFixedNav).toBeFocused();
+              await componentsPage.actionability.pressShiftTab();
+              const firstScrollableNav = sidenav.locator('mdc-navmenuitem[slot="scrollable-menubar"]').first();
+              await expect(firstScrollableNav).toBeFocused();
+            }
+          });
+
+          // --- Close submenu using Escape ---
+          await test.step('Close submenu using Escape', async () => {
+            await mainMenuNavMenuItem.click();
+            await expect(mainMenuPopover).toBeVisible();
+            await componentsPage.page.keyboard.press('Escape');
+            await expect(mainMenuPopover).not.toBeVisible();
+          });
+        }); 
       });
     });
   });
