@@ -73,7 +73,7 @@ class MenuSection extends Component {
   private renderLabel() {
     if (this.headerText) {
       return html`<mdc-text
-        part="${this.sideNavigationContext?.value?.expanded ? 'align-left' : ''}"
+        part="header-text ${this.sideNavigationContext?.value?.expanded ? 'align-left' : ''}"
         type=${TYPE.BODY_MIDSIZE_BOLD}
         tagname=${VALID_TEXT_TAGS.DIV}
       >

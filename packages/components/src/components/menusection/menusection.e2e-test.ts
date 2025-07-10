@@ -133,7 +133,7 @@ test('mdc-menusection', async ({ componentsPage }) => {
     // With header text
     await test.step('with header text', async () => {
       const section = await setup({ componentsPage, headerText: 'Settings' });
-      const header = section.locator('[part="header-text"]');
+      const header = section.locator('mdc-text[part="header-text "]');
       await expect(header).toHaveText('Settings');
       await expect(section).toHaveAttribute('aria-label', 'Settings');
     });
