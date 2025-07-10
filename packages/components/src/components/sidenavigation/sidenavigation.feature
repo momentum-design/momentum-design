@@ -108,7 +108,7 @@ Feature: SideNavigation Accessibility and User Interaction
 
     Scenario: Open 2nd level submenu from 1st level submenu
       Given the 1st level submenu is open
-      And the 1st level parent menuitem has `aria-expanded="open"`
+      And the 1st level parent menuitem has `aria-expanded="true"`
       And a 2nd level parent menuitem's submenu is collapsed
       And the 2nd level parent menuitem has `aria-expanded="false"`
       When I activate the 2nd level parent menuitem
@@ -124,10 +124,8 @@ Feature: SideNavigation Accessibility and User Interaction
       And that 2nd level nested menuitem receives `aria-current="page"`
       And any previously selected menuitem loses `aria-current`
       And the 1st and 2nd level parent menuitem's style would change to active
-      And the 2nd level submenu closes
-      And the 2nd level parent menuitem has `aria-expanded="false"`
-      And the 1st level submenu closes
-      And the 1st level parent menuitem has `aria-expanded="false"`
+      And both the 1st and 2nd level submenu closes
+      And both the 1st and 2nd level parent menuitem has `aria-expanded="false"`
       And the 1st level parent menuitem receives focus (if using keyboard)
       And a tooltip appears on the 1st level parent menuitem indicating an active nested item (if using keyboard)
 
@@ -137,7 +135,7 @@ Feature: SideNavigation Accessibility and User Interaction
       Given the submenu is closed
       And a nested menuitem (at any level) has `aria-current="page"`
       When I hover over its parent menuitem with mouse
-      Then a tooltip appears indicating an active nested item
+      Then a tooltip appears indicating a nested item is active
 
     Scenario: Focusing over parent menuitem shows tooltip
       Given the submenu is closed
