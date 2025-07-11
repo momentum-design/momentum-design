@@ -1,9 +1,11 @@
 import { CSSResult, PropertyValues, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
+import providerUtils from '../../utils/provider';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
 
@@ -35,13 +37,54 @@ class MenuSection extends Component {
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
 
+  /**
+   * Whether to show a divider below the section header.
+   * This is useful for visually separating sections in the menu.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
+  showDivider = false;
+
+  /**
+   * Shows or hides the section headers based on the expanded state of the side navigation.
+   *
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-header-text' })
+  hideHeaderText?: boolean;
+
+  /**
+   * @internal
+   */
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
   }
 
-  override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
+  /**
+   * Renders the header text of the menu section.
+   * If the menu section header text is placed inside the side navigation,
+   * then the header text is aligned to the left of 1.75rem.
+   *
+   * @returns header text
+   */
+  private renderLabel() {
+    if (this.headerText) {
+      return html`<mdc-text
+        aria-hidden="true"
+        part="header-text ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
+        type=${TYPE.BODY_MIDSIZE_BOLD}
+        tagname=${VALID_TEXT_TAGS.DIV}
+      >
+        ${this.headerText}
+      </mdc-text> `;
+    }
+    return null;
+  }
+
+  protected override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
     if (
       (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
       (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
@@ -52,19 +95,20 @@ class MenuSection extends Component {
       // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
       this.ariaLabel = this.headerText || '';
     }
-  }
 
-  private renderLabel() {
-    if (this.headerText) {
-      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
-        ${this.headerText}
-      </mdc-text> `;
-    }
-    return null;
+    const context = this.sideNavigationContext?.value;
+    if (!context) return;
+
+    const { expanded } = context;
+    this.hideHeaderText = !expanded;
   }
 
   public override render() {
-    return html`${this.renderLabel()}<slot></slot>`;
+    return html`
+      ${!this.hideHeaderText ? this.renderLabel() : null}
+      <slot></slot>
+      ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
+    `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];

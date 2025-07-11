@@ -168,9 +168,11 @@ const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
     <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
     <mdc-divider></mdc-divider>
-    <mdc-menuitemradio name="theme" label="Light" checked></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="Dark"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="System"></mdc-menuitemradio>
+    <mdc-menusection header-text="Theme">
+      <mdc-menuitemradio name="theme" value="light" label="Light" checked></mdc-menuitemradio>
+      <mdc-menuitemradio name="theme" value="dark" label="Dark"></mdc-menuitemradio>
+      <mdc-menuitemradio name="theme" value="system" label="System"></mdc-menuitemradio>
+    </mdc-menusection>
   </mdc-menusection>
   <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 

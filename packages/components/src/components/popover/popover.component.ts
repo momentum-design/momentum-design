@@ -592,7 +592,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
         this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
       }
 
-      if (!this.disableAriaExpanded) {
+      if (this.disableAriaExpanded) {
         this.triggerElement.removeAttribute('aria-expanded');
       }
       // Remove aria-haspopup if the popover is not interactive

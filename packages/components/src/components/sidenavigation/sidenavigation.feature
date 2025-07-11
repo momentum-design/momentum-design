@@ -82,50 +82,66 @@ Feature: SideNavigation Accessibility and User Interaction
       And `aria-current` remains unchanged
       And focus remains on the on this menuitem in sidenavigation
 
-  Rule: Selecting a nested menuitem
+  Rule: Selecting a nested menuitem (considering 1st and 2nd level submenus)
 
-    Scenario: Open submenu to reveal nested menuitems
+    Scenario: Open 1st submenu to reveal nested menuitems
       Given the SideNavigation is visible
-      And the parent menuitem's submenu is collapsed
-      When I activate the parent menuitem
-      Then the submenu opens
-      And parent menuitem has `aria-expanded="true"`
+      And the 1st level submenu is collapsed
+      And the 1st level parent menuitem has `aria-expanded="false"`
+      When I activate the 1st level parent menuitem
+      Then the 1st level submenu opens
+      And 1st level parent menuitem has `aria-expanded="true"`
 
-    Scenario: Select nested menuitem with mouse or keyboard
-      Given the submenu is open
-      And the nested menuitem is visible and focusable
-      When I activate the nested menuitem
+    Scenario: Select 1st level nested menuitem with mouse or keyboard
+      Given the 1st level submenu is open
+      And the 1st level parent menuitem has `aria-expanded="true"`
+      And the nested menuitem inside it is visible and focusable
+      When I activate the 1st level nested menuitem
       Then page navigation occurs
       And that nested menuitem receives `aria-current="page"`
       And any previously selected menuitem loses `aria-current`
-      And all the parent menu item's style would change to active
-      And the submenu closes
-      And parent menuitem has `aria-expanded="false"`
+      And the 1st level parent menuitem's style would change to active
+      And the 1st level submenu closes
+      And the 1st level parent menuitem has `aria-expanded="false"`
+      And the 1st level parent menuitem receives focus (if using keyboard)
+      And a tooltip appears on the 1st level parent menuitem indicating an active nested item (if using keyboard)
 
-    Scenario: Return focus to parent after keyboard activation
-      Given the nested menuitem was activated using keyboard
-      When the submenu closes
-      Then focus returns to the parent menuitem
-      And parent menuitem has `aria-expanded="false"`
+    Scenario: Open 2nd level submenu from 1st level submenu
+      Given the 1st level submenu is open
+      And the 1st level parent menuitem has `aria-expanded="true"`
+      And a 2nd level parent menuitem's submenu is collapsed
+      And the 2nd level parent menuitem has `aria-expanded="false"`
+      When I activate the 2nd level parent menuitem
+      Then the 2nd level submenu opens
+      And 2nd level parent menuitem has `aria-expanded="true"`
 
-  Rule: Re-engaging with previously selected parent
+    Scenario: Select 2nd level nested menuitem with mouse or keyboard
+      Given the 2nd level submenu is open
+      And the 2nd level parent menuitem has `aria-expanded="true"`
+      And the nested menuitem inside it is visible and focusable
+      When I activate the 2nd level nested menuitem
+      Then page navigation occurs
+      And that 2nd level nested menuitem receives `aria-current="page"`
+      And any previously selected menuitem loses `aria-current`
+      And the 1st and 2nd level parent menuitem's style would change to active
+      And both the 1st and 2nd level submenu closes
+      And both the 1st and 2nd level parent menuitem has `aria-expanded="false"`
+      And the 1st level parent menuitem receives focus (if using keyboard)
+      And a tooltip appears on the 1st level parent menuitem indicating an active nested item (if using keyboard)
 
-    Scenario: Parent menuitem reflects active state due to selected child
-      Given a nested menuitem has `aria-current="page"`
-      Then the parent menuitem visually shows active state
+  Rule: Re-engaging with previously selected parent (1st or 2nd level submenu)
 
-    Scenario: Hovering or focusing over parent menuitem shows tooltip
+    Scenario: Hovering with mouse over parent menuitem shows tooltip
       Given the submenu is closed
-      And a nested menuitem has `aria-current="page"`
-      When I hover over the parent menuitem with mouse or focus on it using keyboard
+      And a nested menuitem (at any level) has `aria-current="page"`
+      When I hover over its parent menuitem with mouse
+      Then a tooltip appears indicating a nested item is active
+
+    Scenario: Focusing over parent menuitem shows tooltip
+      Given the submenu is closed
+      And a nested menuitem (at any level) has `aria-current="page"`
+      When I focus on its parent menuitem using keyboard
       Then a tooltip appears indicating an active nested item
-
-    Scenario: Reopen submenu from active parent menuitem
-      Given the submenu is closed
-      And a nested menuitem has `aria-current="page"`
-      When I activate the parent menuitem
-      Then the submenu reopens
-      And the previously selected nested menuitem still has `aria-current="page"`
 
   Rule: ✅ Focus Management and Tab Behavior
 
