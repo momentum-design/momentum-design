@@ -345,14 +345,30 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
         });
 
+        // --- Re-engaging with previously selected parent using mouse ---
+        await test.step('Hovering with mouse over activated parent menuitem shows tooltip', async () => {
+          // top level
+          await mainMenuNavMenuItem.hover();
+          await expect(mainMenuTooltip).toBeVisible();
+          const text1 = await mainMenuTooltip.textContent();
+          expect(text1?.trim()).toBe('Contains active navmenuitem');
+          // nested level
+          await mainMenuNavMenuItem.click();
+          await toolsMenuItem.hover();
+          await expect(toolsTooltip).toBeVisible();
+          const text2 = await toolsTooltip.textContent();
+          expect(text2?.trim()).toBe('Contains active navmenuitem');
+        });
+
         await test.step('Select nested menuitem with keyboard inside 2nd level submenu', async () => {
           await setup(componentsPage, variant);
           await mainMenuNavMenuItem.focus();
           await componentsPage.page.keyboard.press('Enter');
           await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(mainMenuPopover).toBeVisible();
-          const toolsMenuItem = mainMenuPopover.locator('mdc-navmenuitem#share-id');
-          await toolsMenuItem.focus();
+          const items = mainMenuPopover.locator('mdc-navmenuitem');
+          await expect(items.first()).toBeFocused();
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [items.nth(1), items.nth(2), toolsMenuItem]);
           await componentsPage.page.keyboard.press('Enter');
           await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(toolsMenuPopover).toBeVisible();
@@ -369,25 +385,8 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
         });
 
-        // --- Re-engaging with previously selected parent ---
-        await test.step('Hovering with mouse over activated parent menuitem shows tooltip', async () => {
-          // top level
-          await mainMenuNavMenuItem.hover();
-          await expect(mainMenuTooltip).toBeVisible();
-          const text1 = await mainMenuTooltip.textContent();
-          expect(text1?.trim()).toBe('Contains active navmenuitem');
-          // nested level
-          await mainMenuNavMenuItem.click();
-          await toolsMenuItem.hover();
-          await expect(toolsTooltip).toBeVisible();
-          const text2 = await toolsTooltip.textContent();
-          expect(text2?.trim()).toBe('Contains active navmenuitem');
-        });
-
+        // --- Re-engaging with previously selected parent using keyboard ---
         await test.step('Focusing with keyboard over activated parent menuitem shows tooltip', async () => {
-          // clear previous state
-          await componentsPage.page.keyboard.press('ArrowLeft');
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [mainMenuNavMenuItem]);
           // top level
           await expect(mainMenuTooltip).toBeVisible();
           const text1 = await mainMenuTooltip.textContent();
@@ -398,6 +397,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           });
           // nested level
           await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(toolsMenuItem).toBeFocused();
           await expect(toolsTooltip).toBeVisible();
           const text2 = await toolsTooltip.textContent();
           expect(text2?.trim()).toBe('Contains active navmenuitem');
@@ -405,13 +405,13 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             source: 'userflow',
             fileNameSuffix: 'active-nested-tooltip',
           });
-          // await componentsPage.page.keyboard.press('ArrowRight');
-          // await expect(toolsMenuPopover).toBeVisible();
-          // const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
-          // await expect(nestedItem).toBeFocused();
-          // await expect(nestedItem).toHaveAttribute('aria-current', 'page');
-          // await expect(nestedItem).toHaveAttribute('active', '');
-          // await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-nested-active-navmenuitem`);
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(toolsMenuPopover).toBeVisible();
+          const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
+          await expect(nestedItem).toBeFocused();
+          await expect(nestedItem).toHaveAttribute('aria-current', 'page');
+          await expect(nestedItem).toHaveAttribute('active', '');
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-nested-active-navmenuitem`);
         });
 
         // --- Focus Management and Tab Behavior ---
