@@ -147,7 +147,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
-    // Add a unique id to the listitem if it does not have one to attach the tooltip.
+    // Add a unique id to the listitem if it does not have one.
     this.id = this.id || generateNewListItemId();
   }
 
@@ -209,7 +209,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('show-arrow', '');
 
     // Set the slot attribute if the parent element has a slot.
-    if (this.parentElement && this.parentElement.hasAttribute('slot')) {
+    if (this.parentElement?.hasAttribute('slot')) {
       tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
     }
 

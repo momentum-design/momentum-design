@@ -102,7 +102,7 @@ const render = (args: Args) => html`
       </mdc-menusection>
 
       <!-- Lower Nav (Fixed section) -->
-      <mdc-mensection slot="fixed-menubar">
+      <mdc-menusection slot="fixed-menubar">
         <mdc-navmenuitem icon-name="settings-bold" nav-id="23" label="Settings"></mdc-navmenuitem>
         <mdc-navmenuitem
           badge-type="counter"
@@ -112,7 +112,7 @@ const render = (args: Args) => html`
           nav-id="24"
           label="Help"
         ></mdc-navmenuitem>
-      </mdc-mensection>
+      </mdc-menusection>
 
       <!-- Brand Logo (Fixed section) -->
       <mdc-icon slot="brand-logo" aria-label="This is a brandlogo." name="apple-bold"></mdc-icon>

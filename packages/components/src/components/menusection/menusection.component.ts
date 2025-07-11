@@ -44,45 +44,6 @@ class MenuSection extends Component {
   @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
   showDivider = false;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.setAttribute('role', ROLE.GROUP);
-  }
-
-  override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-    if (
-      (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
-      (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
-    ) {
-      // Because IDREF attribute reflection does not work across light and shadow DOM, we either set the
-      // `aria-label` directly or use the `ariaLabelledByElements`.
-      // Since the later one just released in the major browsers, we do the first one for now.
-      // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
-      this.ariaLabel = this.headerText || '';
-    }
-  }
-
-  /**
-   * Renders the header text of the menu section.
-   * If the menu section header text is placed inside the side navigation,
-   * then the header text is aligned to the left of 1.75rem.
-   *
-   * @returns header text
-   */
-  private renderLabel() {
-    if (this.headerText) {
-      return html`<mdc-text
-        part="header-text ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
-        type=${TYPE.BODY_MIDSIZE_BOLD}
-        tagname=${VALID_TEXT_TAGS.DIV}
-      >
-        ${this.headerText}
-      </mdc-text> `;
-    }
-    return null;
-  }
-
   /**
    * Shows or hides the section headers based on the expanded state of the side navigation.
    *
@@ -96,8 +57,45 @@ class MenuSection extends Component {
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', ROLE.GROUP);
+  }
+
+  /**
+   * Renders the header text of the menu section.
+   * If the menu section header text is placed inside the side navigation,
+   * then the header text is aligned to the left of 1.75rem.
+   *
+   * @returns header text
+   */
+  private renderLabel() {
+    if (this.headerText) {
+      return html`<mdc-text
+        aria-hidden="true"
+        part="header-text ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
+        type=${TYPE.BODY_MIDSIZE_BOLD}
+        tagname=${VALID_TEXT_TAGS.DIV}
+      >
+        ${this.headerText}
+      </mdc-text> `;
+    }
+    return null;
+  }
+
   protected override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
+    if (
+      (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
+      (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
+    ) {
+      // Because IDREF attribute reflection does not work across light and shadow DOM, we either set the
+      // `aria-label` directly or use the `ariaLabelledByElements`.
+      // Since the later one just released in the major browsers, we do the first one for now.
+      // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
+      this.ariaLabel = this.headerText || '';
+    }
+
     const context = this.sideNavigationContext?.value;
     if (!context) return;
 
