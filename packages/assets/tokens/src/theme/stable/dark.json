@@ -1959,8 +1959,7 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.30}",
-              "description": ""
+              "value": "{color.core.white-alpha.50}"
             }
           },
           "primary": {
