@@ -176,6 +176,16 @@ Feature: Popover Component
       When the user clicks outside again,
       Then the parent popover should close.
 
+  Rule: ✅ Menus in Popover
+
+    Scenario: Close only child popover on outside click
+      Given a parent popover and a nested menu popover are both open,
+      When the user clicks outside the menu popover,
+      Then only the menu popover should close,
+      And the parent popover should remain open.
+      When the user clicks outside again,
+      Then the parent popover should close.
+
   Rule: ✅ Multiple Popovers attached to same trigger
 
     Scenario: Multiple popovers with same trigger using mouse

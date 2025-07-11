@@ -11,10 +11,12 @@ import type MenuPopover from './menupopover.component';
  * @param menuItem - The menu item to check.
  * @returns True if the menu item is a valid menu item, false otherwise.
  */
-const isValidMenuItem = (menuItem: Element | null): boolean =>
-  [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME].includes(
-    menuItem?.tagName?.toLowerCase?.() as typeof MENUITEM_TAGNAME,
-  );
+const isValidMenuItem = (menuItem: Element | null): boolean => {
+  if (!menuItem) return false;
+  const tagName = menuItem.tagName.toLowerCase();
+
+  return ([MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME] as string[]).includes(tagName);
+};
 
 const isValidPopover = (el: Element | null): el is MenuPopover => el?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
