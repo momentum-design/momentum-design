@@ -29,6 +29,7 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+      <div role="menu">
       <mdc-navmenuitem
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['icon-name'] ? `icon-name="${restArgs['icon-name']}"` : ''}
@@ -44,7 +45,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['disable-aria-current'] ? 'disable-aria-current' : ''}
       >
         ${restArgs.children ?? ''}
-      </mdc-navmenuitem>
+      </mdc-navmenuitem></div>
     `,
     clearDocument: true,
   });
@@ -172,7 +173,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         'nav-id': navId,
         'show-label': true,
       });
-      // await componentsPage.accessibility.checkForA11yViolations('navmenuitem-default');
+      await componentsPage.accessibility.checkForA11yViolations('navmenuitem-default');
     });
 
     /**
