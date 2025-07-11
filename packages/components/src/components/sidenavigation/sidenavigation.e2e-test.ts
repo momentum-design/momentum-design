@@ -6,10 +6,10 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 const takeSnapshot = async (
   componentsPage: ComponentsPage,
   name: string,
-  options?: Parameters<typeof componentsPage.visualRegression.takeScreenshot>[1]
+  options?: Parameters<typeof componentsPage.visualRegression.takeScreenshot>[1],
 ) => {
   const deviceName = test.info().project.name;
-  if (["chrome", "firefox", "msedge", "webkit"].includes(deviceName)) {
+  if (['chrome', 'firefox', 'msedge', 'webkit'].includes(deviceName)) {
     await componentsPage.visualRegression.takeScreenshot(name, options);
   }
 };
@@ -368,7 +368,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuPopover).toBeVisible();
           const items = mainMenuPopover.locator('mdc-navmenuitem');
           await expect(items.first()).toBeFocused();
-          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [items.nth(1), items.nth(2), toolsMenuItem]);
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+            items.nth(1),
+            items.nth(2),
+            toolsMenuItem,
+          ]);
           await componentsPage.page.keyboard.press('Enter');
           await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(toolsMenuPopover).toBeVisible();
@@ -411,7 +415,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(nestedItem).toBeFocused();
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
           await expect(nestedItem).toHaveAttribute('active', '');
-          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-nested-active-navmenuitem`);
+          await takeSnapshot(componentsPage, `sidenavigation-${variant}-nested-active-navmenuitem`);
         });
 
         // --- Focus Management and Tab Behavior ---
@@ -467,4 +471,3 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
     });
   });
 });
-
