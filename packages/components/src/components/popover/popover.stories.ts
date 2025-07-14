@@ -8,6 +8,8 @@ import { textControls, hideAllControls, hideControls } from '../../../config/sto
 import '../button';
 import '../option';
 import '../select';
+import '../menupopover';
+import '../menuitem';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -439,6 +441,7 @@ export const nestedPopover: StoryObj = {
     'hide-on-escape': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'hide-on-outside-click': true,
   },
 };
 
@@ -546,5 +549,33 @@ export const MultipleSingleLevelPopovers: StoryObj = {
         </mdc-popover>
       </div>
     </div>
+  `,
+};
+
+export const NestedMenu: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START, triggerID: 'trigger-btn' },
+  render: () => html`
+    ${createTrigger('popover-trigger-interactive', 'Click me!')}
+    <mdc-popover
+      id="popover"
+      triggerID="popover-trigger-interactive"
+      trigger="click"
+      placement="bottom"
+      interactive
+      focus-back-to-trigger
+      focus-trap
+      show-arrow
+      hide-on-escape
+      hide-on-outside-click
+    >
+      <div id="menupopover-test-wrapper">
+        <h2>Hello world</h2>
+        <mdc-button id="menu-trigger-btn">Menu</mdc-button>
+        <mdc-menupopover triggerID="menu-trigger-btn" show-arrow>
+          <mdc-menuitem label="Profile"></mdc-menuitem>
+          <mdc-menuitem label="Notifications"></mdc-menuitem>
+        </mdc-menupopover>
+      </div>
+    </mdc-popover>
   `,
 };
