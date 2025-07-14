@@ -17,7 +17,7 @@ const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation
       variant="${args.variant}"
-      customer-name=${args['customer-name']}
+      footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}"
@@ -128,7 +128,7 @@ const renderNestedSideNavigation = (args: Args) => {
   return html` <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation
       variant="${args.variant}"
-      customer-name=${args['customer-name']}
+      footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}"
@@ -298,7 +298,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     variant: DEFAULTS.VARIANT,
-    'customer-name': '%Customer Name%',
+    'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
     'parent-nav-tooltip-text': 'Contains active navmenuitem',
   },

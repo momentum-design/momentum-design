@@ -15,7 +15,7 @@ import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
-import { generateNewListItemId, generateNewTooltipId } from './listitem.utils';
+import { generateNewListItemId, generateTooltipId } from './listitem.utils';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -201,7 +201,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = generateNewTooltipId();
+    tooltip.id = generateTooltipId();
     tooltip.textContent = this.tooltipText;
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('placement', this.tooltipPlacement);

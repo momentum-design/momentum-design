@@ -50,7 +50,7 @@ class MenuSection extends Component {
    * @internal
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-header-text' })
-  hideHeaderText?: boolean;
+  hideHeaderText = false;
 
   /**
    * @internal

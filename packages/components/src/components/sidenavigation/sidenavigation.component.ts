@@ -8,6 +8,7 @@ import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.cons
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
+import { KEYS } from '../../utils/keys';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
@@ -99,8 +100,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Name of the customer. This is displayed in the bottom section of the side-navigation component.
    * @default ''
    */
-  @property({ type: String, reflect: true, attribute: 'customer-name' })
-  customerName: string = '';
+  @property({ type: String, reflect: true, attribute: 'footer-text' })
+  footerText: string = '';
 
   /**
    * Determines whether the sideNavigation is expanded or not.
@@ -185,8 +186,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * @param event - Custom Event fired from the nested navMenuItem.
    */
   private handleNestedNavMenuItemActiveChange = (event: CustomEvent<any>): void => {
-    const newNavMenuItem = this.findNav((this.navMenuItems as NavMenuItem[]) || [], event.detail.navId);
     if (this.context?.value) {
+      const newNavMenuItem = this.findNav(this.navMenuItems, event.detail.navId);
       this.context.value.setCurrentActiveNavMenuItem(newNavMenuItem);
     }
   };
@@ -254,7 +255,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
     // Prevent default space key behavior to avoid scrolling the page
-    if (event.key === ' ') {
+    if (event.key === KEYS.SPACE) {
       event.preventDefault();
     }
   }
@@ -283,7 +284,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             <slot name="brand-logo"></slot>
             ${this.expanded
               ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="label"
-                  >${this.customerName}</mdc-text
+                  >${this.footerText}</mdc-text
                 >`
               : nothing}
           </div>

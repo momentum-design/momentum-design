@@ -9,7 +9,7 @@ const takeSnapshot = async (
   options?: Parameters<typeof componentsPage.visualRegression.takeScreenshot>[1],
 ) => {
   const deviceName = test.info().project.name;
-  if (['chrome', 'firefox', 'msedge', 'webkit'].includes(deviceName)) {
+  if (['chrome', 'firefox', 'msedge', 'webkit', 'tablet chrome', 'tablet safari'].includes(deviceName)) {
     await componentsPage.visualRegression.takeScreenshot(name, options);
   }
 };
@@ -22,7 +22,7 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
       <mdc-sidenavigation
         variant="${variant}"
         expanded="${expanded}"
-        customer-name="%Customer Name%"
+        footer-text="%Customer Name%"
         grabber-btn-aria-label="Toggle Side navigation"
         parent-nav-tooltip-text="Contains active navmenuitem"
       >
@@ -132,7 +132,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
       await test.step('attributes', async () => {
         // Main sidenavigation attributes
         await expect(sidenav).toHaveAttribute('variant', variant);
-        await expect(sidenav).toHaveAttribute('customer-name', '%Customer Name%');
+        await expect(sidenav).toHaveAttribute('footer-text', '%Customer Name%');
         await expect(sidenav).toHaveAttribute('grabber-btn-aria-label', 'Toggle Side navigation');
         await expect(sidenav).toHaveAttribute('parent-nav-tooltip-text', 'Contains active navmenuitem');
 

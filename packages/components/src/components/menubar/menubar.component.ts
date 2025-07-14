@@ -70,11 +70,9 @@ class MenuBar extends Component {
   /**
    * Returns all menupopovers, including direct and slotted ones .
    */
-  get allPopovers(): Element[] {
+  private getAllPopovers(): Element[] {
     if (!this.menuItems.length) return [];
-    const sidenav = this.menuItems[0].closest(SIDENAV_TAGNAME);
-    const menubar = this.menuItems[0].closest(MENUBAR_TAGNAME);
-    const root = sidenav || menubar;
+    const root = this.menuItems[0]?.closest(SIDENAV_TAGNAME) ?? this;
     if (!root) return [];
 
     const popovers: Element[] = [];
@@ -88,9 +86,7 @@ class MenuBar extends Component {
       // Handle slots
       node.querySelectorAll('slot').forEach(slot => {
         const assigned = (slot as HTMLSlotElement).assignedElements({ flatten: true });
-        assigned.forEach(assignedEl => {
-          searchPopovers(assignedEl);
-        });
+        assigned.forEach(searchPopovers);
       });
     };
 
@@ -127,10 +123,11 @@ class MenuBar extends Component {
     return this.menuItems.findIndex(item => item === target || item === (target as HTMLElement).parentElement);
   }
 
-  private hasSubmenu(triggerId: string | null): boolean {
-    if (!triggerId) return false;
-    const popovers = this.allPopovers;
-    return popovers.some(popover => popover.getAttribute('triggerid') === triggerId);
+  private getSubmenu(triggerId: string | null): MenuPopover | undefined {
+    if (!triggerId) return undefined;
+    return this.getAllPopovers().find(
+      popover => popover.getAttribute('triggerid') === triggerId
+    ) as MenuPopover | undefined;
   }
 
   private showSubmenu(triggerId: string | null): void {
@@ -139,16 +136,13 @@ class MenuBar extends Component {
     const triggerElement = this.menuItems.find(item => item.getAttribute('id') === triggerId);
     if (!triggerElement) return;
 
-    const popovers = this.allPopovers;
-    const submenu = popovers.find(popover => popover.getAttribute('triggerid') === triggerId) as
-      | MenuPopover
-      | undefined;
+    const submenu = this.getSubmenu(triggerId);
     if (submenu) submenu.showPopover();
   }
 
   private updatePopoverPlacement(): void {
     const placement = POPOVER_PLACEMENT.RIGHT_START;
-    this.allPopovers.forEach(popover => {
+    this.getAllPopovers().forEach(popover => {
       popover.setAttribute('placement', placement);
     });
   }
@@ -174,7 +168,7 @@ class MenuBar extends Component {
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');
-      if (this.hasSubmenu(triggerId) && !this.menuItems[newIndex].hasAttribute('soft-disabled')) {
+      if (this.getSubmenu(triggerId) && !this.menuItems[newIndex].hasAttribute('soft-disabled')) {
         this.showSubmenu(triggerId);
       }
     }
@@ -194,14 +188,15 @@ class MenuBar extends Component {
   private isTopLevelMenuItem(element: HTMLElement): boolean {
     const parent = element.parentElement;
     if (!parent || element.role !== ROLE.MENUITEM) return false;
+
     const parentTag = parent.tagName.toLowerCase();
+    const grandParentTag = parent.parentElement?.tagName.toLowerCase();
+
     if (parentTag === MENUBAR_TAGNAME || parentTag === SIDENAV_TAGNAME) return true;
-    if (
-      parentTag === MENUSECTION_TAGNAME &&
-      (parent.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME ||
-        parent.parentElement?.tagName.toLowerCase() === SIDENAV_TAGNAME)
-    )
+    if (parentTag === MENUSECTION_TAGNAME && (grandParentTag === MENUBAR_TAGNAME || grandParentTag === SIDENAV_TAGNAME)) {
       return true;
+    }
+
     return false;
   }
 
@@ -240,9 +235,9 @@ class MenuBar extends Component {
   }
 
   private async crossMenubarNavigationOnRight(element: HTMLElement): Promise<void> {
-    if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id) && !element.hasAttribute('soft-disabled')) {
+    if (this.isTopLevelMenuItem(element) && this.getSubmenu(element.id) && !element.hasAttribute('soft-disabled')) {
       this.showSubmenu(element.id);
-    } else if (this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
+    } else if (this.isNestedMenuItem(element) && !this.getSubmenu(element.id)) {
       await this.closeAllMenuPopovers();
       const parentIndex = this.getParentMenuItemIndex(element);
       if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
