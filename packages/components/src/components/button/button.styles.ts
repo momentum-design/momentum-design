@@ -8,7 +8,7 @@ const styles = css`
     outline: none;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
-    --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
+    --mdc-button-primary-background-color: black;
     --mdc-button-primary-hover-background-color: var(--mds-color-theme-button-primary-hover);
     --mdc-button-primary-pressed-background-color: var(--mds-color-theme-button-primary-pressed);
     --mdc-button-primary-disabled-background-color: var(--mds-color-theme-button-primary-disabled);
