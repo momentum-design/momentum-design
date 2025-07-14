@@ -517,13 +517,19 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
-        role="${ROLE.LISTBOX}"
+        role="${ROLE.GENERIC}"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-        <slot @click="${this.handleOptionsClick}"></slot>
+        <slot
+          @click="${this.handleOptionsClick}"
+          id="listbox"
+          role="${ROLE.LISTBOX}"
+          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+        >
+        </slot>
       </mdc-popover>
     `;
   }
@@ -556,10 +562,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
           aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
-          aria-controls="${ifDefined(this.displayPopover ? 'options-popover' : undefined)}"
+          aria-controls="${ifDefined(this.displayPopover ? 'listbox' : undefined)}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-haspopup="${ROLE.LISTBOX}"
           aria-required="${this.required ? 'true' : 'false'}"
           aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
         >

@@ -106,7 +106,7 @@ export class PopoverUtils {
     } else {
       this.popover.removeAttribute('aria-modal');
     }
-    if (this.popover.interactive) {
+    if (this.popover.interactive && this.popover.role !== ROLE.GENERIC) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel =
           this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
