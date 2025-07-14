@@ -680,6 +680,32 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
   });
 
+  await test.step('Nested MenuPopover', async () => {
+    await test.step('Close only child popover on outside click', async () => {
+      const { popover: parentPopover } = await setup({
+        componentsPage,
+        id: 'parent-popover',
+        triggerID: 'trigger-button',
+        visible: true,
+        hideOnOutsideClick: true,
+        children: `
+          <mdc-button id="child-trigger">Child</mdc-button>
+          <mdc-menupopover id="child-popover" triggerID="child-trigger" visible hide-on-outside-click>
+            <mdc-menuitem label="menu item"></mdc-menuitem>
+          </mdc-menupopover>
+        `,
+      });
+      const childPopover = parentPopover.locator('#child-popover');
+      await expect(parentPopover).toBeVisible();
+      await expect(childPopover).toBeVisible();
+      await componentsPage.page.mouse.click(200, 100); // clicking outside the popover
+      await expect(childPopover).not.toBeVisible();
+      await expect(parentPopover).toBeVisible();
+      await componentsPage.page.mouse.click(200, 100);
+      await expect(parentPopover).not.toBeVisible();
+    });
+  });
+
   await test.step('Multiple popovers with same trigger using mouse', async () => {
     await componentsPage.mount({
       html: `
