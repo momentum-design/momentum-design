@@ -4,9 +4,9 @@ import { TAG_NAME } from './tooltip.constants';
 Tooltip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-tooltip']: Tooltip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-tooltip']: Tooltip;
+  }
 }
 
 export default Tooltip;

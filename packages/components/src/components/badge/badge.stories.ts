@@ -1,25 +1,15 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { textControls } from '../../../config/storybook/utils';
+
+import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
 const MAX_COUNTER_LIST = [9, 99, 999];
 
 const render = (args: Args) => html`
-<mdc-badge
-  type="${args.type}"
-  icon-name="${args['icon-name']}"
-  counter="${args.counter}"
-  max-counter="${args['max-counter']}"
-  variant="${args.variant}"
-  ?overlay=${args.overlay}
-  aria-label="${args['aria-label']}"
-></mdc-badge>
-`;
-const renderOverlay = (args: Args) => html`
-<div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">
   <mdc-badge
     type="${args.type}"
     icon-name="${args['icon-name']}"
@@ -29,7 +19,19 @@ const renderOverlay = (args: Args) => html`
     ?overlay=${args.overlay}
     aria-label="${args['aria-label']}"
   ></mdc-badge>
-</div>
+`;
+const renderOverlay = (args: Args) => html`
+  <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">
+    <mdc-badge
+      type="${args.type}"
+      icon-name="${args['icon-name']}"
+      counter="${args.counter}"
+      max-counter="${args['max-counter']}"
+      variant="${args.variant}"
+      ?overlay=${args.overlay}
+      aria-label="${args['aria-label']}"
+    ></mdc-badge>
+  </div>
 `;
 
 const meta: Meta = {
@@ -81,7 +83,7 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-badge-primary-foreground-color',
       '--mdc-badge-primary-background-color',
       '--mdc-badge-secondary-foreground-color',

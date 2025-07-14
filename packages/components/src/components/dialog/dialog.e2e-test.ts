@@ -1,6 +1,9 @@
 import { expect } from '@playwright/test';
+
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+
 import { DEFAULTS } from './dialog.constants';
+import type Dialog from './dialog.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -59,6 +62,20 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.page.locator('div#wrapper').waitFor();
   const dialog = componentsPage.page.locator(`#${restArgs.id}`);
   const triggerButton = componentsPage.page.locator(`#${restArgs.triggerId}`);
+
+  // add event listener to dialog for close event
+  // this is to ensure that the dialog closes when the close button is clicked
+  // since the dialog is a controlled component, the consumer needs to handle the close event
+  // and set the visible attribute to false
+  await componentsPage.page.evaluate(dialogId => {
+    const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+    if (dialogElement) {
+      dialogElement.onclose = () => {
+        dialogElement.visible = false;
+      };
+    }
+  }, restArgs.id);
+
   return { dialog, triggerButton };
 };
 
@@ -100,6 +117,27 @@ const dialogWithCustomHeader = {
     <mdc-button slot="footer-button-primary">Primary</mdc-button>
   `,
 };
+
+const dialogWithIframe = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <div slot="dialog-body">
+      <p>This is the body content of the dialog.</p>
+      <iframe id="frame" style="width: 100%; height: 200px;"></iframe>
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  `,
+};
+
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -178,7 +216,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.removeAttribute('visible');
         });
         await expect(dialog).not.toBeVisible();
@@ -197,7 +235,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -207,22 +245,26 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(closeButton).not.toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
+
         await componentsPage.page.keyboard.press('Enter');
+
         await expect(dialog).not.toBeVisible();
       });
 
-      await test.step('dialog should close on escape keydown', async () => {
-        await dialog.evaluate((dialog) => {
+      await test.step('dialog should close on escape keydown and fire onClose event', async () => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
+
         await componentsPage.page.keyboard.press('Escape');
+
         await expect(dialog).not.toBeVisible();
       });
 
       await test.step('focus should remain only in the dialog when visible', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -238,6 +280,114 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
         await expect(primaryButton).toBeFocused();
         await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+      });
+
+      await test.step('focus should remain only in the dialog when buttons are added dynamically', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+        await dialog.evaluate(dialog => {
+          dialog.toggleAttribute('visible');
+        });
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        await expect(closeButton).toBeFocused();
+
+        // add a new button dynamically
+        await componentsPage.page.evaluate(() => {
+          const dialog = document.querySelector('mdc-dialog');
+          const newButton = document.createElement('mdc-button');
+          newButton.textContent = 'New Button';
+          newButton.slot = 'dialog-body';
+          dialog?.appendChild(newButton);
+        });
+        // tab through the dialog to check focus
+        await componentsPage.actionability.pressTab();
+        const newButton = componentsPage.page.locator('mdc-button:has-text("New Button")');
+        await expect(newButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const link = componentsPage.page.locator('[slot="footer-link"]');
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+
+        // press shift tab to go back
+        await componentsPage.actionability.pressShiftTab();
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(newButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(closeButton).toBeFocused();
+      });
+
+      await test.step('focus should remain in the dialog when an iframe is inside', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithIframe, visible: false });
+
+        await dialog.evaluate(dialog => {
+          // make dialog visible
+          dialog.toggleAttribute('visible');
+
+          // add a button element inside of the iframe (no real url will be used to avoid any
+          // cross-origin or flakiness issues)
+          const iframe = dialog.querySelector('#frame') as HTMLIFrameElement;
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc) {
+            const button = iframeDoc.createElement('button');
+            button.textContent = 'Iframe Button';
+            iframeDoc.body.appendChild(button);
+          }
+        });
+
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        await expect(closeButton).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        // firefix requires an extra tab to focus the iframe button
+        if (test.info().project.name === 'firefox') {
+          await componentsPage.actionability.pressTab();
+        }
+        const iframeButton = componentsPage.page
+          .locator('#frame')
+          .contentFrame()
+          .getByRole('button', { name: 'Iframe Button' });
+        await expect(iframeButton).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        const link = componentsPage.page.locator('[slot="footer-link"]');
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+
+        // press shift tab to go back
+        await componentsPage.actionability.pressShiftTab();
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        // firefix requires an extra shift tab to focus the iframe button
+        if (test.info().project.name === 'firefox') {
+          await componentsPage.actionability.pressShiftTab();
+        }
+        await expect(iframeButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
       });
 

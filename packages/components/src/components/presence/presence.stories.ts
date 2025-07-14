@@ -1,12 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { TYPE, SIZE, DEFAULTS } from './presence.constants';
-import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-presence type="${args.type}" size="${args.size}"></mdc-presence>
-`;
+import { disableControls, textControls } from '../../../config/storybook/utils';
+
+import { TYPE, SIZE, DEFAULTS } from './presence.constants';
+
+const render = (args: Args) => html` <mdc-presence type="${args.type}" size="${args.size}"></mdc-presence> `;
 
 const meta: Meta = {
   title: 'Components/presence',
@@ -25,9 +25,8 @@ const meta: Meta = {
       options: Object.values(SIZE),
       control: { type: 'select' },
     },
-    ...disableControls([
-      'icon',
-      'iconSize',
+    ...disableControls(['icon', 'iconSize']),
+    ...textControls([
       '--mdc-presence-active-background-color',
       '--mdc-presence-away-background-color',
       '--mdc-presence-away-calling-background-color',

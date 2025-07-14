@@ -2,31 +2,34 @@ import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
 `;
 
-const render = (args: Args) => wrapWithDiv(html`
-  <mdc-option
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    ?disabled="${args.disabled}"
-    ?selected="${args.selected}"
-    label="${args.label}"
-    value="${args.value}"
-    prefix-icon="${args['prefix-icon']}"
-    aria-label="${args['aria-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
-  ></mdc-option>
-`);
+const render = (args: Args) =>
+  wrapWithDiv(html`
+    <mdc-option
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
+      ?selected="${args.selected}"
+      label="${args.label}"
+      value="${args.value}"
+      prefix-icon="${args['prefix-icon']}"
+      aria-label="${args['aria-label']}"
+      tooltip-text="${args['tooltip-text']}"
+      tooltip-placement="${args['tooltip-placement']}"
+    ></mdc-option>
+  `);
 
 const meta: Meta = {
   title: 'Components/select/option',
@@ -38,6 +41,9 @@ const meta: Meta = {
   },
   argTypes: {
     disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     selected: {
@@ -75,13 +81,6 @@ const meta: Meta = {
       'side-header-text',
       'subline-text',
       'role',
-      '--mdc-listitem-background-color-active',
-      '--mdc-listitem-background-color-hover',
-      '--mdc-listitem-default-background-color',
-      '--mdc-listitem-primary-label-color',
-      '--mdc-listitem-secondary-label-color',
-      '--mdc-listitem-disabled-color',
-      '--mdc-listitem-column-gap',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -90,13 +89,16 @@ const meta: Meta = {
       'trailing-text-side-header',
       'trailing-text-subline',
     ]),
-    ...disableControls([
-      'click',
-      'keydown',
-      'keyup',
-      'focus',
-      'default',
+    ...textControls([
+      '--mdc-listitem-background-color-active',
+      '--mdc-listitem-background-color-hover',
+      '--mdc-listitem-default-background-color',
+      '--mdc-listitem-primary-label-color',
+      '--mdc-listitem-secondary-label-color',
+      '--mdc-listitem-disabled-color',
+      '--mdc-listitem-column-gap',
     ]),
+    ...disableControls(['click', 'keydown', 'keyup', 'focus', 'default']),
     ...classArgType,
     ...styleArgType,
   },

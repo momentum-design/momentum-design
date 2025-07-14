@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { IconNames } from '../icon/icon.types';
@@ -47,34 +48,54 @@ test('mdc-inputchip', async ({ componentsPage }) => {
     const inputchipStickerSheet = new StickerSheet(componentsPage, 'mdc-inputchip');
     inputchipStickerSheet.setAttributes({ label: 'Label', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setAttributes({
+      'icon-name': 'placeholder-bold',
+      'aria-label': 'Icon Only',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
     inputchipStickerSheet.setAttributes({ label: 'Error', error: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
     inputchipStickerSheet.setAttributes({ label: 'Disabled', disabled: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Error Disabled',
+
+    inputchipStickerSheet.setAttributes({
+      label: 'Error Disabled',
       error: '',
       disabled: '',
-      'clear-aria-label': 'Clear' });
-    await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Label',
       'clear-aria-label': 'Clear',
-      'icon-name': 'placeholder-bold' });
+    });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Error',
+    inputchipStickerSheet.setAttributes({
+      label: 'Label',
+      'clear-aria-label': 'Clear',
+      'icon-name': 'placeholder-bold',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+    inputchipStickerSheet.setAttributes({
+      label: 'Error',
       error: '',
       'clear-aria-label': 'Clear',
-      'icon-name': 'placeholder-bold' });
+      'icon-name': 'placeholder-bold',
+    });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Disabled',
+    inputchipStickerSheet.setAttributes({
+      label: 'Disabled',
       disabled: '',
       'clear-aria-label': 'Clear',
-      'icon-name': 'placeholder-bold' });
+      'icon-name': 'placeholder-bold',
+    });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Error Disabled',
+    inputchipStickerSheet.setAttributes({
+      label: 'Error Disabled',
       disabled: '',
       error: '',
       'clear-aria-label': 'Clear',
-      'icon-name': 'placeholder-bold' });
+      'icon-name': 'placeholder-bold',
+    });
     await inputchipStickerSheet.createMarkupWithCombination({});
     await inputchipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
@@ -96,10 +117,12 @@ test('mdc-inputchip', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const inputchip = await setup({ componentsPage,
+    const inputchip = await setup({
+      componentsPage,
       label: 'Label',
       clearAriaLabel: 'Clear',
-      iconName: 'placeholder-bold' });
+      iconName: 'placeholder-bold',
+    });
     await test.step('attribute label should be present on component by default', async () => {
       await expect(inputchip).toHaveAttribute('label', 'Label');
     });
@@ -129,7 +152,8 @@ test('mdc-inputchip', async ({ componentsPage }) => {
       componentsPage,
       label: 'Label',
       clearAriaLabel: 'Clear',
-      secondChipForFocus: true });
+      secondChipForFocus: true,
+    });
     const btn = inputchip.locator('mdc-button');
 
     await componentsPage.page.evaluate(() => {

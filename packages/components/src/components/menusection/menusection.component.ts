@@ -1,11 +1,11 @@
-import { CSSResult, html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
-import type MenuItemRadio from '../menuitemradio/menuitemradio.component';
-import { ARIA_CHECKED_STATES } from './menusection.constants';
+import { CSSResult, PropertyValues, html } from 'lit';
+import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
+import styles from './menusection.styles';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -19,82 +19,55 @@ import { ROLE } from '../../utils/roles';
  * @tagname mdc-menusection
  *
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
+ *
+ * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
  */
 class MenuSection extends Component {
   /**
-   * Query assigned `menuitemradio` elements from the default slot.
-   * These elements are used to enforce single-selection behavior.
-   *
-   * @internal
+   * The primary headerText of the list item.
+   * This appears on the leading side of the list item.
    */
-  @queryAssignedElements({ selector: `${MENUITEMRADIO_TAGNAME}:not([disabled])` })
-  radios!: MenuItemRadio[];
+  @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
+
+  /**
+   * The primary headerText of the list item.
+   * This appears on the leading side of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
-    this.addEventListener('click', this.handleClick);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClick);
-  }
-
-  /**
-   * Handles `click` events within the component.
-   * Delegates logic to `toggleCheckedState()` based on the clicked element.
-   *
-   * @param event - The click event from a child menu item
-   *
-   * @internal
-   */
-  private handleClick = (event: MouseEvent) => {
-    this.toggleCheckedState(event.target);
-  };
-
-  /**
-   * Toggles the `aria-checked` state on a target menu item based on its tag name.
-   * - For checkboxes, toggles the checked state.
-   * - For radios, ensures only one item is selected in the group.
-   *
-   * @param target - The event target element to update
-   *
-   * @internal
-   */
-  private toggleCheckedState(target: EventTarget | null) : void {
-    if (!(target instanceof HTMLElement)) return;
-
-    // Do not toggle state for disabled elements
-    if (target.hasAttribute('disabled')) return;
-
-    const tagName = target.tagName.toLowerCase();
-    const currentChecked = target.getAttribute('aria-checked') === ARIA_CHECKED_STATES.TRUE;
-
-    switch (tagName) {
-      case MENUITEMCHECKBOX_TAGNAME:
-        target.setAttribute('aria-checked', String(!currentChecked));
-        break;
-
-      case MENUITEMRADIO_TAGNAME:
-        if (currentChecked) return;
-
-        this.radios.forEach((radio) => {
-          const newCheckedState = radio === target ? ARIA_CHECKED_STATES.TRUE : ARIA_CHECKED_STATES.FALSE;
-          radio.setAttribute('aria-checked', newCheckedState);
-        });
-        break;
-
-      default:
-        break;
+  override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (
+      (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
+      (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
+    ) {
+      // Because IDREF attribute reflection does not work across light and shadow DOM, we either set the
+      // `aria-label` directly or use the `ariaLabelledByElements`.
+      // Since the later one just released in the major browsers, we do the first one for now.
+      // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
+      this.ariaLabel = this.headerText || '';
     }
   }
 
-  public override render() {
-    return html`<slot></slot>`;
+  private renderLabel() {
+    if (this.headerText) {
+      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
+        ${this.headerText}
+      </mdc-text> `;
+    }
+    return null;
   }
 
-  public static override styles: CSSResult[] = [...Component.styles];
+  public override render() {
+    return html`${this.renderLabel()}<slot></slot>`;
+  }
+
+  public static override styles: CSSResult[] = [...Component.styles, ...styles];
 }
 
 export default MenuSection;

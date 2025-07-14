@@ -47,7 +47,17 @@ class PopoverStack {
    * @param popover - Popover instance
    */
   remove(popover: Popover) {
-    this.stack = this.stack.filter((item) => item !== popover);
+    this.stack = this.stack.filter(item => item !== popover);
+  }
+
+  /**
+   * Checks if the stack has a specific popover
+   *
+   * @param popover - Popover instance
+   * @returns True if the stack has the popover, false otherwise
+   */
+  has(popover: Popover): boolean {
+    return this.stack.includes(popover);
   }
 
   /**

@@ -1,7 +1,6 @@
 import { css } from 'lit';
 
 const styles = css`
-
   :host {
     --mdc-tooltip-max-width: 400px;
     --mdc-tooltip-padding: 0.75rem;

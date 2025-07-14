@@ -1,4 +1,5 @@
 import type { Locator, Page, PageScreenshotOptions } from '@playwright/test';
+
 import CONSTANTS from './constants';
 
 export type ScreenShotOptions = PageScreenshotOptions & {
@@ -8,4 +9,4 @@ export type ScreenShotOptions = PageScreenshotOptions & {
   fileNameSuffix?: string;
 };
 
-export type ThemeClass = typeof CONSTANTS.THEME_CLASSES[keyof typeof CONSTANTS.THEME_CLASSES];
+export type ThemeClass = (typeof CONSTANTS.THEME_CLASSES)[keyof typeof CONSTANTS.THEME_CLASSES];

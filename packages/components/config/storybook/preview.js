@@ -2,20 +2,44 @@ import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
 
 import { setCustomElementsManifest } from '@storybook/web-components';
+
 import customElements from '../../dist/custom-elements.json';
+
 import { themes } from './themes';
 import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
+import { withCssPropertyProvider } from './provider/cssPropertyProvider';
+
+const cssProperties = [];
+
+function collectCssProperties(declaration) {
+  if (declaration.cssProperties) {
+    declaration.cssProperties.forEach(property => {
+      if (!cssProperties.includes(property.name)) {
+        cssProperties.push(property.name);
+      }
+    });
+  }
+}
 
 function refactorCustomElements(customElements) {
-  const toCamelCase = (str) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+  const toCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
 
-  customElements.modules.forEach((module) => {
-    module.declarations.forEach((declaration) => {
-      const attributesMap = new Set(declaration?.attributes?.map((attr) => toCamelCase(attr.name)));
+  customElements.modules.forEach(module => {
+    module.declarations.forEach(declaration => {
+      // Collect CSS properties
+      collectCssProperties(declaration);
+
+      // modify css parts to start with Part Name:
+      const mappedParts = declaration.cssParts?.map(part => ({
+        ...part,
+        name: `Shadow Part Name: "${part.name}"`,
+      }));
+
+      const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap
-      const filteredMembers = declaration.members.filter((member) => !attributesMap.has(member.name));
-      Object.assign(declaration, { members: filteredMembers });
+      const filteredMembers = declaration.members.filter(member => !attributesMap.has(member.name));
+      Object.assign(declaration, { members: filteredMembers, cssParts: mappedParts });
     });
   });
 
@@ -107,12 +131,11 @@ const preview = {
       },
     },
     options: {
-      storySort: (story1, story2) =>
-        globalThis['storybook-multilevel-sort:storySort'](story1, story2),
+      storySort: (story1, story2) => globalThis['storybook-multilevel-sort:storySort'](story1, story2),
     },
     direction: 'ltr',
   },
-  decorators: [withThemeProvider, withIconProvider],
+  decorators: [withCssPropertyProvider(cssProperties), withThemeProvider, withIconProvider],
   globalTypes: {
     theme: {
       description: 'Global theme for components',
@@ -122,7 +145,7 @@ const preview = {
         title: 'Theme',
         icon: 'globe',
         // Array of plain string values or MenuItem shape (see below)
-        items: themes.map((theme) => theme.displayName),
+        items: themes.map(theme => theme.displayName),
         // Change title based on selected value
         dynamicTitle: true,
       },

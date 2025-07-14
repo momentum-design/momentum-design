@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import path from 'path';
+
 import { ActionType } from 'plop';
+
 import { folders, componentName } from '../constants';
 
 export const AddToComponentExports: ActionType = {
@@ -12,6 +14,5 @@ export const AddToComponentExports: ActionType = {
   data: {
     componentName,
   },
-  template:
-    `  {{sentenceCase ${componentName}}},\n$1`,
+  template: `  {{sentenceCase ${componentName}}},\n$1`,
 };

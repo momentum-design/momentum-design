@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { VARIANT } from './progressbar.constants';
 
 type SetupOptions = {
@@ -72,10 +74,12 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
   );
 
   // Error state (default variant) - only set error if `error: true`
-  await progressbarStickerSheet.setAttributes({ error: true,
+  await progressbarStickerSheet.setAttributes({
+    error: true,
     label: 'Label',
     'help-text': 'Helper text',
-    'data-aria-label': 'This is a progress bar' });
+    'data-aria-label': 'This is a progress bar',
+  });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.DEFAULT],
@@ -86,9 +90,11 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
 
   // Inline progressbar
   // Reset error to false for inline progressbars, and include label for inline
-  progressbarStickerSheet.setAttributes({ label: 'Label',
+  progressbarStickerSheet.setAttributes({
+    label: 'Label',
     'help-text': 'Helper text',
-    'data-aria-label': 'This is a progress bar' });
+    'data-aria-label': 'This is a progress bar',
+  });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.INLINE],

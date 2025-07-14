@@ -1,9 +1,11 @@
 import type { ValueOf } from '../../utils/types';
+
 import { ARROW_ICON } from './select.constants';
 
 interface Events {
   onClickEvent: MouseEvent;
   onChangeEvent: Event;
+  onInputEvent: Event;
   onKeyDownEvent: KeyboardEvent;
   onFocusEvent: FocusEvent;
 }

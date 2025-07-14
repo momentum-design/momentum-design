@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+
 import { DEFAULTS, LENGTH_UNIT_SIZE } from './iconprovider.constants';
 
 type SetupOptions = {

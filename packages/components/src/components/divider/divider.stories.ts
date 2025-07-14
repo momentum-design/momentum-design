@@ -3,9 +3,11 @@ import '.';
 import '../button';
 import '../text';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls, textControls } from '../../../config/storybook/utils';
+
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const contentMap: Record<string, ReturnType<typeof html>> = {
   text: html`<mdc-text tagname="h1">Label</mdc-text>`,
@@ -61,7 +63,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(DIRECTIONS),
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-divider-background-color',
       '--mdc-divider-width',
       '--mdc-divider-horizontal-gradient',

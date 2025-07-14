@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { test } from '../../../config/playwright/setup';
 
 test.beforeEach(async ({ componentsPage }) => {
@@ -22,7 +23,8 @@ test('mdc-animation', async ({ componentsPage }) => {
     await test.step('matches screenshot of element', async () => {
       const animation = componentsPage.page.locator('mdc-animation');
 
-      await componentsPage.waitForEvent(animation, 'complete');
+      const animationComplete = await componentsPage.waitForEvent(animation, 'complete');
+      await animationComplete();
 
       await componentsPage.visualRegression.takeScreenshot('mdc-animation', { element: animation });
     });

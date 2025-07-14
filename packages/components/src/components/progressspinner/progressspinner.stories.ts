@@ -1,14 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-progressspinner
-   value="${args.value}" 
-   ?error="${args.error}" 
-   data-aria-label="${args['data-aria-label']}">
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls, textControls } from '../../../config/storybook/utils';
+
+const render = (args: Args) =>
+  html` <mdc-progressspinner value="${args.value}" ?error="${args.error}" data-aria-label="${args['data-aria-label']}">
   </mdc-progressspinner>`;
 
 const meta: Meta = {
@@ -29,15 +27,24 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type',
+    ...hideControls([
+      'help-text-type',
       'required',
-      'label', 'disabled',
+      'label',
+      'disabled',
       'help-text',
       'toggletip-text',
       'toggletip-placement',
       'info-icon-aria-label',
       'variant',
       'id',
+    ]),
+    ...textControls([
+      '--mdc-spinner-size',
+      '--mdc-track-color',
+      '--mdc-progress-color',
+      '--mdc-progress-success-color',
+      '--mdc-progress-error-color',
       '--mdc-progressbar-default-background-color',
       '--mdc-progressbar-default-active-background-color',
       '--mdc-progressbar-success-background-color',
@@ -49,13 +56,6 @@ const meta: Meta = {
       '--mdc-progressbar-label-fontsize',
       '--mdc-progressbar-label-fontweight',
       '--mdc-progressbar-help-text-color',
-    ]),
-    ...disableControls([
-      '--mdc-spinner-size',
-      '--mdc-track-color',
-      '--mdc-progress-color',
-      '--mdc-progress-success-color',
-      '--mdc-progress-error-color',
     ]),
     ...classArgType,
     ...styleArgType,

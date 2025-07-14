@@ -1,8 +1,11 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, queryAssignedNodes, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { PopoverPlacement } from '../popover/popover.types';
+
 import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 
@@ -49,21 +52,39 @@ class ToggleTip extends Popover {
   @state() currentAnnouncement = '';
 
   /**
-    * Set this attribute with the id of the element in the DOM, to which announcement
-    * elements will be appended.
-    * If an id is provided, the announcement elements will be appended to this element.
-    * If id is not provided, a visually hidden div element will be created in the DOM.
-    *
-    * Please refer to the `mdc-screenreaderannouncer` component for more details.
-  */
+   * Set this attribute with the id of the element in the DOM, to which announcement
+   * elements will be appended.
+   * If an id is provided, the announcement elements will be appended to this element.
+   * If id is not provided, a visually hidden div element will be created in the DOM.
+   *
+   * Please refer to the `mdc-screenreaderannouncer` component for more details.
+   */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
   screenreaderAnnouncerIdentity?: string;
+
+  /**
+   * The placement of the popover.
+   * - **top**
+   * - **top-start**
+   * - **top-end**
+   * - **bottom**
+   * - **bottom-start**
+   * - **bottom-end**
+   * - **left**
+   * - **left-start**
+   * - **left-end**
+   * - **right**
+   * - **right-start**
+   * - **right-end**
+   * @default bottom
+   */
+  @property({ type: String, reflect: true })
+  override placement: PopoverPlacement = DEFAULTS.PLACEMENT;
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.closeButton = this.closeButton ?? DEFAULTS.CLOSE_BUTTON;
     this.closeButtonAriaLabel = DEFAULTS.CLOSE_BUTTON_ARIA_LABEL;
-    this.placement = DEFAULTS.PLACEMENT;
     this.trigger = DEFAULTS.CLICK;
     this.showArrow = DEFAULTS.SHOW_ARROW;
     this.interactive = true;
@@ -81,7 +102,12 @@ class ToggleTip extends Popover {
    *          If there are no nodes, an empty string is returned.
    */
   private getToggleTipText(): string {
-    return this.defaultSlotNodes?.map((node: Node) => node.textContent).join(' ')?.trim() || '';
+    return (
+      this.defaultSlotNodes
+        ?.map((node: Node) => node.textContent)
+        .join(' ')
+        ?.trim() || ''
+    );
   }
 
   /**
@@ -112,7 +138,8 @@ class ToggleTip extends Popover {
       <mdc-screenreaderannouncer
         identity="${ifDefined(this.screenreaderAnnouncerIdentity)}"
         announcement="${this.currentAnnouncement}"
-        delay="300">
+        delay="300"
+      >
       </mdc-screenreaderannouncer>
     `;
   }

@@ -1,13 +1,13 @@
 import type { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './navitemlist.styles';
+
 import MenuBar from '../menubar/menubar.component';
-import { MenuMixin } from '../../utils/mixins/MenuMixin';
-import { ORIENTATION } from '../menubar/menubar.constants';
 import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type NavItem from '../navitem/navitem.component';
+
+import styles from './navitemlist.styles';
 
 /**
  * `mdc-navitemlist` is a container component used to group multiple mdc-navitem elements into a navigation list.
@@ -19,7 +19,7 @@ import type NavItem from '../navitem/navitem.component';
  *
  * @slot default - Slot for projecting one or more navigation items, optional section headers and dividers.
  */
-class NavItemList extends MenuMixin(MenuBar) {
+class NavItemList extends MenuBar {
   /**
    * Determines whether the navItemList is expanded or not.
    *
@@ -41,7 +41,6 @@ class NavItemList extends MenuMixin(MenuBar) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.ariaOrientation = ORIENTATION.VERTICAL;
     this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
   }
 
@@ -64,7 +63,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    * @param event - Custom Event fired from the nested navItem.
    */
   private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
-    const newNavItem = this.findNav(this.navItems as NavItem[] || [], event.detail.navId);
+    const newNavItem = this.findNav((this.navItems as NavItem[]) || [], event.detail.navId);
     if (this.sideNavigationContext?.value) {
       this.sideNavigationContext.value.setCurrentActiveNavItem(newNavItem);
     }
@@ -76,7 +75,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    *
    * @internal
    */
-  private findNav = (navs: NavItem[], navId: string): NavItem| undefined => navs.find((nav) => nav.navId === navId);
+  private findNav = (navs: NavItem[], navId: string): NavItem | undefined => navs.find(nav => nav.navId === navId);
 
   /**
    * Returns all nested, non-disabled mdc-navitem elements inside this component.

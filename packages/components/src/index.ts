@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 // Components Imports
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
@@ -40,6 +41,7 @@ import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
+import Password from './components/password';
 import Popover from './components/popover';
 import Presence from './components/presence';
 import Progressbar from './components/progressbar';
@@ -72,6 +74,8 @@ import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
+import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
+import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Constants / Utils Imports
@@ -126,6 +130,7 @@ export {
   NavItemList,
   OptGroup,
   Option,
+  Password,
   Popover,
   Presence,
   Progressbar,
@@ -154,25 +159,28 @@ export {
 
 // Types Exports
 export type {
-  TextType,
+  BadgeType,
+  ButtonColor,
+  ButtonVariant,
+  IconButtonSize,
+  MenuPopoverActionEvent,
+  MenuPopoverChangeEvent,
+  MenuSectionChangeEvent,
+  PillButtonSize,
+  PopoverPlacement,
+  SkeletonVariant,
   SpinnerSize,
   SpinnerVariant,
-  SkeletonVariant,
-  PopoverPlacement,
-  BadgeType,
-  IconButtonSize,
-  PillButtonSize,
-  ButtonVariant,
-  ButtonColor,
+  TextType,
 };
 
 // Constants / Utils Exports
 export {
-  inMemoryCache,
-  webAPIIconsCache,
   BUTTON_COLORS,
   BUTTON_VARIANTS,
   ICON_BUTTON_SIZES,
+  inMemoryCache,
   PILL_BUTTON_SIZES,
   SKELETON_VARIANTS,
+  webAPIIconsCache,
 };

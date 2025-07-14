@@ -1,4 +1,5 @@
 import { html } from 'lit';
+
 import { themes } from '../themes';
 import '../../../src/components/themeprovider';
 import './overrides.css';
@@ -7,7 +8,7 @@ const applyStyle = (element, className) => {
   element.classList.add(className);
 };
 
-const setCanvasBackgroundOnDocs = (backgroundColor) => {
+const setCanvasBackgroundOnDocs = backgroundColor => {
   const docsBody = document.querySelectorAll('div.docs-story');
   // eslint-disable-next-line no-restricted-syntax
   for (const body of docsBody) {
@@ -17,7 +18,7 @@ const setCanvasBackgroundOnDocs = (backgroundColor) => {
 
 export const withThemeProvider = (story, context) => {
   const currentTheme = context.globals.theme;
-  const themeObject = themes.find((theme) => theme.displayName === currentTheme);
+  const themeObject = themes.find(theme => theme.displayName === currentTheme);
 
   // this body override is necessary cause the themeprovider is not available on the body
   const body = document.querySelector('body.sb-show-main');

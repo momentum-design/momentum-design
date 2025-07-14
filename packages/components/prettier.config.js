@@ -8,14 +8,31 @@ const config = {
   bracketSameLine: false,
   jsxSingleQuote: false,
   printWidth: 120,
-  proseWrap: 'preserve',
+  proseWrap: 'always',
   quoteProps: 'as-needed',
   requirePragma: false,
   semi: true,
   singleQuote: true,
   tabWidth: 2,
   trailingComma: 'all',
-  useTabs: false
+  useTabs: false,
+  plugins: ['prettier-plugin-gherkin'],
+  overrides: [
+    {
+      files: ['*.md', '*.mdx'],
+      options: {
+        proseWrap: 'always',
+        printWidth: 80,
+      },
+    },
+    {
+      files: ['*.feature'],
+      options: {
+        printWidth: 120,
+        tabWidth: 2,
+      },
+    },
+  ],
 };
 
 module.exports = config;

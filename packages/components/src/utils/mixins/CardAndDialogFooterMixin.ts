@@ -1,9 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, TemplateResult } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
+
 import { DEFAULTS, VARIANTS } from '../../components/card/card.constants';
-import type { Constructor } from './index.types';
 import { BUTTON_COLORS, BUTTON_VARIANTS } from '../../components/button/button.constants';
+
+import type { Constructor } from './index.types';
 
 export declare class CardAndDialogFooterMixinInterface {
   protected footerLink?: Array<HTMLElement>;
@@ -50,7 +52,7 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
      */
     protected updateFooterButtonColors(variant: string) {
       const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
-      footerButtons?.forEach((button) => {
+      footerButtons?.forEach(button => {
         if (variant === VARIANTS.PROMOTIONAL) {
           button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
         } else {
@@ -72,15 +74,15 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
       if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
         arrayItems = this.footerLink;
       } else if (
-        tagname === DEFAULTS.BUTTON
-        && variant === BUTTON_VARIANTS.PRIMARY
-        && this.footerButtonPrimary?.length
+        tagname === DEFAULTS.BUTTON &&
+        variant === BUTTON_VARIANTS.PRIMARY &&
+        this.footerButtonPrimary?.length
       ) {
         arrayItems = this.footerButtonPrimary;
       } else if (
-        tagname === DEFAULTS.BUTTON
-        && variant === BUTTON_VARIANTS.SECONDARY
-        && this.footerButtonSecondary?.length
+        tagname === DEFAULTS.BUTTON &&
+        variant === BUTTON_VARIANTS.SECONDARY &&
+        this.footerButtonSecondary?.length
       ) {
         arrayItems = this.footerButtonSecondary;
       }
@@ -88,7 +90,7 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
       for (let i = 1; i < arrayItems.length; i += 1) {
         arrayItems[i].remove();
       }
-      arrayItems.forEach((element) => {
+      arrayItems.forEach(element => {
         // remove the element if it doesn't match with the tagname
         if (!element.matches(tagname)) {
           element.remove();
@@ -106,17 +108,19 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
      * @returns The footer element
      */
     protected renderFooter() {
-      return html`<div part="footer">
-        <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
-        <slot
-          name="footer-button-secondary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
-        ></slot>
-        <slot
-          name="footer-button-primary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
-        ></slot>
-      </div>`;
+      return html` <slot name="footer">
+        <div part="footer">
+          <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
+          <slot
+            name="footer-button-secondary"
+            @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
+          ></slot>
+          <slot
+            name="footer-button-primary"
+            @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
+          ></slot>
+        </div>
+      </slot>`;
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type

@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+
 import type { ScreenShotOptions } from '../types';
 import CONSTANTS from '../constants';
 
@@ -19,7 +20,7 @@ class VisualRegression {
    * @param direction - Either 'rtl' (right-to-left) or 'ltr' (left-to-right).
    */
   private async setDocumentDirection(direction: 'rtl' | 'ltr'): Promise<void> {
-    await this.page.evaluate(async (dir) => {
+    await this.page.evaluate(async dir => {
       document.documentElement.setAttribute('dir', dir);
 
       // wait for the next 2 frames to ensure the direction change is applied
@@ -27,7 +28,7 @@ class VisualRegression {
       // and apply the new direction before taking a screenshot
       // otherwise, the screenshot might not reflect the new direction
       // and the visual regression tests might fail
-      await new Promise<void>((resolve) => {
+      await new Promise<void>(resolve => {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             resolve();
@@ -47,6 +48,7 @@ class VisualRegression {
 
   /**
    * Takes a screenshot of the whole page, with the passed in options
+   * If options.element is provided, it will take a screenshot of that element instead of the whole page.
    *
    * @param name - name of the screenshot, file extension will be appended automatically!
    * @param options - description
@@ -67,10 +69,19 @@ class VisualRegression {
         name: `${name}-userflow-${options?.fileNameSuffix}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
       });
     } else if (isSnapshotRun && screenshotSource === 'stickersheet') {
+      // High contrast screenshot only for LTR and supported browsers
+      if (['chromium', 'msedge'].includes(browserName)) {
+        await this.toggleHighContrastMode(true); // Enable high contrast
+        expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
+          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
+        });
+        await this.toggleHighContrastMode(false); // Reset high contrast
+      }
+
       // Normal contrast screenshots for both RTL and LTR
       /* eslint-disable no-await-in-loop */
       /* eslint-disable no-restricted-syntax */
-      for (const direction of ['rtl', 'ltr'] as const) {
+      for (const direction of ['ltr', 'rtl'] as const) {
         await this.setDocumentDirection(direction);
         await options?.assertionAfterSwitchingDirection?.(this.page);
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
@@ -78,15 +89,8 @@ class VisualRegression {
         });
       }
 
-      // High contrast screenshot only for LTR and supported browsers
-      if (['chromium', 'msedge'].includes(browserName)) {
-        await this.toggleHighContrastMode(true); // Enable high contrast
-        await this.setDocumentDirection('ltr');
-        expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
-        });
-        await this.toggleHighContrastMode(false); // Reset high contrast
-      }
+      // reset to LTR after taking screenshots
+      await this.setDocumentDirection('ltr');
     }
   }
 }

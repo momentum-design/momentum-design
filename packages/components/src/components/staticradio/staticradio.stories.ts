@@ -1,16 +1,17 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-staticradio 
-  ?checked="${args.checked}"
-  ?readonly="${args.readonly}"
-  ?disabled="${args.disabled}"
-  class="${args.class}"
-  style="${args.style}"
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
+
+const render = (args: Args) =>
+  html` <mdc-staticradio
+    ?checked="${args.checked}"
+    ?readonly="${args.readonly}"
+    ?disabled="${args.disabled}"
+    class="${args.class}"
+    style="${args.style}"
   ></mdc-staticradio>`;
 
 const meta: Meta = {
@@ -33,7 +34,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
+    ...textControls([
       '--mdc-staticradio-inner-circle-size',
       '--mdc-staticradio-text-disabled-color',
       '--mdc-staticradio-normal-border-color',

@@ -2,20 +2,23 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import './iconprovider.stories.utils';
 import { html } from 'lit';
-import { ALLOWED_LENGTH_UNITS, ALLOWED_FILE_EXTENSIONS } from './iconprovider.constants';
+
 import { hideControls } from '../../../config/storybook/utils';
 
+import { ALLOWED_LENGTH_UNITS, ALLOWED_FILE_EXTENSIONS } from './iconprovider.constants';
+
 const render = (args: Args) => html`
-<mdc-iconprovider 
-  url=${args.url}
-  icon-set=${args['icon-set']}
-  file-extension=${args['file-extension']}
-  cache-strategy=${args['cache-strategy']}
-  cache-name=${args['cache-name']}
-  length-unit=${args['length-unit']}
-  size=${args.size}>
-  <mdc-subcomponent-icon icon-name=${args['icon-name']}></mdc-subcomponent-icon>
-</mdc-iconprovider>
+  <mdc-iconprovider
+    url=${args.url}
+    icon-set=${args['icon-set']}
+    file-extension=${args['file-extension']}
+    cache-strategy=${args['cache-strategy']}
+    cache-name=${args['cache-name']}
+    length-unit=${args['length-unit']}
+    size=${args.size}
+  >
+    <mdc-subcomponent-icon icon-name=${args['icon-name']}></mdc-subcomponent-icon>
+  </mdc-iconprovider>
 `;
 
 const meta: Meta = {

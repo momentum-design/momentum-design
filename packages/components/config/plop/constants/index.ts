@@ -1,4 +1,5 @@
 import path from 'path';
+
 import CONSTANTS from '../../../src/utils/tag-name/constants';
 
 export enum PROMPT_TYPE {
@@ -6,7 +7,7 @@ export enum PROMPT_TYPE {
 }
 
 export enum GENERATOR_NAME {
-  COMPONENT_GENERATOR = 'component'
+  COMPONENT_GENERATOR = 'component',
 }
 
 export enum ACTION {

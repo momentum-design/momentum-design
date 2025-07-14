@@ -6,9 +6,9 @@ import '../screenreaderannouncer';
 ToggleTip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-toggletip']: ToggleTip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-toggletip']: ToggleTip;
+  }
 }
 
 export default ToggleTip;

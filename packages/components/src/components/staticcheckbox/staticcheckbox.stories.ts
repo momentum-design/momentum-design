@@ -1,11 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-staticcheckbox 
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
+
+const render = (args: Args) =>
+  html` <mdc-staticcheckbox
     ?checked="${args.checked}"
     ?indeterminate="${args.indeterminate}"
     ?disabled="${args.disabled}"
@@ -33,7 +34,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
+    ...textControls([
       '--mdc-staticcheckbox-border-color',
       '--mdc-staticcheckbox-checked-background-color',
       '--mdc-staticcheckbox-disabled-background-color',

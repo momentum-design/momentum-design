@@ -1,8 +1,10 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
 import type { IconNames } from '../icon/icon.types';
+
+import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
 import type { Variant } from './tab.types';
 
 type SetupOptions = {
@@ -203,20 +205,22 @@ test('mdc-tab', async ({ componentsPage }) => {
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with icon only - active - disabled
-    stickerSheet.setAttributes({ text: '',
+    stickerSheet.setAttributes({
+      text: '',
       'icon-name': ICON_PLACEHOLDER,
       'aria-label': 'Label',
       active: '',
-      disabled: '' });
+      disabled: '',
+    });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     await stickerSheet.mountStickerSheet();
     const container = stickerSheet.getWrapperContainer();
 
     // Add role tablist to the row wrapper. A tab with role tab requires parent to have role tablist.
-    await container.evaluate((wrapper) => {
+    await container.evaluate(wrapper => {
       const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-      rowWrappers.forEach((rowWrapper) => {
+      rowWrappers.forEach(rowWrapper => {
         const modifiedRowWrapper = rowWrapper;
         modifiedRowWrapper.setAttribute('role', 'tablist');
       });

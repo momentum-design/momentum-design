@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+
 import type { BrandVisualNames } from './brandvisual.types';
 
 type SetupOptions = {
@@ -56,10 +58,7 @@ test('mdc-brandvisual', async ({ componentsPage }) => {
     const brandVisual = await visualTestingSetup({ componentsPage, name });
 
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-brandvisual',
-        { element: brandVisual },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-brandvisual', { element: brandVisual });
     });
   });
 

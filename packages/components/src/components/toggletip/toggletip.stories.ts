@@ -4,17 +4,15 @@ import '../avatarbutton';
 import '../link';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
+
 import { DEFAULTS } from './toggletip.constants';
 
-const render = (args: Args) => html`
-  <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
-    <mdc-avatarbutton
-      aria-label="Trigger button"
-      icon-name="placeholder-bold"
-      id="${args.triggerID}"
-      initials="MD">
+const render = (args: Args) =>
+  html` <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+    <mdc-avatarbutton aria-label="Trigger button" icon-name="placeholder-bold" id="${args.triggerID}" initials="MD">
     </mdc-avatarbutton>
     <mdc-toggletip
       color="${args.color}"
@@ -31,8 +29,11 @@ const render = (args: Args) => html`
       ><div>
         The toggletip with a
         <mdc-link
-          inline icon-name="placeholder-bold"
-          href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
+          inline
+          icon-name="placeholder-bold"
+          href="https://www.webex.com"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Link
         </mdc-link>
@@ -72,7 +73,7 @@ const meta: Meta = {
     triggerID: {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-toggletip-max-width',
       '--mdc-toggletip-text-color',
       '--mdc-toggletip-text-color-contrast',
@@ -141,34 +142,27 @@ export const Example: StoryObj = {
 };
 
 export const MultipleToggletips: StoryObj = {
-  render: () => html`
-  <div style="display: flex; justify-content: center; align-items: center; height: 50vh; gap: 1rem;">
-    <mdc-avatarbutton
-      aria-label="Trigger button"
-      icon-name="placeholder-bold"
-      id="trigger-1"
-      initials="MD">
-    </mdc-avatarbutton>
-    <mdc-avatarbutton
-      aria-label="Trigger button"
-      id="trigger-2"
-      initials="MD">
-    </mdc-avatarbutton>
-    <mdc-toggletip triggerid="trigger-1">
-      <div>
-        First toggletip with a 
-        <mdc-link
-          inline icon-name="placeholder-bold"
-          href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
-        >
-          Link
-        </mdc-link>
-      </div>
-    </mdc-toggletip>
-    <mdc-toggletip triggerid="trigger-2" close-button close-button-aria-label="Close toggletip">
-      <div>
-        Second toggletip with close button
-      </div>
-    </mdc-toggletip>
-  </div>`,
+  render: () =>
+    html` <div style="display: flex; justify-content: center; align-items: center; height: 50vh; gap: 1rem;">
+      <mdc-avatarbutton aria-label="Trigger button" icon-name="placeholder-bold" id="trigger-1" initials="MD">
+      </mdc-avatarbutton>
+      <mdc-avatarbutton aria-label="Trigger button" id="trigger-2" initials="MD"> </mdc-avatarbutton>
+      <mdc-toggletip triggerid="trigger-1">
+        <div>
+          First toggletip with a
+          <mdc-link
+            inline
+            icon-name="placeholder-bold"
+            href="https://www.webex.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Link
+          </mdc-link>
+        </div>
+      </mdc-toggletip>
+      <mdc-toggletip triggerid="trigger-2" close-button close-button-aria-label="Close toggletip">
+        <div>Second toggletip with close button</div>
+      </mdc-toggletip>
+    </div>`,
 };

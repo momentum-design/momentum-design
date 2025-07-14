@@ -2,9 +2,11 @@
 /* eslint-disable no-restricted-syntax */
 
 import { expect } from '@playwright/test';
+
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import { PopoverColor, PopoverPlacement, PopoverTrigger } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
 type SetupOptions = {
@@ -252,11 +254,11 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       });
     });
     await test.step('hover', async () => {
-      await test.step('mouseover in on trigger button should show tooltip', async () => {
+      await test.step('mouseenter in on trigger button should show tooltip', async () => {
         await triggerButton.hover();
         await expect(tooltip).toBeVisible();
       });
-      await test.step('mouseover out the trigger button should hide the tooltip', async () => {
+      await test.step('mouseout out the trigger button should hide the tooltip', async () => {
         await componentsPage.page.mouse.move(1000, 1000);
         await expect(triggerButton).not.toBeFocused();
         await expect(tooltip).not.toBeVisible();

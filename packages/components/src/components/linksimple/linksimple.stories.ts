@@ -2,9 +2,11 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`<mdc-linksimple
+import { hideControls, readOnlyControls, textControls } from '../../../config/storybook/utils';
+
+const render = (args: Args) =>
+  html`<mdc-linksimple
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
@@ -16,12 +18,13 @@ const render = (args: Args) => html`<mdc-linksimple
     target="${args.target}"
     rel="${args.rel}"
     tabindex="${args.tabIndex}"
-    >${args.children}</mdc-linksimple>`;
+    >${args.children}</mdc-linksimple
+  >`;
 
-const renderWithInvertedBackground = (args: Args) => html`
-    <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
-      ${render(args)}
-    </div>`;
+const renderWithInvertedBackground = (args: Args) =>
+  html` <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
+    ${render(args)}
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/linksimple',
@@ -58,7 +61,7 @@ const meta: Meta = {
       control: 'number',
     },
     ...hideControls(['handleNavigation']),
-    ...disableControls([
+    ...textControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
       '--mdc-link-color-disabled',

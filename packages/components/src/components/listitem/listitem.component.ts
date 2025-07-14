@@ -1,6 +1,7 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -11,6 +12,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+
 import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
@@ -106,6 +108,19 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
   /**
+   * Indicates whether the element is soft disabled.
+   * When set to `true`, the element appears visually disabled but still allows
+   * focus, click, and keyboard actions to be passed through.
+   *
+   * **Important:** When using soft disabled, consumers must ensure that
+   * the element behaves like a disabled element, allowing only focus and
+   * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
+   * @default undefined
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
+  softDisabled?: boolean;
+
+  /**
    * The tooltip text is displayed on hover of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
@@ -123,7 +138,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('mouseenter', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
     this.addEventListener('mouseout', this.hideTooltipOnLeave);
     this.addEventListener('click', this.handleClick);
@@ -135,10 +150,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   /**
-   * Fires the click event when the enter or space key is pressed.
+   * Fires the click event when the enter or space key is pressed down.
+   * This behavior is similar to a button click and key interaction.
    * @param event - The keyboard event triggered when a key is pressed down.
    */
-  private handleKeyDown(event: KeyboardEvent): void {
+  protected handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
       this.triggerClickEvent();
       event.preventDefault();
@@ -148,7 +164,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /**
    * Triggers a click event on the list item.
    */
-  private triggerClickEvent() {
+  protected triggerClickEvent() {
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
@@ -234,14 +250,16 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * This is useful when the list item is disabled, to prevent the user from interacting with the controls.
    * @param disabled - Whether to disable or enable the controls.
    */
-  private disableSlottedChildren(disabled: boolean): void {
-    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach((element) => {
+  private disableSlottedChildren(disabled: boolean = false): void {
+    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
       } else {
         element.removeAttribute('disabled');
       }
     });
+    // Set the aria-disabled attribute to indicate that the list item is disabled.
+    this.setAttribute('aria-disabled', `${disabled}`);
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -250,7 +268,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
-      this.setAttribute('aria-disabled', `${this.disabled}`);
+    }
+
+    if (changedProperties.has('softDisabled')) {
+      this.disableSlottedChildren(this.softDisabled);
     }
   }
 
@@ -259,10 +280,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the trailing controls slot.
    */
   protected renderTrailingControls() {
-    return html`<slot name="trailing-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="trailing-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -270,10 +293,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the leading controls slot.
    */
   protected renderLeadingControls() {
-    return html`<slot name="leading-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="leading-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -284,8 +309,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param event - The mouse event triggered when a click occurs.
    */
   protected stopEventPropagation(event: Event): void {
-    if ((event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE))
-        || (event instanceof MouseEvent)) {
+    if (
+      (event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE)) ||
+      event instanceof MouseEvent
+    ) {
       event.stopPropagation();
     }
   }

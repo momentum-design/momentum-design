@@ -1,7 +1,9 @@
 import fs from 'fs';
+
 import { Page, expect, TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHtmlReport } from 'axe-html-reporter';
+
 import CONSTANTS from '../constants';
 
 interface Accessibility {
@@ -80,11 +82,11 @@ class Accessibility {
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
-    exclusions?.forEach((exclusion) => {
+    exclusions?.forEach(exclusion => {
       accessibilityScanner.exclude(exclusion);
     });
 
-    inclusions?.forEach((inclusion) => {
+    inclusions?.forEach(inclusion => {
       accessibilityScanner.include(inclusion);
     });
 

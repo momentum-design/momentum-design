@@ -2,16 +2,18 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
+
 import { VARIANTS } from './alertchip.constants';
 
-const render = (args: Args) => html`
-  <mdc-alertchip 
-  @click="${action('onclick')}"
-  @keydown="${action('onkeydown')}"
-  @keyup="${action('onkeyup')}"
-  @focus="${action('onfocus')}"
+const render = (args: Args) =>
+  html` <mdc-alertchip
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     variant="${args.variant}"
     label="${args.label}"
   ></mdc-alertchip>`;
@@ -35,6 +37,12 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active', 'disabled']),
+    ...textControls([
+      '--mdc-chip-color',
+      '--mdc-chip-icon-color',
+      '--mdc-chip-border-color',
+      '--mdc-chip-background-color',
+    ]),
   },
 };
 
@@ -48,10 +56,10 @@ export const Example: StoryObj = {
 };
 
 export const AllVariants: StoryObj = {
-  render: () => html`
-  <div style="display: flex; gap: 0.5rem;">
-    ${Object.values(VARIANTS).map((variant) => html`
-      <mdc-alertchip variant="${variant}" label="${variant}"></mdc-alertchip>
-    `)}
-  </div>`,
+  render: () =>
+    html` <div style="display: flex; gap: 0.5rem;">
+      ${Object.values(VARIANTS).map(
+        variant => html` <mdc-alertchip variant="${variant}" label="${variant}"></mdc-alertchip> `,
+      )}
+    </div>`,
 };

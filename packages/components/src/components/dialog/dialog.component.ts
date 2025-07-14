@@ -1,25 +1,33 @@
 import { CSSResult, html, PropertyValues, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import styles from './dialog.styles';
+
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
-import { DEFAULTS } from './dialog.constants';
-import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
+import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { DialogEventManager } from './dialog.events';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+
+import { DEFAULTS } from './dialog.constants';
+import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
+import { DialogEventManager } from './dialog.events';
+import styles from './dialog.styles';
 
 /**
  * Dialog component is a modal dialog that can be used to display information or prompt the user for input.
  * It can be used to create custom dialogs where content for the body and footer actions is provided by the consumer.
- * The dialog is available in three sizes: small, medium, and large. It may also receive custom styling/sizing.
+ * The dialog is available in 5 sizes: small, medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
  * The dialog can be controlled solely through the `visible` property, no trigger element is required.
  * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
  * remember the previously focused element before the dialog was opened.
+ *
+ * The dialog is a controlled component, meaning it does not have its own state management for visibility.
+ * Use the `visible` property to control the visibility of the dialog.
+ * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
+ * or Escape is pressed).
  *
  * Dialog component have 2 variants: default and promotional.
  *
@@ -41,6 +49,8 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden
  * @event created - (React: onCreated) Dispatched when the dialog is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) Dispatched when the dialog is destroyed (removed from the DOM)
+ * @event close - (React: onClose) Dispatched when the Close Button is clicked or Escape key is pressed
+ * (this does not hide the dialog)
  *
  * @cssproperty --mdc-dialog-primary-background-color - primary background color of the dialog
  * @cssproperty --mdc-dialog-border-color - border color of the dialog
@@ -56,9 +66,10 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of
  * `mdc-button` component within the footer section.
- *
+ * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
+ * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
+class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(Component))) {
   /**
    * The unique ID of the dialog
    */
@@ -75,6 +86,8 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   /**
    * The visibility of the dialog
+   *
+   * Dialog is a controlled component, visible is the only property that controls the visibility of the dialog.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
@@ -82,13 +95,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   /**
    * The z-index of the dialog
+   *
+   * The backdrop will have z-index of `zIndex - 1`
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
-   * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), or 'large' (992px width)
+   * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), 'large' (992px width), 'xlarge' (90% width) or 'fullscreen' (100% width).
    * @default small
    */
   @property({ type: String, reflect: true })
@@ -175,11 +190,23 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
 
   /**
-   * For now FocusTrap is always true as the dialog is a modal component only.
-   * This means it will always trap focus within the dialog when it is open.
+   * Determines whether the focus trap is enabled.
+   * If true, focus will be restricted to the content within this component.
+   *
+   * NOTE: this should only be disabled in rare cases! By default a Modal Dialog
+   * should trap focus always.
+   *
+   * @default true
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
+  focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
+
+  /**
+   * For now preventScroll is always true as the dialog is a modal component only.
+   * This means scroll will be prevented when the dialog is open.
    */
   /** @internal */
-  protected override focusTrap: boolean = true;
+  protected override preventScroll: boolean = true;
 
   /** @internal */
   protected triggerElement: HTMLElement | null = null;
@@ -193,24 +220,39 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('keydown', this.onEscapeKeydown.bind(this));
+    // event listener can be added to the element directly, since dialog is a modal component
+    // and it will not be allowed to be focused outside of it
+    this.addEventListener('keydown', this.onEscapeKeydown.bind(this));
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener('keydown', this.onEscapeKeydown);
+    this.removeEventListener('keydown', this.onEscapeKeydown);
 
     this.backdropElement?.remove();
     this.backdropElement = null;
-    this.deactivateFocusTrap?.();
 
     // Set aria-expanded attribute on the trigger element to false if it exists
     this.triggerElement?.setAttribute('aria-expanded', 'false');
 
+    this.deactivatePreventScroll();
+
+    this.deactivateFocusTrap?.();
     this.focusBackToTrigger();
 
     DialogEventManager.onDestroyedDialog(this);
+  }
+
+  /**
+   * Applies the z-index to the dialog and backdrop elements.
+   * The dialog will have a z-index of `zIndex` and the backdrop will have a z-index of `zIndex - 1`.
+   *
+   * @internal
+   */
+  private applyZIndex() {
+    this.style.setProperty('z-index', `${this.zIndex}`);
+    this.backdropElement?.style.setProperty('z-index', `${this.zIndex - 1}`);
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
@@ -220,7 +262,8 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
     this.setupAriaLabelledDescribedBy();
 
-    this.style.zIndex = `${this.zIndex}`;
+    this.applyZIndex();
+
     DialogEventManager.onCreatedDialog(this);
   }
 
@@ -233,24 +276,39 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     }
 
     if (changedProperties.has('visible')) {
-      const oldValue = (changedProperties.get('visible') as boolean | undefined);
+      const oldValue = changedProperties.get('visible') as boolean | undefined;
       await this.isOpenUpdated(oldValue, this.visible);
     }
+
     if (changedProperties.has('zIndex')) {
-      this.setAttribute('z-index', `${this.zIndex}`);
+      // If zIndex is not set, use the default value
+      // This is to ensure that the dialog has always a z-index set even if not explicitly defined
+      if (this.zIndex === null) {
+        this.zIndex = DEFAULTS.Z_INDEX;
+      }
+      this.applyZIndex();
     }
+
     if (changedProperties.has('variant')) {
       this.updateFooterButtonColors(this.variant);
     }
+
     if (
-      changedProperties.has('ariaLabel')
-      || changedProperties.has('ariaLabelledBy')
-      || changedProperties.has('ariaDescribedBy')
-      || changedProperties.has('ariaDescription')
-      || changedProperties.has('headerText')
-      || changedProperties.has('descriptionText')
+      changedProperties.has('ariaLabel') ||
+      changedProperties.has('ariaLabelledBy') ||
+      changedProperties.has('ariaDescribedBy') ||
+      changedProperties.has('ariaDescription') ||
+      changedProperties.has('headerText') ||
+      changedProperties.has('descriptionText')
     ) {
       this.setupAriaLabelledDescribedBy();
+    }
+
+    if (changedProperties.has('focusTrap')) {
+      // if focusTrap turned false and the popover is visible, deactivate the focus trap
+      if (!this.focusTrap && this.visible) {
+        this.deactivateFocusTrap();
+      }
     }
   }
 
@@ -324,6 +382,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   }
 
   /**
+   * Fired when Close Button is clicked or Escape key is pressed.
+   * This method dispatches the close event. Setting visible to false
+   * has to be done by the consumer of the component.
+   */
+  private closeDialog() {
+    DialogEventManager.onCloseDialog(this, false);
+  }
+
+  /**
    * Handles the escape keydown event to close the dialog.
    * @internal
    * @param event - The keyboard event.
@@ -334,7 +401,11 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     }
 
     event.preventDefault();
-    this.hideDialog();
+    // Prevent the event from propagating to the document level
+    // pressing escape on a dialog should only close the dialog, nothing else
+    event.stopPropagation();
+
+    this.closeDialog();
   };
 
   /**
@@ -352,11 +423,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     if (newValue && !oldValue) {
       // Store the currently focused element before opening the dialog
       this.lastActiveElement = document.activeElement as HTMLElement;
-      this.enabledPreventScroll = true;
+
       this.createBackdrop();
 
+      this.activatePreventScroll();
+
       await this.updateComplete;
-      this.activateFocusTrap?.();
+      if (this.focusTrap) {
+        this.activateFocusTrap?.();
+      }
       this.setInitialFocus?.();
 
       // Set aria-expanded attribute on the trigger element to true if it exists
@@ -366,11 +441,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     } else if (!newValue && oldValue) {
       this.backdropElement?.remove();
       this.backdropElement = null;
-      this.deactivateFocusTrap?.();
 
       // Set aria-expanded attribute on the trigger element to false if it exists
       this.triggerElement?.setAttribute('aria-expanded', 'false');
 
+      this.deactivatePreventScroll();
+
+      this.deactivateFocusTrap?.();
       this.focusBackToTrigger();
 
       DialogEventManager.onHideDialog(this);
@@ -393,53 +470,38 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     }
   }
 
-  /**
-   * Hides the dialog.
-   * @internal
-   */
-  public hideDialog = () => {
-    this.visible = false;
-  };
-
-  /**
-   * Shows the dialog.
-   * @internal
-   */
-  public showDialog = () => {
-    this.visible = true;
-  };
-
   public override render() {
     return html`
       ${this.headerText
-    ? html`
-      <div part="header-section">
-        <div part="header">
-          <slot name="header-prefix"></slot>
-          <mdc-text
-            part="header-text"
-            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-            type="${TYPE.BODY_LARGE_BOLD}"  
-          >
-            ${this.headerText}
-          </mdc-text>
-        </div>
-        <mdc-text
-          part="description-text"
-          tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-          type="${TYPE.BODY_MIDSIZE_REGULAR}"
-        >
-          ${this.descriptionText ?? nothing}
-        </mdc-text>
-      </div>`
-    : nothing}
+        ? html` <div part="header-section">
+            <div part="header">
+              <slot name="header-prefix"></slot>
+              <mdc-text
+                part="header-text"
+                tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                type="${TYPE.BODY_LARGE_BOLD}"
+              >
+                ${this.headerText}
+              </mdc-text>
+            </div>
+            ${this.descriptionText
+              ? html`<mdc-text
+                  part="description-text"
+                  tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                  type="${TYPE.BODY_MIDSIZE_REGULAR}"
+                >
+                  ${this.descriptionText}
+                </mdc-text>`
+              : nothing}
+          </div>`
+        : nothing}
       <mdc-button
         part="dialog-close-btn"
         prefix-icon="${DEFAULTS.CANCEL_ICON}"
         variant="${BUTTON_VARIANTS.TERTIARY}"
         size="${ICON_BUTTON_SIZES[20]}"
         aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
-        @click="${this.hideDialog}"
+        @click="${this.closeDialog}"
       ></mdc-button>
       <div part="body">
         <slot name="dialog-body"></slot>

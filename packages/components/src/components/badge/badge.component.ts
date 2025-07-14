@@ -3,11 +3,13 @@ import { CSSResult, html } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { Component } from '../../models';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { DEFAULTS, ICON_NAMES_LIST, ICON_STATE, ICON_VARIANT, TYPE as BADGE_TYPE } from './badge.constants';
 import styles from './badge.styles';
 import type { BadgeType, IconVariant } from './badge.types';
@@ -125,9 +127,9 @@ class Badge extends IconNameMixin(Component) {
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap({
-    'mdc-badge-overlay': this.overlay,
-    [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
-  })}"
+          'mdc-badge-overlay': this.overlay,
+          [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
+        })}"
         name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>

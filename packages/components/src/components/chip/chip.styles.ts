@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
@@ -10,7 +11,7 @@ const styles = css`
     border: 1px solid;
     cursor: pointer;
     white-space: nowrap;
-    
+
     --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
     --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-label-default-normal);
@@ -145,7 +146,9 @@ const styles = css`
     --mdc-chip-background-color: var(--mds-color-theme-background-label-violet-active);
   }
 
-  :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
+  :host([disabled]),
+  :host([disabled]:hover),
+  :host([disabled]:active) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-chip-background-color: var(--mds-color-theme-background-primary-disabled);
     --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);

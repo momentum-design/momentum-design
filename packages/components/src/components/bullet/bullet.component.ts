@@ -1,7 +1,9 @@
 import { property } from 'lit/decorators.js';
 import type { CSSResult } from 'lit';
-import styles from './bullet.styles';
+
 import { Component } from '../../models';
+
+import styles from './bullet.styles';
 import { SIZE } from './bullet.constants';
 import type { Size } from './bullet.types';
 
@@ -15,7 +17,7 @@ import type { Size } from './bullet.types';
  * @cssproperty --mdc-bullet-size-small - small size value of the bullet
  * @cssproperty --mdc-bullet-size-medium - medium size value of the bullet
  * @cssproperty --mdc-bullet-size-large - large size value of the bullet
-*/
+ */
 class Bullet extends Component {
   /**
    * Size of the bullet

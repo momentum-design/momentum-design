@@ -2,11 +2,12 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import type { Ref } from 'lit/directives/ref';
-
 import lottie, { AnimationItem } from 'lottie-web/build/player/lottie_light';
 import animationManifest from '@momentum-design/animations/dist/manifest';
-import styles from './animation.styles';
+
 import { Component } from '../../models';
+
+import styles from './animation.styles';
 import type { AnimationNames, LoopType } from './animation.types';
 import { DEFAULTS } from './animation.constants';
 

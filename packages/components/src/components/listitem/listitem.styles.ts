@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
@@ -21,10 +22,10 @@ const styles = css`
     padding: 0.5rem var(--mdc-listitem-padding-left-and-right);
     width: 100%;
   }
-  :host([variant="inset-rectangle"]) {
+  :host([variant='inset-rectangle']) {
     border-radius: 0.5rem;
   }
-  :host([variant="inset-pill"]) {
+  :host([variant='inset-pill']) {
     border-radius: 3.125rem;
   }
   :host::part(leading-text) {
@@ -48,7 +49,15 @@ const styles = css`
   :host([disabled])::part(leading-text-tertiary-label),
   :host([disabled])::part(leading-text-primary-label),
   :host([disabled])::part(trailing-text-side-header),
-  :host([disabled])::part(trailing-text-subline) {
+  :host([disabled])::part(trailing-text-subline),
+  :host([soft-disabled]),
+  :host([soft-disabled]:hover),
+  :host([soft-disabled]:active),
+  :host([soft-disabled])::part(leading-text-secondary-label),
+  :host([soft-disabled])::part(leading-text-tertiary-label),
+  :host([soft-disabled])::part(leading-text-primary-label),
+  :host([soft-disabled])::part(trailing-text-side-header),
+  :host([soft-disabled])::part(trailing-text-subline) {
     background-color: unset;
     color: var(--mdc-listitem-disabled-color);
     cursor: default;
@@ -59,7 +68,8 @@ const styles = css`
   :host(:active) {
     background-color: var(--mdc-listitem-background-color-active);
   }
-  :host::part(leading), :host::part(trailing) {
+  :host::part(leading),
+  :host::part(trailing) {
     align-items: center;
     column-gap: var(--mdc-listitem-column-gap);
     display: flex;
@@ -68,16 +78,20 @@ const styles = css`
   :host::part(trailing) {
     justify-content: flex-end;
   }
-  :host::part(leading-text-secondary-label), :host::part(leading-text-tertiary-label) {
+  :host::part(leading-text-secondary-label),
+  :host::part(leading-text-tertiary-label) {
     color: var(--mdc-listitem-secondary-label-color);
   }
-  :host::part(leading-text-primary-label), :host::part(trailing-text-side-header), :host::part(trailing-text-subline) {
+  :host::part(leading-text-primary-label),
+  :host::part(trailing-text-side-header),
+  :host::part(trailing-text-subline) {
     color: var(--mdc-listitem-primary-label-color);
   }
   :host::part(trailing-text) {
     text-align: right;
   }
-  ::slotted([slot="leading-controls"]), ::slotted([slot="trailing-controls"]) {
+  ::slotted([slot='leading-controls']),
+  ::slotted([slot='trailing-controls']) {
     align-items: center;
     column-gap: var(--mdc-listitem-column-gap);
     display: flex;

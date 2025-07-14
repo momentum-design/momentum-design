@@ -36,7 +36,7 @@
         "name": "ts-lit-plugin",
         "strict": true
       }
-    ],
+    ]
   },
   "files": [
     "index.ts",
@@ -48,6 +48,7 @@
     "**/*.e2e-test*",
     "**/*.stories*",
     "node_modules",
-    "stories"
+    "stories",
+    "**/*.figma*"
   ],
 }

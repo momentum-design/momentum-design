@@ -1,5 +1,6 @@
 import type { ValueOf } from '../../utils/types';
 import type { IconNames } from '../icon/icon.types';
+
 import { VALIDATION } from './formfieldwrapper.constants';
 
 type ValidationType = ValueOf<typeof VALIDATION>;

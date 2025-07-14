@@ -1,11 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+
 import '.';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+
 import '../button';
 import '../option';
 import '../select';
+import '../menupopover';
+import '../menuitem';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -130,6 +134,7 @@ const renderMultiple = (args: Args) => html`
     placement="bottom"
     z-index="20"
     show-arrow
+    hide-on-escape
   >
     <mdc-text>Description tooltip on mouseenter</mdc-text>
   </mdc-popover>
@@ -184,8 +189,22 @@ const renderBackdrop = (args: Args) => html`
       <mdc-button>Button 5</mdc-button>
     `,
   )}
-  <mdc-button>Button 1</mdc-button>
-  <mdc-button>Button 2</mdc-button>
+  <mdc-button id="popover-trigger-2">Button 1</mdc-button>
+  <mdc-popover
+    id="popover2"
+    triggerID="popover-trigger-2"
+    trigger="click"
+    placement="bottom"
+    interactive
+    z-index="20"
+    focus-back-to-trigger
+    focus-trap
+    show-arrow
+    hide-on-escape
+    hide-on-outside-click
+  >
+    <mdc-text>Popover 2</mdc-text>
+  </mdc-popover>
 `;
 
 const meta: Meta = {
@@ -295,7 +314,7 @@ const meta: Meta = {
     'disable-aria-haspopup': {
       control: 'boolean',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-popover-arrow-border-radius',
       '--mdc-popover-arrow-border',
       '--mdc-popover-primary-background-color',
@@ -395,12 +414,16 @@ export const interactiveMultiple: StoryObj = {
     flip: DEFAULTS.FLIP,
     'focus-trap': true,
     interactive: true,
+    'focus-back-to-trigger': true,
+    'hide-on-escape': true,
+    'hide-on-outside-click': true,
     'show-arrow': true,
     'close-button': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
+
 export const nestedPopover: StoryObj = {
   render: renderNested,
   args: {
@@ -418,8 +441,10 @@ export const nestedPopover: StoryObj = {
     'hide-on-escape': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'hide-on-outside-click': true,
   },
 };
+
 export const hideOnBlur: StoryObj = {
   render: renderHideOnBlur,
   args: {
@@ -453,6 +478,8 @@ export const popoverWithBackdrop: StoryObj = {
     interactive: true,
     'show-arrow': true,
     backdrop: true,
+    'hide-on-outside-click': true,
+    'focus-trap': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
@@ -522,5 +549,33 @@ export const MultipleSingleLevelPopovers: StoryObj = {
         </mdc-popover>
       </div>
     </div>
+  `,
+};
+
+export const NestedMenu: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START, triggerID: 'trigger-btn' },
+  render: () => html`
+    ${createTrigger('popover-trigger-interactive', 'Click me!')}
+    <mdc-popover
+      id="popover"
+      triggerID="popover-trigger-interactive"
+      trigger="click"
+      placement="bottom"
+      interactive
+      focus-back-to-trigger
+      focus-trap
+      show-arrow
+      hide-on-escape
+      hide-on-outside-click
+    >
+      <div id="menupopover-test-wrapper">
+        <h2>Hello world</h2>
+        <mdc-button id="menu-trigger-btn">Menu</mdc-button>
+        <mdc-menupopover triggerID="menu-trigger-btn" show-arrow>
+          <mdc-menuitem label="Profile"></mdc-menuitem>
+          <mdc-menuitem label="Notifications"></mdc-menuitem>
+        </mdc-menupopover>
+      </div>
+    </mdc-popover>
   `,
 };

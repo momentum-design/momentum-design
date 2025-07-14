@@ -2,9 +2,11 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls, textControls } from '../../../config/storybook/utils';
+
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <div role="menubar">
@@ -73,7 +75,7 @@ const meta: Meta = {
     'disable-aria-current': {
       control: 'boolean',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-navitem-color',
       '--mdc-navitem-border-color',
       '--mdc-navitem-disabled-color',

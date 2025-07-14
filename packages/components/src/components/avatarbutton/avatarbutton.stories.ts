@@ -3,9 +3,10 @@ import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
+
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
@@ -60,15 +61,8 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    ...hideControls([
-      'active',
-      'disabled',
-      'soft-disabled',
-      'tabIndex',
-      'role',
-      'type',
-    ]),
-    ...disableControls([
+    ...hideControls(['active', 'disabled', 'soft-disabled', 'tabIndex', 'role', 'type']),
+    ...textControls([
       '--mdc-avatarbutton-overlay-background-color-rest',
       '--mdc-avatarbutton-overlay-background-color-hover',
       '--mdc-avatarbutton-overlay-background-color-active',

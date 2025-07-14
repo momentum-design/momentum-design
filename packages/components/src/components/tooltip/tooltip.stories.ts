@@ -1,13 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
 import '../list';
 import '../listitem';
 import '../popover';
 import { COLOR, DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
 const render = (args: Args) => html`
@@ -27,7 +29,8 @@ const render = (args: Args) => html`
       @created="${action('oncreated')}"
       @destroyed="${action('ondestroyed')}"
       ?visible="${args.visible}"
-      >${args.children}</mdc-tooltip>
+      >${args.children}</mdc-tooltip
+    >
   </div>
 `;
 
@@ -71,7 +74,7 @@ const meta: Meta = {
     triggerID: {
       control: 'text',
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-tooltip-max-width',
       '--mdc-tooltip-padding',
       '--mdc-tooltip-text-color',
@@ -153,14 +156,9 @@ export const TooltipInsidePopover: StoryObj = {
             <mdc-listitem label="Label 3"></mdc-listitem>
             <mdc-listitem label="Label 4"></mdc-listitem>
             <mdc-listitem label="Label 5" id="tooltip-trigger"></mdc-listitem>
-            <mdc-tooltip
-              triggerid="tooltip-trigger"
-              show-arrow
-              style="--mdc-popover-max-width: 750px;"
-            >
-              This tooltip is inside a popover and it has a long text to read.
-              Please take your time to go through it carefully, as it contains valuable information
-              that might help you understand the context, functionality,
+            <mdc-tooltip triggerid="tooltip-trigger" show-arrow style="--mdc-popover-max-width: 750px;">
+              This tooltip is inside a popover and it has a long text to read. Please take your time to go through it
+              carefully, as it contains valuable information that might help you understand the context, functionality,
               or features related to the element you're interacting with.
             </mdc-tooltip>
             <mdc-listitem label="Label 6"></mdc-listitem>
@@ -169,8 +167,8 @@ export const TooltipInsidePopover: StoryObj = {
             <mdc-listitem label="Label 9"></mdc-listitem>
             <mdc-listitem label="Label 10"></mdc-listitem>
           </mdc-list>
-        </mdc-popover>        
-    </div>
+        </mdc-popover>
+      </div>
     </mdc-popover>
   `,
 };

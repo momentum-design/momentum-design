@@ -1,0 +1,18 @@
+# configs
+.prettierignore
+.husky
+
+# cache files
+dist
+config/storybook/public
+playwright-temp
+storybook-static
+
+# report files
+playwright-report
+
+# Handlebars templates
+*.hbs
+
+# Image files
+*.png

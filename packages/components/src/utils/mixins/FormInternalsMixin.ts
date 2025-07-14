@@ -2,6 +2,7 @@
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
+
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
@@ -72,6 +73,12 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
 
     /**
      * Custom validation message that will override the default message and displayed when the input is invalid.
+     *
+     * To display custom validation messages, you must listen for input events (or other relevant events)
+     * on your component and update the `validationMessage` property with the desired message string.
+     * Updating this property will ensure that new validation messages are shown to the user.
+     * - The `validationMessage` property overrides the default browser validation message when set.
+     * - Consumers are responsible for updating `validationMessage` in response to input or validation state changes.
      */
     @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
 

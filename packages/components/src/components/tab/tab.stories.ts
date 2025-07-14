@@ -4,26 +4,30 @@ import '../badge';
 import { html, nothing } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { TAB_VARIANTS } from './tab.constants';
-import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`<div role="tablist">
-  <mdc-tab
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    @activechange="${action('onactivechange')}"
-    ?active="${args.active}"
-    aria-label="${ifDefined(args.text ? nothing : 'Label')}"
-    ?disabled="${args.disabled}"
-    icon-name="${ifDefined(args['icon-name'])}"
-    tabIndex="${ifDefined(args.tabIndex)}"
-    text="${ifDefined(args.text)}"
-    variant="${ifDefined(args.variant)}"
-    tab-id="tab1"
-    >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab>
-</div>`;
+import { textControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+
+import { TAB_VARIANTS } from './tab.constants';
+
+const render = (args: Args) =>
+  html`<div role="tablist">
+    <mdc-tab
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      @activechange="${action('onactivechange')}"
+      ?active="${args.active}"
+      aria-label="${ifDefined(args.text ? nothing : 'Label')}"
+      ?disabled="${args.disabled}"
+      icon-name="${ifDefined(args['icon-name'])}"
+      tabIndex="${ifDefined(args.tabIndex)}"
+      text="${ifDefined(args.text)}"
+      variant="${ifDefined(args.variant)}"
+      tab-id="tab1"
+      >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab
+    >
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/tab',
@@ -59,7 +63,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(TAB_VARIANTS),
     },
-    ...disableControls([
+    ...textControls([
       '--mdc-tab-content-gap',
       '--mdc-tab-height',
       '--mdc-tab-glass-active-background-color-disabled',
@@ -111,12 +115,7 @@ const meta: Meta = {
       '--mdc-tab-pill-inactive-color',
       '--mdc-tab-pill-inactive-color-disabled',
     ]),
-    ...hideControls([
-      'role',
-      'size',
-      'soft-disabled',
-      'type',
-    ]),
+    ...hideControls(['role', 'size', 'soft-disabled', 'type']),
   },
 };
 

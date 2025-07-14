@@ -9,7 +9,7 @@ import type { IconNames } from '../icon/icon.types';
 const getIconNameWithoutStyle = (iconName: IconNames): string => {
   const iconParts = iconName.split('-');
   const variants = ['bold', 'filled', 'regular', 'light'];
-  return iconParts.filter((part) => !variants.includes(part)).join('-');
+  return iconParts.filter(part => !variants.includes(part)).join('-');
 };
 
 export { getIconNameWithoutStyle };

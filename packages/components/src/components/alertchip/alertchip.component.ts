@@ -1,11 +1,13 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './alertchip.styles';
+
 import { Component } from '../../models';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
+
+import styles from './alertchip.styles';
 import { DEFAULTS } from './alertchip.constants';
 import { getAlertIcon } from './alertchip.utils';
 import type { VariantType } from './alertchip.types';
-import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * mdc-alertchip component is an interactive chip that consumers can use to represent an alert.
@@ -25,6 +27,8 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * @cssproperty --mdc-chip-border-color - The border color of the alertchip
  * @cssproperty --mdc-chip-background-color - The background color of the alertchip
  *
+ * @csspart icon - The alert icon
+ * @csspart label - The text label of the alertchip
  */
 class AlertChip extends Buttonsimple {
   /**
@@ -59,7 +63,11 @@ class AlertChip extends Buttonsimple {
   public override render() {
     return html`
       <mdc-icon part="icon" name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
-      <mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+      ${this.label
+        ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
+            >${this.label}</mdc-text
+          >`
+        : nothing}
     `;
   }
 

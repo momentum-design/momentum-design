@@ -1,5 +1,6 @@
-/* eslint-disable no-redeclare */
-import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
+import { v4 as uuidv4 } from 'uuid';
+import { Page, expect, Locator, TestInfo, test, JSHandle } from '@playwright/test';
+
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
 import type { ThemeClass } from './types';
@@ -47,7 +48,7 @@ class ComponentsPage {
    */
   async setGlobalTheme(themeClass: ThemeClass) {
     await this.page.evaluate(
-      (args) => {
+      args => {
         const themeProvider = window.document.querySelector('body mdc-themeprovider');
         if (themeProvider) {
           themeProvider.setAttribute('themeclass', args.themeClass);
@@ -98,7 +99,7 @@ class ComponentsPage {
   async mount({ html, clearDocument = false, elementSelector }: MountOptions) {
     await test.step('Mounting HTML', async () => {
       await this.page.evaluate(
-        (args) => {
+        args => {
           function htmlToElement(htmlString: string): Element {
             const template = document.createElement('template');
             template.innerHTML = htmlString.trim();
@@ -120,20 +121,57 @@ class ComponentsPage {
 
   /**
    * Wait for the event `eventName` to be fired on a HTMLElement, queried by the passed in `locator`
+   *
+   * The wait is deferred, meaning that it will do the waiting in 2 steps:
+   * 1. async register the event listener on the element.
+   * 2. return a function that will wait for the event to be fired.
+   *
+   * @example
+   * ```ts
+   *  // Register event listener before user interaction
+   *  const waitForEventDispatch = await componentsPage.waitForEvent(someLocator, 'click');
+   *
+   *  // Do some user interaction that will trigger the event
+   *
+   *  // Wait for the event to be fired
+   *  await waitForEventDispatch();
+   * ```
+   *
    * @param locator - Playwright locator
    * @param eventName - eventName to wait for to be fired on queried HTMLElement
-   * @returns Promise, which resolves when event `eventName` gets fired
+   * @param options - options to pass to the waitForEvent function, including a timeout
+   * @returns Promise, which resolves when event `eventName` listener registered and returns a function.
+   *          The function returns a Promise that resolves when event was fired.
    */
-  async waitForEvent(locator: Locator, eventName: string) {
-    return locator.evaluate(
-      (element: HTMLElement, args) =>
-        new Promise((resolve: (value?: unknown) => void) => {
-          element.addEventListener(args.eventName, () => {
-            resolve();
-          });
-        }),
-      { eventName },
+  async waitForEvent(
+    locator: Locator,
+    eventName: string,
+    options?: { timeout?: number },
+  ): Promise<() => Promise<JSHandle<boolean>>> {
+    const id = uuidv4();
+    // Step 1: Register the event listener on the element
+    await locator.evaluate(
+      (element: HTMLElement, args) => {
+        // @ts-ignore
+        // eslint-disable-next-line no-multi-assign
+        const events = (window.$$eventListeners$$ = window.$$eventListeners$$ || {});
+        events[args.id] = 0;
+        element.addEventListener(args.eventName, () => {
+          events[args.id] += 1;
+        });
+      },
+
+      { eventName, id },
     );
+
+    // Step 2: Wait for the event to be fired
+    return () =>
+      locator.page().waitForFunction<boolean, string>(
+        // @ts-ignore
+        id => (window.$$eventListeners$$?.[id] > 0) as any,
+        id,
+        { timeout: options?.timeout },
+      );
   }
 
   /**
@@ -146,7 +184,7 @@ class ComponentsPage {
    */
   async setAttributes(locator: Locator, attributes: Record<string, string>) {
     await locator.evaluate((element, attrs) => {
-      Object.keys(attrs).forEach((key) => {
+      Object.keys(attrs).forEach(key => {
         element.setAttribute(key, attrs[key]);
       });
     }, attributes);
@@ -175,13 +213,13 @@ class ComponentsPage {
    */
   async expectPromiseTimesOut(promise: Promise<unknown>, shouldTimeout: boolean, timeout: number = 2000) {
     const TIMED_OUT = 'TIMED_OUT';
-    const timeoutPromise = new Promise((resolve) => {
+    const timeoutPromise = new Promise(resolve => {
       setTimeout(resolve, timeout);
     }).then(() => TIMED_OUT);
 
     const [resolved, error] = await Promise.race([promise, timeoutPromise])
-      .then((x) => [x])
-      .catch((err) => [undefined, err]);
+      .then(x => [x])
+      .catch(err => [undefined, err]);
 
     const pass = resolved === TIMED_OUT;
 

@@ -4,8 +4,8 @@ import { ReactiveElement } from 'lit';
 type ConsumeOptions<C> = {
   host: ReactiveElement;
   context: C;
-  subscribe?:boolean
-}
+  subscribe?: boolean;
+};
 const consume = <C extends Context<unknown, unknown>>(options: ConsumeOptions<C>) => {
   const { host, context, subscribe } = options;
 

@@ -1,14 +1,16 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './sidenavigation.styles';
+
 import { Component, Provider } from '../../models';
-import SideNavigationContext from './sidenavigation.context';
-import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
-import type { SideNavigationVariant } from './sidenavigation.types';
 import { ROLE } from '../../utils/roles';
+
+import type { SideNavigationVariant } from './sidenavigation.types';
+import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
+import SideNavigationContext from './sidenavigation.context';
+import styles from './sidenavigation.styles';
 
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
@@ -119,11 +121,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
   parentNavTooltipText?: string;
 
   /**
-  * Toggles between true and false when it's variant is flexible.
-  * @default true
-  *
-  * @internal
-  */
+   * Toggles between true and false when it's variant is flexible.
+   * @default true
+   *
+   * @internal
+   */
   @state()
   private flexibleExpanded = this.variant === DEFAULTS.VARIANT;
 
@@ -160,9 +162,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Is called on every re-render, see Provider class
    */
   protected updateContext(): void {
-    if (this.context.value.variant !== this.variant
-        || this.context.value.expanded !== this.expanded
-        || this.context.value.parentNavTooltipText !== this.parentNavTooltipText
+    if (
+      this.context.value.variant !== this.variant ||
+      this.context.value.expanded !== this.expanded ||
+      this.context.value.parentNavTooltipText !== this.parentNavTooltipText
     ) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
@@ -221,30 +224,40 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return html``;
     }
     return html`
-        <div part="side-navigation-container" id='side-nav-container'>
-          <div part="scrollable-section">
-            <slot name="scrollable-section"></slot>
-          </div>
-          <mdc-divider variant="gradient" part="separator"></mdc-divider>
-          <div part="fixed-section">
-              <slot name="fixed-section"></slot>
-              <div part="brand-logo-container">
-                <slot name="brand-logo"></slot>
-                ${this.expanded ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} 
-                part="label">${this.customerName}</mdc-text>` : nothing}
-              </div>
+      <div part="side-navigation-container" id="side-nav-container">
+        <div part="scrollable-section">
+          <slot name="scrollable-section"></slot>
+        </div>
+        <mdc-divider variant="gradient" part="separator"></mdc-divider>
+        <div part="fixed-section">
+          <slot name="fixed-section"></slot>
+          <div part="brand-logo-container">
+            <slot name="brand-logo"></slot>
+            ${this.expanded
+              ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="label"
+                  >${this.customerName}</mdc-text
+                >`
+              : nothing}
           </div>
         </div>
-        ${this.variant === VARIANTS.FLEXIBLE ? html`<mdc-divider
+      </div>
+      ${this.variant === VARIANTS.FLEXIBLE
+        ? html`<mdc-divider
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
-          > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
-                        aria-expanded="${!!this.expanded}" aria-controls='side-nav-container' 
-                        part="grabber-btn"></mdc-button>
-        </mdc-divider>` : nothing}
-  `;
+          >
+            <mdc-button
+              aria-label=${this.grabberBtnAriaLabel ?? ''}
+              @click=${this.toggleSideNavigation}
+              aria-expanded="${!!this.expanded}"
+              aria-controls="side-nav-container"
+              part="grabber-btn"
+            ></mdc-button>
+          </mdc-divider>`
+        : nothing}
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

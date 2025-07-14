@@ -1,10 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { COLOR } from './chip.constants';
 import type { IconNames } from '../icon/icon.types';
+
+import { COLOR } from './chip.constants';
 import type { ColorType } from './chip.types';
 
 type SetupOptions = {
@@ -14,7 +16,7 @@ type SetupOptions = {
   color?: ColorType;
   disabled?: boolean;
   secondChipForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -52,6 +54,9 @@ test('mdc-chip', async ({ componentsPage }) => {
     chipStickerSheet.setAttributes({ label: 'Chip' });
     await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
 
+    chipStickerSheet.setAttributes({ 'icon-name': 'placeholder-bold', 'aria-label': 'Icon Only' });
+    await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
+
     chipStickerSheet.setAttributes({ label: 'Chip', 'icon-name': 'placeholder-bold' });
     await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
 
@@ -79,7 +84,7 @@ test('mdc-chip', async ({ componentsPage }) => {
 
   /**
    * ATTRIBUTES
-  */
+   */
   await test.step('attributes', async () => {
     const chip = await setup({ componentsPage, label: 'Chip', iconName: 'placeholder-bold' });
     await test.step('attribute color should be present on component by default', async () => {

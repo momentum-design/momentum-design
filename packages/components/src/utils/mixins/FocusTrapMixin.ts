@@ -1,19 +1,97 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
-import type { PropertyValues } from 'lit';
+
 import type { Component } from '../../models';
+
 import type { Constructor } from './index.types';
+
+/**
+ * FocusTrapStack manages a stack of active focus traps,
+ * ensuring only one focus trap is active at a time.
+ *
+ * This also makes sure there is only one keydown listener active at a time,
+ * which is necessary to handle focus trapping correctly.
+ *
+ * Handling iFrames is supported, as long as there are focusable elements around the iFrame.
+ * Otherwise it will not work as expected.
+ */
+class FocusTrapStack {
+  private static stack: Set<any> = new Set();
+
+  static get stackArray() {
+    return Array.from(this.stack);
+  }
+
+  private static currentKeydownListener: ((event: KeyboardEvent) => void) | null = null;
+
+  private static addKeydownListener(keydownListener: (event: KeyboardEvent) => void) {
+    this.currentKeydownListener = keydownListener;
+    document.addEventListener('keydown', keydownListener);
+  }
+
+  private static removeKeydownListener() {
+    if (this.currentKeydownListener) {
+      document.removeEventListener('keydown', this.currentKeydownListener);
+    }
+  }
+
+  /**
+   * Activates a focus trap by adding it to the stack.
+   * It deactivates all other traps in the stack to ensure only one trap is active
+   *
+   * @param trap - The focus trap to activate.
+   */
+  static activate(trap: any) {
+    // Deactivate all other traps
+    this.stackArray.forEach(activeTrap => {
+      if (activeTrap !== trap) {
+        activeTrap.setIsFocusTrapActivated(false);
+      }
+    });
+    this.stack.add(trap);
+
+    // remove the current keydown listener if it exists
+    // and add a new one for the current trap
+    this.removeKeydownListener();
+    this.addKeydownListener(trap.handleTabKeydown.bind(trap));
+  }
+
+  /**
+   * Deactivates a focus trap by removing it from the stack.
+   * Activates the previous trap in the stack if any.
+   *
+   * @param trap - The focus trap to deactivate.
+   */
+  static deactivate(trap: any) {
+    if(!this.stack.has(trap)) {
+      return;
+    }
+    
+    this.stack.delete(trap);
+    this.removeKeydownListener();
+
+    // activate the previous trap in the stack if any
+    if (this.stack.size > 0) {
+      const lastTrap = this.stackArray.pop();
+      if (lastTrap) {
+        lastTrap.setIsFocusTrapActivated(true);
+        this.addKeydownListener(lastTrap.handleTabKeydown.bind(lastTrap));
+      }
+    }
+  }
+}
 
 export declare abstract class FocusTrapClassInterface {
   protected abstract focusTrap: boolean;
-
-  enabledPreventScroll: boolean;
 
   setInitialFocus(elementIndexToReceiveFocus?: number): void;
 
   activateFocusTrap(): void;
 
   deactivateFocusTrap(): void;
+
+  private setIsFocusTrapActivated(isActivated: boolean): void;
 }
 
 export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) => {
@@ -22,7 +100,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Determines whether the focus trap is enabled.
      * If true, focus will be restricted to the content within this component.
      *
-     * @default false
+     * IMPLEMENT THIS IN YOUR COMPONENT.
      */
     protected abstract focusTrap: boolean;
 
@@ -30,18 +108,11 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Determines whether focus should wrap around when reaching the first or last focusable element.
      * If true, focus will cycle from end to start and vice versa.
      *
-     * This only applies when `enabledFocusTrap` is true.
+     * This only applies when `focusTrap` is true.
      * @default true
      */
     @property({ type: Boolean, reflect: true, attribute: 'should-focus-trap-wrap' })
     shouldFocusTrapWrap: boolean = true;
-
-    /**
-     * Prevent outside scrolling when element is shown.
-     * @default false
-     */
-    @property({ type: Boolean })
-    enabledPreventScroll: boolean = false;
 
     /** @internal */
     private focusTrapIndex: number = -1;
@@ -52,49 +123,26 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /** @internal */
     private isFocusTrapActivated: boolean = false;
 
-    override connectedCallback() {
-      super.connectedCallback();
-
-      document.addEventListener('keydown', this.handleTabKeydown.bind(this));
-    }
-
-    override disconnectedCallback() {
-      super.disconnectedCallback();
-
-      document.removeEventListener('keydown', this.handleTabKeydown.bind(this));
-    }
-
-    protected override async updated(changedProperties: PropertyValues) {
-      super.updated(changedProperties);
-
-      if (changedProperties.has('focusTrap')) {
-        if (!this.focusTrap) {
-          this.deactivateFocusTrap();
-        }
-      }
+    private setIsFocusTrapActivated(isActivated: boolean) {
+      this.isFocusTrapActivated = isActivated;
     }
 
     /**
      * Activate the focus trap
-     * This calculates the focusable elements within the component's shadow root
      */
     public activateFocusTrap() {
-      if (this.focusTrap) {
-        this.isFocusTrapActivated = true;
-        this.setFocusableElements();
-      }
+      this.setIsFocusTrapActivated(true);
+      FocusTrapStack.activate(this);
     }
 
     /**
      * Deactivate the focus trap.
      */
     public deactivateFocusTrap() {
-      this.isFocusTrapActivated = false;
-      this.focusTrapIndex = -1;
+      this.setIsFocusTrapActivated(false);
+      FocusTrapStack.deactivate(this);
 
-      // todo: this should not override the body overflow style, but reset it instead
-      this.enabledPreventScroll = false;
-      document.body.style.overflow = '';
+      this.focusTrapIndex = -1;
     }
 
     /**
@@ -160,12 +208,22 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      */
     private isHidden(element: HTMLElement) {
       return (
-        element.hasAttribute('hidden')
-        || element.getAttribute('aria-hidden') === 'true'
-        || this.hasHiddenStyle(element)
-        || this.isNotVisible(element)
-        || this.hasComputedHidden(element)
+        element.hasAttribute('hidden') ||
+        element.getAttribute('aria-hidden') === 'true' ||
+        this.hasHiddenStyle(element) ||
+        this.isNotVisible(element) ||
+        this.hasComputedHidden(element)
       );
+    }
+
+    /**
+     * Checks if the element is disabled.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is disabled.
+     */
+    private isDisabled(element: any) {
+      return element.disabled;
     }
 
     /**
@@ -197,14 +255,14 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
         return true;
       }
       if (
-        (element instanceof HTMLAudioElement || element instanceof HTMLVideoElement)
-        && element.hasAttribute('controls')
+        (element instanceof HTMLAudioElement || element instanceof HTMLVideoElement) &&
+        element.hasAttribute('controls')
       ) {
         return true;
       }
       if (
-        (element instanceof HTMLImageElement || element instanceof HTMLObjectElement)
-        && element.hasAttribute('usemap')
+        (element instanceof HTMLImageElement || element instanceof HTMLObjectElement) &&
+        element.hasAttribute('usemap')
       ) {
         return true;
       }
@@ -222,7 +280,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @returns True if the element is focusable.
      */
     private isFocusable(element: HTMLElement) {
-      if (this.isHidden(element) || this.isNotTabbable(element)) {
+      if (this.isHidden(element) || this.isNotTabbable(element) || this.isDisabled(element)) {
         return false;
       }
       return this.isInteractiveElement(element);
@@ -230,6 +288,8 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
 
     /**
      * Recursively finds all focusable elements within the given root and its descendants.
+     *
+     * Make sure this is performant, as it will be called multiple times.
      *
      * @param root - The root element to search for focusable elements.
      * @param matches - The set of focusable elements.
@@ -252,7 +312,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
           this.findFocusable(element.shadowRoot, matches);
         } else if (element.tagName === 'SLOT') {
           const assignedNodes = (element as HTMLSlotElement).assignedElements({ flatten: true });
-          assignedNodes.forEach((node) => {
+          assignedNodes.forEach(node => {
             if (node instanceof HTMLElement) {
               this.findFocusable(node, matches);
             }
@@ -268,7 +328,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /**
      * Updates the list of focusable elements within the component's shadow root.
      */
-    public setFocusableElements() {
+    private setFocusableElements() {
       if (!this.shadowRoot) return;
 
       this.focusableElements = this.findFocusable(this.shadowRoot, new Set());
@@ -280,15 +340,15 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param elementIndexToReceiveFocus - The index of the preferable element to focus.
      */
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
-      if (this.focusableElements.length === 0) return;
+      this.setFocusableElements();
 
-      if (this.enabledPreventScroll) {
-        document.body.style.overflow = 'hidden';
+      if (this.focusableElements.length === 0 || !this.focusTrap) {
+        return;
       }
 
       if (this.focusableElements[elementIndexToReceiveFocus]) {
         this.focusTrapIndex = elementIndexToReceiveFocus;
-        this.focusableElements[elementIndexToReceiveFocus].focus();
+        this.focusableElements[elementIndexToReceiveFocus].focus({ preventScroll: true });
       }
     }
 
@@ -340,7 +400,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @returns The index of the active element.
      */
     private findElement(activeElement: HTMLElement) {
-      return this.focusableElements.findIndex((element) => this.isEqualFocusNode(activeElement, element));
+      return this.focusableElements.findIndex(element => this.isEqualFocusNode(activeElement, element));
     }
 
     /**
@@ -363,12 +423,16 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param direction - The direction of the focus trap.
      * If true, the focus will be trapped in the previous element.
      */
-    private trapFocus(direction: boolean) {
+    private trapFocus(event: KeyboardEvent) {
+      // calculate the focusable elements
+      this.setFocusableElements();
+
       if (this.focusableElements.length === 0) {
         return;
       }
       const activeElement = this.getDeepActiveElement!() as HTMLElement;
       const activeIndex = this.findElement(activeElement);
+      const direction = event.shiftKey;
 
       if (direction) {
         this.focusTrapIndex = this.calculateNextIndex(activeIndex, -1);
@@ -377,7 +441,16 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
 
       const nextElement = this.focusableElements[this.focusTrapIndex];
+
+      if (nextElement.tagName === 'IFRAME') {
+        // If the next element is an iframe we should not focus it manually
+        // but just let the browser handle it.
+        // this only works if there are focusable elements around the iframe!
+        return;
+      }
+
       if (nextElement) {
+        event.preventDefault();
         nextElement.focus();
       }
     }
@@ -387,17 +460,17 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      *
      * @param event - The keyboard event.
      */
+    // @ts-ignore - this is a method which will be called in the stack
     private handleTabKeydown(event: KeyboardEvent) {
-      if (!this.isFocusTrapActivated || !this.focusableElements.length) {
+      if (!this.isFocusTrapActivated) {
         return;
       }
 
       if (event.key === 'Tab') {
-        event.preventDefault();
-        this.trapFocus(event.shiftKey);
+        this.trapFocus(event);
       }
     }
   }
 
-  return FocusTrap as unknown as Constructor<HTMLElement & FocusTrapClassInterface> & T;
+  return FocusTrap as unknown as Constructor<Component & FocusTrapClassInterface> & T;
 };

@@ -2,17 +2,19 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const render = (args: Args) => html`
-<mdc-inputchip
-@remove="${action('remove')}"
-  label="${args.label}"
-  icon-name="${args['icon-name']}"
-  ?error="${args.error}"
-  ?disabled="${args.disabled}"
-  clear-aria-label="${args['clear-aria-label']}"
-></mdc-inputchip>`;
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
+
+const render = (args: Args) =>
+  html` <mdc-inputchip
+    @remove="${action('remove')}"
+    label="${args.label}"
+    icon-name="${args['icon-name']}"
+    ?error="${args.error}"
+    ?disabled="${args.disabled}"
+    clear-aria-label="${args['clear-aria-label']}"
+  ></mdc-inputchip>`;
 
 const meta: Meta = {
   title: 'Components/chip/input',
@@ -40,6 +42,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
+    ...textControls(['--mdc-chip-color', '--mdc-chip-border-color', '--mdc-chip-background-color']),
   },
 };
 
@@ -83,29 +86,29 @@ export const Disabled: StoryObj = {
 };
 
 export const StatesAndVariants: StoryObj = {
-  render: () => html`
-  <div style="display: flex; gap: 0.5rem;">
-    <mdc-inputchip 
-      label="Input" 
-      icon-name="placeholder-bold" 
-      clear-aria-label="Clear"
-      @click="${action('click')}"
-    ></mdc-inputchip>
-    <mdc-inputchip 
-      label="Error" 
-      icon-name="placeholder-bold" 
-      clear-aria-label="Clear" 
-      error
-      @click="${action('click')}"
-    ></mdc-inputchip>
-    <mdc-inputchip 
-      label="Disabled" 
-      icon-name="placeholder-bold" 
-      clear-aria-label="Clear" 
-      disabled
-      @click="${action('click')}"
-    ></mdc-inputchip>
-  </div>`,
+  render: () =>
+    html` <div style="display: flex; gap: 0.5rem;">
+      <mdc-inputchip
+        label="Input"
+        icon-name="placeholder-bold"
+        clear-aria-label="Clear"
+        @click="${action('click')}"
+      ></mdc-inputchip>
+      <mdc-inputchip
+        label="Error"
+        icon-name="placeholder-bold"
+        clear-aria-label="Clear"
+        error
+        @click="${action('click')}"
+      ></mdc-inputchip>
+      <mdc-inputchip
+        label="Disabled"
+        icon-name="placeholder-bold"
+        clear-aria-label="Clear"
+        disabled
+        @click="${action('click')}"
+      ></mdc-inputchip>
+    </div>`,
 };
 
 export const WithRemove: StoryObj = {
@@ -113,8 +116,7 @@ export const WithRemove: StoryObj = {
     const removeChip = (e: Event) => {
       (e.target as HTMLElement)?.remove();
     };
-    return html`
-    <mdc-inputchip
+    return html` <mdc-inputchip
       @remove="${removeChip}"
       label="Value"
       icon-name="placeholder-bold"

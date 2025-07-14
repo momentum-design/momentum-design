@@ -2,8 +2,7 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './navitem.styles';
-import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
+
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -12,9 +11,12 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import MenuItem from '../menuitem/menuitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
-import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
 import type { PopoverPlacement } from '../popover/popover.types';
+
+import type { BadgeType } from './navitem.types';
+import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
+import styles from './navitem.styles';
 
 /**
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
@@ -226,7 +228,8 @@ class NavItem extends IconNameMixin(MenuItem) {
       <mdc-text
         type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
         tagname=${VALID_TEXT_TAGS.SPAN}
-        part="text-container">
+        part="text-container"
+      >
         ${label}
       </mdc-text>
     `;
@@ -236,12 +239,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     const arrowClass = showLabel ? '' : 'arrow';
 
     return html`
-      <mdc-icon 
-        name=${ICON_NAME.RIGHT_ARROW} 
-        length-unit="rem" 
-        part="trailing-arrow" 
-        class="${arrowClass}">
-      </mdc-icon>
+      <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow" class="${arrowClass}"> </mdc-icon>
     `;
   }
 
@@ -253,11 +251,12 @@ class NavItem extends IconNameMixin(MenuItem) {
     }
 
     return html`
-      <mdc-badge 
+      <mdc-badge
         class="${badgeClass}"
-        type="${ifDefined(this.badgeType)}" 
-        counter="${ifDefined(this.counter)}" 
-        max-counter="${this.maxCounter}">
+        type="${ifDefined(this.badgeType)}"
+        counter="${ifDefined(this.counter)}"
+        max-counter="${this.maxCounter}"
+      >
       </mdc-badge>
     `;
   }
@@ -266,12 +265,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     const context = this.sideNavigationContext?.value;
     return html`
       <div part="icon-container">
-        <mdc-icon
-          name="${this.iconName}"
-          size="1.5"
-          length-unit="rem"
-          part="icon"
-        ></mdc-icon>
+        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="icon"></mdc-icon>
         ${!this.showLabel ? this.renderBadge(this.showLabel) : nothing}
       </div>
       ${this.showLabel ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.showLabel)}` : nothing}

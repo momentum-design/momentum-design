@@ -1,7 +1,9 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 type SetUpOptions = {
@@ -14,8 +16,10 @@ type SetUpOptions = {
   'subline-text'?: string;
   'tooltip-text'?: string;
   'tooltip-placement'?: string;
+  disabled?: boolean;
+  softDisabled?: boolean;
   children?: string;
-}
+};
 
 const primaryLabel = 'Primary Label';
 const secondaryLabel = 'Secondary Label';
@@ -30,6 +34,8 @@ const setup = async (args: SetUpOptions) => {
       <mdc-listitem
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+        ${restArgs.softDisabled ? 'soft-disabled' : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs['secondary-label'] ? `secondary-label="${restArgs['secondary-label']}"` : ''}
         ${restArgs['tertiary-label'] ? `tertiary-label="${restArgs['tertiary-label']}"` : ''}
         ${restArgs['side-header-text'] ? `side-header-text="${restArgs['side-header-text']}"` : ''}
@@ -49,9 +55,9 @@ const setup = async (args: SetUpOptions) => {
 
 test.describe.parallel('mdc-listitem', () => {
   test('visual regression and accessibility', async ({ componentsPage }) => {
-  /**
-   * VISUAL REGRESSION
-   */
+    /**
+     * VISUAL REGRESSION
+     */
     await test.step('visual-regression', async () => {
       const listitemSheet = new StickerSheet(componentsPage, 'mdc-listitem', 'margin: 0.25rem 0;');
       const options = { createNewRow: true };
@@ -135,17 +141,17 @@ test.describe.parallel('mdc-listitem', () => {
     });
 
     /**
-   * ACCESSIBILITY
-   */
+     * ACCESSIBILITY
+     */
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('listitem-default');
     });
   });
 
   test('attributes and interactions', async ({ componentsPage }) => {
-  /**
-   * ATTRIBUTES
-   */
+    /**
+     * ATTRIBUTES
+     */
     await test.step('attributes', async () => {
       const listitem = await setup({ componentsPage });
 
@@ -190,6 +196,12 @@ test.describe.parallel('mdc-listitem', () => {
         const textContent = await mdcText.textContent();
         expect(textContent?.trim()).toBe(sublineText);
       });
+
+      await test.step('should have soft-disabled attribute when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'soft-disabled': '' });
+        await expect(listitem).toHaveAttribute('soft-disabled', '');
+        await expect(listitem).toHaveAttribute('aria-disabled', 'true');
+      });
     });
 
     /**
@@ -225,14 +237,36 @@ test.describe.parallel('mdc-listitem', () => {
           await componentsPage.actionability.pressTab();
           await expect(button).toBeFocused();
         });
+
+        await test.step(`should focus when soft-disabled attribute is present
+           and elements within should be disabled`, async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            softDisabled: true,
+            children: `
+            <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
+          `,
+          });
+          const checkbox = listitem.locator('mdc-checkbox');
+
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await expect(listitem).toHaveAttribute('soft-disabled', '');
+          await expect(listitem).toHaveAttribute('aria-disabled', 'true');
+
+          await componentsPage.actionability.pressTab();
+          await expect(checkbox).not.toBeFocused();
+          await expect(checkbox).toHaveAttribute('disabled', '');
+        });
       });
 
       await test.step('click', async () => {
         await test.step('should trigger click event on component', async () => {
           const listitem = await setup({ componentsPage, label: primaryLabel });
-          const waitForClick = componentsPage.waitForEvent(listitem, 'click');
+          const waitForClick = await componentsPage.waitForEvent(listitem, 'click');
           await listitem.click();
-          await waitForClick;
+          await waitForClick();
         });
 
         await test.step('should trigger click event on leading controls and not on listitem', async () => {
@@ -244,11 +278,11 @@ test.describe.parallel('mdc-listitem', () => {
           `,
           });
           const checkbox = listitem.locator('mdc-checkbox');
-          const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
-          const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+          const waitForCheckboxClick = await componentsPage.waitForEvent(checkbox, 'click');
+          const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
           await checkbox.click();
-          await waitForCheckboxClick;
-          await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+          await waitForCheckboxClick();
+          await componentsPage.expectPromiseTimesOut(waitForListItemClick(), true);
         });
 
         await test.step('should trigger click event on trailing controls and not on listitem', async () => {
@@ -260,24 +294,24 @@ test.describe.parallel('mdc-listitem', () => {
           `,
           });
           const button = listitem.locator('mdc-button');
-          const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
-          const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+          const waitForButtonClick = await componentsPage.waitForEvent(button, 'click');
+          const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
           await button.click();
-          await waitForButtonClick;
-          await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+          await waitForButtonClick();
+          await componentsPage.expectPromiseTimesOut(waitForListItemClick(), true);
         });
       });
 
       await test.step('keyboard', async () => {
         await test.step('should trigger keyup and keydown events on component', async () => {
           const listitem = await setup({ componentsPage, label: primaryLabel });
-          const waitForKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
-          const waitForKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+          const waitForKeyDown = await componentsPage.waitForEvent(listitem, 'keydown');
+          const waitForKeyUp = await componentsPage.waitForEvent(listitem, 'keyup');
           await componentsPage.actionability.pressTab();
           await expect(listitem).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
-          await waitForKeyDown;
-          await waitForKeyUp;
+          await waitForKeyDown();
+          await waitForKeyUp();
         });
 
         await test.step('should trigger keyup and keydown events on leading controls and not on listitem', async () => {
@@ -289,19 +323,19 @@ test.describe.parallel('mdc-listitem', () => {
           `,
           });
           const checkbox = listitem.locator('mdc-checkbox');
-          const waitForCheckboxKeyUp = componentsPage.waitForEvent(checkbox, 'keyup');
-          const waitForCheckboxKeyDown = componentsPage.waitForEvent(checkbox, 'keydown');
+          const waitForCheckboxKeyUp = await componentsPage.waitForEvent(checkbox, 'keyup');
+          const waitForCheckboxKeyDown = await componentsPage.waitForEvent(checkbox, 'keydown');
           await componentsPage.actionability.pressTab();
           await expect(listitem).toBeFocused();
           await componentsPage.actionability.pressTab();
           await expect(checkbox).toBeFocused();
-          const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-          const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+          const waitForListItemKeyUp = await componentsPage.waitForEvent(listitem, 'keyup');
+          const waitForListItemKeyDown = await componentsPage.waitForEvent(listitem, 'keydown');
           await componentsPage.page.keyboard.press('Space');
-          await waitForCheckboxKeyDown;
-          await waitForCheckboxKeyUp;
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
+          await waitForCheckboxKeyDown();
+          await waitForCheckboxKeyUp();
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown(), true);
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp(), true);
         });
 
         await test.step('should trigger keyup & keydown events on trailing controls & not on listitem', async () => {
@@ -313,39 +347,36 @@ test.describe.parallel('mdc-listitem', () => {
           `,
           });
           const button = listitem.locator('mdc-button');
-          const waitForButtonKeyUp = componentsPage.waitForEvent(button, 'keyup');
-          const waitForButtonKeyDown = componentsPage.waitForEvent(button, 'keydown');
+          const waitForButtonKeyUp = await componentsPage.waitForEvent(button, 'keyup');
+          const waitForButtonKeyDown = await componentsPage.waitForEvent(button, 'keydown');
           await componentsPage.actionability.pressTab();
           await expect(listitem).toBeFocused();
           await componentsPage.actionability.pressTab();
           await expect(button).toBeFocused();
-          const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-          const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+          const waitForListItemKeyUp = await componentsPage.waitForEvent(listitem, 'keyup');
+          const waitForListItemKeyDown = await componentsPage.waitForEvent(listitem, 'keydown');
           await componentsPage.page.keyboard.press('Enter');
-          await waitForButtonKeyDown;
-          await waitForButtonKeyUp;
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
+          await waitForButtonKeyDown();
+          await waitForButtonKeyUp();
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown(), true);
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp(), true);
         });
       });
 
-      await test.step(
-        'component should show tooltip when the listitem is focused and tooltip text is passed',
-        async () => {
-          const listitem = await setup({
-            componentsPage,
-            label: primaryLabel,
-            'tooltip-text': 'Tooltip Text',
-            'tooltip-placement': POPOVER_PLACEMENT.BOTTOM,
-          });
-          await componentsPage.actionability.pressTab();
-          await expect(listitem).toBeFocused();
-          const tooltip = componentsPage.page.locator('mdc-tooltip');
-          await expect(tooltip).toBeVisible();
-          const text = await tooltip.textContent();
-          expect(text?.trim()).toBe('Tooltip Text');
-        },
-      );
+      await test.step('component should show tooltip when the listitem is focused and tooltip text is passed', async () => {
+        const listitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'tooltip-text': 'Tooltip Text',
+          'tooltip-placement': POPOVER_PLACEMENT.BOTTOM,
+        });
+        await componentsPage.actionability.pressTab();
+        await expect(listitem).toBeFocused();
+        const tooltip = componentsPage.page.locator('mdc-tooltip');
+        await expect(tooltip).toBeVisible();
+        const text = await tooltip.textContent();
+        expect(text?.trim()).toBe('Tooltip Text');
+      });
     });
   });
 });

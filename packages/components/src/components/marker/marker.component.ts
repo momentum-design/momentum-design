@@ -1,7 +1,9 @@
 import { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './marker.styles';
+
 import { Component } from '../../models';
+
+import styles from './marker.styles';
 import type { MarkerVariants } from './marker.types';
 import { MARKER_VARIANTS } from './marker.constants';
 

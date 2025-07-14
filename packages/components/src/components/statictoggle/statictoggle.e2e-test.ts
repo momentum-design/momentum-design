@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { ToggleSize } from './statictoggle.types';
 import { TOGGLE_SIZE } from './statictoggle.constants';
 

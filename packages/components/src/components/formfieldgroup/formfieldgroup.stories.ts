@@ -1,5 +1,6 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -8,15 +9,15 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../toggle';
 
-const render = (args: Args) => html`
-  <mdc-formfieldgroup
+const render = (args: Args) =>
+  html` <mdc-formfieldgroup
     label="${args.label}"
     help-text="${args['help-text']}"
     data-aria-label="${args['data-aria-label']}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
-   ?required=${args.required}
+    ?required=${args.required}
     help-text-type="${args['help-text-type']}"
   >
     ${args.children}

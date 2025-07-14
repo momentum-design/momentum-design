@@ -1,35 +1,40 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { PropertyValues, CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
+
 import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
-import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
-import type { AriaCheckedStates } from '../menusection/menusection.types';
 import styles from './menuitemcheckbox.styles';
 
 /**
  * A menuitemcheckbox component is a checkable menuitem.
  * There should be no focusable descendants inside this menuitemcheckbox component.
  *
- * The `aria-checked` attribute indicates whether the menuitemcheckbox is checked or not.
+ * The `checked` attribute indicates whether the menuitemcheckbox is checked or not.
  *
- * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
- * By default the `indicator` is set to <b>checkbox</b>.<br/>
+ * Menu item checkbox has `name` and `value` attribute that can be used to identify the menu item when it is selected.
+ *
+ * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b>, <b>toggle</b> and <b>none</b>.
+ * By default, the `indicator` is set to <b>checkbox</b>.<br/>
  *
  * The checkbox will always be positioned on the leading side of the menuitem label and
  * the toggle and checkmark will always be positioned on the trailing side.
  *
  * The checkbox will have the possible states of `true` or `false`.
- * If the indicator is set to <b>checkmark</b> and if the `aria-checked` attribute is set to `true`,
+ * If the indicator is set to <b>checkmark</b> and if the `checked` attribute is set to `true`,
  * then the checkmark will be displayed. if not, then no indicator will be displayed.
  *
- * If you want only one item in a group to be checked, consider using menuitemradio component.
+ * The forth options for the `indicator` is <b>none</b>, which will not display any indicator at all.
+ * It is intended to be used for customised menu items where the indicator is implemented differently.
+ * For example, you can use a custom icon or a different visual element to indicate the state of the menu item.
+ * Make sure the new indicator is accessible.
  *
- * If a menuitemcheckbox is disabled, then the `aria-disabled` attribute is set to `true`.
+ * If you want only one item in a group to be checked, consider using menuitemradio component.
  *
  * @dependency mdc-staticcheckbox
  * @dependency mdc-statictoggle
@@ -37,7 +42,13 @@ import styles from './menuitemcheckbox.styles';
  *
  * @tagname mdc-menuitemcheckbox
  *
- * @cssproperty --mdc-checkmark-indicator-color - Allows customization of the checkmark indicator color
+ * @slot leading-controls - slot for menu item checkbox controls to appear of leading end.
+ * @slot leading-text-primary-label - slot for menu item checkbox primary label.
+ * @slot leading-text-secondary-label - slot for menu item checkbox secondary label.
+ * @slot leading-text-tertiary-label - slot for menu item checkbox tertiary label.
+ * @slot trailing-text-side-header - slot for menu item checkbox side header text.
+ * @slot trailing-text-subline - slot for menu item checkbox subline text.
+ * @slot trailing-controls - slot for menu item checkbox controls to appear of trailing end.
  *
  * @event change - (React: onChange) This event is dispatched when the menuitemcheckbox changes.
  * @event click - (React: onClick) This event is dispatched when the menuitemcheckbox is clicked.
@@ -45,11 +56,11 @@ import styles from './menuitemcheckbox.styles';
  */
 class MenuItemCheckbox extends MenuItem {
   /**
-   * The aria-checked attribute is used to indicate that the menuitemcheckbox is checked or not.
-   * @default 'false'
+   * The checked attribute is used to indicate that the menuitemcheckbox is checked or not.
+   * @default false
    */
-  @property({ type: String, reflect: true, attribute: 'aria-checked' })
-  override ariaChecked: AriaCheckedStates = DEFAULTS.ARIA_CHECKED;
+  @property({ type: Boolean, reflect: true })
+  checked: boolean = false;
 
   /**
    * The indicator attribute is used to differentiate between <b>checkbox</b> and <b>toggle</b>.
@@ -57,49 +68,87 @@ class MenuItemCheckbox extends MenuItem {
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleMouseClick);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEMCHECKBOX;
   }
 
+  /**
+   * Handles click events to toggle checked state
+   * If the menuitemcheckbox is disabled, it does nothing.
+   * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
+   */
+  private handleMouseClick = (event: Event) => {
+    event.stopPropagation();
+    if (this.disabled) return;
+    this.checked = !this.checked;
+
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+  };
+
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('checked')) {
+      this.ariaChecked = `${this.checked}`;
+    }
+  }
+
+  /**
+   * Returns a static checkbox element if the indicator is set to checkbox.
+   * If the indicator is not set to checkbox, it returns nothing.
+   * @returns TemplateResult | typeof nothing
+   */
   private staticCheckbox(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.CHECKBOX) {
-      return nothing;
+    if (this.indicator === INDICATOR.CHECKBOX) {
+      return html`
+        <mdc-staticcheckbox
+          slot="leading-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+        ></mdc-staticcheckbox>
+      `;
     }
-    return html`
-      <mdc-staticcheckbox
-        slot="leading-controls"
-        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
-        ?disabled="${this.disabled}"
-      ></mdc-staticcheckbox>
-  `;
+    return nothing;
   }
 
+  /**
+   * Returns a static toggle element if the indicator is set to toggle.
+   * If the indicator is not set to toggle, it returns nothing.
+   *
+   * The toggle will always be positioned on the trailing side of the menuitem label.
+   * @returns TemplateResult | typeof nothing
+   */
   private staticToggle(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.TOGGLE) {
-      return nothing;
+    if (this.indicator === INDICATOR.TOGGLE) {
+      return html`
+        <mdc-statictoggle
+          slot="trailing-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          size="${TOGGLE_SIZE.COMPACT}"
+        ></mdc-statictoggle>
+      `;
     }
-    return html`
-      <mdc-statictoggle
-        slot="trailing-controls"
-        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
-        ?disabled="${this.disabled}"
-        size="${TOGGLE_SIZE.COMPACT}"
-      ></mdc-statictoggle>
-    `;
+    return nothing;
   }
 
+  /**
+   * Returns a checkmark icon if the indicator is set to checkmark and the checked state is true.
+   * If the indicator is not set to checkmark or the checked state is false, it returns nothing.
+   *
+   * The checkmark icon will always be positioned on the trailing side of the menuitem label.
+   * @returns TemplateResult | typeof nothing
+   */
   private getCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
-      return nothing;
+    if (this.checked && this.indicator === INDICATOR.CHECKMARK) {
+      return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
     }
-    return html`
-      <mdc-icon
-        slot="trailing-controls"
-        name="check-bold"
-        part="checkmark-icon"
-      ></mdc-icon>
-    `;
+    return nothing;
   }
 
   public override render() {
@@ -119,8 +168,7 @@ class MenuItemCheckbox extends MenuItem {
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
         <slot name="trailing-controls"></slot>
-        ${this.staticToggle()}
-        ${this.getCheckmarkIcon()}
+        ${this.staticToggle()} ${this.getCheckmarkIcon()}
       </div>
     `;
   }
