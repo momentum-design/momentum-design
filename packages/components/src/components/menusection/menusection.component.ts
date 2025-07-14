@@ -1,9 +1,10 @@
 import { CSSResult, PropertyValues, html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type { IconNames } from '../icon/icon.types';
 
 import styles from './menusection.styles';
 
@@ -24,8 +25,9 @@ import styles from './menusection.styles';
  */
 class MenuSection extends Component {
   /**
-   * The primary headerText of the list item.
-   * This appears on the leading side of the list item.
+   * The aria-label for the section.
+   * This is used for accessibility purposes to describe the section.
+   * If not provided, it defaults to the `headerText`.
    */
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
 
@@ -34,6 +36,13 @@ class MenuSection extends Component {
    * This appears on the leading side of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
+
+  /**
+   * Name of the icon rendered before the text
+   *
+   * If not provided, no icon will be rendered and text will be aligned to the start.
+   */
+  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -54,17 +63,20 @@ class MenuSection extends Component {
     }
   }
 
-  private renderLabel() {
+  private renderHeader() {
     if (this.headerText) {
-      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
-        ${this.headerText}
-      </mdc-text> `;
+      return html` <mdc-listheader
+        part="header"
+        header-text="${this.headerText}"
+        prefix-icon="${ifDefined(this.prefixIcon)}"
+      >
+      </mdc-listheader>`;
     }
     return null;
   }
 
   public override render() {
-    return html`${this.renderLabel()}<slot></slot>`;
+    return html`${this.renderHeader()}<slot></slot>`;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];
