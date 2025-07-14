@@ -1,5 +1,6 @@
 import MenuSection from './menusection.component';
 import { TAG_NAME } from './menusection.constants';
+import '../listheader';
 
 MenuSection.register(TAG_NAME);
 
