@@ -497,6 +497,36 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       });
     });
 
+    await test.step('Backdrop attribute with hide on outside click', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-menupopover id="first-menupopover" triggerID="trigger-1">
+              <mdc-menuitem label="Menu 1">
+            </mdc-menupopover>
+            
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-menupopover id="second-menupopover" triggerID="trigger-2"><mdc-menuitem label="Menu 2"></mdc-menuitem></mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const popover1 = componentsPage.page.locator('#first-menupopover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-menupopover');
+
+      await expect(popover1).not.toBeVisible();
+      await trigger1.click();
+      await expect(popover1).toBeVisible();
+      await trigger2.click({ force: true });
+      await expect(popover2).not.toBeVisible();
+      await expect(popover1).not.toBeVisible();
+      await trigger2.click();
+      await expect(popover2).toBeVisible();
+    });
+
     // Group: Menuitem types: checkbox and radio (with grouped navigation)
     await test.step('Menuitem types: checkbox and radio', async () => {
       const { wrapper, triggerElement } = await setup({ componentsPage, html: groupHTML });
