@@ -1,8 +1,10 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host > .mdc-menusection__label {
-    padding: 0.5rem 0.75rem;
+  :host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   ::slotted(mdc-divider) {
