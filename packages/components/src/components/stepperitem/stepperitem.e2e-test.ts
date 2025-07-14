@@ -106,9 +106,11 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
   await test.step('should skip future-disabled in focus order', async () => {
     await componentsPage.mount({
       html: `
+      <mdc-list>
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
       <mdc-stepperitem label="Step 2" status="future-disabled" step-number="2"></mdc-stepperitem>
       <mdc-stepperitem label="Step 3" status="error" optional-label="Error"></mdc-stepperitem>
+      </mdc-list>
     `,
       clearDocument: true,
     });
