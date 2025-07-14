@@ -1,7 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import styles from './stepper.styles';
+
 import { Component } from '../../models';
+
+import styles from './stepper.styles';
 import { DEFAULT } from './stepper.constants';
 import type { OrientationType, StatusType } from './stepper.types';
 
@@ -17,28 +19,28 @@ import type { OrientationType, StatusType } from './stepper.types';
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Stepper extends Component {
-    @property({ type: String, reflect: true })
-    orientation: OrientationType = DEFAULT.ORIENTATION;
+  @property({ type: String, reflect: true })
+  orientation: OrientationType = DEFAULT.ORIENTATION;
 
-    @property({ type: String, reflect: true })
-    status: StatusType = DEFAULT.STATUS;
+  @property({ type: String, reflect: true })
+  status: StatusType = DEFAULT.STATUS;
 
-    @queryAssignedElements({ })
-    private stepperItems!: Array<HTMLElement>;
+  @queryAssignedElements({})
+  private stepperItems!: Array<HTMLElement>;
 
-    private handleSlotChange() {
-      // Ensure that only mdc-stepperitem elements are present in the slot
-      // If any other elements are present, remove them
-      this.stepperItems?.forEach((item) => {
-        if (!item.matches('mdc-stepperitem')) {
-          this.remove();
-        }
-      });
-    }
+  private handleSlotChange() {
+    // Ensure that only mdc-stepperitem elements are present in the slot
+    // If any other elements are present, remove them
+    this.stepperItems?.forEach(item => {
+      if (!item.matches('mdc-stepperitem')) {
+        this.remove();
+      }
+    });
+  }
 
-    public override render() {
-      return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
-    }
+  public override render() {
+    return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+  }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
