@@ -44,7 +44,7 @@ const meta: Meta = {
       control: 'text',
     },
     'show-divider': {
-      control: 'boolean'
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
@@ -82,14 +82,14 @@ export const MultipleMenuSections: StoryObj = {
         <mdc-menuitem label="MenuItem1"></mdc-menuitem>
         <mdc-menuitem label="MenuItem2"></mdc-menuitem>
       </mdc-menusection>
-      <mdc-menusection show-divider header-text="Section with checkboxes and radio buttons">
+      <mdc-menusection show-divider>
         <mdc-menuitemcheckbox label="Toggle6" indicator="toggle"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox
           label="Checkmark7"
           indicator="checkmark"
           aria-label="Checkbox 7"
         ></mdc-menuitemcheckbox> </mdc-menusection
-      ><mdc-menusection show-divider>
+      ><mdc-menusection show-divider header-text="Section with checkboxes and radio buttons">
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox1"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox2"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox3"></mdc-menuitemcheckbox>

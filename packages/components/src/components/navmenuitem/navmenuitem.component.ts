@@ -42,7 +42,7 @@ import styles from './navmenuitem.styles';
  * @cssproperty --mdc-navmenuitem-color - Text color of the navmenuitem in its normal state.
  * @cssproperty --mdc-navmenuitem-border-color - Border color of the navmenuitem in its normal state.
  * @cssproperty --mdc-navmenuitem-disabled-color - Text color of the navmenuitem when disabled.
- * @cssproperty --mdc-navmenuitem-expanded-width - Width of the navMenuItem when expanded.
+ * @cssproperty --mdc-navmenuitem-expanded-width - Width of the navmenuitem when expanded.
  * @cssproperty --mdc-navmenuitem-hover-background-color - Background color of the navmenuitem when hovered.
  * @cssproperty --mdc-navmenuitem-hover-active-background-color - Background color of the active navmenuitem when hovered.
  * @cssproperty --mdc-navmenuitem-pressed-background-color - Background color of the navmenuitem when pressed.
