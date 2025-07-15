@@ -7,8 +7,16 @@ const styles = css`
     height: 100%;
   }
 
-  ::slotted(mdc-divider) {
+  :host::part(divider) {
     margin-block: 0.25rem;
+  }
+
+  :host(:dir(ltr))::part(align-header) {
+    padding-left: 1.75rem;
+  }
+
+  :host(:dir(rtl))::part(align-header) {
+    padding-right: 1.75rem;
   }
 `;
 

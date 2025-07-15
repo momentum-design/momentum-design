@@ -1,8 +1,8 @@
 import { createContext } from '@lit/context';
 
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
-import type NavItem from '../navitem/navitem.component';
-import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
+import type NavMenuItem from '../navmenuitem/navmenuitem.component';
+import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { TAG_NAME } from './sidenavigation.constants';
@@ -12,7 +12,7 @@ class SideNavigationContext {
 
   public expanded?: boolean;
 
-  private currentActiveNavItem?: NavItem;
+  private currentActiveNavMenuItem?: NavMenuItem;
 
   public parentNavTooltipText?: string;
 
@@ -24,24 +24,24 @@ class SideNavigationContext {
     this.parentNavTooltipText = defaultParentNavTooltipText;
   }
 
-  public hasSiblingWithTriggerId(navItem: NavItem | undefined) {
-    const id = navItem?.getAttribute('id');
+  public hasSiblingWithTriggerId(navMenuItem: NavMenuItem | undefined) {
+    const id = navMenuItem?.getAttribute('id');
     if (!id) return false;
 
-    const siblings = Array.from(navItem?.parentElement?.children ?? []);
+    const siblings = Array.from(navMenuItem?.parentElement?.children ?? []);
     return siblings.some(
       sibling =>
-        sibling !== navItem &&
+        sibling !== navMenuItem &&
         sibling.tagName.toLowerCase() === MENUPOPOVER_TAGNAME &&
         sibling.getAttribute('triggerid') === id,
     );
   }
 
-  private getParentNavItems(navItem: NavItem | undefined): NavItem[] {
-    if (!navItem) return [];
+  private getParentNavMenuItems(navMenuItem: NavMenuItem | undefined): NavMenuItem[] {
+    if (!navMenuItem) return [];
 
-    const parents: NavItem[] = [];
-    let current = navItem;
+    const parents: NavMenuItem[] = [];
+    let current = navMenuItem;
 
     while (current) {
       // Walk up to find the menupopover
@@ -51,11 +51,11 @@ class SideNavigationContext {
       const triggerId = popover.getAttribute('triggerid');
       if (!triggerId) break;
 
-      // Find the NavItem that triggered this menupopover
-      const triggeringNavItem = document.getElementById(triggerId) as NavItem | null;
-      if (triggeringNavItem && triggeringNavItem.tagName.toLowerCase() === NAVITEM_TAGNAME) {
-        parents.push(triggeringNavItem);
-        current = triggeringNavItem;
+      // Find the NavMenuItem that triggered this menupopover
+      const triggeringNavMenuItem = document.getElementById(triggerId) as NavMenuItem | null;
+      if (triggeringNavMenuItem && triggeringNavMenuItem.tagName.toLowerCase() === NAVMENUITEM_TAGNAME) {
+        parents.push(triggeringNavMenuItem);
+        current = triggeringNavMenuItem;
       } else {
         break;
       }
@@ -64,32 +64,34 @@ class SideNavigationContext {
     return parents;
   }
 
-  public setCurrentActiveNavItem(navItem: NavItem | undefined) {
-    const isSameItem = this.currentActiveNavItem?.navId === navItem?.navId;
-    const shouldSkip = navItem?.disableAriaCurrent || this.hasSiblingWithTriggerId(navItem);
+  public setCurrentActiveNavMenuItem(navMenuItem: NavMenuItem | undefined) {
+    const isSameItem = this.currentActiveNavMenuItem?.navId === navMenuItem?.navId;
+    const shouldSkip =
+      navMenuItem?.disableAriaCurrent || this.hasSiblingWithTriggerId(navMenuItem) || navMenuItem?.softDisabled;
 
     if (isSameItem || shouldSkip) return;
 
     // Clean up previous active item
-    if (this.currentActiveNavItem) {
-      this.currentActiveNavItem.removeAttribute('aria-current');
-      this.currentActiveNavItem.removeAttribute('active');
+    if (this.currentActiveNavMenuItem) {
+      this.currentActiveNavMenuItem.removeAttribute('aria-current');
+      this.currentActiveNavMenuItem.removeAttribute('active');
 
-      const previousParents = this.getParentNavItems(this.currentActiveNavItem);
+      const previousParents = this.getParentNavMenuItems(this.currentActiveNavMenuItem);
       previousParents.forEach(parent => {
         parent.removeAttribute('tooltip-text');
+        parent.removeAttribute('tooltip-placement');
         parent.removeAttribute('active');
       });
     }
 
     // Apply attributes to new active item
-    if (!navItem) return;
+    if (!navMenuItem) return;
 
-    this.currentActiveNavItem = navItem;
-    navItem.setAttribute('aria-current', 'page');
-    navItem.setAttribute('active', '');
+    this.currentActiveNavMenuItem = navMenuItem;
+    navMenuItem.setAttribute('aria-current', 'page');
+    navMenuItem.setAttribute('active', '');
 
-    const newParents = this.getParentNavItems(navItem);
+    const newParents = this.getParentNavMenuItems(navMenuItem);
     newParents.forEach(parent => {
       parent.setAttribute('tooltip-text', this.parentNavTooltipText || '');
       parent.setAttribute('tooltip-placement', POPOVER_PLACEMENT.BOTTOM);

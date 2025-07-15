@@ -115,7 +115,6 @@ class MenuPopover extends Popover {
 
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
-
     // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));

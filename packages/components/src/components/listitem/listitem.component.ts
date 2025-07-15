@@ -7,15 +7,15 @@ import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
-import { TAG_NAME as NAVITEMLIST_TAG_NAME } from '../navitemlist/navitemlist.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 
-import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
+import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
+import { generateListItemId, generateTooltipId } from './listitem.utils';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -147,6 +147,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
+    // Add a unique id to the listitem if it does not have one.
+    this.id = this.id || generateListItemId();
   }
 
   /**
@@ -191,29 +193,25 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
       return;
     }
 
-    // Add a unique id to the listitem if it does not have one to attach the tooltip.
-    this.id = this.id || LISTITEM_ID;
-
     // Remove any existing tooltip.
-    const existingTooltip = document.getElementById(TOOLTIP_ID);
-    if (existingTooltip) existingTooltip.remove();
+    this.hideTooltipOnLeave()
 
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = TOOLTIP_ID;
+    tooltip.id = generateTooltipId();
     tooltip.textContent = this.tooltipText;
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('placement', this.tooltipPlacement);
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 
-    // The navitem follows a different pattern to attach the tooltip.
-    if (this.parentElement?.tagName?.toLowerCase() === NAVITEMLIST_TAG_NAME) {
-      this.before(tooltip);
-    } else {
-      // Add tooltip programmatically after the parent element.
-      this.parentElement?.after(tooltip);
+    // Set the slot attribute if the parent element has a slot.
+    if (this.parentElement?.hasAttribute('slot')) {
+      tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
     }
+
+    // Attach the tooltip programmatically after the nearest parent element.
+    this.parentElement?.after(tooltip);
   }
 
   /**
@@ -221,9 +219,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * This is triggered on focusout and mouseout events.
    */
   private hideTooltipOnLeave(): void {
-    this.id = this.id === LISTITEM_ID ? '' : this.id;
-    const existingTooltip = document.querySelector(`#${TOOLTIP_ID}`);
-    existingTooltip?.remove();
+    const existingTooltip = document.querySelector(`${TOOLTIP_TAG_NAME}[triggerid="${this.id}"]`);
+    if (existingTooltip) {
+      existingTooltip.remove();
+    }
   }
 
   /**
