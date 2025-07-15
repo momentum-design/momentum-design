@@ -97,12 +97,12 @@ class MenuBar extends Component {
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    this.updatePopoverPlacement();
   }
 
   public override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
     this.resetTabIndexAndSetActiveTabIndex(this.menuItems);
+    this.updatePopoverPlacement();
   }
 
   /**
