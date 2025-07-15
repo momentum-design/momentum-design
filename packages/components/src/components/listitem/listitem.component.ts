@@ -15,7 +15,7 @@ import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
-import { generateNewListItemId, generateTooltipId } from './listitem.utils';
+import { generateListItemId, generateTooltipId } from './listitem.utils';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -148,7 +148,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
     // Add a unique id to the listitem if it does not have one.
-    this.id = this.id || generateNewListItemId();
+    this.id = this.id || generateListItemId();
   }
 
   /**
@@ -194,10 +194,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
 
     // Remove any existing tooltip.
-    const existingTooltip = document.querySelector(`${TOOLTIP_TAG_NAME}[triggerid="${this.id}"]`);
-    if (existingTooltip) {
-      existingTooltip.remove();
-    }
+    this.hideTooltipOnLeave()
 
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
