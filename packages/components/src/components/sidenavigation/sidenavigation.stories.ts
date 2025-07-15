@@ -142,7 +142,7 @@ const renderNestedSideNavigation = (args: Args) => {
           <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
           <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navmenuitem>
         </mdc-menupopover>
-        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section1">
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 1">
           <mdc-navmenuitem
             badge-type="counter"
             counter="2"
@@ -262,12 +262,12 @@ const renderNestedSideNavigation = (args: Args) => {
 };
 
 const meta: Meta = {
-  title: 'Work In Progress/sidenavigation/sidenavigation',
+  title: 'Components/sidenavigation/sidenavigation',
   tags: ['autodocs'],
   component: 'mdc-sidenavigation',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
