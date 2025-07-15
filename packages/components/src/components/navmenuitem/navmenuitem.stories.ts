@@ -32,12 +32,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/sidenavigation/navmenuitem',
+  title: 'Components/sidenavigation/navmenuitem',
   tags: ['autodocs'],
   component: 'mdc-navmenuitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'nav-id': {
