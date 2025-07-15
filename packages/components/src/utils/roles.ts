@@ -7,7 +7,6 @@ const ROLE = {
   CHECKBOX: 'checkbox',
   COMBOBOX: 'combobox',
   DIALOG: 'dialog',
-  GENERIC: 'generic',
   GROUP: 'group',
   IMG: 'img',
   LIST: 'list',
