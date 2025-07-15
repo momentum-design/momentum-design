@@ -3,6 +3,7 @@ import { TAG_NAME } from './sidenavigation.constants';
 import '../text';
 import '../button';
 import '../divider';
+import '../menubar';
 
 SideNavigation.register(TAG_NAME);
 

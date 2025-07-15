@@ -3,8 +3,10 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import providerUtils from '../../utils/provider';
 import { ROLE } from '../../utils/roles';
 import type { IconNames } from '../icon/icon.types';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
 
@@ -44,6 +46,26 @@ class MenuSection extends Component {
    */
   @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
 
+  /**
+   * Whether to show a divider below the section header.
+   * This is useful for visually separating sections in the menu.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
+  showDivider = false;
+
+  /**
+   * Shows or hides the section headers based on the expanded state of the side navigation.
+   *
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-header-text' })
+  hideHeaderText = false;
+
+  /**
+   * @internal
+   */
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
@@ -61,12 +83,18 @@ class MenuSection extends Component {
       // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
       this.ariaLabel = this.headerText || '';
     }
+
+    const context = this.sideNavigationContext?.value;
+    if (!context) return;
+
+    const { expanded } = context;
+    this.hideHeaderText = !expanded;
   }
 
   private renderHeader() {
     if (this.headerText) {
       return html` <mdc-listheader
-        part="header"
+        part="header ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
         header-text="${this.headerText}"
         prefix-icon="${ifDefined(this.prefixIcon)}"
       >
@@ -76,7 +104,11 @@ class MenuSection extends Component {
   }
 
   public override render() {
-    return html`${this.renderHeader()}<slot></slot>`;
+    return html`
+      ${!this.hideHeaderText ? this.renderHeader() : null}
+      <slot></slot>
+      ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
+    `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];

@@ -37,8 +37,7 @@ import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
 import MenuSection from './components/menusection';
-import NavItem from './components/navitem';
-import NavItemList from './components/navitemlist';
+import NavMenuItem from './components/navmenuitem';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Password from './components/password';
@@ -127,8 +126,7 @@ export {
   MenuItemRadio,
   MenuPopover,
   MenuSection,
-  NavItem,
-  NavItemList,
+  NavMenuItem,
   OptGroup,
   Option,
   Password,
