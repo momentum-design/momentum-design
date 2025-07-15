@@ -306,7 +306,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
           await expect(mainMenuPopover).not.toBeVisible();
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
         });
 
         await test.step('Select nested menuitem with keyboard inside 1st level submenu', async () => {
@@ -322,7 +322,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuPopover).not.toBeVisible();
           await expect(mainMenuNavMenuItem).toBeFocused();
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
         });
 
         // --- Nested menuitem: select nested menuitem (2nd level submenu) ---
@@ -342,7 +342,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toolsMenuItem).toHaveAttribute('active', '');
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
           await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'false');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
         });
 
         // --- Re-engaging with previously selected parent using mouse ---
@@ -386,7 +386,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toolsMenuItem).toHaveAttribute('active', '');
           await expect(mainMenuNavMenuItem).toHaveAttribute('active', '');
           await expect(toolsMenuItem).toHaveAttribute('aria-expanded', 'false');
-          await expect(mainMenuNavMenuItem).not.toHaveAttribute('aria-expanded');
+          await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'false');
         });
 
         // --- Re-engaging with previously selected parent using keyboard ---

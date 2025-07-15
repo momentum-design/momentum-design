@@ -137,6 +137,9 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navmenuitem] navId is required and was not provided.');
     }
+
+    // Set in-menupopover attribute if nested
+    this.toggleAttribute('in-menupopover', this.isNested());
   }
 
   protected override updated(): void {

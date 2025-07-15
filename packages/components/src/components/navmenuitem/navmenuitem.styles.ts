@@ -27,15 +27,19 @@ const styles = [
       padding: 0.5rem;
       color: var(--mdc-navmenuitem-color);
       border-color: var(--mdc-navmenuitem-border-color);
-      border-radius: 1.25rem;
+      border-radius: 0.5rem;
       cursor: pointer;
     }
 
-    :host(:dir(ltr)) {
+    :host(:not([in-menupopover])) {
+      border-radius: 1.25rem;
+    }
+
+    :host(:not([in-menupopover]):dir(ltr)) {
       margin-left: 1rem;
     }
 
-    :host(:dir(rtl)) {
+    :host(:not([in-menupopover]):dir(rtl)) {
       margin-right: 1rem;
     }
 
@@ -74,7 +78,7 @@ const styles = [
       background-color: var(--mdc-navmenuitem-pressed-active-background-color);
     }
 
-    :host::before {
+    :host(:not([in-menupopover]))::before {
       content: '';
       display: block;
       position: absolute;
