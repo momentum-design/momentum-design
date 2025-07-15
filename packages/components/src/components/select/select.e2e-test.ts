@@ -8,6 +8,11 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   children: string;
   placeholder?: string;
+  'data-aria-label'?: string;
+  'help-text-type'?: string;
+  'help-text'?: string;
+  disabled?: boolean;
+  readonly?: boolean;
   height?: string;
   value?: string;
 };
@@ -27,6 +32,12 @@ const setup = async (args: SetupOptions) => {
       <mdc-select
         ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
         ${restArgs.height ? `height="${restArgs.height}"` : ''}
+        ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
+        ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
+        ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs.value ? `value="${restArgs.value}"` : ''}
       >
         ${restArgs.children}
       </mdc-select>
@@ -107,6 +118,15 @@ test('mdc-select', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
+    const select = await setup({
+      componentsPage,
+      children: defaultChildren(),
+      'data-aria-label': label,
+      'help-text-type': 'default',
+      'help-text': 'This is a default help text',
+    });
+    await select.locator('div[id="select-base-triggerid"]').click();
+    await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
     await componentsPage.accessibility.checkForA11yViolations('select-default');
   });
 
