@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
+import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
@@ -98,6 +99,20 @@ class MenuPopover extends Popover {
     this.closeButtonAriaLabel = null;
   }
 
+  protected override async isOpenUpdated(oldValue: boolean, newValue: boolean): Promise<void> {
+    if (oldValue === newValue || !this.triggerElement) return Promise.resolve();
+
+    // Set backdrop to true when the popover is opened with other than menu item.
+    //
+    // make sure backdrop is set before showing the popover, but it does not change when popover is closing, otherwise
+    // `super.isOpenUpdated` will skip the backdrop cleanup
+    if (newValue) {
+      this.backdrop = !(this.triggerElement.tagName.toLowerCase() === MENUITEM_TAGNAME);
+    }
+
+    return super.isOpenUpdated(oldValue, newValue);
+  }
+
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
     // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
@@ -158,7 +173,7 @@ class MenuPopover extends Popover {
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
     if (popoverStack.peek() !== this) return;
-    const popoverOfTarget = (event.target as Element).closest(MENU_POPOVER);
+    const popoverOfTarget = this.findClosestPopover(event.target as Element);
 
     // If the click occurred on a submenu, close all popovers until the submenu
     if (popoverOfTarget && popoverStack.has(popoverOfTarget)) {

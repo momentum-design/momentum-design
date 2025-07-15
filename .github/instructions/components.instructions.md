@@ -2,6 +2,12 @@
 applyTo: 'packages/components/**/*'
 ---
 
+# General information for Components package
+
+- The prefix for momentum-design components is `mdc-` (e.g., `mdc-button`, `mdc-card`, etc.).
+- Icons are rendered using the `mdc-icon` component (e.g., `<mdc-icon name="icon-name"></mdc-icon>`).
+
+
 # Project coding standards for Components package
 
 ## General
@@ -60,3 +66,15 @@ The following groups are available:
 
 ### DONTs
 - Do not generate implementation style tests in `*.e2e-test.ts` files. For example, do not generate tests that check for specific CSS styles or classes.
+
+## *.stories.ts files
+
+- Use `*.stories.ts` files to create interactive stories for components using Storybook.
+- Each stories file should at least have one story named `Example` that demonstrates the component's basic usage.
+- `badges` in the parameters section should be used to indicate the status of the component:
+  - `stable` for components that are fully implemented and tested.
+  - `wip` for components that are still in development and not yet released.
+- The `title` in the meta should be in the format `GROUP_NAME/component-name` where `component-name` is the name of the component in lowercase and `GROUP_NAME` is the name of the group the component belongs to. `GROUP_NAME` can be one of the following:
+  - `Components` - for all released and stable components that are part of the Momentum Design System.
+  - `Work In Progress` - for components that are still in development and not yet released.
+  - `Internal` - for components that are not published as part of the Momentum Design System and are used internally in the project.

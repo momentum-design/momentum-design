@@ -286,6 +286,12 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   public triggerElement: HTMLElement | null = null;
 
   /** @internal */
+  private triggerElementOriginalStyle: Pick<CSSStyleDeclaration, 'zIndex' | 'position'> = {
+    zIndex: '',
+    position: '',
+  };
+
+  /** @internal */
   private hoverTimer: number | null = null;
 
   /** @internal */
@@ -528,7 +534,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * @param oldValue - The old value of the visible property.
    * @param newValue - The new value of the visible property.
    */
-  private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
+  protected async isOpenUpdated(oldValue: boolean, newValue: boolean) {
     if (oldValue === newValue || !this.triggerElement) {
       return;
     }
@@ -540,6 +546,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
       if (this.backdrop) {
         this.utils.createBackdrop();
+        this.triggerElementOriginalStyle = {
+          position: this.triggerElement.style.position,
+          zIndex: this.triggerElement.style.zIndex,
+        };
+        this.triggerElement.style.position = 'relative';
         this.triggerElement.style.zIndex = `${this.zIndex}`;
       }
 
@@ -572,6 +583,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     } else {
       if (popoverStack.peek() === this) {
         popoverStack.pop();
+      }
+
+      if (this.backdrop) {
+        this.triggerElement.style.position = this.triggerElementOriginalStyle.position;
+        this.triggerElement.style.zIndex = this.triggerElementOriginalStyle.zIndex;
       }
 
       if (this.backdropElement) {
@@ -761,6 +777,21 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
         this.utils.setupHoverBridge(placement);
       }
     });
+  }
+
+  /**
+   * Finds the closest popover to the passed element in the DOM tree.
+   *
+   * Useful when need to find the parent popover in a nested popover scenario.
+   *
+   * @param element - The element to start searching from.
+   */
+  protected findClosestPopover(element: Element): Popover | null {
+    let el: Element | null = element;
+    while (el && !(el instanceof Popover)) {
+      el = el.parentElement;
+    }
+    return el;
   }
 
   public override render() {

@@ -14,7 +14,12 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menubar" sty
 
 const render = (args: Args) =>
   wrapWithDiv(
-    html` <mdc-menusection header-text="${args['header-text']}" aria-label="${args['aria-label']}">
+    html` <mdc-menusection
+      header-text="${args['header-text']}"
+      aria-label="${args['aria-label']}"
+      prefix-icon="${args['prefix-icon']}"
+      ?show-divider="${args['show-divider']}"
+    >
       <mdc-menuitem label="Menu item 1"></mdc-menuitem>
       <mdc-menuitem label="Menu item 2"></mdc-menuitem>
       <mdc-menuitem label="Menu item 3"></mdc-menuitem>
@@ -35,6 +40,12 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
+    'prefix-icon': {
+      control: 'text',
+    },
+    'show-divider': {
+      control: 'boolean'
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -46,8 +57,9 @@ export const Example: StoryObj = {
   render,
   args: {
     'header-text': 'Menu Section label',
+    'prefix-icon': 'placeholder-bold',
+    'show-divider': false,
   },
-  ...hideAllControls(),
 };
 
 export const MultipleMenuSections: StoryObj = {

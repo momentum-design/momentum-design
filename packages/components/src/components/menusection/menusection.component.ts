@@ -1,10 +1,11 @@
 import { CSSResult, PropertyValues, html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import providerUtils from '../../utils/provider';
 import { Component } from '../../models';
+import providerUtils from '../../utils/provider';
 import { ROLE } from '../../utils/roles';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type { IconNames } from '../icon/icon.types';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
@@ -26,8 +27,9 @@ import styles from './menusection.styles';
  */
 class MenuSection extends Component {
   /**
-   * The primary headerText of the list item.
-   * This appears on the leading side of the list item.
+   * The aria-label for the section.
+   * This is used for accessibility purposes to describe the section.
+   * If not provided, it defaults to the `headerText`.
    */
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
 
@@ -36,6 +38,13 @@ class MenuSection extends Component {
    * This appears on the leading side of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
+
+  /**
+   * Name of the icon rendered before the text
+   *
+   * If not provided, no icon will be rendered and text will be aligned to the start.
+   */
+  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
 
   /**
    * Whether to show a divider below the section header.
@@ -62,29 +71,8 @@ class MenuSection extends Component {
     this.setAttribute('role', ROLE.GROUP);
   }
 
-  /**
-   * Renders the header text of the menu section.
-   * If the menu section header text is placed inside the side navigation,
-   * then the header text is aligned to the left of 1.75rem.
-   *
-   * @returns header text
-   */
-  private renderLabel() {
-    if (this.headerText) {
-      return html`<mdc-text
-        aria-hidden="true"
-        part="header-text ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
-        type=${TYPE.BODY_MIDSIZE_BOLD}
-        tagname=${VALID_TEXT_TAGS.DIV}
-      >
-        ${this.headerText}
-      </mdc-text> `;
-    }
-    return null;
-  }
-
-  protected override updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
+  override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
     if (
       (changedProperties.has('ariaLabel') || changedProperties.has('headerText')) &&
       (!this.ariaLabel || this.ariaLabel === changedProperties.get('headerText'))
@@ -103,9 +91,21 @@ class MenuSection extends Component {
     this.hideHeaderText = !expanded;
   }
 
+  private renderHeader() {
+    if (this.headerText) {
+      return html` <mdc-listheader
+        part="header ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
+        header-text="${this.headerText}"
+        prefix-icon="${ifDefined(this.prefixIcon)}"
+      >
+      </mdc-listheader>`;
+    }
+    return null;
+  }
+
   public override render() {
     return html`
-      ${!this.hideHeaderText ? this.renderLabel() : null}
+      ${!this.hideHeaderText ? this.renderHeader() : null}
       <slot></slot>
       ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
     `;

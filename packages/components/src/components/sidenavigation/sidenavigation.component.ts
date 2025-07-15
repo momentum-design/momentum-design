@@ -97,7 +97,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   variant: SideNavigationVariant = DEFAULTS.VARIANT;
 
   /**
-   * Name of the customer. This is displayed in the bottom section of the side-navigation component.
+   * Displays footer text in the bottom section of the sidenavigation.
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'footer-text' })
