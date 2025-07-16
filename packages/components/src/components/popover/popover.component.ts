@@ -115,6 +115,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   offset: number = DEFAULTS.OFFSET;
 
   /**
+   *Virtual padding around the boundary to check for overflow.
+   * @default 16
+   */
+  @property({ type: Number, reflect: true, attribute: 'boundary-padding' })
+  boundaryPadding: number = DEFAULTS.BOUNDARY_PADDING;
+
+  /**
    * Determines whether the focus trap is enabled.
    * If true, focus will be restricted to the content within this component.
    * @default false
@@ -726,7 +733,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private positionPopover() {
     if (!this.triggerElement) return;
 
-    const middleware = [shift()];
+    const middleware = [shift({ padding: this.boundaryPadding })];
     let popoverOffset = this.offset;
 
     if (this.flip) {

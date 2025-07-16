@@ -11,6 +11,8 @@ import '../buttongroup';
 import '../divider';
 import '../icon';
 import '../menuitem';
+import '../listitem';
+import '../list';
 
 const createPopover = (args: Args, content: TemplateResult = html``) => html`
   <mdc-menupopover
@@ -339,6 +341,10 @@ export const MixedUsage: StoryObj = {
         <mdc-menuitem label="Zoom In"></mdc-menuitem>
         <mdc-menuitem label="Zoom Out"></mdc-menuitem>
         <mdc-menuitem label="Reset Zoom"></mdc-menuitem>
+        <mdc-divider></mdc-divider>
+        <mdc-menuitemradio indicator="checkmark" name="length" checked label="Short"></mdc-menuitemradio>
+        <mdc-menuitemradio indicator="checkmark" name="length" label="Medium"></mdc-menuitemradio>
+        <mdc-menuitemradio indicator="checkmark" name="length" label="Looooooooooong"></mdc-menuitemradio>
       </mdc-menupopover>
     </div>
   `,
@@ -414,4 +420,28 @@ export const CustomMenu: StoryObj = {
         <mdc-menuitem label="Notifications"></mdc-menuitem>`,
     )}
   `,
+};
+
+export const MenuInList: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: args =>
+    html` <mdc-list>
+        <mdc-listitem @click=${action('onclick')} label="List Item 1">
+          <mdc-button
+            variant="tertiary"
+            id="button-trigger"
+            slot="trailing-controls"
+            aria-label="Open Menu"
+            prefix-icon="more-bold"
+          >
+          </mdc-button>
+        </mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 2"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 3"></mdc-listitem>
+        <mdc-divider></mdc-divider>
+        <mdc-listitem @click=${action('onclick')} label="List Item 4"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 5"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
+      </mdc-list>
+      ${createPopover(args, defaultMenuContent)}`,
 };

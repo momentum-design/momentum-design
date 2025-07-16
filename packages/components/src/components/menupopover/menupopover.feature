@@ -233,16 +233,21 @@ Feature: MenuPopover Accessibility and User Interaction
       Then its checked state toggles
       And the visual indicator reflects the state
       And change event should dispatch
-      And the MenuPopover remains open
+      And the MenuPopover closes
 
-    Scenario: Toggle menuitemcheckbox using keyboard
+    Scenario Outline: Toggle menuitemcheckbox using keyboard
       Given the MenuPopover is open
       And focus is on a "menuitemcheckbox"
-      When I press "Enter" or "Space"
+      When I press <key>
       Then its checked state toggles
       And the visual indicator reflects the state
       And change event should dispatch
-      And the MenuPopover remains open
+      And the MenuPopover <menu popover state>
+
+      Examples:
+        | key   | menu popover state |
+        | Enter | closes             |
+        | Space | remain open        |
 
     Scenario: Select one menuitemradio from a group using mouse
       Given the MenuPopover is open
@@ -251,16 +256,21 @@ Feature: MenuPopover Accessibility and User Interaction
       Then it becomes selected
       And change event should dispatch
       And other items in the group become deselected
-      And the MenuPopover remains open
+      And the MenuPopover closes
 
-    Scenario: Select one menuitemradio from a group using keyboard
+    Scenario Outline: Select one menuitemradio from a group using keyboard
       Given the MenuPopover is open
       And focus is on a "menuitemradio" in a group
-      When I press "Enter" or "Space"
+      When I press <key>
       Then it becomes selected
       And change event should dispatch
       And other items in the group become deselected
-      And the MenuPopover remains open
+      And the MenuPopover <menu popover state>
+
+      Examples:
+        | key   | menu popover state |
+        | Enter | closes             |
+        | Space | remain open        |
 
   Rule: ✅ ScreenReader Accessibility
 
