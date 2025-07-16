@@ -307,7 +307,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   protected closeDelay: number = 0;
 
   /** @internal */
-  private utils: PopoverUtils;
+  protected utils: PopoverUtils;
 
   /** @internal */
   public backdropElement: HTMLElement | null = null;
@@ -354,9 +354,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   /**
    * Sets up the trigger event listeners based on the trigger type.
    */
-  private setupTriggerListener() {
-    if (!this.triggerID) return;
-
+  protected setupTriggerListener() {
     this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
     if (!this.triggerElement) return;
 
@@ -396,7 +394,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   /**
    * Removes the trigger event listeners.
    */
-  private removeEventListeners() {
+  protected removeEventListeners() {
     if (!this.triggerElement) return;
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
     this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
@@ -723,7 +721,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * It also handles the flip, size and arrow placement.
    * It uses the floating-ui/dom library to calculate the position.
    */
-  private positionPopover() {
+  protected positionPopover() {
     if (!this.triggerElement) return;
 
     const middleware = [shift()];

@@ -64,10 +64,10 @@ class FocusTrapStack {
    * @param trap - The focus trap to deactivate.
    */
   static deactivate(trap: any) {
-    if(!this.stack.has(trap)) {
+    if (!this.stack.has(trap)) {
       return;
     }
-    
+
     this.stack.delete(trap);
     this.removeKeydownListener();
 
@@ -87,7 +87,7 @@ export declare abstract class FocusTrapClassInterface {
 
   setInitialFocus(elementIndexToReceiveFocus?: number): void;
 
-  activateFocusTrap(): void;
+  activateFocusTrap(root?: ShadowRoot | HTMLElement | null): void;
 
   deactivateFocusTrap(): void;
 
@@ -123,6 +123,8 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /** @internal */
     private isFocusTrapActivated: boolean = false;
 
+    private focusableRoot: ShadowRoot | HTMLElement | null = this.shadowRoot;
+
     private setIsFocusTrapActivated(isActivated: boolean) {
       this.isFocusTrapActivated = isActivated;
     }
@@ -130,7 +132,10 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /**
      * Activate the focus trap
      */
-    public activateFocusTrap() {
+    public activateFocusTrap(root?: ShadowRoot | HTMLElement | null) {
+      if (root) {
+        this.focusableRoot = root;
+      }
       this.setIsFocusTrapActivated(true);
       FocusTrapStack.activate(this);
     }
@@ -329,9 +334,9 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Updates the list of focusable elements within the component's shadow root.
      */
     private setFocusableElements() {
-      if (!this.shadowRoot) return;
+      if (!this.focusableRoot) return;
 
-      this.focusableElements = this.findFocusable(this.shadowRoot, new Set());
+      this.focusableElements = this.findFocusable(this.focusableRoot, new Set());
     }
 
     /**

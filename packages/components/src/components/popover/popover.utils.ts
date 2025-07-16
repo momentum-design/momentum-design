@@ -188,8 +188,9 @@ export class PopoverUtils {
    * @param x - The x position.
    * @param y - The y position.
    */
-  updatePopoverStyle(x: number, y: number): void {
-    Object.assign(this.popover.style, {
+  updatePopoverStyle(x: number, y: number, element?: HTMLElement): void {
+    const targetElement = element ?? this.popover;
+    Object.assign(targetElement.style, {
       left: `${x}px`,
       top: `${y}px`,
     });
