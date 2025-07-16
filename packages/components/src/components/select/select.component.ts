@@ -80,6 +80,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /** @internal */
   @state() displayPopover = false;
 
+  /** @internal */
+  @state() activeDescendant = '';
+
   /**
    * @internal
    * The native select element
@@ -110,6 +113,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOpen(): void {
     this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
+    this.updateActivedescendant();
   }
 
   private handlePopoverClose(): void {
@@ -367,6 +371,22 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
+  private updateActivedescendant(target?: EventTarget | null): void {
+    const options = this.getAllValidOptions();
+    if (target) {
+      const currentIndex = options.findIndex(option => option === target);
+      this.activeDescendant = options[currentIndex]?.id ?? '';
+    } else {
+      // If no target is provided, find the option with tabindex="0" or the first option
+      const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
+      this.activeDescendant = focusedOption?.id ?? options[0]?.id ?? '';
+    }
+  }
+
+  private resetActivedescendant(): void {
+    this.activeDescendant = '';
+  }
+
   private setFocusAndTabIndex(newIndex: number): void {
     const options = this.getAllValidOptions();
     const targetOption = options[newIndex] as HTMLElement;
@@ -378,15 +398,27 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         const newTabindex = newIndex === index ? '0' : '-1';
         node?.setAttribute('tabindex', newTabindex);
       });
+
+      // Update activeDescendant after changing focus
+      this.activeDescendant = targetOption.id ?? '';
     }
   }
 
   private openPopover(): void {
     this.displayPopover = true;
+
+    // Find the currently selected option or the first option
+    const options = this.getAllValidOptions();
+    const selectedOption = options.find(option => option.hasAttribute('selected'));
+    const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
+
+    // Set activeDescendant to the selected/focused option or first option
+    this.activeDescendant = (selectedOption || focusedOption || options[0])?.id ?? '';
   }
 
   private closePopover(): void {
     this.displayPopover = false;
+    this.resetActivedescendant();
   }
 
   /**
@@ -475,7 +507,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       return nothing;
     }
     return html`
-      <mdc-popover
+      <mdc-popoverlight
         id="options-popover"
         triggerid="${TRIGGER_ID}"
         @keydown="${this.handlePopoverOnOpen}"
@@ -485,20 +517,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
-        role="${ROLE.GENERIC}"
+        role="${ROLE.LISTBOX}"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-        <slot
-          @click="${this.handleOptionsClick}"
-          id="listbox"
-          role="${ROLE.LISTBOX}"
-          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-        >
-        </slot>
-      </mdc-popover>
+        <slot @click="${this.handleOptionsClick}"></slot>
+      </mdc-popoverlight>
     `;
   }
 
@@ -529,11 +555,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
-          aria-controls="${ifDefined(this.displayPopover ? 'listbox' : undefined)}"
+          aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
+          aria-controls="${ifDefined(this.displayPopover ? 'options-popover' : undefined)}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
-          aria-haspopup="${ROLE.LISTBOX}"
           aria-required="${this.required ? 'true' : 'false'}"
           aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
         >
