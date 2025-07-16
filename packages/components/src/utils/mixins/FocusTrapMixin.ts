@@ -123,7 +123,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /** @internal */
     private isFocusTrapActivated: boolean = false;
 
-    private focusableRoot: ShadowRoot | HTMLElement | null = this.shadowRoot;
+    private focusableRoot?: ShadowRoot | HTMLElement | null;
 
     private setIsFocusTrapActivated(isActivated: boolean) {
       this.isFocusTrapActivated = isActivated;
@@ -133,9 +133,8 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Activate the focus trap
      */
     public activateFocusTrap(root?: ShadowRoot | HTMLElement | null) {
-      if (root) {
-        this.focusableRoot = root;
-      }
+      this.focusableRoot = root || this.shadowRoot;
+
       this.setIsFocusTrapActivated(true);
       FocusTrapStack.activate(this);
     }
@@ -345,6 +344,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param elementIndexToReceiveFocus - The index of the preferable element to focus.
      */
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
+      console.log(this.focusableRoot);
       this.setFocusableElements();
 
       if (this.focusableElements.length === 0 || !this.focusTrap) {

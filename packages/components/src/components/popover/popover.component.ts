@@ -6,13 +6,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
-import { ValueOf } from '../../utils/types';
+import type { ValueOf } from '../../utils/types';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
+import type { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -312,6 +312,12 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   /** @internal */
   public backdropElement: HTMLElement | null = null;
 
+  /** @internal */
+  protected triggerElementOverride: HTMLElement | null = null;
+
+  /** @internal */
+  protected popoverContainerOverride?: HTMLElement;
+
   constructor() {
     super();
     this.utils = new PopoverUtils(this);
@@ -323,7 +329,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
     this.setupTriggerListener();
     this.utils.setupAccessibility();
-    this.style.zIndex = `${this.zIndex}`;
+
+    if (this.popoverContainerOverride) {
+      this.popoverContainerOverride.style.zIndex = `${this.zIndex}`;
+    } else {
+      this.style.zIndex = `${this.zIndex}`;
+    }
+
     PopoverEventManager.onCreatedPopover(this);
 
     if (this.visible) {
@@ -335,7 +347,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       if (this.interactive && this.focusTrap) {
         // Wait for the first update to complete before setting focusable elements
         await this.updateComplete;
-        this.activateFocusTrap?.();
+        this.activateFocusTrap?.(this.popoverContainerOverride);
         this.setInitialFocus?.();
       }
     }
@@ -355,7 +367,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * Sets up the trigger event listeners based on the trigger type.
    */
   protected setupTriggerListener() {
-    this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
+    this.triggerElement =
+      this.triggerElementOverride ||
+      (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
     if (!this.triggerElement) return;
 
     if (this.trigger === 'mouseenter') {
@@ -491,6 +505,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -511,7 +526,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       event.stopPropagation();
     }
     event.preventDefault();
+
     this.hidePopover();
+    PopoverEventManager.onEscapeKeyPressed(this);
   };
 
   /**
@@ -573,7 +590,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       if (this.interactive && this.focusTrap) {
         // Wait for the update to complete before setting focusable elements
         await this.updateComplete;
-        this.activateFocusTrap?.();
+        this.activateFocusTrap?.(this.popoverContainerOverride);
         this.setInitialFocus?.();
       }
 
@@ -762,12 +779,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     autoUpdate(this.triggerElement, this, async () => {
       if (!this.triggerElement) return;
 
-      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
-        placement: this.placement,
-        middleware,
-      });
+      const { x, y, middlewareData, placement } = await computePosition(
+        this.triggerElement,
+        this.popoverContainerOverride || this,
+        {
+          placement: this.placement,
+          middleware,
+        },
+      );
 
-      this.utils.updatePopoverStyle(x, y);
+      this.utils.updatePopoverStyle(x, y, this.popoverContainerOverride);
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }

@@ -1,10 +1,10 @@
-import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { query, queryAssignedElements } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import Popover from '../popover/popover.component';
+import { ROLE } from '../../utils/roles';
 
 import styles from './anchorpopover.styles';
 
@@ -27,75 +27,13 @@ class AnchorPopover extends Popover {
   @queryAssignedElements({ slot: 'anchor' })
   private anchorElements!: HTMLElement[];
 
+  override role = ROLE.GENERIC;
+
   protected override async firstUpdated(changedProperties: PropertyValues) {
-    this.triggerElement = this.anchorElements.length > 0 ? this.anchorElements[0] : null;
+    this.triggerElementOverride = this.anchorElements.length > 0 ? this.anchorElements[0] : null;
+    this.popoverContainerOverride = this.popoverElement;
+
     await super.firstUpdated(changedProperties);
-    this.popoverElement.style.zIndex = `${this.zIndex}`;
-
-    if (this.visible) {
-      // If the popover is visible on first update and focustrap is enabled, we need to activate the focus trap
-      if (this.interactive && this.focusTrap) {
-        // Wait for the first update to complete before setting focusable elements
-        await this.updateComplete;
-        this.activateFocusTrap?.(this.popoverElement);
-        this.setInitialFocus?.();
-      }
-    }
-  }
-
-  protected override positionPopover() {
-    if (!this.triggerElement) return;
-
-    const middleware = [shift()];
-    let popoverOffset = this.offset;
-
-    if (this.flip) {
-      middleware.push(flip());
-    }
-
-    if (this.size) {
-      const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
-      middleware.push(
-        size({
-          apply({ availableHeight }) {
-            if (!popoverContent) return;
-            Object.assign(popoverContent.style, {
-              maxHeight: `${availableHeight}px`,
-              overflowY: 'auto',
-            });
-          },
-          padding: 50,
-        }),
-      );
-    }
-
-    if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
-      if (this.arrowElement) {
-        const arrowLen = this.arrowElement.offsetHeight;
-        const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        popoverOffset += arrowOffset;
-        middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
-      }
-    }
-
-    middleware.push(offset(popoverOffset));
-
-    autoUpdate(this.triggerElement, this, async () => {
-      if (!this.triggerElement) return;
-      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this.popoverElement, {
-        placement: this.placement,
-        middleware,
-      });
-
-      this.utils.updatePopoverStyle(x, y, this.popoverElement);
-      if (middlewareData.arrow && this.arrowElement) {
-        this.utils.updateArrowStyle(middlewareData.arrow, placement);
-      }
-      if (this.trigger.includes('mouseenter') && this.interactive) {
-        this.utils.setupHoverBridge(placement);
-      }
-    });
   }
 
   public override render() {

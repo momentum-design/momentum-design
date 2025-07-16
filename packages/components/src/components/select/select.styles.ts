@@ -72,14 +72,25 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
-  :host([readonly])::part(icon-container) {
-    color: var(--mdc-select-disabled-text-color);
-  }
   :host::part(popover-content) {
     min-width: auto;
-    overflow: scroll;
+    overflow-y: auto;
   }
+
+  /* Help text border colors */
+  :host([help-text-type='success'])::part(base-container) {
+    border-color: var(--mdc-select-success-border-color);
+  }
+  :host([help-text-type='error'])::part(base-container) {
+    border-color: var(--mdc-select-error-border-color);
+  }
+  :host([help-text-type='warning'])::part(base-container) {
+    border-color: var(--mdc-select-warning-border-color);
+  }
+
+  /* Disabled, readonly, soft-disabled */
   :host([disabled])::part(base-container),
+  :host([soft-disabled])::part(base-container),
   :host([readonly])::part(base-container),
   :host([help-text-type='success'][disabled])::part(base-container),
   :host([help-text-type='error'][disabled])::part(base-container),
@@ -90,24 +101,16 @@ const styles = css`
     border-color: var(--mdc-select-disabled-border-color);
     background: var(--mdc-select-disabled-background-color);
   }
-  :host([disabled]:hover)::part(base-container),
-  :host([readonly]:hover)::part(base-container) {
-    background-color: unset;
-  }
   :host([readonly])::part(base-text) {
     color: var(--mdc-select-selected-text-color);
   }
-  :host([disabled])::part(base-text) {
+  :host([disabled])::part(base-text),
+  :host([soft-disabled])::part(base-text) {
     color: var(--mdc-select-disabled-text-color);
   }
-  :host([help-text-type='success'])::part(base-container) {
-    border-color: var(--mdc-select-success-border-color);
-  }
-  :host([help-text-type='error'])::part(base-container) {
-    border-color: var(--mdc-select-error-border-color);
-  }
-  :host([help-text-type='warning'])::part(base-container) {
-    border-color: var(--mdc-select-warning-border-color);
+  :host([soft-disabled])::part(icon-container),
+  :host([readonly])::part(icon-container) {
+    color: var(--mdc-select-disabled-text-color);
   }
 `;
 

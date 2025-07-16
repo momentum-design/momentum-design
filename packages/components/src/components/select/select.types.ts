@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+import type { PopoverPlacement } from '../popover/popover.types';
 
 import { ARROW_ICON } from './select.constants';
 
@@ -10,6 +11,8 @@ interface Events {
   onFocusEvent: FocusEvent;
 }
 
+type Placement = Extract<PopoverPlacement, 'bottom-start' | 'top-start'>;
+
 type ArrowIcon = ValueOf<typeof ARROW_ICON>;
 
-export type { Events, ArrowIcon };
+export type { Events, ArrowIcon, Placement };

@@ -15,7 +15,9 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="height: 20rem; width: 20rem;">${htmlString}</div>
+  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
+    ${htmlString}
+  </div>
 `;
 
 const render = (args: Args) =>
@@ -35,16 +37,18 @@ const render = (args: Args) =>
       toggletip-text="${args['toggletip-text']}"
       toggletip-placement="${args['toggletip-placement']}"
       info-icon-aria-label="${args['info-icon-aria-label']}"
+      placement="${args.placement}"
       name="${args.name}"
       placeholder="${args.placeholder}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       ?readonly="${args.readonly}"
     >
-      <mdc-option>London, UK</mdc-option>
-      <mdc-option>Los Angeles, CA</mdc-option>
-      <mdc-option>New York, NY</mdc-option>
-      <mdc-option>Phoenix, AZ</mdc-option>
-      <mdc-option>Seattle, WA</mdc-option>
+      <mdc-option selected value="london">London, UK</mdc-option>
+      <mdc-option value="losangeles">Los Angeles, CA</mdc-option>
+      <mdc-option value="newyork">New York, NY</mdc-option>
+      <mdc-option value="phoenix">Phoenix, AZ</mdc-option>
+      <mdc-option value="seattle">Seattle, WA</mdc-option>
     </mdc-select>
   `);
 
@@ -99,6 +103,13 @@ const meta: Meta = {
     height: {
       control: 'text',
     },
+    placement: {
+      control: 'select',
+      options: ['bottom-start', 'top-start'],
+    },
+    'soft-disabled': {
+      control: 'boolean',
+    },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
@@ -118,6 +129,7 @@ export const Example: StoryObj = {
     'help-text-type': '',
     'data-aria-label': 'Select label',
     height: 'auto',
+    placement: 'bottom-start',
   },
 };
 

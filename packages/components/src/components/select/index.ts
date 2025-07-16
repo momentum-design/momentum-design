@@ -1,6 +1,6 @@
 import '../button';
 import '../icon';
-import '../popover';
+import '../anchorpopover';
 import '../text';
 import '../toggletip';
 import Select from './select.component';
