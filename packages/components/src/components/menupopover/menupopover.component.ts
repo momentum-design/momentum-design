@@ -49,7 +49,7 @@ import { isValidMenuItem, isValidPopover } from './menupopover.utils';
  *   closes recursively all submenus until the selected item's submenu
  *
  * Menu does not close when:
- * - Space key pressed on a menu item radio
+ * - Space key pressed on a menu item radio or menu item checkbox
  *
  * @tagname mdc-menupopover
  *
