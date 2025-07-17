@@ -8,8 +8,6 @@ import { textControls, hideAllControls, hideControls } from '../../../config/sto
 import '../button';
 import '../option';
 import '../select';
-import '../menupopover';
-import '../menuitem';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const createAnchorPopover = (args: Args, content: TemplateResult, triggerText: string) => html`
@@ -125,16 +123,6 @@ const renderHideOnBlur = (args: Args) => html`
       'Click me!',
     )}
     <mdc-button>External Button</mdc-button>
-  </div>
-`;
-
-const renderMultiple = (args: Args) => html`
-  <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
-    ${createAnchorPopover(args, html`<mdc-text>Interactive content on click</mdc-text>`, 'Click/ Hover me!')}
-    <mdc-anchorpopover id="popover2" trigger="mouseenter" placement="bottom" z-index="20" show-arrow hide-on-escape>
-      <mdc-button slot="anchor">Click/ Hover me!</mdc-button>
-      <mdc-text>Description tooltip on mouseenter</mdc-text>
-    </mdc-anchorpopover>
   </div>
 `;
 
@@ -396,28 +384,6 @@ export const interactiveHover: StoryObj = {
   },
 };
 
-export const interactiveMultiple: StoryObj = {
-  render: renderMultiple,
-  args: {
-    id: 'anchorpopover-multiple',
-    trigger: 'click',
-    placement: POPOVER_PLACEMENT.TOP,
-    offset: DEFAULTS.OFFSET,
-    'z-index': DEFAULTS.Z_INDEX,
-    delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
-    'focus-trap': true,
-    interactive: true,
-    'focus-back-to-trigger': true,
-    'hide-on-escape': true,
-    'hide-on-outside-click': true,
-    'show-arrow': true,
-    'close-button': true,
-    role: DEFAULTS.ROLE,
-    color: DEFAULTS.COLOR,
-  },
-};
-
 export const nestedPopover: StoryObj = {
   render: renderNested,
   args: {
@@ -543,32 +509,4 @@ export const MultipleSingleLevelPopovers: StoryObj = {
   `,
 };
 
-export const NestedMenu: StoryObj = {
-  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START },
-  render: () => html`
-    <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
-      <mdc-anchorpopover
-        id="anchorpopover"
-        trigger="click"
-        placement="bottom"
-        interactive
-        focus-back-to-trigger
-        focus-trap
-        show-arrow
-        hide-on-escape
-        hide-on-outside-click
-      >
-        <mdc-button slot="anchor">Click me!</mdc-button>
-        <div id="menupopover-test-wrapper">
-          <h2>Hello world</h2>
-          <mdc-menupopover triggerID="menu-trigger-btn" show-arrow>
-            <mdc-button id="menu-trigger-btn">Menu</mdc-button>
-            <mdc-menuitem label="Profile"></mdc-menuitem>
-            <mdc-menuitem label="Notifications"></mdc-menuitem>
-          </mdc-menupopover>
-        </div>
-      </mdc-anchorpopover>
-    </div>
-  `,
-};
 // End AI-Assisted

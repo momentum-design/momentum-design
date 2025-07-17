@@ -344,7 +344,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param elementIndexToReceiveFocus - The index of the preferable element to focus.
      */
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
-      console.log(this.focusableRoot);
       this.setFocusableElements();
 
       if (this.focusableElements.length === 0 || !this.focusTrap) {

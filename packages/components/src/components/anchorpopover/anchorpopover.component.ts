@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import Popover from '../popover/popover.component';
-import { ROLE } from '../../utils/roles';
 
 import styles from './anchorpopover.styles';
 
@@ -27,12 +26,16 @@ class AnchorPopover extends Popover {
   @queryAssignedElements({ slot: 'anchor' })
   private anchorElements!: HTMLElement[];
 
-  override role = ROLE.GENERIC;
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = null;
+    this.ariaLabel = null;
+    this.ariaLabelledby = null;
+  }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     this.triggerElementOverride = this.anchorElements.length > 0 ? this.anchorElements[0] : null;
     this.popoverContainerOverride = this.popoverElement;
-
     await super.firstUpdated(changedProperties);
   }
 

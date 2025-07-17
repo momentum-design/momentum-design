@@ -501,7 +501,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <mdc-anchorpopover
           trigger="manual"
           id="options-popover"
-          triggerid="${TRIGGER_ID}"
           @keydown="${this.handlePopoverOnOpen}"
           interactive
           ?visible="${this.displayPopover}"
@@ -525,7 +524,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             class="${this.disabled ? '' : 'mdc-focus-ring'}"
             role="${ROLE.COMBOBOX}"
             aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
-            aria-controls="${ifDefined(this.displayPopover ? 'options-popover' : undefined)}"
+            aria-controls="${ifDefined(this.displayPopover ? 'options-listbox' : undefined)}"
             aria-label="${this.dataAriaLabel ?? ''}"
             aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
             aria-expanded="${this.displayPopover ? 'true' : 'false'}"
@@ -556,7 +555,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
               <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
             </div>
           </div>
-          <div role="${ROLE.LISTBOX}">
+          <div id="options-listbox" role="${ROLE.LISTBOX}" 
+          aria-labelledby="${TRIGGER_ID}"
+          aria-label="${this.dataAriaLabel ?? ''}"
+          aria-required="${this.required ? 'true' : 'false'}"
+          aria-multiselectable="false">
             <slot @click="${this.handleOptionsClick}"></slot>
           </div>
         </mdc-popover>

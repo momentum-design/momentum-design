@@ -57,7 +57,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * This attribute is required for the popover to work.
    */
   @property({ type: String, reflect: true })
-  triggerID: string = '';
+  triggerID?: string | null = null;
 
   /**
    * Determines the events that cause the Popover to show.
@@ -328,12 +328,12 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.utils.setupAppendTo();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
     this.setupTriggerListener();
-    this.utils.setupAccessibility();
 
     if (this.popoverContainerOverride) {
       this.popoverContainerOverride.style.zIndex = `${this.zIndex}`;
     } else {
       this.style.zIndex = `${this.zIndex}`;
+      this.utils.setupAccessibility();
     }
 
     PopoverEventManager.onCreatedPopover(this);
@@ -460,9 +460,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.utils.setupAppendTo();
     }
     if (
-      changedProperties.has('interactive') ||
-      changedProperties.has('aria-label') ||
-      changedProperties.has('aria-labelledby')
+      (changedProperties.has('interactive') ||
+        changedProperties.has('aria-label') ||
+        changedProperties.has('aria-labelledby')) &&
+      !this.popoverContainerOverride
     ) {
       this.utils.setupAccessibility();
     }
