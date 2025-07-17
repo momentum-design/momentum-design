@@ -1,5 +1,8 @@
-// import type { ValueOf } from '../../utils/types';
+import type { ValueOf } from '../../utils/types';
 
-interface Events {}
+import { SIZE, VARIANT } from './accordiongroup.constants';
 
-export type { Events };
+type Size = ValueOf<typeof SIZE>;
+type Variant = ValueOf<typeof VARIANT>;
+
+export type { Size, Variant };

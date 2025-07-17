@@ -25,6 +25,8 @@ const ROLE = {
   TAB: 'tab',
   TABLIST: 'tablist',
   TOOLTIP: 'tooltip',
+  HEADING: 'heading',
+  REGION: 'region',
 } as const;
 
 type RoleType = ValueOf<typeof ROLE>;

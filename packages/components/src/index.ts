@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 // Components Imports
 import Accordion from './components/accordion';
-import Accordionbutton from './components/accordionbutton';
+import AccordionButton from './components/accordionbutton';
 import Accordiongroup from './components/accordiongroup';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
@@ -100,7 +100,7 @@ import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 export {
   Accordion,
   Accordiongroup,
-  Accordionbutton,
+  AccordionButton,
   AlertChip,
   Animation,
   Appheader,
