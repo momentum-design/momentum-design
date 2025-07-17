@@ -7,7 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html` <mdc-accordion args.property="${args.property}"></mdc-accordion>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/accordion',
+  title: 'Work In Progress/accordion/accordion',
   tags: ['autodocs'],
   component: 'mdc-accordion',
   render,

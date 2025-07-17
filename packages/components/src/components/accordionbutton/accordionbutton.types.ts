@@ -1,5 +1,5 @@
 // import type { ValueOf } from '../../utils/types';
 
-interface Events {}
+// interface Events {}
 
-export type { Events };
+// export type { Events };

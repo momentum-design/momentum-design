@@ -1,5 +1,6 @@
 /* eslint-disable import/order */
 // Components Imports
+import AccordionButton from './components/accordionbutton';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
 import Appheader from './components/appheader';
@@ -68,7 +69,6 @@ import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import Accordion from './components/accordion';
 import Accordiongroup from './components/accordiongroup';
-import Accordionbutton from './components/accordionbutton';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -92,6 +92,7 @@ import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 
 // Components Exports
 export {
+  AccordionButton,
   AlertChip,
   Animation,
   Appheader,
@@ -160,7 +161,6 @@ export {
   Listheader,
   Accordion,
   Accordiongroup,
-  Accordionbutton,
 };
 
 // Types Exports

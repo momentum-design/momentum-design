@@ -1,12 +1,15 @@
-import Accordionbutton from './accordionbutton.component';
+import '../text';
+import '../button';
+import '../icon';
+import AccordionButton from './accordionbutton.component';
 import { TAG_NAME } from './accordionbutton.constants';
 
-Accordionbutton.register(TAG_NAME);
+AccordionButton.register(TAG_NAME);
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-accordionbutton']: Accordionbutton;
+    ['mdc-accordionbutton']: AccordionButton;
   }
 }
 
-export default Accordionbutton;
+export default AccordionButton;
