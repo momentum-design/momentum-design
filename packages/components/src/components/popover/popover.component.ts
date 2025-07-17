@@ -421,6 +421,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
+    // If the role is changed to an empty string, set it to null
+    // to avoid setting an invalid role on the popover element.
+    if (changedProperties.has('role')) {
+      if (this.role === '') {
+        this.role = null;
+      }
+    }
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);

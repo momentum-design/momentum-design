@@ -1,4 +1,4 @@
-import type { PropertyValues, TemplateResult } from 'lit';
+import type { PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -15,9 +15,9 @@ import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { ARROW_ICON, TRIGGER_ID } from './select.constants';
+import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
-import type { ArrowIcon } from './select.types';
+import type { ArrowIcon, Placement } from './select.types';
 
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
@@ -62,8 +62,22 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   @property({ type: String }) height = 'auto';
 
+  /**
+   * The placeholder text which will be shown on the text if provided.
+   */
+  @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
+
+  /**
+   * Indicates whether the select is soft disabled.
+   * When set to `true`, the select appears visually disabled but still allows
+   * focus.
+   *
+   * @default undefined
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
+
   /** @internal */
-  @queryAssignedElements() optionsList!: Array<HTMLElement>;
+  @queryAssignedElements() slotContents!: Array<HTMLElement>;
 
   /** @internal */
   @state() private baseIconName: ArrowIcon = ARROW_ICON.ARROW_DOWN;
@@ -89,14 +103,31 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   @query('select') override inputElement!: HTMLInputElement;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // wrap the children of this with a div
+    const { childNodes } = this;
+
+    if (childNodes.length > 0) {
+      const wrapper = document.createElement('div');
+      wrapper.setAttribute('id', LISTBOX_ID);
+      wrapper.setAttribute('role', ROLE.LISTBOX);
+      wrapper.setAttribute('aria-label', this.dataAriaLabel || '');
+      wrapper.setAttribute('aria-labelledby', TRIGGER_ID);
+      wrapper.append(...childNodes);
+      this.appendChild(wrapper);
+    }
+  }
+
   /**
    * A helper function which returns a flattened array of all valid options from the assigned slot.
    * It takes care of the edge cases where the option is either a direct child or a
    * child of an option group.
    */
   private getAllValidOptions() {
+    const optionsList = Array.from(this.slotContents[0]?.children || []);
     return (
-      this.optionsList
+      optionsList
         ?.map(option => {
           if (option.tagName.toLowerCase() === OPTION_TAG_NAME) {
             return option;
@@ -108,17 +139,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         })
         .flat() || []
     );
-  }
-
-  private handlePopoverOpen(): void {
-    this.displayPopover = true;
-    this.baseIconName = ARROW_ICON.ARROW_UP;
-    this.updateActivedescendant();
-  }
-
-  private handlePopoverClose(): void {
-    this.displayPopover = false;
-    this.baseIconName = ARROW_ICON.ARROW_DOWN;
   }
 
   /**
@@ -289,6 +309,18 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
+  private handleClickCombobox(event: MouseEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      return;
+    }
+    if (this.displayPopover) {
+      this.closePopover();
+    } else {
+      this.openPopover();
+    }
+    event.stopPropagation();
+  }
+
   /**
    * Handles the keydown event on the select element when the popover is closed.
    * The options are as follows:
@@ -298,15 +330,23 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * - END: Opens the popover and sets focus and tabindex on the last option.
    * @param event - The keyboard event.
    */
-  private handlePopoverOnClose(event: KeyboardEvent): void {
+  private handleKeydownCombobox(event: KeyboardEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      return;
+    }
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
+        this.openPopover();
+        // Prevent the default browser behavior of scrolling down
+        event.preventDefault();
+        break;
       case KEYS.ENTER:
       case KEYS.SPACE:
         this.openPopover();
         // Prevent the default browser behavior of scrolling down
         event.preventDefault();
+        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.openPopover();
@@ -371,18 +411,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
-  private updateActivedescendant(target?: EventTarget | null): void {
-    const options = this.getAllValidOptions();
-    if (target) {
-      const currentIndex = options.findIndex(option => option === target);
-      this.activeDescendant = options[currentIndex]?.id ?? '';
-    } else {
-      // If no target is provided, find the option with tabindex="0" or the first option
-      const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
-      this.activeDescendant = focusedOption?.id ?? options[0]?.id ?? '';
-    }
-  }
-
   private resetActivedescendant(): void {
     this.activeDescendant = '';
   }
@@ -406,6 +434,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   private openPopover(): void {
     this.displayPopover = true;
+    this.baseIconName = ARROW_ICON.ARROW_UP;
 
     // Find the currently selected option or the first option
     const options = this.getAllValidOptions();
@@ -418,6 +447,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   private closePopover(): void {
     this.displayPopover = false;
+    this.baseIconName = ARROW_ICON.ARROW_DOWN;
     this.resetActivedescendant();
   }
 
@@ -444,101 +474,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
-  /**
-   * Generates the native select element.
-   * The native select element is not rendered directly and is not visible on the UI.
-   * It's rendered only on the DOM for accessibility purposes.
-   * Instead, the overlay uses the native select element to generate the list of options.
-   * @returns A TemplateResult representing the native select element.
-   */
-  private getNativeSelect(): TemplateResult {
-    return html`
-      <select
-        part="native-select"
-        id="${this.id}"
-        tabindex="-1"
-        aria-hidden="true"
-        name="${this.name}"
-        size="1"
-        .value="${this.selectedValue}"
-        ?autofocus="${this.autofocus}"
-        ?disabled="${this.disabled}"
-        ?required="${this.required}"
-        @mousedown="${(event: MouseEvent) => event.preventDefault()}"
-      >
-        ${this.getOptionsContentFromSlot()}
-      </select>
-    `;
-  }
-
-  /**
-   * This method maps over all valid options and constructs their corresponding
-   * HTML `<option>` elements. The attributes such as `value`, `label`, `disabled`,
-   * and `selected` are extracted from the respective option elements.
-   * If the attribute is not present, a default value or fallback is used.
-   * The content of each `<option>` is set to the text content of the option element.
-   * @returns An array of `TemplateResult` representing the option elements.
-   */
-  private getOptionsContentFromSlot(): TemplateResult[] {
-    return this.getAllValidOptions().map(
-      option => html`
-        <option
-          part="native-select"
-          value="${option.getAttribute('value') ?? ''}"
-          label="${option.getAttribute('label') ?? ''}"
-          ?disabled="${!!option.hasAttribute('disabled')}"
-          ?selected="${!!option.hasAttribute('selected')}"
-        >
-          ${option.textContent}
-        </option>
-      `,
-    );
-  }
-
-  /**
-   * Generates the content for the popover associated with the select component.
-   * If the component is disabled or readonly, returns `nothing`.
-   * Otherwise, returns a `TemplateResult` that renders a popover with various configurations
-   * such as visibility, interaction, and event handlers.
-   * The popover acts as a dropdown list with options, allowing user interaction.
-   */
-  private getPopoverContent(): TemplateResult | typeof nothing {
-    if (this.disabled || this.readonly) {
-      return nothing;
-    }
-    return html`
-      <mdc-popover
-        id="options-popover"
-        triggerid="${TRIGGER_ID}"
-        @keydown="${this.handlePopoverOnOpen}"
-        interactive
-        ?visible="${this.displayPopover}"
-        hide-on-outside-click
-        hide-on-escape
-        focus-back-to-trigger
-        focus-trap
-        role="${ROLE.LISTBOX}"
-        placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-        @shown="${this.handlePopoverOpen}"
-        @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
-      >
-        <slot @click="${this.handleOptionsClick}"></slot>
-      </mdc-popover>
-    `;
-  }
-
   public override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
-      this.closePopover();
-      this.handlePopoverClose();
-    }
-    if (changedProperties.has('displayPopover')) {
-      if (this.displayPopover) {
-        this.openPopover();
-      } else {
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('readonly')
+    ) {
+      if (this.disabled || this.softDisabled || this.readonly) {
         this.closePopover();
       }
     }
@@ -548,10 +492,40 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return html`
       ${this.renderLabel()}
       <div part="container">
+        <select
+          part="native-select"
+          id="${this.id}"
+          tabindex="-1"
+          aria-hidden="true"
+          name="${this.name}"
+          size="1"
+          .value="${this.selectedValue}"
+          ?autofocus="${this.autofocus}"
+          ?disabled="${this.disabled}"
+          ?required="${this.required}"
+          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+          @mousedown="${(event: MouseEvent) => event.preventDefault()}"
+        >
+          ${this.getAllValidOptions().map(
+            option => html`
+              <option
+                part="native-select"
+                value="${option.getAttribute('value') ?? ''}"
+                label="${option.getAttribute('label') ?? ''}"
+                ?disabled="${!!option.hasAttribute('disabled')}"
+                ?selected="${!!option.hasAttribute('selected')}"
+              >
+                ${option.textContent}
+              </option>
+            `,
+          )}
+        </select>
         <div
+          slot="anchor"
           id="${TRIGGER_ID}"
           part="base-container"
-          @keydown="${this.handlePopoverOnClose}"
+          @click="${this.handleClickCombobox}"
+          @keydown="${this.handleKeydownCombobox}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
@@ -560,8 +534,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-haspopup="${ROLE.LISTBOX}"
           aria-required="${this.required ? 'true' : 'false'}"
           aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
+          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+          aria-readonly="${ifDefined(this.readonly)}"
         >
           ${this.selectedIcon
             ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
@@ -577,7 +554,26 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
           </div>
         </div>
-        ${this.getNativeSelect()} ${this.getPopoverContent()}
+        <mdc-popover
+          trigger="manual"
+          id="options-popover"
+          triggerid="${TRIGGER_ID}"
+          @keydown="${this.handlePopoverOnOpen}"
+          interactive
+          ?visible="${this.displayPopover}"
+          role=""
+          hide-on-outside-click
+          hide-on-escape
+          focus-back-to-trigger
+          focus-trap
+          size
+          placement="${this.placement}"
+          @closebyescape="${this.closePopover}"
+          @closebyoutsideclick="${this.closePopover}"
+          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+        >
+          <slot @click="${this.handleOptionsClick}"></slot>
+        </mdc-popover>
       </div>
       ${this.renderHelperText()}
     `;
