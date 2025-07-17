@@ -320,11 +320,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
-      case KEYS.ENTER:
-      case KEYS.SPACE:
         this.openPopover();
         // Prevent the default browser behavior of scrolling down
         event.preventDefault();
+        break;
+      case KEYS.ENTER:
+      case KEYS.SPACE:
+        this.openPopover();
+        event.preventDefault();
+        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.openPopover();
