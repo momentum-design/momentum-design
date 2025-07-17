@@ -115,11 +115,46 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   offset: number = DEFAULTS.OFFSET;
 
   /**
-   *Virtual padding around the boundary to check for overflow.
-   * @default 16
+   * This describes the clipping element(s) or area that overflow will be checked relative to.
+   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
+   * element to be clipped.
+   *
+   * Possible values:
+   *  - 'clippingAncestors'
+   *  - any css selector
+   *
+   * @default 'clippingAncestors'
+   *
+   * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary' })
+  boundary: 'clippingAncestors' | string = DEFAULTS.BOUNDARY;
+
+  /**
+   * This describes the root boundary that the element will be checked for overflow relative to.
+   * The default is 'viewport', which is the area of the page the user can see on the screen.
+   *
+   * The other string option is 'document', which is the entire page outside the viewport.
+   *
+   * @default 'viewport'
+   *
+   * @see [Floating UI - rootBoundary](https://floating-ui.com/docs/detectOverflow#rootboundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary-root' })
+  boundaryRoot: 'viewport' | 'document' = DEFAULTS.BOUNDARY_ROOT;
+
+  /**
+   * Virtual padding around the boundary to check for overflow.
+   * So the popover will not be placed on top of the edge of the boundary.
+   *
+   * Default works well for most cases, but you can set this to customise it when necessary.
+   *
+   * @default undefined
+   *
+   * @see [Floating UI - padding](https://floating-ui.com/docs/detectOverflow#padding)
    */
   @property({ type: Number, reflect: true, attribute: 'boundary-padding' })
-  boundaryPadding: number = DEFAULTS.BOUNDARY_PADDING;
+  boundaryPadding: undefined | number;
 
   /**
    * Determines whether the focus trap is enabled.
@@ -733,7 +768,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private positionPopover() {
     if (!this.triggerElement) return;
 
-    const middleware = [shift({ padding: this.boundaryPadding })];
+    const middleware = [
+      shift({
+        boundary:
+          !this.boundary || this.boundary === 'clippingAncestors'
+            ? 'clippingAncestors'
+            : Array.from(document.querySelectorAll(this.boundary)),
+        rootBoundary: this.boundaryRoot,
+        padding: this.boundaryPadding,
+      }),
+    ];
     let popoverOffset = this.offset;
 
     if (this.flip) {
