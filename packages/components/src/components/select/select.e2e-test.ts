@@ -15,9 +15,11 @@ type SetupOptions = {
 const label = 'Select an option';
 const defaultPlaceholder = 'Select placeholder';
 const defaultChildren = (selected?: boolean) => `
-  <mdc-option value="option1">Option Label 1</mdc-option>
-  <mdc-option value="option2" ${selected ? 'selected' : ''}>Option Label 2</mdc-option>
-  <mdc-option value="option3">Option Label 3</mdc-option>
+  <mdc-selectlistbox>
+    <mdc-option value="option1">Option Label 1</mdc-option>
+    <mdc-option value="option2" ${selected ? 'selected' : ''}>Option Label 2</mdc-option>
+    <mdc-option value="option3">Option Label 3</mdc-option>
+  </mdc-selectlistbox>
 `;
 
 const setup = async (args: SetupOptions) => {
@@ -88,11 +90,15 @@ test('mdc-select', async ({ componentsPage }) => {
       label: 'You are in a meeting',
       placeholder: 'Select an option',
     });
-    selectSheet.setChildren(`<mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
-      <mdc-option prefix-icon="apps-bold" selected>Add apps</mdc-option>
-      <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
-      <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
-      <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>`);
+    selectSheet.setChildren(`
+      <mdc-selectlistbox>
+        <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
+        <mdc-option prefix-icon="apps-bold" selected>Add apps</mdc-option>
+        <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
+        <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
+        <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
+      </mdc-selectlistbox>
+      `);
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
 
     await selectSheet.mountStickerSheet();
@@ -162,16 +168,16 @@ test('mdc-select', async ({ componentsPage }) => {
       await test.step('component should open and close dropdown when clicked', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
         await select.locator('div[id="select-base-triggerid"]').click();
-        await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
+        await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.locator('div[id="select-base-triggerid"]').click();
-        await expect(select.locator('mdc-popover[id="options-popover"]')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
       await test.step('component should open dropdown and select 2nd option', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
         await select.locator('div[id="select-base-triggerid"]').click();
-        await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
+        await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.locator('mdc-option').nth(1).click();
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
@@ -192,28 +198,28 @@ test('mdc-select', async ({ componentsPage }) => {
         const select = await setup({ componentsPage, children: defaultChildren() });
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ENTER);
-        await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
+        await expect(select.locator('mdc-popover')).toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.ENTER);
-        await expect(select.locator('mdc-popover[id="options-popover"]')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
-        await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
+        await expect(select.locator('mdc-popover')).toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
-        await expect(select.locator('mdc-popover[id="options-popover"]')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
       await test.step('component should open dropdown select an option and then close the dropdown', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ENTER);
-        await expect(select.locator('mdc-popover[id="options-popover"]')).toBeVisible();
+        await expect(select.locator('mdc-popover')).toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
-        await expect(select.locator('mdc-popover[id="options-popover"]')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
       await test.step('component should navigate in between options list', async () => {

@@ -77,7 +77,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
 
   /** @internal */
-  @queryAssignedElements() slotContents!: Array<HTMLElement>;
+  @queryAssignedElements({ selector: 'mdc-selectlistbox' }) slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
   @state() private baseIconName: ArrowIcon = ARROW_ICON.ARROW_DOWN;
@@ -94,38 +94,37 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /** @internal */
   @state() displayPopover = false;
 
-  /** @internal */
-  @state() activeDescendant = '';
-
   /**
    * @internal
    * The native select element
    */
   @query('select') override inputElement!: HTMLInputElement;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    // wrap the children of this with a div
-    const { childNodes } = this;
-
-    if (childNodes.length > 0) {
-      const wrapper = document.createElement('div');
-      wrapper.setAttribute('id', LISTBOX_ID);
-      wrapper.setAttribute('role', ROLE.LISTBOX);
-      wrapper.setAttribute('aria-label', this.dataAriaLabel || '');
-      wrapper.setAttribute('aria-labelledby', TRIGGER_ID);
-      wrapper.append(...childNodes);
-      this.appendChild(wrapper);
+  /**
+   * Modifies the listbox wrapper to ensure it has the correct attributes
+   * and IDs for accessibility.
+   *
+   * Once [ariaOwnsElements](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/ariaOwnsElements) is supported in browsers,
+   * this an be removed and mdc-option can be used directly in the select component with a listbox in a different
+   * shadow root and aria-owns attribute to connect them.
+   */
+  private modifyListBoxWrapper() {
+    const slottedListBox = this.slottedListboxes[0];
+    if (!slottedListBox) {
+      return;
     }
+    slottedListBox.setAttribute('id', LISTBOX_ID);
+    slottedListBox.setAttribute('aria-label', this.dataAriaLabel || '');
+    slottedListBox.setAttribute('aria-labelledby', TRIGGER_ID);
   }
 
   /**
-   * A helper function which returns a flattened array of all valid options from the assigned slot.
+   * A helper function which returns a flattened array of all valid options from within the slotted listbox.
    * It takes care of the edge cases where the option is either a direct child or a
    * child of an option group.
    */
   private getAllValidOptions() {
-    const optionsList = Array.from(this.slotContents[0]?.children || []);
+    const optionsList = Array.from(this.slottedListboxes[0]?.children || []);
     return (
       optionsList
         ?.map(option => {
@@ -411,10 +410,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
-  private resetActivedescendant(): void {
-    this.activeDescendant = '';
-  }
-
   private setFocusAndTabIndex(newIndex: number): void {
     const options = this.getAllValidOptions();
     const targetOption = options[newIndex] as HTMLElement;
@@ -426,29 +421,17 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         const newTabindex = newIndex === index ? '0' : '-1';
         node?.setAttribute('tabindex', newTabindex);
       });
-
-      // Update activeDescendant after changing focus
-      this.activeDescendant = targetOption.id ?? '';
     }
   }
 
   private openPopover(): void {
     this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
-
-    // Find the currently selected option or the first option
-    const options = this.getAllValidOptions();
-    const selectedOption = options.find(option => option.hasAttribute('selected'));
-    const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
-
-    // Set activeDescendant to the selected/focused option or first option
-    this.activeDescendant = (selectedOption || focusedOption || options[0])?.id ?? '';
   }
 
   private closePopover(): void {
     this.displayPopover = false;
     this.baseIconName = ARROW_ICON.ARROW_DOWN;
-    this.resetActivedescendant();
   }
 
   /**
@@ -456,7 +439,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * If an option is selected, use that as the value.
    * If not, use the placeholder if it exists, otherwise use the first option.
    */
-  public override firstUpdated() {
+  public override async firstUpdated() {
+    await this.updateComplete;
+    this.modifyListBoxWrapper();
+
     const options = this.getAllValidOptions();
     const selectedOptionIndex = options.findIndex(option => option?.hasAttribute('selected'));
 
@@ -485,6 +471,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       if (this.disabled || this.softDisabled || this.readonly) {
         this.closePopover();
       }
+    }
+
+    if (changedProperties.has('dataAriaLabel')) {
+      this.modifyListBoxWrapper();
     }
   }
 
@@ -521,7 +511,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           )}
         </select>
         <div
-          slot="anchor"
           id="${TRIGGER_ID}"
           part="base-container"
           @click="${this.handleClickCombobox}"
@@ -529,8 +518,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
-          aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
-          aria-controls="${ifDefined(this.displayPopover ? 'options-popover' : undefined)}"
+          aria-controls="${LISTBOX_ID}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
@@ -556,7 +544,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         </div>
         <mdc-popover
           trigger="manual"
-          id="options-popover"
           triggerid="${TRIGGER_ID}"
           @keydown="${this.handlePopoverOnOpen}"
           interactive

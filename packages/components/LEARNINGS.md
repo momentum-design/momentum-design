@@ -1,4 +1,6 @@
-# Screen Reader (VoiceOver) & Select Component: Shadow DOM Observations
+# Screen Reader
+
+## VoiceOver: Select Component & Shadow DOM Observations
 
 - When using the select component, VoiceOver on macOS reveals that:
   - The `combobox` role can locate its associated `listbox` even if they exist
@@ -8,7 +10,7 @@
   - Adding `aria-owns` does not resolve this, as it does not work across shadow
     root boundaries.
 
-## Implementation Update
+### Implementation Update
 
 To address this, the select component now considers all options provided through
 the default slot and wraps them inside a `listbox`. This wrapping is performed
