@@ -1,5 +1,8 @@
 /* eslint-disable import/order */
 // Components Imports
+import Accordion from './components/accordion';
+import Accordionbutton from './components/accordionbutton';
+import Accordiongroup from './components/accordiongroup';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
 import Appheader from './components/appheader';
@@ -30,6 +33,7 @@ import Link from './components/link';
 import LinkButton from './components/linkbutton';
 import Linksimple from './components/linksimple';
 import List from './components/list';
+import Listheader from './components/listheader';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
 import MenuBar from './components/menubar';
@@ -51,12 +55,16 @@ import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Select from './components/select';
+import SelectListbox from './components/selectlistbox';
 import SideNavigation from './components/sidenavigation';
 import Skeleton from './components/skeleton';
 import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
 import StaticToggle from './components/statictoggle';
+import Stepper from './components/stepper';
+import StepperConnector from './components/stepperconnector';
+import StepperItem from './components/stepperitem';
 import Tab from './components/tab';
 import TabList from './components/tablist';
 import Text from './components/text';
@@ -66,11 +74,6 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import Listheader from './components/listheader';
-import SelectListbox from './components/selectlistbox';
-import StepperItem from './components/stepperitem';
-import StepperConnector from './components/stepperconnector';
-import Stepper from './components/stepper';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -95,6 +98,9 @@ import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Components Exports
 export {
+  Accordion,
+  Accordiongroup,
+  Accordionbutton,
   AlertChip,
   Animation,
   Appheader,
