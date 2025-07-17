@@ -66,6 +66,9 @@ import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
+import Accordion from './components/accordion';
+import Accordiongroup from './components/accordiongroup';
+import Accordionbutton from './components/accordionbutton';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -155,6 +158,9 @@ export {
   Tooltip,
   VirtualizedList,
   Listheader,
+  Accordion,
+  Accordiongroup,
+  Accordionbutton,
 };
 
 // Types Exports
