@@ -1,12 +1,12 @@
-import Accordiongroup from './accordiongroup.component';
+import AccordionGroup from './accordiongroup.component';
 import { TAG_NAME } from './accordiongroup.constants';
 
-Accordiongroup.register(TAG_NAME);
+AccordionGroup.register(TAG_NAME);
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-accordiongroup']: Accordiongroup;
+    ['mdc-accordiongroup']: AccordionGroup;
   }
 }
 
-export default Accordiongroup;
+export default AccordionGroup;

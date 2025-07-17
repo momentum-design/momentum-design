@@ -1,6 +1,9 @@
-import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html } from 'lit';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 
+import { TAG_NAME as ACCORDION_TAGNAME } from '../accordion/accordion.constants';
+import { TAG_NAME as ACCORDIONBUTTON_TAGNAME } from '../accordionbutton/accordionbutton.constants';
 import { Component } from '../../models';
 
 import { DEFAULTS } from './accordiongroup.constants';
@@ -17,7 +20,7 @@ import { Size, Variant } from './accordiongroup.types';
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
-class Accordiongroup extends Component {
+class AccordionGroup extends Component {
   /**
    * The size of the accordion item.
    * @default 'small'
@@ -30,12 +33,45 @@ class Accordiongroup extends Component {
    */
   @property({ type: String, reflect: true }) variant: Variant = DEFAULTS.VARIANT;
 
+  /**
+   * If true, multiple accordion items can be expanded at the same time.
+   * @default false
+   * TODO: Make this work dude.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'allow-multiple' }) allowMultiple = false;
+
+  /** @internal */
+  @queryAssignedElements({ selector: ACCORDION_TAGNAME })
+  private accordionItems!: Array<HTMLElement>;
+
+  /** @internal */
+  @queryAssignedElements({ selector: ACCORDIONBUTTON_TAGNAME })
+  private accordionButtonItems!: Array<HTMLElement>;
+
+  private setChildrenAccordionAttributes(attributeName: string, attributeValue: string): void {
+    this.accordionItems.forEach(accordion => {
+      accordion.setAttribute(attributeName, attributeValue);
+    });
+    this.accordionButtonItems.forEach(accordion => {
+      accordion.setAttribute(attributeName, attributeValue);
+    });
+  }
+
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('size')) {
+      this.setChildrenAccordionAttributes('size', this.size);
+    }
+    if (changedProperties.has('variant')) {
+      this.setChildrenAccordionAttributes('variant', this.variant);
+    }
+  }
+
   public override render() {
-    return html`<p>This is a dummy accordiongroup component!</p>
-      <slot></slot>`;
+    return html` <slot></slot> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Accordiongroup;
+export default AccordionGroup;
