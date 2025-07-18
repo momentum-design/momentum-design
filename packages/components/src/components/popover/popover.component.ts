@@ -6,13 +6,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
-import { ValueOf } from '../../utils/types';
+import type { ValueOf } from '../../utils/types';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
+import type { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -456,6 +456,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
+    // If the role is changed to an empty string, set it to null
+    // to avoid setting an invalid role on the popover element.
+    if (changedProperties.has('role')) {
+      if (this.role === '') {
+        this.role = null;
+      }
+    }
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
@@ -535,6 +542,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -556,6 +564,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     event.preventDefault();
     this.hidePopover();
+    PopoverEventManager.onEscapeKeyPressed(this);
   };
 
   /**
