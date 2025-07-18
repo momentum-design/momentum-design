@@ -13,6 +13,7 @@ import '../icon';
 import '../menuitem';
 import '../listitem';
 import '../list';
+import { KEYS } from '../../utils/keys';
 
 const createPopover = (args: Args, content: TemplateResult = html``) => html`
   <mdc-menupopover
@@ -444,4 +445,61 @@ export const MenuInList: StoryObj = {
         <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
       </mdc-list>
       ${createPopover(args, defaultMenuContent)}`,
+};
+
+export const DynamicMenu: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: () => {
+    let counter = 1;
+
+    const stopEnterAndSpace = (event: any) =>
+      event.key === KEYS.ENTER || event.key === KEYS.SPACE ? event.stopPropagation() : undefined;
+
+    const addNewMenu = (event: any) => {
+      event.stopImmediatePropagation();
+
+      const withDelay = event.target?.getAttribute('name') === 'delay';
+      const parent = event.target?.closest('mdc-menupopover');
+
+      const menuItem = document.createElement('mdc-menuitem');
+      menuItem.setAttribute('label', `#${counter} Remove itself ${withDelay ? 'with delay' : ''}`);
+      menuItem.addEventListener('click', (e: any) => {
+        e.stopPropagation();
+        if (withDelay) {
+          setTimeout(() => e.target?.remove?.(), 500);
+        } else {
+          e.target?.remove?.();
+        }
+      });
+      menuItem.addEventListener('keydown', stopEnterAndSpace);
+
+      if (withDelay) {
+        setTimeout(() => parent?.append(menuItem), 500);
+      } else {
+        parent?.append(menuItem);
+      }
+      counter += 1;
+    };
+
+    return html`<mdc-button id="trigger-btn">Dynamic menu</mdc-button>
+      <mdc-menupopover triggerID="trigger-btn" placement="bottom-start">
+        <mdc-menuitem label="Add menu item..." name="instant" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+          <mdc-icon name="plus-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+        </mdc-menuitem>
+        <mdc-menuitem label="Add with delay..." name="delay" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+          <mdc-icon name="completed-by-time-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+        </mdc-menuitem>
+        <mdc-menuitem label="Nested" id="sub-trigger" arrow-position="trailing"> </mdc-menuitem>
+        <mdc-menupopover triggerID="sub-trigger" placement="right-start">
+          <mdc-menuitem label="Add menu item..." name="instant" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+            <mdc-icon name="plus-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitem>
+          <mdc-menuitem label="Add with delay..." name="delay" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+            <mdc-icon name="completed-by-time-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitem>
+          <mdc-divider></mdc-divider>
+        </mdc-menupopover>
+        <mdc-divider></mdc-divider>
+      </mdc-menupopover>`;
+  },
 };
