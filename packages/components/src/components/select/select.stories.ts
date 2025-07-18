@@ -15,7 +15,9 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="height: 20rem; width: 20rem;">${htmlString}</div>
+  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
+    ${htmlString}
+  </div>
 `;
 
 const render = (args: Args) =>
@@ -35,16 +37,20 @@ const render = (args: Args) =>
       toggletip-text="${args['toggletip-text']}"
       toggletip-placement="${args['toggletip-placement']}"
       info-icon-aria-label="${args['info-icon-aria-label']}"
+      placement="${args.placement}"
       name="${args.name}"
       placeholder="${args.placeholder}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       ?readonly="${args.readonly}"
     >
-      <mdc-option>London, UK</mdc-option>
-      <mdc-option>Los Angeles, CA</mdc-option>
-      <mdc-option>New York, NY</mdc-option>
-      <mdc-option>Phoenix, AZ</mdc-option>
-      <mdc-option>Seattle, WA</mdc-option>
+      <mdc-selectlistbox>
+        <mdc-option selected value="london">London, UK</mdc-option>
+        <mdc-option value="losangeles">Los Angeles, CA</mdc-option>
+        <mdc-option value="newyork">New York, NY</mdc-option>
+        <mdc-option value="phoenix">Phoenix, AZ</mdc-option>
+        <mdc-option value="seattle">Seattle, WA</mdc-option>
+      </mdc-selectlistbox>
     </mdc-select>
   `);
 
@@ -99,6 +105,13 @@ const meta: Meta = {
     height: {
       control: 'text',
     },
+    placement: {
+      control: 'select',
+      options: ['bottom-start', 'top-start'],
+    },
+    'soft-disabled': {
+      control: 'boolean',
+    },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
@@ -118,6 +131,7 @@ export const Example: StoryObj = {
     'help-text-type': '',
     'data-aria-label': 'Select label',
     height: 'auto',
+    placement: 'bottom-start',
   },
 };
 
@@ -125,23 +139,25 @@ export const SelectWithGroups: StoryObj = {
   render: () => html`
     <div style="height: 35rem;">
       <mdc-select label="Select an option from the list of groups" data-aria-label="Select an option">
-        <mdc-optgroup label="Fruit">
-          <mdc-option value="apple">Apples</mdc-option>
-          <mdc-option value="banana">Bananas</mdc-option>
-          <mdc-option value="cherry">Cherries</mdc-option>
-          <mdc-option value="damson">Damsons</mdc-option>
-        </mdc-optgroup>
-        <mdc-divider></mdc-divider>
-        <mdc-optgroup label="Vegetables">
-          <mdc-option value="artichoke">Artichokes</mdc-option>
-          <mdc-option value="broccoli">Broccoli</mdc-option>
-          <mdc-option value="cabbage">Cabbages</mdc-option>
-        </mdc-optgroup>
-        <mdc-divider></mdc-divider>
-        <mdc-optgroup label="Fish">
-          <mdc-option value="tuna">Tuna</mdc-option>
-          <mdc-option value="salmon">Salmon</mdc-option>
-        </mdc-optgroup>
+        <mdc-selectlistbox>
+          <mdc-optgroup label="Fruit">
+            <mdc-option value="apple">Apples</mdc-option>
+            <mdc-option value="banana">Bananas</mdc-option>
+            <mdc-option value="cherry">Cherries</mdc-option>
+            <mdc-option value="damson">Damsons</mdc-option>
+          </mdc-optgroup>
+          <mdc-divider></mdc-divider>
+          <mdc-optgroup label="Vegetables">
+            <mdc-option value="artichoke">Artichokes</mdc-option>
+            <mdc-option value="broccoli">Broccoli</mdc-option>
+            <mdc-option value="cabbage">Cabbages</mdc-option>
+          </mdc-optgroup>
+          <mdc-divider></mdc-divider>
+          <mdc-optgroup label="Fish">
+            <mdc-option value="tuna">Tuna</mdc-option>
+            <mdc-option value="salmon">Salmon</mdc-option>
+          </mdc-optgroup>
+        </mdc-selectlistbox>
       </mdc-select>
     </div>
   `,
@@ -152,15 +168,17 @@ export const SelectWithLongOptionText: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <mdc-select placeholder="Select a color" label="Select one color">
-        <mdc-option>Red</mdc-option>
-        <mdc-option>Yellow</mdc-option>
-        <mdc-option
-          toggletip-text="White and Black are the biggest colors on the spectrum"
-          toggletip-placement="bottom"
-        >
-          White and Black are the biggest colors on the spectrum
-        </mdc-option>
-        <mdc-option>Green</mdc-option>
+        <mdc-selectlistbox>
+          <mdc-option>Red</mdc-option>
+          <mdc-option>Yellow</mdc-option>
+          <mdc-option
+            toggletip-text="White and Black are the biggest colors on the spectrum"
+            toggletip-placement="bottom"
+          >
+            White and Black are the biggest colors on the spectrum
+          </mdc-option>
+          <mdc-option>Green</mdc-option>
+        </mdc-selectlistbox>
       </mdc-select>
     `),
   ...hideAllControls(),
@@ -170,11 +188,13 @@ export const SelectWithIconOptions: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <mdc-select placeholder="Select an option" label="You are in a meeting">
-        <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
-        <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
-        <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
-        <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
-        <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
+        <mdc-selectlistbox>
+          <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
+          <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
+          <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
+          <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
+          <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
+        </mdc-selectlistbox>
       </mdc-select>
     `),
   ...hideAllControls(),
@@ -189,7 +209,9 @@ export const SelectWithStates: StoryObj = {
         label="How many Infinity Stones exist?"
         required
       >
-        <mdc-option value="six" selected>Six</mdc-option>
+        <mdc-selectlistbox>
+          <mdc-option value="six" selected>Six</mdc-option>
+        </mdc-selectlistbox>
       </mdc-select>
       <mdc-select
         help-text="Selecting this number may cause a security risk because it is not properly setup."
@@ -197,7 +219,9 @@ export const SelectWithStates: StoryObj = {
         label="Select phone number"
         required
       >
-        <mdc-option selected value="456-198-0253">456-198-0253</mdc-option>
+        <mdc-selectlistbox>
+          <mdc-option selected value="456-198-0253">456-198-0253</mdc-option>
+        </mdc-selectlistbox>
       </mdc-select>
       <mdc-select
         help-text-type="${VALIDATION.ERROR}"
@@ -222,7 +246,9 @@ export const SelectWithFixedHeight = {
   render: (args: Args) =>
     wrapWithDiv(html`
       <mdc-select height="${args.height}" placeholder="${args.placeholder}" label="${args.label}">
-        ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
+        <mdc-selectlistbox>
+          ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
+        </mdc-selectlistbox>
       </mdc-select>
     `),
   argTypes: {
@@ -249,11 +275,13 @@ export const SelectWithForm: StoryObj = {
               label="How many Infinity Stones exist?"
               required
             >
-              <mdc-option value="two">Two</mdc-option>
-              <mdc-option value="three">Three</mdc-option>
-              <mdc-option value="four">Four</mdc-option>
-              <mdc-option value="five">Five</mdc-option>
-              <mdc-option value="six">Six</mdc-option>
+              <mdc-selectlistbox>
+                <mdc-option value="two">Two</mdc-option>
+                <mdc-option value="three">Three</mdc-option>
+                <mdc-option value="four">Four</mdc-option>
+                <mdc-option value="five">Five</mdc-option>
+                <mdc-option value="six">Six</mdc-option>
+              </mdc-selectlistbox>
             </mdc-select>
             <div style="display: flex; gap: 3rem; margin-top: 1rem;">
               <mdc-button type="submit" size="24">Submit</mdc-button>
@@ -263,6 +291,33 @@ export const SelectWithForm: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+  ...hideAllControls(),
+};
+
+export const SelectWithDynamicOptions: StoryObj = {
+  render: () => {
+    const options = Array.from({ length: 10 }, (_, i) => html`<mdc-option label="Option ${i + 1}"></mdc-option>`);
+    let extraOption: TemplateResult | null = null;
+
+    setTimeout(() => {
+      extraOption = html`<mdc-option label="Delayed Option"></mdc-option>`;
+      const select = document.querySelector('mdc-select[label="Select option"] mdc-selectlistbox');
+      if (select) {
+        const option = document.createElement('mdc-option');
+        option.setAttribute('label', 'Delayed Option');
+        select.appendChild(option);
+      }
+    }, 2000);
+
+    return wrapWithDiv(html`
+      <mdc-select placeholder="Select an option" label="Select option">
+        <mdc-selectlistbox> ${options} ${extraOption} </mdc-selectlistbox>
+      </mdc-select>
+    `);
+  },
+  argTypes: {
+    ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
   },
   ...hideAllControls(),
 };
