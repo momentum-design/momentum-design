@@ -10,7 +10,7 @@ import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradi
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { popoverStack } from '../popover/popover.stack';
-import { PopoverPlacement } from '../popover/popover.types';
+import type { PopoverPlacement } from '../popover/popover.types';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -87,6 +87,7 @@ class MenuPopover extends Popover {
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
     this.addEventListener('click', this.handleMouseClick);
+    this.addEventListener('created', this.handleItemCreation);
   }
 
   /** @internal */
@@ -134,6 +135,8 @@ class MenuPopover extends Popover {
       this.backdrop = !(this.triggerElement.tagName.toLowerCase() === MENUITEM_TAGNAME);
     }
 
+    this.resetMenuNavigation();
+
     return super.isOpenUpdated(oldValue, newValue);
   }
 
@@ -154,6 +157,7 @@ class MenuPopover extends Popover {
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[currentIndex].setAttribute('tabindex', '0');
+      this.menuItems[currentIndex].focus();
     }
   }
 
@@ -280,6 +284,41 @@ class MenuPopover extends Popover {
       this.closeMenu(target);
     }
   }
+
+  private handleItemCreation(event: Event) {
+    const item = event.target as HTMLElement;
+
+    if (isValidMenuItem(item)) {
+      // Parent menu popover should not listen on nested menu items
+      event.stopImmediatePropagation();
+      // `destroyed` triggered in the `disconnectedCallback` of the item which executed when the item is removed from the DOM
+      // because of that the event does not bubble up to menupopover, and we need to capture the `destroyed` event on the item itself
+      item.addEventListener('destroyed', this.handleItemChangeEvent);
+      // `disabled` could bubble up, but it is more consistent to handle it the same way as `destroyed`
+      item.addEventListener('disabled', this.handleItemChangeEvent);
+    }
+  }
+
+  private handleItemChangeEvent = (event: Event) => {
+    event.stopImmediatePropagation();
+
+    if (event.target && event.type === 'destroyed') {
+      event.target.removeEventListener('destroyed', this.handleItemChangeEvent);
+      event.target.removeEventListener('disabled', this.handleItemChangeEvent);
+    }
+
+    this.resetMenuNavigation();
+  };
+
+  private resetMenuNavigation = () => {
+    // Re-collect menu items to ensure the list is up-to-date
+    this.collectMenuItems();
+    // Reset tab indexes to ensure at least one menu item is focusable
+    const focusableMenuItem = this.menuItems.find(item => item.getAttribute('tabindex') === '0');
+    if (!focusableMenuItem) {
+      this.resetTabIndexes(0);
+    }
+  };
 
   /**
    * Resolves the key pressed by the user based on the direction of the layout.
