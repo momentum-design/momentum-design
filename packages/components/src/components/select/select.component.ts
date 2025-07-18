@@ -28,7 +28,7 @@ import type { ArrowIcon, Placement } from './select.types';
  *
  * To set a default option, use the `selected` attribute on the `mdc-option` element.
  *
- * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-select` to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
+ * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-select` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
