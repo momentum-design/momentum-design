@@ -9,6 +9,10 @@ export interface Events {
   onKeyDownEvent: KeyboardEvent;
   onKeyUpEvent: KeyboardEvent;
   onFocusEvent: FocusEvent;
+  onEnabledEvent: Event;
+  onDisabledEvent: Event;
+  onCreatedEvent: Event;
+  onDestroyedEvent: Event;
 }
 
 declare global {
