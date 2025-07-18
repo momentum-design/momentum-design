@@ -211,9 +211,11 @@ test('mdc-select', async ({ componentsPage }) => {
 
     await test.step('component should reflect selected value in querySelector and value attribute', async () => {
       const select = await setup({ componentsPage, children: defaultChildren(true) });
-      const selectedValue = await componentsPage.page.evaluate(
-        () => (document.querySelector('mdc-select') as HTMLSelectElement)?.value || '',
-      );
+      const selectedValue = await componentsPage.page.evaluate(() => {
+        const selectElement = document.querySelector('mdc-select');
+        // Access the value property safely
+        return selectElement ? selectElement.getAttribute('value') || '' : '';
+      });
 
       expect(selectedValue).toBe('option2');
       await expect(select).toHaveAttribute('value', 'option2');
