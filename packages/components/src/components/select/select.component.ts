@@ -2,6 +2,7 @@ import type { PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -26,6 +27,8 @@ import type { ArrowIcon, Placement } from './select.types';
  * including long text truncation with tooltip support.
  *
  * To set a default option, use the `selected` attribute on the `mdc-option` element.
+ *
+ * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-select` to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -211,10 +214,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       } else {
         this.inputElement.setCustomValidity('');
       }
-      this.setValidity();
-    } else {
-      this.internals.setValidity({});
     }
+    this.setValidity();
   }
 
   /**
@@ -227,6 +228,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.selectedIcon = null;
     this.internals.setFormValue(this.selectedValue);
     this.updateTabIndexForAllOptions();
+    this.requestUpdate();
   }
 
   /** @internal */
@@ -478,6 +480,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
+  private handleOnChange(): void {
+    this.selectedValue = this.inputElement.value;
+    this.internals.setFormValue(this.selectedValue);
+  }
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -489,11 +496,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-hidden="true"
           name="${this.name}"
           size="1"
-          .value="${this.selectedValue}"
+          .value="${live(this.selectedValue)}"
           ?autofocus="${this.autofocus}"
           ?disabled="${this.disabled}"
           ?required="${this.required}"
           aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+          @change="${this.handleOnChange}"
           @mousedown="${(event: MouseEvent) => event.preventDefault()}"
         >
           ${this.getAllValidOptions().map(
