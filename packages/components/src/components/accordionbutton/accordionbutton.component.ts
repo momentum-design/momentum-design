@@ -64,9 +64,9 @@ class AccordionButton extends DisabledMixin(Component) {
   private headSectionId = `head-section-${uuidv4()}`;
 
   /** @internal */
-  private bodySectionId = `body-section-${uuidv4()}`;
+  protected bodySectionId = `body-section-${uuidv4()}`;
 
-  private handleHeaderClick(): void {
+  protected handleHeaderClick(): void {
     this.expanded = !this.expanded;
     const event = new CustomEvent('header-click', {
       bubbles: true,
@@ -81,11 +81,11 @@ class AccordionButton extends DisabledMixin(Component) {
     }
   }
 
-  private renderIcon(iconName?: IconNames): TemplateResult | typeof nothing {
+  protected renderIcon(iconName?: IconNames): TemplateResult | typeof nothing {
     return iconName ? html`<mdc-icon name="${iconName}"></mdc-icon>` : nothing;
   }
 
-  private renderHeadingText(): TemplateResult | typeof nothing {
+  protected renderHeadingText(): TemplateResult | typeof nothing {
     return this.headerText
       ? html`<mdc-text id="${this.headSectionId}" type="${TYPE.BODY_LARGE_REGULAR}" tagname=${VALID_TEXT_TAGS.SPAN}
           >${this.headerText}</mdc-text
@@ -93,7 +93,7 @@ class AccordionButton extends DisabledMixin(Component) {
       : nothing;
   }
 
-  private renderHeader(): TemplateResult {
+  protected renderHeader(): TemplateResult {
     return html`
       <div
         part="header-section"
