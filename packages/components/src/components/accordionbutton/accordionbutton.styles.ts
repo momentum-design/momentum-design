@@ -71,17 +71,14 @@ const styles = css`
     align-items: center;
   }
 
-  :host([variant='stacked']),
-  :host([variant='contained']) {
+  :host([variant='stacked']) {
     border: 1px solid var(--mdc-accordionbutton-border-color);
     border-radius: 0.5rem;
   }
 
   :host([variant='stacked'])::part(header-section),
-  :host([variant='contained'])::part(header-section),
-  :host(:not([expanded])[variant='borderless'])::part(header-section) {
+  :host([variant='contained'])::part(header-section) {
     border-bottom: 1px solid var(--mdc-accordionbutton-border-color);
-    border-radius: 0.5rem 0.5rem 0 0;
   }
 
   :host([variant='borderless']) {

@@ -3,6 +3,10 @@ import '.';
 import { html } from 'lit';
 
 import '../accordionbutton';
+import '../accordion';
+import '../chip';
+import '../button';
+import '../avatarbutton';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
@@ -15,7 +19,17 @@ const render = (args: Args) =>
       >${defaultChildren}</mdc-accordionbutton
     >
     <mdc-accordionbutton header-text="Heading 2" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordionbutton header-text="Heading 3" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordionbutton header-text="Heading 4" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordion header-text="Heading 3" prefix-icon="placeholder-bold">
+      <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
+      <mdc-avatarbutton slot="leading-controls" icon-name="placeholder-bold"></mdc-avatarbutton>
+      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-button slot="trailing-controls">Control</mdc-button>
+      ${defaultChildren}
+    </mdc-accordion>
+    <mdc-accordionbutton header-text="Heading 4" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordion header-text="Heading 5" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordion>
   </mdc-accordiongroup>`;
 
 const meta: Meta = {
@@ -45,6 +59,6 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
-    variant: DEFAULTS.VARIANT,
+    variant: VARIANT.CONTAINED,
   },
 };
