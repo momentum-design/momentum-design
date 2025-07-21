@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -11,37 +11,61 @@ import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
 import type { StatusType, VariantType } from './stepperitem.types';
 
 /**
- * stepperitem component, which ...
+ * stepperitem component is used to represent a single step in a stepper component. It is used within a `mdc-stepper` component to indicate the current step in a process.
+ * It can have different statuses such as `completed`, `current`, `incomplete`, `error-current`, and `error-incomplete`.
+ * The component supports various visual styles and can be customized with labels, help text, and step numbers.
+ *
+ * This is an uncontrolled component, meaning it does not manage its own state. Instead, it relies on the consumer's to manage the state of each step.
+ * Make sure to set `aria-current="step"` on the current stepper item. It is applicable only when status is `current` or `error-current`. This ensures accessibility for the stepper component. Only one stepper item should have this attribute at a time.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
  * @tagname mdc-stepperitem
  *
- * @event focus - (React: onFocus) Triggered when the stepper item receives focus.
+ * @event click - (React: onclick) Triggered when the stepper item receives click.
  *
  * @cssproperty --mdc-stepperitem-status-container-background - The background color of the status container.
  * @cssproperty --mdc-stepperitem-label-color - The color of the label text.
- * @cssproperty --mdc-stepperitem-optional-label-color - The color of the optional label text.
+ * @cssproperty --mdc-stepperitem-help-text-color - The color of the optional label text.
  * @cssproperty --mdc-stepperitem-step-number-color - The color of the step number text.
  */
 class StepperItem extends TabIndexMixin(Component) {
+  /**
+   * The variant of the stepper item, which can be `inline` or `stacked`.
+   * @default 'inline'
+   */
   @property({ type: String, reflect: true })
   variant: VariantType = DEFAULT.VARIANT;
 
+  /**
+   * The status of the stepper item, which can be `completed`, `current`, `incomplete`, `error-current`, or `error-incomplete`.
+   * @default 'incomplete'
+   */
   @property({ type: String, reflect: true })
   status: StatusType = DEFAULT.STATUS;
 
   /**
-   * Additional informational text that appears below the primary label
-   * When status is "error", this property should contain the error message
+   * The label for the stepper item, which is displayed as the main text of the step.
+   * This label is typically used to describe the step or action that the step represents.
+   * @default ''
    */
-  @property({ type: String, reflect: true, attribute: 'optional-label' })
-  optionalLabel?: string;
-
   @property({ type: String, reflect: true })
   label: string = '';
 
+  /**
+   * Additional informational text that appears below the label
+   * This text is optional and can be used to provide more context or instructions for the step.
+   * @default ''
+   */
+  @property({ type: String, reflect: true, attribute: 'help-text' })
+  helpText?: string;
+
+  /**
+   * The step number for the stepper item, which is displayed as a numeric indicator of the step's position in the sequence.
+   * This is useful for indicating the order of steps in a process.
+   * @default ''
+   */
   @property({ type: String, reflect: true, attribute: 'step-number' })
   stepNumber?: string;
 
@@ -50,40 +74,22 @@ class StepperItem extends TabIndexMixin(Component) {
     this.role = ROLE.LISTITEM;
   }
 
-  constructor() {
-    super();
-    this.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        this.dispatchEvent(new FocusEvent('focus', { bubbles: true, composed: true }));
-      }
-    });
-  }
-
-  private updateStatus(status: StatusType) {
-    this.tabIndex = status === STATUS.ERROR_INCOMPLETE ? -1 : 0;
-    this.ariaDisabled = `${status === STATUS.ERROR_INCOMPLETE}`;
-    if (status === STATUS.CURRENT) {
-      this.setAttribute('aria-current', 'step');
-    } else {
-      this.removeAttribute('aria-current');
-    }
-  }
-
-  protected override updated(changedProperties: PropertyValueMap<StepperItem>): void {
-    super.updated(changedProperties);
-    if (changedProperties.has('status')) {
-      this.updateStatus(this.status);
-    }
-  }
-
+  /**
+   * Renders the status icon based on the current status of the stepper item.
+   * - If the status is `completed`, it renders a check icon.
+   * - If the status is `current` or `error-current`, it renders a pencil icon.
+   * - If the status is `not-started` or `error-incomplete`, it renders the step number.
+   * - If the status is anything else, it renders nothing.
+   * @returns A template literal that renders the status icon based on the current status of the stepper item.
+   */
   private renderStatusIcon() {
-    if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR_CURRENT) {
-      const iconName = this.status === STATUS.COMPLETED ? STATUS_ICON.COMPLETED : STATUS_ICON.ERROR;
-      return html`<mdc-icon part="status-icon" name=${iconName} length-unit="rem" size="1"></mdc-icon>`;
+    if (this.status === STATUS.COMPLETED) {
+      return html`<mdc-icon part="status-icon" name=${STATUS_ICON.COMPLETED} length-unit="rem" size="1"></mdc-icon>`;
     }
-
-    if (this.stepNumber) {
+    if (this.status === STATUS.ERROR_CURRENT || this.status === STATUS.CURRENT) {
+      return html`<mdc-icon part="status-icon" name=${STATUS_ICON.PENCIL} length-unit="rem" size="1"></mdc-icon>`;
+    }
+    if (this.stepNumber && (this.status === STATUS.NOT_STARTED || this.status === STATUS.ERROR_INCOMPLETE)) {
       return html`<mdc-text part="step-number" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
         >${this.stepNumber}</mdc-text
       >`;
@@ -92,14 +98,29 @@ class StepperItem extends TabIndexMixin(Component) {
     return nothing;
   }
 
-  private renderOptionalLabel() {
-    if (!this.optionalLabel) {
+  /**
+   * Renders the help text for the stepper item.
+   * If the `helpText` property is not set, it returns nothing.
+   * @returns A template literal that renders the help text for the stepper item.
+   */
+  private renderhelpText() {
+    if (!this.helpText) {
       return nothing;
     }
-    const content = this.status === STATUS.ERROR_CURRENT ? this.optionalLabel : `(${this.optionalLabel})`;
-    return html`<mdc-text part="optional-label" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
-      >${content}</mdc-text
+    const helpTextContent = html`<mdc-text
+      part="help-text"
+      tagname=${VALID_TEXT_TAGS.SPAN}
+      type=${TYPE.BODY_MIDSIZE_REGULAR}
+      >${this.helpText}</mdc-text
     >`;
+
+    if (this.status === STATUS.ERROR_INCOMPLETE || this.status === STATUS.ERROR_CURRENT) {
+      return html`<div part="help-text">
+        <mdc-icon part="help-icon" name=${STATUS_ICON.ERROR} length-unit="rem" size="1"></mdc-icon>
+        ${helpTextContent}
+      </div>`;
+    }
+    return helpTextContent;
   }
 
   public override render() {
@@ -110,7 +131,7 @@ class StepperItem extends TabIndexMixin(Component) {
               >${this.label}</mdc-text
             >`
           : nothing}
-        ${this.renderOptionalLabel()}
+        ${this.renderhelpText()}
       </div>`;
   }
 

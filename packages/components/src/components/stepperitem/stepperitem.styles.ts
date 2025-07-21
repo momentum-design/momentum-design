@@ -9,9 +9,9 @@ const styles = css`
     cursor: pointer;
 
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-normal);
-    --mdc-stepperitem-step-number-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-stepperitem-label-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-stepperitem-label-container-background: none;
   }
 
   :host([variant='stacked']) {
@@ -22,13 +22,20 @@ const styles = css`
   :host::part(label) {
     color: var(--mdc-stepperitem-label-color);
   }
-  :host::part(optional-label) {
-    color: var(--mdc-stepperitem-optional-label-color);
+  :host::part(help-text) {
+    color: var(--mdc-stepperitem-help-text-color);
   }
-  :host([status='error']) {
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-error-normal);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-error-normal);
+  :host([status='error-current']),
+  :host([status='error-incomplete']) {
+    --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-normal);
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-alert-error-normal);
+  }
+
+  :host([status='error-current'])::part(help-text),
+  :host([status='error-incomplete'])::part(help-text) {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   :host::part(status-container) {
@@ -38,81 +45,99 @@ const styles = css`
     width: 1.75rem;
     aspect-ratio: 1;
     border-radius: 50%;
+  }
+
+  :host([status='completed'])::part(status-container) {
     background-color: var(--mdc-stepperitem-status-container-background);
   }
-
-  :host([status='future-clickable']) {
-    --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-secondary-normal);
+  :host([status='completed'])::part(status-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
-
-  :host([status='future-disabled'])::part(status-container) {
-    --mdc-stepperitem-status-container-background: transparent;
+  :host([status='current'])::part(status-container) {
+    border: 1px solid var(--mds-color-theme-control-active-normal);
+  }
+  :host([status='error-current'])::part(status-container) {
+    border: 1px solid var(--mds-color-theme-outline-cancel-normal);
+  }
+  :host([status='error-incomplete'])::part(status-container),
+  :host([status='not-started'])::part(status-container) {
     border: 1px solid var(--mds-color-theme-outline-secondary-normal);
   }
 
-  :host::part(status-icon) {
-    --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
-  }
-  :host([status='error'])::part(status-icon) {
+  :host([status='error-current'])::part(help-icon),
+  :host([status='error-incomplete'])::part(help-icon) {
     --mdc-icon-fill-color: var(--mds-color-theme-text-error-normal);
   }
 
   :host::part(step-number) {
-    color: var(--mdc-stepperitem-step-number-color);
+    color: var(--mdc-stepperitem-label-color);
   }
 
-  :host([status='future-clickable']) {
-    --mdc-stepperitem-step-number-color: var(--mds-color-theme-text-primary-normal);
-  }
-  :host([status='future-disabled']) {
-    cursor: default;
-    --mdc-stepperitem-step-number-color: var(--mds-color-theme-text-secondary-normal);
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-secondary-normal);
+  :host::part(label-container) {
+    background-color: var(--mdc-stepperitem-label-container-background);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
   }
 
-  :host(:not([status='future-disabled']):hover)::part(label-container) {
-    text-decoration: underline;
-    text-decoration-color: var(--mdc-stepperitem-label-color);
+  :host(:hover) {
+    --mdc-stepperitem-label-container-background: var(--mds-color-theme-background-primary-hover);
+  }
+  :host(:active) {
+    --mdc-stepperitem-label-container-background: var(--mds-color-theme-background-primary-active);
   }
 
-  :host([status='completed']:hover),
-  :host([status='current']:hover) {
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-accent-hover);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-accent-hover);
+  :host([status='completed']:hover) {
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-hover);
   }
-
-  :host([status='error']:hover)::part(status-icon) {
-    --mdc-icon-fill-color: var(--mds-color-theme-text-error-hover);
-  }
-  :host([status='error']:hover) {
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-error-hover);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-error-hover);
-    --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-alert-error-hover);
-  }
-
-  :host([status='future-clickable']:hover) {
-    --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-secondary-hover);
-  }
-
-  :host([status='completed']:active),
-  :host([status='current']:active) {
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-accent-active);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-accent-active);
+  :host([status='completed']:active) {
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-active);
   }
 
-  :host([status='error']:hover)::part(status-icon) {
-    --mdc-icon-fill-color: var(--mds-color-theme-text-error-active);
+  :host([status='current']:hover)::part(status-container) {
+    background-color: var(--mds-color-theme-outline-secondary-normal);
+    border-color: var(--mds-color-theme-control-active-hover);
   }
-  :host([status='error']:active) {
-    --mdc-stepperitem-label-color: var(--mds-color-theme-text-error-active);
-    --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-error-active);
-    --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-alert-error-active);
+  :host([status='current']:active)::part(status-container) {
+    background-color: var(--mds-color-theme-background-secondary-active);
+    border-color: var(--mds-color-theme-control-active-hover);
   }
 
-  :host([status='future-clickable']:active) {
-    --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-secondary-active);
+  :host([status='not-started']:hover)::part(status-container),
+  :host([status='error-incomplete']:hover)::part(status-container) {
+    background-color: var(--mds-color-theme-background-secondary-hover);
+    border-color: var(--mds-color-theme-outline-secondary-normal);
+  }
+  :host([status='not-started']:active)::part(status-container),
+  :host([status='error-incomplete']:active)::part(status-container) {
+    background-color: var(--mds-color-theme-background-secondary-active);
+    border-color: var(--mds-color-theme-outline-secondary-normal);
+  }
+
+  :host([status='error-current']:hover)::part(status-container) {
+    background-color: var(--mds-color-theme-background-secondary-hover);
+    border-color: var(--mds-color-theme-outline-cancel-normal);
+  }
+  :host([status='error-current']:active)::part(status-container) {
+    background-color: var(--mds-color-theme-background-secondary-active);
+    border-color: var(--mds-color-theme-outline-cancel-normal);
+  }
+
+  :host([status='error-current']:hover)::part(help-icon),
+  :host([status='error-incomplete']:hover)::part(help-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-text-error-hover);
+  }
+  :host([status='error-current']:hover),
+  :host([status='error-incomplete']:hover) {
+    --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-hover);
+  }
+  :host([status='error-current']:hover)::part(help-icon),
+  :host([status='error-incomplete']:hover)::part(help-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-text-error-active);
+  }
+
+  :host([status='error-current']:active),
+  :host([status='error-incomplete']:active) {
+    --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-active);
   }
 `;
 

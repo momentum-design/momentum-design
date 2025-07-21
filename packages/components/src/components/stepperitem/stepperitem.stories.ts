@@ -12,9 +12,9 @@ const render = (args: Args) =>
     @focus=${action('onFocus')}
     variant=${args.variant}
     status=${args.status}
-    optional-label=${args['optional-label']}
+    help-text=${args['help-text']}
     label=${args.label}
-    step-number=${args.stepNumber}
+    step-number=${args['step-number']}
     class=${args.class}
     style=${args.style}
   ></mdc-stepperitem>`;
@@ -36,7 +36,7 @@ const meta: Meta = {
       control: { type: 'select' },
       options: Object.values(STATUS),
     },
-    'optional-label': {
+    'help-text': {
       control: { type: 'text' },
     },
     label: {
@@ -56,9 +56,9 @@ export const Example: StoryObj = {
   args: {
     variant: VARIANT.INLINE,
     status: STATUS.COMPLETED,
-    'optional-label': 'Optional',
+    'help-text': 'Help text',
     label: 'Label',
-    stepNumber: '1',
+    'step-number': '1',
   },
 };
 
@@ -67,7 +67,7 @@ export const Inline: StoryObj = {
     variant: VARIANT.INLINE,
     status: STATUS.CURRENT,
     label: 'Label',
-    stepNumber: '1',
+    'step-number': '1',
   },
 };
 
@@ -76,7 +76,7 @@ export const Stacked: StoryObj = {
     variant: VARIANT.STACKED,
     status: STATUS.CURRENT,
     label: 'Label',
-    stepNumber: '1',
+    'step-number': '1',
   },
 };
 
@@ -84,8 +84,8 @@ export const Error: StoryObj = {
   args: {
     variant: VARIANT.INLINE,
     status: STATUS.ERROR_CURRENT,
-    'optional-label': 'Error message',
+    'help-text': 'Error message',
     label: 'Label',
-    stepNumber: '1',
+    'step-number': '1',
   },
 };

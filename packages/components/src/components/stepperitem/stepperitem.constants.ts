@@ -18,7 +18,7 @@ const STATUS = {
 
 const STATUS_ICON = {
   COMPLETED: 'check-bold' as Extract<IconNames, 'check-bold'>,
-  ERROR: 'error-legacy-filled' as Extract<IconNames, 'error-legacy-filled'>,
+  ERROR: 'error-legacy-badge-filled' as Extract<IconNames, 'error-legacy-badge-filled'>,
   PENCIL: 'edit-bold' as Extract<IconNames, 'edit-bold'>,
 } as const;
 
