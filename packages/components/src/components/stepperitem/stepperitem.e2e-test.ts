@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { test } from '../../../config/playwright/setup';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { VARIANT } from './stepperitem.constants';
 
 type SetupOptions = {
-  componentsPage: any;
+  componentsPage: ComponentsPage;
   'label-text'?: string;
   status?: string;
   'helper-text'?: string;

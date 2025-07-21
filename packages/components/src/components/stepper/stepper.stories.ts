@@ -7,7 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html` <mdc-stepper args.property="${args.property}"></mdc-stepper>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepper',
+  title: 'Work In Progress/stepper/stepper',
   tags: ['autodocs'],
   component: 'mdc-stepper',
   render,

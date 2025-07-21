@@ -69,6 +69,7 @@ import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
 import Stepper from './components/stepper';
 import Stepperitem from './components/stepperitem';
+import Connector from './components/connector';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -161,6 +162,7 @@ export {
   VirtualizedList,
   Listheader,
   SelectListbox,
+  Connector,
 };
 
 // Types Exports

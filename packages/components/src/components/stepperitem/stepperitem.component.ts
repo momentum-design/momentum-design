@@ -8,7 +8,7 @@ import { ROLE } from '../../utils/roles';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
-import { StatusType, VariantType } from './stepperitem.types';
+import type { StatusType, VariantType } from './stepperitem.types';
 
 /**
  * stepperitem component, which ...
@@ -61,8 +61,8 @@ class StepperItem extends TabIndexMixin(Component) {
   }
 
   private updateStatus(status: StatusType) {
-    this.tabIndex = status === STATUS.FUTURE_DISABLED ? -1 : 0;
-    this.ariaDisabled = `${status === STATUS.FUTURE_DISABLED}`;
+    this.tabIndex = status === STATUS.ERROR_INCOMPLETE ? -1 : 0;
+    this.ariaDisabled = `${status === STATUS.ERROR_INCOMPLETE}`;
     if (status === STATUS.CURRENT) {
       this.setAttribute('aria-current', 'step');
     } else {
@@ -78,7 +78,7 @@ class StepperItem extends TabIndexMixin(Component) {
   }
 
   private renderStatusIcon() {
-    if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR) {
+    if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR_CURRENT) {
       const iconName = this.status === STATUS.COMPLETED ? STATUS_ICON.COMPLETED : STATUS_ICON.ERROR;
       return html`<mdc-icon part="status-icon" name=${iconName} length-unit="rem" size="1"></mdc-icon>`;
     }
@@ -96,7 +96,7 @@ class StepperItem extends TabIndexMixin(Component) {
     if (!this.optionalLabel) {
       return nothing;
     }
-    const content = this.status === STATUS.ERROR ? this.optionalLabel : `(${this.optionalLabel})`;
+    const content = this.status === STATUS.ERROR_CURRENT ? this.optionalLabel : `(${this.optionalLabel})`;
     return html`<mdc-text part="optional-label" tagname=${VALID_TEXT_TAGS.SPAN} type=${TYPE.BODY_MIDSIZE_REGULAR}
       >${content}</mdc-text
     >`;

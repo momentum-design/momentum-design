@@ -20,7 +20,7 @@ const render = (args: Args) =>
   ></mdc-stepperitem>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepperitem',
+  title: 'Work In Progress/stepper/stepperitem',
   tags: ['autodocs'],
   component: 'mdc-stepperitem',
   render,
@@ -83,17 +83,9 @@ export const Stacked: StoryObj = {
 export const Error: StoryObj = {
   args: {
     variant: VARIANT.INLINE,
-    status: STATUS.ERROR,
+    status: STATUS.ERROR_CURRENT,
     'optional-label': 'Error message',
     label: 'Label',
     stepNumber: '1',
   },
-};
-
-export const Test: StoryObj = {
-  render: () => html`
-    <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-    <mdc-stepperitem label="Step 2" status="future-disabled" step-number="2"></mdc-stepperitem>
-    <mdc-stepperitem label="Step 3" status="error" optional-label="Error"></mdc-stepperitem>
-  `,
 };
