@@ -1,4 +1,5 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
 import '.';
 import { html } from 'lit';
 import '../button';
@@ -17,6 +18,7 @@ const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit
 
 const render = (args: Args) =>
   html` <mdc-accordionbutton
+    @onexpanded=${action('onexpanded')}
     ?disabled=${args.disabled}
     ?expanded=${args.expanded}
     data-aria-level="${args['data-aria-level']}"

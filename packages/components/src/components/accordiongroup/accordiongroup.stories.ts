@@ -14,7 +14,7 @@ import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 const defaultChildren = `Loreum impusm sit amet, consectetur adipiscing elit.`;
 
 const render = (args: Args) =>
-  html` <mdc-accordiongroup size="${args.size}" variant="${args.variant}">
+  html` <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
     <mdc-accordionbutton header-text="Heading 1" prefix-icon="placeholder-bold" expanded
       >${defaultChildren}</mdc-accordionbutton
     >
@@ -44,6 +44,9 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
+    'allow-multiple': {
+      control: 'boolean',
+    },
     size: {
       control: 'select',
       options: Object.values(SIZE),
@@ -61,5 +64,6 @@ export const Example: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
     variant: VARIANT.CONTAINED,
+    'allow-multiple': false,
   },
 };

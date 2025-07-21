@@ -1,4 +1,5 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
 import '.';
 import { html } from 'lit';
 import '../checkbox';
@@ -26,6 +27,7 @@ const defaultChildren = html`
 
 const render = (args: Args) =>
   html` <mdc-accordion
+    @onexpanded=${action('onexpanded')}
     ?disabled=${args.disabled}
     ?expanded=${args.expanded}
     data-aria-level="${args['data-aria-level']}"
