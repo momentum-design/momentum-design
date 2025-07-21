@@ -36,7 +36,6 @@ class AccordionGroup extends Component {
   /**
    * If true, multiple accordion items can be expanded at the same time.
    * @default false
-   * TODO: Make this work dude.
    */
   @property({ type: Boolean, reflect: true, attribute: 'allow-multiple' }) allowMultiple = false;
 
@@ -47,6 +46,20 @@ class AccordionGroup extends Component {
   /** @internal */
   @queryAssignedElements({ selector: ACCORDIONBUTTON_TAGNAME })
   private accordionButtonItems!: Array<HTMLElement>;
+
+  constructor() {
+    super();
+    this.addEventListener('onexpanded', this.handleAccordionExpanded);
+  }
+
+  private handleAccordionExpanded(event: Event): void {
+    if (this.allowMultiple) return;
+    [...this.accordionItems, ...this.accordionButtonItems].forEach(accordionItem => {
+      if (accordionItem !== event.target && accordionItem.hasAttribute('expanded')) {
+        accordionItem.toggleAttribute('expanded');
+      }
+    });
+  }
 
   private setChildrenAccordionAttributes(attributeName: string, attributeValue: string): void {
     this.accordionItems.forEach(accordion => {

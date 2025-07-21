@@ -68,9 +68,16 @@ class AccordionButton extends DisabledMixin(Component) {
 
   protected handleHeaderClick(): void {
     this.expanded = !this.expanded;
-    const event = new CustomEvent('header-click', {
+    this.dispatchHeaderClickEvent();
+  }
+
+  private dispatchHeaderClickEvent(): void {
+    const event = new CustomEvent('onexpanded', {
       bubbles: true,
       cancelable: true,
+      detail: {
+        expanded: this.expanded,
+      },
     });
     this.dispatchEvent(event);
   }
