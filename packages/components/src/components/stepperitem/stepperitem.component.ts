@@ -26,9 +26,10 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @event click - (React: onclick) Triggered when the stepper item receives click.
  *
  * @cssproperty --mdc-stepperitem-status-container-background - The background color of the status container.
+ * @cssproperty --mdc-stepperitem-status-container-border-color - The border color of the status container.
  * @cssproperty --mdc-stepperitem-label-color - The color of the label text.
  * @cssproperty --mdc-stepperitem-help-text-color - The color of the optional label text.
- * @cssproperty --mdc-stepperitem-step-number-color - The color of the step number text.
+ * @cssproperty --mdc-stepperitem-label-container-background - The background color of the label container.
  */
 class StepperItem extends TabIndexMixin(Component) {
   /**
