@@ -4,7 +4,10 @@ import { html } from 'lit';
 import '../button';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { VARIANT, SIZE } from '../accordiongroup/accordiongroup.constants';
+import { SIZE } from '../accordiongroup/accordiongroup.constants';
+import { hideAllControls } from '../../../config/storybook/utils';
+
+import { VARIANT } from './accordionbutton.constants';
 
 const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
   labore et dolore magna aliqua. Ut enim ad minim veniam, <mdc-button>Control Button</mdc-button> quis nostrud
@@ -72,6 +75,45 @@ export const Example: StoryObj = {
     disabled: false,
     size: SIZE.SMALL,
     expanded: true,
-    variant: VARIANT.BORDERLESS,
+    variant: VARIANT.DEFAULT,
   },
+};
+
+export const AllVariants: StoryObj = {
+  render: () => html`
+    <div style="width: 30rem;">
+      <mdc-accordionbutton
+        variant="${VARIANT.DEFAULT}"
+        header-text="Accordion Default Heading"
+        prefix-icon="placeholder-regular"
+        expanded
+      >
+        ${defaultChildren}
+      </mdc-accordionbutton>
+      <br /><br /><br />
+      <mdc-accordionbutton header-text="Accordion Default Heading" prefix-icon="placeholder-regular">
+        ${defaultChildren}
+      </mdc-accordionbutton>
+    </div>
+    <br /><br /><br /><br /><br />
+    <div style="width: 30rem;">
+      <mdc-accordionbutton
+        variant="${VARIANT.BORDERLESS}"
+        header-text="Accordion Borderless Heading"
+        prefix-icon="placeholder-regular"
+        expanded
+      >
+        ${defaultChildren}
+      </mdc-accordionbutton>
+      <br /><br /><br />
+      <mdc-accordionbutton
+        variant="${VARIANT.BORDERLESS}"
+        header-text="Accordion Borderless Heading"
+        prefix-icon="placeholder-regular"
+      >
+        ${defaultChildren}
+      </mdc-accordionbutton>
+    </div>
+  `,
+  ...hideAllControls(),
 };

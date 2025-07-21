@@ -30,6 +30,7 @@ const render = (args: Args) =>
     </mdc-accordion>
     <mdc-accordionbutton header-text="Heading 4" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
     <mdc-accordion header-text="Heading 5" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordion>
+    <mdc-accordionbutton header-text="Heading 6" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
   </mdc-accordiongroup>`;
 
 const meta: Meta = {

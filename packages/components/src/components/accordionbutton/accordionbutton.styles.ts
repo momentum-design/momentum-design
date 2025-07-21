@@ -32,7 +32,7 @@ const styles = css`
     width: 100%;
   }
 
-  :host([expanded])::part(header-section) {
+  :host([variant='default'][expanded])::part(header-section) {
     border-radius: 0.5rem 0.5rem 0 0;
   }
 
@@ -71,14 +71,26 @@ const styles = css`
     align-items: center;
   }
 
-  :host([variant='stacked']) {
+  :host([variant='default']) {
     border: 1px solid var(--mdc-accordionbutton-border-color);
     border-radius: 0.5rem;
   }
 
-  :host([variant='stacked'])::part(header-section),
-  :host([variant='contained'])::part(header-section) {
+  :host([expanded])::part(header-section) {
     border-bottom: 1px solid var(--mdc-accordionbutton-border-color);
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  :host(:is([variant='default'], [variant='stacked']):not([expanded]))::part(header-section) {
+    border-radius: 0.5rem;
+  }
+
+  :host([variant='contained'])::part(header-section) {
+    border-radius: 0;
+  }
+
+  :host([variant='default'])::part(header-section) {
+    border-radius: 0.5rem;
   }
 
   :host([variant='borderless']) {
@@ -87,16 +99,15 @@ const styles = css`
   }
 
   :host([variant='borderless'])::part(header-section) {
+    border-radius: 0;
+  }
+
+  :host([variant='borderless']:not([expanded]))::part(header-section) {
     border-bottom: 1px solid var(--mdc-accordionbutton-border-color);
     border-radius: 0;
   }
 
-  :host(:not([expanded])[variant='borderless'])::part(header-section) {
-    border-radius: 0;
-  }
-
-  :host(:not([expanded]))::part(header-section) {
-    border-radius: 0.5rem;
+  :host([variant='default']:not([expanded]))::part(header-section) {
     border-bottom: none;
   }
 `;
