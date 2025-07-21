@@ -1,5 +1,7 @@
-// import type { ValueOf } from '../../utils/types';
+import type { ValueOf } from '../../utils/types';
 
-// interface Events {}
+import { VARIANT } from './accordionbutton.constants';
 
-// export type { Events };
+type Variant = ValueOf<typeof VARIANT>;
+
+export type { Variant };

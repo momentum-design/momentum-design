@@ -9,7 +9,20 @@ import '../toggle';
 import '../badge';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { SIZE, VARIANT } from '../accordiongroup/accordiongroup.constants';
+import { SIZE } from '../accordiongroup/accordiongroup.constants';
+import { VARIANT } from '../accordionbutton/accordionbutton.constants';
+import { hideAllControls } from '../../../config/storybook/utils';
+
+const defaultChildren = html`
+  <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
+  <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
+  <mdc-icon slot="leading-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
+  <mdc-icon slot="trailing-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
+  <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+  <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+  <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+  Default children is good
+`;
 
 const render = (args: Args) =>
   html` <mdc-accordion
@@ -21,14 +34,7 @@ const render = (args: Args) =>
     size="${args.size}"
     variant="${args.variant}"
   >
-    <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
-    <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
-    <mdc-icon slot="leading-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
-    <mdc-icon slot="trailing-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
-    <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
-    <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
-    <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    Default children is good
+    ${defaultChildren}
   </mdc-accordion>`;
 
 const meta: Meta = {
@@ -80,4 +86,40 @@ export const Example: StoryObj = {
     expanded: true,
     variant: VARIANT.BORDERLESS,
   },
+};
+
+export const AllVariants: StoryObj = {
+  render: () => html`
+    <div style="width: 60rem;">
+      <mdc-accordion
+        variant="${VARIANT.DEFAULT}"
+        header-text="Accordion Default Heading"
+        prefix-icon="placeholder-regular"
+        expanded
+        >${defaultChildren}</mdc-accordion
+      >
+      <br /><br /><br />
+      <mdc-accordion header-text="Accordion Default Heading" prefix-icon="placeholder-regular"
+        >${defaultChildren}</mdc-accordion
+      >
+    </div>
+    <br /><br /><br /><br /><br />
+    <div style="width: 60rem;">
+      <mdc-accordion
+        variant="${VARIANT.BORDERLESS}"
+        header-text="Accordion Borderless Heading"
+        prefix-icon="placeholder-regular"
+        expanded
+        >${defaultChildren}</mdc-accordion
+      >
+      <br /><br /><br />
+      <mdc-accordion
+        variant="${VARIANT.BORDERLESS}"
+        header-text="Accordion Borderless Heading"
+        prefix-icon="placeholder-regular"
+        >${defaultChildren}</mdc-accordion
+      >
+    </div>
+  `,
+  ...hideAllControls(),
 };

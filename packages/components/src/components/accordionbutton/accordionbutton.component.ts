@@ -7,16 +7,16 @@ import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
-import { Size, Variant } from '../accordiongroup/accordiongroup.types';
-import { IconNames } from '../icon/icon.types';
+import type { Size } from '../accordiongroup/accordiongroup.types';
+import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
+import type { Variant } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
 /**
  * accordionbutton component, which ...
- *
  * @tagname mdc-accordionbutton
  *
  * @slot default - This is a default/unnamed slot
@@ -34,7 +34,7 @@ class AccordionButton extends DisabledMixin(Component) {
 
   /**
    * The variant of the accordion item. Based on the variant, the styling of the accordion gets changed.
-   * @default 'stacked'
+   * @default 'default'
    */
   @property({ type: String, reflect: true }) variant: Variant = DEFAULTS.VARIANT;
 
