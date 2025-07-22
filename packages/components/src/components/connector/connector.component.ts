@@ -25,11 +25,13 @@ import type { OrientationType, StatusType } from './connector.types';
 class Connector extends Component {
   /**
    * The status of the connector (complete or incomplete)
+   * @default "incomplete"
    */
   @property({ type: String, reflect: true }) status: StatusType = DEFAULTS.STATUS;
 
   /**
    * The orientation of the connector (vertical or horizontal)
+   * @default "horizontal"
    */
   @property({ type: String, reflect: true }) orientation: OrientationType = DEFAULTS.ORIENTATION;
 
