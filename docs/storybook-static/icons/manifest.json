@@ -600,6 +600,7 @@
   "check-light": "./svg/check-light.svg",
   "check-regular": "./svg/check-regular.svg",
   "checkbox-group-bold": "./svg/checkbox-group-bold.svg",
+  "checkbox-group-filled": "./svg/checkbox-group-filled.svg",
   "checkbox-group-light": "./svg/checkbox-group-light.svg",
   "checkbox-group-regular": "./svg/checkbox-group-regular.svg",
   "clean-up-bold": "./svg/clean-up-bold.svg",
