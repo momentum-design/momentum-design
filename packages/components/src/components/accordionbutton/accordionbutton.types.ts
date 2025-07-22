@@ -4,4 +4,8 @@ import { VARIANT } from './accordionbutton.constants';
 
 type Variant = ValueOf<typeof VARIANT>;
 
-export type { Variant };
+interface Events {
+  onShownEvent: Event;
+}
+
+export type { Variant, Events };

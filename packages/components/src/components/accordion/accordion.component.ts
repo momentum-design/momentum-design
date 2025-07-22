@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 
 import { ROLE } from '../../utils/roles';
@@ -13,10 +13,18 @@ import styles from './accordion.styles';
  *
  * @tagname mdc-accordion
  *
- * @slot default - This is a default/unnamed slot
+ * @slot leading-controls - The leading controls slot of the accordion on the header section.
+ * @slot trailing-controls - The trailing controls slot of the accordion on the header section.
+ * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
  *
+ * @event shown - (React: onShown) This event is triggered when the accordion is expanded.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion button.
+ *
+ * @csspart header-section - The header section of the accordion button.
+ * @csspart leading-header - The leading header of the accordion button.
+ * @csspart trailing-header - The trailing header of the accordion button.
+ * @csspart body-section - The body section of the accordion button.
  */
 class Accordion extends AccordionButton {
   /** @internal */
@@ -26,6 +34,20 @@ class Accordion extends AccordionButton {
   /** @internal */
   @queryAssignedElements({ slot: 'trailing-controls' })
   trailingControlsSlot!: Array<HTMLElement>;
+
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
+        if (this.disabled) {
+          element.setAttribute('disabled', '');
+        } else {
+          element.removeAttribute('disabled');
+        }
+      });
+    }
+  }
 
   public override renderHeader() {
     return html`
@@ -38,6 +60,7 @@ class Accordion extends AccordionButton {
         <div part="trailing-header">
           <slot name="trailing-controls"></slot>
           <mdc-button
+            ?disabled="${this.disabled}"
             @click="${this.handleHeaderClick}"
             aria-controls="${this.bodySectionId}"
             aria-expanded="${this.expanded}"

@@ -17,13 +17,23 @@ import styles from './accordionbutton.styles';
 
 /**
  * accordionbutton component, which ...
+ *
  * @tagname mdc-accordionbutton
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
+ * @event shown - (React: onShown) This event is triggered when the accordion button is expanded.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion button.
+ * @cssproperty --mdc-accordionbutton-hover-color - The hover color of the accordion button.
+ * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion button.
+ * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion button.
+ *
+ * @csspart header-section - The header section of the accordion button.
+ * @csspart header-button-section - The header button section of the accordion button.
+ * @csspart leading-header - The leading header of the accordion button.
+ * @csspart trailing-header - The trailing header of the accordion button.
+ * @csspart body-section - The body section of the accordion button.
  */
 class AccordionButton extends DisabledMixin(Component) {
   /**
@@ -73,7 +83,7 @@ class AccordionButton extends DisabledMixin(Component) {
   }
 
   private dispatchHeaderClickEvent(): void {
-    const event = new CustomEvent('onexpanded', {
+    const event = new CustomEvent('shown', {
       bubbles: true,
       cancelable: true,
       detail: {

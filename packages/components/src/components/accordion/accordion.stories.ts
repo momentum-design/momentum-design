@@ -10,7 +10,7 @@ import '../badge';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import { VARIANT, defaultChildren as defaultBodyContent } from '../accordionbutton/accordionbutton.constants';
-import { hideAllControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 
 const defaultChildren = html`
   <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
@@ -23,7 +23,7 @@ const defaultChildren = html`
 
 const render = (args: Args) =>
   html` <mdc-accordion
-    @onexpanded=${action('onexpanded')}
+    @shown=${action('onshown')}
     ?disabled=${args.disabled}
     ?expanded=${args.expanded}
     data-aria-level="${args['data-aria-level']}"
@@ -69,6 +69,13 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
+    ...disableControls([
+      'leading-controls',
+      'trailing-controls',
+      'default',
+      'shown',
+      '--mdc-accordionbutton-border-color',
+    ]),
   },
 };
 
