@@ -62,10 +62,10 @@ class AccordionGroup extends Component {
   }
 
   private setChildrenAccordionAttributes(attributeName: string, attributeValue: string): void {
-    this.accordionItems.forEach(accordion => {
+    [...this.accordionItems].forEach(accordion => {
       accordion.setAttribute(attributeName, attributeValue);
     });
-    this.accordionButtonItems.forEach(accordion => {
+    [...this.accordionButtonItems].forEach(accordion => {
       accordion.setAttribute(attributeName, attributeValue);
     });
   }
@@ -73,9 +73,11 @@ class AccordionGroup extends Component {
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
     if (changedProperties.has('size')) {
+      if (!this.size) this.size = DEFAULTS.SIZE;
       this.setChildrenAccordionAttributes('size', this.size);
     }
     if (changedProperties.has('variant')) {
+      if (!this.variant) this.variant = DEFAULTS.VARIANT;
       this.setChildrenAccordionAttributes('variant', this.variant);
     }
   }
