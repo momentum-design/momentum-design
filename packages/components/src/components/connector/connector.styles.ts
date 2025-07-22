@@ -2,25 +2,23 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-connector-complete-bg: var(--mds-color-theme-outline-theme-normal);
-    --mdc-connector-incomplete-bg: var(--mds-color-theme-outline-primary-normal);
+    --mdc-connector-complete-background: var(--mds-color-theme-outline-theme-normal);
+    --mdc-connector-incomplete-background: var(--mds-color-theme-outline-primary-normal);
     display: block;
+    width: 100%;
+    height: 100%;
   }
   :host::part(connector) {
-    width: 220px;
-    height: 1px;
-    background: var(--mdc-connector-incomplete-bg);
+    width: 100%;
+    height: 0.625rem;
+    background: var(--mdc-connector-incomplete-background);
   }
   :host([status='complete'])::part(connector) {
-    background: var(--mdc-connector-complete-bg);
+    background: var(--mdc-connector-complete-background);
   }
   :host([orientation='vertical'])::part(connector) {
-    width: 1px;
-    height: 220px;
-  }
-  :host([orientation='horizontal'])::part(connector) {
-    width: 220px;
-    height: 1px;
+    width: 0.625rem;
+    height: 100%;
   }
 `;
 

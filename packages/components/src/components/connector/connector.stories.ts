@@ -5,12 +5,14 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-  <mdc-connector
-    status="${args.status}"
-    orientation="${args.orientation}"
-    style="${args.style}"
-    class="${args.class}"
-  ></mdc-connector>
+  <div style="width: 200px; height: 200px; display: flex; align-items: center;">
+    <mdc-connector
+      status="${args.status}"
+      orientation="${args.orientation}"
+      style="${args.style}"
+      class="${args.class}"
+    ></mdc-connector>
+  </div>
 `;
 
 const meta: Meta = {
