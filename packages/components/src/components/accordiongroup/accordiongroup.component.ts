@@ -15,10 +15,9 @@ import { Size, Variant } from './accordiongroup.types';
  *
  * @tagname mdc-accordiongroup
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - The default slot can contain the accordion or accordiongroup items.
  *
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-accordiongroup-border-color - The border color of the entire accordiongroup
  */
 class AccordionGroup extends Component {
   /**
@@ -49,7 +48,7 @@ class AccordionGroup extends Component {
 
   constructor() {
     super();
-    this.addEventListener('onexpanded', this.handleAccordionExpanded);
+    this.addEventListener('shown', this.handleAccordionExpanded);
   }
 
   private handleAccordionExpanded(event: Event): void {

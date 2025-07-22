@@ -8,11 +8,10 @@ import '../avatarbutton';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { defaultChildren } from '../accordionbutton/accordionbutton.constants';
+import { disableControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
-
-const defaultChildren =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut. Ut tortor pretium viverra suspendisse potenti.';
 
 const render = (args: Args) =>
   html` <mdc-accordiongroup
@@ -51,6 +50,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
+    ...disableControls(['default', '--mdc-accordiongroup-border-color']),
   },
 };
 
@@ -59,7 +59,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
-    variant: VARIANT.CONTAINED,
+    variant: DEFAULTS.VARIANT,
     'allow-multiple': false,
   },
 };
@@ -67,21 +67,21 @@ export const Example: StoryObj = {
 export const StackedVariant: StoryObj = {
   args: {
     variant: VARIANT.STACKED,
-    size: DEFAULTS.SIZE,
+    size: SIZE.SMALL,
   },
 };
 
 export const ContainedVariant: StoryObj = {
   args: {
     variant: VARIANT.CONTAINED,
-    size: DEFAULTS.SIZE,
+    size: SIZE.SMALL,
   },
 };
 
 export const BorderlessVariant: StoryObj = {
   args: {
     variant: VARIANT.BORDERLESS,
-    size: DEFAULTS.SIZE,
+    size: SIZE.SMALL,
   },
 };
 
@@ -101,7 +101,7 @@ export const LargeSize: StoryObj = {
 
 export const MultiInteractiveAccordion: StoryObj = {
   args: {
-    size: DEFAULTS.SIZE,
+    size: SIZE.SMALL,
     variant: VARIANT.CONTAINED,
     'allow-multiple': false,
   },

@@ -6,14 +6,14 @@ import '../button';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
 import { defaultChildren, VARIANT } from './accordionbutton.constants';
 
 const render = (args: Args) =>
   html` <mdc-accordionbutton
-    @onexpanded=${action('onexpanded')}
+    @shown=${action('onshown')}
     ?disabled=${args.disabled}
     ?expanded=${args.expanded}
     data-aria-level="${ifDefined(args['data-aria-level'])}"
@@ -59,6 +59,14 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
+    ...disableControls([
+      '--mdc-accordionbutton-border-color',
+      '--mdc-accordionbutton-hover-color',
+      '--mdc-accordionbutton-active-color',
+      '--mdc-accordionbutton-disabled-color',
+      'default',
+      'shown',
+    ]),
   },
 };
 
@@ -68,7 +76,7 @@ export const Example: StoryObj = {
   args: {
     'data-aria-level': 3,
     'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    'prefix-icon': 'placeholder-bold',
     disabled: false,
     size: SIZE.SMALL,
     expanded: true,
@@ -80,7 +88,7 @@ export const BorderlessVariant: StoryObj = {
   args: {
     variant: VARIANT.BORDERLESS,
     'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    'prefix-icon': 'placeholder-bold',
   },
 };
 
@@ -88,7 +96,7 @@ export const LargeSize: StoryObj = {
   args: {
     size: SIZE.LARGE,
     'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    'prefix-icon': 'placeholder-bold',
   },
 };
 
@@ -96,7 +104,7 @@ export const SmallSize: StoryObj = {
   args: {
     size: SIZE.SMALL,
     'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    'prefix-icon': 'placeholder-bold',
   },
 };
 
