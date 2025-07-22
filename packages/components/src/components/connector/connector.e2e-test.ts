@@ -40,10 +40,13 @@ test('mdc-connector', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const sheet = new StickerSheet(componentsPage, 'mdc-connector', 'margin: 0.5rem;');
-    await sheet.createMarkupWithCombination({
-      status: STATUS,
-      orientation: ORIENTATION,
-    });
+    await sheet.createMarkupWithCombination(
+      {
+        status: STATUS,
+        orientation: ORIENTATION,
+      },
+      { rowWrapperStyle: 'height: 200px; width: 200px; margin: 2rem;' },
+    );
     await sheet.mountStickerSheet();
     await componentsPage.visualRegression.takeScreenshot('mdc-connector-stickersheet', {
       element: sheet.getWrapperContainer(),

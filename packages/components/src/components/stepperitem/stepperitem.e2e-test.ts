@@ -1,28 +1,32 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { VARIANT } from './stepperitem.constants';
+import { STATUS, VARIANT } from './stepperitem.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  'label-text'?: string;
+  label?: string;
   status?: string;
-  'helper-text'?: string;
+  'help-text'?: string;
   'step-number'?: string;
   'aria-label'?: string;
+  'aria-current'?: string;
 };
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   const html = `
     <mdc-stepperitem
-      ${restArgs['label-text'] ? `label-text="${restArgs['label-text']}"` : ''}
+      ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.status ? `status="${restArgs.status}"` : ''}
-      ${restArgs['helper-text'] ? `helper-text="${restArgs['helper-text']}"` : ''}
+      ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
       ${restArgs['step-number'] ? `step-number="${restArgs['step-number']}"` : ''}
       ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
+      ${restArgs['aria-current'] ? `aria-current="${restArgs['aria-current']}"` : ''}
     ></mdc-stepperitem>
   `;
   await componentsPage.mount({ html, clearDocument: true });
@@ -39,78 +43,75 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     await expect(stepperitem).toBeVisible();
     await expect(stepperitem).toHaveAttribute('role', 'listitem');
     await expect(stepperitem).toHaveAttribute('tabindex', '0');
-    await expect(stepperitem).toHaveAttribute('status', 'current');
-    await expect(stepperitem).toHaveAttribute('aria-current', 'true');
+    await expect(stepperitem).toHaveAttribute('status', 'not-started');
   });
 
-  await test.step('should render with label-text', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label' });
+  await test.step('should render with label', async () => {
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label' });
     await expect(stepperitem).toBeVisible();
     await expect(stepperitem.locator('[part="label"]')).toHaveText('Step Label');
   });
 
-  await test.step('should render with helper-text when present', async () => {
+  await test.step('should render with help-text when present', async () => {
     const { stepperitem } = await setup({
       componentsPage,
-      'label-text': 'Step Label',
-      'helper-text': 'Helper text',
+      label: 'Step Label',
+      'help-text': 'Helper text',
     });
-    await expect(stepperitem.locator('[part="helper-text"]')).toHaveText('Helper text');
+    await expect(stepperitem.locator('[part="help-text"]')).toHaveText('Helper text');
   });
 
   await test.step('should render step number for not-started and error-incomplete', async () => {
     const statuses = ['not-started', 'error-incomplete'];
-    await Promise.all(
-      statuses.map(async status => {
-        const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', status, 'step-number': '2' });
-        await expect(stepperitem.locator('[part="step-number"]')).toHaveText('2');
-        await expect(stepperitem).toHaveAttribute('status', status);
-      }),
-    );
+    for (const status of statuses) {
+      const { stepperitem } = await setup({ componentsPage, label: 'Step Label', status, 'step-number': '2' });
+      await expect(stepperitem.locator('[part="step-number"]')).toHaveText('2');
+      await expect(stepperitem).toHaveAttribute('status', status);
+    }
   });
 
   await test.step('should render completed icon for completed status', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', status: 'completed' });
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label', status: 'completed' });
     const statusIcon = stepperitem.locator('[part="status-icon"]');
     await expect(statusIcon).toBeVisible();
     await expect(statusIcon).toHaveAttribute('name', 'check-bold');
     await expect(stepperitem.locator('[part="label"]')).toHaveText('Step Label');
   });
 
-  await test.step('should render pencil icon and helper-text for current or error-current status', async () => {
+  await test.step('should render pencil icon and help-text for current or error-current status', async () => {
     const statuses = ['current', 'error-current'];
-    await Promise.all(
-      statuses.map(async status => {
-        const { stepperitem } = await setup({
-          componentsPage,
-          'label-text': 'Step Label',
-          status,
-          'helper-text': 'helper',
-        });
-        const statusIcon = stepperitem.locator('[part="status-icon"]');
-        await expect(statusIcon).toBeVisible();
-        await expect(statusIcon).toHaveAttribute('name', 'edit-bold');
-        await expect(stepperitem.locator('[part="helper-text"]')).toHaveText('helper');
-      }),
-    );
+    for (const status of statuses) {
+      const { stepperitem } = await setup({
+        componentsPage,
+        label: 'Step Label',
+        status,
+        'help-text': 'helper',
+        'aria-current': 'step',
+      });
+      await expect(stepperitem).toHaveAttribute('aria-current', 'step');
+      await expect(stepperitem).toHaveAttribute('status', status);
+      await expect(stepperitem).toHaveAttribute('help-text', 'helper');
+      const statusIcon = stepperitem.locator('[part="status-icon"]');
+      await expect(statusIcon).toBeVisible();
+      await expect(statusIcon).toHaveAttribute('name', 'edit-bold');
+    }
   });
 
-  await test.step('should render error icon with helper-text when status is error-current or error-incomplete', async () => {
+  await test.step('should render error icon with help-text when status is error-current or error-incomplete', async () => {
     const statuses = ['error-current', 'error-incomplete'];
-    await Promise.all(
-      statuses.map(async status => {
-        const { stepperitem } = await setup({
-          componentsPage,
-          'label-text': 'Step Label',
-          status,
-          'helper-text': 'Error message',
-        });
-        const statusIcon = stepperitem.locator('[part="status-icon"]');
-        await expect(statusIcon).toBeVisible();
-        await expect(statusIcon).toHaveAttribute('name', 'error-legacy-badge');
-        await expect(stepperitem.locator('[part="helper-text"]')).toHaveText('Error message');
-      }),
-    );
+    for (const status of statuses) {
+      const { stepperitem } = await setup({
+        componentsPage,
+        label: 'Step Label',
+        status,
+        'help-text': 'Error message',
+      });
+      const statusIcon = stepperitem.locator('[part="help-icon"]');
+      await expect(stepperitem).toHaveAttribute('status', status);
+      await expect(stepperitem).toHaveAttribute('help-text', 'Error message');
+      await expect(statusIcon).toBeVisible();
+      await expect(statusIcon).toHaveAttribute('name', 'error-legacy-badge-filled');
+    }
   });
 
   /**
@@ -120,7 +121,7 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
   // Keyboard and Focus Management
 
   await test.step('should be focusable with Tab', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', 'step-number': '1' });
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '1' });
     await componentsPage.page.keyboard.press('Tab');
     await expect(stepperitem).toBeFocused();
   });
@@ -129,14 +130,14 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
    * INTERACTIONS
    */
   await test.step('should fire click event when clicked', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', 'step-number': '4' });
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '4' });
     const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
     await stepperitem.click();
     await waitForClick;
   });
 
   await test.step('should fire click event on Enter', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', 'step-number': '5' });
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '5' });
     const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
     await componentsPage.actionability.pressTab();
     await expect(stepperitem).toBeFocused();
@@ -145,7 +146,7 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
   });
 
   await test.step('should fire click event on Space', async () => {
-    const { stepperitem } = await setup({ componentsPage, 'label-text': 'Step Label', 'step-number': '5' });
+    const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '5' });
     const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
     await componentsPage.actionability.pressTab();
     await expect(stepperitem).toBeFocused();
@@ -159,19 +160,23 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
   await test.step('should have correct ARIA attributes and tabindex', async () => {
     const { stepperitem } = await setup({
       componentsPage,
-      'label-text': 'Step Label',
+      label: 'Step Label',
       status: 'current',
       'step-number': '2',
+      'aria-label': 'Step 2 current',
+      'aria-current': 'step',
     });
     await expect(stepperitem).toHaveAttribute('role', 'listitem');
     await expect(stepperitem).toHaveAttribute('tabindex', '0');
     await expect(stepperitem).toHaveAttribute('aria-current', 'step');
+    await expect(stepperitem).toHaveAttribute('aria-label', 'Step 2 current');
+    await expect(stepperitem).toHaveAttribute('status', 'current');
   });
 
   await test.step('should announce aria-label for screen readers', async () => {
     const { stepperitem } = await setup({
       componentsPage,
-      'label-text': 'Step Label',
+      label: 'Step Label',
       'step-number': '2',
       status: 'not-started',
       'aria-label': 'Step 2 not started',
@@ -186,7 +191,7 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
       html: `
       <mdc-list>
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-      <mdc-stepperitem label="Step 2" helper-text="Helper text" status="current"></mdc-stepperitem>
+      <mdc-stepperitem label="Step 2" help-text="Helper text" status="current"></mdc-stepperitem>
       <mdc-stepperitem label="Step 3" status="not-started" step-number="3"></mdc-stepperitem>
       </mdc-list>
     `,
@@ -201,16 +206,13 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     stepperitemSheet.setAttributes({ label: 'Step Label', helperLabel: 'helper', 'step-number': '2' });
     await stepperitemSheet.createMarkupWithCombination({
       variant: VARIANT,
-      status: {
-        current: 'current',
-        completed: 'completed',
-        'not-started': 'not-started',
-        'error-incomplete': 'error-incomplete',
-        'error-current': 'error-current',
-      },
+      status: STATUS,
     });
-    // stepperitemSheet.setAttributes({ label: 'Step Label', status: 'error', 'helper-text': 'Error message' });
-    // await stepperitemSheet.createMarkupWithCombination({ variant: VARIANT });
+    stepperitemSheet.setAttributes({ label: 'Step Label', 'help-text': 'Help Text', 'step-number': '3' });
+    await stepperitemSheet.createMarkupWithCombination({
+      variant: VARIANT,
+      status: STATUS,
+    });
     await stepperitemSheet.mountStickerSheet();
     await componentsPage.visualRegression.takeScreenshot('mdc-stepperitem', {
       element: stepperitemSheet.getWrapperContainer(),

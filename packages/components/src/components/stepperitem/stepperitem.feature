@@ -7,8 +7,8 @@ Feature: StepperItem Accessibility and User Interaction
     And the stepperitem contains:
       | Property       | Value        | State    |
       | -------------- | ------------ | -------- |
-      | label-text     | "Step Label" | Normal   |
-      | helper-text    | "Help"       | Optional |
+      | label          | "Step Label" | Normal   |
+      | help-text      | "Help"       | Optional |
       | step-number    | "1"          | Optional |
       | status         | current      | Optional |
 
@@ -19,11 +19,11 @@ Feature: StepperItem Accessibility and User Interaction
       When the stepperitem is rendered
       Then the label-text should be visible
 
-    Scenario: Render stepperitem with helper-text
+    Scenario: Render stepperitem with help-text
       Given the stepperitem has a label-text "Step Label"
-      And the stepperitem has an helper-text "Optional"
+      And the stepperitem has an help-text "Optional"
       When the stepperitem is rendered
-      Then the helper-text should be visible in parentheses
+      Then the help-text should be visible in parentheses
 
     Scenario: Render stepperitem with step-number
       Given the stepperitem has a status "not-started" or "error-incomplete"
@@ -39,25 +39,25 @@ Feature: StepperItem Accessibility and User Interaction
 
     Scenario: Render stepperitem with current or error-current status
       Given the stepperitem has status "error-current" or "current"
-      And the stepperitem has an helper-text
+      And the stepperitem has an help-text
       When the stepperitem is rendered
       Then a pencil icon should be visible in the status container
-      And the helper-text should be visible
-      And the color of helper-text should be appropriate for the status
+      And the help-text should be visible
+      And the color of help-text should be appropriate for the status
 
     Scenario: Render stepperitem as stacked variant
       Given the stepperitem is rendered as a stacked variant
       When the stepperitem is rendered
       Then the stepperitem should have the icon on top
       And the label-text should be visible below the icon
-      And the helper-text should be visible below the label-text
+      And the help-text should be visible below the label-text
 
     Scenario: Render stepperitem as inline variant
       Given the stepperitem is rendered as an inline variant
       When the stepperitem is rendered
       Then the stepperitem should have the icon on the left
       And the label-text should be visible to the right of the icon
-      And the helper-text should be visible below the label-text
+      And the help-text should be visible below the label-text
 
   Rule: ✅ Keyboard and Focus Management
 
@@ -91,12 +91,12 @@ Feature: StepperItem Accessibility and User Interaction
       Then the stepperitem should have role="listitem" or appropriate role
       And the stepperitem should have correct tabindex based on status
       When status is "current" or "error-current"
-      Then the stepperitem should have aria-current="step"
+      Then the user needs to set aria-current="step" on this stepperitem
 
-    Scenario: helper-text accessibility
-      Given the stepperitem has an helper-text
+    Scenario: help-text accessibility
+      Given the stepperitem has an help-text
       When the stepperitem is rendered
-      Then the helper-text should be associated with the stepperitem for screen readers
+      Then the help-text should be associated with the stepperitem for screen readers
 
     Scenario: Step number accessibility
       Given the stepperitem has a step number
@@ -104,16 +104,16 @@ Feature: StepperItem Accessibility and User Interaction
       Then the step number should be announced by screen readers
 
     Scenario: Error message accessibility
-      Given the stepperitem has status "error" and an helper-text
+      Given the stepperitem has status "error" and an help-text
       When the stepperitem is rendered
       Then the error message should be announced by screen readers
 
   Rule: ✅ ScreenReader Accessibility
 
     Scenario: VoiceOver reads stepperitem content
-      Given the stepperitem has label, helper-text, and step number
+      Given the stepperitem has label, help-text, and step number
       When VoiceOver navigates to the stepperitem
-      Then VoiceOver should announce the role, label, step number, and helper-text
+      Then VoiceOver should announce the role, label, step number, and help-text
 
     Scenario: VoiceOver announces completed and error status
       Given the stepperitem has status "completed" or "error"
