@@ -8,11 +8,11 @@ const styles = css`
     border-radius: 0.25rem;
     cursor: pointer;
 
-    --mdc-stepperitem-status-container-background: none;
-    --mdc-stepperitem-status-container-border-color: none;
+    --mdc-stepperitem-status-container-background: transparent;
+    --mdc-stepperitem-status-container-border-color: transparent;
     --mdc-stepperitem-label-color: var(--mds-color-theme-text-primary-normal);
     --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-secondary-normal);
-    --mdc-stepperitem-label-container-background: none;
+    --mdc-stepperitem-label-container-background: transparent;
   }
 
   :host([variant='stacked']) {
