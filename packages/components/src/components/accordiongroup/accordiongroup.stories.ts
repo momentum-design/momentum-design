@@ -1,36 +1,32 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-
 import '../accordionbutton';
 import '../accordion';
 import '../chip';
-import '../button';
 import '../avatarbutton';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 
-const defaultChildren = `Loreum impusm sit amet, consectetur adipiscing elit.`;
+const defaultChildren =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut. Ut tortor pretium viverra suspendisse potenti.';
 
 const render = (args: Args) =>
-  html` <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
-    <mdc-accordionbutton header-text="Heading 1" prefix-icon="placeholder-bold" expanded
+  html` <mdc-accordiongroup
+    size="${ifDefined(args.size)}"
+    variant="${ifDefined(args.variant)}"
+    ?allow-multiple="${args['allow-multiple']}"
+  >
+    <mdc-accordionbutton header-text="Why is the moon sometimes out during the day?"
       >${defaultChildren}</mdc-accordionbutton
     >
-    <mdc-accordionbutton header-text="Heading 2" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordionbutton header-text="Heading 4" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordion header-text="Heading 3" prefix-icon="placeholder-bold">
-      <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
-      <mdc-avatarbutton slot="leading-controls" icon-name="placeholder-bold"></mdc-avatarbutton>
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-button slot="trailing-controls">Control</mdc-button>
-      ${defaultChildren}
-    </mdc-accordion>
-    <mdc-accordionbutton header-text="Heading 4" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordion header-text="Heading 5" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordion>
-    <mdc-accordionbutton header-text="Heading 6" prefix-icon="placeholder-bold">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordionbutton header-text="Why is the sky blue?">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordionbutton header-text="Will we ever discover aliens?">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordionbutton header-text="How much does the Earth weigh?">${defaultChildren}</mdc-accordionbutton>
+    <mdc-accordionbutton header-text="How do airplanes stay up?">${defaultChildren}</mdc-accordionbutton>
   </mdc-accordiongroup>`;
 
 const meta: Meta = {
@@ -66,4 +62,71 @@ export const Example: StoryObj = {
     variant: VARIANT.CONTAINED,
     'allow-multiple': false,
   },
+};
+
+export const StackedVariant: StoryObj = {
+  args: {
+    variant: VARIANT.STACKED,
+    size: DEFAULTS.SIZE,
+  },
+};
+
+export const ContainedVariant: StoryObj = {
+  args: {
+    variant: VARIANT.CONTAINED,
+    size: DEFAULTS.SIZE,
+  },
+};
+
+export const BorderlessVariant: StoryObj = {
+  args: {
+    variant: VARIANT.BORDERLESS,
+    size: DEFAULTS.SIZE,
+  },
+};
+
+export const SmallSize: StoryObj = {
+  args: {
+    size: SIZE.SMALL,
+    variant: VARIANT.CONTAINED,
+  },
+};
+
+export const LargeSize: StoryObj = {
+  args: {
+    size: SIZE.LARGE,
+    variant: VARIANT.CONTAINED,
+  },
+};
+
+export const MultiInteractiveAccordion: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+    variant: VARIANT.CONTAINED,
+    'allow-multiple': false,
+  },
+  render: (args: Args) => html`
+    <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
+      <mdc-accordion header-text="Identify Your Goals" prefix-icon="add-option-bold">
+        <mdc-chip slot="leading-controls" label="Step 1"></mdc-chip>
+        <mdc-avatarbutton slot="trailing-controls" initials="#1"></mdc-avatarbutton>
+        ${defaultChildren}
+      </mdc-accordion>
+      <mdc-accordion header-text="Write Your Goals" prefix-icon="add-option-bold">
+        <mdc-chip slot="leading-controls" label="Step 2"></mdc-chip>
+        <mdc-avatarbutton slot="trailing-controls" initials="#2"></mdc-avatarbutton>
+        ${defaultChildren}
+      </mdc-accordion>
+      <mdc-accordion header-text="Need Analysis" prefix-icon="add-option-bold">
+        <mdc-chip slot="leading-controls" label="Step 3"></mdc-chip>
+        <mdc-avatarbutton slot="trailing-controls" initials="#3"></mdc-avatarbutton>
+        ${defaultChildren}
+      </mdc-accordion>
+      <mdc-accordion header-text="List Objectives" prefix-icon="add-option-bold">
+        <mdc-chip slot="leading-controls" label="Step 4"></mdc-chip>
+        <mdc-avatarbutton slot="trailing-controls" initials="#4"></mdc-avatarbutton>
+        ${defaultChildren}
+      </mdc-accordion>
+    </mdc-accordiongroup>
+  `,
 };

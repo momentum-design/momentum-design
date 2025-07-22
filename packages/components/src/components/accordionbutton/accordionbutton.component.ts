@@ -42,7 +42,7 @@ class AccordionButton extends DisabledMixin(Component) {
    * The aria level of the accordion component.
    * @default 3
    */
-  @property({ type: String, reflect: true, attribute: 'data-aria-level' }) dataAriaLevel = DEFAULTS.DATA_ARIA_LEVEL;
+  @property({ type: Number, reflect: true, attribute: 'data-aria-level' }) dataAriaLevel = DEFAULTS.DATA_ARIA_LEVEL;
 
   /**
    * The visibility of the accordion button.
@@ -67,6 +67,7 @@ class AccordionButton extends DisabledMixin(Component) {
   protected bodySectionId = `body-section-${uuidv4()}`;
 
   protected handleHeaderClick(): void {
+    if (this.disabled) return;
     this.expanded = !this.expanded;
     this.dispatchHeaderClickEvent();
   }

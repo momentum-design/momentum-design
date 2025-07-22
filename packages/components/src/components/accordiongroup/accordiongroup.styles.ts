@@ -30,6 +30,7 @@ const styles = css`
   :host([variant='contained']) ::slotted(mdc-accordionbutton) {
     border-bottom: 1px solid var(--mdc-accordiongroup-border-color);
   }
+  :host([variant='contained']) ::slotted(mdc-accordion:last-child),
   :host([variant='contained']) ::slotted(mdc-accordionbutton:last-child) {
     border-bottom: none;
   }
