@@ -1,17 +1,20 @@
 import { createContext } from '@lit/context';
 
+import { OrientationType } from '../connector/connector.types';
+import { VariantType } from '../stepperitem/stepperitem.types';
+
 import { TAG_NAME } from './stepper.constants';
 
 class StepperContext {
-  public orientation?: string;
+  public orientation?: OrientationType;
 
-  public activeStep?: HTMLElement;
+  public variant?: VariantType;
 
   public static context = createContext<StepperContext>(TAG_NAME);
 
-  constructor(defaultOrientation?: string, defaultActiveStep?: HTMLElement) {
+  constructor(defaultOrientation?: OrientationType, defaultVariant?: VariantType) {
     this.orientation = defaultOrientation;
-    this.activeStep = defaultActiveStep;
+    this.variant = defaultVariant;
   }
 }
 

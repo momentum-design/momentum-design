@@ -1,45 +1,37 @@
 import { CSSResult, html } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
+import type { VariantType } from '../stepperitem/stepperitem.types';
 
+import { DEFAULTS } from './stepper.constants';
 import styles from './stepper.styles';
-import { DEFAULT } from './stepper.constants';
-import type { OrientationType, StatusType } from './stepper.types';
 
 /**
- * stepper component, which ...
+ * stepper component, which orchestrates stepperitem and connector components, is a wrapper for the stepper functionality.
  *
  * @tagname mdc-stepper
  *
- * @slot default - Pass the list of mdc-stepperitem elements to be rendered inside the stepper.
+ * @slot default - Pass the list of mdc-stepperitem and mdc-connector elements to be rendered inside the stepper.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Stepper extends Component {
   @property({ type: String, reflect: true })
-  orientation: OrientationType = DEFAULT.ORIENTATION;
+  variant: VariantType = DEFAULTS.VARIANT;
 
-  @property({ type: String, reflect: true })
-  status: StatusType = DEFAULT.STATUS;
-
-  @queryAssignedElements({})
-  private stepperItems!: Array<HTMLElement>;
-
-  private handleSlotChange() {
-    // Ensure that only mdc-stepperitem elements are present in the slot
-    // If any other elements are present, remove them
-    this.stepperItems?.forEach(item => {
-      if (!item.matches('mdc-stepperitem')) {
-        this.remove();
+  private handleSlotChange = (event: Event) => {
+    // remove anything that is not a mdc-stepperitem or mdc-connector
+    const slot = event.target as HTMLSlotElement;
+    const assignedElements = slot.assignedElements({ flatten: true });
+    assignedElements.forEach(element => {
+      if (element.tagName.toLowerCase() !== 'mdc-stepperitem' && element.tagName.toLowerCase() !== 'mdc-connector') {
+        slot.removeChild(element);
       }
     });
-  }
+  };
 
   public override render() {
-    return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+    return html` <slot @slotchange=${this.handleSlotChange}></slot> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

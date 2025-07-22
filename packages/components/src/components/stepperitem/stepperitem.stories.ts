@@ -97,3 +97,15 @@ export const Error: StoryObj = {
     'step-number': '1',
   },
 };
+
+export const LongText: StoryObj = {
+  args: {
+    variant: VARIANT.STACKED,
+    label:
+      'This is a very long label that should wrap to the next line if it exceeds the width of the stepper item container',
+    'help-text':
+      'This is a very long help text that should also wrap to the next line if it exceeds the width of the stepper item container',
+    status: STATUS.CURRENT,
+    'step-number': '1',
+  },
+};

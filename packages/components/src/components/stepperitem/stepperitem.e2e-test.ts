@@ -202,6 +202,7 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
 
   // Visual Regression
   await test.step('should match visual regression screenshot', async () => {
+    await componentsPage.page.setViewportSize({ width: 500, height: 500 });
     const stepperitemSheet = new StickerSheet(componentsPage, 'mdc-stepperitem', 'margin: 0.25rem 0;');
     stepperitemSheet.setAttributes({ label: 'Step Label', helperLabel: 'helper', 'step-number': '2' });
     await stepperitemSheet.createMarkupWithCombination({
@@ -213,6 +214,13 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
       variant: VARIANT,
       status: STATUS,
     });
+    stepperitemSheet.setAttributes({
+      label: 'A very long label text added here',
+      'help-text': 'This is a very long help text',
+      status: 'completed',
+      variant: 'stacked',
+    });
+    await stepperitemSheet.createMarkupWithCombination({});
     await stepperitemSheet.mountStickerSheet();
     await componentsPage.visualRegression.takeScreenshot('mdc-stepperitem', {
       element: stepperitemSheet.getWrapperContainer(),

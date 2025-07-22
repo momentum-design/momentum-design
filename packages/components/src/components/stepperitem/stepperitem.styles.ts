@@ -48,6 +48,16 @@ const styles = css`
     padding: 0.25rem 0.5rem;
   }
 
+  :host([variant='stacked'])::part(label-container) {
+    max-width: 8.75rem;
+  }
+  :host([variant='stacked'])::part(label),
+  :host([variant='stacked'])::part(help-text) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   :host([status='error-current']),
   :host([status='error-incomplete']) {
     --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-normal);
