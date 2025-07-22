@@ -11,11 +11,29 @@ import styles from './accordiongroup.styles';
 import { Size, Variant } from './accordiongroup.types';
 
 /**
- * accordiongroup component, which ...
+ * An accordion group is a vertically stacked set of interactive headings that each contain a header and body content.
+ * Each heading of the accordion acts as a control that enable users to expand or hide their associated body sections of content.
+ * Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
+ *
+ * - Default Slot: The accordion group component only accepts, `accordion` and `accordionbutton` components as the children, rest are ignored.
+ *
+ * There are three types of variants:
+ * - Stacked - Each accordion will have a gap of 1.5rem (24px).
+ * - Borderless - Each accordion will not have any border and the group will also not have any border.
+ * - Contained - Each accordion will have no gap in between them and the border of the entire accordiongroup will be continuous.
+ *
+ * There are two types of sizes:
+ * - Small: Small size has a padding of 1rem (16px) for both heading and body sections.
+ * - Large: Large size has a padding of 1.5rem (24px) for both heading and body sections.
+ *
+ * The variant and size will be applied to all accordions inside this accordion group.
+ * To show/expand more than one accordion at any given time, then set `allow-multiple` to `true`. By default, it's `false`.
+ *
+ * If you don't need any controls on your accordion heading, then it's advised to use `accordionbutton` component.
  *
  * @tagname mdc-accordiongroup
  *
- * @slot default - The default slot can contain the accordion or accordiongroup items.
+ * @slot default - The default slot can contain the `accordion` or `accordionbutton` components.
  *
  * @cssproperty --mdc-accordiongroup-border-color - The border color of the entire accordiongroup
  */
@@ -33,7 +51,7 @@ class AccordionGroup extends Component {
   @property({ type: String, reflect: true }) variant: Variant = DEFAULTS.VARIANT;
 
   /**
-   * If true, multiple accordion items can be expanded at the same time.
+   * If true, multiple accordion items can be visible at the same time.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'allow-multiple' }) allowMultiple = false;
@@ -51,6 +69,13 @@ class AccordionGroup extends Component {
     this.addEventListener('shown', this.handleAccordionExpanded);
   }
 
+  /**
+   * Handles the 'shown' event for accordion items.
+   * If `allowMultiple` is false, ensures that only one accordion item
+   * remains expanded by collapsing all other expanded items when a new item is expanded.
+   *
+   * @param event - The event object from the 'shown' event.
+   */
   private handleAccordionExpanded(event: Event): void {
     if (this.allowMultiple) return;
     [...this.accordionItems, ...this.accordionButtonItems].forEach(accordionItem => {
@@ -60,6 +85,12 @@ class AccordionGroup extends Component {
     });
   }
 
+  /**
+   * Sets the given attribute on all child accordion or accordionbutton components.
+   *
+   * @param attributeName - The name of the attribute to set.
+   * @param attributeValue - The value to set the attribute to.
+   */
   private setChildrenAccordionAttributes(attributeName: string, attributeValue: string): void {
     [...this.accordionItems].forEach(accordion => {
       accordion.setAttribute(attributeName, attributeValue);

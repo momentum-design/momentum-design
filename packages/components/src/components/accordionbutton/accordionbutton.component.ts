@@ -16,7 +16,26 @@ import type { Variant } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
 /**
- * accordionbutton component, which ...
+ * An accordion button contains a header and body section with optional slots inside the heading which are focusable.
+ *
+ * The header section contains:
+ * - Prefix Icon
+ * - Header Text
+ *
+ * The body section contains:
+ * - Default slot - User can place any content inside the body section.
+ *
+ * The accordion button can be expanded or collapsed. The visibility of the body section can be controlled by `expanded` attribute. <br/>
+ * There are two types of variants based on that the border styling of the accordion gets reflected. <br/>
+ * There are two sizes of accordion, one is small and the other is large.
+ * Small size has a padding of 1rem (16px) and large size has a padding of 1.5rem (24px) for the body section of accordion.
+ *
+ * By default, the header text in the accordion heading is of H3 with an aria-level of '3'.
+ * If this accordion is placed on any other level in the entire webpage, then do adjust the aria-level number based on that.
+ *
+ * An accordion can be disabled, and when it's disabled, the header section will not be clickable.
+ *
+ * If you do need any controls on your accordion heading, then it's advised to use `accordion` component.
  *
  * @tagname mdc-accordionbutton
  *
@@ -76,12 +95,22 @@ class AccordionButton extends DisabledMixin(Component) {
   /** @internal */
   protected bodySectionId = `body-section-${uuidv4()}`;
 
+  /**
+   * Handles the click event of the header section.
+   * If the accordion is disabled, it will not toggle the expanded state.
+   * It will dispatch the `shown` event with the current expanded state.
+   */
   protected handleHeaderClick(): void {
     if (this.disabled) return;
     this.expanded = !this.expanded;
     this.dispatchHeaderClickEvent();
   }
 
+  /**
+   * Dispatches the `shown` event with the current expanded state.
+   * The event is cancelable and bubbles.
+   * The event detail contains the current expanded state.
+   */
   private dispatchHeaderClickEvent(): void {
     const event = new CustomEvent('shown', {
       bubbles: true,
@@ -93,6 +122,12 @@ class AccordionButton extends DisabledMixin(Component) {
     this.dispatchEvent(event);
   }
 
+  /**
+   * Handles the keydown event of the component.
+   * If the key pressed is either Enter or Space, it calls the handleHeaderClick method.
+   * This allows keyboard users to toggle the accordion button using these keys.
+   * @param event The KeyboardEvent fired.
+   */
   private handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
       this.handleHeaderClick();
