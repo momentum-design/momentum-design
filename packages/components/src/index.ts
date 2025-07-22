@@ -67,7 +67,6 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
-import Stepper from './components/stepper';
 import Stepperitem from './components/stepperitem';
 import Connector from './components/connector';
 
@@ -149,7 +148,6 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
-  Stepper,
   Stepperitem,
   Tab,
   TabList,
