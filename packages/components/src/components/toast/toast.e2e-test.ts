@@ -3,10 +3,8 @@ import { expect } from '@playwright/test';
 
 import { test } from '../../../config/playwright/setup';
 
-import type { ToastVariant } from './toast.types';
-
 type ToastSetupOptions = {
-  variant?: ToastVariant;
+  variant?: string;
   ariaLabel?: string;
   headerText?: string;
   headerTagName?: string;
