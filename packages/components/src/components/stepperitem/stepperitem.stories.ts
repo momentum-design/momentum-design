@@ -10,7 +10,9 @@ import { STATUS, VARIANT } from './stepperitem.constants';
 
 const render = (args: Args) =>
   html` <mdc-stepperitem
-    @focus=${action('onFocus')}
+    @click=${action('onClick')}
+    @keydown=${action('onKeyDown')}
+    @keyup=${action('onKeyUp')}
     variant=${args.variant}
     status=${args.status}
     help-text=${args['help-text']}

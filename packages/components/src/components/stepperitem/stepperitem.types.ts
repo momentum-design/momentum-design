@@ -7,7 +7,9 @@ type StatusType = ValueOf<typeof STATUS>;
 type StatusIconType = ValueOf<typeof STATUS>;
 
 interface Events {
-  focus: FocusEvent;
+  onClickEvent: MouseEvent;
+  onKeyDownEvent: KeyboardEvent;
+  onKeyUpEvent: KeyboardEvent;
 }
 
 export type { VariantType, StatusType, StatusIconType, Events };

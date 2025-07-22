@@ -23,7 +23,9 @@ import type { StatusType, VariantType } from './stepperitem.types';
  *
  * @tagname mdc-stepperitem
  *
- * @event click - (React: onclick) Triggered when the stepper item receives click.
+ * @event click - (React: onClick) This event is dispatched when the stepperitem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the stepperitem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the stepperitem.
  *
  * @cssproperty --mdc-stepperitem-status-container-background - The background color of the status container.
  * @cssproperty --mdc-stepperitem-status-container-border-color - The border color of the status container.
@@ -73,6 +75,64 @@ class StepperItem extends TabIndexMixin(Component) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.LISTITEM;
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
+  }
+
+  /**
+   * Handles the keydown event on the stepperitem.
+   * If the key is 'Enter' or 'Space', the stepperitem is pressed.
+   * If the key is 'Enter', the stepperitem is pressed. The native HTML button works in the same way.
+   * If the key is 'Space', the stepperitem's default is prevent to avoid scrolling etc in the host application.
+   *
+   * @param event - The keyboard event.
+   */
+  private handleKeyDown(event: KeyboardEvent) {
+    if (['Enter', ' '].includes(event.key)) {
+      this.classList.add('pressed');
+      if (event.key === 'Enter') {
+        this.triggerClickEvent();
+      }
+
+      // preventing the default event behavior for space key
+      // to avoid scrolling etc in the host application
+      // preventing the default event behavior for enter key
+      // to avoid the keyup event to be triggered
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Triggers a click event on the stepper item.
+   *
+   */
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
+  }
+
+  /**
+   * Handles the keyup event on the stepperitem.
+   * If the key is 'Enter' or 'Space', the stepperitem is clicked.
+   * If the key is 'Space', the stepperitem is pressed. The native HTML button works in the same way.
+   *
+   * @param event - The keyboard event.
+   */
+  private handleKeyUp(event: KeyboardEvent) {
+    if (['Enter', ' '].includes(event.key)) {
+      this.classList.remove('pressed');
+      if (event.key === ' ') {
+        this.triggerClickEvent();
+      }
+    }
   }
 
   /**
