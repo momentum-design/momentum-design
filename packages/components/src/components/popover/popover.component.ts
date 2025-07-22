@@ -537,7 +537,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
     let insidePopoverClick = false;
     const path = event.composedPath();
-    insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {

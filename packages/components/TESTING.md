@@ -99,7 +99,8 @@ recommended:
 ### Update Visual Regression snapshots
 
 To update Visual Regression snapshots, follow the steps below to run E2E testing
-on Docker:
+on Docker. To quickly execute it in VSCode, use the VSCode Task
+`Components E2E Docker Tests` for Docker.
 
 1. You need to have os of the container solution installed on your local
    machine:

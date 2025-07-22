@@ -24,9 +24,9 @@ const label = 'Select an option';
 const defaultPlaceholder = 'Select placeholder';
 const defaultChildren = (selected?: boolean) => `
   <mdc-selectlistbox>
-    <mdc-option value="option1">Option Label 1</mdc-option>
-    <mdc-option value="option2" ${selected ? 'selected' : ''}>Option Label 2</mdc-option>
-    <mdc-option value="option3">Option Label 3</mdc-option>
+    <mdc-option value="option1" label="Option Label 1"></mdc-option>
+    <mdc-option value="option2" ${selected ? 'selected' : ''} label="Option Label 2"></mdc-option>
+    <mdc-option value="option3" label="Option Label 3"></mdc-option>
   </mdc-selectlistbox>
 `;
 
@@ -117,11 +117,11 @@ test('mdc-select', async ({ componentsPage }) => {
     });
     selectSheet.setChildren(`
       <mdc-selectlistbox>
-        <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
-        <mdc-option prefix-icon="apps-bold" selected>Add apps</mdc-option>
-        <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
-        <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
-        <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
+        <mdc-option prefix-icon="alert-bold" label="Mute notifications"></mdc-option>
+        <mdc-option prefix-icon="apps-bold" selected label="Add apps"></mdc-option>
+        <mdc-option prefix-icon="stored-info-bold" label="View direct message policy"></mdc-option>
+        <mdc-option prefix-icon="calendar-day-bold" label="Meeting capabilities"></mdc-option>
+        <mdc-option prefix-icon="exit-room-bold" label="Leave"></mdc-option>
       </mdc-selectlistbox>
       `);
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
@@ -199,13 +199,14 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
-      await test.step('component should open dropdown and select 2nd option', async () => {
+      await test.step('component should open dropdown and select 2nd option and close popover', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
         await select.locator('div[id="select-base-triggerid"]').click();
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.locator('mdc-option').nth(1).click();
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
     });
 
@@ -242,18 +243,20 @@ test('mdc-select', async ({ componentsPage }) => {
 
       const mdcSelect = form.locator('mdc-select');
       const submitButton = form.locator('mdc-button[type="submit"]');
-      const selectEl = mdcSelect.locator('select');
+      const inputEl = mdcSelect.locator('input');
 
       // Try to submit the form without selecting an option
       await submitButton.click();
 
       // Check if validation message is shown
-      const validationMessage = await selectEl.evaluate(element => {
-        const select = element as HTMLSelectElement;
+      const validationMessage = await inputEl.evaluate(element => {
+        const select = element as HTMLInputElement;
         return select.validationMessage;
       });
 
       expect(validationMessage).not.toBe('');
+      // if validation message is shown, the select should be focused
+      await expect(mdcSelect).toBeFocused();
 
       // Now select an option and verify form can be submitted
       await mdcSelect.locator('div[id="select-base-triggerid"]').click();
@@ -322,10 +325,10 @@ test('mdc-select', async ({ componentsPage }) => {
       expect(isFormValid).toBe(false);
 
       // Check if custom validation message is still displayed after reset
-      const selectEl = mdcSelect.locator('select');
-      const validationMessage = await selectEl.evaluate(element => {
-        const select = element as HTMLSelectElement;
-        return select.validationMessage;
+      const inputEl = mdcSelect.locator('input');
+      const validationMessage = await inputEl.evaluate(element => {
+        const input = element as HTMLInputElement;
+        return input.validationMessage;
       });
 
       expect(validationMessage).toBe(customMessage);
