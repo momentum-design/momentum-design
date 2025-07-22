@@ -1,20 +1,22 @@
 /* eslint-disable no-restricted-syntax */
-
 import { expect } from '@playwright/test';
 
 import { test } from '../../../config/playwright/setup';
 
+import type { ToastVariant } from './toast.types';
+
 type ToastSetupOptions = {
-  variant?: string;
+  variant?: ToastVariant;
   ariaLabel?: string;
   headerText?: string;
   headerTagName?: string;
   closeButtonAriaLabel?: string;
   rtl?: boolean;
   children?: string;
+  componentsPage: any
 };
 
-const setup = async (options: ToastSetupOptions & { componentsPage: any }) => {
+const setup = async (options: ToastSetupOptions) => {
   const {
     componentsPage,
     variant,
@@ -97,7 +99,6 @@ test.describe('Toast Feature Scenarios', () => {
       await test.step('Toast emits "shown" event when displayed', async () => {
         const toast = await setup({ componentsPage, children: '<span slot="toast-body-normal">Your file has been successfully uploaded</span>' });
         const shownPromise = componentsPage.waitForEvent(toast, 'shown');
-        await toast.evaluate((el) => (el as any).show && (el as any).show());
         await shownPromise;
       });
 
