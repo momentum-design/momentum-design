@@ -67,6 +67,7 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
+import Toast from './components/toast';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -146,6 +147,7 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  Toast,
   Tab,
   TabList,
   Text,
