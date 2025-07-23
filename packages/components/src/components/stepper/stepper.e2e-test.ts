@@ -163,9 +163,13 @@ test('mdc-stepper', async ({ componentsPage }) => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
   await test.step('should match visual regression screenshot (StickerSheet)', async () => {
-    await takeScreenshot(componentsPage, ORIENTATION.HORIZONTAL);
-    await componentsPage.accessibility.checkForA11yViolations('stepper-horizontal');
-    await takeScreenshot(componentsPage, ORIENTATION.VERTICAL);
-    await componentsPage.accessibility.checkForA11yViolations('stepper-vertical');
+    // Tests are ignored for mobile devices
+    const deviceName = test.info().project.name;
+    if (['chrome', 'firefox', 'msedge', 'webkit', 'tablet chrome', 'tablet safari'].includes(deviceName)) {
+      await takeScreenshot(componentsPage, ORIENTATION.HORIZONTAL);
+      await componentsPage.accessibility.checkForA11yViolations('stepper-horizontal');
+      await takeScreenshot(componentsPage, ORIENTATION.VERTICAL);
+      await componentsPage.accessibility.checkForA11yViolations('stepper-vertical');
+    }
   });
 });
