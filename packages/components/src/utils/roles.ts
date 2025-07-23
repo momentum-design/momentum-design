@@ -8,6 +8,7 @@ const ROLE = {
   COMBOBOX: 'combobox',
   DIALOG: 'dialog',
   GROUP: 'group',
+  HEADING: 'heading',
   IMG: 'img',
   LIST: 'list',
   LISTBOX: 'listbox',
@@ -22,11 +23,10 @@ const ROLE = {
   PROGRESSBAR: 'progressbar',
   RADIO: 'radio',
   RADIOGROUP: 'radiogroup',
+  REGION: 'region',
   TAB: 'tab',
   TABLIST: 'tablist',
   TOOLTIP: 'tooltip',
-  HEADING: 'heading',
-  REGION: 'region',
 } as const;
 
 type RoleType = ValueOf<typeof ROLE>;
