@@ -7,7 +7,7 @@ import { BUTTON_COLORS, BUTTON_VARIANTS } from '../../components/button/button.c
 
 import type { Constructor } from './index.types';
 
-export declare class CardAndDialogFooterMixinInterface {
+export declare class FooterMixinInterface {
   protected footerLink?: Array<HTMLElement>;
 
   protected footerButtonPrimary?: Array<HTMLElement>;
@@ -21,7 +21,7 @@ export declare class CardAndDialogFooterMixinInterface {
   protected renderFooter(): TemplateResult;
 }
 
-export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const FooterMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
      * The links in the footer section
@@ -124,5 +124,5 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<CardAndDialogFooterMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<FooterMixinInterface> & T;
 };
