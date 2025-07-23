@@ -178,6 +178,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             ]);
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+            await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
             await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
               source: 'userflow',
               fileNameSuffix: 'collapsed-view',
@@ -186,14 +187,16 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
 
             await componentsPage.page.keyboard.press('Space');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
           });
           await test.step('Collapse and expand sidenavigation using mouse', async () => {
-            await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
-
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+            await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
+
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+            await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
           });
         }
 
