@@ -76,8 +76,8 @@ import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
+import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
-import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Constants / Utils Imports
 import {
@@ -87,6 +87,7 @@ import {
   PILL_BUTTON_SIZES,
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Components Exports
 export {
@@ -171,6 +172,8 @@ export type {
   PillButtonSize,
   PopoverPlacement,
   SkeletonVariant,
+  SelectChangeEvent,
+  SelectInputEvent,
   SpinnerSize,
   SpinnerVariant,
   TextType,
