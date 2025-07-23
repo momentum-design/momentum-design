@@ -4,7 +4,6 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    width: 100%;
     gap: 0.5rem;
   }
 
@@ -12,10 +11,33 @@ const styles = css`
     flex-shrink: 0;
   }
 
+  :host([orientation='horizontal']) {
+    width: 100%;
+  }
+
   :host([orientation='vertical']) {
     flex-direction: column;
     height: 100%;
+  }
+
+  :host([orientation='vertical'][variant='inline']),
+  :host([orientation='horizontal'][variant='stacked']) {
     align-items: flex-start;
+  }
+
+  :host([orientation='vertical'][variant='stacked']) ::slotted(mdc-connector) {
+    display: flex;
+    justify-content: center;
+  }
+
+  :host([orientation='vertical'][variant='inline']) ::slotted(mdc-connector) {
+    display: flex;
+    padding-left: 0.875rem;
+  }
+
+  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-connector) {
+    padding-top: 0.9375rem;
+    margin: 0 -1rem;
   }
 `;
 
