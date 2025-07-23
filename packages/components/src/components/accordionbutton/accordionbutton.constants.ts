@@ -1,5 +1,3 @@
-import { html } from 'lit';
-
 import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
@@ -24,10 +22,4 @@ const DEFAULTS = {
   ICON_NAME: ICON_NAME.ARROW_UP,
 } as const;
 
-const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
-  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-  laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
-
-export { TAG_NAME, ICON_NAME, DEFAULTS, VARIANT, defaultChildren };
+export { TAG_NAME, ICON_NAME, DEFAULTS, VARIANT };

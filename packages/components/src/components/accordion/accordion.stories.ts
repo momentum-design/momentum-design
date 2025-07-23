@@ -9,8 +9,14 @@ import '../badge';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
-import { VARIANT, defaultChildren as defaultBodyContent } from '../accordionbutton/accordionbutton.constants';
+import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+
+const defaultBodyContent = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
+  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+  laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const defaultChildren = html`
   <mdc-chip slot="leading-controls" label="Label"></mdc-chip>

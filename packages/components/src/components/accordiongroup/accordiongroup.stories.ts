@@ -8,10 +8,15 @@ import '../avatarbutton';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { defaultChildren } from '../accordionbutton/accordionbutton.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
+
+const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
+  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+  laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const render = (args: Args) =>
   html` <mdc-accordiongroup
