@@ -30,7 +30,11 @@ const setup = async (componentsPage: ComponentsPage, args: Args) => {
 };
 
 const takeScreenshot = async (componentsPage: ComponentsPage, orientation: OrientationType) => {
-  const sheet = new StickerSheet(componentsPage, 'mdc-stepper', 'margin: 0.5rem;');
+  if (orientation === ORIENTATION.VERTICAL) {
+    await componentsPage.page.setViewportSize({ width: 700, height: 1000 });
+  }
+  const styles = `margin: 0.5rem; ${orientation === ORIENTATION.VERTICAL ? 'height: 800px;' : ''}`;
+  const sheet = new StickerSheet(componentsPage, 'mdc-stepper', styles);
   sheet.setAttributes({ orientation });
   sheet.setChildren(`<mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
     <mdc-connector status="complete"></mdc-connector>
