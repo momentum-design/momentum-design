@@ -258,11 +258,15 @@ test('mdc-select', async ({ componentsPage }) => {
       // if validation message is shown, the select should be focused
       await expect(mdcSelect).toBeFocused();
 
+      // click outside to make sure the validation message is not shown anymore before proceeding
+      await componentsPage.page.mouse.click(0, 0);
+
       // Now select an option and verify form can be submitted
       await mdcSelect.locator('div[id="select-base-triggerid"]').click();
       await mdcSelect.locator('mdc-option').nth(1).click();
 
-      // Verify the selected value
+      // Verify the selected value and popover is closed
+      await expect(mdcSelect.locator('mdc-popover')).not.toBeVisible();
       await expect(mdcSelect).toHaveAttribute('value', 'option2');
 
       // Try to submit the form again

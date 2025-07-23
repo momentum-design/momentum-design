@@ -23,7 +23,7 @@ import styles from './option.styles';
  * on the right side of the option to indicate that it is selected.
  *
  * The `prefixIcon` property can be used to display an icon on the left side of the option label.
- * We can pass a tooltip which will be displayed on hover of the option label text.
+ * We can show a tooltip by setting `tooltip-text` attribute. This will be displayed on hover or focus of the option.
  * The tooltip will be helpful for a long label text which is truncated with ellipsis.
  *
  * @dependency mdc-icon
