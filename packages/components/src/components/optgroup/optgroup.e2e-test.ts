@@ -37,10 +37,10 @@ test('mdc-optgroup', async ({ componentsPage }) => {
   await test.step('visual-regression', async () => {
     const markUpOptions = { createNewRow: true };
     const optionGroupChildren = `
-      <mdc-option>Boston</mdc-option>
-      <mdc-option selected>Mexico</mdc-option>
-      <mdc-option>Toronto</mdc-option>
-      <mdc-option disabled>Canada</mdc-option>
+      <mdc-option label="Boston"></mdc-option>
+      <mdc-option label="Mexico" selected></mdc-option>
+      <mdc-option label="Toronto"></mdc-option>
+      <mdc-option label="Canada" disabled></mdc-option>
     `;
     const optionSheet = new StickerSheet(componentsPage, 'mdc-optgroup', 'margin: 0.25rem');
     optionSheet.setAttributes({ label: 'List options' });
@@ -69,7 +69,7 @@ test('mdc-optgroup', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const optgroup = await setup({ componentsPage, children: '<mdc-option>Option Label</mdc-option>' });
+    const optgroup = await setup({ componentsPage, children: '<mdc-option label="Option Label"></mdc-option>' });
 
     await test.step('should have header text label when the label attribute is passed', async () => {
       await componentsPage.setAttributes(optgroup, { label: 'Primary Label' });
