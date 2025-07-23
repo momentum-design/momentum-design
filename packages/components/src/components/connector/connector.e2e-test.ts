@@ -27,16 +27,7 @@ const setup = async (options: SetupOptions) => {
 
 test('mdc-connector', async ({ componentsPage }) => {
   /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    const { connector } = await setup({ componentsPage });
-    await componentsPage.accessibility.checkForA11yViolations('connector-default');
-    await expect(connector).toBeVisible();
-  });
-
-  /**
-   * VISUAL REGRESSION
+   * ACCESSIBILITY & VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
     const sheet = new StickerSheet(componentsPage, 'mdc-connector', 'margin: 0.5rem;');
@@ -51,6 +42,7 @@ test('mdc-connector', async ({ componentsPage }) => {
     await componentsPage.visualRegression.takeScreenshot('mdc-connector-stickersheet', {
       element: sheet.getWrapperContainer(),
     });
+    await componentsPage.accessibility.checkForA11yViolations('connector-default');
   });
 
   /**
@@ -60,28 +52,30 @@ test('mdc-connector', async ({ componentsPage }) => {
     // Scenario: Connector status attribute (default)
     const { connector } = await setup({ componentsPage });
     await test.step('should have default status and orientation attributes', async () => {
-      expect(await connector.getAttribute('status')).toBe('incomplete');
-      expect(await connector.getAttribute('orientation')).toBe('horizontal');
+      await expect(connector).toHaveAttribute('status', 'incomplete');
+      await expect(connector).toHaveAttribute('orientation', 'horizontal');
+      await expect(connector).toHaveAttribute('aria-orientation', 'horizontal');
     });
 
     // Scenario: Connector status attribute (complete/incomplete)
     const { connector: completeConnector } = await setup({ componentsPage, status: 'complete' });
     await test.step('should visually indicate completion when status is complete', async () => {
-      expect(await completeConnector.getAttribute('status')).toBe('complete');
+      await expect(completeConnector).toHaveAttribute('status', 'complete');
     });
     const { connector: incompleteConnector } = await setup({ componentsPage, status: 'incomplete' });
     await test.step('should visually indicate incompletion when status is incomplete', async () => {
-      expect(await incompleteConnector.getAttribute('status')).toBe('incomplete');
+      await expect(incompleteConnector).toHaveAttribute('status', 'incomplete');
     });
 
     // Scenario: Connector orientation
     const { connector: verticalConnector } = await setup({ componentsPage, orientation: 'vertical' });
     await test.step('should be displayed vertically when orientation is vertical', async () => {
-      expect(await verticalConnector.getAttribute('orientation')).toBe('vertical');
+      await expect(verticalConnector).toHaveAttribute('orientation', 'vertical');
+      await expect(verticalConnector).toHaveAttribute('aria-orientation', 'vertical');
     });
     const { connector: horizontalConnector } = await setup({ componentsPage, orientation: 'horizontal' });
     await test.step('should be displayed horizontally when orientation is horizontal', async () => {
-      expect(await horizontalConnector.getAttribute('orientation')).toBe('horizontal');
+      await expect(horizontalConnector).toHaveAttribute('orientation', 'horizontal');
     });
   });
 });

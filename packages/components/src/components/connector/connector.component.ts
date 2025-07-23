@@ -35,6 +35,13 @@ class Connector extends Component {
    */
   @property({ type: String, reflect: true }) orientation: OrientationType = DEFAULTS.ORIENTATION;
 
+  override updated(changedProperties: Map<string, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('orientation')) {
+      this.ariaOrientation = this.orientation;
+    }
+  }
+
   public override render() {
     return html` <div part="connector"></div> `;
   }
