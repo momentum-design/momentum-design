@@ -2,6 +2,7 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component, Provider } from '../../models';
+import { ROLE } from '../../utils/roles';
 import type { OrientationType } from '../connector/connector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
 
@@ -24,6 +25,11 @@ class Stepper extends Provider<StepperContext> {
       context: StepperContext.context,
       initialValue: new StepperContext(DEFAULTS.ORIENTATION, DEFAULTS.VARIANT),
     });
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = ROLE.LIST;
   }
 
   /**
@@ -73,7 +79,7 @@ class Stepper extends Provider<StepperContext> {
     const assignedElements = slot.assignedElements({ flatten: true });
     assignedElements.forEach(element => {
       if (element.tagName.toLowerCase() !== 'mdc-stepperitem' && element.tagName.toLowerCase() !== 'mdc-connector') {
-        slot.removeChild(element);
+        element.remove();
       }
     });
   };

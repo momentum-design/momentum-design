@@ -12,22 +12,11 @@ const render = (args: Args) =>
   html` <mdc-stepper orientation="${args.orientation}" variant="${args.variant}">
     <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
     <mdc-connector status="complete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 2"
-      status="completed"
-      help-text="Help text"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 2" status="completed" help-text="Help text"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
     <mdc-stepperitem label="Step 3" status="current" help-text="Help text"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 4"
-      status="error-incomplete"
-      step-number="4"
-      help-text="Error"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 4" status="error-incomplete" step-number="4" help-text="Error"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
     <mdc-stepperitem label="Step 5" status="not-started" step-number="5"></mdc-stepperitem>
   </mdc-stepper>`;
@@ -36,27 +25,11 @@ const renderWithErrorCurrent = (args: Args) =>
   html` <mdc-stepper orientation="${args.orientation}" variant="${args.variant}">
     <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
     <mdc-connector status="complete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 2"
-      status="completed"
-      help-text="Help text"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 2" status="completed" help-text="Help text"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 3"
-      status="error-current"
-      help-text="Help text"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 3" status="error-current" help-text="Help text"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 4"
-      status="error-incomplete"
-      step-number="4"
-      help-text="Error"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 4" status="error-incomplete" step-number="4" help-text="Error"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
     <mdc-stepperitem label="Step 5" status="not-started" step-number="5"></mdc-stepperitem>
   </mdc-stepper>`;
@@ -71,13 +44,7 @@ const renderWithLargeLabel = (args: Args) =>
       help-text="Help text is also very long"
     ></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
-    <mdc-stepperitem
-      variant="${args.variant}"
-      label="Step 4"
-      status="error-incomplete"
-      step-number="4"
-      help-text="Error"
-    ></mdc-stepperitem>
+    <mdc-stepperitem label="Step 4" status="error-incomplete" step-number="4" help-text="Error"></mdc-stepperitem>
     <mdc-connector status="incomplete"></mdc-connector>
     <mdc-stepperitem label="Step 5" status="not-started" step-number="5"></mdc-stepperitem>
   </mdc-stepper>`;
