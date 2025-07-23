@@ -86,7 +86,7 @@ const styles = css`
   }
 
   :host([variant='contained'])::part(header-section) {
-    border-radius: 0;
+    border-radius: inherit;
   }
 
   :host([variant='default'])::part(header-section) {
