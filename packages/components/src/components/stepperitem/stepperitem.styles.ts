@@ -64,8 +64,8 @@ const styles = css`
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-background-alert-error-normal);
   }
 
-  :host([status='error-current'])::part(help-text),
-  :host([status='error-incomplete'])::part(help-text) {
+  :host([status='error-current'])::part(help-text-container),
+  :host([status='error-incomplete'])::part(help-text-container) {
     display: flex;
     align-items: center;
     gap: 0.25rem;
