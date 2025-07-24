@@ -119,7 +119,7 @@ test.describe('Toast Feature Scenarios', () => {
         const toast = await setup({ componentsPage, showMoreText: SHOW_MORE_TEXT, showLessText: SHOW_LESS_TEXT, children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">Details</p>` });
         await expect(toast).toHaveAttribute('show-more-text', SHOW_MORE_TEXT);
         await expect(toast).toHaveAttribute('show-less-text', SHOW_LESS_TEXT);
-        const showMoreBtn = componentsPage.page.locator('mdc-button[part="footer-toggle-btn"]');
+        const showMoreBtn = componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]');
         await expect(showMoreBtn).toHaveText(SHOW_MORE_TEXT);
         await expect(showMoreBtn).toBeVisible();
       });
@@ -131,7 +131,7 @@ test.describe('Toast Feature Scenarios', () => {
         const toast = await setup({ componentsPage, children: `<span slot="toast-body-normal">${body}</span>` });
         const bodySlot = toast.locator('span[slot="toast-body-normal"]');
         await expect(bodySlot).toContainText(body);
-        await expect(toast.locator('mdc-button[part="footer-toggle-btn"]')).not.toBeVisible();
+        await expect(toast.locator('mdc-linkbutton[part="footer-button-toggle"]')).not.toBeVisible();
       });
 
       await test.step('Toast renders normal and detailed body content', async () => {
@@ -143,7 +143,7 @@ test.describe('Toast Feature Scenarios', () => {
         const detailedSlot = toast.locator('p[slot="toast-body-detailed"]');
         await expect(detailedSlot).toHaveText(detailedBody);
         await expect(detailedSlot).not.toBeVisible();
-        const showMoreBtn = toast.locator('mdc-button[part="footer-toggle-btn"]');
+        const showMoreBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
         await expect(showMoreBtn).toBeVisible();
         await expect(showMoreBtn).toContainText(SHOW_MORE_TEXT);
       });
@@ -157,12 +157,13 @@ test.describe('Toast Feature Scenarios', () => {
         const closePromise = componentsPage.waitForEvent(toast, 'close');
         await closeBtn.click();
         await closePromise;
+        await expect(toast).not.toBeVisible();
       });
 
       await test.step('User expands/collapses toast body using mouse', async () => {
         const detailedBody = 'This is detailed content.';
         const toast = await setup({ componentsPage, showMoreText: SHOW_MORE_TEXT, showLessText: SHOW_LESS_TEXT, children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">${detailedBody}</p>` });
-        const showMoreBtn = toast.locator('mdc-button[part="footer-toggle-btn"]');
+        const showMoreBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
         await showMoreBtn.click(); // expand
         const detailedSlot = toast.locator('p[slot="toast-body-detailed"]');
         await expect(detailedSlot).toBeVisible();
@@ -174,45 +175,23 @@ test.describe('Toast Feature Scenarios', () => {
     });
 
     await test.step('Rule: ✅ Keyboard Interactions', async () => {
-      await test.step('User navigates toast using Tab', async () => {
+      await test.step('User navigates toast using Tab and Shift+Tab', async () => {
         await setup({
           componentsPage,
           children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">Detailed</p><mdc-button slot="footer-button-primary">Primary</mdc-button><mdc-button slot="footer-button-secondary">Secondary</mdc-button>`
         });
-        await componentsPage.actionability.pressTab();
-        const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
-        await expect(closeBtn).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        const showMoreBtn = componentsPage.page.locator('mdc-button[part="footer-toggle-btn"]');
-        await expect(showMoreBtn).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]')).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(componentsPage.page.locator('mdc-button[slot="footer-button-primary"]')).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(componentsPage.page.locator('mdc-button[slot="footer-button-primary"]')).not.toBeFocused();
-      });
-
-      await test.step('User navigates toast using Shift+Tab', async () => {
-        await setup({
-          componentsPage,
-          children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">Detailed</p><mdc-button slot="footer-button-primary">Primary</mdc-button><mdc-button slot="footer-button-secondary">Secondary</mdc-button>`
-        });
-        // Move focus to primary button
-        await componentsPage.actionability.pressTab(); // close
-        await componentsPage.actionability.pressTab(); // show more
-        await componentsPage.actionability.pressTab(); // secondary
-        await componentsPage.actionability.pressTab(); // primary
-        await expect(componentsPage.page.locator('mdc-button[slot="footer-button-primary"]')).toBeFocused();
-        await componentsPage.actionability.pressShiftTab();
-        await expect(componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]')).toBeFocused();
-        await componentsPage.actionability.pressShiftTab();
-        const showMoreBtn = componentsPage.page.locator('mdc-button[part="footer-toggle-btn"]');
-        await expect(showMoreBtn).toBeFocused();
-        await componentsPage.actionability.pressShiftTab();
-        await expect(componentsPage.page.locator('mdc-toast [part="toast-close-btn"]')).toBeFocused();
-        await componentsPage.actionability.pressShiftTab();
-        await expect(componentsPage.page.locator('mdc-toast [part="toast-close-btn"]')).not.toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('Tab', [
+          componentsPage.page.locator('mdc-toast [part="toast-close-btn"]'),
+          componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]'),
+          componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]'),
+          componentsPage.page.locator('mdc-button[slot="footer-button-primary"]'),
+        ]);
+        await componentsPage.actionability.pressAndCheckFocus('Shift+Tab', [
+          componentsPage.page.locator('mdc-button[slot="footer-button-primary"]'),
+          componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]'),
+          componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]'),
+          componentsPage.page.locator('mdc-toast [part="toast-close-btn"]'),
+        ]);
       });
 
       await test.step('User closes toast with keyboard', async () => {
@@ -223,6 +202,7 @@ test.describe('Toast Feature Scenarios', () => {
         const closePromise = componentsPage.waitForEvent(toast, 'close');
         await closeBtn.press('Enter');
         await closePromise;
+        await expect(toast).not.toBeVisible();
       });
 
       await test.step('User expands/collapses toast body with keyboard', async () => {
@@ -232,7 +212,7 @@ test.describe('Toast Feature Scenarios', () => {
           showLessText: SHOW_LESS_TEXT,
           children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">This is detailed content.</p>`
         });
-        const showMoreBtn = toast.locator('mdc-button[part="footer-toggle-btn"]');
+        const showMoreBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
         await showMoreBtn.focus();
         await showMoreBtn.press('Enter'); // expand
         const detailedSlot = toast.locator('p[slot="toast-body-detailed"]');

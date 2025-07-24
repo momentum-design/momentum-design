@@ -65,7 +65,7 @@ Feature: Toast Accessibility and User Interaction
             And the detailed body text is "This is detailed content."
             Then the toast should render the normal body text
             And the link button should be visible
-            And its text should be "Show more"
+            And the link button should be visible with showMoreText
             And the detailed body content should be hidden by default
 
     Rule: ✅ Mouse Interactions
@@ -76,41 +76,37 @@ Feature: Toast Accessibility and User Interaction
             Then the "close" event should be emitted
 
         Scenario: User expands toast body using mouse
-            Given the toast is visible with long content and a "Show more" link button
+            Given the toast is visible with long content and a link button with showMoreText
             When the link button is clicked
             Then the body should expand to reveal full content
-            And the link button text should change to "Show less"
+            And the link button text should change to showLessText
 
         Scenario: User collapses toast body using mouse
-            Given the toast is visible and expanded with a "Show less" link button
+            Given the toast is visible and expanded with a showLestText link button
             When the link button is clicked
             Then the body should collapse to show only the short content
-            And the link button text should change back to "Show more"
+            And the link button text should change back to showMoreText
 
     Rule: ✅ Keyboard Interactions
 
-        Scenario: User navigates toast using Tab
-            Given the toast is visible and the focus enters the toast
-            Then the focus should first move to the close button
-            When Tab is pressed
-            Then focus should move to the link button if visible
-            When Tab is pressed
-            Then focus should move to the secondary button
-            When Tab is pressed
-            Then focus should move to the primary button
-            When Tab is pressed
-            Then the focus should move out of the toast
+        Scenario Outline: User navigates toast using <direction> key
+            Given the toast is visible and the focus is on the <start>
+            When <key> is pressed
+            Then the focus should move to <end>
 
-        Scenario: User navigates toast using Shift+Tab
-            Given the toast is visible and the focus is on the primary button
-            When Shift+Tab is pressed
-            Then the focus should move to the secondary button
-            When Shift+Tab is pressed
-            Then the focus should move to the link button if visible
-            When Shift+Tab is pressed
-            Then the focus should move to the close button
-            When Shift+Tab is pressed
-            Then the focus should move out of the toast
+            Examples: Forward tabbing (Tab)
+                | direction | key | start            | end              |
+                | forward   | Tab | close button     | linkbutton       |
+                | forward   | Tab | linkbutton       | secondary button |
+                | forward   | Tab | secondary button | primary button   |
+                | forward   | Tab | primary button   | out of the toast |
+
+            Examples: Reverse tabbing (Shift+Tab)
+                | direction | key       | start            | end              |
+                | backward  | Shift+Tab | primary button   | secondary button |
+                | backward  | Shift+Tab | secondary button | linkbutton       |
+                | backward  | Shift+Tab | linkbutton       | close button     |
+                | backward  | Shift+Tab | close button     | out of the toast |
 
         Scenario: User closes toast with keyboard
             Given the toast is visible and the close button is focused
