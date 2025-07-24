@@ -1,1 +1,0 @@
-import{u as T}from"./index-C9z9WAEj.js";import{P as o}from"./popover.component-C7-8N8j7.js";const s=T.constructTagName("menupopover"),E={PLACEMENT:o.BOTTOM_START,ORIENTATION:"vertical"};export{E as D,s as T};
