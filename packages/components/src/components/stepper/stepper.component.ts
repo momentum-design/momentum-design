@@ -74,18 +74,8 @@ class Stepper extends Provider<StepperContext> {
     }
   }
 
-  private handleSlotChange = (event: Event) => {
-    const slot = event.target as HTMLSlotElement;
-    const assignedElements = slot.assignedElements({ flatten: true });
-    assignedElements.forEach(element => {
-      if (element.tagName.toLowerCase() !== 'mdc-stepperitem' && element.tagName.toLowerCase() !== 'mdc-connector') {
-        element.remove();
-      }
-    });
-  };
-
   public override render() {
-    return html` <slot @slotchange=${this.handleSlotChange}></slot> `;
+    return html` <slot></slot> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

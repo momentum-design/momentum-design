@@ -7,7 +7,6 @@ Feature: Stepper context propagation, child filtering, and integration
   As a user, I want the stepper to update connector and stepperitem context when orientation or variant changes.
   As a developer, I want to ensure that only valid children (mdc-stepperitem, mdc-connector) are rendered inside the
   stepper.
-  As a developer, I want the stepper to remove any invalid children from its slot.
   As a developer, I want the stepper to act as a context provider for its children.
 
   Scenario: Stepper provides horizontal orientation to connectors
@@ -39,11 +38,6 @@ Feature: Stepper context propagation, child filtering, and integration
     Given a stepper with variant set to inline
     When the variant is changed to stacked
     Then all stepperitem children should update their variant to stacked
-
-  Scenario: Stepper filters invalid children
-    Given a stepper with children that are not mdc-stepperitem or mdc-connector
-    When the stepper is rendered
-    Then any invalid children should be removed from the slot
 
   Scenario: Stepper integrates stepperitem and connector visually
     Given a stepper with multiple stepperitem and connector children

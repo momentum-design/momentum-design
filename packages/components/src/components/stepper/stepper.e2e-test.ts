@@ -101,21 +101,6 @@ test('mdc-stepper', async ({ componentsPage }) => {
     await expect(item1).toHaveAttribute('variant', 'stacked');
   });
 
-  await test.step('should filter out invalid children', async () => {
-    const children = `
-      <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-      <div id="invalid">Invalid</div>
-      <mdc-connector></mdc-connector>
-      <span id="invalid2">Invalid2</span>
-      <mdc-stepperitem label="Step 2" status="current"></mdc-stepperitem>
-    `;
-    await setup(componentsPage, { children });
-    const invalid = componentsPage.page.locator('#invalid');
-    const invalid2 = componentsPage.page.locator('#invalid2');
-    await expect(invalid).toHaveCount(0);
-    await expect(invalid2).toHaveCount(0);
-  });
-
   await test.step('should have appropriate ARIA roles and attributes for navigation', async () => {
     const children = `
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
