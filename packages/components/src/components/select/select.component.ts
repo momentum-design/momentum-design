@@ -472,6 +472,22 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.visualCombobox.focus();
   }
 
+  /**
+   * Updates the state of the select component.
+   * This public method should be fired when the selected on the option components is updated from the outside.
+   * It ensures that the selected attribute is set correctly on the options
+   * and that the aria-selected attribute is updated accordingly.
+   */
+  public updateState(): void {
+    const newSelectedOption = this.getFirstSelectedOption();
+
+    if (!newSelectedOption) {
+      this.setSelectedOption(this.placeholder ? null : this.getFirstValidOption());
+    } else if (this.selectedOption?.value !== newSelectedOption.value) {
+      this.setSelectedOption(newSelectedOption);
+    }
+  }
+
   public override render() {
     return html`
       ${this.renderLabel()}
