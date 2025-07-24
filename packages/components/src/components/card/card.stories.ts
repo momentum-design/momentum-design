@@ -160,10 +160,10 @@ export const StaticContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
-        >Content Before Body</mdc-text
-      >
-      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+    children: html` <div slot="before-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -179,8 +179,10 @@ export const StaticContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
-      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    children: html` <div slot="after-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -271,13 +273,13 @@ export const InteractiveContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
-        >Content Before Body</mdc-text
-      >
-      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
-      <div slot="before-body" style="display: flex; gap: 8px; margin-top: 8px;">
-        <mdc-button size="28">Click Me</mdc-button>
-        <mdc-button size="28" variant="secondary">View More</mdc-button>
+    children: html` <div slot="before-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <mdc-button size="28">Click Me</mdc-button>
+          <mdc-button size="28" variant="secondary">View More</mdc-button>
+        </div>
       </div>
       - ${interactiveChildren}`,
   },
@@ -294,12 +296,14 @@ export const InteractiveContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html` <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body" />
-      <div slot="after-body" style="display: flex; gap: 8px; margin: 8px 0;">
-        <mdc-button size="28">Click Me</mdc-button>
-        <mdc-button size="28" variant="secondary">View More</mdc-button>
+    children: html` <div slot="after-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+        <img src="https://placehold.co/120x30" alt="Image Alt" width="100%" />
+        <div style="display: flex; gap: 8px; margin: 8px 0;">
+          <mdc-button size="28">Click Me</mdc-button>
+          <mdc-button size="28" variant="secondary">View More</mdc-button>
+        </div>
       </div>
-      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
       ${interactiveChildren}`,
   },
 };

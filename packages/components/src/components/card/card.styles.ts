@@ -23,6 +23,7 @@ const styles = css`
   }
 
   :host([orientation='vertical'])::part(image) {
+    object-fit: cover;
     height: 12.5rem;
     width: 100%;
     border-top-left-radius: 0.5rem;
@@ -30,6 +31,7 @@ const styles = css`
   }
 
   :host([orientation='horizontal'])::part(image) {
+    object-fit: cover;
     width: 10rem;
     height: 100%;
     border-top-left-radius: 0.5rem;
@@ -81,6 +83,12 @@ const styles = css`
 
   :host::part(footer) {
     gap: 1rem;
+    margin-top: auto;
+  }
+
+  ::slotted([slot='before-body']),
+  ::slotted([slot='after-body']) {
+    margin-top: 1rem;
   }
 
   ::slotted([slot='footer-link']),
