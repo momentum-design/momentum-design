@@ -2,11 +2,11 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { DEFAULTS, LINK_SIZES } from '../link/link.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
+import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
 
 const render = (args: Args) =>
   html`<mdc-linkbutton
@@ -14,7 +14,6 @@ const render = (args: Args) =>
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
-    ?active="${args.active}"
     ?disabled="${args.disabled}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
@@ -23,7 +22,6 @@ const render = (args: Args) =>
     tabindex="${args.tabIndex}"
     ?autofocus="${args.autofocus}"
     aria-label="${args['aria-label']}"
-    ariaStateKey="${ifDefined(args.ariaStateKey)}"
     >${args.children}</mdc-linkbutton>`;
 
 const renderWithInvertedBackground = (args: Args) =>
@@ -41,7 +39,6 @@ const meta: Meta = {
   },
   argTypes: {
     children: {
-      description: 'Text content to be displayed.',
       control: 'text',
     },
     disabled: {
@@ -56,18 +53,12 @@ const meta: Meta = {
     'icon-name': {
       control: 'text',
     },
-    active: {
-      control: 'boolean',
-    },
     size: {
       control: 'select',
-      options: Object.values(LINK_SIZES),
+      options: Object.values(LINKBUTTON_SIZES),
     },
     tabIndex: {
       control: 'number',
-    },
-    ariaStateKey: {
-      control: 'text',
     },
     autofocus: {
       control: 'boolean',
@@ -97,7 +88,7 @@ const defaultArgs = {
   'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
-  size: DEFAULTS.LINK_SIZE,
+  size: DEFAULTS.SIZE,
   tabIndex: 0,
 };
 

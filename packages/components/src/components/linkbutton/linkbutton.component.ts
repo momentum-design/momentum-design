@@ -2,13 +2,14 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { ROLE } from '../../utils/roles';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Link from '../link/link.component';
-import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from '../link/link.constants';
-import { LinkSize } from '../link/link.types';
-import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
 import { DEFAULTS as LINKSIMPLE_DEFAULTS } from '../linksimple/linksimple.constants';
+
+import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
+import type { LinkButtonSize } from './linkbutton.types';
+import { getIconSize } from './linkbutton.utils';
+import styles from './linkbutton.styles';
 
 /**
  * `mdc-linkbutton` visually resembles a link but behaves like a button, combining the appearance of `mdc-link` with the interactive and accessibility features of `mdc-button`.
@@ -42,16 +43,14 @@ import { DEFAULTS as LINKSIMPLE_DEFAULTS } from '../linksimple/linksimple.consta
 class LinkButton extends IconNameMixin(Buttonsimple) {
   /**
    * Sets the size of the linkbutton.
-   *
-   * Acceptable values:
-   * - 'small'
-   * - 'midsize'
-   * - 'large'
-   *
-   * @default large
+   * Acceptable values: 
+   * - 12
+   * - 14
+   * - 16
+   * @default 16
    */
-  @property({ type: String, reflect: true })
-  override size: any = DEFAULTS.LINK_SIZE;
+  @property({ type: Number, reflect: true })
+  override size: LinkButtonSize = DEFAULTS.SIZE;
 
   /**
    * The linkbutton can be inline or standalone.
@@ -69,9 +68,11 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
 
   override connectedCallback() {
     super.connectedCallback();
+    
+    this.active = undefined as unknown as boolean;
     this.softDisabled = undefined as unknown as boolean;
-    this.role = ROLE.BUTTON;
-    this.type = BUTTON_DEFAULTS.TYPE;
+    this.role = DEFAULTS.ROLE;
+    this.type = DEFAULTS.TYPE;
   }
 
   override update(changedProperties: PropertyValues): void {
@@ -86,36 +87,20 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
    *
    * @param size - The desired link size.
    */
-  private setSize(size: LinkSize) {
-    this.setAttribute('size', Object.values(LINK_SIZES).includes(size) ? `${size}` : DEFAULTS.LINK_SIZE.toString());
-  }
-
-  /**
-   * Returns the appropriate icon size for the trailing icon based on the current linkbutton size.
-   *
-   * @returns The icon size value in rem units.
-   */
-  private getIconSize(): number {
-    switch (this.size as LinkSize) {
-      case LINK_SIZES.SMALL:
-        return LINK_ICON_SIZES.SMALL;
-      case LINK_SIZES.MIDSIZE:
-        return LINK_ICON_SIZES.MIDSIZE;
-      default:
-        return LINK_ICON_SIZES.LARGE;
-    }
+  private setSize(size: LinkButtonSize) {
+    this.setAttribute('size', Object.values(LINKBUTTON_SIZES).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
   }
 
   public override render() {
     return html`
       <slot></slot>
       ${this.iconName
-        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
+        ? html` <mdc-icon name=${this.iconName} size=${getIconSize(this.size)} length-unit="rem"></mdc-icon> `
         : nothing}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Link.styles];
+  public static override styles: Array<CSSResult> = [...Link.styles, ...styles];
 }
 
 export default LinkButton;

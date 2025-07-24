@@ -4,7 +4,10 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { LINK_SIZES, LINK_ICON_SIZES } from '../link/link.constants';
+
+import { LINKBUTTON_SIZES } from './linkbutton.constants';
+import { getIconSize } from './linkbutton.utils';
+import type { LinkButtonSize } from './linkbutton.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -13,11 +16,9 @@ type SetupOptions = {
   inline?: boolean;
   inverted?: boolean;
   disabled?: boolean;
-  active?: boolean;
   autofocus?: boolean;
   size?: string;
   'aria-label'?: string;
-  ariaStateKey?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -29,11 +30,9 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.inline ? 'inline' : ''}
         ${restArgs.inverted ? 'inverted' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.active ? 'active' : ''}
         ${restArgs.autofocus ? 'autofocus' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
-        ${restArgs.ariaStateKey ? `ariaStateKey="${restArgs.ariaStateKey}"` : ''}
       >
         ${restArgs.children ?? 'LinkButton'}
       </mdc-linkbutton>
@@ -72,7 +71,7 @@ test.describe('LinkButton Feature Scenarios', () => {
         const filteredAttrs = Object.fromEntries(Object.entries(attrs).filter(([, v]) => v !== undefined)) as Record<string, string>;
         stickerSheet.setAttributes(filteredAttrs);
         await stickerSheet.createMarkupWithCombination(
-          { size: LINK_SIZES },
+          { size: LINKBUTTON_SIZES },
           inverted ? { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' } : undefined,
         );
       };
@@ -118,17 +117,25 @@ test.describe('LinkButton Feature Scenarios', () => {
       });
 
       await test.step('render linkbutton with icon-name attribute', async () => {
-        await setup({ componentsPage, 'icon-name': 'placeholder-bold' });
-        const icon = componentsPage.page.locator('mdc-icon[name="placeholder-bold"]');
+        const iconName = 'placeholder-bold';
+        await setup({ componentsPage, 'icon-name': iconName });
+        const icon = componentsPage.page.locator(`mdc-icon[name="${iconName}"]`);
         await expect(icon).toBeVisible();
+        await expect(icon).toHaveAttribute('name', iconName);
+        await expect(icon).toHaveAttribute('size', '1');
       });
 
       await test.step('render linkbutton with different sizes', async () => {
-        await Promise.all(Object.values(LINK_SIZES).map(async (size) => {
-          await setup({ componentsPage, 'icon-name': 'placeholder-bold', size });
-          const icon = componentsPage.page.locator('mdc-icon[name="placeholder-bold"]');
-          await expect(icon).toHaveAttribute('size', LINK_ICON_SIZES[size]);
-        }));
+        const sizes = [12, 14, 16];
+        await Promise.all(
+          sizes.map(async (size) => {
+            await setup({ componentsPage, 'icon-name': 'placeholder-bold', size: `${size}` });
+            const icon = componentsPage.page.locator('mdc-icon[name="placeholder-bold"]');
+            await expect(icon).toBeVisible();
+            const expectedIconSize = getIconSize((String(size) as unknown) as LinkButtonSize);
+            await expect(icon).toHaveAttribute('size', expectedIconSize.toString());
+          })
+        );
       });
 
       await test.step('render linkbutton with inline and block layout', async () => {
@@ -148,11 +155,6 @@ test.describe('LinkButton Feature Scenarios', () => {
         await expect(linkbutton).toHaveAttribute('disabled', '');
         await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
         await expect(await linkbutton.getAttribute('tabindex')).not.toBe('0');
-      });
-
-      await test.step('render linkbutton with active state', async () => {
-        const linkbutton = await setup({ componentsPage, active: true });
-        await expect(linkbutton).toHaveAttribute('active', '');
       });
 
       await test.step('render linkbutton with autofocus', async () => {
@@ -227,7 +229,7 @@ test.describe('LinkButton Feature Scenarios', () => {
         const linkbutton = await setup({ componentsPage });
         await expect(linkbutton).toHaveAttribute('role', 'button');
         await expect(linkbutton).toHaveAttribute('tabindex', '0');
-        await expect(linkbutton).toHaveAttribute('size', 'large');
+        await expect(linkbutton).toHaveAttribute('size', '16');
       });
 
       await test.step('disabled state ARIA attributes', async () => {
@@ -239,11 +241,6 @@ test.describe('LinkButton Feature Scenarios', () => {
       await test.step('render linkbutton with aria-label', async () => {
         const linkbutton = await setup({ componentsPage, 'aria-label': 'Accessible label' });
         await expect(linkbutton).toHaveAttribute('aria-label', 'Accessible label');
-      });
-
-      await test.step('render linkbutton with ariaStateKey', async () => {
-        const linkbutton = await setup({ componentsPage, ariaStateKey: 'state-key' });
-        await expect(linkbutton).toHaveAttribute('ariaStateKey', 'state-key');
       });
     });
   });

@@ -1,3 +1,8 @@
+import type { ValueOf } from '../../utils/types';
+
+import { LINKBUTTON_SIZES } from './linkbutton.constants';
+
+type LinkButtonSize = ValueOf<typeof LINKBUTTON_SIZES>;
 interface Events {
   onClickEvent: MouseEvent;
   onKeyDownEvent: KeyboardEvent;
@@ -5,4 +10,4 @@ interface Events {
   onBlurEvent: Event;
 }
 
-export type { Events };
+export type { Events, LinkButtonSize };

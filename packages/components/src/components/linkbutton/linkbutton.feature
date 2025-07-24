@@ -4,41 +4,41 @@ Feature: LinkButton Accessibility and User Interaction
         Given the LinkButton component is rendered on the page
         And the linkbutton has role="button"
         And the linkbutton is focusable with tabindex="0"
-        And the linkbutton has default size="large"
+        And the linkbutton has default size of 16px
         And the linkbutton contains:
             | Property         | Value                | State    |
             | ---------------- | -------------------- | -------- |
             | Children         | "LinkButton"         | Normal   |
-            | Icon Name        | "icon-name"          | Optional |
-            | Inline           | true/false           | Optional |
-            | Inverted         | true/false           | Optional |
-            | Disabled         | true/false           | Optional |
-            | Active           | true/false           | Optional |
-            | Autofocus        | true/false           | Optional |
+            | icon-name        | "icon-name"          | Optional |
+            | inline           | true/false           | Optional |
+            | inverted         | true/false           | Optional |
+            | disabled         | true/false           | Optional |
+            | autofocus        | true/false           | Optional |
             | aria-label       | "Accessible label"   | Optional |
-            | ariaStateKey     | "state-key"          | Optional |
 
     Rule: ✅ Rendering and Visual States
 
         Scenario: Render linkbutton with children slot only
-            Given the linkbutton has children slot content "LinkButton"
+            Given the linkbutton has slot content "LinkButton"
             When the linkbutton is rendered
-            Then the children slot content should be visible
+            Then the slot content should be visible
 
         Scenario: Render linkbutton with icon-name attribute
             Given the linkbutton has icon-name set to "icon-name"
             When the linkbutton is rendered
-            Then the icon should be rendered with the name "icon-name"
+            Then the icon should be rendered with name "icon-name"
+            And the icon should have a default size of 0.75rem
+            And the icon should appear trailing the slot content
 
         Scenario: Render linkbutton with different sizes
-            Given the linkbutton has children slot content "LinkButton"
+            Given the linkbutton has slot content "LinkButton"
             And the linkbutton has icon-name set
-            When the linkbutton size is set to "small"
-            Then the icon should have the small size
-            When the linkbutton size is set to "midsize"
-            Then the icon should have the midsize size
-            When the linkbutton size is set to "large"
-            Then the icon should have the large size
+            When the linkbutton size is set to 16px
+            Then the icon should have a size of 0.75rem
+            When the linkbutton size is set to 14px
+            Then the icon should have a size of 0.5rem
+            When the linkbutton size is set to 12px
+            Then the icon should have a size of 0.25rem
 
         Scenario: Render linkbutton with inline and block layout
             Given the linkbutton has inline attribute set to true
