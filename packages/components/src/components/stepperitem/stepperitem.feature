@@ -92,8 +92,11 @@ Feature: StepperItem Accessibility and User Interaction
       Given the stepperitem is rendered
       Then the stepperitem should have role="listitem" or appropriate role
       And the stepperitem should have correct tabindex based on status
-      When status is "current" or "error-current"
-      Then the user needs to set aria-current="step" on this stepperitem
+
+    Scenario: Having aria-current attribute
+      Given the stepperitem has status "current" or "error-current"
+      When the stepperitem is rendered
+      Then the stepperitem should have aria-current="step"
 
     Scenario: help-text accessibility
       Given the stepperitem has a help-text
