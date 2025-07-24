@@ -28,6 +28,15 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the stepperitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the stepperitem.
  *
+ * @csspart status-container - The container for the status icon or step number.
+ * @csspart label-container - The container for the label and help text.
+ * @csspart help-text-container - The container for the help text and error icon when applicable.
+ * @csspart status-icon - The icon representing the status of the stepper item.
+ * @csspart step-number - The text representing the step number.
+ * @csspart label - The text representing the label of the stepper item.
+ * @csspart help-text - The text providing additional information about the stepper item.
+ * @csspart help-icon - The icon representing an error in the stepper item.
+ *
  * @cssproperty --mdc-stepperitem-status-container-background - The background color of the status container.
  * @cssproperty --mdc-stepperitem-status-container-border-color - The border color of the status container.
  * @cssproperty --mdc-stepperitem-label-color - The color of the label text.
@@ -172,7 +181,7 @@ class StepperItem extends TabIndexMixin(Component) {
     >`;
 
     if (this.status === STATUS.ERROR_INCOMPLETE || this.status === STATUS.ERROR_CURRENT) {
-      return html`<div part="help-text">
+      return html`<div part="help-text-container">
         <mdc-icon part="help-icon" name=${STATUS_ICON.ERROR} length-unit="rem" size="1"></mdc-icon>
         ${helpTextContent}
       </div>`;

@@ -16,11 +16,8 @@ import type { OrientationType, StatusType } from './connector.types';
  *
  * @csspart connector - The main connector line between steps
  *
- * @cssproperty --mdc-connector-complete-bg - Background color for the complete connector
- * @cssproperty --mdc-connector-incomplete-bg - Background color for the incomplete connector
- *
- * status: The status of the connector ("complete" or "incomplete")
- * orientation: The orientation of the connector ("vertical" or "horizontal")
+ * @cssproperty --mdc-connector-complete-background - Background color for the complete connector
+ * @cssproperty --mdc-connector-incomplete-background - Background color for the incomplete connector
  */
 class Connector extends Component {
   /**

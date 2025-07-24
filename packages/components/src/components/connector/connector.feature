@@ -1,14 +1,11 @@
-# Feature: Connector Component
-## Description
-## User Stories
 Feature: Connector status display
   As a user, I want to see the status of each step in a stepper.
-  As a user, I want to know which steps are completed and which are incomplete.
+  And I want to know which steps are completed and which are incomplete.
 
   Scenario: Connector displays status
     Given a stepper with multiple steps
     When a step is completed
-    Then the connector between steps should indicate completion
+    Then the connector between steps should visually indicate completion
 
   Scenario: Connector status attribute
     Given a connector component
@@ -26,4 +23,4 @@ Feature: Connector status display
 
   Scenario: Visual only
     Given a connector component
-    Then it should not have any accessibility attributes
+    Then it should not contain any accessibility attributes
