@@ -100,6 +100,7 @@ class Accordion extends AccordionButton {
             @click="${this.handleHeaderClick}"
             aria-controls="${this.bodySectionId}"
             aria-expanded="${this.expanded}"
+            title="${this.headerText}"
             prefix-icon="${this.expanded ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
             variant="${BUTTON_VARIANTS.TERTIARY}"
           ></mdc-button>

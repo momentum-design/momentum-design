@@ -2,9 +2,7 @@ Feature: Accordion Button Component
 
   Background:
     Given the Accordion Button component is rendered on the page
-    And the button has role="button"
-    And the button has default size="small"
-    And the button contains:
+    And the accordion button contains:
       | Property      | Value                  | State    |
       | ------------- | ---------------------- | -------- |
       | Prefix Icon   | icon name              | Optional |

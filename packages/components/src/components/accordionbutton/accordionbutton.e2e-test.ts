@@ -30,7 +30,7 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: `
       <mdc-accordionbutton
-        ${restArgs.expanded !== undefined ? `expanded="${restArgs.expanded}"` : ''}
+        ${restArgs.expanded ? 'expanded' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
@@ -150,7 +150,7 @@ test.describe('AccordionButton Feature Scenarios', () => {
      * USER INTERACTION
      */
     await test.step('user interaction', async () => {
-      await test.step('toggle accordion on header click', async () => {
+      await test.step('mouse click on header', async () => {
         const { headerButton, headerButtonSection, content } = await setup({ componentsPage });
 
         // Initially collapsed
@@ -172,10 +172,11 @@ test.describe('AccordionButton Feature Scenarios', () => {
         const { headerButton, headerButtonSection, content } = await setup({ componentsPage });
 
         // Focus the header button
-        await headerButton.focus();
+        await componentsPage.actionability.pressTab();
+        await expect(headerButton).toBeFocused();
 
         // Test Enter key
-        await headerButton.press(KEYS.ENTER);
+        await headerButtonSection.press(KEYS.ENTER);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(content).toBeVisible();
 
