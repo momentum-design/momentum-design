@@ -77,19 +77,11 @@ class Card extends CardComponentMixin(FooterMixin(Component)) {
    */
   private handleIconButtons = () => {
     this.iconButtons?.forEach(element => {
-      if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
-        element.remove();
-      } else {
+      if (element.matches(DEFAULTS.BUTTON)) {
         element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
         element.setAttribute('size', '32');
       }
     });
-    // limit to show only first 3 buttons defined in the slot
-    if (this.iconButtons && this.iconButtons.length > 3) {
-      for (let i = 3; i < this.iconButtons.length; i += 1) {
-        this.iconButtons[i].remove();
-      }
-    }
   };
 
   /**

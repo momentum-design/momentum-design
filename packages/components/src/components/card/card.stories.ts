@@ -197,9 +197,7 @@ const interactiveChildren = html`<mdc-text slot="body" type="body-midsize-medium
   <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
   <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
   <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-  <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="this is not rendered"></mdc-button>
   <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
-  <mdc-text slot="footer-link">Not rendered</mdc-text>
   <mdc-button slot="footer-button-secondary">Label</mdc-button>
   <mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
