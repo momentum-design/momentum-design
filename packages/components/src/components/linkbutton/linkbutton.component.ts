@@ -4,7 +4,6 @@ import { property } from 'lit/decorators.js';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Link from '../link/link.component';
-import { DEFAULTS as LINKSIMPLE_DEFAULTS } from '../linksimple/linksimple.constants';
 
 import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
 import type { LinkButtonSize } from './linkbutton.types';
@@ -12,12 +11,12 @@ import { getIconSize } from './linkbutton.utils';
 import styles from './linkbutton.styles';
 
 /**
- * `mdc-linkbutton` visually resembles a link but behaves like a button, combining the appearance of `mdc-link` with the interactive and accessibility features of `mdc-button`.
+ * `mdc-linkbutton` visually mimics a hyperlink while functioning as a button. It blends the appearance of `mdc-link` with the accessibility and interaction capabilities of `mdc-button`.
  *
  * ### Features:
- * - Behaves like a button while visually resembling a link.
- * - Supports slots for text label and optional trailing icon.
- * - Inherits accessibility and keyboard interaction support from `mdc-buttonsimple`.
+ * - Looks like a link, behaves like a button.
+ * - Supports slots for a text label and an optional trailing icon.
+ * - Inherits accessibility and keyboard interaction behavior from `mdc-buttonsimple`.
  *
  * @dependency mdc-icon
  *
@@ -57,14 +56,14 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  inline: boolean = LINKSIMPLE_DEFAULTS.INLINE;
+  inline: boolean = DEFAULTS.INLINE;
 
   /**
    * The linkbutton color can be inverted by setting the inverted attribute to true.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  inverted: boolean = LINKSIMPLE_DEFAULTS.INVERTED;
+  inverted: boolean = DEFAULTS.INVERTED;
 
   override connectedCallback() {
     super.connectedCallback();

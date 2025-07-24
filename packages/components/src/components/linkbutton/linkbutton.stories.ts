@@ -65,7 +65,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls(['role', 'type', 'soft-disabled']),
+    ...hideControls(['active','role', 'type', 'soft-disabled', 'ariaStateKey']),
     ...disableControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
