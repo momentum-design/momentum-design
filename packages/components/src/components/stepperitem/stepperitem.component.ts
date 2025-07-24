@@ -5,6 +5,7 @@ import { Component } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -42,8 +43,8 @@ class StepperItem extends TabIndexMixin(Component) {
   variant: VariantType = DEFAULT.VARIANT;
 
   /**
-   * The status of the stepper item, which can be `completed`, `current`, `incomplete`, `error-current`, or `error-incomplete`.
-   * @default 'incomplete'
+   * The status of the stepper item, which can be `completed`, `current`, `not-started`, `error-current`, or `error-incomplete`.
+   * @default 'not-started'
    */
   @property({ type: String, reflect: true })
   status: StatusType = DEFAULT.STATUS;
@@ -69,8 +70,8 @@ class StepperItem extends TabIndexMixin(Component) {
    * This is useful for indicating the order of steps in a process.
    * @default ''
    */
-  @property({ type: String, reflect: true, attribute: 'step-number' })
-  stepNumber?: string;
+  @property({ type: Number, reflect: true, attribute: 'step-number' })
+  stepNumber?: number;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -92,23 +93,18 @@ class StepperItem extends TabIndexMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
+    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
       this.classList.add('pressed');
-      if (event.key === 'Enter') {
+      if (event.key === KEYS.ENTER) {
         this.triggerClickEvent();
       }
-
-      // preventing the default event behavior for space key
-      // to avoid scrolling etc in the host application
-      // preventing the default event behavior for enter key
-      // to avoid the keyup event to be triggered
+      // Prevent default event behavior to avoid scrolling or double-triggering
       event.preventDefault();
     }
   }
 
   /**
    * Triggers a click event on the stepper item.
-   *
    */
   private triggerClickEvent() {
     const clickEvent = new MouseEvent('click', {
@@ -127,9 +123,9 @@ class StepperItem extends TabIndexMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
+    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
       this.classList.remove('pressed');
-      if (event.key === ' ') {
+      if (event.key === KEYS.SPACE) {
         this.triggerClickEvent();
       }
     }
@@ -164,7 +160,7 @@ class StepperItem extends TabIndexMixin(Component) {
    * If the `helpText` property is not set, it returns nothing.
    * @returns A template literal that renders the help text for the stepper item.
    */
-  private renderhelpText() {
+  private renderHelpText() {
     if (!this.helpText) {
       return nothing;
     }
@@ -192,7 +188,7 @@ class StepperItem extends TabIndexMixin(Component) {
               >${this.label}</mdc-text
             >`
           : nothing}
-        ${this.renderhelpText()}
+        ${this.renderHelpText()}
       </div>`;
   }
 

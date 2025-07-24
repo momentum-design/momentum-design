@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { IconNames } from '../icon/icon.types';
+import type { IconNames } from '../icon/icon.types';
 
 const TAG_NAME = utils.constructTagName('stepperitem');
 

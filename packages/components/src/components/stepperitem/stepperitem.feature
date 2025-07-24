@@ -21,9 +21,9 @@ Feature: StepperItem Accessibility and User Interaction
 
     Scenario: Render stepperitem with help-text
       Given the stepperitem has a label-text "Step Label"
-      And the stepperitem has an help-text "Optional"
+      And the stepperitem has a help-text "Help text"
       When the stepperitem is rendered
-      Then the help-text should be visible in parentheses
+      Then the help-text should be visible
 
     Scenario: Render stepperitem with step-number
       Given the stepperitem has a status "not-started" or "error-incomplete"
@@ -39,7 +39,7 @@ Feature: StepperItem Accessibility and User Interaction
 
     Scenario: Render stepperitem with current or error-current status
       Given the stepperitem has status "error-current" or "current"
-      And the stepperitem has an help-text
+      And the stepperitem has a help-text
       When the stepperitem is rendered
       Then a pencil icon should be visible in the status container
       And the help-text should be visible
@@ -51,6 +51,7 @@ Feature: StepperItem Accessibility and User Interaction
       Then the stepperitem should have the icon on top
       And the label-text should be visible below the icon
       And the help-text should be visible below the label-text
+      And the help-text and the icon alignment should follow LTR/RTL.
 
     Scenario: Render stepperitem as inline variant
       Given the stepperitem is rendered as an inline variant
@@ -58,6 +59,7 @@ Feature: StepperItem Accessibility and User Interaction
       Then the stepperitem should have the icon on the left
       And the label-text should be visible to the right of the icon
       And the help-text should be visible below the label-text
+      And the help-text and the icon alignment should follow LTR/RTL.
 
   Rule: ✅ Keyboard and Focus Management
 
@@ -94,7 +96,7 @@ Feature: StepperItem Accessibility and User Interaction
       Then the user needs to set aria-current="step" on this stepperitem
 
     Scenario: help-text accessibility
-      Given the stepperitem has an help-text
+      Given the stepperitem has a help-text
       When the stepperitem is rendered
       Then the help-text should be associated with the stepperitem for screen readers
 
@@ -104,7 +106,7 @@ Feature: StepperItem Accessibility and User Interaction
       Then the step number should be announced by screen readers
 
     Scenario: Error message accessibility
-      Given the stepperitem has status "error" and an help-text
+      Given the stepperitem has status "error" and a help-text
       When the stepperitem is rendered
       Then the error message should be announced by screen readers
 
