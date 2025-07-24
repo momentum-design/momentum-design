@@ -1,4 +1,4 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
@@ -184,6 +184,13 @@ class AccordionButton extends DisabledMixin(Component) {
       </div>`;
     }
     return nothing;
+  }
+
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('disabled')) {
+      this.setAttribute('aria-disabled', `${this.disabled}`);
+    }
   }
 
   public override render() {
