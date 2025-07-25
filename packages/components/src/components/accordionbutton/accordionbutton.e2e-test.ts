@@ -53,6 +53,7 @@ const setup = async (args: SetupOptions) => {
   return { accordionButton, headerButton, headerButtonSection, content };
 };
 
+test.use({ viewport: { width: 500, height: 1000 } });
 test.describe('AccordionButton Feature Scenarios', () => {
   test('mdc-accordionbutton', async ({ componentsPage }) => {
     /**
