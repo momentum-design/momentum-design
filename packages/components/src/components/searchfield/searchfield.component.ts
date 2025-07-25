@@ -4,6 +4,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { KEYS } from '../../utils/keys';
 
 import styles from './searchfield.styles';
 import { DEFAULTS } from './searchfield.constants';
@@ -110,8 +111,8 @@ class Searchfield extends Input {
           <div
             part="filters-container"
             @click=${() => this.inputElement.focus()}
-            @keydown=${(e: KeyboardEvent) => (e.key === 'Enter' ? this.inputElement.focus() : null)}
-            @keyup=${(e: KeyboardEvent) => (e.key === ' ' ? this.inputElement.focus() : null)}
+            @keydown=${(e: KeyboardEvent) => (e.key === KEYS.ENTER ? this.inputElement.focus() : null)}
+            @keyup=${(e: KeyboardEvent) => (e.key === KEYS.SPACE ? this.inputElement.focus() : null)}
           >
             <slot name="filters" @slotchange=${this.renderInputChips}></slot>
           </div>

@@ -6,13 +6,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
-import { ValueOf } from '../../utils/types';
+import type { ValueOf } from '../../utils/types';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
+import type { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -113,6 +113,48 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    */
   @property({ type: Number, reflect: true })
   offset: number = DEFAULTS.OFFSET;
+
+  /**
+   * This describes the clipping element(s) or area that overflow will be checked relative to.
+   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
+   * element to be clipped.
+   *
+   * Possible values:
+   *  - 'clippingAncestors'
+   *  - any css selector
+   *
+   * @default 'clippingAncestors'
+   *
+   * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary' })
+  boundary: 'clippingAncestors' | string = DEFAULTS.BOUNDARY;
+
+  /**
+   * This describes the root boundary that the element will be checked for overflow relative to.
+   * The default is 'viewport', which is the area of the page the user can see on the screen.
+   *
+   * The other string option is 'document', which is the entire page outside the viewport.
+   *
+   * @default 'viewport'
+   *
+   * @see [Floating UI - rootBoundary](https://floating-ui.com/docs/detectOverflow#rootboundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary-root' })
+  boundaryRoot: 'viewport' | 'document' = DEFAULTS.BOUNDARY_ROOT;
+
+  /**
+   * Virtual padding around the boundary to check for overflow.
+   * So the popover will not be placed on top of the edge of the boundary.
+   *
+   * Default works well for most cases, but you can set this to customise it when necessary.
+   *
+   * @default undefined
+   *
+   * @see [Floating UI - padding](https://floating-ui.com/docs/detectOverflow#padding)
+   */
+  @property({ type: Number, reflect: true, attribute: 'boundary-padding' })
+  boundaryPadding: undefined | number;
 
   /**
    * Determines whether the focus trap is enabled.
@@ -414,6 +456,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
+    // If the role is changed to an empty string, set it to null
+    // to avoid setting an invalid role on the popover element.
+    if (changedProperties.has('role')) {
+      if (this.role === '') {
+        this.role = null;
+      }
+    }
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
@@ -488,11 +537,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
     let insidePopoverClick = false;
     const path = event.composedPath();
-    insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
+      PopoverEventManager.onClickOutside(this);
     }
   };
 
@@ -514,6 +565,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     event.preventDefault();
     this.hidePopover();
+    PopoverEventManager.onEscapeKeyPressed(this);
   };
 
   /**
@@ -726,7 +778,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private positionPopover() {
     if (!this.triggerElement) return;
 
-    const middleware = [shift()];
+    const middleware = [
+      shift({
+        boundary:
+          !this.boundary || this.boundary === 'clippingAncestors'
+            ? 'clippingAncestors'
+            : Array.from(document.querySelectorAll(this.boundary)),
+        rootBoundary: this.boundaryRoot,
+        padding: this.boundaryPadding,
+      }),
+    ];
     let popoverOffset = this.offset;
 
     if (this.flip) {
@@ -734,6 +795,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
 
     if (this.size) {
+      // expose a CSS variable for the available height
+      // so that it can be used in other components styles
+      const setInternalAvailableHeight = (availableHeight: number) => {
+        this.style.setProperty('--mdc-popover-internal-available-height', `${availableHeight}px`);
+      };
       const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
@@ -743,6 +809,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
               maxHeight: `${availableHeight}px`,
               overflowY: 'auto',
             });
+            setInternalAvailableHeight(availableHeight);
           },
           padding: 50,
         }),

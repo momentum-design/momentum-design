@@ -9,6 +9,7 @@ import type { IconNames } from '../icon/icon.types';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
+import { DEFAULTS } from './menusection.constants';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -52,6 +53,17 @@ class MenuSection extends Component {
    */
   @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
   showDivider = false;
+
+  /**
+   * The variant of the divider.
+   * Can be set to 'solid' or 'gradient'.
+   *
+   * Keep 'solid' if used in MenuPopovers, as it is the default style.
+   *
+   * @default 'solid'
+   */
+  @property({ type: String, reflect: true, attribute: 'divider-variant' })
+  dividerVariant = DEFAULTS.DIVIDER_VARIANT;
 
   /**
    * Shows or hides the section headers based on the expanded state of the side navigation.
@@ -107,7 +119,7 @@ class MenuSection extends Component {
     return html`
       ${!this.hideHeaderText ? this.renderHeader() : null}
       <slot></slot>
-      ${this.showDivider ? html`<mdc-divider variant="gradient" part="divider"></mdc-divider>` : null}
+      ${this.showDivider ? html`<mdc-divider variant="${this.dividerVariant}" part="divider"></mdc-divider>` : null}
     `;
   }
 

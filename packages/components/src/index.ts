@@ -27,6 +27,7 @@ import IconProvider from './components/iconprovider';
 import Input from './components/input';
 import InputChip from './components/inputchip';
 import Link from './components/link';
+import LinkButton from './components/linkbutton';
 import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
@@ -66,6 +67,9 @@ import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
+import SelectListbox from './components/selectlistbox';
+import Stepperitem from './components/stepperitem';
+import StepperConnector from './components/stepperconnector';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -75,8 +79,8 @@ import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
+import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
-import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Constants / Utils Imports
 import {
@@ -86,6 +90,7 @@ import {
   PILL_BUTTON_SIZES,
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Components Exports
 export {
@@ -116,6 +121,7 @@ export {
   Input,
   InputChip,
   Link,
+  LinkButton,
   Linksimple,
   List,
   ListItem,
@@ -145,6 +151,7 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  Stepperitem,
   Tab,
   TabList,
   Text,
@@ -155,6 +162,8 @@ export {
   Tooltip,
   VirtualizedList,
   Listheader,
+  SelectListbox,
+  StepperConnector,
 };
 
 // Types Exports
@@ -169,6 +178,8 @@ export type {
   PillButtonSize,
   PopoverPlacement,
   SkeletonVariant,
+  SelectChangeEvent,
+  SelectInputEvent,
   SpinnerSize,
   SpinnerVariant,
   TextType,
