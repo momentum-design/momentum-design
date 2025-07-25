@@ -2,8 +2,8 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-connector-complete-background: var(--mds-color-theme-outline-theme-normal);
-    --mdc-connector-incomplete-background: var(--mds-color-theme-outline-primary-normal);
+    --mdc-stepperconnector-complete-background: var(--mds-color-theme-outline-theme-normal);
+    --mdc-stepperconnector-incomplete-background: var(--mds-color-theme-outline-primary-normal);
     display: block;
     width: 100%;
     height: 100%;
@@ -11,10 +11,10 @@ const styles = css`
   :host::part(connector) {
     width: 100%;
     height: 0.0625rem;
-    background: var(--mdc-connector-incomplete-background);
+    background: var(--mdc-stepperconnector-incomplete-background);
   }
   :host([status='complete'])::part(connector) {
-    background: var(--mdc-connector-complete-background);
+    background: var(--mdc-stepperconnector-complete-background);
   }
   :host([orientation='vertical'])::part(connector) {
     width: 0.0625rem;
@@ -23,16 +23,16 @@ const styles = css`
 
   @media (forced-colors: active) {
     :host([orientation='horizontal'])::part(connector) {
-      border-top: 1px solid var(--mdc-connector-incomplete-background);
+      border-top: 1px solid var(--mdc-stepperconnector-incomplete-background);
     }
     :host([status='complete'][orientation='horizontal'])::part(connector) {
-      border-top: 1px solid var(--mdc-connector-complete-background);
+      border-top: 1px solid var(--mdc-stepperconnector-complete-background);
     }
     :host([orientation='vertical'])::part(connector) {
-      border-left: 1px solid var(--mdc-connector-incomplete-background);
+      border-left: 1px solid var(--mdc-stepperconnector-incomplete-background);
     }
     :host([status='complete'][orientation='vertical'])::part(connector) {
-      border-left: 1px solid var(--mdc-connector-complete-background);
+      border-left: 1px solid var(--mdc-stepperconnector-complete-background);
     }
   }
 `;

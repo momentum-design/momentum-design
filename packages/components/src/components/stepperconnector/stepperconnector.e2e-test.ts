@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { ORIENTATION, STATUS } from './connector.constants';
+import { ORIENTATION, STATUS } from './stepperconnector.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -14,23 +14,23 @@ type SetupOptions = {
 const setup = async (options: SetupOptions) => {
   const { componentsPage, status = 'incomplete', orientation = 'horizontal' } = options;
   const html = `
-    <mdc-connector
+    <mdc-stepperconnector
       status="${status}"
       orientation="${orientation}"
     />
   `;
   await componentsPage.mount({ html, clearDocument: true });
-  const connector = componentsPage.page.locator('mdc-connector');
+  const connector = componentsPage.page.locator('mdc-stepperconnector');
   await connector.waitFor();
   return { connector };
 };
 
-test('mdc-connector', async ({ componentsPage }) => {
+test('mdc-stepperconnector', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY & VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const sheet = new StickerSheet(componentsPage, 'mdc-connector', 'margin: 0.5rem;');
+    const sheet = new StickerSheet(componentsPage, 'mdc-stepperconnector', 'margin: 0.5rem;');
     await sheet.createMarkupWithCombination(
       {
         status: STATUS,
@@ -39,10 +39,10 @@ test('mdc-connector', async ({ componentsPage }) => {
       { rowWrapperStyle: 'height: 200px; width: 200px; margin: 2rem;' },
     );
     await sheet.mountStickerSheet();
-    await componentsPage.visualRegression.takeScreenshot('mdc-connector-stickersheet', {
+    await componentsPage.visualRegression.takeScreenshot('mdc-stepperconnector-stickersheet', {
       element: sheet.getWrapperContainer(),
     });
-    await componentsPage.accessibility.checkForA11yViolations('connector-default');
+    await componentsPage.accessibility.checkForA11yViolations('mdc-stepperconnector-default');
   });
 
   /**

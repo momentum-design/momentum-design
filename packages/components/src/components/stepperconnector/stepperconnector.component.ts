@@ -4,23 +4,23 @@ import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 
-import { DEFAULTS } from './connector.constants';
-import styles from './connector.styles';
-import type { OrientationType, StatusType } from './connector.types';
+import { DEFAULTS } from './stepperconnector.constants';
+import styles from './stepperconnector.styles';
+import type { OrientationType, StatusType } from './stepperconnector.types';
 
 /**
- * Connector component visually represents the connection between two stepper items.
+ * StepperConnector component visually represents the connection between two stepper items.
  * Indicates whether the connection is complete or incomplete, and supports vertical or horizontal orientation.
  * They are used between 2 `mdc-stepperitem` components to visually connect them and wrapped in a `mdc-stepper` component.
  *
- * @tagname mdc-connector
+ * @tagname mdc-stepperconnector
  *
  * @csspart connector - The main connector line between steps
  *
- * @cssproperty --mdc-connector-complete-background - Background color for the complete connector
- * @cssproperty --mdc-connector-incomplete-background - Background color for the incomplete connector
+ * @cssproperty --mdc-stepperconnector-complete-background - Background color for the complete connector
+ * @cssproperty --mdc-stepperconnector-incomplete-background - Background color for the incomplete connector
  */
-class Connector extends Component {
+class StepperConnector extends Component {
   /**
    * The status of the connector (complete or incomplete)
    * @default "incomplete"
@@ -47,4 +47,4 @@ class Connector extends Component {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Connector;
+export default StepperConnector;

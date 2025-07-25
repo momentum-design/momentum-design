@@ -1,6 +1,6 @@
 import type { ValueOf } from '../../utils/types';
 
-import { ORIENTATION, STATUS } from './connector.constants';
+import { ORIENTATION, STATUS } from './stepperconnector.constants';
 
 type StatusType = ValueOf<typeof STATUS>;
 type OrientationType = ValueOf<typeof ORIENTATION>;

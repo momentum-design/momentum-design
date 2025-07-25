@@ -4,23 +4,23 @@ import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-import { ORIENTATION, STATUS } from './connector.constants';
+import { ORIENTATION, STATUS } from './stepperconnector.constants';
 
 const render = (args: Args) => html`
   <div style="width: 200px; height: 200px; display: flex; align-items: center;">
-    <mdc-connector
+    <mdc-stepperconnector
       status="${args.status}"
       orientation="${args.orientation}"
       style="${args.style}"
       class="${args.class}"
-    ></mdc-connector>
+    ></mdc-stepperconnector>
   </div>
 `;
 
 const meta: Meta = {
   title: 'Work In Progress/stepper/connector',
   tags: ['autodocs'],
-  component: 'mdc-connector',
+  component: 'mdc-stepperconnector',
   render,
   parameters: {
     badges: ['wip'],

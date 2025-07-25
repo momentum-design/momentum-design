@@ -15,6 +15,6 @@ const DEFAULTS = {
   ORIENTATION: ORIENTATION.HORIZONTAL,
 } as const;
 
-const TAG_NAME = utils.constructTagName('connector');
+const TAG_NAME = utils.constructTagName('stepperconnector');
 
 export { TAG_NAME, STATUS, ORIENTATION, DEFAULTS };
