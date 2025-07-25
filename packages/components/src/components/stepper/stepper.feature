@@ -1,14 +1,7 @@
 Feature: Stepper context propagation, child filtering, and integration
-  As a developer, I want the stepper to automatically provide orientation and variant context to stepperconnector and
-  stepperitem components.
   As a user, I want the stepper to visually connect steps with connectors that reflect the current orientation and
   variant.
-  As a user, I want the stepper to support both horizontal and vertical layouts, and both inline and stacked variants.
-  As a user, I want the stepper to update stepperconnector and stepperitem context when orientation or variant changes.
-  As a developer, I want to ensure that only valid children (mdc-stepperitem, mdc-stepperconnector) are rendered inside
-  the
-  stepper.
-  As a developer, I want the stepper to act as a context provider for its children.
+  And I want the stepper to update stepperconnector and stepperitem context when orientation or variant changes.
 
   Scenario: Stepper provides horizontal orientation to connectors
     Given a stepper with orientation set to horizontal

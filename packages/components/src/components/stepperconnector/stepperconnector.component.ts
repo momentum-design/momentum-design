@@ -35,7 +35,7 @@ class StepperConnector extends Component {
    */
   @property({ type: String, reflect: true }) orientation: OrientationType = DEFAULTS.ORIENTATION;
 
-    /**
+  /**
    * @internal
    */
   private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
@@ -45,10 +45,9 @@ class StepperConnector extends Component {
     if (changedProperties.has('orientation')) {
       this.ariaOrientation = this.orientation;
     }
-    
+
     const context = this.stepperContext?.value;
     if (!context || !context.orientation) return;
-    // Determine expansion state
     this.orientation = context.orientation;
   }
 

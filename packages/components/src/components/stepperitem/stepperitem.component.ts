@@ -94,7 +94,6 @@ class StepperItem extends TabIndexMixin(Component) {
 
     const context = this.stepperContext?.value;
     if (!context || !context.variant) return;
-    // Determine expansion state
     this.variant = context.variant;
   }
 

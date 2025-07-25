@@ -1,4 +1,5 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { CSSResult, PropertyValueMap } from 'lit';
+import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component, Provider } from '../../models';
@@ -20,6 +21,20 @@ import styles from './stepper.styles';
  *
  */
 class Stepper extends Provider<StepperContext> {
+  /**
+   * The orientation of the stepperconnector (vertical or horizontal)
+   * @default "horizontal"
+   */
+  @property({ type: String, reflect: true })
+  orientation: OrientationType = DEFAULTS.ORIENTATION;
+
+  /**
+   * The variant of the stepper item, which can be `inline` or `stacked`.
+   * @default 'inline'
+   */
+  @property({ type: String, reflect: true })
+  variant: VariantType = DEFAULTS.VARIANT;
+
   constructor() {
     super({
       context: StepperContext.context,
@@ -39,20 +54,6 @@ class Stepper extends Provider<StepperContext> {
   public static get Context() {
     return StepperContext.context;
   }
-
-  /**
-   * The orientation of the stepperconnector (vertical or horizontal)
-   * @default "horizontal"
-   */
-  @property({ type: String, reflect: true })
-  orientation: OrientationType = DEFAULTS.ORIENTATION;
-
-  /**
-   * The variant of the stepper item, which can be `inline` or `stacked`.
-   * @default 'inline'
-   */
-  @property({ type: String, reflect: true })
-  variant: VariantType = DEFAULTS.VARIANT;
 
   protected override updated(changedProperties: PropertyValueMap<Stepper>): void {
     if (changedProperties.has('orientation') || changedProperties.has('variant')) {
