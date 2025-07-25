@@ -68,6 +68,8 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
+import Stepperitem from './components/stepperitem';
+import StepperConnector from './components/stepperconnector';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -149,6 +151,7 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  Stepperitem,
   Tab,
   TabList,
   Text,
@@ -160,6 +163,7 @@ export {
   VirtualizedList,
   Listheader,
   SelectListbox,
+  StepperConnector,
 };
 
 // Types Exports
