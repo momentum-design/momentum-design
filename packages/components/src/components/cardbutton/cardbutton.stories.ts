@@ -88,7 +88,7 @@ const meta: Meta = {
       options: Object.values(BUTTON_VARIANTS),
     },
     ...hideControls(['children', 'active', 'size']),
-    ...textControls(['--mdc-card-width']),
+    ...textControls(['--mdc-card-width', '--mdc-card-height']),
     ...classArgType,
     ...styleArgType,
   },

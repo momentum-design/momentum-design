@@ -67,7 +67,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
-    ...textControls(['--mdc-card-width']),
+    ...textControls(['--mdc-card-width', '--mdc-card-height']),
     ...classArgType,
     ...styleArgType,
   },
@@ -295,6 +295,7 @@ export const InteractiveContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
+    '--mdc-card-height': '35rem',
     children: html` <div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
         <img src="https://placehold.co/120x30" alt="Image Alt" width="100%" />

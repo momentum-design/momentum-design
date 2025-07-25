@@ -62,6 +62,7 @@ import styles from './card.styles';
  * @dependency mdc-text
  *
  * @cssproperty --mdc-card-width - The width of the card
+ * @cssproperty --mdc-card-height - The height of the card
  *
  */
 class Card extends CardComponentMixin(FooterMixin(Component)) {
@@ -112,9 +113,11 @@ class Card extends CardComponentMixin(FooterMixin(Component)) {
       ${this.renderImage()}
       <div part="body">
         ${this.renderHeader()}
-        <slot name="before-body"></slot>
-        <slot name="body"></slot>
-        <slot name="after-body"></slot>
+        <div part="text-content">
+          <slot name="before-body"></slot>
+          <slot name="body"></slot>
+          <slot name="after-body"></slot>
+        </div>
         ${this.renderFooter()}
       </div>
     `;

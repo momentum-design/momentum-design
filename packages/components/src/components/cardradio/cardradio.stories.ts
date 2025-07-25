@@ -92,7 +92,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
-    ...textControls(['--mdc-card-width']),
+    ...textControls(['--mdc-card-width', '--mdc-card-height']),
     ...classArgType,
     ...styleArgType,
   },

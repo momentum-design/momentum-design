@@ -5,6 +5,7 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = css`
   :host {
     --mdc-card-width: 20rem;
+    --mdc-card-height: 20rem;
     align-items: flex-start;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
@@ -12,12 +13,15 @@ const styles = css`
     transition: box-shadow 0.2s;
     width: var(--mdc-card-width);
   }
+
   :host([variant='ghost']) {
     border-color: transparent;
   }
+
   :host([orientation='horizontal']) {
     min-width: 40rem;
     --mdc-card-width: 40rem;
+    height: var(--mdc-card-height);
   }
 
   :host([orientation='vertical']) {
@@ -41,6 +45,12 @@ const styles = css`
     border-bottom-left-radius: 0.5rem;
   }
 
+  :host::part(text-content) {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
   :host::part(header) {
     display: flex;
     gap: 0.5rem;
@@ -52,6 +62,7 @@ const styles = css`
 
   :host::part(body) {
     width: 100%;
+    height: inherit;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -86,7 +97,6 @@ const styles = css`
 
   :host::part(footer) {
     gap: 1rem;
-    margin-top: auto;
   }
 
   ::slotted([slot='before-body']),
