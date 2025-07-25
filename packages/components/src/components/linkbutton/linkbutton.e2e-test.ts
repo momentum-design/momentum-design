@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
@@ -16,30 +17,36 @@ type SetupOptions = {
   inline?: boolean;
   inverted?: boolean;
   disabled?: boolean;
+  'soft-disabled'?: boolean;
   autofocus?: boolean;
   size?: string;
   'aria-label'?: string;
+  addPageFooter?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
-  await componentsPage.mount({
-    html: `
-      <mdc-linkbutton
-        ${restArgs['icon-name'] ? `icon-name="${restArgs['icon-name']}"` : ''}
-        ${restArgs.inline ? 'inline' : ''}
-        ${restArgs.inverted ? 'inverted' : ''}
-        ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.autofocus ? 'autofocus' : ''}
-        ${restArgs.size ? `size="${restArgs.size}"` : ''}
-        ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
-      >
-        ${restArgs.children ?? 'LinkButton'}
-      </mdc-linkbutton>
-    `,
-    clearDocument: true,
-  });
-  const linkbutton = componentsPage.page.locator('mdc-linkbutton');
+
+  const html = `
+    ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
+    <mdc-linkbutton
+      ${restArgs['icon-name'] ? `icon-name="${restArgs['icon-name']}"` : ''}
+      ${restArgs.inline ? 'inline' : ''}
+      ${restArgs.inverted ? 'inverted' : ''}
+      ${restArgs.disabled ? 'disabled' : ''}
+      ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
+      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.size ? `size="${restArgs.size}"` : ''}
+      ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
+    >
+      ${restArgs.children ?? 'LinkButton'}
+    </mdc-linkbutton>
+    ${restArgs.addPageFooter ? '<div id="content" tabindex="0"><p>Test content</p></div></div>' : ''}
+  `;
+
+  await componentsPage.mount({ html, clearDocument: true });
+
+  const linkbutton = componentsPage.page.locator('mdc-linkbutton').first();
   await linkbutton.waitFor();
   return linkbutton;
 };
@@ -64,15 +71,29 @@ test.describe('LinkButton Feature Scenarios', () => {
         { inline: '', disabled: '', 'icon-name': 'placeholder-bold' },
       ];
 
-      const createVariants = async (baseAttrs: Record<string, string | undefined>, inline = false, inverted = false) => {
-        const attrs: Record<string, string | undefined> = { ...baseAttrs };
+      const createVariants = async (
+        baseAttrs: Record<string, string | undefined>,
+        inline = false,
+        inverted = false,
+      ) => {
+        const attrs: Record<string, string> = {};
+
+        for (const [key, val] of Object.entries(baseAttrs)) {
+          if (val !== undefined) {
+            attrs[key] = val;
+          }
+        }
+
         if (inline) attrs.inline = '';
         if (inverted) attrs.inverted = '';
-        const filteredAttrs = Object.fromEntries(Object.entries(attrs).filter(([, v]) => v !== undefined)) as Record<string, string>;
-        stickerSheet.setAttributes(filteredAttrs);
+
+        stickerSheet.setAttributes(attrs);
+
         await stickerSheet.createMarkupWithCombination(
           { size: LINKBUTTON_SIZES },
-          inverted ? { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' } : undefined,
+          inverted
+            ? { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' }
+            : undefined,
         );
       };
 
@@ -126,7 +147,7 @@ test.describe('LinkButton Feature Scenarios', () => {
       });
 
       await test.step('render linkbutton with different sizes', async () => {
-        const sizes = [12, 14, 16];
+        const sizes = Object.values(LINKBUTTON_SIZES);
         await Promise.all(
           sizes.map(async (size) => {
             await setup({ componentsPage, 'icon-name': 'placeholder-bold', size: `${size}` });
@@ -155,6 +176,13 @@ test.describe('LinkButton Feature Scenarios', () => {
         await expect(linkbutton).toHaveAttribute('disabled', '');
         await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
         await expect(await linkbutton.getAttribute('tabindex')).not.toBe('0');
+      });
+
+      await test.step('render soft-disabled linkbutton', async () => {
+        const linkbutton = await setup({ componentsPage, 'soft-disabled': true });
+        await expect(linkbutton).toHaveAttribute('soft-disabled', '');
+        await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
+        await expect(linkbutton).toHaveAttribute('tabindex', '0');
       });
 
       await test.step('render linkbutton with autofocus', async () => {
@@ -186,10 +214,11 @@ test.describe('LinkButton Feature Scenarios', () => {
      */
     await test.step('keyboard interactions', async () => {
       await test.step('focus and blur events', async () => {
-        const linkbutton = await setup({ componentsPage });
+        const linkbutton = await setup({ componentsPage, addPageFooter: true });
         await componentsPage.actionability.pressTab();
         await expect(linkbutton).toBeFocused();
-        await linkbutton.evaluate((el) => el.blur());
+        // Tab to next element to naturally trigger blur
+        await componentsPage.actionability.pressTab();
         await expect(linkbutton).not.toBeFocused();
       });
 
@@ -219,6 +248,15 @@ test.describe('LinkButton Feature Scenarios', () => {
         const linkbutton = await setup({ componentsPage, disabled: true });
         await expect(await linkbutton.getAttribute('tabindex')).not.toBe('0');
       });
+
+      await test.step('soft-disabled linkbutton keyboard behavior', async () => {
+        const linkbutton = await setup({ componentsPage, 'soft-disabled': true });
+        await expect(linkbutton).toHaveAttribute('soft-disabled', '');
+        await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
+        await expect(linkbutton).toHaveAttribute('tabindex', '0');
+        await componentsPage.actionability.pressTab();
+        await expect(linkbutton).toBeFocused();
+      });
     });
 
     /**
@@ -236,6 +274,12 @@ test.describe('LinkButton Feature Scenarios', () => {
         const linkbutton = await setup({ componentsPage, disabled: true });
         await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
         await expect(await linkbutton.getAttribute('tabindex')).not.toBe('0');
+      });
+
+      await test.step('soft-disabled state ARIA attributes', async () => {
+        const linkbutton = await setup({ componentsPage, 'soft-disabled': true });
+        await expect(linkbutton).toHaveAttribute('aria-disabled', 'true');
+        await expect(linkbutton).toHaveAttribute('tabindex', '0');
       });
 
       await test.step('render linkbutton with aria-label', async () => {

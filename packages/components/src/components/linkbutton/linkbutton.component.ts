@@ -69,9 +69,7 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
     super.connectedCallback();
     
     this.active = undefined as unknown as boolean;
-    this.softDisabled = undefined as unknown as boolean;
     this.role = DEFAULTS.ROLE;
-    this.type = DEFAULTS.TYPE;
   }
 
   override update(changedProperties: PropertyValues): void {

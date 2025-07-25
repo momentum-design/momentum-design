@@ -13,6 +13,7 @@ Feature: LinkButton Accessibility and User Interaction
             | inline           | true/false           | Optional |
             | inverted         | true/false           | Optional |
             | disabled         | true/false           | Optional |
+            | soft-disabled    | true/false           | Optional |
             | autofocus        | true/false           | Optional |
             | aria-label       | "Accessible label"   | Optional |
 
@@ -59,10 +60,12 @@ Feature: LinkButton Accessibility and User Interaction
             And the linkbutton should have aria-disabled="true"
             And the linkbutton should not be focusable
 
-        Scenario: Render linkbutton with active state
-            Given the linkbutton has active attribute set to true
+        Scenario: Render soft-disabled linkbutton
+            Given the linkbutton has soft-disabled attribute set
             When the linkbutton is rendered
-            Then the linkbutton should have the active visual state
+            Then the linkbutton should appear visually disabled
+            And the linkbutton should have aria-disabled="true"
+            But the linkbutton should remain focusable
 
         Scenario: Render linkbutton with autofocus
             Given the linkbutton has autofocus attribute set to true
@@ -117,28 +120,34 @@ Feature: LinkButton Accessibility and User Interaction
             When I try to activate with Enter or Space
             Then no events should be triggered
 
+        Scenario: Soft-disabled linkbutton keyboard behavior
+            Given the linkbutton is soft-disabled
+            When I navigate using Tab key
+            Then the linkbutton should receive focus
+            And the linkbutton should be visually focused
+
     Rule: ✅ ARIA and Accessibility
 
         Scenario: Default ARIA attributes
             Given the linkbutton is rendered
             Then the linkbutton should have role="button"
             And the linkbutton should have tabindex="0"
-            And the linkbutton should have size="large"
+            And the linkbutton should have size="16"
 
         Scenario: Disabled state ARIA attributes
             Given the linkbutton is disabled
             Then the linkbutton should have aria-disabled="true"
             And the linkbutton should not be in tab order
 
+        Scenario: Soft-disabled state ARIA attributes
+            Given the linkbutton is soft-disabled
+            Then the linkbutton should have aria-disabled="true"
+            But the linkbutton should remain in tab order with tabindex="0"
+
         Scenario: Render linkbutton with aria-label
             Given the linkbutton has aria-label set to "Accessible label"
             When the linkbutton is rendered
             Then the linkbutton should have aria-label="Accessible label"
-
-        Scenario: Render linkbutton with ariaStateKey
-            Given the linkbutton has ariaStateKey set to "state-key"
-            When the linkbutton is rendered
-            Then the linkbutton should have ariaStateKey="state-key"
 
     Rule: ✅ ScreenReader Accessibility
 
@@ -150,6 +159,10 @@ Feature: LinkButton Accessibility and User Interaction
 
         Scenario: VoiceOver announces disabled state
             Given the linkbutton is disabled
+            When VoiceOver navigates to the linkbutton
+            Then VoiceOver should announce "disabled" or "dimmed"
+        Scenario: VoiceOver announces soft-disabled state
+            Given the linkbutton is soft-disabled
             When VoiceOver navigates to the linkbutton
             Then VoiceOver should announce "disabled" or "dimmed"
 

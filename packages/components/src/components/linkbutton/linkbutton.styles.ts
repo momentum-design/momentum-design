@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    --mdc-link-color-disabled: var(--mds-color-theme-text-primary-disabled);
     gap: 0.25rem;
   }
 
@@ -57,6 +58,10 @@ const styles = css`
     line-height: var(--mds-font-apps-body-small-regular-underline-line-height);
     text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
+  }
+
+  :host([soft-disabled]) {
+    color: var(--mdc-link-color-disabled);
   }
 `;
 

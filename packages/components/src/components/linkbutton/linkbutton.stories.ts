@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { textControls, hideControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
 
@@ -15,6 +15,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     ?disabled="${args.disabled}"
+    ?soft-disabled="${args['soft-disabled']}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
     icon-name="${args['icon-name']}"
@@ -30,18 +31,21 @@ const renderWithInvertedBackground = (args: Args) =>
   </div>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/linkbutton',
+  title: 'Components/linkbutton',
   tags: ['autodocs'],
   component: 'mdc-linkbutton',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },    
+    'soft-disabled': {
       control: 'boolean',
     },
     inline: {
@@ -65,8 +69,8 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls(['active','role', 'type', 'soft-disabled', 'ariaStateKey']),
-    ...disableControls([
+    ...hideControls(['active','role', 'type', 'ariaStateKey']),
+    ...textControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
       '--mdc-link-color-disabled',
@@ -85,6 +89,7 @@ export default meta;
 const defaultArgs = {
   children: 'LinkButton',
   disabled: false,
+  'soft-disabled': false,
   'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
@@ -101,10 +106,8 @@ export const Example: StoryObj = {
 export const StandaloneLinkButton: StoryObj = {
   args: {
     ...defaultArgs,
-  },
-  argTypes: {
-    inline: { control: false },
-    inverted: { control: false },
+    inline: false,
+    inverted: false
   },
 };
 
@@ -113,10 +116,7 @@ export const StandaloneLinkButtonInverted: StoryObj = {
   args: {
     ...defaultArgs,
     inverted: true,
-  },
-  argTypes: {
-    inline: { control: false },
-    inverted: { control: { disabled: true } },
+    inline: false,
   },
 };
 
@@ -124,10 +124,7 @@ export const InlineLinkButton: StoryObj = {
   args: {
     ...defaultArgs,
     inline: true,
-  },
-  argTypes: {
-    inverted: { control: false },
-    inline: { control: { disabled: true } },
+    inverted: false
   },
 };
 
@@ -137,9 +134,5 @@ export const InlineLinkButtonInverted: StoryObj = {
     ...defaultArgs,
     inline: true,
     inverted: true,
-  },
-  argTypes: {
-    inline: { control: { disabled: true } },
-    inverted: { control: { disabled: true } },
   },
 };
