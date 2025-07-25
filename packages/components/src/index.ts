@@ -1,5 +1,7 @@
 /* eslint-disable import/order */
 // Components Imports
+import Accordion from './components/accordion';
+import AccordionGroup from './components/accordiongroup';
 import AccordionButton from './components/accordionbutton';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
@@ -68,8 +70,6 @@ import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
-import Accordion from './components/accordion';
-import Accordiongroup from './components/accordiongroup';
 import SelectListbox from './components/selectlistbox';
 import Stepperitem from './components/stepperitem';
 import StepperConnector from './components/stepperconnector';
@@ -97,7 +97,9 @@ import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 // Components Exports
 export {
+  Accordion,
   AccordionButton,
+  AccordionGroup,
   AlertChip,
   Animation,
   Appheader,
@@ -128,6 +130,7 @@ export {
   LinkButton,
   Linksimple,
   List,
+  Listheader,
   ListItem,
   Marker,
   MenuBar,
@@ -149,12 +152,14 @@ export {
   ScreenreaderAnnouncer,
   Searchfield,
   Select,
+  SelectListbox,
   SideNavigation,
   Skeleton,
   Spinner,
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  StepperConnector,
   Stepperitem,
   Tab,
   TabList,
@@ -165,11 +170,6 @@ export {
   ToggleTip,
   Tooltip,
   VirtualizedList,
-  Listheader,
-  Accordion,
-  Accordiongroup,
-  SelectListbox,
-  StepperConnector,
 };
 
 // Types Exports
