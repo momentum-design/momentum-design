@@ -49,10 +49,16 @@ const styles = [
       background-color: var(--mdc-checkbox-disabled-checked-icon-color);
     }
 
+    :host mdc-staticcheckbox {
+      position: relative;
+    }
+
     .input {
       margin: 0;
       padding: 0;
       position: absolute;
+      top: 0;
+      left: 0;
       opacity: 0.1%;
       overflow: visible;
       z-index: 1;

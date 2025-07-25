@@ -121,19 +121,25 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
     <mdc-popover triggerid="select-popover-trigger" interactive>
       <div style="width: 15rem;">
         <mdc-select id="select-popover-1">
-          <mdc-option value="1">Option 1</mdc-option>
-          <mdc-option value="2">Option 2</mdc-option>
-          <mdc-option value="3">Option 3</mdc-option>
+          <mdc-selectlistbox>
+            <mdc-option value="1" label="Option 1"></mdc-option>
+            <mdc-option value="2" label="Option 2"></mdc-option>
+            <mdc-option value="3" label="Option 3"></mdc-option>
+          </mdc-selectlistbox>
         </mdc-select>
         <mdc-select id="select-popover-2">
-          <mdc-option value="4">Option 4</mdc-option>
-          <mdc-option value="5">Option 5</mdc-option>
-          <mdc-option value="6">Option 6</mdc-option>
+          <mdc-selectlistbox>
+            <mdc-option value="4" label="Option 4"></mdc-option>
+            <mdc-option value="5" label="Option 5"></mdc-option>
+            <mdc-option value="6" label="Option 6"></mdc-option>
+          </mdc-selectlistbox>
         </mdc-select>
         <mdc-select id="select-popover-3">
-          <mdc-option value="7">Option 7</mdc-option>
-          <mdc-option value="8">Option 8</mdc-option>
-          <mdc-option value="9">Option 9</mdc-option>
+          <mdc-selectlistbox>
+            <mdc-option value="7" label="Option 7"></mdc-option>
+            <mdc-option value="8" label="Option 8"></mdc-option>
+            <mdc-option value="9" label="Option 9"></mdc-option>
+          </mdc-selectlistbox>
         </mdc-select>
       </div>
     </mdc-popover>

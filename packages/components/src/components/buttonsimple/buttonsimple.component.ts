@@ -6,6 +6,7 @@ import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { AutoFocusMixin } from '../../utils/mixins/AutoFocusMixin';
+import { KEYS } from '../../utils/keys';
 
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
@@ -237,9 +238,9 @@ class Buttonsimple extends AutoFocusMixin(TabIndexMixin(DisabledMixin(Component)
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
+    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
       this.classList.add('pressed');
-      if (event.key === 'Enter') {
+      if (event.key === KEYS.ENTER) {
         this.triggerClickEvent();
       }
 
@@ -259,9 +260,9 @@ class Buttonsimple extends AutoFocusMixin(TabIndexMixin(DisabledMixin(Component)
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
+    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
       this.classList.remove('pressed');
-      if (event.key === ' ') {
+      if (event.key === KEYS.SPACE) {
         this.triggerClickEvent();
       }
     }

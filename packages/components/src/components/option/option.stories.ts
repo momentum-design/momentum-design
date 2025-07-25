@@ -23,6 +23,7 @@ const render = (args: Args) =>
       ?soft-disabled="${args['soft-disabled']}"
       ?selected="${args.selected}"
       label="${args.label}"
+      secondary-label="${args['secondary-label']}"
       value="${args.value}"
       prefix-icon="${args['prefix-icon']}"
       aria-label="${args['aria-label']}"
@@ -52,6 +53,9 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
+    'secondary-label': {
+      control: 'text',
+    },
     value: {
       control: 'text',
     },
@@ -76,7 +80,6 @@ const meta: Meta = {
       'willValidate',
       'variant',
       'tabIndex',
-      'secondary-label',
       'tertiary-label',
       'side-header-text',
       'subline-text',
@@ -98,7 +101,7 @@ const meta: Meta = {
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
     ]),
-    ...disableControls(['click', 'keydown', 'keyup', 'focus', 'default']),
+    ...disableControls(['default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -109,6 +112,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Option Label',
+    'secondary-label': 'Secondary Label',
     disabled: false,
     selected: false,
     value: '',

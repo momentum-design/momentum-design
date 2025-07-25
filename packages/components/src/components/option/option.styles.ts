@@ -4,6 +4,8 @@ const styles = css`
   :host {
     --mdc-option-icon-width: 1rem;
 
+    flex-shrink: 0;
+
     display: flex;
     flex-direction: row;
     align-items: center;

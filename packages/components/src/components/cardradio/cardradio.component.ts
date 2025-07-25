@@ -6,6 +6,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import styles from './cardradio.styles';
 
@@ -131,7 +132,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
       const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
       this.updateCardRadio(enabledCards, prevIndex);
     }
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.toggleChecked();
     }
   }
@@ -141,7 +142,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === ' ') {
+    if (event.key === KEYS.SPACE) {
       this.toggleChecked();
     }
   }

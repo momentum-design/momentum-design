@@ -1,6 +1,7 @@
 import type { PropertyValues, CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
@@ -83,8 +84,7 @@ class MenuItemCheckbox extends MenuItem {
    * If the menuitemcheckbox is disabled, it does nothing.
    * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
    */
-  private handleMouseClick = (event: Event) => {
-    event.stopPropagation();
+  private handleMouseClick = () => {
     if (this.disabled) return;
     this.checked = !this.checked;
 
@@ -145,8 +145,15 @@ class MenuItemCheckbox extends MenuItem {
    * @returns TemplateResult | typeof nothing
    */
   private getCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.checked && this.indicator === INDICATOR.CHECKMARK) {
-      return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
+    if (this.indicator === INDICATOR.CHECKMARK) {
+      return html`
+        <mdc-icon
+          slot="trailing-controls"
+          name="check-bold"
+          part="checkmark-icon"
+          class=${classMap({ 'hidden-checkmark': !this.checked })}
+        ></mdc-icon>
+      `;
     }
     return nothing;
   }

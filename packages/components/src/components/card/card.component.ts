@@ -4,7 +4,7 @@ import { queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
-import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+import { FooterMixin } from '../../utils/mixins/FooterMixin';
 
 import { DEFAULTS } from './card.constants';
 import styles from './card.styles';
@@ -55,7 +55,7 @@ import styles from './card.styles';
  * @slot after-body - This slot is for passing the content after the body
  *
  */
-class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
+class Card extends CardComponentMixin(FooterMixin(Component)) {
   /**
    * The icon buttons in the header section
    * @internal

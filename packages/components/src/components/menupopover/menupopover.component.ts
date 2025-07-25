@@ -3,16 +3,18 @@ import { property } from 'lit/decorators.js';
 
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
+import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
+import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
+import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { popoverStack } from '../popover/popover.stack';
-import { PopoverPlacement } from '../popover/popover.types';
+import type { PopoverPlacement } from '../popover/popover.types';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
-import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
+import { isValidMenuItem, isValidPopover } from './menupopover.utils';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.
@@ -30,6 +32,24 @@ import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover
  * to work as a submenu (right-aligned, shows on hover).
  *
  * The orientation of the menu popover is always set to `vertical`.
+ *
+ * Submenu opens when:
+ * - Clicked on a menu item with a submenu
+ * - Enter or Space key pressed on a menu item with a submenu
+ *
+ * Menu closes completely (with all sub menus) when:
+ * - A menu item is clicked that does not have a submenu
+ * - Enter key pressed on a menu item (not a submenu trigger), menu item radio or menu item checkbox
+ * - Click outside the menu popover (on the backdrop)
+ *
+ * Close submenus when:
+ * - Esc key pressed, only the current submenu closed
+ * - Arrow Left key pressed, only the current submenu closed
+ * - Open another submenu with Click, Enter or Space key,
+ *   closes recursively all submenus until the selected item's submenu
+ *
+ * Menu does not close when:
+ * - Space key pressed on a menu item radio or menu item checkbox
  *
  * @tagname mdc-menupopover
  *
@@ -60,17 +80,22 @@ class MenuPopover extends Popover {
   @property({ type: String, reflect: true })
   override placement: PopoverPlacement = DEFAULTS.PLACEMENT;
 
+  private menuItems: Array<HTMLElement> = [];
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('keyup', this.handleKeyUp);
     this.addEventListener('click', this.handleMouseClick);
+    this.addEventListener('created', this.handleItemCreation);
   }
 
   /** @internal */
-  get menuItems(): Array<HTMLElement> {
+  collectMenuItems() {
     const slot = this.shadowRoot?.querySelector('slot');
     const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-    return allAssignedElements
+
+    this.menuItems = allAssignedElements
       .map(node => {
         if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
           return Array.from(node.children).filter(child => isValidMenuItem(child)) as Array<HTMLElement>;
@@ -110,17 +135,30 @@ class MenuPopover extends Popover {
       this.backdrop = !(this.triggerElement.tagName.toLowerCase() === MENUITEM_TAGNAME);
     }
 
+    this.resetMenuNavigation();
+
     return super.isOpenUpdated(oldValue, newValue);
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
-    // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
+
+    this.collectMenuItems();
+    this.resetTabIndexes(0);
+    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
+  }
+
+  /**
+   * Reset all tabindex to -1 and set the tabindex of the current menu item to 0
+   *
+   * @param currentIndex - The index of the currently focused menu item.
+   */
+  private resetTabIndexes(currentIndex: number) {
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
-      this.menuItems[0].setAttribute('tabindex', '0');
+      this.menuItems[currentIndex].setAttribute('tabindex', '0');
+      this.menuItems[currentIndex].focus();
     }
-    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
   }
 
   /**
@@ -199,7 +237,7 @@ class MenuPopover extends Popover {
    * @returns - A boolean indicating whether a submenu with the specified trigger ID exists.
    */
   private hasSubmenuWithTriggerId(id: string | null): boolean {
-    return this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
+    return !!id && this.parentElement?.querySelector?.(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
   }
 
   public override togglePopoverVisible = () => {
@@ -213,6 +251,26 @@ class MenuPopover extends Popover {
   };
 
   /**
+   * Determines whether to close the menu based on the clicked target.
+   *
+   * @param target - The target element that was clicked.
+   */
+  private closeMenu(target: HTMLElement) {
+    const triggerId = target.getAttribute('id');
+
+    if (
+      isValidMenuItem(target) &&
+      !this.hasSubmenuWithTriggerId(triggerId) &&
+      this === target.closest(MENU_POPOVER) // Ensure close all popover called only once
+    ) {
+      this.closeAllMenuPopovers();
+      if (target.matches(MENUITEM_TAGNAME)) {
+        target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
+      }
+    }
+  }
+
+  /**
    * Handles mouse click events on the menu items.
    * This method checks if the clicked element is a valid menu item and not a submenu trigger.
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
@@ -220,17 +278,47 @@ class MenuPopover extends Popover {
    */
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    const triggerId = target.getAttribute('id');
-    if (
-      isActiveMenuItem(target) && // menuitemcheckbox and menuitemradio are not supposed to close the popover
-      !this.hasSubmenuWithTriggerId(triggerId) &&
-      this === target.closest(MENU_POPOVER) // Ensure close all popover called only once
-    ) {
-      this.closeAllMenuPopovers();
 
-      target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
+    if (event.isTrusted) {
+      // skip manually dispatched clicks from listItem
+      this.closeMenu(target);
     }
   }
+
+  private handleItemCreation(event: Event) {
+    const item = event.target as HTMLElement;
+
+    if (isValidMenuItem(item)) {
+      // Parent menu popover should not listen on nested menu items
+      event.stopImmediatePropagation();
+      // `destroyed` triggered in the `disconnectedCallback` of the item which executed when the item is removed from the DOM
+      // because of that the event does not bubble up to menupopover, and we need to capture the `destroyed` event on the item itself
+      item.addEventListener('destroyed', this.handleItemChangeEvent);
+      // `disabled` could bubble up, but it is more consistent to handle it the same way as `destroyed`
+      item.addEventListener('disabled', this.handleItemChangeEvent);
+    }
+  }
+
+  private handleItemChangeEvent = (event: Event) => {
+    event.stopImmediatePropagation();
+
+    if (event.target && event.type === 'destroyed') {
+      event.target.removeEventListener('destroyed', this.handleItemChangeEvent);
+      event.target.removeEventListener('disabled', this.handleItemChangeEvent);
+    }
+
+    this.resetMenuNavigation();
+  };
+
+  private resetMenuNavigation = () => {
+    // Re-collect menu items to ensure the list is up-to-date
+    this.collectMenuItems();
+    // Reset tab indexes to ensure at least one menu item is focusable
+    const focusableMenuItem = this.menuItems.find(item => item.getAttribute('tabindex') === '0');
+    if (!focusableMenuItem) {
+      this.resetTabIndexes(0);
+    }
+  };
 
   /**
    * Resolves the key pressed by the user based on the direction of the layout.
@@ -258,12 +346,20 @@ class MenuPopover extends Popover {
    * Handles keydown events for keyboard navigation within the menu popover.
    * This method allows users to navigate through the menu items using the keyboard.
    * It supports Home, End, Arrow Up, Arrow Down, Arrow Left, Arrow Right, and Escape keys.
+   *
+   * Also, it handles Enter key to close the menu popover
+   *
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    const currentIndex = this.getCurrentIndex(event.target);
+    let isKeyHandled = false;
+
+    this.collectMenuItems();
+    const target = event.target as HTMLElement;
+    const currentIndex = this.getCurrentIndex(target);
     if (currentIndex === -1) return;
+    this.resetTabIndexes(currentIndex);
 
     const isRtl = window.getComputedStyle(this).direction === 'rtl';
 
@@ -273,23 +369,27 @@ class MenuPopover extends Popover {
       case KEYS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
+        isKeyHandled = true;
         break;
       }
       case KEYS.END: {
         // Move focus to the last menu item
         this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
+        isKeyHandled = true;
         break;
       }
       case KEYS.ARROW_DOWN: {
         // Move focus to the next menu item
         const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+        isKeyHandled = true;
         break;
       }
       case KEYS.ARROW_UP: {
         // Move focus to the prev menu item
         const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+        isKeyHandled = true;
         break;
       }
       case KEYS.ARROW_RIGHT: {
@@ -299,6 +399,7 @@ class MenuPopover extends Popover {
           const submenu = this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${triggerId}"]`) as MenuPopover;
           if (submenu) {
             submenu.showPopover();
+            isKeyHandled = true;
           }
         }
         break;
@@ -308,15 +409,73 @@ class MenuPopover extends Popover {
         if (isValidPopover(this.parentElement)) {
           this.hidePopover();
           this.resetTabIndexAndSetFocus(0, currentIndex);
+          isKeyHandled = true;
         }
         break;
       }
       case KEYS.ESCAPE: {
         this.resetTabIndexAndSetFocus(0, currentIndex);
+        isKeyHandled = true;
+        break;
+      }
+      case KEYS.ENTER: {
+        this.closeMenu(target);
+        isKeyHandled = true;
+        break;
+      }
+      case KEYS.SPACE: {
+        // Prevent page scroll when space is pressed down
+        isKeyHandled = true;
         break;
       }
       default:
         break;
+    }
+
+    // When menu consume any of the pressed key, we need to stop propagation
+    // to prevent the event from bubbling up and being handled by parent components which might use the same key.
+    if (isKeyHandled) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Handles keyup events for keyboard navigation within the menu popover.
+   *
+   * Some keys must be handled with keyup event to prevent default action.
+   *
+   * Space key closes the menu when the user presses it on a menu item,
+   * but the same key will trigger a click on the menu opener button.
+   * The button uses the keyup event so we have to handle it here as well
+   * to prevent the meu opener action which would re-open the menu.
+   *
+   * @param event - The keyboard event that triggered the keydown action.
+   * @returns - This method does not return anything.
+   */
+  private handleKeyUp(event: KeyboardEvent) {
+    let isKeyHandled = false;
+
+    const target = event.target as HTMLElement;
+
+    switch (event.key) {
+      case KEYS.SPACE: {
+        // If the target is a menu item, trigger its click event
+        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`)) {
+          this.closeMenu(target);
+          isKeyHandled = true;
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+    // When menu consume any of the pressed key, we need to stop propagation
+    // to prevent the event from bubbling up and being handled by parent components which might use the same key.
+    if (isKeyHandled) {
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 

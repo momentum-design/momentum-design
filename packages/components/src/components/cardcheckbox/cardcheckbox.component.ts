@@ -5,6 +5,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
@@ -92,7 +93,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.toggleChecked();
     }
   }
@@ -102,7 +103,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === ' ') {
+    if (event.key === KEYS.SPACE) {
       this.toggleChecked();
     }
   }

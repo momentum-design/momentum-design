@@ -7,7 +7,7 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
-import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+import { FooterMixin } from '../../utils/mixins/FooterMixin';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -69,7 +69,7 @@ import styles from './dialog.styles';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(Component))) {
+class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) {
   /**
    * The unique ID of the dialog
    */

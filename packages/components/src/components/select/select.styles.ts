@@ -23,19 +23,27 @@ const styles = css`
     align-items: unset;
     width: unset;
   }
-  :host::part(native-select) {
+  :host::part(native-input) {
     margin: 0;
     opacity: 0.1%;
     overflow: visible;
     padding: 0;
     position: absolute;
     width: 100%;
-    height: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
     z-index: -1;
   }
   :host::part(container) {
     width: 100%;
     position: relative;
+  }
+  :host ::slotted(mdc-selectlistbox) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: var(--mdc-popover-internal-available-height);
   }
   :host::part(base-container) {
     border-radius: 0.5rem;
@@ -72,14 +80,26 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
-  :host([readonly])::part(icon-container) {
-    color: var(--mdc-select-disabled-text-color);
-  }
   :host::part(popover-content) {
     min-width: auto;
-    overflow: scroll;
+    max-height: var(--mdc-popover-max-height);
+    padding: 0.75rem 0.5rem;
   }
+
+  /* Help text border colors */
+  :host([help-text-type='success'])::part(base-container) {
+    border-color: var(--mdc-select-success-border-color);
+  }
+  :host([help-text-type='error'])::part(base-container) {
+    border-color: var(--mdc-select-error-border-color);
+  }
+  :host([help-text-type='warning'])::part(base-container) {
+    border-color: var(--mdc-select-warning-border-color);
+  }
+
+  /* Disabled, readonly, soft-disabled */
   :host([disabled])::part(base-container),
+  :host([soft-disabled])::part(base-container),
   :host([readonly])::part(base-container),
   :host([help-text-type='success'][disabled])::part(base-container),
   :host([help-text-type='error'][disabled])::part(base-container),
@@ -90,24 +110,16 @@ const styles = css`
     border-color: var(--mdc-select-disabled-border-color);
     background: var(--mdc-select-disabled-background-color);
   }
-  :host([disabled]:hover)::part(base-container),
-  :host([readonly]:hover)::part(base-container) {
-    background-color: unset;
-  }
   :host([readonly])::part(base-text) {
     color: var(--mdc-select-selected-text-color);
   }
-  :host([disabled])::part(base-text) {
+  :host([disabled])::part(base-text),
+  :host([soft-disabled])::part(base-text) {
     color: var(--mdc-select-disabled-text-color);
   }
-  :host([help-text-type='success'])::part(base-container) {
-    border-color: var(--mdc-select-success-border-color);
-  }
-  :host([help-text-type='error'])::part(base-container) {
-    border-color: var(--mdc-select-error-border-color);
-  }
-  :host([help-text-type='warning'])::part(base-container) {
-    border-color: var(--mdc-select-warning-border-color);
+  :host([soft-disabled])::part(icon-container),
+  :host([readonly])::part(icon-container) {
+    color: var(--mdc-select-disabled-text-color);
   }
 `;
 

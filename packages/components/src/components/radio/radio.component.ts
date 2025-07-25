@@ -9,6 +9,7 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import styles from './radio.styles';
 
@@ -236,12 +237,12 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
       this.updateRadio(enabledRadios, prevIndex, event);
-    } else if (event.key === ' ') {
+    } else if (event.key === KEYS.SPACE) {
       this.updateRadio(enabledRadios, currentIndex, event);
     }
     this.updateTabIndex();
 
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
   }

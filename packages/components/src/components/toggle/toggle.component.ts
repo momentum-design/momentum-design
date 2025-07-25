@@ -2,6 +2,7 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
@@ -147,7 +148,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
   }

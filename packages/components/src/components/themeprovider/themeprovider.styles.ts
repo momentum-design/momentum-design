@@ -11,10 +11,8 @@ const styles = css`
     --mdc-themeprovider-font-feature-settings: 'ss02' on;
 
     /* Custom scrollbar variables */
-    --mdc-themeprovider-scrollbar-track-color: var(--mds-color-theme-background-secondary-normal);
+    --mdc-themeprovider-scrollbar-track-color: transparent;
     --mdc-themeprovider-scrollbar-thumb-color: var(--mds-color-theme-scrollbar-button-normal);
-    --mdc-themeprovider-scrollbar-thumb-hover-color: var(--mds-color-theme-scrollbar-button-hover);
-    --mdc-themeprovider-scrollbar-thumb-active-color: var(--mds-color-theme-scrollbar-button-pressed);
 
     color: var(--mdc-themeprovider-color-default);
     font-family: var(--mdc-themeprovider-font-family);

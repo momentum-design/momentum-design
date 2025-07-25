@@ -149,5 +149,5 @@ jobs:
         run: |
           git checkout ${{ github.head_ref || github.ref_name }}
           git add .
-          git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
+          git diff --cached --quiet || HUSKY=0 git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
           git push origin ${{ github.head_ref || github.ref_name }}

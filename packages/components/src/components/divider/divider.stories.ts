@@ -9,15 +9,15 @@ import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 
-const contentMap: Record<string, ReturnType<typeof html>> = {
-  text: html`<mdc-text tagname="h1">Label</mdc-text>`,
+const contentMap = (args: Args): Record<string, ReturnType<typeof html>> => ({
+  text: html`<mdc-text tagname="h1">${args.childrenText}</mdc-text>`,
   // button role has been specifically added for managing storybook A11y.
   grabber: html`<mdc-button role="button" aria-label="divider label" aria-expanded="false"></mdc-button>`,
   noChildren: html``,
-};
+});
 
 const render = (args: Args) => {
-  const content = contentMap[args.typeOfChildren] || html``;
+  const content = contentMap(args)[args.typeOfChildren] || html``;
 
   return html`
     <div style="height: 25rem; margin: 1rem">
@@ -46,6 +46,11 @@ const meta: Meta = {
       control: 'radio',
       options: ['noChildren', 'text', 'grabber'],
       description: 'Choose the type of content to render inside the divider',
+    },
+    childrenText: {
+      control: 'text',
+      description: 'Text content for the text divider',
+      if: { arg: 'typeOfChildren', eq: 'text' },
     },
     orientation: {
       control: 'radio',
@@ -89,6 +94,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     typeOfChildren: 'noChildren',
+    childrenText: 'Divider Text',
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
     'arrow-direction': DIRECTIONS.NEGATIVE,
@@ -117,6 +123,7 @@ export const noChildrenDivider: StoryObj = {
   },
   args: {
     typeOfChildren: 'noChildren',
+    childrenText: 'Divider Text',
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
   },
@@ -141,6 +148,7 @@ export const textDivider: StoryObj = {
   args: {
     ...noChildrenDivider.args,
     typeOfChildren: 'text',
+    childrenText: 'Divider Text',
   },
 };
 
@@ -156,6 +164,7 @@ export const grabberButtonDivider: StoryObj = {
   args: {
     ...noChildrenDivider.args,
     typeOfChildren: 'grabber',
+    childrenText: 'Divider Text',
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE,
   },

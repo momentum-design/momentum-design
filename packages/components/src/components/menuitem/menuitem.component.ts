@@ -81,6 +81,12 @@ class MenuItem extends ListItem {
    * Handles the keydown event for the menu item.
    * If the Enter key is pressed, it triggers a click event on the menu item.
    * This allows keyboard users to activate the menu item using the Enter key.
+
+   * This follows the native behaviour, actionable element can be triggered by Enter
+   * key on the keydown event.
+   *
+   * Note: Action triggered by Space on the keyup event.
+   *
    * @param event - The keyboard event that triggered the action.
    */
   override handleKeyDown(event: KeyboardEvent): void {
@@ -95,6 +101,11 @@ class MenuItem extends ListItem {
    * If the Space key is released, it triggers a click event on the menu item.
    * This allows keyboard users to activate the menu item using the Space key.
    * It also prevents the default action of the Space key to avoid scrolling the page.
+   *
+   * This follows the native behaviour, actionable element can be triggered by Space
+   * key on the keyup event.
+   *
+   * Note: Action triggered by Enter on the keydown event.
    * @param event - The keyboard event that triggered the action.
    */
   private handleKeyUp(event: KeyboardEvent): void {

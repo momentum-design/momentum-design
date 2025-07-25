@@ -10,6 +10,7 @@ type SetupOptions = {
   'soft-disabled'?: boolean;
   'aria-label'?: string;
   label?: string;
+  secondaryLabel?: string;
   selected?: boolean;
   'tooltip-text'?: string;
   'tooltip-placement'?: string;
@@ -17,6 +18,7 @@ type SetupOptions = {
 };
 
 const label = 'Primary Label';
+const secondaryLabel = 'Secondary Label';
 const icon = 'placeholder-bold';
 
 const setup = async (args: SetupOptions) => {
@@ -28,6 +30,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
+        ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
         ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
         ${restArgs['tooltip-placement'] ? `tooltip-placement="${restArgs['tooltip-placement']}"` : ''}
@@ -51,9 +54,9 @@ test('mdc-option', async ({ componentsPage }) => {
     const optionSheet = new StickerSheet(componentsPage, 'mdc-option', 'margin: 0.25rem');
     optionSheet.setAttributes({ label });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
-    optionSheet.setChildren('Option with children');
-    await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ label, 'prefix-icon': icon });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({ label, 'secondary-label': secondaryLabel, 'prefix-icon': icon });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '' });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
@@ -95,9 +98,16 @@ test('mdc-option', async ({ componentsPage }) => {
 
     await test.step('should have label text when the attribute is passed', async () => {
       await componentsPage.setAttributes(option, { label });
-      const mdcTextElement = option.locator('mdc-text');
+      const mdcTextElement = option.locator('mdc-text[part="leading-text-primary-label"]');
       const textContent = await mdcTextElement.textContent();
       expect(textContent?.trim()).toBe(label);
+    });
+
+    await test.step('should have secondary label text when the label and secondary-label attribute are passed', async () => {
+      await componentsPage.setAttributes(option, { label, 'secondary-label': secondaryLabel });
+      const mdcTextElement = option.locator('mdc-text[part="leading-text-secondary-label"]');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe(secondaryLabel);
     });
 
     await test.step('should have icon on the left when the prefix-icon attribute is passed', async () => {
@@ -120,17 +130,6 @@ test('mdc-option', async ({ componentsPage }) => {
       await componentsPage.setAttributes(option, { 'soft-disabled': '' });
       await expect(option).toHaveAttribute('soft-disabled');
       await expect(option).toHaveAttribute('aria-disabled', 'true');
-    });
-
-    await test.step('should set label from default slot content if label attribute is not set', async () => {
-      await componentsPage.mount({
-        html: '<mdc-option>Slot Label</mdc-option>',
-        clearDocument: true,
-      });
-      const option = componentsPage.page.locator('mdc-option');
-      const mdcTextElement = option.locator('mdc-text');
-      const textContent = await mdcTextElement.textContent();
-      expect(textContent?.trim()).toBe('Slot Label');
     });
 
     await test.step('should set aria-label attribute when provided', async () => {

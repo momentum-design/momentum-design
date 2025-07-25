@@ -88,6 +88,10 @@ const styles = css`
   ::slotted([slot='footer-button-secondary']) {
     margin-bottom: 0.5rem;
   }
+
+  :host::part(text) {
+    margin: unset;
+  }
 `;
 
 export default [hostFitContentStyles, styles];

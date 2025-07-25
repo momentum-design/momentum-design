@@ -11,6 +11,6 @@ const KEYS = {
   PAGE_UP: 'PageUp',
   SPACE: ' ',
   TAB: 'Tab',
-} as const;
+};
 
 export { KEYS };

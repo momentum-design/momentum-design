@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
+import { queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
@@ -38,15 +39,25 @@ import styles from './menubar.styles';
  * @slot default - Contains the menu items and their associated popovers
  */
 class MenuBar extends Component {
+  @queryAssignedElements({ selector: 'mdc-menusection', flatten: true })
+  menusections!: Array<HTMLElement>;
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
   }
 
-  override connectedCallback(): void {
+  override async connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
     this.ariaOrientation = DEFAULTS.ORIENTATION;
+
+    await this.updateComplete;
+
+    // to make sure menusection dividers have the correct divider variant
+    this.menusections?.forEach(section => {
+      section.setAttribute('divider-variant', 'gradient');
+    });
   }
 
   /**
@@ -125,9 +136,9 @@ class MenuBar extends Component {
 
   private getSubmenu(triggerId: string | null): MenuPopover | undefined {
     if (!triggerId) return undefined;
-    return this.getAllPopovers().find(
-      popover => popover.getAttribute('triggerid') === triggerId
-    ) as MenuPopover | undefined;
+    return this.getAllPopovers().find(popover => popover.getAttribute('triggerid') === triggerId) as
+      | MenuPopover
+      | undefined;
   }
 
   private showSubmenu(triggerId: string | null): void {
@@ -193,7 +204,10 @@ class MenuBar extends Component {
     const grandParentTag = parent.parentElement?.tagName.toLowerCase();
 
     if (parentTag === MENUBAR_TAGNAME || parentTag === SIDENAV_TAGNAME) return true;
-    if (parentTag === MENUSECTION_TAGNAME && (grandParentTag === MENUBAR_TAGNAME || grandParentTag === SIDENAV_TAGNAME)) {
+    if (
+      parentTag === MENUSECTION_TAGNAME &&
+      (grandParentTag === MENUBAR_TAGNAME || grandParentTag === SIDENAV_TAGNAME)
+    ) {
       return true;
     }
 

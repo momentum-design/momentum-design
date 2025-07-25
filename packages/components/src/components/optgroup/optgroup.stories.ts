@@ -14,11 +14,11 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 const render = (args: Args) =>
   wrapWithDiv(html`
     <mdc-optgroup label="${args.label}" ?disabled="${args.disabled}" data-aria-label="${args['data-aria-label']}">
-      <mdc-option>Boston, MA</mdc-option>
-      <mdc-option selected>Chicago, IL</mdc-option>
-      <mdc-option>Detroit, MI</mdc-option>
-      <mdc-option>Flagstaff, AZ</mdc-option>
-      <mdc-option>Honolulu, HI</mdc-option>
+      <mdc-option label="Boston, MA"></mdc-option>
+      <mdc-option label="Chicago, IL" selected></mdc-option>
+      <mdc-option label="Detroit, MI"></mdc-option>
+      <mdc-option label="Flagstaff, AZ"></mdc-option>
+      <mdc-option label="Honolulu, HI"></mdc-option>
     </mdc-optgroup>
   `);
 
@@ -61,18 +61,18 @@ export const List: StoryObj = {
   render: (args: Args) =>
     wrapWithDiv(html`
       <mdc-optgroup label="North America">
-        <mdc-option>Boston</mdc-option>
-        <mdc-option>Mexico</mdc-option>
-        <mdc-option>Toronto</mdc-option>
+        <mdc-option label="Boston"></mdc-option>
+        <mdc-option label="Mexico"></mdc-option>
+        <mdc-option label="Toronto"></mdc-option>
       </mdc-optgroup>
       <mdc-optgroup label="Europe" ?disabled="${args.disabled}">
-        <mdc-option>Berlin</mdc-option>
-        <mdc-option>London</mdc-option>
-        <mdc-option>Vienna</mdc-option>
+        <mdc-option label="Berlin"></mdc-option>
+        <mdc-option label="London"></mdc-option>
+        <mdc-option label="Vienna"></mdc-option>
       </mdc-optgroup>
       <mdc-optgroup label="Asia Pacific">
-        <mdc-option>Mumbai</mdc-option>
-        <mdc-option>Sydney</mdc-option>
+        <mdc-option label="Mumbai"></mdc-option>
+        <mdc-option label="Sydney"></mdc-option>
       </mdc-optgroup>
     `),
   args: {

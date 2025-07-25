@@ -1,5 +1,4 @@
-import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
-import { html, nothing } from 'lit';
+import { CSSResult, nothing, PropertyValues, TemplateResult, html } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -14,8 +13,9 @@ import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
-import type { ListItemVariants } from './listitem.types';
+import { ListItemVariants } from './listitem.types';
 import { generateListItemId, generateTooltipId } from './listitem.utils';
+import { ListItemEventManager } from './listitem.events';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -61,6 +61,10 @@ import { generateListItemId, generateTooltipId } from './listitem.utils';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.
  * @event focus - (React: onFocus) This event is dispatched when the listitem receives focus.
+ * @event enabled - (React: onEnabled) This event is dispatched after the listitem is enabled
+ * @event disabled - (React: onDisabled) This event is dispatched after the listitem is disabled
+ * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
 class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /** @internal */
@@ -149,6 +153,13 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.role = this.role || ROLE.LISTITEM;
     // Add a unique id to the listitem if it does not have one.
     this.id = this.id || generateListItemId();
+
+    ListItemEventManager.onCreatedListItem(this);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    ListItemEventManager.onDestroyedListItem(this);
   }
 
   /**
@@ -194,7 +205,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
 
     // Remove any existing tooltip.
-    this.hideTooltipOnLeave()
+    this.hideTooltipOnLeave();
 
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
@@ -233,13 +244,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  protected getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
-    if (!content) {
-      return nothing;
-    }
+  protected getText(slotName: string, type: TextType, content?: string): TemplateResult {
     return html`
       <slot name="${slotName}">
-        <mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
+        ${content
+          ? html`<mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>`
+          : nothing}
       </slot>
     `;
   }
@@ -253,8 +263,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
+        ListItemEventManager.onDisableListItem(this);
       } else {
         element.removeAttribute('disabled');
+        ListItemEventManager.onEnableListItem(this);
       }
     });
     // Set the aria-disabled attribute to indicate that the list item is disabled.
