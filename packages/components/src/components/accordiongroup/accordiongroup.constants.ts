@@ -16,6 +16,6 @@ const VARIANT = {
 const DEFAULTS = {
   SIZE: SIZE.SMALL,
   VARIANT: VARIANT.STACKED,
-};
+} as const;
 
 export { DEFAULTS, SIZE, VARIANT, TAG_NAME };
