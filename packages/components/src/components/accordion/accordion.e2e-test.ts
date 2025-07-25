@@ -57,6 +57,7 @@ const setup = async (args: SetupOptions) => {
   return { accordion, headerButton, headerButtonSection, content };
 };
 
+test.use({ viewport: { width: 500, height: 1000 } });
 test.describe('Accordion Feature Scenarios', () => {
   test('mdc-accordion', async ({ componentsPage }) => {
     /**
@@ -175,11 +176,9 @@ test.describe('Accordion Feature Scenarios', () => {
       });
 
       await test.step('keyboard navigation', async () => {
-        const { accordion, headerButtonSection, content } = await setup({ componentsPage });
+        const { accordion, headerButtonSection, content } = await setup({ componentsPage, children: 'Content' });
 
         // Focus the header button
-        await componentsPage.actionability.pressTab();
-        await componentsPage.actionability.pressTab();
         await componentsPage.actionability.pressTab();
         await expect(headerButtonSection).toBeFocused();
 
