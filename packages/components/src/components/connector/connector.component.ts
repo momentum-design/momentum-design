@@ -1,4 +1,5 @@
-import { CSSResult, html } from 'lit';
+import type { CSSResult } from 'lit';
+import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';

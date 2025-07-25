@@ -122,7 +122,7 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
 
   await test.step('should be focusable with Tab', async () => {
     const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '1' });
-    await componentsPage.page.keyboard.press('Tab');
+    await componentsPage.actionability.pressTab();
     await expect(stepperitem).toBeFocused();
   });
 
