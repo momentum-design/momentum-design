@@ -3,7 +3,7 @@ import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
-import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -23,7 +23,7 @@ import type { ToastVariant } from './toast.types';
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
-class Toast extends CardAndDialogFooterMixin(Component) {
+class Toast extends FooterMixin(Component) {
   /**
    * The unique ID of the toast
    */
