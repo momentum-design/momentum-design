@@ -6,6 +6,8 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import { KEYS } from '../../utils/keys';
+import providerUtils from '../../utils/provider';
+import Stepper from '../stepper/stepper.component';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -81,6 +83,19 @@ class StepperItem extends TabIndexMixin(Component) {
    */
   @property({ type: Number, reflect: true, attribute: 'step-number' })
   stepNumber?: number;
+
+  /**
+   * @internal
+   */
+  private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
+
+  override updated(changedProperties: Map<string, unknown>): void {
+    super.updated(changedProperties);
+
+    const context = this.stepperContext?.value;
+    if (!context || !context.variant) return;
+    this.variant = context.variant;
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
