@@ -795,6 +795,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
 
     if (this.size) {
+      // expose a CSS variable for the available height
+      // so that it can be used in other components styles
+      const setInternalAvailableHeight = (availableHeight: number) => {
+        this.style.setProperty('--mdc-popover-internal-available-height', `${availableHeight}px`);
+      };
       const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
@@ -804,6 +809,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
               maxHeight: `${availableHeight}px`,
               overflowY: 'auto',
             });
+            setInternalAvailableHeight(availableHeight);
           },
           padding: 50,
         }),
