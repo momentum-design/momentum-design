@@ -39,6 +39,12 @@ const styles = css`
     width: 100%;
     position: relative;
   }
+  :host ::slotted(mdc-selectlistbox) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: var(--mdc-popover-internal-available-height);
+  }
   :host::part(base-container) {
     border-radius: 0.5rem;
     padding: 5.5px 6px 5.5px 12px;
