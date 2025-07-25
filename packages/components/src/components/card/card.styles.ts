@@ -4,21 +4,24 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
+    --mdc-card-width: 20rem;
     align-items: flex-start;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
     box-shadow: none;
     transition: box-shadow 0.2s;
+    width: var(--mdc-card-width);
   }
   :host([variant='ghost']) {
     border-color: transparent;
   }
   :host([orientation='horizontal']) {
-    max-width: 40rem;
+    min-width: 40rem;
+    --mdc-card-width: 40rem;
   }
 
   :host([orientation='vertical']) {
-    max-width: 20rem;
+    min-width: 20rem;
     flex-direction: column;
   }
 

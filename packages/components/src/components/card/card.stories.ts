@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
@@ -67,6 +67,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
+    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },

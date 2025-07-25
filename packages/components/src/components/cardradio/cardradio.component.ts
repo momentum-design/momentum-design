@@ -29,6 +29,24 @@ import styles from './cardradio.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
+ * @slot footer-button-primary - This slot is for passing primary variant of
+ *
+ * @csspart header - The header part of the card
+ * @csspart icon - The icon part of the card header
+ * @csspart body - The body part of the card
+ * @csspart image - The image part of the card
+ * @csspart footer - The footer part of the card
+ * @csspart footer-link - The link part of the card footer
+ * @csspart footer-button-primary - The primary button part of the card footer
+ * @csspart footer-button-secondary - The secondary button part of the card footer
+ * @csspart icon-button - The icon button part of the card header
+ * @csspart text - The text part of the card
+ * @csspart check - The check part of the card
+ * @csspart check-icon - The check icon part of the card
+ * @csspart check-icon-button - The check icon button part of the card
+ *
+ * @cssproperty --mdc-card-width - The width of the card
  *
  * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
