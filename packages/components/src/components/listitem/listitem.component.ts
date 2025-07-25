@@ -1,5 +1,4 @@
-import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
-import { html, nothing } from 'lit';
+import { CSSResult, nothing, PropertyValues, TemplateResult, html } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -245,13 +244,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  protected getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
-    if (!content) {
-      return nothing;
-    }
+  protected getText(slotName: string, type: TextType, content?: string): TemplateResult {
     return html`
       <slot name="${slotName}">
-        <mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
+        ${content
+          ? html`<mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>`
+          : nothing}
       </slot>
     `;
   }

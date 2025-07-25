@@ -226,3 +226,16 @@ export const ListWithLongText: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+export const ListItemLabelsUsingSlot: StoryObj = {
+  render: () => html`
+    <mdc-list>
+      <mdc-listitem variant="full-width">
+        <mdc-checkbox slot="leading-controls" data-aria-label="List item checkbox" checked=""></mdc-checkbox>
+        <mdc-text slot="leading-text-primary-label" type="body-midsize-regular" tagname="div">Primary</mdc-text>
+        <mdc-text slot="leading-text-secondary-label" type="body-large-regular">Secondary</mdc-text>
+        <mdc-text slot="leading-text-tertiary-label" type="body-small-bold" tagname="div">Tertiary</mdc-text>
+      </mdc-listitem>
+    </mdc-list>
+  `,
+};

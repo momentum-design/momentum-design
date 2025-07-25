@@ -12,6 +12,8 @@ import '../optgroup';
 import '../option';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
+import type Select from './select.component';
+
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
@@ -355,6 +357,61 @@ export const SelectWithDynamicOptions: StoryObj = {
   },
   argTypes: {
     ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
+  },
+  ...hideAllControls(),
+};
+
+export const SelectWithChangingSelectedAfterMount: StoryObj = {
+  render: () => {
+    const handleClick = () => {
+      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
+      const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
+      if (selectListbox) {
+        const options = selectListbox.querySelectorAll('mdc-option');
+        options.forEach((option, idx) => {
+          if (idx === 0) {
+            option.removeAttribute('selected');
+          }
+          if (idx === 1) {
+            option.setAttribute('selected', '');
+          }
+        });
+        select.updateState();
+      }
+    };
+
+    const handleClickRemove = () => {
+      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
+      const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
+      if (selectListbox) {
+        const options = selectListbox.querySelectorAll('mdc-option');
+        options.forEach(option => {
+          option.removeAttribute('selected');
+        });
+        select.updateState();
+      }
+    };
+
+    return wrapWithDiv(html`
+      <mdc-button @click=${handleClick}>Change Selected to Option 2</mdc-button>
+      <mdc-button @click=${handleClickRemove}>Remove Selected</mdc-button>
+      <mdc-select
+        label="Select an option"
+        placeholder="Select an option"
+        @change="${action('onchange')}"
+        @click="${action('onclick')}"
+        @input="${action('oninput')}"
+        @keydown="${action('onkeydown')}"
+        @focus="${action('onfocus')}"
+      >
+        <mdc-selectlistbox>
+          <mdc-option selected label="Option 1" secondary-label="Secondary Label 1" value="option1"></mdc-option>
+          <mdc-option label="Option 2" secondary-label="Secondary Label 2" value="option2"></mdc-option>
+          <mdc-option label="Option 3" secondary-label="Secondary Label 3" value="option3"></mdc-option>
+          <mdc-option label="Option 4" secondary-label="Secondary Label 4" value="option4"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+    `);
   },
   ...hideAllControls(),
 };
