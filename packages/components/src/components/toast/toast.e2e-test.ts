@@ -158,6 +158,7 @@ test.describe('Toast Feature Scenarios', () => {
         await closeBtn.click();
         await closePromise;
         await expect(toast).not.toBeVisible();
+        await expect(toast).not.toBeVisible();
       });
 
       await test.step('User expands/collapses toast body using mouse', async () => {
@@ -202,6 +203,7 @@ test.describe('Toast Feature Scenarios', () => {
         const closePromise = componentsPage.waitForEvent(toast, 'close');
         await closeBtn.press('Enter');
         await closePromise;
+        await expect(toast).not.toBeVisible();
         await expect(toast).not.toBeVisible();
       });
 

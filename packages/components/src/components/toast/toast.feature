@@ -64,7 +64,6 @@ Feature: Toast Accessibility and User Interaction
             Given the normal body text is "Your files are now available in the dashboard"
             And the detailed body text is "This is detailed content."
             Then the toast should render the normal body text
-            And the link button should be visible
             And the link button should be visible with showMoreText
             And the detailed body content should be hidden by default
 
