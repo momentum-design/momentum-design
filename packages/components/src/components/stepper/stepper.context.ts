@@ -1,6 +1,6 @@
 import { createContext } from '@lit/context';
 
-import type { OrientationType } from '../connector/connector.types';
+import type { OrientationType } from '../stepperconnector/stepperconnector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
 
 import { TAG_NAME } from './stepper.constants';

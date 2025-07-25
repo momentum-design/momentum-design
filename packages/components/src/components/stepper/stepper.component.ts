@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 
 import { Component, Provider } from '../../models';
 import { ROLE } from '../../utils/roles';
-import type { OrientationType } from '../connector/connector.types';
+import type { OrientationType } from '../stepperconnector/stepperconnector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
 
 import { DEFAULTS } from './stepper.constants';
@@ -11,12 +11,12 @@ import StepperContext from './stepper.context';
 import styles from './stepper.styles';
 
 /**
- * stepper component, which orchestrates stepperitem and connector components, is a wrapper for the stepper functionality.
+ * stepper component, which orchestrates stepperitem and stepperconnector components, is a wrapper for the stepper functionality.
  * It provides the context for the stepper items and connectors, allowing them to adapt to the stepper's orientation and variant.
  *
  * @tagname mdc-stepper
  *
- * @slot default - Pass the list of mdc-stepperitem and mdc-connector elements to be rendered inside the stepper.
+ * @slot default - Pass the list of mdc-stepperitem and mdc-stepperconnector elements to be rendered inside the stepper.
  *
  */
 class Stepper extends Provider<StepperContext> {
@@ -41,7 +41,7 @@ class Stepper extends Provider<StepperContext> {
   }
 
   /**
-   * The orientation of the connector (vertical or horizontal)
+   * The orientation of the stepperconnector (vertical or horizontal)
    * @default "horizontal"
    */
   @property({ type: String, reflect: true })

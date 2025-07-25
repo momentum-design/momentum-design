@@ -2,9 +2,9 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { ORIENTATION } from '../connector/connector.constants';
+import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
 import { VARIANT } from '../stepperitem/stepperitem.constants';
-import type { OrientationType } from '../connector/connector.types';
+import type { OrientationType } from '../stepperconnector/stepperconnector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
 
 type Args = {
@@ -37,28 +37,28 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
   const sheet = new StickerSheet(componentsPage, 'mdc-stepper', styles);
   sheet.setAttributes({ orientation });
   sheet.setChildren(`<mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-    <mdc-connector status="complete"></mdc-connector>
+    <mdc-stepperconnector status="complete"></mdc-stepperconnector>
     <mdc-stepperitem
       label="Step 2"
       status="completed"
       help-text="Help text"
     ></mdc-stepperitem>
-    <mdc-connector status="incomplete"></mdc-connector>
+    <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
     <mdc-stepperitem
       label="Step 3"
       status="error-current"
       help-text="Help text"
     ></mdc-stepperitem>
-    <mdc-connector status="incomplete"></mdc-connector>
+    <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
     <mdc-stepperitem
       label="Step 4"
       status="error-incomplete"
       step-number="4"
       help-text="Error"
     ></mdc-stepperitem>
-    <mdc-connector status="incomplete"></mdc-connector>
+    <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
     <mdc-stepperitem label="Step 5" status="not-started" step-number="5"></mdc-stepperitem>
-     <mdc-connector status="incomplete"></mdc-connector>
+     <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
     <mdc-stepperitem
       label="This is a very long label for step 6 that might not fit"
       status="not-started"
@@ -76,11 +76,11 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
 test('mdc-stepper', async ({ componentsPage }) => {
   const children = `
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-      <mdc-connector></mdc-connector>
+      <mdc-stepperconnector></mdc-stepperconnector>
       <mdc-stepperitem label="Step 2" status="current"></mdc-stepperitem>
     `;
   const stepper = await setup(componentsPage, { children });
-  const connector = componentsPage.page.locator('mdc-connector');
+  const stepperconnector = componentsPage.page.locator('mdc-stepperconnector');
   const item1 = componentsPage.page.locator('mdc-stepperitem').nth(0);
   const item2 = componentsPage.page.locator('mdc-stepperitem').nth(1);
 
@@ -90,21 +90,21 @@ test('mdc-stepper', async ({ componentsPage }) => {
   });
 
   await test.step('should provide orientation and variant context to children', async () => {
-    await expect(connector).toHaveAttribute('orientation', 'horizontal');
+    await expect(stepperconnector).toHaveAttribute('orientation', 'horizontal');
     await expect(item1).toHaveAttribute('variant', 'inline');
     await expect(item2).toHaveAttribute('variant', 'inline');
   });
 
-  await test.step('should update connector and stepperitem context on attribute change', async () => {
+  await test.step('should update stepperconnector and stepperitem context on attribute change', async () => {
     await componentsPage.setAttributes(stepper, { orientation: 'vertical', variant: 'stacked' });
-    await expect(connector).toHaveAttribute('orientation', 'vertical');
+    await expect(stepperconnector).toHaveAttribute('orientation', 'vertical');
     await expect(item1).toHaveAttribute('variant', 'stacked');
   });
 
   await test.step('should have appropriate ARIA roles and attributes for navigation', async () => {
     const children = `
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-      <mdc-connector></mdc-connector>
+      <mdc-stepperconnector></mdc-stepperconnector>
       <mdc-stepperitem label="Step 2" status="current"></mdc-stepperitem>
     `;
     const stepper = await setup(componentsPage, { children, orientation: 'vertical' });
@@ -116,11 +116,11 @@ test('mdc-stepper', async ({ componentsPage }) => {
   await test.step('should support keyboard and mouse interactions on stepperitems', async () => {
     const children = `
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
-      <mdc-connector status="complete"></mdc-connector>
+      <mdc-stepperconnector status="complete"></mdc-stepperconnector>
       <mdc-stepperitem label="Step 2" status="completed"></mdc-stepperitem>
-      <mdc-connector></mdc-connector>
+      <mdc-stepperconnector></mdc-stepperconnector>
       <mdc-stepperitem label="Step 3" status="current"></mdc-stepperitem>
-      <mdc-connector></mdc-connector>
+      <mdc-stepperconnector></mdc-stepperconnector>
       <mdc-stepperitem label="Step 4" status="not-started"></mdc-stepperitem>
     `;
     await setup(componentsPage, { children });

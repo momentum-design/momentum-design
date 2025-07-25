@@ -25,17 +25,17 @@ const styles = css`
     align-items: flex-start;
   }
 
-  :host([orientation='vertical'][variant='stacked']) ::slotted(mdc-connector) {
+  :host([orientation='vertical'][variant='stacked']) ::slotted(mdc-stepperconnector) {
     display: flex;
     justify-content: center;
   }
 
-  :host([orientation='vertical'][variant='inline']) ::slotted(mdc-connector) {
+  :host([orientation='vertical'][variant='inline']) ::slotted(mdc-stepperconnector) {
     display: flex;
     padding-left: 0.875rem;
   }
 
-  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-connector) {
+  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
     padding-top: 0.9375rem;
     margin: 0 -1rem;
   }
