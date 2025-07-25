@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
@@ -88,6 +88,7 @@ const meta: Meta = {
       options: Object.values(BUTTON_VARIANTS),
     },
     ...hideControls(['children', 'active', 'size']),
+    ...textControls(['--mdc-card-width', '--mdc-card-height']),
     ...classArgType,
     ...styleArgType,
   },
@@ -126,6 +127,7 @@ export const HorizontalCard: StoryObj = {
     'image-src': 'https://placehold.co/160x300',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
+    '--mdc-card-height': '20rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -197,6 +199,7 @@ export const ContentAfterBody: StoryObj = {
     'image-src': 'https://placehold.co/160x560',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
+    '--mdc-card-height': '35rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,

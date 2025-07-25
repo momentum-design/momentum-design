@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, disableControls } from '../../../config/storybook/utils';
+import { hideControls, disableControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -95,6 +95,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
+    ...textControls(['--mdc-card-width', '--mdc-card-height']),
     ...classArgType,
     ...styleArgType,
   },
@@ -137,6 +138,7 @@ export const HorizontalCard: StoryObj = {
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'aria-label': 'Aria Label',
+    '--mdc-card-height': '20rem',
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     'selection-type': SELECTION_TYPE.CHECKBOX,
@@ -215,6 +217,7 @@ export const ContentAfterBody: StoryObj = {
     'image-src': 'https://placehold.co/160x540',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
+    '--mdc-card-height': '35rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
