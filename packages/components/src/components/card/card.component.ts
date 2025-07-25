@@ -20,7 +20,8 @@ import styles from './card.styles';
  *    - Subtitle
  * - Body
  *
- * The card can either be vertically or horizontally oriented.
+ * The card can either be vertically or horizontally oriented. The vertical card has a min-width of 20rem and the horizontal card has a min-width of 40rem.
+ * The width and height of the card can be customized using CSS properties `--mdc-card-width` and `--mdc-card-height`.
  *
  * There are 2 variants for the card that represent the border styling - 'border' and 'ghost'.
  *
