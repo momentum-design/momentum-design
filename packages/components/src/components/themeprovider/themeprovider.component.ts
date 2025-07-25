@@ -48,10 +48,6 @@ import styles from './themeprovider.styles';
  * default: `"ss02" on`
  * @cssproperty --mdc-themeprovider-scrollbar-track-color - Option to override the color of the scrollbar track.
  * @cssproperty --mdc-themeprovider-scrollbar-thumb-color - Option to override the color of the scrollbar thumb.
- * @cssproperty --mdc-themeprovider-scrollbar-thumb-hover-color - Option to override the color of the
- * scrollbar thumb on hover. Applicable only on webkit browsers.
- * @cssproperty --mdc-themeprovider-scrollbar-thumb-active-color - Option to override the color of the
- * scrollbar thumb on press. Applicable only on webkit browsers.
  */
 class ThemeProvider extends Provider<ThemeProviderContext> {
   constructor() {
