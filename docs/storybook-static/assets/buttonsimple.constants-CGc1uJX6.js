@@ -1,1 +1,0 @@
-import{u as T}from"./index-C9z9WAEj.js";const E=T.constructTagName("buttonsimple"),t={20:20,24:24,28:28,32:32,40:40,48:48,52:52,64:64,72:72,88:88,124:124},s={BUTTON:"button",SUBMIT:"submit",RESET:"reset"},a={SIZE:t[32],TYPE:s.BUTTON,ROLE:"button",ARIA_STATE_KEY:"aria-pressed"};export{s as B,a as D,E as T,t as a};
