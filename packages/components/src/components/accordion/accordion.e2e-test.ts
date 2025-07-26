@@ -2,10 +2,10 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { Size } from '../accordiongroup/accordiongroup.types';
+import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
-import { Variant } from '../accordionbutton/accordionbutton.types';
+import type { Variant } from '../accordionbutton/accordionbutton.types';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { ROLE } from '../../utils/roles';
 

@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 import { hostFocusRingStyles } from '../../utils/styles';
 
-// TODO: FIX: When the contained variant is set, then the first and last border & focus ring of accordion child is not proper.
 const styles = css`
   :host {
     --mdc-accordiongroup-border-color: var(--mds-color-theme-outline-secondary-normal);

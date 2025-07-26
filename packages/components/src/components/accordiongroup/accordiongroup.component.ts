@@ -8,7 +8,7 @@ import { Component } from '../../models';
 
 import { DEFAULTS } from './accordiongroup.constants';
 import styles from './accordiongroup.styles';
-import { Size, Variant } from './accordiongroup.types';
+import type { Size, Variant } from './accordiongroup.types';
 
 /**
  * An accordion group is a vertically stacked set of interactive headings that each contain a header and body content.
