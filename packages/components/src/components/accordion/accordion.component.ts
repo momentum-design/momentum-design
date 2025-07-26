@@ -1,4 +1,5 @@
-import { CSSResult, html, PropertyValues } from 'lit';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 
 import { ROLE } from '../../utils/roles';
