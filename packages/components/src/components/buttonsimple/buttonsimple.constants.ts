@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import { ROLE } from '../../utils/roles';
 
 const TAG_NAME = utils.constructTagName('buttonsimple');
 
@@ -28,8 +29,8 @@ const BUTTON_TYPE = {
 const DEFAULTS = {
   SIZE: BUTTON_SIZES[32],
   TYPE: BUTTON_TYPE.BUTTON,
-  ROLE: 'button',
+  ROLE: ROLE.BUTTON,
   ARIA_STATE_KEY: 'aria-pressed',
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS, BUTTON_TYPE, BUTTON_SIZES };

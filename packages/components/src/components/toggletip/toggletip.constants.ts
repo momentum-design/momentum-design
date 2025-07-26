@@ -10,6 +10,6 @@ const DEFAULTS = {
   PLACEMENT: POPOVER_PLACEMENT.TOP,
   CLICK: TRIGGER.CLICK,
   SHOW_ARROW: true,
-};
+} as const;
 
 export { DEFAULTS, TAG_NAME };

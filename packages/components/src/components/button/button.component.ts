@@ -3,6 +3,8 @@ import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
+import { ROLE } from '../../utils/roles';
+import type { RoleType } from '../../utils/roles';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import type { IconNames } from '../icon/icon.types';
 
@@ -72,7 +74,7 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
    * @default button
    */
   @property({ type: String, reflect: true })
-  override role = 'button';
+  override role: RoleType = ROLE.BUTTON;
 
   /**
    * @internal
