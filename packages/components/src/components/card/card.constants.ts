@@ -26,6 +26,6 @@ const DEFAULTS = {
   ICON_LENGTH_UNIT: 'rem',
   LINK: LINK_TAG,
   BUTTON: BUTTON_TAG,
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS, VARIANTS, ORIENTATIONS };

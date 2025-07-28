@@ -20,6 +20,6 @@ const ICON_SIZE_IN_REM = {
 
 const DEFAULTS = {
   SIZE: TOGGLE_SIZE.DEFAULT,
-};
+} as const;
 
 export { TAG_NAME, ICON_SIZE_IN_REM, DEFAULTS, TOGGLE_SIZE, ICON_NAME };

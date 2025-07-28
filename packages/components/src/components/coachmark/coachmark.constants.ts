@@ -9,6 +9,6 @@ const DEFAULTS = {
   ARROW: true,
   CLOSE_BUTTON: true,
   DISABLE_ARIA_EXPANDED: true,
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS };
