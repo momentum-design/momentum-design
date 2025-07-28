@@ -1,5 +1,6 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import '.';
@@ -9,17 +10,21 @@ import '../button';
 import '../link';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { TOAST_VARIANT } from './toast.constants';
 
 const render = (args: Args) => html`
   <mdc-toast
-    variant="${args.variant}"
+    variant="${ifDefined(args.variant)}"
     header-text="${args['header-text']}"
     header-tag-name="${args['header-tag-name']}"
     close-button-aria-label="${args['close-button-aria-label']}"
+    show-more-text="${args['show-more-text']}"
+    show-less-text="${args['show-less-text']}"
+    class="${args.class}"
+    style="${args.style}"
     @close=${action('onclose')}
   >
     ${args.children}
@@ -49,9 +54,25 @@ const meta: Meta = {
     'close-button-aria-label': {
       control: 'text',
     },
+    'show-more-text': {
+      control: 'text',
+    },
+    'show-less-text': {
+      control: 'text',
+    },
     ...classArgType,
     ...styleArgType,
     ...disableControls(['children']),
+    ...hideControls(['isDetailVisible', 'hasDetailedSlot', 'detailedElements']),
+    ...textControls([
+      '--mdc-toast-background-color',
+      '--mdc-toast-border-color',
+      '--mdc-toast-header-text-color',
+      '--mdc-toast-icon-color',
+      '--mdc-toast-elevation-3',
+      '--mdc-toast-width',
+      '--mdc-toast-padding',
+    ])
   },
 };
 
@@ -63,8 +84,10 @@ export const Example: StoryObj = {
     'header-text': 'Toast Title',
     'header-tag-name': 'span',
     'close-button-aria-label': 'Close toast',
+    'show-more-text': 'Show more',
+    'show-less-text': 'Show less',
     children: html`
-      <mdc-icon name="placeholder-bold" size="1" slot="content-prefix"></mdc-icon>
+      <mdc-icon name="placeholder-bold" size="1.5" slot="content-prefix"></mdc-icon>
       <p slot="toast-body-normal">This is a toast message.</p>
       <p slot="toast-body-detailed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
@@ -93,7 +116,7 @@ export const AllVariants: StoryObj = {
       }, {
         variant: 'custom',
         'header-text': 'User Message',
-        children: html`<mdc-icon name="chat-bold" size="1" slot="content-prefix"></mdc-icon><span slot="toast-body-normal">New message received.</span>`,
+        children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon><span slot="toast-body-normal">New message received.</span>`,
       }].map((args) =>
         render({
           'header-tag-name': 'span',
@@ -111,7 +134,6 @@ export const AllVariants: StoryObj = {
 export const UserJoined: StoryObj = {
   name: 'User Joined',
   args: {
-    variant: 'custom',
     'header-text': '',
     'header-tag-name': 'span',
     'close-button-aria-label': 'Close toast',
@@ -128,7 +150,6 @@ export const UserJoined: StoryObj = {
 export const Connecting: StoryObj = {
   name: 'Connecting',
   args: {
-    variant: 'custom',
     'header-text': 'Connecting',
     'header-tag-name': 'span',
     'close-button-aria-label': 'Close toast',

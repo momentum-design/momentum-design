@@ -59,7 +59,7 @@ const setup = async (options: ToastSetupOptions) => {
 };
 
 test.describe('Toast Feature Scenarios', () => {
-  test.skip('mdc-toast', async ({ componentsPage }) => {
+  test('mdc-toast', async ({ componentsPage }) => {
     await test.step('Rule: ✅ Attributes', async () => {
       await test.step('Toast sets default attributes', async () => {
         const toast = await setup({ componentsPage, headerText: 'Action Completed' });
@@ -157,7 +157,6 @@ test.describe('Toast Feature Scenarios', () => {
         const closePromise = componentsPage.waitForEvent(toast, 'close');
         await closeBtn.click();
         await closePromise;
-        await expect(toast).not.toBeVisible();
       });
 
       await test.step('User expands/collapses toast body using mouse', async () => {
@@ -178,18 +177,19 @@ test.describe('Toast Feature Scenarios', () => {
       await test.step('User navigates toast using Tab and Shift+Tab', async () => {
         await setup({
           componentsPage,
+          showMoreText: SHOW_MORE_TEXT, 
+          showLessText: SHOW_LESS_TEXT,
           children: `<span slot="toast-body-normal">Normal</span><p slot="toast-body-detailed">Detailed</p><mdc-button slot="footer-button-primary">Primary</mdc-button><mdc-button slot="footer-button-secondary">Secondary</mdc-button>`
         });
         await componentsPage.actionability.pressAndCheckFocus('Tab', [
           componentsPage.page.locator('mdc-toast [part="toast-close-btn"]'),
-          componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]'),
+          componentsPage.page.locator('mdc-toast [part="footer-button-toggle"]'),
           componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]'),
           componentsPage.page.locator('mdc-button[slot="footer-button-primary"]'),
         ]);
         await componentsPage.actionability.pressAndCheckFocus('Shift+Tab', [
-          componentsPage.page.locator('mdc-button[slot="footer-button-primary"]'),
           componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]'),
-          componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]'),
+          componentsPage.page.locator('mdc-toast [part="footer-button-toggle"]'),
           componentsPage.page.locator('mdc-toast [part="toast-close-btn"]'),
         ]);
       });
@@ -202,7 +202,6 @@ test.describe('Toast Feature Scenarios', () => {
         const closePromise = componentsPage.waitForEvent(toast, 'close');
         await closeBtn.press('Enter');
         await closePromise;
-        await expect(toast).not.toBeVisible();
       });
 
       await test.step('User expands/collapses toast body with keyboard', async () => {

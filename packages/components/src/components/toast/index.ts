@@ -3,6 +3,7 @@ import { TAG_NAME } from './toast.constants';
 import '../icon';
 import '../text';
 import '../button';
+import '../linkbutton';
 
 Toast.register(TAG_NAME);
 

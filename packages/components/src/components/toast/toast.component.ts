@@ -1,27 +1,37 @@
-import { CSSResult, html, nothing, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { CSSResult, html, nothing, PropertyValues, TemplateResult } from 'lit';
+import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
-import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { DEFAULTS, ICON_NAMES_LIST, TOAST_VARIANT } from './toast.constants';
+import { DEFAULTS, VARIANT_ICON_NAMES, TOAST_VARIANT } from './toast.constants';
 import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
 /**
- * Toast is a lightweight, non-blocking alert used to inform the user of a process.
+ * `mdc-toast` is a lightweight, non-blocking alert used to inform the user of a process.
  * It can be used to display success, warning, error, or custom messages.
  * It's a controlled component that can be mounted/unmounted externally.
+ * 
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-button
+ * @dependency mdc-linkbutton
  *
  * @tagname mdc-toast
  * 
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-toast-background-color - Background color of the toast.
+ * @cssproperty --mdc-toast-border-color - Border color of the toast.
+ * @cssproperty --mdc-toast-header-text-color - Color of the header text in the toast.
+ * @cssproperty --mdc-toast-icon-color - Color of the icon in the toast.
+ * @cssproperty --mdc-toast-elevation-3 - Elevation effect applied to the toast.
+ * @cssproperty --mdc-toast-width - Width of the toast.
+ * @cssproperty --mdc-toast-padding - Padding inside the toast.
  */
 class Toast extends FooterMixin(Component) {
   /**
@@ -31,17 +41,18 @@ class Toast extends FooterMixin(Component) {
   override id: string = '';
 
   /**
-   * Types of toast
-   * Can be `custom`, `success`, `warning` or `error`.
+   * Type of toast
+   * - Can be `custom`, `success`, `warning` or `error`.
+   * @default 'custom'
    */
   @property({ type: String, reflect: true })
-  variant?: ToastVariant;
+  variant: ToastVariant = DEFAULTS.VARIANT;
 
   /**
-   * Defines a string value for the aria-label attribute for close button accessibility
+   * Defines aria-label attribute for close button accessibility
    */
   @property({ type: String, attribute: 'close-button-aria-label' })
-  closeButtonAriaLabel: string | null = null;
+  closeButtonAriaLabel?: string;
 
   /**
    * Defines a string value to display as the title of the toast
@@ -57,19 +68,19 @@ class Toast extends FooterMixin(Component) {
   headerTagName: string = DEFAULTS.HEADER_TAG_NAME;
 
   /**
-   * Defines a string value for the aria-label attribute when header is not used
+   * Defines aria-label attribute when header is not used
    */
   @property({ type: String, reflect: true, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
   /**
-   * Defines a string value to display as the "Show More" button text
+   * Defines a string value to display linkbutton text
    */
   @property({ type: String, reflect: true, attribute: 'show-more-text' })
   showMoreText?: string;
 
   /**
-   * Defines a string value to display as the "Show Less" button text
+   * Defines a string value to display linkbutton text
    */
   @property({ type: String, reflect: true, attribute: 'show-less-text' })
   showLessText?: string;
@@ -79,6 +90,9 @@ class Toast extends FooterMixin(Component) {
 
   @state()
   private hasDetailedSlot: boolean = false;
+
+  @queryAssignedElements({ slot: 'toast-body-detailed', flatten: true })
+  private detailedElements!: HTMLElement[];
 
   /**
    * Fired when Close Button is clicked using mouse or keyboard.
@@ -98,30 +112,20 @@ class Toast extends FooterMixin(Component) {
     this.isDetailVisible = !this.isDetailVisible;
   }
 
-  private handleDetailedSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
+  private updateDetailedSlotPresence() {
+    this.hasDetailedSlot = this.detailedElements?.some((el) => el.textContent?.trim()) ?? false;
+  }
 
-    const hasMeaningfulContent = slot
-      .assignedNodes({ flatten: true })
-      .some((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          const element = node as HTMLElement;
-          return element.hasChildNodes() || element.textContent?.trim();
-        }
-        if (node.nodeType === Node.TEXT_NODE) {
-          return !!node.textContent?.trim();
-        }
-        return false;
-    });
-
-    this.hasDetailedSlot = hasMeaningfulContent;
+  protected override firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+    this.updateDetailedSlotPresence();
   }
 
   private renderIcon(iconName: string): TemplateResult {
     return html`
       <mdc-icon
         name="${ifDefined(iconName as IconNames)}"
-        size="${DEFAULTS.ICON_SIZE}"
+        size="${DEFAULTS.PREFIX_ICON_SIZE}"
         part="toast-prefix-icon"
       ></mdc-icon>
     `;
@@ -132,28 +136,44 @@ class Toast extends FooterMixin(Component) {
 
       switch (variant) {
       case TOAST_VARIANT.SUCCESS:
-        return this.renderIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME);
+        return this.renderIcon(VARIANT_ICON_NAMES.SUCCESS_ICON_NAME);
       case TOAST_VARIANT.WARNING:
-        return this.renderIcon(ICON_NAMES_LIST.WARNING_ICON_NAME);
+        return this.renderIcon(VARIANT_ICON_NAMES.WARNING_ICON_NAME);
       case TOAST_VARIANT.ERROR:
-        return this.renderIcon(ICON_NAMES_LIST.ERROR_ICON_NAME);
+        return this.renderIcon(VARIANT_ICON_NAMES.ERROR_ICON_NAME);
       default:
         return nothing;
     }
   }
 
+  private shouldRenderToggleButton() {
+    return this.variant === DEFAULTS.VARIANT && this.hasDetailedSlot && this.showMoreText && this.showLessText;
+  }
+
+  private renderToggleDetailButton() {
+    if (!this.shouldRenderToggleButton()) return nothing;
+    return html`
+      <mdc-linkbutton
+        part="footer-button-toggle"
+        @click="${this.toggleDetailVisibility}"
+        icon-name="${this.isDetailVisible ? DEFAULTS.ARROW_UP_BOLD : DEFAULTS.ARROW_DOWN_BOLD}"
+      >
+        ${this.isDetailVisible ? this.showLessText : this.showMoreText}
+      </mdc-linkbutton>
+    `;
+  }
+
   protected override renderFooter() {
     return html` <slot name="footer">
       <div part="footer">
-        ${this.hasDetailedSlot ? html`<mdc-button part="footer-toggle-btn" @click="${this.toggleDetailVisibility}" postfix-icon="arrow-down-bold" variant="tertiary">${this.isDetailVisible ? 'Show less' : 'Show more'}</mdc-button>`
-      : nothing}
+        ${this.renderToggleDetailButton()}
         <slot
           name="footer-button-secondary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, DEFAULTS.SECONDARY_BUTTON)}
         ></slot>
         <slot
           name="footer-button-primary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, DEFAULTS.PRIMARY_BUTTON)}
         ></slot>
       </div>
     </slot>`;
@@ -162,28 +182,30 @@ class Toast extends FooterMixin(Component) {
   public override render() {
     return html`
       <div part="content-container">
-        ${this.variant === TOAST_VARIANT.CUSTOM ? html`<slot name="content-prefix" part="content-prefix"></slot>` : html`${this.renderIconBasedOnVariant()}`}
+        ${this.variant === DEFAULTS.VARIANT ? html`<slot name="content-prefix"></slot>` : html`${this.renderIconBasedOnVariant()}`}
         <div part="toast-content">
-          <mdc-text
-            part="toast-header"
-            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-            type="${TYPE.BODY_LARGE_BOLD}"
-          >
-            ${this.headerText}
-          </mdc-text>
+          ${this.headerText
+            ? html`
+                <mdc-text
+                  part="toast-header"
+                  tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                  type="${TYPE.BODY_LARGE_BOLD}"
+                >
+                  ${this.headerText}
+                </mdc-text>
+              `
+            : nothing}
           <slot name="toast-body-normal"></slot>
-          <slot 
-            name="toast-body-detailed" 
-            @slotchange="${this.handleDetailedSlotChange}" 
-            style="${this.isDetailVisible ? '' : 'display:none;'}">
-          </slot>
+          <div ?hidden="${!this.isDetailVisible}">
+            <slot name="toast-body-detailed"></slot>
+          </div>
         </div>
         <mdc-button
             part="toast-close-btn"
             prefix-icon="${DEFAULTS.CANCEL_ICON}"
-            variant="${BUTTON_VARIANTS.TERTIARY}"
-            size="${ICON_BUTTON_SIZES[20]}"
-            aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
+            variant="${DEFAULTS.TERTIARY_BUTTON}"
+            size="${DEFAULTS.CLOSE_ICON_SIZE}"
+            aria-label="${ifDefined(this.closeButtonAriaLabel)}"
             @click="${this.closeToast}"
           ></mdc-button>
       </div>
