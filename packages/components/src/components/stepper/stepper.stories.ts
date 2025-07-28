@@ -39,7 +39,7 @@ const renderWithLargeLabel = (args: Args) =>
     <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>
     <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
     <mdc-stepperitem
-      label="This is a very long label for step 3 that might not fit"
+      label="This is a very long label for step 2 that might not fit"
       status="current"
       help-text="Help text is also very long"
     ></mdc-stepperitem>

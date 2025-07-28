@@ -5,12 +5,12 @@ Feature: Stepper context propagation, child filtering, and integration
 
   Scenario: Stepper provides horizontal orientation to connectors
     Given a stepper with orientation set to horizontal
-    When the stepper renders stepperconnector children
+    When the stepper renders with stepperconnector children
     Then each stepperconnector should have orientation set to horizontal
 
   Scenario: Stepper provides vertical orientation to connectors
     Given a stepper with orientation set to vertical
-    When the stepper renders stepperconnector children
+    When the stepper renders with stepperconnector children
     Then each stepperconnector should have orientation set to vertical
 
   Scenario: Stepper provides stacked variant to stepperitems
@@ -41,4 +41,6 @@ Feature: Stepper context propagation, child filtering, and integration
   Scenario: Stepper accessibility
     Given a stepper with stepperitem and stepperconnector children
     When the stepper is rendered
-    Then the stepper should have appropriate ARIA roles and attributes for navigation
+    Then the stepper should have role="list" 
+    And each stepperitem should have role="listitem"
+
