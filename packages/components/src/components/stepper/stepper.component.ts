@@ -12,7 +12,7 @@ import StepperContext from './stepper.context';
 import styles from './stepper.styles';
 
 /**
- * stepper component, which orchestrates stepperitem and stepperconnector components, is a wrapper for the stepper functionality.
+ * Stepper component, which orchestrates stepperitem and stepperconnector components, is a wrapper for the stepper functionality.
  * It provides the context for the stepper items and connectors, allowing them to adapt to the stepper's orientation and variant.
  *
  * @tagname mdc-stepper

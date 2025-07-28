@@ -44,15 +44,15 @@ const renderWithLargeLabel = (args: Args) =>
       help-text="Help text is also very long"
     ></mdc-stepperitem>
     <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
-    <mdc-stepperitem label="Step 4" status="error-incomplete" step-number="4" help-text="Error"></mdc-stepperitem>
+    <mdc-stepperitem label="Step 3" status="error-incomplete" step-number="3" help-text="Error"></mdc-stepperitem>
     <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
-    <mdc-stepperitem label="Step 5" status="not-started" step-number="5"></mdc-stepperitem>
+    <mdc-stepperitem label="Step 4" status="not-started" step-number="4"></mdc-stepperitem>
   </mdc-stepper>`;
 
 const meta: Meta = {
   title: 'Work In Progress/stepper/stepper',
   tags: ['autodocs'],
-  component: 'mdc-stepperitemper',
+  component: 'mdc-stepper',
   render,
   parameters: {
     badges: ['wip'],
