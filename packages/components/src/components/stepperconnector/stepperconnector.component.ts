@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
-import Stepper from '../stepper/stepper.component.ts';
+import Stepper from '../stepper/stepper.component';
 
 import { DEFAULTS } from './stepperconnector.constants';
 import styles from './stepperconnector.styles';
