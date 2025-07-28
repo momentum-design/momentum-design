@@ -1,4 +1,4 @@
-import { CSSResult, nothing, PropertyValues, TemplateResult, html } from 'lit';
+import { CSSResult, html, nothing, PropertyValues, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -7,15 +7,16 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 
 import { DEFAULTS } from './listitem.constants';
+import { ListItemEventManager } from './listitem.events';
 import styles from './listitem.styles';
 import { ListItemVariants } from './listitem.types';
 import { generateListItemId, generateTooltipId } from './listitem.utils';
-import { ListItemEventManager } from './listitem.events';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -220,9 +221,13 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     if (this.parentElement?.hasAttribute('slot')) {
       tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
     }
-
-    // Attach the tooltip programmatically after the nearest parent element.
-    this.parentElement?.after(tooltip);
+    if (this.parentElement?.tagName?.toLowerCase() === SELECTLISTBOX_TAG_NAME) {
+      // If the parent element is a mdc-selectlistbox, append the tooltip after its parent element i.e mdc-select
+      this.parentElement?.parentElement?.after(tooltip);
+    } else {
+      // Attach the tooltip programmatically after the nearest parent element.
+      this.parentElement?.after(tooltip);
+    }
   }
 
   /**
