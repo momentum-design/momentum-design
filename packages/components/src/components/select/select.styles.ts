@@ -80,7 +80,7 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
-  :host::part(popover-content) {
+  :host mdc-popover::part(popover-content) {
     min-width: auto;
     max-height: var(--mdc-popover-max-height);
     padding: 0.75rem 0.5rem;
