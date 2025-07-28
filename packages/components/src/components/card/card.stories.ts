@@ -67,7 +67,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
-    ...textControls(['--mdc-card-width', '--mdc-card-height']),
+    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },
@@ -105,7 +105,6 @@ export const StaticHorizontalCard: StoryObj = {
     'image-src': 'https://placehold.co/160x300',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    '--mdc-card-height': '20rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -177,7 +176,6 @@ export const StaticContentAfterBody: StoryObj = {
     'image-src': 'https://placehold.co/160x560',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    '--mdc-card-height': '35rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -211,7 +209,6 @@ export const InteractiveHorizontalCard: StoryObj = {
     'image-src': 'https://placehold.co/160x330',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    '--mdc-card-height': '25rem',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -298,7 +295,6 @@ export const InteractiveContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    '--mdc-card-height': '35rem',
     children: html` <div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
         <img src="https://placehold.co/120x30" alt="Image Alt" width="100%" />

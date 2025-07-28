@@ -5,7 +5,6 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = css`
   :host {
     --mdc-card-width: 20rem;
-    --mdc-card-height: 10rem;
     align-items: flex-start;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
@@ -21,7 +20,6 @@ const styles = css`
   :host([orientation='horizontal']) {
     min-width: 40rem;
     --mdc-card-width: 40rem;
-    height: var(--mdc-card-height);
   }
 
   :host([orientation='vertical']) {

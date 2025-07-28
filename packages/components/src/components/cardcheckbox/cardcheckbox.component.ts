@@ -49,7 +49,6 @@ import styles from './cardcheckbox.styles';
  * @csspart check-icon-button - The check icon button part of the card
  *
  * @cssproperty --mdc-card-width - The width of the card
- * @cssproperty --mdc-card-height - The height of the card
  *
  * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
