@@ -148,6 +148,15 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       required: '',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
+    // disabled and required
+    wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Disabled Required Label',
+      'help-text': 'Help Text',
+      required: '',
+      disabled: true,
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
     // With long text that gets truncated into an ellipsis
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',

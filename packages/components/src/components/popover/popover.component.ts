@@ -7,6 +7,7 @@ import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
+import type Tooltip from '../tooltip/tooltip.component';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -323,6 +324,15 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-haspopup' })
   disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
 
+  /**
+   * If a tooltip is connected to the same trigger element,
+   * this property will keep the connected tooltip closed if this popover is open.
+   * This is useful when you want to show a popover with a tooltip
+   * but you don't want the tooltip to be shown at the same time.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-closed' })
+  keepConnectedTooltipClosed: boolean = false;
+
   public arrowElement: HTMLElement | null = null;
 
   public triggerElement: HTMLElement | null = null;
@@ -352,12 +362,20 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private utils: PopoverUtils;
 
   /** @internal */
+  public shouldSupressOpening: boolean = false;
+
+  /** @internal */
   public backdropElement: HTMLElement | null = null;
 
   constructor() {
     super();
     this.utils = new PopoverUtils(this);
   }
+
+  private getConnectedTooltip = () =>
+    (this.getRootNode() as Document | ShadowRoot).querySelector(
+      `mdc-tooltip[triggerID="${this.triggerID}"]`,
+    ) as Tooltip;
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
@@ -368,10 +386,20 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.style.zIndex = `${this.zIndex}`;
     PopoverEventManager.onCreatedPopover(this);
 
-    if (this.visible) {
+    if (this.visible && !this.shouldSupressOpening) {
       this.positionPopover();
 
       this.activatePreventScroll();
+
+      if (this.keepConnectedTooltipClosed) {
+        // If the popover is visible on first update and keepConnectedTooltipsClosed is true,
+        // we need to close the connected tooltip.
+        const connectedTooltip = this.getConnectedTooltip();
+        if (connectedTooltip) {
+          connectedTooltip.visible = false;
+          connectedTooltip.shouldSupressOpening = true;
+        }
+      }
 
       // If the popover is visible on first update and focustrap is enabled, we need to activate the focus trap
       if (this.interactive && this.focusTrap) {
@@ -388,6 +416,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeEventListeners();
     this.deactivateFocusTrap?.();
     this.deactivatePreventScroll();
+
+    if (this.keepConnectedTooltipClosed) {
+      const connectedTooltip = this.getConnectedTooltip();
+      if (connectedTooltip) {
+        connectedTooltip.shouldSupressOpening = false;
+      }
+    }
 
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
@@ -591,9 +626,19 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       return;
     }
 
-    if (newValue) {
+    if (newValue && !this.shouldSupressOpening) {
       if (popoverStack.peek() !== this) {
         popoverStack.push(this);
+      }
+
+      if (this.keepConnectedTooltipClosed) {
+        // If the gets visible and keepConnectedTooltipsClosed is true,
+        // we need to close the connected tooltip.
+        const connectedTooltip = this.getConnectedTooltip();
+        if (connectedTooltip) {
+          connectedTooltip.visible = false;
+          connectedTooltip.shouldSupressOpening = true;
+        }
       }
 
       if (this.backdrop) {
@@ -674,6 +719,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }
+
+      if (this.keepConnectedTooltipClosed) {
+        const connectedTooltip = this.getConnectedTooltip();
+        if (connectedTooltip) {
+          connectedTooltip.shouldSupressOpening = false;
+        }
+      }
       PopoverEventManager.onHidePopover(this);
     }
   }
@@ -737,10 +789,18 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * Shows the popover.
    */
   public showPopover = () => {
+    if (this.visible || this.shouldSupressOpening) {
+      return;
+    }
     this.cancelCloseDelay();
-    setTimeout(() => {
+
+    if (this.openDelay > 0) {
+      setTimeout(() => {
+        this.visible = true;
+      }, this.openDelay);
+    } else {
       this.visible = true;
-    }, this.openDelay);
+    }
   };
 
   /**

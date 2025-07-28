@@ -803,6 +803,123 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popoverHover).not.toBeVisible();
     await expect(trigger).toBeFocused();
   });
+
+  await test.step('Tooltip and popover with keepConnectedTooltipClosed', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="height: 500px; width: 500px; display: 
+        flex; flex-direction: column; align-items: center; justify-content: center;">
+          <mdc-button id="trigger-multi">Trigger</mdc-button>
+          <mdc-tooltip id="tooltip" show-arrow triggerID="trigger-multi">This is a tooltip</mdc-tooltip>
+          <mdc-popover 
+            id="popover" 
+            triggerID="trigger-multi" 
+            trigger="click" 
+            show-arrow 
+            hide-on-escape
+            close-button 
+            close-button-aria-label="Close Popover"
+            focus-back-to-trigger 
+            hide-on-outside-click
+            interactive 
+            focus-trap
+            placement="top"
+            keep-connected-tooltip-closed
+          >Click Popover</mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const trigger = componentsPage.page.locator('#trigger-multi');
+    const tooltip = componentsPage.page.locator('#tooltip');
+    const popover = componentsPage.page.locator('#popover');
+
+    // Hover to open tooltip
+    await trigger.hover();
+    await expect(tooltip).toBeVisible();
+    await expect(popover).not.toBeVisible();
+
+    // Click to open popover, tooltip should close
+    await trigger.click();
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+
+    // Hover again while popover is open, tooltip should NOT open, popover remains open
+    await componentsPage.page.mouse.move(0, 0);
+    await trigger.hover();
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+
+    // Click outside to close popover, tooltip should remain closed
+    await componentsPage.page.mouse.click(0, 0);
+    await expect(popover).not.toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+
+    // Tooltip should be hoverable again
+    await trigger.hover();
+    await expect(tooltip).toBeVisible();
+    await expect(popover).not.toBeVisible();
+  });
+
+  await test.step('Popover and Tooltip on same trigger and Dialog opens', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="height: 500px; width: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-tooltip id="tooltip" show-arrow triggerID="trigger">Tooltip content</mdc-tooltip>
+          <mdc-popover id="popover" triggerID="trigger" trigger="click" show-arrow interactive focus-trap keep-connected-tooltip-closed>
+            <mdc-button id="open-dialog">Open Dialog</mdc-button>
+          </mdc-popover>
+          <mdc-dialog id="dialog" close-button-aria-label="Close Dialog">
+            <div slot="dialog-body">
+              <mdc-text>Dialog Content</mdc-text>
+              <mdc-button id="dialog-action">Action</mdc-button>
+            </div>
+          </mdc-dialog>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    // Attach click handler to #open-dialog to open dialog and close popover
+    await componentsPage.page.evaluate(() => {
+      const openDialogBtn = document.querySelector('#open-dialog');
+      if (openDialogBtn) {
+        openDialogBtn.addEventListener('click', () => {
+          const dialog = document.querySelector('#dialog') as any;
+          if (dialog) dialog.visible = true;
+          const popover = document.querySelector('#popover') as any;
+          if (popover) popover.visible = false;
+        });
+      }
+    });
+
+    const trigger = componentsPage.page.locator('#trigger');
+    const tooltip = componentsPage.page.locator('#tooltip');
+    const popover = componentsPage.page.locator('#popover');
+    const openDialogBtn = componentsPage.page.locator('#open-dialog');
+    const dialog = componentsPage.page.locator('#dialog');
+    const dialogCloseButton = dialog.locator('mdc-button[aria-label="Close Dialog"]');
+
+    // Focus on trigger, tooltip should open
+    await componentsPage.actionability.pressTab();
+    await expect(trigger).toBeFocused();
+    await expect(tooltip).toBeVisible();
+
+    // Press Space to open popover, tooltip should close, popover opens, focus moves inside
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(openDialogBtn).toBeFocused();
+
+    // Press Space on action inside popover to open dialog
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+
+    await expect(dialog).toBeVisible();
+    await expect(popover).not.toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(dialogCloseButton).toBeFocused();
+  });
 };
 
 test('mdc-popover', async ({ componentsPage }) => {

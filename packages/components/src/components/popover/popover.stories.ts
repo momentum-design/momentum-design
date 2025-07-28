@@ -49,6 +49,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
     ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
+    ?keep-connected-tooltip-closed="${args['keep-connected-tooltip-closed']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -603,6 +604,7 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
     'show-arrow': true,
     'hide-on-escape': true,
     'hide-on-outside-click': true,
+    'keep-connected-tooltip-closed': true,
   },
   render: args => html`
     ${createTrigger(args.triggerID, 'Click me!')}
@@ -610,9 +612,9 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
       args,
       html`
         <mdc-button
-          @click=${async () => {
+          @click=${() => {
             const popover = document.getElementById('popover') as Popover;
-            popover.visible = false;
+            popover.hidePopover();
 
             const dialog = document.getElementById('popover-dialog') as Dialog;
             dialog.visible = true;
@@ -623,10 +625,16 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
       `,
     )}
     <mdc-tooltip id="tooltip" triggerID="${args.triggerID}" placement="top"> Tooltip text </mdc-tooltip>
-    <mdc-dialog id="popover-dialog">
-      <mdc-text slot="header">Dialog Title</mdc-text>
-      <mdc-text slot="body">Dialog content goes here.</mdc-text>
-      <mdc-button slot="footer" dialog-action="close">Close</mdc-button>
+    <mdc-dialog
+      id="popover-dialog"
+      header-text="Dialog Title"
+      @close=${() => {
+        const dialog = document.getElementById('popover-dialog') as Dialog;
+        dialog.visible = false;
+      }}
+    >
+      <mdc-text slot="dialog-body">Dialog content goes here.</mdc-text>
+      <mdc-button slot="footer">Close</mdc-button>
     </mdc-dialog>
   `,
 };
