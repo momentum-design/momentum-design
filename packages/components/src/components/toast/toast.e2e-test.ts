@@ -261,7 +261,8 @@ test.describe('Toast Feature Scenarios', () => {
           showLessText: SHOW_LESS_TEXT,
           children: `<mdc-text tagname="span" slot="toast-body-normal">${normalBody}</mdc-text><mdc-text tagname="span" slot="toast-body-detailed">${detailedBody}</mdc-text>`
         });
-        const showMoreBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        const showMoreBtn = await toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        await expect(showMoreBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
         if (isDesktopDevice()) {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
@@ -270,9 +271,10 @@ test.describe('Toast Feature Scenarios', () => {
           await componentsPage.accessibility.checkForA11yViolations(`toast-collapsed-view`);
         }
         await showMoreBtn.click(); // expand
-        const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
+        const detailedSlot = await toast.locator('mdc-text[slot="toast-body-detailed"]');
         await expect(detailedSlot).toBeVisible();
         await expect(showMoreBtn).toContainText(SHOW_LESS_TEXT);
+        await expect(showMoreBtn.locator('mdc-icon[name="arrow-up-bold"]')).toBeVisible();
         if (isDesktopDevice()) {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
@@ -283,6 +285,7 @@ test.describe('Toast Feature Scenarios', () => {
         await showMoreBtn.click(); // collapse
         await expect(detailedSlot).not.toBeVisible();
         await expect(showMoreBtn).toContainText(SHOW_MORE_TEXT);
+        await expect(showMoreBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
         if (isDesktopDevice()) {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
