@@ -12,9 +12,11 @@ import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
 /**
- * `mdc-toast` is a lightweight, non-blocking alert used to inform the user of a process.
- * It can be used to display success, warning, error, or custom messages.
- * It's a controlled component that can be mounted/unmounted externally.
+ * `mdc-toast` is a lightweight, non-blocking alert used to inform users about application processes.
+ * It supports success, warning, error, and custom messages, and is designed to be controlled externally.
+ * 
+ * **Note**: When using `slot="toast-body-normal"` and `slot="toast-body-detailed"`, it's strongly recommended to wrap the content with `<mdc-text tagname="span">`.
+ * If not used, ensure your custom content is styled appropriately to match the design and alignment expectations of the toast component.
  * 
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -74,13 +76,13 @@ class Toast extends FooterMixin(Component) {
   override ariaLabel: string | null = null;
 
   /**
-   * Defines a string value to display linkbutton text
+   * Defines the text shown on the linkbutton when detailed content is hidden.
    */
   @property({ type: String, reflect: true, attribute: 'show-more-text' })
   showMoreText?: string;
 
   /**
-   * Defines a string value to display linkbutton text
+   * Defines the text shown on the linkbutton when detailed content is visible.
    */
   @property({ type: String, reflect: true, attribute: 'show-less-text' })
   showLessText?: string;
@@ -147,7 +149,7 @@ class Toast extends FooterMixin(Component) {
   }
 
   private shouldRenderToggleButton() {
-    return this.variant === DEFAULTS.VARIANT && this.hasDetailedSlot && this.showMoreText && this.showLessText;
+    return this.hasDetailedSlot && this.showMoreText && this.showLessText;
   }
 
   private renderToggleDetailButton() {
@@ -161,6 +163,20 @@ class Toast extends FooterMixin(Component) {
         ${this.isDetailVisible ? this.showLessText : this.showMoreText}
       </mdc-linkbutton>
     `;
+  }
+
+  protected renderHeader() {
+    return this.headerText
+      ? html`
+          <mdc-text
+            part="toast-header"
+            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+            type="${TYPE.BODY_LARGE_BOLD}"
+          >
+            ${this.headerText}
+          </mdc-text>
+        `
+      : nothing;
   }
 
   protected override renderFooter() {
@@ -184,17 +200,7 @@ class Toast extends FooterMixin(Component) {
       <div part="content-container">
         ${this.variant === DEFAULTS.VARIANT ? html`<slot name="content-prefix"></slot>` : html`${this.renderIconBasedOnVariant()}`}
         <div part="toast-content">
-          ${this.headerText
-            ? html`
-                <mdc-text
-                  part="toast-header"
-                  tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-                  type="${TYPE.BODY_LARGE_BOLD}"
-                >
-                  ${this.headerText}
-                </mdc-text>
-              `
-            : nothing}
+          ${this.renderHeader()}
           <slot name="toast-body-normal"></slot>
           <div ?hidden="${!this.isDetailVisible}">
             <slot name="toast-body-detailed"></slot>

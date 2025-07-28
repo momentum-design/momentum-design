@@ -20,7 +20,6 @@ const styles = css`
     border: 0.0625rem solid var(--mdc-toast-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-toast-elevation-3);
-    position: relative;
   }
 
   :host::part(toast-prefix-icon) {
@@ -32,11 +31,11 @@ const styles = css`
   }
 
   :host([variant='warning'])::part(toast-prefix-icon) {
-    --mdc-toast-icon-color: var(--mds-color-theme-text-error-normal);
+    --mdc-toast-icon-color: var(--mds-color-theme-text-warning-normal);
   }
 
   :host([variant='error'])::part(toast-prefix-icon) {
-    --mdc-toast-icon-color: var(--mds-color-theme-text-warning-normal);
+    --mdc-toast-icon-color: var(--mds-color-theme-text-error-normal);
   }
 
   :host::part(content-container) {
@@ -77,8 +76,12 @@ const styles = css`
     align-self: stretch;
   }
 
+  :host::part(footer-button-toggle) {
+    text-decoration: none;
+  }
+
   :host::part(text) {
-    margin: unset;
+    margin: auto;
   }
 `;
 

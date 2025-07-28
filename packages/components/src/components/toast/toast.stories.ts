@@ -7,7 +7,6 @@ import '.';
 import '../avatar';
 import '../spinner';
 import '../button';
-import '../link';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
@@ -78,22 +77,28 @@ const meta: Meta = {
 
 export default meta;
 
+const DefaultArgs = {
+  variant: 'custom',
+  'header-tag-name': 'span',
+  'close-button-aria-label': 'Close toast',
+};
+
+const DefaultFooter = html`
+  <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+  <mdc-button slot="footer-button-primary">Primary</mdc-button>
+`;
+
 export const Example: StoryObj = {
   args: {
-    variant: 'custom',
+    ...DefaultArgs,
     'header-text': 'Toast Title',
-    'header-tag-name': 'span',
-    'close-button-aria-label': 'Close toast',
     'show-more-text': 'Show more',
     'show-less-text': 'Show less',
     children: html`
-      <mdc-icon name="placeholder-bold" size="1.5" slot="content-prefix"></mdc-icon>
-      <p slot="toast-body-normal">This is a toast message.</p>
-      <p slot="toast-body-detailed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
-      <mdc-text slot="footer-link">Not rendered</mdc-text>
-      <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
-      <mdc-button slot="footer-button-primary">Primary</mdc-button>`,
+      <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
+      <mdc-text slot="toast-body-normal" tagname="span">This is a toast message.</mdc-text>
+      <mdc-text slot="toast-body-detailed" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>
+      ${DefaultFooter}`,
   },
 };
 
@@ -102,25 +107,32 @@ export const AllVariants: StoryObj = {
   render: () => html`
     <div style="display: grid; grid-template-columns: repeat(2, 0fr); gap: 2rem;">
       ${[{
+        ...DefaultArgs,
         variant: 'success',
         'header-text': 'Success!',
-        children: html`<span slot="toast-body-normal">Your action was successful.</span>`,
+        children: html`<mdc-text tagname="span" slot="toast-body-normal">Your action was successful.</mdc-text>
+        ${DefaultFooter}`,
       }, {
+        ...DefaultArgs,
         variant: 'warning',
         'header-text': 'Warning!',
-        children: html`<span slot="toast-body-normal">There was a warning.</span>`,
+        children: html`<mdc-text tagname="span" slot="toast-body-normal">There was a warning.</mdc-text>
+        ${DefaultFooter}`,
       }, {
+        ...DefaultArgs,
         variant: 'error',
         'header-text': 'Error!',
-        children: html`<span slot="toast-body-normal">An error occurred.</span>`,
+        children: html`<mdc-text tagname="span" slot="toast-body-normal">An error occurred.</mdc-text>
+        ${DefaultFooter}`,
       }, {
-        variant: 'custom',
+        ...DefaultArgs,
         'header-text': 'User Message',
-        children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon><span slot="toast-body-normal">New message received.</span>`,
+        children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon>
+        <mdc-text tagname="span" slot="toast-body-normal">New message received.</mdc-text>
+        ${DefaultFooter}`,
       }].map((args) =>
         render({
-          'header-tag-name': 'span',
-          'close-button-aria-label': 'Close toast',
+          ...DefaultArgs,
           ...args,
         })
       )}
@@ -134,12 +146,11 @@ export const AllVariants: StoryObj = {
 export const UserJoined: StoryObj = {
   name: 'User Joined',
   args: {
+    ...DefaultArgs,
     'header-text': '',
-    'header-tag-name': 'span',
-    'close-button-aria-label': 'Close toast',
     children: html`
       <mdc-avatar slot="content-prefix" src="https://picsum.photos/id/63/256" size=24></mdc-avatar>
-      <span slot="toast-body-normal"><b>Username</b> joined the session.</span>
+      <mdc-text tagname="span" slot="toast-body-normal"><b>Username</b> joined the session.</mdc-text>
     `,
   },
    parameters: {
@@ -150,9 +161,8 @@ export const UserJoined: StoryObj = {
 export const Connecting: StoryObj = {
   name: 'Connecting',
   args: {
+    ...DefaultArgs,
     'header-text': 'Connecting',
-    'header-tag-name': 'span',
-    'close-button-aria-label': 'Close toast',
     children: html`
       <mdc-spinner slot="content-prefix" size="small"></mdc-spinner>
     `,
