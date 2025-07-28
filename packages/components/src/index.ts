@@ -27,6 +27,7 @@ import IconProvider from './components/iconprovider';
 import Input from './components/input';
 import InputChip from './components/inputchip';
 import Link from './components/link';
+import LinkButton from './components/linkbutton';
 import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
@@ -121,6 +122,7 @@ export {
   Input,
   InputChip,
   Link,
+  LinkButton,
   Linksimple,
   List,
   ListItem,

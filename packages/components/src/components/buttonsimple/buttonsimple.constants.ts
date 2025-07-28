@@ -3,6 +3,9 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('buttonsimple');
 
 const BUTTON_SIZES = {
+  12: 12,
+  14: 14,
+  16: 16,
   20: 20,
   24: 24,
   28: 28,
