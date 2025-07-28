@@ -16,6 +16,6 @@ const LINK_ICON_SIZES = {
 
 const DEFAULTS = {
   LINK_SIZE: LINK_SIZES.LARGE,
-};
+} as const;
 
 export { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES, TAG_NAME };
