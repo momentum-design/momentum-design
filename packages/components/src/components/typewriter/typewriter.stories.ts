@@ -4,6 +4,12 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
+import '../text';
+import '../button';
+import '../input';
+import '../select';
+import '../list';
+import '../listitem';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -97,12 +103,13 @@ export const CustomSpeed: StoryObj = {
 export const DynamicSpeedDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Dynamic Speed Adjustment</h3>
+      <mdc-text type="heading-large-bold" tagname="h3">Dynamic Speed Adjustment</mdc-text>
       <mdc-typewriter id="dynamic-speed-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
         This text starts at normal speed...
       </mdc-typewriter>
-      <div style="margin-top: 20px;">
-        <button
+      <div style="margin-top: 20px; display: flex; gap: 12px;">
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-speed-typewriter') as any;
             if (typewriter) {
@@ -112,8 +119,9 @@ export const DynamicSpeedDemo: StoryObj = {
           }}
         >
           Add Fast Text
-        </button>
-        <button
+        </mdc-button>
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-speed-typewriter') as any;
             if (typewriter) {
@@ -123,7 +131,7 @@ export const DynamicSpeedDemo: StoryObj = {
           }}
         >
           Add Slow Text
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -132,12 +140,13 @@ export const DynamicSpeedDemo: StoryObj = {
 export const ChunkedTextDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Chunked Text Addition</h3>
+      <mdc-text type="heading-large-bold" tagname="h3">Chunked Text Addition</mdc-text>
       <mdc-typewriter id="chunked-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
         Initial text.
       </mdc-typewriter>
-      <div style="margin-top: 20px;">
-        <button
+      <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
@@ -146,8 +155,9 @@ export const ChunkedTextDemo: StoryObj = {
           }}
         >
           Add Chunk 1 (Fast)
-        </button>
-        <button
+        </mdc-button>
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
@@ -156,8 +166,9 @@ export const ChunkedTextDemo: StoryObj = {
           }}
         >
           Add Chunk 2 (Slow)
-        </button>
-        <button
+        </mdc-button>
+        <mdc-button
+          variant="tertiary"
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
@@ -166,7 +177,7 @@ export const ChunkedTextDemo: StoryObj = {
           }}
         >
           Add Chunk 3 (Normal)
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -175,21 +186,24 @@ export const ChunkedTextDemo: StoryObj = {
 export const AccessibilityDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Accessibility Features Demo</h3>
-      <p>This typewriter component includes accessibility features:</p>
-      <ul>
-        <li>Screen readers announce the complete text</li>
-        <li>Uses <code>aria-live="polite"</code> for dynamic updates</li>
-        <li>Shows <code>aria-busy</code> during typing animation</li>
-        <li>Cursor is hidden from screen readers with <code>aria-hidden</code></li>
-      </ul>
+      <mdc-text type="heading-large-bold" tagname="h3">Accessibility Features Demo</mdc-text>
+      <mdc-text type="body-large-regular" tagname="p"
+        >This typewriter component includes accessibility features:</mdc-text
+      >
+      <mdc-list style="margin: 16px 0;">
+        <mdc-listitem>Screen readers announce the complete text</mdc-listitem>
+        <mdc-listitem>Uses <code>aria-live="polite"</code> for dynamic updates</mdc-listitem>
+        <mdc-listitem>Shows <code>aria-busy</code> during typing animation</mdc-listitem>
+        <mdc-listitem>Cursor is hidden from screen readers with <code>aria-hidden</code></mdc-listitem>
+      </mdc-list>
 
       <mdc-typewriter type="${TYPE.BODY_LARGE_REGULAR}" speed="normal" id="dynamic-typewriter-a11y">
         This text demonstrates accessible typewriter functionality. Screen readers will announce the complete text
         rather than character by character.
       </mdc-typewriter>
       <div style="margin-top: 20px;">
-        <button
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-typewriter-a11y');
             if (typewriter) {
@@ -198,7 +212,7 @@ export const AccessibilityDemo: StoryObj = {
           }}
         >
           Add more text
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -211,7 +225,8 @@ export const DynamicExample: StoryObj = {
         Initial text that will be typed out.
       </mdc-typewriter>
       <div style="margin-top: 20px;">
-        <button
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-typewriter');
             if (typewriter) {
@@ -220,7 +235,7 @@ export const DynamicExample: StoryObj = {
           }}
         >
           Add more text
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -248,12 +263,13 @@ export const EventHandlingExample: StoryObj = {
 
     return html`
       <div>
-        <h3>Event Handling</h3>
+        <mdc-text type="heading-large-bold" tagname="h3">Event Handling</mdc-text>
         <mdc-typewriter id="event-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
           This text will trigger events as it types.
         </mdc-typewriter>
-        <div style="margin-top: 20px;">
-          <button
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+          <mdc-button
+            variant="primary"
             @click=${() => {
               const typewriter = document.getElementById('event-typewriter');
               if (typewriter) {
@@ -262,7 +278,7 @@ export const EventHandlingExample: StoryObj = {
             }}
           >
             Change content
-          </button>
+          </mdc-button>
         </div>
         <div id="event-status" style="margin-top: 20px; padding: 10px; min-height: 100px;">
           <div>Events will appear here:</div>
@@ -275,40 +291,43 @@ export const EventHandlingExample: StoryObj = {
 export const DynamicTextAndSpeedDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Dynamic Text + Speed Control</h3>
-      <p>Add custom text chunks with different speeds interactively:</p>
+      <mdc-text type="heading-large-bold" tagname="h3">Dynamic Text + Speed Control</mdc-text>
+      <mdc-text type="body-large-regular" tagname="p"
+        >Add custom text chunks with different speeds interactively:</mdc-text
+      >
 
       <mdc-typewriter id="dynamic-combined-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="60">
         Welcome to the interactive typewriter!
       </mdc-typewriter>
 
       <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-        <input
+        <mdc-input
           id="custom-text-input"
           type="text"
           placeholder="Enter text to add..."
-          style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex: 1; min-width: 200px;"
-        />
+          style="flex: 1; min-width: 200px;"
+        ></mdc-input>
 
-        <select id="speed-selector" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <mdc-select id="speed-selector" style="min-width: 150px;">
           <option value="20">Fast (20ms)</option>
           <option value="60" selected>Normal (60ms)</option>
           <option value="120">Slow (120ms)</option>
           <option value="200">Very Slow (200ms)</option>
           <option value="custom">Custom...</option>
-        </select>
+        </mdc-select>
 
-        <input
+        <mdc-input
           id="custom-speed-input"
           type="number"
           placeholder="Custom ms"
           min="10"
           max="1000"
           step="10"
-          style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100px; display: none;"
-        />
+          style="width: 100px; display: none;"
+        ></mdc-input>
 
-        <button
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
             const textInput = document.getElementById('custom-text-input') as HTMLInputElement;
@@ -331,12 +350,12 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
               textInput.value = '';
             }
           }}
-          style="padding: 8px 16px; background: #007ACC; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Add Text
-        </button>
+        </mdc-button>
 
-        <button
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
             const speedSelector = document.getElementById('speed-selector') as HTMLSelectElement;
@@ -352,28 +371,28 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
               typewriter.speed = newSpeed;
             }
           }}
-          style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Change Speed
-        </button>
+        </mdc-button>
       </div>
 
       <div style="margin-top: 15px;">
-        <strong>Quick Actions:</strong>
+        <mdc-text type="body-small-medium" tagname="span">Quick Actions:</mdc-text>
         <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
-          <button
+          <mdc-button
+            variant="tertiary"
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
                 typewriter.addTextChunk(' 🚀 Super fast!', 15);
               }
             }}
-            style="padding: 6px 12px; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em;"
           >
             Add Fast Emoji
-          </button>
+          </mdc-button>
 
-          <button
+          <mdc-button
+            variant="tertiary"
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
@@ -383,12 +402,12 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
                 );
               }
             }}
-            style="padding: 6px 12px; background: #6f42c1; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em;"
           >
             Add Long Text
-          </button>
+          </mdc-button>
 
-          <button
+          <mdc-button
+            variant="tertiary"
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
@@ -396,12 +415,12 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
                 typewriter.addTextChunk(' Speed changed to fast mode!');
               }
             }}
-            style="padding: 6px 12px; background: #20c997; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em;"
           >
             Change Speed + Add
-          </button>
+          </mdc-button>
 
-          <button
+          <mdc-button
+            variant="tertiary"
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
@@ -409,10 +428,9 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
                 typewriter.speed = 60;
               }
             }}
-            style="padding: 6px 12px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em;"
           >
             Reset
-          </button>
+          </mdc-button>
         </div>
       </div>
 
@@ -440,39 +458,42 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
 export const InstantTextDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Instant Text Addition</h3>
-      <p>Demonstrate instant text that bypasses the typing animation:</p>
+      <mdc-text type="heading-large-bold" tagname="h3">Instant Text Addition</mdc-text>
+      <mdc-text type="body-large-regular" tagname="p"
+        >Demonstrate instant text that bypasses the typing animation:</mdc-text
+      >
 
       <mdc-typewriter id="instant-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
         This text types normally...
       </mdc-typewriter>
 
-      <div style="margin-top: 20px;">
-        <button
+      <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('instant-typewriter') as any;
             if (typewriter) {
               typewriter.addInstantTextChunk(' INSTANT TEXT!');
             }
           }}
-          style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Add Instant Text
-        </button>
+        </mdc-button>
 
-        <button
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('instant-typewriter') as any;
             if (typewriter) {
               typewriter.addTextChunk(' And back to typing...', 80);
             }
           }}
-          style="padding: 8px 16px; background: #007ACC; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Add Animated Text
-        </button>
+        </mdc-button>
 
-        <button
+        <mdc-button
+          variant="tertiary"
           @click=${() => {
             const typewriter = document.getElementById('instant-typewriter') as any;
             if (typewriter) {
@@ -480,10 +501,9 @@ export const InstantTextDemo: StoryObj = {
               typewriter.addTextChunk(' Also instant!', undefined, true);
             }
           }}
-          style="padding: 8px 16px; background: #6f42c1; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Add Instant (Parameter)
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -492,15 +512,18 @@ export const InstantTextDemo: StoryObj = {
 export const MixedChunksDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Mixed Instant & Animated Chunks</h3>
-      <p>Demonstrate seamless mixing of instant and animated text chunks:</p>
+      <mdc-text type="heading-large-bold" tagname="h3">Mixed Instant & Animated Chunks</mdc-text>
+      <mdc-text type="body-large-regular" tagname="p"
+        >Demonstrate seamless mixing of instant and animated text chunks:</mdc-text
+      >
 
       <mdc-typewriter id="mixed-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
         Starting text...
       </mdc-typewriter>
 
-      <div style="margin-top: 20px;">
-        <button
+      <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('mixed-typewriter') as any;
             if (typewriter) {
@@ -512,22 +535,21 @@ export const MixedChunksDemo: StoryObj = {
               typewriter.addTextChunk(' and finish normally.', 60);
             }
           }}
-          style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Add Mixed Sequence
-        </button>
+        </mdc-button>
 
-        <button
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('mixed-typewriter') as any;
             if (typewriter) {
               typewriter.textContent = 'Starting text...';
             }
           }}
-          style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Reset
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
@@ -536,13 +558,16 @@ export const MixedChunksDemo: StoryObj = {
 export const RapidUpdatesDemo: StoryObj = {
   render: () => html`
     <div>
-      <h3>Rapid Updates Use Case</h3>
-      <p>Simulate rapid data updates where animation would be too slow:</p>
+      <mdc-text type="heading-large-bold" tagname="h3">Rapid Updates Use Case</mdc-text>
+      <mdc-text type="body-large-regular" tagname="p"
+        >Simulate rapid data updates where animation would be too slow:</mdc-text
+      >
 
       <mdc-typewriter id="rapid-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="fast"> Live Feed: </mdc-typewriter>
 
-      <div style="margin-top: 20px;">
-        <button
+      <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <mdc-button
+          variant="primary"
           @click=${() => {
             const typewriter = document.getElementById('rapid-typewriter') as any;
             if (typewriter) {
@@ -563,22 +588,21 @@ export const RapidUpdatesDemo: StoryObj = {
               });
             }
           }}
-          style="padding: 8px 16px; background: #fd7e14; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Simulate Live Updates
-        </button>
+        </mdc-button>
 
-        <button
+        <mdc-button
+          variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('rapid-typewriter') as any;
             if (typewriter) {
               typewriter.textContent = 'Live Feed: ';
             }
           }}
-          style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
           Clear Feed
-        </button>
+        </mdc-button>
       </div>
     </div>
   `,
