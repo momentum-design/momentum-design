@@ -49,8 +49,10 @@ const styles = css`
   }
 
   :host([variant='stacked'])::part(label-container) {
-    max-width: 8.75rem;
+    width: 8.75rem;
+    padding: 0.25rem 0;
   }
+
   :host([variant='stacked'])::part(label),
   :host([variant='stacked'])::part(help-text) {
     overflow: hidden;
@@ -68,6 +70,7 @@ const styles = css`
   :host([status='error-incomplete'])::part(help-text-container) {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.25rem;
   }
 
@@ -93,6 +96,7 @@ const styles = css`
   :host([status='error-current'])::part(help-icon),
   :host([status='error-incomplete'])::part(help-icon) {
     --mdc-icon-fill-color: var(--mds-color-theme-text-error-normal);
+    flex-shrink: 0;
   }
 
   :host(:hover) {
