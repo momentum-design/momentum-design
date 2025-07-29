@@ -6,7 +6,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import type { IconNames } from '../icon/icon.types';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TYPE } from '../text/text.constants';
+import type { TagName } from '../text/text.types';
 
 import { DEFAULTS } from './toast.constants';
 import { getIconNameForVariant } from './toast.utils';
@@ -71,7 +72,7 @@ class Toast extends FooterMixin(Component) {
    * @default 'h2'
    */
   @property({ type: String, reflect: true, attribute: 'header-tag-name' })
-  headerTagName: string = DEFAULTS.HEADER_TAG_NAME;
+  headerTagName: TagName = DEFAULTS.HEADER_TAG_NAME;
 
   /**
    * Defines aria-label attribute when header is not used
@@ -165,7 +166,7 @@ class Toast extends FooterMixin(Component) {
       ? html`
           <mdc-text
             part="toast-header"
-            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+            tagname="${this.headerTagName}"
             type="${TYPE.BODY_LARGE_BOLD}"
           >
             ${this.headerText}
