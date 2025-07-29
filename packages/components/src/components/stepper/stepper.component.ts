@@ -17,7 +17,7 @@ import styles from './stepper.styles';
  *
  * @tagname mdc-stepper
  *
- * @slot default - Pass the list of mdc-stepperitem and mdc-stepperconnector elements to be rendered inside the stepper.
+ * @slot default - Pass the list of `mdc-stepperitem` and `mdc-stepperconnector` elements to be rendered inside the stepper.
  *
  */
 class Stepper extends Provider<StepperContext> {
