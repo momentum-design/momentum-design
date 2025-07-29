@@ -36,7 +36,6 @@ import type { ToastVariant } from './toast.types';
  * @csspart footer - The container for the toast's footer, including toggle and action buttons.
  * @csspart footer-button-toggle - The toggle button for showing/hiding detailed content.
  * @csspart toast-close-btn - The close button for the toast.
- * @csspart text - The text content inside the toast (used for alignment).
  *
  * @cssproperty --mdc-toast-background-color - Background color of the toast.
  * @cssproperty --mdc-toast-border-color - Border color of the toast.

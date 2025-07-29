@@ -23,11 +23,6 @@ type ToastSetupOptions = {
 const SHOW_MORE_TEXT = 'Show more';
 const SHOW_LESS_TEXT = 'Show less';
 
-const isDesktopDevice = () => {
-  const deviceName = test.info().project.name;
-  return ['chrome', 'firefox', 'msedge', 'webkit', 'tablet chrome', 'tablet safari'].includes(deviceName);
-};
-
 const setup = async (options: ToastSetupOptions) => {
   const {
     componentsPage,
@@ -72,9 +67,11 @@ const setup = async (options: ToastSetupOptions) => {
 
 test.describe('Toast Feature Scenarios', () => {
   test('mdc-toast', async ({ componentsPage }) => {
+    /**
+     *  VISUAL REGRESSION AND ACCESSIBILITY
+     */
     await test.step('visual-regression', async () => {
-      if (!isDesktopDevice()) test.skip();
-
+      await componentsPage.page.setViewportSize({ width: 800, height: 800 });
       const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
       const COMMON_ATTRS = {
         'close-button-aria-label': 'Close toast',
@@ -383,44 +380,35 @@ test.describe('Toast Feature Scenarios', () => {
         const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
 
         await toggleBtn.focus();
-
-        if (isDesktopDevice()) {
-          await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
-            source: 'userflow',
-            fileNameSuffix: 'collapsed-view',
-            element: toast
-          });
-          await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
-        }
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+          source: 'userflow',
+          fileNameSuffix: 'collapsed-view',
+          element: toast
+        });
+        await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
 
         await toggleBtn.press('Enter'); // expand
         await expect(detailedSlot).toBeVisible();
         await expect(toggleBtn.locator('mdc-icon[name="arrow-up-bold"]')).toBeVisible();
         await expect(toggleBtn).toContainText(SHOW_LESS_TEXT);
         await expect(toggleBtn).toBeFocused();
-
-        if (isDesktopDevice()) {
-          await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
-            source: 'userflow',
-            fileNameSuffix: 'expanded-view',
-            element: toast
-          });
-          await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
-        }
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+          source: 'userflow',
+          fileNameSuffix: 'expanded-view',
+          element: toast
+        });
+        await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
 
         await toggleBtn.press('Enter'); // collapse
         await expect(detailedSlot).not.toBeVisible();
         await expect(toggleBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
         await expect(toggleBtn).toContainText(SHOW_MORE_TEXT);
         await expect(toggleBtn).toBeFocused();
-
-        if (isDesktopDevice()) {
-          await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
-            source: 'userflow',
-            fileNameSuffix: 'collapsed-view',
-            element: toast
-          });
-        }
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+          source: 'userflow',
+          fileNameSuffix: 'collapsed-view',
+          element: toast
+        });
       });
     });
   });

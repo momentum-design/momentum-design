@@ -12,6 +12,7 @@ const styles = css`
 
     display: flex;
     width: var(--mdc-toast-width);
+    max-width: 100%;
     padding: var(--mdc-toast-padding);
     flex-direction: column;
     align-items: flex-start;
@@ -80,8 +81,8 @@ const styles = css`
     text-decoration: none;
   }
 
-  :host::part(text) {
-    margin: auto;
+  mdc-text::part(text) {
+    margin: 0;
   }
 `;
 
