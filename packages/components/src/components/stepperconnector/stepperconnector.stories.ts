@@ -18,12 +18,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepper/connector',
+  title: 'Components/stepper/stepperconnector',
   tags: ['autodocs'],
   component: 'mdc-stepperconnector',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     status: {
