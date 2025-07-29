@@ -8,6 +8,6 @@ const DEFAULTS = {
     count: 0,
     estimateSize: () => 0,
   },
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS, VIRTUALIZED_WRAPPER_TAG_NAME };
