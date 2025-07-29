@@ -60,6 +60,7 @@ import Tab from './components/tab';
 import TabList from './components/tablist';
 import Text from './components/text';
 import Textarea from './components/textarea';
+import Typewriter from './components/typewriter';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
@@ -75,6 +76,7 @@ import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
+import type { TextType as TypewriterType } from './components/typewriter/typewriter.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
@@ -153,6 +155,7 @@ export {
   Textarea,
   ThemeProvider,
   Toggle,
+  Typewriter,
   ToggleTip,
   Tooltip,
   VirtualizedList,
@@ -177,6 +180,7 @@ export type {
   SpinnerSize,
   SpinnerVariant,
   TextType,
+  TypewriterType,
 };
 
 // Constants / Utils Exports
