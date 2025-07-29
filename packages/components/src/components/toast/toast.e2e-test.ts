@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 
-import { test } from '../../../config/playwright/setup';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { TOAST_VARIANT } from './toast.constants';
@@ -17,7 +17,7 @@ type ToastSetupOptions = {
   showLessText?: string;
   rtl?: boolean;
   children?: string;
-  componentsPage: any;
+  componentsPage: ComponentsPage;
 };
 
 const SHOW_MORE_TEXT = 'Show more';
@@ -158,13 +158,15 @@ test.describe('Toast Feature Scenarios', () => {
       await test.step('Toast sets default attributes', async () => {
         const toast = await setup({ componentsPage, headerText: 'Action Completed' });
         await expect(toast).toHaveAttribute('header-tag-name', 'h2');
-        await expect(componentsPage.page.locator('mdc-toast [part="toast-header"]')).toHaveAttribute('tagname', 'h2');
+        const header = componentsPage.page.locator('mdc-toast [part="toast-header"]');
+        await expect(header).toHaveAttribute('tagname', 'h2');
       });
 
       await test.step('Toast sets the header-text attribute', async () => {
         const toast = await setup({ componentsPage, headerText: 'Action Completed' });
         await expect(toast).toHaveAttribute('header-text', 'Action Completed');
-        await expect(componentsPage.page.locator('mdc-toast [part="toast-header"]')).toHaveText('Action Completed');
+        const header = componentsPage.page.locator('mdc-toast [part="toast-header"]');
+        await expect(header).toHaveText('Action Completed');
       });
 
       await test.step('Toast accepts allowed variant values', async () => {
@@ -199,9 +201,10 @@ test.describe('Toast Feature Scenarios', () => {
       });
 
       await test.step('Toast sets the close-button-aria-label attribute', async () => {
-        await setup({ componentsPage, closeButtonAriaLabel: 'Dismiss notification' });
+        const closeButtonAriaLabel = 'Dismiss notification';
+        await setup({ componentsPage, closeButtonAriaLabel });
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
-        await expect(closeBtn).toHaveAttribute('aria-label', 'Dismiss notification');
+        await expect(closeBtn).toHaveAttribute('aria-label', closeButtonAriaLabel);
       });
 
       await test.step('Toast sets the header-tag-name attribute', async () => {
@@ -211,7 +214,8 @@ test.describe('Toast Feature Scenarios', () => {
           headerTagName: 'span',
         });
         await expect(toast).toHaveAttribute('header-tag-name', 'span');
-        await expect(componentsPage.page.locator('mdc-toast [part="toast-header"]')).toHaveAttribute('tagname', 'span');
+        const header = componentsPage.page.locator('mdc-toast [part="toast-header"]');
+        await expect(header).toHaveAttribute('tagname', 'span');
       });
 
       await test.step('Toast sets showMoreText and showLessText attributes', async () => {
@@ -225,8 +229,9 @@ test.describe('Toast Feature Scenarios', () => {
           `,
         });
         await expect(toast).toHaveAttribute('show-more-text', SHOW_MORE_TEXT);
-        await expect(toast).toHaveAttribute('show-less-text', SHOW_LESS_TEXT);
-        await expect(componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]')).toHaveText(SHOW_MORE_TEXT);
+        await expect(toast).toHaveAttribute('show-less-text', SHOW_LESS_TEXT);     
+        const showMoreBtn = componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        await expect(showMoreBtn).toHaveText(SHOW_MORE_TEXT);
       });
     });
 
@@ -383,6 +388,7 @@ test.describe('Toast Feature Scenarios', () => {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
             fileNameSuffix: 'collapsed-view',
+            element: toast
           });
           await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
         }
@@ -397,6 +403,7 @@ test.describe('Toast Feature Scenarios', () => {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
             fileNameSuffix: 'expanded-view',
+            element: toast
           });
           await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
         }
@@ -411,6 +418,7 @@ test.describe('Toast Feature Scenarios', () => {
           await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
             source: 'userflow',
             fileNameSuffix: 'collapsed-view',
+            element: toast
           });
         }
       });

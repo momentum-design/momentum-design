@@ -1,4 +1,5 @@
-import { CSSResult, html, nothing, PropertyValues, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -7,7 +8,8 @@ import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { DEFAULTS, VARIANT_ICON_NAMES, TOAST_VARIANT } from './toast.constants';
+import { DEFAULTS } from './toast.constants';
+import { getIconNameForVariant } from './toast.utils';
 import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
@@ -27,6 +29,15 @@ import type { ToastVariant } from './toast.types';
  * 
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *
+ * @csspart content-container - The container for the toast's main content, including icon, text, and close button.
+ * @csspart toast-prefix-icon - The icon shown at the start of the toast, styled by variant.
+ * @csspart toast-content - The container for the header and body content of the toast.
+ * @csspart toast-header - The header text of the toast.
+ * @csspart footer - The container for the toast's footer, including toggle and action buttons.
+ * @csspart footer-button-toggle - The toggle button for showing/hiding detailed content.
+ * @csspart toast-close-btn - The close button for the toast.
+ * @csspart text - The text content inside the toast (used for alignment).
+ *
  * @cssproperty --mdc-toast-background-color - Background color of the toast.
  * @cssproperty --mdc-toast-border-color - Border color of the toast.
  * @cssproperty --mdc-toast-header-text-color - Color of the header text in the toast.
@@ -36,12 +47,6 @@ import type { ToastVariant } from './toast.types';
  * @cssproperty --mdc-toast-padding - Padding inside the toast.
  */
 class Toast extends FooterMixin(Component) {
-  /**
-   * The unique ID of the toast
-   */
-  @property({ type: String, reflect: true })
-  override id: string = '';
-
   /**
    * Type of toast
    * - Can be `custom`, `success`, `warning` or `error`.
@@ -123,10 +128,11 @@ class Toast extends FooterMixin(Component) {
     this.updateDetailedSlotPresence();
   }
 
-  private renderIcon(iconName: string): TemplateResult {
+  protected renderIcon(iconName: string) {
+    if(!iconName) return nothing;
     return html`
       <mdc-icon
-        name="${ifDefined(iconName as IconNames)}"
+        name="${iconName as IconNames}"
         size="${DEFAULTS.PREFIX_ICON_SIZE}"
         part="toast-prefix-icon"
       ></mdc-icon>
@@ -134,18 +140,8 @@ class Toast extends FooterMixin(Component) {
   }
 
   private renderIconBasedOnVariant() {
-    const { variant } = this;
-
-      switch (variant) {
-      case TOAST_VARIANT.SUCCESS:
-        return this.renderIcon(VARIANT_ICON_NAMES.SUCCESS_ICON_NAME);
-      case TOAST_VARIANT.WARNING:
-        return this.renderIcon(VARIANT_ICON_NAMES.WARNING_ICON_NAME);
-      case TOAST_VARIANT.ERROR:
-        return this.renderIcon(VARIANT_ICON_NAMES.ERROR_ICON_NAME);
-      default:
-        return nothing;
-    }
+    const iconName = getIconNameForVariant(this.variant);
+    return iconName ? this.renderIcon(iconName) : nothing;
   }
 
   private shouldRenderToggleButton() {
