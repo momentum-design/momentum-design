@@ -27,6 +27,7 @@ import IconProvider from './components/iconprovider';
 import Input from './components/input';
 import InputChip from './components/inputchip';
 import Link from './components/link';
+import LinkButton from './components/linkbutton';
 import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
@@ -68,6 +69,9 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
+import StepperItem from './components/stepperitem';
+import StepperConnector from './components/stepperconnector';
+import Stepper from './components/stepper';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -120,6 +124,7 @@ export {
   Input,
   InputChip,
   Link,
+  LinkButton,
   Linksimple,
   List,
   ListItem,
@@ -149,6 +154,7 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
+  StepperItem,
   Tab,
   TabList,
   Text,
@@ -161,6 +167,8 @@ export {
   VirtualizedList,
   Listheader,
   SelectListbox,
+  StepperConnector,
+  Stepper,
 };
 
 // Types Exports
