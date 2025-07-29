@@ -23,12 +23,12 @@ const render = (args: Args) =>
   ></mdc-stepperitem>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepper/stepperitem',
+  title: 'Components/stepper/stepperitem',
   tags: ['autodocs'],
   component: 'mdc-stepperitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
