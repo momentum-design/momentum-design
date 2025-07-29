@@ -3,6 +3,8 @@ import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
+import providerUtils from '../../utils/provider';
+import Stepper from '../stepper/stepper.component';
 
 import { DEFAULTS } from './stepperconnector.constants';
 import styles from './stepperconnector.styles';
@@ -33,11 +35,20 @@ class StepperConnector extends Component {
    */
   @property({ type: String, reflect: true }) orientation: OrientationType = DEFAULTS.ORIENTATION;
 
+  /**
+   * @internal
+   */
+  private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
+
   override updated(changedProperties: Map<string, unknown>): void {
     super.updated(changedProperties);
     if (changedProperties.has('orientation')) {
       this.ariaOrientation = this.orientation;
     }
+
+    const context = this.stepperContext?.value;
+    if (!context || !context.orientation) return;
+    this.orientation = context.orientation;
   }
 
   public override render() {
