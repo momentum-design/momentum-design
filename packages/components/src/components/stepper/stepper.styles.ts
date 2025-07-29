@@ -37,7 +37,7 @@ const styles = css`
 
   :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
     padding-top: 0.9375rem;
-    margin: 0 -1rem;
+    margin: 0 -3rem;
   }
 `;
 
