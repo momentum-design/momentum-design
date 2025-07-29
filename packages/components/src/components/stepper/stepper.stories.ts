@@ -55,12 +55,12 @@ const renderWithLargeLabel = (args: Args) =>
   </mdc-stepper>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepper/stepper',
+  title: 'Components/stepper/stepper',
   tags: ['autodocs'],
   component: 'mdc-stepper',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     orientation: {
