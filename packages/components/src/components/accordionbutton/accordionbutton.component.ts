@@ -139,7 +139,7 @@ class AccordionButton extends DisabledMixin(Component) {
   }
 
   protected renderIcon(iconName?: IconNames): TemplateResult | typeof nothing {
-    return iconName ? html`<mdc-icon name="${iconName}"></mdc-icon>` : nothing;
+    return iconName ? html`<mdc-icon name="${iconName}" length-unit="rem" size="1"></mdc-icon>` : nothing;
   }
 
   protected renderHeadingText(): TemplateResult | typeof nothing {

@@ -6,7 +6,7 @@ import '.';
 import '../button';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
 import { VARIANT } from './accordionbutton.constants';
@@ -59,11 +59,8 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
+    ...disableControls(['default', 'shown', 'header-text', 'prefix-icon']),
     ...textControls([
-      'default',
-      'shown',
-      'header-text',
-      'prefix-icon',
       '--mdc-accordionbutton-border-color',
       '--mdc-accordionbutton-hover-color',
       '--mdc-accordionbutton-active-color',

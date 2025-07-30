@@ -4,8 +4,8 @@ import { queryAssignedElements } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { ROLE } from '../../utils/roles';
-import AccordionButton from '../accordionbutton';
-import { BUTTON_VARIANTS } from '../button/button.constants';
+import AccordionButton from '../accordionbutton/accordionbutton.component';
+import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 
 import styles from './accordion.styles';
 
@@ -46,6 +46,9 @@ import styles from './accordion.styles';
  * @event shown - (React: onShown) This event is triggered when the accordion is expanded.
  *
  * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion.
+ * @cssproperty --mdc-accordionbutton-hover-color - The hover color of the accordion.
+ * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion.
+ * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion.
  *
  * @csspart header-section - The header section of the accordion.
  * @csspart leading-header - The leading header of the accordion.
@@ -108,6 +111,7 @@ class Accordion extends AccordionButton {
             title="${ifDefined(this.headerText)}"
             prefix-icon="${this.getArrowIconName()}"
             variant="${BUTTON_VARIANTS.TERTIARY}"
+            size="${ICON_BUTTON_SIZES[20]}"
           ></mdc-button>
         </div>
       </div>
