@@ -5,6 +5,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
+import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './accordionbutton.types';
 import { VARIANT } from './accordionbutton.constants';
@@ -34,10 +35,10 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : `header-text="${defaultHeaderText}"`}
+        ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ''}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
       >
-        ${restArgs.children || defaultContent}
+        ${restArgs.children}
       </mdc-accordionbutton>
     `,
     clearDocument: true,
@@ -107,9 +108,9 @@ test.describe('AccordionButton Feature Scenarios', () => {
       await test.step('render accordion button with default settings', async () => {
         const { headerButton, headerButtonSection } = await setup({ componentsPage });
 
-        await expect(headerButton).toHaveAttribute('role', 'heading');
+        await expect(headerButton).toHaveAttribute('role', ROLE.HEADING);
         await expect(headerButton).toHaveAttribute('aria-level', '3');
-        await expect(headerButtonSection).toHaveAttribute('role', 'button');
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveText(defaultHeaderText);
       });
@@ -145,6 +146,26 @@ test.describe('AccordionButton Feature Scenarios', () => {
         const borderless = await setup({ componentsPage, variant: VARIANT.BORDERLESS });
         await expect(borderless.accordionButton).toHaveAttribute('variant', VARIANT.BORDERLESS);
       });
+
+      await test.step('render empty accordion button', async () => {
+        const { accordionButton, headerButtonSection } = await setup({ componentsPage, children: '' });
+
+        await expect(accordionButton).toHaveAttribute('header-text', '');
+        await expect(accordionButton.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
+          'role',
+          ROLE.HEADING,
+        );
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+      });
+
+      await test.step('render accordion button with invalid icon', async () => {
+        const { accordionButton, headerButtonSection } = await setup({ componentsPage, prefixIcon: 'invalid-icon' });
+
+        await expect(accordionButton).toHaveAttribute('prefix-icon', 'invalid-icon');
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+      });
     });
 
     /**
@@ -152,37 +173,47 @@ test.describe('AccordionButton Feature Scenarios', () => {
      */
     await test.step('user interaction', async () => {
       await test.step('mouse click on header', async () => {
-        const { headerButton, headerButtonSection, content } = await setup({ componentsPage });
+        const { headerButton, headerButtonSection, content, accordionButton } = await setup({ componentsPage });
 
         // Initially collapsed
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).not.toBeVisible();
 
         // Expand
+        let waitForShownEvent = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButton.click();
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(content).toBeVisible();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Collapse
+        waitForShownEvent = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButton.click();
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).not.toBeVisible();
       });
 
       await test.step('keyboard navigation', async () => {
-        const { headerButton, headerButtonSection, content } = await setup({ componentsPage });
+        const { headerButton, headerButtonSection, content, accordionButton } = await setup({ componentsPage });
 
         // Focus the header button
         await componentsPage.actionability.pressTab();
         await expect(headerButton).toBeFocused();
 
         // Test Enter key
+        let waitForShownEvent = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButtonSection.press(KEYS.ENTER);
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(content).toBeVisible();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Test Space key
+        waitForShownEvent = await componentsPage.waitForEvent(accordionButton, 'shown');
         await headerButton.press(KEYS.SPACE);
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).not.toBeVisible();
       });

@@ -210,25 +210,49 @@ test.describe('AccordionGroup Feature Scenarios', () => {
         });
       });
       await test.step('keyboard click', async () => {
+        await test.step('component should be focusable with tab and shift tab', async () => {
+          const { accordionButtons } = await setup({
+            componentsPage,
+            items: accordionItems.map(accordion => ({ ...accordion, expanded: false, disabled: false })),
+          });
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [
+            accordionButtons.first(),
+            accordionButtons.nth(1),
+            accordionButtons.last(),
+          ]);
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.SHIFT_TAB, [
+            accordionButtons.nth(1),
+            accordionButtons.first(),
+          ]);
+        });
+
         await test.step('when allow multiple is false, only one item should be expanded at a time', async () => {
-          const { accordionGroup } = await setup({ componentsPage, items: accordionItems, allowMultiple: false });
-          await componentsPage.actionability.pressTab();
+          const { accordionGroup, accordionButtons } = await setup({
+            componentsPage,
+            items: accordionItems,
+            allowMultiple: false,
+          });
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [accordionButtons.first()]);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expect(accordionGroup.locator('mdc-accordionbutton').nth(0)).not.toHaveAttribute('expanded');
-          await componentsPage.actionability.pressTab();
+          await expect(accordionButtons.first()).not.toHaveAttribute('expanded');
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [accordionButtons.nth(1)]);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expect(accordionGroup.locator('mdc-accordionbutton').nth(1)).toHaveAttribute('expanded');
-          await expect(accordionGroup.locator('mdc-accordionbutton').nth(1)).toHaveAttribute(
-            'header-text',
-            'Accordion Header 2',
-          );
+          await expect(accordionButtons.nth(1)).toHaveAttribute('expanded');
+          await expect(accordionButtons.nth(1).locator('[part="body-section"]')).toBeVisible();
+          await expect(accordionButtons.first().locator('[part="body-section"]')).not.toBeVisible();
           await expect(accordionGroup.locator('mdc-accordionbutton:not([expanded])')).toHaveCount(2);
         });
 
         await test.step('when allow multiple is true, more than one item should be expanded', async () => {
-          const { accordionGroup } = await setup({ componentsPage, items: accordionItems, allowMultiple: true });
-          await componentsPage.actionability.pressTab();
-          await componentsPage.actionability.pressTab();
+          const { accordionGroup, accordionButtons } = await setup({
+            componentsPage,
+            items: accordionItems,
+            allowMultiple: true,
+          });
+          await componentsPage.actionability.pressAndCheckFocus(KEYS.TAB, [
+            accordionButtons.first(),
+            accordionButtons.nth(1),
+          ]);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
           await expect(accordionGroup.locator('mdc-accordionbutton[expanded]')).toHaveCount(2);
         });

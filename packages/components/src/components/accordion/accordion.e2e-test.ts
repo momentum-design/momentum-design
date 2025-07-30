@@ -38,10 +38,10 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : `header-text="${defaultHeaderText}"`}
+        ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ``}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
       >
-        ${restArgs.children || defaultContent}
+        ${restArgs.children}
       </mdc-accordion>
     `,
     clearDocument: true,
@@ -111,7 +111,7 @@ test.describe('Accordion Feature Scenarios', () => {
       await test.step('render accordion with default settings', async () => {
         const { accordion, headerButton, headerButtonSection } = await setup({ componentsPage });
 
-        await expect(accordion).toHaveAttribute('header-text', defaultHeaderText);
+        await expect(accordion).toHaveAttribute('header-text', '');
         await expect(headerButton.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
           'role',
           ROLE.HEADING,
@@ -148,6 +148,26 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(content).toBeVisible();
       });
+
+      await test.step('render empty accordion', async () => {
+        const { accordion, headerButtonSection } = await setup({ componentsPage, children: '' });
+
+        await expect(accordion).toHaveAttribute('header-text', '');
+        await expect(accordion.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
+          'role',
+          ROLE.HEADING,
+        );
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+      });
+
+      await test.step('render accordion with invalid icon', async () => {
+        const { accordion, headerButtonSection } = await setup({ componentsPage, prefixIcon: 'invalid-icon' });
+
+        await expect(accordion).toHaveAttribute('prefix-icon', 'invalid-icon');
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+      });
     });
 
     /**
@@ -163,13 +183,18 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(content).not.toBeVisible();
 
         // Expand
+        let waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.click();
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(accordion).toHaveAttribute('expanded');
         await expect(content).toBeVisible();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Collapse
+        waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.click();
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(accordion).not.toHaveAttribute('expanded');
         await expect(content).not.toBeVisible();
@@ -183,13 +208,18 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toBeFocused();
 
         // Test Enter key
+        let waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.press(KEYS.ENTER);
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(accordion).toHaveAttribute('expanded');
         await expect(content).toBeVisible();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Test Space key
+        waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.press(KEYS.SPACE);
+        await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(accordion).not.toHaveAttribute('expanded');
         await expect(content).not.toBeVisible();
