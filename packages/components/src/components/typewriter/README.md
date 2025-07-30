@@ -121,15 +121,6 @@ typewriter.clearQueue();
 typewriter.maxQueueSize = 100;
 ```
 
-## Accessibility Features
-
-- **`aria-live="polite"`** - Announces text changes to screen readers
-- **`aria-busy`** - Indicates when typing animation is active
-- **`aria-label`** - Provides full text content to screen readers
-- **`aria-hidden="true"`** - Hides decorative cursor from screen readers
-- **Complete text announcement** - Screen readers read full text, not
-  character-by-character
-
 ## Examples
 
 ### Basic Usage

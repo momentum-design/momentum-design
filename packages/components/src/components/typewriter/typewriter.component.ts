@@ -8,7 +8,14 @@ import '../text';
 
 import styles from './typewriter.styles';
 import { DEFAULTS, SPEED } from './typewriter.constants';
-import type { TextType, TagName, TypewriterSpeed, TextChunk } from './typewriter.types';
+import type {
+  TextType,
+  TagName,
+  TypewriterSpeed,
+  TextChunk,
+  TypewriterChangeEvent,
+  TypewriterTypingCompleteEvent,
+} from './typewriter.types';
 
 /**
  * Typewriter component that creates a typewriter effect on text content.
@@ -52,8 +59,10 @@ import type { TextType, TagName, TypewriterSpeed, TextChunk } from './typewriter
  * @csspart text - The text element (forwarded to mdc-text)
  * @csspart cursor - The cursor element (only visible during typing)
  *
- * @event typing-complete - Fired when the typewriter finishes typing all content
- * @event change - Fired when the content of the typewriter changes
+ * @event typing-complete - Fired when the typewriter finishes typing all content.
+ *   Detail: \{ finalContent: string, totalDuration: number \}
+ * @event change - Fired when the content of the typewriter changes.
+ *   Detail: \{ content: string, isTyping: boolean \}
  */
 class Typewriter extends Component {
   /**
@@ -137,6 +146,11 @@ class Typewriter extends Component {
    */
   @state()
   private typingComplete: boolean = true;
+
+  /**
+   * Timestamp when current typing animation started (for duration calculation)
+   */
+  private animationStartTime: number = 0;
 
   /**
    * Called when the element is first connected to the document
@@ -352,7 +366,16 @@ class Typewriter extends Component {
       this.typingComplete = false;
     }
 
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          content: this.originalText,
+          isTyping: !this.typingComplete,
+        },
+      }) as TypewriterChangeEvent,
+    );
 
     this.previousTextContent = content;
     this.startTypingAnimation();
@@ -363,6 +386,7 @@ class Typewriter extends Component {
    */
   private startTypingAnimation(onComplete?: () => void): void {
     this.clearTypingAnimation();
+    this.animationStartTime = performance.now();
 
     // Don't start animation if there's no new content to type
     if (this.displayedText === this.originalText) {
@@ -404,11 +428,16 @@ class Typewriter extends Component {
           }, 0);
         } else {
           this.createTimeout(() => {
+            const totalDuration = performance.now() - this.animationStartTime;
             this.dispatchEvent(
               new CustomEvent(DEFAULTS.CUSTOM_EVENT.TYPING_COMPLETE, {
                 bubbles: true,
                 composed: true,
-              }),
+                detail: {
+                  finalContent: this.originalText,
+                  totalDuration,
+                },
+              }) as TypewriterTypingCompleteEvent,
             );
           }, 0);
         }

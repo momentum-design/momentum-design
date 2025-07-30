@@ -14,11 +14,11 @@ const styles = [
 
     [part='cursor'] {
       display: inline-block;
-      width: 2px;
+      width: 0.125rem;
       height: 1em;
       background-color: currentColor;
       vertical-align: text-bottom;
-      margin-left: 2px;
+      margin-left: 0.125rem;
       opacity: 1;
     }
 
