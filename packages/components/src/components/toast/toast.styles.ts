@@ -10,13 +10,10 @@ const styles = css`
     --mdc-toast-width: 25rem;
     --mdc-toast-padding: 1rem;
 
-    display: flex;
+    display: block;
     width: var(--mdc-toast-width);
     max-width: 100%;
     padding: var(--mdc-toast-padding);
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
     background-color: var(--mdc-toast-background-color);
     border: 0.0625rem solid var(--mdc-toast-border-color);
     border-radius: 0.5rem;
@@ -75,6 +72,10 @@ const styles = css`
     align-items: center;
     gap: 0.75rem;
     align-self: stretch;
+  }
+
+  .has-footer-buttons {
+    margin-top: 1rem;
   }
 
   :host::part(footer-button-toggle) {

@@ -101,6 +101,9 @@ class Toast extends FooterMixin(Component) {
   @queryAssignedElements({ slot: 'toast-body-detailed', flatten: true })
   private detailedElements!: HTMLElement[];
 
+  @state()
+  private hasFooterButtons: string = '';
+
   /**
    * Fired when Close Button is clicked using mouse or keyboard.
    * This method dispatches the close event.
@@ -121,6 +124,12 @@ class Toast extends FooterMixin(Component) {
 
   private updateDetailedSlotPresence() {
     this.hasDetailedSlot = this.detailedElements?.some((el) => el.textContent?.trim()) ?? false;
+  }
+
+  private updateFooterButtonsPresence() {
+    this.hasFooterButtons = (this.footerButtonPrimary?.length ?? 0) > 0 ||
+      (this.footerButtonSecondary?.length ?? 0) > 0 ||
+      this.shouldRenderToggleButton() ? 'has-footer-buttons' : '';
   }
 
   protected override firstUpdated(changedProperties: PropertyValues): void {
@@ -174,10 +183,16 @@ class Toast extends FooterMixin(Component) {
         `
       : nothing;
   }
+  
+  protected override handleFooterSlot(tagname: string, variant?: string | undefined): void {
+    super.handleFooterSlot(tagname, variant);
+    this.updateFooterButtonsPresence();
+  }
 
   protected override renderFooter() {
+    this.updateFooterButtonsPresence();
     return html` <slot name="footer">
-      <div part="footer">
+      <div part="footer" class="${this.hasFooterButtons}">
         ${this.renderToggleDetailButton()}
         <slot
           name="footer-button-secondary"
