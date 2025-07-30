@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, disableControls } from '../../../config/storybook/utils';
+import { hideControls, disableControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -95,6 +95,7 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
+    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },
