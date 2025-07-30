@@ -26,6 +26,13 @@ import type { ToastVariant } from './toast.types';
  * @dependency mdc-button
  * @dependency mdc-linkbutton
  *
+ * @slot content-prefix - Slot for custom content before the icon (only for custom variant).
+ * @slot toast-body-normal - Slot for the main body content of the toast.
+ * @slot toast-body-detailed - Slot for additional detailed content, shown when expanded.
+ * @slot footer - Slot for custom footer content. Prefer using footer-button-primary and footer-button-secondary slots.
+ * @slot footer-button-primary - Slot for passing the primary variant of `mdc-button` in the footer.
+ * @slot footer-button-secondary - Slot for passing the secondary variant of `mdc-button` in the footer.
+ *
  * @tagname mdc-toast
  * 
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
@@ -148,11 +155,6 @@ class Toast extends FooterMixin(Component) {
     `;
   }
 
-  private renderIconBasedOnVariant() {
-    const iconName = getIconNameForVariant(this.variant);
-    return iconName ? this.renderIcon(iconName) : nothing;
-  }
-
   private shouldRenderToggleButton() {
     return this.hasDetailedSlot && this.showMoreText && this.showLessText;
   }
@@ -209,7 +211,9 @@ class Toast extends FooterMixin(Component) {
   public override render() {
     return html`
       <div part="content-container">
-        ${this.variant === DEFAULTS.VARIANT ? html`<slot name="content-prefix"></slot>` : html`${this.renderIconBasedOnVariant()}`}
+        ${this.variant === DEFAULTS.VARIANT 
+        ? html`<slot name="content-prefix"></slot>` 
+        : html`${this.renderIcon(getIconNameForVariant(this.variant) ?? '')}`}
         <div part="toast-content">
           ${this.renderHeader()}
           <slot name="toast-body-normal"></slot>

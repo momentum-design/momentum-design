@@ -9,7 +9,7 @@ import '../spinner';
 import '../button';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { TOAST_VARIANT } from './toast.constants';
@@ -31,12 +31,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/toast',
+  title: 'Components/toast',
   tags: ['autodocs'],
   component: 'mdc-toast',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
@@ -62,7 +62,7 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...disableControls(['children']),
-    ...hideControls(['isDetailVisible', 'hasDetailedSlot', 'detailedElements']),
+    ...hideControls(['isDetailVisible', 'hasDetailedSlot', 'detailedElements', 'hasFooterButtons']),
     ...textControls([
       '--mdc-toast-background-color',
       '--mdc-toast-border-color',
@@ -138,9 +138,7 @@ export const AllVariants: StoryObj = {
       )}
     </div>
   `,
-  parameters: {
-    controls: { disable: true },
-  },
+   ...hideAllControls(),
 };
 
 export const UserJoined: StoryObj = {
@@ -153,9 +151,7 @@ export const UserJoined: StoryObj = {
       <mdc-text tagname="span" slot="toast-body-normal"><b>Username</b> joined the session.</mdc-text>
     `,
   },
-   parameters: {
-    controls: { disable: true },
-  },
+  ...hideAllControls(),
 };
 
 export const Connecting: StoryObj = {
@@ -167,9 +163,7 @@ export const Connecting: StoryObj = {
       <mdc-spinner slot="content-prefix" size="small"></mdc-spinner>
     `,
   },
-  parameters: {
-    controls: { disable: true },
-  },
+  ...hideAllControls(),
 };
 
 
