@@ -4,7 +4,7 @@ const styles = css`
   :host::part(header-section) {
     display: flex;
     align-items: center;
-    cursor: pointer;
+    cursor: unset;
     justify-content: space-between;
   }
   :host::part(header-section):hover,

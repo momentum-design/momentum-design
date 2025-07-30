@@ -48,6 +48,10 @@ const styles = css`
     color: var(--mdc-accordionbutton-disabled-color);
   }
 
+  :host([disabled][expanded])::part(header-section) {
+    border-bottom: unset;
+  }
+
   :host([disabled])::part(header-section):active,
   :host([disabled])::part(header-section):hover {
     background-color: unset;

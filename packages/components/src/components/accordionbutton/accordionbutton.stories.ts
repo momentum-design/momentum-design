@@ -1,12 +1,12 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import '../button';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { hideAllControls, textControls } from '../../../config/storybook/utils';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
 import { VARIANT } from './accordionbutton.constants';
@@ -45,12 +45,6 @@ const meta: Meta = {
     'data-aria-level': {
       control: 'number',
     },
-    'header-text': {
-      control: 'text',
-    },
-    'prefix-icon': {
-      control: 'text',
-    },
     size: {
       control: 'select',
       options: Object.values(SIZE),
@@ -65,13 +59,15 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...disableControls([
+    ...textControls([
+      'default',
+      'shown',
+      'header-text',
+      'prefix-icon',
       '--mdc-accordionbutton-border-color',
       '--mdc-accordionbutton-hover-color',
       '--mdc-accordionbutton-active-color',
       '--mdc-accordionbutton-disabled-color',
-      'default',
-      'shown',
     ]),
   },
 };

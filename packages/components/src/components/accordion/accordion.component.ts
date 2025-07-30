@@ -1,10 +1,10 @@
 import type { CSSResult, PropertyValues } from 'lit';
 import { html } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { ROLE } from '../../utils/roles';
 import AccordionButton from '../accordionbutton';
-import { ICON_NAME } from '../accordionbutton/accordionbutton.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 
 import styles from './accordion.styles';
@@ -34,6 +34,10 @@ import styles from './accordion.styles';
  * If you don't need any controls on your accordion heading, then it's advised to use `accordionbutton` component.
  *
  * @tagname mdc-accordion
+ *
+ * @dependency mdc-button
+ * @dependency mdc-icon
+ * @dependency mdc-text
  *
  * @slot leading-controls - The leading controls slot of the accordion on the header section.
  * @slot trailing-controls - The trailing controls slot of the accordion on the header section.
@@ -101,8 +105,8 @@ class Accordion extends AccordionButton {
             @click="${this.handleHeaderClick}"
             aria-controls="${this.bodySectionId}"
             aria-expanded="${this.expanded}"
-            title="${this.headerText}"
-            prefix-icon="${this.expanded ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
+            title="${ifDefined(this.headerText)}"
+            prefix-icon="${this.getArrowIconName()}"
             variant="${BUTTON_VARIANTS.TERTIARY}"
           ></mdc-button>
         </div>

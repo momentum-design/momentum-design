@@ -12,7 +12,7 @@ import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
-import type { Variant } from './accordionbutton.types';
+import type { IconName, Variant } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
 /**
@@ -38,6 +38,10 @@ import styles from './accordionbutton.styles';
  * If you do need any controls on your accordion heading, then it's advised to use `accordion` component.
  *
  * @tagname mdc-accordionbutton
+ *
+ * @dependency mdc-button
+ * @dependency mdc-icon
+ * @dependency mdc-text
  *
  * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
  *
@@ -126,7 +130,7 @@ class AccordionButton extends DisabledMixin(Component) {
    * Handles the keydown event of the component.
    * If the key pressed is either Enter or Space, it calls the handleHeaderClick method.
    * This allows keyboard users to toggle the accordion button using these keys.
-   * @param event The KeyboardEvent fired.
+   * @param event - The KeyboardEvent fired.
    */
   private handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
@@ -164,15 +168,31 @@ class AccordionButton extends DisabledMixin(Component) {
           aria-controls="${this.bodySectionId}"
         >
           <div part="leading-header">${this.renderIcon(this.prefixIcon)} ${this.renderHeadingText()}</div>
-          <div part="trailing-header">
-            ${this.renderIcon(this.expanded ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN)}
-          </div>
+          <div part="trailing-header">${this.renderIcon(this.getArrowIconName())}</div>
         </div>
       </div>
     `;
   }
 
+  /**
+   * Returns the icon name based on the expanded state.
+   * If the accordion button is disabled, it always returns the arrow down icon.
+   * Otherwise, it returns the arrow up icon if the accordion button is expanded, otherwise the arrow down icon.
+   * @returns The icon name based on the expanded state.
+   */
+  protected getArrowIconName(): IconName {
+    if (this.disabled) {
+      return ICON_NAME.ARROW_DOWN;
+    }
+    return this.expanded ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN;
+  }
+
   protected renderBody(): TemplateResult | typeof nothing {
+    // When disabled, then the body section should not be visible,
+    // even if the expanded attribute is set true.
+    if (this.disabled) {
+      return nothing;
+    }
     if (this.expanded) {
       return html`<div
         id="${this.bodySectionId}"

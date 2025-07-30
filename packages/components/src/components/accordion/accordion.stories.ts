@@ -1,16 +1,16 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { action } from '@storybook/addon-actions';
-import '.';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import '../icon';
-import '../chip';
-import '../button';
+import '.';
 import '../badge';
+import '../button';
+import '../chip';
+import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { SIZE } from '../accordiongroup/accordiongroup.constants';
+import { hideAllControls, textControls } from '../../../config/storybook/utils';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
-import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
 const defaultBodyContent = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
   labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
@@ -55,12 +55,6 @@ const meta: Meta = {
     'data-aria-level': {
       control: 'number',
     },
-    'header-text': {
-      control: 'text',
-    },
-    'prefix-icon': {
-      control: 'text',
-    },
     size: {
       control: 'select',
       options: Object.values(SIZE),
@@ -75,11 +69,13 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...disableControls([
+    ...textControls([
       'leading-controls',
       'trailing-controls',
       'default',
       'shown',
+      'header-text',
+      'prefix-icon',
       '--mdc-accordionbutton-border-color',
     ]),
   },

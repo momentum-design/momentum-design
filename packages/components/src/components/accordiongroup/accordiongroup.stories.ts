@@ -1,14 +1,14 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import '../accordionbutton';
-import '../accordion';
-import '../chip';
-import '../avatarbutton';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import '.';
+import '../accordion';
+import '../accordionbutton';
+import '../avatarbutton';
+import '../chip';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { textControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 
@@ -55,7 +55,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...disableControls(['default', '--mdc-accordiongroup-border-color']),
+    ...textControls(['default', '--mdc-accordiongroup-border-color']),
   },
 };
 
