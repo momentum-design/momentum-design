@@ -297,12 +297,11 @@ export const TypedEventDetails: StoryObj = {
         id="typed-event-typewriter"
         type="${TYPE.BODY_LARGE_REGULAR}"
         speed="slow"
-        @change="${e => action('change')(e.detail)}"
-        @typing-complete="${e => action('typing-complete')(e.detail)}"
+        @change="${(e: CustomEvent) => action('change')(e.detail)}"
+        @typing-complete="${(e: CustomEvent) => action('typing-complete')(e.detail)}"
       >
         Watch the Actions panel to see event details with timing information!
       </mdc-typewriter>
-
       <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
         <mdc-button
           variant="primary"
@@ -488,8 +487,9 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
           const customSpeedInput = document.getElementById('custom-speed-input');
 
           if (speedSelector && customSpeedInput) {
-            speedSelector.addEventListener('change', e => {
-              if (e.target.value === 'custom') {
+            speedSelector.addEventListener('change', (e: Event) => {
+              const target = e.target as HTMLSelectElement;
+              if (target.value === 'custom') {
                 customSpeedInput.style.display = 'block';
               } else {
                 customSpeedInput.style.display = 'none';
