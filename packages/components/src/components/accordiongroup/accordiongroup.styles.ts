@@ -38,6 +38,10 @@ const styles = css`
     border-bottom: none;
     border-radius: 0 0 0.5rem 0.5rem;
   }
+  :host([variant='contained']) ::slotted(mdc-accordion[expanded]:last-child),
+  :host([variant='contained']) ::slotted(mdc-accordionbutton[expanded]:last-child) {
+    border-radius: inherit;
+  }
   :host([variant='borderless']) ::slotted(mdc-accordion[expanded]),
   :host([variant='borderless']) ::slotted(mdc-accordionbutton[expanded]) {
     border-bottom: 1px solid var(--mdc-accordiongroup-border-color);
