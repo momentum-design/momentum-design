@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
@@ -88,6 +88,7 @@ const meta: Meta = {
       options: Object.values(BUTTON_VARIANTS),
     },
     ...hideControls(['children', 'active', 'size']),
+    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },
