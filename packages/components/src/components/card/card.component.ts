@@ -27,8 +27,7 @@ import styles from './card.styles';
  * To make this card interactive, use the following slots:
  * - `icon-button`: This slot supports action icon buttons in the header section (maximum of 3 buttons).
  * - `footer-link`: This slot is for passing `mdc-link` component within the footer section.
- * - `footer-button-primary`: This slot is for passing primary variant of
- * `mdc-button` component within the footer section.
+ * - `footer-button-primary`: This slot is for passing primary variant of `mdc-button` component within the footer section.
  * - `footer-button-secondary`: This slot is for passing secondary variant of `mdc-button` component
  * within the footer section.
  *

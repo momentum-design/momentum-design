@@ -29,7 +29,7 @@ import styles from './cardbutton.styles';
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
- * @slot footer-button-primary - This slot is for passing primary variant of
+ * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
  *
  * @csspart header - The header part of the card
  * @csspart icon - The icon part of the card header
