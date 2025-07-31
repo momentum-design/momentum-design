@@ -56,6 +56,7 @@ import styles from './accordionbutton.styles';
  * @csspart header-button-section - The header button section of the accordion button.
  * @csspart leading-header - The leading header of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
+ * @csspart trailing-header__icon - The trailing header icon of the accordion button.
  * @csspart body-section - The body section of the accordion button.
  */
 class AccordionButton extends DisabledMixin(Component) {
@@ -168,7 +169,9 @@ class AccordionButton extends DisabledMixin(Component) {
           aria-controls="${this.bodySectionId}"
         >
           <div part="leading-header">${this.renderIcon(this.prefixIcon)} ${this.renderHeadingText()}</div>
-          <div part="trailing-header">${this.renderIcon(this.getArrowIconName())}</div>
+          <div part="trailing-header">
+            <div part="trailing-header__icon">${this.renderIcon(this.getArrowIconName())}</div>
+          </div>
         </div>
       </div>
     `;

@@ -53,6 +53,7 @@ import styles from './accordion.styles';
  * @csspart header-section - The header section of the accordion.
  * @csspart leading-header - The leading header of the accordion.
  * @csspart trailing-header - The trailing header of the accordion.
+ * @csspart trailing-header__button - The trailing header button of the accordion.
  * @csspart body-section - The body section of the accordion.
  */
 class Accordion extends AccordionButton {
@@ -104,6 +105,7 @@ class Accordion extends AccordionButton {
         <div part="trailing-header">
           <slot name="trailing-controls"></slot>
           <mdc-button
+            part="trailing-header__button"
             ?disabled="${this.disabled}"
             @click="${this.handleHeaderClick}"
             aria-controls="${this.bodySectionId}"

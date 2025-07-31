@@ -115,7 +115,7 @@ export const AllVariants: StoryObj = {
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Expanded" expanded
           >${defaultChildren}</mdc-accordionbutton
         >
-        <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Not expanded"
+        <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Not expanded" data-aria-level="4"
           >${defaultChildren}</mdc-accordionbutton
         >
       </section>
@@ -128,6 +128,7 @@ export const AllVariants: StoryObj = {
           prefix-icon="placeholder-bold"
           header-text="Borderless Variant"
           variant="${VARIANT.BORDERLESS}"
+          data-aria-level="4"
           >${defaultChildren}</mdc-accordionbutton
         >
       </section>
@@ -136,7 +137,11 @@ export const AllVariants: StoryObj = {
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Small Size"
           >${defaultChildren}</mdc-accordionbutton
         >
-        <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Large Size" size="${SIZE.LARGE}"
+        <mdc-accordionbutton
+          prefix-icon="placeholder-bold"
+          header-text="Large Size"
+          size="${SIZE.LARGE}"
+          data-aria-level="4"
           >${defaultChildren}</mdc-accordionbutton
         >
       </section>

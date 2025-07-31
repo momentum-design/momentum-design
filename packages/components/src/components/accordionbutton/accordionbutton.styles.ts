@@ -19,11 +19,12 @@ const styles = css`
     width: 100%;
     cursor: pointer;
     user-select: none;
+    display: flex;
   }
 
   :host::part(header-button-section) {
     display: flex;
-    flex-direction: row;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
   }
@@ -73,6 +74,10 @@ const styles = css`
     flex-direction: row;
     gap: 0.5rem;
     align-items: center;
+  }
+
+  :host::part(trailing-header__icon) {
+    padding: 0.25rem;
   }
 
   :host([variant='default']) {

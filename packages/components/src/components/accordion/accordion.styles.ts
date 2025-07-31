@@ -11,6 +11,9 @@ const styles = css`
   :host::part(header-section):active {
     background-color: unset;
   }
+  :host::part(trailing-header__button) {
+    margin: 0.125rem;
+  }
 `;
 
 export default [styles];
