@@ -149,6 +149,23 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(content).toBeVisible();
       });
 
+      await test.step('render empty accordion content', async () => {
+        const { accordion, headerButtonSection, content } = await setup({
+          componentsPage,
+          children: '',
+          expanded: true,
+        });
+
+        await expect(accordion.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
+          'role',
+          ROLE.HEADING,
+        );
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(content).toBeEmpty();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
+      });
+
       await test.step('render accordion with invalid icon', async () => {
         const { accordion, headerButtonSection } = await setup({ componentsPage, prefixIcon: 'invalid-icon' });
 

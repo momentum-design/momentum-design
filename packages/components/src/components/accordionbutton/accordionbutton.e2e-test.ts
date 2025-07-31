@@ -147,6 +147,21 @@ test.describe('AccordionButton Feature Scenarios', () => {
         await expect(borderless.accordionButton).toHaveAttribute('variant', VARIANT.BORDERLESS);
       });
 
+      await test.step('render empty accordion button content', async () => {
+        const { headerButton, headerButtonSection, content } = await setup({
+          componentsPage,
+          children: '',
+          expanded: true,
+        });
+
+        await expect(headerButton).toHaveAttribute('role', ROLE.HEADING);
+        await expect(headerButton).toHaveAttribute('aria-level', '3');
+        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(content).toBeEmpty();
+        await expect(content).toHaveAttribute('role', ROLE.REGION);
+      });
+
       await test.step('render accordion button with invalid icon', async () => {
         const { accordionButton, headerButtonSection } = await setup({ componentsPage, prefixIcon: 'invalid-icon' });
 
