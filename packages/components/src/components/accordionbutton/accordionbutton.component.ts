@@ -215,6 +215,15 @@ class AccordionButton extends DisabledMixin(Component) {
     if (changedProperties.has('disabled')) {
       this.setAttribute('aria-disabled', `${this.disabled}`);
     }
+    if (changedProperties.has('dataAriaLevel') && !this.dataAriaLevel) {
+      this.dataAriaLevel = DEFAULTS.DATA_ARIA_LEVEL;
+    }
+    if (changedProperties.has('size') && !this.size) {
+      this.size = DEFAULTS.SIZE;
+    }
+    if (changedProperties.has('variant') && !this.variant) {
+      this.variant = DEFAULTS.VARIANT;
+    }
   }
 
   public override render() {
