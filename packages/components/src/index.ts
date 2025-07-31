@@ -57,6 +57,7 @@ import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
 import StaticToggle from './components/statictoggle';
+import Toast from './components/toast';
 import Tab from './components/tab';
 import TabList from './components/tablist';
 import Text from './components/text';
@@ -68,8 +69,9 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
-import Stepperitem from './components/stepperitem';
+import StepperItem from './components/stepperitem';
 import StepperConnector from './components/stepperconnector';
+import Stepper from './components/stepper';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -151,12 +153,13 @@ export {
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
-  Stepperitem,
+  StepperItem,
   Tab,
   TabList,
   Text,
   Textarea,
   ThemeProvider,
+  Toast,
   Toggle,
   ToggleTip,
   Tooltip,
@@ -164,6 +167,7 @@ export {
   Listheader,
   SelectListbox,
   StepperConnector,
+  Stepper,
 };
 
 // Types Exports
