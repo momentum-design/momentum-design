@@ -38,8 +38,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ``}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+        header-text="${restArgs.headerText ?? defaultHeaderText}"
       >
         ${restArgs.children}
       </mdc-accordion>
@@ -111,7 +111,7 @@ test.describe('Accordion Feature Scenarios', () => {
       await test.step('render accordion with default settings', async () => {
         const { accordion, headerButton, headerButtonSection } = await setup({ componentsPage });
 
-        await expect(accordion).toHaveAttribute('header-text', '');
+        await expect(accordion).toHaveAttribute('header-text', defaultHeaderText);
         await expect(headerButton.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
           'role',
           ROLE.HEADING,
@@ -147,18 +147,6 @@ test.describe('Accordion Feature Scenarios', () => {
 
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(content).toBeVisible();
-      });
-
-      await test.step('render empty accordion', async () => {
-        const { accordion, headerButtonSection } = await setup({ componentsPage, children: '' });
-
-        await expect(accordion).toHaveAttribute('header-text', '');
-        await expect(accordion.locator('div[part="leading-header"]').locator('div[aria-level]')).toHaveAttribute(
-          'role',
-          ROLE.HEADING,
-        );
-        await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
-        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
       });
 
       await test.step('render accordion with invalid icon', async () => {

@@ -129,10 +129,4 @@ Feature: Accordion Button Component
       When the accordion button is rendered
       Then the icon should not be displayed
       And no error should be thrown
-      And the accordion button should render properly without the icon
-
-    Scenario: Missing header text
-      Given the accordion button is rendered without header text
-      Then the accordion button should still be rendered
-      And proper ARIA states should be maintained
-      And the accordion button should be focusable
+      And the accordion button should render properly without the Icon

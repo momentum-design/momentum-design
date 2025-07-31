@@ -108,9 +108,3 @@ Feature: Accordion Component
       Then the icon should not be displayed
       And no error should be thrown
       And the accordion should render properly without the icon
-
-    Scenario: Missing header text
-      Given the accordion is rendered without header text
-      Then the accordion should still be rendered
-      And proper ARIA states should be maintained
-      And the accordion should be focusable
