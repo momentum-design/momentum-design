@@ -55,11 +55,17 @@ const meta: Meta = {
     expanded: {
       control: 'boolean',
     },
+    'header-text': {
+      control: 'text',
+    },
+    'prefix-icon': {
+      control: 'text',
+    },
     variant: {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...disableControls(['default', 'shown', 'header-text', 'prefix-icon']),
+    ...disableControls(['default']),
     ...textControls([
       '--mdc-accordionbutton-border-color',
       '--mdc-accordionbutton-hover-color',
