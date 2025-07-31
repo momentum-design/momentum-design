@@ -108,8 +108,8 @@ const styles = css`
     margin-bottom: 0.5rem;
   }
 
-  :host::part(text) {
-    margin: unset;
+  mdc-text::part(text) {
+    margin: 0;
   }
 `;
 
