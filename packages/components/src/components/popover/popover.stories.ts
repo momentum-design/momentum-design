@@ -447,6 +447,7 @@ export const nestedPopover: StoryObj = {
     'hide-on-escape': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'focus-back-to-trigger': true,
     'hide-on-outside-click': true,
   },
 };
@@ -495,7 +496,14 @@ export const popoverWithSelect: StoryObj = {
   render: () => html`
     <div style="width: 10rem; height: 8rem; margin: 5rem;">
       <mdc-button id="select-button">Click me!</mdc-button>
-      <mdc-popover triggerID="select-button" interactive hide-on-escape hide-on-outside-click>
+      <mdc-popover
+        triggerID="select-button"
+        interactive
+        hide-on-escape
+        hide-on-outside-click
+        focus-trap
+        focus-back-to-trigger
+      >
         <div style="width: 15rem;">
           <mdc-select>
             <mdc-selectlistbox>
@@ -614,7 +622,7 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
         <mdc-button
           @click=${() => {
             const popover = document.getElementById('popover') as Popover;
-            popover.hidePopover();
+            popover.hide();
 
             const dialog = document.getElementById('popover-dialog') as Dialog;
             dialog.visible = true;

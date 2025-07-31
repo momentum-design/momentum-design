@@ -93,20 +93,21 @@ class Tooltip extends Popover {
   /**
    * Updates the tooltip id if it is empty.
    */
-  private onIdUpdated(): void {
+  private async onIdUpdated(): Promise<void> {
     // Set tooltip ID if not set.
     if (this.id.length === 0) {
       this.id = `mdc-tooltip-${uuidv4()}`;
     }
+
+    await this.updateComplete;
     // Update the aria props on the trigger component to updated tooltip id.
-    const triggerElement = document.getElementById(this.triggerID);
-    if (triggerElement) {
+    if (this.triggerElement) {
       switch (this.tooltipType) {
         case TOOLTIP_TYPES.DESCRIPTION:
-          triggerElement.setAttribute('aria-describedby', this.id);
+          this.triggerElement.setAttribute('aria-describedby', this.id);
           break;
         case TOOLTIP_TYPES.LABEL:
-          triggerElement.setAttribute('aria-labelledby', this.id);
+          this.triggerElement.setAttribute('aria-labelledby', this.id);
           break;
         default:
           break;
@@ -130,31 +131,31 @@ class Tooltip extends Popover {
    */
   private onTooltipTypeUpdated(changedProperties: PropertyValues): void {
     const previousTooltipType = changedProperties.get('tooltipType');
+
     if (!Object.values(TOOLTIP_TYPES).includes(this.tooltipType)) {
       this.setTooltipType(DEFAULTS.TOOLTIP_TYPE);
     }
 
-    const triggerElement = document.getElementById(this.triggerID);
-    if (triggerElement) {
+    if (this.triggerElement) {
       const tooltipText = this.getTooltipText();
       switch (this.tooltipType) {
         case TOOLTIP_TYPES.DESCRIPTION:
           if (previousTooltipType === TOOLTIP_TYPES.LABEL) {
-            triggerElement.removeAttribute('aria-labelledby');
+            this.triggerElement.removeAttribute('aria-labelledby');
           }
-          triggerElement.setAttribute('aria-describedby', this.id);
+          this.triggerElement.setAttribute('aria-describedby', this.id);
           break;
         case TOOLTIP_TYPES.LABEL:
           if (previousTooltipType === TOOLTIP_TYPES.DESCRIPTION) {
-            triggerElement.removeAttribute('aria-describedby');
+            this.triggerElement.removeAttribute('aria-describedby');
           }
-          triggerElement.setAttribute('aria-labelledby', this.id);
+          this.triggerElement.setAttribute('aria-labelledby', this.id);
           break;
         default:
           if (previousTooltipType === TOOLTIP_TYPES.DESCRIPTION) {
-            triggerElement.removeAttribute('aria-describedby');
+            this.triggerElement.removeAttribute('aria-describedby');
           } else if (previousTooltipType === TOOLTIP_TYPES.LABEL) {
-            triggerElement.removeAttribute('aria-labelledby');
+            this.triggerElement.removeAttribute('aria-labelledby');
           }
           break;
       }
@@ -164,11 +165,11 @@ class Tooltip extends Popover {
     }
   }
 
-  public override update(changedProperties: PropertyValues): void {
+  public override async update(changedProperties: PropertyValues): Promise<void> {
     super.update(changedProperties);
 
     if (changedProperties.has('id')) {
-      this.onIdUpdated();
+      await this.onIdUpdated();
     }
     if (changedProperties.has('placement')) {
       this.onPlacementUpdated();
