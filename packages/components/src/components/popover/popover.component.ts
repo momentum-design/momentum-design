@@ -516,6 +516,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.removeEventListener('keydown', this.onEscapeKeydown);
       this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
     }
+
+    if (this.hideOnBlur) {
+      this.removeEventListener('focusout', this.onPopoverFocusOut);
+    }
   };
 
   protected override async updated(changedProperties: PropertyValues) {
@@ -699,15 +703,15 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
       this.activatePreventScroll();
 
-      // make sure popover is fully rendered
+      if (this.hideOnOutsideClick) {
+        document.addEventListener('click', this.onOutsidePopoverClick);
+      }
+
+      // make sure popover is fully rendered before activating focus trap
       setTimeout(() => {
         if (this.interactive && this.focusTrap) {
           this.activateFocusTrap?.();
           this.setInitialFocus?.();
-        }
-
-        if (this.hideOnOutsideClick) {
-          document.addEventListener('click', this.onOutsidePopoverClick);
         }
       }, 0);
 
@@ -732,9 +736,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
           this.triggerElement.style.pointerEvents = '';
         }
       }
+
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
       }
+
       if (this.hideOnEscape) {
         this.removeEventListener('keydown', this.onEscapeKeydown);
         this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
@@ -802,7 +808,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     if (!this.interactive) {
       this.hide();
     } else {
-      if (this.visible) return;
       this.hoverTimer = window.setTimeout(() => {
         this.visible = false;
       }, this.closeDelay);

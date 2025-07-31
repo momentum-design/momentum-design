@@ -402,6 +402,7 @@ export const interactiveHover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
+    'focus-back-to-trigger': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
