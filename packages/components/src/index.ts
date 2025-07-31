@@ -70,6 +70,7 @@ import TabList from './components/tablist';
 import Text from './components/text';
 import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
+import Toast from './components/toast';
 import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
@@ -168,6 +169,7 @@ export {
   Text,
   Textarea,
   ThemeProvider,
+  Toast,
   Toggle,
   ToggleTip,
   Tooltip,
