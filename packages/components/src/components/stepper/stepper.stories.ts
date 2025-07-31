@@ -52,7 +52,7 @@ const renderWithErrorCurrent = (args: Args) =>
       <mdc-stepperconnector status="complete"></mdc-stepperconnector>
       <mdc-stepperitem label="Step 2" status="completed" help-text="Help text"></mdc-stepperitem>
       <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
-      <mdc-stepperitem label="Step 3" status="error-current" help-text="Help text"></mdc-stepperitem>
+      <mdc-stepperitem label="Step 3" status="error-current" help-text="Error message"></mdc-stepperitem>
       <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
       <mdc-stepperitem label="Step 4" status="error-incomplete" step-number="4" help-text="Error"></mdc-stepperitem>
       <mdc-stepperconnector status="incomplete"></mdc-stepperconnector>
