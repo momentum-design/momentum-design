@@ -5,7 +5,6 @@ import { html, TemplateResult } from 'lit';
 
 import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
-import Popover from '.';
 import '../button';
 import '../option';
 import '../select';
@@ -13,6 +12,7 @@ import '../menupopover';
 import '../menuitem';
 import '../dialog';
 
+import type Popover from '.';
 import type Dialog from '../dialog';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';

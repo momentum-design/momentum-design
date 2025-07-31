@@ -70,9 +70,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * - **focusin**
    * - **manual**
    *
-   * NOTE: this can't be changed after the component is created.
-   * If you need to change the trigger type, you need to create a new popover instance.
-   *
    * @default click
    */
   @property({ type: String, reflect: true })

@@ -7,6 +7,7 @@ import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import type Dialog from '../dialog/dialog.component';
 
+import type Popover from './popover.component';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import type { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 
@@ -887,9 +888,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       const openDialogBtn = document.querySelector('#open-dialog');
       if (openDialogBtn) {
         openDialogBtn.addEventListener('click', () => {
-          const dialog = document.querySelector('#dialog') as any;
+          const dialog = document.querySelector('#dialog') as Dialog;
           if (dialog) dialog.visible = true;
-          const popover = document.querySelector('#popover') as any;
+          const popover = document.querySelector('#popover') as Popover;
           if (popover) popover.visible = false;
         });
       }
