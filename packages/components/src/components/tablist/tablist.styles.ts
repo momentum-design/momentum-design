@@ -14,10 +14,10 @@ const styles = [
       width: var(--mdc-tablist-width);
       display: flex;
       align-items: center;
+    }
 
-      ::slotted(mdc-tab) {
-        width: initial;
-      }
+    :host ::slotted(mdc-tab) {
+      width: initial;
     }
 
     :host .container {
