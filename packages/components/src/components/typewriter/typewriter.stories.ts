@@ -96,12 +96,32 @@ export const FastTyping: StoryObj = {
 };
 
 export const CustomSpeed: StoryObj = {
-  args: {
-    type: TYPE.BODY_LARGE_REGULAR,
-    tagname: VALID_TEXT_TAGS.P,
-    speed: '100',
-    children: 'This uses a custom speed value of 100ms per character.',
-  },
+  render: () => html`
+    <div>
+      <mdc-typewriter
+        id="custom-speed-typewriter"
+        type="${TYPE.BODY_LARGE_REGULAR}"
+        tagname="${VALID_TEXT_TAGS.P}"
+        speed="100"
+      >
+        This uses a custom speed value of 100ms per character.
+      </mdc-typewriter>
+      <div style="margin-top: 20px;">
+        <mdc-button
+          variant="primary"
+          @click=${() => {
+            const typewriter = document.getElementById('custom-speed-typewriter') as any;
+            if (typewriter) {
+              typewriter.textContent = 'This uses a custom speed value of 100ms per character.';
+              typewriter.speed = '100';
+            }
+          }}
+        >
+          Reset
+        </mdc-button>
+      </div>
+    </div>
+  `,
 };
 
 export const DynamicSpeedDemo: StoryObj = {
