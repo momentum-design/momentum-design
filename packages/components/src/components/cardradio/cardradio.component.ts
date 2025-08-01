@@ -75,9 +75,9 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
 
   constructor() {
     super();
-    this.addEventListener('click', this.toggleChecked);
-    this.addEventListener('keydown', this.toggleOnEnter);
-    this.addEventListener('keyup', this.toggleOnSpace);
+    this.addEventListener('click', this.toggleChecked.bind(this));
+    this.addEventListener('keydown', this.toggleOnEnter.bind(this));
+    this.addEventListener('keyup', this.toggleOnSpace.bind(this));
   }
 
   override connectedCallback() {
