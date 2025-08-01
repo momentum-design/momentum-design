@@ -14,7 +14,6 @@ import '../listitem';
 import '../selectlistbox';
 import '../option';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { DEFAULTS } from './typewriter.constants';
@@ -26,7 +25,7 @@ const render = (args: Args) => html`
     type="${args.type}"
     tagname="${ifDefined(args.tagname)}"
     speed="${args.speed}"
-    max-queue-size="${ifDefined(args.maxQueueSize)}"
+    max-queue-size="${ifDefined(args['max-queue-size'])}"
     >${args.children}</mdc-typewriter
   >
 `;
@@ -56,14 +55,13 @@ const meta: Meta = {
       control: { type: 'number', min: 10, max: 1000, step: 10 },
       description: 'Speed of typewriter effect in milliseconds per character. Lower = faster.',
     },
-    maxQueueSize: {
+    'max-queue-size': {
       control: { type: 'number', min: 1, max: 1000, step: 1 },
       description:
         'Maximum number of text chunks in queue before dropping oldest chunks. Set to high value for unlimited.',
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['text']),
   },
 };
 
@@ -240,91 +238,6 @@ export const DynamicExample: StoryObj = {
           }}
         >
           Add more text
-        </mdc-button>
-      </div>
-    </div>
-  `,
-};
-
-export const EventHandlingExample: StoryObj = {
-  render: () => html`
-    <div>
-      <mdc-text type="heading-large-bold" tagname="h3">Event Handling</mdc-text>
-      <mdc-typewriter
-        id="event-typewriter"
-        type="${TYPE.BODY_LARGE_REGULAR}"
-        speed="normal"
-        @change="${action('change')}"
-        @typing-complete="${action('typing-complete')}"
-      >
-        This text will trigger events as it types.
-      </mdc-typewriter>
-      <div style="margin-top: 20px; display: flex; gap: 12px;">
-        <mdc-button
-          variant="primary"
-          @click=${() => {
-            const typewriter = document.getElementById('event-typewriter');
-            if (typewriter) {
-              typewriter.textContent = 'Content changed! Watch for events.';
-            }
-          }}
-        >
-          Change content
-        </mdc-button>
-      </div>
-      <div style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        <mdc-text type="body-small-regular" tagname="p">
-          Events will be logged in the Storybook Actions panel below.
-        </mdc-text>
-      </div>
-    </div>
-  `,
-};
-
-export const TypedEventDetails: StoryObj = {
-  render: () => html`
-    <div>
-      <mdc-text type="heading-large-bold" tagname="h3">Typed Event Details</mdc-text>
-      <mdc-text type="body-large-regular" tagname="p">
-        This story demonstrates the new TypedEvent implementation with detailed event payloads:
-      </mdc-text>
-      <mdc-list style="margin: 16px 0;">
-        <mdc-listitem><strong>change</strong> event includes: content and isTyping status</mdc-listitem>
-        <mdc-listitem><strong>typing-complete</strong> event includes: finalContent and totalDuration</mdc-listitem>
-      </mdc-list>
-
-      <mdc-typewriter
-        id="typed-event-typewriter"
-        type="${TYPE.BODY_LARGE_REGULAR}"
-        speed="slow"
-        @change="${(e: CustomEvent) => action('change')(e.detail)}"
-        @typing-complete="${(e: CustomEvent) => action('typing-complete')(e.detail)}"
-      >
-        Watch the Actions panel to see event details with timing information!
-      </mdc-typewriter>
-      <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-        <mdc-button
-          variant="primary"
-          @click=${() => {
-            const typewriter = document.getElementById('typed-event-typewriter') as any;
-            if (typewriter) {
-              typewriter.addTextChunk(' Additional text with timing data.', 80);
-            }
-          }}
-        >
-          Add Timed Text
-        </mdc-button>
-        <mdc-button
-          variant="secondary"
-          @click=${() => {
-            const typewriter = document.getElementById('typed-event-typewriter') as any;
-            if (typewriter) {
-              typewriter.speed = 30;
-              typewriter.addTextChunk(' Fast typing mode enabled!');
-            }
-          }}
-        >
-          Add Fast Text
         </mdc-button>
       </div>
     </div>

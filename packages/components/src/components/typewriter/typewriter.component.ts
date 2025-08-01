@@ -59,9 +59,9 @@ import type {
  * @csspart text - The text element (forwarded to mdc-text)
  * @csspart cursor - The cursor element (only visible during typing)
  *
- * @event typing-complete - Fired when the typewriter finishes typing all content.
+ * @event typing-complete - (React: onTypingComplete) Fired when the typewriter finishes typing all content.
  *   Detail: \{ finalContent: string, totalDuration: number \}
- * @event change - Fired when the content of the typewriter changes.
+ * @event change - (React: onChange) Fired when the content of the typewriter changes.
  *   Detail: \{ content: string, isTyping: boolean \}
  */
 class Typewriter extends Component {
@@ -106,49 +106,58 @@ class Typewriter extends Component {
 
   /**
    * Internal state for the displayed text
+   * @internal
    */
   @state()
   private displayedText: string = '';
 
   /**
    * Internal state to track the original text
+   * @internal
    */
   @state()
   private originalText: string = '';
 
   /**
    * Character index for typing animation
+   * @internal
    */
   private currentIndex: number = 0;
 
   /**
    * Typing animation timeout id
+   * @internal
    */
   private typingTimeout: number | null = null;
 
   /**
    * Set of pending setTimeout IDs for cleanup
+   * @internal
    */
   private pendingTimeouts: Set<number> = new Set();
 
   /**
    * Queue of text chunks to be added (limited to prevent memory issues)
+   * @internal
    */
   private textChunkQueue: Array<TextChunk> = [];
 
   /**
    * Stores previous text content for comparison
+   * @internal
    */
   private previousTextContent: string = '';
 
   /**
    * Whether the typing animation has completed
+   * @internal
    */
   @state()
   private typingComplete: boolean = true;
 
   /**
    * Timestamp when current typing animation started (for duration calculation)
+   * @internal
    */
   private animationStartTime: number = 0;
 
@@ -328,8 +337,8 @@ class Typewriter extends Component {
   /**
    * Responds to property changes
    */
-  public override willUpdate(changedProperties: PropertyValues): void {
-    super.willUpdate(changedProperties);
+  public override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
 
     // Only restart animation if speed changed during active typing
     // and we're not in the middle of chunk processing
