@@ -33,6 +33,8 @@ import styles from './accordion.styles';
  *
  * If you don't need any controls on your accordion heading, then it's advised to use `accordionbutton` component.
  *
+ * If an accordion is expanded by default, then the screen reader might loose focus when toggling the visibilty of the accordion.
+ *
  * @tagname mdc-accordion
  *
  * @dependency mdc-button
