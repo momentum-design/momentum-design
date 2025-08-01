@@ -43,6 +43,8 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
+test.use({ viewport: { width: 800, height: 1200 } });
+
 test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
   const formfieldwrapper = await setup({
     componentsPage,
@@ -137,7 +139,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       id: 'test-formfieldwrapper',
       label: 'Disabled Label',
       'help-text': 'Help Text',
-      disabled: true,
+      disabled: '',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // required
@@ -146,6 +148,15 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
       required: '',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    // disabled and required
+    wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Disabled Required Label',
+      'help-text': 'Help Text',
+      required: '',
+      disabled: '',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // With long text that gets truncated into an ellipsis

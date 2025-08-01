@@ -104,7 +104,7 @@
     "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.6.12",
+    "@floating-ui/dom": "^1.7.2",
     "@lit/context": "^1.1.2",
     "@lit/react": "^1.0.5",
     "@momentum-design/animations": "workspace:*",
