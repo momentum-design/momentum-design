@@ -160,8 +160,9 @@ export const ChunkedTextDemo: StoryObj = {
       <mdc-text type="heading-large-bold" tagname="h3">Chunked Text Addition</mdc-text>
       <mdc-text type="body-large-regular" tagname="p">
         Text chunks are processed sequentially. Each chunk can have its own speed setting that temporarily overrides the
-        component's speed property, then restores the original speed when the chunk completes. Chunks don't queue - they
-        start processing immediately when added.
+        component's speed property, then restores the original speed defined in the base component when the chunk
+        completes. Chunks don't queue - they start processing immediately when added which also dumps all elements in
+        the queue behind it, then completes with animation.
       </mdc-text>
       <mdc-typewriter id="chunked-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="60">
         Initial text.
