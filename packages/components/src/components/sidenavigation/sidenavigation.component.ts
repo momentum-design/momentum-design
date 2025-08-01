@@ -73,7 +73,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
     });
 
-    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange as EventListener);
+    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
   }
 
   override connectedCallback(): void {
