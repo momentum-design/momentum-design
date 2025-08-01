@@ -39,7 +39,7 @@ const meta: Meta = {
   component: 'mdc-accordiongroup',
   render,
   parameters: {
-    badges: ['badge'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
