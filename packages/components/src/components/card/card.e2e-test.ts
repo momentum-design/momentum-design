@@ -85,8 +85,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/150' });
-        await expect(card).toHaveAttribute('image-src', 'https://placehold.co/150');
+        await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/100x100' });
+        await expect(card).toHaveAttribute('image-src', 'https://placehold.co/100x100');
         await componentsPage.removeAttribute(card, 'image-src');
       });
 
@@ -211,13 +211,12 @@ test.describe.parallel('mdc-card', () => {
     suffix?: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x180';
 
     // Card without body
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': imageSrc,
+      'image-src': 'https://placehold.co/100x100',
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -317,7 +316,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
@@ -333,7 +332,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
@@ -370,7 +369,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/70x110',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
@@ -386,7 +385,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/70x110',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 

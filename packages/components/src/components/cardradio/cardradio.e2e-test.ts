@@ -124,8 +124,8 @@ test.describe.parallel('mdc-cardradio', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(cardradio, { 'image-src': 'https://placehold.co/150' });
-        await expect(cardradio).toHaveAttribute('image-src', 'https://placehold.co/150');
+        await componentsPage.setAttributes(cardradio, { 'image-src': 'https://placehold.co/100x100' });
+        await expect(cardradio).toHaveAttribute('image-src', 'https://placehold.co/100x100');
         await componentsPage.removeAttribute(cardradio, 'image-src');
       });
 
@@ -227,13 +227,12 @@ test.describe.parallel('mdc-cardradio', () => {
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x170';
 
     // Card radio without body
     cardRadioStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': imageSrc,
+      'image-src': 'https://placehold.co/100x100',
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -323,7 +322,7 @@ test.describe.parallel('mdc-cardradio', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
         await componentsPage.page.waitForTimeout(200);
@@ -350,7 +349,7 @@ test.describe.parallel('mdc-cardradio', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/70x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
         await componentsPage.page.waitForTimeout(200);

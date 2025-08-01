@@ -181,7 +181,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
 
   public override render() {
     return html`
-      ${this.renderImage()}
+      <div part="image-wrapper">${this.renderImage()}</div>
       <div part="body">
         ${this.renderHeader()}
         <slot name="before-body"></slot>

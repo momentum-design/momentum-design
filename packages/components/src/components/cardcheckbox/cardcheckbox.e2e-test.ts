@@ -123,8 +123,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(cardcheckbox, { 'image-src': 'https://placehold.co/150' });
-        await expect(cardcheckbox).toHaveAttribute('image-src', 'https://placehold.co/150');
+        await componentsPage.setAttributes(cardcheckbox, { 'image-src': 'https://placehold.co/100x100' });
+        await expect(cardcheckbox).toHaveAttribute('image-src', 'https://placehold.co/100x100');
         await componentsPage.removeAttribute(cardcheckbox, 'image-src');
       });
 
@@ -222,13 +222,12 @@ test.describe.parallel('mdc-cardcheckbox', () => {
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardcheckboxStickersheet = new StickerSheet(componentsPage, 'mdc-cardcheckbox');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x170';
 
     // Card checkbox without body
     cardcheckboxStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': imageSrc,
+      'image-src': 'https://placehold.co/100x100',
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -320,7 +319,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
         await componentsPage.page.waitForTimeout(200);
@@ -347,7 +346,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/70x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
         await componentsPage.page.waitForTimeout(200);
