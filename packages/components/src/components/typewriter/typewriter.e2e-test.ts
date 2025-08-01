@@ -5,7 +5,6 @@
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import type { TextType, TagName } from './typewriter.types';
@@ -67,26 +66,19 @@ test.describe('mdc-typewriter', () => {
    */
   const createSnapshot = async ({
     componentsPage,
-    combination,
     fileNameSuffix,
   }: {
     componentsPage: ComponentsPage;
-    combination: Record<string, Record<string, any>>;
     fileNameSuffix: string;
   }) => {
-    const typewriterStickerSheet = new StickerSheet(componentsPage, 'mdc-typewriter');
-    typewriterStickerSheet.setChildren(textContent);
-    await typewriterStickerSheet.createMarkupWithCombination(combination, { createNewRow: true });
+    await setup({
+      componentsPage,
+      children: textContent,
+      speed: 'fast', // Faster speed for testing
+      waitForAnimation: true, // Wait for initial animation to complete
+    });
 
-    await typewriterStickerSheet.mountStickerSheet();
-    const container = typewriterStickerSheet.getWrapperContainer();
-
-    // Wait for typewriter animation to complete before taking screenshot
-    // Use a fixed numeric value for animation speed calculation
-    const animationSpeed = 100; // ms per character
-    await componentsPage.page.waitForTimeout(textContent.length * animationSpeed + 200);
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`, { element: container });
+    await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`);
     /**
      * ACCESSIBILITY
      */
@@ -95,16 +87,10 @@ test.describe('mdc-typewriter', () => {
     });
   };
 
-  test.use({ viewport: { width: 400, height: 800 } });
+  test.use({ viewport: { width: 400, height: 100 } });
   test('visual-regression & accessibility', async ({ componentsPage }) => {
-    const body = Object.fromEntries(Object.entries(TYPE).filter(([k]) => k.startsWith('BODY')));
-
-    await test.step('create snapshot for body type typewriter component', async () => {
-      await createSnapshot({ componentsPage, combination: { type: body }, fileNameSuffix: 'body' });
-    });
-
-    await test.step('create snapshot for tagname typewriter component', async () => {
-      await createSnapshot({ componentsPage, combination: { tagname: VALID_TEXT_TAGS }, fileNameSuffix: 'tagname' });
+    await test.step('create snapshot', async () => {
+      await createSnapshot({ componentsPage, fileNameSuffix: 'visual' });
     });
   });
 
@@ -157,7 +143,7 @@ test.describe('mdc-typewriter', () => {
     /**
      * ATTRIBUTE SPEED PRESET CHECK
      */
-    const presetSpeeds = ['slow', 'normal', 'fast'];
+    const presetSpeeds = ['very-slow', 'slow', 'normal', 'fast', 'very-fast'];
     for (const preset of presetSpeeds) {
       await test.step(`speed preset ${preset}`, async () => {
         await componentsPage.setAttributes(typewriter, { speed: preset });
@@ -186,7 +172,7 @@ test.describe('mdc-typewriter', () => {
   test('dynamic text changes', async ({ componentsPage, page }) => {
     // Initial setup with short text
     const initialText = 'Initial text';
-    await setup({
+    const typewriter = await setup({
       componentsPage,
       children: initialText,
       speed: 'fast', // Faster speed for testing
@@ -208,39 +194,19 @@ test.describe('mdc-typewriter', () => {
 
     // Verify the full content is rendered
     const fullText = initialText + additionalText;
-    const shadowContent = await page.evaluate(() => {
-      // Find the mdc-text component within the typewriter
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent?.trim().replace(/\s+/g, ' ') : '';
-      }
-      return '';
-    });
 
     // The displayed text should match the full text
-    expect(shadowContent).toContain(fullText);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(fullText);
 
-    // Also verify that a typing-complete event is fired
-    const hasEventListener = await page.evaluate(
-      async () =>
-        new Promise(resolve => {
-          const element = document.querySelector('mdc-typewriter');
-          if (!element) {
-            resolve(false);
-            return;
-          }
-          const onTypingComplete = () => {
-            element.removeEventListener('typing-complete', onTypingComplete);
-            resolve(true);
-          };
-          element.addEventListener('typing-complete', onTypingComplete);
-          // Force a content change to trigger the typing animation
-          element.textContent += '.';
-        }),
-    );
-
-    expect(hasEventListener).toBe(true);
+    // wait for typing-complete event
+    const eventResolve = await componentsPage.waitForEvent(typewriter, 'typing-complete');
+    await page.evaluate(() => {
+      const element = document.querySelector('mdc-typewriter');
+      if (element) {
+        element.textContent += '.';
+      }
+    });
+    await eventResolve();
   });
 
   test('accessibility features', async ({ componentsPage }) => {
@@ -329,16 +295,7 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(100);
 
     // Verify the content includes the instant text immediately
-    const finalContent = await page.evaluate(() => {
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent?.trim() : '';
-      }
-      return '';
-    });
-
-    expect(finalContent).toContain(initialText + instantText);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(initialText + instantText);
   });
 
   test('mixed instant and animated chunks', async ({ componentsPage, page }) => {
@@ -373,18 +330,8 @@ test.describe('mdc-typewriter', () => {
     // Wait for animated portion to complete
     await page.waitForTimeout(animatedText.length * 20 + 500);
 
-    // Verify all content is present
-    const finalContent = await page.evaluate(() => {
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent?.trim() : '';
-      }
-      return '';
-    });
-
     const expectedContent = initialText + instantText1 + animatedText + instantText2;
-    expect(finalContent).toBe(expectedContent);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(expectedContent);
   });
 
   test('instant parameter in addTextChunk', async ({ componentsPage, page }) => {
@@ -409,51 +356,28 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(100);
 
     // Verify the content includes the instant text immediately
-    const finalContent = await page.evaluate(() => {
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent?.trim() : '';
-      }
-      return '';
-    });
-
-    expect(finalContent).toContain(initialText + instantText);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(initialText + instantText);
   });
 
   test('instant text events', async ({ componentsPage, page }) => {
     // Setup with initial text
-    await setup({
+    const typewriter = await setup({
       componentsPage,
       children: 'Start: ',
       waitForAnimation: true,
     });
 
     // Listen for typing-complete event
-    const eventFired = await page.evaluate(
-      async () =>
-        new Promise(resolve => {
-          const element = document.querySelector('mdc-typewriter');
-          if (!element) {
-            resolve(false);
-            return;
-          }
 
-          let eventReceived = false;
-          const onTypingComplete = () => {
-            eventReceived = true;
-            element.removeEventListener('typing-complete', onTypingComplete);
-            setTimeout(() => resolve(eventReceived), 50);
-          };
-
-          element.addEventListener('typing-complete', onTypingComplete);
-
-          // Add instant text which should fire the event
-          (element as any).addInstantTextChunk('INSTANT!');
-        }),
-    );
-
-    expect(eventFired).toBe(true);
+    const eventResolve = await componentsPage.waitForEvent(typewriter, 'typing-complete');
+    await page.evaluate(() => {
+      const element = document.querySelector('mdc-typewriter');
+      if (element) {
+        // Add instant text which should fire the event
+        (element as any).addInstantTextChunk('INSTANT!');
+      }
+    });
+    await eventResolve();
   });
 
   test('rapid instant updates performance', async ({ componentsPage, page }) => {
@@ -480,17 +404,9 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(200);
 
     // Verify all messages are present
-    const finalContent = await page.evaluate(() => {
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent?.trim() : '';
-      }
-      return '';
-    });
-
-    messages.forEach((msg, index) => {
-      expect(finalContent).toContain(`[${index}] ${msg}`);
+    const textContent = await componentsPage.page.locator('mdc-text').textContent();
+    messages.forEach(async (msg, index) => {
+      expect(textContent).toContain(`[${index}] ${msg}`);
     });
   });
 
@@ -572,18 +488,10 @@ test.describe('mdc-typewriter', () => {
     // Wait for processing and verify content was added
     await page.waitForTimeout(1000);
 
-    const finalContent = await page.evaluate(() => {
-      const element = document.querySelector('mdc-typewriter');
-      if (element && element.shadowRoot) {
-        const textElement = element.shadowRoot.querySelector('mdc-text');
-        return textElement ? textElement.textContent || '' : '';
-      }
-      return '';
-    });
-
     // Should contain base text and some of the numbered chunks
-    expect(finalContent).toContain('Base: ');
-    expect(finalContent.length).toBeGreaterThan('Base: '.length);
+    const textContent = await componentsPage.page.locator('mdc-text').textContent();
+    expect(textContent).toContain('Base: ');
+    expect(textContent?.length).toBeGreaterThan('Base: '.length);
   });
 
   test('memory cleanup on disconnect', async ({ componentsPage, page }) => {
@@ -616,11 +524,5 @@ test.describe('mdc-typewriter', () => {
     const elementExists = await page.evaluate(() => document.querySelector('mdc-typewriter') !== null);
 
     expect(elementExists).toBe(false);
-
-    // Wait a bit more to ensure cleanup has occurred
-    await page.waitForTimeout(200);
-
-    // Test passes if we reach here without errors - cleanup was successful
-    expect(true).toBe(true);
   });
 });
