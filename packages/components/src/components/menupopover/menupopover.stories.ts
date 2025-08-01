@@ -11,6 +11,8 @@ import '../buttongroup';
 import '../divider';
 import '../icon';
 import '../menuitem';
+import '../menuitemcheckbox';
+import '../menuitemradio';
 import '../listitem';
 import '../list';
 import { KEYS } from '../../utils/keys';
@@ -131,7 +133,7 @@ const meta: Meta = {
       'show-arrow',
       'close-button',
       'interactive',
-      'hidePopover',
+      'hide',
       'hide-on-outside-click',
       'hide-on-blur',
       'hide-on-escape',
@@ -139,7 +141,7 @@ const meta: Meta = {
       'onOutsidePopoverClick',
       'onPopoverFocusOut',
       'role',
-      'showPopover',
+      'show',
       'startCloseDelay',
       'togglePopoverVisible',
       'triggerElement',

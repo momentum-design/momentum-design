@@ -44,7 +44,8 @@ class MenuBar extends Component {
 
   constructor() {
     super();
-    this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
   }
 
   override async connectedCallback() {
@@ -76,6 +77,24 @@ class MenuBar extends Component {
     };
     assigned.forEach(collect);
     return items;
+  }
+
+  /** @internal */
+  private getVisibleSubMenusOfItems(items: Array<HTMLElement>): Array<MenuPopover> {
+    const subMenus = <Array<MenuPopover>>[];
+    if (!items || items.length === 0) return subMenus;
+
+    items.forEach(item => {
+      const id = item.getAttribute('id');
+      if (!id) return;
+
+      const submenu = this.querySelector?.(`${MENUPOPOVER_TAGNAME}[triggerid="${id}"]`) as MenuPopover;
+      if (submenu && submenu.visible) {
+        subMenus.push(submenu);
+      }
+    });
+
+    return subMenus;
   }
 
   /**
@@ -117,6 +136,24 @@ class MenuBar extends Component {
   }
 
   /**
+   * Closes all other submenus on the top level.
+   * This method is used to ensure that only one topolevel submenu is open at a time.
+   * It finds all other menu items with submenus and closes their submenus.
+   * @param target - The target menu item that was clicked.
+   */
+  private handleClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target || !this.isTopLevelMenuItem(target)) return;
+
+    const otherMenuItemsOnTop = this.menuItems.filter(item => item !== target);
+    const otherOpenSubMenus = this.getVisibleSubMenusOfItems(otherMenuItemsOnTop);
+
+    otherOpenSubMenus.forEach(subMenu => {
+      subMenu.hide();
+    });
+  }
+
+  /**
    * Resets all list items tabindex to -1 and sets the tabindex of the
    * element at the given index to 0, effectively setting the active
    * element. This is used when navigating the list via keyboard.
@@ -148,7 +185,7 @@ class MenuBar extends Component {
     if (!triggerElement) return;
 
     const submenu = this.getSubmenu(triggerId);
-    if (submenu) submenu.showPopover();
+    if (submenu) submenu.show();
   }
 
   private updatePopoverPlacement(): void {
@@ -224,7 +261,7 @@ class MenuBar extends Component {
     while (popoverStack.peek()) {
       const popover = popoverStack.pop();
       if (popover) {
-        popover.hidePopover();
+        popover.hide();
         popovers.push(popover);
       }
     }
@@ -239,7 +276,7 @@ class MenuBar extends Component {
       const triggerMenuItem = this.menuItems.find(item => item.getAttribute('id') === triggerId);
       if (triggerMenuItem) {
         if (this.isTopLevelMenuItem(triggerMenuItem)) {
-          parentPopover?.hidePopover();
+          parentPopover?.hide();
         }
         await parentPopover?.updateComplete;
         const parentMenuItemIndex = this.getCurrentIndex(triggerMenuItem);

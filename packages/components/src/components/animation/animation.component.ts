@@ -149,6 +149,17 @@ class Animation extends Component {
     }
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    // Clean up the lottie instance when the component is removed from the DOM
+    if (this.lottieInstance) {
+      this.lottieInstance.removeEventListener('complete', this.onCompleteHandler);
+      this.lottieInstance.destroy();
+      this.lottieInstance = undefined;
+    }
+  }
+
   /**
    * Re-dispatch the complete event from the animation library
    *
