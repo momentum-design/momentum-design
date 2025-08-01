@@ -31,6 +31,8 @@ import type { Size, Variant } from './accordiongroup.types';
  *
  * If you don't need any controls on your accordion heading, then it's advised to use `accordionbutton` component.
  *
+ * If the first accordion of the accordion group is expanded by default, then the screen reader might loose focus when toggling the visibilty of the first accordion.
+ *
  * @tagname mdc-accordiongroup
  *
  * @slot default - The default slot can contain the `accordion` or `accordionbutton` components.
