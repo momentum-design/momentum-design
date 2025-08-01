@@ -49,7 +49,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-menupopover',
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     id: {
