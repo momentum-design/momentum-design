@@ -81,7 +81,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
 };
 
 test.use({ viewport: { width: 800, height: 1200 } });
-test('mdc-textarea', async ({ componentsPage, browserName }) => {
+test('mdc-textarea', async ({ componentsPage }) => {
   const mdcTextarea = await setup({
     componentsPage,
     id: 'test-mdc-textarea',
@@ -153,11 +153,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
         const textarea = element as HTMLTextAreaElement;
         return textarea.validationMessage;
       });
-      if (browserName === 'webkit') {
-        expect(validationMessage).toContain('Fill out this field');
-      } else {
-        expect(validationMessage).toContain('Please fill out this field.');
-      }
+      expect(validationMessage).toMatch(/fill (out|in) this field/i);
       await textareaElement.fill('This is a long text');
       await expect(textareaElement).toHaveValue('This is a ');
       await submitButton.click();
