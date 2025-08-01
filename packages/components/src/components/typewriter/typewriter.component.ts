@@ -1,6 +1,5 @@
 import { CSSResult, PropertyValues, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -31,7 +30,7 @@ import type {
  * - 'normal' = 60ms per character (default)
  * - 'fast' = 20ms per character
  * - 'very-fast' = 1ms per character
- * - Or any custom number in milliseconds
+ * - Or any numeric string representing milliseconds
  *
  * Advanced features:
  * - Dynamic speed adjustment during typing
@@ -48,19 +47,16 @@ import type {
  * - Uses aria-live="polite" for dynamic content updates
  * - Sets aria-busy during typing animation
  *
- * The cursor is only visible during active typing and disappears when typing is complete.
- *
  * @dependency mdc-text
  *
  * @tagname mdc-typewriter
  * @slot - Default slot for text content
  *
- * @csspart container - Container for text and cursor
+ * @csspart container - Container for the text element
  * @csspart text - The text element (forwarded to mdc-text)
- * @csspart cursor - The cursor element (only visible during typing)
  *
  * @event typing-complete - (React: onTypingComplete) Fired when the typewriter finishes typing all content.
- *   Detail: \{ finalContent: string, totalDuration: number \}
+ *   Detail: \{ finalContent: string \}
  * @event change - (React: onChange) Fired when the content of the typewriter changes.
  *   Detail: \{ content: string, isTyping: boolean \}
  */
@@ -84,17 +80,17 @@ class Typewriter extends Component {
 
   /**
    * Speed of the typewriter effect in milliseconds per character.
-   * Can be a string preset ('slow', 'normal', 'fast') or a number in milliseconds.
+   * Can be a string preset or a numeric string in milliseconds.
    * - 'very-slow' = 240ms per character
    * - 'slow' = 120ms per character
    * - 'normal' = 60ms per character (default)
    * - 'fast' = 20ms per character
    * - 'very-fast' = 1ms per character
-   * - Or any custom number in milliseconds
+   * - Or any numeric string representing milliseconds (e.g., '100')
    * @default 'normal' (60ms per character)
    */
   @property({ attribute: 'speed', reflect: true })
-  public speed: TypewriterSpeed | number = DEFAULTS.SPEED;
+  public speed: TypewriterSpeed = DEFAULTS.SPEED;
 
   /**
    * Maximum number of text chunks that can be queued before oldest chunks are dropped.
@@ -156,12 +152,6 @@ class Typewriter extends Component {
   private typingComplete: boolean = true;
 
   /**
-   * Timestamp when current typing animation started (for duration calculation)
-   * @internal
-   */
-  private animationStartTime: number = 0;
-
-  /**
    * Called when the element is first connected to the document
    */
   public override connectedCallback(): void {
@@ -215,7 +205,7 @@ class Typewriter extends Component {
    * @param speed - Optional speed override for this chunk
    * @param instant - If true, text appears instantly without animation
    */
-  public addTextChunk(text: string, speed?: TypewriterSpeed | number, instant?: boolean): void {
+  public addTextChunk(text: string, speed?: TypewriterSpeed, instant?: boolean): void {
     if (!text) return;
 
     if (this.maxQueueSize < Number.MAX_SAFE_INTEGER && this.textChunkQueue.length >= this.maxQueueSize) {
@@ -314,23 +304,25 @@ class Typewriter extends Component {
    * Gets the typing delay in milliseconds per character
    */
   private getTypingDelayMs(): number {
-    if (typeof this.speed === 'string') {
-      switch (this.speed) {
-        case 'slow':
-          return SPEED.SLOW;
-        case 'fast':
-          return SPEED.FAST;
-        case 'very-slow':
-          return SPEED.VERY_SLOW;
-        case 'very-fast':
-          return SPEED.VERY_FAST;
-        case 'normal':
-        default:
-          return SPEED.NORMAL;
+    const speedValue = this.speed;
+
+    // Handle preset string values
+    switch (speedValue) {
+      case 'slow':
+        return SPEED.SLOW;
+      case 'fast':
+        return SPEED.FAST;
+      case 'very-slow':
+        return SPEED.VERY_SLOW;
+      case 'very-fast':
+        return SPEED.VERY_FAST;
+      case 'normal':
+        return SPEED.NORMAL;
+      default: {
+        // Try to parse as a number string, fallback to normal speed
+        const numericSpeed = parseInt(speedValue, 10);
+        return !Number.isNaN(numericSpeed) ? Math.max(10, numericSpeed) : SPEED.NORMAL;
       }
-    } else {
-      // For numeric values, use them directly as milliseconds
-      return Math.max(10, this.speed || SPEED.NORMAL);
     }
   }
 
@@ -395,7 +387,6 @@ class Typewriter extends Component {
    */
   private startTypingAnimation(onComplete?: () => void): void {
     this.clearTypingAnimation();
-    this.animationStartTime = performance.now();
 
     // Don't start animation if there's no new content to type
     if (this.displayedText === this.originalText) {
@@ -437,14 +428,12 @@ class Typewriter extends Component {
           }, 0);
         } else {
           this.createTimeout(() => {
-            const totalDuration = performance.now() - this.animationStartTime;
             this.dispatchEvent(
               new CustomEvent(DEFAULTS.CUSTOM_EVENT.TYPING_COMPLETE, {
                 bubbles: true,
                 composed: true,
                 detail: {
                   finalContent: this.originalText,
-                  totalDuration,
                 },
               }) as TypewriterTypingCompleteEvent,
             );
@@ -486,7 +475,6 @@ class Typewriter extends Component {
           aria-label="${this.originalText}"
           >${this.displayedText}</mdc-text
         >
-        <span part="cursor" class="${classMap({ 'cursor-hidden': this.typingComplete })}" aria-hidden="true"></span>
         <slot @slotchange=${this.handleSlotChange} class="typewriter-hidden"></slot>
       </div>
     `;

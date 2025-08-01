@@ -1,19 +1,18 @@
-import type { ValueOf, TypedEvent } from '../../utils/types';
+import type { TypedEvent } from '../../utils/types';
 import type { TextType, TagName } from '../text/text.types';
 
 import type Typewriter from './typewriter.component';
-import { SPEED } from './typewriter.constants';
 
-type TypewriterSpeed = ValueOf<typeof SPEED> | 'slow' | 'normal' | 'fast' | 'very-slow' | 'very-fast';
+type TypewriterSpeed = 'slow' | 'normal' | 'fast' | 'very-slow' | 'very-fast' | string;
 
 interface TextChunk {
   text: string;
-  speed?: TypewriterSpeed | number;
+  speed?: TypewriterSpeed;
   instant?: boolean;
 }
 
 type TypewriterChangeEvent = TypedEvent<Typewriter, { content: string; isTyping: boolean }>;
-type TypewriterTypingCompleteEvent = TypedEvent<Typewriter, { finalContent: string; totalDuration: number }>;
+type TypewriterTypingCompleteEvent = TypedEvent<Typewriter, { finalContent: string }>;
 
 interface Events {
   onChangeEvent: TypewriterChangeEvent;

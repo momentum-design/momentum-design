@@ -17,7 +17,7 @@ const DEFAULTS = {
   CSS_PART_TEXT: 'text',
   CSS_PART_CONTAINER: 'container',
   CHILDREN: '',
-  SPEED: SPEED.NORMAL,
+  SPEED: 'normal',
   CUSTOM_EVENT: {
     TYPING_COMPLETE: 'typing-complete',
   },

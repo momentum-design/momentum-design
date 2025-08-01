@@ -52,8 +52,9 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     speed: {
-      control: { type: 'number', min: 10, max: 1000, step: 10 },
-      description: 'Speed of typewriter effect in milliseconds per character. Lower = faster.',
+      control: 'text',
+      description:
+        'Speed of typewriter effect. Use preset values ("slow", "normal", "fast", "very-slow", "very-fast") or numeric strings ("100", "50", etc.) in milliseconds per character.',
     },
     'max-queue-size': {
       control: { type: 'number', min: 1, max: 1000, step: 1 },
@@ -98,7 +99,7 @@ export const CustomSpeed: StoryObj = {
   args: {
     type: TYPE.BODY_LARGE_REGULAR,
     tagname: VALID_TEXT_TAGS.P,
-    speed: 100,
+    speed: '100',
     children: 'This uses a custom speed value of 100ms per character.',
   },
 };
@@ -107,8 +108,12 @@ export const DynamicSpeedDemo: StoryObj = {
   render: () => html`
     <div>
       <mdc-text type="heading-large-bold" tagname="h3">Dynamic Speed Adjustment</mdc-text>
-      <mdc-typewriter id="dynamic-speed-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
-        This text starts at normal speed...
+      <mdc-text type="body-large-regular" tagname="p">
+        Changing the speed property affects the remaining characters of the current animation. This demonstration shows
+        how speed changes apply immediately to ongoing typing.
+      </mdc-text>
+      <mdc-typewriter id="dynamic-speed-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="120">
+        This text starts typing slowly (120ms per character)... but you can change the speed while it's typing!
       </mdc-typewriter>
       <div style="margin-top: 20px; display: flex; gap: 12px;">
         <mdc-button
@@ -116,24 +121,33 @@ export const DynamicSpeedDemo: StoryObj = {
           @click=${() => {
             const typewriter = document.getElementById('dynamic-speed-typewriter') as any;
             if (typewriter) {
-              typewriter.speed = 20; // Much faster
-              typewriter.addTextChunk(' and now continues much faster!');
+              typewriter.speed = '20'; // Much faster - affects remaining characters immediately
             }
           }}
         >
-          Add Fast Text
+          Speed Up Current Text
         </mdc-button>
         <mdc-button
           variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('dynamic-speed-typewriter') as any;
             if (typewriter) {
-              typewriter.speed = 150; // Much slower
-              typewriter.addTextChunk(' And now very slowly...');
+              typewriter.speed = '200'; // Much slower - affects remaining characters immediately
             }
           }}
         >
-          Add Slow Text
+          Slow Down Current Text
+        </mdc-button>
+        <mdc-button
+          variant="tertiary"
+          @click=${() => {
+            const typewriter = document.getElementById('dynamic-speed-typewriter') as any;
+            if (typewriter) {
+              typewriter.speed = '60'; // Reset to normal
+            }
+          }}
+        >
+          Reset Speed
         </mdc-button>
       </div>
     </div>
@@ -144,7 +158,12 @@ export const ChunkedTextDemo: StoryObj = {
   render: () => html`
     <div>
       <mdc-text type="heading-large-bold" tagname="h3">Chunked Text Addition</mdc-text>
-      <mdc-typewriter id="chunked-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="normal">
+      <mdc-text type="body-large-regular" tagname="p">
+        Text chunks are processed sequentially. Each chunk can have its own speed setting that temporarily overrides the
+        component's speed property, then restores the original speed when the chunk completes. Chunks don't queue - they
+        start processing immediately when added.
+      </mdc-text>
+      <mdc-typewriter id="chunked-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="60">
         Initial text.
       </mdc-typewriter>
       <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
@@ -153,34 +172,50 @@ export const ChunkedTextDemo: StoryObj = {
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
-              typewriter.addTextChunk(' First chunk added.', 20);
+              typewriter.addTextChunk(' [Fast chunk at 20ms]', '20');
             }
           }}
         >
-          Add Chunk 1 (Fast)
+          Add Fast Chunk
         </mdc-button>
         <mdc-button
           variant="secondary"
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
-              typewriter.addTextChunk(' Second chunk added.', 120);
+              typewriter.addTextChunk(' [Slow chunk at 150ms]', '150');
             }
           }}
         >
-          Add Chunk 2 (Slow)
+          Add Slow Chunk
         </mdc-button>
         <mdc-button
           variant="tertiary"
           @click=${() => {
             const typewriter = document.getElementById('chunked-typewriter') as any;
             if (typewriter) {
-              typewriter.addTextChunk(' Final chunk!');
+              typewriter.addTextChunk(' [Normal speed chunk]');
             }
           }}
         >
-          Add Chunk 3 (Normal)
+          Add Normal Chunk
         </mdc-button>
+        <mdc-button
+          variant="secondary"
+          @click=${() => {
+            const typewriter = document.getElementById('chunked-typewriter') as any;
+            if (typewriter) {
+              typewriter.addInstantTextChunk(' [INSTANT]');
+            }
+          }}
+        >
+          Add Instant Text
+        </mdc-button>
+      </div>
+      <div style="margin-top: 10px;">
+        <mdc-text type="body-small-medium" tagname="p">
+          Notice: Each chunk's speed setting is temporary and doesn't affect the component's base speed property.
+        </mdc-text>
       </div>
     </div>
   `,
@@ -248,9 +283,16 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
   render: () => html`
     <div>
       <mdc-text type="heading-large-bold" tagname="h3">Dynamic Text + Speed Control</mdc-text>
-      <mdc-text type="body-large-regular" tagname="p"
-        >Add custom text chunks with different speeds interactively:</mdc-text
-      >
+      <mdc-text type="body-large-regular" tagname="p"> This demo shows two different ways to control speed: </mdc-text>
+      <mdc-list style="margin: 16px 0;">
+        <mdc-listitem
+          ><strong>Add Text:</strong> Adds a chunk with temporary speed (restores original speed after)</mdc-listitem
+        >
+        <mdc-listitem
+          ><strong>Change Speed:</strong> Changes the component's base speed property (affects remaining
+          text)</mdc-listitem
+        >
+      </mdc-list>
 
       <mdc-typewriter id="dynamic-combined-typewriter" type="${TYPE.BODY_LARGE_REGULAR}" speed="60">
         Welcome to the interactive typewriter!
@@ -297,12 +339,12 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
               const text = textInput.value.trim();
               if (!text) return;
 
-              let speed = parseInt(speedSelector.value, 10);
+              let speed = speedSelector.value;
               if (speedSelector.value === 'custom' && customSpeedInput.value) {
-                speed = parseInt(customSpeedInput.value, 10);
+                speed = customSpeedInput.value;
               }
 
-              // Add the text chunk with the selected speed
+              // Add the text chunk with temporary speed (restores original speed after)
               typewriter.addTextChunk(` ${text}`, speed);
 
               // Clear the input
@@ -310,7 +352,7 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
             }
           }}
         >
-          Add Text
+          Add Text (Temporary Speed)
         </mdc-button>
 
         <mdc-button
@@ -321,17 +363,17 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
             const customSpeedInput = document.getElementById('custom-speed-input') as HTMLInputElement;
 
             if (typewriter && speedSelector) {
-              let newSpeed = parseInt(speedSelector.value, 10);
+              let newSpeed = speedSelector.value;
               if (speedSelector.value === 'custom' && customSpeedInput.value) {
-                newSpeed = parseInt(customSpeedInput.value, 10);
+                newSpeed = customSpeedInput.value;
               }
 
-              // Change the global typing speed
+              // Change the component's base speed property (affects remaining characters)
               typewriter.speed = newSpeed;
             }
           }}
         >
-          Change Speed
+          Change Base Speed
         </mdc-button>
       </div>
 
@@ -343,11 +385,11 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
-                typewriter.addTextChunk(' 🚀 Super fast!', 15);
+                typewriter.addTextChunk(' 🚀 Super fast chunk!', '15');
               }
             }}
           >
-            Add Fast Emoji
+            Add Fast Chunk
           </mdc-button>
 
           <mdc-button
@@ -355,14 +397,11 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
-                typewriter.addTextChunk(
-                  ' This is a longer sentence that demonstrates how the typewriter handles more substantial text additions with custom speeds.',
-                  40,
-                );
+                typewriter.addTextChunk(' This chunk types slowly to demonstrate temporary speed override.', '150');
               }
             }}
           >
-            Add Long Text
+            Add Slow Chunk
           </mdc-button>
 
           <mdc-button
@@ -370,12 +409,12 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
             @click=${() => {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
-                typewriter.speed = 20;
-                typewriter.addTextChunk(' Speed changed to fast mode!');
+                typewriter.speed = '20'; // Change base speed
+                typewriter.addTextChunk(' Base speed changed to fast!');
               }
             }}
           >
-            Change Speed + Add
+            Change Base + Add
           </mdc-button>
 
           <mdc-button
@@ -384,7 +423,7 @@ export const DynamicTextAndSpeedDemo: StoryObj = {
               const typewriter = document.getElementById('dynamic-combined-typewriter') as any;
               if (typewriter) {
                 typewriter.textContent = 'Reset! Ready for new content.';
-                typewriter.speed = 60;
+                typewriter.speed = '60';
               }
             }}
           >

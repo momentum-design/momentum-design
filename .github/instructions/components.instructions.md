@@ -36,6 +36,13 @@ applyTo: 'packages/components/**/*'
 - Use `TypedEvent` from `utils/types` for component-specific behaviors (e.g., `typing-complete`)
 - Ensure events are fired consistently for both programmatic and user-initiated changes
 - Include relevant data in event details for consumers
+- Use `@event` decorator for custom events to ensure proper type safety and documentation
+- use `- (React: <eventInCamelCase>)` for event names in React components to follow React's event naming conventions and add it as a comment for the tsdoc
+
+### Property and Attribute Management
+- Use `@property` decorator for public properties with appropriate type annotations
+- Use `@attribute` decorator for properties that should be reflected as HTML attributes
+- use `@internal` tsdocs for properties that are not part of the public API but are used internally
 
 ### Accessibility (A11Y) First
 - Always include proper ARIA attributes (`aria-live`, `aria-busy`, `role`, etc.)
