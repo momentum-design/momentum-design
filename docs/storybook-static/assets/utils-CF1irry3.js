@@ -1,1 +1,0 @@
-const r=e=>{const t={};return e.forEach(o=>{t[o]={control:!1}}),t},n=()=>({parameters:{controls:{disable:!0}}}),s=e=>{const t={};return e.forEach(o=>{t[o]={table:{disable:!0}}}),t},a=e=>{const t={};return e.forEach(o=>{t[o]={table:{readonly:!0}}}),t},l=e=>{const t={};return e.forEach(o=>{t[o]={control:{type:"text"}}}),t};export{n as a,r as d,s as h,a as r,l as t};
