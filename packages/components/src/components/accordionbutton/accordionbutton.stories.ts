@@ -32,12 +32,12 @@ const render = (args: Args) =>
   </mdc-accordionbutton>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/accordion/accordionbutton',
+  title: 'Components/accordion/accordionbutton',
   tags: ['autodocs'],
   component: 'mdc-accordionbutton',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
