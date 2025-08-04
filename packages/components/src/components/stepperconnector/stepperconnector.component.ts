@@ -42,9 +42,6 @@ class StepperConnector extends Component {
 
   override updated(changedProperties: Map<string, unknown>): void {
     super.updated(changedProperties);
-    if (changedProperties.has('orientation')) {
-      this.ariaOrientation = this.orientation;
-    }
 
     const context = this.stepperContext?.value;
     if (!context || !context.orientation) return;
