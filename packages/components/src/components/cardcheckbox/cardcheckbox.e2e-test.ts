@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+
+/* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -220,6 +223,18 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     });
   });
 
+  // Ensure all images are visible before snapshot
+  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+    const cardcheckbox = componentsPage.page.locator('mdc-cardcheckbox');
+    const img = cardcheckbox.locator('img[src="https://placehold.co/100x100"]');
+    const imgCount = await img.count();
+    if (imgCount > 0) {
+      for (let i = 0; i < imgCount; i += 1) {
+        await expect(img.nth(i)).toBeVisible();
+      }
+    }
+  }
+
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardcheckboxStickersheet = new StickerSheet(componentsPage, 'mdc-cardcheckbox');
 
@@ -294,7 +309,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     });
 
     await cardcheckboxStickersheet.mountStickerSheet();
-    await componentsPage.page.waitForTimeout(500);
+    await loadAllImages(componentsPage);
     const container = cardcheckboxStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot(`mdc-cardcheckbox-${orientation}`, { element: container });
@@ -306,8 +321,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-vertical');
@@ -322,7 +337,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -333,8 +348,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-horizontal');
@@ -349,7 +364,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });

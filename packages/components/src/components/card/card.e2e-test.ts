@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+
+/* eslint-disable no-await-in-loop */
 import { expect, Locator } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -204,6 +207,18 @@ test.describe.parallel('mdc-card', () => {
     });
   });
 
+  // Ensure all images are visible before snapshot
+  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+    const card = componentsPage.page.locator('mdc-card');
+    const img = card.locator('img[src="https://placehold.co/100x100"]');
+    const imgCount = await img.count();
+    if (imgCount > 0) {
+      for (let i = 0; i < imgCount; i += 1) {
+        await expect(img.nth(i)).toBeVisible();
+      }
+    }
+  }
+
   const createStickerSheetBasedOnOrientation = async (
     componentsPage: ComponentsPage,
     orientation: string,
@@ -283,7 +298,7 @@ test.describe.parallel('mdc-card', () => {
     });
 
     await cardStickersheet.mountStickerSheet();
-    await componentsPage.page.waitForTimeout(500);
+    await loadAllImages(componentsPage);
     const container = cardStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       const fileName = suffix ? `mdc-card-${orientation}-${suffix}` : `mdc-card-${orientation}`;
@@ -295,8 +310,8 @@ test.describe.parallel('mdc-card', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
 
       await test.step('static card vertical', async () => {
@@ -320,7 +335,7 @@ test.describe.parallel('mdc-card', () => {
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -336,7 +351,7 @@ test.describe.parallel('mdc-card', () => {
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
       });
@@ -347,8 +362,8 @@ test.describe.parallel('mdc-card', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
 
       await test.step('static card horizontal', async () => {
@@ -373,7 +388,7 @@ test.describe.parallel('mdc-card', () => {
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });
@@ -389,7 +404,7 @@ test.describe.parallel('mdc-card', () => {
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
