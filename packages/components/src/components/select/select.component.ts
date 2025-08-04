@@ -356,6 +356,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         this.displayPopover = true;
         // Prevent the default browser behavior of scrolling down
         event.preventDefault();
+        event.stopPropagation();
         break;
       case KEYS.ENTER:
       case KEYS.SPACE:
@@ -555,6 +556,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           interactive
           ?visible="${this.displayPopover}"
           role=""
+          backdrop
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger
