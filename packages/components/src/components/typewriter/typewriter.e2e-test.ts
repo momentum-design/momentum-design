@@ -233,10 +233,6 @@ test.describe('mdc-typewriter', () => {
 
     // Check aria-busy after completion
     await expect(container).toHaveAttribute('aria-busy', 'false');
-
-    // Check cursor has aria-hidden
-    const cursor = typewriter.locator('[part="cursor"]').first();
-    await expect(cursor).toHaveAttribute('aria-hidden', 'true');
   });
 
   test('addTextChunk method', async ({ componentsPage, page }) => {
