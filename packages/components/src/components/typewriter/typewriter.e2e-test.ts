@@ -78,7 +78,10 @@ test.describe('mdc-typewriter', () => {
       waitForAnimation: true, // Wait for initial animation to complete
     });
 
-    await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`);
+    await componentsPage.page.waitForTimeout(200); // Ensure everything is rendered
+    await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`, {
+      animations: 'disabled',
+    });
     /**
      * ACCESSIBILITY
      */
