@@ -7,24 +7,28 @@ const styles = css`
     --mdc-buttongroup-border-radius: 1.25rem;
     --mdc-buttongroup-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-buttongroup-divider-color: var(--mds-color-theme-outline-secondary-normal);
+  }
 
+  :host::part(container) {
+    display: flex;
     border-radius: var(--mdc-buttongroup-border-radius);
     border: 1px solid var(--mdc-buttongroup-border-color);
   }
 
-  :host([variant='primary']) {
+  :host([variant='primary'])::part(container) {
     border: none;
     background-color: var(--mds-color-theme-outline-primary-normal);
     gap: 1px;
   }
 
   ::slotted(mdc-button) {
+    width: inherit;
     border-radius: 0;
     border: none;
     box-sizing: content-box;
   }
 
-  :host([orientation='vertical']) {
+  :host([orientation='vertical'])::part(container) {
     flex-direction: column;
   }
 
