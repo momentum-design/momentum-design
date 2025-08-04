@@ -15,6 +15,7 @@ const render = (args: Args) =>
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
+    @clear="${action('onclear')}"
     label="${args.label}"
     placeholder="${args.placeholder}"
     name="${args.name}"

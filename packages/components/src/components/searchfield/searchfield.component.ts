@@ -94,6 +94,7 @@ class Searchfield extends Input {
       // Dispatch the custom 'remove' event from inputChip
       element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
+    this.dispatchEvent(new CustomEvent('clear', { bubbles: true, composed: true }));
   }
 
   public override render() {
