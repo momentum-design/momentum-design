@@ -17,12 +17,6 @@ import { DEFAULTS } from './searchfield.constants';
  * This component is built by extending the `mdc-input` component.
  *
  * @tagname mdc-searchfield
- * 
- * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
- * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
- * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
- * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
- * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
  * @slot filters - Slot for input chips
  *
@@ -100,7 +94,6 @@ class Searchfield extends Input {
       // Dispatch the custom 'remove' event from inputChip
       element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
-    this.dispatchEvent(new CustomEvent('clear', { bubbles: true, composed: true }));
   }
 
   public override render() {

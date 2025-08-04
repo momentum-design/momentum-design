@@ -18,6 +18,7 @@ const render = (args: Args) => {
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
+    @clear="${action('onclear')}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
