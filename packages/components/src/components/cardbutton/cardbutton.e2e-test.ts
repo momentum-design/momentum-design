@@ -182,7 +182,21 @@ test.describe.parallel('mdc-cardbutton', () => {
     const imgCount = await img.count();
     if (imgCount > 0) {
       for (let i = 0; i < imgCount; i += 1) {
+        await img.nth(i).waitFor();
         await expect(img.nth(i)).toBeVisible();
+      }
+    }
+  }
+
+  // Ensure all icons are visible before snapshot
+  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+    const card = componentsPage.page.locator('mdc-card');
+    const icon = card.locator('mdc-icon[name="placeholder-bold"]');
+    const iconCount = await icon.count();
+    if (iconCount > 0) {
+      for (let i = 0; i < iconCount; i += 1) {
+        await icon.nth(i).waitFor();
+        await expect(icon.nth(i)).toBeVisible();
       }
     }
   }
@@ -262,6 +276,7 @@ test.describe.parallel('mdc-cardbutton', () => {
 
     await cardbuttonStickersheet.mountStickerSheet();
     await loadAllImages(componentsPage);
+    await loadAllIcons(componentsPage);
     const container = cardbuttonStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot(`mdc-cardbutton-${orientation}`, { element: container });
@@ -290,6 +305,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -317,6 +333,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });
