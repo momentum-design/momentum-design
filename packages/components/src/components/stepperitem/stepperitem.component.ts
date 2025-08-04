@@ -6,6 +6,8 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import { KEYS } from '../../utils/keys';
+import providerUtils from '../../utils/provider';
+import Stepper from '../stepper/stepper.component';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -18,6 +20,8 @@ import type { StatusType, VariantType } from './stepperitem.types';
  *
  * This is an uncontrolled component, meaning it does not manage its own state. Instead, it relies on the consumer's to manage the state of each step.
  * Make sure to set `aria-current="step"` on the current stepper item. It is applicable only when status is `current` or `error-current`. This ensures accessibility for the stepper component. Only one stepper item should have this attribute at a time.
+ *
+ * Additionally, make use of `aria-label` to provide a descriptive detail about the stepper item, especially for screen readers. If this aria-label is not set, it would read out only the label text and doesn't provide enough context for the user.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -81,6 +85,19 @@ class StepperItem extends TabIndexMixin(Component) {
    */
   @property({ type: Number, reflect: true, attribute: 'step-number' })
   stepNumber?: number;
+
+  /**
+   * @internal
+   */
+  private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
+
+  override updated(changedProperties: Map<string, unknown>): void {
+    super.updated(changedProperties);
+
+    const context = this.stepperContext?.value;
+    if (!context || !context.variant) return;
+    this.variant = context.variant;
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();

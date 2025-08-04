@@ -142,12 +142,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   constructor() {
     super();
 
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseenter', this.displayTooltipForLongText);
-    this.addEventListener('focusout', this.hideTooltipOnLeave);
-    this.addEventListener('mouseout', this.hideTooltipOnLeave);
-    this.addEventListener('click', this.handleClick);
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('focusin', this.displayTooltipForLongText.bind(this));
+    this.addEventListener('mouseenter', this.displayTooltipForLongText.bind(this));
+    this.addEventListener('focusout', this.hideTooltipOnLeave.bind(this));
+    this.addEventListener('mouseout', this.hideTooltipOnLeave.bind(this));
+    this.addEventListener('click', this.handleClick.bind(this));
   }
 
   override connectedCallback(): void {

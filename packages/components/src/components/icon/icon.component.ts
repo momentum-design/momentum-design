@@ -99,7 +99,7 @@ class Icon extends Component {
 
   private readonly iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
-  @state() private abortController: AbortController;
+  @state() private abortController?: AbortController;
 
   constructor() {
     super();
@@ -141,7 +141,7 @@ class Icon extends Component {
         // (directly passing the abortcontroller to the fetch request per reference
         // will not work due to JS call-by-sharing behavior)
         const renewSignal = () => {
-          this.abortController.abort();
+          this.abortController?.abort();
           this.abortController = new AbortController();
           return this.abortController.signal;
         };
@@ -257,6 +257,13 @@ class Icon extends Component {
       this.sizeFromContext = this.iconProviderContext.value?.size;
       this.updateSize();
     }
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    // abort the fetch request when the component is disconnected
+    this.abortController?.abort();
+    this.abortController = undefined; // reset the abort controller
   }
 
   override render() {

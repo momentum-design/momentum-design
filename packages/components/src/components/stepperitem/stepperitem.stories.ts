@@ -18,17 +18,18 @@ const render = (args: Args) =>
     help-text=${args['help-text']}
     label=${args.label}
     step-number=${args['step-number']}
+    aria-label=${args['aria-label']}
     class=${args.class}
     style=${args.style}
   ></mdc-stepperitem>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/stepper/stepperitem',
+  title: 'Components/stepper/stepperitem',
   tags: ['autodocs'],
   component: 'mdc-stepperitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
@@ -47,6 +48,9 @@ const meta: Meta = {
     },
     'step-number': {
       control: { type: 'number' },
+    },
+    'aria-label': {
+      control: { type: 'text' },
     },
     ...textControls([
       '--mdc-stepperitem-status-container-background',
@@ -69,6 +73,7 @@ export const Example: StoryObj = {
     'help-text': 'Help text',
     label: 'Label',
     'step-number': '1',
+    'aria-label': 'Step 1: Label, completed',
   },
 };
 
@@ -78,6 +83,7 @@ export const Inline: StoryObj = {
     status: STATUS.CURRENT,
     label: 'Label',
     'step-number': '1',
+    'aria-label': 'Step 1: Label, current',
   },
 };
 
@@ -87,6 +93,7 @@ export const Stacked: StoryObj = {
     status: STATUS.CURRENT,
     label: 'Label',
     'step-number': '1',
+    'aria-label': 'Step 1: Label, current',
   },
 };
 
@@ -97,6 +104,7 @@ export const Error: StoryObj = {
     'help-text': 'Error message',
     label: 'Label',
     'step-number': '1',
+    'aria-label': 'Step 1: Label, error, Error message',
   },
 };
 
@@ -109,5 +117,6 @@ export const LongText: StoryObj = {
       'This is a very long help text that should also wrap to the next line if it exceeds the width of the stepper item container',
     status: STATUS.CURRENT,
     'step-number': '1',
+    'aria-label': 'Step 1: long label, current',
   },
 };

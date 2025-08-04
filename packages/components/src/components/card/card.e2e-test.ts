@@ -362,6 +362,7 @@ test.describe.parallel('mdc-card', () => {
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
     } else {
+      await componentsPage.page.setViewportSize({ width: 700, height: 600 });
       await test.step('static card horizontal', async () => {
         await setup({
           componentsPage,
@@ -369,7 +370,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/70x180',
+          imageSrc: 'https://placehold.co/70x110',
           imageAlt: 'Image Alt',
         });
 
@@ -385,7 +386,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/70x180',
+          imageSrc: 'https://placehold.co/70x110',
           imageAlt: 'Image Alt',
         });
 

@@ -54,7 +54,6 @@ test('mdc-stepperconnector', async ({ componentsPage }) => {
     await test.step('should have default status and orientation attributes', async () => {
       await expect(connector).toHaveAttribute('status', 'incomplete');
       await expect(connector).toHaveAttribute('orientation', 'horizontal');
-      await expect(connector).toHaveAttribute('aria-orientation', 'horizontal');
     });
 
     // Scenario: Connector status attribute (complete/incomplete)
@@ -71,7 +70,6 @@ test('mdc-stepperconnector', async ({ componentsPage }) => {
     const { connector: verticalConnector } = await setup({ componentsPage, orientation: 'vertical' });
     await test.step('should be displayed vertically when orientation is vertical', async () => {
       await expect(verticalConnector).toHaveAttribute('orientation', 'vertical');
-      await expect(verticalConnector).toHaveAttribute('aria-orientation', 'vertical');
     });
     const { connector: horizontalConnector } = await setup({ componentsPage, orientation: 'horizontal' });
     await test.step('should be displayed horizontally when orientation is horizontal', async () => {

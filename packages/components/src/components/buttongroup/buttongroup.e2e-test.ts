@@ -66,7 +66,7 @@ const setupWithPopover = async (args: SetupOptions) => {
   return { buttongroup, popover };
 };
 
-test.use({ viewport: { width: 600, height: 400 } });
+test.use({ viewport: { width: 600, height: 800 } });
 test('mdc-buttongroup', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
@@ -115,11 +115,10 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>`);
     buttonGroupStickerSheet.setAttributes({
-      orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[28],
     });
-    await buttonGroupStickerSheet.createMarkupWithCombination({});
+    await buttonGroupStickerSheet.createMarkupWithCombination({orientation: BUTTON_GROUP_ORIENTATION});
 
     // split icon button
     buttonGroupStickerSheet.setChildren(`
