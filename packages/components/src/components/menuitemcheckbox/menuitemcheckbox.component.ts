@@ -71,7 +71,7 @@ class MenuItemCheckbox extends MenuItem {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleMouseClick);
+    this.addEventListener('click', this.handleMouseClick.bind(this));
   }
 
   override connectedCallback(): void {
@@ -84,12 +84,12 @@ class MenuItemCheckbox extends MenuItem {
    * If the menuitemcheckbox is disabled, it does nothing.
    * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
    */
-  private handleMouseClick = () => {
+  private handleMouseClick() {
     if (this.disabled) return;
     this.checked = !this.checked;
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-  };
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);

@@ -74,7 +74,7 @@ class MenuItem extends ListItem {
 
   constructor() {
     super();
-    this.addEventListener('keyup', this.handleKeyUp);
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
   /**

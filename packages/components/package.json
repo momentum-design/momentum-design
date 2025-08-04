@@ -30,10 +30,11 @@
   ],
   "scripts": {
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
-    "analyze:prebuild": "yarn analyze:lint",
+    "analyze:prebuild": "yarn analyze:lint && yarn analyze:style",
     "analyze:postbuild": "yarn analyze:syntax",
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:syntax": "tsc --noEmit",
+    "analyze:style": "stylelint \"./src/**/*.styles.ts\" --config config/stylelint/stylelint.config.js",
     "dev": "concurrently --raw --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
     "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",
     "dev:storybook": "yarn copy:storybook && storybook dev -p 6006 -c config/storybook",
@@ -104,7 +105,7 @@
     "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.6.12",
+    "@floating-ui/dom": "^1.7.2",
     "@lit/context": "^1.1.2",
     "@lit/react": "^1.0.5",
     "@momentum-design/animations": "workspace:*",
@@ -145,12 +146,14 @@
     "lint-staged": "^16.1.2",
     "pascalcase": "^2.0.0",
     "plop": "^4.0.1",
+    "postcss-lit": "^1.2.0",
     "prettier": "^3.3.3",
     "prettier-plugin-gherkin": "^3.1.2",
     "rimraf": "^6.0.1",
     "storybook": "^8.2.5",
     "storybook-addon-rtl": "^1.0.1",
     "storybook-multilevel-sort": "^2.0.1",
+    "stylelint": "^16.23.0",
     "typescript": "^4.8.4",
     "vite-plugin-dynamic-import": "^1.6.0"
   }
