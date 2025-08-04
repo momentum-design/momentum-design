@@ -64,7 +64,7 @@ class CardButton extends CardComponentMixin(Buttonsimple) {
 
   public override render() {
     return html`
-      <div part="image-wrapper">${this.renderImage()}</div>
+      ${this.renderImage()}
       <div part="body">
         ${this.renderHeader()}
         <slot name="before-body"></slot>

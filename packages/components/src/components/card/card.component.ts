@@ -108,7 +108,7 @@ class Card extends CardComponentMixin(FooterMixin(Component)) {
 
   public override render() {
     return html`
-      <div part="image-wrapper">${this.renderImage()}</div>
+      ${this.renderImage()}
       <div part="body">
         ${this.renderHeader()}
         <div part="text-content">

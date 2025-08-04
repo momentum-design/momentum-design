@@ -109,7 +109,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
       if (!this.imageSrc) {
         return nothing;
       }
-      return html`<img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" />`;
+      return html`<div part="image-wrapper"><img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" /></div>`;
     }
 
     /**
