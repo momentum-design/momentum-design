@@ -243,8 +243,8 @@ test.describe.parallel('mdc-cardradio', () => {
 
   // Ensure all icons are visible before snapshot
   const loadAllIcons = async (componentsPage: ComponentsPage) => { 
-    const card = componentsPage.page.locator('mdc-card');
-    const icon = card.locator('mdc-icon[name="placeholder-bold"]');
+    const cardradio = componentsPage.page.locator('mdc-cardradio');
+    const icon = cardradio.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
     if (iconCount > 0) {
       for (let i = 0; i < iconCount; i += 1) {
