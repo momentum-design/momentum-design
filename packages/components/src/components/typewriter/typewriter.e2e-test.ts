@@ -71,16 +71,15 @@ test.describe('mdc-typewriter', () => {
     componentsPage: ComponentsPage;
     fileNameSuffix: string;
   }) => {
-    await setup({
+    const typewriter = await setup({
       componentsPage,
       children: textContent,
       speed: 'fast', // Faster speed for testing
       waitForAnimation: true, // Wait for initial animation to complete
     });
 
-    await componentsPage.page.waitForTimeout(200); // Ensure everything is rendered
     await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`, {
-      animations: 'disabled',
+      element: typewriter,
     });
     /**
      * ACCESSIBILITY
