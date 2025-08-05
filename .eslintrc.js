@@ -13,6 +13,9 @@ module.exports = {
     BufferEncoding: 'readonly',
   },
   ignorePatterns: [
+    'dist/**/*',
+    'dist',
+    '**/dist/**/*',
     '**/dist/**',
     '*.hbs',
     'scripts/**',

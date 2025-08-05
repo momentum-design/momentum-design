@@ -12,6 +12,13 @@ configureSort({
         example: null,
       },
     },
+    widgets: {
+      '**': {
+        docs: null,
+        accessibility: null,
+        example: null,
+      },
+    },
     'work in progress': {
       '**': {
         docs: null,
