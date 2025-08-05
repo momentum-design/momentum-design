@@ -194,10 +194,10 @@ export const ContentBeforeBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
-        >Content Before Body</mdc-text
-      >
-      <img src="https://placehold.co/100x100" alt="Image Alt" slot="before-body" />
+    children: html`<div slot="before-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -216,8 +216,10 @@ export const ContentAfterBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html` <img src="https://placehold.co/100x100" alt="Image Alt" slot="after-body" />
-      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    children: html`<div slot="after-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };
