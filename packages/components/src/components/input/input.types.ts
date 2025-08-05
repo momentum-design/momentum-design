@@ -18,4 +18,4 @@ interface Events {
   onClearEvent: InputClearEvent;
 }
 
-export type { AutoCapitalizeType, AutoCompleteType, InputType, Events };
+export type { AutoCapitalizeType, AutoCompleteType, InputType, InputClearEvent, InputChangeEvent, Events };
