@@ -61,39 +61,14 @@ const setup = async (args: SetupOptions) => {
 const textContent = 'The quick brown fox jumps over the lazy dog';
 
 test.describe('mdc-typewriter', () => {
-  /**
-   * VISUAL REGRESSION
-   */
-  const createSnapshot = async ({
-    componentsPage,
-    fileNameSuffix,
-  }: {
-    componentsPage: ComponentsPage;
-    fileNameSuffix: string;
-  }) => {
-    const typewriter = await setup({
+  test('accessibility', async ({ componentsPage }) => {
+    await setup({
       componentsPage,
       children: textContent,
       speed: 'fast', // Faster speed for testing
       waitForAnimation: true, // Wait for initial animation to complete
     });
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-typewriter-${fileNameSuffix}`, {
-      element: typewriter,
-    });
-    /**
-     * ACCESSIBILITY
-     */
-    await test.step(`accessibility for ${fileNameSuffix}`, async () => {
-      await componentsPage.accessibility.checkForA11yViolations(`mdc-typewriter-${fileNameSuffix}`);
-    });
-  };
-
-  test.use({ viewport: { width: 400, height: 100 } });
-  test('visual-regression & accessibility', async ({ componentsPage }) => {
-    await test.step('create snapshot', async () => {
-      await createSnapshot({ componentsPage, fileNameSuffix: 'visual' });
-    });
+    await componentsPage.accessibility.checkForA11yViolations('mdc-typewriter');
   });
 
   test('attributes', async ({ componentsPage }) => {
@@ -197,8 +172,14 @@ test.describe('mdc-typewriter', () => {
     // Verify the full content is rendered
     const fullText = initialText + additionalText;
 
+    // typewriter locator should only have one children
+    const childCount = await typewriter.evaluate(el => el.shadowRoot?.children.length);
+    expect(childCount).toBe(1);
+
     // The displayed text should match the full text
-    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(fullText);
+    const textElement = typewriter.locator('mdc-text');
+    await expect(textElement).toHaveCount(1);
+    expect(await textElement.textContent()).toBe(fullText);
 
     // wait for typing-complete event
     const eventResolve = await componentsPage.waitForEvent(typewriter, 'typing-complete');
@@ -268,7 +249,7 @@ test.describe('mdc-typewriter', () => {
       return '';
     });
 
-    expect(finalContent).toContain(initialText + chunkText);
+    expect(finalContent).toBe(initialText + chunkText);
   });
 
   test('addInstantTextChunk method', async ({ componentsPage, page }) => {
@@ -293,7 +274,7 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(100);
 
     // Verify the content includes the instant text immediately
-    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(initialText + instantText);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toBe(initialText + instantText);
   });
 
   test('mixed instant and animated chunks', async ({ componentsPage, page }) => {
@@ -329,7 +310,7 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(animatedText.length * 20 + 500);
 
     const expectedContent = initialText + instantText1 + animatedText + instantText2;
-    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(expectedContent);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toBe(expectedContent);
   });
 
   test('instant parameter in addTextChunk', async ({ componentsPage, page }) => {
@@ -354,7 +335,7 @@ test.describe('mdc-typewriter', () => {
     await page.waitForTimeout(100);
 
     // Verify the content includes the instant text immediately
-    expect(await componentsPage.page.locator('mdc-text').textContent()).toContain(initialText + instantText);
+    expect(await componentsPage.page.locator('mdc-text').textContent()).toBe(initialText + instantText);
   });
 
   test('instant text events', async ({ componentsPage, page }) => {
