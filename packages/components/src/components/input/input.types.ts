@@ -8,9 +8,11 @@ type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
 type InputType = ValueOf<typeof INPUT_TYPE>;
 
 type InputClearEvent = TypedEvent<Input>;
+type InputChangeEvent = TypedEvent<Input>;
+
 interface Events {
   onInputEvent: InputEvent;
-  onChangeEvent: Event;
+  onChangeEvent: InputChangeEvent;
   onFocusEvent: FocusEvent;
   onBlurEvent: FocusEvent;
   onClearEvent: InputClearEvent;
