@@ -115,7 +115,7 @@ export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'title-tag-name': DEFAULTS.TAGNAME,
@@ -134,7 +134,7 @@ export const HorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x280',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'aria-label': 'Aria Label',
@@ -170,7 +170,7 @@ export const CardWithoutImage: StoryObj = {
 
 export const CardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -190,7 +190,7 @@ export const ContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -201,10 +201,10 @@ export const ContentBeforeBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
-        >Content Before Body</mdc-text
-      >
-      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+    children: html`<div slot="before-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -213,7 +213,7 @@ export const ContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x540',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -224,8 +224,10 @@ export const ContentAfterBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
-      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    children: html`<div slot="after-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -243,7 +245,7 @@ export const CardsInCheckboxGroup: StoryObj = {
               orientation="vertical"
               card-title="Title ${index}"
               subtitle="Subtitle"
-              image-src="https://placehold.co/320x200"
+              image-src="https://placehold.co/100x100"
               image-alt="Image Alt"
               icon-name="placeholder-bold"
               tabIndex="0"
