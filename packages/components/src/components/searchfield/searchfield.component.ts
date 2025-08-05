@@ -10,16 +10,21 @@ import styles from './searchfield.styles';
 import { DEFAULTS } from './searchfield.constants';
 
 /**
- * searchfield component is used as an input field for search functionality.
+ * `mdc-searchfield` component is used as an input field for search functionality.
  *
  * It supports `mdc-inputchip` as filters.
  *
  * This component is built by extending the `mdc-input` component.
  *
  * @tagname mdc-searchfield
+ * 
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
  * @slot filters - Slot for input chips
- *
  */
 class Searchfield extends Input {
   @queryAssignedElements({ slot: 'filters' })
@@ -43,7 +48,7 @@ class Searchfield extends Input {
    */
   override handleKeyDown(event: KeyboardEvent) {
     super.handleKeyDown(event);
-    if (event.key === 'Escape') {
+    if (event.key === KEYS.ESCAPE) {
       this.clearInputText();
     }
   }
