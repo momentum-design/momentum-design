@@ -237,8 +237,9 @@ const styles = css`
     --mdc-button-primary-disabled-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 
-  :host([data-btn-type='pill']) ::slotted(mdc-text),
-  :host([data-btn-type='pill-with-icon']) ::slotted(mdc-text) {
+  :host([data-btn-type='pill'])::part(button-text),
+  :host([data-btn-type='pill-with-icon'])::part(button-text) {
+    display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
