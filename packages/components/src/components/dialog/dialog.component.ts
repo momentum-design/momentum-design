@@ -466,12 +466,14 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
    * @internal
    */
   private focusBackToTrigger() {
-    // If the trigger element is defined, focus it
-    if (this.triggerElement) {
-      this.triggerElement.focus();
-    } else if (this.lastActiveElement && this.lastActiveElement.focus) {
-      // If the trigger element is not defined, focus the last active element
-      this.lastActiveElement.focus();
+    // If the trigger element is defined, and element inside dialog is visually focused, focus back on trigger element
+    if (this.isDeepActiveElementVisuallyFocused()) {
+      if (this.triggerElement) {
+        this.triggerElement.focus();
+      } else if (this.lastActiveElement && this.lastActiveElement.focus) {
+        // If the trigger element is not defined, focus the last active element
+        this.lastActiveElement.focus();
+      }
     }
   }
 
