@@ -7,8 +7,6 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import type { PopoverPlacement } from '../popover/popover.types';
-import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
-import { TAG_NAME as SELECT_TAG_NAME } from '../select/select.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
@@ -222,20 +220,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     if (this.parentElement?.hasAttribute('slot')) {
       tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
     }
-    if (this.parentElement?.tagName?.toLowerCase() === SELECTLISTBOX_TAG_NAME) {
-      // Traverse the DOM to find the nearest mdc-select ancestor and append the tooltip after it.
-      let ancestor: HTMLElement | null = this.parentElement;
-      while (ancestor) {
-        if (ancestor.tagName?.toLowerCase() === SELECT_TAG_NAME) {
-          ancestor.after(tooltip);
-          break;
-        }
-        ancestor = ancestor.parentElement;
-      }
-    } else {
-      // Attach the tooltip programmatically after the nearest parent element.
-      this.parentElement?.after(tooltip);
-    }
+
+    // Attach the tooltip programmatically after the nearest parent element.
+    this.parentElement?.after(tooltip);
   }
 
   /**
