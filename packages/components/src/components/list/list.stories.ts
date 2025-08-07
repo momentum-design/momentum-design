@@ -5,7 +5,8 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls } from '../../../config/storybook/utils';
+import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import '../avatar';
 import '../avatarbutton';
 import '../badge';
@@ -14,7 +15,8 @@ import '../checkbox';
 import '../divider';
 import '../icon';
 import '../listitem';
-import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import '../listheader';
+import '../text';
 import '../toggle';
 
 const fakeUserNamesList = [
@@ -31,7 +33,10 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list header-text="${args['header-text']}" data-aria-label="${args['data-aria-label']}">
+  html` <mdc-list aria-label="${args['aria-label']}">
+    ${args.textPassedToListHeader
+      ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+      : ''}
     ${repeat(
       fakeUserNamesList,
       name =>
@@ -62,13 +67,14 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    'header-text': {
+    textPassedToListHeader: {
+      control: 'text',
+      description: 'Text to be rendered in the list header component. This is a control in storybook only.',
+    },
+    'aria-label': {
       control: 'text',
     },
-    'data-aria-label': {
-      control: 'text',
-    },
-    ...hideControls(['role', 'listItems', 'default']),
+    ...disableControls(['default', 'list-header']),
     ...classArgType,
     ...styleArgType,
   },
@@ -78,14 +84,17 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'header-text': 'Participants List',
-    'data-aria-label': 'View all participants',
+    textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
   },
 };
 
 export const ListWithDivider: StoryObj = {
-  render: () => html`
-    <mdc-list>
+  render: args => html`
+    <mdc-list aria-label="${args['aria-label']}">
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
       <mdc-listitem @click=${action('onclick')} label="List Item 1"></mdc-listitem>
       <mdc-listitem @click=${action('onclick')} label="List Item 2"></mdc-listitem>
       <mdc-listitem @click=${action('onclick')} label="List Item 3"></mdc-listitem>
@@ -95,4 +104,8 @@ export const ListWithDivider: StoryObj = {
       <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
     </mdc-list>
   `,
+  args: {
+    textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
+  },
 };
