@@ -9,6 +9,7 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
+import { FocusBackToTriggerMixin } from '../../utils/mixins/FocusBackToTriggerMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -47,7 +48,7 @@ import { PopoverUtils } from './popover.utils';
  * @slot - Default slot for the popover content
  *
  */
-class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
+class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(Component))) {
   /**
    * The unique ID of the popover.
    */
@@ -337,8 +338,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
   public arrowElement: HTMLElement | null = null;
 
-  public triggerElement: HTMLElement | null = null;
-
   /** @internal */
   private triggerElementOriginalStyle: Pick<CSSStyleDeclaration, 'zIndex' | 'position'> = {
     zIndex: '',
@@ -392,7 +391,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   };
 
   private setupTriggerRelatedElement() {
-    this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
+    this.setTriggerElement(
+      (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`) as HTMLElement,
+    );
     this.storeConnectedTooltip();
   }
 
@@ -754,9 +755,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.deactivatePreventScroll();
       this.deactivateFocusTrap?.();
 
-      if (this.focusBackToTrigger) {
-        this.triggerElement?.focus();
-      }
+      this.moveFocusBackToTrigger();
 
       if (this.keepConnectedTooltipClosed) {
         if (this.connectedTooltip) {

@@ -91,8 +91,6 @@ export declare abstract class FocusTrapClassInterface {
 
   deactivateFocusTrap(): void;
 
-  isDeepActiveElementVisuallyFocused(): boolean;
-
   private setIsFocusTrapActivated(isActivated: boolean): void;
 }
 
@@ -399,15 +397,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
 
       return (host as HTMLElement) || document.body;
-    }
-
-    /**
-     * Returns whether or not the deepest active element in the shadow dom is visually focused.
-     *
-     * @returns If deepest active element is visually focused
-     */
-    public isDeepActiveElementVisuallyFocused() {
-      return this.getDeepActiveElement().matches(':focus-visible');
     }
 
     /**
