@@ -1,46 +1,44 @@
 import type { CSSResult } from 'lit';
-import { html, nothing } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { html } from 'lit';
+import { queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
-import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import type { RoleType } from '../../utils/roles';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { HEADER_ID } from './list.constants';
 import styles from './list.styles';
 
 /**
  * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
  *
+ * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
+ * `mdc-listitem` components can be placed in the default slot.
+ *
  * @tagname mdc-list
  *
- * @dependency mdc-text
+ * @slot default - This is a default/unnamed slot, where listitems can be placed.
+ * @slot list-header - This slot is used to pass a header for the list, which can be a `mdc-listheader` component.
  *
- * @slot default - This is a default/unnamed slot
+ * @csspart container - The container slot around the list items
  */
-class List extends DataAriaLabelMixin(Component) {
+class List extends Component {
   /**
    * @internal
    * Get all listitem elements which are not disabled in the list.
    */
   @queryAssignedElements({ selector: `${LISTITEM_TAGNAME}:not([disabled])` })
-  listItems!: Array<HTMLElement>;
-
-  /**
-   * The header text of the list.
-   */
-  @property({ type: String, attribute: 'header-text', reflect: true }) headerText?: string;
-
-  /** @internal */
-  protected dataRole: RoleType = ROLE.LIST;
+  private listItems!: Array<HTMLElement>;
 
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Set the role attribute for accessibility.
+    this.setAttribute('role', ROLE.LIST);
   }
 
   /**
@@ -124,26 +122,10 @@ class List extends DataAriaLabelMixin(Component) {
   }
 
   public override render() {
-    const headerText = this.headerText
-      ? html`
-          <mdc-text
-            id="${HEADER_ID}"
-            part="header-text"
-            type="${TYPE.BODY_MIDSIZE_BOLD}"
-            tagname="${VALID_TEXT_TAGS.SPAN}"
-            >${this.headerText}</mdc-text
-          >
-        `
-      : nothing;
     return html`
-      <div
-        role="${this.dataRole}"
-        aria-labelledby="${this.headerText ? HEADER_ID : ''}"
-        aria-label="${this.dataAriaLabel ?? ''}"
-      >
-        ${headerText}
-        <slot role="presentation" @click="${this.handleMouseClick}"></slot>
-      </div>
+      <slot name="list-header"></slot>
+      <!-- make the container slot role presentation to keep it ignored in a11y tree -->
+      <slot part="container" @click="${this.handleMouseClick}" role="presentation"></slot>
     `;
   }
 
