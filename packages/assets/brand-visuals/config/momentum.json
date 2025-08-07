@@ -6,7 +6,7 @@
         {
           "id": "optimise-svgs-logos",
           "target": "./src/logos/*.svg",
-          "destination": "./dist/logos/svg",
+          "destination": "./dist/resource/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -37,7 +37,7 @@
         {
           "id": "optimise-svgs-images",
           "target": "./src/images/*.svg",
-          "destination": "./dist/images",
+          "destination": "./dist/resource/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -68,7 +68,7 @@
         {
           "id": "copy-images",
           "target": "./src/images/*.png",
-          "destination": "./dist/images",
+          "destination": "./dist/resource/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -90,7 +90,7 @@
         {
           "id": "copy-backgrounds",
           "target": "./src/backgrounds/*.png",
-          "destination": "./dist/backgrounds",
+          "destination": "./dist/resource/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -111,12 +111,13 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/{logos,images,backgrounds}/**/*.*",
+          "target": "./dist/resource/{png,svg}/**/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
             "config": {
-              "fileName": "manifest.json"
+              "fileName": "manifest.json",
+              "staticPath": "/brandvisuals"
             }
           }
         },
@@ -136,13 +137,25 @@
         },
         { 
           "id": "lit-brand-visuals",
-          "target": "./dist/logos/svg/**/*.*",
-          "destination": "./dist/logos/ts",
+          "target": "./dist/resource/svg/**/*.svg",
+          "destination": "./dist/resource/ts",
           "format": {
             "type": "LIT",
             "config": {
               "partName": "brandvisual",
               "hbsPath": "./config/templates/lit.ts.hbs"
+            }
+          }
+        },
+        { 
+          "id": "lit-brand-visuals-image-png",
+          "target": "./dist/resource/png/**/*.png",
+          "destination": "./dist/resource/ts",
+          "format": {
+            "type": "IMAGE",
+            "config": {
+              "partName": "brandvisualImage",
+              "hbsPath": "./config/templates/image.ts.hbs"
             }
           }
         }

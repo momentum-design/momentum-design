@@ -75,7 +75,7 @@ export interface WOFF2Format {
  */
 export interface ManifestFormat {
   type: typeof CONSTANTS.FORMATS.MANIFEST;
-  config: { fileName: string };
+  config: { fileName: string, staticPath?: string };
 }
 
 /**
@@ -121,6 +121,11 @@ export interface SvgGlyphsFormat {
 export interface LitFormat {
   type: typeof CONSTANTS.FORMATS.LIT;
   config: { hbsPath: string, partName: string };
+}
+
+export interface ImageFormat {
+  type: typeof CONSTANTS.FORMATS.IMAGE;
+  config: { hbspath: string, partName: string };
 }
 
 /**
@@ -180,6 +185,7 @@ export type Formats = (
   | SvgGlyphsFormat
   | TypesFormat
   | LitFormat
+  | ImageFormat
 ) & {
   encoding?: Encoding;
 };

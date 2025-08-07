@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 const brandvisualsFolder = path.dirname(require.resolve('@momentum-design/brand-visuals/dist/manifest.json'));
 const brandvisualsExampleFile = require.resolve(
-  '@momentum-design/brand-visuals/dist/logos/ts/webex-logo-lockup-dark-color-gradient-horizontal.ts',
+  '@momentum-design/brand-visuals/dist/resource/ts/webex-logo-lockup-dark-color-gradient-horizontal.ts',
 );
 
 const root = process.cwd();
