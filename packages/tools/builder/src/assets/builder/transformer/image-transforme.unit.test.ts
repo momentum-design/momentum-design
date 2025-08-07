@@ -1,20 +1,8 @@
+import fs from 'fs';
 import Transformer from './transformer';
 import ImageTransformer from './image-transformer';
 import * as Utils from '../utils';
 import { Formats, ImageFormat } from '../types';
-
-jest.mock('fs', () => ({
-  promises: {
-    readFile: jest.fn(),
-  },
-}));
-
-jest.mock('@momentum-design/brand-visuals/dist/manifest.json', () => ({
-  default: {
-    test: '/brandvisuals/resource/png/test.png',
-    font: '/brandvisuals/resource/png/font.png',
-  },
-}), { virtual: true });
 
 describe('@momentum-design/builder - Image Transformer', () => {
   let transformer: ImageTransformer;
@@ -27,8 +15,14 @@ describe('@momentum-design/builder - Image Transformer', () => {
     type: 'IMAGE',
   } as unknown as ImageFormat;
 
+  const mockManifest = {
+    test: 'test.png',
+    font: 'font.png',
+  };
+
   beforeEach(() => {
     transformer = new ImageTransformer(FORMAT, '/dist');
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValue(JSON.stringify(mockManifest));
     // @ts-ignore
     jest.spyOn(transformer.logger, 'debug').mockImplementation(() => {});
     // @ts-ignore
@@ -60,12 +54,11 @@ describe('@momentum-design/builder - Image Transformer', () => {
         ...file,
         distPath: '/dist/test.ts',
         partName: 'brandvisualImage',
-        data: '<img src="/brandvisuals/resource/png/test.png" part="brandvisualImage" alt="test" />',
+        data: '<img src="test.png" part="brandvisualImage" alt="test" />',
       });
     });
 
     it('should throw error if manifest fails to load', async () => {
-      // simulate manifest load failure
       jest.spyOn(transformer as any, 'loadManifest').mockImplementation(() => {
         throw new Error('manifest load failed');
       });
@@ -90,7 +83,7 @@ describe('@momentum-design/builder - Image Transformer', () => {
           srcPath: 'font.png',
           distPath: '/dist/font.ts',
           partName: 'brandvisualImage',
-          data: '<img src="/brandvisuals/resource/png/font.png" part="brandvisualImage" alt="font" />',
+          data: '<img src="font.png" part="brandvisualImage" alt="font" />',
         },
       ];
 
