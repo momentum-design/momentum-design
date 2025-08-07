@@ -86,8 +86,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
    */
   private dispatchChangeEvent(event: Event): void {
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
+    this.dispatchEvent(new Event('change', event));
   }
 
   /** @internal */
