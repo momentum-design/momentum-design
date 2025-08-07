@@ -30,15 +30,17 @@ export const FocusBackToTriggerMixin = <T extends Constructor<Component>>(superC
     /**
      * Reference to the trigger element that should receive focus when the component is closed.
      * This element will be focused when moveFocusBackToTrigger is called.
+     * @internal
      */
-    public triggerElement: HTMLElement | null = null;
+    protected triggerElement: HTMLElement | null = null;
 
     /**
      * Sets the trigger element that should receive focus when the component is closed.
      *
      * @param triggerElement - The HTML element to focus, or null/undefined to clear
+     * @internal
      */
-    public setTriggerElement(triggerElement?: HTMLElement | null) {
+    protected setTriggerElement(triggerElement?: HTMLElement | null) {
       this.triggerElement = triggerElement || null;
     }
 
@@ -75,19 +77,16 @@ export const FocusBackToTriggerMixin = <T extends Constructor<Component>>(superC
      * - The focusBackToTrigger property is enabled
      * - The current active element is visually focused (has :focus-visible)
      *
+     * @internal
      */
-    public moveFocusBackToTrigger(): void {
+    protected moveFocusBackToTrigger(): void {
       if (
         this.triggerElement &&
         typeof this.triggerElement.focus === 'function' &&
         this.focusBackToTrigger &&
         this.isDeepActiveElementVisuallyFocused()
       ) {
-        try {
-          this.triggerElement.focus();
-        } catch {
-          // Silently fail if focus throws an error (element might be hidden, removed, etc.)
-        }
+        this.triggerElement.focus();
       }
     }
   }

@@ -245,7 +245,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
-  focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
+  override focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
 
   /**
    * Determines whether the popover with backdrop.

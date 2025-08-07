@@ -148,7 +148,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(F
    * describing the dialog for accessibility
    */
   @property({ type: String, reflect: true, attribute: 'aria-description' })
-  override ariaDescription: string | null = null;
+  ariaDescription: string | null = null;
 
   /**
    * Defines a string value to display as the title of the dialog
