@@ -76,7 +76,7 @@ class ButtonGroup extends Component {
   }
 
   public override render() {
-    return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+    return html`<div part="container"><slot @slotchange=${this.handleSlotChange}></slot></div>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

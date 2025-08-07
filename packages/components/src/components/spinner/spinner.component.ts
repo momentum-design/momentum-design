@@ -50,7 +50,7 @@ class Spinner extends Component {
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  inverted = DEFAULTS.INVERTED;
+  inverted?: boolean = DEFAULTS.INVERTED;
 
   /**
    * Size of the spinner.

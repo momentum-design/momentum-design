@@ -76,22 +76,22 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   public override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', 'link');
-    this.addEventListener('click', this.handleNavigation);
-    this.addEventListener('keydown', this.handleNavigation);
+    this.addEventListener('click', this.handleNavigation.bind(this));
+    this.addEventListener('keydown', this.handleNavigation.bind(this));
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.removeEventListener('click', this.handleNavigation);
-    this.removeEventListener('keydown', this.handleNavigation);
+    this.removeEventListener('click', this.handleNavigation.bind(this));
+    this.removeEventListener('keydown', this.handleNavigation.bind(this));
   }
 
-  private handleNavigation = (e: MouseEvent | KeyboardEvent): void => {
+  private handleNavigation(e: MouseEvent | KeyboardEvent): void {
     if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
       if (this.disabled) return;
       window.open(this.href, this.target, this.rel);
     }
-  };
+  }
 
   /**
    * Sets or removes `aria-disabled` and updates `tabIndex` to reflect

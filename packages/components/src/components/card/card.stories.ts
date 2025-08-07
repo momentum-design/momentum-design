@@ -87,7 +87,7 @@ export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -102,7 +102,7 @@ export const StaticHorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x300',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -128,7 +128,7 @@ export const StaticCardWithoutImage: StoryObj = {
 
 export const StaticCardWithoutHeader: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
@@ -138,7 +138,7 @@ export const StaticCardWithoutHeader: StoryObj = {
 
 export const StaticCardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -154,7 +154,7 @@ export const StaticContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -163,7 +163,7 @@ export const StaticContentBeforeBody: StoryObj = {
     orientation: DEFAULTS.ORIENTATION,
     children: html` <div slot="before-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },
@@ -173,7 +173,7 @@ export const StaticContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x560',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -182,7 +182,7 @@ export const StaticContentAfterBody: StoryObj = {
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html` <div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },
@@ -206,7 +206,7 @@ export const InteractiveHorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x330',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -232,7 +232,7 @@ export const InteractiveCardWithoutImage: StoryObj = {
 
 export const InteractiveCardWithoutHeader: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
@@ -242,7 +242,7 @@ export const InteractiveCardWithoutHeader: StoryObj = {
 
 export const InteractiveCardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -265,7 +265,7 @@ export const InteractiveContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -274,7 +274,7 @@ export const InteractiveContentBeforeBody: StoryObj = {
     orientation: DEFAULTS.ORIENTATION,
     children: html` <div slot="before-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-        <img src="https://placehold.co/100x50" alt="Image Alt" width="100%" />
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
         <div style="display: flex; gap: 8px; margin-top: 8px;">
           <mdc-button size="28">Click Me</mdc-button>
           <mdc-button size="28" variant="secondary">View More</mdc-button>
@@ -288,7 +288,7 @@ export const InteractiveContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x540',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -297,7 +297,7 @@ export const InteractiveContentAfterBody: StoryObj = {
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html` <div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-        <img src="https://placehold.co/120x30" alt="Image Alt" width="100%" />
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
         <div style="display: flex; gap: 8px; margin: 8px 0;">
           <mdc-button size="28">Click Me</mdc-button>
           <mdc-button size="28" variant="secondary">View More</mdc-button>

@@ -141,3 +141,6 @@ packages/components/playwright-temp
 # Figma Code Connect
 figma-react.config.json
 figma-webcomponent.config.json
+
+# copilot plan mode
+plan.md

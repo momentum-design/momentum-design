@@ -37,7 +37,9 @@ export class ListItemEventManager {
   static onCreatedListItem(instance: ListItem) {
     // Use setTimeout to ensure the event is dispatched after the component is fully initialized
     // Inherited Element might execute its own lifecycle methods
-    setTimeout(() => this.dispatchListItemEvent('created', instance), 0);
+    setTimeout(() => {
+      this.dispatchListItemEvent('created', instance);
+    }, 0);
   }
 
   /**

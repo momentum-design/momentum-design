@@ -126,7 +126,7 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClickEvent);
+    this.addEventListener('click', this.handleClickEvent.bind(this));
   }
 
   override connectedCallback(): void {

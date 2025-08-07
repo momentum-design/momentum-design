@@ -112,13 +112,16 @@ class TabList extends Component {
   /**
    * @internal
    */
-  private isRtl = (): boolean =>
-    document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl';
+  private isRtl(): boolean {
+    return (
+      document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl'
+    );
+  }
 
   constructor() {
     super();
 
-    this.addEventListener('keydown', this.handleKeydown);
+    this.addEventListener('keydown', this.handleKeydown.bind(this));
     // Reason for assertion below: https://github.com/microsoft/TypeScript/issues/28357
     this.addEventListener('activechange', this.handleNestedTabActiveChange as (event: Event) => Promise<void>);
   }
@@ -162,8 +165,14 @@ class TabList extends Component {
       this.activeTabId = getFirstTab(this.tabs)?.tabId;
     }
 
-    this.tabsContainer?.addEventListener('focusin', this.handleFocus);
-    this.tabsContainer?.addEventListener('mousedown', this.handleMousedown);
+    this.tabsContainer?.addEventListener('focusin', this.handleFocus.bind(this));
+    this.tabsContainer?.addEventListener('mousedown', this.handleMousedown.bind(this));
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.tabsContainer?.removeEventListener('focusin', this.handleFocus);
+    this.tabsContainer?.removeEventListener('mousedown', this.handleMousedown);
   }
 
   /**
@@ -214,13 +223,13 @@ class TabList extends Component {
    *
    * @param newTab - the new tab that is active.
    */
-  private fireTabChangeEvent = (newTab: Tab): void => {
+  private fireTabChangeEvent(newTab: Tab): void {
     const event = new CustomEvent('change', {
       detail: { tabId: newTab.tabId },
     });
 
     this.dispatchEvent(event);
-  };
+  }
 
   /**
    * When the tablist receives focus, then focus the active tab.
@@ -229,7 +238,7 @@ class TabList extends Component {
    *
    * @param event - Focus event.
    */
-  private handleFocus = async (event: FocusEvent) => {
+  private async handleFocus(event: FocusEvent) {
     /**
      * If the element losing focus is a tab, do nothing.
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
@@ -251,7 +260,7 @@ class TabList extends Component {
     }
 
     await this.focusTab(activeTab);
-  };
+  }
 
   /**
    * Prevent the mousedown event from triggering a focus event before the click event.
@@ -260,13 +269,13 @@ class TabList extends Component {
    *
    * @param event - Mouse event.
    */
-  private handleMousedown = (event: MouseEvent) => {
+  private handleMousedown(event: MouseEvent) {
     if (!(event.target instanceof Tab)) {
       return;
     }
 
     event.preventDefault();
-  };
+  }
 
   /**
    * Handle the tab active change event fired from the nested tab.
@@ -275,7 +284,7 @@ class TabList extends Component {
    *
    * @param event - Custom Event fired from the nested tab.
    */
-  private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+  private async handleNestedTabActiveChange(event: CustomEvent<any>): Promise<void> {
     event.stopPropagation();
     const tab = event.target;
     if (!(tab instanceof Tab)) {
@@ -286,7 +295,7 @@ class TabList extends Component {
     await this.focusTab(tab);
 
     this.activeTabId = tab.tabId;
-  };
+  }
 
   /**
    * Resets all tabs' tabindex to -1 and sets the tabindex of the
@@ -297,11 +306,11 @@ class TabList extends Component {
    *
    * @param tabId - The id of the new active tab in the tabs.
    */
-  private resetTabIndexAndSetNewTabIndex = (newTab: Tab): void => {
+  private resetTabIndexAndSetNewTabIndex(newTab: Tab): void {
     this.tabs?.forEach(tab => {
       tab.setAttribute('tabindex', tab === newTab ? '0' : '-1');
     });
-  };
+  }
 
   /**
    * Removes active attribute from all tabs and sets active on the new tab.
@@ -310,7 +319,7 @@ class TabList extends Component {
    *
    * @param tabId - The id of the new active tab.
    */
-  private setActiveTab = (newTab: Tab): void => {
+  private setActiveTab(newTab: Tab): void {
     this.tabs?.forEach(tab => {
       if (tab === newTab) {
         tab.setAttribute('active', '');
@@ -318,7 +327,7 @@ class TabList extends Component {
         tab.removeAttribute('active');
       }
     });
-  };
+  }
 
   /**
    * Set focus on the new tab, then scroll it into view.
@@ -327,7 +336,7 @@ class TabList extends Component {
    *
    * @param tab - Tab to set focus on.
    */
-  private focusTab = async (tab?: Tab): Promise<void> => {
+  private async focusTab(tab?: Tab): Promise<void> {
     if (!(tab instanceof Tab)) {
       return;
     }
@@ -338,7 +347,7 @@ class TabList extends Component {
     }
 
     await this.handleArrowButtonVisibility();
-  };
+  }
 
   /**
    * Handle the keydown event. The arrow keys, Home, End, Enter, and Space keys are supported.
@@ -347,7 +356,7 @@ class TabList extends Component {
    *
    * @param event - HTML Keyboard Event.
    */
-  private handleKeydown = async (event: KeyboardEvent): Promise<void> => {
+  private async handleKeydown(event: KeyboardEvent): Promise<void> {
     const tab = event.target;
 
     if (!(tab instanceof Tab)) {
@@ -383,7 +392,7 @@ class TabList extends Component {
 
       default:
     }
-  };
+  }
 
   /**
    * Should the arrow button be shown.
@@ -392,8 +401,9 @@ class TabList extends Component {
    *
    * @param direction - The direction of the arrow button.
    */
-  private shouldShowArrowButton = (direction: ArrowButtonDirectionType): boolean =>
-    direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton;
+  private shouldShowArrowButton(direction: ArrowButtonDirectionType): boolean {
+    return direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton;
+  }
 
   /**
    * If an arrow button is in focus and it gets removed, switch focus to the opposite arrow button.
@@ -401,7 +411,7 @@ class TabList extends Component {
    *
    * @internal
    */
-  private switchFocus = async (): Promise<void> => {
+  private async switchFocus(): Promise<void> {
     await this.updateComplete;
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
       getActiveTab(this.tabs || [])?.focus();
@@ -411,7 +421,7 @@ class TabList extends Component {
     ) {
       this.notFocusedArrowButton?.focus();
     }
-  };
+  }
 
   /**
    * Show or hide the arrow buttons based on the position of the tabs
@@ -419,7 +429,7 @@ class TabList extends Component {
    *
    * @internal
    */
-  private handleArrowButtonVisibility = async (): Promise<void> => {
+  private async handleArrowButtonVisibility(): Promise<void> {
     if (!this.tabs) {
       return;
     }
@@ -482,7 +492,7 @@ class TabList extends Component {
     if (isArrowButtonFocused) {
       await this.switchFocus();
     }
-  };
+  }
 
   /**
    * Scroll tabs forward or backward.
@@ -491,7 +501,7 @@ class TabList extends Component {
    *
    * @param direction - The direction to scroll the tabs in.
    */
-  private scrollTabs = async (direction: ArrowButtonDirectionType): Promise<void> => {
+  private async scrollTabs(direction: ArrowButtonDirectionType): Promise<void> {
     const forwardMultiplier = !this.isRtl() ? 1 : -1;
     const backwardMultiplier = !this.isRtl() ? -1 : 1;
 
@@ -504,7 +514,7 @@ class TabList extends Component {
     });
 
     await this.handleArrowButtonVisibility();
-  };
+  }
 
   public override render() {
     const forwardArrowDirection = !this.isRtl() ? 'right' : 'left';

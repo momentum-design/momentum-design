@@ -14,7 +14,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
-import { isValidMenuItem, isValidPopover } from './menupopover.utils';
+import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.
@@ -82,6 +82,8 @@ class MenuPopover extends Popover {
 
   private menuItems: Array<HTMLElement> = [];
 
+  private menuItemsWithSubMenus: Array<HTMLElement> = [];
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
@@ -90,8 +92,22 @@ class MenuPopover extends Popover {
     this.addEventListener('created', this.handleItemCreation);
   }
 
+  /**
+   * Retrieves the submenu popover associated with a given target element.
+   * This method checks if the target element has an `id` attribute and uses it to find the corresponding submenu popover.
+   * If a submenu popover is found, it returns it; otherwise, it returns `undefined` or `null`.
+   * @param target - The target element for which to find the submenu popover.
+   * @returns - The submenu popover instance or `undefined`/`null` if not found.
+   * @internal
+   */
+  private getSubMenuPopoverOfTarget(target: HTMLElement): typeof this | undefined | null {
+    const id = target.getAttribute('id');
+    if (!id) return null;
+    return this.parentElement?.querySelector?.(`${MENU_POPOVER}[triggerid="${id}"]`);
+  }
+
   /** @internal */
-  collectMenuItems() {
+  private collectMenuItems() {
     const slot = this.shadowRoot?.querySelector('slot');
     const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
 
@@ -104,6 +120,26 @@ class MenuPopover extends Popover {
       })
       .flat()
       .filter(node => !!node && !node.hasAttribute('disabled'));
+
+    this.menuItemsWithSubMenus = this.menuItems.filter(item => {
+      const submenu = this.getSubMenuPopoverOfTarget(item);
+      return submenu;
+    });
+  }
+
+  /** @internal */
+  private getOpenSubMenusOfItems(items: Array<HTMLElement>): Array<this> {
+    const subMenus = <Array<this>>[];
+    if (!items || items.length === 0) return subMenus;
+
+    items.forEach(item => {
+      const submenu = this.getSubMenuPopoverOfTarget(item);
+      if (submenu && submenu.visible) {
+        subMenus.push(submenu);
+      }
+    });
+
+    return subMenus;
   }
 
   override connectedCallback() {
@@ -133,6 +169,16 @@ class MenuPopover extends Popover {
     // `super.isOpenUpdated` will skip the backdrop cleanup
     if (newValue) {
       this.backdrop = !(this.triggerElement.tagName.toLowerCase() === MENUITEM_TAGNAME);
+    }
+
+    // if the current menupopover is closed, close all submenus
+    if (newValue === false) {
+      this.menuItemsWithSubMenus.forEach(item => {
+        const submenu = this.getSubMenuPopoverOfTarget(item);
+        if (submenu) {
+          submenu.hide();
+        }
+      });
     }
 
     this.resetMenuNavigation();
@@ -193,9 +239,11 @@ class MenuPopover extends Popover {
    */
   private closeAllMenuPopovers(until?: Element): void {
     while (popoverStack.peek() !== until) {
+      if (!isValidMenuPopover(popoverStack.peek() as Element)) break;
+
       const popover = popoverStack.pop();
       if (popover) {
-        popover.hidePopover();
+        popover.hide();
       } else {
         break;
       }
@@ -211,16 +259,9 @@ class MenuPopover extends Popover {
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
     if (popoverStack.peek() !== this) return;
-    const popoverOfTarget = this.findClosestPopover(event.target as Element);
-
-    // If the click occurred on a submenu, close all popovers until the submenu
-    if (popoverOfTarget && popoverStack.has(popoverOfTarget)) {
-      this.closeAllMenuPopovers(popoverOfTarget);
-      return;
-    }
-
     const path = event.composedPath();
-    const insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    const insidePopoverClick =
+      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
@@ -229,44 +270,45 @@ class MenuPopover extends Popover {
   };
 
   /**
-   * Checks if the menu popover has a submenu with the specified trigger ID.
-   * This method is used to determine if a menu item has a submenu associated with it,
-   * which is indicated by the presence of a `triggerid` attribute in the submenu popover.
-   * It queries the parent element for any popover with the specified trigger ID.
-   * @param id - The ID of the menu item to check for a submenu.
-   * @returns - A boolean indicating whether a submenu with the specified trigger ID exists.
+   * Toggles the visibility of the popover.
+   * This method checks if the trigger element has the `soft-disabled` attribute.
+   * If it does, the popover will not be toggled.
+   * If the popover is currently visible, it hides the popover; otherwise, it shows the popover.
+   * @returns - This method does not return anything.
    */
-  private hasSubmenuWithTriggerId(id: string | null): boolean {
-    return !!id && this.parentElement?.querySelector?.(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
-  }
-
   public override togglePopoverVisible = () => {
     if (this.triggerElement?.hasAttribute('soft-disabled')) return;
-    if (this.isTriggerClicked) {
-      this.hidePopover();
+    if (this.visible) {
+      this.hide();
     } else {
-      this.showPopover();
-      this.isTriggerClicked = true;
+      this.show();
     }
   };
 
   /**
-   * Determines whether to close the menu based on the clicked target.
-   *
-   * @param target - The target element that was clicked.
+   * Closes all other submenus on the same level as the target menu item.
+   * This method is used to ensure that only one submenu is open at a time.
+   * It finds all other menu items with submenus and closes their submenus.
+   * @param target - The target menu item that was clicked.
    */
-  private closeMenu(target: HTMLElement) {
-    const triggerId = target.getAttribute('id');
+  private closeOtherSubMenusOnSameLevel(target: HTMLElement): void {
+    const otherMenuItemsOnSameLevel = this.menuItemsWithSubMenus.filter(item => item !== target);
+    const otherOpenSubMenus = this.getOpenSubMenusOfItems(otherMenuItemsOnSameLevel);
 
-    if (
-      isValidMenuItem(target) &&
-      !this.hasSubmenuWithTriggerId(triggerId) &&
-      this === target.closest(MENU_POPOVER) // Ensure close all popover called only once
-    ) {
-      this.closeAllMenuPopovers();
-      if (target.matches(MENUITEM_TAGNAME)) {
-        target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
-      }
+    otherOpenSubMenus.forEach(subMenu => {
+      subMenu.hide();
+    });
+  }
+
+  /**
+   * Fires the 'action' event on the target menu item.
+   * This method is used to trigger the action associated with a menu item when it is clicked or activated.
+   * It checks if the target element matches the `MENUITEM_TAGNAME` and dispatches an 'action' event.
+   * @param target - The target menu item that was clicked or activated.
+   */
+  private fireMenuItemAction(target: HTMLElement): void {
+    if (target.matches(MENUITEM_TAGNAME)) {
+      target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
     }
   }
 
@@ -278,14 +320,24 @@ class MenuPopover extends Popover {
    */
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
+    // stopPropagation to prevent the click from bubbling up to parent elements
+    event.stopPropagation();
 
-    if (event.isTrusted) {
-      // skip manually dispatched clicks from listItem
-      this.closeMenu(target);
+    // if the target is not a valid menu item or if the event is not trusted (
+    // e.g., triggered by keydown originally), do nothing. Pressing space and enter
+    // is handled separately in the respective handler.
+    if (!isValidMenuItem(target) || !event.isTrusted) return;
+
+    // If the target has a submenu, show it and close other submenus on the same level
+    if (this.getSubMenuPopoverOfTarget(target)) {
+      this.closeOtherSubMenusOnSameLevel(target);
+      return;
     }
+    this.closeAllMenuPopovers();
+    this.fireMenuItemAction(target);
   }
 
-  private handleItemCreation(event: Event) {
+  private handleItemCreation = (event: Event) => {
     const item = event.target as HTMLElement;
 
     if (isValidMenuItem(item)) {
@@ -297,7 +349,7 @@ class MenuPopover extends Popover {
       // `disabled` could bubble up, but it is more consistent to handle it the same way as `destroyed`
       item.addEventListener('disabled', this.handleItemChangeEvent);
     }
-  }
+  };
 
   private handleItemChangeEvent = (event: Event) => {
     event.stopImmediatePropagation();
@@ -352,7 +404,7 @@ class MenuPopover extends Popover {
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
-  private handleKeyDown(event: KeyboardEvent) {
+  private handleKeyDown = (event: KeyboardEvent) => {
     let isKeyHandled = false;
 
     this.collectMenuItems();
@@ -394,20 +446,17 @@ class MenuPopover extends Popover {
       }
       case KEYS.ARROW_RIGHT: {
         // If there is a submenu, open it.
-        const triggerId = this.menuItems[currentIndex]?.getAttribute('id');
-        if (this.hasSubmenuWithTriggerId(triggerId)) {
-          const submenu = this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${triggerId}"]`) as MenuPopover;
-          if (submenu) {
-            submenu.showPopover();
-            isKeyHandled = true;
-          }
+        const subMenu = this.getSubMenuPopoverOfTarget(target);
+        if (subMenu) {
+          subMenu.show();
+          isKeyHandled = true;
         }
         break;
       }
       case KEYS.ARROW_LEFT: {
         // If the current popover is a submenu then close this popover.
-        if (isValidPopover(this.parentElement)) {
-          this.hidePopover();
+        if (isValidMenuPopover(this.parentElement)) {
+          this.hide();
           this.resetTabIndexAndSetFocus(0, currentIndex);
           isKeyHandled = true;
         }
@@ -419,8 +468,11 @@ class MenuPopover extends Popover {
         break;
       }
       case KEYS.ENTER: {
-        this.closeMenu(target);
-        isKeyHandled = true;
+        if (!this.getSubMenuPopoverOfTarget(target)) {
+          this.closeAllMenuPopovers();
+          this.fireMenuItemAction(target);
+          isKeyHandled = true;
+        }
         break;
       }
       case KEYS.SPACE: {
@@ -438,7 +490,7 @@ class MenuPopover extends Popover {
       event.stopPropagation();
       event.preventDefault();
     }
-  }
+  };
 
   /**
    * Handles keyup events for keyboard navigation within the menu popover.
@@ -453,7 +505,7 @@ class MenuPopover extends Popover {
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
-  private handleKeyUp(event: KeyboardEvent) {
+  private handleKeyUp = (event: KeyboardEvent) => {
     let isKeyHandled = false;
 
     const target = event.target as HTMLElement;
@@ -462,8 +514,12 @@ class MenuPopover extends Popover {
       case KEYS.SPACE: {
         // If the target is a menu item, trigger its click event
         if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`)) {
-          this.closeMenu(target);
-          isKeyHandled = true;
+          // only close all menu popovers if the target is not opening a menu popover
+          if (!this.getSubMenuPopoverOfTarget(target)) {
+            this.closeAllMenuPopovers();
+            this.fireMenuItemAction(target);
+            isKeyHandled = true;
+          }
         }
         break;
       }
@@ -477,7 +533,7 @@ class MenuPopover extends Popover {
       event.stopPropagation();
       event.preventDefault();
     }
-  }
+  };
 
   public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];
 }

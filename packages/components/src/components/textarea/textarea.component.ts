@@ -79,13 +79,13 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * The rows attribute specifies the visible number of lines in a text area.
    * @default 5
    */
-  @property({ type: Number }) rows = DEFAULTS.ROWS;
+  @property({ type: Number }) rows?: number = DEFAULTS.ROWS;
 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
    * @default 40
    */
-  @property({ type: Number }) cols = DEFAULTS.COLS;
+  @property({ type: Number }) cols?: number = DEFAULTS.COLS;
 
   /**
    * The wrap attribute specifies how the text in a text area is to be wrapped when submitted in a form.

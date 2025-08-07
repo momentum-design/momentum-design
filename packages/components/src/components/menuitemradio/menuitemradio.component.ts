@@ -74,7 +74,7 @@ class MenuItemRadio extends MenuItem {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleMouseClick);
+    this.addEventListener('click', this.handleMouseClick.bind(this));
   }
 
   override connectedCallback(): void {
@@ -110,14 +110,14 @@ class MenuItemRadio extends MenuItem {
    * If the menuitemradio is not checked, it sets its checked state to `true`
    * and sets all other menuitemradio elements of the same group with checked state to `false`.
    */
-  private handleMouseClick = () => {
+  private handleMouseClick() {
     if (this.disabled || this.checked) return;
 
     this.updateOtherRadiosCheckedState();
     this.checked = true;
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-  };
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);

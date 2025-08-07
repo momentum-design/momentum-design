@@ -98,14 +98,9 @@ export class PopoverUtils {
   }
 
   /**
-   * Sets up the accessibility attributes for the popover.
+   * Sets up the aria labels
    */
-  setupAccessibility() {
-    if (this.popover.role === ROLE.DIALOG || this.popover.role === ROLE.ALERTDIALOG) {
-      this.popover.setAttribute('aria-modal', 'true');
-    } else {
-      this.popover.removeAttribute('aria-modal');
-    }
+  updateAriaLabels() {
     if (this.popover.interactive && this.popover.role) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel =
@@ -114,6 +109,17 @@ export class PopoverUtils {
       if (!this.popover.ariaLabelledby) {
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
+    }
+  }
+
+  /**
+   * Updates the aria-modal attribute based on the popover's role.
+   */
+  updateAriaModal() {
+    if (this.popover.role === ROLE.DIALOG || this.popover.role === ROLE.ALERTDIALOG) {
+      this.popover.setAttribute('aria-modal', 'true');
+    } else {
+      this.popover.removeAttribute('aria-modal');
     }
   }
 
@@ -215,6 +221,13 @@ export class PopoverUtils {
       backdrop.appendChild(styleElement);
       this.popover.parentElement?.appendChild(backdrop);
       this.popover.backdropElement = backdrop;
+    }
+  }
+
+  removeBackdrop() {
+    if (this.popover.backdropElement) {
+      this.popover.backdropElement.remove();
+      this.popover.backdropElement = null;
     }
   }
 }

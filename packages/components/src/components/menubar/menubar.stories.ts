@@ -96,7 +96,7 @@ const render = () => html`
 
       container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
     };
-    document.addEventListener('click', handleClick);
+    document.addEventListener('action', handleClick);
   </script>
   <style>
     #container h1 {

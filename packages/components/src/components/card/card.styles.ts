@@ -5,7 +5,7 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = css`
   :host {
     --mdc-card-width: 20rem;
-    align-items: flex-start;
+    align-items: stretch;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
     box-shadow: none;

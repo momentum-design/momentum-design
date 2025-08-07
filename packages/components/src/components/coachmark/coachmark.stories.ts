@@ -13,10 +13,10 @@ import type Coachmark from './coachmark.component';
 
 const render = (args: Args) => html`
   <div style="height: 50vh; display: inline-block">
-    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.showPopover()}">
+    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.show()}">
       open
     </mdc-button>
-    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.hidePopover()}">
+    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.hide()}">
       close
     </mdc-button>
     <mdc-text id="${args.triggerID}">Anchor</mdc-text>

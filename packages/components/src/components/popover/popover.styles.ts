@@ -37,15 +37,13 @@ const styles = css`
     color: var(--mdc-popover-inverted-text-color);
   }
 
-  :host([color='contrast']) {
-    .popover-arrow {
-      background-color: var(--mdc-popover-inverted-background-color);
-      border-color: var(--mdc-popover-inverted-border-color);
-    }
+  :host([color='contrast']) .popover-arrow {
+    background-color: var(--mdc-popover-inverted-background-color);
+    border-color: var(--mdc-popover-inverted-border-color);
+  }
 
-    .popover-close {
-      color: var(--mdc-popover-inverted-text-color);
-    }
+  :host([color='contrast']) .popover-close {
+    color: var(--mdc-popover-inverted-text-color);
   }
 
   :host::part(popover-content) {

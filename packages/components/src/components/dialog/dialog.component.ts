@@ -362,6 +362,11 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
    * @internal
    */
   private createBackdrop() {
+    // Remove existing backdrop if present
+    if (this.backdropElement && this.backdropElement.parentElement) {
+      this.backdropElement.parentElement.removeChild(this.backdropElement);
+      this.backdropElement = null;
+    }
     const backdrop = document.createElement('div');
     backdrop.classList.add('dialog-backdrop');
     const styleElement = document.createElement('style');

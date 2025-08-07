@@ -14,6 +14,7 @@ const isValidMenuItem = (menuItem: Element | null): boolean => {
   return role === ROLE.MENUITEM || role === ROLE.MENUITEMCHECKBOX || role === ROLE.MENUITEMRADIO;
 };
 
-const isValidPopover = (el: Element | null): el is MenuPopover => el?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
+const isValidMenuPopover = (el: Element | null): el is MenuPopover =>
+  el?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
-export { isValidMenuItem, isValidPopover };
+export { isValidMenuItem, isValidMenuPopover };

@@ -45,6 +45,8 @@ import { ListItemEventManager } from './listitem.events';
  * @slot trailing-text-side-header - slot for list item side header text.
  * @slot trailing-text-subline - slot for list item subline text.
  * @slot trailing-controls - slot for list item controls to appear of trailing end.
+ * @slot content - content slot can be used to override the content completely. Be aware that
+ * this will override the default content of the list item.
  *
  * @cssproperty --mdc-listitem-default-background-color - Allows customization of the default background color.
  * @cssproperty --mdc-listitem-background-color-hover - Allows customization of the background color on hover.
@@ -55,7 +57,11 @@ import { ListItemEventManager } from './listitem.events';
  *  - Allows customization of the secondary and tertiary label text slot color.
  * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
  * @cssproperty --mdc-listitem-column-gap - Allows customization of column gap.
- * @cssproperty --mdc-listitem-padding-left-and-right - Allows customization of padding left and right.
+ * @cssproperty --mdc-listitem-padding-left-right - Allows customization of padding left and right.
+ * @cssproperty --mdc-listitem-padding-top-bottom - Allows customization of padding top and bottom.
+ * @cssproperty --mdc-listitem-cursor - Allows customization of the cursor.
+ * @cssproperty --mdc-listitem-width - Allows customization of the width of the list item.
+ * @cssproperty --mdc-listitem-height - Allows customization of the height of the list item.
  *
  * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
@@ -140,12 +146,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   constructor() {
     super();
 
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseenter', this.displayTooltipForLongText);
-    this.addEventListener('focusout', this.hideTooltipOnLeave);
-    this.addEventListener('mouseout', this.hideTooltipOnLeave);
-    this.addEventListener('click', this.handleClick);
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('focusin', this.displayTooltipForLongText.bind(this));
+    this.addEventListener('mouseenter', this.displayTooltipForLongText.bind(this));
+    this.addEventListener('focusout', this.hideTooltipOnLeave.bind(this));
+    this.addEventListener('mouseout', this.hideTooltipOnLeave.bind(this));
+    this.addEventListener('click', this.handleClick.bind(this));
   }
 
   override connectedCallback(): void {
@@ -330,21 +336,23 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
   public override render() {
     return html`
-      <div part="leading">
-        ${this.renderLeadingControls()}
-        <div part="leading-text">
-          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
-          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+      <slot name="content">
+        <div part="leading">
+          ${this.renderLeadingControls()}
+          <div part="leading-text">
+            ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+            ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+            ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+          </div>
         </div>
-      </div>
-      <div part="trailing">
-        <div part="trailing-text">
-          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
-          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+        <div part="trailing">
+          <div part="trailing-text">
+            ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
+            ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+          </div>
+          ${this.renderTrailingControls()}
         </div>
-        ${this.renderTrailingControls()}
-      </div>
+      </slot>
     `;
   }
 
