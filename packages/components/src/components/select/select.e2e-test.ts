@@ -34,6 +34,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+      <div style="width: 300px;">
       ${isForm ? '<form>' : ''}
       <mdc-select
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -50,7 +51,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
         ${restArgs.children}
       </mdc-select>
       ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
-    `,
+    </div>`,
     clearDocument: true,
   });
 
@@ -69,6 +70,40 @@ test('mdc-select', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
+  await test.step('tooltip for long text option', async () => {
+    const longLabel = 'This is a very long option label that should be truncated and show a tooltip';
+    const select = await setup({
+      componentsPage,
+      label: 'Select with long option',
+      placeholder: 'Select an option',
+      children: `
+        <mdc-selectlistbox>
+          <mdc-option value="option1" label="${longLabel}" tooltip-text="${longLabel}"></mdc-option>
+          <mdc-option value="option2" label="Short label"></mdc-option>
+        </mdc-selectlistbox>
+      `,
+    });
+
+    // Open the dropdown
+    await select.locator('div[id="select-base-triggerid"]').click();
+    await expect(select.locator('mdc-popover')).toBeVisible();
+
+    // Hover over the long text option
+    const longOption = select.locator('mdc-option[value="option1"]');
+    await longOption.hover();
+
+    // Wait for the tooltip to appear
+    const triggerID = await longOption.getAttribute('id');
+    const tooltip = select.page().locator(`mdc-tooltip[visible][triggerid="${triggerID}"]`);
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveText(longLabel);
+
+    // Visual regression snapshot of the tooltip
+    await componentsPage.visualRegression.takeScreenshot('mdc-select-long-option-tooltip', {
+      source: 'userflow',
+    });
+  });
+
   await test.step('visual-regression', async () => {
     const markUpOptions = { createNewRow: true };
     const selectSheet = new StickerSheet(componentsPage, 'mdc-select', 'margin: 0.25rem');
