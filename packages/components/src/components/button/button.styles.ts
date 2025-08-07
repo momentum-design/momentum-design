@@ -239,7 +239,7 @@ const styles = css`
 
   :host([data-btn-type='pill'])::part(button-text),
   :host([data-btn-type='pill-with-icon'])::part(button-text) {
-    display: inline-block;
+    display: block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
