@@ -43,7 +43,9 @@ import { getIconNameWithoutStyle } from './button.utils';
  *
  * @tagname mdc-button
  *
- * @slot button-text - Text label of the button.
+ * @slot - Text label of the button.
+ *
+ * @csspart button-text - Text label of the button, passed in default slot
  */
 class Button extends ButtonComponentMixin(Buttonsimple) {
   /**
