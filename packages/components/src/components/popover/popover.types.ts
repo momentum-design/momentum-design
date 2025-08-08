@@ -1,4 +1,4 @@
-import type { ValueOf, TypedEvent } from '../../utils/types';
+import type { ValueOf, TypedCustomEvent } from '../../utils/types';
 
 import type Popover from './popover.component';
 import { POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
@@ -7,10 +7,10 @@ type PopoverPlacement = ValueOf<typeof POPOVER_PLACEMENT>;
 type PopoverColor = ValueOf<typeof COLOR>;
 type PopoverTrigger = ValueOf<typeof TRIGGER> | `${ValueOf<typeof TRIGGER>} ${ValueOf<typeof TRIGGER>}`;
 
-type PopoverShownEvent = TypedEvent<Popover, { show: boolean }>;
-type PopoverHiddenEvent = TypedEvent<Popover, { show: boolean }>;
-type PopoverCreatedEvent = TypedEvent<Popover, { show: boolean }>;
-type PopoverDestroyedEvent = TypedEvent<Popover, { show: boolean }>;
+type PopoverShownEvent = TypedCustomEvent<Popover, { show: boolean }>;
+type PopoverHiddenEvent = TypedCustomEvent<Popover, { show: boolean }>;
+type PopoverCreatedEvent = TypedCustomEvent<Popover, { show: boolean }>;
+type PopoverDestroyedEvent = TypedCustomEvent<Popover, { show: boolean }>;
 
 interface Events {
   onShownEvent: PopoverShownEvent;

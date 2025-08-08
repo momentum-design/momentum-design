@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -15,6 +16,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menubar" sty
 const render = (args: Args) =>
   wrapWithDiv(
     html` <mdc-menusection
+      @change="${action('onchange')}"
       header-text="${args['header-text']}"
       aria-label="${args['aria-label']}"
       prefix-icon="${args['prefix-icon']}"
