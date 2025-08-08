@@ -12,6 +12,8 @@ import '../link';
 import '../button';
 import '../popover';
 import '../tooltip';
+import '../list';
+import '../listitem';
 
 const createDialog = (args: Args, content: TemplateResult, onClose: () => void) =>
   html`<mdc-dialog
@@ -273,6 +275,52 @@ const renderDialogWithIframe = (args: Args) => {
   `;
 };
 
+const dialogListContent = (textPassedToListHeader: string, ariaLabel: string) => html`
+  <mdc-list aria-label="${ariaLabel}">
+    ${textPassedToListHeader
+      ? html`<mdc-listheader slot="list-header" header-text="${textPassedToListHeader}"></mdc-listheader>`
+      : ''}
+    <mdc-listitem @click=${action('onclick')} label="List Item 1">
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
+      <span slot="secondary-label ">This is a long secondary label</span>
+      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+      <mdc-toggle slot="trailing-controls" data-aria-label="mock label"></mdc-toggle>
+    </mdc-listitem>
+    <mdc-listitem @click=${action('onclick')} label="List Item 2">
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
+      <span slot="secondary-label ">This is a long secondary label</span>
+      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+      <mdc-toggle slot="trailing-controls" data-aria-label="mock label"></mdc-toggle>
+    </mdc-listitem>
+    <mdc-listitem @click=${action('onclick')} label="List Item 3">
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
+      <span slot="secondary-label ">This is a long secondary label</span>
+      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+      <mdc-toggle slot="trailing-controls" data-aria-label="mock label"></mdc-toggle>
+    </mdc-listitem>
+  </mdc-list>
+`;
+
+const renderDialogWithList = (args: Args) => html`
+  ${createTrigger(args.triggerId, 'Click me!', () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  })}
+  ${createDialog(
+    args,
+    html`
+      <div slot="dialog-body" style="width: 100%">
+        <p>This is the body content of the dialog.</p>
+        ${dialogListContent(args.textPassedToListHeader, args['aria-label'])}
+      </div>
+    `,
+    () => {
+      const dialog = document.getElementById(args.id) as HTMLElement;
+      dialog.removeAttribute('visible');
+    },
+  )}
+`;
+
 const meta: Meta = {
   title: 'Components/dialog',
   tags: ['autodocs'],
@@ -523,5 +571,13 @@ export const DialogWithIframe: StoryObj = {
   args: {
     ...commonProperties,
     size: DIALOG_SIZE[0],
+  },
+};
+
+export const DialogWithList: StoryObj = {
+  render: renderDialogWithList,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[1],
   },
 };
