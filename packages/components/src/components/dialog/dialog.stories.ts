@@ -55,6 +55,20 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
   </div>
 `;
 
+const createTriggerWithTooltip = (triggerID: string, text: String, toggleVisibility: () => void) => html`
+  <div
+    style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  "
+  >
+    <mdc-button @click="${toggleVisibility}" id="${triggerID}">${text}</mdc-button>
+    <mdc-tooltip id="tooltip" triggerId="${triggerID}" placement="top"> Open a dialog </mdc-tooltip>
+  </div>
+`;
+
 const dialogBodyContent = (toggleVisibility?: () => void, customHeader = false) => html`
   ${customHeader && html` <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon> `}
   <div slot="dialog-body">
@@ -78,6 +92,7 @@ const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
       interactive
       hide-on-escape
       focus-back-to-trigger
+      hide-on-outside-click
     >
       <div class="popover-content">
         <p>This is the content of the popover.</p>
@@ -196,7 +211,7 @@ const renderWithPopover = (args: Args) => {
     dialog.removeAttribute('visible');
   };
   return html`
-    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createTriggerWithTooltip(args.triggerId, 'Click me!', toggleVisibility)}
     ${createDialog(args, dialogWithPopoverContent(toggleVisibility), onClose)}
   `;
 };
