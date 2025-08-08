@@ -24,6 +24,16 @@
             }
         },
         {
+            "label": "Components Test E2E Podman",
+            "type": "shell",
+            "command": "yarn components test:e2e:podman:serve",
+            "hide": true,
+            "presentation": {
+                "group": "E2E Test",
+                "close": false
+            }
+        },
+        {
             "label": "Execute your Tests here",
             "type": "process",
             "command": "",
@@ -42,6 +52,15 @@
                 "Execute your Tests here"
             ],
             "problemMatcher": []
-        }
+        },
+        {
+            "label": "Components E2E Podman Tests",
+            "dependsOn": [
+                "Components Test E2E WebServer",
+                "Components Test E2E Podman",
+                "Execute your Tests here"
+            ],
+            "problemMatcher": []
+        },
     ]
 }
