@@ -81,6 +81,17 @@ const styles = [
       bottom: 0;
       right: 0;
     }
+
+    :host([size='32'])::part(presence) {
+      bottom: -0.125rem;
+      right: -0.125rem;
+    }
+
+    :host([size='24'])::part(presence) {
+      bottom: -0.156rem;
+      right: -0.156rem;
+    }
+
     :host::part(loading-wrapper) {
       position: absolute;
       border-radius: 100vh;
