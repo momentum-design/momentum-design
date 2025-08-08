@@ -352,6 +352,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
                 hide-on-escape
                 focus-trap
                 focus-back-to-trigger
+                hide-on-outside-click
               >
                 <mdc-button>Button inside Popover inside dialog</mdc-button>
               </mdc-popover>
@@ -921,6 +922,127 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).not.toBeVisible();
     await expect(tooltip).not.toBeVisible();
     await expect(dialogCloseButton).toBeFocused();
+  });
+
+  await test.step('Focus does not return to trigger by default', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="height: 500px; width: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-tooltip id="tooltip" show-arrow triggerID="trigger">Tooltip content</mdc-tooltip>
+            <mdc-popover id="popover" triggerID="trigger" trigger="click" show-arrow interactive focus-trap hide-on-escape>
+              <mdc-button id="popover-action">Action</mdc-button>
+            </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const trigger = componentsPage.page.locator('#trigger');
+    const tooltip = componentsPage.page.locator('#tooltip');
+    const popover = componentsPage.page.locator('#popover');
+    const popoverActionButton = componentsPage.page.locator('#popover-action');
+
+    // Focus on trigger, tooltip should open
+    await componentsPage.actionability.pressTab();
+    await expect(trigger).toBeFocused();
+    await expect(tooltip).toBeVisible();
+
+    // Press Space to open popover, tooltip should close, popover opens, focus moves inside
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(popoverActionButton).toBeFocused();
+
+    // Press Space on action inside popover to open dialog
+    await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+
+    await expect(popover).not.toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(trigger).not.toBeFocused();
+  });
+
+  await test.step('Focus does return to trigger when popover has focus-back-to-trigger attribute', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="height: 500px; width: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-tooltip id="tooltip" show-arrow triggerID="trigger">Tooltip content</mdc-tooltip>
+            <mdc-popover id="popover" triggerID="trigger" trigger="click" show-arrow interactive focus-trap hide-on-escape focus-back-to-trigger>
+              <mdc-button id="popover-action">Action</mdc-button>
+            </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const trigger = componentsPage.page.locator('#trigger');
+    const tooltip = componentsPage.page.locator('#tooltip');
+    const popover = componentsPage.page.locator('#popover');
+    const popoverActionButton = componentsPage.page.locator('#popover-action');
+
+    // Focus on trigger, tooltip should open
+    await componentsPage.actionability.pressTab();
+    await expect(trigger).toBeFocused();
+    await expect(tooltip).toBeVisible();
+
+    // Press Space to open popover, tooltip should close, popover opens, focus moves inside
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(popoverActionButton).toBeFocused();
+
+    // Press Space on action inside popover to open dialog
+    await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+
+    await expect(popover).not.toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(trigger).toBeFocused();
+  });
+
+  await test.step('Tooltip on trigger element does not open if it does not have visual focus when popover is closed', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="height: 500px; width: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <p id="text-outside-popover">Backdrop</p>
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-tooltip id="tooltip" show-arrow triggerID="trigger">Tooltip content</mdc-tooltip>
+            <mdc-popover id="popover" triggerID="trigger" trigger="click" placement="bottom" show-arrow interactive focus-trap hide-on-escape hide-on-outside-click backdrop focus-back-to-trigger>
+              <mdc-button id="popover-action">Action</mdc-button>
+              <p id="popover-label">Popover Label</p>
+            </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const trigger = componentsPage.page.locator('#trigger');
+    const tooltip = componentsPage.page.locator('#tooltip');
+    const popover = componentsPage.page.locator('#popover');
+    const popoverActionButton = componentsPage.page.locator('#popover-action');
+    const popoverLabel = componentsPage.page.locator('#popover-label');
+    const backdrop = componentsPage.page.locator('#text-outside-popover');
+
+    // Focus on trigger, tooltip should open
+    await trigger.hover();
+    await expect(tooltip).toBeVisible();
+
+    // Open popover, tooltip should close, popover opens, focus moves inside
+    await trigger.click();
+    await expect(popover).toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(popoverActionButton).toBeFocused();
+
+    // Click on p tag to remove focus from inside popover
+    await popoverLabel.click();
+    await expect(popoverActionButton).not.toBeFocused();
+
+    // Click on backdrop to close popover
+    await backdrop.click({ force: true });
+
+    await expect(popover).not.toBeVisible();
+    await expect(tooltip).not.toBeVisible();
+    await expect(trigger).toBeFocused();
   });
 };
 
