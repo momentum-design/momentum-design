@@ -16,7 +16,7 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-const wrapWithList = (content: TemplateResult) => html`<mdc-list style="width: 10rem">${content}</mdc-list>`;
+const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc-list>`;
 
 const render = (args: Args) =>
   wrapWithList(html`
