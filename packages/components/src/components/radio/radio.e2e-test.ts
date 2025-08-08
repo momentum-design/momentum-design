@@ -202,15 +202,45 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           secondRadioBtn: true,
         });
+
         const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const changeEvents: Array<{ value: string; method: string }> = [];
+
+        // Expose function to capture change events
+        await componentsPage.page.exposeFunction('captureChangeEvent', (value: string) => {
+          changeEvents.push({ value, method: 'change' });
+        });
+
+        // Set up change event listeners
+        await componentsPage.page.evaluate(() => {
+          const radioInputs = document.querySelectorAll('mdc-radio[name="student-plan"]');
+
+          radioInputs.forEach(radio => {
+            radio.addEventListener('change', event => {
+              const target = event.target as HTMLInputElement;
+              (window as any).captureChangeEvent(target.value);
+            });
+          });
+        });
+
         await componentsPage.actionability.pressTab();
         await expect(radios.nth(0)).toBeFocused();
+
         await componentsPage.page.keyboard.press('ArrowDown');
         await expect(radios.nth(1)).toBeFocused();
         await expect(radios.nth(1)).toBeChecked();
+
+        // Check that change event was fired for keyboard navigation
+        expect(changeEvents).toHaveLength(1);
+        expect(changeEvents[0].value).toBe('Default plan');
+
         await componentsPage.page.keyboard.press('ArrowUp');
         await expect(radios.nth(0)).toBeFocused();
         await expect(radios.nth(0)).toBeChecked();
+
+        // Check that second change event was fired
+        expect(changeEvents).toHaveLength(2);
+        expect(changeEvents[1].value).toBe('standard');
       });
 
       await test.step('radio btn inside form', async () => {

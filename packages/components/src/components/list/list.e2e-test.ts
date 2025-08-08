@@ -9,8 +9,6 @@ type SetUpOptions = {
   'header-text'?: string;
 };
 
-const headerText = 'Participants List';
-
 const generateBasicChildren = (count: number) =>
   new Array(count)
     .fill(1)
@@ -49,7 +47,8 @@ const setup = async (args: SetUpOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-list ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}>
+      <mdc-list>
+        ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
         ${restArgs.children ? restArgs.children : ''}
       </mdc-list>
     `,
@@ -69,15 +68,17 @@ test('mdc-list', async ({ componentsPage }) => {
     const options = { createNewRow: true };
     listSheet.setChildren(generateBasicChildren(1));
     await listSheet.createMarkupWithCombination({}, options);
-    listSheet.setAttributes({
-      'header-text': 'List Header',
-    });
-    listSheet.setChildren(generateChildren(6));
+    listSheet.setChildren(`
+      <mdc-listheader header-text="List Header"></mdc-listheader>
+      ${generateChildren(6)}
+    `);
     await listSheet.createMarkupWithCombination({}, options);
-    listSheet.setAttributes({
-      'header-text': 'List With Divider',
-    });
-    listSheet.setChildren([generateChildren(2), '<mdc-divider></mdc-divider>', generateChildren(2)].join(''));
+    listSheet.setChildren(`
+      <mdc-listheader header-text="List With Divider"></mdc-listheader>
+      ${generateChildren(2)}
+      <mdc-divider></mdc-divider>
+      ${generateChildren(2)}
+    `);
     await listSheet.createMarkupWithCombination({}, options);
 
     await listSheet.mountStickerSheet();
@@ -93,19 +94,6 @@ test('mdc-list', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('list-default');
-  });
-
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    const list = await setup({ componentsPage, children: generateChildren(1) });
-
-    await test.step('should have header text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(list, { 'header-text': headerText });
-      const textContent = await componentsPage.page.locator('mdc-text[part="header-text"]').textContent();
-      expect(textContent?.trim()).toBe(headerText);
-    });
   });
 
   /**
