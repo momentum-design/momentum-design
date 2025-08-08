@@ -139,7 +139,7 @@ const dialogWithIframe = {
 };
 
 test('mdc-dialog', async ({ componentsPage }) => {
-  const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+  const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots });
 
   // initial check for the dialog be visible on the screen:
   await dialog.waitFor();
@@ -234,7 +234,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+        const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
@@ -249,6 +249,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('dialog should close on escape keydown and fire onClose event', async () => {
@@ -260,6 +261,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Escape');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('focus should remain only in the dialog when visible', async () => {
