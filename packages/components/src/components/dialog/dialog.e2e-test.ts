@@ -414,36 +414,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
 
       // Start AI-Assisted
-      await test.step('focus should not return to trigger element if no element in the dialog has visual focus when it is closed', async () => {
-        const { dialog, triggerButton } = await setup({
-          componentsPage,
-          ...dialogWithAllSlots,
-          visible: false,
-        });
-
-        // Initially dialog should not be visible
-        await expect(dialog).not.toBeVisible();
-
-        // Click the trigger button to open the dialog
-        await triggerButton.click();
-        await expect(dialog).toBeVisible();
-
-        // Click on the dialog content to move focus away from close button
-        const dialogContent = componentsPage.page.locator('[slot="dialog-body"] p');
-        await dialogContent.click();
-
-        // Close button should NOT be focused after clicking on dialog content
-        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
-        await expect(closeButton).not.toBeFocused();
-
-        // Click the close button to close the dialog
-        await closeButton.click();
-        await expect(dialog).not.toBeVisible();
-
-        // Trigger button should NOT be focused after dialog is closed
-        await expect(triggerButton).not.toBeFocused();
-      });
-
       await test.step('focus should pass correctly between different interactive components', async () => {
         const dialogWithFormElements = {
           id: 'dialog',

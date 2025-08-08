@@ -394,13 +394,6 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       // Popover should close, dialog should remain open and Popover Button Trigger should be focused
       await expect(popover).not.toBeVisible();
       await expect(dialog).toBeVisible();
-
-      // Firefox has different focus behavior when components are nested, so we skip this assertion
-      // if (test.info().project.name === 'firefox') {
-      //     await componentsPage.page.keyboard.press(KEYS.TAB);
-      //     await componentsPage.page.keyboard.press(KEYS.TAB);
-      // }
-
       await expect(componentsPage.page.locator('#trigger-button-dialog')).toBeFocused();
 
       // Press Escape again to close the dialog

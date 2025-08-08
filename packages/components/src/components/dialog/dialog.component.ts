@@ -8,7 +8,6 @@ import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
-import { FocusBackToTriggerMixin } from '../../utils/mixins/FocusBackToTriggerMixin';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -70,7 +69,7 @@ import styles from './dialog.styles';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(FooterMixin(Component)))) {
+class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) {
   /**
    * The unique ID of the dialog
    */
@@ -203,18 +202,14 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(F
   focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
 
   /**
-   * The focus back to trigger after the dialog is closed.
-   * @default true
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
-  focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
-
-  /**
    * For now preventScroll is always true as the dialog is a modal component only.
    * This means scroll will be prevented when the dialog is open.
    */
   /** @internal */
   protected override preventScroll: boolean = true;
+
+  /** @internal */
+  protected triggerElement: HTMLElement | null = null;
 
   /** @internal */
   protected backdropElement: HTMLElement | null = null;
@@ -276,9 +271,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(F
     super.updated(changedProperties);
 
     if (changedProperties.has('triggerId')) {
-      this.setTriggerElement(
-        (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerId}"]`) as HTMLElement,
-      );
+      this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerId}"]`);
       this.setupAriaHasPopup();
     }
 
@@ -473,10 +466,13 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(F
    * @internal
    */
   private handleFocusBackToTrigger() {
-    if (!this.triggerElement) {
-      this.setTriggerElement(this.lastActiveElement);
+    // If the trigger element is defined, focus it
+    if (this.triggerElement) {
+      this.triggerElement.focus();
+    } else if (this.lastActiveElement && this.lastActiveElement.focus) {
+      // If the trigger element is not defined, focus the last active element
+      this.lastActiveElement.focus();
     }
-    this.moveFocusBackToTrigger();
   }
 
   public override render() {

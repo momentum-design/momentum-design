@@ -19,7 +19,6 @@ const DEFAULTS = {
   VARIANT: DIALOG_VARIANT.DEFAULT,
   DISABLE_ARIA_HAS_POPUP: false,
   FOCUS_TRAP: true,
-  FOCUS_BACK: true,
 } as const;
 
 const DIALOG_SIZE = ['small', 'medium', 'large', 'xlarge', 'fullscreen'] as const;

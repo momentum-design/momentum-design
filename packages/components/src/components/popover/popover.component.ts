@@ -9,7 +9,6 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
-import { FocusBackToTriggerMixin } from '../../utils/mixins/FocusBackToTriggerMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -48,7 +47,7 @@ import { PopoverUtils } from './popover.utils';
  * @slot - Default slot for the popover content
  *
  */
-class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(Component))) {
+class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   /**
    * The unique ID of the popover.
    */
@@ -338,6 +337,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
 
   public arrowElement: HTMLElement | null = null;
 
+  public triggerElement: HTMLElement | null = null;
+
   /** @internal */
   private triggerElementOriginalStyle: Pick<CSSStyleDeclaration, 'zIndex' | 'position'> = {
     zIndex: '',
@@ -391,9 +392,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
   };
 
   private setupTriggerRelatedElement() {
-    this.setTriggerElement(
-      (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`) as HTMLElement,
-    );
+    this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
     this.storeConnectedTooltip();
   }
 
@@ -473,7 +472,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
       this.addEventListener('mouseleave', this.startCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
-      this.triggerElement.addEventListener('focusin', this.show);
+      this.triggerElement.addEventListener('focusin', this.handleFocusIn);
       if (!this.interactive) {
         this.triggerElement.addEventListener('focusout', this.handleFocusOut);
       }
@@ -496,7 +495,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
     // focusin trigger
-    this.triggerElement?.removeEventListener('focusin', this.show);
+    this.triggerElement?.removeEventListener('focusin', this.handleFocusIn);
     this.triggerElement?.removeEventListener('focusout', this.handleFocusOut);
   };
 
@@ -755,7 +754,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
       this.deactivatePreventScroll();
       this.deactivateFocusTrap?.();
 
-      this.moveFocusBackToTrigger();
+      if (this.focusBackToTrigger) {
+        this.triggerElement?.focus();
+      }
 
       if (this.keepConnectedTooltipClosed) {
         if (this.connectedTooltip) {
@@ -793,6 +794,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(
   private handleFocusOut = () => {
     if (!this.isHovered) {
       this.hide();
+    }
+  };
+
+  /**
+   *  Handles focus in event on the trigger element.
+   *  This method checks if the trigger element has visible focus or is being hovered.
+   */
+  private handleFocusIn = () => {
+    if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
+      this.show();
     }
   };
 
