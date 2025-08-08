@@ -1,31 +1,28 @@
-import { property } from 'lit/decorators.js';
-
 import { Component } from '../../models';
 
 import type { Constructor } from './index.types';
 
-export interface FocusBackToTriggerMixinInterface {
+export declare abstract class FocusBackToTriggerMixinInterface {
+  protected abstract focusBackToTrigger: boolean;
+
   setTriggerElement(triggerElement?: HTMLElement | null): void;
 
   triggerElement: HTMLElement | null;
 
   moveFocusBackToTrigger(): void;
-
-  focusBackToTrigger: boolean;
-
-  isDeepActiveElementVisuallyFocused(): boolean;
 }
 
 export const FocusBackToTriggerMixin = <T extends Constructor<Component>>(superClass: T) => {
-  class InnerMixinClass extends superClass {
+  abstract class InnerMixinClass extends superClass {
     /**
      * Determines whether focus should return to trigger element when closed.
      * If true, focus will return to trigger element.
      *
+     * IMPLEMENT THIS IN YOUR COMPONENT.
+     *
      * @default true
      */
-    @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
-    focusBackToTrigger: boolean = true;
+    protected abstract focusBackToTrigger: boolean;
 
     /**
      * Reference to the trigger element that should receive focus when the component is closed.
@@ -66,7 +63,8 @@ export const FocusBackToTriggerMixin = <T extends Constructor<Component>>(superC
      * @returns If deepest active element is visually focused
      */
     private isDeepActiveElementVisuallyFocused(): boolean {
-      return this.getDeepActiveElement().matches(':focus-visible');
+      const activeElmt = this.getDeepActiveElement();
+      return activeElmt.matches(':focus-visible');
     }
 
     /**

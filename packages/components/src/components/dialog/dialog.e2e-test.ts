@@ -67,14 +67,27 @@ const setup = async (args: SetupOptions) => {
   // this is to ensure that the dialog closes when the close button is clicked
   // since the dialog is a controlled component, the consumer needs to handle the close event
   // and set the visible attribute to false
-  await componentsPage.page.evaluate(dialogId => {
-    const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
-    if (dialogElement) {
-      dialogElement.onclose = () => {
-        dialogElement.visible = false;
-      };
-    }
-  }, restArgs.id);
+  if (restArgs.id && restArgs.triggerId) {
+    await componentsPage.page.evaluate(
+      ({ dialogId, triggerId }: { dialogId: string; triggerId: string }) => {
+        const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+        const triggerElement = document.querySelector(`#${triggerId}`) as HTMLElement;
+
+        if (dialogElement) {
+          dialogElement.onclose = () => {
+            dialogElement.visible = false;
+          };
+        }
+
+        if (triggerElement && dialogElement) {
+          triggerElement.onclick = () => {
+            dialogElement.toggleAttribute('visible');
+          };
+        }
+      },
+      { dialogId: restArgs.id, triggerId: restArgs.triggerId },
+    );
+  }
 
   return { dialog, triggerButton };
 };
@@ -139,7 +152,7 @@ const dialogWithIframe = {
 };
 
 test('mdc-dialog', async ({ componentsPage }) => {
-  const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+  const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots });
 
   // initial check for the dialog be visible on the screen:
   await dialog.waitFor();
@@ -234,7 +247,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+        const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
@@ -249,6 +262,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('dialog should close on escape keydown and fire onClose event', async () => {
@@ -260,6 +274,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Escape');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('focus should remain only in the dialog when visible', async () => {
@@ -399,6 +414,36 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
 
       // Start AI-Assisted
+      await test.step('focus should not return to trigger element if no element in the dialog has visual focus when it is closed', async () => {
+        const { dialog, triggerButton } = await setup({
+          componentsPage,
+          ...dialogWithAllSlots,
+          visible: false,
+        });
+
+        // Initially dialog should not be visible
+        await expect(dialog).not.toBeVisible();
+
+        // Click the trigger button to open the dialog
+        await triggerButton.click();
+        await expect(dialog).toBeVisible();
+
+        // Click on the dialog content to move focus away from close button
+        const dialogContent = componentsPage.page.locator('[slot="dialog-body"] p');
+        await dialogContent.click();
+
+        // Close button should NOT be focused after clicking on dialog content
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        await expect(closeButton).not.toBeFocused();
+
+        // Click the close button to close the dialog
+        await closeButton.click();
+        await expect(dialog).not.toBeVisible();
+
+        // Trigger button should NOT be focused after dialog is closed
+        await expect(triggerButton).not.toBeFocused();
+      });
+
       await test.step('focus should pass correctly between different interactive components', async () => {
         const dialogWithFormElements = {
           id: 'dialog',

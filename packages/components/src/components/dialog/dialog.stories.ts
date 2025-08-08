@@ -91,6 +91,7 @@ const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
       interactive
       hide-on-escape
       focus-back-to-trigger
+      hide-on-outside-click
     >
       <div class="popover-content">
         <p>This is the content of the popover.</p>

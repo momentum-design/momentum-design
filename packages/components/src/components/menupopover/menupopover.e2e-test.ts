@@ -493,7 +493,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(saveAsMenuPopover).not.toBeVisible();
         await expect(newMenuPopover).not.toBeVisible();
         await expect(wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]')).not.toBeVisible();
-        await expect(wrapper.locator('#trigger-btn')).toBeFocused();
+        await expect(wrapper.locator('#trigger-btn')).not.toBeFocused(); // as closed with mouse and no visual focus present
       });
     });
 

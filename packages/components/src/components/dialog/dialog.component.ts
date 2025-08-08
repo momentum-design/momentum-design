@@ -203,6 +203,13 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FocusBackToTriggerMixin(F
   focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
 
   /**
+   * The focus back to trigger after the dialog is closed.
+   * @default true
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
+  focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
+
+  /**
    * For now preventScroll is always true as the dialog is a modal component only.
    * This means scroll will be prevented when the dialog is open.
    */
