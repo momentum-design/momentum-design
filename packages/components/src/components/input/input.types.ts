@@ -7,11 +7,15 @@ type AutoCapitalizeType = ValueOf<typeof AUTO_CAPITALIZE>;
 type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
 type InputType = ValueOf<typeof INPUT_TYPE>;
 
+type InputClearEvent = TypedCustomEvent<Input>;
+type InputChangeEvent = TypedCustomEvent<Input>;
+
 interface Events {
   onInputEvent: OverrideEventTarget<InputEvent, Input>;
-  onChangeEvent: TypedCustomEvent<Input>;
+  onChangeEvent: InputChangeEvent;
   onFocusEvent: OverrideEventTarget<FocusEvent, Input>;
   onBlurEvent: OverrideEventTarget<FocusEvent, Input>;
+  onClearEvent: InputClearEvent;
 }
 
-export type { AutoCapitalizeType, AutoCompleteType, InputType, Events };
+export type { AutoCapitalizeType, AutoCompleteType, InputType, InputClearEvent, InputChangeEvent, Events };
