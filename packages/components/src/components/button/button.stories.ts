@@ -230,10 +230,9 @@ export const IconButtonInverted: StoryObj = {
 };
 
 export const PillButtonEllipsis: StoryObj = {
-  render: args =>
-    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  render: args => render({ ...args, style: 'width: 150px;' }),
   args: {
-    textWithinChildren: 'Long text with icons',
+    children: 'Long text with icons',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -247,10 +246,9 @@ export const PillButtonEllipsis: StoryObj = {
 };
 
 export const PillWithPrefixIconEllipsis: StoryObj = {
-  render: args =>
-    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  render: args => render({ ...args, style: 'width: 150px;' }),
   args: {
-    textWithinChildren: 'Long text with icons',
+    children: 'Long text with icons',
     'prefix-icon': 'placeholder-bold',
     active: false,
     disabled: false,
