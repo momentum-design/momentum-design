@@ -64,10 +64,10 @@ class FocusTrapStack {
    * @param trap - The focus trap to deactivate.
    */
   static deactivate(trap: any) {
-    if(!this.stack.has(trap)) {
+    if (!this.stack.has(trap)) {
       return;
     }
-    
+
     this.stack.delete(trap);
     this.removeKeydownListener();
 
@@ -299,7 +299,13 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       if (root instanceof HTMLElement && this.isFocusable(root)) {
         matches.add(root);
       }
-      const children = Array.from(root.children) as HTMLElement[];
+
+      let children: HTMLElement[] = [];
+      if (root.children.length) {
+        children = Array.from(root.children) as HTMLElement[];
+      } else if (root instanceof HTMLElement && root.shadowRoot) {
+        children = Array.from(root.shadowRoot.children) as HTMLElement[];
+      }
 
       children.forEach((child: Node) => {
         const element = child as HTMLElement;
