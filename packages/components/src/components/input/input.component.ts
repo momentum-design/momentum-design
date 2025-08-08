@@ -31,6 +31,7 @@ import styles from './input.styles';
  * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -308,6 +309,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
+    this.dispatchEvent(new CustomEvent('clear', { bubbles: true, composed: true }));
   }
 
   /**
