@@ -239,7 +239,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
     this.deactivatePreventScroll();
 
     this.deactivateFocusTrap?.();
-    this.handleFocusBackToTrigger();
+    this.focusBackToTrigger();
 
     DialogEventManager.onDestroyedDialog(this);
   }
@@ -453,7 +453,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
       this.deactivatePreventScroll();
 
       this.deactivateFocusTrap?.();
-      this.handleFocusBackToTrigger();
+      this.focusBackToTrigger();
 
       DialogEventManager.onHideDialog(this);
     }
@@ -465,7 +465,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
    *
    * @internal
    */
-  private handleFocusBackToTrigger() {
+  private focusBackToTrigger() {
     // If the trigger element is defined, focus it
     if (this.triggerElement) {
       this.triggerElement.focus();

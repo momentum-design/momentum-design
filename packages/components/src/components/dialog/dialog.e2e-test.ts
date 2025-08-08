@@ -67,27 +67,14 @@ const setup = async (args: SetupOptions) => {
   // this is to ensure that the dialog closes when the close button is clicked
   // since the dialog is a controlled component, the consumer needs to handle the close event
   // and set the visible attribute to false
-  if (restArgs.id && restArgs.triggerId) {
-    await componentsPage.page.evaluate(
-      ({ dialogId, triggerId }: { dialogId: string; triggerId: string }) => {
-        const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
-        const triggerElement = document.querySelector(`#${triggerId}`) as HTMLElement;
-
-        if (dialogElement) {
-          dialogElement.onclose = () => {
-            dialogElement.visible = false;
-          };
-        }
-
-        if (triggerElement && dialogElement) {
-          triggerElement.onclick = () => {
-            dialogElement.toggleAttribute('visible');
-          };
-        }
-      },
-      { dialogId: restArgs.id, triggerId: restArgs.triggerId },
-    );
-  }
+  await componentsPage.page.evaluate(dialogId => {
+    const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+    if (dialogElement) {
+      dialogElement.onclose = () => {
+        dialogElement.visible = false;
+      };
+    }
+  }, restArgs.id);
 
   return { dialog, triggerButton };
 };

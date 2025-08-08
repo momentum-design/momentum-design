@@ -29,7 +29,6 @@ const createDialog = (args: Args, content: TemplateResult, onClose: () => void) 
     aria-labelledby="${ifDefined(args['aria-labelledby'])}"
     aria-label="${ifDefined(args['aria-label'])}"
     ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
-    ?focus-back-to-trigger=${args['focus-back-to-trigger']}
     size="${args.size}"
     ?visible="${args.visible}"
     variant="${args.variant}"
@@ -323,9 +322,6 @@ const meta: Meta = {
       control: 'boolean',
     },
     'focus-trap': {
-      control: 'boolean',
-    },
-    'focus-back-to-trigger': {
       control: 'boolean',
     },
     role: {
