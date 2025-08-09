@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -15,6 +16,9 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style=
 const render = (args: Args) =>
   wrapWithDiv(
     html` <mdc-menuitemcheckbox
+      @change="${action('onchange')}"
+      @click="${action('onclick')}"
+      @focus="${action('onfocus')}"
       ?disabled="${args.disabled}"
       ?checked="${args.checked}"
       label="${args.label}"

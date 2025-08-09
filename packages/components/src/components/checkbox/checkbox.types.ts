@@ -1,6 +1,10 @@
+import type { OverrideEventTarget, TypedCustomEvent } from "../../utils/types";
+
+import type Checkbox from "./checkbox.component";
+
 interface Events {
-  onChangeEvent: Event;
-  onFocusEvent: FocusEvent;
+  onChangeEvent: TypedCustomEvent<Checkbox>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, Checkbox>;
 }
 
 export type { Events };

@@ -22,6 +22,8 @@ const render = (args: Args) =>
       @keydown="${action('onkeydown')}"
       @keyup="${action('onkeyup')}"
       @focus="${action('onfocus')}"
+      @created="${action('oncreated')}"
+      @destroyed="${action('ondestroyed')}"
       arrow-position="${args['arrow-position']}"
       arrow-direction="${args['arrow-direction']}"
       ?disabled="${args.disabled}"

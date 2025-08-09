@@ -1,10 +1,11 @@
-import { ValueOf } from '../../utils/types';
+import { TypedCustomEvent, ValueOf } from '../../utils/types';
 
+import type Tab from './tab.component';
 import { TAB_VARIANTS } from './tab.constants';
 
 type Variant = ValueOf<typeof TAB_VARIANTS>;
 interface Events {
-  onActiveChangeEvent: Event;
+  onActiveChangeEvent: TypedCustomEvent<Tab, { tabId: string; active: boolean }>;
 }
 
 export type { Variant, Events };
