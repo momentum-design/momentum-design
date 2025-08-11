@@ -359,14 +359,14 @@ test.describe.parallel('mdc-listitem', () => {
 
       await test.step('component should show tooltip when the listitem is focused and tooltip associated with it', async () => {
         await componentsPage.mount({
-          html: `<mdc-listitem 
+          html: `<mdc-list><mdc-listitem 
           label="A long label here" 
           id="listitem-with-tooltip" 
           style="width: 100px"></mdc-listitem>
           <mdc-tooltip 
           id="listitem-tooltip" 
           triggerID="listitem-with-tooltip" 
-          show-arrow>The long label associated with the listitem is displayed here</mdc-tooltip>`,
+          show-arrow>The long label associated with the listitem is displayed here</mdc-tooltip></mdc-list>`,
           clearDocument: true,
         });
         const listitem = componentsPage.page.locator('mdc-listitem');

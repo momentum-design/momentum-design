@@ -31,7 +31,6 @@ import { ListItemVariants } from './listitem.types';
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
- * @dependency mdc-tooltip
  *
  * @slot leading-controls - slot for list item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for list item primary label.
