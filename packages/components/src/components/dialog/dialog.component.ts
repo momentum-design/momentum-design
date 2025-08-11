@@ -460,7 +460,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))) 
   }
 
   /**
-   * Sets the focs back to the trigger element or the last active element.
+   * Sets the focus back to the trigger element or the last active element.
    * This is called when the dialog is closed to ensure that the user can continue interacting with the application.
    *
    * @internal
