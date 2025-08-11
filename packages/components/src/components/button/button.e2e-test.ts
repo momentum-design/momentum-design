@@ -255,7 +255,7 @@ test.describe.parallel('mdc-button', () => {
           id="button-ellipsis"
           style="width: 150px;"
         >
-          <mdc-text>This is a very long text that should get truncated with ellipsis</mdc-text>
+          This is a very long text that should get truncated with ellipsis
         </mdc-button>
         
         <mdc-tooltip 

@@ -44,6 +44,8 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @tagname mdc-button
  *
  * @slot - Text label of the button.
+ *
+ * @csspart button-text - Text label of the button, passed in default slot
  */
 class Button extends ButtonComponentMixin(Buttonsimple) {
   /**
@@ -142,7 +144,7 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
             length-unit="rem"
           ></mdc-icon>`
         : ''}
-      <slot @slotchange=${this.inferButtonType}></slot>
+      <slot @slotchange=${this.inferButtonType} part="button-text"></slot>
       ${this.postfixFilledIconName
         ? html` <mdc-icon
             name="${this.postfixFilledIconName as IconNames}"
