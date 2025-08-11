@@ -18,6 +18,9 @@ import '../listitem';
 import '../listheader';
 import '../text';
 import '../toggle';
+import '../select';
+import '../selectlistbox';
+import '../option';
 
 const fakeUserNamesList = [
   'Maria Simpson',
@@ -106,6 +109,46 @@ export const ListWithDivider: StoryObj = {
   `,
   args: {
     textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
+  },
+};
+
+export const ScrollableListWithSelect: StoryObj = {
+  render: args => html`
+    <mdc-list aria-label="${args['aria-label']}" style="height: 200px; overflow-y: auto;" id="scrollable-list">
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
+      ${repeat(
+        fakeUserNamesList,
+        name =>
+          html`<mdc-listitem @click="${action('onclick')}" label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+            <mdc-select
+              slot="leading-controls"
+              style="--mdc-select-width: 200px;"
+              boundary="scrollable-list"
+              strategy="fixed"
+            >
+              <mdc-selectlistbox>
+                <mdc-option value="option1" label="Option 1" disabled></mdc-option>
+                <mdc-option value="option2" label="Option 2"></mdc-option>
+                <mdc-option value="option3" label="Option 3"></mdc-option>
+                <mdc-option value="option4" label="Option 4" disabled></mdc-option>
+                <mdc-option value="option5" label="Option 5"></mdc-option>
+                <mdc-option value="option6" label="Option 6" disabled></mdc-option>
+                <mdc-option value="option6" label="Option 7" soft-disabled></mdc-option>
+              </mdc-selectlistbox>
+            </mdc-select>
+            <mdc-avatar
+              slot="leading-controls"
+              initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
+            ></mdc-avatar>
+          </mdc-listitem> `,
+      )}
+    </mdc-list>
+  `,
+  args: {
+    textPassedToListHeader: 'Scrollable Participants List',
     'aria-label': 'View all participants',
   },
 };
