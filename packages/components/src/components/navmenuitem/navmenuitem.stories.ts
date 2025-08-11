@@ -112,8 +112,6 @@ const meta: Meta = {
       'arrow-position',
       'arrow-direction',
       'tabIndex',
-      'tooltip-text',
-      'tooltip-placement',
     ]),
     ...classArgType,
     ...styleArgType,

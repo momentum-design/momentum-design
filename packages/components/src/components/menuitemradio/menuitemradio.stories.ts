@@ -4,8 +4,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import '../menusection';
 import '../divider';
 
@@ -21,8 +20,6 @@ const render = (args: Args) =>
       indicator="${args.indicator}"
       label="${args.label}"
       secondary-label="${args['secondary-label']}"
-      tooltip-text="${args['tooltip-text']}"
-      tooltip-placement="${args['tooltip-placement']}"
     ></mdc-menuitemradio>`,
   );
 
@@ -51,21 +48,12 @@ const meta: Meta = {
     'secondary-label': {
       control: 'text',
     },
-    'tooltip-text': {
-      control: 'text',
-    },
-    'tooltip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
-    },
     ...hideControls([
       'data-aria-label',
       'variant',
       'tertiary-label',
       'side-header-text',
       'subline-text',
-      'keydown',
-      'keyup',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -75,6 +63,8 @@ const meta: Meta = {
       'trailing-controls',
       'arrow-position',
       'arrow-direction',
+    ]),
+    ...textControls([
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-background-color-active',
@@ -84,7 +74,6 @@ const meta: Meta = {
       '--mdc-listitem-column-gap',
       '--mdc-listitem-padding-left-and-right',
     ]),
-    ...disableControls(['change', 'click', 'focus']),
     ...classArgType,
     ...styleArgType,
   },
@@ -99,8 +88,6 @@ export const Example: StoryObj = {
     label: 'Menu Item',
     indicator: INDICATOR.RADIO,
     'secondary-label': '',
-    'tooltip-text': '',
-    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
