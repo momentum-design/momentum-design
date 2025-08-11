@@ -14,7 +14,7 @@ const { publicPath, port } = require('./configs/e2e');
 // normal URL fetching will be done
 const replaceBrandVisualsDynamicImport = source => {
   const newSource = source.replace(
-    '@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts',
+    '@momentum-design/brand-visuals/dist/resource/ts/${this.name}.ts',
     '../../../playwright-temp/brandvisuals/index',
   );
   return newSource;

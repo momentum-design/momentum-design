@@ -19,9 +19,8 @@ export const BrandvisualsTable = ({ brandvisuals, type }: Props) => {
     () => (
       <div className={`brandvisualsGrid grid192 brandvisualsGrid-${classNameSuffix}`}>
         {Object.entries(brandvisuals).map(([key, path]) => {
-          let finalPath = `${path.replace('./backgrounds', '/momentum-design/brand-visuals')}`;
-          finalPath = `${finalPath.replace('./images', '/momentum-design/brand-visuals')}`;
-          finalPath = `${finalPath.replace('./logos/svg', '/momentum-design/brand-visuals')}`;
+          let finalPath = `${path.replace('./resource/png', '/momentum-design/brand-visuals')}`;
+          finalPath = `${finalPath.replace('./resource/svg', '/momentum-design/brand-visuals')}`;
 
           return (
             <div className="brandvisualsWrapper">
