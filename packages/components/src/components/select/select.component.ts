@@ -11,7 +11,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
@@ -79,6 +79,36 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
 
+  /**
+   * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
+   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
+   * element to be clipped.
+   *
+   * Possible values:
+   *  - 'clippingAncestors'
+   *  - any css selector
+   *
+   * @default 'clippingAncestors'
+   *
+   * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary' })
+  boundary: 'clippingAncestors' | string = POPOVER_DEFAULTS.BOUNDARY;
+
+  /**
+   * The strategy of the popover within Select.
+   * This determines how the popover is positioned in the DOM.
+   *
+   * In case `boundary` is set to something other than 'clippingAncestors',
+   * it might be necessary to set the `strategy` to 'fixed' to ensure that the popover
+   * is not getting clipped by scrollable containers enclosing the select.
+   *
+   * @default absolute
+   * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
+   */
+  @property({ type: String, reflect: true, attribute: 'strategy' })
+  strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
+
   /** @internal */
   @queryAssignedElements({ selector: 'mdc-selectlistbox' }) slottedListboxes!: Array<HTMLElement>;
 
@@ -95,11 +125,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private initialSelectedOption: Option | null = null;
 
   private getAllValidOptions(): Array<Option> {
-    return Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTION_TAG_NAME) || []);
+    return Array.from(this.slottedListboxes[0]?.querySelectorAll(`${OPTION_TAG_NAME}:not([disabled])`) || []);
   }
 
   private getFirstValidOption(): Option | null {
-    return this.slottedListboxes[0]?.querySelector(OPTION_TAG_NAME);
+    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}:not([disabled])`);
   }
 
   private getLastValidOption(): Option | null {
@@ -108,7 +138,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private getFirstSelectedOption(): Option | null {
-    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]`);
+    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]:not([disabled])`);
   }
 
   /**
@@ -185,10 +215,17 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The event which triggered this function.
    */
   private handleOptionsClick(event: MouseEvent): void {
-    this.setSelectedOption(event.target as Option);
-
-    this.displayPopover = false;
-    this.fireEvents();
+    const option = event.target as Option;
+    if (
+      option &&
+      option.tagName === OPTION_TAG_NAME.toUpperCase() &&
+      !option.hasAttribute('disabled') &&
+      !option.hasAttribute('soft-disabled')
+    ) {
+      this.setSelectedOption(option);
+      this.displayPopover = false;
+      this.fireEvents();
+    }
   }
 
   /**
@@ -561,6 +598,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           focus-back-to-trigger
           focus-trap
           size
+          boundary="${ifDefined(this.boundary)}"
+          strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
           @closebyescape="${() => {
             this.displayPopover = false;
@@ -568,7 +607,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @closebyoutsideclick="${() => {
             this.displayPopover = false;
           }}"
-          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+          style="--mdc-popover-max-width: var(--mdc-select-width); --mdc-popover-max-height: ${this.height};"
         >
           <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>

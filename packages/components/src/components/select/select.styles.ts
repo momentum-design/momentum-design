@@ -16,12 +16,13 @@ const styles = css`
     --mdc-select-success-border-color: var(--mds-color-theme-text-success-normal);
     --mdc-select-background-hover: var(--mds-color-theme-background-primary-hover);
     --mdc-select-background-active: var(--mds-color-theme-background-primary-active);
+    --mdc-select-width: 100%;
 
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
     align-items: unset;
-    width: unset;
+    width: var(--mdc-select-width);
   }
   :host::part(native-input) {
     margin: 0;
@@ -82,6 +83,7 @@ const styles = css`
   }
   :host mdc-popover::part(popover-content) {
     min-width: auto;
+    width: var(--mdc-select-width);
     max-height: var(--mdc-popover-max-height);
     padding: 0.75rem 0.5rem;
   }

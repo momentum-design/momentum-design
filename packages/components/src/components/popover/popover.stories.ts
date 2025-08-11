@@ -11,6 +11,8 @@ import '../select';
 import '../menupopover';
 import '../menuitem';
 import '../dialog';
+import '../list';
+import '../listitem';
 
 import type Popover from '.';
 import type Dialog from '../dialog';
@@ -645,5 +647,60 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
       <mdc-text slot="dialog-body">Dialog content goes here.</mdc-text>
       <mdc-button slot="footer">Close</mdc-button>
     </mdc-dialog>
+  `,
+};
+
+export const PopoverScrollOverflow: StoryObj = {
+  args: {
+    ...Example.args,
+    id: 'popover-scroll-overflow',
+    triggerID: 'trigger-scroll-btn',
+    interactive: true,
+    'focus-trap': true,
+    'focus-back-to-trigger': true,
+    'show-arrow': true,
+    'hide-on-escape': true,
+    'hide-on-outside-click': true,
+    size: true,
+  },
+  render: args => html`
+    <mdc-list style="height: 200px; width: 100%; overflow-y: auto;">
+      <mdc-listitem label="Item 1"></mdc-listitem>
+      <mdc-listitem label="Item 2"></mdc-listitem>
+      <mdc-listitem label="Item 3">
+        <div style="height: fit-content" slot="content">
+          <mdc-button id="${args.triggerID}">Trigger</mdc-button>
+          ${createPopover(
+            args,
+            html`
+              <div style="height: 300px; overflow-y: auto;">
+                <mdc-text
+                  >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                  et dolore magna aliqua.</mdc-text
+                >
+                <mdc-text>More content...</mdc-text>
+                <mdc-text>Even more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+              </div>
+            `,
+          )}
+        </div>
+      </mdc-listitem>
+      <mdc-listitem label="Item 4"></mdc-listitem>
+      <mdc-listitem label="Item 5"></mdc-listitem>
+      <mdc-listitem label="Item 6"></mdc-listitem>
+      <mdc-listitem label="Item 7"></mdc-listitem>
+      <mdc-listitem label="Item 8"></mdc-listitem>
+      <mdc-listitem label="Item 9"></mdc-listitem>
+      <mdc-listitem label="Item 10"></mdc-listitem>
+      <mdc-listitem label="Item 11"></mdc-listitem>
+      <mdc-listitem label="Item 12"></mdc-listitem>
+    </mdc-list>
   `,
 };
