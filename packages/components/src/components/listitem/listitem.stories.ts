@@ -100,7 +100,11 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
-      '--mdc-listitem-padding-left-and-right',
+      '--mdc-listitem-padding-left-right',
+      '--mdc-listitem-padding-top-bottom',
+      '--mdc-listitem-cursor',
+      '--mdc-listitem-width',
+      '--mdc-listitem-height',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -229,4 +233,17 @@ export const ListItemLabelsUsingSlot: StoryObj = {
     variant: LISTITEM_VARIANTS.FULL_WIDTH,
   },
   ...hideAllControls(),
+};
+
+export const ListItemOverrideWithContentSlot: StoryObj = {
+  render: () => html`
+    <mdc-list>
+      <mdc-listitem variant="full-width">
+        <span slot="content">This is a complete override / customisation to show case flexibility.</span>
+        <mdc-button slot="content" variant="secondary">Action 1</mdc-button>
+        <mdc-button slot="content" variant="primary">Action 2</mdc-button>
+        <mdc-button slot="content" variant="tertiary">Action 3</mdc-button>
+      </mdc-listitem>
+    </mdc-list>
+  `,
 };

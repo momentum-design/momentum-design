@@ -472,7 +472,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.addEventListener('mouseleave', this.startCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
-      this.triggerElement.addEventListener('focusin', this.show);
+      this.triggerElement.addEventListener('focusin', this.handleFocusIn);
       if (!this.interactive) {
         this.triggerElement.addEventListener('focusout', this.handleFocusOut);
       }
@@ -495,7 +495,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
     // focusin trigger
-    this.triggerElement?.removeEventListener('focusin', this.show);
+    this.triggerElement?.removeEventListener('focusin', this.handleFocusIn);
     this.triggerElement?.removeEventListener('focusout', this.handleFocusOut);
   };
 
@@ -794,6 +794,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private handleFocusOut = () => {
     if (!this.isHovered) {
       this.hide();
+    }
+  };
+
+  /**
+   *  Handles focus in event on the trigger element.
+   *  This method checks if the trigger element has visible focus or is being hovered.
+   */
+  private handleFocusIn = () => {
+    if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
+      this.show();
     }
   };
 

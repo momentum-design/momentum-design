@@ -11,16 +11,21 @@ const styles = css`
     --mdc-listitem-secondary-label-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-listitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-listitem-column-gap: 0.75rem;
-    --mdc-listitem-padding-left-and-right: 0.75rem;
+    --mdc-listitem-padding-left-right: 0.75rem;
+    --mdc-listitem-padding-top-bottom: 0.5rem;
+    --mdc-listitem-cursor: pointer;
+    --mdc-listitem-width: 100%;
+    --mdc-listitem-height: auto;
   }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
     column-gap: var(--mdc-listitem-column-gap);
-    cursor: pointer;
     display: flex;
     flex-direction: row;
-    padding: 0.5rem var(--mdc-listitem-padding-left-and-right);
-    width: 100%;
+    cursor: var(--mdc-listitem-cursor);
+    padding: var(--mdc-listitem-padding-top-bottom) var(--mdc-listitem-padding-left-right);
+    width: var(--mdc-listitem-width);
+    height: var(--mdc-listitem-height);
   }
   :host([variant='inset-rectangle']) {
     border-radius: 0.5rem;
@@ -31,7 +36,7 @@ const styles = css`
   :host::part(leading-text) {
     flex: 1;
     /** 2x of column gap on both ends of the listitem - 100% width */
-    width: calc(100% - (2 * var(--mdc-listitem-padding-left-and-right)));
+    width: calc(100% - (2 * var(--mdc-listitem-padding-left-right)));
   }
   :host::part(leading-text-primary-label),
   :host::part(leading-text-secondary-label),
@@ -42,6 +47,11 @@ const styles = css`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  :host([disabled]) {
+    pointer-events: none;
+  }
+
   :host([disabled]),
   :host([disabled]:hover),
   :host([disabled]:active),

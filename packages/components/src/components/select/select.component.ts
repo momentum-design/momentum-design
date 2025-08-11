@@ -399,53 +399,52 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The keyboard event.
    */
   private handlePopoverKeydown(event: KeyboardEvent): void {
+    let optionToFocus: Option | null = null;
     switch (event.key) {
       case KEYS.HOME: {
-        const firstOption = this.getFirstValidOption();
-        this.focusAndUpdateTabIndexes(firstOption);
-        event.preventDefault();
+        optionToFocus = this.getFirstValidOption();
         break;
       }
       case KEYS.END: {
-        const lastOption = this.getLastValidOption();
-        this.focusAndUpdateTabIndexes(lastOption);
-        event.preventDefault();
+        optionToFocus = this.getLastValidOption();
         break;
       }
       case KEYS.ARROW_DOWN: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.min(currentIndex + 1, options.length - 1);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.ARROW_UP: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.max(currentIndex - 1, 0);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.PAGE_DOWN: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.min(currentIndex + 10, options.length - 1);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.PAGE_UP: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.max(currentIndex - 10, 0);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       default:
         break;
+    }
+
+    if (optionToFocus) {
+      this.focusAndUpdateTabIndexes(optionToFocus);
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 

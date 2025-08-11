@@ -54,7 +54,6 @@ const styles = [
     :host([disabled]) {
       color: var(--mdc-navmenuitem-disabled-color);
       background-color: var(--mdc-navmenuitem-disabled-background-color);
-      pointer-events: none;
     }
 
     :host([active][disabled]) {

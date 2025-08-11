@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+
+/* eslint-disable no-await-in-loop */
 import { expect, Locator } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -85,8 +88,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/150' });
-        await expect(card).toHaveAttribute('image-src', 'https://placehold.co/150');
+        await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/100x100' });
+        await expect(card).toHaveAttribute('image-src', 'https://placehold.co/100x100');
         await componentsPage.removeAttribute(card, 'image-src');
       });
 
@@ -204,6 +207,32 @@ test.describe.parallel('mdc-card', () => {
     });
   });
 
+  // Ensure all images are visible before snapshot
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
+    const card = componentsPage.page.locator('mdc-card');
+    const img = card.locator('img[src="https://placehold.co/100x100"]');
+    const imgCount = await img.count();
+    if (imgCount > 0) {
+      for (let i = 0; i < imgCount; i += 1) {
+        await img.nth(i).waitFor();
+        await expect(img.nth(i)).toBeVisible();
+      }
+    }
+  };
+
+  // Ensure all icons are visible before snapshot
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
+    const card = componentsPage.page.locator('mdc-card');
+    const icon = card.locator('mdc-icon[name="placeholder-bold"]');
+    const iconCount = await icon.count();
+    if (iconCount > 0) {
+      for (let i = 0; i < iconCount; i += 1) {
+        await icon.nth(i).waitFor();
+        await expect(icon.nth(i)).toBeVisible();
+      }
+    }
+  };
+
   const createStickerSheetBasedOnOrientation = async (
     componentsPage: ComponentsPage,
     orientation: string,
@@ -211,13 +240,12 @@ test.describe.parallel('mdc-card', () => {
     suffix?: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x180';
 
     // Card without body
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': imageSrc,
+      'image-src': 'https://placehold.co/100x100',
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -284,7 +312,7 @@ test.describe.parallel('mdc-card', () => {
     });
 
     await cardStickersheet.mountStickerSheet();
-    await componentsPage.page.waitForTimeout(500);
+    await loadAllImages(componentsPage);
     const container = cardStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       const fileName = suffix ? `mdc-card-${orientation}-${suffix}` : `mdc-card-${orientation}`;
@@ -296,8 +324,8 @@ test.describe.parallel('mdc-card', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
 
       await test.step('static card vertical', async () => {
@@ -317,11 +345,12 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -333,11 +362,12 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/260x180',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
       });
@@ -348,8 +378,8 @@ test.describe.parallel('mdc-card', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
-    if (isDeskop) {
+    const isDesktop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDesktop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
 
       await test.step('static card horizontal', async () => {
@@ -370,11 +400,12 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/70x110',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });
@@ -386,11 +417,12 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/70x110',
+          imageSrc: 'https://placehold.co/100x100',
           imageAlt: 'Image Alt',
         });
 
-        await componentsPage.page.waitForTimeout(200);
+        await loadAllImages(componentsPage);
+        await loadAllIcons(componentsPage);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
