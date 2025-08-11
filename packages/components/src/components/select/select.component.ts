@@ -45,6 +45,20 @@ import type { Placement } from './select.types';
  * @event input - (React: onInput) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
+ *
+ * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
+ * @cssproperty --mdc-select-background-color-hover - The background color of the combobox of select when hovered.
+ * @cssproperty --mdc-select-background-color-active - The background color of the combobox of select when active.
+ * @cssproperty --mdc-select-background-color-disabled - The background color of the combobox of select when disabled.
+ * @cssproperty --mdc-select-text-color - The text color of the select.
+ * @cssproperty --mdc-select-text-color-selected - The text color of the selected option in the select.
+ * @cssproperty --mdc-select-text-color-disabled - The text color of the select when disabled.
+ * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-border-color-disabled - The border color of the select when disabled.
+ * @cssproperty --mdc-select-border-color-success - The border color of the select when in success state.
+ * @cssproperty --mdc-select-border-color-warning - The border color of the select when in warning state.
+ * @cssproperty --mdc-select-border-color-error - The border color of the select when in error state.
+ * @cssproperty --mdc-select-width - The width of the select.
  */
 class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
