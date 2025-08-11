@@ -214,6 +214,7 @@ export const ListWithLongText: StoryObj = {
       A long lengthy text with small secondary label
     </mdc-tooltip>
     <mdc-tooltip triggerID="listitem-2" show-arrow> A small primary label with a lengthy secondary label </mdc-tooltip>
+    <mdc-text>Note: The consumer needs to attach mdc-tooltip to the listitem from their end</mdc-text>
   `,
   ...hideAllControls(),
 };

@@ -203,6 +203,7 @@ export const MenuItemWithTooltip: StoryObj = {
         <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
       </mdc-menuitem>
       <mdc-tooltip triggerID="menuitem-1" show-arrow>This is the tooltip text.</mdc-tooltip>
+      <mdc-text>Note: The consumer needs to attach mdc-tooltip to the menuitem from their end</mdc-text>
     </div>
   `,
   ...hideAllControls(),

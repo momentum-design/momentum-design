@@ -117,6 +117,7 @@ export const OptionWithLongText: StoryObj = {
     <div style="width: 15rem;" aria-label="List box" role="listbox">
       <mdc-option id="option-1" label="This is a very long text and it should be truncated."></mdc-option>
       <mdc-tooltip triggerID="option-1" show-arrow> This is a very long text and it should be truncated. </mdc-tooltip>
+      <mdc-text>Note: The consumer needs to attach mdc-tooltip to the option from their end</mdc-text>
     </div>
   `,
   ...hideAllControls(),
