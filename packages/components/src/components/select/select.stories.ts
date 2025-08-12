@@ -5,7 +5,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
@@ -115,6 +115,21 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...textControls([
+      '--mdc-select-background-color',
+      '--mdc-select-background-color-hover',
+      '--mdc-select-background-color-active',
+      '--mdc-select-background-color-disabled',
+      '--mdc-select-text-color',
+      '--mdc-select-text-color-selected',
+      '--mdc-select-text-color-disabled',
+      '--mdc-select-border-color',
+      '--mdc-select-border-color-disabled',
+      '--mdc-select-border-color-success',
+      '--mdc-select-border-color-warning',
+      '--mdc-select-border-color-error',
+      '--mdc-select-width',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
