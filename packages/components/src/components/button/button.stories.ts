@@ -325,7 +325,12 @@ export const PillWithPostfixSlot: StoryObj = {
       style="${args.style}"
       ?autofocus="${args.autofocus}"
     >
-      <mdc-animation name="wow" loop="true" slot="postfix" style="height: 1.25rem; width: 1.25rem;"></mdc-animation>
+      <mdc-animation
+        name="wow"
+        loop="true"
+        slot="postfix"
+        style="height: 1.25rem; width: 1.25rem; flex-shrink: 0;"
+      ></mdc-animation>
       ${args.children}
     </mdc-button>`,
   args: {
