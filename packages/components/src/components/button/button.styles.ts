@@ -249,11 +249,6 @@ const styles = css`
   :host::part(postfix-icon) {
     flex-shrink: 0;
   }
-
-  :host::slotted([slot='prefix']),
-  :host::slotted([slot='postfix']) {
-    flex-shrink: 0;
-  }
 `;
 
 export default [styles];
