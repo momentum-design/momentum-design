@@ -16,7 +16,6 @@ import styles from './slider.styles';
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
-// AI-Assisted
 class Slider extends Component {
   /**
    * Whether or not to show a value range. When false, the slider displays a slide-able handle for the value property; when true, it displays slide-able handles for the valueStart and valueEnd properties.
@@ -69,7 +68,7 @@ class Slider extends Component {
   @property({ type: Number, attribute: 'value-end' }) valueEnd?: number;
 
   /**
-   * The step between values.
+   * The step between values. This will show tick marks and the stepper will snap to the nearest tick mark.
    */
   @property({ type: Number }) step = 1;
 
@@ -148,7 +147,6 @@ class Slider extends Component {
    */
   @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel: string = '';
 
-  // End AI-Assisted
   public override render() {
     return html`<p>This is a dummy slider component!</p>
       <slot></slot>`;

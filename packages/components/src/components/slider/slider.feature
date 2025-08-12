@@ -111,7 +111,7 @@ Feature: Slider
     And value-start and value-end will represent the timeline values in seconds
     And the tooltips will have the corresponding timeline values in "xx:xx" format
 
-  Scenario Outline: slider Thumb Visual States in range mode
+  Scenario Outline: Slider Thumb Visual States in range mode
     Given a range slider thumb <whichThumb>
     When the thumb is in the "<state>" state
     Then its visual appearance should clearly indicate the "<state>" state
