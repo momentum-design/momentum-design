@@ -47,10 +47,6 @@ const styles = css`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
-  :host([disabled]) {
-    pointer-events: none;
-  }
 
   :host([disabled]),
   :host([disabled]:hover),
