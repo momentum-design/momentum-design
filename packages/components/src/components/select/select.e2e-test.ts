@@ -71,7 +71,7 @@ test('mdc-select', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const markUpOptions = { createNewRow: true };
-    const selectSheet = new StickerSheet(componentsPage, 'mdc-select', 'margin: 0.25rem');
+    const selectSheet = new StickerSheet(componentsPage, 'mdc-select', 'padding: 0.25rem');
     selectSheet.setAttributes({ label, placeholder: 'Select an headquarters from the list' });
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
     selectSheet.setAttributes({ label, placeholder: defaultPlaceholder });
