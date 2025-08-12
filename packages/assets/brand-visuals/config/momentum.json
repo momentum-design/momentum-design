@@ -117,7 +117,7 @@
             "type": "MANIFEST",
             "config": {
               "fileName": "manifest.json",
-              "staticPath": "/brandvisuals"
+              "staticPath": "/momentum-design/brandvisuals"
             }
           }
         },
