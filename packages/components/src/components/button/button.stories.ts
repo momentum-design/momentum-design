@@ -1,5 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../spinner';
+import '../animation';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -250,6 +252,84 @@ export const PillWithPrefixIconEllipsis: StoryObj = {
   args: {
     children: 'Long text with icons',
     'prefix-icon': 'placeholder-bold',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
+};
+
+export const PillWithPrefixSlot: StoryObj = {
+  render: args =>
+    html` <mdc-button
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      ?active="${args.active}"
+      ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
+      variant="${args.variant}"
+      size="${args.size}"
+      color="${args.color}"
+      type="${args.type}"
+      role="${args.role}"
+      tabIndex="${args.tabIndex}"
+      aria-label="${args['aria-label']}"
+      ariaStateKey="${ifDefined(args.ariaStateKey)}"
+      ?inverted="${args.inverted}"
+      style="${args.style}"
+      ?autofocus="${args.autofocus}"
+    >
+      <mdc-spinner slot="prefix" variant="button" size="small"></mdc-spinner>
+      ${args.children}
+    </mdc-button>`,
+  args: {
+    children: 'Loading...',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
+};
+
+export const PillWithPostfixSlot: StoryObj = {
+  render: args =>
+    html` <mdc-button
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      ?active="${args.active}"
+      ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
+      variant="${args.variant}"
+      size="${args.size}"
+      color="${args.color}"
+      type="${args.type}"
+      role="${args.role}"
+      tabIndex="${args.tabIndex}"
+      aria-label="${args['aria-label']}"
+      ariaStateKey="${ifDefined(args.ariaStateKey)}"
+      ?inverted="${args.inverted}"
+      style="${args.style}"
+      ?autofocus="${args.autofocus}"
+    >
+      <mdc-animation name="wow" loop="true" slot="postfix" style="height: 1.25rem; width: 1.25rem;"></mdc-animation>
+      ${args.children}
+    </mdc-button>`,
+  args: {
+    children: 'Wow',
     active: false,
     disabled: false,
     'soft-disabled': false,
