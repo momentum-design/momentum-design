@@ -27,6 +27,14 @@ const styles = css`
     width: var(--mdc-popover-max-width);
   }
 
+  :host([strategy='absolute']) {
+    position: absolute;
+  }
+
+  :host([strategy='fixed']) {
+    position: fixed;
+  }
+
   :host([visible]) {
     display: block;
   }
@@ -48,6 +56,7 @@ const styles = css`
 
   :host::part(popover-content) {
     position: relative;
+    cursor: default;
     padding: 0.75rem;
     min-width: max-content;
     z-index: 9998;
