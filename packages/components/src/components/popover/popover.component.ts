@@ -157,7 +157,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * @see [Floating UI - padding](https://floating-ui.com/docs/detectOverflow#padding)
    */
   @property({ type: Number, reflect: true, attribute: 'boundary-padding' })
-  boundaryPadding: undefined | number;
+  boundaryPadding?: number;
 
   /**
    * Determines whether the focus trap is enabled.
@@ -288,6 +288,22 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    */
   @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel: string | null = null;
+
+  /**
+   * The strategy of the popover.
+   * This determines how the popover is positioned in the DOM.
+   * - **absolute**: The popover is positioned absolutely relative to the nearest positioned ancestor.
+   * - **fixed**: The popover is positioned fixed relative to the viewport.
+   *
+   * Default as `absolute` is recommended for most cases.
+   * In cases where the popover gets clipped by a scrollable container,
+   * you can set this to `fixed` to avoid clipping.
+   *
+   * @default absolute
+   * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
+   */
+  @property({ type: String, reflect: true, attribute: 'strategy' })
+  strategy: 'absolute' | 'fixed' = DEFAULTS.STRATEGY;
 
   /**
    * Role of the popover
@@ -881,20 +897,28 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private positionPopover = () => {
     if (!this.triggerElement) return;
 
+    const boundary =
+      !this.boundary || this.boundary === 'clippingAncestors'
+        ? 'clippingAncestors'
+        : Array.from(document.querySelectorAll(this.boundary));
+    const rootBoundary = this.boundaryRoot;
+
     const middleware = [
       shift({
-        boundary:
-          !this.boundary || this.boundary === 'clippingAncestors'
-            ? 'clippingAncestors'
-            : Array.from(document.querySelectorAll(this.boundary)),
-        rootBoundary: this.boundaryRoot,
+        boundary,
+        rootBoundary,
         padding: this.boundaryPadding,
       }),
     ];
     let popoverOffset = this.offset;
 
     if (this.flip) {
-      middleware.push(flip());
+      middleware.push(
+        flip({
+          boundary,
+          rootBoundary,
+        }),
+      );
     }
 
     if (this.size) {
@@ -906,6 +930,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
+          boundary,
+          rootBoundary,
           apply({ availableHeight }) {
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
@@ -937,6 +963,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
         placement: this.placement,
         middleware,
+        strategy: this.strategy,
       });
 
       this.utils.updatePopoverStyle(x, y);
