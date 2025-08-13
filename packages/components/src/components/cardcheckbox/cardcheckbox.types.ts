@@ -1,4 +1,4 @@
-import type { OverrideEventTarget, TypedCustomEvent, ValueOf } from '../../utils/types';
+import type { OverrideEventTarget, ValueOf } from '../../utils/types';
 
 import type CardCheckbox from './cardcheckbox.component';
 import { SELECTION_TYPE } from './cardcheckbox.constants';
@@ -10,7 +10,6 @@ interface Events {
   onKeyDownEvent: OverrideEventTarget<KeyboardEvent, CardCheckbox>;
   onKeyUpEvent: OverrideEventTarget<KeyboardEvent, CardCheckbox>;
   onFocusEvent: OverrideEventTarget<FocusEvent, CardCheckbox>;
-  onChangeEvent: TypedCustomEvent<CardCheckbox>;
 }
 
 export { SelectionType, Events };

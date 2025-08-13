@@ -5,9 +5,11 @@ import { ARROW_POSITIONS, ARROW_DIRECTIONS } from './menuitem.constants';
 
 interface Events {
   onClickEvent: OverrideEventTarget<MouseEvent, MenuItem>;
-  onFocusEvent: OverrideEventTarget<FocusEvent, MenuItem>;
   onKeyDownEvent: OverrideEventTarget<KeyboardEvent, MenuItem>;
   onKeyUpEvent: OverrideEventTarget<KeyboardEvent, MenuItem>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, MenuItem>;
+  onEnabledEvent: TypedCustomEvent<MenuItem>;
+  onDisabledEvent: TypedCustomEvent<MenuItem>;
   onCreatedEvent: TypedCustomEvent<MenuItem>;
   onDestroyedEvent: TypedCustomEvent<MenuItem>;
 }

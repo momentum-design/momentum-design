@@ -41,6 +41,8 @@ import styles from './menuitem.styles';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the menuitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the menuitem.
  * @event focus - (React: onFocus) This event is dispatched when the menuitem receives focus.
+ * @event enabled - (React: onEnabled) This event is dispatched after the menuitem is enabled
+ * @event disabled - (React: onDisabled) This event is dispatched after the menuitem is disabled
  * @event created - (React: onCreated) This event is dispatched after the menuitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the menuitem is destroyed (removed from the DOM)
  */
