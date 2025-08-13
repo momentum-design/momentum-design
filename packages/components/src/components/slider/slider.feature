@@ -67,8 +67,8 @@ Feature: Slider
     And aria-valuemax will be set to 100
     And aria-valuenow will be set to 35
 
-  Scenario Outline: Slider Keyboard Navigation
-    Given the slider is focused
+  Scenario Outline: Continuous Slider Keyboard Navigation
+    Given the continuous slider is focused
     When the user presses the "<key>" key
     Then the slider value should "<action>"
 
@@ -78,6 +78,21 @@ Feature: Slider
       | ArrowUp    | increase by one step |
       | ArrowLeft  | decrease by one step |
       | ArrowDown  | decrease by one step |
+      | Home       | set to minimum value |
+      | End        | set to maximum value |
+
+  Scenario Outline: Stepped Slider Keyboard Navigation
+    Given the stepped slider is focused
+    And the step value is 5
+    When the user presses the "<key>" key
+    Then the slider value should "<action>"
+
+    Examples:
+      | key        | action               |
+      | ArrowRight | increase by 5 steps  |
+      | ArrowUp    | increase by 5 steps  |
+      | ArrowLeft  | decrease by 5 steps  |
+      | ArrowDown  | decrease by 5 steps  |
       | Home       | set to minimum value |
       | End        | set to maximum value |
 
@@ -146,6 +161,20 @@ Feature: Slider
     Then the selected start and end values should snap to the nearest tick mark (multiple of 20)
     And the values should be displayed in tooltips
     And the slider should show 5 tick marks spread uniformly around the slider component
+
+  Scenario: Range slider with end thumb meeting the start thumb
+    Given a range slider with min=0, max=100, step=10, value-start=50, and value-end=60
+    When the user drags the end thumb to the left
+    Then the end value should update to match the new position and have value-end=50
+    And the start value should not change
+    And dragging the end thumb anymore to the left will not change value-end
+
+  Scenario: Range slider with start thumb meeting the end thumb
+    Given a range slider with min=0, max=100, step=10, value-start=50, and value-end=60
+    When the user drags the start thumb to the right
+    Then the start value should update to match the new position and have value-start=60
+    And the end value should not change
+    And dragging the start thumb anymore to the right will not change value-start
 
   Scenario: Accessibility related attributes for range slider
     Given a range slider with min and max value defined to 0 and 100
