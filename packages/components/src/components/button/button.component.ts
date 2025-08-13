@@ -37,15 +37,19 @@ import { getIconNameWithoutStyle } from './button.utils';
  * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
  * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
  * - **Icon button**: A button represented by just an icon without any text.
- * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons/slots.
  *
  * @dependency mdc-icon
  *
  * @tagname mdc-button
  *
  * @slot - Text label of the button.
+ * @slot prefix - Content to be displayed before the text label.
+ * @slot postfix - Content to be displayed after the text label.
  *
  * @csspart button-text - Text label of the button, passed in default slot
+ * @csspart prefix - Content before the text label, passed in `prefix` slot
+ * @csspart postfix - Content after the text label, passed in `postfix` slot
  */
 class Button extends ButtonComponentMixin(Buttonsimple) {
   /**
@@ -137,21 +141,25 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
 
   public override render() {
     return html`
-      ${this.prefixFilledIconName
-        ? html` <mdc-icon
-            name="${this.prefixFilledIconName as IconNames}"
-            part="prefix-icon"
-            length-unit="rem"
-          ></mdc-icon>`
-        : ''}
+      <slot name="prefix" part="prefix">
+        ${this.prefixFilledIconName
+          ? html` <mdc-icon
+              name="${this.prefixFilledIconName as IconNames}"
+              part="prefix-icon"
+              length-unit="rem"
+            ></mdc-icon>`
+          : ''}
+      </slot>
       <slot @slotchange=${this.inferButtonType} part="button-text"></slot>
-      ${this.postfixFilledIconName
-        ? html` <mdc-icon
-            name="${this.postfixFilledIconName as IconNames}"
-            part="postfix-icon"
-            length-unit="rem"
-          ></mdc-icon>`
-        : ''}
+      <slot name="postfix" part="postfix">
+        ${this.postfixFilledIconName
+          ? html` <mdc-icon
+              name="${this.postfixFilledIconName as IconNames}"
+              part="postfix-icon"
+              length-unit="rem"
+            ></mdc-icon>`
+          : ''}
+      </slot>
     `;
   }
 

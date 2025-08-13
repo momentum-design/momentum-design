@@ -125,14 +125,27 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
      * @param slot - default slot of button
      */
     protected inferButtonType() {
-      const slot = this.shadowRoot
-        ?.querySelector('slot')
+      // Check for text content in the default slot
+      const defaultSlot = (this.shadowRoot?.querySelector('slot:not([name])') as HTMLSlotElement)
         ?.assignedNodes()
         .filter(node => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim()).length;
-      if (slot && (this.prefixIcon || this.postfixIcon)) {
+
+      // Check for prefix content (either icon property or slot content)
+      const prefixSlot = (this.shadowRoot?.querySelector('slot[name="prefix"]') as HTMLSlotElement)
+        ?.assignedNodes()
+        .filter(node => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim()).length;
+      const hasPrefix = this.prefixIcon || (prefixSlot && prefixSlot > 0);
+
+      // Check for postfix content (either icon property or slot content)
+      const postfixSlot = (this.shadowRoot?.querySelector('slot[name="postfix"]') as HTMLSlotElement)
+        ?.assignedNodes()
+        .filter(node => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim()).length;
+      const hasPostfix = this.postfixIcon || (postfixSlot && postfixSlot > 0);
+
+      if (defaultSlot && (hasPrefix || hasPostfix)) {
         this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
         this.setAttribute('data-btn-type', 'pill-with-icon');
-      } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
+      } else if (!defaultSlot && (hasPrefix || hasPostfix)) {
         this.typeInternal = BUTTON_TYPE_INTERNAL.ICON;
         this.setAttribute('data-btn-type', 'icon');
       } else {

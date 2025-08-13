@@ -464,6 +464,80 @@ test.describe.parallel('mdc-button', () => {
     });
   });
 
+  test('mdc-button pill with postfix slot button', async ({ componentsPage }) => {
+    await testForCombinations(
+      {
+        children: '<mdc-icon slot="postfix" name="placeholder-bold"></mdc-icon>Pill with postfix slot',
+        componentsPage,
+      },
+      'pill-with-postfix-slot',
+    );
+
+    await test.step('accessibility for pill with postfix slot button', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill-with-postfix-slot');
+    });
+
+    await test.step('snapshot of pill with postfix slot button', async () => {
+      const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+
+      // default
+      buttonSheet.setChildren('<mdc-icon slot="postfix" name="placeholder-light"></mdc-icon>Pill with postfix slot');
+      await commonMount();
+
+      // tertiary
+      buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+
+      // disabled
+      buttonSheet.setAttributes({ disabled: '' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+
+      // soft-disabled
+      buttonSheet.setAttributes({ 'soft-disabled': '' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+
+      // inverted
+      buttonSheet.setAttributes({
+        inverted: '',
+        variant: BUTTON_VARIANTS.PRIMARY,
+        color: BUTTON_COLORS.DEFAULT,
+      });
+      await buttonSheet.createMarkupWithCombination(
+        { size: PILL_BUTTON_SIZES },
+        { rowWrapperStyle: 'background: var(--mds-color-theme-inverted-background-normal); padding: 5px 0;' },
+      );
+
+      // active
+      buttonSheet.setAttributes({ active: '' });
+      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      await buttonSheet.createMarkupWithCombination({
+        size: PILL_BUTTON_SIZES,
+        variant: subVariants,
+        color: BUTTON_COLORS,
+      });
+
+      // tertiary active
+      buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+
+      // active disabled
+      buttonSheet.setAttributes({ active: '', disabled: '' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+
+      // active soft-disabled
+      buttonSheet.setAttributes({ active: '', 'soft-disabled': '' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+
+      await buttonSheet.mountStickerSheet();
+
+      await test.step('matches screenshot of pill-with-postfix-slot-button element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-postfix-slot', {
+          element: buttonSheet.getWrapperContainer(),
+        });
+      });
+    });
+  });
+
   test('mdc-button icon button', async ({ componentsPage }) => {
     const prefixIcon = 'placeholder-bold';
     await testForCombinations({ prefixIcon, componentsPage }, 'icon');
