@@ -33,7 +33,8 @@ applyTo: 'packages/components/**/*'
 
 ### Event Handling
 - Fire appropriate events for state changes (`change`, `input`, etc.)
-- Use `TypedEvent` from `utils/types` for component-specific behaviors (e.g., `typing-complete`)
+- Use `TypedCustomEvent` from `utils/types` for component-specific behaviors (e.g., `typing-complete`)
+- Use `OverrideEventTarget` from `utils/types` when you need to override the type of the event target for stronger type safety
 - Ensure events are fired consistently for both programmatic and user-initiated changes
 - Include relevant data in event details for consumers
 - Use `@event` decorator for custom events to ensure proper type safety and documentation
