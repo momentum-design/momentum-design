@@ -17,7 +17,7 @@ import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 const wrapWithList = (args: Args, content?: TemplateResult) =>
-  html`<mdc-list style="width: 10rem">
+  html`<mdc-list>
     <mdc-listitem
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"

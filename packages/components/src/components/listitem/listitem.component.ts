@@ -128,6 +128,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('click', this.handleClick.bind(this));
   }
 
   override connectedCallback(): void {
@@ -139,6 +140,20 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     ListItemEventManager.onDestroyedListItem(this);
+  }
+
+  /**
+   * Handles the click event on the list item.
+   * Prevents click when listitem is disabled
+   * @param event - The mouse event triggered when the list item is clicked.
+   */
+  private handleClick(event: MouseEvent): void {
+    if (this.disabled) {
+      // when disabled, prevent the click event from propagating
+      // and from firing on the host (immediate)
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
   }
 
   /**

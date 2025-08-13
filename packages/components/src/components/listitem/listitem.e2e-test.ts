@@ -263,6 +263,13 @@ test.describe.parallel('mdc-listitem', () => {
           await waitForClick();
         });
 
+        await test.step('should not trigger click when listitem is disabled', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel, disabled: true });
+          const waitForClick = await componentsPage.waitForEvent(listitem, 'click');
+          await listitem.click();
+          await componentsPage.expectPromiseTimesOut(waitForClick(), true);
+        });
+
         await test.step('should trigger click event on leading controls and not on listitem', async () => {
           const listitem = await setup({
             componentsPage,
