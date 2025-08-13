@@ -1,10 +1,11 @@
 
-import type { ValueOf } from '../../utils/types';
+import type { TypedCustomEvent, ValueOf } from '../../utils/types';
 
+import type Toast from './toast.component';
 import { TOAST_VARIANT } from './toast.constants';
 
 interface Events {
-  onCloseEvent: Event;
+  onCloseEvent: TypedCustomEvent<Toast>;
 }
 
 type ToastVariant = ValueOf<typeof TOAST_VARIANT>;
