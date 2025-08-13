@@ -210,6 +210,7 @@ export class PopoverUtils {
       styleElement.textContent = `
         .popover-backdrop {
           position: fixed;
+          cursor: default;
           top: 0;
           left: 0;
           width: 100%;

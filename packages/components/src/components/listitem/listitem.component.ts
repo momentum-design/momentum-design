@@ -196,7 +196,14 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * Handles the click event on the list item.
    * If the tooltip is open, it has to be closed first.
    */
-  private handleClick(): void {
+  private handleClick(event: MouseEvent): void {
+    if (this.disabled) {
+      // when disabled, prevent the click event from propagating
+      // and from firing on the host (immediate)
+      event.stopImmediatePropagation();
+      event.preventDefault();
+      return;
+    }
     // If the tooltip is open, it has to be closed first.
     this.hideTooltipOnLeave();
   }
