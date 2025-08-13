@@ -5,7 +5,7 @@ import { Component } from '../../models';
 
 import styles from './brandvisual.styles';
 import type { BrandVisualNames } from './brandvisual.types';
-import { DEFAULTS } from './brandvisual.constants';
+import { DEFAULTS, PATH } from './brandvisual.constants';
 
 /**
  * The `mdc-brandvisual` component is responsible for rendering logos dynamically & ensures they are
@@ -35,18 +35,34 @@ class Brandvisual extends Component {
   name?: BrandVisualNames = DEFAULTS.NAME;
 
   private async getBrandVisualData() {
-    if (this.name) {
-      // dynamic import of the lit template from the momentum brand-visuals package
-      return import(`@momentum-design/brand-visuals/dist/resource/ts/${this.name}.ts`)
+    if (!this.name) {
+      const error = new Error('No brandvisual name provided.');
+      this.handleBrandVisualLoadedFailure(error);
+      return Promise.reject(error);
+    }
+
+    const subPaths = Object.values(PATH);
+    let index = 0;
+
+    const tryNext = (): Promise<void> => {
+      if (index >= subPaths.length) {
+        const error = new Error(`Brand visual "${this.name}" not found in any known path.`);
+        this.handleBrandVisualLoadedFailure(error);
+        return Promise.reject(error);
+      }
+
+      return import(`@momentum-design/brand-visuals/dist/${subPaths[index]}/ts/${this.name}.ts`)
         .then(module => {
           this.handleBrandVisualLoadedSuccess(module.default());
         })
-        .catch(error => {
-          this.handleBrandVisualLoadedFailure(error);
+        .catch(() => {
+          index += 1;
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          tryNext();
         });
-    }
-    this.handleBrandVisualLoadedFailure(new Error('No brandvisual name provided.'));
-    return Promise.reject(new Error('No brandvisual name provided.'));
+    };
+
+    return tryNext();
   }
 
   override updated(changedProperties: Map<string, any>) {

@@ -44,12 +44,20 @@ export default defineConfig({
                 dest: 'dist/illustrations',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/resource/png/*.png'),
-                dest: 'dist/brandvisuals/resource/png',
+                src: path.join(brandVisualsDistFolder, '/images/png/*.png'),
+                dest: 'dist/brandvisuals/images/png',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/resource/svg/*.svg'),
-                dest: 'dist/brandvisuals/resource/svg',
+                src: path.join(brandVisualsDistFolder, '/images/svg/*.svg'),
+                dest: 'dist/brandvisuals/images/svg',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/backgrounds/png/*.png'),
+                dest: 'dist/brandvisuals/backgrounds/png',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/logos/svg/*.svg'),
+                dest: 'dist/brandvisuals/logos/svg',
               },
               {
                 src: path.join(storybookFolder, '/storybook-static/*'),

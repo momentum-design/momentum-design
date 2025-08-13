@@ -29,6 +29,8 @@ class ManifestTransformer extends Transformer {
 
       const key = relativePath?.split('/').pop()?.split('.').at(0) || 'unknown';
 
+      // staticPath is used for accessing static images,
+      // mainly to ensure that static images can be accessed in both storybook and documentation.
       const finalPath = staticPath
         ? `${staticPath.replace(/\/+$/, '')}/${relativePath}`
         : `./${relativePath}`;

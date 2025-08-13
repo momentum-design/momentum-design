@@ -125,7 +125,7 @@ export interface LitFormat {
 
 export interface ImageFormat {
   type: typeof CONSTANTS.FORMATS.IMAGE;
-  config: { hbspath: string, partName: string };
+  config: { hbspath: string, partName: string, manifestPath: string};
 }
 
 /**

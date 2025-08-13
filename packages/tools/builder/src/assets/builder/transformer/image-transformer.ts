@@ -5,9 +5,9 @@ import { transformHbs } from '../utils';
 import Transformer from './transformer';
 
 /**
- * The LitTransformer class.
+ * The ImageTransformer class.
  *
- * This transformer will process svg icons and will generate ts files file containing the proper lit template.
+ * This transformer will process svg icons and will generate ts files file containing the proper image template.
  * @beta
  */
 class ImageTransformer extends Transformer {
@@ -17,7 +17,7 @@ class ImageTransformer extends Transformer {
 
   private async loadManifest(): Promise<Record<string, string>> {
     try {
-      const manifestPath = require.resolve('@momentum-design/brand-visuals/dist/manifest.json');
+      const manifestPath = require.resolve(this.format.config.manifestPath);
       const manifestContent = await fs.readFile(manifestPath, 'utf-8');
       return JSON.parse(manifestContent) as Record<string, string>;
     } catch (error) {
@@ -26,24 +26,28 @@ class ImageTransformer extends Transformer {
     }
   }
 
+  public addAttributesToImage(image: string, name: string, partName: string = 'element'): string {
+    return image.replace('<img', `<img aria-hidden="true" part="${partName}" data-name="${name}"`);
+  }
+
   /**
-   * Converts the svg file to a lit template using Handlebars.
+   * Converts the svg file to a image template using Handlebars.
    * This will also add attributes to the svg string.
    *
    * @param file - file to convert
    * @returns the converted file
    */
   public async convertToImageTemplate(file: FileType): Promise<FileType> {
-    // retrieve the file name, i.e. accessibility-regular
     const fileName = path.basename(file.srcPath, path.extname(file.srcPath));
     const imageMap = await this.loadManifest();
+
+    const imageTag = `<img src="${imageMap[fileName]}" />`;
+    const enrichedImageTag = this.addAttributesToImage(imageTag, fileName, this.format.config.partName);
 
     return transformHbs(path.resolve(this.format.config.hbsPath))
       .then((template) => {
         const data = template({
-          distPath: `${imageMap[fileName]}`,
-          partName: this.format.config.partName,
-          name: fileName,
+          imageData: enrichedImageTag,
         });
         return {
           ...file,
@@ -53,7 +57,7 @@ class ImageTransformer extends Transformer {
         };
       })
       .catch((error) => {
-        this.logger.error(`Failed converting file (${file.srcPath}) to lit template: ${error}`);
+        this.logger.error(`Failed converting file (${file.srcPath}) to image template: ${error}`);
         throw error;
       });
   }

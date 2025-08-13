@@ -6,7 +6,7 @@
         {
           "id": "optimise-svgs-logos",
           "target": "./src/logos/*.svg",
-          "destination": "./dist/resource/svg",
+          "destination": "./dist/logos/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -37,7 +37,7 @@
         {
           "id": "optimise-svgs-images",
           "target": "./src/images/*.svg",
-          "destination": "./dist/resource/svg",
+          "destination": "./dist/images/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -66,9 +66,31 @@
           }
         },
         {
-          "id": "copy-images",
+          "id": "copy-png-images",
           "target": "./src/images/*.png",
-          "destination": "./dist/resource/png",
+          "destination": "./dist/images/png",
+          "copyOnly": true,
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            },
+            {
+              "searchValue": " ",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "COPY_IMAGE",
+            "config": {
+              "mergePaths": true
+            }
+          }
+        },
+        {
+          "id": "copy-svg-images",
+          "target": "./src/images/*.svg",
+          "destination": "./dist/images/svg",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -90,7 +112,7 @@
         {
           "id": "copy-backgrounds",
           "target": "./src/backgrounds/*.png",
-          "destination": "./dist/resource/png",
+          "destination": "./dist/backgrounds/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -111,7 +133,7 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/resource/{png,svg}/**/*.*",
+          "target": "./dist/{logos,images,backgrounds}/{svg,png}/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
@@ -137,8 +159,8 @@
         },
         { 
           "id": "lit-brand-visuals",
-          "target": "./dist/resource/svg/**/*.svg",
-          "destination": "./dist/resource/ts",
+          "target": "./dist/logos/svg/**/*.*",
+          "destination": "./dist/logos/ts",
           "format": {
             "type": "LIT",
             "config": {
@@ -148,14 +170,40 @@
           }
         },
         { 
-          "id": "lit-brand-visuals-image-png",
-          "target": "./dist/resource/png/**/*.png",
-          "destination": "./dist/resource/ts",
+          "id": "lit-brand-visuals-svg-images",
+          "target": "./dist/images/svg/**/*.svg",
+          "destination": "./dist/images/ts",
+          "format": {
+            "type": "LIT",
+            "config": {
+              "partName": "brandvisual",
+              "hbsPath": "./config/templates/lit.ts.hbs"
+            }
+          }
+        },
+        { 
+          "id": "image-brand-visuals-png-images",
+          "target": "./dist/images/png/**/*.png",
+          "destination": "./dist/images/ts",
           "format": {
             "type": "IMAGE",
             "config": {
               "partName": "brandvisualImage",
-              "hbsPath": "./config/templates/image.ts.hbs"
+              "hbsPath": "./config/templates/image.ts.hbs",
+              "manifestPath": "@momentum-design/brand-visuals/dist/manifest.json"
+            }
+          }
+        },
+        { 
+          "id": "image-brand-visuals-png-backgrounds",
+          "target": "./dist/backgrounds/png/**/*.png",
+          "destination": "./dist/backgrounds/ts",
+          "format": {
+            "type": "IMAGE",
+            "config": {
+              "partName": "brandvisualImage",
+              "hbsPath": "./config/templates/image.ts.hbs",
+              "manifestPath": "@momentum-design/brand-visuals/dist/manifest.json"
             }
           }
         }
