@@ -18,7 +18,6 @@ const render = (args: Args) =>
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
-    @change="${action('onchange')}"
     variant="${args.variant}"
     orientation="${args.orientation}"
     card-title="${args['card-title']}"
