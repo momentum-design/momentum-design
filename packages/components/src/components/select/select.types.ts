@@ -1,18 +1,18 @@
-import type { ValueOf, TypedEvent } from '../../utils/types';
+import type { ValueOf, TypedCustomEvent, OverrideEventTarget } from '../../utils/types';
 import type { PopoverPlacement, PopoverShownEvent, PopoverHiddenEvent } from '../popover/popover.types';
 
 import type Select from './select.component';
 import { ARROW_ICON } from './select.constants';
 
-type SelectChangeEvent = TypedEvent<Select, { value: string; label?: string }>;
-type SelectInputEvent = TypedEvent<Select, { value: string; label?: string }>;
+type SelectChangeEvent = TypedCustomEvent<Select, { value: string; label?: string }>;
+type SelectInputEvent = TypedCustomEvent<Select, { value: string; label?: string }>;
 
 interface Events {
-  onClickEvent: MouseEvent;
+  onClickEvent: OverrideEventTarget<MouseEvent, Select>;
   onChangeEvent: SelectChangeEvent;
   onInputEvent: SelectInputEvent;
-  onKeyDownEvent: KeyboardEvent;
-  onFocusEvent: FocusEvent;
+  onKeyDownEvent: OverrideEventTarget<KeyboardEvent, Select>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, Select>;
   // Shown and hidden events from Popover, which bubble up
   onShownEvent: PopoverShownEvent;
   onHiddenEvent: PopoverHiddenEvent;
