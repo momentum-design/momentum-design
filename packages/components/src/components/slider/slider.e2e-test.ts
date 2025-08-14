@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 
+import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -249,6 +250,33 @@ test.describe('Slider Feature Scenarios', () => {
         await expect(slider).toHaveAttribute('data-aria-label', 'Timeline Range');
       });
 
+      await test.step('step value is 5, user sets an even number', async () => {
+        const slider = await setup({ componentsPage, min: 0, max: 100, step: 5, value: 42 });
+        // Native input[type=range] snaps to nearest valid step (i.e. 40)
+        await expect(slider).toHaveAttribute('value', '40');
+      });
+
+      await test.step('user provides a value out of range', async () => {
+        // Value above max
+        let slider = await setup({ componentsPage, min: 0, max: 100, value: 120 });
+        await expect(slider).toHaveAttribute('value', '100');
+        // Value below min
+        slider = await setup({ componentsPage, min: 0, max: 100, value: -10 });
+        await expect(slider).toHaveAttribute('value', '0');
+      });
+
+      await test.step('user provides a non-numeric value (NaN or other)', async () => {
+        // Set initial valid value
+        const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
+        await expect(slider).toHaveAttribute('value', '50');
+        // Try to set NaN
+        await componentsPage.setAttributes(slider, { value: 'NaN' });
+        await expect(slider).toHaveAttribute('value', '50');
+        // Try to set non-numeric string
+        await componentsPage.setAttributes(slider, { value: 'abc' });
+        await expect(slider).toHaveAttribute('value', '50');
+      });
+
       /**
        * DISABLED & SOFT-DISABLED
        */
@@ -283,18 +311,18 @@ test.describe('Slider Feature Scenarios', () => {
         const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
         await componentsPage.actionability.pressTab();
         await expect(slider).toBeFocused();
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value', '51');
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value', '50');
         await componentsPage.setAttributes(slider, { step: '5' });
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value', '55');
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value', '50');
-        await componentsPage.page.keyboard.press('Home');
+        await componentsPage.page.keyboard.press(KEYS.HOME);
         await expect(slider).toHaveAttribute('value', '0');
-        await componentsPage.page.keyboard.press('End');
+        await componentsPage.page.keyboard.press(KEYS.END);
         await expect(slider).toHaveAttribute('value', '100');
       });
 
@@ -311,46 +339,46 @@ test.describe('Slider Feature Scenarios', () => {
         await expect(slider).toBeFocused(); // FIXME: start thumb should be focused
 
         // Move start thumb right
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value-start', '21');
         // Move start thumb left
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value-start', '20');
 
         // Move end thumb left (Shift+Tab to focus end thumb, if needed)
         await componentsPage.page.keyboard.press('Tab');
         await expect(slider).toBeFocused(); // FIXME: end thumb should be focused
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value-end', '79');
         // Move end thumb right
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value-end', '80');
 
         // Set step and test increment
         await componentsPage.setAttributes(slider, { step: '5' });
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value-end', '85');
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value-end', '80');
 
         // Home/End keys for start thumb
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(slider).toBeFocused();
-        await componentsPage.page.keyboard.press('Home');
+        await componentsPage.page.keyboard.press(KEYS.HOME);
         await expect(slider).toHaveAttribute('value-start', '0');
-        await componentsPage.page.keyboard.press('End');
+        await componentsPage.page.keyboard.press(KEYS.END);
         await expect(slider).toHaveAttribute('value-start', '100');
 
         // Start thumb will not exceed end thumb
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value-start', '80');
-        await componentsPage.page.keyboard.press('ArrowRight');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
         await expect(slider).toHaveAttribute('value-start', '80');
 
         // End thumb will not go below start thumb
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value-end', '80');
-        await componentsPage.page.keyboard.press('ArrowLeft');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
         await expect(slider).toHaveAttribute('value-end', '80');
       });
 

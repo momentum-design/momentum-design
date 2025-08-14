@@ -96,6 +96,28 @@ Feature: Slider
       | Home       | set to minimum value |
       | End        | set to maximum value |
 
+  Scenario: Step value is 5, user sets an even number
+    Given a slider with min=0, max=100, step=5
+    When the user sets the value to an even number (e.g., 42)
+    Then the slider should snap the value to the nearest valid step (i.e. 40)
+    And the thumb position should reflect the snapped value
+
+  Scenario: User provides a value out of range
+    Given a slider with min=0, max=100
+    When the user sets the value to 120 (greater than max)
+    Then the slider should set the value to the maximum (100)
+    And the thumb should be positioned at the end of the track
+    When the user sets the value to -10 (less than min)
+    Then the slider should set the value to the minimum (0)
+    And the thumb should be positioned at the start of the track
+
+  Scenario: User provides a non-numeric value (NaN or other)
+    Given a slider with min=0, max=100
+    When the user sets the value to NaN or a non-numeric input
+    Then the slider should not update the value
+    And the thumb should remain at its default valid position
+    And the component should ignore the invalid input
+
   Scenario: Screen Reader Interaction with Slider
     Given a user is navigating to the slider component using a screen reader
     When the slider receives focus
