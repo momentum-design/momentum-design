@@ -224,7 +224,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardcheckbox = componentsPage.page.locator('mdc-cardcheckbox');
     const img = cardcheckbox.locator('img[src="https://placehold.co/100x100"]');
     const imgCount = await img.count();
@@ -234,10 +234,10 @@ test.describe.parallel('mdc-cardcheckbox', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const cardcheckbox = componentsPage.page.locator('mdc-cardcheckbox');
     const icon = cardcheckbox.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -247,7 +247,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardcheckboxStickersheet = new StickerSheet(componentsPage, 'mdc-cardcheckbox');

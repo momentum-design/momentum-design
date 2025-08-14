@@ -23,9 +23,11 @@ import styles from './menuitem.styles';
  *
  * Menu item has `name` and `value` attribute that can be used to identify the menu item when it is selected.
  *
+ * **Note**: If a menuitem contains a long text, it is recommended to create a tooltip for the menuitem that displays the full text on hover.
+ * Consumers need to add a unique ID to this menuitem and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the menuitem using the `triggerID` attribute.
+ *
  * @dependency mdc-text
  * @dependency mdc-icon
- * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitem
  *

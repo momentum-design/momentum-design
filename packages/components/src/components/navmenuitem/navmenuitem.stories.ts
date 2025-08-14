@@ -27,6 +27,7 @@ const render = (args: Args) => html`
       ?show-label=${args['show-label']}
       ?disable-aria-current=${args['disable-aria-current']}
       aria-label=${args['aria-label']}
+      tooltip-text=${args['tooltip-text']}
     ></mdc-navmenuitem>
   </div>
 `;
@@ -75,6 +76,9 @@ const meta: Meta = {
     'disable-aria-current': {
       control: 'boolean',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
     ...textControls([
       '--mdc-navmenuitem-color',
       '--mdc-navmenuitem-border-color',
@@ -112,8 +116,6 @@ const meta: Meta = {
       'arrow-position',
       'arrow-direction',
       'tabIndex',
-      'tooltip-text',
-      'tooltip-placement',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -147,5 +149,20 @@ export const collapsedNavMenuItem: StoryObj = {
     'aria-label': 'This is a navmenuitem.',
     active: false,
     'show-label': false,
+  },
+};
+
+export const tooltipNavMenuItem: StoryObj = {
+  args: {
+    'nav-id': '1',
+    'icon-name': 'placeholder-bold',
+    'badge-type': ALLOWED_BADGE_TYPES.COUNTER,
+    counter: 3,
+    'max-counter': DEFAULTS.MAX_COUNTER,
+    disabled: false,
+    'aria-label': 'This is a navmenuitem.',
+    active: false,
+    'show-label': false,
+    'tooltip-text': 'This is a tooltip text.',
   },
 };

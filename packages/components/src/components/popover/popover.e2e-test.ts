@@ -170,7 +170,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
   const popoverWrapper = componentsPage.page.locator('.popoverWrapper');
   const selectPopoverTrigger = componentsPage.page.locator('#select-popover-trigger');
   await selectPopoverTrigger.click();
-  const selectPopoverInternal = componentsPage.page.locator('#select-popover-2');
+  const selectPopoverInternal = componentsPage.page.locator('mdc-select[id="select-popover-2"]');
   await selectPopoverInternal.waitFor();
   await selectPopoverInternal.click();
 

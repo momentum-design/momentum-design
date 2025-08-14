@@ -34,6 +34,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+      <div style="width: 300px;">
       ${isForm ? '<form>' : ''}
       <mdc-select
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -50,7 +51,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
         ${restArgs.children}
       </mdc-select>
       ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
-    `,
+    </div>`,
     clearDocument: true,
   });
 
@@ -69,6 +70,47 @@ test('mdc-select', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
+  await test.step('tooltip for long text option', async () => {
+    await componentsPage.mount({
+      html: `<div><mdc-select placeholder="Select a color" label="Select one color">
+        <mdc-selectlistbox>
+          <mdc-option label="Red"></mdc-option>
+          <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+          <mdc-option
+            id="option-1"
+            label="White and Black are the biggest colors on the spectrum"
+          ></mdc-option>
+          <mdc-option label="Green"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+      <mdc-tooltip triggerid="option-1" show-arrow>
+        White and Black are the biggest colors on the spectrum
+      </mdc-tooltip></div>`,
+      clearDocument: true,
+    });
+    const select = componentsPage.page.locator('mdc-select');
+    await select.waitFor();
+
+    // Open the dropdown
+    await select.locator('div[id="select-base-triggerid"]').click();
+    await expect(select.locator('mdc-popover')).toBeVisible();
+
+    // Hover over the long text option
+    const longOption = select.locator('mdc-option#option-1');
+    await longOption.hover();
+
+    // Wait for the tooltip to appear
+    const triggerID = await longOption.getAttribute('id');
+    const tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="${triggerID}"]`);
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveText('White and Black are the biggest colors on the spectrum');
+
+    // Visual regression snapshot of the tooltip
+    await componentsPage.visualRegression.takeScreenshot('mdc-select-long-option-tooltip', {
+      source: 'userflow',
+    });
+  });
+
   await test.step('visual-regression', async () => {
     const markUpOptions = { createNewRow: true };
     const selectSheet = new StickerSheet(componentsPage, 'mdc-select', 'padding: 0.25rem');

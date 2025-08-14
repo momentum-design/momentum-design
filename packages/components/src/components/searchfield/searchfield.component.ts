@@ -17,7 +17,7 @@ import { DEFAULTS } from './searchfield.constants';
  * This component is built by extending the `mdc-input` component.
  *
  * @tagname mdc-searchfield
- * 
+ *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
  * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
