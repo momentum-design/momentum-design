@@ -2,7 +2,9 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
+import type { IconName } from '../accordionbutton/accordionbutton.types';
 
+import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 
 /**
@@ -16,12 +18,14 @@ import styles from './slider.styles';
  */
 class Slider extends Component {
   /**
-   * Whether or not to show a value range. When false, the slider displays a slide-able handle for the value property; when true, it displays slide-able handles for the valueStart and valueEnd properties.
+   * Indicates whether it is a range slider. When true, the slider displays two handles for selecting a range of values.
+   * When false, the slider displays a single handle for selecting a single value.
+   * @default false
    */
   @property({ type: Boolean }) range = false;
 
   /**
-   * Whether the slider is disabled.
+   * Whether the slider is disabled. When true, the slider cannot be interacted with.
    */
   @property({ type: Boolean }) disabled?: boolean;
 
@@ -42,13 +46,15 @@ class Slider extends Component {
 
   /**
    * The slider minimum value.
+   * @default 0
    */
-  @property({ type: Number }) min = 0;
+  @property({ type: Number }) min: number = DEFAULTS.MIN;
 
   /**
    * The slider maximum value.
+   * @default 100
    */
-  @property({ type: Number }) max = 100;
+  @property({ type: Number }) max: number = DEFAULTS.MAX;
 
   /**
    * The slider value displayed when range is false.
@@ -66,9 +72,9 @@ class Slider extends Component {
   @property({ type: Number, attribute: 'value-end' }) valueEnd?: number;
 
   /**
-   * The step between values. This will show tick marks and the stepper will snap to the nearest tick mark.
+   * The step between values. If defined, we will show tick marks and the stepper will snap to the nearest tick mark.
    */
-  @property({ type: Number }) step = 1;
+  @property({ type: Number }) step?: number;
 
   /**
    * It represents the label for slider component.
@@ -86,39 +92,19 @@ class Slider extends Component {
   @property({ type: String, attribute: 'label-end' }) labelEnd?: string;
 
   /**
-   * An optional label for the slider's value displayed when range is false; if not set, the label is the value itself.
+   * An optional label for the slider's value displayed when range is false; if not set, the label is the 'value' itself.
    */
-  @property({ type: String, attribute: 'value-label' }) valueLabel: string = '';
+  @property({ type: String, attribute: 'value-label' }) valueLabel?: string;
 
   /**
-   * An optional label for the slider's start value displayed when range is true; if not set, the label is the valueStart itself.
+   * An optional label for the slider's start value displayed when range is true; if not set, the label is the 'valueStart' itself.
    */
-  @property({ type: String, attribute: 'value-label-start' }) valueLabelStart: string = '';
+  @property({ type: String, attribute: 'value-label-start' }) valueLabelStart?: string;
 
   /**
-   * An optional label for the slider's end value displayed when range is true; if not set, the label is the valueEnd itself.
+   * An optional label for the slider's end value displayed when range is true; if not set, the label is the 'valueEnd' itself.
    */
-  @property({ type: String, attribute: 'value-label-end' }) valueLabelEnd: string = '';
-
-  /**
-   * Aria label for the slider's start handle displayed when range is true.
-   */
-  @property({ type: String, attribute: 'aria-label-start' }) ariaLabelStart: string = '';
-
-  /**
-   * Aria value text for the slider's start value displayed when range is true.
-   */
-  @property({ type: String, attribute: 'aria-valuetext-start' }) ariaValuetextStart: string = '';
-
-  /**
-   * Aria label for the slider's end handle displayed when range is true.
-   */
-  @property({ type: String, attribute: 'aria-label-end' }) ariaLabelEnd: string = '';
-
-  /**
-   * Aria value text for the slider's end value displayed when range is true.
-   */
-  @property({ type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd: string = '';
+  @property({ type: String, attribute: 'value-label-end' }) valueLabelEnd?: string;
 
   /**
    * Name attribute for the slider (single value).
@@ -126,28 +112,183 @@ class Slider extends Component {
   @property({ type: String }) name?: string;
 
   /**
-   * Name attribute for the slider's start handle (range).
+   * Name attribute for the slider's start handle when range is true.
    */
   @property({ type: String, attribute: 'name-start' }) nameStart?: string;
 
   /**
-   * Name attribute for the slider's end handle (range).
+   * Name attribute for the slider's end handle when range is true.
    */
   @property({ type: String, attribute: 'name-end' }) nameEnd?: string;
 
   /**
-   * Aria value text for the slider's value displayed when range is false.
-   */
-  @property({ type: String, attribute: 'data-aria-valuetext' }) dataAriaValuetext: string = '';
-
-  /**
    * Aria label for the slider's handle displayed when range is false.
    */
-  @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel: string = '';
+  @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel?: string;
+
+  /**
+   * Aria label for the slider's start handle displayed when range is true.
+   */
+  @property({ type: String, attribute: 'aria-label-start' }) ariaLabelStart?: string;
+
+  /**
+   * Aria label for the slider's end handle displayed when range is true.
+   */
+  @property({ type: String, attribute: 'aria-label-end' }) ariaLabelEnd?: string;
+
+  /**
+   * Aria value text for the slider's value displayed when range is false.
+   */
+  @property({ type: String, attribute: 'data-aria-valuetext' }) dataAriaValuetext?: string;
+
+  /**
+   * Aria value text for the slider's start value displayed when range is true.
+   */
+  @property({ type: String, attribute: 'aria-valuetext-start' }) ariaValuetextStart?: string;
+
+  /**
+   * Aria value text for the slider's end value displayed when range is true.
+   */
+  @property({ type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
 
   public override render() {
-    return html`<p>This is a dummy slider component!</p>
-      <slot></slot>`;
+    // Tick marks
+    const ticks = [];
+    if (this.step && this.step > 0) {
+      for (let i = this.min; i <= this.max; i += this.step) {
+        ticks.push(i);
+      }
+    }
+
+    // Icons
+    const iconTemplate = (icon: string | undefined, part: string) =>
+      typeof icon === 'string' && icon.length > 0
+        ? html`<mdc-icon name="${icon as IconName}" part="${part}"></mdc-icon>`
+        : null;
+
+    // Tooltip
+    const tooltipTemplate = (val: number | string | undefined, label: string | undefined) => html`
+      <div part="slider-tooltip">${label || val}</div>
+    `;
+
+    return html`
+      <div part="slider-container">
+        ${this.label ? html`<label part="slider-label">${this.label}</label>` : null}
+        <div part="slider-track">
+          ${iconTemplate(this.leadingIcon, 'leading-icon')}
+          <div part="slider-ticks">
+            ${ticks.map(
+              tick =>
+                html`<span
+                  part="slider-tick"
+                  style="left:${((tick - this.min) / (this.max - this.min)) * 100}%"
+                ></span>`,
+            )}
+          </div>
+          ${this.range
+            ? html`
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? ''}"
+                  .value="${String(this.valueStart ?? this.min)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.nameStart ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.valueStart ?? this.min}"
+                  aria-label="${this.ariaLabelStart || this.label || ''}"
+                  aria-valuetext="${this.ariaValuetextStart || this.valueLabelStart || this.valueStart || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInputStart}
+                  @change=${this.onChangeStart}
+                />
+                ${tooltipTemplate(this.valueStart, this.valueLabelStart)}
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? ''}"
+                  .value="${String(this.valueEnd ?? this.max)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.nameEnd ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.valueEnd ?? this.max}"
+                  aria-label="${this.ariaLabelEnd || this.label || ''}"
+                  aria-valuetext="${this.ariaValuetextEnd || this.valueLabelEnd || this.valueEnd || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInputEnd}
+                  @change=${this.onChangeEnd}
+                />
+                ${tooltipTemplate(this.valueEnd, this.valueLabelEnd)}
+              `
+            : html`
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? ''}"
+                  .value="${String(this.value ?? this.min)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.name ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.value ?? this.min}"
+                  aria-label="${this.dataAriaLabel || this.label || ''}"
+                  aria-valuetext="${this.dataAriaValuetext || this.valueLabel || this.value || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInput}
+                  @change=${this.onChange}
+                />
+                ${tooltipTemplate(this.value, this.valueLabel)}
+              `}
+          ${iconTemplate(this.trailingIcon, 'trailing-icon')}
+        </div>
+        <div part="slider-labels">
+          ${this.labelStart ? html`<span part="slider-label-start">${this.labelStart}</span>` : null}
+          ${this.labelEnd ? html`<span part="slider-label-end">${this.labelEnd}</span>` : null}
+        </div>
+        <slot></slot>
+      </div>
+    `;
+  }
+
+  onInput(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.value = Number(input.value);
+    this.dispatchEvent(new CustomEvent('input', { detail: { value: this.value } }));
+  }
+
+  onChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.value = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
+  }
+
+  onInputStart(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueStart = Number(input.value);
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart } }));
+  }
+
+  onChangeStart(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueStart = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart } }));
+  }
+
+  onInputEnd(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueEnd = Number(input.value);
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd } }));
+  }
+
+  onChangeEnd(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueEnd = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd } }));
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
