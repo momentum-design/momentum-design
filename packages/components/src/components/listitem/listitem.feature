@@ -1,4 +1,3 @@
-# AI-Assisted
 Feature: Listitem Accessibility and User Interaction
 
   Background:
@@ -6,7 +5,6 @@ Feature: Listitem Accessibility and User Interaction
     And the listitem has role="listitem"
     And the listitem is focusable with tabindex="0"
     And the listitem has default variant="full-width"
-    And the listitem has default tooltip-placement="top"
     And the listitem contains:
       | Property           | Value                    | State    |
       | ------------------ | ------------------------ | -------- |
@@ -15,7 +13,6 @@ Feature: Listitem Accessibility and User Interaction
       | Tertiary Label     | "Tertiary Label"         | Optional |
       | Side Header Text   | "Header Text"            | Optional |
       | Subline Text       | "Subline Text"           | Optional |
-      | Tooltip Text       | "Tooltip content"        | Optional |
       | Disabled State     | true/false               | Optional |
       | Soft-Disabled      | true/false               | Optional |
       | Leading Controls   | checkboxes/radio/icons   | Optional |
@@ -28,7 +25,6 @@ Feature: Listitem Accessibility and User Interaction
       When the listitem is rendered
       Then the primary label should be visible
       And the listitem should have proper ARIA attributes
-      And the listitem should have correct default variant and tooltip placement
 
     Scenario: Render listitem with multiple text labels
       Given the listitem has a primary label "Primary Label"
@@ -162,13 +158,6 @@ Feature: Listitem Accessibility and User Interaction
       Then a click event should be triggered on the listitem
       But no events should be triggered on the controls
 
-    Scenario: Hover over listitem with tooltip
-      Given the listitem has tooltip-text attribute set
-      When I hover over the listitem
-      Then the tooltip should become visible
-      And the tooltip should display the correct text
-      And the tooltip should be positioned according to tooltip-placement
-
   Rule: ✅ Keyboard Interactions
 
     Scenario: Navigate with keyboard within listitem
@@ -214,7 +203,6 @@ Feature: Listitem Accessibility and User Interaction
       Then the listitem should have role="listitem"
       And the listitem should have tabindex="0"
       And the listitem should have variant="full-width"
-      And the listitem should have tooltip-placement="top"
 
     Scenario: Disabled state ARIA attributes
       Given the listitem is disabled
@@ -261,27 +249,6 @@ Feature: Listitem Accessibility and User Interaction
       Then all elements should be properly positioned
       And the hierarchy should be visually clear
       And spacing should follow design guidelines
-
-  Rule: ✅ Tooltip Functionality
-
-    Scenario: Tooltip display on focus
-      Given the listitem has tooltip-text attribute
-      When the listitem receives focus
-      Then the tooltip should become visible
-      And the tooltip should display the specified text
-
-    Scenario: Tooltip placement options
-      Given the listitem has tooltip-text and tooltip-placement attributes
-      When tooltip-placement is set to different values (top, bottom, left, right)
-      Then the tooltip should appear in the specified position
-      And the tooltip should not overlap with other elements
-
-    Scenario: Tooltip behavior with controls
-      Given the listitem has tooltip-text and interactive controls
-      When the listitem is focused
-      Then the tooltip should be visible
-      When focus moves to controls within the listitem
-      Then the tooltip behavior should be appropriate for the context
 
   Rule: ✅ Event Handling and Propagation
 
@@ -345,11 +312,3 @@ Feature: Listitem Accessibility and User Interaction
       When VoiceOver activates controls within
       Then the control's action should execute
       And appropriate feedback should be provided
-
-    Scenario: VoiceOver announces tooltip content
-      Given the listitem has tooltip text
-      When VoiceOver focuses the listitem
-      Then VoiceOver should announce the tooltip content
-      And tooltip content should be accessible through VoiceOver gestures
-
-# End AI-Assisted

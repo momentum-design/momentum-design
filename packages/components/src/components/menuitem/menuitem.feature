@@ -1,4 +1,3 @@
-# AI-Assisted
 Feature: Menuitem Accessibility and User Interaction
 
   Background:
@@ -217,5 +216,3 @@ Feature: Menuitem Accessibility and User Interaction
       When VoiceOver activates the menuitem
       Then the associated action should execute
       And appropriate feedback should be provided
-
-# End AI-Assisted
