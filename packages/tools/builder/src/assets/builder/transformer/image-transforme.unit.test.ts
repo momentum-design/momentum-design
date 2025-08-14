@@ -11,13 +11,14 @@ describe('@momentum-design/builder - Image Transformer', () => {
     config: {
       hbsPath: '/template/image.hbs',
       partName: 'brandvisualImage',
+      manifestPath: '@momentum-design/brand-visuals/dist/manifest.json',
     },
     type: 'IMAGE',
   } as unknown as ImageFormat;
 
   const mockManifest = {
     test: 'test.png',
-    font: 'font.png',
+    image: 'image.png',
   };
 
   beforeEach(() => {
@@ -43,8 +44,8 @@ describe('@momentum-design/builder - Image Transformer', () => {
   describe('convertToImageTemplate()', () => {
     it('should convert image file to lit template using manifest', async () => {
       const file = { srcPath: '/src/test.png', data: '' };
-      // eslint-disable-next-line max-len
-      const templateSpy = jest.fn(({ distPath, partName, name }) => `<img src="${distPath}" part="${partName}" alt="${name}" />`);
+
+      const templateSpy = jest.fn(({ imageData }) => imageData);
 
       jest.spyOn(Utils, 'transformHbs').mockResolvedValue(templateSpy);
 
@@ -54,7 +55,11 @@ describe('@momentum-design/builder - Image Transformer', () => {
         ...file,
         distPath: '/dist/test.ts',
         partName: 'brandvisualImage',
-        data: '<img src="test.png" part="brandvisualImage" alt="test" />',
+        data: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="test.png" />',
+      });
+
+      expect(templateSpy).toHaveBeenCalledWith({
+        imageData: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="test.png" />',
       });
     });
 
@@ -71,24 +76,21 @@ describe('@momentum-design/builder - Image Transformer', () => {
 
   describe('transformFilesAsync()', () => {
     it('should transform all input files', async () => {
-      transformer.inputFiles = [{ srcPath: 'font.png', distPath: '', data: '' }];
+      transformer.inputFiles = [{ srcPath: 'image.png', distPath: '', data: '' }];
 
-      // eslint-disable-next-line max-len
-      const templateSpy = jest.fn(({ distPath, partName, name }) => `<img src="${distPath}" part="${partName}" alt="${name}" />`);
-
+      const templateSpy = jest.fn(({ imageData }) => imageData);
       jest.spyOn(Utils, 'transformHbs').mockResolvedValue(templateSpy);
 
-      const outputFiles = [
-        {
-          srcPath: 'font.png',
-          distPath: '/dist/font.ts',
-          partName: 'brandvisualImage',
-          data: '<img src="font.png" part="brandvisualImage" alt="font" />',
-        },
-      ];
-
       await transformer.transformFilesAsync();
-      expect(transformer.outputFiles).toStrictEqual(outputFiles);
+
+      expect(transformer.outputFiles).toStrictEqual([
+        {
+          srcPath: 'image.png',
+          distPath: '/dist/image.ts',
+          partName: 'brandvisualImage',
+          data: '<img aria-hidden="true" part="brandvisualImage" data-name="image" src="image.png" />',
+        },
+      ]);
     });
 
     it('should resolve immediately if no input files', async () => {
