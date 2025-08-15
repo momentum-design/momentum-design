@@ -59,6 +59,8 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-border-color-warning - The border color of the select when in warning state.
  * @cssproperty --mdc-select-border-color-error - The border color of the select when in error state.
  * @cssproperty --mdc-select-width - The width of the select.
+ * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
+ * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
 class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -71,13 +73,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @default false
    */
   @property({ type: Boolean }) readonly = false;
-
-  /**
-   * height attribute of the select field. If set,
-   * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default auto
-   */
-  @property({ type: String }) height = 'auto';
 
   /**
    * The placeholder text which will be shown on the text if provided.
@@ -621,7 +616,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @closebyoutsideclick="${() => {
             this.displayPopover = false;
           }}"
-          style="--mdc-popover-max-width: var(--mdc-select-width); --mdc-popover-max-height: ${this.height};"
         >
           <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>

@@ -17,6 +17,8 @@ const styles = css`
     --mdc-select-border-color-warning: var(--mds-color-theme-text-warning-normal);
     --mdc-select-border-color-error: var(--mds-color-theme-text-error-normal);
     --mdc-select-width: 100%;
+    --mdc-select-listbox-width: var(--mdc-select-width);
+    --mdc-select-listbox-height: auto;
 
     display: flex;
     flex-direction: column;
@@ -81,9 +83,13 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
+
+  /* Popover height, width & padding overrides */
+  :host mdc-popover {
+    --mdc-popover-max-width: var(--mdc-select-listbox-width);
+    --mdc-popover-max-height: var(--mdc-select-listbox-height);
+  }
   :host mdc-popover::part(popover-content) {
-    min-width: auto;
-    width: var(--mdc-select-width);
     max-height: var(--mdc-popover-max-height);
     padding: 0.75rem 0.5rem;
   }
