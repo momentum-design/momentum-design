@@ -4,6 +4,13 @@ const TAG_NAME = utils.constructTagName('brandvisual');
 
 const DEFAULTS = {
   NAME: undefined,
+  ALT: undefined,
 } as const;
 
-export { TAG_NAME, DEFAULTS };
+const PATH = {
+  LOGOS: 'logos',
+  IMAGES: 'images',
+  BACKGROUNDS: 'backgrounds',
+};
+
+export { TAG_NAME, DEFAULTS, PATH };

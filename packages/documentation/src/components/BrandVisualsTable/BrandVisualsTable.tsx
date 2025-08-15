@@ -18,22 +18,16 @@ export const BrandvisualsTable = ({ brandvisuals, type }: Props) => {
   const render = useMemo(
     () => (
       <div className={`brandvisualsGrid grid192 brandvisualsGrid-${classNameSuffix}`}>
-        {Object.entries(brandvisuals).map(([key, path]) => {
-          let finalPath = `${path.replace('./backgrounds', '/momentum-design/brand-visuals')}`;
-          finalPath = `${finalPath.replace('./images', '/momentum-design/brand-visuals')}`;
-          finalPath = `${finalPath.replace('./logos/svg', '/momentum-design/brand-visuals')}`;
-
-          return (
-            <div className="brandvisualsWrapper">
-              <div className="nameAnchor">
-                <div className="nameWrapper">
-                  <code >{key}</code>
-                </div>
+        {Object.entries(brandvisuals).map(([key, path]) => (
+          <div className="brandvisualsWrapper">
+            <div className="nameAnchor">
+              <div className="nameWrapper">
+                <code >{key}</code>
               </div>
-              <img src={finalPath} className="brandvisualsImg" />
             </div>
-          );
-        })}
+            <img src={path} className="brandvisualsImg" />
+          </div>
+        ))}
       </div>
     ),
     [brandvisuals],
