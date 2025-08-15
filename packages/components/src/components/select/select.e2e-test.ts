@@ -182,6 +182,8 @@ test('mdc-select', async ({ componentsPage }) => {
       await select.click();
       await select.locator('mdc-selectlistbox').waitFor({ state: 'visible' });
 
+      await componentsPage.page.waitForTimeout(100); // Wait for the trigger up-down arrow icon to be updated
+
       // take screenshot to verify the overridden dimensions
       await componentsPage.visualRegression.takeScreenshot('mdc-select-custom-styling-overrides');
     });
