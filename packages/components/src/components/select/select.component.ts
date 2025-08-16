@@ -86,7 +86,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    *
    * @default undefined
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
+  softDisabled?: boolean;
 
   /**
    * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
@@ -258,7 +259,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     // update all form related values
     this.value = this.selectedOption?.value ?? '';
     this.internals.setFormValue(this.value);
-    this.inputElement.setAttribute('value', this.value);
+    this.inputElement?.setAttribute('value', this.value);
 
     this.setInputValidity();
   }
@@ -313,9 +314,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private setInputValidity() {
     if (!this.selectedOption && this.required && this.validationMessage) {
-      this.inputElement.setCustomValidity(this.validationMessage);
+      this.inputElement?.setCustomValidity(this.validationMessage);
     } else {
-      this.inputElement.setCustomValidity('');
+      this.inputElement?.setCustomValidity('');
     }
     this.setValidity();
   }
@@ -526,6 +527,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   public updateState(): void {
     const newSelectedOption = this.getFirstSelectedOption();
+
+    if (!this.inputElement) {
+      return;
+    }
 
     if (!newSelectedOption) {
       this.setSelectedOption(this.placeholder ? null : this.getFirstValidOption());
