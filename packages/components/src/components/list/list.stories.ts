@@ -128,6 +128,7 @@ export const ScrollableListWithSelect: StoryObj = {
               style="--mdc-select-width: 200px;"
               boundary="scrollable-list"
               strategy="fixed"
+              backdrop-append-to="scrollable-list"
             >
               <mdc-selectlistbox>
                 <mdc-option value="option1" label="Option 1" disabled></mdc-option>
