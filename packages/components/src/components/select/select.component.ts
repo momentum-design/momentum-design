@@ -120,6 +120,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
 
   /**
+   * The z-index of the popover within Select.
+   *
+   * Override this to make sure this stays on top of other components.
+   * @default 1000
+   */
+  @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
+  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+
+  /**
    * ID of the element where the backdrop will be appended to.
    * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
    * If not set, the backdrop will be appended to the parent element of the select.
@@ -631,6 +640,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @closebyoutsideclick="${() => {
             this.displayPopover = false;
           }}"
+          z-index="${ifDefined(this.popoverZIndex)}"
           exportparts="popover-content"
         >
           <slot @click="${this.handleOptionsClick}"></slot>
