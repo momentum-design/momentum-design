@@ -119,6 +119,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @property({ type: String, reflect: true, attribute: 'strategy' })
   strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
 
+  /**
+   * ID of the element where the backdrop will be appended to.
+   * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
+   * If not set, the backdrop will be appended to the parent element of the select.
+   */
+  @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
+  backdropAppendTo?: string;
+
   /** @internal */
   @queryAssignedElements({ selector: 'mdc-selectlistbox' }) slottedListboxes!: Array<HTMLElement>;
 
@@ -607,6 +615,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           ?visible="${this.displayPopover}"
           role=""
           backdrop
+          backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
+          is-backdrop-invisible
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger
@@ -621,6 +631,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @closebyoutsideclick="${() => {
             this.displayPopover = false;
           }}"
+          exportparts="popover-content"
         >
           <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>

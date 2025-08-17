@@ -91,6 +91,7 @@ const styles = css`
   }
   :host mdc-popover::part(popover-content) {
     max-height: var(--mdc-popover-max-height);
+    min-width: auto;
     padding: 0.75rem 0.5rem;
   }
 
