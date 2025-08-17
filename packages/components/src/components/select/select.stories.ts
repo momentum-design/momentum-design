@@ -44,6 +44,10 @@ const render = (args: Args) =>
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       ?readonly="${args.readonly}"
+      boundary="${args.boundary}"
+      strategy="${args.strategy}"
+      popover-z-index="${args['popover-z-index']}"
+      backdrop-append-to="${args['backdrop-append-to']}"
     >
       <mdc-selectlistbox>
         <mdc-option value="london" label="London, UK"></mdc-option>
