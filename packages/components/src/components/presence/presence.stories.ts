@@ -4,7 +4,7 @@ import { html } from 'lit';
 
 import { disableControls, textControls } from '../../../config/storybook/utils';
 
-import { TYPE, PRESENCE_SIZE, DEFAULTS } from './presence.constants';
+import { PRESENCE_TYPE, PRESENCE_SIZE, DEFAULTS } from './presence.constants';
 
 const render = (args: Args) => html` <mdc-presence type="${args.type}" size="${args.size}"></mdc-presence> `;
 
@@ -18,7 +18,7 @@ const meta: Meta = {
   },
   argTypes: {
     type: {
-      options: Object.values(TYPE),
+      options: Object.values(PRESENCE_TYPE),
       control: { type: 'select' },
     },
     size: {

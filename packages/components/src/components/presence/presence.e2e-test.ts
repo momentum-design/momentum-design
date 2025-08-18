@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { DEFAULTS, TYPE, PRESENCE_SIZE } from './presence.constants';
+import { DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
 import type { PresenceType, PresenceSize } from './presence.types';
 
 type SetupOptions = {
@@ -35,7 +35,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const presenceStickerSheet = new StickerSheet(componentsPage, 'mdc-presence');
-    await presenceStickerSheet.createMarkupWithCombination({ type: TYPE, size: PRESENCE_SIZE });
+    await presenceStickerSheet.createMarkupWithCombination({ type: PRESENCE_TYPE, size: PRESENCE_SIZE });
     await presenceStickerSheet.mountStickerSheet();
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence');
@@ -71,11 +71,11 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only accept allowed type and size', async () => {
       await componentsPage.setAttributes(presence, {
-        type: TYPE.MEETING,
+        type: PRESENCE_TYPE.MEETING,
         size: PRESENCE_SIZE[124].toString(),
       });
 
-      await expect(presence).toHaveAttribute('type', TYPE.MEETING);
+      await expect(presence).toHaveAttribute('type', PRESENCE_TYPE.MEETING);
       await expect(presence).toHaveAttribute('size', PRESENCE_SIZE[124].toString());
     });
   });

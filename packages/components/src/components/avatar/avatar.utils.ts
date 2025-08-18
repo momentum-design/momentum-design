@@ -16,7 +16,7 @@ const getPresenceSize = (size: AvatarSize): PresenceSize => {
     [AVATAR_SIZE[32]]: PRESENCE_SIZE[32],
     [AVATAR_SIZE[24]]: PRESENCE_SIZE[24],
   };
-  return avatarPresenceSizeMap[size] || PRESENCE_SIZE[32]
+  return avatarPresenceSizeMap[size] || PRESENCE_SIZE[32]; // default size of presence
 };
 
 const getAvatarIconSize = (size: AvatarSize): number => {

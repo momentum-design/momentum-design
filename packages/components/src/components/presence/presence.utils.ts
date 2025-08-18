@@ -1,35 +1,35 @@
-import { TYPE , PRESENCE_SIZE } from './presence.constants';
+import { PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
 import type { PresenceSize, PresenceType } from './presence.types';
 
 export const getIconValue = (type: PresenceType) => {
   switch (type) {
-    case TYPE.AWAY:
+    case PRESENCE_TYPE.AWAY:
       return 'recents-presence-badge-filled';
-    case TYPE.AWAY_CALLING:
+    case PRESENCE_TYPE.AWAY_CALLING:
       return 'away-calling-presence-filled';
-    case TYPE.BUSY:
+    case PRESENCE_TYPE.BUSY:
       return 'busy-presence-bold';
-    case TYPE.DND:
+    case PRESENCE_TYPE.DND:
       return 'dnd-presence-badge-filled';
-    case TYPE.MEETING:
+    case PRESENCE_TYPE.MEETING:
       return 'camera-filled';
-    case TYPE.ON_CALL:
+    case PRESENCE_TYPE.ON_CALL:
       return 'handset-filled';
-    case TYPE.ON_DEVICE:
+    case PRESENCE_TYPE.ON_DEVICE:
       return 'generic-device-video-badge-filled';
-    case TYPE.ON_MOBILE:
+    case PRESENCE_TYPE.ON_MOBILE:
       return 'phone-badge-filled';
-    case TYPE.PAUSE:
+    case PRESENCE_TYPE.PAUSE:
       return 'pause-badge-filled';
-    case TYPE.PTO:
+    case PRESENCE_TYPE.PTO:
       return 'pto-presence-filled';
-    case TYPE.PRESENTING:
+    case PRESENCE_TYPE.PRESENTING:
       return 'share-screen-badge-filled';
-    case TYPE.QUIET:
+    case PRESENCE_TYPE.QUIET:
       return 'quiet-hours-presence-filled';
-    case TYPE.SCHEDULED:
+    case PRESENCE_TYPE.SCHEDULED:
       return 'meetings-presence-badge-filled';
-    case TYPE.ACTIVE:
+    case PRESENCE_TYPE.ACTIVE:
     default:
       return 'active-presence-small-filled';
   }
