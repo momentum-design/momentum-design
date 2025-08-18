@@ -4,6 +4,8 @@ import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
+import type Select from './select.component';
+
 type SetupOptions = {
   componentsPage: ComponentsPage;
   children: string;
@@ -38,7 +40,6 @@ const setup = async (args: SetupOptions, isForm = false) => {
       <mdc-select
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-        ${restArgs.height ? `height="${restArgs.height}"` : ''}
         ${restArgs.required ? 'required' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
@@ -158,12 +159,33 @@ test('mdc-select', async ({ componentsPage }) => {
       expect(arrowIcon).toBeDefined();
     });
 
-    await test.step('should set the height of the select dropdown to be fixed', async () => {
-      const select = await setup({ componentsPage, children: defaultChildren(), height: '2rem' });
-      await select.locator('div[part=container]').click();
-      const dropdown = select.locator('mdc-popover');
-      await dropdown.waitFor();
-      await expect(dropdown).toHaveCSS('--mdc-popover-max-height', '2rem');
+    await test.step('should respect select width, listbox width and height overrides via CSS variables', async () => {
+      const customSelectWidth = '300px';
+      const customListBoxWidth = '400px';
+      const customListBoxHeight = '100px';
+      const select = await setup({ componentsPage, children: defaultChildren() });
+
+      // Override CSS variables for the listbox
+      await componentsPage.page.evaluate(
+        ({ width, listboxWidth, listBoxHeight }) => {
+          const selectEl = document.querySelector('mdc-select') as Select;
+          if (selectEl) {
+            selectEl.style.setProperty('--mdc-select-width', width);
+            selectEl.style.setProperty('--mdc-select-listbox-width', listboxWidth);
+            selectEl.style.setProperty('--mdc-select-listbox-height', listBoxHeight);
+          }
+        },
+        { width: customSelectWidth, listboxWidth: customListBoxWidth, listBoxHeight: customListBoxHeight },
+      );
+
+      // Open the dropdown to show the listbox
+      await select.click();
+      await select.locator('mdc-selectlistbox').waitFor({ state: 'visible' });
+
+      await componentsPage.page.waitForTimeout(100); // Wait for the trigger up-down arrow icon to be updated
+
+      // take screenshot to verify the overridden dimensions
+      await componentsPage.visualRegression.takeScreenshot('mdc-select-custom-styling-overrides');
     });
 
     await test.step('should have placeholder attribute when no option is selected', async () => {

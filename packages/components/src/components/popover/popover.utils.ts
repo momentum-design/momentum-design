@@ -200,35 +200,4 @@ export class PopoverUtils {
       top: `${y}px`,
     });
   }
-
-  createBackdrop() {
-    if (!this.popover.backdropElement) {
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('popover-backdrop');
-
-      const styleElement = document.createElement('style');
-      styleElement.textContent = `
-        .popover-backdrop {
-          position: fixed;
-          cursor: default;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: transparent;
-          z-index: ${this.popover.zIndex - 1};
-        }
-      `;
-      backdrop.appendChild(styleElement);
-      this.popover.parentElement?.appendChild(backdrop);
-      this.popover.backdropElement = backdrop;
-    }
-  }
-
-  removeBackdrop() {
-    if (this.popover.backdropElement) {
-      this.popover.backdropElement.remove();
-      this.popover.backdropElement = null;
-    }
-  }
 }
