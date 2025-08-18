@@ -1,29 +1,41 @@
 import { css } from 'lit';
 
-const styles = css`
-  :host {
-    --mdc-listitem-column-gap: 0.75rem;
-    --mdc-option-icon-width: 1rem;
-    flex-shrink: 0;
-  }
+import { baseHostStyleVariables, focusRingBoxShadow } from '../../utils/styles';
 
-  :host::part(leading-icon),
-  :host::part(trailing) {
-    display: flex;
-    align-items: center;
-    width: var(--mdc-option-icon-width);
-  }
+const styles = [
+  baseHostStyleVariables,
+  css`
+    :host {
+      --mdc-option-icon-width: 1rem;
 
-  :host::part(leading-text) {
-    flex: 1;
-  }
+      flex-shrink: 0;
 
-  :host::part(leading-icon) {
-    margin-inline-end: var(--mdc-listitem-column-gap);
-  }
-  :host::part(trailing) {
-    margin-inline-start: var(--mdc-listitem-column-gap);
-  }
-`;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    :host::part(list-item) {
+      height: 2.25rem;
+    }
+    :host::part(default-slot) {
+      display: none;
+    }
+    :host::part(leading-icon),
+    :host::part(trailing) {
+      flex: 1;
+      max-width: var(--mdc-option-icon-width);
+    }
+    :host::part(leading-text) {
+      flex: 1;
+      /** 2x of leading and trailing icon width + 2x of column gap on both sides of the label text */
+      width: calc(100% - (2 * var(--mdc-option-icon-width)) - (2 * var(--mdc-listitem-column-gap)));
+    }
+    :host(.mdc-option--focused) {
+      outline: none;
+      position: relative;
+      box-shadow: ${focusRingBoxShadow};
+    }
+  `,
+];
 
-export default [styles];
+export default styles;

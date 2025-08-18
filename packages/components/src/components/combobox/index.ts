@@ -1,3 +1,6 @@
+import '../icon';
+import '../input';
+import '../popover';
 import Combobox from './combobox.component';
 import { TAG_NAME } from './combobox.constants';
 
