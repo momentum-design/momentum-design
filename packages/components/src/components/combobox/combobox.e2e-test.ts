@@ -243,10 +243,27 @@ test.describe('Combobox Feature Scenarios', () => {
         await input.fill('aus');
         await input.press(KEYS.ARROW_DOWN); // Open dropdown
         await input.press(KEYS.ESCAPE); // Close dropdown
-        await input.press(KEYS.ESCAPE); // Clear input text
 
         await expect(dropdown).not.toBeVisible();
+        await input.press(KEYS.ESCAPE); // Clear input text
         await expect(input).toHaveValue('');
+      });
+
+      await test.step('should leave the combobox with valid input text using the keyboard', async () => {
+        const { input, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+        await expect(dropdown).toBeVisible();
+        await input.press(KEYS.TAB); // Tab away
+
+        await expect(input).toHaveValue('aus');
+        await expect(dropdown).not.toBeVisible();
       });
 
       await test.step('should update to current selected option when navigating and tabbing with valid input', async () => {

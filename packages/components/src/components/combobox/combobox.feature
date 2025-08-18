@@ -126,6 +126,15 @@ Feature: Combobox component
       Given I have opened the combobox component with the placeholder "Start typing to search"
       When I type the character "aus"
       And I see the dropdown open with options "Austria" and "Australia"
+      And I press Tab key once
+      Then the combobox input text should still have "aus"
+      And the dropdown should be closed
+      And the DOM focus should not be on the combobox
+
+    Scenario: User leaves the combobox with valid input text and navigates to the first option using the keyboard
+      Given I have opened the combobox component with the placeholder "Start typing to search"
+      When I type the character "aus"
+      And I see the dropdown open with options "Austria" and "Australia"
       Then I press Arrow Down to focus the first option ("Austria")
       And I press Tab key once
       Then the combobox input text should get updated to "Austria"
