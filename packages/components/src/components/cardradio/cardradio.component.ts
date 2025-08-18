@@ -54,7 +54,6 @@ import styles from './cardradio.styles';
  * It toggles the checked state when enter key is used.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
  * It toggles the checked state when space key is used.
- * @event change - (React: onChange) Event that gets dispatched when the card state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
  *
  */

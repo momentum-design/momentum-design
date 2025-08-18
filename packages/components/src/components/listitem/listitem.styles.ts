@@ -47,6 +47,7 @@ const styles = css`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   :host([disabled]),
   :host([disabled]:hover),
   :host([disabled]:active),

@@ -5,7 +5,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
@@ -34,7 +34,6 @@ const render = (args: Args) =>
       ?required="${args.required}"
       help-text-type="${args['help-text-type']}"
       help-text="${args['help-text']}"
-      height="${args.height}"
       data-aria-label="${args['data-aria-label']}"
       toggletip-text="${args['toggletip-text']}"
       toggletip-placement="${args['toggletip-placement']}"
@@ -45,6 +44,10 @@ const render = (args: Args) =>
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       ?readonly="${args.readonly}"
+      boundary="${args.boundary}"
+      strategy="${args.strategy}"
+      popover-z-index="${args['popover-z-index']}"
+      backdrop-append-to="${args['backdrop-append-to']}"
     >
       <mdc-selectlistbox>
         <mdc-option value="london" label="London, UK"></mdc-option>
@@ -104,9 +107,6 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
-    height: {
-      control: 'text',
-    },
     placement: {
       control: 'select',
       options: ['bottom-start', 'top-start'],
@@ -115,6 +115,23 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...textControls([
+      '--mdc-select-background-color',
+      '--mdc-select-background-color-hover',
+      '--mdc-select-background-color-active',
+      '--mdc-select-background-color-disabled',
+      '--mdc-select-text-color',
+      '--mdc-select-text-color-selected',
+      '--mdc-select-text-color-disabled',
+      '--mdc-select-border-color',
+      '--mdc-select-border-color-disabled',
+      '--mdc-select-border-color-success',
+      '--mdc-select-border-color-warning',
+      '--mdc-select-border-color-error',
+      '--mdc-select-width',
+      '--mdc-select-listbox-height',
+      '--mdc-select-listbox-width',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -132,7 +149,6 @@ export const Example: StoryObj = {
     'help-text': 'Select Help Text',
     'help-text-type': '',
     'data-aria-label': 'Select label',
-    height: 'auto',
     placement: 'bottom-start',
   },
 };
@@ -251,25 +267,6 @@ export const SelectWithStates: StoryObj = {
     </div>
   `,
   ...hideAllControls(),
-};
-
-export const SelectWithFixedHeight = {
-  args: {
-    height: '18rem',
-    placeholder: 'Select an option',
-    label: 'Select option',
-  },
-  render: (args: Args) =>
-    wrapWithDiv(html`
-      <mdc-select height="${args.height}" placeholder="${args.placeholder}" label="${args.label}">
-        <mdc-selectlistbox>
-          ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
-        </mdc-selectlistbox>
-      </mdc-select>
-    `),
-  argTypes: {
-    ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
-  },
 };
 
 export const SelectWithForm: StoryObj = {

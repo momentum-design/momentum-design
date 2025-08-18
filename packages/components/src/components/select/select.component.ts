@@ -11,7 +11,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
@@ -45,6 +45,22 @@ import type { Placement } from './select.types';
  * @event input - (React: onInput) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
+ *
+ * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
+ * @cssproperty --mdc-select-background-color-hover - The background color of the combobox of select when hovered.
+ * @cssproperty --mdc-select-background-color-active - The background color of the combobox of select when active.
+ * @cssproperty --mdc-select-background-color-disabled - The background color of the combobox of select when disabled.
+ * @cssproperty --mdc-select-text-color - The text color of the select.
+ * @cssproperty --mdc-select-text-color-selected - The text color of the selected option in the select.
+ * @cssproperty --mdc-select-text-color-disabled - The text color of the select when disabled.
+ * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-border-color-disabled - The border color of the select when disabled.
+ * @cssproperty --mdc-select-border-color-success - The border color of the select when in success state.
+ * @cssproperty --mdc-select-border-color-warning - The border color of the select when in warning state.
+ * @cssproperty --mdc-select-border-color-error - The border color of the select when in error state.
+ * @cssproperty --mdc-select-width - The width of the select.
+ * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
+ * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
 class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -59,13 +75,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * height attribute of the select field. If set,
-   * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default auto
-   */
-  @property({ type: String }) height = 'auto';
-
-  /**
    * The placeholder text which will be shown on the text if provided.
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
@@ -77,7 +86,55 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    *
    * @default undefined
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
+  softDisabled?: boolean;
+
+  /**
+   * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
+   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
+   * element to be clipped.
+   *
+   * Possible values:
+   *  - 'clippingAncestors'
+   *  - any css selector
+   *
+   * @default 'clippingAncestors'
+   *
+   * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary' })
+  boundary: 'clippingAncestors' | string = POPOVER_DEFAULTS.BOUNDARY;
+
+  /**
+   * The strategy of the popover within Select.
+   * This determines how the popover is positioned in the DOM.
+   *
+   * In case `boundary` is set to something other than 'clippingAncestors',
+   * it might be necessary to set the `strategy` to 'fixed' to ensure that the popover
+   * is not getting clipped by scrollable containers enclosing the select.
+   *
+   * @default absolute
+   * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
+   */
+  @property({ type: String, reflect: true, attribute: 'strategy' })
+  strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
+
+  /**
+   * The z-index of the popover within Select.
+   *
+   * Override this to make sure this stays on top of other components.
+   * @default 1000
+   */
+  @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
+  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+
+  /**
+   * ID of the element where the backdrop will be appended to.
+   * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
+   * If not set, the backdrop will be appended to the parent element of the select.
+   */
+  @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
+  backdropAppendTo?: string;
 
   /** @internal */
   @queryAssignedElements({ selector: 'mdc-selectlistbox' }) slottedListboxes!: Array<HTMLElement>;
@@ -95,11 +152,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private initialSelectedOption: Option | null = null;
 
   private getAllValidOptions(): Array<Option> {
-    return Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTION_TAG_NAME) || []);
+    return Array.from(this.slottedListboxes[0]?.querySelectorAll(`${OPTION_TAG_NAME}:not([disabled])`) || []);
   }
 
   private getFirstValidOption(): Option | null {
-    return this.slottedListboxes[0]?.querySelector(OPTION_TAG_NAME);
+    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}:not([disabled])`);
   }
 
   private getLastValidOption(): Option | null {
@@ -108,7 +165,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private getFirstSelectedOption(): Option | null {
-    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]`);
+    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]:not([disabled])`);
   }
 
   /**
@@ -185,10 +242,17 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The event which triggered this function.
    */
   private handleOptionsClick(event: MouseEvent): void {
-    this.setSelectedOption(event.target as Option);
-
-    this.displayPopover = false;
-    this.fireEvents();
+    const option = event.target as Option;
+    if (
+      option &&
+      option.tagName === OPTION_TAG_NAME.toUpperCase() &&
+      !option.hasAttribute('disabled') &&
+      !option.hasAttribute('soft-disabled')
+    ) {
+      this.setSelectedOption(option);
+      this.displayPopover = false;
+      this.fireEvents();
+    }
   }
 
   /**
@@ -212,7 +276,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     // update all form related values
     this.value = this.selectedOption?.value ?? '';
     this.internals.setFormValue(this.value);
-    this.inputElement.setAttribute('value', this.value);
+    this.inputElement?.setAttribute('value', this.value);
 
     this.setInputValidity();
   }
@@ -267,9 +331,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private setInputValidity() {
     if (!this.selectedOption && this.required && this.validationMessage) {
-      this.inputElement.setCustomValidity(this.validationMessage);
+      this.inputElement?.setCustomValidity(this.validationMessage);
     } else {
-      this.inputElement.setCustomValidity('');
+      this.inputElement?.setCustomValidity('');
     }
     this.setValidity();
   }
@@ -399,53 +463,52 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The keyboard event.
    */
   private handlePopoverKeydown(event: KeyboardEvent): void {
+    let optionToFocus: Option | null = null;
     switch (event.key) {
       case KEYS.HOME: {
-        const firstOption = this.getFirstValidOption();
-        this.focusAndUpdateTabIndexes(firstOption);
-        event.preventDefault();
+        optionToFocus = this.getFirstValidOption();
         break;
       }
       case KEYS.END: {
-        const lastOption = this.getLastValidOption();
-        this.focusAndUpdateTabIndexes(lastOption);
-        event.preventDefault();
+        optionToFocus = this.getLastValidOption();
         break;
       }
       case KEYS.ARROW_DOWN: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.min(currentIndex + 1, options.length - 1);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.ARROW_UP: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.max(currentIndex - 1, 0);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.PAGE_DOWN: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.min(currentIndex + 10, options.length - 1);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       case KEYS.PAGE_UP: {
         const options = this.getAllValidOptions();
         const currentIndex = options.findIndex(option => option === event.target);
         const newIndex = Math.max(currentIndex - 10, 0);
-        this.focusAndUpdateTabIndexes(options[newIndex]);
-        event.preventDefault();
+        optionToFocus = options[newIndex];
         break;
       }
       default:
         break;
+    }
+
+    if (optionToFocus) {
+      this.focusAndUpdateTabIndexes(optionToFocus);
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -481,6 +544,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   public updateState(): void {
     const newSelectedOption = this.getFirstSelectedOption();
+
+    if (!this.inputElement) {
+      return;
+    }
 
     if (!newSelectedOption) {
       this.setSelectedOption(this.placeholder ? null : this.getFirstValidOption());
@@ -557,11 +624,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           ?visible="${this.displayPopover}"
           role=""
           backdrop
+          backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
+          is-backdrop-invisible
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger
           focus-trap
           size
+          boundary="${ifDefined(this.boundary)}"
+          strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
           @closebyescape="${() => {
             this.displayPopover = false;
@@ -569,7 +640,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @closebyoutsideclick="${() => {
             this.displayPopover = false;
           }}"
-          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+          z-index="${ifDefined(this.popoverZIndex)}"
+          exportparts="popover-content"
         >
           <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>

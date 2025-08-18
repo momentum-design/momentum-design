@@ -5,6 +5,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
@@ -47,7 +48,7 @@ import { PopoverUtils } from './popover.utils';
  * @slot - Default slot for the popover content
  *
  */
-class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
+class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component))) {
   /**
    * The unique ID of the popover.
    */
@@ -157,7 +158,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * @see [Floating UI - padding](https://floating-ui.com/docs/detectOverflow#padding)
    */
   @property({ type: Number, reflect: true, attribute: 'boundary-padding' })
-  boundaryPadding: undefined | number;
+  boundaryPadding?: number;
 
   /**
    * Determines whether the focus trap is enabled.
@@ -255,6 +256,22 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   backdrop: boolean = DEFAULTS.BACKDROP;
 
   /**
+   * Element ID the backdrop will be a append to (if `backdrop` is true).
+   * @default ''
+   */
+  @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
+  override backdropAppendTo?: string;
+
+  /**
+   * Set this property to true to make the backdrop invisible (if `backdrop` is true).
+   * This is useful for components that do want a backdrop which stops interaction,
+   * but do not want the backdrop to be visible as a overlay.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'is-backdrop-invisible' })
+  override isBackdropInvisible?: boolean = DEFAULTS.IS_BACKDROP_INVISIBLE;
+
+  /**
    * Changes the placement of popover to keep it in view when scrolling.
    * @default true
    */
@@ -288,6 +305,22 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    */
   @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel: string | null = null;
+
+  /**
+   * The strategy of the popover.
+   * This determines how the popover is positioned in the DOM.
+   * - **absolute**: The popover is positioned absolutely relative to the nearest positioned ancestor.
+   * - **fixed**: The popover is positioned fixed relative to the viewport.
+   *
+   * Default as `absolute` is recommended for most cases.
+   * In cases where the popover gets clipped by a scrollable container,
+   * you can set this to `fixed` to avoid clipping.
+   *
+   * @default absolute
+   * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
+   */
+  @property({ type: String, reflect: true, attribute: 'strategy' })
+  strategy: 'absolute' | 'fixed' = DEFAULTS.STRATEGY;
 
   /**
    * Role of the popover
@@ -340,12 +373,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   public triggerElement: HTMLElement | null = null;
 
   /** @internal */
-  private triggerElementOriginalStyle: Pick<CSSStyleDeclaration, 'zIndex' | 'position'> = {
-    zIndex: '',
-    position: '',
-  };
-
-  /** @internal */
   private hoverTimer: number | null = null;
 
   /** @internal */
@@ -365,9 +392,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
   /** @internal */
   protected shouldSupressOpening: boolean = false;
-
-  /** @internal */
-  public backdropElement: HTMLElement | null = null;
 
   /** @internal */
   private connectedTooltip: Tooltip | null = null;
@@ -437,7 +461,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeAllListeners();
     this.deactivateFocusTrap?.();
     this.deactivatePreventScroll();
-    this.utils.removeBackdrop();
+
+    this.moveElementBackAfterBackdropRemoval(this.triggerElement);
+    this.removeBackdrop();
+
     this.floatingUICleanupFunction?.();
 
     // clean timer if there is one set:
@@ -472,7 +499,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.addEventListener('mouseleave', this.startCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
-      this.triggerElement.addEventListener('focusin', this.show);
+      this.triggerElement.addEventListener('focusin', this.handleFocusIn);
       if (!this.interactive) {
         this.triggerElement.addEventListener('focusout', this.handleFocusOut);
       }
@@ -495,7 +522,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
     // focusin trigger
-    this.triggerElement?.removeEventListener('focusin', this.show);
+    this.triggerElement?.removeEventListener('focusin', this.handleFocusIn);
     this.triggerElement?.removeEventListener('focusout', this.handleFocusOut);
   };
 
@@ -675,14 +702,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
         }
       }
 
-      if (this.backdrop) {
-        this.utils.createBackdrop();
-        this.triggerElementOriginalStyle = {
-          position: this.triggerElement.style.position,
-          zIndex: this.triggerElement.style.zIndex,
-        };
-        this.triggerElement.style.position = 'relative';
-        this.triggerElement.style.zIndex = `${this.zIndex}`;
+      // create backdrop if it doesn't exist
+      if (this.backdrop && !this.backdropElement) {
+        this.createBackdrop('popover');
+        this.keepElementAboveBackdrop(this.triggerElement);
       }
 
       this.positionPopover();
@@ -722,9 +745,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.floatingUICleanupFunction?.();
 
       if (this.backdrop) {
-        this.triggerElement.style.position = this.triggerElementOriginalStyle.position;
-        this.triggerElement.style.zIndex = this.triggerElementOriginalStyle.zIndex;
-        this.utils.removeBackdrop();
+        this.moveElementBackAfterBackdropRemoval(this.triggerElement);
+        this.removeBackdrop();
       }
 
       if (this.hideOnBlur) {
@@ -794,6 +816,16 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private handleFocusOut = () => {
     if (!this.isHovered) {
       this.hide();
+    }
+  };
+
+  /**
+   *  Handles focus in event on the trigger element.
+   *  This method checks if the trigger element has visible focus or is being hovered.
+   */
+  private handleFocusIn = () => {
+    if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
+      this.show();
     }
   };
 
@@ -871,20 +903,28 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private positionPopover = () => {
     if (!this.triggerElement) return;
 
+    const boundary =
+      !this.boundary || this.boundary === 'clippingAncestors'
+        ? 'clippingAncestors'
+        : Array.from(document.querySelectorAll(this.boundary));
+    const rootBoundary = this.boundaryRoot;
+
     const middleware = [
       shift({
-        boundary:
-          !this.boundary || this.boundary === 'clippingAncestors'
-            ? 'clippingAncestors'
-            : Array.from(document.querySelectorAll(this.boundary)),
-        rootBoundary: this.boundaryRoot,
+        boundary,
+        rootBoundary,
         padding: this.boundaryPadding,
       }),
     ];
     let popoverOffset = this.offset;
 
     if (this.flip) {
-      middleware.push(flip());
+      middleware.push(
+        flip({
+          boundary,
+          rootBoundary,
+        }),
+      );
     }
 
     if (this.size) {
@@ -896,6 +936,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
+          boundary,
+          rootBoundary,
           apply({ availableHeight }) {
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
@@ -927,6 +969,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
         placement: this.placement,
         middleware,
+        strategy: this.strategy,
       });
 
       this.utils.updatePopoverStyle(x, y);

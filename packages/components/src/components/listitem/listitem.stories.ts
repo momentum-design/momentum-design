@@ -16,7 +16,7 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-const wrapWithList = (content: TemplateResult) => html`<mdc-list style="width: 10rem">${content}</mdc-list>`;
+const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc-list>`;
 
 const render = (args: Args) =>
   wrapWithList(html`
@@ -25,6 +25,10 @@ const render = (args: Args) =>
       @keydown="${action('onkeydown')}"
       @keyup="${action('onkeyup')}"
       @focus="${action('onfocus')}"
+      @enabled="${action('onenabled')}"
+      @disabled="${action('ondisabled')}"
+      @created="${action('oncreated')}"
+      @destroyed="${action('ondestroyed')}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       variant="${args.variant}"
