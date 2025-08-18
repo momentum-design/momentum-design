@@ -1,4 +1,4 @@
-import type { TypedEvent } from '../../utils/types';
+import type { TypedCustomEvent } from '../../utils/types';
 import type { TextType, TagName } from '../text/text.types';
 
 import type Typewriter from './typewriter.component';
@@ -11,8 +11,8 @@ interface TextChunk {
   instant?: boolean;
 }
 
-type TypewriterChangeEvent = TypedEvent<Typewriter, { content: string; isTyping: boolean }>;
-type TypewriterTypingCompleteEvent = TypedEvent<Typewriter, { finalContent: string }>;
+type TypewriterChangeEvent = TypedCustomEvent<Typewriter, { content: string; isTyping: boolean }>;
+type TypewriterTypingCompleteEvent = TypedCustomEvent<Typewriter>;
 
 interface Events {
   onChangeEvent: TypewriterChangeEvent;
