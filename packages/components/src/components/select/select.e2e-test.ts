@@ -107,8 +107,9 @@ test('mdc-select', async ({ componentsPage }) => {
     await expect(tooltip).toHaveText('White and Black are the biggest colors on the spectrum');
 
     // Visual regression snapshot of the tooltip
-    await componentsPage.visualRegression.takeScreenshot('mdc-select-long-option-tooltip', {
+    await componentsPage.visualRegression.takeScreenshot('mdc-select', {
       source: 'userflow',
+      fileNameSuffix: 'long-option-tooltip',
     });
   });
 
