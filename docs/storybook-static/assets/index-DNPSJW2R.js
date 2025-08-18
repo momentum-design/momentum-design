@@ -1,1 +1,0 @@
-import{C as t,u as e}from"./provider.component-BaQC7CJH.js";import{R as s}from"./roles-DU0xbrD4.js";class r extends t{constructor(){super(...arguments),this.role=s.LISTBOX}createRenderRoot(){return this}}const o=e.constructTagName("selectlistbox");r.register(o);

@@ -1,0 +1,25 @@
+import"./index-D7d-hHYS.js";import{k as s}from"./lit-element-D5KKan5q.js";import{t as o}from"./if-defined-D5BV9-c0.js";import{a as r}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{T as c}from"./index-ChdxzOZP.js";import{c as p,s as m}from"./commonArgTypes-BluK8w5L.js";import{a as l,t as d}from"./utils-CFOyPOhY.js";import{A as u}from"./index-D4kcqyOv.js";import"./property-Bj3TGwkg.js";import"./IconNameMixin-Bk-Z_FTS.js";import"./roles-CJI3JVG-.js";import"./button.constants-BBlkZKjZ.js";import"./provider.component-DrWB4byV.js";import"./buttonsimple.constants-CVV9o_W6.js";import"./buttonsimple.component-UJ4pbvCi.js";import"./keys-hFXe221I.js";import"./DisabledMixin-B-Cnza7-.js";import"./TabIndexMixin-DEwGeIeI.js";import"./index-B-GnYs90.js";import"./v4-CQkTLCs1.js";import"./state-CmYk530Z.js";import"./index-4mcLjOzG.js";import"./iframe-DXPkVZ5h.js";import"../sb-preview/runtime.js";import"./index-CwZu4Wnd.js";import"./iconprovider.component-BtAZSWEH.js";import"./create-context-89xeped_.js";import"./index-DeEenWCE.js";const b=t=>s`
+  <mdc-avatarbutton
+    @click="${r("onclick")}"
+    @keydown="${r("onkeydown")}"
+    @keyup="${r("onkeyup")}"
+    @focus="${r("onfocus")}"
+    counter="${o(t.counter)}"
+    icon-name="${o(t["icon-name"])}"
+    initials="${o(t.initials)}"
+    presence="${t.presence==="none"?void 0:o(t.presence)}"
+    size="${o(t.size)}"
+    src="${o(t.src)}"
+    ?is-typing="${t["is-typing"]}"
+    aria-label=${t["aria-label"]}
+  ></mdc-avatarbutton>
+`,F={title:"Components/avatarbutton",tags:["autodocs"],component:"mdc-avatarbutton",render:b,parameters:{badges:["stable"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:["none",...Object.values(c)]},size:{control:"select",options:Object.values(u)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},"aria-label":{control:"text"},...l(["active","disabled","soft-disabled","tabIndex","role","type"]),...d(["--mdc-avatarbutton-overlay-background-color-rest","--mdc-avatarbutton-overlay-background-color-hover","--mdc-avatarbutton-overlay-background-color-active"]),...p,...m}},e={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:88,"icon-name":"","is-typing":"","aria-label":"Avatar Button"}};var a,i,n;e.parameters={...e.parameters,docs:{...(a=e.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: {
+    src: 'https://picsum.photos/id/63/256',
+    initials: 'MD',
+    size: 88,
+    'icon-name': '',
+    'is-typing': '',
+    'aria-label': 'Avatar Button'
+  }
+}`,...(n=(i=e.parameters)==null?void 0:i.docs)==null?void 0:n.source}}};const G=["Example"];export{e as Example,G as __namedExportsOrder,F as default};
