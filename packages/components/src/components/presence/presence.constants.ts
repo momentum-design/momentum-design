@@ -19,19 +19,20 @@ const TYPE = {
   SCHEDULED: 'scheduled',
 } as const;
 
-const SIZE = {
-  XX_SMALL: 'xx_small',
-  X_SMALL: 'x_small',
-  SMALL: 'small',
-  MIDSIZE: 'midsize',
-  LARGE: 'large',
-  X_LARGE: 'x_large',
-  XX_LARGE: 'xx_large',
+
+const PRESENCE_SIZE = {
+  24: 24,
+  32: 32,
+  48: 48,
+  64: 64,
+  72: 72,
+  88: 88,
+  124: 124,
 } as const;
 
 const DEFAULTS = {
   TYPE: TYPE.ACTIVE,
-  SIZE: SIZE.SMALL,
+  SIZE: PRESENCE_SIZE[32],
 } as const;
 
-export { TAG_NAME, DEFAULTS, TYPE, SIZE };
+export { TAG_NAME, DEFAULTS, TYPE, PRESENCE_SIZE };

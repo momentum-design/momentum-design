@@ -23,32 +23,32 @@ const styles = [
       --mdc-presence-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
     }
 
-    .mdc-presence {
+    :host::part(presence-content) {
       border-radius: 50%;
       background-color: var(--mdc-presence-overlay-background-color);
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    .mdc-presence__xx_small,
-    .mdc-presence__x_small,
-    .mdc-presence__small {
-      width: 1.0625rem;
-      height: 1.0625rem;
+    :host([size='24'])::part(presence-content),
+    :host([size='32'])::part(presence-content),
+    :host([size='48'])::part(presence-content) {
+      width: 1.125rem;
+      height: 1.125rem;
     }
-    .mdc-presence__midsize {
-      width: 1.419375rem;
-      height: 1.419375rem;
+    :host([size='64'])::part(presence-content) {
+      width: 1.5625rem;
+      height: 1.5625rem;
     }
-    .mdc-presence__large {
-      width: 1.596875rem;
-      height: 1.596875rem;
+    :host([size='72'])::part(presence-content) {
+      width: 1.75rem;
+      height: 1.75rem;
     }
-    .mdc-presence__x_large {
-      width: 1.951875rem;
-      height: 1.951875rem;
+    :host([size='88'])::part(presence-content) {
+      width: 2.125rem;
+      height: 2.125rem;
     }
-    .mdc-presence__xx_large {
+    :host([size='124'])::part(presence-content) {
       width: 2.75rem;
       height: 2.75rem;
     }
