@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
+import { ROLE } from '../../utils/roles';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -43,9 +44,9 @@ const setup = async (args: SetupOptions) => {
   });
 
   const combobox = componentsPage.page.locator('mdc-combobox');
-  const input = combobox.locator('mdc-input');
-  const dropdown = combobox.locator('[role="listbox"]');
-  const options = dropdown.locator('[role="option"]');
+  const input = combobox.locator(`[role="${ROLE.COMBOBOX}"`);
+  const dropdown = combobox.locator(`[role="${ROLE.LISTBOX}"]`);
+  const options = dropdown.locator(`[role="${ROLE.OPTION}"]`);
 
   return {
     combobox,
@@ -151,7 +152,7 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.press(KEYS.ARROW_DOWN);
 
         await expect(dropdown).toBeVisible();
@@ -166,7 +167,7 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.press(KEYS.ARROW_DOWN); // Open dropdown
 
         // Navigate down twice
@@ -175,6 +176,7 @@ test.describe('Combobox Feature Scenarios', () => {
 
         await input.press(KEYS.ARROW_DOWN);
         await expect(getOptionByText('Australia')).toHaveAttribute('aria-selected', 'true');
+        await expect(getOptionByText('Austria')).not.toHaveAttribute('aria-selected', 'true');
 
         // Navigate back up
         await input.press(KEYS.ARROW_UP);
@@ -189,7 +191,7 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.fill('aus');
 
         await expect(options).toHaveCount(2);
@@ -205,7 +207,7 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.press(KEYS.ARROW_DOWN); // Open dropdown
         await input.press(KEYS.ARROW_DOWN); // Move to first option
         await input.press(KEYS.ENTER); // Select option
@@ -222,14 +224,14 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.press(KEYS.ARROW_DOWN); // Open dropdown
         await input.press(KEYS.ESCAPE); // Close dropdown
 
         await expect(dropdown).not.toBeVisible();
       });
 
-      await test.step('should update to first matching option when tabbing with valid input', async () => {
+      await test.step('should clear input text with Escape key', async () => {
         const { input, dropdown } = await setup({
           componentsPage,
           label: defaultLabel,
@@ -237,9 +239,28 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.fill('aus');
-        await input.press(KEYS.TAB);
+        await input.press(KEYS.ARROW_DOWN); // Open dropdown
+        await input.press(KEYS.ESCAPE); // Close dropdown
+        await input.press(KEYS.ESCAPE); // Clear input text
+
+        await expect(dropdown).not.toBeVisible();
+        await expect(input).toHaveValue('');
+      });
+
+      await test.step('should update to current selected option when navigating and tabbing with valid input', async () => {
+        const { input, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+        await input.press(KEYS.ARROW_DOWN); // Select the first option
+        await input.press(KEYS.TAB); // Then tab away
 
         await expect(input).toHaveValue('Austria');
         await expect(dropdown).not.toBeVisible();
@@ -253,7 +274,7 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.fill('as');
         await expect(dropdown).not.toBeVisible();
 
@@ -272,11 +293,11 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
 
-        await input.focus();
+        await componentsPage.actionability.pressTab();
         await input.press(KEYS.ARROW_DOWN); // Open dropdown and focus first option
 
         // Verify first option is focused
-        const firstOption = componentsPage.page.locator('[role="option"]').first();
+        const firstOption = componentsPage.page.locator(`[role="${ROLE.OPTION}"]`).first();
         await expect(firstOption).toHaveAttribute('aria-selected', 'true');
 
         await input.press(KEYS.TAB);
@@ -284,6 +305,60 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(input).toHaveValue('Argentina');
         await expect(dropdown).not.toBeVisible();
         await expect(input).not.toBeFocused();
+      });
+    });
+
+    /**
+     * KEYBOARD NAVIGATION WITH INPUT
+     */
+    await test.step('keyboard navigation with input', async () => {
+      await test.step('should handle typing while navigating options', async () => {
+        const { input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        // Initial setup - open dropdown and type 'b'
+        await input.click();
+        await input.fill('b');
+
+        // Verify dropdown shows 'Bangladesh' and 'Brazil'
+        const brazilOption = getOptionByText('Brazil');
+        const bangladeshOption = getOptionByText('Bangladesh');
+
+        await expect(dropdown).toBeVisible();
+        await expect(brazilOption).toBeVisible();
+        await expect(bangladeshOption).toBeVisible();
+
+        // First arrow down - focus should move to 'Bangladesh'
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(bangladeshOption).toHaveAttribute('aria-selected', 'true');
+
+        // Second arrow down - focus should move to 'Brazil'
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(brazilOption).toHaveAttribute('aria-selected', 'true');
+
+        // Type 'a' - should update input to 'ba' and filter options
+        await input.fill('a');
+        await expect(input).toHaveValue('ba');
+
+        // Verify only 'Bangladesh' is shown
+        await expect(brazilOption).not.toBeVisible();
+        await expect(bangladeshOption).toBeVisible();
+
+        // Arrow down should focus 'Bangladesh'
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(bangladeshOption).toHaveAttribute('aria-selected', 'true');
+
+        // Press Enter to select
+        await input.press(KEYS.ENTER);
+
+        // Verify selection and dropdown state
+        await expect(input).toHaveValue('Bangladesh');
+        await expect(dropdown).not.toBeVisible();
+        await expect(input).toBeFocused();
       });
     });
 
@@ -300,20 +375,20 @@ test.describe('Combobox Feature Scenarios', () => {
         });
 
         // Check combobox role and aria-haspopup
-        await expect(combobox).toHaveAttribute('role', 'combobox');
-        await expect(combobox).toHaveAttribute('aria-haspopup', 'listbox');
+        await expect(combobox).toHaveAttribute('role', ROLE.COMBOBOX);
+        await expect(combobox).toHaveAttribute('aria-haspopup', ROLE.LISTBOX);
 
         // Check input attributes
-        await expect(input).toHaveAttribute('role', 'combobox');
-        await expect(input).toHaveAttribute('aria-autocomplete', 'list');
+        await expect(input).toHaveAttribute('role', ROLE.COMBOBOX);
+        await expect(input).toHaveAttribute('aria-autocomplete', ROLE.LIST);
 
         // Check dropdown attributes when opened
         await input.click();
-        await expect(dropdown).toHaveAttribute('role', 'listbox');
+        await expect(dropdown).toHaveAttribute('role', ROLE.LISTBOX);
       });
 
       // Run standard accessibility checks
-      await componentsPage.accessibility.checkForA11yViolations('combobox');
+      await componentsPage.accessibility.checkForA11yViolations(ROLE.COMBOBOX);
     });
   });
 });
