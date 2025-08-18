@@ -204,3 +204,8 @@ Feature: Select component
     Given I have a select container with the dropdown open
     Then the combobox container should have aria-activedescendant attribute set to the id of the currently focused option when opened
     And the value of aria-activedescendant will get updated to the currently focused option, when the user navigates through the options
+
+  Scenario: Listbox width and height overrides
+    Given the select component is rendered
+    When I override the listbox width and height using CSS variables
+    Then the listbox should respect the new width and height values visually
