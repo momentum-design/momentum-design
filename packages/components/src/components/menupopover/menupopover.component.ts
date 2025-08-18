@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
+import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
@@ -168,7 +169,9 @@ class MenuPopover extends Popover {
     // make sure backdrop is set before showing the popover, but it does not change when popover is closing, otherwise
     // `super.isOpenUpdated` will skip the backdrop cleanup
     if (newValue) {
-      this.backdrop = !(this.triggerElement.tagName.toLowerCase() === MENUITEM_TAGNAME);
+      this.backdrop = ![MENUITEM_TAGNAME, NAVMENUITEM_TAGNAME].includes(
+        this.triggerElement.tagName.toLowerCase() as any,
+      );
     }
 
     // if the current menupopover is closed, close all submenus

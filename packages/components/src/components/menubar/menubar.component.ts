@@ -88,7 +88,7 @@ class MenuBar extends Component {
       const id = item.getAttribute('id');
       if (!id) return;
 
-      const submenu = this.querySelector?.(`${MENUPOPOVER_TAGNAME}[triggerid="${id}"]`) as MenuPopover;
+      const submenu = document.querySelector?.(`${MENUPOPOVER_TAGNAME}[triggerid="${id}"]`) as MenuPopover;
       if (submenu && submenu.visible) {
         subMenus.push(submenu);
       }
