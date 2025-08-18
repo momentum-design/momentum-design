@@ -136,8 +136,8 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
   constructor() {
     super();
     this.addEventListener('click', this.handleClickEvent.bind(this));
-    this.addEventListener('focusin', this.displayTooltipForLongText.bind(this));
-    this.addEventListener('mouseenter', this.displayTooltipForLongText.bind(this));
+    this.addEventListener('focusin', this.renderDynamicTooltip.bind(this));
+    this.addEventListener('mouseenter', this.renderDynamicTooltip.bind(this));
     this.addEventListener('focusout', this.removeTooltip.bind(this));
     this.addEventListener('mouseout', this.removeTooltip.bind(this));
   }
@@ -179,7 +179,7 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
     }
   }
 
-  private displayTooltipForLongText(): void {
+  private renderDynamicTooltip(): void {
     if (!this.tooltipText) {
       return;
     }

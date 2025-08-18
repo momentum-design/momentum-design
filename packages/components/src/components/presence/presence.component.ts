@@ -87,11 +87,11 @@ class Presence extends Component {
   private get iconSize() {
     switch (this.size) {
       case SIZE.MIDSIZE:
-        return 1.16125;
+        return 1.1875;
       case SIZE.LARGE:
-        return 1.30625;
+        return 1.3125;
       case SIZE.X_LARGE:
-        return 1.596875;
+        return 1.625;
       case SIZE.XX_LARGE:
         return 2.25;
       case SIZE.XX_SMALL:

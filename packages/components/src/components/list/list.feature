@@ -49,9 +49,23 @@ Feature: List Accessibility, User Interaction, and Focus Management
       Then focus should return to the first list item
 
     Scenario: Focus controls within list items
-      Given the list contains items with leading and trailing controls
+      Given the list contains items with interactive leading and trailing controls
+      When I press Tab
+      Then the first list item should receive focus
       When I press Tab repeatedly
       Then focus should move from the list item to each control in order
+
+    Scenario: Using Arrow Down for navigation
+      Given the list contains five items and the keyboard focus is on the fourth listitem
+      When I press ArrowDown
+      Then focus should move to the last item
+      When I press ArrowDown on the last item
+      Then focus should move to the first item
+
+    Scenario: Using Arrow Up for navigation
+      Given the list contains five items and the keyboard focus is on the second listitem
+      When I press ArrowUp
+      Then focus should move to the first item
       When I press ArrowUp on the first item
       Then focus should move to the last item
 
@@ -60,36 +74,43 @@ Feature: List Accessibility, User Interaction, and Focus Management
     Scenario: Click to focus list items
       Given the list contains multiple items
       When I click on a specific list item
-      Then that list item should receive focus
+      Then that list item should fire click event
 
   Rule: ✅ Disabled and Enabled States
 
     Scenario: Focus skips disabled list items
-      Given the list contains five items, some with disabled attribute
+      Given the list contains five items:
+        | index | label    | disabled |
+        | 1     | "Item 1" | false    |
+        | 2     | "Item 2" | true     |
+        | 3     | "Item 3" | false    |
+        | 4     | "Item 4" | true     |
+        | 5     | "Item 5" | false    |
       When I press Tab
-      Then focus should skip disabled items and move to the next enabled item
+      Then focus should move to "Item 1"
       When I press ArrowDown
-      Then focus should cycle through enabled items only
-
-    Scenario: Visual indication of disabled items
-      Given the list contains disabled items
-      When the list is rendered
-      Then disabled items should appear visually disabled
-      And have aria-disabled="true"
-
-  Rule: ✅ User Flows
+      Then focus should move to "Item 3"
+      When I press ArrowDown
+      Then focus should move to "Item 5"
+      When I press ArrowDown
+      Then focus should cycle back to "Item 1"
+      And focus should never land on disabled items ("Item 2" or "Item 4")
 
     Scenario: Focus all items in user flow
       Given the list contains five items
-      When I press Tab and ArrowDown repeatedly
-      Then each item should receive focus in order
+      When I press Tab
+      Then the first list item is focused.
+      When I press ArrowDown
+      Then the second list item should receive focus
       When I press ArrowUp
-      Then focus should move back through the items
+      Then focus should move back through the first list item
 
-    Scenario: Take visual regression screenshots for user flows
-      Given the list is rendered with disabled items
-      When I navigate to the last enabled item
-      Then a screenshot should be taken for visual regression
+    Scenario: Rowing index preserves focus on Shift+Tab
+      Given the list contains five items with rowing index enabled
+      And focus is on the third list item
+      When I press Tab to move to the next focusable element outside the list
+      And I press Shift+Tab
+      Then focus should return to the third list item
 
   Rule: ✅ ARIA and Accessibility Attributes
 
@@ -98,7 +119,3 @@ Feature: List Accessibility, User Interaction, and Focus Management
       Then the list should have role="list"
       And each item should have role="listitem"
       And disabled items should have aria-disabled="true"
-
-    Scenario: Controls have appropriate ARIA labels
-      Given the list contains items with controls
-      Then each control should have appropriate aria-label or data-aria-label

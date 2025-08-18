@@ -108,12 +108,14 @@ Feature: Listitem Accessibility and User Interaction
       When I navigate using Tab key
       Then focus should move to the listitem first
       When I press Tab again
-      Then focus should move to the first leading control
+      Then focus should move to the first leading control (checkbox)
       When I press Tab again
-      Then focus should move to the next leading control
+      Then focus should move to the next leading control (button)
+      When I press Tab again
+      Then focus should move out of the listitem (since there are not trailing controls
 
     Scenario: Focus management with trailing controls
-      Given the listitem has interactive trailing controls (button, toggle)
+      Given the listitem has interactive trailing controls
       When I navigate through the listitem with Tab
       Then focus should follow the logical order: listitem → leading controls → trailing controls
 
@@ -125,9 +127,10 @@ Feature: Listitem Accessibility and User Interaction
       But the interactive controls should be disabled and not focusable
 
     Scenario: Skip disabled listitem in focus order
-      Given the listitem is disabled
+      Given the listitem is disabled along with its controls in the disabled state
       When I navigate using Tab key
-      Then the listitem should be skipped in the focus order
+      Then the listitem should not receive focus
+      And the interactive controls within the listitem also skips the focus
       And focus should move to the next focusable element
 
   Rule: ✅ Mouse Interactions
@@ -220,11 +223,6 @@ Feature: Listitem Accessibility and User Interaction
       Then each label should be properly associated with the listitem
       And screen readers should announce all labels in logical order
 
-    Scenario: Controls accessibility with ARIA labels
-      Given the listitem has interactive controls
-      Then each control should have appropriate aria-label or data-aria-label
-      And controls should be properly described for screen readers
-
   Rule: ✅ Content Slots and Layout Management
 
     Scenario: Leading controls slot management
@@ -249,34 +247,6 @@ Feature: Listitem Accessibility and User Interaction
       Then all elements should be properly positioned
       And the hierarchy should be visually clear
       And spacing should follow design guidelines
-
-  Rule: ✅ Event Handling and Propagation
-
-    Scenario: Click event propagation from listitem
-      Given the listitem is in a container
-      When I click on the listitem (not on controls)
-      Then the click event should be properly dispatched
-      And event details should be accessible
-
-    Scenario: Click event isolation for controls
-      Given the listitem has interactive controls
-      When I click on a control
-      Then the control's click event should fire
-      But the listitem's click event should not fire
-      And event propagation should be properly managed
-
-    Scenario: Keyboard event propagation
-      Given the listitem is focused
-      When I press keys
-      Then keydown and keyup events should be properly dispatched
-      And event details should be accessible
-
-    Scenario: Focus and blur events
-      Given the listitem is rendered
-      When the listitem receives focus
-      Then a focus event should be triggered
-      When focus moves away from the listitem
-      Then a blur event should be triggered
 
   Rule: ✅ ScreenReader Accessibility
 
