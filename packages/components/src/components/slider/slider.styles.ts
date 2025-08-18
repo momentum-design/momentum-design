@@ -3,14 +3,11 @@ import { css } from 'lit';
 const styles = css`
   :host {
     width: 100%;
-    --mdc-slider-track-color: var(--mds-color-theme-control-indicator-inactive-normal);
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-normal);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-normal);
-    --mdc-slider-progress-color: var(--mds-color-theme-control-active-normal);
-    --mdc-slider-thumb-size: 23px;
+    --mdc-slider-thumb-size: 1.4375rem;
+    --mdc-slider-track-height: 2rem;
     --mdc-slider-tick-color: #bdbdbd;
-    --mdc-slider-disabled-opacity: 0.4;
-    --mdc-slider-soft-disabled-opacity: 0.7;
   }
 
   :host::part(slider-label) {
@@ -29,7 +26,7 @@ const styles = css`
 
   :host::part(slider-track) {
     width: 100%;
-    height: 32px;
+    height: var(--mdc-slider-track-height);
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -50,15 +47,13 @@ const styles = css`
     appearance: none;
     width: 100%;
     height: 0.5rem;
-    background: var(--mdc-slider-track-color);
     border-radius: 0.25rem;
     outline: none;
     position: relative;
-    z-index: 2;
     margin: 0;
     cursor: pointer;
-    transition: background 0.2s;
   }
+
   input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -66,11 +61,14 @@ const styles = css`
     height: var(--mdc-slider-thumb-size);
     background: var(--mdc-slider-thumb-color);
     border-radius: 50%;
-    /* box-shadow: -60rem 0 0 60rem var(--mdc-slider-progress-color); */
     border: 1px solid var(--mdc-slider-thumb-border-color);
-    transition:
-      background 0.2s,
-      box-shadow 0.2s;
+  }
+
+  :host::part(slider-tooltip) {
+    /* make this position dynamic, above slider thumb */
+    position: absolute;
+    top: 1rem;
+    left: 50%;
   }
 
   /* :host::part(slider-ticks) {
@@ -80,7 +78,6 @@ const styles = css`
     top: 50%;
     height: 4px;
     pointer-events: none;
-    z-index: 1;
   }
   :host::part(slider-tick) {
     position: absolute;
@@ -100,6 +97,7 @@ const styles = css`
     background: #003e6b;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   } */
+
   input[type='range']:focus::-webkit-slider-thumb {
     /* replace this with focus ring */
     outline: 2px solid #0072ce;
@@ -152,18 +150,6 @@ const styles = css`
   input[type='range']:focus::-ms-thumb {
     outline: 2px solid #0072ce;
     outline-offset: 2px;
-  }
-  input[type='range']:disabled {
-    opacity: var(--mdc-slider-disabled-opacity);
-    cursor: not-allowed;
-  }
-  :host([disabled]) input[type='range'] {
-    opacity: var(--mdc-slider-disabled-opacity);
-    cursor: not-allowed;
-  }
-  :host([soft-disabled]) input[type='range'] {
-    opacity: var(--mdc-slider-soft-disabled-opacity);
-    cursor: not-allowed;
   }
 `;
 

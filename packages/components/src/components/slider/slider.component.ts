@@ -1,5 +1,6 @@
-import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
+import type { CSSResult, PropertyValueMap } from 'lit';
+import { html, nothing } from 'lit';
+import { property, query } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
@@ -152,16 +153,39 @@ class Slider extends Component {
    */
   @property({ type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
 
-  // Icons
+  @query('input[type="range"]')
+  protected inputElement!: HTMLInputElement;
+
+  protected override updated(changedProperties: PropertyValueMap<Slider>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value') || changedProperties.has('disabled') || changedProperties.has('softDisabled')) {
+      this.updateTrackStyling();
+    }
+  }
+
   iconTemplate(icon: string | undefined, part: string) {
     return typeof icon === 'string' && icon.length > 0
       ? html`<mdc-icon name="${icon as IconName}" part="${part}" length-unit="rem" size="1.25"></mdc-icon>`
       : null;
   }
 
-  // Tooltip
   tooltipTemplate(val: number | string | undefined, label: string | undefined) {
     return html` <div part="slider-tooltip">${label || val}</div> `;
+  }
+
+  updateTrackStyling() {
+    if (!this.inputElement) return;
+
+    const value = Number(this.value ?? this.inputElement.value);
+    const max = Number(this.inputElement.max) || 1;
+    const progress = Math.max(0, Math.min(100, (value / max) * 100));
+    let progressColor = `var(--mds-color-theme-control-active-normal)`;
+    let trackColor = `var(--mds-color-theme-control-indicator-inactive-normal)`;
+    if (this.disabled || this.softDisabled) {
+      progressColor = `var(--mds-color-theme-control-active-disabled)`;
+      trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
+    }
+    this.inputElement.style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
   }
 
   public override render() {
@@ -176,12 +200,19 @@ class Slider extends Component {
       ${this.label ? html`<label part="slider-label">${this.label}</label>` : null}
       <div part="slider-track">
         ${this.iconTemplate(this.leadingIcon, 'leading-icon')}
-        <div part="slider-ticks">
-          ${ticks.map(
-            tick =>
-              html`<span part="slider-tick" style="left:${((tick - this.min) / (this.max - this.min)) * 100}%"></span>`,
-          )}
-        </div>
+        ${this.step > 1
+          ? html`
+              <div part="slider-ticks">
+                ${ticks.map(
+                  tick =>
+                    html`<span
+                      part="slider-tick"
+                      style="left:${((tick - this.min) / (this.max - this.min)) * 100}%"
+                    ></span>`,
+                )}
+              </div>
+            `
+          : nothing}
         ${this.range
           ? html`
               <input
