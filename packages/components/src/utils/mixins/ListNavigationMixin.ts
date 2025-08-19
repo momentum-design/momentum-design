@@ -6,32 +6,26 @@ import { KEYS } from '../keys';
 
 import type { Constructor } from './index.types';
 
-export declare class ListNavigationMixinInterface {}
-
-interface ListNavigationMixinOptions {
+export declare abstract class ListNavigationMixinInterface {
   /**
-   * Name of the property that will be used to store the items in the component.
-   * @default 'items'
-   */
-  itemsPropertyName?: string;
-  /**
-   * Weather the list should loop back to the other end when reaching the first of last item.
+   * Whether to loop navigation when reaching the end of the list.
+   * If true, pressing the down arrow on the last item will focus the first item,
+   * and pressing the up arrow on the first item will focus the last item.
+   * If false, navigation will stop at the first or last item.
+   *
    * @default true
    */
-  loop: boolean;
+  protected loop: boolean;
+
   /**
-   * Whether to propagate key events to parent elements.
-   * If set to true, all key events (and not just the unhandled ones) will bubble up and can be handled by parent components.
+   * Whether to propagate all key events to parent components.
+   * If true, all key events will bubble up and can be handled by parent components.
+   * If false, navigation key events handled by this mixin will not propagate further.
+   *
    * @default false
    */
-  propagateAllKeyEvents?: boolean;
+  protected propagateAllKeyEvents: boolean;
 }
-
-const DEFAULT_OPTIONS: ListNavigationMixinOptions = {
-  loop: true,
-  itemsPropertyName: 'items',
-  propagateAllKeyEvents: false,
-};
 
 /**
  * This mixin extends the passed class with list like navigation capabilities.
@@ -39,23 +33,30 @@ const DEFAULT_OPTIONS: ListNavigationMixinOptions = {
  * It handles up and down arrow keys, home and end keys to navigate through a list of items.
  * Key mapping aligned to reading direction (RTL or LTR).
  *
+ * @example
+ * ```ts
+ * class MyComponent extends ListNavigationMixin(Component) {
+ *   protected override loop = false; // Enable looping navigation
+ *
+ *   protected get navItems() {
+ *      return this.shadowRoot?.querySelectorAll('.mdc-listitem') || [];
+ *   }
+ * }
+ * ```
  * @param superClass - The class to extend with the mixin.
- * @param options - Options to configure the mixin behavior.
  */
-export const ListNavigationMixin = <T extends Constructor<LitElement>>(
-  superClass: T,
-  options?: ListNavigationMixinOptions,
-) => {
-  const { itemsPropertyName, loop, propagateAllKeyEvents } = { ...DEFAULT_OPTIONS, ...options };
+export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+  abstract class InnerMixinClass extends superClass {
+    /** @see ListNavigationMixinInterface.loop */
+    protected loop: boolean = true;
 
-  class InnerMixinClass extends superClass {
+    /** @see ListNavigationMixinInterface.propagateAllKeyEvents */
+    protected propagateAllKeyEvents = false;
+
     /**
      *  Get list items from the passed property
      */
-    private get navItems(): HTMLElement[] {
-      // @ts-ignore
-      return (this[itemsPropertyName] as HTMLElement[]) || [];
-    }
+    protected abstract get navItems(): HTMLElement[];
 
     constructor(...rest: any[]) {
       super(...rest);
@@ -67,7 +68,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(
     /**
      * Reset tabindex and set focus to the first item in the list after the component is first updated.
      *
-     * @param changedProperties
+     * @param changedProperties - The properties that have changed since the last update.
      */
     override async firstUpdated(changedProperties: PropertyValues) {
       await super.firstUpdated(changedProperties);
@@ -112,7 +113,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(
         }
         case KEYS.ARROW_DOWN: {
           // Move focus to the next item
-          const eolIndex = loop ? 0 : currentIndex;
+          const eolIndex = this.loop ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           isKeyHandled = true;
@@ -120,7 +121,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(
         }
         case KEYS.ARROW_UP: {
           // Move focus to the prev item
-          const eolIndex = loop ? this.navItems.length - 1 : currentIndex;
+          const eolIndex = this.loop ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           isKeyHandled = true;
@@ -132,7 +133,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(
 
       // When the component consume any of the pressed key, we need to stop propagation
       // to prevent the event from bubbling up and being handled by parent components which might use the same key.
-      if (isKeyHandled && !propagateAllKeyEvents) {
+      if (isKeyHandled && !this.propagateAllKeyEvents) {
         event.stopPropagation();
         event.preventDefault();
       }
@@ -162,11 +163,13 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(
     /**
      * Reset all tabindex to -1 and set the tabindex of the current item to 0
      *
-     * @param currentIndex - The index of the currently focused item.
+     * @param index - The index of the currently focused item.
      */
-    private resetTabIndexes(currentIndex: number) {
+    private resetTabIndexes(index: number) {
       if (this.navItems.length > 0) {
         this.navItems.forEach(item => item.setAttribute('tabindex', '-1'));
+        const currentIndex = this.navItems[index] ? index : 0;
+
         this.navItems[currentIndex].setAttribute('tabindex', '0');
         this.navItems[currentIndex].focus();
       }

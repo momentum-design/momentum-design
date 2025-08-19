@@ -10,6 +10,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
@@ -72,7 +73,7 @@ import { ListItemEventManager } from './listitem.events';
  * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
-class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
+class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -159,13 +160,6 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.role = this.role || ROLE.LISTITEM;
     // Add a unique id to the listitem if it does not have one.
     this.id = this.id || generateListItemId();
-
-    ListItemEventManager.onCreatedListItem(this);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    ListItemEventManager.onDestroyedListItem(this);
   }
 
   /**
@@ -276,9 +270,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
+        this.dispatchModifiedEvent('disabled');
         ListItemEventManager.onDisableListItem(this);
       } else {
         element.removeAttribute('disabled');
+        this.dispatchModifiedEvent('enabled');
         ListItemEventManager.onEnableListItem(this);
       }
     });

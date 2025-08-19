@@ -5,19 +5,13 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 import '../option';
 import '../optgroup';
 import '../divider';
 import ListBox from './listbox.component';
-//
-// import type Select from './select.component';
-
-const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
@@ -29,17 +23,6 @@ const render = (args: Args) =>
   wrapWithDiv(html`
     <mdc-listbox
       @change="${action('onchange')}"
-      @click="${action('onclick')}"
-      @keydown="${action('onkeydown')}"
-      @focus="${action('onfocus')}"
-      label="${args.label}"
-      ?required="${args.required}"
-      help-text-type="${args['help-text-type']}"
-      help-text="${args['help-text']}"
-      height="${args.height}"
-      data-aria-label="${args['data-aria-label']}"
-      toggletip-text="${args['toggletip-text']}"
-      toggletip-placement="${args['toggletip-placement']}"
       name="${args.name}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
@@ -68,43 +51,17 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    required: {
-      control: 'boolean',
-    },
     disabled: {
       control: 'boolean',
     },
     readonly: {
       control: 'boolean',
     },
-    'help-text': {
-      control: 'text',
-    },
-    'help-text-type': {
-      control: 'select',
-      description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
-      options: helpTextTypes,
-    },
-    'info-icon-aria-label': {
-      control: 'text',
-    },
-    'data-aria-label': {
-      control: 'text',
-    },
-    'toggletip-text': {
-      control: 'text',
-    },
-    'toggletip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
-    },
-    height: {
-      control: 'text',
-    },
     'soft-disabled': {
       control: 'boolean',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...textControls(['--mdc-listbox-max-height']),
+    ...hideControls(['id', 'value', 'default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -115,15 +72,8 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Headquarters location',
-    required: true,
-    placeholder: 'Select your headquarters location',
     disabled: false,
     readonly: false,
-    'help-text': 'Select Help Text',
-    'help-text-type': '',
-    'data-aria-label': 'Select label',
-    height: 'auto',
-    placement: 'bottom-start',
   },
 };
 

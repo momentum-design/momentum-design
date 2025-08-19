@@ -4,11 +4,12 @@ import { property, state } from 'lit/decorators.js';
 import List from '../list';
 import type Option from '../option';
 import { TAG_NAME as OPTION_TAGNAME } from '../option/option.constants';
-import { TAG_NAME as OPTGROUP_TAGNAME } from '../optgroup/optgroup.constants';
 import { ROLE } from '../../utils/roles';
-import { ItemsLifeCycleManagerMixin } from '../../utils/mixins/ItemsLifeCycleManagerMixin';
+import { DestroyItemMixin } from '../../utils/mixins/lifecycle/ItemsLifeCycleManagerMixin';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
+import { ItemCollectionMixin } from '../../utils/mixins/ItemCollectionMixin';
+import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 
 import styles from './listbox.styles';
 
@@ -36,12 +37,12 @@ import styles from './listbox.styles';
  *
  *
  */
-class ListBox extends ListNavigationMixin(ItemsLifeCycleManagerMixin<Option, typeof Component>(Component), {
+class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Component>(DestroyItemMixin(Component))) {
+  public static override styles: Array<CSSResult> = [...List.styles, ...styles];
+
   // According to WCAG this is the expected behavior for listbox
   // https://www.w3.org/WAI/ARIA/apg/practices/listbox
-  loop: false,
-}) {
-  public static override styles: Array<CSSResult> = [...List.styles, ...styles];
+  protected override loop = false;
 
   /**
    * The name attribute is used to identify the listbox
@@ -60,30 +61,21 @@ class ListBox extends ListNavigationMixin(ItemsLifeCycleManagerMixin<Option, typ
     super();
     this.role = ROLE.LISTBOX;
     this.addEventListener('click', this.handleClick);
+    this.addEventListener('modified', this.handleModifiedEvent);
   }
 
-  /**
-   * Collects listbox's options for navigation and selection.
-   */
-  override collectItems() {
-    const slot = this.renderRoot.querySelector('slot:not([name])') as HTMLSlotElement;
+  handleModifiedEvent(event: LifeCycleModifiedEvent) {
+    const item = event.target as Option;
 
-    if (!slot) {
-      this.setItemCache([]);
-      return;
+    if (event.change === 'enabled') {
+      this.addItemToCacheAt(item);
+    } else if (event.change === 'disabled') {
+      this.removeItemFromCache(item);
     }
+  }
 
-    const elements = slot.assignedElements();
-    this.setItemCache(
-      elements.reduce((list, el) => {
-        if (this.isValidItem(el)) {
-          list.push(el as Option);
-        } else if (el.matches(OPTGROUP_TAGNAME)) {
-          list.push(...(el.querySelectorAll(`${OPTION_TAGNAME}:not([disabled])`) as unknown as Option[]));
-        }
-        return list;
-      }, [] as Option[]),
-    );
+  protected get navItems(): HTMLElement[] {
+    return this.items;
   }
 
   override isValidItem(item: Element): boolean {
@@ -91,7 +83,10 @@ class ListBox extends ListNavigationMixin(ItemsLifeCycleManagerMixin<Option, typ
   }
 
   handleClick(event: MouseEvent): void {
-    this.setSelectedOption(event.target as Option);
+    const target = event.target as HTMLElement;
+    if (this.isValidItem(target)) {
+      this.setSelectedOption(target as Option);
+    }
   }
 
   getFirstSelectedOption() {
