@@ -1,0 +1,1 @@
+import{C as e,u as t}from"./provider.component-DrWB4byV.js";import{R as s}from"./roles-CJI3JVG-.js";class o extends e{connectedCallback(){super.connectedCallback(),this.role=s.LISTBOX}createRenderRoot(){return this}}const c=t.constructTagName("selectlistbox");o.register(c);
