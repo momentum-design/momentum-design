@@ -263,10 +263,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   override backdropAppendTo?: string;
 
   /**
-   * Set this property to true to make the backdrop invisible (if `backdrop` is true).
-   * This is useful for components that do want a backdrop which stops interaction,
-   * but do not want the backdrop to be visible as a overlay.
-   * @default false
+   * Set this property to false to make the backdrop a dimmed visible backdrop (if `backdrop` is true).
+   * This is useful for cases where the popovers backdrop should get dimmed.
+   *
+   * @default true - default is to have a invisible backdrop
    */
   @property({ type: Boolean, reflect: true, attribute: 'is-backdrop-invisible' })
   override isBackdropInvisible?: boolean = DEFAULTS.IS_BACKDROP_INVISIBLE;
