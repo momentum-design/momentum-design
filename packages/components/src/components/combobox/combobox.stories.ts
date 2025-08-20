@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../selectlistbox';
 import '../option';
+import '../button';
 import { html } from 'lit';
 
 import { textControls } from '../../../config/storybook/utils';
@@ -31,6 +32,9 @@ const render = (args: Args) =>
         <mdc-option label="Denmark"></mdc-option>
       </mdc-selectlistbox>
     </mdc-combobox>
+    <!-- TODO: remove this below code -->
+    <br /><br /><br /><br /><br /><br />
+    <mdc-button>Button</mdc-button>
   </div>`;
 
 const meta: Meta = {
