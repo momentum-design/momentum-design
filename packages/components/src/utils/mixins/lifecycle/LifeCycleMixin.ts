@@ -20,6 +20,8 @@ export declare class LifeCycleMixinInterface {
  * Emits 'created' and 'destroyed' events when the component is connected or disconnected from the DOM.
  * Also provides a method to dispatch 'LifeCycleModifiedEvent' for changes in the component's state.
  *
+ * Use {@link CaptureDestroyEventForChildElement} to propagate the "destroyed" events to the parent component.
+ *
  * @example
  * ```ts
  *  // Add disabled state change event

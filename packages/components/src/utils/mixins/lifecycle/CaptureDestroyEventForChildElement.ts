@@ -5,7 +5,7 @@ import type { Constructor } from '../index.types';
 
 import { LIFE_CYCLE_EVENTS } from './lifecycle.contants';
 
-export declare class ItemsLifeCycleManagerMixinInterface {}
+export declare class CaptureDestroyEventForChildElementInterface {}
 
 /**
  * Mixin to re-dispatch elements destroy event.
@@ -74,5 +74,5 @@ export const CaptureDestroyEventForChildElement = <T extends Constructor<LitElem
     };
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<ItemsLifeCycleManagerMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<CaptureDestroyEventForChildElementInterface> & T;
 };
