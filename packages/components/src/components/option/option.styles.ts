@@ -30,10 +30,13 @@ const styles = [
       /** 2x of leading and trailing icon width + 2x of column gap on both sides of the label text */
       width: calc(100% - (2 * var(--mdc-option-icon-width)) - (2 * var(--mdc-listitem-column-gap)));
     }
-    :host(.mdc-option--focused) {
+    :host([data-focused]) {
       outline: none;
       position: relative;
       box-shadow: ${focusRingBoxShadow};
+    }
+    :host([data-hidden]) {
+      display: none;
     }
   `,
 ];
