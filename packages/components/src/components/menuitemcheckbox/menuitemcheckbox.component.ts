@@ -160,23 +160,25 @@ class MenuItemCheckbox extends MenuItem {
 
   public override render() {
     return html`
-      <div part="leading">
-        ${this.staticCheckbox()}
-        <slot name="leading-controls"></slot>
-        <div part="leading-text">
-          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
-          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+      <slot name="content">
+        <div part="leading">
+          ${this.staticCheckbox()}
+          <slot name="leading-controls"></slot>
+          <div part="leading-text">
+            ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+            ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+            ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+          </div>
         </div>
-      </div>
-      <div part="trailing">
-        <div part="trailing-text">
-          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
-          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+        <div part="trailing">
+          <div part="trailing-text">
+            ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
+            ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+          </div>
+          <slot name="trailing-controls"></slot>
+          ${this.staticToggle()} ${this.getCheckmarkIcon()}
         </div>
-        <slot name="trailing-controls"></slot>
-        ${this.staticToggle()} ${this.getCheckmarkIcon()}
-      </div>
+      </slot>
     `;
   }
 
