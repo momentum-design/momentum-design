@@ -54,23 +54,14 @@ describe('@momentum-design/builder - Image Transformer', () => {
       expect(result).toEqual({
         ...file,
         distPath: '/dist/test.ts',
-        partName: 'brandvisualImage',
-        data: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="test.png" />',
+        // eslint-disable-next-line max-len
+        data: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
       });
 
       expect(templateSpy).toHaveBeenCalledWith({
-        imageData: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="test.png" />',
+        // eslint-disable-next-line max-len
+        imageData: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
       });
-    });
-
-    it('should throw error if manifest fails to load', async () => {
-      jest.spyOn(transformer as any, 'loadManifest').mockImplementation(() => {
-        throw new Error('manifest load failed');
-      });
-
-      const file = { srcPath: '/src/test.png', data: '' };
-
-      await expect(transformer.convertToImageTemplate(file)).rejects.toThrow('manifest load failed');
     });
   });
 
@@ -87,8 +78,8 @@ describe('@momentum-design/builder - Image Transformer', () => {
         {
           srcPath: 'image.png',
           distPath: '/dist/image.ts',
-          partName: 'brandvisualImage',
-          data: '<img aria-hidden="true" part="brandvisualImage" data-name="image" src="image.png" />',
+          // eslint-disable-next-line max-len
+          data: '<img aria-hidden="true" part="brandvisualImage" data-name="image" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
         },
       ]);
     });

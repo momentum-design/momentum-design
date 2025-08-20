@@ -9,8 +9,7 @@ const brandvisualsExampleFile = require.resolve(
 
 const root = process.cwd();
 const playwrightPublicDist = path.join(root, 'playwright-temp', 'brandvisuals', 'index.ts');
-//  To keep the paths for accessing static resources consistent (storybook and documentation), we added the momentum-design path here.
-const storybookPublicDist = path.join(root, 'config', 'storybook', 'public', 'momentum-design', 'brandvisuals');
+const storybookPublicDist = path.join(root, 'config', 'storybook', 'public', 'brandvisuals');
 
 const copyToDest = (srcDir, destDir) => {
   try {
