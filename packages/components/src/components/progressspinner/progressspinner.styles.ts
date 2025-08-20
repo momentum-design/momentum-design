@@ -37,12 +37,15 @@ const styles = css`
   }
 
   :host::part(success-icon) {
+    --mdc-icon-size: var(--mdc-spinner-size);
     color: var(--mdc-progress-success-color);
   }
 
   :host::part(error-icon) {
+    --mdc-icon-size: calc(2 / 3 * var(--mdc-spinner-size));
+
     color: var(--mdc-progress-error-color);
-    margin: 0.5rem;
+    margin: calc(1 / 6 * var(--mdc-spinner-size));
   }
 `;
 
