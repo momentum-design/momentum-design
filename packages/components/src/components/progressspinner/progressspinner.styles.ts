@@ -12,14 +12,14 @@ const styles = css`
   }
 
   :host::part(spinner-container) {
-    width: 3rem;
-    height: 3rem;
+    width: var(--mdc-spinner-size);
+    height: var(--mdc-spinner-size);
     position: relative;
   }
 
   :host::part(spinner-base) {
-    width: var(--mdc-spinner-size);
-    height: var(--mdc-spinner-size);
+    width: 100%;
+    height: 100%;
     rotate: -90deg;
   }
 
