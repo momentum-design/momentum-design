@@ -67,12 +67,10 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private closePopover(): void {
-    console.log('closing now');
     this.isOpen = false;
   }
 
   private openPopover(): void {
-    console.log('opening now');
     this.isOpen = true;
   }
 
@@ -101,12 +99,16 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     slottedListBox.setAttribute('aria-labelledby', TRIGGER_ID);
   }
 
+  private compareValueAndLabel(value: string, label: string): boolean {
+    return value.toLowerCase().startsWith(label.toLowerCase());
+  }
+
   private getAllValidOptions(): Array<Option> {
     return Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTION_TAG_NAME) || []);
   }
 
   private getVisibleOptions(): Array<Option> {
-    return this.getAllValidOptions().filter(option => option.label?.toLowerCase().startsWith(this.value.toLowerCase()));
+    return this.getAllValidOptions().filter(option => this.compareValueAndLabel(option.label ?? '', this.value));
   }
 
   private setSelectedValue(value: string): void {
@@ -123,24 +125,15 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     });
   }
 
-  private resetAriaSelected(options: Array<Option>, newIndex: number, oldIndex: number) {
-    if (newIndex === oldIndex) return;
-    options[oldIndex]?.setAttribute('aria-selected', 'false');
-    options[newIndex]?.setAttribute('aria-selected', 'true');
-  }
-
   private handleBlurChange() {
-    console.log('blurring in');
+    this.closePopover();
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
-    console.log(getLastFocusedOptionIndex);
     if (getLastFocusedOptionIndex === -1) return;
     this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
-    this.closePopover();
   }
 
   private handleInputKeydown(event: KeyboardEvent) {
-    console.log('input in');
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
@@ -184,7 +177,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       }
       case KEYS.ENTER: {
         this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
-        this.closePopover();
+        if (this.isOpen === true) {
+          this.closePopover();
+        }
         break;
       }
       default: {
@@ -196,32 +191,19 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   private handleInputChange(event: Event) {
     const target = event.target as HTMLInputElement;
     this.setSelectedValue(target.value);
+    const options = this.getAllValidOptions();
+    this.resetOptionFocusedClass();
+    options.forEach(option => {
+      if (!this.compareValueAndLabel(option.label ?? '', this.value)) {
+        option.setAttribute('data-hidden', '');
+      } else {
+        option.removeAttribute('data-hidden');
+      }
+    });
+    if (this.isOpen === false) {
+      this.openPopover();
+    }
   }
-
-  // protected override updated(changedProperties: PropertyValues): void {
-  //   if (changedProperties.has('value')) {
-  //     console.log('updated in');
-  //     const options = this.getAllValidOptions();
-  //     this.resetOptionFocusedClass();
-  //     options.forEach(option => {
-  //       if (!option.label?.toLowerCase().startsWith(this.value.toLowerCase())) {
-  //         option.setAttribute('data-hidden', '');
-  //       } else {
-  //         option.removeAttribute('data-hidden');
-  //       }
-  //     });
-  //     // const hiddenOptionsCount = options.filter(option => option.hasAttribute('data-hidden')).length;
-  //     // if (hiddenOptionsCount && this.noResultText) {
-  //     //   this.isOpen = false;
-  //     // }
-  //     // On change of value, if the dropdown is closed, open it.
-  //     console.log(this.isOpen, this.dontOpenAgain);
-  //     if (this.isOpen === false && this.dontOpenAgain) {
-  //       this.dontOpenAgain = false;
-  //       this.openPopover();
-  //     }
-  //   }
-  // }
 
   public override render() {
     return html`
@@ -231,10 +213,10 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           <mdc-input
             value="${this.value}"
             ?disabled="${this.disabled}"
-            @click="${this.handleClick}"
-            @keyup="${this.handleInputKeydown}"
             @blur="${this.handleBlurChange}"
+            @click="${this.handleClick}"
             @input="${this.handleInputChange}"
+            @keyup="${this.handleInputKeydown}"
             role="${ROLE.COMBOBOX}"
             placeholder="${this.placeholder}"
             aria-expanded="${this.isOpen.toString()}"
