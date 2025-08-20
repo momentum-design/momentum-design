@@ -26,9 +26,21 @@ export declare abstract class ListNavigationMixinInterface {
    */
   protected propagateAllKeyEvents: boolean;
 
-  protected resetTabIndexes(index: number);
+  /**
+   * Reset all tabindex to -1 and set the tabindex of the current item to 0
+   *
+   * @param index - The index of the currently focused item.
+   */
+  protected resetTabIndexes(index: number): void;
 
-  protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number);
+  /**
+   * Resets the tabindex of the currently focused item and sets focus to a new item.
+   *
+   * @param newIndex - The index of the new item to focus.
+   * @param oldIndex - The index of the currently focused item.
+   * @returns - This method does not return anything.
+   */
+  protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number): void;
 }
 
 /**
@@ -164,11 +176,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
       return this.navItems.findIndex(node => node === target);
     }
 
-    /**
-     * Reset all tabindex to -1 and set the tabindex of the current item to 0
-     *
-     * @param index - The index of the currently focused item.
-     */
+    /** @see ListNavigationMixinInterface.resetTabIndexes */
     protected resetTabIndexes(index: number) {
       if (this.navItems.length > 0) {
         this.navItems.forEach(item => item.setAttribute('tabindex', '-1'));
@@ -179,13 +187,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
       }
     }
 
-    /**
-     * Resets the tabindex of the currently focused item and sets focus to a new item.
-     *
-     * @param newIndex - The index of the new item to focus.
-     * @param oldIndex - The index of the currently focused item.
-     * @returns - This method does not return anything.
-     */
+    /** @see ListNavigationMixinInterface.resetTabIndexAndSetFocus */
     protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number) {
       const { navItems } = this;
 
