@@ -76,6 +76,8 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import Combobox from './components/combobox';
+import Slider from './components/slider';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -177,6 +179,8 @@ export {
   ToggleTip,
   Tooltip,
   VirtualizedList,
+  Combobox,
+  Slider,
 };
 
 // Types Exports
