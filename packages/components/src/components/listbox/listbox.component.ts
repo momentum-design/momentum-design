@@ -5,11 +5,11 @@ import List from '../list';
 import type Option from '../option';
 import { TAG_NAME as OPTION_TAGNAME } from '../option/option.constants';
 import { ROLE } from '../../utils/roles';
-import { DestroyItemMixin } from '../../utils/mixins/lifecycle/DestroyItemMixin';
+import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
-import { ItemCollectionMixin } from '../../utils/mixins/ItemCollectionMixin';
 import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
+import { ElementStore } from '../../utils/mixins/controllers/ElementStore';
 
 import styles from './listbox.styles';
 
@@ -37,7 +37,7 @@ import styles from './listbox.styles';
  *
  *
  */
-class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Component>(DestroyItemMixin(Component))) {
+class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Component)) {
   public static override styles: Array<CSSResult> = [...List.styles, ...styles];
 
   // According to WCAG this is the expected behavior for listbox
@@ -57,28 +57,34 @@ class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Com
   /** @internal */
   @state() selectedOption?: Option | null;
 
+  private itemsStore = new ElementStore<Option>(this, this.isValidItem);
+
   constructor() {
     super();
-    this.role = ROLE.LISTBOX;
     this.addEventListener('click', this.handleClick);
     this.addEventListener('modified', this.handleModifiedEvent);
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.role = ROLE.LISTBOX;
   }
 
   handleModifiedEvent(event: LifeCycleModifiedEvent) {
     const item = event.target as Option;
 
-    if (event.change === 'enabled') {
-      this.addItemToCacheAt(item);
-    } else if (event.change === 'disabled') {
-      this.removeItemFromCache(item);
+    if (event.detail.change === 'enabled') {
+      this.itemsStore.add(item);
+    } else if (event.detail.change === 'disabled') {
+      this.itemsStore.delete(item);
     }
   }
 
   protected get navItems(): HTMLElement[] {
-    return this.items;
+    return this.itemsStore.items;
   }
 
-  override isValidItem(item: Element): boolean {
+  private isValidItem(item: Element): boolean {
     return item.matches(`${OPTION_TAGNAME}:not([disabled])`);
   }
 
@@ -90,7 +96,7 @@ class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Com
   }
 
   getFirstSelectedOption() {
-    return this.items.find(el => el.matches('[selected]'));
+    return this.itemsStore.items.find(el => el.matches('[selected]'));
   }
 
   /**
@@ -114,7 +120,7 @@ class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Com
    */
   override updated(changedProperties: PropertyValues): void {
     if (changedProperties.has('value')) {
-      const newSelectedOption = this.items.find(option => option.value === this.value);
+      const newSelectedOption = this.itemsStore.items.find(option => option.value === this.value);
       if (newSelectedOption) {
         this.setSelectedOption(newSelectedOption, false);
       } else {
@@ -150,7 +156,7 @@ class ListBox extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Com
    * @param selectedOption - The option which gets selected
    */
   private updateSelectedInChildOptions(selectedOption: Option | null): void {
-    this.items.forEach(option => option.removeAttribute('selected'));
+    this.itemsStore.items.forEach(option => option.removeAttribute('selected'));
     selectedOption?.setAttribute?.('selected', 'true');
   }
 

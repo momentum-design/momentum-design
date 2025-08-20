@@ -32,7 +32,7 @@ export declare class ItemsLifeCycleManagerMixinInterface {}
  *
  * @param superClass - The class to extend with the mixin.
  */
-export const DestroyItemMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const CaptureDestroyEventForChildElement = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     constructor(...rest: any[]) {
       super(...rest);

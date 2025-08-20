@@ -1,3 +1,5 @@
+import { TypedCustomEvent } from '../../types';
+
 /**
  * Event fired when a modification occurs in the managed component.
  *
@@ -5,20 +7,10 @@
  *
  * @example
  * ```ts
- *  this.dispatchEvent(new LifeCycleModifiedEvent('disabled'));
+ *  this.dispatchEvent(new CustomEvent('modified', {change: 'disabled'}));
  * ```
  */
-export class LifeCycleModifiedEvent extends Event {
-  /**
-   * Describes the type of change that occurred.
-   */
-  public readonly change: string;
-
-  constructor(change: string) {
-    super('modified', { bubbles: true, composed: true });
-    this.change = change;
-  }
-}
+export type LifeCycleModifiedEvent = TypedCustomEvent<Element, { change: string }>;
 
 declare global {
   interface GlobalEventHandlersEventMap {

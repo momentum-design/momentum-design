@@ -64,9 +64,9 @@ export declare class ItemCollectionMixinInterface<TItem> {
  *    }
  *
  *    handleModifiedEvent(event: LifeCycleModifiedEvent) {
- *      if (event.change === 'enabled') {
+ *      if (event.details.change === 'enabled') {
  *         this.addItemToCacheAt(event.target);
- *      } else if (event.change === 'disabled') {
+ *      } else if (event.details.change === 'disabled') {
  *         this.removeItemFromCache(event.target)
  *      }
  *    }
