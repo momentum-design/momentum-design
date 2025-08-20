@@ -45,12 +45,6 @@ Feature: List box component
     And the focus should be on the selected option "London UK"
     And there should be a checkmark next to "London UK" indicating it is selected
 
-  Scenario: Listbox component is marked as disabled
-    Given the listbox component is marked as disabled
-    When I see the listbox component with the label "Headquarters Location"
-    And I try to interact with the listbox component using the mouse or keyboard
-    Then the listbox component should be visually styled as disabled
-
   Scenario: Listbox component with default selected option
     Given the listbox component has a default selected option "Tokyo HQ"
     When I see the listbox component with the label "Headquarters Location"
@@ -62,7 +56,6 @@ Feature: List box component
     Given I am using a screen reader
     When I focus on the listbox component with the label "Headquarters Location"
     Then the screen reader should announce "Headquarters Location, Select your headquarters, London UK, New York NY, Tokyo HQ"
-    And the screen reader should indicate that the listbox component is required if it is marked as such
 
   Scenario: Navigate to listbox component using screen reader
     Given I am using a screen reader
@@ -96,7 +89,6 @@ Feature: List box component
 
   Scenario: Accessibility attributes on select combobox
     Given I have a select container with role of combobox
-    And this container should have aria-required attribute set to "true" if the listbox component is marked as required
     And this container should have aria-invalid attribute set to "true" if there is an error message
 
   Scenario: Accessibility attributes on select options

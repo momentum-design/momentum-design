@@ -27,7 +27,7 @@ import styles from './listbox.styles';
  *
  * @tagname mdc-listbox
  *
- * @cssproperty --mdc-listbox-max-height - max height of the listbox.
+ * @cssproperty --mdc-listbox-max-height - max height of the listbox
  *
  * @slot default - This is a default/unnamed slot
  *

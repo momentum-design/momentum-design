@@ -26,7 +26,6 @@ const render = (args: Args) =>
       name="${args.name}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
-      ?readonly="${args.readonly}"
     >
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
@@ -54,9 +53,6 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    readonly: {
-      control: 'boolean',
-    },
     'soft-disabled': {
       control: 'boolean',
     },
@@ -72,8 +68,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Headquarters location',
-    disabled: false,
-    readonly: false,
+    disabled: true,
   },
 };
 
@@ -161,7 +156,7 @@ export const ListboxWithFixedHeight = {
       </mdc-listbox>
     `),
   argTypes: {
-    ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
+    ...disableControls(['name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
   },
 };
 
@@ -185,7 +180,7 @@ export const ListboxWithDynamicOptions: StoryObj = {
     `);
   },
   argTypes: {
-    ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
+    ...disableControls(['name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
   },
   ...hideAllControls(),
 };

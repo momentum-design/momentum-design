@@ -3,7 +3,6 @@ import { property } from 'lit/decorators.js';
 
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
-import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
@@ -12,10 +11,14 @@ import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { ItemCollectionMixin } from '../../utils/mixins/ItemCollectionMixin';
+import type Option from '../option';
+import { DestroyItemMixin } from '../../utils/mixins/lifecycle/ItemsLifeCycleManagerMixin';
+import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 
-import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
-import styles from './menupopover.styles';
 import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
+import styles from './menupopover.styles';
+import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.
@@ -61,7 +64,7 @@ import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
  *
  * @slot default - Contains the menu items to be displayed in the popover
  */
-class MenuPopover extends Popover {
+class MenuPopover extends ListNavigationMixin(ItemCollectionMixin<Option, typeof Popover>(DestroyItemMixin(Popover))) {
   /**
    * The placement of the popover.
    * - **top**
@@ -81,16 +84,17 @@ class MenuPopover extends Popover {
   @property({ type: String, reflect: true })
   override placement: PopoverPlacement = DEFAULTS.PLACEMENT;
 
-  private menuItems: Array<HTMLElement> = [];
-
   private menuItemsWithSubMenus: Array<HTMLElement> = [];
+
+  protected get navItems(): HTMLElement[] {
+    return this.items;
+  }
 
   constructor() {
     super();
-    this.addEventListener('keydown', this.handleKeyDown);
+    // this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
     this.addEventListener('click', this.handleMouseClick);
-    this.addEventListener('created', this.handleItemCreation);
   }
 
   /**
@@ -105,27 +109,6 @@ class MenuPopover extends Popover {
     const id = target.getAttribute('id');
     if (!id) return null;
     return this.parentElement?.querySelector?.(`${MENU_POPOVER}[triggerid="${id}"]`);
-  }
-
-  /** @internal */
-  private collectMenuItems() {
-    const slot = this.shadowRoot?.querySelector('slot');
-    const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-
-    this.menuItems = allAssignedElements
-      .map(node => {
-        if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
-          return Array.from(node.children).filter(child => isValidMenuItem(child)) as Array<HTMLElement>;
-        }
-        return isValidMenuItem(node) ? node : [];
-      })
-      .flat()
-      .filter(node => !!node && !node.hasAttribute('disabled'));
-
-    this.menuItemsWithSubMenus = this.menuItems.filter(item => {
-      const submenu = this.getSubMenuPopoverOfTarget(item);
-      return submenu;
-    });
   }
 
   /** @internal */
@@ -184,7 +167,7 @@ class MenuPopover extends Popover {
       });
     }
 
-    this.resetMenuNavigation();
+    // this.resetTabIndexAndSetFocus();
 
     return super.isOpenUpdated(oldValue, newValue);
   }
@@ -192,44 +175,8 @@ class MenuPopover extends Popover {
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
 
-    this.collectMenuItems();
     this.resetTabIndexes(0);
     this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
-  }
-
-  /**
-   * Reset all tabindex to -1 and set the tabindex of the current menu item to 0
-   *
-   * @param currentIndex - The index of the currently focused menu item.
-   */
-  private resetTabIndexes(currentIndex: number) {
-    if (this.menuItems.length > 0) {
-      this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
-      this.menuItems[currentIndex].setAttribute('tabindex', '0');
-      this.menuItems[currentIndex].focus();
-    }
-  }
-
-  /**
-   * Retrieves the current index of the menu item that triggered the event.
-   * @param target - The target element that triggered the event.
-   * @returns - The index of the current menu item in the `menuItems` array.
-   */
-  private getCurrentIndex(target: EventTarget | null): number {
-    return this.menuItems.findIndex(node => node === target);
-  }
-
-  /**
-   * Resets the tabindex of the currently focused menu item and sets focus to a new menu item.
-   * @param newIndex - The index of the new menu item to focus.
-   * @param oldIndex - The index of the currently focused menu item.
-   * @returns - This method does not return anything.
-   */
-  private resetTabIndexAndSetFocus(newIndex: number, oldIndex: number) {
-    if (newIndex === oldIndex) return;
-    this.menuItems[oldIndex].setAttribute('tabindex', '-1');
-    this.menuItems[newIndex].setAttribute('tabindex', '0');
-    this.menuItems[newIndex].focus();
   }
 
   /**
@@ -340,63 +287,6 @@ class MenuPopover extends Popover {
     this.fireMenuItemAction(target);
   }
 
-  private handleItemCreation = (event: Event) => {
-    const item = event.target as HTMLElement;
-
-    if (isValidMenuItem(item)) {
-      // Parent menu popover should not listen on nested menu items
-      event.stopImmediatePropagation();
-      // `destroyed` triggered in the `disconnectedCallback` of the item which executed when the item is removed from the DOM
-      // because of that the event does not bubble up to menupopover, and we need to capture the `destroyed` event on the item itself
-      item.addEventListener('destroyed', this.handleItemChangeEvent);
-      // `disabled` could bubble up, but it is more consistent to handle it the same way as `destroyed`
-      item.addEventListener('disabled', this.handleItemChangeEvent);
-    }
-  };
-
-  private handleItemChangeEvent = (event: Event) => {
-    event.stopImmediatePropagation();
-
-    if (event.target && event.type === 'destroyed') {
-      event.target.removeEventListener('destroyed', this.handleItemChangeEvent);
-      event.target.removeEventListener('disabled', this.handleItemChangeEvent);
-    }
-
-    this.resetMenuNavigation();
-  };
-
-  private resetMenuNavigation = () => {
-    // Re-collect menu items to ensure the list is up-to-date
-    this.collectMenuItems();
-    // Reset tab indexes to ensure at least one menu item is focusable
-    const focusableMenuItem = this.menuItems.find(item => item.getAttribute('tabindex') === '0');
-    if (!focusableMenuItem) {
-      this.resetTabIndexes(0);
-    }
-  };
-
-  /**
-   * Resolves the key pressed by the user based on the direction of the layout.
-   * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
-   * It checks if the layout is RTL and adjusts the arrow keys accordingly.
-   * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
-   * @param key - The key pressed by the user.
-   * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
-   * @returns - The resolved key based on the direction.
-   */
-  private resolveDirectionKey(key: string, isRtl: boolean) {
-    if (!isRtl) return key;
-
-    switch (key) {
-      case KEYS.ARROW_LEFT:
-        return KEYS.ARROW_RIGHT;
-      case KEYS.ARROW_RIGHT:
-        return KEYS.ARROW_LEFT;
-      default:
-        return key;
-    }
-  }
-
   /**
    * Handles keydown events for keyboard navigation within the menu popover.
    * This method allows users to navigate through the menu items using the keyboard.
@@ -407,93 +297,92 @@ class MenuPopover extends Popover {
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
-  private handleKeyDown = (event: KeyboardEvent) => {
-    let isKeyHandled = false;
-
-    this.collectMenuItems();
-    const target = event.target as HTMLElement;
-    const currentIndex = this.getCurrentIndex(target);
-    if (currentIndex === -1) return;
-    this.resetTabIndexes(currentIndex);
-
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-    const targetKey = this.resolveDirectionKey(event.key, isRtl);
-
-    switch (targetKey) {
-      case KEYS.HOME: {
-        // Move focus to the first menu item
-        this.resetTabIndexAndSetFocus(0, currentIndex);
-        isKeyHandled = true;
-        break;
-      }
-      case KEYS.END: {
-        // Move focus to the last menu item
-        this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
-        isKeyHandled = true;
-        break;
-      }
-      case KEYS.ARROW_DOWN: {
-        // Move focus to the next menu item
-        const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
-        this.resetTabIndexAndSetFocus(newIndex, currentIndex);
-        isKeyHandled = true;
-        break;
-      }
-      case KEYS.ARROW_UP: {
-        // Move focus to the prev menu item
-        const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
-        this.resetTabIndexAndSetFocus(newIndex, currentIndex);
-        isKeyHandled = true;
-        break;
-      }
-      case KEYS.ARROW_RIGHT: {
-        // If there is a submenu, open it.
-        const subMenu = this.getSubMenuPopoverOfTarget(target);
-        if (subMenu) {
-          subMenu.show();
-          isKeyHandled = true;
-        }
-        break;
-      }
-      case KEYS.ARROW_LEFT: {
-        // If the current popover is a submenu then close this popover.
-        if (isValidMenuPopover(this.parentElement)) {
-          this.hide();
-          this.resetTabIndexAndSetFocus(0, currentIndex);
-          isKeyHandled = true;
-        }
-        break;
-      }
-      case KEYS.ESCAPE: {
-        this.resetTabIndexAndSetFocus(0, currentIndex);
-        isKeyHandled = true;
-        break;
-      }
-      case KEYS.ENTER: {
-        if (!this.getSubMenuPopoverOfTarget(target)) {
-          this.closeAllMenuPopovers();
-          this.fireMenuItemAction(target);
-          isKeyHandled = true;
-        }
-        break;
-      }
-      case KEYS.SPACE: {
-        // Prevent page scroll when space is pressed down
-        isKeyHandled = true;
-        break;
-      }
-      default:
-        break;
-    }
-
-    // When menu consume any of the pressed key, we need to stop propagation
-    // to prevent the event from bubbling up and being handled by parent components which might use the same key.
-    if (isKeyHandled) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  };
+  // private handleKeyDown = (event: KeyboardEvent) => {
+  //   let isKeyHandled = false;
+  //
+  //   const target = event.target as HTMLElement;
+  //   const currentIndex = this.getCurrentIndex(target);
+  //   if (currentIndex === -1) return;
+  //   this.resetTabIndexes(currentIndex);
+  //
+  //   const isRtl = window.getComputedStyle(this).direction === 'rtl';
+  //
+  //   const targetKey = this.resolveDirectionKey(event.key, isRtl);
+  //
+  //   switch (targetKey) {
+  //     case KEYS.HOME: {
+  //       // Move focus to the first menu item
+  //       this.resetTabIndexAndSetFocus(0, currentIndex);
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     case KEYS.END: {
+  //       // Move focus to the last menu item
+  //       this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     case KEYS.ARROW_DOWN: {
+  //       // Move focus to the next menu item
+  //       const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
+  //       this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     case KEYS.ARROW_UP: {
+  //       // Move focus to the prev menu item
+  //       const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
+  //       this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     case KEYS.ARROW_RIGHT: {
+  //       // If there is a submenu, open it.
+  //       const subMenu = this.getSubMenuPopoverOfTarget(target);
+  //       if (subMenu) {
+  //         subMenu.show();
+  //         isKeyHandled = true;
+  //       }
+  //       break;
+  //     }
+  //     case KEYS.ARROW_LEFT: {
+  //       // If the current popover is a submenu then close this popover.
+  //       if (isValidMenuPopover(this.parentElement)) {
+  //         this.hide();
+  //         this.resetTabIndexAndSetFocus(0, currentIndex);
+  //         isKeyHandled = true;
+  //       }
+  //       break;
+  //     }
+  //     case KEYS.ESCAPE: {
+  //       this.resetTabIndexAndSetFocus(0, currentIndex);
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     case KEYS.ENTER: {
+  //       if (!this.getSubMenuPopoverOfTarget(target)) {
+  //         this.closeAllMenuPopovers();
+  //         this.fireMenuItemAction(target);
+  //         isKeyHandled = true;
+  //       }
+  //       break;
+  //     }
+  //     case KEYS.SPACE: {
+  //       // Prevent page scroll when space is pressed down
+  //       isKeyHandled = true;
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  //
+  //   // When menu consume any of the pressed key, we need to stop propagation
+  //   // to prevent the event from bubbling up and being handled by parent components which might use the same key.
+  //   if (isKeyHandled) {
+  //     event.stopPropagation();
+  //     event.preventDefault();
+  //   }
+  // };
 
   /**
    * Handles keyup events for keyboard navigation within the menu popover.

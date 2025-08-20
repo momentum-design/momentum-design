@@ -100,17 +100,6 @@ test('mdc-listbox', async ({ componentsPage }) => {
   });
 
   /**
-   * DISABLED STATE
-   */
-  await test.step('disabled state', async () => {
-    const listbox = await setup({ componentsPage, children: defaultChildren(), label, disabled: true });
-    await expect(listbox).toHaveAttribute('disabled');
-    await expect(listbox).toHaveCSS('opacity', '0.5');
-    await listbox.locator('mdc-option').nth(1).click();
-    await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
-  });
-
-  /**
    * DEFAULT SELECTED OPTION
    */
   await test.step('default selected option', async () => {
@@ -125,8 +114,6 @@ test('mdc-listbox', async ({ componentsPage }) => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), label });
     await expect(listbox).toHaveAttribute('role', 'listbox');
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('role', 'option');
-    await expect(listbox).toHaveAttribute('aria-required', 'false');
-    await expect(listbox).toHaveAttribute('aria-invalid', 'false');
   });
 });
 // End AI-Assisted

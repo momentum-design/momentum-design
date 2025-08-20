@@ -3,6 +3,7 @@ import { css } from 'lit';
 const styles = css`
   :host {
     --mdc-listbox-max-height: auto;
+
     height: inherit;
     width: inherit;
 
