@@ -3,7 +3,7 @@
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
+import { PRESENCE_TYPE } from '../presence/presence.constants';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { IconNames } from '../icon/icon.types';
 
