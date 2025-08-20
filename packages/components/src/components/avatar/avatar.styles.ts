@@ -81,6 +81,34 @@ const styles = [
       bottom: 0;
       right: 0;
     }
+
+    :host([size='124'])::part(presence) {
+      bottom: -0.25rem;
+      right: -0.21875rem;
+    }
+
+    :host([size='88'])::part(presence),
+    :host([size='72'])::part(presence),
+    :host([size='64'])::part(presence) {
+      bottom: -0.09375rem;
+      right: -0.09375rem;
+    }
+
+    :host([size='48'])::part(presence) {
+      bottom: -0.03125rem;
+      right: -0.03125rem;
+    }
+
+    :host([size='32'])::part(presence) {
+      bottom: -0.15625rem;
+      right: -0.15625rem;
+    }
+
+    :host([size='24'])::part(presence) {
+      bottom: -0.1875rem;
+      right: -0.1875rem;
+    }
+
     :host::part(loading-wrapper) {
       position: absolute;
       border-radius: 100vh;
