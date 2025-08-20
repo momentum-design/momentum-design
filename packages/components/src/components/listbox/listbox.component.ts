@@ -5,7 +5,7 @@ import List from '../list';
 import type Option from '../option';
 import { TAG_NAME as OPTION_TAGNAME } from '../option/option.constants';
 import { ROLE } from '../../utils/roles';
-import { DestroyItemMixin } from '../../utils/mixins/lifecycle/ItemsLifeCycleManagerMixin';
+import { DestroyItemMixin } from '../../utils/mixins/lifecycle/DestroyItemMixin';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
 import { ItemCollectionMixin } from '../../utils/mixins/ItemCollectionMixin';
