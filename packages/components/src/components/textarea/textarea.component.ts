@@ -330,7 +330,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"
           part="textarea"
-          id="${this.id}"
+          id="${this.dataId}"
           name="${this.name}"
           .value="${this.value}"
           ?disabled="${this.disabled}"

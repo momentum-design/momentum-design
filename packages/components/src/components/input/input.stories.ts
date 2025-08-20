@@ -6,7 +6,7 @@ import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import { disableControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { AUTO_CAPITALIZE } from './input.constants';
@@ -29,7 +29,7 @@ const render = (args: Args) => {
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     value="${value}"
-    id="${args.id}"
+    data-id="${args['data-id']}"
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
@@ -70,7 +70,7 @@ const meta: Meta = {
     name: {
       control: 'text',
     },
-    id: {
+    'data-id': {
       control: 'text',
     },
     value: {
@@ -150,6 +150,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
+    ...hideControls(['id']),
     ...textControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
@@ -175,6 +176,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'input-example',
     name: 'input',
     label: 'Label',
     required: true,

@@ -17,6 +17,7 @@ const render = (args: Args) => html`
     value="toggleValue"
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
+    data-id="${ifDefined(args['data-id'])}"
     size="${args.size}"
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
@@ -41,6 +42,9 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    'data-id': {
+      control: 'text',
+    },
     size: {
       control: 'inline-radio',
       options: Object.values(TOGGLE_SIZE),
@@ -108,6 +112,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'toggle-example',
     label: 'Toggle label',
     checked: false,
     size: DEFAULTS.SIZE,

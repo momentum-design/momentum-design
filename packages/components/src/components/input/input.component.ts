@@ -342,7 +342,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       aria-label="${this.dataAriaLabel ?? ''}"
       class="input"
       part="mdc-input"
-      id="${this.id}"
+      id="${this.dataId}"
       name="${this.name}"
       .value="${live(this.value)}"
       ?disabled="${this.disabled}"

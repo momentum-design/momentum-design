@@ -30,6 +30,7 @@ const render = (args: Args) =>
       @input="${action('oninput')}"
       @keydown="${action('onkeydown')}"
       @focus="${action('onfocus')}"
+      data-id="${args['data-id']}"
       label="${args.label}"
       ?required="${args.required}"
       help-text-type="${args['help-text-type']}"
@@ -68,6 +69,9 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    'data-id': {
+      control: 'text',
+    },
     name: {
       control: 'text',
     },
@@ -141,6 +145,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'select-example',
     label: 'Headquarters location',
     required: true,
     placeholder: 'Select your headquarters location',

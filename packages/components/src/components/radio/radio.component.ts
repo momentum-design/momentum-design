@@ -281,7 +281,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
         ?readonly="${this.readonly}"
       >
         <input
-          id="${this.id}"
+          id="${this.dataId}"
           type="radio"
           role="${ROLE.RADIO}"
           ?autofocus="${this.autofocus}"

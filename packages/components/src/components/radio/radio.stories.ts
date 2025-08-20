@@ -1,6 +1,7 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -14,6 +15,7 @@ const render = (args: Args) => html`
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
     @click="${action('onclick')}"
+    data-id="${ifDefined(args['data-id'])}"
     label="${args.label}"
     name="radio"
     value="option1"
@@ -40,6 +42,9 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
+    'data-id': {
+      control: 'text',
+    },
     readonly: {
       control: { type: 'boolean' },
     },
@@ -77,7 +82,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: { type: 'text' },
     },
-    ...hideControls(['help-text-type']),
+    ...hideControls(['help-text-type', 'id']),
     ...textControls([
       '--mdc-radio-text-disabled-color',
       '--mdc-radio-control-inactive-hover',
@@ -95,6 +100,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'radio-example',
     label: 'Standard Plan',
     checked: false,
     readonly: false,

@@ -1,6 +1,7 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -10,6 +11,7 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <mdc-checkbox
+    data-id="${ifDefined(args['data-id'])}"
     label="${args.label}"
     help-text="${args['help-text']}"
     ?checked="${args.checked}"
@@ -39,6 +41,9 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    'data-id': {
+      control: 'text',
+    },
     label: {
       control: 'text',
     },
@@ -93,6 +98,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'checkbox-example',
     label: 'I agree to the terms',
     'help-text': '',
     checked: false,

@@ -20,6 +20,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     @limitexceeded="${action('limitexceeded')}"
+    data-id="${ifDefined(args['data-id'])}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -60,6 +61,9 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
+    'data-id': {
+      control: 'text',
+    },
     name: {
       control: 'text',
     },
@@ -161,6 +165,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'data-id': 'textarea-example',
     name: 'textarea',
     label: 'Label',
     rows: DEFAULTS.ROWS,

@@ -172,7 +172,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         ?disabled="${this.disabled}"
       >
         <input
-          id="${this.id}"
+          id="${this.dataId}"
           type="checkbox"
           class="input"
           ?autofocus="${this.autofocus}"

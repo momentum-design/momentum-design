@@ -28,6 +28,12 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
   /**
+  * Indicates the unique identifier for the component. Required for acccessibility.
+  */
+  @property({ type: String, attribute: 'data-id', reflect: true }) 
+  dataId = '';
+
+  /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
   @property({ reflect: true, type: String }) label?: string;
@@ -89,7 +95,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return this.shouldRenderLabel
-      ? html`<label for="${this.id}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
+      ? html`<label for="${this.dataId}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
