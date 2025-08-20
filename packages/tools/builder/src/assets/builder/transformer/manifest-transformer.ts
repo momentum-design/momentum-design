@@ -18,30 +18,20 @@ class ManifestTransformer extends Transformer {
    * Transform the passed in files by optimizing each of them
    */
   public override transformFilesSync() {
-    const { fileName, staticPath } = this.format.config;
-    const manifest: Record<string, string> = {};
-
-    this.inputFiles?.forEach((file) => {
-      const relativePath = file.srcPath
-        .split(this.destination)
-        .pop()
-        ?.replace(/^\/+/, '');
-
-      const key = relativePath?.split('/').pop()?.split('.').at(0) || 'unknown';
-
-      // staticPath is used for accessing static images,
-      // mainly to ensure that static images can be accessed in both storybook and documentation.
-      const finalPath = staticPath
-        ? `${staticPath.replace(/\/+$/, '')}/${relativePath}`
-        : `./${relativePath}`;
-
-      manifest[key] = finalPath;
-    });
+    const manifest = this.inputFiles?.reduce(
+      (output, file) => ({
+        ...output,
+        [file.srcPath.split('/').pop()?.split('.').at(0) || 'unknown']: `./${file.srcPath
+          ?.split(this.destination)
+          .pop()}`,
+      }),
+      {},
+    );
 
     this.outputFiles = [
       {
         srcPath: '',
-        distPath: path.join(this.destination, fileName),
+        distPath: path.join(this.destination, this.format.config.fileName),
         data: JSON.stringify(manifest, null, 2),
       },
     ];

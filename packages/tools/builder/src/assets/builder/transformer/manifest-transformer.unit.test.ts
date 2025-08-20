@@ -2,96 +2,54 @@ import path from 'path';
 import type { Formats } from '../types';
 import ManifestTransformer from './manifest-transformer';
 import Transformer from './transformer';
+import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
 
-describe('@momentum-design/builder - ManifestTransformer', () => {
+describe('@momentum-design/builder - Manifest-Transformer', () => {
+  let transformer: ManifestTransformer;
   const DIST_NAME = 'MyFont';
+  const FORMAT: Formats = { config: { fileName: DIST_NAME }, type: 'MANIFEST' };
+
+  beforeEach(() => {
+    transformer = new ManifestTransformer(FORMAT, '/dist');
+    // @ts-ignore
+    jest.spyOn(transformer.logger, 'debug').mockImplementation(() => { });
+  });
 
   describe('constructor()', () => {
-    const FORMAT: Formats = { config: { fileName: DIST_NAME }, type: 'MANIFEST' };
-    let transformer: ManifestTransformer;
-
-    beforeEach(() => {
-      transformer = new ManifestTransformer(FORMAT, '/dist');
-      // @ts-ignore
-      jest.spyOn(transformer.logger, 'debug').mockImplementation(() => {});
-    });
-
-    it('should extend Transformer', () => {
+    it('should extend Builder', () => {
       expect(transformer instanceof Transformer).toBe(true);
     });
 
-    it('should mount the format and destination', () => {
+    it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
       expect(transformer.destination).toBe('/dist');
     });
   });
 
-  describe('transformFilesSync()', () => {
-    it('should generate manifest with relative paths and default "./" prefix', () => {
-      const FORMAT: Formats = { config: { fileName: DIST_NAME }, type: 'MANIFEST' };
-      const transformer = new ManifestTransformer(FORMAT, '/dist');
-
-      transformer.inputFiles = [
-        { srcPath: '/dist/icons/test-icon.svg', distPath: '', data: 'svg-data' },
-      ];
-
+  describe('transformFilesSync function', () => {
+    it('should mock the transformFilesSync function and track its usage', () => {
+      transformer.inputFiles = [{ srcPath: '/font/file.svg', distPath: 'font', data: 'testing manifest' }];
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
-
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
       expect(transformer.outputFiles).toEqual([
         {
-          srcPath: '',
+          data: JSON.stringify(JSON.parse('{"file":".//font/file.svg"}'), null, 2),
           distPath: path.join('/dist', DIST_NAME),
-          data: JSON.stringify({
-            'test-icon': './icons/test-icon.svg',
-          }, null, 2),
+          srcPath: '',
         },
       ]);
     });
-
-    it('should generate manifest with staticPath prefix if provided', () => {
-      const FORMAT: Formats = {
-        config: {
-          fileName: DIST_NAME,
-          staticPath: '/static/assets',
-        },
-        type: 'MANIFEST',
-      };
-      const transformer = new ManifestTransformer(FORMAT, '/dist');
-
-      transformer.inputFiles = [
-        { srcPath: '/dist/images/logo.svg', distPath: '', data: 'svg-data' },
-      ];
-
+    it('should mock the transformFilesSync function and track its usage', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
-
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
       expect(transformer.outputFiles).toEqual([
         {
-          srcPath: '',
+          data: JSON.stringify(JSON.parse('{"font":"./font"}'), null, 2),
           distPath: path.join('/dist', DIST_NAME),
-          data: JSON.stringify({
-            logo: '/static/assets/images/logo.svg',
-          }, null, 2),
-        },
-      ]);
-    });
-
-    it('should fallback to "unknown" key if filename is missing', () => {
-      const FORMAT: Formats = { config: { fileName: DIST_NAME }, type: 'MANIFEST' };
-      const transformer = new ManifestTransformer(FORMAT, '/dist');
-
-      transformer.inputFiles = [
-        { srcPath: '/dist/', distPath: '', data: 'svg-data' },
-      ];
-
-      transformer.transformFilesSync();
-
-      expect(transformer.outputFiles).toEqual([
-        {
           srcPath: '',
-          distPath: path.join('/dist', DIST_NAME),
-          data: JSON.stringify({
-            unknown: './',
-          }, null, 2),
         },
       ]);
     });

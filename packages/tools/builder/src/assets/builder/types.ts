@@ -75,7 +75,7 @@ export interface WOFF2Format {
  */
 export interface ManifestFormat {
   type: typeof CONSTANTS.FORMATS.MANIFEST;
-  config: { fileName: string, staticPath?: string };
+  config: { fileName: string };
 }
 
 /**
@@ -125,7 +125,7 @@ export interface LitFormat {
 
 export interface ImageFormat {
   type: typeof CONSTANTS.FORMATS.IMAGE;
-  config: { hbspath: string, partName: string, manifestPath: string};
+  config: { hbspath: string, partName: string };
 }
 
 /**
