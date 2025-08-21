@@ -16,6 +16,7 @@ const render = (args: Args) =>
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
+    @change="${action('onchange')}"
     name="${args.name}"
     variant="${args.variant}"
     orientation="${args.orientation}"

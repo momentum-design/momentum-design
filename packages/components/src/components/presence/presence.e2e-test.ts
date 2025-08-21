@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { DEFAULTS, TYPE, SIZE } from './presence.constants';
+import { DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
 import type { PresenceType, PresenceSize } from './presence.types';
 
 type SetupOptions = {
@@ -35,7 +35,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const presenceStickerSheet = new StickerSheet(componentsPage, 'mdc-presence');
-    await presenceStickerSheet.createMarkupWithCombination({ type: TYPE, size: SIZE });
+    await presenceStickerSheet.createMarkupWithCombination({ type: PRESENCE_TYPE, size: PRESENCE_SIZE });
     await presenceStickerSheet.mountStickerSheet();
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence');
@@ -57,7 +57,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   await test.step('attributes', async () => {
     await test.step('attribute should be present on component by default', async () => {
       await expect(presence).toHaveAttribute('type', DEFAULTS.TYPE);
-      await expect(presence).toHaveAttribute('size', DEFAULTS.SIZE);
+      await expect(presence).toHaveAttribute('size', DEFAULTS.SIZE.toString());
     });
 
     await test.step('should fallback to default values when invalid attributes are passed', async () => {
@@ -66,22 +66,22 @@ const testToRun = async (componentsPage: ComponentsPage) => {
         size: 'invalid',
       });
       await expect(presence).toHaveAttribute('type', DEFAULTS.TYPE);
-      await expect(presence).toHaveAttribute('size', DEFAULTS.SIZE);
+      await expect(presence).toHaveAttribute('size', DEFAULTS.SIZE.toString());
     });
 
     await test.step('should only accept allowed type and size', async () => {
       await componentsPage.setAttributes(presence, {
-        type: TYPE.MEETING,
-        size: SIZE.XX_LARGE,
+        type: PRESENCE_TYPE.MEETING,
+        size: PRESENCE_SIZE[124].toString(),
       });
 
-      await expect(presence).toHaveAttribute('type', TYPE.MEETING);
-      await expect(presence).toHaveAttribute('size', SIZE.XX_LARGE);
+      await expect(presence).toHaveAttribute('type', PRESENCE_TYPE.MEETING);
+      await expect(presence).toHaveAttribute('size', PRESENCE_SIZE[124].toString());
     });
   });
 };
 
-test.describe.parallel('mdc-Presence', () => {
+test.describe.parallel('mdc-presence', () => {
   test.use({ viewport: { width: 400, height: 800 } });
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
