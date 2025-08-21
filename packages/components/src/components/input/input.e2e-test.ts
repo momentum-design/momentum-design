@@ -9,7 +9,7 @@ import { getHelperIcon } from '../formfieldwrapper/formfieldwrapper.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  dataId?: string;
+  id?: string;
   value?: string;
   placeholder?: string;
   required?: boolean;
@@ -43,7 +43,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
     ${isForm ? '<form>' : ''}
     ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
       <mdc-input
-      ${restArgs.dataId ? `data-id="${restArgs.dataId}"` : ''}
+      id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
       ${restArgs.required ? 'required' : ''}
@@ -87,7 +87,7 @@ test.use({ viewport: { width: 800, height: 1500 } });
 test('mdc-input', async ({ componentsPage, browserName }) => {
   const input = await setup({
     componentsPage,
-    dataId: 'test-mdc-input',
+    id: 'test-mdc-input',
     placeholder: 'Placeholder',
     maxlength: 10,
     minlength: 5,
@@ -104,7 +104,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
    */
   await test.step('attributes', async () => {
     await test.step('attributes should be present on component', async () => {
-      await expect(input).toHaveAttribute('data-id', 'test-mdc-input');
+      await expect(input).toHaveAttribute('id', 'test-mdc-input');
       await expect(input).toHaveAttribute('placeholder', 'Placeholder');
       await expect(input).toHaveAttribute('label', 'Label');
       const label = input.locator('label');
@@ -302,7 +302,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const form = await setup(
         {
           componentsPage,
-          dataId: 'test-mdc-input',
+          id: 'test-mdc-input',
           placeholder: 'Placeholder',
           required: true,
           maxlength: 10,
@@ -334,7 +334,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const form = await setup(
         {
           componentsPage,
-          dataId: 'test-mdc-input',
+          id: 'test-mdc-input',
           placeholder: 'Enter your name',
           required: true,
           minlength: 3,
@@ -365,7 +365,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const form = await setup(
         {
           componentsPage,
-          dataId: 'test-mdc-input',
+          id: 'test-mdc-input',
           placeholder: 'Enter your name',
           validationMessage: 'Please enter a valid name',
           required: true,
@@ -428,7 +428,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const form = await setup(
         {
           componentsPage,
-          dataId: 'test-mdc-input',
+          id: 'test-mdc-input',
           placeholder: 'Enter your name',
           required: true,
           minlength: 5,
@@ -482,7 +482,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
    */
   await test.step('visual-regression', async () => {
     const attributes = {
-      dataId: 'test-mdc-input',
+      id: 'test-mdc-input',
       placeholder: 'Placeholder',
       label: 'Label',
       'help-text': 'Help Text',

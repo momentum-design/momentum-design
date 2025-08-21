@@ -5,7 +5,6 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  dataId?: string;
   name?: string;
   value?: string;
   label?: string;
@@ -23,7 +22,6 @@ const setup = async (args: SetupOptions) => {
     html: `
       <form id="radio-form">
         <mdc-radio
-          ${restArgs.dataId ? `data-id="${restArgs.dataId}"` : ''}
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs.value ? `value="${restArgs.value}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -69,21 +67,18 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Radio btn without label
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         'data-aria-label': 'Standard Plan',
       });
 
       // Radio btn with label
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Standard Plan',
       });
 
       // Checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Selected Radio Label',
         checked: true,
       });
@@ -91,7 +86,6 @@ test('mdc-radio', async ({ componentsPage }) => {
       // Checked radio btn with help text
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Selected Radio Label',
         'help-text': 'This is a help text',
         checked: true,
@@ -100,7 +94,6 @@ test('mdc-radio', async ({ componentsPage }) => {
       // Readonly radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
@@ -109,7 +102,6 @@ test('mdc-radio', async ({ componentsPage }) => {
       // Readonly but checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
@@ -119,7 +111,6 @@ test('mdc-radio', async ({ componentsPage }) => {
       // Disabled radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Disabled Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
@@ -128,7 +119,6 @@ test('mdc-radio', async ({ componentsPage }) => {
       // Disabled but checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
-        dataId: 'test-mdc-radio',
         label: 'Disabled Selected Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
@@ -279,11 +269,7 @@ test('mdc-radio', async ({ componentsPage }) => {
      * ATTRIBUTES
      */
     await test.step('attributes', async () => {
-      const radio = await setup({ componentsPage, dataId: 'test-mdc-radio' });
-      await test.step('should have id attribute when dataId is passed', async () => {
-        await expect(radio).toHaveAttribute('data-id', 'test-mdc-radio');
-      });
-
+      const radio = await setup({ componentsPage });
       // For label
       await test.step('should have label element when the label attribute is passed', async () => {
         await componentsPage.setAttributes(radio, { label: 'Radio label' });
