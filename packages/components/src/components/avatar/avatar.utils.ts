@@ -1,4 +1,4 @@
-import { SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
+import { PRESENCE_SIZE } from '../presence/presence.constants';
 import type { PresenceSize } from '../presence/presence.types';
 import { TYPE as FONT_TYPE } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
@@ -8,15 +8,15 @@ import type { AvatarSize } from './avatar.types';
 
 const getPresenceSize = (size: AvatarSize): PresenceSize => {
   const avatarPresenceSizeMap: Record<AvatarSize, PresenceSize> = {
-    [AVATAR_SIZE[124]]: PRESENCE_SIZE.XX_LARGE,
-    [AVATAR_SIZE[88]]: PRESENCE_SIZE.X_LARGE,
-    [AVATAR_SIZE[72]]: PRESENCE_SIZE.LARGE,
-    [AVATAR_SIZE[64]]: PRESENCE_SIZE.MIDSIZE,
-    [AVATAR_SIZE[48]]: PRESENCE_SIZE.SMALL,
-    [AVATAR_SIZE[32]]: PRESENCE_SIZE.X_SMALL,
-    [AVATAR_SIZE[24]]: PRESENCE_SIZE.XX_SMALL,
+    [AVATAR_SIZE[124]]: PRESENCE_SIZE[124],
+    [AVATAR_SIZE[88]]: PRESENCE_SIZE[88],
+    [AVATAR_SIZE[72]]: PRESENCE_SIZE[72],
+    [AVATAR_SIZE[64]]: PRESENCE_SIZE[64],
+    [AVATAR_SIZE[48]]: PRESENCE_SIZE[48],
+    [AVATAR_SIZE[32]]: PRESENCE_SIZE[32],
+    [AVATAR_SIZE[24]]: PRESENCE_SIZE[24],
   };
-  return avatarPresenceSizeMap[size] || PRESENCE_SIZE.X_SMALL; // default size of presence
+  return avatarPresenceSizeMap[size] || PRESENCE_SIZE[32]; // default size of presence
 };
 
 const getAvatarIconSize = (size: AvatarSize): number => {

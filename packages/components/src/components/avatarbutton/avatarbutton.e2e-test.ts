@@ -4,7 +4,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
+import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import type { IconNames } from '../icon/icon.types';

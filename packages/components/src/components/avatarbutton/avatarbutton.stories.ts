@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
-import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
+import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';

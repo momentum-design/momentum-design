@@ -19,6 +19,7 @@ const ROLE = {
   MENUITEMCHECKBOX: 'menuitemcheckbox',
   MENUITEMRADIO: 'menuitemradio',
   NAVIGATION: 'navigation',
+  OPTION: 'option',
   PRESENTATION: 'presentation',
   PROGRESSBAR: 'progressbar',
   RADIO: 'radio',
