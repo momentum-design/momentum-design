@@ -1,17 +1,19 @@
-import type { CSSResult } from 'lit';
-import { html } from 'lit';
+import type { CSSResult, TemplateResult } from 'lit';
+import { html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
-import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
-import type Option from '../option/option.component';
+import { KEYS } from '../../utils/keys';
+import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
-import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
-import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
+import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import type Option from '../option/option.component';
+import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
+import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 
 import { ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
@@ -19,6 +21,7 @@ import styles from './combobox.styles';
 /**
  * Combobox component, which ...
  *
+ * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
  * @dependency mdc-popover
@@ -38,6 +41,12 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String }) placeholder?: string;
 
   /**
+   * readonly attribute of the select field. If true, the select is read-only.
+   * @default false
+   */
+  @property({ type: Boolean }) readonly = false;
+
+  /**
    * height attribute of the select field. If set,
    * then a scroll bar will be visible when there more options than the adjusted height.
    * @default auto
@@ -46,9 +55,19 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   /**
    * Text to be displayed when no results are found.
-   * @default 'No results'
+   *
+   * @default undefined
    */
-  @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText = 'No results';
+  @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText?: string;
+
+  /**
+   * Indicates whether the select is soft disabled.
+   * When set to `true`, the select appears visually disabled but still allows
+   * focus.
+   *
+   * @default undefined
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled?: boolean;
 
   /** @internal */
   @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
@@ -62,8 +81,8 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private handleClick(event: MouseEvent): void {
+    this.setSelectedValue((event.target as HTMLInputElement).value);
     this.toggleDropdown();
-    event.stopPropagation();
   }
 
   private closePopover(): void {
@@ -99,7 +118,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     slottedListBox.setAttribute('aria-labelledby', TRIGGER_ID);
   }
 
-  private compareValueAndLabel(value: string, label: string): boolean {
+  private compareValueWithLabel(value: string, label: string): boolean {
     return value.toLowerCase().startsWith(label.toLowerCase());
   }
 
@@ -108,7 +127,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private getVisibleOptions(): Array<Option> {
-    return this.getAllValidOptions().filter(option => this.compareValueAndLabel(option.label ?? '', this.value));
+    return this.getAllValidOptions().filter(option => this.compareValueWithLabel(option.label ?? '', this.value));
   }
 
   private setSelectedValue(value: string): void {
@@ -194,7 +213,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     const options = this.getAllValidOptions();
     this.resetOptionFocusedClass();
     options.forEach(option => {
-      if (!this.compareValueAndLabel(option.label ?? '', this.value)) {
+      if (!this.compareValueWithLabel(option.label ?? '', this.value)) {
         option.setAttribute('data-hidden', '');
       } else {
         option.removeAttribute('data-hidden');
@@ -205,7 +224,27 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
   }
 
+  private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
+    return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
+      ? html`<mdc-listitem part="no-results-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
+      : nothing;
+  }
+
+  private shouldDisplayPopover(optionsLength: number): boolean {
+    if (!this.slottedListboxes[0]) {
+      return false;
+    }
+    if (optionsLength) {
+      return this.isOpen;
+    }
+    if (this.noResultText) {
+      return true;
+    }
+    return false;
+  }
+
   public override render() {
+    const options = this.getVisibleOptions();
     return html`
       ${this.renderLabel()}
       <div part="container">
@@ -217,22 +256,37 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
             @click="${this.handleClick}"
             @input="${this.handleInputChange}"
             @keyup="${this.handleInputKeydown}"
-            role="${ROLE.COMBOBOX}"
-            placeholder="${this.placeholder}"
             aria-expanded="${this.isOpen.toString()}"
+            role="${ROLE.COMBOBOX}"
+            aria-controls="${LISTBOX_ID}"
+            placeholder="${this.placeholder}"
             aria-autocomplete="${ROLE.LIST}"
+            aria-label="${this.dataAriaLabel ?? ''}"
+            aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+            aria-haspopup="${ROLE.LISTBOX}"
+            aria-required="${this.required ? 'true' : 'false'}"
+            aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
+            aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+            aria-readonly="${ifDefined(this.readonly)}"
           ></mdc-input>
-          <div part="container__base-icon" role="${ROLE.BUTTON}" aria-expanded="${this.isOpen.toString()}">
+          <mdc-buttonsimple
+            part="container__button"
+            ?disabled="${this.disabled}"
+            tabindex="-1"
+            aria-expanded="${this.isOpen.toString()}"
+            aria-label="${this.dataAriaLabel ?? ''}"
+          >
             <mdc-icon
-              name="${this.isOpen ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
+              part="container__button-icon"
+              name="${this.shouldDisplayPopover(options.length) ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
               size="1"
               length-unit="rem"
             ></mdc-icon>
-          </div>
+          </mdc-buttonsimple>
           <mdc-popover
             trigger="${TRIGGER.MANUAL}"
             triggerid="${TRIGGER_ID}"
-            ?visible="${this.isOpen}"
+            ?visible="${this.shouldDisplayPopover(options.length)}"
             role=""
             hide-on-outside-click
             hide-on-escape
@@ -246,6 +300,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
               this.closePopover();
             }}"
           >
+            ${this.renderNoResultsText(options.length)}
             <slot></slot>
           </mdc-popover>
         </div>
