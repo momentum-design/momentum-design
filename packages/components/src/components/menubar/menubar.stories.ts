@@ -96,7 +96,7 @@ const render = () => html`
 
       container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
     };
-    document.addEventListener('click', handleClick);
+    document.addEventListener('action', handleClick);
   </script>
   <style>
     #container h1 {
@@ -271,7 +271,7 @@ export const EditorMenubar: StoryObj = {
 export const WithMenuSections: StoryObj = {
   render: () =>
     html` <mdc-menubar style="width: 8rem; margin: 1rem 0;">
-      <mdc-menusection>
+      <mdc-menusection show-divider>
         <mdc-menuitem id="temp-id1" label="Style1"></mdc-menuitem>
         <mdc-menuitem id="temp-id2" label="Style2"></mdc-menuitem>
         <mdc-menuitem id="temp-id3" label="Style3"></mdc-menuitem>
@@ -284,7 +284,6 @@ export const WithMenuSections: StoryObj = {
           </mdc-menusection>
         </mdc-menupopover>
       </mdc-menusection>
-      <mdc-divider></mdc-divider>
       <mdc-menusection>
         <mdc-menuitem id="align-id1" label="Align1" arrow-position="trailing"></mdc-menuitem>
         <mdc-menuitem id="align-id2" label="Align2"></mdc-menuitem>

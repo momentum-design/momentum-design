@@ -127,8 +127,8 @@ export const SpiltIconButton: StoryObj = {
 };
 
 export const GroupWithPopover: StoryObj = {
-  render: () => html`
-    <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
+  render: (args: Args) => html`
+    <mdc-buttongroup variant="${args.variant}" orientation="${args.orientation}" size="${args.size}">
       <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
     </mdc-buttongroup>
@@ -148,4 +148,9 @@ export const GroupWithPopover: StoryObj = {
       <mdc-text>Settings related to video options</mdc-text>
     </mdc-popover>
   `,
+  args: {
+    variant: BUTTON_GROUP_VARIANT.SECONDARY,
+    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
+    size: BUTTON_GROUP_SIZE[28],
+  },
 };

@@ -4,8 +4,11 @@ import { property, state } from 'lit/decorators.js';
 import { Component, Provider } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
+import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
+import type NavMenuItem from '../navmenuitem';
+import { KEYS } from '../../utils/keys';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
@@ -20,20 +23,20 @@ import styles from './sidenavigation.styles';
  * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
- * - Serves as a context provider for descendant components - `mdc-navitemlist` and `mdc-navitem`
+ * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
  *
  * ### Usage:
- * In a sidenavigation, navitems can be used in the following ways:
+ * In a sidenavigation, navmenuitems can be used in the following ways:
  *
- * 1. **Simple navitem** – No submenu or interaction beyond selection.
+ * 1. **Simple navmenuitem** – No submenu or interaction beyond selection.
  *
- * 2. **Navitem with submenu**:
- *    - Provide an `id` on the `mdc-navitem`
- *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navitem's `id`
+ * 2. **NavMenuItem with submenu**:
+ *    - Provide an `id` on the `mdc-navmenuitem`
+ *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navmenuitem's `id`
  *    - Set `parent-nav-tooltip-text` with appropriate text that will display when a child menu item
  *      inside the nested menupopover is active, conveying which submenu item is currently selected
  *
- * 3. **Actionable navitem (no submenu)**:
+ * 3. **Actionable navmenuitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger
  *    - Set `disable-aria-current="true"` to maintain visual active state without navigation behavior
  *
@@ -43,15 +46,16 @@ import styles from './sidenavigation.styles';
  * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
  *
  * #### Accessibility Notes:
- * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-navitemlist`
+ * - Always provide meaningful `aria-label` attributes for both `mdc-navmenuitem` and `mdc-menubar`
  * to ensure screen reader support
  * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
  *
  * @dependency mdc-text
  * @dependency mdc-button
  * @dependency mdc-divider
+ * @dependency mdc-menubar
  *
- * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navmenuitem changes.
  *
  * @tagname mdc-sidenavigation
  *
@@ -68,6 +72,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
       context: SideNavigationContext.context,
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
     });
+
+    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
   }
 
   override connectedCallback(): void {
@@ -91,11 +97,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
   variant: SideNavigationVariant = DEFAULTS.VARIANT;
 
   /**
-   * Name of the customer. This is displayed in the bottom section of the side-navigation component.
+   * Displays footer text in the bottom section of the sidenavigation.
    * @default ''
    */
-  @property({ type: String, reflect: true, attribute: 'customer-name' })
-  customerName: string = '';
+  @property({ type: String, reflect: true, attribute: 'footer-text' })
+  footerText: string = '';
 
   /**
    * Determines whether the sideNavigation is expanded or not.
@@ -175,6 +181,34 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   /**
+   * Handle the navMenuItem active change event fired from the nested navMenuItem.
+   * @internal
+   * @param event - Custom Event fired from the nested navMenuItem.
+   */
+  private handleNestedNavMenuItemActiveChange = (event: CustomEvent<any>): void => {
+    if (this.context?.value) {
+      const newNavMenuItem = this.findNav(this.navMenuItems, event.detail.navId);
+      this.context.value.setCurrentActiveNavMenuItem(newNavMenuItem);
+    }
+  };
+
+  /**
+   * Matches new navMenuItem with navId.
+   * @param NavMenuItem - The new active navMenuItem.
+   *
+   * @internal
+   */
+  private findNav = (navs: NavMenuItem[], navId: string): NavMenuItem | undefined =>
+    navs.find(nav => nav.navId === navId);
+
+  /**
+   * Returns all nested, non-disabled mdc-navmenuitem elements inside this component.
+   */
+  private get navMenuItems(): NavMenuItem[] {
+    return Array.from(this.querySelectorAll(`${NAVMENUITEM_TAGNAME}:not([disabled])`));
+  }
+
+  /**
    * Syncs `expanded` and `aria-expanded` based on `variant` and `flexibleExpanded`.
    *
    * @internal
@@ -219,23 +253,38 @@ class SideNavigation extends Provider<SideNavigationContext> {
     this.updateExpansionState();
   }
 
+  private preventScrollOnSpace(event: KeyboardEvent): void {
+    // Prevent default space key behavior to avoid scrolling the page
+    if (event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+  }
+
   public override render() {
     if (this.variant === VARIANTS.HIDDEN) {
       return html``;
     }
     return html`
       <div part="side-navigation-container" id="side-nav-container">
-        <div part="scrollable-section">
-          <slot name="scrollable-section"></slot>
+        <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
+          <slot name="scrollable-section">
+            <mdc-menubar>
+              <slot name="scrollable-menubar"></slot>
+            </mdc-menubar>
+          </slot>
         </div>
         <mdc-divider variant="gradient" part="separator"></mdc-divider>
         <div part="fixed-section">
-          <slot name="fixed-section"></slot>
+          <slot name="fixed-section">
+            <mdc-menubar>
+              <slot name="fixed-menubar"></slot>
+            </mdc-menubar>
+          </slot>
           <div part="brand-logo-container">
             <slot name="brand-logo"></slot>
             ${this.expanded
               ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="label"
-                  >${this.customerName}</mdc-text
+                  >${this.footerText}</mdc-text
                 >`
               : nothing}
           </div>

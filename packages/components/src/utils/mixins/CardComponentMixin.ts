@@ -80,14 +80,14 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
     orientation: CardOrientation = DEFAULTS.ORIENTATION;
 
     /**
-     * The tag name for the card title. It supports all the types that `msc-text` supports
+     * The tag name for the card title. It supports all the types that `mdc-text` supports
      * @default 'span'
      */
     @property({ type: String, attribute: 'title-tag-name', reflect: true })
     titleTagName: TagNameType = DEFAULTS.TAGNAME;
 
     /**
-     * The tag name for the subtitle. It supports all the types that `msc-text` supports
+     * The tag name for the subtitle. It supports all the types that `mdc-text` supports
      * @default 'span'
      */
     @property({ type: String, attribute: 'subtitle-tag-name', reflect: true })
@@ -109,7 +109,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
       if (!this.imageSrc) {
         return nothing;
       }
-      return html`<img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" />`;
+      return html`<div part="image-wrapper"><img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" /></div>`;
     }
 
     /**

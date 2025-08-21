@@ -31,7 +31,7 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.page.locator('#wrapper').waitFor();
   if (open) {
     await componentsPage.page.evaluate(() => {
-      (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover();
+      (document.getElementById('coachmark') as Coachmark | undefined)?.show();
     });
     await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
   }
@@ -97,11 +97,11 @@ test('mdc-coachmark', async ({ componentsPage }) => {
    */
   await test.step('interactions', async () => {
     await test.step('programmatic', async () => {
-      await test.step('coachmark should open when the showPopover function is called', async () => {
+      await test.step('coachmark should open when the show function is called', async () => {
         await setup({ componentsPage, open: false });
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
         await componentsPage.page.evaluate(() =>
-          (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
+          (document.getElementById('coachmark') as Coachmark | undefined)?.show(),
         );
         await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
       });

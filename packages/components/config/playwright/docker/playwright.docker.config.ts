@@ -1,7 +1,8 @@
+import os from 'os';
+
 import type { PlaywrightTestConfig } from '@playwright/test';
 import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
-import os from 'os';
 
 /**
  * Read environment variables from file.
@@ -73,6 +74,14 @@ const config: PlaywrightTestConfig = {
         channel: 'chrome',
       },
     },
+
+    {
+      name: 'msedge',
+      use: {
+        channel: 'msedge',
+      },
+    },
+
     {
       name: 'firefox',
       use: {
@@ -88,40 +97,40 @@ const config: PlaywrightTestConfig = {
     },
 
     /* Test against mobile viewports. */
-    {
-      name: 'mobile chrome',
-      use: {
-        ...devices['Galaxy S9+'],
-      },
-    },
-    {
-      name: 'mobile safari',
-      use: {
-        ...devices['iPhone 12'],
-      },
-    },
+    // Mobile viewports are currently disabled due to not providing
+    // sufficient value since its not real mobile device testing and
+    // the focus of the components is currently not on mobile.
+    // Those might be re-enabled in the future if needed.
+    // {
+    //   name: 'mobile chrome',
+    //   use: {
+    //     ...devices['Galaxy S9+'],
+    //   },
+    // },
+    // {
+    //   name: 'mobile safari',
+    //   use: {
+    //     ...devices['iPhone 12'],
+    //   },
+    // },
 
     /* Test against tablet viewports. */
-    {
-      name: 'tablet chrome',
-      use: {
-        ...devices['Galaxy Tab S4'],
-      },
-    },
-    {
-      name: 'tablet safari',
-      use: {
-        ...devices['iPad Pro 11'],
-      },
-    },
-
-    /* Test against branded browsers. */
-    {
-      name: 'msedge',
-      use: {
-        channel: 'msedge',
-      },
-    },
+    // Mobile viewports are currently disabled due to not providing
+    // sufficient value since its not real mobile device testing and
+    // the focus of the components is currently not on mobile.
+    // Those might be re-enabled in the future if needed.
+    // {
+    //   name: 'tablet chrome',
+    //   use: {
+    //     ...devices['Galaxy Tab S4'],
+    //   },
+    // },
+    // {
+    //   name: 'tablet safari',
+    //   use: {
+    //     ...devices['iPad Pro 11'],
+    //   },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */

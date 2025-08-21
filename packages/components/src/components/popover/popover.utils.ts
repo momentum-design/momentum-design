@@ -98,15 +98,10 @@ export class PopoverUtils {
   }
 
   /**
-   * Sets up the accessibility attributes for the popover.
+   * Sets up the aria labels
    */
-  setupAccessibility() {
-    if (this.popover.role === ROLE.DIALOG || this.popover.role === ROLE.ALERTDIALOG) {
-      this.popover.setAttribute('aria-modal', 'true');
-    } else {
-      this.popover.removeAttribute('aria-modal');
-    }
-    if (this.popover.interactive) {
+  updateAriaLabels() {
+    if (this.popover.interactive && this.popover.role) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel =
           this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
@@ -114,6 +109,17 @@ export class PopoverUtils {
       if (!this.popover.ariaLabelledby) {
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
+    }
+  }
+
+  /**
+   * Updates the aria-modal attribute based on the popover's role.
+   */
+  updateAriaModal() {
+    if (this.popover.role === ROLE.DIALOG || this.popover.role === ROLE.ALERTDIALOG) {
+      this.popover.setAttribute('aria-modal', 'true');
+    } else {
+      this.popover.removeAttribute('aria-modal');
     }
   }
 
@@ -193,28 +199,5 @@ export class PopoverUtils {
       left: `${x}px`,
       top: `${y}px`,
     });
-  }
-
-  createBackdrop() {
-    if (!this.popover.backdropElement) {
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('popover-backdrop');
-
-      const styleElement = document.createElement('style');
-      styleElement.textContent = `
-        .popover-backdrop {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: transparent;
-          z-index: ${this.popover.zIndex - 1};
-        }
-      `;
-      backdrop.appendChild(styleElement);
-      this.popover.parentElement?.appendChild(backdrop);
-      this.popover.backdropElement = backdrop;
-    }
   }
 }

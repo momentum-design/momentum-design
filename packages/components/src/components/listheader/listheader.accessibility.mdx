@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/listheader/Accessibility" />
+
+## Accessibility
+
+The `mdc-listheader` component is designed to be used within lists and menus,
+providing a header that can help organize content.
+
+Except the passed in slot content (where interactive content like buttons etc
+can be passed in), everything else will be hidden from screen readers (using
+`aria-hidden`) to make sure the header can be used within lists, groups and
+menus without interfering.

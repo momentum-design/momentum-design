@@ -41,6 +41,10 @@ import styles from './menuitem.styles';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the menuitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the menuitem.
  * @event focus - (React: onFocus) This event is dispatched when the menuitem receives focus.
+ * @event enabled - (React: onEnabled) This event is dispatched after the menuitem is enabled
+ * @event disabled - (React: onDisabled) This event is dispatched after the menuitem is disabled
+ * @event created - (React: onCreated) This event is dispatched after the menuitem is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched after the menuitem is destroyed (removed from the DOM)
  */
 class MenuItem extends ListItem {
   /**
@@ -74,13 +78,19 @@ class MenuItem extends ListItem {
 
   constructor() {
     super();
-    this.addEventListener('keyup', this.handleKeyUp);
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
   /**
    * Handles the keydown event for the menu item.
    * If the Enter key is pressed, it triggers a click event on the menu item.
    * This allows keyboard users to activate the menu item using the Enter key.
+
+   * This follows the native behaviour, actionable element can be triggered by Enter
+   * key on the keydown event.
+   *
+   * Note: Action triggered by Space on the keyup event.
+   *
    * @param event - The keyboard event that triggered the action.
    */
   override handleKeyDown(event: KeyboardEvent): void {
@@ -95,6 +105,11 @@ class MenuItem extends ListItem {
    * If the Space key is released, it triggers a click event on the menu item.
    * This allows keyboard users to activate the menu item using the Space key.
    * It also prevents the default action of the Space key to avoid scrolling the page.
+   *
+   * This follows the native behaviour, actionable element can be triggered by Space
+   * key on the keyup event.
+   *
+   * Note: Action triggered by Enter on the keydown event.
    * @param event - The keyboard event that triggered the action.
    */
   private handleKeyUp(event: KeyboardEvent): void {

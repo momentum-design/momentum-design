@@ -1,6 +1,7 @@
 import type { PropertyValues, CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
@@ -73,7 +74,7 @@ class MenuItemRadio extends MenuItem {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleMouseClick);
+    this.addEventListener('click', this.handleMouseClick.bind(this));
   }
 
   override connectedCallback(): void {
@@ -109,16 +110,14 @@ class MenuItemRadio extends MenuItem {
    * If the menuitemradio is not checked, it sets its checked state to `true`
    * and sets all other menuitemradio elements of the same group with checked state to `false`.
    */
-  private handleMouseClick = (event: Event) => {
-    event.stopPropagation();
-
+  private handleMouseClick() {
     if (this.disabled || this.checked) return;
 
     this.updateOtherRadiosCheckedState();
     this.checked = true;
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-  };
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -156,31 +155,40 @@ class MenuItemRadio extends MenuItem {
    * @returns TemplateResult | typeof nothing
    */
   private renderCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.checked && this.indicator === INDICATOR.CHECKMARK) {
-      return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
+    if (this.indicator === INDICATOR.CHECKMARK) {
+      return html`
+        <mdc-icon
+          slot="trailing-controls"
+          name="check-bold"
+          part="checkmark-icon"
+          class=${classMap({ 'hidden-checkmark': !this.checked })}
+        ></mdc-icon>
+      `;
     }
     return nothing;
   }
 
   public override render() {
     return html`
-      <div part="leading">
-        ${this.renderStaticRadio()}
-        <slot name="leading-controls"></slot>
-        <div part="leading-text">
-          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
-          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+      <slot name="content">
+        <div part="leading">
+          ${this.renderStaticRadio()}
+          <slot name="leading-controls"></slot>
+          <div part="leading-text">
+            ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+            ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+            ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+          </div>
         </div>
-      </div>
-      <div part="trailing">
-        <div part="trailing-text">
-          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
-          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+        <div part="trailing">
+          <div part="trailing-text">
+            ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
+            ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+          </div>
+          <slot name="trailing-controls"></slot>
+          ${this.renderCheckmarkIcon()}
         </div>
-        <slot name="trailing-controls"></slot>
-        ${this.renderCheckmarkIcon()}
-      </div>
+      </slot>
     `;
   }
 

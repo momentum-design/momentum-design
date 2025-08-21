@@ -10,7 +10,6 @@ Feature: Select component
       | newyork | New York NY |
       | tokyo   | Tokyo HQ    |
 
-  # Interactions using the mouse
   Scenario: User opens the select dropdown using the mouse
     Given that I see the select component with the label "Headquarters Location"
     When I click on the select dropdown with placeholder "Select your headquarters" using the mouse
@@ -39,7 +38,6 @@ Feature: Select component
     Then I should see the options "London UK", "New York NY", and "Tokyo HQ"
     And there should be a checkmark next to "New York NY" indicating it is selected
 
-  # Interactions using the keyboard
   Scenario: User opens the select dropdown using the keyboard
     Given I see the select component with the label "Headquarters Location" and placeholder "Select your headquarters"
     When I focus on the select component using the Tab key
@@ -82,7 +80,6 @@ Feature: Select component
     And the focus should be on the selected option "London UK"
     And there should be a checkmark next to "London UK" indicating it is selected
 
-  # Other attributes and behaviors
   Scenario: Select component has a been marked as required
     Given the select component has been marked as required
     When I see the select component with the label "Headquarters Location"
@@ -128,7 +125,16 @@ Feature: Select component
     Then the select component should be visually styled as disabled
     And I will not be able to open the select dropdown
 
-  # Screen reader interactions
+  Scenario: Select component with default selected option
+    Given the select component has a default selected option "Tokyo HQ"
+    When I see the select component with the label "Headquarters Location"
+    Then the select component should show "Tokyo HQ" as the selected option
+    And the value of selected option should be reflected on the select component itself.
+    And no change or input events should be fired on the initial load
+    When I click on the select component
+    Then I should see the a listbox with the options "London UK", "New York NY", and "Tokyo HQ"
+    And there should be a checkmark next to "Tokyo HQ" indicating it is selected
+
   Scenario: Screen reader reads the select component
     Given I am using a screen reader
     When I focus on the select component with the label "Headquarters Location"
@@ -175,7 +181,6 @@ Feature: Select component
     And the screen reader should announce "Headquarters Location, Select your headquarters"
     And the screen reader should not announce any options
 
-  # Accessibility checks
   Scenario: Accessibility check for select component
     Given I have opened the page with the select component
     Then the select container should have the role of "combobox"
@@ -193,3 +198,8 @@ Feature: Select component
     Given I have a select container with the dropdown open
     Then the combobox container should have aria-activedescendant attribute set to the id of the currently focused option when opened
     And the value of aria-activedescendant will get updated to the currently focused option, when the user navigates through the options
+
+  Scenario: Listbox width and height overrides
+    Given the select component is rendered
+    When I override the listbox width and height using CSS variables
+    Then the listbox should respect the new width and height values visually

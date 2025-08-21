@@ -573,15 +573,17 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(checkboxes.first()).toBeFocused();
         const waitForChangeAfterSpace = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Space');
-        // await checkboxes.first().click();
+
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'true');
         await waitForChangeAfterSpace();
+        // menu remain visible after checkbox toggle with space
+        await expect(menupopover).toBeVisible();
         const waitForChangeAfterEnter = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Enter');
-        // await checkboxes.first().click();
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'false');
         await waitForChangeAfterEnter();
-        await componentsPage.page.keyboard.press('Escape');
+        // menu closes after checkbox toggle with Enter
+        await expect(menupopover).not.toBeVisible();
       });
 
       // Radio
@@ -602,6 +604,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         const waitForChangeAfterSpace = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Space');
         await waitForChangeAfterSpace();
+        // menu remain visible after checkbox toggle with space
+        await expect(menupopover).toBeVisible();
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
         await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'false');
@@ -613,9 +617,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'true');
-        await componentsPage.page.keyboard.press('ArrowDown');
-        const notifications = menupopover.locator('[label="Notifications"]');
-        await expect(notifications).toBeFocused();
+        // menu remain visible after checkbox toggle with space
+        await expect(menupopover).not.toBeVisible();
       });
     });
   });

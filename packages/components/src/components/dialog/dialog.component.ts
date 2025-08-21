@@ -7,7 +7,8 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
-import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+import { FooterMixin } from '../../utils/mixins/FooterMixin';
+import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -69,7 +70,7 @@ import styles from './dialog.styles';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(Component))) {
+class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component)))) {
   /**
    * The unique ID of the dialog
    */
@@ -212,9 +213,6 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   protected triggerElement: HTMLElement | null = null;
 
   /** @internal */
-  protected backdropElement: HTMLElement | null = null;
-
-  /** @internal */
   protected lastActiveElement: HTMLElement | null = null;
 
   override connectedCallback() {
@@ -230,8 +228,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
 
     this.removeEventListener('keydown', this.onEscapeKeydown);
 
-    this.backdropElement?.remove();
-    this.backdropElement = null;
+    this.removeBackdrop();
 
     // Set aria-expanded attribute on the trigger element to false if it exists
     this.triggerElement?.setAttribute('aria-expanded', 'false');
@@ -356,32 +353,6 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   }
 
   /**
-   * Creates a backdrop element for the dialog.
-   * The backdrop is a full-screen overlay that appears behind the dialog when it is open.
-   * It prevents interaction with the rest of the application while the dialog is open.
-   * @internal
-   */
-  private createBackdrop() {
-    const backdrop = document.createElement('div');
-    backdrop.classList.add('dialog-backdrop');
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      .dialog-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--mds-color-theme-common-overlays-secondary-normal);
-        z-index: ${this.zIndex - 1};
-      }
-    `;
-    backdrop.appendChild(styleElement);
-    this.parentElement?.appendChild(backdrop);
-    this.backdropElement = backdrop;
-  }
-
-  /**
    * Fired when Close Button is clicked or Escape key is pressed.
    * This method dispatches the close event. Setting visible to false
    * has to be done by the consumer of the component.
@@ -424,7 +395,9 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
       // Store the currently focused element before opening the dialog
       this.lastActiveElement = document.activeElement as HTMLElement;
 
-      this.createBackdrop();
+      // remove any existing backdrop and create a new one
+      this.removeBackdrop();
+      this.createBackdrop('dialog');
 
       this.activatePreventScroll();
 
@@ -439,8 +412,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
 
       DialogEventManager.onShowDialog(this);
     } else if (!newValue && oldValue) {
-      this.backdropElement?.remove();
-      this.backdropElement = null;
+      this.removeBackdrop();
 
       // Set aria-expanded attribute on the trigger element to false if it exists
       this.triggerElement?.setAttribute('aria-expanded', 'false');
@@ -455,7 +427,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   }
 
   /**
-   * Sets the focs back to the trigger element or the last active element.
+   * Sets the focus back to the trigger element or the last active element.
    * This is called when the dialog is closed to ensure that the user can continue interacting with the application.
    *
    * @internal

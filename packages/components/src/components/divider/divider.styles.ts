@@ -203,6 +203,7 @@ const styles = [
       color: var(--mdc-divider-text-color);
       font-size: var(--mdc-divider-text-size);
       line-height: var(--mdc-divider-text-line-height);
+      flex-shrink: 0;
     }
   `,
 ];

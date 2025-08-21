@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
@@ -88,6 +88,7 @@ const meta: Meta = {
       options: Object.values(BUTTON_VARIANTS),
     },
     ...hideControls(['children', 'active', 'size']),
+    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },
@@ -106,7 +107,7 @@ export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -123,7 +124,7 @@ export const HorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x300',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -149,7 +150,7 @@ export const CardWithoutImage: StoryObj = {
 
 export const CardWithoutHeader: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
@@ -159,7 +160,7 @@ export const CardWithoutHeader: StoryObj = {
 
 export const CardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -175,17 +176,17 @@ export const ContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
-        >Content Before Body</mdc-text
-      >
-      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+    children: html`<div slot="before-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };
@@ -194,15 +195,17 @@ export const ContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/160x560',
+    'image-src': 'https://placehold.co/100x100',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
-      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    children: html`<div slot="after-body">
+        <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+        <img src="https://placehold.co/100x100" alt="Image Alt" />
+      </div>
       ${defaultChildren}`,
   },
 };

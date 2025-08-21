@@ -5,6 +5,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
@@ -30,15 +31,32 @@ import styles from './cardcheckbox.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
+ * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
+ *
+ * @csspart header - The header part of the card
+ * @csspart icon - The icon part of the card header
+ * @csspart body - The body part of the card
+ * @csspart image - The image part of the card
+ * @csspart footer - The footer part of the card
+ * @csspart footer-link - The link part of the card footer
+ * @csspart footer-button-primary - The primary button part of the card footer
+ * @csspart footer-button-secondary - The secondary button part of the card footer
+ * @csspart icon-button - The icon button part of the card header
+ * @csspart text - The text part of the card
+ * @csspart check - The check part of the card
+ * @csspart check-icon - The check icon part of the card
+ * @csspart check-icon-button - The check icon button part of the card
+ *
+ * @cssproperty --mdc-card-width - The width of the card
  *
  * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
  * It toggles the checked state when enter key is used.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
  * It toggles the checked state when space key is used.
- * @event change - (React: onChange) Event that gets dispatched when the card state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
- *
+ * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  */
 class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   /**
@@ -57,9 +75,9 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
 
   constructor() {
     super();
-    this.addEventListener('click', this.toggleChecked);
-    this.addEventListener('keydown', this.toggleOnEnter);
-    this.addEventListener('keyup', this.toggleOnSpace);
+    this.addEventListener('click', this.toggleChecked.bind(this));
+    this.addEventListener('keydown', this.toggleOnEnter.bind(this));
+    this.addEventListener('keyup', this.toggleOnSpace.bind(this));
   }
 
   override connectedCallback() {
@@ -85,6 +103,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
     if (!this.disabled) {
       this.checked = !this.checked;
     }
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
   /**
@@ -92,7 +111,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.toggleChecked();
     }
   }
@@ -102,7 +121,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === ' ') {
+    if (event.key === KEYS.SPACE) {
       this.toggleChecked();
     }
   }

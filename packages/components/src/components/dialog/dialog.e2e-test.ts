@@ -139,7 +139,7 @@ const dialogWithIframe = {
 };
 
 test('mdc-dialog', async ({ componentsPage }) => {
-  const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+  const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots });
 
   // initial check for the dialog be visible on the screen:
   await dialog.waitFor();
@@ -234,7 +234,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+        const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
@@ -249,6 +249,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('dialog should close on escape keydown and fire onClose event', async () => {
@@ -260,6 +261,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Escape');
 
         await expect(dialog).not.toBeVisible();
+        await expect(triggerButton).toBeFocused();
       });
 
       await test.step('focus should remain only in the dialog when visible', async () => {
@@ -397,6 +399,93 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
       });
+
+      // Start AI-Assisted
+      await test.step('focus should pass correctly between different interactive components', async () => {
+        const dialogWithFormElements = {
+          id: 'dialog',
+          triggerId: 'trigger-btn',
+          ariaLabel: 'dialog with form elements',
+          visible: false,
+          variant: 'default',
+          closeButtonAriaLabel: 'Close button label',
+          headerText: 'Dialog with Form Elements',
+          descriptionText: 'Dialog with various form elements for focus testing',
+          children: `
+            <div slot="dialog-body">
+              <mdc-input id="first-input" label="First Input"></mdc-input>
+              
+              <mdc-checkbox id="standalone-checkbox" checked>Standalone Checkbox</mdc-checkbox>
+              
+              <mdc-formfieldgroup legend="Checkbox Group">
+                <mdc-checkbox id="group-checkbox-1" value="option1">Group Checkbox 1</mdc-checkbox>
+                <mdc-checkbox id="group-checkbox-2" value="option2">Group Checkbox 2</mdc-checkbox>
+              </mdc-formfieldgroup>
+              
+              <mdc-radiogroup legend="Radio Group" name="radio-test">
+                <mdc-radio id="radio-1" value="radio1">Radio Option 1</mdc-radio>
+                <mdc-radio id="radio-2" value="radio2">Radio Option 2</mdc-radio>
+              </mdc-radiogroup>
+              
+              <mdc-button id="dialog-body-button">Dialog Body Button</mdc-button>
+              
+              <mdc-input id="second-input" label="Second Input"></mdc-input>
+            </div>
+            <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Footer Link</mdc-link>
+            <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+            <mdc-button slot="footer-button-primary">Primary</mdc-button>
+          `,
+        };
+
+        const { dialog } = await setup({ componentsPage, ...dialogWithFormElements });
+        await dialog.evaluate(dialog => {
+          dialog.toggleAttribute('visible');
+        });
+        await expect(dialog).toBeVisible();
+
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        const firstInput = componentsPage.page.locator('#first-input');
+        const standaloneCheckbox = componentsPage.page.locator('#standalone-checkbox');
+        const groupCheckbox1 = componentsPage.page.locator('#group-checkbox-1');
+        const groupCheckbox2 = componentsPage.page.locator('#group-checkbox-2');
+        const radio1 = componentsPage.page.locator('#radio-1');
+        const dialogBodyButton = componentsPage.page.locator('#dialog-body-button');
+        const secondInput = componentsPage.page.locator('#second-input');
+        const footerLink = componentsPage.page.locator('[slot="footer-link"]');
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+
+        const elementsInTabOrder = [
+          closeButton,
+          firstInput,
+          standaloneCheckbox,
+          groupCheckbox1,
+          groupCheckbox2,
+          radio1,
+          dialogBodyButton,
+          secondInput,
+          footerLink,
+          secondaryButton,
+          primaryButton,
+        ];
+
+        /* eslint-disable no-await-in-loop */
+        for (let i = 0; i < elementsInTabOrder.length; i += 1) {
+          const element = elementsInTabOrder[i];
+
+          await expect(element).toBeFocused();
+          await componentsPage.actionability.pressTab();
+        }
+
+        for (let i = elementsInTabOrder.length - 1; i >= 0; i -= 1) {
+          const element = elementsInTabOrder[i];
+
+          await componentsPage.actionability.pressShiftTab();
+          await expect(element).toBeFocused();
+        }
+        /* eslint-enable no-await-in-loop */
+      });
+      // End AI-Assisted
     });
   });
 });

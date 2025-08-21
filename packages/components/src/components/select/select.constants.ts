@@ -8,5 +8,6 @@ const ARROW_ICON = {
 } as const;
 
 const TRIGGER_ID = 'select-base-triggerid';
+const LISTBOX_ID = 'select-listbox';
 
-export { ARROW_ICON, TAG_NAME, TRIGGER_ID };
+export { ARROW_ICON, TAG_NAME, TRIGGER_ID, LISTBOX_ID };

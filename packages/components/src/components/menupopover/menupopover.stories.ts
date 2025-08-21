@@ -11,6 +11,11 @@ import '../buttongroup';
 import '../divider';
 import '../icon';
 import '../menuitem';
+import '../menuitemcheckbox';
+import '../menuitemradio';
+import '../listitem';
+import '../list';
+import { KEYS } from '../../utils/keys';
 
 const createPopover = (args: Args, content: TemplateResult = html``) => html`
   <mdc-menupopover
@@ -44,7 +49,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-menupopover',
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     id: {
@@ -128,7 +133,7 @@ const meta: Meta = {
       'show-arrow',
       'close-button',
       'interactive',
-      'hidePopover',
+      'hide',
       'hide-on-outside-click',
       'hide-on-blur',
       'hide-on-escape',
@@ -136,7 +141,7 @@ const meta: Meta = {
       'onOutsidePopoverClick',
       'onPopoverFocusOut',
       'role',
-      'showPopover',
+      'show',
       'startCloseDelay',
       'togglePopoverVisible',
       'triggerElement',
@@ -168,9 +173,11 @@ const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
     <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
     <mdc-divider></mdc-divider>
-    <mdc-menuitemradio name="theme" label="Light" checked></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="Dark"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="System"></mdc-menuitemradio>
+    <mdc-menusection header-text="Theme">
+      <mdc-menuitemradio name="theme" value="light" label="Light" checked></mdc-menuitemradio>
+      <mdc-menuitemradio name="theme" value="dark" label="Dark"></mdc-menuitemradio>
+      <mdc-menuitemradio name="theme" value="system" label="System"></mdc-menuitemradio>
+    </mdc-menusection>
   </mdc-menusection>
   <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
@@ -337,6 +344,10 @@ export const MixedUsage: StoryObj = {
         <mdc-menuitem label="Zoom In"></mdc-menuitem>
         <mdc-menuitem label="Zoom Out"></mdc-menuitem>
         <mdc-menuitem label="Reset Zoom"></mdc-menuitem>
+        <mdc-divider></mdc-divider>
+        <mdc-menuitemradio indicator="checkmark" name="length" checked label="Short"></mdc-menuitemradio>
+        <mdc-menuitemradio indicator="checkmark" name="length" label="Medium"></mdc-menuitemradio>
+        <mdc-menuitemradio indicator="checkmark" name="length" label="Looooooooooong"></mdc-menuitemradio>
       </mdc-menupopover>
     </div>
   `,
@@ -412,4 +423,85 @@ export const CustomMenu: StoryObj = {
         <mdc-menuitem label="Notifications"></mdc-menuitem>`,
     )}
   `,
+};
+
+export const MenuInList: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: args =>
+    html` <mdc-list>
+        <mdc-listitem @click=${action('onclick')} label="List Item 1">
+          <mdc-button
+            variant="tertiary"
+            id="button-trigger"
+            slot="trailing-controls"
+            aria-label="Open Menu"
+            prefix-icon="more-bold"
+          >
+          </mdc-button>
+        </mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 2"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 3"></mdc-listitem>
+        <mdc-divider></mdc-divider>
+        <mdc-listitem @click=${action('onclick')} label="List Item 4"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 5"></mdc-listitem>
+        <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
+      </mdc-list>
+      ${createPopover(args, defaultMenuContent)}`,
+};
+
+export const DynamicMenu: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: () => {
+    let counter = 1;
+
+    const stopEnterAndSpace = (event: any) =>
+      event.key === KEYS.ENTER || event.key === KEYS.SPACE ? event.stopPropagation() : undefined;
+
+    const addNewMenu = (event: any) => {
+      event.stopImmediatePropagation();
+
+      const withDelay = event.target?.getAttribute('name') === 'delay';
+      const parent = event.target?.closest('mdc-menupopover');
+
+      const menuItem = document.createElement('mdc-menuitem');
+      menuItem.setAttribute('label', `#${counter} Remove itself ${withDelay ? 'with delay' : ''}`);
+      menuItem.addEventListener('click', (e: any) => {
+        e.stopPropagation();
+        if (withDelay) {
+          setTimeout(() => e.target?.remove?.(), 500);
+        } else {
+          e.target?.remove?.();
+        }
+      });
+      menuItem.addEventListener('keydown', stopEnterAndSpace);
+
+      if (withDelay) {
+        setTimeout(() => parent?.append(menuItem), 500);
+      } else {
+        parent?.append(menuItem);
+      }
+      counter += 1;
+    };
+
+    return html`<mdc-button id="trigger-btn">Dynamic menu</mdc-button>
+      <mdc-menupopover triggerID="trigger-btn" placement="bottom-start">
+        <mdc-menuitem label="Add menu item..." name="instant" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+          <mdc-icon name="plus-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+        </mdc-menuitem>
+        <mdc-menuitem label="Add with delay..." name="delay" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+          <mdc-icon name="completed-by-time-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+        </mdc-menuitem>
+        <mdc-menuitem label="Nested" id="sub-trigger" arrow-position="trailing"> </mdc-menuitem>
+        <mdc-menupopover triggerID="sub-trigger" placement="right-start">
+          <mdc-menuitem label="Add menu item..." name="instant" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+            <mdc-icon name="plus-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitem>
+          <mdc-menuitem label="Add with delay..." name="delay" @click=${addNewMenu} @keydown=${stopEnterAndSpace}>
+            <mdc-icon name="completed-by-time-bold" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitem>
+          <mdc-divider></mdc-divider>
+        </mdc-menupopover>
+        <mdc-divider></mdc-divider>
+      </mdc-menupopover>`;
+  },
 };

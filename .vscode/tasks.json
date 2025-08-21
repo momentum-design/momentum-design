@@ -1,0 +1,66 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Components Test E2E WebServer",
+            "type": "shell",
+            "command": "yarn components test:e2e:serve",
+            "hide": true,
+            "presentation": {
+                "group": "E2E Test",
+                "close": false
+            }
+        },
+        {
+            "label": "Components Test E2E Docker",
+            "type": "shell",
+            "command": "yarn components test:e2e:docker:serve",
+            "hide": true,
+            "presentation": {
+                "group": "E2E Test",
+                "close": false
+            }
+        },
+        {
+            "label": "Components Test E2E Podman",
+            "type": "shell",
+            "command": "yarn components test:e2e:podman:serve",
+            "hide": true,
+            "presentation": {
+                "group": "E2E Test",
+                "close": false
+            }
+        },
+        {
+            "label": "Execute your Tests here",
+            "type": "process",
+            "command": "",
+            "hide": true,
+            "presentation": {
+                "group": "E2E Test",
+                "focus": true,
+                "close": false
+            }
+        },
+        {
+            "label": "Components E2E Docker Tests",
+            "dependsOn": [
+                "Components Test E2E WebServer",
+                "Components Test E2E Docker",
+                "Execute your Tests here"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Components E2E Podman Tests",
+            "dependsOn": [
+                "Components Test E2E WebServer",
+                "Components Test E2E Podman",
+                "Execute your Tests here"
+            ],
+            "problemMatcher": []
+        },
+    ]
+}

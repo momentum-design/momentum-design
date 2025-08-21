@@ -209,3 +209,31 @@ Feature: Popover Component
       When the user presses **Escape** key,
       Then the second popover should close,
       And the first popover should open (since focus is back on the trigger).
+
+    Scenario: Tooltip and Popover on same trigger with keepConnectedTooltipClosed attribute as true
+      Given a trigger element with a popover and a tooltip attached
+      And the popover has the `keep-connected-tooltip-closed` attribute set to `true`
+      When the trigger is clicked,
+      Then the popover should open,
+      And the tooltip should closed.
+      When the popover is open
+      And the trigger is hovered again,
+      Then the tooltip should not open
+      And the popover should remain open.
+      When the user clicks outside the popover,
+      Then the popover should close,
+      And the tooltip should remain closed.
+
+    Scenario: Popover and Tooltip on same trigger and Dialog opens
+      Given a trigger element with a popover and a tooltip attached,
+      And the popover has a action inside where a dialog opens which takes focus
+      When the focus is on the trigger,
+      Then the tooltip should open.
+      When the user presses **Space** or **Enter** on the trigger,
+      Then the popover should open
+      And focus moves inside
+      When the user presses Space or Enter on the action inside the popover that opens a dialog,
+      Then the dialog should open,
+      And the popover should close,
+      And the tooltip should close
+      And the focus move into the dialog.

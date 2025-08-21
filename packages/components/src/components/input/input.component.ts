@@ -8,6 +8,7 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
 import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
+import { KEYS } from '../../utils/keys';
 
 import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -30,6 +31,7 @@ import styles from './input.styles';
  * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -247,7 +249,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @param event - Keyboard event
    */
   protected handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
   }
@@ -307,6 +309,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
+    this.dispatchEvent(new CustomEvent('clear', { bubbles: true, composed: true }));
   }
 
   /**

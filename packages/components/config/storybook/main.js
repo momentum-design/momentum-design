@@ -7,11 +7,22 @@ configureSort({
     styling: null,
     components: {
       '**': {
+        docs: null,
+        accessibility: null,
+        example: null,
+      },
+    },
+    widgets: {
+      '**': {
+        docs: null,
+        accessibility: null,
         example: null,
       },
     },
     'work in progress': {
       '**': {
+        docs: null,
+        accessibility: null,
         example: null,
       },
     },
@@ -20,7 +31,7 @@ configureSort({
 });
 
 const config = {
-  stories: ['../../src/docs/*.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  stories: ['../../src/docs/*.mdx', '../../src/**/*.accessibility.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-controls',
     '@storybook/addon-links',

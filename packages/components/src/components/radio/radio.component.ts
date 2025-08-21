@@ -9,6 +9,7 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 import styles from './radio.styles';
 
@@ -77,16 +78,6 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private getAllRadiosWithinSameGroup(): Radio[] {
     return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
-  }
-
-  /**
-   * The 'change' event does not bubble up through the shadow DOM as it was not composed.
-   * Therefore, we need to re-dispatch the same event to ensure it is propagated correctly.
-   * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
-   */
-  private dispatchChangeEvent(event: Event): void {
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   /** @internal */
@@ -183,7 +174,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * This will toggle the state of the radio element.
    * Dispatches the change event.
    */
-  private handleChange(event: Event): void {
+  private handleChange(): void {
     if (this.disabled || this.readonly) return;
 
     const radios = this.getAllRadiosWithinSameGroup();
@@ -202,7 +193,8 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     if (inputElement) {
       inputElement.checked = true;
     }
-    this.dispatchChangeEvent(event);
+
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
   /**
@@ -211,11 +203,10 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    *
    * @param enabledRadios - An array of enabled radio buttons within the same group.
    * @param index - The index of the radio button to be updated within the enabled radios array.
-   * @param event - The event that triggered the update.
    */
-  private updateRadio(enabledRadios: Radio[], index: number, event: Event) {
+  private updateRadio(enabledRadios: Radio[], index: number) {
     enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
-    enabledRadios[index].handleChange(event);
+    enabledRadios[index].handleChange();
   }
 
   /**
@@ -231,17 +222,17 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledRadios.length;
-      this.updateRadio(enabledRadios, nextIndex, event);
+      this.updateRadio(enabledRadios, nextIndex);
     } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
-      this.updateRadio(enabledRadios, prevIndex, event);
-    } else if (event.key === ' ') {
-      this.updateRadio(enabledRadios, currentIndex, event);
+      this.updateRadio(enabledRadios, prevIndex);
+    } else if (event.key === KEYS.SPACE) {
+      this.updateRadio(enabledRadios, currentIndex);
     }
     this.updateTabIndex();
 
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
   }

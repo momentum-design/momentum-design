@@ -18,10 +18,6 @@ import styles from './cardbutton.styles';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @slot before-body - This slot is for passing the content before the body
- * @slot body - This slot is for passing the text content for the card
- * @slot after-body - This slot is for passing the content after the body
- *
  * @event click - (React: onClick) Event that gets dispatched when the card is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
  * It fires the click event when enter key is used.
@@ -29,6 +25,24 @@ import styles from './cardbutton.styles';
  * It fires the click event when space key is used.
  * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
  *
+ * @slot before-body - This slot is for passing the content before the body
+ * @slot body - This slot is for passing the text content for the card
+ * @slot after-body - This slot is for passing the content after the body
+ * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
+ * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
+ *
+ * @csspart header - The header part of the card
+ * @csspart icon - The icon part of the card header
+ * @csspart body - The body part of the card
+ * @csspart image - The image part of the card
+ * @csspart footer - The footer part of the card
+ * @csspart footer-link - The link part of the card footer
+ * @csspart footer-button-primary - The primary button part of the card footer
+ * @csspart footer-button-secondary - The secondary button part of the card footer
+ * @csspart icon-button - The icon button part of the card header
+ * @csspart text - The text part of the card
+ *
+ * @cssproperty --mdc-card-width - The width of the card
  */
 class CardButton extends CardComponentMixin(Buttonsimple) {
   override connectedCallback(): void {

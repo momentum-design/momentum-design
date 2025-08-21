@@ -4,7 +4,7 @@ import { queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
-import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+import { FooterMixin } from '../../utils/mixins/FooterMixin';
 
 import { DEFAULTS } from './card.constants';
 import styles from './card.styles';
@@ -20,15 +20,14 @@ import styles from './card.styles';
  *    - Subtitle
  * - Body
  *
- * The card can either be vertically or horizontally oriented.
+ * The card can either be vertically or horizontally oriented. The vertical card has a min-width of 20rem and the horizontal card has a min-width of 40rem.
  *
  * There are 2 variants for the card that represent the border styling - 'border' and 'ghost'.
  *
  * To make this card interactive, use the following slots:
  * - `icon-button`: This slot supports action icon buttons in the header section (maximum of 3 buttons).
  * - `footer-link`: This slot is for passing `mdc-link` component within the footer section.
- * - `footer-button-primary`: This slot is for passing primary variant of
- * `mdc-button` component within the footer section.
+ * - `footer-button-primary`: This slot is for passing primary variant of `mdc-button` component within the footer section.
  * - `footer-button-secondary`: This slot is for passing secondary variant of `mdc-button` component
  * within the footer section.
  *
@@ -45,17 +44,26 @@ import styles from './card.styles';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred.
  *
+ * @csspart header - The header part of the card
+ * @csspart icon - The icon part of the card header
+ * @csspart body - The body part of the card
+ * @csspart image - The image part of the card
+ * @csspart footer - The footer part of the card
+ * @csspart footer-link - The link part of the card footer
+ * @csspart footer-button-primary - The primary button part of the card footer
+ * @csspart footer-button-secondary - The secondary button part of the card footer
+ * @csspart icon-button - The icon button part of the card header
+ * @csspart text - The text part of the card
+ *
  * @tagname mdc-card
  *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @slot before-body - This slot is for passing the content before the body
- * @slot body - This slot is for passing the text content for the card
- * @slot after-body - This slot is for passing the content after the body
+ * @cssproperty --mdc-card-width - The width of the card
  *
  */
-class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
+class Card extends CardComponentMixin(FooterMixin(Component)) {
   /**
    * The icon buttons in the header section
    * @internal
@@ -77,19 +85,11 @@ class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
    */
   private handleIconButtons = () => {
     this.iconButtons?.forEach(element => {
-      if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
-        element.remove();
-      } else {
+      if (element.matches(DEFAULTS.BUTTON)) {
         element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
         element.setAttribute('size', '32');
       }
     });
-    // limit to show only first 3 buttons defined in the slot
-    if (this.iconButtons && this.iconButtons.length > 3) {
-      for (let i = 3; i < this.iconButtons.length; i += 1) {
-        this.iconButtons[i].remove();
-      }
-    }
   };
 
   /**
@@ -111,9 +111,11 @@ class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
       ${this.renderImage()}
       <div part="body">
         ${this.renderHeader()}
-        <slot name="before-body"></slot>
-        <slot name="body"></slot>
-        <slot name="after-body"></slot>
+        <div part="text-content">
+          <slot name="before-body"></slot>
+          <slot name="body"></slot>
+          <slot name="after-body"></slot>
+        </div>
         ${this.renderFooter()}
       </div>
     `;

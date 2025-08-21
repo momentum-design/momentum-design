@@ -1,6 +1,6 @@
 ---
 mode: 'agent'
-tools: ['codebase', 'editFiles', 'runCommands', 'search']
+tools: ['codebase', 'editFiles', 'runCommands', 'search', 'Figma Dev Mode MCP']
 ---
 
 # Generate a new component
@@ -27,6 +27,7 @@ Proceed only if you fully understand and agree to adhere strictly to every requi
     - a list of user stories for the component
     - a list of attributes for the component
     - a component to extend (if applicable)
+    - a link to the Figma design file for the component (if applicable)
 
 2. Modify the component name to ensure it follows the correct format:
     - all lowercase
@@ -56,7 +57,9 @@ For adding attributes, use the reactive property from Lit.dev (https://lit.dev/d
     - When overridding methods, try to keep as much of the original implementation and only change what is necessary to cover the new user stories or attributes.
 
 10. Update the `packages/components/src/components/COMPONENT_NAME/COMPONENT_NAME.styles.ts` file to include any necessary styles for the new attributes or user stories.
-    - Adding any necessary CSS styles in the `COMPONENT_NAME.styles.ts` file.
+    - If a Figma design file link is provided, retrieve the design file using the Figma Dev Mode MCP tool (running tool get_code).
+    - Adding any necessary CSS styles in the `COMPONENT_NAME.styles.ts` file based on the retrieved design file.
+    - If a Figma design file link is provided, use tool get_image to retrieve the png image of the component from the Figma design file and save it in the `packages/components/src/components/COMPONENT_NAME` directory.
 
 11. Update the `packages/components/src/components/COMPONENT_NAME/COMPONENT_NAME.stories.ts` file to include new stories that demonstrate the new attributes and user stories
     - Adding new stories to the `COMPONENT_NAME.stories.ts` file to demonstrate the new attributes and user stories.

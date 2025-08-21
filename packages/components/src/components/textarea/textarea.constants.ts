@@ -18,6 +18,6 @@ const DEFAULTS = {
   ROWS: 5,
   COLS: 40,
   WRAP: WRAP.SOFT,
-};
+} as const;
 
 export { TAG_NAME, WRAP, AUTO_COMPLETE, DEFAULTS };

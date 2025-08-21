@@ -1,8 +1,8 @@
+/* eslint-disable import/order */
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
-import '.';
 import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
@@ -10,6 +10,13 @@ import '../option';
 import '../select';
 import '../menupopover';
 import '../menuitem';
+import '../dialog';
+import '../list';
+import '../listitem';
+
+import type Popover from '.';
+import type Dialog from '../dialog';
+
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -44,6 +51,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
     ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
+    ?keep-connected-tooltip-closed="${args['keep-connected-tooltip-closed']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -396,6 +404,7 @@ export const interactiveHover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
+    'focus-back-to-trigger': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
@@ -441,6 +450,7 @@ export const nestedPopover: StoryObj = {
     'hide-on-escape': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'focus-back-to-trigger': true,
     'hide-on-outside-click': true,
   },
 };
@@ -489,22 +499,35 @@ export const popoverWithSelect: StoryObj = {
   render: () => html`
     <div style="width: 10rem; height: 8rem; margin: 5rem;">
       <mdc-button id="select-button">Click me!</mdc-button>
-      <mdc-popover triggerID="select-button" interactive hide-on-escape hide-on-outside-click>
+      <mdc-popover
+        triggerID="select-button"
+        interactive
+        hide-on-escape
+        hide-on-outside-click
+        focus-trap
+        focus-back-to-trigger
+      >
         <div style="width: 15rem;">
           <mdc-select>
-            <mdc-option>Option 1</mdc-option>
-            <mdc-option>Option 2</mdc-option>
-            <mdc-option>Option 3</mdc-option>
+            <mdc-selectlistbox>
+              <mdc-option label="Option 1" value="option-1"></mdc-option>
+              <mdc-option label="Option 2" value="option-2"></mdc-option>
+              <mdc-option label="Option 3" value="option-3"></mdc-option>
+            </mdc-selectlistbox>
           </mdc-select>
           <mdc-select>
-            <mdc-option>Option 4</mdc-option>
-            <mdc-option>Option 5</mdc-option>
-            <mdc-option>Option 6</mdc-option>
+            <mdc-selectlistbox>
+              <mdc-option label="Option 4" value="option-4"></mdc-option>
+              <mdc-option label="Option 5" value="option-5"></mdc-option>
+              <mdc-option label="Option 6" value="option-6"></mdc-option>
+            </mdc-selectlistbox>
           </mdc-select>
           <mdc-select>
-            <mdc-option>Option 7</mdc-option>
-            <mdc-option>Option 8</mdc-option>
-            <mdc-option>Option 9</mdc-option>
+            <mdc-selectlistbox>
+              <mdc-option label="Option 7" value="option-7"></mdc-option>
+              <mdc-option label="Option 8" value="option-8"></mdc-option>
+              <mdc-option label="Option 9" value="option-9"></mdc-option>
+            </mdc-selectlistbox>
           </mdc-select>
         </div>
       </mdc-popover>
@@ -577,5 +600,107 @@ export const NestedMenu: StoryObj = {
         </mdc-menupopover>
       </div>
     </mdc-popover>
+  `,
+};
+
+export const PopoverWithTooltipAndDialog: StoryObj = {
+  args: {
+    ...Example.args,
+    id: 'popover',
+    placement: POPOVER_PLACEMENT.RIGHT_START,
+    triggerID: 'trigger-btn',
+    interactive: true,
+    'focus-trap': true,
+    'focus-back-to-trigger': true,
+    'show-arrow': true,
+    'hide-on-escape': true,
+    'hide-on-outside-click': true,
+    'keep-connected-tooltip-closed': true,
+  },
+  render: args => html`
+    ${createTrigger(args.triggerID, 'Click me!')}
+    ${createPopover(
+      args,
+      html`
+        <mdc-button
+          @click=${() => {
+            const popover = document.getElementById('popover') as Popover;
+            popover.hide();
+
+            const dialog = document.getElementById('popover-dialog') as Dialog;
+            dialog.visible = true;
+          }}
+        >
+          Open dialog
+        </mdc-button>
+      `,
+    )}
+    <mdc-tooltip id="tooltip" triggerID="${args.triggerID}" placement="top"> Tooltip text </mdc-tooltip>
+    <mdc-dialog
+      id="popover-dialog"
+      header-text="Dialog Title"
+      @close=${() => {
+        const dialog = document.getElementById('popover-dialog') as Dialog;
+        dialog.visible = false;
+      }}
+    >
+      <mdc-text slot="dialog-body">Dialog content goes here.</mdc-text>
+      <mdc-button slot="footer">Close</mdc-button>
+    </mdc-dialog>
+  `,
+};
+
+export const PopoverScrollOverflow: StoryObj = {
+  args: {
+    ...Example.args,
+    id: 'popover-scroll-overflow',
+    triggerID: 'trigger-scroll-btn',
+    interactive: true,
+    'focus-trap': true,
+    'focus-back-to-trigger': true,
+    'show-arrow': true,
+    'hide-on-escape': true,
+    'hide-on-outside-click': true,
+    size: true,
+  },
+  render: args => html`
+    <mdc-list style="height: 200px; width: 100%; overflow-y: auto;">
+      <mdc-listitem label="Item 1"></mdc-listitem>
+      <mdc-listitem label="Item 2"></mdc-listitem>
+      <mdc-listitem label="Item 3">
+        <div style="height: fit-content" slot="content">
+          <mdc-button id="${args.triggerID}">Trigger</mdc-button>
+          ${createPopover(
+            args,
+            html`
+              <div style="height: 300px; overflow-y: auto;">
+                <mdc-text
+                  >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                  et dolore magna aliqua.</mdc-text
+                >
+                <mdc-text>More content...</mdc-text>
+                <mdc-text>Even more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+                <mdc-text>And some more content...</mdc-text>
+              </div>
+            `,
+          )}
+        </div>
+      </mdc-listitem>
+      <mdc-listitem label="Item 4"></mdc-listitem>
+      <mdc-listitem label="Item 5"></mdc-listitem>
+      <mdc-listitem label="Item 6"></mdc-listitem>
+      <mdc-listitem label="Item 7"></mdc-listitem>
+      <mdc-listitem label="Item 8"></mdc-listitem>
+      <mdc-listitem label="Item 9"></mdc-listitem>
+      <mdc-listitem label="Item 10"></mdc-listitem>
+      <mdc-listitem label="Item 11"></mdc-listitem>
+      <mdc-listitem label="Item 12"></mdc-listitem>
+    </mdc-list>
   `,
 };

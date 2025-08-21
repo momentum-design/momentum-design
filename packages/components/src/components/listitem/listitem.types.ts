@@ -1,14 +1,26 @@
-import type { ValueOf } from '../../utils/types';
+import type { OverrideEventTarget, TypedCustomEvent, ValueOf } from '../../utils/types';
 
+import type ListItem from './listitem.component';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-type ListItemVariants = ValueOf<typeof LISTITEM_VARIANTS>;
+export type ListItemVariants = ValueOf<typeof LISTITEM_VARIANTS>;
 
-interface Events {
-  onClickEvent: MouseEvent;
-  onKeyDownEvent: KeyboardEvent;
-  onKeyUpEvent: KeyboardEvent;
-  onFocusEvent: FocusEvent;
+export interface Events {
+  onClickEvent: OverrideEventTarget<MouseEvent, ListItem>;
+  onKeyDownEvent: OverrideEventTarget<KeyboardEvent, ListItem>;
+  onKeyUpEvent: OverrideEventTarget<KeyboardEvent, ListItem>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, ListItem>;
+  onEnabledEvent: TypedCustomEvent<ListItem>;
+  onDisabledEvent: TypedCustomEvent<ListItem>;
+  onCreatedEvent: TypedCustomEvent<ListItem>;
+  onDestroyedEvent: TypedCustomEvent<ListItem>;
 }
 
-export type { ListItemVariants, Events };
+declare global {
+  interface GlobalEventHandlersEventMap {
+    disabled: TypedCustomEvent<ListItem>;
+    enabled: TypedCustomEvent<ListItem>;
+    created: TypedCustomEvent<ListItem>;
+    destroyed: TypedCustomEvent<ListItem>;
+  }
+}

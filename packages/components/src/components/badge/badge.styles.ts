@@ -74,6 +74,11 @@ const styles = [
       .mdc-badge-text {
         outline: 0.125rem solid;
       }
+
+      .mdc-badge-dot {
+        background-color: ButtonText;
+        outline: none;
+      }
     }
   `,
 ];

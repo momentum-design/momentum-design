@@ -1,11 +1,15 @@
 import { CSSResult, PropertyValues, html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import providerUtils from '../../utils/provider';
 import { ROLE } from '../../utils/roles';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type { IconNames } from '../icon/icon.types';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 import styles from './menusection.styles';
+import { DEFAULTS } from './menusection.constants';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -21,11 +25,13 @@ import styles from './menusection.styles';
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
  *
  * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
+ * @event action - (React: onAction) This event is dispatched when a `menuitem` selected.
  */
 class MenuSection extends Component {
   /**
-   * The primary headerText of the list item.
-   * This appears on the leading side of the list item.
+   * The aria-label for the section.
+   * This is used for accessibility purposes to describe the section.
+   * If not provided, it defaults to the `headerText`.
    */
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
 
@@ -34,6 +40,44 @@ class MenuSection extends Component {
    * This appears on the leading side of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText: string | null = null;
+
+  /**
+   * Name of the icon rendered before the text
+   *
+   * If not provided, no icon will be rendered and text will be aligned to the start.
+   */
+  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
+
+  /**
+   * Whether to show a divider below the section header.
+   * This is useful for visually separating sections in the menu.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-divider' })
+  showDivider = false;
+
+  /**
+   * The variant of the divider.
+   * Can be set to 'solid' or 'gradient'.
+   *
+   * Keep 'solid' if used in MenuPopovers, as it is the default style.
+   *
+   * @default 'solid'
+   */
+  @property({ type: String, reflect: true, attribute: 'divider-variant' })
+  dividerVariant = DEFAULTS.DIVIDER_VARIANT;
+
+  /**
+   * Shows or hides the section headers based on the expanded state of the side navigation.
+   *
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-header-text' })
+  hideHeaderText = false;
+
+  /**
+   * @internal
+   */
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -52,19 +96,32 @@ class MenuSection extends Component {
       // more details: https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
       this.ariaLabel = this.headerText || '';
     }
+
+    const context = this.sideNavigationContext?.value;
+    if (!context) return;
+
+    const { expanded } = context;
+    this.hideHeaderText = !expanded;
   }
 
-  private renderLabel() {
+  private renderHeader() {
     if (this.headerText) {
-      return html`<mdc-text part="header-text" type=${TYPE.BODY_MIDSIZE_BOLD} tagname=${VALID_TEXT_TAGS.DIV}>
-        ${this.headerText}
-      </mdc-text> `;
+      return html` <mdc-listheader
+        part="header ${this.sideNavigationContext?.value?.expanded ? 'align-header' : ''}"
+        header-text="${this.headerText}"
+        prefix-icon="${ifDefined(this.prefixIcon)}"
+      >
+      </mdc-listheader>`;
     }
     return null;
   }
 
   public override render() {
-    return html`${this.renderLabel()}<slot></slot>`;
+    return html`
+      ${!this.hideHeaderText ? this.renderHeader() : null}
+      <slot part="container"></slot>
+      ${this.showDivider ? html`<mdc-divider variant="${this.dividerVariant}" part="divider"></mdc-divider>` : null}
+    `;
   }
 
   public static override styles: CSSResult[] = [...Component.styles, ...styles];

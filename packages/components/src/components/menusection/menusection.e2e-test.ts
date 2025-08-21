@@ -8,6 +8,8 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   headerText?: string;
   ariaLabel?: string;
+  prefixIcon?: string;
+  showDivider?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -18,6 +20,8 @@ const setup = async (args: SetupOptions) => {
         <mdc-menusection
           ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ''}
           ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+          ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+          ${restArgs.showDivider ? `show-divider="${restArgs.showDivider}"` : ''}
         >
           <mdc-menuitemradio name="option" value="1" label="Option 1"></mdc-menuitemradio>
           <mdc-menuitemradio name="option" value="2" label="Option 2"></mdc-menuitemradio>
@@ -67,13 +71,13 @@ test('mdc-menusection', async ({ componentsPage }) => {
     const menusectionSheet = new StickerSheet(componentsPage, 'mdc-menusection', 'margin: 0.25rem 0;');
     const options = { createNewRow: true };
 
-    menusectionSheet.setAttributes({ 'header-text': 'Default Section' });
+    menusectionSheet.setAttributes({ 'header-text': 'Default Section', 'show-divider': true });
     menusectionSheet.setChildren(`
       <mdc-menuitem label="MenuItem1"></mdc-menuitem>
       <mdc-menuitem label="MenuItem2"></mdc-menuitem>
     `);
     await menusectionSheet.createMarkupWithCombination({}, options);
-    menusectionSheet.setAttributes({ 'header-text': 'Settings Section' });
+    menusectionSheet.setAttributes({ 'header-text': 'Settings Section', 'show-divider': true });
     menusectionSheet.setChildren(`
       <mdc-menuitemcheckbox indicator="none" label="Profile"></mdc-menuitemcheckbox>
       <mdc-menuitemcheckbox checked label="Notifications"></mdc-menuitemcheckbox>
@@ -82,7 +86,7 @@ test('mdc-menusection', async ({ componentsPage }) => {
       <mdc-menuitemcheckbox checked disabled label="Restart"></mdc-menuitemcheckbox>
     `);
     await menusectionSheet.createMarkupWithCombination({}, options);
-    menusectionSheet.setAttributes({ 'header-text': 'Select a color' });
+    menusectionSheet.setAttributes({ 'header-text': 'Select a color', 'show-divider': true });
     menusectionSheet.setChildren(`
       <mdc-menuitemradio name="color" indicator="none" label="Red"></mdc-menuitemradio>
       <mdc-menuitemradio name="color" checked label="Green"></mdc-menuitemradio>
@@ -90,13 +94,11 @@ test('mdc-menusection', async ({ componentsPage }) => {
       <mdc-menuitemradio name="color" disabled label="Black"></mdc-menuitemradio>
     `);
     await menusectionSheet.createMarkupWithCombination({}, options);
-    menusectionSheet.setAttributes({ 'header-text': 'Multiple options' });
+    menusectionSheet.setAttributes({ 'header-text': 'Multiple options'});
     menusectionSheet.setChildren(`
       <mdc-menuitem label="Save Text"></mdc-menuitem>
-      <mdc-divider></mdc-divider>
       <mdc-menuitemcheckbox name="style" indicator="none" label="Bold"></mdc-menuitemcheckbox>
       <mdc-menuitemcheckbox name="style" checked label="Italic"></mdc-menuitemcheckbox>
-      <mdc-divider></mdc-divider>
       <mdc-menuitemradio name="radio" indicator="checkmark" checked label="Zoom In"></mdc-menuitemradio>
       <mdc-menuitemradio name="radio" label="Zoom Out"></mdc-menuitemradio>
     `);
@@ -133,7 +135,7 @@ test('mdc-menusection', async ({ componentsPage }) => {
     // With header text
     await test.step('with header text', async () => {
       const section = await setup({ componentsPage, headerText: 'Settings' });
-      const header = section.locator('[part="header-text"]');
+      const header = section.locator('mdc-listheader[part*="header"]');
       await expect(header).toHaveText('Settings');
       await expect(section).toHaveAttribute('aria-label', 'Settings');
     });
@@ -142,6 +144,20 @@ test('mdc-menusection', async ({ componentsPage }) => {
     await test.step('with custom aria-label', async () => {
       const section = await setup({ componentsPage, ariaLabel: 'Custom Section' });
       await expect(section).toHaveAttribute('aria-label', 'Custom Section');
+    });
+
+    // With show-divider
+    await test.step('with show-divider', async () => {
+      const section = await setup({ componentsPage, showDivider: 'true' });
+      const divider = section.locator('mdc-divider[part="divider"]');
+      await expect(divider).toHaveCount(1);
+    });
+
+    // With prefix-icon
+    await test.step('with prefix-icon', async () => {
+      const section = await setup({ componentsPage, headerText: 'Settings', prefixIcon: 'settings' });
+      const icon = section.locator('mdc-listheader mdc-icon[name="settings"]');
+      await expect(icon).toHaveCount(1);
     });
   });
 

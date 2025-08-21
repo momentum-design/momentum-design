@@ -9,8 +9,9 @@ const KEYS = {
   HOME: 'Home',
   PAGE_DOWN: 'PageDown',
   PAGE_UP: 'PageUp',
+  SHIFT_TAB: 'Shift+Tab',
   SPACE: ' ',
   TAB: 'Tab',
-} as const;
+};
 
 export { KEYS };

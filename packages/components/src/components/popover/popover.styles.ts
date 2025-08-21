@@ -27,6 +27,14 @@ const styles = css`
     width: var(--mdc-popover-max-width);
   }
 
+  :host([strategy='absolute']) {
+    position: absolute;
+  }
+
+  :host([strategy='fixed']) {
+    position: fixed;
+  }
+
   :host([visible]) {
     display: block;
   }
@@ -37,19 +45,18 @@ const styles = css`
     color: var(--mdc-popover-inverted-text-color);
   }
 
-  :host([color='contrast']) {
-    .popover-arrow {
-      background-color: var(--mdc-popover-inverted-background-color);
-      border-color: var(--mdc-popover-inverted-border-color);
-    }
+  :host([color='contrast']) .popover-arrow {
+    background-color: var(--mdc-popover-inverted-background-color);
+    border-color: var(--mdc-popover-inverted-border-color);
+  }
 
-    .popover-close {
-      color: var(--mdc-popover-inverted-text-color);
-    }
+  :host([color='contrast']) .popover-close {
+    color: var(--mdc-popover-inverted-text-color);
   }
 
   :host::part(popover-content) {
     position: relative;
+    cursor: default;
     padding: 0.75rem;
     min-width: max-content;
     z-index: 9998;

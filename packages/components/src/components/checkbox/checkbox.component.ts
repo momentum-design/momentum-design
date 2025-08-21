@@ -2,6 +2,7 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -134,7 +135,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
+    if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
   }

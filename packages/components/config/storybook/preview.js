@@ -36,10 +36,15 @@ function refactorCustomElements(customElements) {
         name: `Shadow Part Name: "${part.name}"`,
       }));
 
+      const mappedEvents = declaration.events?.map(event => ({
+        ...event,
+        name: `Event Name: "${event.name}"`,
+      }));
+
       const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap
       const filteredMembers = declaration.members.filter(member => !attributesMap.has(member.name));
-      Object.assign(declaration, { members: filteredMembers, cssParts: mappedParts });
+      Object.assign(declaration, { members: filteredMembers, cssParts: mappedParts, events: mappedEvents });
     });
   });
 

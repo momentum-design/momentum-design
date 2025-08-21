@@ -5,7 +5,8 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls } from '../../../config/storybook/utils';
+import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import '../avatar';
 import '../avatarbutton';
 import '../badge';
@@ -14,8 +15,12 @@ import '../checkbox';
 import '../divider';
 import '../icon';
 import '../listitem';
-import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import '../listheader';
+import '../text';
 import '../toggle';
+import '../select';
+import '../selectlistbox';
+import '../option';
 
 const fakeUserNamesList = [
   'Maria Simpson',
@@ -31,7 +36,10 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list header-text="${args['header-text']}" data-aria-label="${args['data-aria-label']}">
+  html` <mdc-list aria-label="${args['aria-label']}">
+    ${args.textPassedToListHeader
+      ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+      : ''}
     ${repeat(
       fakeUserNamesList,
       name =>
@@ -62,13 +70,14 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    'header-text': {
+    textPassedToListHeader: {
+      control: 'text',
+      description: 'Text to be rendered in the list header component. This is a control in storybook only.',
+    },
+    'aria-label': {
       control: 'text',
     },
-    'data-aria-label': {
-      control: 'text',
-    },
-    ...hideControls(['role', 'listItems', 'default']),
+    ...disableControls(['default', 'list-header']),
     ...classArgType,
     ...styleArgType,
   },
@@ -78,14 +87,17 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'header-text': 'Participants List',
-    'data-aria-label': 'View all participants',
+    textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
   },
 };
 
 export const ListWithDivider: StoryObj = {
-  render: () => html`
-    <mdc-list>
+  render: args => html`
+    <mdc-list aria-label="${args['aria-label']}">
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
       <mdc-listitem @click=${action('onclick')} label="List Item 1"></mdc-listitem>
       <mdc-listitem @click=${action('onclick')} label="List Item 2"></mdc-listitem>
       <mdc-listitem @click=${action('onclick')} label="List Item 3"></mdc-listitem>
@@ -95,4 +107,49 @@ export const ListWithDivider: StoryObj = {
       <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
     </mdc-list>
   `,
+  args: {
+    textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
+  },
+};
+
+export const ScrollableListWithSelect: StoryObj = {
+  render: args => html`
+    <mdc-list aria-label="${args['aria-label']}" style="height: 200px; overflow-y: auto;" id="scrollable-list">
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
+      ${repeat(
+        fakeUserNamesList,
+        name =>
+          html`<mdc-listitem @click="${action('onclick')}" label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+            <mdc-select
+              slot="leading-controls"
+              style="--mdc-select-width: 200px;"
+              boundary="scrollable-list"
+              strategy="fixed"
+              backdrop-append-to="scrollable-list"
+            >
+              <mdc-selectlistbox>
+                <mdc-option value="option1" label="Option 1" disabled></mdc-option>
+                <mdc-option value="option2" label="Option 2"></mdc-option>
+                <mdc-option value="option3" label="Option 3"></mdc-option>
+                <mdc-option value="option4" label="Option 4" disabled></mdc-option>
+                <mdc-option value="option5" label="Option 5"></mdc-option>
+                <mdc-option value="option6" label="Option 6" disabled></mdc-option>
+                <mdc-option value="option6" label="Option 7" soft-disabled></mdc-option>
+              </mdc-selectlistbox>
+            </mdc-select>
+            <mdc-avatar
+              slot="leading-controls"
+              initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
+            ></mdc-avatar>
+          </mdc-listitem> `,
+      )}
+    </mdc-list>
+  `,
+  args: {
+    textPassedToListHeader: 'Scrollable Participants List',
+    'aria-label': 'View all participants',
+  },
 };

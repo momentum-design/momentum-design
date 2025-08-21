@@ -1,12 +1,12 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 
-import { DEFAULTS, SIZE } from './presence.constants';
+import { DEFAULTS, PRESENCE_SIZE } from './presence.constants';
 import styles from './presence.styles';
 import type { PresenceType, PresenceSize } from './presence.types';
-import { getIconValue } from './presence.utils';
+import { getIconValue, getPresenceIconSize } from './presence.utils';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
@@ -58,20 +58,20 @@ class Presence extends Component {
   type: PresenceType = DEFAULTS.TYPE;
 
   /**
-   * Acceptable values include:
-   * - XX_SMALL
-   * - X_SMALL
-   * - SMALL
-   * - MIDSIZE
-   * - LARGE
-   * - X_LARGE
-   * - XX_LARGE
+   * Acceptable numeric values include:
+   * - 24
+   * - 32
+   * - 48
+   * - 64
+   * - 72
+   * - 88
+   * - 124
    *
-   * Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
-   * icons will be no smaller than 14px.
-   * @default small
+   * Presence icons are minimum 14px in size, meaning 24, 32, and 48 presence
+   * icons will be no smaller than 14px (for sizes 24, 32, 48).
+   * @default 32
    */
-  @property({ type: String, reflect: true })
+  @property({ type: Number, reflect: true })
   size: PresenceSize = DEFAULTS.SIZE;
 
   /**
@@ -81,26 +81,15 @@ class Presence extends Component {
   @state()
   private currentIconType: PresenceType = DEFAULTS.TYPE;
 
-  /**
-   * Get the size of the presence icon based on the given size type
-   */
-  private get iconSize() {
-    switch (this.size) {
-      case SIZE.MIDSIZE:
-        return 1.16125;
-      case SIZE.LARGE:
-        return 1.30625;
-      case SIZE.X_LARGE:
-        return 1.596875;
-      case SIZE.XX_LARGE:
-        return 2.25;
-      case SIZE.XX_SMALL:
-      case SIZE.X_SMALL:
-      case SIZE.SMALL:
-      default:
-        this.size = DEFAULTS.SIZE;
-        return 0.875;
+  override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('size')) {
+      this.setSize(this.size);
     }
+  }
+
+  private setSize(size: PresenceSize): void {
+    this.setAttribute('size', Object.values(PRESENCE_SIZE).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
   }
 
   /**
@@ -133,11 +122,11 @@ class Presence extends Component {
 
   public override render() {
     return html`
-      <div class="mdc-presence mdc-presence__${this.size}">
+      <div part="presence-content">
         <mdc-icon
           class="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
           name="${this.icon}"
-          size="${this.iconSize}"
+          size="${getPresenceIconSize(this.size)}"
           @load="${this.handleOnLoad}"
           @error="${this.handleOnError}"
         ></mdc-icon>

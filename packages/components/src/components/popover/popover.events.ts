@@ -52,4 +52,22 @@ export class PopoverEventManager {
   static onDestroyedPopover(instance: Popover) {
     this.dispatchPopoverEvent('destroyed', instance);
   }
+
+  /**
+   * Custom event that is fired when the popover is closed by pressing the Escape key.
+   *
+   * @param instance - The popover instance.
+   */
+  static onEscapeKeyPressed(instance: Popover) {
+    this.dispatchPopoverEvent('closebyescape', instance);
+  }
+
+  /**
+   * Custom event that is fired when the popover is closed by clicking outside of it.
+   *
+   * @param instance - The popover instance.
+   */
+  static onClickOutside(instance: Popover) {
+    this.dispatchPopoverEvent('closebyoutsideclick', instance);
+  }
 }

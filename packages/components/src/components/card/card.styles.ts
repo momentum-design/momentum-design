@@ -4,25 +4,31 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    align-items: flex-start;
+    --mdc-card-width: 20rem;
+    align-items: stretch;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
     box-shadow: none;
     transition: box-shadow 0.2s;
+    width: var(--mdc-card-width);
   }
+
   :host([variant='ghost']) {
     border-color: transparent;
   }
+
   :host([orientation='horizontal']) {
-    max-width: 40rem;
+    min-width: 40rem;
+    --mdc-card-width: 40rem;
   }
 
   :host([orientation='vertical']) {
-    max-width: 20rem;
+    min-width: 20rem;
     flex-direction: column;
   }
 
   :host([orientation='vertical'])::part(image) {
+    object-fit: cover;
     height: 12.5rem;
     width: 100%;
     border-top-left-radius: 0.5rem;
@@ -30,10 +36,17 @@ const styles = css`
   }
 
   :host([orientation='horizontal'])::part(image) {
+    object-fit: cover;
     width: 10rem;
     height: 100%;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
+  }
+
+  :host::part(text-content) {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   :host::part(header) {
@@ -47,6 +60,7 @@ const styles = css`
 
   :host::part(body) {
     width: 100%;
+    height: inherit;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -83,10 +97,19 @@ const styles = css`
     gap: 1rem;
   }
 
+  ::slotted([slot='before-body']),
+  ::slotted([slot='after-body']) {
+    margin-top: 1rem;
+  }
+
   ::slotted([slot='footer-link']),
   ::slotted([slot='footer-button-primary']),
   ::slotted([slot='footer-button-secondary']) {
     margin-bottom: 0.5rem;
+  }
+
+  mdc-text::part(text) {
+    margin: 0;
   }
 `;
 

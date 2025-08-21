@@ -10,6 +10,6 @@ const DEFAULTS = {
   ICON: 'search-bold' as Extract<IconNames, 'search-bold'>,
   CLOSE_BTN: true,
   INPUT_CHIP_TAG,
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS };

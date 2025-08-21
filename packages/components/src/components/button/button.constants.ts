@@ -44,7 +44,7 @@ const DEFAULTS = {
   TYPE_INTERNAL: BUTTON_TYPE_INTERNAL.ICON,
   TYPE: BUTTON_TYPE.BUTTON,
   INVERTED: false,
-};
+} as const;
 
 export {
   TAG_NAME,

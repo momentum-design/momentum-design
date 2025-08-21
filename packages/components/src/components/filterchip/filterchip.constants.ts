@@ -7,6 +7,6 @@ const TAG_NAME = utils.constructTagName('filterchip');
 const DEFAULTS = {
   ICON_NAME: 'check-bold' as Extract<IconNames, 'check-bold'>,
   COLOR: 'default' as Extract<ColorType, 'default'>,
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS };

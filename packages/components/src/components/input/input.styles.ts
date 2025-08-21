@@ -22,7 +22,6 @@ const styles = [
       --mdc-input-success-border-color: var(--mds-color-theme-text-success-normal);
       --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
     }
-
     :host,
     .input-container,
     .input-section,
@@ -89,7 +88,7 @@ const styles = [
 
     .prefix-text {
       color: var(--mdc-input-support-text-color);
-      white-space: nowrap; // restrict prefix text to be in one line
+      white-space: nowrap; /* restrict prefix text to be in one line */
     }
 
     :host(:not([disabled])) .input-container:hover {

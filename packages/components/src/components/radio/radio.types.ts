@@ -1,6 +1,10 @@
+import type { OverrideEventTarget, TypedCustomEvent } from "../../utils/types";
+
+import type Radio from "./radio.component";
+
 interface Events {
-  onChangeEvent: Event;
-  onFocusEvent: FocusEvent;
+  onChangeEvent: TypedCustomEvent<Radio>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, Radio>;
 }
 
 export type { Events };
