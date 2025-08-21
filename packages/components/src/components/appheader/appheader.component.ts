@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 
 import { Component } from '../../models';
 
@@ -24,32 +24,26 @@ import styles from './appheader.styles';
  * @csspart trailing-section - The trailing section of the header.
  */
 class Appheader extends Component {
-  protected override firstUpdated() {
-    const centerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="center"]');
-    if (centerSlot) this.toggleNoCenter(centerSlot);
-  }
-
-  private toggleNoCenter(slot: HTMLSlotElement) {
-    const hasContent = slot.assignedNodes({ flatten: true }).length > 0;
-    this.toggleAttribute('no-center', !hasContent);
-  }
-
   /**
    * Renders the structured layout of the app header.
    * Uses `slots` for flexibility, allowing consumers to insert custom content.
    */
   public override render() {
-    return html` <header part="container">
-      <div part="leading-section">
-        <slot name="leading"></slot>
-      </div>
-      <div part="center-section">
-        <slot name="center" @slotchange=${this.toggleNoCenter}></slot>
-      </div>
-      <div part="trailing-section">
-        <slot name="trailing"></slot>
-      </div>
-    </header>`;
+    const hasCenter = !!this.querySelector('[slot="center"]');
+
+    return html`
+      <header part="container">
+        <div part="leading-section">
+          <slot name="leading"></slot>
+        </div>
+        ${hasCenter
+          ? html`<div part="center-section"><slot name="center"></slot></div>`
+          : nothing}
+        <div part="trailing-section">
+          <slot name="trailing"></slot>
+        </div>
+      </header>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
