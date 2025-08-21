@@ -5,6 +5,7 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-combobox-icon-color: var(--mds-color-theme-text-primary-normal);
 
     display: flex;
     flex-direction: column;
@@ -19,10 +20,18 @@ const styles = css`
     display: flex;
     position: relative;
   }
-  :host::part(container__base-icon) {
+  :host::part(container__button) {
     position: absolute;
     right: 0;
     padding: 0.5rem;
+    background-color: unset;
+    border-left: 1px solid var(--mdc-combobox-border-color);
+  }
+  :host::part(container__button-icon) {
+    --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
+  }
+  :host::part(no-results-text) {
+    pointer-events: none;
   }
 `;
 

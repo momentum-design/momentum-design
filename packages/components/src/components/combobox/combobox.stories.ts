@@ -18,6 +18,7 @@ const render = (args: Args) =>
       placeholder="${args.placeholder}"
       no-result-text="${args['no-result-text']}"
       ?disabled="${args.disabled}"
+      data-aria-label="${args['data-aria-label']}"
     >
       <mdc-selectlistbox>
         <mdc-option label="Argentina"></mdc-option>
@@ -64,7 +65,21 @@ export const Example: StoryObj = {
     'help-text': 'Select a country',
     disabled: false,
     height: '5rem',
-    'no-result-text': 'No results',
+    'no-result-text': '',
     placeholder: 'Start typing',
+    'data-aria-label': 'Select a country',
+  },
+};
+
+export const NoResultText: StoryObj = {
+  args: {
+    value: '',
+    label: 'Top Countries',
+    'help-text': 'Select a country',
+    disabled: false,
+    height: '5rem',
+    'no-result-text': 'No results found',
+    placeholder: 'Start typing',
+    'data-aria-label': 'Select a country',
   },
 };
