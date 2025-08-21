@@ -33,6 +33,15 @@ const styles = css`
   :host::part(trailing-section) {
     justify-content: flex-end;
   }
+
+  :host([no-center])::part(center-section) {
+    display: none;
+  }
+
+  :host([no-center])::part(leading-section),
+  :host([no-center])::part(trailing-section) {
+    flex: 1;
+  }
 `;
 
 export default [styles];

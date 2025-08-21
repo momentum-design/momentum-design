@@ -24,6 +24,16 @@ import styles from './appheader.styles';
  * @csspart trailing-section - The trailing section of the header.
  */
 class Appheader extends Component {
+  protected override firstUpdated() {
+    const centerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="center"]');
+    if (centerSlot) this.toggleNoCenter(centerSlot);
+  }
+
+  private toggleNoCenter(slot: HTMLSlotElement) {
+    const hasContent = slot.assignedNodes({ flatten: true }).length > 0;
+    this.toggleAttribute('no-center', !hasContent);
+  }
+
   /**
    * Renders the structured layout of the app header.
    * Uses `slots` for flexibility, allowing consumers to insert custom content.
@@ -34,7 +44,7 @@ class Appheader extends Component {
         <slot name="leading"></slot>
       </div>
       <div part="center-section">
-        <slot name="center"></slot>
+        <slot name="center" @slotchange=${this.toggleNoCenter}></slot>
       </div>
       <div part="trailing-section">
         <slot name="trailing"></slot>
