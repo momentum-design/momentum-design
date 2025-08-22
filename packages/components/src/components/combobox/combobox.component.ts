@@ -2,25 +2,26 @@ import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
-import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
-import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import Input from '../input/input.component';
+import { AUTO_COMPLETE } from '../input/input.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 
-import { ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
+import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
 
 /**
  * Combobox component, which ...
- *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
@@ -76,30 +77,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   @state() private lastSelectedOption = 0;
 
-  private toggleDropdown(): void {
-    this.isOpen = !this.isOpen;
-  }
-
-  private handleClick(event: MouseEvent): void {
-    this.setSelectedValue((event.target as HTMLInputElement).value);
-    this.toggleDropdown();
-  }
-
-  private closePopover(): void {
-    this.isOpen = false;
-  }
-
-  private openPopover(): void {
-    this.isOpen = true;
-  }
-
-  private resetOptionFocusedClass() {
-    this.getAllValidOptions().forEach(option => {
-      option.removeAttribute('data-focused');
-      option.setAttribute('aria-selected', 'false');
-    });
-  }
-
   /**
    * Modifies the listbox wrapper to ensure it has the correct attributes
    * and IDs for accessibility.
@@ -116,6 +93,18 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     slottedListBox.setAttribute('id', LISTBOX_ID);
     slottedListBox.setAttribute('aria-label', this.dataAriaLabel || '');
     slottedListBox.setAttribute('aria-labelledby', TRIGGER_ID);
+  }
+
+  private openPopover(): void {
+    this.isOpen = true;
+  }
+
+  private closePopover(): void {
+    this.isOpen = false;
+  }
+
+  private toggleDropdown(): void {
+    this.isOpen = !this.isOpen;
   }
 
   private compareValueWithLabel(value: string, label: string): boolean {
@@ -144,7 +133,16 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     });
   }
 
-  private handleBlurChange() {
+  private resetFocusedOption() {
+    this.getAllValidOptions()
+      .filter(option => option.hasAttribute('data-focused'))
+      .forEach(option => {
+        option.removeAttribute('data-focused');
+        option.setAttribute('aria-selected', 'false');
+      });
+  }
+
+  private handleBlurChange(): void {
     this.closePopover();
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
@@ -152,7 +150,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
   }
 
-  private handleInputKeydown(event: KeyboardEvent) {
+  private handleInputKeydown(event: KeyboardEvent): void {
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
@@ -195,23 +193,40 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         break;
       }
       case KEYS.ENTER: {
+        if (getLastFocusedOptionIndex === -1) return;
         this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
         if (this.isOpen === true) {
           this.closePopover();
         }
         break;
       }
-      default: {
+      case KEYS.ESCAPE: {
+        if (getLastFocusedOptionIndex !== -1) {
+          options[getLastFocusedOptionIndex].removeAttribute('data-focused');
+          options[getLastFocusedOptionIndex].setAttribute('aria-selected', 'false');
+        }
+        if (options.length && this.shouldDisplayPopover(options.length)) {
+          this.closePopover();
+        } else {
+          this.setSelectedValue('');
+        }
         break;
       }
+      case KEYS.HOME:
+      case KEYS.END: {
+        this.resetFocusedOption();
+        break;
+      }
+      default:
+        break;
     }
   }
 
-  private handleInputChange(event: Event) {
+  private handleInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.setSelectedValue(target.value);
+    this.resetFocusedOption();
     const options = this.getAllValidOptions();
-    this.resetOptionFocusedClass();
     options.forEach(option => {
       if (!this.compareValueWithLabel(option.label ?? '', this.value)) {
         option.setAttribute('data-hidden', '');
@@ -222,12 +237,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     if (this.isOpen === false) {
       this.openPopover();
     }
-  }
-
-  private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
-    return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
-      ? html`<mdc-listitem part="no-results-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
-      : nothing;
   }
 
   private shouldDisplayPopover(optionsLength: number): boolean {
@@ -243,73 +252,92 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return false;
   }
 
+  private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
+    return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
+      ? html`<mdc-listitem part="no-results-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
+      : nothing;
+  }
+
   public override render() {
     const options = this.getVisibleOptions();
     return html`
       ${this.renderLabel()}
-      <div part="container">
-        <div class="mdc-focus-ring" part="container__base" id="${TRIGGER_ID}">
-          <mdc-input
-            value="${this.value}"
+      <div part="container__base" id="${TRIGGER_ID}">
+        <mdc-input
+          @blur="${this.handleBlurChange}"
+          @click="${() => this.toggleDropdown()}"
+          ?soft-disabled="${this.softDisabled}"
+        >
+          <input
+            slot="input"
             ?disabled="${this.disabled}"
-            @blur="${this.handleBlurChange}"
-            @click="${this.handleClick}"
-            @input="${this.handleInputChange}"
-            @keyup="${this.handleInputKeydown}"
-            aria-expanded="${this.isOpen.toString()}"
-            role="${ROLE.COMBOBOX}"
-            aria-controls="${LISTBOX_ID}"
+            .value="${live(this.value)}"
+            autocomplete="${AUTO_COMPLETE.OFF}"
+            class="input"
+            name="${this.name}"
+            part="mdc-input"
             placeholder="${this.placeholder}"
-            aria-autocomplete="${ROLE.LIST}"
+            role="${ROLE.COMBOBOX}"
+            ?readonly="${this.readonly}"
+            ?required="${this.required}"
+            @input=${this.handleInputChange}
+            @keydown=${this.handleInputKeydown}
+            aria-autocomplete="${AUTOCOMPLETE_LIST}"
+            aria-controls="${LISTBOX_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+            aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+            aria-expanded="${this.isOpen.toString()}"
+            aria-haspopup="${ROLE.LISTBOX}"
+            aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
             aria-label="${this.dataAriaLabel ?? ''}"
             aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-            aria-haspopup="${ROLE.LISTBOX}"
-            aria-required="${this.required ? 'true' : 'false'}"
-            aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
-            aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
             aria-readonly="${ifDefined(this.readonly)}"
-          ></mdc-input>
-          <mdc-buttonsimple
-            part="container__button"
-            ?disabled="${this.disabled}"
-            tabindex="-1"
-            aria-expanded="${this.isOpen.toString()}"
-            aria-label="${this.dataAriaLabel ?? ''}"
-          >
-            <mdc-icon
-              part="container__button-icon"
-              name="${this.shouldDisplayPopover(options.length) ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
-              size="1"
-              length-unit="rem"
-            ></mdc-icon>
-          </mdc-buttonsimple>
-          <mdc-popover
-            trigger="${TRIGGER.MANUAL}"
-            triggerid="${TRIGGER_ID}"
-            ?visible="${this.shouldDisplayPopover(options.length)}"
-            role=""
-            hide-on-outside-click
-            hide-on-escape
-            size
-            placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-            style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
-            @closebyescape="${() => {
-              this.closePopover();
-            }}"
-            @closebyoutsideclick="${() => {
-              this.closePopover();
-            }}"
-          >
-            ${this.renderNoResultsText(options.length)}
-            <slot></slot>
-          </mdc-popover>
-        </div>
+            aria-required="${this.required ? 'true' : 'false'}"
+          />
+        </mdc-input>
+        <mdc-buttonsimple
+          @click="${() => this.toggleDropdown()}"
+          part="container__button"
+          ?disabled="${this.disabled}"
+          tabindex="-1"
+          aria-expanded="${this.isOpen.toString()}"
+          aria-controls="${LISTBOX_ID}"
+          aria-label="${this.dataAriaLabel ?? ''}"
+        >
+          <mdc-icon
+            part="container__button-icon"
+            name="${this.shouldDisplayPopover(options.length) ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
+            size="1"
+            length-unit="rem"
+          ></mdc-icon>
+        </mdc-buttonsimple>
+        <mdc-popover
+          ?visible="${this.shouldDisplayPopover(options.length)}"
+          disable-aria-expanded
+          hide-on-escape
+          hide-on-outside-click
+          placement="${POPOVER_PLACEMENT.BOTTOM_START}"
+          role=""
+          size
+          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+          trigger="${TRIGGER.MANUAL}"
+          triggerid="${TRIGGER_ID}"
+          @closebyescape="${() => {
+            this.closePopover();
+          }}"
+          @closebyoutsideclick="${() => {
+            this.closePopover();
+          }}"
+        >
+          ${this.renderNoResultsText(options.length)}
+          <slot></slot>
+        </mdc-popover>
       </div>
       ${this.renderHelperText()}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
 }
 
 export default Combobox;

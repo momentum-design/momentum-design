@@ -8,7 +8,8 @@ const ICON_NAME = {
   ARROW_DOWN: 'arrow-down-bold' as Extract<IconNames, 'arrow-down-bold'>,
 } as const;
 
-const TRIGGER_ID = 'combobox-triggerid';
+const AUTOCOMPLETE_LIST = 'list';
 const LISTBOX_ID = 'combobox-listbox';
+const TRIGGER_ID = 'combobox-triggerid';
 
-export { TAG_NAME, ICON_NAME, TRIGGER_ID, LISTBOX_ID };
+export { TAG_NAME, ICON_NAME, TRIGGER_ID, LISTBOX_ID, AUTOCOMPLETE_LIST };

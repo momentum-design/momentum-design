@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../selectlistbox';
 import '../option';
+import '../select';
 import '../button';
 import { html } from 'lit';
 
@@ -11,14 +12,16 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) =>
   html` <div style="width: 25rem;">
     <mdc-combobox
-      label="${args.label}"
-      help-text="${args['help-text']}"
-      value="${args.value}"
-      height="${args.height}"
-      placeholder="${args.placeholder}"
-      no-result-text="${args['no-result-text']}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       data-aria-label="${args['data-aria-label']}"
+      height="${args.height}"
+      help-text="${args['help-text']}"
+      label="${args.label}"
+      name="${args.name}"
+      no-result-text="${args['no-result-text']}"
+      placeholder="${args.placeholder}"
+      value="${args.value}"
     >
       <mdc-selectlistbox>
         <mdc-option label="Argentina"></mdc-option>
@@ -33,9 +36,6 @@ const render = (args: Args) =>
         <mdc-option label="Denmark"></mdc-option>
       </mdc-selectlistbox>
     </mdc-combobox>
-    <!-- TODO: remove this below code -->
-    <br /><br /><br /><br /><br /><br />
-    <mdc-button>Button</mdc-button>
   </div>`;
 
 const meta: Meta = {
@@ -62,6 +62,7 @@ export const Example: StoryObj = {
   args: {
     value: '',
     label: 'Top Countries',
+    name: 'country',
     'help-text': 'Select a country',
     disabled: false,
     height: '5rem',
@@ -71,15 +72,34 @@ export const Example: StoryObj = {
   },
 };
 
-export const NoResultText: StoryObj = {
-  args: {
-    value: '',
-    label: 'Top Countries',
-    'help-text': 'Select a country',
-    disabled: false,
-    height: '5rem',
-    'no-result-text': 'No results found',
-    placeholder: 'Start typing',
-    'data-aria-label': 'Select a country',
-  },
+export const CombiSelect: StoryObj = {
+  render: () => html`
+    <mdc-combobox
+      name="country"
+      label="Top Countries"
+      placeholder="Start typing"
+      help-text="Select a country"
+      no-result-text="Tomato Potato"
+    >
+      <mdc-selectlistbox>
+        <mdc-option value="london" label="London, UK"></mdc-option>
+        <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
+        <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
+        <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+      </mdc-selectlistbox>
+    </mdc-combobox>
+    <br /><br /><br />
+    <mdc-input name="country" label="Top Countries" placeholder="Start typing" help-text="Select a country"></mdc-input>
+    <br /><br /><br />
+    <mdc-select name="country" label="Top Countries" placeholder="Start typing" help-text="Select a country">
+      <mdc-selectlistbox>
+        <mdc-option value="london" label="London, UK"></mdc-option>
+        <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
+        <mdc-option value="newyork" label="New York, NY"></mdc-option>
+        <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
+        <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+      </mdc-selectlistbox>
+    </mdc-select>
+  `,
 };
