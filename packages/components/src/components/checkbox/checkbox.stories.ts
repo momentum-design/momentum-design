@@ -31,7 +31,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/checkbox',
+  title: 'Components/input/checkbox',
   tags: ['autodocs'],
   component: 'mdc-checkbox',
   render,

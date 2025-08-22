@@ -14,7 +14,7 @@ const render = (args: Args) =>
   </mdc-selectlistbox>`;
 
 const meta: Meta = {
-  title: 'Components/select/selectlistbox',
+  title: 'Components/input/select/selectlistbox',
   tags: ['autodocs'],
   component: 'mdc-selectlistbox',
   render,

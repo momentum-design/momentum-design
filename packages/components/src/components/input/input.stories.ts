@@ -53,7 +53,7 @@ const render = (args: Args) => {
 };
 
 const meta: Meta = {
-  title: 'Components/input',
+  title: 'Components/input/input',
   tags: ['autodocs'],
   component: 'mdc-input',
   render,

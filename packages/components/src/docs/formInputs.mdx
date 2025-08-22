@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/Input" />
+
+# Input Related Components
+
+This documentation applies to all input-related components:
+
+- Input
+- Checkbox
+- Radio
+- Toggle
+- Textarea
+- Select
+
+## Help Text & Validation
+
+- `help-text` displays contextual information below the input.
+- `help-text-type` controls the semantic style of the helper message:
+  - `"default"` → neutral guidance (e.g., "Please provide a valid name").
+  - `"warning"` → indicates a non-blocking issue (e.g., "Name is too short").
+  - `"error"` → indicates an invalid state that blocks submission (e.g., "Name is required").
+  - `"success"` → indicates a valid/positive state (e.g., "Looks good!").
+
+#### Recommended practice
+
+- Dynamically update `help-text` and `help-text-type` based on user input.
+- Integrate with form validation logic to provide real-time feedback.

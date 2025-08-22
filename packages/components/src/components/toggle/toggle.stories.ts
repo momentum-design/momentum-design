@@ -33,7 +33,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/toggle',
+  title: 'Components/input/toggle',
   tags: ['autodocs'],
   component: 'mdc-toggle',
   render,

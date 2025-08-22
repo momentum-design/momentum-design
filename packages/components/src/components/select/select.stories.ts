@@ -60,7 +60,7 @@ const render = (args: Args) =>
   `);
 
 const meta: Meta = {
-  title: 'Components/select/select',
+  title: 'Components/input/select/select',
   tags: ['autodocs'],
   component: 'mdc-select',
   render,

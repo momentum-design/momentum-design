@@ -24,18 +24,6 @@ import styles from './input.styles';
  * - leading icon - displayed before the input field.
  * - clear-aria-label - aria label for the trailing button.
  * - all the attributes of the input field.
- * 
- * ### Help Text & Validation
- * - `help-text` displays contextual information below the input.
- * - `help-text-type` controls the semantic style of the helper message:
- *    - `"default"` → neutral guidance (e.g., "Please provide a valid name").
- *    - `"warning"` → indicates a non-blocking issue (e.g., "Name is too short").
- *    - `"error"` → indicates an invalid state that blocks submission (e.g., "Name is required").
- *    - `"success"` → indicates a valid/positive state (e.g., "Looks good!").
- *
- * #### Recommended practice: 
- * Developers should dynamically update `help-text` and `help-text-type` based on user input,
- * for example, inside `@input` handlers or form validation logic.
  *
  * @tagname mdc-input
  *

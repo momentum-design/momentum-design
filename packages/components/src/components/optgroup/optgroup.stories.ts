@@ -23,7 +23,7 @@ const render = (args: Args) =>
   `);
 
 const meta: Meta = {
-  title: 'Components/select/optgroup',
+  title: 'Components/input/select/optgroup',
   tags: ['autodocs'],
   component: 'mdc-optgroup',
   render,
