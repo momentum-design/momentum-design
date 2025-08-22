@@ -2,6 +2,7 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 } from 'uuid';
 
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
@@ -17,7 +18,6 @@ import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { BadgeType } from './navmenuitem.types';
 import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navmenuitem.constants';
 import styles from './navmenuitem.styles';
-import { generateNaviMenuItemId, generateNaviMenuItemTooltipId } from './navmenuitem.utils';
 
 /**
  * `mdc-navmenuitem` is a menuitem styled to work as a navigation tab.
@@ -184,14 +184,14 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
       return;
     }
     if (!this.id) {
-      this.id = generateNaviMenuItemId();
+      this.id = `mdc-navmenuitem-${v4()}`;
     }
 
     this.removeTooltip();
 
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = generateNaviMenuItemTooltipId();
+    tooltip.id = `mdc-navmenuitem-tooltip-${v4()}`;
     tooltip.textContent = this.tooltipText;
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');

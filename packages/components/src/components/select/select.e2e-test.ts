@@ -93,7 +93,7 @@ test('mdc-select', async ({ componentsPage }) => {
     await select.waitFor();
 
     // Open the dropdown
-    await select.locator('div[id="select-base-triggerid"]').click();
+    await select.click();
     await expect(select.locator('mdc-popover')).toBeVisible();
 
     // Hover over the long text option
@@ -257,16 +257,16 @@ test('mdc-select', async ({ componentsPage }) => {
     await test.step('mouse/pointer', async () => {
       await test.step('component should open and close dropdown when clicked', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).toBeVisible();
 
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
       await test.step('component should open dropdown and select 2nd option and close popover', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.locator('mdc-option').nth(1).click();
@@ -327,7 +327,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await componentsPage.page.mouse.click(0, 0);
 
       // Now select an option and verify form can be submitted
-      await mdcSelect.locator('div[id="select-base-triggerid"]').click();
+      await mdcSelect.click();
       await mdcSelect.locator('mdc-option').nth(1).click();
 
       // Verify the selected value and popover is closed
@@ -373,7 +373,7 @@ test('mdc-select', async ({ componentsPage }) => {
       const resetButton = form.locator('mdc-button[type="reset"]');
 
       // First select an option
-      await mdcSelect.locator('div[id="select-base-triggerid"]').click();
+      await mdcSelect.click();
       await mdcSelect.locator('mdc-option').nth(1).click();
 
       // Verify the selected value

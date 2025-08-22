@@ -45,29 +45,21 @@ Feature: Listitem Accessibility and User Interaction
     Scenario: Render listitem with leading controls
       Given the listitem has a primary label
       And the listitem has leading controls in slot="leading-controls"
-      When the leading controls contain checkboxes
-      Then the checkbox should be visible before the label
-      When the leading controls contain radio buttons
-      Then the radio button should be visible before the label
-      When the leading controls contain icons
-      Then the icon should be visible before the label
+      When the leading controls contain interactive elements
+      Then the interactive element should be visible before the label
       And the layout should be properly aligned
 
     Scenario: Render listitem with trailing controls
       Given the listitem has a primary label
       And the listitem has trailing controls in slot="trailing-controls"
-      When the trailing controls contain buttons
-      Then the button should be visible after the label
-      When the trailing controls contain toggles
-      Then the toggle should be visible after the label
-      When the trailing controls contain badges
-      Then the badge should be visible after the label
+      When the trailing controls contain interactive elements
+      Then the interactive element should be visible after the label
       And the layout should be properly aligned
 
     Scenario: Render listitem with mixed leading and trailing controls
       Given the listitem has multiple text labels
-      And the listitem has multiple leading controls (checkbox, avatar, icon)
-      And the listitem has multiple trailing controls (icon, button, toggle, badge)
+      And the listitem has multiple leading controls
+      And the listitem has multiple trailing controls
       When the listitem is rendered
       Then all controls should be properly positioned
       And the layout should be balanced and aligned
