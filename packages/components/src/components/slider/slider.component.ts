@@ -158,7 +158,12 @@ class Slider extends Component {
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
     super.updated(changedProperties);
-    if (changedProperties.has('value') || changedProperties.has('disabled') || changedProperties.has('softDisabled')) {
+    if (
+      changedProperties.has('value') ||
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('step')
+    ) {
       this.updateTrackStyling();
     }
   }
@@ -175,8 +180,7 @@ class Slider extends Component {
 
   updateTrackStyling() {
     if (!this.inputElement) return;
-
-    const value = Number(this.value ?? this.inputElement.value);
+    const value = Number(this.inputElement.value);
     const max = Number(this.inputElement.max) || 1;
     const progress = Math.max(0, Math.min(100, (value / max) * 100));
     let progressColor = `var(--mds-color-theme-control-active-normal)`;

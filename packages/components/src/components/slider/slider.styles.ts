@@ -1,5 +1,7 @@
 import { css } from 'lit';
 
+import { baseHostStyleVariables, focusRingBoxShadow } from '../../utils/styles';
+
 const styles = css`
   :host {
     width: 100%;
@@ -7,7 +9,7 @@ const styles = css`
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-slider-thumb-size: 1.4375rem;
     --mdc-slider-track-height: 2rem;
-    --mdc-slider-tick-color: #bdbdbd;
+    --mdc-slider-tick-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
 
   :host::part(slider-label) {
@@ -30,6 +32,7 @@ const styles = css`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    position: relative;
   }
 
   :host::part(slider-labels) {
@@ -49,7 +52,6 @@ const styles = css`
     height: 0.5rem;
     border-radius: 0.25rem;
     outline: none;
-    position: relative;
     margin: 0;
     cursor: pointer;
   }
@@ -110,6 +112,18 @@ const styles = css`
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
+  input[type='range']:focus::-webkit-slider-thumb {
+    box-shadow: ${focusRingBoxShadow};
+  }
+
+  input[type='range']:focus::-moz-range-thumb {
+    box-shadow: ${focusRingBoxShadow};
+  }
+
+  input[type='range']:focus::-ms-thumb {
+    box-shadow: ${focusRingBoxShadow};
+  }
+
   :host::part(slider-tooltip) {
     /* make this position dynamic, above slider thumb */
     position: absolute;
@@ -117,38 +131,26 @@ const styles = css`
     left: 50%;
   }
 
-  input[type='range']:focus::-webkit-slider-thumb {
-    /* replace this with focus ring */
-    outline: 2px solid #0072ce;
-    outline-offset: 2px;
-  }
-
-  input[type='range']:focus::-moz-range-thumb {
-    outline: 2px solid #0072ce;
-    outline-offset: 2px;
-  }
-
-  input[type='range']:focus::-ms-thumb {
-    outline: 2px solid #0072ce;
-    outline-offset: 2px;
-  }
-  /* :host::part(slider-ticks) {
+  :host::part(slider-ticks) {
     position: absolute;
-    left: 0;
+    left: 34px;
     right: 0;
     top: 50%;
-    height: 4px;
-    pointer-events: none;
+    height: 0.25rem;
+    width: 90.75%;
+    z-index: 1;
   }
+
   :host::part(slider-tick) {
     position: absolute;
     top: 0;
-    width: 4px;
-    height: 4px;
+    width: 0.25rem;
+    height: 0.25rem;
     background: var(--mdc-slider-tick-color);
+    /* background-color: white; */
     border-radius: 50%;
     transform: translateY(-50%);
-  } */
+  }
 `;
 
-export default [styles];
+export default [baseHostStyleVariables, styles];
