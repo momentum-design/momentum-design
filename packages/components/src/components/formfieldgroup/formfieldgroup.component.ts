@@ -43,9 +43,7 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    /** @internal */
     this.shouldRenderLabel = false;
-    this.id = '';
     this.disabled = undefined as unknown as boolean;
   }
 
