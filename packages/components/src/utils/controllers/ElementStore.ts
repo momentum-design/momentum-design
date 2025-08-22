@@ -1,25 +1,16 @@
 import { ReactiveController } from 'lit';
 
-import { LIFE_CYCLE_EVENTS } from '../lifecycle/lifecycle.contants';
-import { isBefore } from '../../dom';
-import type { Component } from '../../../models';
+import { LIFE_CYCLE_EVENTS } from '../mixins/lifecycle/lifecycle.contants';
+import { isBefore } from '../dom';
+import type { Component } from '../../models';
 
 export type ElementStoreChangeTypes = 'added' | 'removed';
 
-interface ElementStoreOptions<TItem> {
+interface ElementStoreOptions {
   /**
    * - A function to determine if an item is valid for caching.
    */
-  validItemPredicate: (item: any) => boolean;
-
-  /**
-   * Change callback called when item added or removed from the store.
-   *
-   * @param type - type of the change
-   * @param item - added/removed item
-   * @param items - updated items list
-   */
-  onChangeCallback: (type: ElementStoreChangeTypes, item: TItem, items: TItem[]) => void;
+  isValidItem: (item: any) => boolean;
 }
 
 const defaultIsValidFn = (item: any) => !!item;
@@ -27,18 +18,13 @@ const defaultIsValidFn = (item: any) => !!item;
 /**
  * ElementStore is a controller that manages a collection of elements.
  *
- * If you would like to use `created` or `destroyed` events in the host and also access to the update `store.items`,
- * then please consider use of the `onChangeCallback` option, otherwise host can read only outdate `store.items`
- *
- * When host directly listen on `created` or `destroyed` events `this.store.items` will be not updated at that time.
- * The host register listeners in the constructor but the ElementStore does it later in the `hostConnected`.
- * Because, handlers called in the registration order, the host's handler called first and then the store's handler.
- *
  * @example
  * ```ts
  * // Add and remove item based on the disabled state
  * class Container extends Component {
- *    private this.store = new ElementStore<HTMLLIElement>(this, (item) => item.matches('li:not([disabled])'));
+ *    private this.store = new ElementStore<HTMLLIElement>(this, {
+ *       validItemPredicate: (item) => item.matches('li:not([disabled])')
+ *    });
  *
  *    constructor() {
  *      super();
@@ -66,9 +52,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * @param item - The item to validate.
    * @returns - True if the item is valid, false otherwise.
    */
-  private isValidItem: ElementStoreOptions<TItem>['validItemPredicate'];
-
-  private changeCallback?: ElementStoreOptions<TItem>['onChangeCallback'];
+  private readonly isValidItem: ElementStoreOptions['isValidItem'];
 
   /** Stored items */
   private cache: TItem[] = [];
@@ -83,26 +67,56 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * This controller manages a collection of elements, allowing for
    * adding and removing items based on lifecycle events.
    *
-   * @param host - The host component that this controller is attached to.
+   * A component can have multiple ElementStore controllers
    *
-   * @param options
+   * All ElementStore must be created before any `addEventListener` in the constructor, see the example.
+   *
+   * Note: This controller relies on `created` and `destroyed` events.
+   * For the best result, dispatch these events on the child components or use the `LifeCycleMixin` mixin.
+   * And make sure the `destroyed` event properly propagated to the host, `CaptureDestroyEventForChildElement` mixin
+   * can help with that.
+   *
+   * @example
+   * ```ts
+   * class Container extends CaptureDestroyEventForChildElement(Component) {
+   *  private itemsStore = new ElementStore<Item>(this, {
+   *     isValidItem: this.isValidItem,
+   *  });
+   *
+   *  construrctor() {
+   *     super()
+   *     this.addEventListener('modified', this.handleModifiedEvent);
+   *  }
+   *
+   *  private handleModifiedEvent(event: LifeCycleModifiedEvent) {
+   *     const item = event.target as Item;
+   *
+   *     switch (event.detail.change) {
+   *       case 'enabled':  return this.itemsStore.add(item);
+   *       case 'disabled': return this.itemsStore.delete(item);
+   *     }
+   *  }
+   *
+   *  private isValidItem(item: Element): boolean {
+   *     return item.matches(`${ITEM_TAGNAME}:not([disabled])`);
+   *  }
+   * ```
+   *
+   * @param host - The host component that this controller is attached to.
+   * @param options - Element store options
    */
-  constructor(host: Component, options?: ElementStoreOptions<TItem>) {
+  constructor(host: Component, options?: ElementStoreOptions) {
     this.host = host;
     host.addController(this);
-    this.isValidItem = options?.validItemPredicate || defaultIsValidFn;
-    this.changeCallback = options?.onChangeCallback;
-  }
+    this.isValidItem = options?.isValidItem || defaultIsValidFn;
 
-  hostConnected() {
     this.host.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
     this.host.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
   }
 
-  hostDisconnected() {
-    this.host.removeEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
-    this.host.removeEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
-  }
+  hostConnected() {}
+
+  hostDisconnected() {}
 
   /**
    * Handles the item creation event.
@@ -168,10 +182,6 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
       } else if (idx >= 0) {
         this.cache.splice(idx, 0, newItem);
       }
-
-      if (idx >= -1) {
-        this.changeCallback?.('added', newItem, this.items);
-      }
     }
   }
 
@@ -184,7 +194,6 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     const idx = this.cache.indexOf(item as TItem);
     if (idx !== -1) {
       this.cache.splice(idx, 1);
-      this.changeCallback?.('removed', item as TItem, this.items);
     }
   }
 

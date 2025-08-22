@@ -9,7 +9,7 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
 import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import { ElementStore, ElementStoreChangeTypes } from '../../utils/mixins/controllers/ElementStore';
+import { ElementStore } from '../../utils/controllers/ElementStore';
 
 import styles from './listbox.styles';
 
@@ -55,17 +55,15 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   @state() selectedOption?: Option | null;
 
-  private itemsStore: ElementStore<Option>;
+  private itemsStore = new ElementStore<Option>(this, {
+    isValidItem: this.isValidItem,
+  });
 
   constructor() {
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('modified', this.handleModifiedEvent);
-
-    this.itemsStore = new ElementStore<Option>(this, {
-      validItemPredicate: this.isValidItem,
-      onChangeCallback: this.storeChangeHandler,
-    });
+    this.addEventListener('destroyed', this.handleDestroyEvent);
   }
 
   override connectedCallback() {
@@ -103,10 +101,8 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     }
   }
 
-  storeChangeHandler = (type: ElementStoreChangeTypes) => {
-    if (type === 'removed') {
-      this.handleNoSelection();
-    }
+  handleDestroyEvent = () => {
+    this.handleNoSelection();
   };
 
   protected get navItems(): HTMLElement[] {
@@ -170,7 +166,6 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    */
   private setSelectedOption(option?: Option | null, fireEvent = true, updateOptions = true): void {
     if (!option || option.disabled || option.softDisabled) return;
-
     if (updateOptions) {
       this.updateSelectedInChildOptions(option);
     }
