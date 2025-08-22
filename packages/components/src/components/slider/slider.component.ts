@@ -162,7 +162,9 @@ class Slider extends Component {
       changedProperties.has('value') ||
       changedProperties.has('disabled') ||
       changedProperties.has('softDisabled') ||
-      changedProperties.has('step')
+      changedProperties.has('step') ||
+      changedProperties.has('min') ||
+      changedProperties.has('max')
     ) {
       this.updateTrackStyling();
     }
@@ -175,14 +177,22 @@ class Slider extends Component {
   }
 
   tooltipTemplate(val: number | string | undefined, label: string | undefined) {
-    return html` <div part="slider-tooltip">${label || val}</div> `;
+    let leftPercent = 0;
+    if (typeof val === 'number' && this.max !== this.min) {
+      leftPercent = ((val - this.min) / (this.max - this.min)) * 100;
+    }
+    return html`
+      <div part="slider-tooltip" style="left:calc(${leftPercent}% - var(--mdc-slider-thumb-size) / 2);">
+        ${label || val}
+      </div>
+    `;
   }
 
   updateTrackStyling() {
     if (!this.inputElement) return;
     const value = Number(this.inputElement.value);
     const max = Number(this.inputElement.max) || 1;
-    const progress = Math.max(0, Math.min(100, (value / max) * 100));
+    const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
     let progressColor = `var(--mds-color-theme-control-active-normal)`;
     let trackColor = `var(--mds-color-theme-control-indicator-inactive-normal)`;
     if (this.disabled || this.softDisabled) {
@@ -204,78 +214,81 @@ class Slider extends Component {
       ${this.label ? html`<label part="slider-label">${this.label}</label>` : null}
       <div part="slider-track">
         ${this.iconTemplate(this.leadingIcon, 'leading-icon')}
-        ${this.step > 1
-          ? html`
-              <div part="slider-ticks">
-                ${ticks.map(
-                  tick =>
-                    html`<span
-                      part="slider-tick"
-                      style="left:${((tick - this.min) / (this.max - this.min)) * 100}%"
-                    ></span>`,
-                )}
-              </div>
-            `
-          : nothing}
-        ${this.range
-          ? html`
-              <input
-                type="range"
-                min="${this.min}"
-                max="${this.max}"
-                step="${this.step ?? 1}"
-                .value="${String(this.valueStart ?? this.min)}"
-                ?disabled="${this.disabled}"
-                name="${this.nameStart ?? ''}"
-                aria-valuemin="${this.min}"
-                aria-valuemax="${this.max}"
-                aria-valuenow="${this.valueStart ?? this.min}"
-                aria-label="${this.ariaLabelStart || this.label || ''}"
-                aria-valuetext="${this.ariaValuetextStart || this.valueLabelStart || this.valueStart || ''}"
-                tabindex="${this.disabled ? -1 : 0}"
-                @input=${this.onInputStart}
-                @change=${this.onChangeStart}
-              />
-              ${this.tooltipTemplate(this.valueStart, this.valueLabelStart)}
-              <input
-                type="range"
-                min="${this.min}"
-                max="${this.max}"
-                step="${this.step ?? 1}"
-                .value="${String(this.valueEnd ?? this.max)}"
-                ?disabled="${this.disabled}"
-                name="${this.nameEnd ?? ''}"
-                aria-valuemin="${this.min}"
-                aria-valuemax="${this.max}"
-                aria-valuenow="${this.valueEnd ?? this.max}"
-                aria-label="${this.ariaLabelEnd || this.label || ''}"
-                aria-valuetext="${this.ariaValuetextEnd || this.valueLabelEnd || this.valueEnd || ''}"
-                tabindex="${this.disabled ? -1 : 0}"
-                @input=${this.onInputEnd}
-                @change=${this.onChangeEnd}
-              />
-              ${this.tooltipTemplate(this.valueEnd, this.valueLabelEnd)}
-            `
-          : html`
-              <input
-                type="range"
-                min="${this.min}"
-                max="${this.max}"
-                step="${this.step ?? 1}"
-                .value="${String(this.value ?? this.min)}"
-                ?disabled="${this.disabled}"
-                name="${this.name ?? ''}"
-                aria-valuemin="${this.min}"
-                aria-valuemax="${this.max}"
-                aria-valuenow="${this.value ?? this.min}"
-                aria-label="${this.dataAriaLabel || this.label || ''}"
-                aria-valuetext="${this.dataAriaValuetext || this.valueLabel || this.value || ''}"
-                tabindex="${this.disabled ? -1 : 0}"
-                @input=${this.onInput}
-                @change=${this.onChange}
-              />
-              ${this.tooltipTemplate(this.value, this.valueLabel)}
-            `}
+        <div part="slider-wrapper">
+          ${this.step > 1
+            ? html`
+                <div part="slider-ticks">
+                  ${ticks.map(
+                    tick =>
+                      html`<span
+                        part="slider-tick"
+                        style="left:calc(${((tick - this.min) / (this.max - this.min)) *
+                        100}% - var(--mdc-slider-thumb-size) / 2)"
+                      ></span>`,
+                  )}
+                </div>
+              `
+            : nothing}
+          ${this.range
+            ? html`
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? 1}"
+                  .value="${String(this.valueStart ?? this.min)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.nameStart ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.valueStart ?? this.min}"
+                  aria-label="${this.ariaLabelStart || this.label || ''}"
+                  aria-valuetext="${this.ariaValuetextStart || this.valueLabelStart || this.valueStart || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInputStart}
+                  @change=${this.onChangeStart}
+                />
+                ${this.tooltipTemplate(this.valueStart, this.valueLabelStart)}
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? 1}"
+                  .value="${String(this.valueEnd ?? this.max)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.nameEnd ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.valueEnd ?? this.max}"
+                  aria-label="${this.ariaLabelEnd || this.label || ''}"
+                  aria-valuetext="${this.ariaValuetextEnd || this.valueLabelEnd || this.valueEnd || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInputEnd}
+                  @change=${this.onChangeEnd}
+                />
+                ${this.tooltipTemplate(this.valueEnd, this.valueLabelEnd)}
+              `
+            : html`
+                <input
+                  type="range"
+                  min="${this.min}"
+                  max="${this.max}"
+                  step="${this.step ?? 1}"
+                  .value="${String(this.value ?? this.min)}"
+                  ?disabled="${this.disabled}"
+                  name="${this.name ?? ''}"
+                  aria-valuemin="${this.min}"
+                  aria-valuemax="${this.max}"
+                  aria-valuenow="${this.value ?? this.min}"
+                  aria-label="${this.dataAriaLabel || this.label || ''}"
+                  aria-valuetext="${this.dataAriaValuetext || this.valueLabel || this.value || ''}"
+                  tabindex="${this.disabled ? -1 : 0}"
+                  @input=${this.onInput}
+                  @change=${this.onChange}
+                />
+                ${this.tooltipTemplate(this.value, this.valueLabel)}
+              `}
+        </div>
         ${this.iconTemplate(this.trailingIcon, 'trailing-icon')}
       </div>
       <div part="slider-labels">

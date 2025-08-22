@@ -32,7 +32,15 @@ const styles = css`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  :host::part(slider-wrapper) {
     position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   :host::part(slider-labels) {
@@ -125,31 +133,34 @@ const styles = css`
   }
 
   :host::part(slider-tooltip) {
-    /* make this position dynamic, above slider thumb */
     position: absolute;
-    top: 1rem;
     left: 50%;
+    bottom: 120%;
+    border-radius: 0.5rem;
+    box-sizing: content-box;
+    background-color: var(--mds-color-theme-background-solid-primary-normal);
+    border-radius: 0.5rem;
+    border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
+    filter: var(--mds-elevation-3);
+    padding: 0.5rem;
   }
 
   :host::part(slider-ticks) {
     position: absolute;
-    left: 34px;
-    right: 0;
-    top: 50%;
-    height: 0.25rem;
-    width: 90.75%;
-    z-index: 1;
+    left: 2%;
+    bottom: 7%;
+    width: 98%;
+    height: 100%;
+    pointer-events: none;
   }
 
   :host::part(slider-tick) {
     position: absolute;
-    top: 0;
+    top: 50%;
     width: 0.25rem;
     height: 0.25rem;
     background: var(--mdc-slider-tick-color);
-    /* background-color: white; */
     border-radius: 50%;
-    transform: translateY(-50%);
   }
 `;
 
