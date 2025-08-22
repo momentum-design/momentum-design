@@ -13,10 +13,8 @@ const styles = css`
     align-items: unset;
     width: unset;
   }
-  :host::part(container) {
-    width: 100%;
-  }
   :host::part(container__base) {
+    width: 100%;
     display: flex;
     position: relative;
   }
