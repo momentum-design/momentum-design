@@ -602,7 +602,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           </div>
         </div>
         <input
-          id="${this.id}"
+          id="${this.inputId}"
           part="native-input"
           name="${this.name}"
           type="text"
