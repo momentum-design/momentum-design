@@ -9,15 +9,17 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
 import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import { ElementStore } from '../../utils/mixins/controllers/ElementStore';
+import { ElementStore, ElementStoreChangeTypes } from '../../utils/mixins/controllers/ElementStore';
 
 import styles from './listbox.styles';
 
 /**
  * listbox component presents a list of options and allows a user to select one of them.
  *
- * PLease note, this component has name and value attributes and also emits change event,
- * but it is not a form control (yet).
+ * Notes:
+ * - This is a standalone listbox component. Select has its own mdc-selectlistbox component.
+ * - this component has name and value attributes and also emits change event,
+ *   but it is not a form control (yet).
  *
  * @dependency mdc-list
  * @dependency mdc-icon
@@ -31,15 +33,11 @@ import styles from './listbox.styles';
  *
  * @slot default - This is a default/unnamed slot
  *
- * @part container - The container of the listbox
+ * @csspart container - The container of the listbox
  *
  * @event change - (React: onChange) This event is emitted when the selected item changed
- *
- *
  */
 class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Component)) {
-  public static override styles: Array<CSSResult> = [...List.styles, ...styles];
-
   // According to WCAG this is the expected behavior for listbox
   // https://www.w3.org/WAI/ARIA/apg/practices/listbox
   protected override loop = false;
@@ -57,12 +55,17 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   @state() selectedOption?: Option | null;
 
-  private itemsStore = new ElementStore<Option>(this, this.isValidItem);
+  private itemsStore: ElementStore<Option>;
 
   constructor() {
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('modified', this.handleModifiedEvent);
+
+    this.itemsStore = new ElementStore<Option>(this, {
+      validItemPredicate: this.isValidItem,
+      onChangeCallback: this.storeChangeHandler,
+    });
   }
 
   override connectedCallback() {
@@ -73,12 +76,38 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   handleModifiedEvent(event: LifeCycleModifiedEvent) {
     const item = event.target as Option;
 
-    if (event.detail.change === 'enabled') {
-      this.itemsStore.add(item);
-    } else if (event.detail.change === 'disabled') {
-      this.itemsStore.delete(item);
+    switch (event.detail.change) {
+      case 'enabled':
+        this.itemsStore.add(item);
+        break;
+      case 'disabled':
+        this.itemsStore.delete(item);
+        break;
+      case 'selected':
+        // When selection changed on the option
+        this.setSelectedOption(item, false, false);
+        break;
+      case 'unselected':
+        this.handleNoSelection();
+        break;
+      default:
+        break;
     }
   }
+
+  handleNoSelection() {
+    const selectedOption = this.getFirstSelectedOption();
+    if (!selectedOption) {
+      this.selectedOption = undefined;
+      this.value = '';
+    }
+  }
+
+  storeChangeHandler = (type: ElementStoreChangeTypes) => {
+    if (type === 'removed') {
+      this.handleNoSelection();
+    }
+  };
 
   protected get navItems(): HTMLElement[] {
     return this.itemsStore.items;
@@ -108,9 +137,12 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
 
     await this.updateComplete;
 
-    const firstSelectedOption = this.getFirstSelectedOption();
+    // Sync value and DOM
+    const selected = this.value
+      ? this.itemsStore.items.find(option => option.value === this.value)
+      : this.getFirstSelectedOption();
 
-    this.setSelectedOption(firstSelectedOption ?? null);
+    this.setSelectedOption(selected);
   }
 
   /**
@@ -134,11 +166,14 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    *
    * @param option - The option element in DOM which gets selected.
    * @param fireEvent - A boolean flag to indicate whether to fire the change event or not.
+   * @param updateOptions - Whether update the other options or not
    */
-  private setSelectedOption(option: Option | null, fireEvent = true): void {
+  private setSelectedOption(option?: Option | null, fireEvent = true, updateOptions = true): void {
     if (!option || option.disabled || option.softDisabled) return;
 
-    this.updateSelectedInChildOptions(option);
+    if (updateOptions) {
+      this.updateSelectedInChildOptions(option);
+    }
 
     // set the selected option in the component state
     this.selectedOption = option;
@@ -169,25 +204,11 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     }
   }
 
-  /**
-   * Updates the state of the select component.
-   * This public method should be fired when the selected on the option components is updated from the outside.
-   * It ensures that the selected attribute is set correctly on the options
-   * and that the aria-selected attribute is updated accordingly.
-   */
-  public updateState(): void {
-    const newSelectedOption = this.getFirstSelectedOption();
-
-    if (!newSelectedOption) {
-      this.setSelectedOption(null);
-    } else if (this.selectedOption?.value !== newSelectedOption.value) {
-      this.setSelectedOption(newSelectedOption);
-    }
-  }
-
   override render() {
     return html`<slot part="container"></slot>`;
   }
+
+  public static override styles: Array<CSSResult> = [...List.styles, ...styles];
 }
 
 export default ListBox;

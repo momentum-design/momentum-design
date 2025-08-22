@@ -4,8 +4,35 @@ import { LIFE_CYCLE_EVENTS } from '../lifecycle/lifecycle.contants';
 import { isBefore } from '../../dom';
 import type { Component } from '../../../models';
 
+export type ElementStoreChangeTypes = 'added' | 'removed';
+
+interface ElementStoreOptions<TItem> {
+  /**
+   * - A function to determine if an item is valid for caching.
+   */
+  validItemPredicate: (item: any) => boolean;
+
+  /**
+   * Change callback called when item added or removed from the store.
+   *
+   * @param type - type of the change
+   * @param item - added/removed item
+   * @param items - updated items list
+   */
+  onChangeCallback: (type: ElementStoreChangeTypes, item: TItem, items: TItem[]) => void;
+}
+
+const defaultIsValidFn = (item: any) => !!item;
+
 /**
  * ElementStore is a controller that manages a collection of elements.
+ *
+ * If you would like to use `created` or `destroyed` events in the host and also access to the update `store.items`,
+ * then please consider use of the `onChangeCallback` option, otherwise host can read only outdate `store.items`
+ *
+ * When host directly listen on `created` or `destroyed` events `this.store.items` will be not updated at that time.
+ * The host register listeners in the constructor but the ElementStore does it later in the `hostConnected`.
+ * Because, handlers called in the registration order, the host's handler called first and then the store's handler.
  *
  * @example
  * ```ts
@@ -39,7 +66,9 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * @param item - The item to validate.
    * @returns - True if the item is valid, false otherwise.
    */
-  private isValidItem: (item: unknown) => boolean;
+  private isValidItem: ElementStoreOptions<TItem>['validItemPredicate'];
+
+  private changeCallback?: ElementStoreOptions<TItem>['onChangeCallback'];
 
   /** Stored items */
   private cache: TItem[] = [];
@@ -55,12 +84,14 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * adding and removing items based on lifecycle events.
    *
    * @param host - The host component that this controller is attached to.
-   * @param validItemPredicate - A function to determine if an item is valid for caching.
+   *
+   * @param options
    */
-  constructor(host: Component, validItemPredicate?: (item: any) => boolean) {
+  constructor(host: Component, options?: ElementStoreOptions<TItem>) {
     this.host = host;
     host.addController(this);
-    this.isValidItem = validItemPredicate || (item => !!item);
+    this.isValidItem = options?.validItemPredicate || defaultIsValidFn;
+    this.changeCallback = options?.onChangeCallback;
   }
 
   hostConnected() {
@@ -123,17 +154,23 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *  is `>= 0`, the item is added at that index.
    *  otherwise, do nothing.
    *
-   * @param newItem - The item to add to the cache.
+   * @param item - The item to add to the cache.
    * @param index - The index at which to add the item. If `undefined`, the item is added automatically.
    */
-  private addItem(newItem: Element, index: number | undefined = undefined): void {
-    if (this.isValidItem(newItem) && !this.cache.includes(newItem as TItem)) {
+  private addItem(item: Element, index: number | undefined = undefined): void {
+    const newItem = item as TItem;
+
+    if (this.isValidItem(newItem) && !this.cache.includes(newItem)) {
       const idx = index === undefined ? this.cache.findIndex(e => isBefore(newItem, e)) : index;
 
       if (idx === -1) {
-        this.cache.push(newItem as TItem);
+        this.cache.push(newItem);
       } else if (idx >= 0) {
-        this.cache.splice(idx, 0, newItem as TItem);
+        this.cache.splice(idx, 0, newItem);
+      }
+
+      if (idx >= -1) {
+        this.changeCallback?.('added', newItem, this.items);
       }
     }
   }
@@ -147,6 +184,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     const idx = this.cache.indexOf(item as TItem);
     if (idx !== -1) {
       this.cache.splice(idx, 1);
+      this.changeCallback?.('removed', item as TItem, this.items);
     }
   }
 

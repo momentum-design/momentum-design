@@ -21,12 +21,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 
 const render = (args: Args) =>
   wrapWithDiv(html`
-    <mdc-listbox
-      @change="${action('onchange')}"
-      name="${args.name}"
-      ?disabled="${args.disabled}"
-      ?soft-disabled="${args['soft-disabled']}"
-    >
+    <mdc-listbox @change="${action('onchange')}" name="${args.name}">
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
       <mdc-option value="newyork" label="New York, NY"></mdc-option>
@@ -36,28 +31,22 @@ const render = (args: Args) =>
   `);
 
 const meta: Meta = {
-  title: 'Work In Progress/listbox',
+  title: 'Components/listbox',
   tags: ['autodocs'],
   component: 'mdc-listbox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     name: {
       control: 'text',
     },
-    label: {
+    value: {
       control: 'text',
     },
-    disabled: {
-      control: 'boolean',
-    },
-    'soft-disabled': {
-      control: 'boolean',
-    },
     ...textControls(['--mdc-listbox-max-height']),
-    ...hideControls(['id', 'value', 'default']),
+    ...hideControls(['id', 'default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -66,10 +55,7 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  args: {
-    label: 'Headquarters location',
-    disabled: true,
-  },
+  args: {},
 };
 
 export const ListboxWithSecondaryLabel: StoryObj = {
@@ -199,7 +185,6 @@ export const ListboxWithChangingSelectedAfterMount: StoryObj = {
             option.setAttribute('selected', '');
           }
         });
-        listBox.updateState();
       }
     };
 
@@ -210,7 +195,6 @@ export const ListboxWithChangingSelectedAfterMount: StoryObj = {
         options.forEach(option => {
           option.removeAttribute('selected');
         });
-        listBox.updateState();
       }
     };
 

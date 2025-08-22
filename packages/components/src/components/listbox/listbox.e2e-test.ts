@@ -7,11 +7,6 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   children: string;
   label?: string;
-  required?: boolean;
-  disabled?: boolean;
-  helpText?: string;
-  validationMessage?: string;
-  toggletip?: string;
   name?: string;
 };
 
@@ -22,28 +17,22 @@ const defaultChildren = (selectedIdx?: number) => `
   <mdc-option value="tokyo" label="Tokyo HQ" ${selectedIdx === 2 ? 'selected' : ''}></mdc-option>
 `;
 
-const setup = async (args: SetupOptions, isForm = false) => {
+const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      ${isForm ? '<form>' : ''}
+    <div>
+      <mdc-button>Start here</mdc-button>
       <mdc-listbox
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
-        ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.name ? `name="${restArgs.name}"` : ''}
       >
         ${restArgs.children}
       </mdc-listbox>
-      ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
+     </div> 
     `,
     clearDocument: true,
   });
-
-  if (isForm) {
-    const form = componentsPage.page.locator('form');
-    await form.waitFor();
-    return form;
-  }
 
   const listbox = componentsPage.page.locator('mdc-listbox');
   await listbox.waitFor();
@@ -72,6 +61,7 @@ test('mdc-listbox', async ({ componentsPage }) => {
 
     await test.step('keyboard navigation and selection', async () => {
       const listbox = await setup({ componentsPage, children: defaultChildren() });
+      await componentsPage.page.locator('mdc-button').focus();
       await componentsPage.actionability.pressTab();
       await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
 
@@ -115,5 +105,18 @@ test('mdc-listbox', async ({ componentsPage }) => {
     await expect(listbox).toHaveAttribute('role', 'listbox');
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('role', 'option');
   });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression for listbox', async () => {
+    await componentsPage.page.setViewportSize({ width: 600, height: 2100 });
+    const listbox = await setup({ componentsPage, children: defaultChildren() });
+
+    await test.step('matches screenshot of popover', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover', {
+        element: listbox,
+      });
+    });
+  });
 });
-// End AI-Assisted

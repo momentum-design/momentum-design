@@ -38,9 +38,10 @@ export declare abstract class ListNavigationMixinInterface {
    *
    * @param newIndex - The index of the new item to focus.
    * @param oldIndex - The index of the currently focused item.
+   * @param focusNewItem - Call focus() on the new item or not. It should be false during firstUpdate
    * @returns - This method does not return anything.
    */
-  protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number): void;
+  protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
 }
 
 /**
@@ -89,7 +90,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
     override async firstUpdated(changedProperties: PropertyValues) {
       await super.firstUpdated(changedProperties);
 
-      this.resetTabIndexAndSetFocus(0);
+      this.resetTabIndexAndSetFocus(0, undefined, false);
     }
 
     /**
@@ -188,7 +189,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
     }
 
     /** @see ListNavigationMixinInterface.resetTabIndexAndSetFocus */
-    protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number) {
+    protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem = true) {
       const { navItems } = this;
 
       if (navItems.length === 0) return;
@@ -206,7 +207,10 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
       }
 
       newItem.setAttribute('tabindex', '0');
-      newItem.focus();
+
+      if (focusNewItem) {
+        newItem.focus();
+      }
     }
 
     /**
