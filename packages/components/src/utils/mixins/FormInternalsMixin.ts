@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 
 import type { Constructor } from './index.types';
 
@@ -99,14 +98,6 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
 
     get willValidate() {
       return this.internals.willValidate;
-    }
-
-    override connectedCallback() {
-      super.connectedCallback();
-
-      if (!this.id) {
-        this.id = `mdc-el-${uuidv4()}`;
-      }
     }
 
     /**

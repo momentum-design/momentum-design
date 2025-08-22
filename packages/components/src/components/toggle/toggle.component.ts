@@ -196,7 +196,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         part="container"
       >
         <input
-          id="${this.id}"
+          id="${this.inputId}"
           type="checkbox"
           part="toggle-input"
           role="${ROLE.CHECKBOX}"
