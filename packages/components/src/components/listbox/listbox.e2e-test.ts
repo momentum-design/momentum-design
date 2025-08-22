@@ -111,10 +111,10 @@ test('mdc-listbox', async ({ componentsPage }) => {
    */
   await test.step('visual-regression for listbox', async () => {
     await componentsPage.page.setViewportSize({ width: 600, height: 2100 });
-    const listbox = await setup({ componentsPage, children: defaultChildren() });
+    const listbox = await setup({ componentsPage, children: defaultChildren(1) });
 
-    await test.step('matches screenshot of popover', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-popover', {
+    await test.step('matches screenshot of listbox', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-listbox', {
         element: listbox,
       });
     });
