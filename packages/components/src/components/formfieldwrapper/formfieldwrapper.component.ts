@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -28,6 +29,13 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
   /**
+  * Indicates the unique identifier for the native input element. 
+  * Required for acccessibility.
+  * @internal
+  */
+  protected inputId = `mdc-el-${uuidv4()}`;
+
+  /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
   @property({ reflect: true, type: String }) label?: string;
@@ -38,12 +46,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'required' }) required = false;
-
-  /**
-   * The unique id of the input field. It is used to link the input field with the label.
-   * @default ''
-   */
-  @property({ type: String }) override id = '';
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -89,7 +91,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return this.shouldRenderLabel
-      ? html`<label for="${this.id}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
+      ? html`<label for="${this.inputId}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
