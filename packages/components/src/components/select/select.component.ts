@@ -625,7 +625,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           role=""
           backdrop
           backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
-          is-backdrop-invisible
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger

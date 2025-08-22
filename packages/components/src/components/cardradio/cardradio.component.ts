@@ -55,7 +55,7 @@ import styles from './cardradio.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
  * It toggles the checked state when space key is used.
  * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
- *
+ * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  */
 class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
   /**
@@ -97,7 +97,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * Dispatches the change event.
    */
   private toggleChecked(): void {
-    if (this.disabled) return;
+    if (this.disabled || this.checked) return;
 
     const cards = this.getAllCardsWithinSameGroup();
     cards.forEach(card => {
@@ -107,6 +107,8 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
       card.checked = false;
     });
     this.checked = true;
+
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
   setDisabled(disabled: boolean): void {

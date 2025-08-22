@@ -25,6 +25,7 @@ import { DEFAULTS } from './menusection.constants';
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
  *
  * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
+ * @event action - (React: onAction) This event is dispatched when a `menuitem` selected.
  */
 class MenuSection extends Component {
   /**
@@ -118,7 +119,7 @@ class MenuSection extends Component {
   public override render() {
     return html`
       ${!this.hideHeaderText ? this.renderHeader() : null}
-      <slot></slot>
+      <slot part="container"></slot>
       ${this.showDivider ? html`<mdc-divider variant="${this.dividerVariant}" part="divider"></mdc-divider>` : null}
     `;
   }
