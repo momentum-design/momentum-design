@@ -6,8 +6,9 @@ import '../select';
 import '../button';
 import { html } from 'lit';
 
-import { textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 const render = (args: Args) =>
   html` <div style="width: 25rem;">
@@ -47,12 +48,46 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
-    ...textControls(['label', 'help-text', 'placeholder', 'value', 'height', 'no-result-text']),
+    name: {
+      control: 'text',
+    },
+    label: {
+      control: 'text',
+    },
+    required: {
+      control: 'boolean',
+    },
+    placeholder: {
+      control: 'text',
+    },
     disabled: {
       control: 'boolean',
     },
+    'soft-disabled': {
+      control: 'boolean',
+    },
+    'data-aria-label': {
+      control: 'text',
+    },
+    height: {
+      control: 'text',
+    },
+    'help-text': {
+      control: 'text',
+    },
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
+    'no-result-text': {
+      control: 'text',
+    },
+    ...classArgType,
+    ...styleArgType,
+    ...hideControls(['id', 'validity', 'validation-message', 'willValidate', 'default']),
   },
 };
 
@@ -64,11 +99,14 @@ export const Example: StoryObj = {
     label: 'Top Countries',
     name: 'country',
     'help-text': 'Select a country',
+    'help-text-type': VALIDATION.DEFAULT,
     disabled: false,
+    'soft-disabled': false,
     height: '5rem',
     'no-result-text': '',
     placeholder: 'Start typing',
     'data-aria-label': 'Select a country',
+    'info-icon-aria-label': 'Required icon label',
   },
 };
 
@@ -82,11 +120,16 @@ export const CombiSelect: StoryObj = {
       no-result-text="Tomato Potato"
     >
       <mdc-selectlistbox>
-        <mdc-option value="london" label="London, UK"></mdc-option>
-        <mdc-option value="losangeles" label="Los Angeles, CA"></mdc-option>
-        <mdc-option value="newyork" label="New York, NY"></mdc-option>
-        <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
-        <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+        <mdc-option label="Argentina"></mdc-option>
+        <mdc-option label="Australia"></mdc-option>
+        <mdc-option label="Austria"></mdc-option>
+        <mdc-option label="Bangladesh"></mdc-option>
+        <mdc-option label="Belgium"></mdc-option>
+        <mdc-option label="Brazil"></mdc-option>
+        <mdc-option label="Canada"></mdc-option>
+        <mdc-option label="China"></mdc-option>
+        <mdc-option label="Colombia"></mdc-option>
+        <mdc-option label="Denmark"></mdc-option>
       </mdc-selectlistbox>
     </mdc-combobox>
     <br /><br /><br />

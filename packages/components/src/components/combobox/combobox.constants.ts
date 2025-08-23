@@ -9,7 +9,7 @@ const ICON_NAME = {
 } as const;
 
 const AUTOCOMPLETE_LIST = 'list';
-const LISTBOX_ID = 'combobox-listbox';
-const TRIGGER_ID = 'combobox-triggerid';
+const LISTBOX_ID = 'combobox-listbox-id';
+const TRIGGER_ID = 'combobox-trigger-id';
 
 export { TAG_NAME, ICON_NAME, TRIGGER_ID, LISTBOX_ID, AUTOCOMPLETE_LIST };
