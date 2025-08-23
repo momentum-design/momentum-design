@@ -16,6 +16,7 @@ Feature: SideNavigation Accessibility and User Interaction
       And the collapse button is visible and enabled
       When I click on the arrow (collapse) button with the mouse
       Then the sidenavigation collapses and displays only icons
+      And toggle event is fired
 
     Scenario: Collapse the sidenavigation using keyboard
       Given the sidenavigation is expanded and fully visible
@@ -24,12 +25,14 @@ Feature: SideNavigation Accessibility and User Interaction
       And I press the "Enter" or "Space" key
       Then the sidenavigation collapses and displays only icons
       And focus remains on the arrow button after collapsing
+      And toggle event is fired
 
     Scenario: Expand the sidenavigation using mouse
       Given the sidenavigation is collapsed
       And the expand button is visible and enabled
       When I click on the arrow (expand) button with the mouse
       Then the sidenavigation expands and shows labels next to icons
+      And toggle event is fired
 
     Scenario: Expand the sidenavigation using keyboard
       Given the sidenavigation is collapsed
@@ -38,6 +41,7 @@ Feature: SideNavigation Accessibility and User Interaction
       And I press the "Enter" or "Space" key
       Then the sidenavigation expands and shows labels next to icons
       And focus remains on the arrow button after expanding
+      And toggle event is fired
 
   Rule: ✅ Scroll Behavior
 
