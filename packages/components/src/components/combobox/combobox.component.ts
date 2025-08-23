@@ -75,7 +75,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   @state() private isOpen = false;
 
-  @state() private lastSelectedOption = 0;
+  @state() private lastSelectedOptionIndex = 0;
 
   /**
    * Modifies the listbox wrapper to ensure it has the correct attributes
@@ -107,8 +107,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.isOpen = !this.isOpen;
   }
 
-  private compareValueWithLabel(value: string, label: string): boolean {
-    return value.toLowerCase().startsWith(label.toLowerCase());
+  private compareOptionWithValue(option: Option, value: string): boolean {
+    const optionValue = option.getAttribute('value') || option.getAttribute('label') || '';
+    return optionValue.toLowerCase().startsWith(value.toLowerCase());
   }
 
   private getAllValidOptions(): Array<Option> {
@@ -116,12 +117,14 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private getVisibleOptions(): Array<Option> {
-    return this.getAllValidOptions().filter(option => this.compareValueWithLabel(option.label ?? '', this.value));
+    return this.getAllValidOptions().filter(option => this.compareOptionWithValue(option, this.value));
   }
 
   private setSelectedValue(value: string): void {
+    // this.value = option?.getAttribute('value') || option?.getAttribute('label') || '';
+    // console.log(option,' = ', option?.getAttribute('value'), ' = ', option?.getAttribute('label'));
     this.value = value;
-    this.internals.setFormValue(value);
+    this.internals.setFormValue(this.value);
   }
 
   public override async firstUpdated() {
@@ -136,10 +139,27 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   private resetFocusedOption() {
     this.getAllValidOptions()
       .filter(option => option.hasAttribute('data-focused'))
-      .forEach(option => {
-        option.removeAttribute('data-focused');
-        option.setAttribute('aria-selected', 'false');
-      });
+      .forEach(option => this.updateFocus(option, false));
+  }
+
+  // private filterOptionsBasedOnInputValue(): void {}
+
+  // private handleInputClick(): void {
+  //   // this.toggleDropdown();
+  //   this.resetFocusedOption();
+  //   this.filterOptionsBasedOnInputValue();
+  //   if (this.isOpen === false) {
+  //     this.openPopover();
+  //   }
+  // }
+
+  private updateFocus(option: Option, value: boolean): void {
+    if (value) {
+      option.setAttribute('data-focused', '');
+    } else {
+      option.removeAttribute('data-focused');
+    }
+    option.setAttribute('aria-selected', value.toString());
   }
 
   private handleBlurChange(): void {
@@ -157,38 +177,34 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       case KEYS.ARROW_DOWN: {
         this.openPopover();
         if (getLastFocusedOptionIndex === -1 || getLastFocusedOptionIndex === options.length - 1) {
-          this.lastSelectedOption = 0;
+          this.lastSelectedOptionIndex = 0;
         } else {
-          this.lastSelectedOption =
+          this.lastSelectedOptionIndex =
             getLastFocusedOptionIndex + 1 === options.length
               ? getLastFocusedOptionIndex
               : getLastFocusedOptionIndex + 1;
         }
         if (getLastFocusedOptionIndex !== -1) {
-          options[getLastFocusedOptionIndex].removeAttribute('data-focused');
-          options[getLastFocusedOptionIndex].setAttribute('aria-selected', 'false');
+          this.updateFocus(options[getLastFocusedOptionIndex], false);
         }
-        options[this.lastSelectedOption].setAttribute('data-focused', '');
-        options[this.lastSelectedOption].setAttribute('aria-selected', 'true');
+        this.updateFocus(options[this.lastSelectedOptionIndex], true);
         event.preventDefault();
         break;
       }
       case KEYS.ARROW_UP: {
         this.openPopover();
         if (getLastFocusedOptionIndex === -1 || getLastFocusedOptionIndex === 0) {
-          this.lastSelectedOption = options.length - 1;
+          this.lastSelectedOptionIndex = options.length - 1;
         } else {
-          this.lastSelectedOption =
+          this.lastSelectedOptionIndex =
             getLastFocusedOptionIndex - 1 === options.length
               ? getLastFocusedOptionIndex
               : getLastFocusedOptionIndex - 1;
         }
         if (getLastFocusedOptionIndex !== -1) {
-          options[getLastFocusedOptionIndex].removeAttribute('data-focused');
-          options[getLastFocusedOptionIndex].setAttribute('aria-selected', 'false');
+          this.updateFocus(options[getLastFocusedOptionIndex], false);
         }
-        options[this.lastSelectedOption].setAttribute('data-focused', '');
-        options[this.lastSelectedOption].setAttribute('aria-selected', 'true');
+        this.updateFocus(options[this.lastSelectedOptionIndex], true);
         event.preventDefault();
         break;
       }
@@ -202,8 +218,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       }
       case KEYS.ESCAPE: {
         if (getLastFocusedOptionIndex !== -1) {
-          options[getLastFocusedOptionIndex].removeAttribute('data-focused');
-          options[getLastFocusedOptionIndex].setAttribute('aria-selected', 'false');
+          this.updateFocus(options[getLastFocusedOptionIndex], false);
         }
         if (options.length && this.shouldDisplayPopover(options.length)) {
           this.closePopover();
@@ -223,12 +238,12 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private handleInputChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as Option;
     this.setSelectedValue(target.value);
     this.resetFocusedOption();
     const options = this.getAllValidOptions();
     options.forEach(option => {
-      if (!this.compareValueWithLabel(option.label ?? '', this.value)) {
+      if (!this.compareOptionWithValue(option, this.value)) {
         option.setAttribute('data-hidden', '');
       } else {
         option.removeAttribute('data-hidden');
@@ -236,6 +251,19 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     });
     if (this.isOpen === false) {
       this.openPopover();
+    }
+  }
+
+  private handleOptionsClick(event: MouseEvent): void {
+    const option = event.target as Option;
+    if (
+      option &&
+      option.tagName === OPTION_TAG_NAME.toUpperCase() &&
+      !option.hasAttribute('disabled') &&
+      !option.hasAttribute('soft-disabled')
+    ) {
+      // this.setSelectedValue(option);
+      this.closePopover();
     }
   }
 
@@ -254,7 +282,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
     return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
-      ? html`<mdc-listitem part="no-results-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
+      ? html`<mdc-listitem part="no-result-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
       : nothing;
   }
 
@@ -330,7 +358,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           }}"
         >
           ${this.renderNoResultsText(options.length)}
-          <slot></slot>
+          <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
       ${this.renderHelperText()}
