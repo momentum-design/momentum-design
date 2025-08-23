@@ -176,27 +176,35 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
               firstNavMenuItemInFixedBar,
               toggleButton,
             ]);
+            const eventResolveAfterEnter = await componentsPage.waitForEvent(sidenav, 'toggle');
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
+            await eventResolveAfterEnter();
             await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
               source: 'userflow',
               fileNameSuffix: 'collapsed-view',
             });
             await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-collapsed`);
 
+            const eventResolveAfterSpace = await componentsPage.waitForEvent(sidenav, 'toggle');
             await componentsPage.page.keyboard.press('Space');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
             await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
+            await eventResolveAfterSpace();
           });
           await test.step('Collapse and expand sidenavigation using mouse', async () => {
+            const eventResolveAfterClickCollapse = await componentsPage.waitForEvent(sidenav, 'toggle');
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
+            await eventResolveAfterClickCollapse();
 
+            const eventResolveAfterClickExpand = await componentsPage.waitForEvent(sidenav, 'toggle');
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
             await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
+            await eventResolveAfterClickExpand();
           });
         }
 
