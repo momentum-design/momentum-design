@@ -79,24 +79,6 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
 class SideNavigation extends Provider<SideNavigationContext> {
-  constructor() {
-    super({
-      context: SideNavigationContext.context,
-      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
-    });
-
-    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.role = ROLE.NAVIGATION;
-  }
-
-  public static get Context() {
-    return SideNavigationContext.context;
-  }
-
   /**
    * Four variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -137,6 +119,24 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
   parentNavTooltipText?: string;
+
+  constructor() {
+    super({
+      context: SideNavigationContext.context,
+      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
+    });
+
+    this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = ROLE.NAVIGATION;
+  }
+
+  public static get Context() {
+    return SideNavigationContext.context;
+  }
 
   protected override updated(changedProperties: Map<string, any>): void {
     super.updated(changedProperties);
@@ -213,6 +213,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /**
    * Returns all nested, non-disabled mdc-navmenuitem elements inside this component.
+   * @internal
    */
   private get navMenuItems(): NavMenuItem[] {
     return Array.from(this.querySelectorAll(`${NAVMENUITEM_TAGNAME}:not([disabled])`));

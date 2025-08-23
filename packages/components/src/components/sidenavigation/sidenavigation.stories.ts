@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
 import '../menuitem';
@@ -286,8 +286,7 @@ const meta: Meta = {
       '--mdc-sidenavigation-collapsed-width',
       '--mdc-sidenavigation-vertical-divider-button-z-index',
     ]),
-    ...disableControls(['scrollable-section', 'fixed-section', 'brand-logo']),
-    ...hideControls(['role', 'Context']),
+    ...hideControls(['Context']),
     ...classArgType,
     ...styleArgType,
   },
