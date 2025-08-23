@@ -28,7 +28,7 @@ const styles = css`
   :host::part(container__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
-  :host::part(no-results-text) {
+  :host::part(no-result-text) {
     pointer-events: none;
   }
 `;
