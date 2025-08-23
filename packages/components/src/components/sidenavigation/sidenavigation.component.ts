@@ -1,9 +1,8 @@
-import { CSSResult, html, nothing } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { property } from 'lit/decorators.js';
 
 import { Component, Provider } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import type { Directions } from '../divider/divider.types';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
@@ -63,8 +62,21 @@ import styles from './sidenavigation.styles';
  * @slot fixed-section - Slot for the fixed content area of the side navigation.
  * @slot brand-logo - Slot for the brand logo (e.g., icon or img).
  *
+ * @csspart side-navigation-container - The main container wrapping the entire side navigation.
+ * @csspart scrollable-section - The scrollable section of the side navigation.
+ * @csspart fixed-section - The fixed section of the side navigation.
+ * @csspart separator - The divider between the scrollable and fixed sections.
+ * @csspart brand-logo-container - The container wrapping the brand logo and footer text.
+ * @csspart footer-text - The footer text label in the fixed section.
+ * @csspart vertical-divider - The vertical divider between the scrollable and fixed sections.
+ * @csspart vertical-divider-button - The button inside the vertical divider used to toggle expand/collapse.
+ *
+ * @event toggle - (React: onToggle) Dispatched when the grabber button is clicked to expand/collapse the sidenavigation.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of a nested navmenuitem changes.
+ *
  * @cssproperty --mdc-sidenavigation-expanded-width - width of the sideNavigation when expanded
- * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collpased
+ * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collapsed
+ * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   constructor() {
@@ -126,37 +138,35 @@ class SideNavigation extends Provider<SideNavigationContext> {
   @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
   parentNavTooltipText?: string;
 
-  /**
-   * Toggles between true and false when it's variant is flexible.
-   * @default true
-   *
-   * @internal
-   */
-  @state()
-  private flexibleExpanded = this.variant === DEFAULTS.VARIANT;
-
-  /**
-   * Direction of the arrow icon, if applicable.
-   * - **positive**
-   * - **negative**
-   *
-   * Note: Positive and Negative directions are defined based on Cartesian plane.
-   * @default 'negative'
-   *
-   * @internal
-   */
-  @state()
-  private arrowDirection: Directions = this.flexibleExpanded ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
-
   protected override updated(changedProperties: Map<string, any>): void {
     super.updated(changedProperties);
 
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
-      this.updateExpansionState();
+
+      // hard set expanded state for fixed variants:
+      switch (this.variant) {
+        case VARIANTS.FIXED_EXPANDED:
+          this.expanded = true;
+          break;
+        case VARIANTS.FIXED_COLLAPSED:
+          this.expanded = false;
+          break;
+        default:
+      }
     }
 
     if (changedProperties.has('variant') || changedProperties.has('expanded')) {
+      this.updateContext();
+    }
+  }
+
+  protected override firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    if (this.variant === VARIANTS.FLEXIBLE && this.expanded === undefined) {
+      // if on first update the variant is flexible and expanded is not set, default to expanded true
+      this.expanded = true;
       this.updateContext();
     }
   }
@@ -209,26 +219,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   /**
-   * Syncs `expanded` and `aria-expanded` based on `variant` and `flexibleExpanded`.
-   *
-   * @internal
-   */
-  private updateExpansionState = (): void => {
-    switch (this.variant) {
-      case VARIANTS.FLEXIBLE:
-        this.expanded = this.flexibleExpanded;
-        break;
-      case VARIANTS.FIXED_EXPANDED:
-        this.expanded = true;
-        break;
-      case VARIANTS.FIXED_COLLAPSED:
-        this.expanded = false;
-        break;
-      default:
-    }
-  };
-
-  /**
    * Sets the variant attribute for the sideNavigation component.
    * If the provided variant is not included in the variant,
    * it defaults to the value specified in DEFAULTS.VARIANT.
@@ -243,14 +233,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /**
    * Toggles navigation state for the flexible variant.
-   * Updates `flexibleExpanded`, `ariaExpanded`, and `arrowDirection`.
    *
    * @internal
    */
   private toggleSideNavigation(): void {
-    this.flexibleExpanded = !this.flexibleExpanded;
-    this.arrowDirection = this.arrowDirection === DIRECTIONS.NEGATIVE ? DIRECTIONS.POSITIVE : DIRECTIONS.NEGATIVE;
-    this.updateExpansionState();
+    this.expanded = !this.expanded;
+    this.dispatchEvent(new CustomEvent('toggle', { detail: { expanded: this.expanded } }));
   }
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
@@ -283,7 +271,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           <div part="brand-logo-container">
             <slot name="brand-logo"></slot>
             ${this.expanded
-              ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="label"
+              ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="footer-text"
                   >${this.footerText}</mdc-text
                 >`
               : nothing}
@@ -292,17 +280,18 @@ class SideNavigation extends Provider<SideNavigationContext> {
       </div>
       ${this.variant === VARIANTS.FLEXIBLE
         ? html`<mdc-divider
+            part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
             variant=${DIVIDER_VARIANT.GRADIENT}
-            arrow-direction=${this.arrowDirection}
+            arrow-direction=${this.expanded ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE}
             button-position=${DIRECTIONS.POSITIVE}
           >
             <mdc-button
+              part="vertical-divider-button"
               aria-label=${this.grabberBtnAriaLabel ?? ''}
               @click=${this.toggleSideNavigation}
               aria-expanded="${!!this.expanded}"
               aria-controls="side-nav-container"
-              part="grabber-btn"
             ></mdc-button>
           </mdc-divider>`
         : nothing}
