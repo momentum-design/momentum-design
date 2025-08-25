@@ -161,6 +161,7 @@ const styles = css`
     height: 0.25rem;
     background: var(--mdc-slider-tick-color);
     border-radius: 50%;
+    transform: translateX(-50%);
   }
 `;
 
