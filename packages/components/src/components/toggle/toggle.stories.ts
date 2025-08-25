@@ -26,7 +26,7 @@ const render = (args: Args) => html`
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     ?checked="${args.checked}"
     ?required="${args.required}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     ?disabled="${args.disabled}"
   >
   </mdc-toggle>
@@ -57,7 +57,7 @@ const meta: Meta = {
     'help-text': {
       control: 'text',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     required: {
@@ -112,7 +112,6 @@ export const Example: StoryObj = {
     checked: false,
     size: DEFAULTS.SIZE,
     disabled: false,
-    autofocus: false,
     'help-text': '',
   },
 };
