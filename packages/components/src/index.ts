@@ -91,6 +91,13 @@ import type { TextType as TypewriterType } from './components/typewriter/typewri
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
+import type {
+  InputInputEvent,
+  InputChangeEvent,
+  InputFocusEvent,
+  InputBlurEvent,
+  InputClearEvent,
+} from './components/input/input.types';
 
 // Constants / Utils Imports
 import {
@@ -203,6 +210,11 @@ export type {
   SpinnerVariant,
   TextType,
   TypewriterType,
+  InputInputEvent,
+  InputChangeEvent,
+  InputFocusEvent,
+  InputBlurEvent,
+  InputClearEvent,
 };
 
 // Constants / Utils Exports
