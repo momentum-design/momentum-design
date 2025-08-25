@@ -4,9 +4,9 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 
 import '.';
+import '../tooltip';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
@@ -27,8 +27,6 @@ const render = (args: Args) =>
       value="${args.value}"
       prefix-icon="${args['prefix-icon']}"
       aria-label="${args['aria-label']}"
-      tooltip-text="${args['tooltip-text']}"
-      tooltip-placement="${args['tooltip-placement']}"
     ></mdc-option>
   `);
 
@@ -64,13 +62,6 @@ const meta: Meta = {
     },
     'prefix-icon': {
       control: 'text',
-    },
-    'tooltip-text': {
-      control: 'text',
-    },
-    'tooltip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
     },
     ...hideControls([
       'id',
@@ -118,18 +109,15 @@ export const Example: StoryObj = {
     value: '',
     'prefix-icon': '',
     'aria-label': 'Select an option label',
-    'tooltip-text': '',
-    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
 export const OptionWithLongText: StoryObj = {
   render: () => html`
     <div style="width: 15rem;" aria-label="List box" role="listbox">
-      <mdc-option
-        label="This is a very long text and it should be truncated."
-        tooltip-text="This is a very long text and it should be truncated."
-      ></mdc-option>
+      <mdc-option id="option-1" label="This is a very long text and it should be truncated."></mdc-option>
+      <mdc-tooltip triggerID="option-1" show-arrow> This is a very long text and it should be truncated. </mdc-tooltip>
+      <mdc-text>Note: The consumer needs to attach mdc-tooltip to the option from their end</mdc-text>
     </div>
   `,
   ...hideAllControls(),

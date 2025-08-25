@@ -229,7 +229,7 @@ test.describe.parallel('mdc-cardradio', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardradio = componentsPage.page.locator('mdc-cardradio');
     const img = cardradio.locator('img[src="https://placehold.co/100x100"]');
     const imgCount = await img.count();
@@ -239,10 +239,10 @@ test.describe.parallel('mdc-cardradio', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const cardradio = componentsPage.page.locator('mdc-cardradio');
     const icon = cardradio.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -252,7 +252,7 @@ test.describe.parallel('mdc-cardradio', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');

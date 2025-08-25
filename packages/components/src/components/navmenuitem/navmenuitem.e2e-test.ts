@@ -1,4 +1,3 @@
-// AI-Assisted
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -13,6 +12,7 @@ type SetupOptions = {
   'soft-disabled'?: boolean;
   'badge-type'?: string;
   counter?: number;
+  'tooltip-text'?: string;
   'max-counter'?: number;
   'nav-id'?: string;
   'show-label'?: boolean;
@@ -39,6 +39,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['badge-type'] ? `badge-type="${restArgs['badge-type']}"` : ''}
         ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
         ${restArgs['max-counter'] ? `max-counter="${restArgs['max-counter']}"` : ''}
+        ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
         ${restArgs['nav-id'] ? `nav-id="${restArgs['nav-id']}"` : ''}
         ${restArgs['show-label'] ? 'show-label' : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
@@ -308,6 +309,22 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           await expect(navmenuitem).toHaveAttribute('aria-disabled', 'true');
         });
       });
+
+      await test.step('component should show tooltip when the listitem is focused and tooltip text is passed', async () => {
+        const navmenuitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'icon-name': iconName,
+          'nav-id': navId,
+          'show-label': true,
+          'tooltip-text': 'This is a tooltip Text',
+        });
+        await componentsPage.actionability.pressTab();
+        await expect(navmenuitem).toBeFocused();
+        const tooltip = componentsPage.page.locator('mdc-tooltip');
+        await expect(tooltip).toBeVisible();
+        await expect(tooltip).toHaveText('This is a tooltip Text');
+      });
     });
 
     /**
@@ -542,4 +559,3 @@ test.describe('NavMenuItem Feature Scenarios', () => {
     });
   });
 });
-// End AI-Assisted

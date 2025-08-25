@@ -19,6 +19,8 @@ can properly recognize the relationship between the listbox and its options.
 
 ### Form-Associated Custom Elements: Native Behavior & Event Suppression
 
-When a custom element is form-associated, it inherits native form control behavior.
-This includes automatic suppression of user interaction events when the element is disabled.
-That said, you do not need to manually prevent these events — the browser enforces this behavior automatically, just like it does for native elements like <input disabled> or <button disabled>.
+When a custom element is form-associated, it inherits native form control
+behavior. This includes automatic suppression of user interaction events when
+the element is disabled. That said, you do not need to manually prevent these
+events — the browser enforces this behavior automatically, just like it does for
+native elements like <input disabled> or <button disabled>.

@@ -181,6 +181,13 @@ Feature: Select component
     And the screen reader should announce "Headquarters Location, Select your headquarters"
     And the screen reader should not announce any options
 
+  Scenario: Tooltip is shown for a long text option in the select component
+    Given I have opened the select dropdown with the placeholder "Select your headquarters"
+    And the select component has an option with label "This is a very long option label that should be truncated and show a tooltip"
+    And there is a tooltip attached to this option using `mdc-tooltip`
+    When I hover over the option with label "This is a very long option label that should be truncated and show a tooltip"
+    Then I should see a tooltip with the text "This is a very long option label that should be truncated and show a tooltip"
+
   Scenario: Accessibility check for select component
     Given I have opened the page with the select component
     Then the select container should have the role of "combobox"
