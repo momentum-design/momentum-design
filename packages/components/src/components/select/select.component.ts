@@ -602,7 +602,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           </div>
         </div>
         <input
-          id="${this.id}"
+          id="${this.inputId}"
           part="native-input"
           name="${this.name}"
           type="text"
@@ -625,7 +625,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           role=""
           backdrop
           backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
-          is-backdrop-invisible
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger

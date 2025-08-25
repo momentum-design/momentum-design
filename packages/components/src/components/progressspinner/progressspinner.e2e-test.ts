@@ -39,7 +39,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   });
 };
 
-const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressspinnerStickerSheet: any) => {
+const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressspinnerStickerSheet: StickerSheet) => {
   progressspinnerStickerSheet.setAttributes({
     'data-aria-label': 'Progress spinner',
   });
@@ -61,13 +61,38 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progresss
   );
 
   // Error state- only set error if `error` is true
-  await progressspinnerStickerSheet.setAttributes({
+  progressspinnerStickerSheet.setAttributes({
     error: true,
     'data-aria-label': 'Error progress bar',
   });
   await progressspinnerStickerSheet.createMarkupWithCombination(
     {
       value: [10],
+    },
+    { createNewRow: true },
+  );
+
+  progressspinnerStickerSheet.setAttributes({
+    'data-aria-label': 'Progress spinner',
+  });
+
+  // Progress spinner with custom sizes
+  await progressspinnerStickerSheet.createMarkupWithCombination(
+    {
+      style: ['--mdc-spinner-size: 2rem', '--mdc-spinner-size: 4rem'],
+      value: [66, 100],
+    },
+    { createNewRow: true },
+  );
+
+  progressspinnerStickerSheet.setAttributes({
+    error: true,
+    'data-aria-label': 'Progress spinner',
+  });
+
+  await progressspinnerStickerSheet.createMarkupWithCombination(
+    {
+      style: ['--mdc-spinner-size: 2rem', '--mdc-spinner-size: 4rem'],
     },
     { createNewRow: true },
   );
@@ -95,7 +120,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 };
 
-test.use({ viewport: { width: 200, height: 500 } });
+test.use({ viewport: { width: 200, height: 750 } });
 test('Standalone Progress Spinner Tests', async ({ componentsPage }) => {
   await testToRun(componentsPage);
 });

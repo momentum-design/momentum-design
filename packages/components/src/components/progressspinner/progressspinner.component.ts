@@ -64,7 +64,7 @@ class Progressspinner extends Progressbar {
         aria-valuemax="100"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        <svg part="spinner-base">
+        <svg part="spinner-base" viewBox="0 0 48 48">
           <circle
             part="spinner-track"
             cx="24"
