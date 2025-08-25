@@ -90,32 +90,32 @@ const styles = css`
     border: 1px solid var(--mdc-slider-thumb-border-color);
   }
 
-  input[type='range']:hover::-webkit-slider-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):hover::-webkit-slider-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-hover);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
-  input[type='range']:active::-webkit-slider-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):active::-webkit-slider-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-pressed);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
-  input[type='range']:hover::-moz-range-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):hover::-moz-range-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-hover);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
-  input[type='range']:active::-moz-range-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):active::-moz-range-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-pressed);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
-  input[type='range']:hover::-ms-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):hover::-ms-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-hover);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }
 
-  input[type='range']:active::-ms-thumb {
+  :host(:not([soft-disabled])) input[type='range']:not(:disabled):active::-ms-thumb {
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-pressed);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-active);
   }

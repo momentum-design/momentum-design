@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
 import { html, nothing } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
@@ -18,6 +18,12 @@ import styles from './slider.styles';
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Slider extends Component {
+  /**
+   * Internal state to track if the slider thumb is focused (single value)
+   * @internal
+   */
+  @state() private thumbFocused = false;
+
   /**
    * Indicates whether it is a range slider. When true, the slider displays two handles for selecting a range of values.
    * When false, the slider displays a single handle for selecting a single value.
@@ -168,7 +174,29 @@ class Slider extends Component {
     ) {
       this.updateTrackStyling();
     }
+
+    if (changedProperties.has('softDisabled')) {
+      this.setSoftDisabled();
+    }
   }
+
+  setSoftDisabled() {
+    if (this.softDisabled) {
+      this.inputElement.setAttribute('aria-disabled', 'true');
+      this.inputElement.setAttribute('tabindex', '0');
+      this.inputElement.style.pointerEvents = 'none';
+      this.inputElement.addEventListener('keydown', this.preventKeyboardEvent);
+    } else {
+      this.inputElement.removeAttribute('aria-disabled');
+      this.inputElement.style.pointerEvents = '';
+      this.inputElement.removeEventListener('keydown', this.preventKeyboardEvent);
+    }
+  }
+
+  private preventKeyboardEvent = (e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   iconTemplate(icon: string | undefined, part: string) {
     return typeof icon === 'string' && icon.length > 0
