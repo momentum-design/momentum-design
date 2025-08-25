@@ -134,9 +134,10 @@ test.describe('Slider Feature Scenarios', () => {
         'trailing-icon': 'speaker-bold',
       });
       const slider = componentsPage.page.locator('mdc-slider');
-      await expect(slider).toHaveAttribute('aria-valuemin', '0');
-      await expect(slider).toHaveAttribute('aria-valuemax', '100');
-      await expect(slider).toHaveAttribute('aria-valuenow', '35');
+      const sliderInput = slider.locator('input[type="range"]');
+      await expect(sliderInput).toHaveAttribute('aria-valuemin', '0');
+      await expect(sliderInput).toHaveAttribute('aria-valuemax', '100');
+      await expect(sliderInput).toHaveAttribute('aria-valuenow', '35');
       await componentsPage.accessibility.checkForA11yViolations('slider-accessible');
     });
 
@@ -252,29 +253,45 @@ test.describe('Slider Feature Scenarios', () => {
 
       await test.step('step value is 5, user sets an even number', async () => {
         const slider = await setup({ componentsPage, min: 0, max: 100, step: 5, value: 42 });
+        await expect(slider).toHaveAttribute('value', '42');
         // Native input[type=range] snaps to nearest valid step (i.e. 40)
-        await expect(slider).toHaveAttribute('value', '40');
+        const sliderInput = slider.locator('input[type="range"]');
+        const inputValue = await sliderInput.inputValue();
+        expect(inputValue).toBe('40');
       });
 
       await test.step('user provides a value out of range', async () => {
         // Value above max
         let slider = await setup({ componentsPage, min: 0, max: 100, value: 120 });
-        await expect(slider).toHaveAttribute('value', '100');
+        await expect(slider).toHaveAttribute('value', '120');
+        const sliderInput = slider.locator('input[type="range"]');
+        const valueMax = await sliderInput.inputValue();
+        expect(valueMax).toBe('100');
         // Value below min
         slider = await setup({ componentsPage, min: 0, max: 100, value: -10 });
-        await expect(slider).toHaveAttribute('value', '0');
+        const input = slider.locator('input[type="range"]');
+        await expect(slider).toHaveAttribute('value', '-10');
+        const valueMin = await input.inputValue();
+        expect(valueMin).toBe('0');
       });
 
       await test.step('user provides a non-numeric value (NaN or other)', async () => {
         // Set initial valid value
         const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
+        const input = slider.locator('input[type="range"]');
         await expect(slider).toHaveAttribute('value', '50');
+        let inputValue = await input.inputValue();
+        expect(inputValue).toBe('50');
         // Try to set NaN
         await componentsPage.setAttributes(slider, { value: 'NaN' });
-        await expect(slider).toHaveAttribute('value', '50');
+        await expect(slider).toHaveAttribute('value', 'NaN');
+        inputValue = await input.inputValue();
+        expect(inputValue).toBe('50');
         // Try to set non-numeric string
         await componentsPage.setAttributes(slider, { value: 'abc' });
-        await expect(slider).toHaveAttribute('value', '50');
+        await expect(slider).toHaveAttribute('value', 'abc');
+        inputValue = await input.inputValue();
+        expect(inputValue).toBe('50');
       });
 
       /**
@@ -282,16 +299,18 @@ test.describe('Slider Feature Scenarios', () => {
        */
       await test.step('disabled slider', async () => {
         const slider = await setup({ componentsPage, min: 0, max: 100, value: 50, disabled: true });
+        const sliderInput = slider.locator('input[type="range"]');
         await expect(slider).toHaveAttribute('disabled');
-        await expect(slider).toBeDisabled();
-        await expect(slider).toHaveAttribute('aria-disabled', 'true');
+        await expect(sliderInput).toBeDisabled();
       });
+
       await test.step('soft-disabled slider', async () => {
         const slider = await setup({ componentsPage, min: 0, max: 100, value: 50, 'soft-disabled': true });
+        const sliderInput = slider.locator('input[type="range"]');
         await expect(slider).toHaveAttribute('soft-disabled');
+        await expect(sliderInput).toHaveAttribute('aria-disabled', 'true');
         await slider.focus();
-        await expect(slider).toBeFocused();
-        await expect(slider).toHaveAttribute('aria-disabled', 'true');
+        await expect(sliderInput).toBeFocused();
       });
     });
 

@@ -5,9 +5,9 @@ Feature: Slider
     And the slider has a defined minimum and maximum value
     And if range is false, there is a thumb to drag that lets the value change continuously
     And if range is true, there are two thumbs to drag, one for the start value and one for the end value, that let the values change continuously
-
   # Single-value slider user stories
   # As a user I want to select a single value using a slider so that I can easily choose a value within a defined range
+
   Scenario: User selects a value using the slider
     Given the slider is displayed with min and max values defined
     When the user drags the slider thumb or uses keyboard navigation
@@ -125,9 +125,9 @@ Feature: Slider
     And the screen reader should read out "Slider, [label], [current value], minimum [min value], maximum [max value]"
     When the user changes the slider value using keyboard navigation
     Then the screen reader should announce the updated value each time it changes
-
   # Range slider user stories
   # As a user I want to select a range of values using a slider with two thumbs so that I can easily choose a start and end value within a defined range
+
   Scenario: User selects a range using the slider
     Given the slider is displayed with min and max values defined and range is set to true
     When the user drags either slider thumb or uses keyboard navigation (using tab to focus the thumb)
