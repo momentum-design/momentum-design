@@ -12,14 +12,14 @@ const styles = css`
   }
 
   :host::part(spinner-container) {
-    width: 3rem;
-    height: 3rem;
+    width: var(--mdc-spinner-size);
+    height: var(--mdc-spinner-size);
     position: relative;
   }
 
   :host::part(spinner-base) {
-    width: var(--mdc-spinner-size);
-    height: var(--mdc-spinner-size);
+    width: 100%;
+    height: 100%;
     rotate: -90deg;
   }
 
@@ -37,12 +37,15 @@ const styles = css`
   }
 
   :host::part(success-icon) {
+    --mdc-icon-size: var(--mdc-spinner-size);
     color: var(--mdc-progress-success-color);
   }
 
   :host::part(error-icon) {
+    --mdc-icon-size: calc(2 / 3 * var(--mdc-spinner-size));
+
     color: var(--mdc-progress-error-color);
-    margin: 0.5rem;
+    margin: calc(1 / 6 * var(--mdc-spinner-size));
   }
 `;
 
