@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html } from 'lit';
 
 import { Component } from '../../models';
 
@@ -29,16 +29,12 @@ class Appheader extends Component {
    * Uses `slots` for flexibility, allowing consumers to insert custom content.
    */
   public override render() {
-    const hasCenter = !!this.querySelector('[slot="center"]');
-
     return html`
       <header part="container">
         <div part="leading-section">
           <slot name="leading"></slot>
         </div>
-        ${hasCenter
-          ? html`<div part="center-section"><slot name="center"></slot></div>`
-          : nothing}
+        <div part="center-section"><slot name="center"></slot></div>
         <div part="trailing-section">
           <slot name="trailing"></slot>
         </div>
