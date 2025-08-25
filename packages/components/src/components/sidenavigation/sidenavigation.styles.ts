@@ -4,6 +4,7 @@ const styles = css`
   :host {
     --mdc-sidenavigation-expanded-width: 15rem;
     --mdc-sidenavigation-collapsed-width: 4.5rem;
+    --mdc-sidenavigation-vertical-divider-button-z-index: auto;
 
     display: flex;
     height: 100%;
@@ -64,6 +65,10 @@ const styles = css`
 
   :host::part(separator) {
     margin-bottom: 0.75rem;
+  }
+
+  :host::part(vertical-divider-button) {
+    z-index: var(--mdc-sidenavigation-vertical-divider-button-z-index);
   }
 `;
 
