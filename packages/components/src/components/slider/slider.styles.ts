@@ -137,7 +137,6 @@ const styles = css`
     left: 50%;
     bottom: 120%;
     border-radius: 0.5rem;
-    box-sizing: content-box;
     background-color: var(--mds-color-theme-background-solid-primary-normal);
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
