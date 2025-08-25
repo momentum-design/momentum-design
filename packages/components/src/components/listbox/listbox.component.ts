@@ -31,15 +31,18 @@ import styles from './listbox.styles';
  *
  * @cssproperty --mdc-listbox-max-height - max height of the listbox
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default/unnamed slot, where options and optgroups are placed
  *
  * @csspart container - The container of the listbox
  *
  * @event change - (React: onChange) This event is emitted when the selected item changed
  */
 class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Component)) {
-  // According to WCAG this is the expected behavior for listbox
-  // https://www.w3.org/WAI/ARIA/apg/practices/listbox
+  /**
+   * According to WCAG this is the expected behavior for listbox
+   * https://www.w3.org/WAI/ARIA/apg/practices/listbox
+   * @internal
+   */
   protected override loop = false;
 
   /**
@@ -55,6 +58,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   @state() selectedOption?: Option | null;
 
+  /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
   });
@@ -71,7 +75,8 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     this.role = ROLE.LISTBOX;
   }
 
-  handleModifiedEvent(event: LifeCycleModifiedEvent) {
+  /** @internal */
+  private handleModifiedEvent(event: LifeCycleModifiedEvent) {
     const item = event.target as Option;
 
     switch (event.detail.change) {
@@ -93,52 +98,44 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     }
   }
 
-  handleNoSelection() {
+  /**
+   * If nothing is selected anymore, clear the value
+   * @internal
+   */
+  private handleNoSelection() {
     const selectedOption = this.getFirstSelectedOption();
     if (!selectedOption) {
       this.selectedOption = undefined;
-      this.value = '';
+      this.value = undefined;
     }
   }
 
-  handleDestroyEvent = () => {
+  /** @internal */
+  private handleDestroyEvent = () => {
     this.handleNoSelection();
   };
 
+  /** @internal */
   protected get navItems(): HTMLElement[] {
     return this.itemsStore.items;
   }
 
+  /** @internal */
   private isValidItem(item: Element): boolean {
     return item.matches(`${OPTION_TAGNAME}:not([disabled])`);
   }
 
-  handleClick(event: MouseEvent): void {
+  /** @internal */
+  private handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (this.isValidItem(target)) {
       this.setSelectedOption(target as Option);
     }
   }
 
-  getFirstSelectedOption() {
+  /** @internal */
+  private getFirstSelectedOption() {
     return this.itemsStore.items.find(el => el.matches('[selected]'));
-  }
-
-  /**
-   * Handles the first updated lifecycle event.
-   * If an option is selected, use that as the value.
-   */
-  public override async firstUpdated(changedProperties: PropertyValues): Promise<void> {
-    await super.firstUpdated(changedProperties);
-
-    await this.updateComplete;
-
-    // Sync value and DOM
-    const selected = this.value
-      ? this.itemsStore.items.find(option => option.value === this.value)
-      : this.getFirstSelectedOption();
-
-    this.setSelectedOption(selected);
   }
 
   /**
@@ -146,7 +143,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    *
    * @param changedProperties - The properties that have changed since the last update.
    */
-  override updated(changedProperties: PropertyValues): void {
+  protected override updated(changedProperties: PropertyValues): void {
     if (changedProperties.has('value')) {
       const newSelectedOption = this.itemsStore.items.find(option => option.value === this.value);
       if (newSelectedOption) {
@@ -165,7 +162,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    * @param updateOptions - Whether update the other options or not
    */
   private setSelectedOption(option?: Option | null, fireEvent = true, updateOptions = true): void {
-    if (!option || option.disabled || option.softDisabled) return;
+    if (option?.disabled || option?.softDisabled) return;
     if (updateOptions) {
       this.updateSelectedInChildOptions(option);
     }
@@ -173,7 +170,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     // set the selected option in the component state
     this.selectedOption = option;
 
-    this.value = option?.value ?? '';
+    this.value = option?.value;
 
     if (fireEvent) {
       this.fireEvents();
@@ -185,9 +182,9 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    *
    * @param selectedOption - The option which gets selected
    */
-  private updateSelectedInChildOptions(selectedOption: Option | null): void {
+  private updateSelectedInChildOptions(selectedOption?: Option | null): void {
     this.itemsStore.items.forEach(option => option.removeAttribute('selected'));
-    selectedOption?.setAttribute?.('selected', 'true');
+    selectedOption?.toggleAttribute('selected', true);
   }
 
   /**

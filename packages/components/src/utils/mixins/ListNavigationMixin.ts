@@ -1,46 +1,20 @@
 /* eslint-disable max-classes-per-file */
 import { PropertyValues } from 'lit';
-import type { LitElement } from 'lit';
 
+import type { Component } from '../../models';
 import { KEYS } from '../keys';
 
 import type { Constructor } from './index.types';
 
 export declare abstract class ListNavigationMixinInterface {
-  /**
-   * Whether to loop navigation when reaching the end of the list.
-   * If true, pressing the down arrow on the last item will focus the first item,
-   * and pressing the up arrow on the first item will focus the last item.
-   * If false, navigation will stop at the first or last item.
-   *
-   * @default true
-   */
   protected loop: boolean;
 
-  /**
-   * Whether to propagate all key events to parent components.
-   * If true, all key events will bubble up and can be handled by parent components.
-   * If false, navigation key events handled by this mixin will not propagate further.
-   *
-   * @default false
-   */
   protected propagateAllKeyEvents: boolean;
 
-  /**
-   * Reset all tabindex to -1 and set the tabindex of the current item to 0
-   *
-   * @param index - The index of the currently focused item.
-   */
   protected resetTabIndexes(index: number): void;
 
-  /**
-   * Resets the tabindex of the currently focused item and sets focus to a new item.
-   *
-   * @param newIndex - The index of the new item to focus.
-   * @param oldIndex - The index of the currently focused item.
-   * @param focusNewItem - Call focus() on the new item or not. It should be false during firstUpdate
-   * @returns - This method does not return anything.
-   */
+  protected abstract get navItems(): HTMLElement[];
+
   protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
 }
 
@@ -62,16 +36,32 @@ export declare abstract class ListNavigationMixinInterface {
  * ```
  * @param superClass - The class to extend with the mixin.
  */
-export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ListNavigationMixin = <T extends Constructor<Component>>(superClass: T) => {
   abstract class InnerMixinClass extends superClass {
-    /** @see ListNavigationMixinInterface.loop */
+    /**
+     * Whether to loop navigation when reaching the end of the list.
+     * If true, pressing the down arrow on the last item will focus the first item,
+     * and pressing the up arrow on the first item will focus the last item.
+     * If false, navigation will stop at the first or last item.
+     *
+     * @default true
+     * @internal
+     */
     protected loop: boolean = true;
 
-    /** @see ListNavigationMixinInterface.propagateAllKeyEvents */
+    /**
+     * Whether to propagate all key events to parent components.
+     * If true, all key events will bubble up and can be handled by parent components.
+     * If false, navigation key events handled by this mixin will not propagate further.
+     *
+     * @default false
+     * @internal
+     */
     protected propagateAllKeyEvents = false;
 
     /**
-     *  Get list items from the passed property
+     * Get list items from the passed property
+     * @internal
      */
     protected abstract get navItems(): HTMLElement[];
 
@@ -87,8 +77,8 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
      *
      * @param changedProperties - The properties that have changed since the last update.
      */
-    override async firstUpdated(changedProperties: PropertyValues) {
-      await super.firstUpdated(changedProperties);
+    protected override async firstUpdated(changedProperties: PropertyValues) {
+      super.firstUpdated(changedProperties);
 
       this.resetTabIndexAndSetFocus(0, undefined, false);
     }
@@ -102,6 +92,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
      * Check the mixin options to change this behavior.
      *
      * @param event - The keyboard event triggered by user interaction.
+     * @internal
      */
     protected handleNavigationKeyDown = (event: KeyboardEvent) => {
       let isKeyHandled = false;
@@ -161,6 +152,7 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
      * It retrieves the index of the clicked item and resets the tabindex accordingly.
      *
      * @param event - The mouse event triggered by user interaction.
+     * @internal
      */
     protected handleNavigationClick = (event: MouseEvent) => {
       const newIndex = this.getCurrentIndex(event.target);
@@ -177,7 +169,11 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
       return this.navItems.findIndex(node => node === target);
     }
 
-    /** @see ListNavigationMixinInterface.resetTabIndexes */
+    /**
+     * Reset all tabindex to -1 and set the tabindex of the current item to 0
+     *
+     * @param index - The index of the currently focused item.
+     */
     protected resetTabIndexes(index: number) {
       if (this.navItems.length > 0) {
         this.navItems.forEach(item => item.setAttribute('tabindex', '-1'));
@@ -188,7 +184,14 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
       }
     }
 
-    /** @see ListNavigationMixinInterface.resetTabIndexAndSetFocus */
+    /**
+     * Resets the tabindex of the currently focused item and sets focus to a new item.
+     *
+     * @param newIndex - The index of the new item to focus.
+     * @param oldIndex - The index of the currently focused item.
+     * @param focusNewItem - Call focus() on the new item or not. It should be false during firstUpdate
+     * @returns - This method does not return anything.
+     */
     protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem = true) {
       const { navItems } = this;
 
@@ -237,5 +240,5 @@ export const ListNavigationMixin = <T extends Constructor<LitElement>>(superClas
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<ListNavigationMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<Component & ListNavigationMixinInterface> & T;
 };

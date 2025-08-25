@@ -83,7 +83,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *     isValidItem: this.isValidItem,
    *  });
    *
-   *  construrctor() {
+   *  constructor() {
    *     super()
    *     this.addEventListener('modified', this.handleModifiedEvent);
    *  }

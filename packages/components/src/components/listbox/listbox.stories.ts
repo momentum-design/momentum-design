@@ -5,7 +5,7 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
-import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import '../option';
@@ -21,7 +21,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 
 const render = (args: Args) =>
   wrapWithDiv(html`
-    <mdc-listbox @change="${action('onchange')}" name="${args.name}">
+    <mdc-listbox @change="${action('onchange')}" name="${args.name}" value="${args.value}">
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
       <mdc-option value="newyork" label="New York, NY"></mdc-option>
@@ -46,7 +46,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...textControls(['--mdc-listbox-max-height']),
-    ...hideControls(['id', 'default']),
+    ...disableControls(['default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -55,7 +55,9 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  args: {},
+  args: {
+    value: 'london',
+  },
 };
 
 export const ListboxWithSecondaryLabel: StoryObj = {
