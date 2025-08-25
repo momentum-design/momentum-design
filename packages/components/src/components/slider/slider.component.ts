@@ -313,8 +313,14 @@ class Slider extends Component {
                   tabindex="${this.disabled ? -1 : 0}"
                   @input=${this.onInput}
                   @change=${this.onChange}
+                  @focus=${() => {
+                    this.thumbFocused = true;
+                  }}
+                  @blur=${() => {
+                    this.thumbFocused = false;
+                  }}
                 />
-                ${this.tooltipTemplate(this.value, this.valueLabel)}
+                ${this.thumbFocused ? this.tooltipTemplate(this.value, this.valueLabel) : nothing}
               `}
         </div>
         ${this.iconTemplate(this.trailingIcon, 'trailing-icon')}

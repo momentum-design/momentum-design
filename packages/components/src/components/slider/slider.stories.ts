@@ -107,13 +107,12 @@ export const Example: StoryObj = {
   },
 };
 
-export const RangeSlider: StoryObj = {
+export const SliderWithTicks: StoryObj = {
   args: {
     min: 0,
     max: 100,
     step: 5,
     value: 20,
-    range: true,
     'label-start': 'Start',
     'label-end': 'End',
     'value-label-start': '20',
