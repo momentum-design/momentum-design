@@ -29,135 +29,135 @@ class Slider extends Component {
    * When false, the slider displays a single handle for selecting a single value.
    * @default false
    */
-  @property({ type: Boolean }) range = false;
+  @property({ reflect: true, type: Boolean }) range = false;
 
   /**
    * Whether the slider is disabled. When true, the slider cannot be interacted with.
    */
-  @property({ type: Boolean }) disabled?: boolean;
+  @property({ reflect: true, type: Boolean }) disabled?: boolean;
 
   /**
    * Acts similar to disabled, but component is focusable and tooltip is shown on focus.
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
+  @property({ reflect: true, type: Boolean, attribute: 'soft-disabled' }) softDisabled?: boolean;
 
   /**
    * Icon that represents the minimum value; ex: muted speaker.
    */
-  @property({ type: String, attribute: 'leading-icon' }) leadingIcon?: string;
+  @property({ reflect: true, type: String, attribute: 'leading-icon' }) leadingIcon?: string;
 
   /**
    * Icon that represents the maximum value; ex: speaker with full volume.
    */
-  @property({ type: String, attribute: 'trailing-icon' }) trailingIcon?: string;
+  @property({ reflect: true, type: String, attribute: 'trailing-icon' }) trailingIcon?: string;
 
   /**
    * The slider minimum value.
    * @default 0
    */
-  @property({ type: Number }) min: number = DEFAULTS.MIN;
+  @property({ reflect: true, type: Number }) min: number = DEFAULTS.MIN;
 
   /**
    * The slider maximum value.
    * @default 100
    */
-  @property({ type: Number }) max: number = DEFAULTS.MAX;
+  @property({ reflect: true, type: Number }) max: number = DEFAULTS.MAX;
 
   /**
    * The slider value displayed when range is false.
    */
-  @property({ type: Number }) value?: number;
+  @property({ reflect: true, type: Number }) value?: number;
 
   /**
    * The slider start value displayed when range is true.
    */
-  @property({ type: Number, attribute: 'value-start' }) valueStart?: number;
+  @property({ reflect: true, type: Number, attribute: 'value-start' }) valueStart?: number;
 
   /**
    * The slider end value displayed when range is true.
    */
-  @property({ type: Number, attribute: 'value-end' }) valueEnd?: number;
+  @property({ reflect: true, type: Number, attribute: 'value-end' }) valueEnd?: number;
 
   /**
    * The step between values. If defined and greater than 1, we will show tick marks and the stepper will snap to the nearest tick mark.
    * @default 1
    */
-  @property({ type: Number }) step: number = DEFAULTS.STEP;
+  @property({ reflect: true, type: Number }) step: number = DEFAULTS.STEP;
 
   /**
    * It represents the label for slider component.
    */
-  @property({ type: String }) label?: string;
+  @property({ reflect: true, type: String }) label?: string;
 
   /**
    * The label text is shown below the slider (on leading side) representing the minimum starting value of the slider.
    */
-  @property({ type: String, attribute: 'label-start' }) labelStart?: string;
+  @property({ reflect: true, type: String, attribute: 'label-start' }) labelStart?: string;
 
   /**
    * The label text is shown below the slider (on trailing side) representing the maximum starting value of the slider.
    */
-  @property({ type: String, attribute: 'label-end' }) labelEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'label-end' }) labelEnd?: string;
 
   /**
    * An optional label for the slider's value displayed when range is false; if not set, the label is the 'value' itself.
    */
-  @property({ type: String, attribute: 'value-label' }) valueLabel?: string;
+  @property({ reflect: true, type: String, attribute: 'value-label' }) valueLabel?: string;
 
   /**
    * An optional label for the slider's start value displayed when range is true; if not set, the label is the 'valueStart' itself.
    */
-  @property({ type: String, attribute: 'value-label-start' }) valueLabelStart?: string;
+  @property({ reflect: true, type: String, attribute: 'value-label-start' }) valueLabelStart?: string;
 
   /**
    * An optional label for the slider's end value displayed when range is true; if not set, the label is the 'valueEnd' itself.
    */
-  @property({ type: String, attribute: 'value-label-end' }) valueLabelEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'value-label-end' }) valueLabelEnd?: string;
 
   /**
    * Name attribute for the slider (single value).
    */
-  @property({ type: String }) name?: string;
+  @property({ reflect: true, type: String }) name?: string;
 
   /**
    * Name attribute for the slider's start handle when range is true.
    */
-  @property({ type: String, attribute: 'name-start' }) nameStart?: string;
+  @property({ reflect: true, type: String, attribute: 'name-start' }) nameStart?: string;
 
   /**
    * Name attribute for the slider's end handle when range is true.
    */
-  @property({ type: String, attribute: 'name-end' }) nameEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'name-end' }) nameEnd?: string;
 
   /**
    * Aria label for the slider's handle displayed when range is false.
    */
-  @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel?: string;
+  @property({ reflect: true, type: String, attribute: 'data-aria-label' }) dataAriaLabel?: string;
 
   /**
    * Aria label for the slider's start handle displayed when range is true.
    */
-  @property({ type: String, attribute: 'aria-label-start' }) ariaLabelStart?: string;
+  @property({ reflect: true, type: String, attribute: 'aria-label-start' }) ariaLabelStart?: string;
 
   /**
    * Aria label for the slider's end handle displayed when range is true.
    */
-  @property({ type: String, attribute: 'aria-label-end' }) ariaLabelEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'aria-label-end' }) ariaLabelEnd?: string;
 
   /**
    * Aria value text for the slider's value displayed when range is false.
    */
-  @property({ type: String, attribute: 'data-aria-valuetext' }) dataAriaValuetext?: string;
+  @property({ reflect: true, type: String, attribute: 'data-aria-valuetext' }) dataAriaValuetext?: string;
 
   /**
    * Aria value text for the slider's start value displayed when range is true.
    */
-  @property({ type: String, attribute: 'aria-valuetext-start' }) ariaValuetextStart?: string;
+  @property({ reflect: true, type: String, attribute: 'aria-valuetext-start' }) ariaValuetextStart?: string;
 
   /**
    * Aria value text for the slider's end value displayed when range is true.
    */
-  @property({ type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
 
   @query('input[type="range"]')
   protected inputElement!: HTMLInputElement;
