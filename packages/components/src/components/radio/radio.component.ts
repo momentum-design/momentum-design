@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -10,6 +10,7 @@ import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
 import { KEYS } from '../../utils/keys';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 
 import styles from './radio.styles';
 
@@ -41,7 +42,10 @@ import styles from './radio.styles';
  *
  */
 
-class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Radio
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * Determines whether the radio is selected or unselected.
    *
@@ -56,21 +60,22 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
 
-  /**
-   * Automatically focus on the element when the page loads.
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) override autofocus = false;
-
   override connectedCallback(): void {
     super.connectedCallback();
     // Radio does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
   }
 
-  override firstUpdated() {
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     this.updateTabIndex();
+
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   /**

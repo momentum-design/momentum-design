@@ -22,6 +22,7 @@ const render = (args: Args) =>
     role="${args.role}"
     tabIndex="${args.tabIndex}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-buttonsimple
   >`;
 
@@ -57,6 +58,9 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BUTTON_TYPE),
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,

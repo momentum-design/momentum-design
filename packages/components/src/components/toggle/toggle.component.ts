@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { KEYS } from '../../utils/keys';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
@@ -49,7 +50,10 @@ import type { ToggleSize } from './toggle.types';
  * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
  * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
  */
-class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Toggle
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * Determines whether the toggle is active or inactive.
    * @default false
@@ -66,17 +70,20 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
 
-  /**
-   * Automatically focus on the element when the page loads.
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) override autofocus = false;
-
   override connectedCallback(): void {
     super.connectedCallback();
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+  }
+
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   /** @internal
@@ -200,7 +207,6 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           type="checkbox"
           part="toggle-input"
           role="${ROLE.CHECKBOX}"
-          ?autofocus="${this.autofocus}"
           ?required="${this.required}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"

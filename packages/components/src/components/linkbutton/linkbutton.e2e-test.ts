@@ -35,7 +35,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.inverted ? 'inverted' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
-      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
     >
@@ -149,13 +149,13 @@ test.describe('LinkButton Feature Scenarios', () => {
       await test.step('render linkbutton with different sizes', async () => {
         const sizes = Object.values(LINKBUTTON_SIZES);
         await Promise.all(
-          sizes.map(async (size) => {
+          sizes.map(async size => {
             await setup({ componentsPage, 'icon-name': 'placeholder-bold', size: `${size}` });
             const icon = componentsPage.page.locator('mdc-icon[name="placeholder-bold"]');
             await expect(icon).toBeVisible();
-            const expectedIconSize = getIconSize((String(size) as unknown) as LinkButtonSize);
+            const expectedIconSize = getIconSize(String(size) as unknown as LinkButtonSize);
             await expect(icon).toHaveAttribute('size', expectedIconSize.toString());
-          })
+          }),
         );
       });
 
@@ -185,9 +185,9 @@ test.describe('LinkButton Feature Scenarios', () => {
         await expect(linkbutton).toHaveAttribute('tabindex', '0');
       });
 
-      await test.step('render linkbutton with autofocus', async () => {
+      await test.step('render linkbutton with auto-focus-on-mount', async () => {
         const linkbutton = await setup({ componentsPage, autofocus: true });
-        await expect(linkbutton).toHaveAttribute('autofocus', '');
+        await expect(linkbutton).toHaveAttribute('auto-focus-on-mount', '');
       });
     });
 

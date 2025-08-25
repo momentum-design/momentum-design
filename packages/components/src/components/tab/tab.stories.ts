@@ -25,6 +25,7 @@ const render = (args: Args) =>
       text="${ifDefined(args.text)}"
       variant="${ifDefined(args.variant)}"
       tab-id="tab1"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
       >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab
     >
   </div>`;
@@ -62,6 +63,9 @@ const meta: Meta = {
     variant: {
       control: 'select',
       options: Object.values(TAB_VARIANTS),
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     ...textControls([
       '--mdc-tab-content-gap',

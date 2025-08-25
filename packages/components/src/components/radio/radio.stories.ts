@@ -26,6 +26,7 @@ const render = (args: Args) => html`
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-radio>
 `;
 
@@ -38,8 +39,6 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
     readonly: {
       control: { type: 'boolean' },
     },
@@ -77,6 +76,9 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: { type: 'text' },
     },
+    'auto-focus-on-mount': {
+      control: 'boolean',
+    },
     ...hideControls(['help-text-type']),
     ...textControls([
       '--mdc-radio-text-disabled-color',
@@ -88,6 +90,8 @@ const meta: Meta = {
       '--mdc-radio-control-inactive-disabled-background',
       '--mdc-radio-disabled-border-color',
     ]),
+    ...classArgType,
+    ...styleArgType,
   },
 };
 

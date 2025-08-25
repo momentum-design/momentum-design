@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
-import { AutoFocusMixin } from '../../utils/mixins/AutoFocusMixin';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import type { RoleType } from '../../utils/roles';
@@ -25,7 +25,7 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  *
  * @tagname mdc-buttonsimple
  */
-class Buttonsimple extends AutoFocusMixin(TabIndexMixin(DisabledMixin(Component))) {
+class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component))) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.

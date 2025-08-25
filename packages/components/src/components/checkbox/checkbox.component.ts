@@ -1,8 +1,9 @@
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { KEYS } from '../../utils/keys';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -36,7 +37,10 @@ import styles from './checkbox.styles';
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
  * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a selected checkbox when disabled.
  */
-class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Checkbox
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * Determines whether the checkbox is selected or unselected.
    *
@@ -64,6 +68,16 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     super.connectedCallback();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+  }
+
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   /**
@@ -175,7 +189,6 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           id="${this.inputId}"
           type="checkbox"
           class="input"
-          ?autofocus="${this.autofocus}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
           ?required="${this.required}"

@@ -31,7 +31,7 @@ const render = (args: Args) =>
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
     style="${args.style}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-button
   >`;
 
@@ -85,7 +85,7 @@ const meta: Meta = {
     inverted: {
       control: 'boolean',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     ...classArgType,
@@ -284,7 +284,7 @@ export const PillWithPrefixSlot: StoryObj = {
       ariaStateKey="${ifDefined(args.ariaStateKey)}"
       ?inverted="${args.inverted}"
       style="${args.style}"
-      ?autofocus="${args.autofocus}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-spinner slot="prefix" variant="button" size="small"></mdc-spinner>
       ${args.children}
@@ -323,7 +323,7 @@ export const PillWithPostfixSlot: StoryObj = {
       ariaStateKey="${ifDefined(args.ariaStateKey)}"
       ?inverted="${args.inverted}"
       style="${args.style}"
-      ?autofocus="${args.autofocus}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-animation
         name="wow"

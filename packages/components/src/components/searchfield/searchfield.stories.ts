@@ -30,7 +30,7 @@ const render = (args: Args) =>
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     autocapitalize="${ifDefined(args.autocapitalize)}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
@@ -78,7 +78,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(AUTO_CAPITALIZE),
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     autocomplete: {

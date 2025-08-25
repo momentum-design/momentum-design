@@ -60,7 +60,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
-      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
@@ -279,9 +279,9 @@ test('mdc-textarea', async ({ componentsPage }) => {
     });
 
     await test.step('attribute autofocus should be present on component', async () => {
-      await componentsPage.setAttributes(mdcTextarea, { autofocus: '' });
-      await expect(mdcTextarea).toHaveAttribute('autofocus');
-      await componentsPage.removeAttribute(mdcTextarea, 'autofocus');
+      await componentsPage.setAttributes(mdcTextarea, { 'auto-focus-on-mount': '' });
+      await expect(mdcTextarea).toHaveAttribute('auto-focus-on-mount');
+      await componentsPage.removeAttribute(mdcTextarea, 'auto-focus-on-mount');
     });
 
     await test.step('attribute autocapitalize should be present on component', async () => {

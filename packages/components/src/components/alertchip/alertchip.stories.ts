@@ -16,6 +16,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     variant="${args.variant}"
     label="${args.label}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-alertchip>`;
 
 const meta: Meta = {
@@ -33,6 +34,9 @@ const meta: Meta = {
     },
     label: {
       control: 'text',
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,

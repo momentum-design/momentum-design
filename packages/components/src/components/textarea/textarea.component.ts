@@ -8,6 +8,7 @@ import { AUTO_CAPITALIZE } from '../input/input.constants';
 import type { AutoCapitalizeType } from '../input/input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
@@ -63,7 +64,7 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
  */
 
-class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
+class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
   /**
    * The placeholder text that is displayed when the textarea field is empty.
    */
@@ -104,12 +105,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * @default 'off'
    */
   @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
-
-  /**
-   * If true, the textarea field is focused when the component is rendered.
-   * @default false
-   */
-  @property({ type: Boolean }) override autofocus: boolean = false;
 
   /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
@@ -162,6 +157,16 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           this.onerror(error);
         }
       });
+  }
+
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   private setTextareaValidity() {
@@ -340,7 +345,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           rows=${ifDefined(this.rows)}
           cols=${ifDefined(this.cols)}
           wrap=${ifDefined(this.wrap)}
-          ?autofocus="${this.autofocus}"
           autocapitalize=${this.autocapitalize}
           autocomplete=${this.autocomplete}
           minlength=${ifDefined(this.minlength)}
