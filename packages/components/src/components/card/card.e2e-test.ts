@@ -3,6 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect, Locator } from '@playwright/test';
 
+import { imageFixtures } from '../../../config/playwright/setup/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -88,8 +89,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/100x100' });
-        await expect(card).toHaveAttribute('image-src', 'https://placehold.co/100x100');
+        await componentsPage.setAttributes(card, { 'image-src': imageFixtures['card-image'] });
+        await expect(card).toHaveAttribute('image-src', imageFixtures['card-image']);
         await componentsPage.removeAttribute(card, 'image-src');
       });
 
@@ -245,7 +246,7 @@ test.describe.parallel('mdc-card', () => {
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': 'https://placehold.co/100x100',
+      'image-src': imageFixtures['card-image'],
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -345,7 +346,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures['card-image'],
           imageAlt: 'Image Alt',
         });
 
@@ -362,7 +363,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures['card-image'],
           imageAlt: 'Image Alt',
         });
 
@@ -400,7 +401,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures['card-image'],
           imageAlt: 'Image Alt',
         });
 
@@ -417,7 +418,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures['card-image'],
           imageAlt: 'Image Alt',
         });
 

@@ -71,6 +71,7 @@
     "figma:unpublish:webcomponent": "yarn figma connect unpublish --config figma-webcomponent.config.json",
     "figma:unpublish": "yarn figma:unpublish:webcomponent && yarn figma:unpublish:react",
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs",
+    "generate:image-fixtures": "node ./config/playwright/setup/pngToDataurl.js",
     "publish": "yarn publish:npmjs",
     "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
     "publish:npmjs:prepare": "node scripts/prepareForPublish.js",
