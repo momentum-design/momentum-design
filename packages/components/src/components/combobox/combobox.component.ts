@@ -180,6 +180,10 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return this.getAllValidOptions().filter(option => this.compareOptionWithValue(option, this.internalValue));
   }
 
+  private getFirstSelectedOption(): Option | null {
+    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]:not([disabled])`);
+  }
+
   private setSelectedValue(option: Option | null): void {
     const newValue = option?.getAttribute('value') || '';
     const newLabel = option?.getAttribute('label') || '';
@@ -192,15 +196,44 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.internalValue = newLabel;
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
+
+    this.setInputValidity();
   }
 
   public override async firstUpdated() {
     await this.updateComplete;
     this.modifyListBoxWrapper();
+
+    const firstSelectedOption = this.getFirstSelectedOption();
+    if (firstSelectedOption) {
+      firstSelectedOption.removeAttribute('selected');
+      this.setSelectedValue(firstSelectedOption);
+    } else {
+      this.setInputValidity();
+    }
     // For the first, we set the first element only as active.
     this.getAllValidOptions().forEach(option => {
       option.setAttribute('tabindex', '-1');
     });
+  }
+
+  /**
+   * Sets the validity of the input element based on the selected option.
+   * If the selected option is not set and the select is required,
+   * it sets a custom validation message.
+   * If the selected option is set or the select is not required,
+   * it clears the custom validation message.
+   * This method is called to ensure that the select component behaves correctly
+   * in form validation scenarios, especially when the select is required.
+   * @internal
+   */
+  private setInputValidity() {
+    if (!this.selectedOption.value && this.required && this.validationMessage) {
+      this.inputElement?.setCustomValidity(this.validationMessage);
+    } else {
+      this.inputElement?.setCustomValidity('');
+    }
+    this.setValidity();
   }
 
   private resetFocusedOption() {
@@ -208,17 +241,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       .filter(option => option.hasAttribute('data-focused'))
       .forEach(option => this.updateFocus(option, false));
   }
-
-  // private filterOptionsBasedOnInputValue(): void {}
-
-  // private handleInputClick(): void {
-  //   // this.toggleDropdown();
-  //   this.resetFocusedOption();
-  //   this.filterOptionsBasedOnInputValue();
-  //   if (this.isOpen === false) {
-  //     this.openPopover();
-  //   }
-  // }
 
   private updateFocus(option: Option, value: boolean): void {
     if (option === undefined) return;
@@ -427,6 +449,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           part="internal-native-input"
           tabindex="-1"
           autocomplete="${AUTO_COMPLETE.OFF}"
+          @invalid=${this.setInputValidity}
           aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
         />
         <mdc-popover
