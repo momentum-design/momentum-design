@@ -44,15 +44,15 @@ export default defineConfig({
                 dest: 'dist/illustrations',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/backgrounds/*.png'),
+                src: path.join(brandVisualsDistFolder, '/backgrounds/png/*.png'),
                 dest: 'dist/brand-visuals',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/images/*.png'),
+                src: path.join(brandVisualsDistFolder, '/images/png/*.png'),
                 dest: 'dist/brand-visuals',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/images/*.svg'),
+                src: path.join(brandVisualsDistFolder, '/images/svg/*.svg'),
                 dest: 'dist/brand-visuals',
               },
               {
