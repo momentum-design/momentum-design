@@ -53,6 +53,11 @@ const styles = css`
     flex-shrink: 0;
   }
 
+  #start-slider {
+    height: 0;
+    z-index: 1;
+  }
+
   input[type='range'] {
     -webkit-appearance: none;
     appearance: none;
@@ -61,12 +66,15 @@ const styles = css`
     border-radius: 0.25rem;
     outline: none;
     margin: 0;
-    cursor: pointer;
+    position: absolute;
+    pointer-events: none;
   }
 
   input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+    pointer-events: all;
+    cursor: pointer;
     width: var(--mdc-slider-thumb-size);
     height: var(--mdc-slider-thumb-size);
     background: var(--mdc-slider-thumb-color);
@@ -75,6 +83,8 @@ const styles = css`
   }
 
   input[type='range']::-moz-range-thumb {
+    pointer-events: all;
+    cursor: pointer;
     width: var(--mdc-slider-thumb-size);
     height: var(--mdc-slider-thumb-size);
     background: var(--mdc-slider-thumb-color);
@@ -83,6 +93,8 @@ const styles = css`
   }
 
   input[type='range']::-ms-thumb {
+    pointer-events: all;
+    cursor: pointer;
     width: var(--mdc-slider-thumb-size);
     height: var(--mdc-slider-thumb-size);
     background: var(--mdc-slider-thumb-color);
@@ -151,6 +163,7 @@ const styles = css`
     width: 98%;
     height: 100%;
     pointer-events: none;
+    z-index: 1;
   }
 
   :host::part(slider-tick) {

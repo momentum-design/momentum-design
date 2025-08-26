@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
 import { html, nothing } from 'lit';
-import { property, query, state } from 'lit/decorators.js';
+import { property, queryAll, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
@@ -23,6 +23,10 @@ class Slider extends Component {
    * @internal
    */
   @state() private thumbFocused = false;
+
+  @state() private thumbStartFocused = false;
+
+  @state() private thumbEndFocused = false;
 
   /**
    * Indicates whether it is a range slider. When true, the slider displays two handles for selecting a range of values.
@@ -159,8 +163,8 @@ class Slider extends Component {
    */
   @property({ reflect: true, type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
 
-  @query('input[type="range"]')
-  protected inputElement!: HTMLInputElement;
+  @queryAll('input[type="range"]')
+  protected inputElements!: HTMLInputElement[];
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
     super.updated(changedProperties);
@@ -181,19 +185,21 @@ class Slider extends Component {
   }
 
   setSoftDisabled() {
-    if (this.softDisabled) {
-      this.inputElement.setAttribute('aria-disabled', 'true');
-      this.inputElement.setAttribute('tabindex', '0');
-      this.inputElement.style.pointerEvents = 'none';
-      this.inputElement.addEventListener('keydown', this.preventKeyboardEvent);
-    } else {
-      this.inputElement.removeAttribute('aria-disabled');
-      this.inputElement.style.pointerEvents = '';
-      this.inputElement.removeEventListener('keydown', this.preventKeyboardEvent);
-    }
+    this.inputElements.forEach(input => {
+      const inputElement = input as HTMLInputElement;
+      if (this.softDisabled) {
+        inputElement.setAttribute('aria-disabled', 'true');
+        inputElement.addEventListener('keydown', this.preventChange);
+        inputElement.addEventListener('mousedown', this.preventChange);
+      } else {
+        inputElement.removeAttribute('aria-disabled');
+        inputElement.removeEventListener('keydown', this.preventChange);
+        inputElement.removeEventListener('mousedown', this.preventChange);
+      }
+    });
   }
 
-  private preventKeyboardEvent = (e: KeyboardEvent) => {
+  private preventChange = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -217,9 +223,9 @@ class Slider extends Component {
   }
 
   updateTrackStyling() {
-    if (!this.inputElement) return;
-    const value = Number(this.inputElement.value);
-    const max = Number(this.inputElement.max) || 1;
+    if (!this.inputElements[0]) return;
+    const value = Number(this.inputElements[0].value);
+    const max = Number(this.inputElements[0].max) || 1;
     const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
     let progressColor = `var(--mds-color-theme-control-active-normal)`;
     let trackColor = `var(--mds-color-theme-control-indicator-inactive-normal)`;
@@ -227,7 +233,7 @@ class Slider extends Component {
       progressColor = `var(--mds-color-theme-control-active-disabled)`;
       trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
     }
-    this.inputElement.style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
+    this.inputElements[0].style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
   }
 
   public override render() {
@@ -260,6 +266,7 @@ class Slider extends Component {
           ${this.range
             ? html`
                 <input
+                  id="start-slider"
                   type="range"
                   min="${this.min}"
                   max="${this.max}"
@@ -275,9 +282,16 @@ class Slider extends Component {
                   tabindex="${this.disabled ? -1 : 0}"
                   @input=${this.onInputStart}
                   @change=${this.onChangeStart}
+                  @focus=${() => {
+                    this.thumbStartFocused = true;
+                  }}
+                  @blur=${() => {
+                    this.thumbStartFocused = false;
+                  }}
                 />
-                ${this.tooltipTemplate(this.valueStart, this.valueLabelStart)}
+                ${this.thumbStartFocused ? this.tooltipTemplate(this.valueStart, this.valueLabelStart) : nothing}
                 <input
+                  part="end-slider"
                   type="range"
                   min="${this.min}"
                   max="${this.max}"
@@ -293,11 +307,18 @@ class Slider extends Component {
                   tabindex="${this.disabled ? -1 : 0}"
                   @input=${this.onInputEnd}
                   @change=${this.onChangeEnd}
+                  @focus=${() => {
+                    this.thumbEndFocused = true;
+                  }}
+                  @blur=${() => {
+                    this.thumbEndFocused = false;
+                  }}
                 />
-                ${this.tooltipTemplate(this.valueEnd, this.valueLabelEnd)}
+                ${this.thumbEndFocused ? this.tooltipTemplate(this.valueEnd, this.valueLabelEnd) : nothing}
               `
             : html`
                 <input
+                  part="single-slider"
                   type="range"
                   min="${this.min}"
                   max="${this.max}"
@@ -317,6 +338,12 @@ class Slider extends Component {
                     this.thumbFocused = true;
                   }}
                   @blur=${() => {
+                    this.thumbFocused = false;
+                  }}
+                  @mouseenter=${() => {
+                    if (!this.disabled) this.thumbFocused = true;
+                  }}
+                  @mouseleave=${() => {
                     this.thumbFocused = false;
                   }}
                 />

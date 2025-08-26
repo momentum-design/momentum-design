@@ -11,6 +11,8 @@ const render = (args: Args) => html`
     max="${args.max}"
     step="${args.step}"
     value="${args.value}"
+    value-start="${args['value-start']}"
+    value-end="${args['value-end']}"
     ?range="${args.range}"
     ?disabled="${args.disabled}"
     ?soft-disabled="${args['soft-disabled']}"
@@ -49,6 +51,8 @@ const meta: Meta = {
     max: { control: 'number' },
     step: { control: 'number' },
     value: { control: 'number' },
+    'value-start': { control: 'number' },
+    'value-end': { control: 'number' },
     range: { control: 'boolean' },
     disabled: { control: 'boolean' },
     'soft-disabled': { control: 'boolean' },
@@ -115,11 +119,7 @@ export const SliderWithTicks: StoryObj = {
     value: 20,
     'label-start': 'Start',
     'label-end': 'End',
-    'value-label-start': '20',
-    'value-label-end': '80',
-    'value-start': 20,
-    'value-end': 80,
-    label: 'Range',
+    label: 'Steps',
   },
 };
 
@@ -130,16 +130,6 @@ export const DisabledSlider: StoryObj = {
     value: 50,
     disabled: true,
     label: 'Disabled',
-  },
-};
-
-export const SoftDisabledSlider: StoryObj = {
-  args: {
-    min: 0,
-    max: 100,
-    value: 50,
-    'soft-disabled': true,
-    label: 'Soft Disabled',
   },
 };
 
@@ -154,13 +144,31 @@ export const SliderWithIcons: StoryObj = {
   },
 };
 
-export const SliderWithLabels: StoryObj = {
+export const SoftDisabledSlider: StoryObj = {
   args: {
     min: 0,
     max: 100,
     value: 30,
-    label: 'Timeline',
+    label: 'Timeline with labels',
     'label-start': '00:00',
     'label-end': '03:00',
+    'value-label': `00:30`,
+    'soft-disabled': true,
+  },
+};
+
+export const RangeSlider: StoryObj = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    'value-start': 20,
+    'value-end': 80,
+    range: true,
+    label: 'Range',
+    'label-start': 'Min',
+    'label-end': 'Max',
+    'value-label-start': '20',
+    'value-label-end': '80',
   },
 };
