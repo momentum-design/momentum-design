@@ -94,6 +94,18 @@ class Buttonsimple extends AutoFocusMixin(TabIndexMixin(DisabledMixin(Component)
   type: ButtonType = DEFAULTS.TYPE;
 
   /**
+   * The name of the button, submitted as a pair with the button's value as part of the form data,
+   * when that button is used to submit the form.
+   */
+  @property({ type: String, reflect: true }) name?: undefined | string = undefined;
+
+  /**
+   * Defines the value associated with the button's name when it's submitted with the form data.
+   * This value is passed to the server in params when the form is submitted using this button.
+   */
+  @property({ type: String, reflect: true }) value?: undefined | string = undefined;
+
+  /**
    * @internal
    */
   private prevTabindex = 0;
