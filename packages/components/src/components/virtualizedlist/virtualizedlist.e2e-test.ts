@@ -22,7 +22,7 @@ const setup = async (args: SetupOptions) => {
 
 test.describe('mdc-virtualizedlist', () => {
   test('default virtualized list behavior', async ({ componentsPage }) => {
-    await setup({
+    const virtualizedList = await setup({
       componentsPage,
     });
 
@@ -35,7 +35,10 @@ test.describe('mdc-virtualizedlist', () => {
 
     currentLastElement = componentsPage.page.getByRole('listitem').last();
     await currentLastElement.waitFor();
+
+    const waitForScrollEvent = await componentsPage.waitForEvent(virtualizedList, 'scroll');
     await currentLastElement.scrollIntoViewIfNeeded();
+    await waitForScrollEvent();
 
     await componentsPage.page.getByText('list item number 99').waitFor();
 

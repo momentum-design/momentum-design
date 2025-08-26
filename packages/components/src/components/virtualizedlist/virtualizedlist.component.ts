@@ -21,20 +21,11 @@ import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
  *
  * @tagname mdc-virtualizedlist
  *
- * @event onscroll - (React: onScroll) Event that gets called when user scrolls inside of list.
+ * @event scroll - (React: onScroll) Event that gets called when user scrolls inside of list.
  *
  * @slot - Client side List with nested list items.
  */
 class VirtualizedList extends Component {
-  /**
-   * Callback that gets called when user scrolls inside of list. This gives access to the scroll container element
-   * as well via the event. Particularly useful for
-   * handling logic related when the user scrolls to the top or bottom of a list.
-   * @default undefined
-   */
-  @property({ type: Function, attribute: 'onscroll' })
-  override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
-
   /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are two required object props in order to get virtualization to work properly.
@@ -166,10 +157,18 @@ class VirtualizedList extends Component {
     </div>`;
   }
 
+  /**
+   * Refires the scroll event from the internal scroll container to the host element
+   */
+  private handleScroll(event: Event): void {
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
+  }
+
   public override render() {
-    return html`<div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.onscroll && this.onscroll}>
+    return html`<div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.handleScroll}>
       ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
-    </div> `;
+    </div>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
