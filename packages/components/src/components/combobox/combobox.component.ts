@@ -77,6 +77,13 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   @state() private lastSelectedOptionIndex = 0;
 
+  @state() private selectedOption: {
+    value?: string;
+    label?: string;
+  } = {};
+
+  @state() private internalValue = '';
+
   /**
    * Modifies the listbox wrapper to ensure it has the correct attributes
    * and IDs for accessibility.
@@ -108,8 +115,8 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private compareOptionWithValue(option: Option, value: string): boolean {
-    const optionValue = option.getAttribute('value') || option.getAttribute('label') || '';
-    return optionValue.toLowerCase().startsWith(value.toLowerCase());
+    const optionValue = option.getAttribute('label') || '';
+    return optionValue.toLowerCase().startsWith(value?.toLowerCase());
   }
 
   private getAllValidOptions(): Array<Option> {
@@ -117,13 +124,19 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private getVisibleOptions(): Array<Option> {
-    return this.getAllValidOptions().filter(option => this.compareOptionWithValue(option, this.value));
+    return this.getAllValidOptions().filter(option => this.compareOptionWithValue(option, this.internalValue));
   }
 
-  private setSelectedValue(value: string): void {
-    // this.value = option?.getAttribute('value') || option?.getAttribute('label') || '';
-    // console.log(option,' = ', option?.getAttribute('value'), ' = ', option?.getAttribute('label'));
-    this.value = value;
+  private setSelectedValue(option: Option | null): void {
+    const newValue = option?.getAttribute('value') || '';
+    const newLabel = option?.getAttribute('label') || '';
+    this.selectedOption = {
+      ...this.selectedOption,
+      value: newValue,
+      label: newLabel,
+    };
+    this.value = newValue;
+    this.internalValue = newLabel;
     this.internals.setFormValue(this.value);
   }
 
@@ -166,8 +179,11 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.closePopover();
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
-    if (getLastFocusedOptionIndex === -1) return;
-    this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
+    // if no option is focused, then set the last selected option
+    if (getLastFocusedOptionIndex === -1) {
+      return;
+    }
+    this.setSelectedValue(options[getLastFocusedOptionIndex]);
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
@@ -210,7 +226,8 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       }
       case KEYS.ENTER: {
         if (getLastFocusedOptionIndex === -1) return;
-        this.setSelectedValue(options[getLastFocusedOptionIndex].label ?? '');
+        this.setSelectedValue(options[getLastFocusedOptionIndex]);
+        this.updateHiddenOptions();
         if (this.isOpen === true) {
           this.closePopover();
         }
@@ -223,7 +240,11 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         if (options.length && this.shouldDisplayPopover(options.length)) {
           this.closePopover();
         } else {
-          this.setSelectedValue('');
+          this.setSelectedValue(null);
+          // force clear the actual DOM input property
+          const input = event.target as HTMLInputElement;
+          input.value = '';
+          this.updateHiddenOptions();
         }
         break;
       }
@@ -237,18 +258,21 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
   }
 
-  private handleInputChange(event: Event): void {
-    const target = event.target as Option;
-    this.setSelectedValue(target.value);
-    this.resetFocusedOption();
+  private updateHiddenOptions(): void {
     const options = this.getAllValidOptions();
     options.forEach(option => {
-      if (!this.compareOptionWithValue(option, this.value)) {
+      if (!this.compareOptionWithValue(option, this.internalValue)) {
         option.setAttribute('data-hidden', '');
       } else {
         option.removeAttribute('data-hidden');
       }
     });
+  }
+
+  private handleInputChange(event: Event): void {
+    this.internalValue = (event.target as HTMLInputElement).value;
+    this.resetFocusedOption();
+    this.updateHiddenOptions();
     if (this.isOpen === false) {
       this.openPopover();
     }
@@ -292,29 +316,30 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       ${this.renderLabel()}
       <div part="container__base" id="${TRIGGER_ID}">
         <mdc-input
-          @blur="${this.handleBlurChange}"
           @click="${() => this.toggleDropdown()}"
+          ?disabled="${this.disabled}"
           ?soft-disabled="${this.softDisabled}"
         >
           <input
+            id="${this.id}"
             slot="input"
             ?disabled="${this.disabled}"
-            .value="${live(this.value)}"
+            .value="${this.selectedOption?.label ?? ''}"
             autocomplete="${AUTO_COMPLETE.OFF}"
             class="input"
-            name="${this.name}"
             part="mdc-input"
-            placeholder="${this.placeholder}"
+            placeholder="${ifDefined(this.placeholder)}"
             role="${ROLE.COMBOBOX}"
             ?readonly="${this.readonly}"
             ?required="${this.required}"
             @input=${this.handleInputChange}
             @keydown=${this.handleInputKeydown}
+            @blur="${this.handleBlurChange}"
             aria-autocomplete="${AUTOCOMPLETE_LIST}"
             aria-controls="${LISTBOX_ID}"
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
-            aria-expanded="${this.isOpen.toString()}"
+            aria-expanded="${this.isOpen ? 'true' : 'false'}"
             aria-haspopup="${ROLE.LISTBOX}"
             aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
             aria-label="${this.dataAriaLabel ?? ''}"
@@ -328,7 +353,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           part="container__button"
           ?disabled="${this.disabled}"
           tabindex="-1"
-          aria-expanded="${this.isOpen.toString()}"
+          aria-expanded="${this.isOpen ? 'true' : 'false'}"
           aria-controls="${LISTBOX_ID}"
           aria-label="${this.dataAriaLabel ?? ''}"
         >
@@ -339,6 +364,16 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
             length-unit="rem"
           ></mdc-icon>
         </mdc-buttonsimple>
+        <input
+          name="${this.name}"
+          type="text"
+          .value="${live(this.selectedOption?.value ?? '')}"
+          aria-hidden="true"
+          part="internal-native-input"
+          tabindex="-1"
+          autocomplete="${AUTO_COMPLETE.OFF}"
+          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+        />
         <mdc-popover
           ?visible="${this.shouldDisplayPopover(options.length)}"
           disable-aria-expanded
