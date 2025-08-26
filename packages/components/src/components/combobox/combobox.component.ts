@@ -14,11 +14,12 @@ import Input from '../input/input.component';
 import { AUTO_COMPLETE } from '../input/input.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
+import { Placement } from './combobox.types';
 
 /**
  * Combobox component, which ...
@@ -42,13 +43,18 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the select field. If true, the select is read-only.
+   * readonly attribute of the combobox field. If true, the combobox is read-only.
    * @default false
    */
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * height attribute of the select field. If set,
+   * The placeholder text which will be shown on the text if provided.
+   */
+  @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
+
+  /**
+   * height attribute of the combobox field. If set,
    * then a scroll bar will be visible when there more options than the adjusted height.
    * @default auto
    */
@@ -62,13 +68,60 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText?: string;
 
   /**
-   * Indicates whether the select is soft disabled.
-   * When set to `true`, the select appears visually disabled but still allows
+   * Indicates whether the combobox is soft disabled.
+   * When set to `true`, the combobox appears visually disabled but still allows
    * focus.
    *
    * @default undefined
    */
   @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled?: boolean;
+
+  /**
+   * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
+   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
+   * element to be clipped.
+   *
+   * Possible values:
+   *  - 'clippingAncestors'
+   *  - any css selector
+   *
+   * @default 'clippingAncestors'
+   *
+   * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
+   */
+  @property({ type: String, reflect: true, attribute: 'boundary' })
+  boundary: 'clippingAncestors' | string = POPOVER_DEFAULTS.BOUNDARY;
+
+  /**
+   * The strategy of the popover within Select.
+   * This determines how the popover is positioned in the DOM.
+   *
+   * In case `boundary` is set to something other than 'clippingAncestors',
+   * it might be necessary to set the `strategy` to 'fixed' to ensure that the popover
+   * is not getting clipped by scrollable containers enclosing the combobox.
+   *
+   * @default absolute
+   * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
+   */
+  @property({ type: String, reflect: true, attribute: 'strategy' })
+  strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
+
+  /**
+   * The z-index of the popover within Select.
+   *
+   * Override this to make sure this stays on top of other components.
+   * @default 1000
+   */
+  @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
+  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+
+  /**
+   * ID of the element where the backdrop will be appended to.
+   * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
+   * If not set, the backdrop will be appended to the parent element of the combobox.
+   */
+  @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
+  backdropAppendTo?: string;
 
   /** @internal */
   @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
@@ -89,7 +142,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * and IDs for accessibility.
    *
    * Once [ariaOwnsElements](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/ariaOwnsElements) is supported in browsers,
-   * this an be removed and mdc-option can be used directly in the select component with a listbox in a different
+   * this an be removed and mdc-option can be used directly in the combobox component with a listbox in a different
    * shadow root and aria-owns attribute to connect them.
    */
   private modifyListBoxWrapper() {
@@ -138,6 +191,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.value = newValue;
     this.internalValue = newLabel;
     this.internals.setFormValue(this.value);
+    this.updateHiddenOptions();
   }
 
   public override async firstUpdated() {
@@ -167,6 +221,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   // }
 
   private updateFocus(option: Option, value: boolean): void {
+    if (option === undefined) return;
     if (value) {
       option.setAttribute('data-focused', '');
     } else {
@@ -181,6 +236,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     // if no option is focused, then set the last selected option
     if (getLastFocusedOptionIndex === -1) {
+      // TODO: set the combobox invalid as no value is selected.
       return;
     }
     this.setSelectedValue(options[getLastFocusedOptionIndex]);
@@ -227,7 +283,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       case KEYS.ENTER: {
         if (getLastFocusedOptionIndex === -1) return;
         this.setSelectedValue(options[getLastFocusedOptionIndex]);
-        this.updateHiddenOptions();
         if (this.isOpen === true) {
           this.closePopover();
         }
@@ -244,7 +299,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           // force clear the actual DOM input property
           const input = event.target as HTMLInputElement;
           input.value = '';
-          this.updateHiddenOptions();
         }
         break;
       }
@@ -267,6 +321,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         option.removeAttribute('data-hidden');
       }
     });
+    // TODO: Add option group hidden content
   }
 
   private handleInputChange(event: Event): void {
@@ -286,7 +341,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       !option.hasAttribute('disabled') &&
       !option.hasAttribute('soft-disabled')
     ) {
-      // this.setSelectedValue(option);
+      this.setSelectedValue(option);
       this.closePopover();
     }
   }
@@ -376,24 +431,31 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         />
         <mdc-popover
           ?visible="${this.shouldDisplayPopover(options.length)}"
-          disable-aria-expanded
-          hide-on-escape
-          hide-on-outside-click
-          placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-          role=""
-          size
-          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
-          trigger="${TRIGGER.MANUAL}"
-          triggerid="${TRIGGER_ID}"
           @closebyescape="${() => {
             this.closePopover();
           }}"
           @closebyoutsideclick="${() => {
             this.closePopover();
           }}"
+          backdrop
+          backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
+          boundary="${ifDefined(this.boundary)}"
+          disable-aria-expanded
+          exportparts="popover-content"
+          hide-on-escape
+          hide-on-outside-click
+          is-backdrop-invisible
+          placement="${this.placement}"
+          role=""
+          size
+          strategy="${ifDefined(this.strategy)}"
+          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+          trigger="${TRIGGER.MANUAL}"
+          triggerid="${TRIGGER_ID}"
+          z-index="${ifDefined(this.popoverZIndex)}"
         >
           ${this.renderNoResultsText(options.length)}
-          <slot @click="${this.handleOptionsClick}"></slot>
+          <slot @mousedown="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
       ${this.renderHelperText()}
