@@ -116,7 +116,7 @@ on Docker. To quickly execute it in VSCode, use the VSCode Task
 2. **Docker engine / daemon needs to run before executing.** OR **Podman machine
    needs to be run before executing**
 
-3. Login to the ghrc.io:
+3. Login to the ghcr.io:
 
    ```bash
     echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with your github credentials (replace $PAT with personal access token (access token needs write packages access))
@@ -213,13 +213,13 @@ Mac.
      # replace all the v1.49.1 to the latest version of playwright and run this script to build new image
    ```
 
-1. After the build is done, login to the docker ghrc.io:
+1. After the build is done, login to the docker ghcr.io:
 
    ```bash
     echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with you github credentials (replace $PAT with personal access token (access token needs write packages access))
    ```
 
-1. Now you can push the latest image to GHRC:
+1. Now you can push the latest image to GHCR:
 
    ```bash
      docker push ghcr.io/momentum-design/momentum-design/docker-playwright:v1.49.1
