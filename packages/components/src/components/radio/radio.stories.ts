@@ -30,7 +30,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/input/radio',
+  title: 'Components/radio',
   tags: ['autodocs'],
   component: 'mdc-radio',
   render,

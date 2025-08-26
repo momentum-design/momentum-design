@@ -50,7 +50,7 @@ const render = (args: Args) =>
   ></mdc-textarea>`;
 
 const meta: Meta = {
-  title: 'Components/input/textarea',
+  title: 'Components/textarea',
   tags: ['autodocs'],
   component: 'mdc-textarea',
   render,

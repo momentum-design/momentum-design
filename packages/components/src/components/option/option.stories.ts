@@ -33,7 +33,7 @@ const render = (args: Args) =>
   `);
 
 const meta: Meta = {
-  title: 'Components/input/select/option',
+  title: 'Components/select/option',
   tags: ['autodocs'],
   component: 'mdc-option',
   render,
