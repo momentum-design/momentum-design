@@ -1,7 +1,5 @@
 import { css } from 'lit';
 
-import { hostFocusRingStyles } from '../../utils/styles';
-
 const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
@@ -45,4 +43,4 @@ const styles = css`
   }
 `;
 
-export default [styles, ...hostFocusRingStyles()];
+export default [styles];
