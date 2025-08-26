@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
@@ -107,7 +108,7 @@ export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -124,7 +125,7 @@ export const HorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -150,7 +151,7 @@ export const CardWithoutImage: StoryObj = {
 
 export const CardWithoutHeader: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
@@ -160,7 +161,7 @@ export const CardWithoutHeader: StoryObj = {
 
 export const CardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -176,7 +177,7 @@ export const ContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -185,7 +186,7 @@ export const ContentBeforeBody: StoryObj = {
     orientation: DEFAULTS.ORIENTATION,
     children: html`<div slot="before-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-        <img src="https://placehold.co/100x100" alt="Image Alt" />
+        <img src=${imageFixtures.card} alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },
@@ -195,7 +196,7 @@ export const ContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -204,7 +205,7 @@ export const ContentAfterBody: StoryObj = {
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html`<div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-        <img src="https://placehold.co/100x100" alt="Image Alt" />
+        <img src=${imageFixtures.card} alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },

@@ -3,7 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect, Locator } from '@playwright/test';
 
-import { imageFixtures } from '../../../config/playwright/setup/imageFixtures';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -89,8 +89,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(card, { 'image-src': imageFixtures['card-image'] });
-        await expect(card).toHaveAttribute('image-src', imageFixtures['card-image']);
+        await componentsPage.setAttributes(card, { 'image-src': imageFixtures.card });
+        await expect(card).toHaveAttribute('image-src', imageFixtures.card);
         await componentsPage.removeAttribute(card, 'image-src');
       });
 
@@ -246,7 +246,7 @@ test.describe.parallel('mdc-card', () => {
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': imageFixtures['card-image'],
+      'image-src': imageFixtures.card,
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -346,7 +346,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: imageFixtures['card-image'],
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
 
@@ -363,7 +363,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: interactiveChildren,
-          imageSrc: imageFixtures['card-image'],
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
 
@@ -401,7 +401,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: imageFixtures['card-image'],
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
 
@@ -418,7 +418,7 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
-          imageSrc: imageFixtures['card-image'],
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
 
