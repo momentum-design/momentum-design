@@ -59,7 +59,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
       ${restArgs.trailingButton ? 'trailing-button' : ''}
       ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
-      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
@@ -176,10 +176,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.removeAttribute(input, 'trailing-button');
     });
 
-    await test.step('attribute autofocus should be present on component', async () => {
-      await componentsPage.setAttributes(input, { autofocus: '' });
-      await expect(input).toHaveAttribute('autofocus');
-      await componentsPage.removeAttribute(input, 'autofocus');
+    await test.step('attribute auto-focus-on-mount should be present on component', async () => {
+      await componentsPage.setAttributes(input, { 'auto-focus-on-mount': '' });
+      await expect(input).toHaveAttribute('auto-focus-on-mount');
+      await componentsPage.removeAttribute(input, 'auto-focus-on-mount');
     });
 
     await test.step('attribute autocapitalize should be present on component', async () => {

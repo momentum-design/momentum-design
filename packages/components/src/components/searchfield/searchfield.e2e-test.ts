@@ -46,7 +46,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.leadingIcon ? `leading-icon="${restArgs.leadingIcon}"` : ''}
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
     ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
-      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
@@ -180,9 +180,9 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     });
 
     await test.step('attribute autofocus should be present on component', async () => {
-      await componentsPage.setAttributes(searchField, { autofocus: '' });
-      await expect(searchField).toHaveAttribute('autofocus');
-      await componentsPage.removeAttribute(searchField, 'autofocus');
+      await componentsPage.setAttributes(searchField, { 'auto-focus-on-mount': '' });
+      await expect(searchField).toHaveAttribute('auto-focus-on-mount');
+      await componentsPage.removeAttribute(searchField, 'auto-focus-on-mount');
     });
 
     await test.step('attribute autocapitalize should be present on component', async () => {
