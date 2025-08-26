@@ -5,7 +5,6 @@ import { property, query } from 'lit/decorators.js';
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
-  autofocus: boolean;
   disabled?: boolean;
   name: string;
   value: string | string[];

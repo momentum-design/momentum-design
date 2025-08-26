@@ -23,6 +23,7 @@ const render = (args: Args) => html`
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
     aria-label=${args['aria-label']}
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-avatarbutton>
 `;
 
@@ -60,6 +61,9 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     ...hideControls(['active', 'disabled', 'soft-disabled', 'tabIndex', 'role', 'type']),
     ...textControls([
