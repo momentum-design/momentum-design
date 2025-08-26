@@ -16,13 +16,13 @@ const styles = css`
   :host::part(leading-section),
   :host::part(center-section),
   :host::part(trailing-section) {
-    flex: 1;
     display: flex;
     height: 100%;
   }
 
   :host::part(leading-section) {
     justify-content: flex-start;
+    flex: 1;
   }
 
   :host::part(center-section) {
@@ -32,6 +32,7 @@ const styles = css`
 
   :host::part(trailing-section) {
     justify-content: flex-end;
+    flex: 1;
   }
 `;
 
