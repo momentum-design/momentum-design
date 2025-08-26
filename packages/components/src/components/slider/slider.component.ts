@@ -3,19 +3,39 @@ import { html, nothing } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
+import { KEYS } from '../../utils/keys';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
 
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 
 /**
- * slider component, which ...
+ * slider component is used to select a value or range of values from within a defined range.
+ * It provides a visual representation of the current value(s) and allows users to adjust the value(s) by dragging the thumb(s) along the track.
+ * It can be used as a single slider or a range slider. This is set by the boolean attribute `range`
+ * If the step value is more than 1, tick marks are shown to represent the steps between the min and max values. The slider thumb will snap to the nearest tick mark.
  *
  * @tagname mdc-slider
  *
- * @slot default - This is a default/unnamed slot
+ * @dependency mdc-icon
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @csspart slider-tooltip - The tooltip of the slider
+ * @csspart slider-track - The track of the slider
+ * @csspart slider-wrapper - The wrapper around the slider input(s)
+ * @csspart slider-ticks - The container for the tick marks
+ * @csspart slider-tick - The individual tick marks
+ * @csspart slider-input - The input element of the slider
+ * @csspart slider-label - The label of the slider
+ *
+ * @event input - Fired when the slider value changes
+ * @event change - Fired when the slider value is committed
+ *
+ * @cssproperty --mdc-slider-thumb-color - The color of the slider thumb
+ * @cssproperty --mdc-slider-thumb-border-color - The color of the slider thumb border
+ * @cssproperty --mdc-slider-thumb-size - The size of the slider thumb
+ * @cssproperty --mdc-slider-track-height - The height of the slider track
+ * @cssproperty --mdc-slider-tick-color - The color of the slider tick marks
+ *
  */
 class Slider extends Component {
   /**
@@ -174,7 +194,10 @@ class Slider extends Component {
       changedProperties.has('softDisabled') ||
       changedProperties.has('step') ||
       changedProperties.has('min') ||
-      changedProperties.has('max')
+      changedProperties.has('max') ||
+      changedProperties.has('range') ||
+      changedProperties.has('valueStart') ||
+      changedProperties.has('valueEnd')
     ) {
       this.updateTrackStyling();
     }
@@ -182,9 +205,33 @@ class Slider extends Component {
     if (changedProperties.has('softDisabled')) {
       this.setSoftDisabled();
     }
+
+    if (changedProperties.has('range')) {
+      this.initializeRangeSlider();
+    }
   }
 
-  setSoftDisabled() {
+  /**
+   * Initializes the range slider by setting default values for the start and end handles.
+   * Updates the slider's input elements to reflect the current values.
+   */
+  private initializeRangeSlider() {
+    if (!this.valueStart) {
+      this.valueStart = this.min;
+    }
+    if (!this.valueEnd) {
+      this.valueEnd = this.max;
+    }
+    this.handleInputStart();
+    this.handleInputEnd();
+  }
+
+  /**
+   * Sets the soft-disabled state for the slider.
+   * Prevents user interaction with the slider.
+   * Applies the appropriate ARIA attributes.
+   */
+  private setSoftDisabled() {
     this.inputElements.forEach(input => {
       const inputElement = input as HTMLInputElement;
       if (this.softDisabled) {
@@ -199,18 +246,66 @@ class Slider extends Component {
     });
   }
 
+  /**
+   * Handles input changes for the start thumb of the range slider.
+   * The start thumb will never cross over the end thumb
+   */
+  private handleInputStart() {
+    const input = this.inputElements[0];
+    if (!this.valueEnd) return;
+    if (Number(input.value) > this.valueEnd) {
+      input.value = String(this.valueEnd);
+      this.valueStart = this.valueEnd;
+    } else if (Number(input.value) > this.min && Number(input.value) < this.valueEnd) {
+      this.valueStart = Number(input.value);
+    }
+  }
+
+  /**
+   * Handles input changes for the end thumb of the range slider.
+   * The end thumb will never cross over the start thumb
+   */
+  private handleInputEnd() {
+    const input = this.inputElements[1];
+    if (!this.valueStart) return;
+    if (Number(input.value) < this.valueStart) {
+      input.value = String(this.valueStart);
+      this.valueEnd = this.valueStart;
+    } else if (Number(input.value) < this.max && Number(input.value) > this.valueStart) {
+      this.valueEnd = Number(input.value);
+    }
+  }
+
+  /**
+   * Prevents default behavior for mouse and keyboard events.
+   * @param e - The event to prevent.
+   */
   private preventChange = (e: Event) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   };
 
-  iconTemplate(icon: string | undefined, part: string) {
+  /**
+   * Renders an icon element.
+   * @param icon - The name of the icon to render.
+   * @param part - The part attribute for the icon element.
+   * @returns The icon element or null.
+   */
+  private iconTemplate(icon: string | undefined, part: string) {
     return typeof icon === 'string' && icon.length > 0
       ? html`<mdc-icon name="${icon as IconName}" part="${part}" length-unit="rem" size="1.25"></mdc-icon>`
       : null;
   }
 
-  tooltipTemplate(val: number | string | undefined, label: string | undefined) {
+  /**
+   * Renders a visual representation of tooltip element.
+   * @param val - The value to display in the tooltip.
+   * @param label - The label to display in the tooltip.
+   * @returns The tooltip element.
+   */
+  private tooltipTemplate(val: number | string | undefined, label: string | undefined) {
     let leftPercent = 0;
     if (typeof val === 'number' && this.max !== this.min) {
       leftPercent = ((val - this.min) / (this.max - this.min)) * 100;
@@ -222,18 +317,104 @@ class Slider extends Component {
     `;
   }
 
+  /**
+   * Updates the styling of the slider track.
+   * The progress value is calculated and updated using appropriate tokens
+   * In a range slider, both thumbs are considered.
+   * The track is filled between the two thumbs.
+   */
   updateTrackStyling() {
-    if (!this.inputElements[0]) return;
-    const value = Number(this.inputElements[0].value);
-    const max = Number(this.inputElements[0].max) || 1;
-    const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
     let progressColor = `var(--mds-color-theme-control-active-normal)`;
     let trackColor = `var(--mds-color-theme-control-indicator-inactive-normal)`;
-    if (this.disabled || this.softDisabled) {
-      progressColor = `var(--mds-color-theme-control-active-disabled)`;
-      trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
+    if (this.range) {
+      if (!this.inputElements[1]) return;
+      const valueStart = Number(this.inputElements[0].value);
+      const valueEnd = Number(this.inputElements[1].value);
+      const max = Number(this.inputElements[0].max) || 1;
+      const progressStart = Math.max(0, Math.min(100, ((valueStart - this.min) / (max - this.min)) * 100));
+      const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (max - this.min)) * 100));
+      if (this.disabled || this.softDisabled) {
+        progressColor = `var(--mds-color-theme-control-active-disabled)`;
+        trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
+      }
+      this.inputElements[1].style.background = `linear-gradient(
+        to right,
+        ${trackColor} 0%,
+        ${trackColor} ${progressStart}%,
+        ${progressColor} ${progressStart}%,
+        ${progressColor} ${progressEnd}%,
+        ${trackColor} ${progressEnd}%,
+        ${trackColor} 100%
+      )`;
+    } else {
+      if (!this.inputElements[0]) return;
+      const value = Number(this.inputElements[0].value);
+      const max = Number(this.inputElements[0].max) || 1;
+      const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
+      if (this.disabled || this.softDisabled) {
+        progressColor = `var(--mds-color-theme-control-active-disabled)`;
+        trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
+      }
+      this.inputElements[0].style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
     }
-    this.inputElements[0].style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
+  }
+
+  /**
+   * Handles the input event for the single value slider.
+   * @param e - The input event.
+   */
+  onInput(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.value = Number(input.value);
+    this.dispatchEvent(new CustomEvent('input', { detail: { value: this.value } }));
+  }
+
+  /**
+   * Handles the change event for the single value slider.
+   * @param e - The change event.
+   */
+  onChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.value = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
+  }
+
+  /**
+   * Handles the input event for the start thumb of range value slider.
+   * @param e - The input event.
+   */
+  onInputStart() {
+    this.handleInputStart();
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart } }));
+  }
+
+  /**
+   * Handles the change event for the start thumb of the range slider.
+   * @param e - The change event.
+   */
+  onChangeStart(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueStart = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart } }));
+  }
+
+  /**
+   * Handles the input event for the end thumb of the range value slider.
+   * @param e - The input event.
+   */
+  onInputEnd() {
+    this.handleInputEnd();
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd } }));
+  }
+
+  /**
+   * Handles the change event for the end thumb of the range slider.
+   * @param e - The change event.
+   */
+  onChangeEnd(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.valueEnd = Number(input.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd } }));
   }
 
   public override render() {
@@ -288,6 +469,12 @@ class Slider extends Component {
                   @blur=${() => {
                     this.thumbStartFocused = false;
                   }}
+                  @mouseenter=${() => {
+                    if (!this.disabled) this.thumbStartFocused = true;
+                  }}
+                  @mouseleave=${() => {
+                    this.thumbStartFocused = false;
+                  }}
                 />
                 ${this.thumbStartFocused ? this.tooltipTemplate(this.valueStart, this.valueLabelStart) : nothing}
                 <input
@@ -311,6 +498,12 @@ class Slider extends Component {
                     this.thumbEndFocused = true;
                   }}
                   @blur=${() => {
+                    this.thumbEndFocused = false;
+                  }}
+                  @mouseenter=${() => {
+                    if (!this.disabled) this.thumbEndFocused = true;
+                  }}
+                  @mouseleave=${() => {
                     this.thumbEndFocused = false;
                   }}
                 />
@@ -357,42 +550,6 @@ class Slider extends Component {
         ${this.labelEnd ? html`<span part="slider-label-end">${this.labelEnd}</span>` : null}
       </div>
     `;
-  }
-
-  onInput(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.value = Number(input.value);
-    this.dispatchEvent(new CustomEvent('input', { detail: { value: this.value } }));
-  }
-
-  onChange(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.value = Number(input.value);
-    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
-  }
-
-  onInputStart(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.valueStart = Number(input.value);
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart } }));
-  }
-
-  onChangeStart(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.valueStart = Number(input.value);
-    this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart } }));
-  }
-
-  onInputEnd(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.valueEnd = Number(input.value);
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd } }));
-  }
-
-  onChangeEnd(e: Event) {
-    const input = e.target as HTMLInputElement;
-    this.valueEnd = Number(input.value);
-    this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd } }));
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

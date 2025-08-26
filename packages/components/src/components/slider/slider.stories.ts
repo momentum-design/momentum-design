@@ -4,9 +4,12 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-slider
+    @input="${action('input')}"
+    @change="${action('change')}"
     min="${args.min}"
     max="${args.max}"
     step="${args.step}"
@@ -33,8 +36,6 @@ const render = (args: Args) => html`
     name-end="${args['name-end']}"
     data-aria-valuetext="${args['data-aria-valuetext']}"
     data-aria-label="${args['data-aria-label']}"
-    @input="${action('input')}"
-    @change="${action('change')}"
   ></mdc-slider>
 `;
 
@@ -73,6 +74,13 @@ const meta: Meta = {
     'name-end': { control: 'text' },
     'data-aria-valuetext': { control: 'text' },
     'data-aria-label': { control: 'text' },
+    ...textControls([
+      '--mdc-slider-thumb-color',
+      '--mdc-slider-thumb-border-color',
+      '--mdc-slider-thumb-size',
+      '--mdc-slider-track-height',
+      '--mdc-slider-tick-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -168,7 +176,49 @@ export const RangeSlider: StoryObj = {
     label: 'Range',
     'label-start': 'Min',
     'label-end': 'Max',
-    'value-label-start': '20',
-    'value-label-end': '80',
+  },
+};
+
+export const RangeSliderWithTicks: StoryObj = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 12,
+    'value-start': 38,
+    'value-end': 90,
+    range: true,
+    label: 'Range',
+    'label-start': 'Min',
+    'label-end': 'Max',
+  },
+};
+
+export const DisabledRangeSlider: StoryObj = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    'value-start': 20,
+    'value-end': 80,
+    range: true,
+    label: 'Range',
+    'label-start': 'Min',
+    'label-end': 'Max',
+    disabled: true,
+  },
+};
+
+export const SoftDisabledRangeSlider: StoryObj = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    'value-start': 20,
+    'value-end': 80,
+    range: true,
+    label: 'Range',
+    'label-start': 'Min',
+    'label-end': 'Max',
+    'soft-disabled': true,
   },
 };
