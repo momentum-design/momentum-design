@@ -31,6 +31,18 @@ const styles = css`
   :host::part(no-result-text) {
     pointer-events: none;
   }
+  :host::part(internal-native-input) {
+    margin: 0;
+    opacity: 0.1%;
+    overflow: visible;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
 `;
 
 export default [styles, ...hostFocusRingStyles()];
