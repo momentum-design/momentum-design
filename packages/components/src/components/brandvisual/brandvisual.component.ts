@@ -5,7 +5,6 @@ import { Component } from '../../models';
 
 import styles from './brandvisual.styles';
 import type { BrandVisualNames } from './brandvisual.types';
-import { DEFAULTS, PATH } from './brandvisual.constants';
 
 /**
  * The `mdc-brandvisual` component is responsible for rendering logos dynamically & ensures they are
@@ -32,37 +31,29 @@ class Brandvisual extends Component {
    * Name of the brandVisual (= filename)
    */
   @property({ type: String, reflect: true })
-  name?: BrandVisualNames = DEFAULTS.NAME;
+  name?: BrandVisualNames;
+
+  /**
+   * Alt text for the brandvisual image for accessibility.
+   * This will only be set if the brandvisual is an image (png).
+   */
+  @property({ type: String, reflect: true })
+  altText?: string;
 
   private async getBrandVisualData() {
-    if (!this.name) {
-      const error = new Error('No brandvisual name provided.');
-      this.handleBrandVisualLoadedFailure(error);
-      return Promise.reject(error);
-    }
-
-    const subPaths = Object.values(PATH);
-    let index = 0;
-
-    const tryNext = (): Promise<void> => {
-      if (index >= subPaths.length) {
-        const error = new Error(`Brand visual "${this.name}" not found in any known path.`);
-        this.handleBrandVisualLoadedFailure(error);
-        return Promise.reject(error);
-      }
-
-      return import(`@momentum-design/brand-visuals/dist/${subPaths[index]}/ts/${this.name}.ts`)
+    if (this.name) {
+      // dynamic import of the lit template from the momentum brand-visuals package
+      return import(`@momentum-design/brand-visuals/dist/ts/${this.name}.ts`)
         .then(module => {
           this.handleBrandVisualLoadedSuccess(module.default());
         })
-        .catch(() => {
-          index += 1;
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          tryNext();
+        .catch(error => {
+          this.handleBrandVisualLoadedFailure(error);
         });
-    };
-
-    return tryNext();
+    }
+    const nameError = new Error('No brandvisual name provided.');
+    this.handleBrandVisualLoadedFailure(nameError);
+    return Promise.reject(nameError);
   }
 
   override updated(changedProperties: Map<string, any>) {
@@ -86,6 +77,7 @@ class Brandvisual extends Component {
   private handleBrandVisualLoadedSuccess(brandVisualHtml: HTMLElement) {
     // update brandVisualData state once fetched:
     this.brandVisualData = brandVisualHtml;
+    this.brandVisualData.setAttribute('alt', this.altText || '');
 
     // when brandvisual is imported successfully, trigger brandvisual load event.
     const loadEvent = new Event('load', {

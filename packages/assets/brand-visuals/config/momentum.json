@@ -6,7 +6,7 @@
         {
           "id": "optimise-svgs-logos",
           "target": "./src/logos/*.svg",
-          "destination": "./dist/logos/svg",
+          "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -37,7 +37,7 @@
         {
           "id": "optimise-svgs-images",
           "target": "./src/images/*.svg",
-          "destination": "./dist/images/svg",
+          "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -68,7 +68,7 @@
         {
           "id": "copy-png-images",
           "target": "./src/images/*.png",
-          "destination": "./dist/images/png",
+          "destination": "./dist/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -90,7 +90,7 @@
         {
           "id": "copy-svg-images",
           "target": "./src/images/*.svg",
-          "destination": "./dist/images/svg",
+          "destination": "./dist/svg",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -112,7 +112,7 @@
         {
           "id": "copy-backgrounds",
           "target": "./src/backgrounds/*.png",
-          "destination": "./dist/backgrounds/png",
+          "destination": "./dist/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -133,7 +133,7 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/{logos,images,backgrounds}/{svg,png}/*.*",
+          "target": "./dist/{svg,png}/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
@@ -156,10 +156,10 @@
             }
           }
         },
-        { 
-          "id": "lit-brand-visuals",
-          "target": "./dist/logos/svg/**/*.*",
-          "destination": "./dist/logos/ts",
+        {
+          "id": "lit-brand-visuals-svg",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/ts",
           "format": {
             "type": "LIT",
             "config": {
@@ -168,35 +168,10 @@
             }
           }
         },
-        { 
-          "id": "lit-brand-visuals-svg-images",
-          "target": "./dist/images/svg/**/*.svg",
-          "destination": "./dist/images/ts",
-          "format": {
-            "type": "LIT",
-            "config": {
-              "partName": "brandvisual",
-              "hbsPath": "./config/templates/lit.ts.hbs"
-            }
-          }
-        },
-        { 
-          "id": "image-brand-visuals-png-images",
-          "target": "./dist/images/png/**/*.png",
-          "destination": "./dist/images/ts",
-          "format": {
-            "type": "IMAGE",
-            "config": {
-              "partName": "brandvisualImage",
-              "hbsPath": "./config/templates/image.ts.hbs",
-              "manifestPath": "@momentum-design/brand-visuals/dist/manifest.json"
-            }
-          }
-        },
-        { 
-          "id": "image-brand-visuals-png-backgrounds",
-          "target": "./dist/backgrounds/png/**/*.png",
-          "destination": "./dist/backgrounds/ts",
+        {
+          "id": "lit-brand-visuals-png",
+          "target": "./dist/png/**/*.png",
+          "destination": "./dist/ts",
           "format": {
             "type": "IMAGE",
             "config": {
