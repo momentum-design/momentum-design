@@ -10,8 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const inputFolder = path.posix.resolve(__dirname, '../config/playwright/setup/pngFixtures');
-const outputFile = path.posix.resolve(__dirname, '../config/playwright/setup/utils/imageFixtures.ts');
+const inputFolder = path.resolve(__dirname, '../config/playwright/setup/pngFixtures');
+const outputFile = path.resolve(__dirname, '../config/playwright/setup/utils/imageFixtures.ts');
 
 // Load existing fixtures if any
 let existingFixtures = {};
@@ -22,8 +22,8 @@ if (fs.existsSync(outputFile)) {
     if (match) {
       existingFixtures = JSON.parse(match[1]);
     }
-  } catch (e) {
-    console.warn('⚠️ Could not parse existing imageFixtures.ts, regenerating...');
+  } catch {
+    console.warn('⚠️ Could not parse existing imageFixtures.ts, try again...');
   }
 }
 
@@ -33,14 +33,21 @@ const newFixtures = { ...existingFixtures };
 let changed = false;
 
 files.forEach(file => {
-  const filePath = path.posix.join(inputFolder, file);
-  const buffer = fs.readFileSync(filePath);
-  const base64 = buffer.toString('base64');
   const key = file.replace(/\.png$/, '');
-  const dataUrl = `data:image/png;base64,${base64}`;
+  if (!(key in newFixtures)) {
+    // Only read + encode if this file is not already in fixtures
+    const filePath = path.join(inputFolder, file);
+    const buffer = fs.readFileSync(filePath);
+    const base64 = buffer.toString('base64');
+    newFixtures[key] = `data:image/png;base64,${base64}`;
+    changed = true;
+  }
+});
 
-  if (newFixtures[key] !== dataUrl) {
-    newFixtures[key] = dataUrl;
+// Remove fixtures for deleted files
+Object.keys(newFixtures).forEach(key => {
+  if (!files.includes(`${key}.png`)) {
+    delete newFixtures[key];
     changed = true;
   }
 });
@@ -54,7 +61,7 @@ if (changed) {
 export const imageFixtures = ${JSON.stringify(newFixtures, null, 2)} as const;
 `;
   fs.writeFileSync(outputFile, output, 'utf8');
-  console.log(`✅ Updated imageFixtures.ts with ${files.length} image(s).`);
+  console.log(`✅ Updated imageFixtures.ts with ${Object.keys(newFixtures).length} image(s).`);
 } else {
   console.log('ℹ️ No changes detected, imageFixtures.ts is up-to-date.');
 }
