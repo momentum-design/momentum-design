@@ -15,10 +15,8 @@ const styles = css`
     border-radius: var(--mdc-buttongroup-border-radius);
   }
 
-  :host::part(container) {
-    gap: var(--mdc-buttongroup-border-width);
-  }
   :host([variant='primary'])::part(container) {
+    gap: 1px;
     border: none;
     background-color: var(--mds-color-theme-outline-primary-normal);
   }
@@ -27,62 +25,66 @@ const styles = css`
     width: inherit;
     border-radius: 0;
     border: none;
-    box-sizing: content-box;
+    box-sizing: border-box;
     position: relative;
+  }
+  :host([orientation='horizontal'][variant='secondary']) ::slotted(mdc-button) {
+    border-block-start: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+    border-block-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+  }
+  :host([orientation='horizontal'][variant='secondary']) ::slotted(mdc-button:first-of-type) {
+    border-inline-start: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+  }
+  :host([orientation='horizontal'][variant='secondary']) ::slotted(mdc-button:last-of-type) {
+    border-inline-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+  }
+
+  :host([orientation='vertical'][variant='secondary']) ::slotted(mdc-button) {
+    border-inline-start: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+    border-inline-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+  }
+  :host([orientation='vertical'][variant='secondary']) ::slotted(mdc-button:first-of-type) {
+    border-block-start: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
+  }
+  :host([orientation='vertical'][variant='secondary']) ::slotted(mdc-button:last-of-type) {
+    border-block-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
   }
 
   :host([orientation='vertical'])::part(container) {
     flex-direction: column;
   }
 
-  :host([variant='secondary'])::part(container) {
-    outline: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-border-color);
-    outline-offset: calc(-1 * var(--mdc-buttongroup-border-width));
-  }
-
   :host([variant='secondary'][orientation='horizontal']) ::slotted(mdc-button:not(:last-of-type))::after {
     content: '';
     position: absolute;
-    width: var(--mdc-buttongroup-border-width);
-    height: calc(100% - 2 * var(--mdc-buttongroup-border-width));
-    background: var(--mdc-buttongroup-divider-color);
-    inset-inline-end: calc(-1 * var(--mdc-buttongroup-border-width));
-    inset-block-start: var(--mdc-buttongroup-border-width);
+    height: 100%;
+    border-inline-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
+    inset-inline-end: calc(var(--mdc-buttongroup-border-width) / 2);
   }
   :host([variant='secondary'][orientation='vertical']) ::slotted(mdc-button:not(:last-of-type))::after {
     content: '';
     position: absolute;
-    width: calc(100% - 2 * var(--mdc-buttongroup-border-width));
-    height: var(--mdc-buttongroup-border-width);
-    background: var(--mdc-buttongroup-divider-color);
-    inset-block-end: calc(-1 * var(--mdc-buttongroup-border-width));
-    inset-inline-end: var(--mdc-buttongroup-border-width);
+    width: 100%;
+    border-block-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
+    inset-block-end: calc(var(--mdc-buttongroup-border-width) / 2);
   }
 
   :host([orientation='vertical']) ::slotted(mdc-button:first-of-type) {
-    border-top-left-radius: var(--mdc-buttongroup-border-radius);
-    border-top-right-radius: var(--mdc-buttongroup-border-radius);
+    border-start-start-radius: var(--mdc-buttongroup-border-radius);
+    border-start-end-radius: var(--mdc-buttongroup-border-radius);
   }
   :host([orientation='vertical']) ::slotted(mdc-button:last-of-type) {
-    border-bottom-left-radius: var(--mdc-buttongroup-border-radius);
-    border-bottom-right-radius: var(--mdc-buttongroup-border-radius);
+    border-end-start-radius: var(--mdc-buttongroup-border-radius);
+    border-end-end-radius: var(--mdc-buttongroup-border-radius);
   }
 
-  :host([orientation='horizontal']:dir(ltr)) ::slotted(mdc-button:first-of-type) {
-    border-top-left-radius: var(--mdc-buttongroup-border-radius);
-    border-bottom-left-radius: var(--mdc-buttongroup-border-radius);
+  :host([orientation='horizontal']) ::slotted(mdc-button:first-of-type) {
+    border-start-start-radius: var(--mdc-buttongroup-border-radius);
+    border-end-start-radius: var(--mdc-buttongroup-border-radius);
   }
-  :host([orientation='horizontal']:dir(rtl)) ::slotted(mdc-button:first-of-type) {
-    border-top-right-radius: var(--mdc-buttongroup-border-radius);
-    border-bottom-right-radius: var(--mdc-buttongroup-border-radius);
-  }
-  :host([orientation='horizontal']:dir(ltr)) ::slotted(mdc-button:last-of-type) {
-    border-top-right-radius: var(--mdc-buttongroup-border-radius);
-    border-bottom-right-radius: var(--mdc-buttongroup-border-radius);
-  }
-  :host([orientation='horizontal']:dir(rtl)) ::slotted(mdc-button:last-of-type) {
-    border-top-left-radius: var(--mdc-buttongroup-border-radius);
-    border-bottom-left-radius: var(--mdc-buttongroup-border-radius);
+  :host([orientation='horizontal']) ::slotted(mdc-button:last-of-type) {
+    border-start-end-radius: var(--mdc-buttongroup-border-radius);
+    border-end-end-radius: var(--mdc-buttongroup-border-radius);
   }
 
   :host([compact][orientation='horizontal']) ::slotted(mdc-button) {

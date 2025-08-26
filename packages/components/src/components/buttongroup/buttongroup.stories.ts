@@ -154,3 +154,32 @@ export const GroupWithPopover: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
   },
 };
+
+export const AllVariantsAndOrientations: StoryObj = {
+  render: () =>
+    html` <div style="display: flex; flex-direction: column; gap: 1rem">
+      <mdc-buttongroup variant="primary" orientation="horizontal" size="40">
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+      </mdc-buttongroup>
+
+      <mdc-buttongroup variant="secondary" orientation="horizontal" size="40">
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+      </mdc-buttongroup>
+
+      <mdc-buttongroup variant="primary" orientation="vertical" size="40">
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+      </mdc-buttongroup>
+
+      <mdc-buttongroup variant="secondary" orientation="vertical" size="40">
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+      </mdc-buttongroup>
+    </div>`,
+};
