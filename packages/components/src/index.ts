@@ -78,6 +78,7 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Combobox from './components/combobox';
 import Slider from './components/slider';
+import ListBox from './components/listbox';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -181,6 +182,7 @@ export {
   VirtualizedList,
   Combobox,
   Slider,
+  ListBox,
 };
 
 // Types Exports

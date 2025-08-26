@@ -71,6 +71,8 @@ class Option extends FormInternalsMixin(ListItem) {
 
     if (changedProperties.has('selected')) {
       this.setAttribute('aria-selected', `${this.selected}`);
+
+      this.dispatchModifiedEvent(this.selected ? 'selected' : 'unselected');
     }
   }
 
