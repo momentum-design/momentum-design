@@ -1,10 +1,11 @@
-import type { PropertyValues } from 'lit';
+import type { PropertyValueMap, PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -62,7 +63,10 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
-class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Select
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -173,7 +177,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * If an option is selected, use that as the value.
    * If not, use the placeholder if it exists, otherwise use the first option.
    */
-  public override async firstUpdated() {
+  protected override async firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     await this.updateComplete;
     this.modifyListBoxWrapper();
 
@@ -195,6 +199,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       // then we call the native validity
       this.setInputValidity();
     }
+
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   public override updated(changedProperties: PropertyValues): void {
@@ -606,7 +618,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           part="native-input"
           name="${this.name}"
           type="text"
-          ?autofocus="${this.autofocus}"
           ?disabled=${this.disabled}
           ?required=${this.required}
           ?readonly=${this.readonly}
