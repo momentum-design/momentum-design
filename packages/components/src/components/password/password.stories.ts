@@ -9,6 +9,8 @@ import { hideControls, textControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
+import type Password from './password.component';
+
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
   return html` <mdc-password
@@ -223,6 +225,86 @@ export const FormFieldPassword: StoryObj = {
     'validation-message': 'Password must be between 5 and 10 characters.',
     minlength: 5,
     maxlength: 10,
+  },
+};
+
+export const FormFieldPasswordWithHelpTextValidation: StoryObj = {
+  render: args => {
+    const validatePassword = (passwordEl: Password, args: any): boolean => {
+      const { value } = passwordEl;
+      if (!value) {
+        passwordEl.setAttribute('help-text-type', 'error');
+        passwordEl.setAttribute('help-text', 'Password is required');
+        return false;
+      }
+      if (args.minlength && value.length < args.minlength) {
+        passwordEl.setAttribute('help-text-type', 'error');
+        passwordEl.setAttribute('help-text', `Password must be at least ${args.minlength} characters`);
+        return false;
+      }
+      if (args.maxlength && value.length > args.maxlength) {
+        passwordEl.setAttribute('help-text-type', 'error');
+        passwordEl.setAttribute('help-text', `Password must be at most ${args.maxlength} characters`);
+        return false;
+      }
+      passwordEl.setAttribute('help-text-type', 'success');
+      passwordEl.setAttribute('help-text', 'Looks good!');
+      return true;
+    };
+
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      const passwordEl = form.querySelector('mdc-password') as Password;
+      if (passwordEl && !validatePassword(passwordEl, args)) {
+        return;
+      }
+      const formData = new FormData(form);
+      const selectedValue = formData.get('password');
+      action('Form Submitted')({ value: selectedValue });
+    };
+
+    const handleReset = () => {
+      const passwordEl = document.querySelector('mdc-password');
+      if (passwordEl) {
+        passwordEl.setAttribute('help-text-type', args['help-text-type'] || 'default');
+        passwordEl.setAttribute('help-text', args['help-text'] || 'Please provide a valid password');
+      }
+    };
+
+    return html`
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+        <fieldset>
+          <legend>Form Example With Dynamic Help Text</legend>
+          <mdc-password
+            placeholder=${args.placeholder}
+            label=${args.label}
+            name=${args.name}
+            ?required=${args.required}
+            minlength=${ifDefined(args.minlength)}
+            maxlength=${ifDefined(args.maxlength)}
+            help-text=${args['help-text']}
+            help-text-type=${args['help-text-type']}
+            show-hide-button-aria-label=${args['show-hide-button-aria-label']}
+          ></mdc-password>
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  args: {
+    label: 'Password',
+    name: 'password',
+    placeholder: 'Enter your password',
+    required: true,
+    minlength: 5,
+    maxlength: 10,
+    'help-text': 'Please provide a valid password',
+    'help-text-type': 'default',
+    'show-hide-button-aria-label': 'Show or hide password',
   },
 };
 
