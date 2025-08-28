@@ -5,6 +5,7 @@ configureSort({
   storyOrder: {
     consumption: null,
     styling: null,
+    attributes: null,
     components: {
       '**': {
         docs: null,

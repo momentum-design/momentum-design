@@ -21,9 +21,10 @@ const render = (args: Args) =>
     icon-name="${args['icon-name']}"
     size="${args.size}"
     tabindex="${args.tabIndex}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     aria-label="${args['aria-label']}"
-    >${args.children}</mdc-linkbutton>`;
+    >${args.children}</mdc-linkbutton
+  >`;
 
 const renderWithInvertedBackground = (args: Args) =>
   html`<div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
@@ -44,7 +45,7 @@ const meta: Meta = {
     },
     disabled: {
       control: 'boolean',
-    },    
+    },
     'soft-disabled': {
       control: 'boolean',
     },
@@ -64,12 +65,12 @@ const meta: Meta = {
     tabIndex: {
       control: 'number',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls(['active','role', 'type', 'ariaStateKey']),
+    ...hideControls(['active', 'role', 'type', 'ariaStateKey']),
     ...textControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
@@ -107,7 +108,7 @@ export const StandaloneLinkButton: StoryObj = {
   args: {
     ...defaultArgs,
     inline: false,
-    inverted: false
+    inverted: false,
   },
 };
 
@@ -124,7 +125,7 @@ export const InlineLinkButton: StoryObj = {
   args: {
     ...defaultArgs,
     inline: true,
-    inverted: false
+    inverted: false,
   },
 };
 

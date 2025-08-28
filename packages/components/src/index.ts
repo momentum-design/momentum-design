@@ -78,6 +78,7 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Combobox from './components/combobox';
 import Slider from './components/slider';
+import ListBox from './components/listbox';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -90,6 +91,14 @@ import type { TextType as TypewriterType } from './components/typewriter/typewri
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
+import type {
+  InputInputEvent,
+  InputChangeEvent,
+  InputFocusEvent,
+  InputBlurEvent,
+  InputClearEvent,
+} from './components/input/input.types';
+import type { VirtualizedListScrollEvent } from './components/virtualizedlist/virtualizedlist.types';
 
 // Constants / Utils Imports
 import {
@@ -181,6 +190,7 @@ export {
   VirtualizedList,
   Combobox,
   Slider,
+  ListBox,
 };
 
 // Types Exports
@@ -201,6 +211,12 @@ export type {
   SpinnerVariant,
   TextType,
   TypewriterType,
+  InputInputEvent,
+  InputChangeEvent,
+  InputFocusEvent,
+  InputBlurEvent,
+  InputClearEvent,
+  VirtualizedListScrollEvent,
 };
 
 // Constants / Utils Exports

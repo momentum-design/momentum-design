@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, PropertyValueMap } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 
@@ -17,7 +17,7 @@ import { DEFAULTS } from './searchfield.constants';
  * This component is built by extending the `mdc-input` component.
  *
  * @tagname mdc-searchfield
- * 
+ *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
  * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
@@ -84,13 +84,14 @@ class Searchfield extends Input {
    * Eventually, this logic has to be omitted and achieved using CSS instead.
    * @override
    */
-  override firstUpdated() {
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     this.inputElement.onfocus = () => {
       this.isInputFocused = true;
     };
     this.inputElement.onblur = () => {
       this.isInputFocused = false;
     };
+    super.firstUpdated(_changedProperties);
   }
 
   override clearInputText() {

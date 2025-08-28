@@ -1052,7 +1052,7 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.60}"
+            "value": "{color.core.black-alpha.70}"
           }
         },
         "gradient": {
