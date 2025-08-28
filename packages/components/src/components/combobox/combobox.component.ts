@@ -14,6 +14,8 @@ import Input from '../input/input.component';
 import { AUTO_COMPLETE } from '../input/input.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
+import { TAG_NAME as OPTIONGROUP_TAG_NAME } from '../optgroup/optgroup.constants';
+import { TAG_NAME as DIVIDER_TAG_NAME } from '../divider/divider.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
@@ -23,19 +25,42 @@ import styles from './combobox.styles';
 import type { Placement } from './combobox.types';
 
 /**
- * Combobox component, which ...
+ * The Combobox component is a text based dropdown control that allows users to pick an option from a predefined list.
+ * The user can type text to filter the options and select the desired option.
+ *
+ * When the user starts typing, the filter works with startswith search and displays options based on user entered text input.
+ * If the user entered text doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
+ *
+ * If there is text in the `no-result-text` attribute then nothing will be shown.
+ *
+ * It is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
+ * The component ensures accessibility and usability while handling various use cases,
+ * including long text truncation with tooltip support.
+ *
+ * Every mdc-option should have a `value` attribute set to ensure proper form submission.
+ *
+ * To set a default option, use the `selected` attribute on the `mdc-option` element.
+ *
+ * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-combobox` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
+ *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
+ * @dependency mdc-listitem
  * @dependency mdc-popover
  *
  * @tagname mdc-combobox
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
+ * @event click - (React: onClick) This event is dispatched when the combobox is clicked.
+ * @event change - (React: onChange) This event is dispatched when the combobox is changed.
+ * @event input - (React: onInput) This event is dispatched when the combobox is changed.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the combobox.
+ * @event focus - (React: onFocus) This event is dispatched when the combobox receives focus.
  *
  * @cssproperty --mdc-combobox-border-color - The border color of the combobox
+ * @cssproperty --mdc-combobox-icon-color - The icon color of the combobox
  */
 class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -340,7 +365,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.closePopover();
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
-    // if no option is focused, then set the last selected option
+    // if no option is focused, then mark it invalid and return.
     if (getLastFocusedOptionIndex === -1) {
       // TODO: set the combobox invalid as no value is selected.
       return;
@@ -427,13 +452,35 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         option.removeAttribute('data-hidden');
       }
     });
-    // TODO: Add option group hidden content
+  }
+
+  private updateHiddenOptionGroups(): void {
+    const optionGroups = Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTIONGROUP_TAG_NAME) || []);
+    if (!optionGroups.length) return;
+    optionGroups.forEach(optionGroup => {
+      const optionGroupChildren = Array.from(optionGroup.children)?.filter(
+        option => !option.hasAttribute('data-hidden'),
+      );
+      if (optionGroupChildren.length === 0) {
+        optionGroup.setAttribute('data-hidden', '');
+      } else {
+        optionGroup.removeAttribute('data-hidden');
+      }
+    });
+    const visibleOptionGroups = optionGroups.filter(optionGroup => !optionGroup.hasAttribute('data-hidden'));
+    const dividers = Array.from(this.slottedListboxes[0]?.querySelectorAll(DIVIDER_TAG_NAME) || []);
+    if (visibleOptionGroups.length <= 1) {
+      dividers.forEach(divider => divider.setAttribute('data-hidden', ''));
+    } else {
+      dividers.forEach(divider => divider.removeAttribute('data-hidden'));
+    }
   }
 
   private handleInputChange(event: Event): void {
     this.internalValue = (event.target as HTMLInputElement).value;
     this.resetFocusedOption();
     this.updateHiddenOptions();
+    this.updateHiddenOptionGroups();
     if (this.isOpen === false) {
       this.openPopover();
     }
@@ -488,7 +535,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           autocomplete="${AUTO_COMPLETE.OFF}"
           @focus=${this.handleNativeInputFocus}
           @invalid=${this.setInputValidity}
-          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
         />
         <mdc-input
           @click="${() => this.toggleDropdown()}"
