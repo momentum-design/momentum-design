@@ -32,6 +32,7 @@ const render = (args: Args) =>
     tabIndex="${args.tabIndex}"
     class="${args.class}"
     style="${args.style}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-cardbutton
   >`;
 
@@ -87,6 +88,9 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BUTTON_VARIANTS),
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     ...hideControls(['children', 'active', 'size']),
     ...textControls(['--mdc-card-width']),
