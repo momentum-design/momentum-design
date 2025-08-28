@@ -323,7 +323,11 @@ class Slider extends Component {
       leftPercent = ((val - this.min) / (this.max - this.min)) * 100;
     }
     return html`
-      <div part="slider-tooltip" style="left:calc(${leftPercent}% - var(--mdc-slider-thumb-size) / 2);">
+      <div
+        part="slider-tooltip"
+        aria-hidden="true"
+        style="left:calc(${leftPercent}% - var(--mdc-slider-thumb-size) / 2);"
+      >
         ${label || val}
       </div>
     `;
