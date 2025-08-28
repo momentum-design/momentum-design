@@ -11,9 +11,11 @@ export declare abstract class ListNavigationMixinInterface {
 
   protected propagateAllKeyEvents: boolean;
 
-  protected resetTabIndexes(index: number): void;
+  protected initialFocus: number;
 
   protected abstract get navItems(): HTMLElement[];
+
+  protected resetTabIndexes(index: number): void;
 
   protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
 }
@@ -60,6 +62,14 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected propagateAllKeyEvents = false;
 
     /**
+     * The index of the item to focus initially when the component is first updated.
+     *
+     * @default 0
+     * @internal
+     */
+    protected initialFocus: number = 0;
+
+    /**
      * Get list items from the passed property
      * @internal
      */
@@ -80,7 +90,8 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected override async firstUpdated(changedProperties: PropertyValues) {
       super.firstUpdated(changedProperties);
 
-      this.resetTabIndexAndSetFocus(0, undefined, false);
+      const indexToFocus = Math.min(Math.max(this.initialFocus, 0), this.navItems.length - 1);
+      this.resetTabIndexAndSetFocus(indexToFocus, undefined, false);
     }
 
     /**

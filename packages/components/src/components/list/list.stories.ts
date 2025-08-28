@@ -36,7 +36,11 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list aria-label="${args['aria-label']}" ?no-loop="${args['no-loop']}">
+  html` <mdc-list
+    aria-label="${args['aria-label']}"
+    ?no-loop="${args['no-loop']}"
+    initial-focus="${args['initial-focus']}"
+  >
     ${args.textPassedToListHeader
       ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
       : ''}
@@ -190,5 +194,13 @@ export const ListWithRemovalElements: StoryObj = {
         )}
       </mdc-list>
     `;
+  },
+};
+
+export const InitialFocusAtBottom: StoryObj = {
+  args: {
+    textPassedToListHeader: 'Participants List',
+    'aria-label': 'View all participants',
+    'initial-focus': fakeUserNamesList.length - 1,
   },
 };

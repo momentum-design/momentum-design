@@ -37,8 +37,11 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'no-loop' })
+  @property({ type: Boolean, attribute: 'no-loop' })
   protected noLoop: boolean = false;
+
+  @property({ type: Number, attribute: 'initial-focus' })
+  protected override initialFocus: number = 0;
 
   constructor() {
     super();

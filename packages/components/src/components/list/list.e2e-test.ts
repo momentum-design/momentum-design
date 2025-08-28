@@ -7,6 +7,8 @@ type SetUpOptions = {
   componentsPage: ComponentsPage;
   children: string;
   'header-text'?: string;
+  'no-loop'?: boolean;
+  'initial-focus'?: number;
 };
 
 const generateBasicChildren = (count: number) =>
@@ -47,7 +49,7 @@ const setup = async (args: SetUpOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-list>
+      <mdc-list ${restArgs['no-loop'] ? 'no-loop' : ''} initial-focus="${restArgs['initial-focus'] ?? ''}">
         ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
         ${restArgs.children ? restArgs.children : ''}
       </mdc-list>
@@ -185,16 +187,29 @@ test('mdc-list', async ({ componentsPage }) => {
     });
 
     await test.step('focus', async () => {
+      await test.step('component should focus on the item specified in initial-focus attribute', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(5), 'initial-focus': 4 });
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 4"]')).toBeFocused();
+
+        // Focus should not be updated on initial-focus attribute change after component is loaded
+        await list.evaluate(node => node.setAttribute('initial-focus', '1'));
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(list.locator('mdc-listitem[label="List Item 4"]')).toBeFocused();
+      });
+
       await test.step('component should update focus when focused element is removed', async () => {
         const list = await setup({ componentsPage, children: generateChildren(4) });
-
-        await componentsPage.page.pause();
 
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
 
         await list.locator('mdc-listitem[label="List Item 4"]').evaluate(node => node.remove());
-        await componentsPage.page.pause();
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
 
         await componentsPage.page.keyboard.press('ArrowDown');
