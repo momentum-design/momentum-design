@@ -55,12 +55,12 @@ describe('@momentum-design/builder - Image Transformer', () => {
         ...file,
         distPath: '/dist/test.ts',
         // eslint-disable-next-line max-len
-        data: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
+        data: '<img part="brandvisualImage" data-name="test"  src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
       });
 
       expect(templateSpy).toHaveBeenCalledWith({
         // eslint-disable-next-line max-len
-        imageData: '<img aria-hidden="true" part="brandvisualImage" data-name="test" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
+        imageData: '<img part="brandvisualImage" data-name="test"  src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
       });
     });
   });
@@ -79,7 +79,7 @@ describe('@momentum-design/builder - Image Transformer', () => {
           srcPath: 'image.png',
           distPath: '/dist/image.ts',
           // eslint-disable-next-line max-len
-          data: '<img aria-hidden="true" part="brandvisualImage" data-name="image" src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
+          data: '<img part="brandvisualImage" data-name="image"  src="data:image/png;base64,{"test":"test.png","image":"image.png"}" />',
         },
       ]);
     });
