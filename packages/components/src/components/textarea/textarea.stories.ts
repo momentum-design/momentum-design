@@ -380,11 +380,17 @@ export const TextareaInsideForm: StoryObj = {
 
 export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
   render: args => {
+    const MAX_CHAR_LIMIT = args['max-character-limit'];
     const validateTextarea = (form: HTMLFormElement, args: any): boolean => {
       const textareaEl = form.querySelector('mdc-textarea[name="tweet"]') as Textarea;
       const { value } = textareaEl;
       if (args.required && (!value || value.trim() === '')) {
         textareaEl.setAttribute('help-text', 'Please enter your tweet');
+        textareaEl.setAttribute('help-text-type', 'error');
+        return false;
+      }
+      if (value && value.length > MAX_CHAR_LIMIT) {
+        textareaEl.setAttribute('help-text', `Input must not exceed ${MAX_CHAR_LIMIT} characters.`);
         textareaEl.setAttribute('help-text-type', 'error');
         return false;
       }
@@ -420,6 +426,7 @@ export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
             label="Tweet"
             required
             placeholder="Write what's on your mind"
+            max-character-limit="${MAX_CHAR_LIMIT}"
           ></mdc-textarea>
           <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
@@ -433,5 +440,6 @@ export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
     required: true,
     'help-text': '',
     'help-text-type': 'default',
+    'max-character-limit': 75,
   },
 };

@@ -189,6 +189,110 @@ test('mdc-textarea', async ({ componentsPage }) => {
       await expect(textareaElement).toHaveValue('short text');
       expect(validationMessage).toContain('');
     });
+
+    await test.step('should update help-text and help-text-type dynamically based on textarea validity (TextareaInsideFormWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset>
+              <legend>Form Example With Dynamic Help Text</legend>
+              <mdc-textarea
+                id="test-mdc-textarea"
+                name="tweet"
+                label="Tweet"
+                required
+                max-character-limit="75"
+                help-text="Please provide a valid tweet"
+                help-text-type="default"
+                placeholder="Write what's on your mind"
+              ></mdc-textarea>
+              <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const mdcTextarea = componentsPage.page.locator('mdc-textarea');
+      const textareaEl = mdcTextarea.locator('textarea');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const helpText = mdcTextarea.locator('mdc-text[part="help-text"]');
+
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const textarea = formEl.querySelector('mdc-textarea');
+          const helpTextEl = textarea?.querySelector('mdc-text[part="help-text"]');
+          const nativeTextarea = textarea?.shadowRoot?.querySelector('textarea');
+          if (textarea && nativeTextarea) {
+            const { value } = nativeTextarea;
+            const maxCharLimit = Number(textarea.getAttribute('max-character-limit')) || 75;
+            if (!value) {
+              textarea.setAttribute('help-text', 'Tweet is required');
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'Tweet is required';
+            } else if (value.length > maxCharLimit) {
+              textarea.setAttribute('help-text', `Tweet must not exceed ${maxCharLimit} characters`);
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = `Tweet must not exceed ${maxCharLimit} characters`;
+            } else if (value.length < 5) {
+              textarea.setAttribute('help-text', 'Tweet must be at least 5 characters');
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'Tweet must be at least 5 characters';
+            } else {
+              textarea.setAttribute('help-text', 'Looks good!');
+              textarea.setAttribute('help-text-type', 'success');
+              if (helpTextEl) helpTextEl.textContent = 'Looks good!';
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const textarea = formEl.querySelector('mdc-textarea');
+          const helpTextEl = textarea?.querySelector('mdc-text[part="help-text"]');
+          if (textarea) {
+            textarea.setAttribute('help-text', 'Please provide a valid tweet');
+            textarea.setAttribute('help-text-type', 'default');
+            if (helpTextEl) helpTextEl.textContent = 'Please provide a valid tweet';
+          }
+        });
+      });
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(text: string, type: string) {
+        await expect(helpText).toHaveText(text);
+        await expect(mdcTextarea).toHaveAttribute('help-text-type', type);
+      }
+
+      // 1. Submit with empty textarea
+      await componentsPage.actionability.pressTab();
+      await expect(textareaEl).toBeFocused();
+      await submitButton.click();
+      await expectHelpText('Tweet is required', 'error');
+
+      // 2. Fill below min length
+      await textareaEl.fill('1234');
+      await submitButton.click();
+      await expectHelpText('Tweet must be at least 5 characters', 'error');
+
+      // 3. Fill above max character limit
+      await textareaEl.fill('A'.repeat(80));
+      await submitButton.click();
+      await expectHelpText('Tweet must not exceed 75 characters', 'error');
+
+      // 4. Fill valid tweet
+      await textareaEl.fill('Momentum rocks!');
+      await submitButton.click();
+      await expectHelpText('Looks good!', 'success');
+
+      // 5. Reset form and check help-text resets
+      await resetButton.click();
+      await expectHelpText('Please provide a valid tweet', 'default');
+    });
   });
 
   /**
