@@ -2,6 +2,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
@@ -45,7 +46,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const avatarStickerSheet = new StickerSheet(componentsPage, 'mdc-avatar');
-    const src = 'https://picsum.photos/id/63/256';
+    const src = imageFixtures.avatar;
 
     await test.step('should add initials based avatar on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ initials: 'XS' });
