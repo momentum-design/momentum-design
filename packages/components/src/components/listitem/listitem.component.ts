@@ -135,12 +135,6 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
-    ListItemEventManager.onCreatedListItem(this);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    ListItemEventManager.onDestroyedListItem(this);
   }
 
   /**
