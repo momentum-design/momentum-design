@@ -80,6 +80,8 @@ const meta: Meta = {
       '--mdc-slider-thumb-size',
       '--mdc-slider-track-height',
       '--mdc-slider-tick-color',
+      '--mdc-slider-progress-color',
+      '--mdc-slider-track-color',
     ]),
     ...classArgType,
     ...styleArgType,

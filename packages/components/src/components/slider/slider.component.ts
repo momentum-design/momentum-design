@@ -10,7 +10,7 @@ import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 
 /**
- * slider component is used to select a value or range of values from within a defined range.
+ * Slider component is used to select a value or range of values from within a defined range.
  * It provides a visual representation of the current value(s) and allows users to adjust the value(s) by dragging the thumb(s) along the track.
  * It can be used as a single slider or a range slider. This is set by the boolean attribute `range`
  * If the step value is more than 1, tick marks are shown to represent the steps between the min and max values. The slider thumb will snap to the nearest tick mark.
@@ -35,6 +35,8 @@ import styles from './slider.styles';
  * @cssproperty --mdc-slider-thumb-size - The size of the slider thumb
  * @cssproperty --mdc-slider-track-height - The height of the slider track
  * @cssproperty --mdc-slider-tick-color - The color of the slider tick marks
+ * @cssproperty --mdc-slider-progress-color - The color of the slider progress
+ * @cssproperty --mdc-slider-track-color - The color of the slider track
  *
  */
 class Slider extends Component {
@@ -44,8 +46,14 @@ class Slider extends Component {
    */
   @state() private thumbFocused = false;
 
+  /**
+   * @internal
+   */
   @state() private thumbStartFocused = false;
 
+  /**
+   * @internal
+   */
   @state() private thumbEndFocused = false;
 
   /**
@@ -183,6 +191,10 @@ class Slider extends Component {
    */
   @property({ reflect: true, type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
 
+  /**
+   * Targets all the input components with type='range'
+   * @internal
+   */
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
 
@@ -236,12 +248,12 @@ class Slider extends Component {
       const inputElement = input as HTMLInputElement;
       if (this.softDisabled) {
         inputElement.setAttribute('aria-disabled', 'true');
-        inputElement.addEventListener('keydown', this.preventChange);
-        inputElement.addEventListener('mousedown', this.preventChange);
+        inputElement.addEventListener('keydown', this.preventChange.bind(this));
+        inputElement.addEventListener('mousedown', this.preventChange.bind(this));
       } else {
         inputElement.removeAttribute('aria-disabled');
-        inputElement.removeEventListener('keydown', this.preventChange);
-        inputElement.removeEventListener('mousedown', this.preventChange);
+        inputElement.removeEventListener('keydown', this.preventChange.bind(this));
+        inputElement.removeEventListener('mousedown', this.preventChange.bind(this));
       }
     });
   }
@@ -280,12 +292,12 @@ class Slider extends Component {
    * Prevents default behavior for mouse and keyboard events.
    * @param e - The event to prevent.
    */
-  private preventChange = (e: Event) => {
+  private preventChange(e: Event) {
     if ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent)) {
       e.preventDefault();
       e.stopPropagation();
     }
-  };
+  }
 
   /**
    * Renders an icon element.
@@ -324,8 +336,8 @@ class Slider extends Component {
    * The track is filled between the two thumbs.
    */
   updateTrackStyling() {
-    let progressColor = `var(--mds-color-theme-control-active-normal)`;
-    let trackColor = `var(--mds-color-theme-control-indicator-inactive-normal)`;
+    let progressColor = `var(--mdc-slider-progress-color)`;
+    let trackColor = `var(--mdc-slider-track-color)`;
     if (this.range) {
       if (!this.inputElements[1]) return;
       const valueStart = Number(this.inputElements[0].value);
@@ -333,10 +345,6 @@ class Slider extends Component {
       const max = Number(this.inputElements[0].max) || 1;
       const progressStart = Math.max(0, Math.min(100, ((valueStart - this.min) / (max - this.min)) * 100));
       const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (max - this.min)) * 100));
-      if (this.disabled || this.softDisabled) {
-        progressColor = `var(--mds-color-theme-control-active-disabled)`;
-        trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
-      }
       this.inputElements[1].style.background = `linear-gradient(
         to right,
         ${trackColor} 0%,
@@ -448,6 +456,7 @@ class Slider extends Component {
             ? html`
                 <input
                   id="start-slider"
+                  part="start-slider"
                   type="range"
                   min="${this.min}"
                   max="${this.max}"
@@ -478,6 +487,7 @@ class Slider extends Component {
                 />
                 ${this.thumbStartFocused ? this.tooltipTemplate(this.valueStart, this.valueLabelStart) : nothing}
                 <input
+                  id="end-slider"
                   part="end-slider"
                   type="range"
                   min="${this.min}"
@@ -511,6 +521,7 @@ class Slider extends Component {
               `
             : html`
                 <input
+                  id="single-slider"
                   part="single-slider"
                   type="range"
                   min="${this.min}"
