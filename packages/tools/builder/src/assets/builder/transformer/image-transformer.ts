@@ -7,7 +7,7 @@ import Transformer from './transformer';
 /**
  * The ImageTransformer class.
  *
- * This transformer will process svg icons and will generate ts files file containing the proper image template.
+ * This transformer will process png images and will generate ts files file containing the proper image template.
  * @beta
  */
 class ImageTransformer extends Transformer {
@@ -16,12 +16,12 @@ class ImageTransformer extends Transformer {
   }
 
   public addAttributesToImage(image: string, name: string, partName: string = 'element'): string {
-    return image.replace('<img', `<img aria-hidden="true" part="${partName}" data-name="${name}"`);
+    return image.replace('<img', `<img part="${partName}" data-name="${name}" `);
   }
 
   /**
-   * Converts the svg file to a image template using Handlebars.
-   * This will also add attributes to the svg string.
+   * Converts the png file to a image template using Handlebars.
+   * This will also add attributes to the image string.
    *
    * @param file - file to convert
    * @returns the converted file
