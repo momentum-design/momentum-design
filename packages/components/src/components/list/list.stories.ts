@@ -36,7 +36,7 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list aria-label="${args['aria-label']}">
+  html` <mdc-list aria-label="${args['aria-label']}" ?no-loop="${args['no-loop']}">
     ${args.textPassedToListHeader
       ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
       : ''}

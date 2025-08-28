@@ -95,28 +95,28 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected handleNavigationKeyDown = (event: KeyboardEvent) => {
-      let isKeyHandled = false;
+      const keysToHandle = new Set([KEYS.ARROW_DOWN, KEYS.ARROW_UP, KEYS.HOME, KEYS.END]);
+      const isRtl = window.getComputedStyle(this).direction === 'rtl';
+      const targetKey = this.resolveDirectionKey(event.key, isRtl);
+
+      if (!keysToHandle.has(targetKey)) {
+        return;
+      }
 
       const target = event.target as HTMLElement;
       const currentIndex = this.getCurrentIndex(target);
       if (currentIndex === -1) return;
       this.resetTabIndexes(currentIndex);
 
-      const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-      const targetKey = this.resolveDirectionKey(event.key, isRtl);
-
       switch (targetKey) {
         case KEYS.HOME: {
           // Move focus to the first item
           this.resetTabIndexAndSetFocus(0, currentIndex);
-          isKeyHandled = true;
           break;
         }
         case KEYS.END: {
           // Move focus to the last item
           this.resetTabIndexAndSetFocus(this.navItems.length - 1, currentIndex);
-          isKeyHandled = true;
           break;
         }
         case KEYS.ARROW_DOWN: {
@@ -124,7 +124,6 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           const eolIndex = this.loop ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
-          isKeyHandled = true;
           break;
         }
         case KEYS.ARROW_UP: {
@@ -132,7 +131,6 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           const eolIndex = this.loop ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
-          isKeyHandled = true;
           break;
         }
         default:
@@ -141,7 +139,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
 
       // When the component consume any of the pressed key, we need to stop propagation
       // to prevent the event from bubbling up and being handled by parent components which might use the same key.
-      if (isKeyHandled && !this.propagateAllKeyEvents) {
+      if (!this.propagateAllKeyEvents) {
         event.stopPropagation();
         event.preventDefault();
       }
@@ -166,7 +164,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @returns - The index of the current item in the `navItems` array.
      */
     private getCurrentIndex(target: EventTarget | null): number {
-      return this.navItems.findIndex(node => node === target);
+      return this.navItems.findIndex(node => node === target || node === (target as HTMLElement).parentElement);
     }
 
     /**

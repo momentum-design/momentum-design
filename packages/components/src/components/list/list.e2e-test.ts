@@ -136,6 +136,29 @@ test('mdc-list', async ({ componentsPage }) => {
 
         await componentsPage.page.keyboard.press('Home');
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+      });
+
+      await test.step('component should not loop navigation when list has no-loop attribute', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(5) });
+        await list.evaluate(node => node.setAttribute('no-loop', ''));
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('End');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
       });
 
       await test.step('component should navigate inside children of the list items', async () => {
