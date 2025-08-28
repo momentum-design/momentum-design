@@ -1,12 +1,12 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -14,12 +14,13 @@ import Input from '../input/input.component';
 import { AUTO_COMPLETE } from '../input/input.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
-import { Placement } from './combobox.types';
+import type { Placement } from './combobox.types';
 
 /**
  * Combobox component, which ...
@@ -36,7 +37,7 @@ import { Placement } from './combobox.types';
  *
  * @cssproperty --mdc-combobox-border-color - The border color of the combobox
  */
-class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
+class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -89,7 +90,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    *
    * @see [Floating UI - boundary](https://floating-ui.com/docs/detectOverflow#boundary)
    */
-  @property({ type: String, reflect: true, attribute: 'boundary' })
+  @property({ type: String, reflect: true })
   boundary: 'clippingAncestors' | string = POPOVER_DEFAULTS.BOUNDARY;
 
   /**
@@ -103,8 +104,8 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * @default absolute
    * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
    */
-  @property({ type: String, reflect: true, attribute: 'strategy' })
-  strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
+  @property({ type: String, reflect: true })
+  strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
 
   /**
    * The z-index of the popover within Select.
@@ -126,6 +127,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   /** @internal */
   @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
 
+  /** @internal */
+  @query(`[id="${TRIGGER_ID}"]`) private visualCombobox!: HTMLDivElement;
+
   @state() private isOpen = false;
 
   @state() private lastSelectedOptionIndex = 0;
@@ -136,6 +140,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   } = {};
 
   @state() private internalValue = '';
+
+  /** @internal */
+  private initialSelectedOption: Option | null = null;
 
   /**
    * Modifies the listbox wrapper to ensure it has the correct attributes
@@ -184,6 +191,26 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]:not([disabled])`);
   }
 
+  private dispatchChange(option: Option): void {
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: { value: option?.value, label: option?.label },
+        composed: true,
+        bubbles: true,
+      }),
+    );
+  }
+
+  private dispatchInput(option: Option): void {
+    this.dispatchEvent(
+      new CustomEvent('input', {
+        detail: { value: option?.value, label: option?.label },
+        composed: true,
+        bubbles: true,
+      }),
+    );
+  }
+
   private setSelectedValue(option: Option | null): void {
     const newValue = option?.getAttribute('value') || '';
     const newLabel = option?.getAttribute('label') || '';
@@ -198,6 +225,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.updateHiddenOptions();
 
     this.setInputValidity();
+
+    this.dispatchInput(option!);
+    this.dispatchChange(option!);
   }
 
   public override async firstUpdated() {
@@ -207,6 +237,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     const firstSelectedOption = this.getFirstSelectedOption();
     if (firstSelectedOption) {
       firstSelectedOption.removeAttribute('selected');
+      this.initialSelectedOption = firstSelectedOption;
       this.setSelectedValue(firstSelectedOption);
     } else {
       this.setInputValidity();
@@ -215,6 +246,26 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.getAllValidOptions().forEach(option => {
       option.setAttribute('tabindex', '-1');
     });
+  }
+
+  public override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
+      changedProperties.has('readonly')
+    ) {
+      if (this.disabled || this.softDisabled || this.readonly) {
+        // If the combobox is disabled, soft-disabled or readonly,
+        // we close the popover if it is open.
+        this.isOpen = false;
+      }
+    }
+
+    if (changedProperties.has('dataAriaLabel')) {
+      this.modifyListBoxWrapper();
+    }
   }
 
   /**
@@ -234,6 +285,39 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       this.inputElement?.setCustomValidity('');
     }
     this.setValidity();
+  }
+
+  /**
+   * Resets the select to its initially selected option.
+   * @internal
+   */
+  formResetCallback(): void {
+    const optionToResetTo = this.initialSelectedOption || null;
+    if (this.selectedOption?.value !== optionToResetTo?.value) {
+      this.setSelectedValue(optionToResetTo);
+    }
+  }
+
+  /** @internal */
+  formStateRestoreCallback(state: string): void {
+    const optionToRestoreTo = this.getAllValidOptions().find(
+      option => option.value === state || option.label === state,
+    );
+    if (this.selectedOption?.value !== optionToRestoreTo?.value) {
+      this.setSelectedValue(optionToRestoreTo || null);
+    }
+  }
+
+  /**
+   * If the native input is focused, it will focus the visual combobox.
+   * This is to ensure that the visual combobox is focused when the native input is focused.
+   * For example when a form is submitted and the native input is focused,
+   * we want to focus the visual combobox so that the user can see the selected option
+   * and can interact with it.
+   * @internal
+   */
+  private handleNativeInputFocus(): void {
+    this.visualCombobox.focus();
   }
 
   private resetFocusedOption() {
@@ -392,6 +476,20 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return html`
       ${this.renderLabel()}
       <div part="container__base" id="${TRIGGER_ID}">
+        <input
+          name="${this.name}"
+          type="text"
+          .value="${live(this.selectedOption?.value ?? '')}"
+          aria-hidden="true"
+          part="internal-native-input"
+          tabindex="-1"
+          ?required="${this.required}"
+          ?disabled="${this.disabled || this.softDisabled}"
+          autocomplete="${AUTO_COMPLETE.OFF}"
+          @focus=${this.handleNativeInputFocus}
+          @invalid=${this.setInputValidity}
+          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+        />
         <mdc-input
           @click="${() => this.toggleDropdown()}"
           ?disabled="${this.disabled}"
@@ -441,17 +539,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
             length-unit="rem"
           ></mdc-icon>
         </mdc-buttonsimple>
-        <input
-          name="${this.name}"
-          type="text"
-          .value="${live(this.selectedOption?.value ?? '')}"
-          aria-hidden="true"
-          part="internal-native-input"
-          tabindex="-1"
-          autocomplete="${AUTO_COMPLETE.OFF}"
-          @invalid=${this.setInputValidity}
-          aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
-        />
         <mdc-popover
           ?visible="${this.shouldDisplayPopover(options.length)}"
           @closebyescape="${() => {
