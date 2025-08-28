@@ -51,7 +51,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.validationMessage ? `validation-message="${restArgs.validationMessage}"` : ''}
       ${restArgs.trailingButton ? 'trailing-button' : true}
-      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autofocus ? 'auto-focus-on-mount' : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
@@ -161,8 +161,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
 
     await test.step('should the autofocus attribute be present in the component when it sets', async () => {
       await setup(defaultSetupOptions);
-      await componentsPage.setAttributes(password, { autofocus: '' });
-      await expect(password).toHaveAttribute('autofocus');
+      await componentsPage.setAttributes(password, { 'auto-focus-on-mount': '' });
+      await expect(password).toHaveAttribute('auto-focus-on-mount');
     });
 
     await test.step('should the dirname attribute be present in the component when it sets', async () => {

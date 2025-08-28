@@ -43,7 +43,7 @@ function refactorCustomElements(customElements) {
 
       const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap
-      const filteredMembers = declaration.members.filter(member => !attributesMap.has(member.name));
+      const filteredMembers = declaration.members?.filter?.(member => !attributesMap.has(member.name)) ?? [];
       Object.assign(declaration, { members: filteredMembers, cssParts: mappedParts, events: mappedEvents });
     });
   });

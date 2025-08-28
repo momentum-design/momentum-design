@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, PropertyValueMap } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 
@@ -84,13 +84,14 @@ class Searchfield extends Input {
    * Eventually, this logic has to be omitted and achieved using CSS instead.
    * @override
    */
-  override firstUpdated() {
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     this.inputElement.onfocus = () => {
       this.isInputFocused = true;
     };
     this.inputElement.onblur = () => {
       this.isInputFocused = false;
     };
+    super.firstUpdated(_changedProperties);
   }
 
   override clearInputText() {

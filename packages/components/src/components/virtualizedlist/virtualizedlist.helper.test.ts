@@ -64,7 +64,7 @@ class VirtualizedWrapper extends Component {
     return html`
       <div style="height: 500px; width: 500px;">
         <mdc-virtualizedlist
-          .onscroll=${this.onscroll}
+          @scroll=${this.onscroll}
           .virtualizerProps=${this.virtualizerProps}
           .setlistdata=${this.setListData}
           >${this.list}</mdc-virtualizedlist

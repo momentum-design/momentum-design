@@ -49,6 +49,7 @@ const render = (args: Args) =>
       strategy="${args.strategy}"
       popover-z-index="${args['popover-z-index']}"
       backdrop-append-to="${args['backdrop-append-to']}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-selectlistbox>
         <mdc-option value="london" label="London, UK"></mdc-option>
@@ -107,6 +108,9 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     placement: {
       control: 'select',

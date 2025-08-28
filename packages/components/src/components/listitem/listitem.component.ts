@@ -8,6 +8,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
+import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import { DEFAULTS } from './listitem.constants';
 import { ListItemEventManager } from './listitem.events';
@@ -66,7 +67,7 @@ import { ListItemVariants } from './listitem.types';
  * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
-class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
+class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -207,9 +208,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
+        this.dispatchModifiedEvent('disabled');
         ListItemEventManager.onDisableListItem(this);
       } else {
         element.removeAttribute('disabled');
+        this.dispatchModifiedEvent('enabled');
         ListItemEventManager.onEnableListItem(this);
       }
     });

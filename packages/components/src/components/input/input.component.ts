@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
@@ -9,6 +9,7 @@ import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
 import { KEYS } from '../../utils/keys';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 
 import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -57,7 +58,10 @@ import styles from './input.styles';
  *
  */
 
-class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Input
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -109,12 +113,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
 
   /**
-   * If true, the input field is focused when the component is rendered.
-   * @default false
-   */
-  @property({ type: Boolean }) override autofocus = false;
-
-  /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
    */
   @property({ type: String }) dirname?: string;
@@ -158,6 +156,16 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           this.onerror(error);
         }
       });
+  }
+
+  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   /** @internal */
@@ -356,7 +364,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       maxlength=${ifDefined(this.maxlength)}
       autocapitalize=${this.autocapitalize}
       autocomplete=${this.autocomplete}
-      ?autofocus="${this.autofocus}"
       dirname=${ifDefined(this.dirname)}
       pattern=${ifDefined(this.pattern)}
       list=${ifDefined(this.list)}

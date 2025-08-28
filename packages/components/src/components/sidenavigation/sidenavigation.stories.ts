@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
 import '../menuitem';
@@ -21,6 +21,7 @@ const render = (args: Args) => html`
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}"
+      @toggle="${action('ontoggle')}"
     >
       <!-- Upper Nav (scrollable section) -->
       <mdc-menusection slot="scrollable-menubar" show-divider>
@@ -280,14 +281,12 @@ const meta: Meta = {
     'parent-nav-tooltip-text': {
       control: 'text',
     },
-    ...disableControls([
-      'scrollable-section',
-      'fixed-section',
-      'brand-logo',
+    ...textControls([
       '--mdc-sidenavigation-expanded-width',
       '--mdc-sidenavigation-collapsed-width',
+      '--mdc-sidenavigation-vertical-divider-button-z-index',
     ]),
-    ...hideControls(['role', 'Context']),
+    ...hideControls(['Context']),
     ...classArgType,
     ...styleArgType,
   },
