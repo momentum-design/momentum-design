@@ -3,7 +3,7 @@ import { StyleInfo } from 'lit/directives/style-map.js';
 
 import type { TypedCustomEvent } from '../../utils/types';
 
-import type VirtualizedList  from './virtualizedlist.component';
+import type VirtualizedList from './virtualizedlist.component';
 
 interface SetListDataProps {
   virtualItems: Array<VirtualItem>;
@@ -11,10 +11,12 @@ interface SetListDataProps {
   listStyle: Readonly<StyleInfo>;
 }
 
+type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
+
 interface Events {
-  onScrollEvent: TypedCustomEvent<VirtualizedList>;
+  onScrollEvent: VirtualizedListScrollEvent;
 }
 
 type VirtualizerProps = Partial<VirtualizerOptions<Element, Element>>;
 
-export type { Events, VirtualizerProps, SetListDataProps };
+export type { Events, VirtualizedListScrollEvent, VirtualizerProps, SetListDataProps };

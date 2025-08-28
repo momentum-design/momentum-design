@@ -37,7 +37,7 @@ const render = (args: Args) => {
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
@@ -58,8 +58,6 @@ const meta: Meta = {
     name: 'password',
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
     id: {
       control: 'text',
       description: 'The unique id of the password field. It is used to link the password field with the label.',
@@ -107,9 +105,8 @@ const meta: Meta = {
       control: 'number',
       description: 'The maximum number of characters that the password field can accept.',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
-      description: 'If true, the password field is focused when the component is rendered.',
     },
     dirname: {
       control: 'text',
@@ -169,6 +166,8 @@ const meta: Meta = {
       'prefix-text',
       'leading-icon',
     ]),
+    ...classArgType,
+    ...styleArgType,
   },
 };
 

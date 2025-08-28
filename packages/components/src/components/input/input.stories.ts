@@ -43,7 +43,7 @@ const render = (args: Args) => {
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     autocapitalize="${args.autocapitalize}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
@@ -114,7 +114,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(AUTO_CAPITALIZE),
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     autocomplete: {
@@ -189,7 +189,6 @@ export const Example: StoryObj = {
     'leading-icon': '',
     'trailing-button': false,
     autocapitalize: 'off',
-    autofocus: false,
     'clear-aria-label': 'clear input',
     'data-aria-label': '',
   },

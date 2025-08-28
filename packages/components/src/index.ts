@@ -98,6 +98,7 @@ import type {
   InputBlurEvent,
   InputClearEvent,
 } from './components/input/input.types';
+import type { VirtualizedListScrollEvent } from './components/virtualizedlist/virtualizedlist.types';
 
 // Constants / Utils Imports
 import {
@@ -215,6 +216,7 @@ export type {
   InputFocusEvent,
   InputBlurEvent,
   InputClearEvent,
+  VirtualizedListScrollEvent,
 };
 
 // Constants / Utils Exports

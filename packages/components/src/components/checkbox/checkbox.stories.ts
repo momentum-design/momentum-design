@@ -18,7 +18,7 @@ const render = (args: Args) => html`
     ?disabled="${args.disabled}"
     name="${args.name}"
     value="${args.value}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
@@ -65,7 +65,7 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     'toggletip-text': {

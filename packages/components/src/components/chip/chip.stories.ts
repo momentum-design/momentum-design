@@ -18,6 +18,7 @@ const render = (args: Args) =>
     label="${args.label}"
     icon-name="${args['icon-name']}"
     ?disabled="${args.disabled}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-chip>`;
 
 const meta: Meta = {
@@ -40,6 +41,9 @@ const meta: Meta = {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     ...classArgType,

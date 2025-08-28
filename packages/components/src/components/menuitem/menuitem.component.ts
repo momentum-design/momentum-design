@@ -68,13 +68,13 @@ class MenuItem extends ListItem {
   /**
    * The name attribute is used to identify the menu item when it is selected.
    */
-  @property({ type: String, reflect: true }) name?: undefined | string = undefined;
+  @property({ type: String, reflect: true }) name?: string;
 
   /**
    * The value attribute is used to represent a value when the menu item is selected.
    * It is typically used with checkbox and radio menu items, but can be handy for any menu item.
    */
-  @property({ type: String, reflect: true }) value?: undefined | string = undefined;
+  @property({ type: String, reflect: true }) value?: string;
 
   constructor() {
     super();
