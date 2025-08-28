@@ -326,7 +326,7 @@ class Slider extends Component {
       <div
         part="slider-tooltip"
         aria-hidden="true"
-        style="left:calc(${leftPercent}% - var(--mdc-slider-thumb-size) / 2);"
+        style="left:${leftPercent}%; transform: translateX(${-leftPercent}%)"
       >
         ${label || val}
       </div>
