@@ -15,7 +15,7 @@ import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import type { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
+import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -324,8 +324,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @default absolute
    * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
    */
-  @property({ type: String, reflect: true, attribute: 'strategy' })
-  strategy: 'absolute' | 'fixed' = DEFAULTS.STRATEGY;
+  @property({ type: String, reflect: true })
+  strategy: PopoverStrategy = DEFAULTS.STRATEGY;
 
   /**
    * Role of the popover
