@@ -1,11 +1,14 @@
 import type { CSSResult, PropertyValues } from 'lit';
 import { html } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
+import { ElementStore } from '../../utils/controllers/ElementStore';
+import type ListItem from '../listitem';
+import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 
 import styles from './list.styles';
 
@@ -22,13 +25,9 @@ import styles from './list.styles';
  *
  * @csspart container - The container slot around the list items
  */
-class List extends ListNavigationMixin(Component) {
-  /**
-   * @internal
-   * Get all listitem elements which are not disabled in the list.
-   */
-  @queryAssignedElements({ selector: `${LISTITEM_TAGNAME}:not([disabled])` })
-  private listItems!: Array<HTMLElement>;
+class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Component)) {
+  /** @internal */
+  private itemsStore: ElementStore<ListItem>;
 
   /**
    * Whether to stop loop navigation when reaching the end of the list.
@@ -40,6 +39,17 @@ class List extends ListNavigationMixin(Component) {
    */
   @property({ type: Boolean, reflect: true, attribute: 'no-loop' })
   protected noLoop: boolean = false;
+
+  constructor() {
+    super();
+
+    this.addEventListener('destroyed', this.handleDestroyEvent, {});
+    // This must be initialized after the destroyed event listener
+    // to keep the element in the itemStore in order to move the focus correctly
+    this.itemsStore = new ElementStore<ListItem>(this, {
+      isValidItem: this.isValidItem,
+    });
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -60,7 +70,31 @@ class List extends ListNavigationMixin(Component) {
   }
 
   get navItems(): HTMLElement[] {
-    return this.listItems;
+    return this.itemsStore.items;
+  }
+
+  private handleDestroyEvent = (event: Event) => {
+    const destroyedElement = event.target as HTMLElement;
+    if (destroyedElement.tabIndex !== 0) {
+      return;
+    }
+
+    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
+    if (destroyedItemIndex === -1) {
+      return;
+    }
+
+    let newIndex = destroyedItemIndex + 1;
+    if (newIndex >= this.navItems.length) {
+      newIndex = this.navItems.length - 2;
+    }
+
+    this.resetTabIndexes(newIndex);
+  };
+
+  /** @internal */
+  private isValidItem(item: Element): boolean {
+    return item.matches(`${LISTITEM_TAGNAME}:not([disabled])`);
   }
 
   public override render() {

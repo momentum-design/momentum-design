@@ -183,6 +183,30 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(list.locator('mdc-listitem[label="List Item 2"]')).not.toBeFocused();
       });
     });
+
+    await test.step('focus', async () => {
+      await test.step('component should update focus when focused element is removed', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(4) });
+
+        await componentsPage.page.pause();
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 4"]').evaluate(node => node.remove());
+        await componentsPage.page.pause();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 2"]').evaluate(node => node.remove());
+        await expect(list.locator('mdc-listitem[label="List Item 3"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 3"]').evaluate(node => node.remove());
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+      });
+    });
   });
 
   /**

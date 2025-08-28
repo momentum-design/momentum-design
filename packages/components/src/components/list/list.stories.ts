@@ -153,3 +153,42 @@ export const ScrollableListWithSelect: StoryObj = {
     'aria-label': 'View all participants',
   },
 };
+
+export const ListWithRemovalElements: StoryObj = {
+  render: args => {
+    const handleRemoveItem = (event: Event) => {
+      const button = event.target as HTMLElement;
+      const listItem = button.closest('mdc-listitem');
+      if (listItem) {
+        listItem.remove();
+      }
+    };
+
+    const removeLast = (event: Event) => {
+      const button = event.target as HTMLElement;
+      const items = [...button.closest('mdc-list')!.querySelectorAll('mdc-listitem')];
+
+      items[items.length - 1]?.remove();
+    };
+
+    return html`
+      <mdc-list aria-label="${args['aria-label']}">
+        ${args.textPassedToListHeader
+          ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+          : ''}
+        ${repeat(
+          fakeUserNamesList,
+          name =>
+            html`<mdc-listitem @click="${action('onclick')}" label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+              <mdc-avatar
+                slot="leading-controls"
+                initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
+              ></mdc-avatar>
+              <mdc-button slot="trailing-controls" @click="${handleRemoveItem}"> Remove </mdc-button>
+              <mdc-button slot="trailing-controls" @click="${removeLast}"> Remove Last </mdc-button>
+            </mdc-listitem> `,
+        )}
+      </mdc-list>
+    `;
+  },
+};

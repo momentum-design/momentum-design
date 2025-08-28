@@ -202,7 +202,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       if (newIndex === oldIndex && newItem && newItem.getAttribute('tabindex') === '0') {
         return;
       }
-      if (oldIndex !== undefined && navItems[oldIndex]) {
+
+      if (oldIndex === undefined) {
+        navItems.forEach(item => item.setAttribute('tabindex', '-1'));
+      } else if (oldIndex !== undefined && navItems[oldIndex]) {
         // Reset tabindex of the old item
         navItems[oldIndex].setAttribute('tabindex', '-1');
       }
