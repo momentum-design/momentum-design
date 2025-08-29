@@ -119,7 +119,7 @@ export const ActiveTabAttributeSet: StoryObj = {
 
 export const TablistWithPanels: StoryObj = {
   render: args => {
-    const updateTabPanel = event => {
+    const updateTabPanel = (event: CustomEvent) => {
       const activeTab = document.querySelector(`mdc-tab[tab-id="${event.detail.tabId}"]`);
       const panelId = activeTab?.getAttribute('aria-controls');
       const panels = document.querySelectorAll('[role="tabpanel"]');
