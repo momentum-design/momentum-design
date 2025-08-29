@@ -10,8 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const inputFolder = path.resolve(__dirname, '../config/playwright/setup/pngFixtures');
-const outputFile = path.resolve(__dirname, '../config/playwright/setup/utils/imageFixtures.ts');
+const inputFolder = path.posix.resolve(__dirname, '../config/playwright/setup/pngFixtures');
+const outputFile = path.posix.resolve(__dirname, '../config/playwright/setup/utils/imageFixtures.ts');
 
 // Load existing fixtures if any
 let existingFixtures = {};
@@ -36,7 +36,7 @@ files.forEach(file => {
   const key = file.replace(/\.png$/, '');
   if (!(key in newFixtures)) {
     // Only read + encode if this file is not already in fixtures
-    const filePath = path.join(inputFolder, file);
+    const filePath = path.posix.join(inputFolder, file);
     const buffer = fs.readFileSync(filePath);
     const base64 = buffer.toString('base64');
     newFixtures[key] = `data:image/png;base64,${base64}`;
