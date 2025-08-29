@@ -6,6 +6,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 type SetUpOptions = {
   componentsPage: ComponentsPage;
   children: string;
+  suffix?: string;
   'header-text'?: string;
   'no-loop'?: boolean;
   'initial-focus'?: number;
@@ -49,10 +50,13 @@ const setup = async (args: SetUpOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-list ${restArgs['no-loop'] ? 'no-loop' : ''} initial-focus="${restArgs['initial-focus'] ?? ''}">
-        ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
-        ${restArgs.children ? restArgs.children : ''}
-      </mdc-list>
+      <div>
+        <mdc-list ${restArgs['no-loop'] ? 'no-loop' : ''} initial-focus="${restArgs['initial-focus'] ?? ''}">
+          ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
+          ${restArgs.children ? restArgs.children : ''}
+        </mdc-list>
+        ${restArgs.suffix ? restArgs.suffix : ''}
+      </div>
     `,
     clearDocument: true,
   });
@@ -220,6 +224,44 @@ test('mdc-list', async ({ componentsPage }) => {
 
         await list.locator('mdc-listitem[label="List Item 3"]').evaluate(node => node.remove());
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+      });
+
+      await test.step('focus should return to the previously focused item when an item is added', async () => {
+        const list = await setup({
+          componentsPage,
+          children: generateChildren(4),
+          suffix: `<mdc-button id="add-item-button">Add Item</mdc-button>`,
+        });
+        await componentsPage.page.pause();
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        // Add new item
+        await list.evaluate(node => {
+          const newItem = document.createElement('mdc-listitem');
+          newItem.setAttribute('label', 'List Item 5');
+          node.appendChild(newItem);
+        });
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        await componentsPage.actionability.pressShiftTab();
+        await list.evaluate(node => {
+          const newItem = document.createElement('mdc-listitem');
+          newItem.setAttribute('label', 'List Item 6');
+
+          const btn = document.createElement('mdc-button');
+          btn.setAttribute('slot', 'trailing-controls');
+          btn.textContent = 'Action';
+          newItem.appendChild(btn);
+
+          node.appendChild(newItem);
+        });
+        await componentsPage.actionability.pressShiftTab();
+        await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });
     });
   });

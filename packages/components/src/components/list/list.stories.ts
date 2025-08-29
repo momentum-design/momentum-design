@@ -1,12 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import '.';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+
 import '../avatar';
 import '../avatarbutton';
 import '../badge';
@@ -21,6 +23,7 @@ import '../toggle';
 import '../select';
 import '../selectlistbox';
 import '../option';
+import type List from '.';
 
 const fakeUserNamesList = [
   'Maria Simpson',
@@ -202,5 +205,49 @@ export const InitialFocusAtBottom: StoryObj = {
     textPassedToListHeader: 'Participants List',
     'aria-label': 'View all participants',
     'initial-focus': fakeUserNamesList.length - 1,
+  },
+};
+
+export const ExpandingList: StoryObj = {
+  render: args => {
+    const listRef = createRef<List>();
+
+    const addItem = () => {
+      const newItem = document.createElement('mdc-listitem');
+      newItem.setAttribute('variant', LISTITEM_VARIANTS.INSET_PILL);
+      newItem.setAttribute('label', `List Item ${listRef.value?.children.length + 1}`);
+
+      const btn1 = document.createElement('mdc-button');
+      btn1.setAttribute('slot', 'trailing-controls');
+      btn1.textContent = 'Action';
+
+      const btn2 = document.createElement('mdc-button');
+      btn2.setAttribute('slot', 'trailing-controls');
+      btn2.textContent = 'Action 2';
+
+      newItem.append(btn1, btn2);
+      listRef.value?.append(newItem);
+    };
+
+    return html`
+      <mdc-list aria-label="${args['aria-label']}" ${ref(listRef)}>
+        ${args.textPassedToListHeader
+          ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+          : ''}
+        ${repeat(
+          fakeUserNamesList.slice(0, 4),
+          name =>
+            html`<mdc-listitem label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+              <mdc-avatar
+                slot="leading-controls"
+                initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
+              ></mdc-avatar>
+              <mdc-button slot="trailing-controls">Action</mdc-button>
+              <mdc-button slot="trailing-controls">Action 2</mdc-button>
+            </mdc-listitem> `,
+        )}
+      </mdc-list>
+      <mdc-button style="margin-top: 16px;" @click="${addItem}">Add Item</mdc-button>
+    `;
   },
 };

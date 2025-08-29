@@ -9,6 +9,7 @@ import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { ElementStore } from '../../utils/controllers/ElementStore';
 import type ListItem from '../listitem';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
+import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 
 import styles from './list.styles';
 
@@ -46,7 +47,8 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   constructor() {
     super();
 
-    this.addEventListener('destroyed', this.handleDestroyEvent, {});
+    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<ListItem>(this, {
@@ -76,9 +78,18 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     return this.itemsStore.items;
   }
 
+  private handleCreatedEvent = (event: Event) => {
+    const createdElement = event.target as HTMLElement;
+    if (!this.isValidItem(createdElement)) {
+      return;
+    }
+
+    createdElement.tabIndex = -1;
+  };
+
   private handleDestroyEvent = (event: Event) => {
     const destroyedElement = event.target as HTMLElement;
-    if (destroyedElement.tabIndex !== 0) {
+    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
       return;
     }
 
