@@ -24,7 +24,8 @@ const styles = css`
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mdc-popover-border-color);
     filter: var(--mdc-popover-elevation-3);
-    width: var(--mdc-popover-max-width);
+    max-width: var(--mdc-popover-max-width);
+    width: var(--mdc-popover-max-width); /* shrink-to-fit until max-width */
   }
 
   :host([strategy='absolute']) {
