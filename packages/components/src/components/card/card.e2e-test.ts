@@ -209,7 +209,7 @@ test.describe.parallel('mdc-card', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const card = componentsPage.page.locator('mdc-card');
     const img = card.locator('img[src="https://placehold.co/100x100"]');
     const imgCount = await img.count();
@@ -219,10 +219,10 @@ test.describe.parallel('mdc-card', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const card = componentsPage.page.locator('mdc-card');
     const icon = card.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -232,7 +232,7 @@ test.describe.parallel('mdc-card', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (
     componentsPage: ComponentsPage,

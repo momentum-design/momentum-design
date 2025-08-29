@@ -1,4 +1,3 @@
-# AI-Assisted
 Feature: Menuitem Accessibility and User Interaction
 
   Background:
@@ -87,7 +86,7 @@ Feature: Menuitem Accessibility and User Interaction
       And the associated action should execute
 
     Scenario: Hover over menuitem with tooltip
-      Given the menuitem has tooltip-text attribute set
+      Given the menuitem has tooltip associated with it
       When I hover over the menuitem
       Then the tooltip should become visible
       And the tooltip should display the correct text
@@ -217,6 +216,3 @@ Feature: Menuitem Accessibility and User Interaction
       When VoiceOver activates the menuitem
       Then the associated action should execute
       And appropriate feedback should be provided
-
-
-# End AI-Assisted

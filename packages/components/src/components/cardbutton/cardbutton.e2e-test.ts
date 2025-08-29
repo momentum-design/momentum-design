@@ -177,7 +177,7 @@ test.describe.parallel('mdc-cardbutton', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardbutton = componentsPage.page.locator('mdc-cardbutton');
     const img = cardbutton.locator(`img[src="${imageFixtures.card}"]`);
     const imgCount = await img.count();
@@ -187,10 +187,10 @@ test.describe.parallel('mdc-cardbutton', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const cardbutton = componentsPage.page.locator('mdc-cardbutton');
     const icon = cardbutton.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -200,7 +200,7 @@ test.describe.parallel('mdc-cardbutton', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardbuttonStickersheet = new StickerSheet(componentsPage, 'mdc-cardbutton');
