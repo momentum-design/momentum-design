@@ -12,8 +12,6 @@ type SetupOptions = {
   label?: string;
   secondaryLabel?: string;
   selected?: boolean;
-  'tooltip-text'?: string;
-  'tooltip-placement'?: string;
   style?: string;
 };
 
@@ -32,8 +30,6 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
-        ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
-        ${restArgs['tooltip-placement'] ? `tooltip-placement="${restArgs['tooltip-placement']}"` : ''}
         ${restArgs.selected ? `selected="${restArgs.selected}"` : ''}
         ${restArgs.style ? `style="${restArgs.style}"` : ''}
       ></mdc-option>
@@ -163,19 +159,23 @@ test('mdc-option', async ({ componentsPage }) => {
     });
 
     await test.step('should display tooltip for truncated/long label text', async () => {
-      const option = await setup({
-        componentsPage,
-        label: 'A very long label that should be truncated and show a tooltip',
-        style: 'width: 10rem',
-        'tooltip-text': 'A very long label that should be truncated and show a tooltip',
+      await componentsPage.mount({
+        html: `<div style="width: 15rem;" aria-label="List box" role="listbox">
+      <mdc-option id='option-1'
+        label="This is a very long text and it should be truncated."
+      ></mdc-option>
+      <mdc-tooltip triggerID="option-1" show-arrow>
+        This is a very long text and it should be truncated.
+      </mdc-tooltip>
+    </div>`,
+        clearDocument: true,
       });
-
-      const text = option.locator('mdc-text');
-      await text.hover();
+      const option = await componentsPage.page.locator('mdc-option');
+      await option.waitFor();
+      await componentsPage.actionability.pressTab();
+      await expect(option).toBeFocused();
       const tooltip = componentsPage.page.locator('mdc-tooltip');
       await expect(tooltip).toBeVisible();
-      await componentsPage.page.mouse.move(100, 200);
-      await expect(tooltip).not.toBeVisible();
     });
   });
 });
