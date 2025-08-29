@@ -429,6 +429,35 @@ class Slider extends Component {
     this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd } }));
   }
 
+  /**
+   * Get the styles for the tick marks.
+   * Since the ticks are placed above the slider, we need to hide the tick that is placed exactly where the slider thumb is.
+   * Based on this condition, it renders the styles appropriately.
+   * @param tick - The tick value.
+   * @returns The styles for the tick mark.
+   */
+  getTickStyles(tick: number) {
+    const values = [];
+    const max = Number(this.inputElements[0]?.max) || 1;
+    const value = Number(this.inputElements[0]?.value);
+    if (value >= 0) {
+      const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
+      values.push(progress);
+    }
+    if (this.range) {
+      const valueEnd = Number(this.inputElements[1]?.value);
+      if (valueEnd >= 0) {
+        const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (max - this.min)) * 100));
+        values.push(progressEnd);
+      }
+    }
+    const position = ((tick - this.min) / (this.max - this.min)) * 100;
+    if (values.includes(tick)) {
+      return `display:none;`;
+    }
+    return `left: calc(${position}% - var(--mdc-slider-thumb-size) / 2);`;
+  }
+
   public override render() {
     // Tick marks
     const ticks = [];
@@ -445,14 +474,7 @@ class Slider extends Component {
           ${this.step > 1
             ? html`
                 <div part="slider-ticks">
-                  ${ticks.map(
-                    tick =>
-                      html`<span
-                        part="slider-tick"
-                        style="left:calc(${((tick - this.min) / (this.max - this.min)) *
-                        100}% - var(--mdc-slider-thumb-size) / 2)"
-                      ></span>`,
-                  )}
+                  ${ticks.map(tick => html`<span part="slider-tick" style=${this.getTickStyles(tick)}></span>`)}
                 </div>
               `
             : nothing}
