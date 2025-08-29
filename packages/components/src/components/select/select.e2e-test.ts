@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -517,7 +517,7 @@ test('mdc-select', async ({ componentsPage }) => {
       });
 
       // Helper to check help-text and help-text-type
-      async function expectHelpText(selectLocator, helpTextLocator, text, type) {
+      async function expectHelpText(selectLocator: Locator, helpTextLocator: Locator, text: string, type: string) {
         if (text === '') {
           await expect(helpTextLocator).toHaveCount(0); // no help-text rendered
         } else {
