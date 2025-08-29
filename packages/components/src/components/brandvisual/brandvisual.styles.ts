@@ -9,6 +9,11 @@ const styles = css`
     height: 100%;
     width: 100%;
   }
+  :host::part(brandvisualImage) {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
 `;
 
 export default [styles];

@@ -6,7 +6,7 @@
         {
           "id": "optimise-svgs-logos",
           "target": "./src/logos/*.svg",
-          "destination": "./dist/logos/svg",
+          "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -37,7 +37,7 @@
         {
           "id": "optimise-svgs-images",
           "target": "./src/images/*.svg",
-          "destination": "./dist/images",
+          "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -66,9 +66,31 @@
           }
         },
         {
-          "id": "copy-images",
+          "id": "copy-png-images",
           "target": "./src/images/*.png",
-          "destination": "./dist/images",
+          "destination": "./dist/png",
+          "copyOnly": true,
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            },
+            {
+              "searchValue": " ",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "COPY_IMAGE",
+            "config": {
+              "mergePaths": true
+            }
+          }
+        },
+        {
+          "id": "copy-svg-images",
+          "target": "./src/images/*.svg",
+          "destination": "./dist/svg",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -90,7 +112,7 @@
         {
           "id": "copy-backgrounds",
           "target": "./src/backgrounds/*.png",
-          "destination": "./dist/backgrounds",
+          "destination": "./dist/png",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {
@@ -111,7 +133,7 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/{logos,images,backgrounds}/**/*.*",
+          "target": "./dist/{svg,png}/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
@@ -134,15 +156,28 @@
             }
           }
         },
-        { 
-          "id": "lit-brand-visuals",
-          "target": "./dist/logos/svg/**/*.*",
-          "destination": "./dist/logos/ts",
+        {
+          "id": "lit-brand-visuals-svg",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/ts",
           "format": {
             "type": "LIT",
             "config": {
               "partName": "brandvisual",
               "hbsPath": "./config/templates/lit.ts.hbs"
+            }
+          }
+        },
+        {
+          "id": "lit-brand-visuals-png",
+          "target": "./dist/png/**/*.png",
+          "destination": "./dist/ts",
+          "format": {
+            "type": "IMAGE",
+            "config": {
+              "partName": "brandvisualImage",
+              "hbsPath": "./config/templates/image.ts.hbs",
+              "manifestPath": "@momentum-design/brand-visuals/dist/manifest.json"
             }
           }
         }
