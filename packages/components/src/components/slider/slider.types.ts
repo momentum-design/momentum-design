@@ -1,5 +1,11 @@
-// import type { ValueOf } from '../../utils/types';
+import { Slider } from '../..';
+import { OverrideEventTarget, TypedCustomEvent } from '../../utils/types';
 
-interface Events {}
+type SliderChangeEvent = TypedCustomEvent<Slider>;
+
+interface Events {
+  onInputEvent: OverrideEventTarget<InputEvent, Slider>;
+  onChangeEvent: SliderChangeEvent;
+}
 
 export type { Events };
