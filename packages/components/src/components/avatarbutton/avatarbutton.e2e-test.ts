@@ -2,6 +2,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
@@ -162,7 +163,7 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
 
   await test.step('visual-regression', async () => {
     const avatarButtonStickerSheet = new StickerSheet(componentsPage, 'mdc-avatarbutton');
-    const src = 'https://picsum.photos/id/63/256';
+    const src = imageFixtures.avatar;
 
     await test.step('should add initials based avatar on sticker sheet', async () => {
       avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', initials: 'XS' });

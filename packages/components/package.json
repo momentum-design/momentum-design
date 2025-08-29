@@ -60,6 +60,7 @@
     "copy:brandvisuals": "node scripts/copyBrandvisuals.js",
     "copy:fonts": "node scripts/copyFonts.js",
     "copy:animations": "node scripts/copyAnimations.js",
+    "generate:image-fixtures": "node scripts/pngToDataurl.js",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "figma:getattributes": "node --env-file=.env scripts/getFigmaComponentAttributes.js",
     "figma:publish:prepare:webcomponent": "node --env-file=.env scripts/createFigmaConfigJson.js config/code-connect/figma-webcomponent.config.js figma-webcomponent.config.json",
