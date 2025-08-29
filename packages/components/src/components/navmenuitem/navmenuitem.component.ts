@@ -154,6 +154,11 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
     this.toggleAttribute('in-menupopover', this.isNested());
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeTooltip();
+  }
+
   protected override updated(): void {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
