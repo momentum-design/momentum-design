@@ -10,6 +10,7 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import '../tooltip';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import type Select from './select.component';
@@ -17,7 +18,7 @@ import type Select from './select.component';
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
+  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: flex-start;">
     ${htmlString}
   </div>
 `;
@@ -207,15 +208,14 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-select placeholder="Select a color" label="Select one color">
         <mdc-selectlistbox>
           <mdc-option label="Red"></mdc-option>
-          <mdc-option label="Yellow"></mdc-option>
-          <mdc-option
-            label="White and Black are the biggest colors on the spectrum"
-            tooltip-text="White and Black are the biggest colors on the spectrum"
-            tooltip-placement="bottom"
-          ></mdc-option>
+          <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+          <mdc-option id="option-1" label="White and Black are the biggest colors on the spectrum"></mdc-option>
           <mdc-option label="Green"></mdc-option>
         </mdc-selectlistbox>
       </mdc-select>
+      <mdc-tooltip triggerid="option-1" show-arrow>
+        White and Black are the biggest colors on the spectrum
+      </mdc-tooltip>
     `),
   ...hideAllControls(),
 };
