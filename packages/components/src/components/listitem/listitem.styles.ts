@@ -79,9 +79,13 @@ const styles = css`
     align-items: center;
     column-gap: var(--mdc-listitem-column-gap);
     display: flex;
-    width: 100%;
+  }
+  :host::part(leading) {
+    flex: 1;
+    min-width: 0;
   }
   :host::part(trailing) {
+    flex: 0 0 auto;
     justify-content: flex-end;
   }
   :host::part(leading-text-secondary-label),
