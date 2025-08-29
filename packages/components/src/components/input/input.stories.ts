@@ -9,6 +9,7 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
+import type Input from './input.component';
 import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) => {
@@ -263,20 +264,67 @@ export const AllVariants: StoryObj = {
     </div>`,
 };
 
-export const FormFieldInput: StoryObj = {
+export const FormFieldInputWithHelpTextValidation: StoryObj = {
   render: args => {
+    const validateInput = (input: Input, args: any): boolean => {
+      const { value } = input;
+      if (!value) {
+        input.setAttribute('help-text-type', 'error');
+        input.setAttribute('help-text', 'Name is required');
+        return false;
+      }
+      if (args.minlength && value.length < args.minlength) {
+        input.setAttribute('help-text-type', 'error');
+        input.setAttribute('help-text', `Name must be at least ${args.minlength} characters`);
+        return false;
+      }
+      if (args.maxlength && value.length > args.maxlength) {
+        input.setAttribute('help-text-type', 'error');
+        input.setAttribute('help-text', `Name must be at most ${args.maxlength} characters`);
+        return false;
+      }
+      input.setAttribute('help-text-type', 'success');
+      input.setAttribute('help-text', 'Looks good!');
+      return true;
+    };
+
     const handleSubmit = (event: Event) => {
       event.preventDefault();
-      const formData = new FormData(event.target as HTMLFormElement);
+      const form = event.target as HTMLFormElement;
+      const input = form.querySelector('mdc-input') as Input;
+
+      if (input && !validateInput(input, args)) {
+        return; // prevent submit if invalid
+      }
+
+      const formData = new FormData(form);
       const selectedValue = formData.get('user-name');
       action('Form Submitted')({ value: selectedValue });
     };
+
+    const handleReset = () => {
+      const input = document.querySelector('mdc-input');
+      if (input) {
+        input.setAttribute('help-text-type', args['help-text-type'] || 'default');
+        input.setAttribute('help-text', args['help-text'] || 'Please provide a valid name');
+      }
+    };
+
     return html`
-      <form @submit=${handleSubmit}>
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
         <fieldset>
-          <legend>Form Example</legend>
-          ${render(args)}
-          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+          <legend>Form Example With Dynamic Help Text</legend>
+          <mdc-input
+            placeholder=${args.placeholder}
+            label=${args.label}
+            name=${args.name}
+            ?required=${args.required}
+            minlength=${ifDefined(args.minlength)}
+            maxlength=${ifDefined(args.maxlength)}
+            help-text=${args['help-text']}
+            help-text-type=${args['help-text-type']}
+          ></mdc-input>
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
@@ -285,20 +333,14 @@ export const FormFieldInput: StoryObj = {
     `;
   },
   args: {
-    class: 'custom-classname',
     label: 'First Name',
     name: 'user-name',
     placeholder: 'Enter your name',
-    readonly: false,
-    disabled: false,
     required: true,
-    'help-text': 'Please provide a valid name',
-    'help-text-type': 'default',
-    'prefix-text': '',
-    'leading-icon': '',
-    'show-hide-button-aria-label': 'Show or hide password',
     minlength: 5,
     maxlength: 10,
+    'help-text': 'Please provide a valid name',
+    'help-text-type': 'default',
   },
 };
 

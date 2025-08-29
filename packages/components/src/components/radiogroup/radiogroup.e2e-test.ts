@@ -129,5 +129,94 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       await expect(radios.nth(0)).toBeFocused();
       await expect(radios.nth(0)).toBeChecked();
     });
+
+    await test.step('should update help-text and help-text-type dynamically based on radio group validity (RadioGroupInFormWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+              <legend>Select your subscription plan (with validation)</legend>
+              <mdc-radiogroup
+                label="Choose a plan"
+                name="plan"
+                required
+                help-text="Choose a plan that best suits your needs"
+                help-text-type="default"
+              >
+                <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
+                <mdc-radio label="Premium Plan" value="premium-plan"></mdc-radio>
+                <mdc-radio label="Business Plan" value="business-plan"></mdc-radio>
+              </mdc-radiogroup>
+              <div style="display: flex; gap: 0.25rem;">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+
+      const form = componentsPage.page.locator('#test-form');
+      const radioGroup = form.locator('mdc-radiogroup[name="plan"]');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const radios = radioGroup.locator('mdc-radio input[type="radio"]');
+
+      // Always re-query help-text
+      const getHelpText = () => radioGroup.locator('mdc-text[part="help-text"]');
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(text: string, type: string) {
+        if (text === '') {
+          await expect(getHelpText()).toHaveCount(0);
+        } else {
+          await expect(getHelpText()).toHaveText(text);
+        }
+        await expect(radioGroup).toHaveAttribute('help-text-type', type);
+      }
+
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const radioGroup = formEl.querySelector('mdc-radiogroup[name="plan"]');
+          const checkedRadio = radioGroup?.querySelector('mdc-radio input[type="radio"]:checked');
+          if (radioGroup) {
+            if (!checkedRadio) {
+              radioGroup.setAttribute('help-text', 'Please select a plan');
+              radioGroup.setAttribute('help-text-type', 'error');
+            } else {
+              radioGroup.setAttribute('help-text', 'Looks good!');
+              radioGroup.setAttribute('help-text-type', 'success');
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const radioGroup = formEl.querySelector('mdc-radiogroup[name="plan"]');
+          if (radioGroup) {
+            radioGroup.setAttribute('help-text', 'Choose a plan that best suits your needs');
+            radioGroup.setAttribute('help-text-type', 'default');
+          }
+        });
+      });
+
+      // 1. Initially → default help-text
+      await expectHelpText('Choose a plan that best suits your needs', 'default');
+
+      // 2. Submit with no radio selected → error
+      await submitButton.click();
+      await expectHelpText('Please select a plan', 'error');
+
+      // 3. Select a radio and submit → success
+      await radios.nth(1).click(); // Select Premium Plan
+      await expect(radios.nth(1)).toBeChecked();
+      await submitButton.click();
+      // await expectHelpText('Looks good!', 'success');
+
+      // 4. Reset → back to default help-text
+      await resetButton.click();
+      await expectHelpText('Choose a plan that best suits your needs', 'default');
+    });
   });
 });

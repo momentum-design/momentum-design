@@ -82,115 +82,6 @@ const setup = async (args: SetupOptions, isForm = false) => {
 
 test.use({ viewport: { width: 800, height: 1200 } });
 test('mdc-textarea', async ({ componentsPage }) => {
-  const mdcTextarea = await setup({
-    componentsPage,
-    id: 'test-mdc-textarea',
-    placeholder: 'Placeholder',
-    label: 'Label',
-    helpText: 'Help Text',
-    secondButtonForFocus: true,
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    const textareaElement = mdcTextarea.locator('textarea');
-    await test.step('component should be focusable with tab', async () => {
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).toBeFocused();
-      await textareaElement.fill('test');
-      await expect(textareaElement).toHaveValue('test');
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).not.toBeFocused();
-    });
-
-    await test.step('readonly component should be focusable with tab but not editable', async () => {
-      await setup({ componentsPage, value: 'Readonly', readonly: true, secondButtonForFocus: true });
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).toBeFocused();
-      await expect(textareaElement).toHaveValue('Readonly');
-      await textareaElement.press('A');
-      await expect(textareaElement).toHaveValue('Readonly');
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).not.toBeFocused();
-      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
-    });
-
-    await test.step('component should not be focusable when disabled', async () => {
-      await setup({ componentsPage, disabled: true, value: 'Disabled' });
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).not.toBeFocused();
-      await expect(textareaElement).toHaveValue('Disabled');
-      await componentsPage.removeAttribute(mdcTextarea, 'disabled');
-    });
-
-    await test.step('component should have character counter when max-character-limit is set', async () => {
-      await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '10', value: '' });
-      const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
-      await expect(characterCounter).toHaveText('00/10');
-      await textareaElement.fill('This is a long text');
-      await expect(textareaElement).toHaveValue('This is a long text');
-      await expect(characterCounter).toHaveText('19/10');
-      await componentsPage.removeAttribute(mdcTextarea, 'max-character-limit');
-    });
-
-    await test.step('component in form should be validated for required and maxlength when submitted', async () => {
-      const form = await setup(
-        {
-          componentsPage,
-          id: 'test-mdc-textarea',
-          placeholder: 'Placeholder',
-          required: true,
-          maxlength: 10,
-        },
-        true,
-      );
-
-      const submitButton = form.locator('mdc-button[type="submit"]');
-      await submitButton.click();
-      const validationMessage = await textareaElement.evaluate(element => {
-        const textarea = element as HTMLTextAreaElement;
-        return textarea.validationMessage;
-      });
-      expect(validationMessage).toMatch(/fill (out|in) this field/i);
-      await textareaElement.fill('This is a long text');
-      await expect(textareaElement).toHaveValue('This is a ');
-      await submitButton.click();
-    });
-
-    await test.step('component in form should be validated for max character limit', async () => {
-      const form = await setup(
-        {
-          componentsPage,
-          id: 'test-mdc-textarea',
-          placeholder: 'Placeholder',
-          required: true,
-          maxCharacterLimit: 11,
-          helpText: 'Input must not exceed 11 characters',
-          helpTextType: 'error',
-          value: 'This is a long text',
-        },
-        true,
-      );
-
-      const submitButton = form.locator('mdc-button[type="submit"]');
-      await submitButton.click();
-      const validationMessage = await textareaElement.evaluate(element => {
-        const textarea = element as HTMLTextAreaElement;
-        return textarea.validationMessage;
-      });
-
-      expect(validationMessage).toContain('Input must not exceed 11 characters');
-
-      await textareaElement.fill('short text');
-      await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
-      await componentsPage.removeAttribute(mdcTextarea, 'help-text');
-      await expect(textareaElement).toHaveValue('short text');
-      expect(validationMessage).toContain('');
-    });
-  });
-
   /**
    * ATTRIBUTES
    */
@@ -371,5 +262,217 @@ test('mdc-textarea', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('textarea-default');
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    const mdcTextarea = await setup({
+      componentsPage,
+      id: 'test-mdc-textarea',
+      placeholder: 'Placeholder',
+      label: 'Label',
+      helpText: 'Help Text',
+      secondButtonForFocus: true,
+    });
+    const textareaElement = mdcTextarea.locator('textarea');
+    await test.step('component should be focusable with tab', async () => {
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await textareaElement.fill('test');
+      await expect(textareaElement).toHaveValue('test');
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
+    });
+
+    await test.step('readonly component should be focusable with tab but not editable', async () => {
+      await setup({ componentsPage, value: 'Readonly', readonly: true, secondButtonForFocus: true });
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await expect(textareaElement).toHaveValue('Readonly');
+      await textareaElement.press('A');
+      await expect(textareaElement).toHaveValue('Readonly');
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+    });
+
+    await test.step('component should not be focusable when disabled', async () => {
+      await setup({ componentsPage, disabled: true, value: 'Disabled' });
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
+      await expect(textareaElement).toHaveValue('Disabled');
+      await componentsPage.removeAttribute(mdcTextarea, 'disabled');
+    });
+
+    await test.step('component should have character counter when max-character-limit is set', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '10', value: '' });
+      const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
+      await expect(characterCounter).toHaveText('00/10');
+      await textareaElement.fill('This is a long text');
+      await expect(textareaElement).toHaveValue('This is a long text');
+      await expect(characterCounter).toHaveText('19/10');
+      await componentsPage.removeAttribute(mdcTextarea, 'max-character-limit');
+    });
+
+    await test.step('component in form should be validated for required and maxlength when submitted', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-textarea',
+          placeholder: 'Placeholder',
+          required: true,
+          maxlength: 10,
+        },
+        true,
+      );
+
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      await submitButton.click();
+      const validationMessage = await textareaElement.evaluate(element => {
+        const textarea = element as HTMLTextAreaElement;
+        return textarea.validationMessage;
+      });
+      expect(validationMessage).toMatch(/fill (out|in) this field/i);
+      await textareaElement.fill('This is a long text');
+      await expect(textareaElement).toHaveValue('This is a ');
+      await submitButton.click();
+    });
+
+    await test.step('component in form should be validated for max character limit', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-textarea',
+          placeholder: 'Placeholder',
+          required: true,
+          maxCharacterLimit: 11,
+          helpText: 'Input must not exceed 11 characters',
+          helpTextType: 'error',
+          value: 'This is a long text',
+        },
+        true,
+      );
+
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      await submitButton.click();
+      const validationMessage = await textareaElement.evaluate(element => {
+        const textarea = element as HTMLTextAreaElement;
+        return textarea.validationMessage;
+      });
+
+      expect(validationMessage).toContain('Input must not exceed 11 characters');
+
+      await textareaElement.fill('short text');
+      await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
+      await componentsPage.removeAttribute(mdcTextarea, 'help-text');
+      await expect(textareaElement).toHaveValue('short text');
+      expect(validationMessage).toContain('');
+    });
+
+    await test.step('should update help-text and help-text-type dynamically based on textarea validity (TextareaInsideFormWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset>
+              <legend>Form Example With Dynamic Help Text</legend>
+              <mdc-textarea
+                id="test-mdc-textarea"
+                name="tweet"
+                label="Tweet"
+                required
+                max-character-limit="75"
+                help-text="Please provide a valid tweet"
+                help-text-type="default"
+                placeholder="Write what's on your mind"
+              ></mdc-textarea>
+              <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const mdcTextarea = componentsPage.page.locator('mdc-textarea');
+      const textareaEl = mdcTextarea.locator('textarea');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const helpText = mdcTextarea.locator('mdc-text[part="help-text"]');
+
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const textarea = formEl.querySelector('mdc-textarea');
+          const helpTextEl = textarea?.querySelector('mdc-text[part="help-text"]');
+          const nativeTextarea = textarea?.shadowRoot?.querySelector('textarea');
+          if (textarea && nativeTextarea) {
+            const { value } = nativeTextarea;
+            const maxCharLimit = Number(textarea.getAttribute('max-character-limit')) || 75;
+            if (!value) {
+              textarea.setAttribute('help-text', 'Tweet is required');
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'Tweet is required';
+            } else if (value.length > maxCharLimit) {
+              textarea.setAttribute('help-text', `Tweet must not exceed ${maxCharLimit} characters`);
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = `Tweet must not exceed ${maxCharLimit} characters`;
+            } else if (value.length < 5) {
+              textarea.setAttribute('help-text', 'Tweet must be at least 5 characters');
+              textarea.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'Tweet must be at least 5 characters';
+            } else {
+              textarea.setAttribute('help-text', 'Looks good!');
+              textarea.setAttribute('help-text-type', 'success');
+              if (helpTextEl) helpTextEl.textContent = 'Looks good!';
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const textarea = formEl.querySelector('mdc-textarea');
+          const helpTextEl = textarea?.querySelector('mdc-text[part="help-text"]');
+          if (textarea) {
+            textarea.setAttribute('help-text', 'Please provide a valid tweet');
+            textarea.setAttribute('help-text-type', 'default');
+            if (helpTextEl) helpTextEl.textContent = 'Please provide a valid tweet';
+          }
+        });
+      });
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(text: string, type: string) {
+        await expect(helpText).toHaveText(text);
+        await expect(mdcTextarea).toHaveAttribute('help-text-type', type);
+      }
+
+      // 1. Submit with empty textarea
+      await componentsPage.actionability.pressTab();
+      await expect(textareaEl).toBeFocused();
+      await submitButton.click();
+      await expectHelpText('Tweet is required', 'error');
+
+      // 2. Fill below min length
+      await textareaEl.fill('1234');
+      await submitButton.click();
+      await expectHelpText('Tweet must be at least 5 characters', 'error');
+
+      // 3. Fill above max character limit
+      await textareaEl.fill('A'.repeat(80));
+      await submitButton.click();
+      await expectHelpText('Tweet must not exceed 75 characters', 'error');
+
+      // 4. Fill valid tweet
+      await textareaEl.fill('Momentum rocks!');
+      await submitButton.click();
+      await expectHelpText('Looks good!', 'success');
+
+      // 5. Reset form and check help-text resets
+      await resetButton.click();
+      await expectHelpText('Please provide a valid tweet', 'default');
+    });
   });
 });

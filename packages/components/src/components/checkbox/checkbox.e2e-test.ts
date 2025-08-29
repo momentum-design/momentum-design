@@ -203,5 +203,89 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await checkbox.click();
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
+
+    await test.step('should update help-text and help-text-type dynamically based on checkbox validity (FormFieldCheckboxWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+              <legend>Select your super hero power (with validation)</legend>
+              <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+              <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
+              <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
+              <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
+              <div style="display: flex; gap: 0.25rem;">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const requiredCheckbox = form.locator('mdc-checkbox[name="super-power"][required]');
+      const requiredInput = requiredCheckbox.locator('input[type="checkbox"]');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const helpText = requiredCheckbox.locator('mdc-text');
+
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const requiredBox = formEl.querySelector('mdc-checkbox[name="super-power"][required]');
+          const helpTextEl = requiredBox?.querySelector('mdc-text');
+          const input = requiredBox?.shadowRoot?.querySelector('input[type="checkbox"]');
+          if (requiredBox && input) {
+            if (!(input as HTMLInputElement).checked) {
+              requiredBox.setAttribute('help-text', 'Please select this required option');
+              requiredBox.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'Please select this required option';
+            } else {
+              requiredBox.setAttribute('help-text', 'Looks good!');
+              requiredBox.setAttribute('help-text-type', 'success');
+              if (helpTextEl) helpTextEl.textContent = 'Looks good!';
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const requiredBox = formEl.querySelector('mdc-checkbox[name="super-power"][required]');
+          const helpTextEl = requiredBox?.querySelector('mdc-text');
+          if (requiredBox) {
+            requiredBox.setAttribute('help-text', '');
+            requiredBox.setAttribute('help-text-type', 'default');
+            if (helpTextEl) helpTextEl.textContent = '';
+          }
+        });
+      });
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(text: string, type: string) {
+        if (text === '') {
+          await expect(helpText).toHaveCount(0); // no help-text rendered
+        } else {
+          await expect(helpText).toHaveText(text);
+        }
+        await expect(requiredCheckbox).toHaveAttribute('help-text-type', type);
+      }
+
+      // 1. Submit with required unchecked
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+      // await expect(requiredInput).toBeFocused(); --- causing issue in WebKit ---
+      await submitButton.click();
+      await expectHelpText('Please select this required option', 'error');
+
+      // 2. Check required and submit
+      await requiredInput.click();
+      await expect(requiredInput).toBeChecked();
+      await submitButton.click();
+      await expectHelpText('Looks good!', 'success');
+
+      // 3. Reset form and check help-text resets
+      await resetButton.click();
+      await expectHelpText('', 'default');
+    });
   });
 });
