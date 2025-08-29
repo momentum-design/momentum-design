@@ -175,7 +175,16 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @returns - The index of the current item in the `navItems` array.
      */
     private getCurrentIndex(target: EventTarget | null): number {
-      return this.navItems.findIndex(node => node === target || node === (target as HTMLElement).parentElement);
+      let el: HTMLElement | null = target as HTMLElement;
+      do {
+        const checkEl = el;
+        const i = this.navItems.findIndex(node => node === checkEl);
+        if (i !== -1) return i;
+
+        el = el.parentElement;
+      } while (el);
+
+      return -1;
     }
 
     /**
