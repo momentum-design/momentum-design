@@ -45,7 +45,6 @@ class Brandvisual extends Component {
       // dynamic import of the lit template from the momentum brand-visuals package
       return import(`@momentum-design/brand-visuals/dist/ts/${this.name}.ts`)
         .then(module => {
-          console.log('getBrandVisualData then ---------');
           this.handleBrandVisualLoadedSuccess(module.default());
         })
         .catch(error => {

@@ -13,8 +13,10 @@ const { publicPath, port } = require('./configs/e2e');
 // in playwright for the time being. not needed anymore in case a BrandVisualProvider and
 // normal URL fetching will be done
 const replaceBrandVisualsDynamicImport = source => {
-  const importRegex = /import\(`@momentum-design\/brand-visuals\/dist\/.*?\/ts\/\$\{this\.name\}\.ts`\)/g;
-  const newSource = source.replace(importRegex, `import('../../../playwright-temp/brandvisuals/index')`);
+  const newSource = source.replace(
+    '@momentum-design/brand-visuals/dist/ts/${this.name}.ts',
+    '../../../playwright-temp/brandvisuals/index',
+  );
   return newSource;
 };
 
