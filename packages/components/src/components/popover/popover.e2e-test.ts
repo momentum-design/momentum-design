@@ -276,7 +276,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).toHaveAttribute('aria-labelledby', 'popover-label');
     await expect(popover).toHaveAttribute('aria-describedby', 'popover-description');
     await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
-    await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+    await expect(triggerButton).toHaveAttribute('aria-expanded');
     await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
     await expect(popover).toHaveAttribute('aria-modal', 'true');
   });
@@ -324,6 +324,24 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
         await expect(popover).toHaveAttribute('color', color);
       });
     }
+  });
+};
+
+const ariaExpandedAttributeTestCases = async (componentsPage: ComponentsPage) => {
+  const { popover, triggerButton } = await setup({
+    componentsPage,
+    id: 'popover',
+    triggerID: 'trigger-button',
+    children: 'Lorem ipsum dolor sit amet.',
+    visible: true,
+    disableAriaExpanded: true,
+  });
+
+  await test.step('attributes after disable-aria-expanded should be set correctly for popover', async () => {
+    await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
+    await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+    await expect(triggerButton).not.toHaveAttribute('aria-haspopup', 'dialog');
+    await expect(popover).toHaveAttribute('aria-modal', 'true');
   });
 };
 
@@ -658,7 +676,10 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         'disable-aria-expanded': 'true',
         visible: 'true',
       });
-      await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+      // disable-aria-expanded changed after first update
+      // it will not remove already existing aria-expanded adn aria-haspopup attributes!
+      await expect(triggerButton).toHaveAttribute('aria-expanded');
+      await expect(triggerButton).toHaveAttribute('aria-haspopup');
     });
   });
 
@@ -1052,6 +1073,13 @@ test('mdc-popover', async ({ componentsPage }) => {
    */
   await test.step('attributes for popover component', async () => {
     await attributeTestCases(componentsPage);
+  });
+
+  /**
+   * disabled-aria-expanded ATTRIBUTE
+   */
+  await test.step('disabled-aria-expanded attribute for popover component', async () => {
+    await ariaExpandedAttributeTestCases(componentsPage);
   });
 
   /**
