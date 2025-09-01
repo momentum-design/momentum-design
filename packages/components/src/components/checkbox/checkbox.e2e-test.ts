@@ -207,8 +207,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     await test.step('should update help-text and help-text-type dynamically based on checkbox validity (FormFieldCheckboxWithHelpTextValidation)', async () => {
       await componentsPage.mount({
         html: `
-          <form id="test-form" novalidate tabindex="-1">
-            <fieldset style="display: flex; flex-direction: column; gap: 1rem;" tabindex="-1">
+          <form id="test-form" novalidate>
+            <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
               <legend>Select your super hero power (with validation)</legend>
               <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
               <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
