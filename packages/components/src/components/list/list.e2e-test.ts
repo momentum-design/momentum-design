@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 
+import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -119,22 +120,22 @@ test('mdc-list', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('ArrowDown');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
         await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('ArrowDown');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
         await expect(list.locator('mdc-listitem[label="List Item 3"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('End');
+        await componentsPage.page.keyboard.press(KEYS.END);
         await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('ArrowUp');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
         await expect(list.locator('mdc-listitem[label="List Item 4"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('ArrowUp');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
         await expect(list.locator('mdc-listitem[label="List Item 3"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('Home');
+        await componentsPage.page.keyboard.press(KEYS.HOME);
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
       });
 
@@ -152,7 +153,7 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(list.locator('mdc-button[aria-label="button label 1"]')).toBeFocused();
 
         // As there are only 2 elements in the list, when we press up arrow on 1st item, then it should go to 2nd item.
-        await componentsPage.page.keyboard.press('ArrowUp');
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
         await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
 
         await componentsPage.actionability.pressTab();
@@ -170,19 +171,19 @@ test('mdc-list', async ({ componentsPage }) => {
       const list = await setup({ componentsPage, children: generateChildren(5) });
       await componentsPage.actionability.pressTab();
       await expect(list.locator('mdc-listitem').first()).toBeFocused();
-      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [
         list.locator('mdc-listitem').nth(1),
         list.locator('mdc-listitem').nth(2),
         list.locator('mdc-listitem').nth(3),
       ]);
-      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_UP, [
         list.locator('mdc-listitem').nth(2),
         list.locator('mdc-listitem').nth(1),
         list.locator('mdc-listitem').first(),
       ]);
-      await componentsPage.page.keyboard.press('End');
+      await componentsPage.page.keyboard.press(KEYS.END);
       await expect(list.locator('mdc-listitem').last()).toBeFocused();
-      await componentsPage.page.keyboard.press('Home');
+      await componentsPage.page.keyboard.press(KEYS.HOME);
       await expect(list.locator('mdc-listitem').first()).toBeFocused();
     });
 
@@ -199,7 +200,7 @@ test('mdc-list', async ({ componentsPage }) => {
       });
       await componentsPage.actionability.pressTab();
       await expect(list.locator('mdc-listitem').nth(1)).toBeFocused();
-      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [
         list.locator('mdc-listitem').nth(3),
         list.locator('mdc-listitem').nth(1),
       ]);
@@ -207,11 +208,77 @@ test('mdc-list', async ({ componentsPage }) => {
         source: 'userflow',
         fileNameSuffix: 'disabled-list-items',
       });
-      await componentsPage.page.keyboard.press('End');
+      await componentsPage.page.keyboard.press(KEYS.END);
       await componentsPage.visualRegression.takeScreenshot('mdc-list', {
         source: 'userflow',
         fileNameSuffix: 'focus-last-disabled-item',
       });
+    });
+
+    await test.step('should have correct ARIA roles and attributes', async () => {
+      const list = await setup({
+        componentsPage,
+        children: `
+            <mdc-listitem label="List Item 1"></mdc-listitem>
+            <mdc-listitem label="List Item 2" disabled></mdc-listitem>
+          `,
+      });
+      await expect(list).toHaveAttribute('role', 'list');
+      const items = list.locator('mdc-listitem');
+      await expect(items.nth(0)).toHaveAttribute('role', 'listitem');
+      await expect(items.nth(1)).toHaveAttribute('role', 'listitem');
+      await expect(items.nth(1)).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await test.step('should skip disabled items when navigating (feature file pattern)', async () => {
+      const list = await setup({
+        componentsPage,
+        children: `
+            <mdc-listitem label="Item 1"></mdc-listitem>
+            <mdc-listitem label="Item 2" disabled></mdc-listitem>
+            <mdc-listitem label="Item 3"></mdc-listitem>
+            <mdc-listitem label="Item 4" disabled></mdc-listitem>
+            <mdc-listitem label="Item 5"></mdc-listitem>
+          `,
+      });
+      await componentsPage.actionability.pressTab();
+      await expect(list.locator('mdc-listitem[label="Item 1"]')).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(list.locator('mdc-listitem[label="Item 3"]')).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(list.locator('mdc-listitem[label="Item 5"]')).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(list.locator('mdc-listitem[label="Item 1"]')).toBeFocused();
+      await expect(list.locator('mdc-listitem[label="Item 2"]')).not.toBeFocused();
+      await expect(list.locator('mdc-listitem[label="Item 4"]')).not.toBeFocused();
+    });
+
+    await test.step('should preserve focus on correct item after Shift+Tab (rowing index)', async () => {
+      await componentsPage.mount({
+        html: `
+            <div>
+              <mdc-list>
+                <mdc-listitem label="List Item 1"></mdc-listitem>
+                <mdc-listitem label="List Item 2"></mdc-listitem>
+                <mdc-listitem label="List Item 3"></mdc-listitem>
+                <mdc-listitem label="List Item 4"></mdc-listitem>
+                <mdc-listitem label="List Item 5"></mdc-listitem>
+              </mdc-list>
+              <mdc-button>Button</mdc-button>
+            </div>
+          `,
+        clearDocument: true,
+      });
+      const list = componentsPage.page.locator('mdc-list');
+      await list.waitFor();
+      const listitems = list.locator('mdc-listitem');
+      await componentsPage.actionability.pressTab();
+      await expect(listitems.first()).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [listitems.nth(1), listitems.nth(2)]);
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.locator('mdc-button')).toBeFocused();
+      await componentsPage.actionability.pressShiftTab();
+      await expect(listitems.nth(2)).toBeFocused();
     });
   });
 });

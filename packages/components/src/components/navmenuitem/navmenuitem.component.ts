@@ -2,6 +2,7 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 } from 'uuid';
 
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
@@ -12,7 +13,7 @@ import MenuItem from '../menuitem/menuitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { ListItemVariants } from '../listitem/listitem.types';
-import type { PopoverPlacement } from '../popover/popover.types';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 
 import type { BadgeType } from './navmenuitem.types';
 import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navmenuitem.constants';
@@ -25,6 +26,8 @@ import styles from './navmenuitem.styles';
  * Note: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
+ *
+ * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the navmenuitem. This tooltip is useful when an active navmenuitem is present within a submenu of the sidenavigation component.
  *
  * @tagname mdc-navmenuitem
  *
@@ -115,6 +118,12 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
   disableAriaCurrent?: boolean;
 
   /**
+   * The tooltip text is displayed on hover of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-text' })
+  tooltipText?: string;
+
+  /**
    * @internal
    */
   private prevIconName?: string;
@@ -127,12 +136,15 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
   constructor() {
     super();
     this.addEventListener('click', this.handleClickEvent.bind(this));
+    this.addEventListener('focusin', this.renderDynamicTooltip.bind(this));
+    this.addEventListener('mouseenter', this.renderDynamicTooltip.bind(this));
+    this.addEventListener('focusout', this.removeTooltip.bind(this));
+    this.addEventListener('mouseout', this.removeTooltip.bind(this));
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
-    this.tooltipPlacement = undefined as unknown as PopoverPlacement;
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navmenuitem] navId is required and was not provided.');
@@ -140,6 +152,11 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
 
     // Set in-menupopover attribute if nested
     this.toggleAttribute('in-menupopover', this.isNested());
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeTooltip();
   }
 
   protected override updated(): void {
@@ -157,6 +174,41 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
       this.ariaLabel = this.ariaLabel || label;
       this.setAttribute('aria-label', label);
     }
+  }
+
+  private removeTooltip() {
+    // Remove any existing tooltip.
+    const existingTooltip = document.querySelector(`${TOOLTIP_TAG_NAME}[triggerid="${this.id}"]`);
+    if (existingTooltip) {
+      existingTooltip.remove();
+    }
+  }
+
+  private renderDynamicTooltip(): void {
+    if (!this.tooltipText) {
+      return;
+    }
+    if (!this.id) {
+      this.id = `mdc-navmenuitem-${v4()}`;
+    }
+
+    this.removeTooltip();
+
+    // Create tooltip for the listitem element.
+    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
+    tooltip.id = `mdc-navmenuitem-tooltip-${v4()}`;
+    tooltip.textContent = this.tooltipText;
+    tooltip.setAttribute('triggerid', this.id);
+    tooltip.setAttribute('visible', '');
+    tooltip.setAttribute('show-arrow', '');
+
+    // Set the slot attribute if the parent element has a slot.
+    if (this.hasAttribute('slot')) {
+      tooltip.setAttribute('slot', this.getAttribute('slot') || '');
+    }
+
+    // Attach the tooltip programmatically after the nearest parent element.
+    this.after(tooltip);
   }
 
   /**

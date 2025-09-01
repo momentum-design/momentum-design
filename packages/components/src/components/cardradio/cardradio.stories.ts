@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls, textControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
@@ -113,7 +114,7 @@ export const Example: StoryObj = {
     'card-title': 'Title',
     name: 'radio-card',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'title-tag-name': DEFAULTS.TAGNAME,
@@ -131,7 +132,7 @@ export const HorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'aria-label': 'Aria Label',
@@ -165,7 +166,7 @@ export const CardWithoutImage: StoryObj = {
 
 export const CardWithoutBody: StoryObj = {
   args: {
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -184,7 +185,7 @@ export const ContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -196,7 +197,7 @@ export const ContentBeforeBody: StoryObj = {
     tabIndex: 0,
     children: html`<div slot="before-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-        <img src="https://placehold.co/100x100" alt="Image Alt" />
+        <img src="${imageFixtures.card}" alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },
@@ -206,7 +207,7 @@ export const ContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/100x100',
+    'image-src': imageFixtures.card,
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
@@ -218,7 +219,7 @@ export const ContentAfterBody: StoryObj = {
     tabIndex: 0,
     children: html`<div slot="after-body">
         <mdc-text type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-        <img src="https://placehold.co/100x100" alt="Image Alt" />
+        <img src="${imageFixtures.card}" alt="Image Alt" />
       </div>
       ${defaultChildren}`,
   },
@@ -237,7 +238,7 @@ export const CardsInRadioGroup: StoryObj = {
               orientation="vertical"
               card-title="Title ${index}"
               subtitle="Subtitle"
-              image-src="https://placehold.co/100x100"
+              image-src="${imageFixtures.card}"
               image-alt="Image Alt"
               icon-name="placeholder-bold"
               tabIndex="0"

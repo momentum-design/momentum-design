@@ -4,22 +4,20 @@ import { html, TemplateResult } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
+
 import '../avatar';
 import '../badge';
 import '../button';
 import '../checkbox';
 import '../icon';
 import '../list';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-
+import '../tooltip';
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc-list>`;
-
-const render = (args: Args) =>
-  wrapWithList(html`
+const wrapWithList = (args: Args, content?: TemplateResult) =>
+  html`<mdc-list>
     <mdc-listitem
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
@@ -37,9 +35,14 @@ const render = (args: Args) =>
       tertiary-label="${args['tertiary-label']}"
       side-header-text="${args['side-header-text']}"
       subline-text="${args['subline-text']}"
-      tooltip-text="${args['tooltip-text']}"
-      tooltip-placement="${args['tooltip-placement']}"
+      >${content ?? ''}</mdc-listitem
     >
+  </mdc-list>`;
+
+const render = (args: Args) =>
+  wrapWithList(
+    args,
+    html`
       <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
       <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
       <mdc-icon slot="leading-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
@@ -47,8 +50,8 @@ const render = (args: Args) =>
       <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    </mdc-listitem>
-  `);
+    `,
+  );
 
 const meta: Meta = {
   title: 'Components/listitem',
@@ -84,19 +87,7 @@ const meta: Meta = {
     'soft-disabled': {
       control: 'boolean',
     },
-    'tooltip-text': {
-      control: 'text',
-    },
-    'tooltip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
-    },
-    ...hideControls(['role']),
     ...disableControls([
-      'click',
-      'keydown',
-      'keyup',
-      'focus',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -135,82 +126,75 @@ export const Example: StoryObj = {
     'side-header-text': 'Header Text',
     'subline-text': 'Subline Text',
     disabled: false,
-    'tooltip-text': '',
-    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
 export const LabelOnly: StoryObj = {
-  render: () => wrapWithList(html`<mdc-listitem label="Primary Label"></mdc-listitem>`),
-  ...hideAllControls(),
+  render: (args: Args) => wrapWithList(args),
+  args: {
+    variant: LISTITEM_VARIANTS.FULL_WIDTH,
+    label: 'Primary Label',
+  },
 };
 
 export const TrailingIcon: StoryObj = {
-  render: () =>
-    wrapWithList(html`
-      <mdc-listitem>
-        <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-      </mdc-listitem>
-    `),
-  ...hideAllControls(),
+  render: (args: Args) =>
+    wrapWithList(args, html`<mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>`),
 };
 
 export const ListWithLabelAndLeadingAvatar: StoryObj = {
-  render: () =>
-    wrapWithList(html`
-      <mdc-listitem label="Primary Label">
-        <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
-      </mdc-listitem>
-    `),
-  ...hideAllControls(),
+  render: (args: Args) =>
+    wrapWithList(
+      args,
+      html`<mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>`,
+    ),
+  args: {
+    label: 'Primary Label',
+  },
 };
 
 export const ListWithLabelAndTrailingBadge: StoryObj = {
-  render: () =>
-    wrapWithList(html`
-      <mdc-listitem label="Primary Label">
-        <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-      </mdc-listitem>
-    `),
-  ...hideAllControls(),
+  render: (args: Args) => wrapWithList(args, html`<mdc-badge slot="trailing-controls" type="dot"></mdc-badge>`),
+  args: {
+    label: 'Primary Label',
+  },
 };
 
 export const ListWithDisableState: StoryObj = {
   render: (args: Args) =>
-    wrapWithList(html`
-      <mdc-listitem ?disabled="${args.disabled}" label="${args.label}" side-header-text="${args['side-header-text']}">
+    wrapWithList(
+      args,
+      html`
         <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
         <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
         <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
         <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
         <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
         <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-      </mdc-listitem>
-    `),
+      `,
+    ),
   args: {
     disabled: true,
     label: 'Primary Label',
     'side-header-text': 'Header',
   },
-  argTypes: {
-    ...hideControls(['variant', 'secondary-label', 'tertiary-label', 'subline-text', 'tabIndex']),
-  },
 };
 
 export const ListWithIconAndLabels: StoryObj = {
-  render: () =>
-    wrapWithList(html`
-      <mdc-listitem
-        label="Primary Label"
-        secondary-label="This is a long Secondary Label"
-        tertiary-label="Teritary Label"
-      >
+  render: (args: Args) =>
+    wrapWithList(
+      args,
+      html`
         <div slot="leading-controls">
           <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
         </div>
-      </mdc-listitem>
-    `),
-  ...hideAllControls(),
+      `,
+    ),
+  args: {
+    label: 'Primary Label',
+    'secondary-label': 'This is a long Secondary Label',
+    'tertiary-label': 'Teritary Label',
+  },
 };
 
 export const ListWithLongText: StoryObj = {
@@ -219,33 +203,41 @@ export const ListWithLongText: StoryObj = {
       <mdc-listitem label="A short text"></mdc-listitem>
       <mdc-listitem label="A little lengthy text"></mdc-listitem>
       <mdc-listitem
+        id="listitem-1"
         label="A long lengthy text with small secondary label"
         secondary-label="a small secondary label"
-        tooltip-text="A long lengthy text with small secondary label"
       ></mdc-listitem>
       <mdc-listitem
+        id="listitem-2"
         label="A small primary label"
         secondary-label="a lengthy secondary label with a small label"
-        tooltip-text="a lengthy secondary label with a small label"
-        tooltip-placement="bottom"
       ></mdc-listitem>
       <mdc-listitem label="A short text"></mdc-listitem>
     </div>
+    <mdc-tooltip triggerID="listitem-1" placement="top" show-arrow>
+      A long lengthy text with small secondary label
+    </mdc-tooltip>
+    <mdc-tooltip triggerID="listitem-2" show-arrow> A small primary label with a lengthy secondary label </mdc-tooltip>
+    <mdc-text>Note: The consumer needs to attach mdc-tooltip to the listitem from their end</mdc-text>
   `,
   ...hideAllControls(),
 };
 
 export const ListItemLabelsUsingSlot: StoryObj = {
-  render: () => html`
-    <mdc-list>
-      <mdc-listitem variant="full-width">
+  render: (args: Args) =>
+    wrapWithList(
+      args,
+      html`
         <mdc-checkbox slot="leading-controls" data-aria-label="List item checkbox" checked=""></mdc-checkbox>
         <mdc-text slot="leading-text-primary-label" type="body-midsize-regular" tagname="div">Primary</mdc-text>
         <mdc-text slot="leading-text-secondary-label" type="body-large-regular">Secondary</mdc-text>
         <mdc-text slot="leading-text-tertiary-label" type="body-small-bold" tagname="div">Tertiary</mdc-text>
-      </mdc-listitem>
-    </mdc-list>
-  `,
+      `,
+    ),
+  args: {
+    variant: LISTITEM_VARIANTS.FULL_WIDTH,
+  },
+  ...hideAllControls(),
 };
 
 export const ListItemOverrideWithContentSlot: StoryObj = {

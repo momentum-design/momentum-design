@@ -7,7 +7,7 @@ const styles = css`
     height: inherit;
     width: inherit;
 
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: var(--mdc-listbox-max-height);
 
     /* prevent focus ring clipping */

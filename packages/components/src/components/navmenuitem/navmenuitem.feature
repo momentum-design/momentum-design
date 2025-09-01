@@ -80,6 +80,12 @@ Feature: NavMenuItem Navigation and User Interaction
       And the navmenuitem should have aria-disabled="true"
       But the navmenuitem should remain focusable
 
+    Scenario: Render tooltip
+      Given the navmenuitem has tooltip-text attribute set
+      When the navmenuitem is hovered through mouse or focused using keyboard
+      Then the tooltip should be visible on focus
+      And the tooltip should display the correct text
+
   Rule: ✅ Mouse Interactions
 
     Scenario: Click on normal active navmenuitem

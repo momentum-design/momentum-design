@@ -3,6 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
@@ -98,8 +99,8 @@ test.describe.parallel('mdc-cardbutton', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(cardbutton, { 'image-src': 'https://placehold.co/100x100' });
-        await expect(cardbutton).toHaveAttribute('image-src', 'https://placehold.co/100x100');
+        await componentsPage.setAttributes(cardbutton, { 'image-src': imageFixtures.card });
+        await expect(cardbutton).toHaveAttribute('image-src', imageFixtures.card);
         await componentsPage.removeAttribute(cardbutton, 'image-src');
       });
 
@@ -176,9 +177,9 @@ test.describe.parallel('mdc-cardbutton', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardbutton = componentsPage.page.locator('mdc-cardbutton');
-    const img = cardbutton.locator('img[src="https://placehold.co/100x100"]');
+    const img = cardbutton.locator(`img[src="${imageFixtures.card}"]`);
     const imgCount = await img.count();
     if (imgCount > 0) {
       for (let i = 0; i < imgCount; i += 1) {
@@ -186,10 +187,10 @@ test.describe.parallel('mdc-cardbutton', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const cardbutton = componentsPage.page.locator('mdc-cardbutton');
     const icon = cardbutton.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -199,7 +200,7 @@ test.describe.parallel('mdc-cardbutton', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardbuttonStickersheet = new StickerSheet(componentsPage, 'mdc-cardbutton');
@@ -208,7 +209,7 @@ test.describe.parallel('mdc-cardbutton', () => {
     cardbuttonStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': 'https://placehold.co/100x100',
+      'image-src': imageFixtures.card,
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -301,7 +302,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);
@@ -329,7 +330,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);
