@@ -7,6 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { disableControls, textControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
 import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 
@@ -70,7 +71,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    src: 'https://picsum.photos/id/63/256',
+    src: imageFixtures.avatar,
     initials: 'MD',
     size: 88,
     'icon-name': '',
@@ -115,7 +116,7 @@ export const SizeWithPresence: StoryObj = {
     ...disableControls(['counter', 'icon-name', 'initials', 'size']),
   },
   args: {
-    src: 'https://picsum.photos/id/63/256',
+    src: imageFixtures.avatar,
     presence: 'active',
     'is-typing': false,
   },

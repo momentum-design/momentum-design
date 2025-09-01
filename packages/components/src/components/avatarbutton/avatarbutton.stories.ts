@@ -7,6 +7,7 @@ import { action } from '@storybook/addon-actions';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
@@ -80,7 +81,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    src: 'https://picsum.photos/id/63/256',
+    src: imageFixtures.avatar,
     initials: 'MD',
     size: 88,
     'icon-name': '',
