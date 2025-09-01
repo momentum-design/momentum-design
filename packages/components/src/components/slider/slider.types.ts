@@ -1,5 +1,5 @@
 import { Slider } from '../..';
-import { OverrideEventTarget, TypedCustomEvent } from '../../utils/types';
+import type { OverrideEventTarget, TypedCustomEvent } from '../../utils/types';
 
 type SliderChangeEvent = TypedCustomEvent<Slider>;
 
