@@ -23,6 +23,15 @@ const styles = css`
     background-color: unset;
     border-left: 1px solid var(--mdc-combobox-border-color);
   }
+  :host::part(mdc-input) {
+    width: calc(100% - 1.5rem);
+  }
+  :host(:dir(rtl))::part(container__button) {
+    right: unset;
+    border-left: unset;
+    left: 0;
+    border-right: 1px solid var(--mdc-combobox-border-color);
+  }
   :host::part(container__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
@@ -40,6 +49,12 @@ const styles = css`
     top: 0;
     left: 0;
     z-index: -1;
+  }
+  /* High Contrast Mode */
+  @media (forced-colors: active) {
+    :host::part(container__button-icon) {
+      --mdc-icon-fill-color: ButtonText;
+    }
   }
 `;
 

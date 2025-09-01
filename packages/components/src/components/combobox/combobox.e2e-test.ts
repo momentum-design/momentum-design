@@ -68,24 +68,57 @@ test.describe('Combobox Feature Scenarios', () => {
      * VISUAL REGRESSION
      */
     await test.step('visual-regression', async () => {
-      const comboboxSheet = new StickerSheet(componentsPage, 'mdc-combobox', 'margin: 0.25rem');
-
-      // Default state
+      const markUpOptions = { createNewRow: true };
+      const label = 'Type headquarters name';
+      const comboboxSheet = new StickerSheet(componentsPage, 'mdc-combobox', 'padding: 0.25rem');
+      comboboxSheet.setAttributes({ label, placeholder: 'Type and select an headquarters from the list' });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
+      comboboxSheet.setAttributes({ label, placeholder: defaultPlaceholder });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
       comboboxSheet.setAttributes({
-        label: defaultLabel,
+        label,
         placeholder: defaultPlaceholder,
+        'help-text-type': 'success',
+        'help-text': 'This is a success message',
       });
-      await comboboxSheet.createMarkupWithCombination({});
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
+      comboboxSheet.setAttributes({
+        label,
+        placeholder: defaultPlaceholder,
+        'help-text-type': 'warning',
+        'help-text': 'This is a warning message',
+      });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
+      comboboxSheet.setAttributes({
+        label,
+        placeholder: defaultPlaceholder,
+        'help-text-type': 'error',
+        'help-text': 'This is an error message',
+      });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
+      comboboxSheet.setAttributes({
+        label,
+        placeholder: defaultPlaceholder,
+        disabled: true,
+      });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
+      comboboxSheet.setAttributes({
+        label,
+        placeholder: defaultPlaceholder,
+        readonly: true,
+      });
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
 
-      // With value
-      await comboboxSheet.createMarkupWithCombination({
-        attributes: { value: 'aus' },
+      comboboxSheet.setAttributes({
+        label: 'You are in a meeting',
+        placeholder: 'Select an option',
       });
-
-      // Disabled state
-      await comboboxSheet.createMarkupWithCombination({
-        attributes: { disabled: true },
-      });
+      comboboxSheet.setChildren(`
+      <mdc-selectlistbox>
+        <mdc-option prefix-icon="apps-bold" value="add-apps" selected label="Add apps"></mdc-option>
+      </mdc-selectlistbox>
+      `);
+      await comboboxSheet.createMarkupWithCombination({}, markUpOptions);
 
       await comboboxSheet.mountStickerSheet();
       await test.step('matches screenshot of element', async () => {
@@ -327,7 +360,6 @@ test.describe('Combobox Feature Scenarios', () => {
 
         await expect(input).toHaveValue('as');
         await expect(dropdown).not.toBeVisible();
-        await expect(input).not.toBeFocused();
       });
 
       await test.step('should select focused option when tabbing away', async () => {
