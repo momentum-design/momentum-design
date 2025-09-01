@@ -1,7 +1,7 @@
 import type { OverrideEventTarget, ValueOf } from '../../utils/types';
 import type { IconNames } from '../icon/icon.types';
 
-import AlertChip from './alertchip.component';
+import type AlertChip from './alertchip.component';
 import { VARIANTS } from './alertchip.constants';
 
 type VariantType = ValueOf<typeof VARIANTS>;

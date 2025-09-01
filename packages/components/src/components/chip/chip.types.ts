@@ -1,6 +1,6 @@
 import type { OverrideEventTarget, ValueOf } from '../../utils/types';
 
-import Chip from './chip.component';
+import type Chip from './chip.component';
 import { COLOR } from './chip.constants';
 
 type ColorType = ValueOf<typeof COLOR>;

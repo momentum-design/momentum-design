@@ -63,7 +63,7 @@ Feature: FilterChip Accessibility, Appearance, and User Interaction
 
     Scenario: Toggle filterchip using Enter and Space keys
       Given the filterchip is focused
-      When I press "Enter"
+      When I press "Enter" or "Space"
       Then the selected state should toggle
       When I press "Space"
       Then the selected state should toggle
@@ -83,3 +83,19 @@ Feature: FilterChip Accessibility, Appearance, and User Interaction
     Scenario: Disabled state ARIA attributes
       Given the filterchip is disabled
       Then the filterchip should not be in tab order
+
+  Rule: ✅ ScreenReader Accessibility
+
+    Scenario: ScreenReader announcements
+      Given the filterchip is rendered
+      Then the ScreenReader should announce the Label
+
+    Scenario: VoiceOver reads filterchip content
+      Given the filterchip is rendered and is selected
+      Then VoiceOver should read the Label
+      And VoiceOver should read the selected State
+
+    Scenario: VoiceOver reads filterchip content
+      Given the filterchip is rendered and is disabled
+      Then VoiceOver should read the Label
+      And VoiceOver should read the disabled State

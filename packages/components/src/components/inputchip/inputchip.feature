@@ -42,7 +42,7 @@ Feature: InputChip Accessibility, Appearance, and User Interaction
       Given the inputchip has clear-aria-label set
       When the inputchip is rendered
       Then the close button should be visible
-      And the close button should have the correct aria-label
+      And the close button should have aria-label equal to clear-aria-label
 
   Rule: ✅ Mouse Interactions
 
@@ -74,7 +74,7 @@ Feature: InputChip Accessibility, Appearance, and User Interaction
 
     Scenario: Activate inputchip using Enter key
       Given the close button is focused
-      When I press "Enter"
+      When I press "Enter" or "Space"
       Then the remove event should be triggered
       And the chip should be removed from the DOM
 

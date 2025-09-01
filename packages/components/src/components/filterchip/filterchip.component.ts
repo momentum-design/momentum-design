@@ -18,6 +18,8 @@ import { DEFAULTS } from './filterchip.constants';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @csspart label - The label part of the chip.
+ *
  * @cssproperty --mdc-chip-color - The color of the chip.
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
  * @cssproperty --mdc-chip-background-color - The background color of the chip.

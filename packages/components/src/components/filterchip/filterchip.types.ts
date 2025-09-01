@@ -1,6 +1,6 @@
 import type { OverrideEventTarget } from '../../utils/types';
 
-import FilterChip from './filterchip.component';
+import type FilterChip from './filterchip.component';
 
 interface Events {
   onClickEvent: OverrideEventTarget<MouseEvent, FilterChip>;
