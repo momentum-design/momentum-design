@@ -176,9 +176,9 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      */
     private getCurrentIndex(target: EventTarget | null): number {
       return this.navItems.findIndex(
-        // eslint-disable-next-line no-bitwise
         node =>
           node === target ||
+          // eslint-disable-next-line no-bitwise
           !!(node.compareDocumentPosition(target as HTMLElement) & Node.DOCUMENT_POSITION_CONTAINED_BY),
       );
     }
