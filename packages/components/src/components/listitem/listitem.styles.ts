@@ -19,7 +19,6 @@ const styles = css`
   }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
-    column-gap: var(--mdc-listitem-column-gap);
     display: flex;
     flex-direction: row;
     cursor: var(--mdc-listitem-cursor);
@@ -33,11 +32,8 @@ const styles = css`
   :host([variant='inset-pill']) {
     border-radius: 3.125rem;
   }
-  :host::part(leading-text) {
-    flex: 1;
-    /** 2x of column gap on both ends of the listitem - 100% width */
-    width: calc(100% - (2 * var(--mdc-listitem-padding-left-right)));
-  }
+  :host::part(leading-text),
+  :host::part(trailing-text),
   :host::part(leading-text-primary-label),
   :host::part(leading-text-secondary-label),
   :host::part(leading-text-tertiary-label),
@@ -79,13 +75,13 @@ const styles = css`
     align-items: center;
     column-gap: var(--mdc-listitem-column-gap);
     display: flex;
-  }
-  :host::part(leading) {
-    flex: 1;
     min-width: 0;
   }
+  :host::part(leading) {
+    flex: 1 1 auto;
+  }
   :host::part(trailing) {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     justify-content: flex-end;
   }
   :host::part(leading-text-secondary-label),

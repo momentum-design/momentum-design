@@ -11,6 +11,7 @@ const styles = css`
     --mdc-popover-inverted-border-color: var(--mds-color-theme-inverted-outline-primary-normal);
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-popover-elevation-3: var(--mds-elevation-3);
+    --mdc-popover-width: 100%;
     --mdc-popover-max-width: max-content;
     --mdc-popover-max-height: auto;
 
@@ -25,7 +26,7 @@ const styles = css`
     border: 0.0625rem solid var(--mdc-popover-border-color);
     filter: var(--mdc-popover-elevation-3);
     max-width: var(--mdc-popover-max-width);
-    width: var(--mdc-popover-max-width); /* shrink-to-fit until max-width */
+    width: var(--mdc-popover-width);
   }
 
   :host([strategy='absolute']) {
