@@ -3,6 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
@@ -127,8 +128,8 @@ test.describe.parallel('mdc-cardradio', () => {
       });
 
       await test.step('attribute image-src should be present on component when provided', async () => {
-        await componentsPage.setAttributes(cardradio, { 'image-src': 'https://placehold.co/100x100' });
-        await expect(cardradio).toHaveAttribute('image-src', 'https://placehold.co/100x100');
+        await componentsPage.setAttributes(cardradio, { 'image-src': imageFixtures.card });
+        await expect(cardradio).toHaveAttribute('image-src', imageFixtures.card);
         await componentsPage.removeAttribute(cardradio, 'image-src');
       });
 
@@ -229,9 +230,9 @@ test.describe.parallel('mdc-cardradio', () => {
   });
 
   // Ensure all images are visible before snapshot
-  const loadAllImages = async (componentsPage: ComponentsPage) => { 
+  const loadAllImages = async (componentsPage: ComponentsPage) => {
     const cardradio = componentsPage.page.locator('mdc-cardradio');
-    const img = cardradio.locator('img[src="https://placehold.co/100x100"]');
+    const img = cardradio.locator(`img[src="${imageFixtures.card}"]`);
     const imgCount = await img.count();
     if (imgCount > 0) {
       for (let i = 0; i < imgCount; i += 1) {
@@ -239,10 +240,10 @@ test.describe.parallel('mdc-cardradio', () => {
         await expect(img.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   // Ensure all icons are visible before snapshot
-  const loadAllIcons = async (componentsPage: ComponentsPage) => { 
+  const loadAllIcons = async (componentsPage: ComponentsPage) => {
     const cardradio = componentsPage.page.locator('mdc-cardradio');
     const icon = cardradio.locator('mdc-icon[name="placeholder-bold"]');
     const iconCount = await icon.count();
@@ -252,7 +253,7 @@ test.describe.parallel('mdc-cardradio', () => {
         await expect(icon.nth(i)).toBeVisible();
       }
     }
-  }
+  };
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
@@ -261,7 +262,7 @@ test.describe.parallel('mdc-cardradio', () => {
     cardRadioStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
-      'image-src': 'https://placehold.co/100x100',
+      'image-src': imageFixtures.card,
       'image-alt': 'Image Alt',
       'icon-name': 'placeholder-bold',
       orientation,
@@ -352,7 +353,7 @@ test.describe.parallel('mdc-cardradio', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);
@@ -380,7 +381,7 @@ test.describe.parallel('mdc-cardradio', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
-          imageSrc: 'https://placehold.co/100x100',
+          imageSrc: imageFixtures.card,
           imageAlt: 'Image Alt',
         });
         await loadAllImages(componentsPage);

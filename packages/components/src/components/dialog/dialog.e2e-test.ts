@@ -444,13 +444,13 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(dialog).toBeVisible();
 
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
-        const firstInput = componentsPage.page.locator('#first-input');
-        const standaloneCheckbox = componentsPage.page.locator('#standalone-checkbox');
-        const groupCheckbox1 = componentsPage.page.locator('#group-checkbox-1');
-        const groupCheckbox2 = componentsPage.page.locator('#group-checkbox-2');
-        const radio1 = componentsPage.page.locator('#radio-1');
-        const dialogBodyButton = componentsPage.page.locator('#dialog-body-button');
-        const secondInput = componentsPage.page.locator('#second-input');
+        const firstInput = componentsPage.page.locator('mdc-input[id="first-input"]');
+        const standaloneCheckbox = componentsPage.page.locator('mdc-checkbox[id="standalone-checkbox"]');
+        const groupCheckbox1 = componentsPage.page.locator('mdc-checkbox[id="group-checkbox-1"]');
+        const groupCheckbox2 = componentsPage.page.locator('mdc-checkbox[id="group-checkbox-2"]');
+        const radio1 = componentsPage.page.locator('mdc-radio[id="radio-1"]');
+        const dialogBodyButton = componentsPage.page.locator('mdc-button[id="dialog-body-button"]');
+        const secondInput = componentsPage.page.locator('mdc-input[id="second-input"]');
         const footerLink = componentsPage.page.locator('[slot="footer-link"]');
         const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
         const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');

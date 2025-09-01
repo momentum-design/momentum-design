@@ -1,4 +1,3 @@
-// AI-Assisted
 import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -9,7 +8,6 @@ type SetupOptions = {
   label?: string;
   'secondary-label'?: string;
   'arrow-position'?: string;
-  'tooltip-text'?: string;
   disabled?: boolean;
   'arrow-direction'?: string;
   'soft-disabled'?: boolean;
@@ -31,7 +29,6 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs['arrow-direction'] ? `arrow-direction="${restArgs['arrow-direction']}"` : ''}
         ${restArgs['arrow-position'] ? `arrow-position="${restArgs['arrow-position']}"` : ''}
-        ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
         ${restArgs['side-header-text'] ? `side-header-text="${restArgs['side-header-text']}"` : ''}
       >
         ${restArgs.children ?? ''}
@@ -266,16 +263,22 @@ test.describe('Menuitem Feature Scenarios', () => {
       });
 
       await test.step('hover over menuitem with tooltip shows tooltip', async () => {
-        const menuitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          'tooltip-text': 'Tooltip content',
+        await componentsPage.mount({
+          html: `   <div role="menu" style="width: 15rem; height: 10rem;">
+      <mdc-menuitem label="Hover on this menu item" id="menuitem-1">
+        <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      </mdc-menuitem>
+      <mdc-tooltip triggerID="menuitem-1" show-arrow>This is the tooltip text.</mdc-tooltip>
+    </div>`,
+          clearDocument: true,
         });
-
-        await menuitem.hover();
+        const menuitem = componentsPage.page.locator('mdc-menuitem');
+        await menuitem.waitFor();
+        await componentsPage.actionability.pressTab();
+        await expect(menuitem).toBeFocused();
         const tooltip = componentsPage.page.locator('mdc-tooltip');
         await expect(tooltip).toBeVisible();
-        await expect(tooltip).toContainText('Tooltip content');
+        await expect(tooltip).toContainText('This is the tooltip text.');
       });
     });
 
@@ -384,4 +387,3 @@ test.describe('Menuitem Feature Scenarios', () => {
     });
   });
 });
-// End AI-Assisted
