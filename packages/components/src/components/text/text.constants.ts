@@ -48,7 +48,7 @@ const VALID_TEXT_TAGS = {
 } as const;
 
 const DEFAULTS = {
-  TYPE: TYPE.BODY_LARGE_REGULAR,
+  TYPE: TYPE.BODY_MIDSIZE_MEDIUM,
   TEXT_ELEMENT_TAGNAME: VALID_TEXT_TAGS.P,
   CSS_PART_TEXT: 'text',
   CHILDREN: 'The quick brown fox jumps over the lazy dog',
