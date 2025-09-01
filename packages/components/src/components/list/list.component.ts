@@ -1,4 +1,4 @@
-import type { CSSResult, PropertyValues } from 'lit';
+import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -12,6 +12,7 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 
 import styles from './list.styles';
+import { DEFAULTS } from './list.constants';
 
 /**
  * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
@@ -27,19 +28,21 @@ import styles from './list.styles';
  * @csspart container - The container slot around the list items
  */
 class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Component)) {
-  /** @internal */
+  /**
+   * @internal
+   */
   private itemsStore: ElementStore<ListItem>;
 
   /**
-   * Whether to stop loop navigation when reaching the end of the list.
-   * If false, pressing the down arrow on the last item will focus the first item,
+   * Whether to loop navigation when reaching the end of the list.
+   * If 'true', pressing the down arrow on the last item will focus the first item,
    * and pressing the up arrow on the first item will focus the last item.
-   * If true, navigation will stop at the first or last item.
+   * If 'false', navigation will stop at the first or last item.
    *
-   * @default false
+   * @default ''
    */
-  @property({ type: Boolean, attribute: 'no-loop' })
-  protected noLoop: boolean = false;
+  @property({ type: String, reflect: true })
+  public override loop: 'true' | 'false' = DEFAULTS.LOOP;
 
   /**
    * The index of the item that should receive focus when the list is first rendered.
@@ -47,8 +50,8 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @default 0
    */
-  @property({ type: Number, attribute: 'initial-focus' })
-  protected override initialFocus: number = 0;
+  @property({ type: Number, reflect: true, attribute: 'initial-focus' })
+  public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
   constructor() {
     super();
@@ -68,22 +71,18 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     this.setAttribute('role', ROLE.LIST);
   }
 
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    this.loop = !this.noLoop;
-  }
-
-  public override firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-
-    this.loop = !this.noLoop;
-  }
-
+  /**
+   * @internal
+   */
   get navItems(): HTMLElement[] {
     return this.itemsStore.items;
   }
 
+  /**
+   * Update the tabIndex of the list items when a new item is added.
+   *
+   * @internal
+   */
   private handleCreatedEvent = (event: Event) => {
     const createdElement = event.target as HTMLElement;
     if (!this.isValidItem(createdElement)) {
@@ -93,6 +92,12 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     createdElement.tabIndex = -1;
   };
 
+  /**
+   * Update the focus when an item is removed.
+   * If there is a next item, focus it. If not, focus the previous item.
+   *
+   * @internal
+   */
   private handleDestroyEvent = (event: Event) => {
     const destroyedElement = event.target as HTMLElement;
     if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
@@ -106,7 +111,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
 
     let newIndex = destroyedItemIndex + 1;
     if (newIndex >= this.navItems.length) {
-      newIndex = this.navItems.length - 2;
+      newIndex = destroyedItemIndex - 1;
     }
 
     this.resetTabIndexes(newIndex);

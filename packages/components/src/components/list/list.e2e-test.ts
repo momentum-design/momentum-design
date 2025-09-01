@@ -9,7 +9,7 @@ type SetUpOptions = {
   children: string;
   suffix?: string;
   'header-text'?: string;
-  'no-loop'?: boolean;
+  loop?: string;
   'initial-focus'?: number;
 };
 
@@ -52,7 +52,7 @@ const setup = async (args: SetUpOptions) => {
   await componentsPage.mount({
     html: `
       <div>
-        <mdc-list ${restArgs['no-loop'] ? 'no-loop' : ''} initial-focus="${restArgs['initial-focus'] ?? ''}">
+        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}">
           ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
           ${restArgs.children ? restArgs.children : ''}
         </mdc-list>
@@ -151,9 +151,9 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
       });
 
-      await test.step('component should not loop navigation when list has no-loop attribute', async () => {
+      await test.step('component should not loop navigation when list has loop attribute set to false', async () => {
         const list = await setup({ componentsPage, children: generateChildren(5) });
-        await list.evaluate(node => node.setAttribute('no-loop', ''));
+        await list.evaluate(node => node.setAttribute('loop', 'false'));
 
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();

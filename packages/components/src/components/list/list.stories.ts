@@ -6,7 +6,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 
 import '../avatar';
@@ -39,11 +39,7 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list
-    aria-label="${args['aria-label']}"
-    ?no-loop="${args['no-loop']}"
-    initial-focus="${args['initial-focus']}"
-  >
+  html` <mdc-list aria-label="${args['aria-label']}" loop="${args.loop}" initial-focus="${args['initial-focus']}">
     ${args.textPassedToListHeader
       ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
       : ''}
@@ -85,6 +81,14 @@ const meta: Meta = {
       control: 'text',
     },
     ...disableControls(['default', 'list-header']),
+    ...hideControls(['itemsStore']),
+    loop: {
+      control: 'select',
+      options: ['true', 'false'],
+      table: {
+        defaultValue: { summary: 'true' },
+      },
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -250,4 +254,41 @@ export const ExpandingList: StoryObj = {
       <mdc-button style="margin-top: 16px;" @click="${addItem}">Add Item</mdc-button>
     `;
   },
+};
+
+export const ScrollingList: StoryObj = {
+  render: args =>
+    html`<mdc-list
+      style="height: 400px; overflow-y: auto; padding: 0.25rem"
+      aria-label="${args['aria-label']}"
+      loop="${args.loop}"
+      initial-focus="${args['initial-focus']}"
+    >
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
+      ${repeat(
+        new Array(5)
+          .fill(0)
+          .map(() => [...fakeUserNamesList])
+          .flat(),
+        item => item,
+        name =>
+          html`<mdc-listitem @click="${action('onclick')}" label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+            <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
+            <mdc-avatar
+              slot="leading-controls"
+              initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
+            ></mdc-avatar>
+            <mdc-button
+              slot="trailing-controls"
+              color="positive"
+              prefix-icon="data-range-selection-bold"
+              aria-label="mock label"
+            ></mdc-button>
+            <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
+            <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+          </mdc-listitem>`,
+      )}
+    </mdc-list>`,
 };

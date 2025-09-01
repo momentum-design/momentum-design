@@ -7,7 +7,7 @@ import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
 
 export declare abstract class ListNavigationMixinInterface {
-  protected loop: boolean;
+  protected loop: 'true' | 'false';
 
   protected propagateAllKeyEvents: boolean;
 
@@ -42,14 +42,14 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
   abstract class InnerMixinClass extends superClass {
     /**
      * Whether to loop navigation when reaching the end of the list.
-     * If true, pressing the down arrow on the last item will focus the first item,
+     * If 'true', pressing the down arrow on the last item will focus the first item,
      * and pressing the up arrow on the first item will focus the last item.
-     * If false, navigation will stop at the first or last item.
+     * If 'false', navigation will stop at the first or last item.
      *
-     * @default true
+     * @default 'true'
      * @internal
      */
-    protected loop: boolean = true;
+    protected loop: 'true' | 'false' = 'true';
 
     /**
      * Whether to propagate all key events to parent components.
@@ -132,14 +132,14 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
         }
         case KEYS.ARROW_DOWN: {
           // Move focus to the next item
-          const eolIndex = this.loop ? 0 : currentIndex;
+          const eolIndex = this.shouldLoop() ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
         }
         case KEYS.ARROW_UP: {
           // Move focus to the prev item
-          const eolIndex = this.loop ? this.navItems.length - 1 : currentIndex;
+          const eolIndex = this.shouldLoop() ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
@@ -233,7 +233,29 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       newItem.setAttribute('tabindex', '0');
 
       if (focusNewItem) {
-        newItem.focus();
+        newItem.focus({ preventScroll: true });
+
+        const list = newItem.closest(this.tagName)!;
+        const elementRect = newItem.getBoundingClientRect();
+        const containerRect = list.getBoundingClientRect();
+
+        const isNewItemInViewport =
+          elementRect.top >= containerRect.top &&
+          elementRect.left >= containerRect.left &&
+          elementRect.bottom <= containerRect.bottom &&
+          elementRect.right <= containerRect.right;
+
+        if (!isNewItemInViewport) {
+          const currentScrollTop = list.scrollTop;
+          newItem.scrollIntoView({ block: 'nearest' });
+          const newScrollTop = list.scrollTop;
+
+          if (newScrollTop > currentScrollTop) {
+            list.scrollTop += 10;
+          } else {
+            list.scrollTop -= 10;
+          }
+        }
       }
     }
 
@@ -259,7 +281,12 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           return key;
       }
     }
+
+    private shouldLoop() {
+      return !(this.loop === 'false');
+    }
   }
+
   // Cast return type to your mixin's interface intersected with the superClass type
   return InnerMixinClass as unknown as Constructor<Component & ListNavigationMixinInterface> & T;
 };
