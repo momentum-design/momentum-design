@@ -459,5 +459,15 @@ test('mdc-slider', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(tooltip).toHaveText('80');
     });
+    await test.step('drag thumb to change value', async () => {
+      const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
+      await componentsPage.actionability.pressTab();
+      await expect(slider).toBeFocused();
+      await componentsPage.page.mouse.move(650, 15);
+      await componentsPage.page.mouse.down();
+      await componentsPage.page.mouse.move(400, 15);
+      await componentsPage.page.mouse.up();
+      await expect(slider).toHaveAttribute('value', '31');
+    });
   });
 });
