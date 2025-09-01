@@ -246,7 +246,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       };
       await componentsPage.mount({
         html: `
-          <form id="test-form">
+          <form id="test-form" novalidate>
             <fieldset>
               <legend>Form Example With Dynamic Help Text</legend>
               <mdc-input
@@ -276,6 +276,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const submitButton = form.locator('mdc-button[type="submit"]');
       const resetButton = form.locator('mdc-button[type="reset"]');
 
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+
       // Helper to expect help-text and type
       async function expectHelpText(text: string, type: string) {
         await expect(helpTextEl).toHaveText(text);
@@ -304,8 +308,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         input.helpText = 'Name must be at least 5 characters';
       });
       await expectHelpText('Name must be at least 5 characters', 'error');
-
-      // Fill with too long value (browser never allows invalid input.)
 
       // Fill with valid value
       await mdcInput.evaluate((el: any) => {

@@ -207,8 +207,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     await test.step('should update help-text and help-text-type dynamically based on checkbox validity (FormFieldCheckboxWithHelpTextValidation)', async () => {
       await componentsPage.mount({
         html: `
-          <form id="test-form" novalidate>
-            <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+          <form id="test-form" novalidate tabindex="-1">
+            <fieldset style="display: flex; flex-direction: column; gap: 1rem;" tabindex="-1">
               <legend>Select your super hero power (with validation)</legend>
               <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
               <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
@@ -224,8 +224,10 @@ test('mdc-checkbox', async ({ componentsPage }) => {
         clearDocument: true,
       });
       const form = componentsPage.page.locator('#test-form');
+      await form.waitFor();
       const requiredCheckbox = form.locator('mdc-checkbox[name="super-power"][required]');
       const requiredInput = requiredCheckbox.locator('input[type="checkbox"]');
+      await requiredInput.waitFor();
       const submitButton = form.locator('mdc-button[type="submit"]');
       const resetButton = form.locator('mdc-button[type="reset"]');
       const helpText = requiredCheckbox.locator('mdc-text');
@@ -271,9 +273,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       }
 
       // 1. Submit with required unchecked
-      await componentsPage.actionability.pressTab();
-      await componentsPage.actionability.pressTab();
-      // await expect(requiredInput).toBeFocused(); --- causing issue in WebKit ---
+      await expect(requiredInput).not.toHaveAttribute('checked');
       await submitButton.click();
       await expectHelpText('Please select this required option', 'error');
 

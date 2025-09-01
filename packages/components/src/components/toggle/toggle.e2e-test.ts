@@ -211,8 +211,6 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       }
 
       // 1. Submit with toggle unchecked
-      await componentsPage.actionability.pressTab();
-      // await expect(mdcToggle).toBeFocused(); --- causing issue in WebKit ---
       await submitButton.click();
       await expectHelpText('You must accept the terms', 'error');
 

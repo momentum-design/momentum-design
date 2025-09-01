@@ -181,7 +181,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
         formEl.addEventListener('submit', event => {
           event.preventDefault();
           const radioGroup = formEl.querySelector('mdc-radiogroup[name="plan"]');
-          const checkedRadio = radioGroup?.querySelector('mdc-radio input[type="radio"]:checked');
+          const checkedRadio = radioGroup?.querySelector('mdc-radio[checked]');
           if (radioGroup) {
             if (!checkedRadio) {
               radioGroup.setAttribute('help-text', 'Please select a plan');
@@ -212,7 +212,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       await radios.nth(1).click(); // Select Premium Plan
       await expect(radios.nth(1)).toBeChecked();
       await submitButton.click();
-      // await expectHelpText('Looks good!', 'success');
+      await expectHelpText('Looks good!', 'success');
 
       // 4. Reset → back to default help-text
       await resetButton.click();
