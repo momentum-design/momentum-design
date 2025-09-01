@@ -156,6 +156,7 @@ export const AllVariants: StoryObj = {
         placeholder="Start typing"
         help-text="Select a country"
         help-text-type="${VALIDATION.SUCCESS}"
+        data-aria-label="Select a country"
         required
       >
         <mdc-selectlistbox>
@@ -166,6 +167,7 @@ export const AllVariants: StoryObj = {
         help-text="Selecting this number may cause a security risk because it is not properly setup."
         help-text-type="${VALIDATION.WARNING}"
         label="Select phone number"
+        data-aria-label="Select phone number"
         required
       >
         <mdc-selectlistbox>
@@ -177,10 +179,11 @@ export const AllVariants: StoryObj = {
         help-text="You must select the total number of Infinity Stones."
         label="How many Infinity Stones exist?"
         placeholder="Select the total number of Infinity Stones"
+        data-aria-label="How many Infinity Stones exist?"
         required
       ></mdc-combobox>
-      <mdc-combobox help-text="This is a disabled text." label="Label" placeholder="Selected text" disabled></mdc-combobox>
-      <mdc-combobox help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-combobox>
+      <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Selected text" disabled></mdc-combobox>
+      <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Selected text" readonly></mdc-combobox>
     </div>
   `,
 };
@@ -191,6 +194,7 @@ export const ComboboxWithOptionGroups: StoryObj = {
       label="Fruits and Vegetables"
       placeholder="Type a fruit or vegetable"
       no-result-text="No results found"
+      data-aria-label="Fruits and Vegetables"
     >
       <mdc-selectlistbox>
         <mdc-optgroup label="Fruit">
@@ -223,6 +227,7 @@ export const ComboboxWithSelectedValue: StoryObj = {
     label: 'Who is your favorite Avenger?',
     value: 'hulk',
     required: true,
+    'data-aria-label': 'Who is your favorite Avenger?',
     children: html`
       <mdc-selectlistbox>
         <mdc-option value="ironman" label="Iron Man"></mdc-option>
@@ -262,6 +267,7 @@ export const ComboboxWithForm: StoryObj = {
             required
             @change=${action('avengers combobox onchange')}
             @input=${action('avengers combobox oninput')}
+            data-aria-label="Select the avenger"
           >
             <mdc-selectlistbox>
               <mdc-option value="ironman" label="Iron Man"></mdc-option>
