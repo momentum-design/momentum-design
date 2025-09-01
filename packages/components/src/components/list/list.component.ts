@@ -41,6 +41,12 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   @property({ type: Boolean, attribute: 'no-loop' })
   protected noLoop: boolean = false;
 
+  /**
+   * The index of the item that should receive focus when the list is first rendered.
+   * If the index is out of bounds, the first item (index 0) will receive focus.
+   *
+   * @default 0
+   */
   @property({ type: Number, attribute: 'initial-focus' })
   protected override initialFocus: number = 0;
 
