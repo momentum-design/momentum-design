@@ -367,7 +367,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     // if no option is focused, then mark it invalid and return.
     if (getLastFocusedOptionIndex === -1) {
-      // TODO: set the combobox invalid as no value is selected.
+      this.checkValidity();
       return;
     }
     this.setSelectedValue(options[getLastFocusedOptionIndex]);
