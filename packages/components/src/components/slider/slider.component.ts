@@ -218,7 +218,7 @@ class Slider extends Component {
       this.setSoftDisabled();
     }
 
-    if (changedProperties.has('range')) {
+    if (changedProperties.has('range') || changedProperties.has('valueStart') || changedProperties.has('valueEnd')) {
       this.initializeRangeSlider();
     }
   }
@@ -264,7 +264,7 @@ class Slider extends Component {
    */
   private handleInputStart() {
     const input = this.inputElements[0];
-    if (!this.valueEnd) return;
+    if (!this.valueEnd || !input) return;
     if (Number(input.value) > this.valueEnd) {
       input.value = String(this.valueEnd);
       this.valueStart = this.valueEnd;
@@ -279,7 +279,7 @@ class Slider extends Component {
    */
   private handleInputEnd() {
     const input = this.inputElements[1];
-    if (!this.valueStart) return;
+    if (!this.valueStart || !input) return;
     if (Number(input.value) < this.valueStart) {
       input.value = String(this.valueStart);
       this.valueEnd = this.valueStart;
@@ -342,6 +342,11 @@ class Slider extends Component {
   updateTrackStyling() {
     let progressColor = `var(--mdc-slider-progress-color)`;
     let trackColor = `var(--mdc-slider-track-color)`;
+    if (this.disabled || this.softDisabled) {
+      progressColor = `var(--mds-color-theme-control-active-disabled)`;
+      trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
+    }
+
     if (this.range) {
       if (!this.inputElements[1]) return;
       const valueStart = Number(this.inputElements[0].value);
@@ -363,10 +368,6 @@ class Slider extends Component {
       const value = Number(this.inputElements[0].value);
       const max = Number(this.inputElements[0].max) || 1;
       const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
-      if (this.disabled || this.softDisabled) {
-        progressColor = `var(--mds-color-theme-control-active-disabled)`;
-        trackColor = `var(--mds-color-theme-control-inactive-disabled)`;
-      }
       this.inputElements[0].style.background = `linear-gradient(to right, ${progressColor} ${progress}%, ${trackColor} ${progress}%)`;
     }
   }
@@ -397,7 +398,7 @@ class Slider extends Component {
    */
   onInputStart() {
     this.handleInputStart();
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart } }));
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart, valueEnd: this.valueEnd } }));
   }
 
   /**
@@ -407,7 +408,7 @@ class Slider extends Component {
   onChangeStart(e: Event) {
     const input = e.target as HTMLInputElement;
     this.valueStart = Number(input.value);
-    this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart } }));
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart, valueEnd: this.valueEnd } }));
   }
 
   /**
@@ -416,7 +417,7 @@ class Slider extends Component {
    */
   onInputEnd() {
     this.handleInputEnd();
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd } }));
+    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd, valueStart: this.valueStart } }));
   }
 
   /**
@@ -426,7 +427,7 @@ class Slider extends Component {
   onChangeEnd(e: Event) {
     const input = e.target as HTMLInputElement;
     this.valueEnd = Number(input.value);
-    this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd } }));
+    this.dispatchEvent(new CustomEvent('change', { detail: { valueEnd: this.valueEnd, valueStart: this.valueStart } }));
   }
 
   /**
@@ -559,8 +560,8 @@ class Slider extends Component {
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"
                   aria-valuenow="${this.value ?? this.min}"
-                  aria-label="${this.dataAriaLabel || this.label || ''}"
-                  aria-valuetext="${this.dataAriaValuetext || this.valueLabel || this.value || ''}"
+                  aria-label="${this.dataAriaLabel ?? this.label ?? ''}"
+                  aria-valuetext="${this.dataAriaValuetext ?? this.valueLabel ?? String(this.valueStart ?? '')}"
                   tabindex="${this.disabled ? -1 : 0}"
                   @input=${this.onInput}
                   @change=${this.onChange}
