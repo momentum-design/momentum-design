@@ -276,6 +276,8 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).toHaveAttribute('aria-labelledby', 'popover-label');
     await expect(popover).toHaveAttribute('aria-describedby', 'popover-description');
     await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
+    // disable-aria-expanded changed after first update
+    // it will not remove already existing aria-expanded and aria-haspopup attributes!
     await expect(triggerButton).toHaveAttribute('aria-expanded');
     await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
     await expect(popover).toHaveAttribute('aria-modal', 'true');
@@ -677,7 +679,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         visible: 'true',
       });
       // disable-aria-expanded changed after first update
-      // it will not remove already existing aria-expanded adn aria-haspopup attributes!
+      // it will not remove already existing aria-expanded and aria-haspopup attributes!
       await expect(triggerButton).toHaveAttribute('aria-expanded');
       await expect(triggerButton).toHaveAttribute('aria-haspopup');
     });
