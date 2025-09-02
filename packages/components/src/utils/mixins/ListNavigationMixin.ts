@@ -90,7 +90,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected override async firstUpdated(changedProperties: PropertyValues) {
       super.firstUpdated(changedProperties);
 
-      const indexToFocus = Math.min(Math.max(this.initialFocus, 0), this.navItems.length - 1);
+      const indexToFocus = Math.max(Math.min(this.initialFocus, this.navItems.length - 1), 0);
       this.resetTabIndexAndSetFocus(indexToFocus, undefined, false);
     }
 
