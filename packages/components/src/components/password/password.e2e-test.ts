@@ -413,6 +413,101 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
   });
 
+  await test.step('should update help-text and help-text-type dynamically based on password validity (FormFieldPasswordWithHelpTextValidation)', async () => {
+    await componentsPage.mount({
+      html: `
+        <form id="test-form" novalidate>
+          <fieldset>
+            <legend>Form Example With Dynamic Help Text</legend>
+            <mdc-password
+              id="test-mdc-password"
+              placeholder="Enter your password"
+              label="Password"
+              required
+              minlength="5"
+              maxlength="10"
+              help-text="Please provide a valid password"
+              help-text-type="default"
+              show-hide-button-aria-label="Show or hide password"
+            ></mdc-password>
+            <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </fieldset>
+        </form>
+      `,
+      clearDocument: true,
+    });
+    const form = componentsPage.page.locator('#test-form');
+    const mdcPassword = componentsPage.page.locator('mdc-password');
+    const passwordEl = mdcPassword.locator('input');
+    const submitButton = form.locator('mdc-button[type="submit"]');
+    const resetButton = form.locator('mdc-button[type="reset"]');
+
+    // Add dynamic help-text handler to the form
+    await form.evaluate(formEl => {
+      const passwordEl = formEl.querySelector('mdc-password');
+      formEl.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!passwordEl) return;
+        const { value } = passwordEl;
+        const minlength = Number(passwordEl.getAttribute('minlength'));
+        const maxlength = Number(passwordEl.getAttribute('maxlength'));
+        if (!value) {
+          passwordEl.setAttribute('help-text-type', 'error');
+          passwordEl.setAttribute('help-text', 'Password is required');
+          return;
+        }
+        if (minlength && value.length < minlength) {
+          passwordEl.setAttribute('help-text-type', 'error');
+          passwordEl.setAttribute('help-text', `Password must be at least ${minlength} characters`);
+          return;
+        }
+        if (maxlength && value.length > maxlength) {
+          passwordEl.setAttribute('help-text-type', 'error');
+          passwordEl.setAttribute('help-text', `Password must be at most ${maxlength} characters`);
+          return;
+        }
+        passwordEl.setAttribute('help-text-type', 'success');
+        passwordEl.setAttribute('help-text', 'Looks good!');
+      });
+      formEl.addEventListener('reset', () => {
+        if (!passwordEl) return;
+        passwordEl.setAttribute('help-text-type', 'default');
+        passwordEl.setAttribute('help-text', 'Please provide a valid password');
+      });
+    });
+
+    // Helper to check help-text and help-text-type
+    async function expectHelpText(text: string, type: string) {
+      await expect(mdcPassword).toHaveAttribute('help-text', text);
+      await expect(mdcPassword).toHaveAttribute('help-text-type', type);
+    }
+
+    // 1. Submit with empty password
+    await componentsPage.actionability.pressTab();
+    await expect(passwordEl).toBeFocused();
+    await submitButton.click();
+    await expectHelpText('Password is required', 'error');
+
+    // 2. Fill password less than minlength
+    await passwordEl.fill('1234');
+    await submitButton.click();
+    await expectHelpText('Password must be at least 5 characters', 'error');
+
+    // 3. Fill password more than maxlength (browser never allows invalid input.)
+
+    // 4. Fill valid password
+    await passwordEl.fill('12345');
+    await submitButton.click();
+    await expectHelpText('Looks good!', 'success');
+
+    // 5. Reset form and check help-text resets
+    await resetButton.click();
+    await expectHelpText('Please provide a valid password', 'default');
+  });
+
   /**
    * VISUAL REGRESSION
    */
