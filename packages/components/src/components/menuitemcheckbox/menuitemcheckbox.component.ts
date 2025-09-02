@@ -82,11 +82,10 @@ class MenuItemCheckbox extends MenuItem {
   /**
    * Handles click events to toggle checked state
    * If the menuitemcheckbox is disabled, it does nothing.
-   * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
+   * If the menuitemcheckbox is not disabled, it dispatches the 'change' event.
    */
   private handleMouseClick() {
     if (this.disabled) return;
-    this.checked = !this.checked;
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
