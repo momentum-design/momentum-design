@@ -230,28 +230,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
 
       if (focusNewItem) {
         newItem.focus({ preventScroll: true });
-
-        const list = newItem.closest(this.tagName)!;
-        const elementRect = newItem.getBoundingClientRect();
-        const containerRect = list.getBoundingClientRect();
-
-        const isNewItemInViewport =
-          elementRect.top >= containerRect.top &&
-          elementRect.left >= containerRect.left &&
-          elementRect.bottom <= containerRect.bottom &&
-          elementRect.right <= containerRect.right;
-
-        if (!isNewItemInViewport) {
-          const currentScrollTop = list.scrollTop;
-          newItem.scrollIntoView({ block: 'nearest' });
-          const newScrollTop = list.scrollTop;
-
-          if (newScrollTop > currentScrollTop) {
-            list.scrollTop += 10;
-          } else {
-            list.scrollTop -= 10;
-          }
-        }
+        newItem.scrollIntoView({ block: 'nearest' });
       }
     }
 
