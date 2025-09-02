@@ -1,5 +1,4 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
-import { v4 as uuidv4 } from 'uuid';
 import { html, nothing } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
 
@@ -198,8 +197,6 @@ class Slider extends Component {
    */
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
-
-  protected inputId = `mdc-slider-${uuidv4()}`;
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
     super.updated(changedProperties);
@@ -452,7 +449,7 @@ class Slider extends Component {
       }
     }
     return html`
-      ${this.label ? html`<label part="slider-label" for="${this.inputId}">${this.label}</label>` : null}
+      ${this.label ? html`<label part="slider-label" for="single-slider">${this.label}</label>` : null}
       <div part="slider-track">
         ${this.iconTemplate(this.leadingIcon, 'leading-icon')}
         <div part="slider-wrapper">
@@ -532,7 +529,7 @@ class Slider extends Component {
               `
             : html`
                 <input
-                  id="${this.inputId}"
+                  id="single-slider"
                   part="single-slider"
                   type="range"
                   min="${this.min}"
