@@ -228,10 +228,10 @@ class Slider extends Component {
    * Updates the slider's input elements to reflect the current values.
    */
   private initializeRangeSlider() {
-    if (!this.valueStart) {
+    if (this.valueStart === undefined) {
       this.valueStart = this.min;
     }
-    if (!this.valueEnd) {
+    if (this.valueEnd === undefined) {
       this.valueEnd = this.max;
     }
     this.handleInputStart();
@@ -420,24 +420,23 @@ class Slider extends Component {
    */
   getTickStyles(tick: number) {
     const values = [];
-    const max = Number(this.inputElements[0]?.max) || 1;
     const value = Number(this.inputElements[0]?.value);
-    if (value >= 0) {
-      const progress = Math.max(0, Math.min(100, ((value - this.min) / (max - this.min)) * 100));
+    if (value !== undefined) {
+      const progress = Math.max(0, Math.min(100, ((value - this.min) / (this.max - this.min)) * 100));
       values.push(progress);
     }
     if (this.range) {
       const valueEnd = Number(this.inputElements[1]?.value);
-      if (valueEnd >= 0) {
-        const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (max - this.min)) * 100));
+      if (valueEnd !== undefined) {
+        const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (this.max - this.min)) * 100));
         values.push(progressEnd);
       }
     }
-    const position = ((tick - this.min) / (this.max - this.min)) * 100;
-    if (values.includes(tick)) {
+    const tickPosition = ((tick - this.min) / (this.max - this.min)) * 100;
+    if (values.includes(tickPosition)) {
       return `display:none;`;
     }
-    return `left: calc(${position}% - var(--mdc-slider-thumb-size) / 2);`;
+    return `left: calc(${tickPosition}% - var(--mdc-slider-thumb-size) / 2);`;
   }
 
   public override render() {
