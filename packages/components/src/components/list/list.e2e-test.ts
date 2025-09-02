@@ -233,7 +233,20 @@ test('mdc-list', async ({ componentsPage }) => {
           children: generateChildren(4),
           suffix: `<mdc-button id="add-item-button">Add Item</mdc-button>`,
         });
-        await componentsPage.page.pause();
+
+        await componentsPage.page.locator('#add-item-button').evaluate(node => {
+          node.addEventListener('click', () => {
+            const newItem = document.createElement('mdc-listitem');
+            newItem.setAttribute('label', `Button List Item`);
+
+            const btn = document.createElement('mdc-button');
+            btn.setAttribute('slot', 'trailing-controls');
+            btn.innerText = 'New Button';
+            newItem.appendChild(btn);
+
+            document.querySelector('mdc-list')?.appendChild(newItem);
+          });
+        });
 
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
@@ -244,23 +257,22 @@ test('mdc-list', async ({ componentsPage }) => {
         // Add new item
         await list.evaluate(node => {
           const newItem = document.createElement('mdc-listitem');
-          newItem.setAttribute('label', 'List Item 5');
+          newItem.setAttribute('label', 'Added List Item');
           node.appendChild(newItem);
         });
+        await list.locator('mdc-listitem[label="Added List Item"]').waitFor();
         await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
 
-        await componentsPage.actionability.pressShiftTab();
-        await list.evaluate(node => {
-          const newItem = document.createElement('mdc-listitem');
-          newItem.setAttribute('label', 'List Item 6');
+        // Focus the add item button
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await expect(componentsPage.page.locator('#add-item-button')).toBeFocused();
 
-          const btn = document.createElement('mdc-button');
-          btn.setAttribute('slot', 'trailing-controls');
-          btn.textContent = 'Action';
-          newItem.appendChild(btn);
+        await componentsPage.page.keyboard.press('Enter');
+        await list.locator('mdc-listitem[label="Button List Item"]').waitFor();
 
-          node.appendChild(newItem);
-        });
         await componentsPage.actionability.pressShiftTab();
         await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });

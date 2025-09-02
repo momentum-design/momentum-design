@@ -219,7 +219,7 @@ export const ExpandingList: StoryObj = {
     const addItem = () => {
       const newItem = document.createElement('mdc-listitem');
       newItem.setAttribute('variant', LISTITEM_VARIANTS.INSET_PILL);
-      newItem.setAttribute('label', `List Item ${listRef.value?.children.length + 1}`);
+      newItem.setAttribute('label', `List Item ${(listRef.value?.children.length || 0) + 1}`);
 
       const btn1 = document.createElement('mdc-button');
       btn1.setAttribute('slot', 'trailing-controls');
