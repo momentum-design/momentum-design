@@ -184,8 +184,8 @@ const styles = css`
   }
 
   @media (forced-colors: active) {
-    #end-slider,
-    #single-slider {
+    :host::part(end-slider),
+    :host::part(single-slider) {
       border: 1px solid;
     }
   }
