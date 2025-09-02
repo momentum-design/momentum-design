@@ -29,6 +29,13 @@ import styles from './chip.styles';
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
  * @cssproperty --mdc-chip-background-color - The background color of the chip.
  *
+ * @csspart label - The label part of the chip.
+ *
+ * @event click - (React: onClick) This event is dispatched when the chip is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the chip.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the chip.
+ * @event focus - (React: onFocus) This event is dispatched when the chip receives focus.
+ *
  */
 class Chip extends IconNameMixin(Buttonsimple) {
   /**
