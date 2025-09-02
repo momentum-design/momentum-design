@@ -145,6 +145,86 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await toggle.click();
       await expect(toggle).not.toHaveAttribute('checked');
     });
+
+    await test.step('should update help-text and help-text-type dynamically based on toggle validity (ToggleInsideFormWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset>
+              <legend>Form Example With Dynamic Help Text</legend>
+              <mdc-toggle
+                id="test-mdc-toggle"
+                label="Accept Terms"
+                help-text="Please accept the terms"
+                help-text-type="default"
+                required
+                data-aria-label="Accept terms"
+              ></mdc-toggle>
+              <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const mdcToggle = componentsPage.page.locator('mdc-toggle');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const helpText = mdcToggle.locator('mdc-text');
+
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const toggle = formEl.querySelector('mdc-toggle');
+          if (toggle) {
+            const helpTextEl = toggle.querySelector('mdc-text');
+            if (!toggle.hasAttribute('checked')) {
+              toggle.setAttribute('help-text', 'You must accept the terms');
+              toggle.setAttribute('help-text-type', 'error');
+              if (helpTextEl) helpTextEl.textContent = 'You must accept the terms';
+            } else {
+              toggle.setAttribute('help-text', 'Thank you for accepting!');
+              toggle.setAttribute('help-text-type', 'success');
+              if (helpTextEl) helpTextEl.textContent = 'Thank you for accepting!';
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const toggle = formEl.querySelector('mdc-toggle');
+          if (toggle) {
+            const helpTextEl = toggle.querySelector('mdc-text');
+            toggle.setAttribute('help-text', 'Please accept the terms');
+            toggle.setAttribute('help-text-type', 'default');
+            if (helpTextEl) helpTextEl.textContent = 'Please accept the terms';
+          }
+        });
+      });
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(text: string, type: string) {
+        await expect(helpText).toHaveText(text);
+        await expect(mdcToggle).toHaveAttribute('help-text-type', type);
+      }
+
+      // 1. Submit with toggle unchecked
+      await submitButton.click();
+      await expectHelpText('You must accept the terms', 'error');
+
+      // 2. Toggle on and submit
+      const input = mdcToggle.locator('input[type="checkbox"]');
+      await input.click();
+      await expect(mdcToggle).toHaveAttribute('checked');
+      await submitButton.click();
+      await expectHelpText('Thank you for accepting!', 'success');
+
+      // 3. Reset form and check help-text resets
+      await resetButton.click();
+      await expectHelpText('Please accept the terms', 'default');
+    });
   });
 
   /**
