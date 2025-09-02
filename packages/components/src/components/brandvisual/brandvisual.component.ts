@@ -102,13 +102,7 @@ class Brandvisual extends Component {
    * @param brandVisualHtml - The brandvisual html element which has been fetched from the brandvisual provider.
    */
   private handleBrandVisualLoadedSuccess(brandVisualHtml: TemplateResult) {
-    const props: imageProps = {};
-
-    if (this.altText) {
-      props.alt = this.altText;
-    }
-
-    this.brandVisualData = this.injectTemplateAttributes(brandVisualHtml, 'img', props);
+    this.brandVisualData = this.injectTemplateAttributes(brandVisualHtml, 'img', { alt: this.altText });
 
     // when brandvisual is imported successfully, trigger brandvisual load event.
     const loadEvent = new Event('load', {
