@@ -233,6 +233,108 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(input).not.toBeFocused();
     });
 
+    await test.step('dynamic help-text validation interaction test for mdc-input (FormFieldInputWithHelpTextValidation)', async () => {
+      const args = {
+        label: 'First Name',
+        name: 'user-name',
+        placeholder: 'Enter your name',
+        required: true,
+        minlength: 5,
+        maxlength: 10,
+        helpText: 'Please provide a valid name',
+        helpTextType: 'default',
+      };
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset>
+              <legend>Form Example With Dynamic Help Text</legend>
+              <mdc-input
+                id="test-mdc-input"
+                placeholder="${args.placeholder}"
+                label="${args.label}"
+                name="${args.name}"
+                required
+                minlength="${args.minlength}"
+                maxlength="${args.maxlength}"
+                help-text="${args.helpText}"
+                help-text-type="${args.helpTextType}"
+              ></mdc-input>
+              <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const mdcInput = form.locator('mdc-input');
+      const inputEl = mdcInput.locator('input');
+      const helpTextEl = mdcInput.locator('mdc-text[part="help-text"]');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+
+      await form.evaluate((formEl: HTMLFormElement) => {
+        formEl.addEventListener('submit', e => e.preventDefault());
+      });
+
+      // Helper to expect help-text and type
+      async function expectHelpText(text: string, type: string) {
+        await expect(helpTextEl).toHaveText(text);
+        await expect(mdcInput).toHaveAttribute('help-text-type', type);
+      }
+
+      // Initial state
+      await expectHelpText('Please provide a valid name', 'default');
+
+      // Submit with empty value (required)
+      await submitButton.click();
+      await mdcInput.evaluate((el: any) => {
+        const input = el;
+        input.helpTextType = 'error';
+        input.helpText = 'Name is required';
+      });
+      await expectHelpText('Name is required', 'error');
+
+      // Fill with too short value
+      await inputEl.fill('abc');
+      await submitButton.focus(); // hack for firefox
+      await submitButton.click();
+      await mdcInput.evaluate((el: any) => {
+        const input = el;
+        input.helpTextType = 'error';
+        input.helpText = 'Name must be at least 5 characters';
+      });
+      await expectHelpText('Name must be at least 5 characters', 'error');
+
+      // Fill with valid value
+      await mdcInput.evaluate((el: any) => {
+        // set value through the component, not just the inner <input>
+        const input = el;
+        input.value = 'abcdef';
+      });
+      await submitButton.focus(); // hack for firefox
+      await submitButton.click();
+      await mdcInput.evaluate((el: any) => {
+        const input = el;
+        input.helpTextType = 'success';
+        input.helpText = 'Looks good!';
+      });
+      await expectHelpText('Looks good!', 'success');
+
+      // Reset form
+      await resetButton.focus(); // hack for firefox
+      await resetButton.click();
+      await mdcInput.evaluate((el: any) => {
+        const input = el;
+        input.helpTextType = 'default';
+        input.helpText = 'Please provide a valid name';
+      });
+      await expectHelpText('Please provide a valid name', 'default');
+    });
+
     await test.step('readonly component should be focusable with tab', async () => {
       await setup({
         componentsPage,
