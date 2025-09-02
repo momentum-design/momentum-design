@@ -189,10 +189,25 @@ test('mdc-select', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    const getShadowRootElementAttribute = (selector1: string, selector2: string, attributeName: string) =>
+      componentsPage.page.evaluate(
+        ({ selector1, selector2, attributeName }) =>
+          document.querySelector(selector1)?.shadowRoot?.querySelector(selector2)?.getAttribute(attributeName),
+        { selector1, selector2, attributeName },
+      );
+
     await test.step('should have default attributes', async () => {
       const select = await setup({ componentsPage, children: defaultChildren() });
       await expect(select).toHaveAttribute('help-text-type', 'default');
       await expect(select).toHaveAttribute('value', 'option1');
+
+      await expect(await getShadowRootElementAttribute('mdc-select', '[part="base-container"]', 'aria-expanded')).toBe(
+        'false',
+      );
+      await expect(await getShadowRootElementAttribute('mdc-select', '[part="base-container"]', 'aria-haspopup')).toBe(
+        'listbox',
+      );
+
       const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
       const textContent = await mdcTextElement.textContent();
       // The first option should be visible by default when no option is selected and placeholder is not defined.

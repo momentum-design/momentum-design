@@ -348,7 +348,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Disable setting the `aria-expanded` attribute on trigger element.
-   * Make sure to set this to true when its role is not 'dialog' or 'alertdialog' i.e. listbox, menu, etc.
    *
    * Note, when `disable-aria-expanded` is true
    *  - when its value change after first update to
