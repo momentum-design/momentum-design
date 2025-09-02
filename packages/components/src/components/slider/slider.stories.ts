@@ -27,10 +27,10 @@ const render = (args: Args) => html`
     value-label="${args['value-label']}"
     value-label-start="${args['value-label-start']}"
     value-label-end="${args['value-label-end']}"
-    aria-label-start="${args['aria-label-start']}"
-    aria-valuetext-start="${args['aria-valuetext-start']}"
-    aria-label-end="${args['aria-label-end']}"
-    aria-valuetext-end="${args['aria-valuetext-end']}"
+    start-aria-label="${args['start-aria-label']}"
+    start-aria-valuetext="${args['start-aria-valuetext']}"
+    end-aria-label="${args['end-aria-label']}"
+    end-aria-valuetext="${args['end-aria-valuetext']}"
     name="${args.name}"
     name-start="${args['name-start']}"
     name-end="${args['name-end']}"
@@ -65,10 +65,10 @@ const meta: Meta = {
     'value-label': { control: 'text' },
     'value-label-start': { control: 'text' },
     'value-label-end': { control: 'text' },
-    'aria-label-start': { control: 'text' },
-    'aria-valuetext-start': { control: 'text' },
-    'aria-label-end': { control: 'text' },
-    'aria-valuetext-end': { control: 'text' },
+    'start-aria-label': { control: 'text' },
+    'start-aria-valuetext': { control: 'text' },
+    'end-aria-label': { control: 'text' },
+    'end-aria-valuetext': { control: 'text' },
     name: { control: 'text' },
     'name-start': { control: 'text' },
     'name-end': { control: 'text' },
@@ -107,10 +107,10 @@ export const Example: StoryObj = {
     'value-label': '',
     'value-label-start': '',
     'value-label-end': '',
-    'aria-label-start': '',
-    'aria-valuetext-start': '',
-    'aria-label-end': '',
-    'aria-valuetext-end': '',
+    'start-aria-label': '',
+    'start-aria-valuetext': '',
+    'end-aria-label': '',
+    'end-aria-valuetext': '',
     name: '',
     'name-start': '',
     'name-end': '',

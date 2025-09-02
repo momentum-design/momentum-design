@@ -23,10 +23,10 @@ type SetupOptions = {
   'value-label'?: string;
   'value-label-start'?: string;
   'value-label-end'?: string;
-  'aria-label-start'?: string;
-  'aria-valuetext-start'?: string;
-  'aria-label-end'?: string;
-  'aria-valuetext-end'?: string;
+  'start-aria-label'?: string;
+  'start-aria-valuetext'?: string;
+  'end-aria-label'?: string;
+  'end-aria-valuetext'?: string;
   name?: string;
   'name-start'?: string;
   'name-end'?: string;

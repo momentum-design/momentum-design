@@ -1,4 +1,5 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
+import { v4 as uuidv4 } from 'uuid';
 import { html, nothing } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
 
@@ -169,12 +170,12 @@ class Slider extends Component {
   /**
    * Aria label for the slider's start handle displayed when range is true.
    */
-  @property({ reflect: true, type: String, attribute: 'aria-label-start' }) ariaLabelStart?: string;
+  @property({ reflect: true, type: String, attribute: 'start-aria-label' }) startAriaLabel?: string;
 
   /**
    * Aria label for the slider's end handle displayed when range is true.
    */
-  @property({ reflect: true, type: String, attribute: 'aria-label-end' }) ariaLabelEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'end-aria-label' }) endAriaLabel?: string;
 
   /**
    * Aria value text for the slider's value displayed when range is false.
@@ -184,12 +185,12 @@ class Slider extends Component {
   /**
    * Aria value text for the slider's start value displayed when range is true.
    */
-  @property({ reflect: true, type: String, attribute: 'aria-valuetext-start' }) ariaValuetextStart?: string;
+  @property({ reflect: true, type: String, attribute: 'start-aria-valuetext' }) startAriaValuetext?: string;
 
   /**
    * Aria value text for the slider's end value displayed when range is true.
    */
-  @property({ reflect: true, type: String, attribute: 'aria-valuetext-end' }) ariaValuetextEnd?: string;
+  @property({ reflect: true, type: String, attribute: 'end-aria-valuetext' }) endAriaValueText?: string;
 
   /**
    * Targets all the input components with type='range'
@@ -197,6 +198,8 @@ class Slider extends Component {
    */
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
+
+  protected inputId = `mdc-slider-${uuidv4()}`;
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
     super.updated(changedProperties);
@@ -379,7 +382,6 @@ class Slider extends Component {
   onInput(e: Event) {
     const input = e.target as HTMLInputElement;
     this.value = Number(input.value);
-    this.dispatchEvent(new CustomEvent('input', { detail: { value: this.value } }));
   }
 
   /**
@@ -393,15 +395,6 @@ class Slider extends Component {
   }
 
   /**
-   * Handles the input event for the start thumb of range value slider.
-   * @param e - The input event.
-   */
-  onInputStart() {
-    this.handleInputStart();
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueStart: this.valueStart, valueEnd: this.valueEnd } }));
-  }
-
-  /**
    * Handles the change event for the start thumb of the range slider.
    * @param e - The change event.
    */
@@ -409,15 +402,6 @@ class Slider extends Component {
     const input = e.target as HTMLInputElement;
     this.valueStart = Number(input.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { valueStart: this.valueStart, valueEnd: this.valueEnd } }));
-  }
-
-  /**
-   * Handles the input event for the end thumb of the range value slider.
-   * @param e - The input event.
-   */
-  onInputEnd() {
-    this.handleInputEnd();
-    this.dispatchEvent(new CustomEvent('input', { detail: { valueEnd: this.valueEnd, valueStart: this.valueStart } }));
   }
 
   /**
@@ -468,7 +452,7 @@ class Slider extends Component {
       }
     }
     return html`
-      ${this.label ? html`<label part="slider-label">${this.label}</label>` : null}
+      ${this.label ? html`<label part="slider-label" for="${this.inputId}">${this.label}</label>` : null}
       <div part="slider-track">
         ${this.iconTemplate(this.leadingIcon, 'leading-icon')}
         <div part="slider-wrapper">
@@ -494,10 +478,10 @@ class Slider extends Component {
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"
                   aria-valuenow="${this.valueStart ?? this.min}"
-                  aria-label="${this.ariaLabelStart || this.label || ''}"
-                  aria-valuetext="${this.ariaValuetextStart || this.valueLabelStart || this.valueStart || ''}"
+                  aria-label="${this.startAriaLabel || this.label || ''}"
+                  aria-valuetext="${this.startAriaValuetext || this.valueLabelStart || this.valueStart || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${this.onInputStart}
+                  @input=${this.handleInputStart}
                   @change=${this.onChangeStart}
                   @focus=${() => {
                     this.thumbStartFocused = true;
@@ -526,10 +510,10 @@ class Slider extends Component {
                   aria-valuemin="${this.min}"
                   aria-valuemax="${this.max}"
                   aria-valuenow="${this.valueEnd ?? this.max}"
-                  aria-label="${this.ariaLabelEnd || this.label || ''}"
-                  aria-valuetext="${this.ariaValuetextEnd || this.valueLabelEnd || this.valueEnd || ''}"
+                  aria-label="${this.endAriaLabel || this.label || ''}"
+                  aria-valuetext="${this.endAriaValueText || this.valueLabelEnd || this.valueEnd || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${this.onInputEnd}
+                  @input=${this.handleInputEnd}
                   @change=${this.onChangeEnd}
                   @focus=${() => {
                     this.thumbEndFocused = true;
@@ -548,7 +532,7 @@ class Slider extends Component {
               `
             : html`
                 <input
-                  id="single-slider"
+                  id="${this.inputId}"
                   part="single-slider"
                   type="range"
                   min="${this.min}"
