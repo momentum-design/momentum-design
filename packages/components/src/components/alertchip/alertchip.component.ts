@@ -29,6 +29,11 @@ import type { VariantType } from './alertchip.types';
  *
  * @csspart icon - The alert icon
  * @csspart label - The text label of the alertchip
+ *
+ * @event click - (React: onClick) This event is dispatched when the chip is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the chip.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the chip.
+ * @event focus - (React: onFocus) This event is dispatched when the chip receives focus.
  */
 class AlertChip extends Buttonsimple {
   /**
