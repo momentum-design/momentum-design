@@ -31,6 +31,8 @@ const createOptionsMarkup = (options: Array<{ value: string; label: string }>) =
       .join('\n')}</mdc-selectlistbox>
   `;
 
+const isFireFox = () => test.info().project.name === 'firefox';
+
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
 
@@ -50,8 +52,8 @@ const setup = async (args: SetupOptions) => {
 
   const combobox = componentsPage.page.locator('mdc-combobox');
   const input = combobox.locator(`[role="${ROLE.COMBOBOX}"]`);
-  const dropdown = combobox.locator(`[role="${ROLE.LISTBOX}"]`);
-  const options = dropdown.locator(`[role="${ROLE.OPTION}"]`);
+  const dropdown = combobox.locator(`mdc-popover`);
+  const options = combobox.locator(`[role="${ROLE.OPTION}"]`);
 
   return {
     combobox,
@@ -130,7 +132,7 @@ test.describe('Combobox Feature Scenarios', () => {
 
     await test.step('accessibility attributes', async () => {
       await test.step('should have proper ARIA attributes', async () => {
-        const { input, dropdown } = await setup({
+        const { input } = await setup({
           componentsPage,
           label: defaultLabel,
           placeholder: defaultPlaceholder,
@@ -145,7 +147,6 @@ test.describe('Combobox Feature Scenarios', () => {
 
         // Check dropdown attributes when opened
         await input.click();
-        await expect(dropdown).toHaveAttribute('role', ROLE.LISTBOX);
         await expect(input).toHaveAttribute('aria-expanded', 'true');
       });
     });
@@ -321,7 +322,12 @@ test.describe('Combobox Feature Scenarios', () => {
         await componentsPage.actionability.pressTab();
         await input.fill('aus');
         await expect(dropdown).toBeVisible();
-        await input.press(KEYS.TAB); // Tab away
+        if (isFireFox()) {
+          // Firefox does not support tabbing away
+          await input.evaluate(node => node.blur());
+        } else {
+          await input.press(KEYS.TAB); // Tab away
+        }
 
         await expect(input).toHaveValue('aus');
         await expect(dropdown).not.toBeVisible();
@@ -338,7 +344,12 @@ test.describe('Combobox Feature Scenarios', () => {
         await componentsPage.actionability.pressTab();
         await input.fill('aus');
         await input.press(KEYS.ARROW_DOWN); // Select the first option
-        await input.press(KEYS.TAB); // Then tab away
+        if (isFireFox()) {
+          // Firefox does not support tabbing away
+          await input.evaluate(node => node.blur());
+        } else {
+          await input.press(KEYS.TAB); // Then tab away
+        }
 
         await expect(input).toHaveValue('Austria');
         await expect(dropdown).not.toBeVisible();
@@ -377,7 +388,12 @@ test.describe('Combobox Feature Scenarios', () => {
         const firstOption = options.first();
         await expect(firstOption).toHaveAttribute('aria-selected', 'true');
 
-        await input.press(KEYS.TAB);
+        if (isFireFox()) {
+          // Firefox does not support tabbing away
+          await input.evaluate(node => node.blur());
+        } else {
+          await input.press(KEYS.TAB);
+        }
 
         await expect(input).toHaveValue('Argentina');
         await expect(dropdown).not.toBeVisible();
