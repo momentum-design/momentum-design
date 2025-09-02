@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import type { IconNames } from '../icon/icon.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
-import StaticChip from '../staticchip';
+import StaticChip from '../staticchip/staticchip.component';
 
 import { DEFAULTS } from './chip.constants';
 import type { ColorType } from './chip.types';
