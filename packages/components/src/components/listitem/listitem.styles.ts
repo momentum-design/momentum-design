@@ -19,6 +19,7 @@ const styles = css`
   }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
+    column-gap: var(--mdc-listitem-column-gap);
     display: flex;
     flex-direction: row;
     cursor: var(--mdc-listitem-cursor);
