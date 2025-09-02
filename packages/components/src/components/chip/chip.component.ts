@@ -2,9 +2,9 @@ import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { Component } from '../../models';
 import type { IconNames } from '../icon/icon.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import StaticChip from '../staticchip';
 
 import { DEFAULTS } from './chip.constants';
 import type { ColorType } from './chip.types';
@@ -84,7 +84,7 @@ class Chip extends IconNameMixin(Buttonsimple) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...StaticChip.styles, ...styles];
 }
 
 export default Chip;

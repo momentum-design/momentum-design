@@ -15,16 +15,15 @@ import styles from './staticchip.styles';
  * It is recommended to keep the label text for the chip component concise and compact.
  * For best results, we recommend limiting the <b>maximum length of the label text to 20 characters</b>, including empty spaces to split words.
  *
- * This component is built by extending Buttonsimple.
  *
  * @tagname mdc-staticchip
  *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @cssproperty --mdc-staticchip-color - The color of the static chip.
- * @cssproperty --mdc-staticchip-border-color - The border color of the static chip.
- * @cssproperty --mdc-staticchip-background-color - The background color of the static chip.
+ * @cssproperty --mdc-chip-color - The color of the static chip.
+ * @cssproperty --mdc-chip-border-color - The border color of the static chip.
+ * @cssproperty --mdc-chip-background-color - The background color of the static chip.
  *
  */
 class StaticChip extends IconNameMixin(Component) {

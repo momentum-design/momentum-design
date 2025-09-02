@@ -31,7 +31,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...textControls(['--mdc-staticchip-color', '--mdc-staticchip-border-color', '--mdc-staticchip-background-color']),
+    ...textControls(['--mdc-chip-color', '--mdc-chip-border-color', '--mdc-chip-background-color']),
   },
 };
 

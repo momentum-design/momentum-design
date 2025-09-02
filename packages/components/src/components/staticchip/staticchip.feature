@@ -1,7 +1,7 @@
-Feature: StaticChip Accessibility, Appearance, and User Interaction
+Feature: Staticchip Accessibility, Appearance, and User Interaction
 
   Background:
-    Given the StaticChip component is rendered on the page
+    Given the Staticchip component is rendered on the page
     And the Staticchip has default color="default"
     And the Staticchip contains:
       | Property         | Value                | State    |
