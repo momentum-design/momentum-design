@@ -124,27 +124,15 @@ export class PopoverUtils {
   }
 
   /**
-   * Updates the aria-haspopup attribute on the trigger element.
-   */
-  updateAriaHasPopupAttribute() {
-    if (this.popover.interactive && !this.popover.disableAriaHasPopup) {
-      this.popover.triggerElement?.setAttribute(
-        'aria-haspopup',
-        this.popover.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
-      );
-    } else {
-      this.popover.triggerElement?.removeAttribute('aria-haspopup');
-    }
-  }
-
-  /**
    * Updates the aria-expanded attribute on the trigger element.
    */
   updateAriaExpandedAttribute() {
-    if (this.popover.disableAriaExpanded) {
-      this.popover.triggerElement?.removeAttribute('aria-expanded');
-    } else {
+    if (!this.popover.disableAriaExpanded) {
       this.popover.triggerElement?.setAttribute('aria-expanded', `${this.popover.visible}`);
+      this.popover.triggerElement?.setAttribute(
+        'aria-haspopup',
+        this.popover.triggerElement?.getAttribute('aria-haspopup') || this.popover.role || 'dialog',
+      );
     }
   }
 
