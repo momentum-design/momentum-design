@@ -196,6 +196,42 @@ test.describe.parallel('mdc-listitem', () => {
         await expect(listitem).toHaveAttribute('soft-disabled', '');
         await expect(listitem).toHaveAttribute('aria-disabled', 'true');
       });
+
+      await test.step('should respect fixed width and auto-shrink content', async () => {
+        const listitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'secondary-label': secondaryLabel,
+          'side-header-text': sideHeaderText,
+          children: `
+            <div slot="leading-controls">
+              <mdc-checkbox checked data-aria-label="${primaryLabel}"></mdc-checkbox>
+              <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
+            </div>
+            <div slot="trailing-controls">
+              <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
+              <mdc-button variant="secondary">Click</mdc-button>
+              <mdc-toggle data-aria-label="${primaryLabel}" size="compact"></mdc-toggle>
+              <mdc-badge type="dot"></mdc-badge>
+            </div>
+          `,
+        });
+        await componentsPage.setAttributes(listitem, { style: 'width: 800px; outline: 2px solid red;' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-listitem-fixed-width', {
+          source: 'userflow',
+          fileNameSuffix: '800px',
+        });
+        await componentsPage.setAttributes(listitem, { style: 'width: 400px; outline: 2px solid red;' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-listitem-fixed-width', {
+          source: 'userflow',
+          fileNameSuffix: '400px',
+        });
+        // Leading and trailing text should auto-shrink
+        const leadingText = listitem.locator('mdc-text[part="leading-text-primary-label"]');
+        const trailingText = listitem.locator('mdc-text[part="trailing-text-side-header"]');
+        expect(await leadingText.isVisible()).toBe(true);
+        expect(await trailingText.isVisible()).toBe(true);
+      });
     });
 
     /**
