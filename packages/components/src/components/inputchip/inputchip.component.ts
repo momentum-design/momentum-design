@@ -24,6 +24,10 @@ import { DEFAULTS } from './inputchip.constants';
  *
  * @event remove - This event is dispatched when the close button is activated. It bubbles and is composed.
  *
+ * @csspart label - The label part of the chip.
+ * @csspart icon - The icon part of the chip.
+ * @csspart close-icon - The close icon part of the chip.
+ *
  * @cssproperty --mdc-chip-color - The color of the chip.
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
  * @cssproperty --mdc-chip-background-color - The background color of the chip.
@@ -56,7 +60,7 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
    */
   private renderIcon() {
     if (!this.iconName) return nothing;
-    return html` <mdc-icon name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
+    return html` <mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
   }
 
   /**
