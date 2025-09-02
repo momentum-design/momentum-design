@@ -59,6 +59,7 @@ import SelectListbox from './components/selectlistbox';
 import SideNavigation from './components/sidenavigation';
 import Skeleton from './components/skeleton';
 import Spinner from './components/spinner';
+import StaticChip from './components/staticchip';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
 import StaticToggle from './components/statictoggle';
@@ -171,6 +172,7 @@ export {
   SideNavigation,
   Skeleton,
   Spinner,
+  StaticChip,
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
