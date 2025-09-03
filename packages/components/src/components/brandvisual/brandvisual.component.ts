@@ -1,11 +1,10 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 
 import styles from './brandvisual.styles';
-import type { BrandVisualNames } from './brandvisual.types';
-import { DEFAULTS } from './brandvisual.constants';
+import type { BrandVisualNames, imageProps } from './brandvisual.types';
 
 /**
  * The `mdc-brandvisual` component is responsible for rendering logos dynamically & ensures they are
@@ -26,18 +25,25 @@ import { DEFAULTS } from './brandvisual.constants';
  */
 class Brandvisual extends Component {
   @state()
-  private brandVisualData?: HTMLElement;
+  private brandVisualData?: Element | TemplateResult;
 
   /**
    * Name of the brandVisual (= filename)
    */
   @property({ type: String, reflect: true })
-  name?: BrandVisualNames = DEFAULTS.NAME;
+  name?: BrandVisualNames;
+
+  /**
+   * Alt text for the brandvisual image for accessibility.
+   * This will only be set if the brandvisual is an image (png).
+   */
+  @property({ type: String, reflect: true })
+  altText?: string;
 
   private async getBrandVisualData() {
     if (this.name) {
       // dynamic import of the lit template from the momentum brand-visuals package
-      return import(`@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts`)
+      return import(`@momentum-design/brand-visuals/dist/ts/${this.name}.ts`)
         .then(module => {
           this.handleBrandVisualLoadedSuccess(module.default());
         })
@@ -45,8 +51,9 @@ class Brandvisual extends Component {
           this.handleBrandVisualLoadedFailure(error);
         });
     }
-    this.handleBrandVisualLoadedFailure(new Error('No brandvisual name provided.'));
-    return Promise.reject(new Error('No brandvisual name provided.'));
+    const nameError = new Error('No brandvisual name provided.');
+    this.handleBrandVisualLoadedFailure(nameError);
+    return Promise.reject(nameError);
   }
 
   override updated(changedProperties: Map<string, any>) {
@@ -60,6 +67,33 @@ class Brandvisual extends Component {
         }
       });
     }
+
+    if (changedProperties.has('altText')) {
+      if (this.brandVisualData) {
+        this.brandVisualData = this.injectHtmlAttributes(this.brandVisualData as Element, { alt: this.altText });
+      }
+    }
+  }
+
+  private injectTemplateAttributes(litTemplate: TemplateResult, tag: string, props: any): Element | TemplateResult {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(litTemplate.strings[0], 'text/html');
+    const element = doc.querySelector(tag);
+    if (element) {
+      Object.entries(props).forEach(([key, value]) => {
+        element.setAttribute(key, value as string);
+      });
+    }
+
+    return element || litTemplate;
+  }
+
+  private injectHtmlAttributes(html: Element, props: imageProps): Element {
+    Object.entries(props).forEach(([key, value]) => {
+      html.setAttribute(key, value as string);
+    });
+
+    return html;
   }
 
   /**
@@ -67,9 +101,8 @@ class Brandvisual extends Component {
    * Dispatches a 'load' event on the component once the brandvisual has been successfully loaded.
    * @param brandVisualHtml - The brandvisual html element which has been fetched from the brandvisual provider.
    */
-  private handleBrandVisualLoadedSuccess(brandVisualHtml: HTMLElement) {
-    // update brandVisualData state once fetched:
-    this.brandVisualData = brandVisualHtml;
+  private handleBrandVisualLoadedSuccess(brandVisualHtml: TemplateResult) {
+    this.brandVisualData = this.injectTemplateAttributes(brandVisualHtml, 'img', { alt: this.altText });
 
     // when brandvisual is imported successfully, trigger brandvisual load event.
     const loadEvent = new Event('load', {
