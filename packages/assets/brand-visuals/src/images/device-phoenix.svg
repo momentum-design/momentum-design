@@ -3056,11 +3056,11 @@
 <stop stop-color="#8F8F8E"/>
 <stop offset="1" stop-color="#F1F1F0"/>
 </linearGradient>
-<radialGradient id="paint2_radial_23746_2123" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(298.232 301.75) rotate(0.506226) scale(311.254 304.804)">
+<radialGradient id="paint2_radial_23746_2123" cx="0" cy="0" r="1" gradientTransform="matrix(311.242 2.75 -2.74999 304.792 298.232 301.75)" gradientUnits="userSpaceOnUse">
 <stop stop-color="#393939" stop-opacity="0.25"/>
 <stop offset="1" stop-color="#E4E4E4" stop-opacity="0"/>
 </radialGradient>
-<radialGradient id="paint3_radial_23746_2123" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(392.716 40.5) rotate(51.3744) scale(302.723 300.278)">
+<radialGradient id="paint3_radial_23746_2123" cx="0" cy="0" r="1" gradientTransform="matrix(188.968 236.5 -236.5 185.052 392.716 40.5)" gradientUnits="userSpaceOnUse">
 <stop stop-color="#393939" stop-opacity="0.25"/>
 <stop offset="1" stop-color="#E4E4E4" stop-opacity="0"/>
 </radialGradient>
