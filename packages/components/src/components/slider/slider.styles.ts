@@ -5,10 +5,12 @@ import { baseHostStyleVariables, focusRingBoxShadow } from '../../utils/styles';
 const styles = css`
   :host {
     width: 100%;
+    --mdc-slider-input-size: 0.5rem;
+    --mdc-slider-thumb-size: 1.5rem;
+    --mdc-slider-tick-size: 0.25rem;
+    --mdc-slider-track-height: 2rem;
     --mdc-slider-thumb-color: var(--mds-color-theme-overlay-button-secondary-normal);
     --mdc-slider-thumb-border-color: var(--mds-color-theme-outline-input-normal);
-    --mdc-slider-thumb-size: 1.4375rem;
-    --mdc-slider-track-height: 2rem;
     --mdc-slider-tick-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-slider-progress-color: var(--mds-color-theme-control-active-normal);
     --mdc-slider-track-color: var(--mds-color-theme-control-indicator-inactive-normal);
@@ -20,11 +22,6 @@ const styles = css`
     --mdc-slider-track-color: var(--mds-color-theme-control-inactive-disabled);
   }
 
-  :host::part(slider-label) {
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
   :host::part(slider-label),
   :host::part(slider-label-start),
   :host::part(slider-label-end) {
@@ -32,6 +29,11 @@ const styles = css`
     font-size: var(--mds-font-apps-body-midsize-medium-font-size);
     font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
     line-height: var(--mds-font-apps-body-midsize-medium-line-height);
+  }
+
+  :host::part(slider-label) {
+    margin-bottom: 0.5rem;
+    display: block;
   }
 
   :host::part(slider-track) {
@@ -70,7 +72,7 @@ const styles = css`
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 0.5rem;
+    height: var(--mdc-slider-input-size);
     border-radius: 0.25rem;
     outline: none;
     margin: 0;
@@ -154,11 +156,10 @@ const styles = css`
 
   :host::part(slider-tooltip) {
     position: absolute;
-    left: 50%;
     bottom: 120%;
-    background-color: var(--mds-color-theme-background-solid-primary-normal);
     border-radius: 0.5rem;
-    border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
+    border: 1px solid var(--mds-color-theme-outline-secondary-normal);
+    background-color: var(--mds-color-theme-background-solid-primary-normal);
     filter: var(--mds-elevation-3);
     padding: 0.5rem;
   }
@@ -176,8 +177,8 @@ const styles = css`
   :host::part(slider-tick) {
     position: absolute;
     top: 50%;
-    width: 0.25rem;
-    height: 0.25rem;
+    width: var(--mdc-slider-tick-size);
+    height: var(--mdc-slider-tick-size);
     background: var(--mdc-slider-tick-color);
     border-radius: 50%;
     transform: translateX(-50%);

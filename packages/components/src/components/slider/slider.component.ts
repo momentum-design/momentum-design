@@ -33,6 +33,8 @@ import styles from './slider.styles';
  * @cssproperty --mdc-slider-thumb-color - The color of the slider thumb
  * @cssproperty --mdc-slider-thumb-border-color - The color of the slider thumb border
  * @cssproperty --mdc-slider-thumb-size - The size of the slider thumb
+ * @cssproperty --mdc-slider-input-size - The height of the slider input
+ * @cssproperty --mdc-slider-tick-size - The size of the slider tick marks
  * @cssproperty --mdc-slider-track-height - The height of the slider track
  * @cssproperty --mdc-slider-tick-color - The color of the slider tick marks
  * @cssproperty --mdc-slider-progress-color - The color of the slider progress
@@ -44,17 +46,12 @@ class Slider extends Component {
    * Internal state to track if the slider thumb is focused (single value)
    * @internal
    */
-  @state() private thumbFocused = false;
+  @state() private thumbFocused: 'start' | 'end' | undefined = undefined;
 
   /**
    * @internal
    */
-  @state() private thumbStartFocused = false;
-
-  /**
-   * @internal
-   */
-  @state() private thumbEndFocused = false;
+  @state() private thumbHovered: 'start' | 'end' | undefined = undefined;
 
   /**
    * Indicates whether it is a range slider. When true, the slider displays two handles for selecting a range of values.
@@ -62,6 +59,18 @@ class Slider extends Component {
    * @default false
    */
   @property({ reflect: true, type: Boolean }) range = false;
+
+  /**
+   * The slider minimum value.
+   * @default 0
+   */
+  @property({ reflect: true, type: Number }) min: number = DEFAULTS.MIN;
+
+  /**
+   * The slider maximum value.
+   * @default 100
+   */
+  @property({ reflect: true, type: Number }) max: number = DEFAULTS.MAX;
 
   /**
    * Whether the slider is disabled. When true, the slider cannot be interacted with.
@@ -82,18 +91,6 @@ class Slider extends Component {
    * Icon that represents the maximum value; ex: speaker with full volume.
    */
   @property({ reflect: true, type: String, attribute: 'trailing-icon' }) trailingIcon?: string;
-
-  /**
-   * The slider minimum value.
-   * @default 0
-   */
-  @property({ reflect: true, type: Number }) min: number = DEFAULTS.MIN;
-
-  /**
-   * The slider maximum value.
-   * @default 100
-   */
-  @property({ reflect: true, type: Number }) max: number = DEFAULTS.MAX;
 
   /**
    * The slider value displayed when range is false.
@@ -224,21 +221,6 @@ class Slider extends Component {
   }
 
   /**
-   * Initializes the range slider by setting default values for the start and end handles.
-   * Updates the slider's input elements to reflect the current values.
-   */
-  private initializeRangeSlider() {
-    if (this.valueStart === undefined) {
-      this.valueStart = this.min;
-    }
-    if (this.valueEnd === undefined) {
-      this.valueEnd = this.max;
-    }
-    this.handleInputStart();
-    this.handleInputEnd();
-  }
-
-  /**
    * Sets the soft-disabled state for the slider.
    * Prevents user interaction with the slider.
    * Applies the appropriate ARIA attributes.
@@ -256,6 +238,30 @@ class Slider extends Component {
         inputElement.removeEventListener('mousedown', this.preventChange.bind(this));
       }
     });
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.inputElements.forEach(input => {
+      const inputElement = input as HTMLInputElement;
+      inputElement.removeEventListener('keydown', this.preventChange.bind(this));
+      inputElement.removeEventListener('mousedown', this.preventChange.bind(this));
+    });
+  }
+
+  /**
+   * Initializes the range slider by setting default values for the start and end handles.
+   * Updates the slider's input elements to reflect the current values.
+   */
+  private initializeRangeSlider() {
+    if (this.valueStart === undefined) {
+      this.valueStart = this.min;
+    }
+    if (this.valueEnd === undefined) {
+      this.valueEnd = this.max;
+    }
+    this.handleInputStart();
+    this.handleInputEnd();
   }
 
   /**
@@ -318,19 +324,17 @@ class Slider extends Component {
    * @returns The tooltip element.
    */
   private tooltipTemplate(val: number | string | undefined, label: string | undefined) {
-    let leftPercent = 0;
+    let style = '';
+    let percentage = 0;
     if (typeof val === 'number' && this.max !== this.min) {
-      leftPercent = ((val - this.min) / (this.max - this.min)) * 100;
+      percentage = ((val - this.min) / (this.max - this.min)) * 100;
     }
-    return html`
-      <div
-        part="slider-tooltip"
-        aria-hidden="true"
-        style="left:${leftPercent}%; transform: translateX(${-leftPercent}%)"
-      >
-        ${label || val}
-      </div>
-    `;
+    if (percentage > 50) {
+      style = `right:${100 - percentage}%; transform: translateX(calc(50% - (var(--mdc-slider-thumb-size) / 2)))`;
+    } else {
+      style = `left:${percentage}%; transform: translateX(calc(-50% + (var(--mdc-slider-thumb-size) / 2)))`;
+    }
+    return html` <div part="slider-tooltip" aria-hidden="true" style=${style}>${label || val}</div> `;
   }
 
   /**
@@ -480,19 +484,21 @@ class Slider extends Component {
                   @input=${this.handleInputStart}
                   @change=${this.onChangeStart}
                   @focus=${() => {
-                    this.thumbStartFocused = true;
+                    this.thumbFocused = 'start';
                   }}
                   @blur=${() => {
-                    this.thumbStartFocused = false;
+                    this.thumbFocused = undefined;
                   }}
                   @mouseenter=${() => {
-                    if (!this.disabled) this.thumbStartFocused = true;
+                    if (!this.disabled) this.thumbHovered = 'start';
                   }}
                   @mouseleave=${() => {
-                    this.thumbStartFocused = false;
+                    this.thumbHovered = undefined;
                   }}
                 />
-                ${this.thumbStartFocused ? this.tooltipTemplate(this.valueStart, this.valueLabelStart) : nothing}
+                ${this.thumbFocused === 'start' || this.thumbHovered === 'start'
+                  ? this.tooltipTemplate(this.valueStart, this.valueLabelStart)
+                  : nothing}
                 <input
                   id="end-slider"
                   part="end-slider"
@@ -512,19 +518,21 @@ class Slider extends Component {
                   @input=${this.handleInputEnd}
                   @change=${this.onChangeEnd}
                   @focus=${() => {
-                    this.thumbEndFocused = true;
+                    this.thumbFocused = 'end';
                   }}
                   @blur=${() => {
-                    this.thumbEndFocused = false;
+                    this.thumbFocused = undefined;
                   }}
                   @mouseenter=${() => {
-                    if (!this.disabled) this.thumbEndFocused = true;
+                    if (!this.disabled) this.thumbHovered = 'end';
                   }}
                   @mouseleave=${() => {
-                    this.thumbEndFocused = false;
+                    this.thumbHovered = undefined;
                   }}
                 />
-                ${this.thumbEndFocused ? this.tooltipTemplate(this.valueEnd, this.valueLabelEnd) : nothing}
+                ${this.thumbFocused === 'end' || this.thumbHovered === 'end'
+                  ? this.tooltipTemplate(this.valueEnd, this.valueLabelEnd)
+                  : nothing}
               `
             : html`
                 <input
@@ -546,19 +554,21 @@ class Slider extends Component {
                   @input=${this.onInput}
                   @change=${this.onChange}
                   @focus=${() => {
-                    this.thumbFocused = true;
+                    this.thumbFocused = 'start';
                   }}
                   @blur=${() => {
-                    this.thumbFocused = false;
+                    this.thumbFocused = undefined;
                   }}
                   @mouseenter=${() => {
-                    if (!this.disabled) this.thumbFocused = true;
+                    if (!this.disabled) this.thumbHovered = 'start';
                   }}
                   @mouseleave=${() => {
-                    this.thumbFocused = false;
+                    this.thumbHovered = undefined;
                   }}
                 />
-                ${this.thumbFocused ? this.tooltipTemplate(this.value, this.valueLabel) : nothing}
+                ${this.thumbFocused === 'start' || this.thumbHovered === 'start'
+                  ? this.tooltipTemplate(this.value, this.valueLabel)
+                  : nothing}
               `}
         </div>
         ${this.iconTemplate(this.trailingIcon, 'trailing-icon')}
