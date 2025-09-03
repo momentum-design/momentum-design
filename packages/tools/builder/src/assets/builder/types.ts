@@ -123,6 +123,11 @@ export interface LitFormat {
   config: { hbsPath: string, partName: string };
 }
 
+export interface ImageFormat {
+  type: typeof CONSTANTS.FORMATS.IMAGE;
+  config: { hbspath: string, partName: string };
+}
+
 /**
  * File Type
  *
@@ -180,6 +185,7 @@ export type Formats = (
   | SvgGlyphsFormat
   | TypesFormat
   | LitFormat
+  | ImageFormat
 ) & {
   encoding?: Encoding;
 };
