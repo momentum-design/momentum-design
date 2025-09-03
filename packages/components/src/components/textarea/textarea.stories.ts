@@ -11,6 +11,7 @@ import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
+import type Textarea from './textarea.component';
 import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
 
 const render = (args: Args) =>
@@ -374,5 +375,71 @@ export const TextareaInsideForm: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+};
+
+export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
+  render: args => {
+    const MAX_CHAR_LIMIT = args['max-character-limit'];
+    const validateTextarea = (form: HTMLFormElement, args: any): boolean => {
+      const textareaEl = form.querySelector('mdc-textarea[name="tweet"]') as Textarea;
+      const { value } = textareaEl;
+      if (args.required && (!value || value.trim() === '')) {
+        textareaEl.setAttribute('help-text', 'Please enter your tweet');
+        textareaEl.setAttribute('help-text-type', 'error');
+        return false;
+      }
+      if (value && value.length > MAX_CHAR_LIMIT) {
+        textareaEl.setAttribute('help-text', `Input must not exceed ${MAX_CHAR_LIMIT} characters.`);
+        textareaEl.setAttribute('help-text-type', 'error');
+        return false;
+      }
+      textareaEl.setAttribute('help-text', 'Looks good!');
+      textareaEl.setAttribute('help-text-type', 'success');
+      return true;
+    };
+
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      if (!validateTextarea(form, args)) {
+        return;
+      }
+      const formData = new FormData(form);
+      const selectedValue = formData.get('tweet');
+      action('Form Submitted')({ value: selectedValue });
+    };
+
+    const handleReset = (event: Event) => {
+      const form = event.target as HTMLFormElement;
+      const textareaEl = form.querySelector('mdc-textarea[name="tweet"]') as Textarea;
+      textareaEl.setAttribute('help-text', args['help-text'] || '');
+      textareaEl.setAttribute('help-text-type', args['help-text-type'] || 'default');
+    };
+
+    return html`
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+        <fieldset>
+          <legend>Form Example With Dynamic Help Text</legend>
+          <mdc-textarea
+            name="tweet"
+            label="Tweet"
+            required
+            placeholder="Write what's on your mind"
+            max-character-limit="${MAX_CHAR_LIMIT}"
+          ></mdc-textarea>
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  args: {
+    required: true,
+    'help-text': '',
+    'help-text-type': 'default',
+    'max-character-limit': 75,
   },
 };

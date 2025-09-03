@@ -1,22 +1,10 @@
 import { ROLE } from '../../utils/roles';
 import utils from '../../utils/tag-name';
 import { BUTTON_SIZES } from '../buttonsimple/buttonsimple.constants';
+import { COLOR } from '../staticchip/staticchip.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('chip');
-
-const COLOR = {
-  DEFAULT: 'default',
-  COBALT: 'cobalt',
-  GOLD: 'gold',
-  LIME: 'lime',
-  MINT: 'mint',
-  ORANGE: 'orange',
-  PINK: 'pink',
-  PURPLE: 'purple',
-  SLATE: 'slate',
-  VIOLET: 'violet',
-} as const;
 
 const DEFAULTS = {
   COLOR: COLOR.DEFAULT,
