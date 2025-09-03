@@ -194,7 +194,6 @@ class MenuPopover extends Popover {
 
     this.collectMenuItems();
     this.resetTabIndexes(0);
-    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
   }
 
   /**
