@@ -178,7 +178,10 @@ class ComponentsPage {
    * Update one or multiple attributes on a HTMLElement, queried by the passed in `locator`.
    * Additionally, you can update attributes of a nested element by passing an optional nested `Locator`.
    * Boolean attributes are true if present on an element,
-   *  and should be set to an empty string ("") or the attribute's name without leading or trailing whitespace.
+   * and should be set to an empty string ("") or the attribute's name without leading or trailing whitespace.
+   *
+   * Note, this will execute after component's firstUpdate.
+   *
    * @param locator - Playwright locator
    * @param attributes - A record object where keys are attribute names, and values are the attribute values to be set.
    */

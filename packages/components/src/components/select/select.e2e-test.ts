@@ -193,6 +193,10 @@ test('mdc-select', async ({ componentsPage }) => {
       const select = await setup({ componentsPage, children: defaultChildren() });
       await expect(select).toHaveAttribute('help-text-type', 'default');
       await expect(select).toHaveAttribute('value', 'option1');
+      await expect(select).toHaveAttribute('value', 'option1');
+      await expect(select.locator('[part="base-container"]')).toHaveAttribute('aria-expanded', 'false');
+      await expect(select.locator('[part="base-container"]')).toHaveAttribute('aria-haspopup', 'listbox');
+
       const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
       const textContent = await mdcTextElement.textContent();
       // The first option should be visible by default when no option is selected and placeholder is not defined.
