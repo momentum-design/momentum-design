@@ -26,6 +26,7 @@ const FORMATS = {
   SVG_GLYPHS: 'SVG_GLYPHS' as const,
   TYPES: 'TYPES' as const,
   LIT: 'LIT' as const,
+  IMAGE: 'IMAGE' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)
