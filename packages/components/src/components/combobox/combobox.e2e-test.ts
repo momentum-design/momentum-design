@@ -31,21 +31,22 @@ const createOptionsMarkup = (options: Array<{ value: string; label: string }>) =
       .join('\n')}</mdc-selectlistbox>
   `;
 
-const isFireFox = () => test.info().project.name === 'firefox';
-
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
 
   await componentsPage.mount({
     html: `
-      <mdc-combobox
-        ${restArgs.label ? `label="${restArgs.label}"` : ''}
-        ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-        ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : 'data-aria-label="Combobox label"'}
-      >
-        ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}
-      </mdc-combobox>
+      <div>
+        <mdc-combobox
+          ${restArgs.label ? `label="${restArgs.label}"` : ''}
+          ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
+          ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : 'data-aria-label="Combobox label"'}
+        >
+          ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}
+        </mdc-combobox>
+        <mdc-button>Test</mdc-button>
+      </div>
     `,
     clearDocument: true,
   });
@@ -155,6 +156,35 @@ test.describe('Combobox Feature Scenarios', () => {
      * MOUSE INTERACTIONS
      */
     await test.step('mouse interactions', async () => {
+      await test.step('should dispatch click event when clicked on combobox', async () => {
+        const { combobox } = await setup({ componentsPage });
+        const clickPromise = componentsPage.waitForEvent(combobox, 'click');
+        await combobox.click();
+        await clickPromise;
+      });
+
+      await test.step('should dispatch click and focus events when clicked on combobox input', async () => {
+        const { input } = await setup({ componentsPage });
+        const clickPromise = componentsPage.waitForEvent(input, 'click');
+        const focusPromise = componentsPage.waitForEvent(input, 'focus');
+        await input.click();
+        await clickPromise;
+        await focusPromise;
+      });
+
+      await test.step('should dispatch input and change events when clicked on an combobox option', async () => {
+        const { combobox, options } = await setup({
+          componentsPage,
+          options: defaultOptions,
+        });
+        await combobox.click();
+        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
+        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        await options.first().click();
+        await inputPromise;
+        await changePromise;
+      });
+
       await test.step('should open dropdown when input is clicked', async () => {
         const { input, dropdown, options } = await setup({
           componentsPage,
@@ -205,6 +235,26 @@ test.describe('Combobox Feature Scenarios', () => {
      * KEYBOARD INTERACTIONS
      */
     await test.step('keyboard interactions', async () => {
+      await test.step('should dispatch focus event when focus moves to combobox', async () => {
+        const { input } = await setup({ componentsPage });
+        const focusPromise = componentsPage.waitForEvent(input, 'focus');
+        await componentsPage.actionability.pressTab();
+        await focusPromise;
+      });
+
+      await test.step('should dispatch input and keydown events when characters are typed', async () => {
+        const { input } = await setup({ componentsPage });
+        await componentsPage.actionability.pressTab();
+        const inputPromise = componentsPage.waitForEvent(input, 'input');
+        const keydownPromise = componentsPage.waitForEvent(input, 'keydown');
+        await input.press('a');
+        await inputPromise;
+        await keydownPromise;
+        await input.press('b');
+        await inputPromise;
+        await keydownPromise;
+      });
+
       await test.step('should open dropdown with ArrowDown key', async () => {
         const { input, dropdown, options } = await setup({
           componentsPage,
@@ -322,12 +372,7 @@ test.describe('Combobox Feature Scenarios', () => {
         await componentsPage.actionability.pressTab();
         await input.fill('aus');
         await expect(dropdown).toBeVisible();
-        if (isFireFox()) {
-          // Firefox does not support tabbing away
-          await input.evaluate(node => node.blur());
-        } else {
-          await input.press(KEYS.TAB); // Tab away
-        }
+        await componentsPage.actionability.pressTab();
 
         await expect(input).toHaveValue('aus');
         await expect(dropdown).not.toBeVisible();
@@ -344,12 +389,7 @@ test.describe('Combobox Feature Scenarios', () => {
         await componentsPage.actionability.pressTab();
         await input.fill('aus');
         await input.press(KEYS.ARROW_DOWN); // Select the first option
-        if (isFireFox()) {
-          // Firefox does not support tabbing away
-          await input.evaluate(node => node.blur());
-        } else {
-          await input.press(KEYS.TAB); // Then tab away
-        }
+        await input.press(KEYS.TAB); // Then tab away
 
         await expect(input).toHaveValue('Austria');
         await expect(dropdown).not.toBeVisible();
@@ -387,13 +427,7 @@ test.describe('Combobox Feature Scenarios', () => {
         // Verify first option is focused
         const firstOption = options.first();
         await expect(firstOption).toHaveAttribute('aria-selected', 'true');
-
-        if (isFireFox()) {
-          // Firefox does not support tabbing away
-          await input.evaluate(node => node.blur());
-        } else {
-          await input.press(KEYS.TAB);
-        }
+        await input.press(KEYS.TAB);
 
         await expect(input).toHaveValue('Argentina');
         await expect(dropdown).not.toBeVisible();
