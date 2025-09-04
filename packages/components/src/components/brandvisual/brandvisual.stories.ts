@@ -6,7 +6,12 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
-  html` <mdc-brandvisual class="${args.class}" name="${args.name}" style="${args.style}"></mdc-brandvisual>`;
+  html` <mdc-brandvisual
+    class="${args.class}"
+    name="${args.name}"
+    style="${args.style}"
+    altText="${args.altText}"
+  ></mdc-brandvisual>`;
 
 const meta: Meta = {
   title: 'Components/brandvisual',
@@ -18,6 +23,9 @@ const meta: Meta = {
   },
   argTypes: {
     name: {
+      control: 'text',
+    },
+    altText: {
       control: 'text',
     },
     ...hideControls(['brandVisualData']),
