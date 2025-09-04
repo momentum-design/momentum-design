@@ -108,6 +108,17 @@ test.describe('Menuitem Feature Scenarios', () => {
       menuitemSheet.setChildren('');
       await menuitemSheet.createMarkupWithCombination({}, options);
 
+      // Menuitem with short width
+      menuitemSheet.setAttributes({
+        label: 'This is an extremely long label text that should wrap or truncate properly inside a fixed width',
+        'secondary-label': secondaryLabel,
+        style: 'width: 25rem; outline: 2px solid red;', // 400px
+      });
+      menuitemSheet.setChildren(`
+        <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+      `);
+      await menuitemSheet.createMarkupWithCombination({}, options);
+
       await menuitemSheet.mountStickerSheet({ role: 'menu' });
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-menuitem', {

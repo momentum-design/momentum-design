@@ -19,7 +19,6 @@ const styles = css`
   }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
-    column-gap: var(--mdc-listitem-column-gap);
     display: flex;
     flex-direction: row;
     cursor: var(--mdc-listitem-cursor);
@@ -82,9 +81,10 @@ const styles = css`
     flex: 1 1 auto;
   }
   :host::part(trailing) {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     justify-content: flex-end;
   }
+
   :host::part(leading-text-secondary-label),
   :host::part(leading-text-tertiary-label) {
     color: var(--mdc-listitem-secondary-label-color);
@@ -97,12 +97,24 @@ const styles = css`
   :host::part(trailing-text) {
     text-align: right;
   }
+
+  :host::part(trailing-text-side-header):dir(ltr),
+  :host::part(trailing-text-subline):dir(ltr) {
+    margin-left: var(--mdc-listitem-column-gap);
+  }
+
+  :host::part(trailing-text-side-header):dir(rtl),
+  :host::part(trailing-text-subline):dir(rtl) {
+    margin-right: var(--mdc-listitem-column-gap);
+  }
+
   ::slotted([slot='leading-controls']),
   ::slotted([slot='trailing-controls']) {
     align-items: center;
     column-gap: var(--mdc-listitem-column-gap);
     display: flex;
     flex-direction: row;
+    flex-shrink: 0;
   }
 `;
 export default [styles, ...hostFocusRingStyles()];

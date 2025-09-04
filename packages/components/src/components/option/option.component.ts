@@ -84,17 +84,20 @@ class Option extends FormInternalsMixin(ListItem) {
           </div>
         `
       : nothing;
-    const selectedIcon = this.selected
-      ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
+    const trailingContent = this.selected
+      ? html`
+          <div part="trailing-icon">
+            <mdc-icon length-unit="rem" name="${SELECTED_ICON_NAME}"></mdc-icon>
+          </div>
+        `
       : nothing;
-
     return html`
       ${prefixIconContent}
       <div part="leading-text">
         ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
         ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
       </div>
-      <div part="trailing">${selectedIcon}</div>
+      ${trailingContent}
     `;
   }
 
