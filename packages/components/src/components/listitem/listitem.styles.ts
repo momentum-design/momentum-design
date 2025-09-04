@@ -98,13 +98,13 @@ const styles = css`
     text-align: right;
   }
 
-  :host::part(trailing-text-side-header):dir(ltr),
-  :host::part(trailing-text-subline):dir(ltr) {
+  :host(:dir(ltr))::part(trailing-text-side-header),
+  :host(:dir(ltr))::part(trailing-text-subline) {
     margin-left: var(--mdc-listitem-column-gap);
   }
 
-  :host::part(trailing-text-side-header):dir(rtl),
-  :host::part(trailing-text-subline):dir(rtl) {
+  :host(:dir(rtl))::part(trailing-text-side-header),
+  :host(:dir(rtl))::part(trailing-text-subline) {
     margin-right: var(--mdc-listitem-column-gap);
   }
 

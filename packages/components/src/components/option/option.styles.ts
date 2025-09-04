@@ -17,16 +17,16 @@ const styles = css`
     flex: 1 1 auto;
   }
 
-  :host::part(leading-icon):dir(ltr) {
+  :host(:dir(ltr))::part(leading-icon) {
     margin-right: var(--mdc-listitem-column-gap);
   }
-  :host::part(leading-icon):dir(rtl) {
+  :host(:dir(rtl))::part(leading-icon) {
     margin-left: var(--mdc-listitem-column-gap);
   }
-  :host::part(trailing-icon):dir(ltr) {
+  :host(:dir(ltr))::part(trailing-icon) {
     margin-left: var(--mdc-listitem-column-gap);
   }
-  :host::part(trailing-icon):dir(rtl) {
+  :host(:dir(rtl))::part(trailing-icon) {
     margin-right: var(--mdc-listitem-column-gap);
   }
 `;
