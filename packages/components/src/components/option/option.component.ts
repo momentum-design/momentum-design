@@ -87,7 +87,7 @@ class Option extends FormInternalsMixin(ListItem) {
     const trailingContent = this.selected
       ? html`
           <div part="trailing-icon">
-            <mdc-icon length-unit="rem" name="${SELECTED_ICON_NAME}"></mdc-icon>
+            <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
           </div>
         `
       : nothing;
