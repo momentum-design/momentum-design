@@ -78,10 +78,10 @@ const styles = css`
     min-width: 0;
   }
   :host::part(leading) {
-    flex: 1 1 auto;
+    flex: 1;
   }
   :host::part(trailing) {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     justify-content: flex-end;
   }
 

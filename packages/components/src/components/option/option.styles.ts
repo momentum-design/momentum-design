@@ -14,7 +14,7 @@ const styles = css`
   }
 
   :host::part(leading-text) {
-    flex: 1 1 auto;
+    flex: 1;
   }
 
   :host(:dir(ltr))::part(leading-icon) {
