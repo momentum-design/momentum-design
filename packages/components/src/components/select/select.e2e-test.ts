@@ -235,6 +235,33 @@ test('mdc-select', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-select-custom-styling-overrides');
     });
 
+    await test.step('should truncate option text when overflowing', async () => {
+      const customSelectWidth = '400px';
+      const customListBoxWidth = '120px';
+      const select = await setup({ componentsPage, children: defaultChildren() });
+
+      // Override CSS variables for the listbox
+      await componentsPage.page.evaluate(
+        ({ width, listboxWidth }) => {
+          const selectEl = document.querySelector('mdc-select') as Select;
+          if (selectEl) {
+            selectEl.style.setProperty('--mdc-select-width', width);
+            selectEl.style.setProperty('--mdc-select-listbox-width', listboxWidth);
+          }
+        },
+        { width: customSelectWidth, listboxWidth: customListBoxWidth },
+      );
+
+      // Open the dropdown to show the listbox
+      await select.click();
+      await select.locator('mdc-selectlistbox').waitFor({ state: 'visible' });
+
+      await componentsPage.page.waitForTimeout(100); // Wait for the trigger up-down arrow icon to be updated
+
+      // take screenshot to verify the overridden dimensions
+      await componentsPage.visualRegression.takeScreenshot('mdc-select-truncate-overflowing-text');
+    });
+
     await test.step('should have placeholder attribute when no option is selected', async () => {
       const select = await setup({ componentsPage, placeholder: defaultPlaceholder, children: defaultChildren() });
       const mdcTextElement = select.locator('mdc-text[part="base-text "]');
