@@ -195,6 +195,11 @@ class Slider extends Component {
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
 
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.preventChange.bind(this));
+  }
+
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
     super.updated(changedProperties);
     if (
@@ -230,12 +235,8 @@ class Slider extends Component {
       const inputElement = input as HTMLInputElement;
       if (this.softDisabled) {
         inputElement.setAttribute('aria-disabled', 'true');
-        inputElement.addEventListener('keydown', this.preventChange.bind(this));
-        inputElement.addEventListener('mousedown', this.preventChange.bind(this));
       } else {
         inputElement.removeAttribute('aria-disabled');
-        inputElement.removeEventListener('keydown', this.preventChange.bind(this));
-        inputElement.removeEventListener('mousedown', this.preventChange.bind(this));
       }
     });
   }
@@ -299,7 +300,7 @@ class Slider extends Component {
    * @param e - The event to prevent.
    */
   private preventChange(e: Event) {
-    if ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent)) {
+    if (this.softDisabled && ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent))) {
       e.preventDefault();
       e.stopPropagation();
     }
