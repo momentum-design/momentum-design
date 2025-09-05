@@ -8,6 +8,7 @@ import type { IconName } from '../accordionbutton/accordionbutton.types';
 
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
+import type { ThumbStateType } from './slider.types';
 
 /**
  * Slider component is used to select a value or range of values from within a defined range.
@@ -46,12 +47,12 @@ class Slider extends Component {
    * Internal state to track if the slider thumb is focused (single value)
    * @internal
    */
-  @state() private thumbFocused: 'start' | 'end' | undefined = undefined;
+  @state() private thumbFocused: ThumbStateType = DEFAULTS.STATE;
 
   /**
    * @internal
    */
-  @state() private thumbHovered: 'start' | 'end' | undefined = undefined;
+  @state() private thumbHovered: ThumbStateType = DEFAULTS.STATE;
 
   /**
    * Indicates whether it is a range slider. When true, the slider displays two handles for selecting a range of values.
@@ -204,11 +205,11 @@ class Slider extends Component {
     super.updated(changedProperties);
     if (
       changedProperties.has('value') ||
-      changedProperties.has('disabled') ||
-      changedProperties.has('softDisabled') ||
       changedProperties.has('step') ||
       changedProperties.has('min') ||
       changedProperties.has('max') ||
+      changedProperties.has('disabled') ||
+      changedProperties.has('softDisabled') ||
       changedProperties.has('range') ||
       changedProperties.has('valueStart') ||
       changedProperties.has('valueEnd')
@@ -227,7 +228,6 @@ class Slider extends Component {
 
   /**
    * Sets the soft-disabled state for the slider.
-   * Prevents user interaction with the slider.
    * Applies the appropriate ARIA attributes.
    */
   private setSoftDisabled() {
@@ -238,15 +238,6 @@ class Slider extends Component {
       } else {
         inputElement.removeAttribute('aria-disabled');
       }
-    });
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.inputElements.forEach(input => {
-      const inputElement = input as HTMLInputElement;
-      inputElement.removeEventListener('keydown', this.preventChange.bind(this));
-      inputElement.removeEventListener('mousedown', this.preventChange.bind(this));
     });
   }
 
@@ -297,6 +288,7 @@ class Slider extends Component {
 
   /**
    * Prevents default behavior for mouse and keyboard events.
+   * This prevents user interaction with the slider when it is soft-disabled.
    * @param e - The event to prevent.
    */
   private preventChange(e: Event) {
@@ -314,7 +306,12 @@ class Slider extends Component {
    */
   private iconTemplate(icon: string | undefined, part: string) {
     return typeof icon === 'string' && icon.length > 0
-      ? html`<mdc-icon name="${icon as IconName}" part="${part}" length-unit="rem" size="1.25"></mdc-icon>`
+      ? html`<mdc-icon
+          name="${icon as IconName}"
+          part="${part}"
+          length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+          size="${DEFAULTS.ICON_SIZE}"
+        ></mdc-icon>`
       : null;
   }
 
