@@ -98,14 +98,9 @@ const styles = css`
     text-align: right;
   }
 
-  :host(:dir(ltr))::part(trailing-text-side-header),
-  :host(:dir(ltr))::part(trailing-text-subline) {
-    margin-left: var(--mdc-listitem-column-gap);
-  }
-
-  :host(:dir(rtl))::part(trailing-text-side-header),
-  :host(:dir(rtl))::part(trailing-text-subline) {
-    margin-right: var(--mdc-listitem-column-gap);
+  :host::part(trailing-text-side-header),
+  :host::part(trailing-text-subline) {
+    margin-inline-start: var(--mdc-listitem-column-gap);
   }
 
   ::slotted([slot='leading-controls']),

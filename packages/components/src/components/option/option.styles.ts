@@ -16,18 +16,12 @@ const styles = css`
   :host::part(leading-text) {
     flex: 1;
   }
-
-  :host(:dir(ltr))::part(leading-icon) {
-    margin-right: var(--mdc-listitem-column-gap);
+ 
+  :host::part(leading-icon) {
+    margin-inline-end: var(--mdc-listitem-column-gap);
   }
-  :host(:dir(rtl))::part(leading-icon) {
-    margin-left: var(--mdc-listitem-column-gap);
-  }
-  :host(:dir(ltr))::part(trailing) {
-    margin-left: var(--mdc-listitem-column-gap);
-  }
-  :host(:dir(rtl))::part(trailing) {
-    margin-right: var(--mdc-listitem-column-gap);
+  :host::part(trailing) {
+    margin-inline-start: var(--mdc-listitem-column-gap);
   }
 `;
 
