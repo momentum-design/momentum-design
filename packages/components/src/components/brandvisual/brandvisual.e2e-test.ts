@@ -9,6 +9,8 @@ type SetupOptions = {
   name: BrandVisualNames;
 };
 
+// TODO: since esbuild does not support dynamic imports yet, we override the import of the svgs in a custom esbuild plugin,
+// but that means for now we can only test svgs, not pngs in here. needs to be fixed
 const setup = async (args: SetupOptions) => {
   const { componentsPage, name } = args;
 

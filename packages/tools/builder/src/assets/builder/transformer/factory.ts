@@ -13,6 +13,7 @@ import SvgGlyphsTransformer from './svg-glyphs-transformer';
 import TypesTransformer from './types-transformer';
 import LitTransformer from './lit-transformer';
 import ManifestModuleTransformer from './manifest-js-transformer';
+import ImageTransformer from './image-transformer';
 
 type Transformers =
   | Transformer
@@ -26,7 +27,8 @@ type Transformers =
   | CssTransformer
   | SvgGlyphsTransformer
   | TypesTransformer
-  | LitTransformer;
+  | LitTransformer
+  | ImageTransformer;
 
 /**
  * Factory Pattern
@@ -59,6 +61,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new TypesTransformer(format, destination);
     case CONSTANTS.FORMATS.LIT:
       return new LitTransformer(format, destination);
+    case CONSTANTS.FORMATS.IMAGE:
+      return new ImageTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
