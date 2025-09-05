@@ -7,10 +7,10 @@ const styles = css`
   }
 
   :host::part(leading-icon),
-  :host::part(trailing-icon) {
+  :host::part(trailing) {
     display: flex;
     align-items: center;
-    max-width: var(--mdc-option-icon-width);
+    width: var(--mdc-option-icon-width);
   }
 
   :host::part(leading-text) {
@@ -23,10 +23,10 @@ const styles = css`
   :host(:dir(rtl))::part(leading-icon) {
     margin-left: var(--mdc-listitem-column-gap);
   }
-  :host(:dir(ltr))::part(trailing-icon) {
+  :host(:dir(ltr))::part(trailing) {
     margin-left: var(--mdc-listitem-column-gap);
   }
-  :host(:dir(rtl))::part(trailing-icon) {
+  :host(:dir(rtl))::part(trailing) {
     margin-right: var(--mdc-listitem-column-gap);
   }
 `;

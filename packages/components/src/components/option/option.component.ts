@@ -86,9 +86,7 @@ class Option extends FormInternalsMixin(ListItem) {
       : nothing;
     const trailingContent = this.selected
       ? html`
-          <div part="trailing-icon">
             <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
-          </div>
         `
       : nothing;
     return html`
@@ -97,7 +95,9 @@ class Option extends FormInternalsMixin(ListItem) {
         ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
         ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
       </div>
-      ${trailingContent}
+      <div part="trailing">
+        ${trailingContent}
+      </div>
     `;
   }
 
