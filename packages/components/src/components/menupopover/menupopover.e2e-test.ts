@@ -179,6 +179,36 @@ test('mdc-menupopover', async ({ componentsPage }) => {
     await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-submenu-open');
     await componentsPage.page.keyboard.press('Escape'); // Close submenu
     await componentsPage.visualRegression.takeScreenshot('mdc-menupopver-open');
+
+    // Test: should truncate menuitem text when overflowing
+    await test.step('should truncate menuitem text when overflowing', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="width: 800px;">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem label="Short"></mdc-menuitem>
+              <mdc-menuitem label="This is a very long menuitem label that should be truncated when it overflows the container" id="long-menuitem" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menuitem label="Another Short"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const trigger = componentsPage.page.locator('#trigger-btn');
+      const menupopover = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      // Override CSS variable to force small width for truncation
+      await componentsPage.page.evaluate(() => {
+        const popover = document.querySelector('mdc-menupopover');
+        if (popover) {
+          (popover as HTMLElement).style.setProperty('--mdc-popover-max-width', '300px');
+        }
+      });
+      await trigger.click();
+      await expect(menupopover).toBeVisible();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-truncate-overflowing-text');
+    });
   });
 
   /**

@@ -320,6 +320,9 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
       '--mdc-popover-elevation-3',
+      '--mdc-popover-max-width',
+      '--mdc-popover-max-height',
+      '--mdc-popover-width',
     ]),
     ...hideControls([
       'arrowElement',
