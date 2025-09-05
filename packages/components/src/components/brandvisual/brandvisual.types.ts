@@ -5,8 +5,12 @@ import type { TypedCustomEvent } from '../../utils/types';
 import type Brandvisual from './brandvisual.component';
 
 interface Events {
-  onLoadEvent: TypedCustomEvent<Brandvisual, {name: BrandVisualNames}>;
-  onErrorEvent: TypedCustomEvent<Brandvisual, {error: Error}>;
+  onLoadEvent: TypedCustomEvent<Brandvisual, { name: BrandVisualNames }>;
+  onErrorEvent: TypedCustomEvent<Brandvisual, { error: Error }>;
 }
 
-export type { BrandVisualNames, Events };
+interface imageProps {
+  alt?: string;
+}
+
+export type { BrandVisualNames, imageProps, Events };
