@@ -198,9 +198,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
 
       const trigger = componentsPage.page.locator('#trigger-btn');
       const menupopover = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
-      await trigger.click();
-      await expect(menupopover).toBeVisible();
-
       // Override CSS variable to force small width for truncation
       await componentsPage.page.evaluate(() => {
         const popover = document.querySelector('mdc-menupopover');
@@ -208,7 +205,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
           (popover as HTMLElement).style.setProperty('--mdc-popover-max-width', '300px');
         }
       });
-      await componentsPage.page.waitForTimeout(100);
+      await trigger.click();
+      await expect(menupopover).toBeVisible();
       await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-truncate-overflowing-text');
     });
   });
