@@ -60,7 +60,6 @@ const styles = css`
     position: relative;
     cursor: default;
     padding: 0.75rem;
-    min-width: max-content;
     z-index: 9998;
     max-height: var(--mdc-popover-max-height);
   }
