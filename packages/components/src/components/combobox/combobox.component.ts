@@ -264,8 +264,13 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       firstSelectedOption.removeAttribute('selected');
       this.initialSelectedOption = firstSelectedOption;
       this.setSelectedValue(firstSelectedOption);
-    } else {
+    } else if (this.value) {
+      const validOption = this.getAllValidOptions().find(option => option.value === this.value);
+      this.setSelectedValue(validOption!);
+    } else if (this.placeholder) {
       this.setInputValidity();
+    } else {
+      this.setSelectedValue(null);
     }
     // For the first, we set the first element only as active.
     this.getAllValidOptions().forEach(option => {
@@ -295,31 +300,37 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   /**
    * Sets the validity of the input element based on the selected option.
-   * If the selected option is not set and the select is required,
+   * If the selected option is not set and the combobox is required,
    * it sets a custom validation message.
-   * If the selected option is set or the select is not required,
+   * If the selected option is set or the combobox is not required,
    * it clears the custom validation message.
-   * This method is called to ensure that the select component behaves correctly
-   * in form validation scenarios, especially when the select is required.
+   * This method is called to ensure that the combobox component behaves correctly
+   * in form validation scenarios, especially when the combobox is required.
    * @internal
    */
   private setInputValidity() {
-    if (!this.selectedOption.value && this.required && this.validationMessage) {
-      this.inputElement?.setCustomValidity(this.validationMessage);
+    if (!this.selectedOption.value && this.required) {
+      if (this.validationMessage) {
+        this.inputElement?.setCustomValidity(this.validationMessage);
+      } else {
+        this.inputElement?.setCustomValidity('');
+      }
+      this.setValidity();
     } else {
-      this.inputElement?.setCustomValidity('');
+      this.internals.setValidity({});
     }
-    this.setValidity();
   }
 
   /**
-   * Resets the select to its initially selected option.
+   * Resets the combobox to its initially selected option.
    * @internal
    */
   formResetCallback(): void {
     const optionToResetTo = this.initialSelectedOption || null;
     if (this.selectedOption?.value !== optionToResetTo?.value) {
       this.setSelectedValue(optionToResetTo);
+    } else {
+      this.setSelectedValue(null);
     }
   }
 
@@ -330,6 +341,8 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     );
     if (this.selectedOption?.value !== optionToRestoreTo?.value) {
       this.setSelectedValue(optionToRestoreTo || null);
+    } else {
+      this.setSelectedValue(null);
     }
   }
 
