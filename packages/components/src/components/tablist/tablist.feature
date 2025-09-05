@@ -37,8 +37,9 @@ Feature: Tablist component
     Given the tablist component is rendered
     When I change the active tab using the keyboard
     Then a change event should be fired
+    And the event detail should include the tabId of the new active tab
 
-  Scenario: Keyboard navigation between tabs
+  Scenario: Keyboard navigation between tabs (in LTR)
     Given the tablist component is rendered
     When I focus the first tab using the Tab key
     And I press the ArrowRight key repeatedly
@@ -46,7 +47,7 @@ Feature: Tablist component
     When I press the ArrowLeft key repeatedly
     Then the focus should move through tabs in reverse order: fifth, fourth, third, second, first
 
-  Scenario: Keyboard navigation using Home and End
+  Scenario: Keyboard navigation using Home and End (in LTR)
     Given the tablist component is rendered
     When I focus the first tab using the Tab key
     And I press the ArrowRight key twice to focus on the third tab
@@ -55,7 +56,7 @@ Feature: Tablist component
     When I press the End key
     Then the focus should be on the last tab
 
-  Scenario: Select tab by keyboard navigation and Enter
+  Scenario: Select tab by keyboard navigation and Enter (in LTR)
     Given the tablist component is rendered
     When I focus the first tab using the Tab key
     And I press the ArrowRight key to focus on the second tab
@@ -63,7 +64,7 @@ Feature: Tablist component
     Then the second tab should be active and have aria-selected "true"
     And the active-tab-id should be "videos-tab"
 
-  Scenario: Tablist with arrow buttons in small viewport
+  Scenario: Tablist with arrow buttons in small viewport (in LTR)
     Given the tablist component is rendered in a small viewport
     When I focus the first tab using the Tab key
     And I press the ArrowRight key repeatedly
@@ -84,7 +85,7 @@ Feature: Tablist component
     And the viewport is resized to a larger size
     Then the active tab should gain focus
 
-  Scenario: Scroll tabs using arrow buttons
+  Scenario: Scroll tabs using arrow buttons (in LTR)
     Given the tablist component is rendered in a small viewport
     When I focus the first tab using the Tab key
     And I press the ArrowRight key
