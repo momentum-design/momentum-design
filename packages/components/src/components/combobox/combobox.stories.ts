@@ -246,12 +246,12 @@ export const ComboboxWithForm: StoryObj = {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
-      const selectedStones = formData.get('stone-count');
       const selectedAvengers = formData.get('avengers-name');
+      const selectedStones = formData.get('stone-count');
       action('Form Submitted')({
         value: {
-          selectedStones,
           selectedAvengers,
+          selectedStones,
         },
       });
     };
@@ -262,7 +262,7 @@ export const ComboboxWithForm: StoryObj = {
           <mdc-combobox
             id="avenger-form"
             name="avengers-name"
-            placeholder="Select the avenger"
+            placeholder="Type the avenger name"
             label="Who is your favorite Avenger?"
             required
             @change=${action('avengers combobox onchange')}
@@ -276,6 +276,23 @@ export const ComboboxWithForm: StoryObj = {
               <mdc-option value="hulk" selected label="Hulk"></mdc-option>
               <mdc-option value="blackwidow" label="Black Widow"></mdc-option>
               <mdc-option value="hawkeye" label="Hawkeye"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <mdc-combobox
+            name="stone-count"
+            placeholder="Type the count"
+            label="How many Infinity Stones exist?"
+            required
+            @change=${action('stones combobox onchange')}
+            @input=${action('stones combobox oninput')}
+            data-aria-label="How many Infinity Stones exist?"
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="two" label="Two"></mdc-option>
+              <mdc-option value="three" label="Three"></mdc-option>
+              <mdc-option value="four" label="Four"></mdc-option>
+              <mdc-option value="five" label="Five"></mdc-option>
+              <mdc-option value="six" label="Six"></mdc-option>
             </mdc-selectlistbox>
           </mdc-combobox>
           <div style="display: flex; gap: 3rem; margin-top: 1rem;">

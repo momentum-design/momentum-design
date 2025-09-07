@@ -8,14 +8,14 @@ import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
+import { TAG_NAME as DIVIDER_TAG_NAME } from '../divider/divider.constants';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import Input from '../input/input.component';
 import { AUTO_COMPLETE } from '../input/input.constants';
+import { TAG_NAME as OPTIONGROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { TAG_NAME as OPTIONGROUP_TAG_NAME } from '../optgroup/optgroup.constants';
-import { TAG_NAME as DIVIDER_TAG_NAME } from '../divider/divider.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
@@ -153,17 +153,21 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
-  @query(`[id="${TRIGGER_ID}"]`) private visualCombobox!: HTMLDivElement;
+  @query(`[role="${ROLE.COMBOBOX}"]`) private visualCombobox!: HTMLInputElement;
 
+  /** @internal */
   @state() private isOpen = false;
 
+  /** @internal */
   @state() private lastSelectedOptionIndex = 0;
 
+  /** @internal */
   @state() private selectedOption: {
     value?: string;
     label?: string;
   } = {};
 
+  /** @internal */
   @state() private internalValue = '';
 
   /** @internal */
@@ -376,13 +380,11 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   private handleBlurChange(): void {
     this.closePopover();
+    if (this.value === this.selectedOption.value) return;
     const options = this.getVisibleOptions();
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     // if no option is focused, then mark it invalid and return.
-    if (getLastFocusedOptionIndex === -1) {
-      this.checkValidity();
-      return;
-    }
+    if (getLastFocusedOptionIndex === -1) return;
     this.setSelectedValue(options[getLastFocusedOptionIndex]);
   }
 
@@ -525,6 +527,70 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return false;
   }
 
+  /**
+   * Renders the native input element.
+   * This input is hidden and is used for internal purposes only.
+   * The value of the selected option is set as the value of this input.
+   * @internal
+   */
+  private renderNativeInput(): TemplateResult {
+    return html`
+      <input
+        id="${this.inputId}"
+        name="${this.name}"
+        type="text"
+        .value="${live(this.selectedOption?.value ?? '')}"
+        aria-hidden="true"
+        part="internal-native-input"
+        tabindex="-1"
+        ?required=${this.required}
+        ?disabled=${this.disabled || this.softDisabled}
+        ?readonly=${this.readonly}
+        autocomplete="${AUTO_COMPLETE.OFF}"
+        @focus=${this.handleNativeInputFocus}
+        @invalid=${this.setInputValidity}
+      />
+    `;
+  }
+
+  /**
+   * Renders the base input element with accessibility.
+   * This input is displayed on the screen and is used for user interaction only.
+   * The label of the selected option is set as the value of this input.
+   * @internal
+   */
+  private renderBaseInput(): TemplateResult {
+    return html`
+      <input
+        id="${this.id}"
+        slot="input"
+        ?disabled="${this.disabled}"
+        .value="${this.selectedOption?.label ?? ''}"
+        autocomplete="${AUTO_COMPLETE.OFF}"
+        class="input"
+        part="mdc-input"
+        placeholder="${ifDefined(this.placeholder)}"
+        role="${ROLE.COMBOBOX}"
+        ?readonly="${this.readonly}"
+        ?required="${this.required}"
+        @input=${this.handleInputChange}
+        @keydown=${this.handleInputKeydown}
+        @blur="${this.handleBlurChange}"
+        aria-autocomplete="${AUTOCOMPLETE_LIST}"
+        aria-controls="${LISTBOX_ID}"
+        aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+        aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+        aria-expanded="${this.isOpen ? 'true' : 'false'}"
+        aria-haspopup="${ROLE.LISTBOX}"
+        aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+        aria-readonly="${ifDefined(this.readonly)}"
+        aria-required="${this.required ? 'true' : 'false'}"
+      />
+    `;
+  }
+
   private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
     return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
       ? html`<mdc-listitem part="no-result-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
@@ -536,51 +602,13 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     return html`
       ${this.renderLabel()}
       <div part="container__base" id="${TRIGGER_ID}">
-        <input
-          name="${this.name}"
-          type="text"
-          .value="${live(this.selectedOption?.value ?? '')}"
-          aria-hidden="true"
-          part="internal-native-input"
-          tabindex="-1"
-          ?required="${this.required}"
-          ?disabled="${this.disabled || this.softDisabled}"
-          autocomplete="${AUTO_COMPLETE.OFF}"
-          @focus=${this.handleNativeInputFocus}
-          @invalid=${this.setInputValidity}
-        />
+        ${this.renderNativeInput()}
         <mdc-input
           @click="${() => this.toggleDropdown()}"
           ?disabled="${this.disabled}"
           ?soft-disabled="${this.softDisabled}"
         >
-          <input
-            id="${this.id}"
-            slot="input"
-            ?disabled="${this.disabled}"
-            .value="${this.selectedOption?.label ?? ''}"
-            autocomplete="${AUTO_COMPLETE.OFF}"
-            class="input"
-            part="mdc-input"
-            placeholder="${ifDefined(this.placeholder)}"
-            role="${ROLE.COMBOBOX}"
-            ?readonly="${this.readonly}"
-            ?required="${this.required}"
-            @input=${this.handleInputChange}
-            @keydown=${this.handleInputKeydown}
-            @blur="${this.handleBlurChange}"
-            aria-autocomplete="${AUTOCOMPLETE_LIST}"
-            aria-controls="${LISTBOX_ID}"
-            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-            aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
-            aria-expanded="${this.isOpen ? 'true' : 'false'}"
-            aria-haspopup="${ROLE.LISTBOX}"
-            aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
-            aria-label="${this.dataAriaLabel ?? ''}"
-            aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-            aria-readonly="${ifDefined(this.readonly)}"
-            aria-required="${this.required ? 'true' : 'false'}"
-          />
+          ${this.renderBaseInput()}
         </mdc-input>
         <mdc-buttonsimple
           @click="${() => this.toggleDropdown()}"
