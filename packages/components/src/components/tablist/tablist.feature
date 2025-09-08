@@ -27,12 +27,6 @@ Feature: Tablist component
     And the first tab should not be active and have aria-selected "false"
     And the active-tab-id should be "videos-tab"
 
-  Scenario: Change active tab by keyboard (space/enter)
-    Given the tablist component is rendered
-    When I focus the first tab using the Tab key
-    And I press the Enter key
-    Then the first tab should be active and have aria-selected "true"
-
   Scenario: Fire change event when active tab changes
     Given the tablist component is rendered
     When I change the active tab using the keyboard

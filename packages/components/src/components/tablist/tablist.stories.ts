@@ -59,19 +59,19 @@ const render = (args: Args) =>
 
     <!-- The following is an example of the markup for the tab panels.
 This markup is not part of the component and is only provided for context. -->
-    <div id="calls-panel" role="tabpanel" aria-labelledby="calls-tab" hidden>
+    <div id="calls-panel" role="tabpanel" hidden>
       <p>Calls panel</p>
     </div>
-    <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
+    <div id="videos-panel" role="tabpanel" hidden>
       <p>Videos panel</p>
     </div>
-    <div id="music-panel" role="tabpanel" aria-labelledby="music-tab" hidden>
+    <div id="music-panel" role="tabpanel" hidden>
       <p>Music panel</p>
     </div>
-    <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab" hidden>
+    <div id="documents-panel" role="tabpanel" hidden>
       <p>Documents panel</p>
     </div>
-    <div id="meetings-panel" role="tabpanel" aria-labelledby="meetings-tab" hidden>
+    <div id="meetings-panel" role="tabpanel" hidden>
       <p>Meetings panel</p>
     </div>
     <!-- End of example markup for the tab panels -->`;
@@ -178,19 +178,19 @@ export const TablistWithPanels: StoryObj = {
 
       <!-- The following is an example of the markup for the tab panels.
 This markup is not part of the component and is only provided for context. -->
-      <div id="calls-panel" role="tabpanel" aria-labelledby="calls-tab" hidden>
+      <div id="calls-panel" role="tabpanel" hidden>
         <p>Calls panel</p>
       </div>
-      <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
+      <div id="videos-panel" role="tabpanel" hidden>
         <p>Videos panel</p>
       </div>
-      <div id="music-panel" role="tabpanel" aria-labelledby="music-tab" hidden>
+      <div id="music-panel" role="tabpanel" hidden>
         <p>Music panel</p>
       </div>
-      <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab">
+      <div id="documents-panel" role="tabpanel">
         <p>Documents panel</p>
       </div>
-      <div id="meetings-panel" role="tabpanel" aria-labelledby="meetings-tab" hidden>
+      <div id="meetings-panel" role="tabpanel" hidden>
         <p>Meetings panel</p>
       </div>
       <!-- End of example markup for the tab panels -->
