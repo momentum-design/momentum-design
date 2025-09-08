@@ -1,6 +1,7 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
@@ -437,9 +438,7 @@ class Slider extends Component {
    * @returns The styles for the tick mark.
    */
   getTickStyles(tick: number) {
-    const input = this.inputElements[0];
-    if (!input || this.max === this.min) return '';
-
+    if (this.max === this.min) return '';
     const normalizedTick = (tick - this.min) / (this.max - this.min);
 
     const normalizedValues: number[] = [];
@@ -453,16 +452,14 @@ class Slider extends Component {
       const normalizedValueEnd = (valueEnd - this.min) / (this.max - this.min);
       normalizedValues.push(normalizedValueEnd);
     }
-
     // Hide tick if it is at the same pixel as any thumb (allowing for 1px tolerance)
     if (normalizedValues.includes(normalizedTick)) {
       return 'display:none;';
     }
-
     return `--mdc-slider-tick-left:${normalizedTick};`;
   }
 
-  public override render() {
+  private renderTicks() {
     // Tick marks
     const ticks = [];
     if (this.step && this.step > 1) {
@@ -470,18 +467,25 @@ class Slider extends Component {
         ticks.push(i);
       }
     }
+    if (this.step > 1) {
+      return html` <div part="slider-ticks">
+        ${repeat(
+          ticks,
+          tick => tick,
+          tick => html`<span part="slider-tick" style=${this.getTickStyles(tick)}></span>`,
+        )}
+      </div>`;
+    }
+    return nothing;
+  }
+
+  public override render() {
     return html`
       ${this.label ? html`<label part="slider-label" for="single-slider">${this.label}</label>` : null}
       <div part="slider-track">
         ${this.iconTemplate(this.leadingIcon, 'leading-icon')}
         <div part="slider-wrapper">
-          ${this.step > 1
-            ? html`
-                <div part="slider-ticks">
-                  ${ticks.map(tick => html`<span part="slider-tick" style=${this.getTickStyles(tick)}></span>`)}
-                </div>
-              `
-            : nothing}
+          ${this.renderTicks()}
           ${this.range
             ? html`
                 <input
