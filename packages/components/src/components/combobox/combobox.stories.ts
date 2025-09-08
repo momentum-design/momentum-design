@@ -24,7 +24,6 @@ const render = (args: Args) =>
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       data-aria-label="${args['data-aria-label']}"
-      height="${args.height}"
       help-text="${args['help-text']}"
       label="${args.label}"
       name="${args.name}"
@@ -73,9 +72,6 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    height: {
-      control: 'text',
-    },
     'help-text': {
       control: 'text',
     },
@@ -109,7 +105,13 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...hideControls(['id', 'validity', 'validation-message', 'willValidate', 'default']),
-    ...textControls(['--mdc-combobox-border-color', '--mdc-combobox-icon-color']),
+    ...textControls([
+      '--mdc-combobox-border-color',
+      '--mdc-combobox-icon-color',
+      '--mdc-combobox-listbox-height',
+      '--mdc-combobox-listbox-width',
+      '--mdc-combobox-width',
+    ]),
   },
 };
 
@@ -124,7 +126,6 @@ export const Example: StoryObj = {
     'help-text-type': VALIDATION.DEFAULT,
     disabled: false,
     'soft-disabled': false,
-    height: '5rem',
     'no-result-text': '',
     placeholder: 'Start typing',
     'data-aria-label': 'Select a country',

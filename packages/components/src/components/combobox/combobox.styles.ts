@@ -4,12 +4,15 @@ const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-combobox-icon-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-combobox-width: 100%;
+    --mdc-combobox-listbox-width: var(--mdc-combobox-width);
+    --mdc-combobox-listbox-height: auto;
 
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
     align-items: unset;
-    width: unset;
+    width: var(--mdc-combobox-width);
   }
   :host::part(container__base) {
     width: 100%;
@@ -49,6 +52,20 @@ const styles = css`
     top: 0;
     left: 0;
     z-index: -1;
+  }
+  :host ::slotted(mdc-selectlistbox) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: var(--mdc-popover-internal-available-height);
+  }
+  /* Popover height & width overrides */
+  :host mdc-popover {
+    --mdc-popover-max-height: var(--mdc-combobox-listbox-height);
+    --mdc-popover-max-width: var(--mdc-combobox-listbox-width);
+  }
+  :host mdc-popover::part(popover-content) {
+    max-height: var(--mdc-popover-max-height);
   }
   /* High Contrast Mode */
   @media (forced-colors: active) {
