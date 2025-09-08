@@ -90,15 +90,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText?: string;
 
   /**
-   * Indicates whether the combobox is soft disabled.
-   * When set to `true`, the combobox appears visually disabled but still allows
-   * focus.
-   *
-   * @default undefined
-   */
-  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled?: boolean;
-
-  /**
    * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
    * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
    * element to be clipped.
@@ -281,13 +272,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   public override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    if (
-      changedProperties.has('disabled') ||
-      changedProperties.has('softDisabled') ||
-      changedProperties.has('readonly')
-    ) {
-      if (this.disabled || this.softDisabled || this.readonly) {
-        // If the combobox is disabled, soft-disabled or readonly,
+    if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
+      if (this.disabled || this.readonly) {
+        // If the combobox is disabled or readonly,
         // we close the popover if it is open.
         this.isOpen = false;
       }
@@ -495,12 +482,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   private handleOptionsClick(event: MouseEvent): void {
     const option = event.target as Option;
-    if (
-      option &&
-      option.tagName === OPTION_TAG_NAME.toUpperCase() &&
-      !option.hasAttribute('disabled') &&
-      !option.hasAttribute('soft-disabled')
-    ) {
+    if (option && option.tagName === OPTION_TAG_NAME.toUpperCase() && !option.hasAttribute('disabled')) {
       this.setSelectedValue(option);
       this.closePopover();
     }
@@ -536,7 +518,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         part="internal-native-input"
         tabindex="-1"
         ?required=${this.required}
-        ?disabled=${this.disabled || this.softDisabled}
+        ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         autocomplete="${AUTO_COMPLETE.OFF}"
         @focus=${this.handleNativeInputFocus}
@@ -571,7 +553,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
         aria-controls="${LISTBOX_ID}"
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-        aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
+        aria-disabled="${ifDefined(this.disabled)}"
         aria-expanded="${this.isOpen ? 'true' : 'false'}"
         aria-haspopup="${ROLE.LISTBOX}"
         aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
@@ -595,11 +577,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       ${this.renderLabel()}
       <div part="container__base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
-        <mdc-input
-          @click="${() => this.toggleDropdown()}"
-          ?disabled="${this.disabled}"
-          ?soft-disabled="${this.softDisabled}"
-        >
+        <mdc-input @click="${() => this.toggleDropdown()}" ?disabled="${this.disabled}">
           ${this.renderBaseInput()}
         </mdc-input>
         <mdc-buttonsimple
