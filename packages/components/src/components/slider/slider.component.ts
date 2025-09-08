@@ -9,7 +9,6 @@ import type { IconName } from '../accordionbutton/accordionbutton.types';
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 import type { ThumbStateType } from './slider.types';
-import { getElementValueInPx, getThumbWidthPx } from './slider.utils';
 
 /**
  * Slider component is used to select a value or range of values from within a defined range.
@@ -41,7 +40,8 @@ import { getElementValueInPx, getThumbWidthPx } from './slider.utils';
  * @cssproperty --mdc-slider-tick-color - The color of the slider tick marks
  * @cssproperty --mdc-slider-progress-color - The color of the slider progress
  * @cssproperty --mdc-slider-track-color - The color of the slider track
- *
+ * @cssproperty --mdc-slider-tooltip-left - The left position of the slider tooltip
+ * @cssproperty --mdc-slider-tick-left - The left position of the slider tick marks
  */
 class Slider extends Component {
   /**
@@ -341,28 +341,14 @@ class Slider extends Component {
     const [inputStart, inputEnd] = this.inputElements;
     const input = source === 'end' ? inputEnd : inputStart;
     const value = Number(input?.value);
-    // Basic validation to prevent errors if values are missing or invalid
+
     if (typeof value !== 'number' || Number.isNaN(value) || this.max === this.min) {
       return nothing;
     }
-
-    const sliderWidthPx = input.offsetWidth; // Get the actual rendered width of the slider in pixels
-
-    const thumbWidthPx = getThumbWidthPx(input);
     const normalizedValue = (value - this.min) / (this.max - this.min);
-
-    // Calculate the pixel position of the thumb's center within the slider's track.
-    // The thumb's center travels within a range of (sliderWidthPx - thumbWidthPx).
-    // We add half the thumb's width to account for its starting position (left edge at 0).
-    const thumbCenterPx = getElementValueInPx(normalizedValue, sliderWidthPx, thumbWidthPx);
-
-    // Convert the pixel position of the thumb's center into a percentage
-    // relative to the slider's total rendered width.
-    const tooltipLeftPercentage = (thumbCenterPx / sliderWidthPx) * 100;
-
-    const style = `left:${tooltipLeftPercentage}%;`;
-
-    return html` <div part="slider-tooltip" aria-hidden="true" style=${style}>${label || value}</div> `;
+    return html`<div part="slider-tooltip" aria-hidden="true" style="--mdc-slider-tooltip-left: ${normalizedValue}">
+      ${label || value}
+    </div> `;
   }
 
   /**
@@ -454,35 +440,26 @@ class Slider extends Component {
     const input = this.inputElements[0];
     if (!input || this.max === this.min) return '';
 
-    const sliderWidthPx = input.offsetWidth;
-    const thumbWidthPx = getThumbWidthPx(input);
     const normalizedTick = (tick - this.min) / (this.max - this.min);
 
-    // Calculate the pixel position of the tick's center within the slider's track
-    const tickCenterPx = getElementValueInPx(normalizedTick, sliderWidthPx, thumbWidthPx);
-    const tickLeftPercentage = (tickCenterPx / sliderWidthPx) * 100;
-
-    // Hide the tick if it overlaps with any thumb
-    const thumbPositions: number[] = [];
+    const normalizedValues: number[] = [];
     if (this.inputElements[0]) {
       const value = Number(this.inputElements[0].value);
       const normalizedValue = (value - this.min) / (this.max - this.min);
-      const thumbPx = getElementValueInPx(normalizedValue, sliderWidthPx, thumbWidthPx);
-      thumbPositions.push(Math.round(thumbPx));
+      normalizedValues.push(normalizedValue);
     }
     if (this.range && this.inputElements[1]) {
       const valueEnd = Number(this.inputElements[1].value);
       const normalizedValueEnd = (valueEnd - this.min) / (this.max - this.min);
-      const thumbPxEnd = getElementValueInPx(normalizedValueEnd, sliderWidthPx, thumbWidthPx);
-      thumbPositions.push(Math.round(thumbPxEnd));
+      normalizedValues.push(normalizedValueEnd);
     }
 
     // Hide tick if it is at the same pixel as any thumb (allowing for 1px tolerance)
-    if (thumbPositions.some(pos => Math.abs(pos - Math.round(tickCenterPx)) <= 1)) {
+    if (normalizedValues.includes(normalizedTick)) {
       return 'display:none;';
     }
 
-    return `left:${tickLeftPercentage}%;`;
+    return `--mdc-slider-tick-left:${normalizedTick};`;
   }
 
   public override render() {

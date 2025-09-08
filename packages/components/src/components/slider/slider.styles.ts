@@ -5,6 +5,8 @@ import { baseHostStyleVariables, focusRingBoxShadow } from '../../utils/styles';
 const styles = css`
   :host {
     width: 100%;
+    --mdc-slider-tooltip-left: 0;
+    --mdc-slider-tick-left: 0;
     --mdc-slider-input-size: 0.5rem;
     --mdc-slider-thumb-size: 1.5rem;
     --mdc-slider-tick-size: 0.25rem;
@@ -163,6 +165,9 @@ const styles = css`
     filter: var(--mds-elevation-3);
     padding: 0.5rem;
     transform: translateX(-50%);
+    left: calc(
+      var(--mdc-slider-tooltip-left) * (100% - var(--mdc-slider-thumb-size)) + (var(--mdc-slider-thumb-size) / 2)
+    );
   }
 
   :host::part(slider-ticks) {
@@ -182,6 +187,9 @@ const styles = css`
     background: var(--mdc-slider-tick-color);
     border-radius: 50%;
     transform: translateX(-50%);
+    left: calc(
+      var(--mdc-slider-tick-left) * (100% - var(--mdc-slider-thumb-size)) + (var(--mdc-slider-thumb-size) / 2)
+    );
   }
 
   @media (forced-colors: active) {
