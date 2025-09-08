@@ -115,7 +115,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   boundary: 'clippingAncestors' | string = POPOVER_DEFAULTS.BOUNDARY;
 
   /**
-   * The strategy of the popover within Select.
+   * The strategy of the popover within Combobox.
    * This determines how the popover is positioned in the DOM.
    *
    * In case `boundary` is set to something other than 'clippingAncestors',
@@ -129,7 +129,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
 
   /**
-   * The z-index of the popover within Select.
+   * The z-index of the popover within Combobox.
    *
    * Override this to make sure this stays on top of other components.
    * @default 1000
@@ -329,8 +329,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     const optionToResetTo = this.initialSelectedOption || null;
     if (this.selectedOption?.value !== optionToResetTo?.value) {
       this.setSelectedValue(optionToResetTo);
-    } else {
-      this.setSelectedValue(null);
     }
   }
 
@@ -341,8 +339,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     );
     if (this.selectedOption?.value !== optionToRestoreTo?.value) {
       this.setSelectedValue(optionToRestoreTo || null);
-    } else {
-      this.setSelectedValue(null);
     }
   }
 

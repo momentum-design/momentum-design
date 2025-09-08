@@ -3,6 +3,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import '../button';
+import '../tooltip';
 import '../divider';
 import '../optgroup';
 import '../option';
@@ -21,19 +22,23 @@ const render = (args: Args) =>
       @input="${action('oninput')}"
       @keydown="${action('onkeydown')}"
       @focus="${action('onfocus')}"
-      ?disabled="${args.disabled}"
-      ?soft-disabled="${args['soft-disabled']}"
+      backdrop-append-to="${args['backdrop-append-to']}"
+      boundary="${args.boundary}"
       data-aria-label="${args['data-aria-label']}"
+      ?disabled="${args.disabled}"
       help-text="${args['help-text']}"
+      help-text-type="${args['help-text-type']}"
+      info-icon-aria-label="${args['info-icon-aria-label']}"
       label="${args.label}"
       name="${args.name}"
       no-result-text="${args['no-result-text']}"
       placeholder="${args.placeholder}"
-      value="${args.value}"
-      boundary="${args.boundary}"
-      strategy="${args.strategy}"
+      placement="${args.placement}"
       popover-z-index="${args['popover-z-index']}"
-      backdrop-append-to="${args['backdrop-append-to']}"
+      ?required="${args.required}"
+      ?soft-disabled="${args['soft-disabled']}"
+      strategy="${args.strategy}"
+      value="${args.value}"
     >
       ${args.children}
     </mdc-combobox>
@@ -48,63 +53,24 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    name: {
-      control: 'text',
-    },
-    value: {
-      control: 'text',
-    },
-    label: {
-      control: 'text',
-    },
-    required: {
-      control: 'boolean',
-    },
-    placeholder: {
-      control: 'text',
-    },
-    disabled: {
-      control: 'boolean',
-    },
-    'soft-disabled': {
-      control: 'boolean',
-    },
-    'data-aria-label': {
-      control: 'text',
-    },
-    'help-text': {
-      control: 'text',
-    },
-    'help-text-type': {
-      control: 'select',
-      options: Object.values(VALIDATION),
-    },
-    'info-icon-aria-label': {
-      control: 'text',
-    },
-    'no-result-text': {
-      control: 'text',
-    },
-    placement: {
-      control: 'select',
-      options: [POPOVER_PLACEMENT.BOTTOM_START, POPOVER_PLACEMENT.TOP_START],
-    },
-    boundary: {
-      control: 'text',
-    },
-    strategy: {
-      control: 'select',
-      options: Object.values(STRATEGY),
-    },
-    'popover-z-index': {
-      control: 'number',
-    },
-    'backdrop-append-to': {
-      control: 'text',
-    },
-    ...classArgType,
-    ...styleArgType,
-    ...hideControls(['id', 'validity', 'validation-message', 'willValidate', 'default']),
+    'backdrop-append-to': { control: 'text' },
+    boundary: { control: 'text' },
+    'data-aria-label': { control: 'text' },
+    disabled: { control: 'boolean' },
+    'help-text': { control: 'text' },
+    'help-text-type': { control: 'select', options: Object.values(VALIDATION) },
+    'info-icon-aria-label': { control: 'text' },
+    label: { control: 'text' },
+    name: { control: 'text' },
+    'no-result-text': { control: 'text' },
+    placeholder: { control: 'text' },
+    placement: { control: 'select', options: [POPOVER_PLACEMENT.BOTTOM_START, POPOVER_PLACEMENT.TOP_START] },
+    'popover-z-index': { control: 'number' },
+    required: { control: 'boolean' },
+    'soft-disabled': { control: 'boolean' },
+    strategy: { control: 'select', options: Object.values(STRATEGY) },
+    value: { control: 'text' },
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...textControls([
       '--mdc-combobox-border-color',
       '--mdc-combobox-icon-color',
@@ -112,6 +78,8 @@ const meta: Meta = {
       '--mdc-combobox-listbox-width',
       '--mdc-combobox-width',
     ]),
+    ...classArgType,
+    ...styleArgType,
   },
 };
 
@@ -240,6 +208,20 @@ export const ComboboxWithSelectedValue: StoryObj = {
       </mdc-selectlistbox>
     `,
   },
+};
+
+export const ComboboxWithLongOptionText: StoryObj = {
+  render: () => html`
+    <mdc-combobox placeholder="Type a color" label="Select one color">
+      <mdc-selectlistbox>
+        <mdc-option label="Red"></mdc-option>
+        <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+        <mdc-option id="option-3" label="White and Black are the biggest colors on the spectrum"></mdc-option>
+        <mdc-option label="Green"></mdc-option>
+      </mdc-selectlistbox>
+    </mdc-combobox>
+    <mdc-tooltip triggerid="option-3" show-arrow> White and Black are the biggest colors on the spectrum </mdc-tooltip>
+  `,
 };
 
 export const ComboboxWithForm: StoryObj = {
