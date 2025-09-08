@@ -61,6 +61,9 @@ import type { Placement } from './combobox.types';
  *
  * @cssproperty --mdc-combobox-border-color - The border color of the combobox
  * @cssproperty --mdc-combobox-icon-color - The icon color of the combobox
+ * @cssproperty --mdc-combobox-listbox-height - The height of the listbox inside the combobox
+ * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
+ * @cssproperty --mdc-combobox-width - The width of the combobox
  */
 class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -78,13 +81,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * The placeholder text which will be shown on the text if provided.
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
-
-  /**
-   * height attribute of the combobox field. If set,
-   * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default auto
-   */
-  @property({ type: String }) height = 'auto';
 
   /**
    * Text to be displayed when no results are found.
@@ -646,7 +642,6 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           role=""
           size
           strategy="${ifDefined(this.strategy)}"
-          style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
           trigger="${TRIGGER.MANUAL}"
           triggerid="${TRIGGER_ID}"
           z-index="${ifDefined(this.popoverZIndex)}"
