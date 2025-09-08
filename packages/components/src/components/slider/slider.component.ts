@@ -9,6 +9,7 @@ import type { IconName } from '../accordionbutton/accordionbutton.types';
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 import type { ThumbStateType } from './slider.types';
+import { getThumbWidthPx } from './slider.utils';
 
 /**
  * Slider component is used to select a value or range of values from within a defined range.
@@ -227,6 +228,18 @@ class Slider extends Component {
   }
 
   /**
+   * Prevents default behavior for mouse and keyboard events.
+   * This prevents user interaction with the slider when it is soft-disabled.
+   * @param e - The event to prevent.
+   */
+  private preventChange(e: Event) {
+    if (this.softDisabled && ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent))) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  /**
    * Sets the soft-disabled state for the slider.
    * Applies the appropriate ARIA attributes.
    */
@@ -252,49 +265,51 @@ class Slider extends Component {
     if (this.valueEnd === undefined) {
       this.valueEnd = this.max;
     }
-    this.handleInputStart();
-    this.handleInputEnd();
+    this.handleInput(0);
+    this.handleInput(1);
   }
 
   /**
-   * Handles input changes for the start thumb of the range slider.
-   * The start thumb will never cross over the end thumb
+   * Handles input changes for either the start or end thumb of the range slider.
+   * Ensures thumbs do not cross over each other.
+   * @param thumbIndex - 0 for start thumb, 1 for end thumb.
    */
-  private handleInputStart() {
-    const input = this.inputElements[0];
-    if (!this.valueEnd || !input) return;
-    if (Number(input.value) > this.valueEnd) {
-      input.value = String(this.valueEnd);
-      this.valueStart = this.valueEnd;
-    } else if (Number(input.value) > this.min && Number(input.value) < this.valueEnd) {
-      this.valueStart = Number(input.value);
-    }
-  }
+  private handleInput(thumbIndex: 0 | 1) {
+    const input = this.inputElements[thumbIndex];
 
-  /**
-   * Handles input changes for the end thumb of the range slider.
-   * The end thumb will never cross over the start thumb
-   */
-  private handleInputEnd() {
-    const input = this.inputElements[1];
-    if (!this.valueStart || !input) return;
-    if (Number(input.value) < this.valueStart) {
-      input.value = String(this.valueStart);
-      this.valueEnd = this.valueStart;
-    } else if (Number(input.value) < this.max && Number(input.value) > this.valueStart) {
-      this.valueEnd = Number(input.value);
-    }
-  }
+    if (!input) return;
 
-  /**
-   * Prevents default behavior for mouse and keyboard events.
-   * This prevents user interaction with the slider when it is soft-disabled.
-   * @param e - The event to prevent.
-   */
-  private preventChange(e: Event) {
-    if (this.softDisabled && ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent))) {
-      e.preventDefault();
-      e.stopPropagation();
+    if (thumbIndex === 0) {
+      if (!this.valueEnd) return; // Ensure valueEnd is available
+
+      const inputValue = Number(input.value);
+
+      if (inputValue > this.valueEnd) {
+        input.value = String(this.valueEnd);
+        this.valueStart = this.valueEnd;
+      } else if (inputValue >= this.min && inputValue < this.valueEnd) {
+        this.valueStart = inputValue;
+      } else if (inputValue < this.min) {
+        // Handle case where input goes below min
+        input.value = String(this.min);
+        this.valueStart = this.min;
+      }
+    } else {
+      // Handling the end thumb
+      if (!this.valueStart) return; // Ensure valueStart is available
+
+      const inputValue = Number(input.value);
+
+      if (inputValue < this.valueStart) {
+        input.value = String(this.valueStart);
+        this.valueEnd = this.valueStart;
+      } else if (inputValue <= this.max && inputValue > this.valueStart) {
+        this.valueEnd = inputValue;
+      } else if (inputValue > this.max) {
+        // Handle case where input goes above max
+        input.value = String(this.max);
+        this.valueEnd = this.max;
+      }
     }
   }
 
@@ -316,32 +331,7 @@ class Slider extends Component {
   }
 
   /**
-   * Gets the width of the slider thumb in pixels.
-   * @param input - The input element representing the slider thumb.
-   * @returns The width of the thumb in pixels.
-   */
-  private getThumbWidthPx(input: HTMLElement): number {
-    // Try to get the CSS variable from the input element, fallback to documentElement
-    const style = getComputedStyle(input);
-    let thumbSize = style.getPropertyValue('--mdc-slider-thumb-size');
-    if (!thumbSize) {
-      thumbSize = getComputedStyle(document.documentElement).getPropertyValue('--mdc-slider-thumb-size');
-    }
-    // Remove whitespace and handle units (assume px or rem)
-    thumbSize = thumbSize.trim();
-    if (thumbSize.endsWith('px')) {
-      return parseFloat(thumbSize);
-    }
-    if (thumbSize.endsWith('rem')) {
-      const htmlFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      return parseFloat(thumbSize) * htmlFontSize;
-    }
-    // Default fallback (matches previous hardcoded value)
-    return 24;
-  }
-
-  /**
-   * Renders a visual representation of tooltip element.
+   * Renders a visual representation of tooltip element and places it exactly above the slider thumb.
    * @param label - The label to display in the tooltip.
    * @param source - The source of the tooltip (e.g., 'start' or 'end').
    * @returns The tooltip element.
@@ -358,9 +348,7 @@ class Slider extends Component {
 
     const sliderWidthPx = input.offsetWidth; // Get the actual rendered width of the slider in pixels
 
-    const thumbWidthPx = this.getThumbWidthPx(input);
-
-    // Calculate the normalized value (0 to 1) representing the thumb's position along the track
+    const thumbWidthPx = getThumbWidthPx(input);
     const normalizedValue = (value - this.min) / (this.max - this.min);
 
     // Calculate the pixel position of the thumb's center within the slider's track.
@@ -521,7 +509,7 @@ class Slider extends Component {
                   aria-label="${this.startAriaLabel || this.label || ''}"
                   aria-valuetext="${this.startAriaValuetext || this.valueLabelStart || this.valueStart || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${this.handleInputStart}
+                  @input=${() => this.handleInput(0)}
                   @change=${this.onChangeStart}
                   @focus=${() => {
                     this.thumbFocused = 'start';
@@ -555,7 +543,7 @@ class Slider extends Component {
                   aria-label="${this.endAriaLabel || this.label || ''}"
                   aria-valuetext="${this.endAriaValueText || this.valueLabelEnd || this.valueEnd || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${this.handleInputEnd}
+                  @input=${() => this.handleInput(1)}
                   @change=${this.onChangeEnd}
                   @focus=${() => {
                     this.thumbFocused = 'end';
