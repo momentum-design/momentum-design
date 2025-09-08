@@ -36,7 +36,6 @@ const render = (args: Args) =>
       placement="${args.placement}"
       popover-z-index="${args['popover-z-index']}"
       ?required="${args.required}"
-      ?soft-disabled="${args['soft-disabled']}"
       strategy="${args.strategy}"
       value="${args.value}"
     >
@@ -53,23 +52,57 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    'backdrop-append-to': { control: 'text' },
-    boundary: { control: 'text' },
-    'data-aria-label': { control: 'text' },
-    disabled: { control: 'boolean' },
-    'help-text': { control: 'text' },
-    'help-text-type': { control: 'select', options: Object.values(VALIDATION) },
-    'info-icon-aria-label': { control: 'text' },
-    label: { control: 'text' },
-    name: { control: 'text' },
-    'no-result-text': { control: 'text' },
-    placeholder: { control: 'text' },
-    placement: { control: 'select', options: [POPOVER_PLACEMENT.BOTTOM_START, POPOVER_PLACEMENT.TOP_START] },
-    'popover-z-index': { control: 'number' },
-    required: { control: 'boolean' },
-    'soft-disabled': { control: 'boolean' },
-    strategy: { control: 'select', options: Object.values(STRATEGY) },
-    value: { control: 'text' },
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    boundary: {
+      control: 'text',
+    },
+    'data-aria-label': {
+      control: 'text',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    'help-text': {
+      control: 'text',
+    },
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
+    label: {
+      control: 'text',
+    },
+    name: {
+      control: 'text',
+    },
+    'no-result-text': {
+      control: 'text',
+    },
+    placeholder: {
+      control: 'text',
+    },
+    placement: {
+      control: 'select',
+      options: [POPOVER_PLACEMENT.BOTTOM_START, POPOVER_PLACEMENT.TOP_START],
+    },
+    'popover-z-index': {
+      control: 'number',
+    },
+    required: {
+      control: 'boolean',
+    },
+    strategy: {
+      control: 'select',
+      options: Object.values(STRATEGY),
+    },
+    value: {
+      control: 'text',
+    },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...textControls([
       '--mdc-combobox-border-color',
@@ -93,7 +126,6 @@ export const Example: StoryObj = {
     'help-text': 'Select a country',
     'help-text-type': VALIDATION.DEFAULT,
     disabled: false,
-    'soft-disabled': false,
     'no-result-text': '',
     placeholder: 'Start typing',
     'data-aria-label': 'Select a country',
@@ -151,8 +183,8 @@ export const AllVariants: StoryObj = {
         data-aria-label="How many Infinity Stones exist?"
         required
       ></mdc-combobox>
-      <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Selected text" disabled></mdc-combobox>
-      <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Selected text" readonly></mdc-combobox>
+      <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Disabled text" disabled></mdc-combobox>
+      <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Readonly text" readonly></mdc-combobox>
     </div>
   `,
 };
