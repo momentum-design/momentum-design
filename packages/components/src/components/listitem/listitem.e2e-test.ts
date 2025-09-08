@@ -117,7 +117,7 @@ test.describe.parallel('mdc-listitem', () => {
       await listitemSheet.createMarkupWithCombination({}, options);
       listitemSheet.setAttributes({
         label: 'This is a long text which should be truncated',
-        style: 'width: 15rem',
+        style: 'width: 15rem; outline: 2px solid red;',
       });
       listitemSheet.setChildren(`
       <div slot="leading-controls">
@@ -126,7 +126,27 @@ test.describe.parallel('mdc-listitem', () => {
       </div>
     `);
       await listitemSheet.createMarkupWithCombination({}, options);
-
+      listitemSheet.setAttributes({
+        label: 'This is an extremely long label text that should wrap or truncate properly inside a fixed width',
+        'secondary-label': secondaryLabel,
+        'tertiary-label': tertiaryLabel,
+        'side-header-text': sideHeaderText,
+        'subline-text': sublineText,
+        style: 'width: 50rem; outline: 2px solid red;', // 800px
+      });
+      listitemSheet.setChildren(`
+      <div slot="leading-controls">
+        <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
+      </div>
+      <div slot="trailing-controls">
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
+        <mdc-button variant="secondary">Click</mdc-button>
+        <mdc-toggle data-aria-label="${primaryLabel}" size="compact"></mdc-toggle>
+        <mdc-badge type="dot"></mdc-badge>
+      </div>
+    `);
+    await listitemSheet.createMarkupWithCombination({}, options);
       await listitemSheet.mountStickerSheet({ role: 'list' });
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-listitem', {
