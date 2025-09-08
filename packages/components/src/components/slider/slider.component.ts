@@ -316,23 +316,65 @@ class Slider extends Component {
   }
 
   /**
+   * Gets the width of the slider thumb in pixels.
+   * @param input - The input element representing the slider thumb.
+   * @returns The width of the thumb in pixels.
+   */
+  private getThumbWidthPx(input: HTMLElement): number {
+    // Try to get the CSS variable from the input element, fallback to documentElement
+    const style = getComputedStyle(input);
+    let thumbSize = style.getPropertyValue('--mdc-slider-thumb-size');
+    if (!thumbSize) {
+      thumbSize = getComputedStyle(document.documentElement).getPropertyValue('--mdc-slider-thumb-size');
+    }
+    // Remove whitespace and handle units (assume px or rem)
+    thumbSize = thumbSize.trim();
+    if (thumbSize.endsWith('px')) {
+      return parseFloat(thumbSize);
+    }
+    if (thumbSize.endsWith('rem')) {
+      const htmlFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      return parseFloat(thumbSize) * htmlFontSize;
+    }
+    // Default fallback (matches previous hardcoded value)
+    return 24;
+  }
+
+  /**
    * Renders a visual representation of tooltip element.
-   * @param val - The value to display in the tooltip.
    * @param label - The label to display in the tooltip.
+   * @param source - The source of the tooltip (e.g., 'start' or 'end').
    * @returns The tooltip element.
    */
-  private tooltipTemplate(val: number | string | undefined, label: string | undefined) {
-    let style = '';
-    let percentage = 0;
-    if (typeof val === 'number' && this.max !== this.min) {
-      percentage = ((val - this.min) / (this.max - this.min)) * 100;
+
+  private tooltipTemplate(label: string | undefined, source?: string) {
+    const [inputStart, inputEnd] = this.inputElements;
+    const input = source === 'end' ? inputEnd : inputStart;
+    const value = Number(input?.value);
+    // Basic validation to prevent errors if values are missing or invalid
+    if (typeof value !== 'number' || Number.isNaN(value) || this.max === this.min) {
+      return nothing;
     }
-    if (percentage > 50) {
-      style = `right:${100 - percentage}%; transform: translateX(calc(50% - (var(--mdc-slider-thumb-size) / 2)))`;
-    } else {
-      style = `left:${percentage}%; transform: translateX(calc(-50% + (var(--mdc-slider-thumb-size) / 2)))`;
-    }
-    return html` <div part="slider-tooltip" aria-hidden="true" style=${style}>${label || val}</div> `;
+
+    const sliderWidthPx = input.offsetWidth; // Get the actual rendered width of the slider in pixels
+
+    const thumbWidthPx = this.getThumbWidthPx(input);
+
+    // Calculate the normalized value (0 to 1) representing the thumb's position along the track
+    const normalizedValue = (value - this.min) / (this.max - this.min);
+
+    // Calculate the pixel position of the thumb's center within the slider's track.
+    // The thumb's center travels within a range of (sliderWidthPx - thumbWidthPx).
+    // We add half the thumb's width to account for its starting position (left edge at 0).
+    const thumbCenterPx = normalizedValue * (sliderWidthPx - thumbWidthPx) + thumbWidthPx / 2;
+
+    // Convert the pixel position of the thumb's center into a percentage
+    // relative to the slider's total rendered width.
+    const tooltipLeftPercentage = (thumbCenterPx / sliderWidthPx) * 100;
+
+    const style = `left:${tooltipLeftPercentage}%;`;
+
+    return html` <div part="slider-tooltip" aria-hidden="true" style=${style}>${label || value}</div> `;
   }
 
   /**
@@ -495,7 +537,7 @@ class Slider extends Component {
                   }}
                 />
                 ${this.thumbFocused === 'start' || this.thumbHovered === 'start'
-                  ? this.tooltipTemplate(this.valueStart, this.valueLabelStart)
+                  ? this.tooltipTemplate(this.valueLabelStart)
                   : nothing}
                 <input
                   id="end-slider"
@@ -529,7 +571,7 @@ class Slider extends Component {
                   }}
                 />
                 ${this.thumbFocused === 'end' || this.thumbHovered === 'end'
-                  ? this.tooltipTemplate(this.valueEnd, this.valueLabelEnd)
+                  ? this.tooltipTemplate(this.valueLabelEnd, this.thumbFocused || this.thumbHovered)
                   : nothing}
               `
             : html`
@@ -565,7 +607,7 @@ class Slider extends Component {
                   }}
                 />
                 ${this.thumbFocused === 'start' || this.thumbHovered === 'start'
-                  ? this.tooltipTemplate(this.value, this.valueLabel)
+                  ? this.tooltipTemplate(this.valueLabel)
                   : nothing}
               `}
         </div>

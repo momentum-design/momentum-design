@@ -47,7 +47,7 @@ const styles = css`
   :host::part(slider-wrapper) {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: var(--mdc-slider-track-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,6 +162,7 @@ const styles = css`
     background-color: var(--mds-color-theme-background-solid-primary-normal);
     filter: var(--mds-elevation-3);
     padding: 0.5rem;
+    transform: translateX(-50%);
   }
 
   :host::part(slider-ticks) {
