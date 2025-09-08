@@ -9,7 +9,7 @@ import type { IconName } from '../accordionbutton/accordionbutton.types';
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
 import type { ThumbStateType } from './slider.types';
-import { getThumbWidthPx } from './slider.utils';
+import { getElementValueInPx, getThumbWidthPx } from './slider.utils';
 
 /**
  * Slider component is used to select a value or range of values from within a defined range.
@@ -354,7 +354,7 @@ class Slider extends Component {
     // Calculate the pixel position of the thumb's center within the slider's track.
     // The thumb's center travels within a range of (sliderWidthPx - thumbWidthPx).
     // We add half the thumb's width to account for its starting position (left edge at 0).
-    const thumbCenterPx = normalizedValue * (sliderWidthPx - thumbWidthPx) + thumbWidthPx / 2;
+    const thumbCenterPx = getElementValueInPx(normalizedValue, sliderWidthPx, thumbWidthPx);
 
     // Convert the pixel position of the thumb's center into a percentage
     // relative to the slider's total rendered width.
@@ -451,24 +451,38 @@ class Slider extends Component {
    * @returns The styles for the tick mark.
    */
   getTickStyles(tick: number) {
-    const values = [];
-    const value = Number(this.inputElements[0]?.value);
-    if (value !== undefined) {
-      const progress = Math.max(0, Math.min(100, ((value - this.min) / (this.max - this.min)) * 100));
-      values.push(progress);
+    const input = this.inputElements[0];
+    if (!input || this.max === this.min) return '';
+
+    const sliderWidthPx = input.offsetWidth;
+    const thumbWidthPx = getThumbWidthPx(input);
+    const normalizedTick = (tick - this.min) / (this.max - this.min);
+
+    // Calculate the pixel position of the tick's center within the slider's track
+    const tickCenterPx = getElementValueInPx(normalizedTick, sliderWidthPx, thumbWidthPx);
+    const tickLeftPercentage = (tickCenterPx / sliderWidthPx) * 100;
+
+    // Hide the tick if it overlaps with any thumb
+    const thumbPositions: number[] = [];
+    if (this.inputElements[0]) {
+      const value = Number(this.inputElements[0].value);
+      const normalizedValue = (value - this.min) / (this.max - this.min);
+      const thumbPx = getElementValueInPx(normalizedValue, sliderWidthPx, thumbWidthPx);
+      thumbPositions.push(Math.round(thumbPx));
     }
-    if (this.range) {
-      const valueEnd = Number(this.inputElements[1]?.value);
-      if (valueEnd !== undefined) {
-        const progressEnd = Math.max(0, Math.min(100, ((valueEnd - this.min) / (this.max - this.min)) * 100));
-        values.push(progressEnd);
-      }
+    if (this.range && this.inputElements[1]) {
+      const valueEnd = Number(this.inputElements[1].value);
+      const normalizedValueEnd = (valueEnd - this.min) / (this.max - this.min);
+      const thumbPxEnd = getElementValueInPx(normalizedValueEnd, sliderWidthPx, thumbWidthPx);
+      thumbPositions.push(Math.round(thumbPxEnd));
     }
-    const tickPosition = ((tick - this.min) / (this.max - this.min)) * 100;
-    if (values.includes(tickPosition)) {
-      return `display:none;`;
+
+    // Hide tick if it is at the same pixel as any thumb (allowing for 1px tolerance)
+    if (thumbPositions.some(pos => Math.abs(pos - Math.round(tickCenterPx)) <= 1)) {
+      return 'display:none;';
     }
-    return `left: calc(${tickPosition}% - var(--mdc-slider-thumb-size) / 2);`;
+
+    return `left:${tickLeftPercentage}%;`;
   }
 
   public override render() {

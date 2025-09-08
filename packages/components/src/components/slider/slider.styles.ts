@@ -167,9 +167,8 @@ const styles = css`
 
   :host::part(slider-ticks) {
     position: absolute;
-    left: 2%;
     bottom: 7%;
-    width: 98%;
+    width: 100%;
     height: 100%;
     pointer-events: none;
     z-index: 1;

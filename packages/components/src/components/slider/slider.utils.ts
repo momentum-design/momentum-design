@@ -21,3 +21,19 @@ export const getThumbWidthPx = (input: HTMLElement): number => {
   }
   return 0;
 };
+
+/**
+ * Gets the pixel value of a normalized element value.
+ * @param normalizedValue - The normalized value (between 0 and 1) of the slider.
+ * @param sliderWidthInPx - The total width of the slider in pixels.
+ * @param thumbWidthInPx - The width of the slider thumb in pixels.
+ * @returns The pixel value of the slider thumb's position.
+ */
+export const getElementValueInPx = (
+  normalizedValue: number,
+  sliderWidthInPx: number,
+  thumbWidthInPx: number,
+): number => {
+  const availableWidth = sliderWidthInPx - thumbWidthInPx;
+  return normalizedValue * availableWidth + thumbWidthInPx / 2;
+};
