@@ -186,7 +186,8 @@ const styles = css`
 
   @media (forced-colors: active) {
     :host::part(end-slider),
-    :host::part(single-slider) {
+    :host::part(single-slider),
+    :host::part(slider-tick) {
       border: 1px solid;
     }
   }
