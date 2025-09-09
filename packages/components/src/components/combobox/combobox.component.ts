@@ -72,6 +72,13 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-primary-border-color - The border color of the combobox when in primary state
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
  * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
+ *
+ * @csspart internal-native-input - The internal native input element of the combobox.
+ * @csspart mdc-input - The input element of the combobox.
+ * @csspart no-result-text - The no result text element of the combobox.
+ * @csspart container__base - The base container element of the combobox.
+ * @csspart container__button - The button element of the combobox.
+ * @csspart container__button-icon - The icon element of the button of the combobox.
  */
 class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
