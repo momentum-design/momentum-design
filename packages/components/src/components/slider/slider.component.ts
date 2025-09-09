@@ -201,6 +201,7 @@ class Slider extends Component {
   constructor() {
     super();
     this.addEventListener('keydown', this.preventChange.bind(this));
+    this.addEventListener('mousedown', this.preventChange.bind(this));
   }
 
   protected override updated(changedProperties: PropertyValueMap<Slider>): void {
