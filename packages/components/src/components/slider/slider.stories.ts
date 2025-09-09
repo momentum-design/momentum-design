@@ -40,12 +40,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/slider',
+  title: 'Components/slider',
   tags: ['autodocs'],
   component: 'mdc-slider',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     min: { control: 'number' },
