@@ -71,6 +71,7 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-success-border-color - The border color of the combobox when in success state
  * @cssproperty --mdc-combobox-primary-border-color - The border color of the combobox when in primary state
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
+ * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
  */
 class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
