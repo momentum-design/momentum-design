@@ -1,9 +1,10 @@
-import { PropertyValues, CSSResult, html } from 'lit';
+import { PropertyValues, CSSResult, html} from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 import { DEFAULTS } from './linksimple.constants';
 import styles from './linksimple.styles';
@@ -33,7 +34,7 @@ import styles from './linksimple.styles';
  * @cssproperty --mdc-link-inverted-color-hover - Color of the inverted link’s child content in the hover state.
  * @cssproperty --mdc-link-inverted-color-normal - Color of the inverted link’s child content in the normal state.
  */
-class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
+class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**
    * The link can be inline or standalone.
    * @default false
@@ -67,15 +68,37 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   rel?: string;
 
   /**
-   * Stores the previous tabindex if set by user
-   * so it can be restored after disabling
-   * @internal
+   * Optional download attribute to instruct browsers to download the linked resource.
    */
-  private prevTabindex = 0;
+  @property({ type: String, reflect: true })
+  download?: string;
+
+  /**
+   * Optional ping attribute that defines a space-separated list of URLs to be notified if the link is followed.
+   */
+  @property({ type: String, reflect: true })
+  ping?: string;
+
+  /**
+   * Optional hreflang attribute specifying the language of the linked resource.
+   */
+  @property({ type: String, reflect: true })
+  hreflang?: string;
+
+  /**
+   * Optional type attribute indicating the MIME type of the linked resource.
+   */
+  @property({ type: String, reflect: true })
+  type?: string;
+
+  /**
+   * Optional referrerpolicy attribute specifying how much referrer information to send.
+   */
+  @property({ type: String, reflect: true })
+  referrerpolicy?: string;
 
   public override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('role', 'link');
     this.addEventListener('click', this.handleNavigation.bind(this));
     this.addEventListener('keydown', this.handleNavigation.bind(this));
   }
@@ -86,10 +109,10 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
     this.removeEventListener('keydown', this.handleNavigation.bind(this));
   }
 
-  private handleNavigation(e: MouseEvent | KeyboardEvent): void {
-    if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
-      if (this.disabled) return;
-      window.open(this.href, this.target, this.rel);
+  protected handleNavigation(e: MouseEvent | KeyboardEvent): void {
+    if (this.disabled) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
     }
   }
 
@@ -103,15 +126,11 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   private setDisabled(disabled: boolean) {
     if (disabled) {
       this.setAttribute('aria-disabled', 'true');
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
     } else {
-      if (this.tabIndex === -1) {
-        this.tabIndex = this.prevTabindex;
-      }
       this.removeAttribute('aria-disabled');
     }
   }
+
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -121,7 +140,24 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   public override render() {
-    return html` <slot></slot> `;
+    return html`
+      <a
+        class='mdc-focus-ring'
+        part="anchor"
+        href="${this.href}"
+        target="${this.target}"
+        rel="${ifDefined(this.rel)}"
+        download="${ifDefined(this.download)}"
+        ping="${ifDefined(this.ping)}"
+        hreflang="${ifDefined(this.hreflang)}"
+        type="${ifDefined(this.type)}"
+        referrerpolicy="${ifDefined(this.referrerpolicy)}"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        tabindex="${this.disabled ? -1 : 0}"
+      >
+        <slot></slot>
+      </a>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

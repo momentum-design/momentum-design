@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import Linksimple from '../linksimple/linksimple.component';
@@ -57,10 +58,29 @@ class Link extends IconNameMixin(Linksimple) {
 
   public override render() {
     return html`
-      <slot></slot>
-      ${this.iconName
-        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
-        : nothing}
+      <a
+        class="mdc-focus-ring"
+        part="anchor"
+        href="${this.href}"
+        target="${this.target}"
+        rel="${ifDefined(this.rel)}"
+        download="${ifDefined(this.download)}"
+        ping="${ifDefined(this.ping)}"
+        hreflang="${ifDefined(this.hreflang)}"
+        type="${ifDefined(this.type)}"
+        referrerpolicy="${ifDefined(this.referrerpolicy)}"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        tabindex="${this.disabled ? -1 : 0}"
+      >
+        <slot></slot>
+        ${this.iconName
+          ? html`<mdc-icon
+              name="${this.iconName}"
+              size="${this.getIconSize()}"
+              length-unit="rem"
+            ></mdc-icon>`
+          : nothing}
+      </a>
     `;
   }
 

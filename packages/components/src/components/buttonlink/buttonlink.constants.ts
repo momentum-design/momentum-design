@@ -2,4 +2,8 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('buttonlink');
 
-export { TAG_NAME };
+const DEFAULTS = {
+  ROLE: 'link',
+} as const;
+
+export { TAG_NAME, DEFAULTS };

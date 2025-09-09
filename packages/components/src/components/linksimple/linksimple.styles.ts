@@ -17,61 +17,74 @@ const styles = [
       --mdc-link-inverted-color-normal: var(--mds-color-theme-inverted-text-accent-normal);
 
       border-radius: var(--mdc-link-border-radius);
-      color: var(--mdc-link-color-normal);
+      cursor: pointer;
+      line-height: var(--mds-font-apps-body-large-regular-line-height);
       text-underline-offset: auto;
       text-underline-position: from-font;
-      cursor: pointer;
-
-      /* based on default linksimple size (large) */
-      line-height: var(--mds-font-apps-body-large-regular-line-height);
     }
 
     :host([inline]) {
       display: inline-flex;
     }
 
-    :host([inverted]) {
-      color: var(--mdc-link-inverted-color-normal);
-    }
-
-    :host(:hover) {
-      color: var(--mdc-link-color-hover);
-    }
-
-    :host(:active) {
-      color: var(--mdc-link-color-active);
-      box-shadow: none;
-    }
-
-    :host([inverted]:hover) {
-      color: var(--mdc-link-inverted-color-hover);
-    }
-
-    :host([inverted]:active) {
-      color: var(--mdc-link-inverted-color-active);
-    }
-
-    :host([disabled]) {
-      color: var(--mdc-link-color-disabled);
-      pointer-events: none;
-    }
-
-    :host([inverted][disabled]) {
-      color: var(--mdc-link-inverted-color-disabled);
-    }
-
-    /* based on default linksimple size (large) */
-    :host(:hover),
-    :host(:active),
-    :host([inline]) {
+    /* Base anchor styles */
+    :host::part(anchor) {
+      color: var(--mdc-link-color-normal);
       font-size: var(--mds-font-apps-body-large-regular-underline-font-size);
       font-weight: var(--mds-font-apps-body-large-regular-underline-font-weight);
       line-height: var(--mds-font-apps-body-large-regular-underline-line-height);
-      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
       text-transform: var(--mds-font-apps-body-large-regular-underline-text-case);
+      border-radius: var(--mdc-link-border-radius);
+      outline: none;
+      text-decoration: none; /* Prevent default underline */
+    }
+
+    /* Inverted color base */
+    :host([inverted])::part(anchor) {
+      color: var(--mdc-link-inverted-color-normal);
+    }
+
+    /* Disabled state */
+    :host([disabled])::part(anchor),
+    :host([disabled]) {
+      color: var(--mdc-link-color-disabled);
+      pointer-events: none;
+      text-decoration: none;
+    }
+
+    :host([inverted][disabled])::part(anchor) {
+      color: var(--mdc-link-inverted-color-disabled);
+    }
+
+    /* Hover and active states for enabled links */
+    :host(:not([disabled]):hover)::part(anchor) {
+      color: var(--mdc-link-color-hover);
+      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
+    }
+
+    :host(:not([disabled]):active)::part(anchor) {
+      color: var(--mdc-link-color-active);
+      box-shadow: none;
+      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
+    }
+
+    /* Inverted variants hover & active */
+    :host([inverted]:not([disabled]):hover)::part(anchor) {
+      color: var(--mdc-link-inverted-color-hover);
+      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
+    }
+
+    :host([inverted]:not([disabled]):active)::part(anchor) {
+      color: var(--mdc-link-inverted-color-active);
+      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
+    }
+
+    /* Inline variant always shows underline */
+    :host([inline])::part(anchor) {
+      text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
     }
   `,
-  ...hostFocusRingStyles(),
+  ...hostFocusRingStyles(true),
 ];
 
 export default styles;
