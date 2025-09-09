@@ -34,6 +34,10 @@ const styles = css`
     padding: 0.5rem;
     background-color: unset;
     border-left: 1px solid var(--mdc-combobox-border-color);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  :host([disabled])::part(container__button) {
+    cursor: unset;
   }
   :host mdc-input {
     --mdc-input-error-border-color: var(--mdc-combobox-error-border-color);
@@ -46,7 +50,7 @@ const styles = css`
   :host(:focus-within)::part(container__button) {
     border-left: 1px solid var(--mdc-combobox-focused-border-color);
   }
-  :host::part(container__base):hover {
+  :host(:not([disabled]))::part(container__base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
   }
   :host([help-text-type='error'])::part(container__button) {
