@@ -258,7 +258,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     }
 
     private shouldLoop() {
-      return !(this.loop === 'false');
+      return this.loop !== 'false';
     }
   }
 
