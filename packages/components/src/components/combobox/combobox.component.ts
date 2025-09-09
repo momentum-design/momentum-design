@@ -588,9 +588,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       <div part="container__base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
         <mdc-input
-          part="container__input"
           @click="${() => this.toggleDropdown()}"
           ?disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
           help-text-type="${this.helpTextType}"
         >
           ${this.renderBaseInput()}

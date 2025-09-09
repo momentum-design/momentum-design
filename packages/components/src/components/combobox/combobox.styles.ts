@@ -34,7 +34,7 @@ const styles = css`
     background-color: unset;
     border-left: 1px solid var(--mdc-combobox-border-color);
   }
-  :host::part(container__input) {
+  :host mdc-input {
     --mdc-input-error-border-color: var(--mdc-combobox-error-border-color);
     --mdc-input-warning-border-color: var(--mdc-combobox-warning-border-color);
     --mdc-input-success-border-color: var(--mdc-combobox-success-border-color);
