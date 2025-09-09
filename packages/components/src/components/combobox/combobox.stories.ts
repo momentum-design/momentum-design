@@ -196,6 +196,14 @@ export const AllVariants: StoryObj = {
         data-aria-label="How many Infinity Stones exist?"
         required
       ></mdc-combobox>
+      <mdc-combobox
+        help-text-type="${VALIDATION.PRIORITY}"
+        help-text="You must select the total number of Infinity Stones."
+        label="How many Infinity Stones exist?"
+        placeholder="Select the total number of Infinity Stones"
+        data-aria-label="How many Infinity Stones exist?"
+        required
+      ></mdc-combobox>
       <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Disabled text" disabled>
         <mdc-selectlistbox>
           <mdc-option value="avenger" selected label="Avengers"></mdc-option>
@@ -265,7 +273,7 @@ export const ComboboxWithSelectedValue: StoryObj = {
 
 export const ComboboxWithLongOptionText: StoryObj = {
   render: () => html`
-    <mdc-combobox placeholder="Type a color" label="Select one color">
+    <mdc-combobox placeholder="Type a color" label="Select one color" data-aria-label="Select one color">
       <mdc-selectlistbox>
         <mdc-option label="Red"></mdc-option>
         <mdc-option label="Yellow" id="trigger-option"></mdc-option>
