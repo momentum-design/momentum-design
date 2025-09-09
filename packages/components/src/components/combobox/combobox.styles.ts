@@ -65,6 +65,18 @@ const styles = css`
   :host([help-text-type='priority'])::part(container__button) {
     border-color: var(--mdc-combobox-primary-border-color);
   }
+  :host(:dir(rtl)[help-text-type='error'])::part(container__button) {
+    border-color: var(--mdc-combobox-error-border-color);
+  }
+  :host(:dir(rtl)[help-text-type='warning'])::part(container__button) {
+    border-color: var(--mdc-combobox-warning-border-color);
+  }
+  :host(:dir(rtl)[help-text-type='success'])::part(container__button) {
+    border-color: var(--mdc-combobox-success-border-color);
+  }
+  :host(:dir(rtl)[help-text-type='priority'])::part(container__button) {
+    border-color: var(--mdc-combobox-primary-border-color);
+  }
   :host([disabled])::part(container__button) {
     border-left: 1px solid var(--mdc-combobox-text-color-disabled);
   }
@@ -76,6 +88,7 @@ const styles = css`
     border-left: unset;
     left: 0;
     border-right: 1px solid var(--mdc-combobox-border-color);
+    border-radius: 0.5rem 0 0 0.5rem;
   }
   :host::part(container__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
