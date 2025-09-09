@@ -1,3 +1,4 @@
+import '../icon';
 import Slider from './slider.component';
 import { TAG_NAME } from './slider.constants';
 
