@@ -87,6 +87,14 @@ Feature: Listitem Accessibility and User Interaction
       But the listitem should remain focusable
       And any controls within should be disabled
 
+    Scenario: Render listitem with short width and auto-shrinking content
+      Given the listitem has a short width
+      When the listitem is rendered
+      Then all labels and controls should be visible within the boundaries
+      And the leading and trailing text should auto-shrink
+      And no content should overflow the listitem boundaries
+      And text truncation should occur as needed without layout breakage
+
   Rule: ✅ Focus Management and Navigation
 
     Scenario: Focus listitem using Tab navigation

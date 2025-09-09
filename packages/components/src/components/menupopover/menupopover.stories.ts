@@ -115,6 +115,7 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
       '--mdc-popover-elevation-3',
+      '--mdc-popover-width',
       '--mdc-popover-max-width',
       '--mdc-popover-max-height',
     ]),
@@ -125,7 +126,6 @@ const meta: Meta = {
       'close-button-aria-label',
       'color',
       'should-focus-trap-wrap',
-      'disable-aria-haspopup',
       'disableAriaHasPopup',
       'disable-aria-expanded',
       'focus-back-to-trigger',
@@ -234,7 +234,7 @@ export const Example: StoryObj = {
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
     flip: DEFAULTS.FLIP,
-    'disable-aria-haspopup': false,
+    'disable-aria-expanded': false,
   },
   render: args => html`
     <mdc-menuitem id="popover-trigger" label="File"></mdc-menuitem>

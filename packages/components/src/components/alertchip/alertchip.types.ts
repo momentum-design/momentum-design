@@ -1,6 +1,7 @@
-import type { ValueOf } from '../../utils/types';
+import type { OverrideEventTarget, ValueOf } from '../../utils/types';
 import type { IconNames } from '../icon/icon.types';
 
+import type AlertChip from './alertchip.component';
 import { VARIANTS } from './alertchip.constants';
 
 type VariantType = ValueOf<typeof VARIANTS>;
@@ -14,4 +15,11 @@ type IconListType = Extract<
   | 'info-badge-filled'
 >;
 
-export type { VariantType, IconListType };
+interface Events {
+  onClickEvent: OverrideEventTarget<MouseEvent, AlertChip>;
+  onKeyDownEvent: OverrideEventTarget<KeyboardEvent, AlertChip>;
+  onKeyUpEvent: OverrideEventTarget<KeyboardEvent, AlertChip>;
+  onFocusEvent: OverrideEventTarget<FocusEvent, AlertChip>;
+}
+
+export type { VariantType, IconListType, Events };

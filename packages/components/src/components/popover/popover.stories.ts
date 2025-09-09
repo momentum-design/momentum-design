@@ -13,6 +13,7 @@ import '../menuitem';
 import '../dialog';
 import '../list';
 import '../listitem';
+import '../tooltip';
 
 import type Popover from '.';
 import type Dialog from '../dialog';
@@ -50,7 +51,6 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
-    ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
     ?keep-connected-tooltip-closed="${args['keep-connected-tooltip-closed']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
@@ -135,17 +135,9 @@ const renderHideOnBlur = (args: Args) => html`
 const renderMultiple = (args: Args) => html`
   ${createTrigger('popover-trigger-multiple', 'Click/ Hover me!')}
   ${createPopover(args, html`<mdc-text>Interactive content on click</mdc-text>`)}
-  <mdc-popover
-    id="popover2"
-    triggerID="popover-trigger-multiple"
-    trigger="mouseenter"
-    placement="bottom"
-    z-index="20"
-    show-arrow
-    hide-on-escape
-  >
+  <mdc-tooltip id="popover2" triggerID="popover-trigger-multiple" show-arrow hide-on-escape>
     <mdc-text>Description tooltip on mouseenter</mdc-text>
-  </mdc-popover>
+  </mdc-tooltip>
 `;
 
 const renderNested = (args: Args) => html`
@@ -319,9 +311,6 @@ const meta: Meta = {
     'disable-aria-expanded': {
       control: 'boolean',
     },
-    'disable-aria-haspopup': {
-      control: 'boolean',
-    },
     ...textControls([
       '--mdc-popover-arrow-border-radius',
       '--mdc-popover-arrow-border',
@@ -331,6 +320,9 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
       '--mdc-popover-elevation-3',
+      '--mdc-popover-max-width',
+      '--mdc-popover-max-height',
+      '--mdc-popover-width',
     ]),
     ...hideControls([
       'arrowElement',
@@ -363,7 +355,6 @@ export const Example: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': true,
-    'disable-aria-haspopup': false,
     interactive: DEFAULTS.INTERACTIVE,
   },
 };

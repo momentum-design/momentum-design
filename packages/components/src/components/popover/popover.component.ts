@@ -24,6 +24,10 @@ import { PopoverUtils } from './popover.utils';
  * The popover automatically positions itself based on available space and
  * supports dynamic height adjustments with scrollable content when needed。
  *
+ * Note:
+ *  - A component (button) can trigger more than one popover, but only one of them should change the
+ *    aria-expanded and aria-haspopup, the rest of the popovers must have `disable-aria-expanded` attribute.
+ *
  * @dependency mdc-button
  *
  * @tagname mdc-popover
@@ -44,6 +48,7 @@ import { PopoverUtils } from './popover.utils';
  * @cssproperty --mdc-popover-elevation-3 - elevation of the popover
  * @cssproperty --mdc-popover-max-width - max width of the popover
  * @cssproperty --mdc-popover-max-height - max height of the popover
+ * @cssproperty --mdc-popover-width - width of the popover
  *
  * @slot - Default slot for the popover content
  *
@@ -343,21 +348,18 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   ariaDescribedby: string | null = null;
 
   /**
-   * Disable setting the aria-expanded attribute on trigger element.
-   * Make sure to set this to false when the popover is interactive.
+   * Disable setting the `aria-expanded` attribute on trigger element.
+   *
+   * Note, when `disable-aria-expanded` is true
+   *  - when its value change after first update to
+   *    - `true`: popover will not remove the `aria-expanded` to avoid conflicts when there are more than one popover
+   *      registered to the same trigger
+   *      - `false`: check `aria-expanded` value and update it if necessary.
+   *  - aria-haspopup will be disabled as well
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
   disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
-
-  /**
-   * Disable setting the aria-haspopup attribute on trigger element.
-   * Make sure to set this to true when the popover is extended and its role
-   * is not 'dialog' or 'alertdialog' i.e. listbox, menu, etc.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-haspopup' })
-  disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
 
   /**
    * If a tooltip is connected to the same trigger element,
@@ -604,9 +606,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     if (changedProperties.has('disableAriaExpanded')) {
       this.utils.updateAriaExpandedAttribute();
     }
-    if (changedProperties.has('interactive') || changedProperties.has('disableAriaHasPopup')) {
-      this.utils.updateAriaHasPopupAttribute();
-    }
 
     if (changedProperties.has('focusTrap')) {
       // if focusTrap turned false and the popover is visible, deactivate the focus trap
@@ -763,14 +762,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       if (this.hideOnEscape) {
         this.removeEventListener('keydown', this.onEscapeKeydown);
         this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
-      }
-
-      if (this.disableAriaExpanded) {
-        this.triggerElement.removeAttribute('aria-expanded');
-      }
-      // Remove aria-haspopup if the popover is not interactive
-      if (!this.interactive) {
-        this.triggerElement.removeAttribute('aria-haspopup');
       }
 
       this.deactivatePreventScroll();
