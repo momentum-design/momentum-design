@@ -489,6 +489,9 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   private shouldDisplayPopover(optionsLength: number): boolean {
+    if (this.disabled || this.readonly) {
+      return false;
+    }
     if (!this.slottedListboxes[0]) {
       return false;
     }
@@ -577,7 +580,11 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       ${this.renderLabel()}
       <div part="container__base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
-        <mdc-input @click="${() => this.toggleDropdown()}" ?disabled="${this.disabled}">
+        <mdc-input
+          @click="${() => this.toggleDropdown()}"
+          ?disabled="${this.disabled}"
+          help-text-type="${this.helpTextType}"
+        >
           ${this.renderBaseInput()}
         </mdc-input>
         <mdc-buttonsimple
