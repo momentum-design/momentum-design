@@ -183,8 +183,16 @@ export const AllVariants: StoryObj = {
         data-aria-label="How many Infinity Stones exist?"
         required
       ></mdc-combobox>
-      <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Disabled text" disabled></mdc-combobox>
-      <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Readonly text" readonly></mdc-combobox>
+      <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Disabled text" disabled>
+        <mdc-selectlistbox>
+          <mdc-option value="avenger" selected label="Avengers"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-combobox>
+      <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Readonly text" readonly>
+        <mdc-selectlistbox>
+          <mdc-option value="avenger" selected label="Avengers"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-combobox>
     </div>
   `,
 };

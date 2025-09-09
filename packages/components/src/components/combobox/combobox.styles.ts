@@ -7,6 +7,7 @@ const styles = css`
     --mdc-combobox-width: 100%;
     --mdc-combobox-listbox-width: var(--mdc-combobox-width);
     --mdc-combobox-listbox-height: auto;
+    --mdc-combobox-text-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
     display: flex;
     flex-direction: column;
@@ -26,6 +27,9 @@ const styles = css`
     background-color: unset;
     border-left: 1px solid var(--mdc-combobox-border-color);
   }
+  :host([disabled])::part(container__button) {
+    border-left: 1px solid var(--mdc-combobox-text-color-disabled);
+  }
   :host::part(mdc-input) {
     width: calc(100% - 1.5rem);
   }
@@ -38,7 +42,15 @@ const styles = css`
   :host::part(container__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
+  :host([disabled])::part(container__button-icon) {
+    --mdc-icon-fill-color: var(--mdc-combobox-text-color-disabled);
+  }
   :host::part(no-result-text) {
+    pointer-events: none;
+  }
+  :host([disabled]) input,
+  :host([disabled]) mdc-input {
+    user-select: none;
     pointer-events: none;
   }
   :host::part(internal-native-input) {
