@@ -14,6 +14,7 @@ const styles = css`
     --mdc-combobox-success-border-color: var(--mds-color-theme-text-success-normal);
     --mdc-combobox-primary-border-color: var(--mds-color-theme-text-accent-normal);
     --mdc-combobox-focused-background-color: var(--mds-color-theme-background-primary-ghost);
+    --mdc-combobox-focused-border-color: var(--mds-color-theme-outline-input-active);
 
     display: flex;
     flex-direction: column;
@@ -39,12 +40,14 @@ const styles = css`
     --mdc-input-warning-border-color: var(--mdc-combobox-warning-border-color);
     --mdc-input-success-border-color: var(--mdc-combobox-success-border-color);
     --mdc-input-primary-border-color: var(--mdc-combobox-primary-border-color);
+    --mdc-input-focused-border-color: var(--mdc-combobox-focused-border-color);
+    --mdc-input-focused-background-color: var(--mdc-combobox-focused-background-color);
+  }
+  :host(:focus-within)::part(container__button) {
+    border-left: 1px solid var(--mdc-combobox-focused-border-color);
   }
   :host::part(container__base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
-  }
-  :host::part(container__base):active {
-    background-color: var(--mdc-combobox-focused-background-color);
   }
   :host([help-text-type='error'])::part(container__button) {
     border-color: var(--mdc-combobox-error-border-color);

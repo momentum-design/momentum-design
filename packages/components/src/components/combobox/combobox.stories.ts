@@ -121,6 +121,7 @@ const meta: Meta = {
       '--mdc-combobox-success-border-color',
       '--mdc-combobox-primary-border-color',
       '--mdc-combobox-focused-background-color',
+      '--mdc-combobox-focused-border-color',
     ]),
     ...classArgType,
     ...styleArgType,
