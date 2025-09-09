@@ -39,6 +39,7 @@ const render = (args: Args) =>
       ?readonly="${args.readonly}"
       strategy="${args.strategy}"
       value="${args.value}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       ${args.children}
     </mdc-combobox>
@@ -53,6 +54,9 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    'auto-focus-on-mount': {
+      control: 'boolean',
+    },
     'backdrop-append-to': {
       control: 'text',
     },

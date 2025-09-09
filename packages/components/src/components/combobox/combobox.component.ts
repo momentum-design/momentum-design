@@ -19,6 +19,7 @@ import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
@@ -80,7 +81,10 @@ import type { Placement } from './combobox.types';
  * @csspart container__button - The button element of the combobox.
  * @csspart container__button-icon - The icon element of the button of the combobox.
  */
-class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+class Combobox
+  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  implements AssociatedFormControl
+{
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -261,7 +265,7 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.dispatchChange(option!);
   }
 
-  public override async firstUpdated() {
+  protected override async firstUpdated(_changedProperties: PropertyValues) {
     await this.updateComplete;
     this.modifyListBoxWrapper();
 
@@ -282,6 +286,14 @@ class Combobox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     this.getAllValidOptions().forEach(option => {
       option.setAttribute('tabindex', '-1');
     });
+
+    // set the element to auto focus if autoFocusOnMount is set to true
+    // before running the super method, so that the AutoFocusOnMountMixin can use it
+    // to focus the correct element
+    if (this.inputElement && this.autoFocusOnMount) {
+      this.elementToAutoFocus = this.inputElement;
+    }
+    super.firstUpdated(_changedProperties);
   }
 
   public override updated(changedProperties: PropertyValues): void {
