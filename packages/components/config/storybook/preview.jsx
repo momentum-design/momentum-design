@@ -1,7 +1,7 @@
 import React from 'react';
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
-import { Stories, Title, Subtitle, Primary, Description, Controls } from '@storybook/blocks';
+import { Title, Subtitle, Description } from '@storybook/blocks';
 import { setCustomElementsManifest } from '@storybook/web-components';
 
 import customElements from '../../dist/custom-elements.json';
@@ -75,9 +75,6 @@ const preview = {
           <Title />
           <Subtitle />
           <Description />
-          <Primary />
-          <Controls sort="requiredFirst" />
-          <Stories includePrimary={false} />
         </>
       ),
     },
