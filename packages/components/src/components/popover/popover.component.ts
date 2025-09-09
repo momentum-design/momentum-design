@@ -415,14 +415,14 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   constructor() {
     super();
     this.utils = new PopoverUtils(this);
-    this.cleanupTrigger();
+    this.parseTrigger();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
-    this.style.zIndex = `${this.zIndex}`;
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
 
+    this.style.zIndex = `${this.zIndex}`;
     this.utils.setupAppendTo();
 
     PopoverEventManager.onCreatedPopover(this);
@@ -433,7 +433,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.setupTriggerListeners();
   }
 
-  private cleanupTrigger = () => {
+  private parseTrigger = () => {
     const triggers = this.trigger?.split(' ') || [];
     const validTriggers = triggers.filter(trigger =>
       Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>),
@@ -557,7 +557,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (changedProperties.has('trigger')) {
-      this.cleanupTrigger();
+      this.parseTrigger();
       this.removeTriggerListeners();
       this.setupTriggerListeners();
     }
