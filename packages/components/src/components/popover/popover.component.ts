@@ -717,7 +717,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       }
       if (this.hideOnEscape) {
         this.addEventListener('keydown', this.onEscapeKeydown);
-        triggerElement?.addEventListener('keydown', this.onEscapeKeydown);
+        document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
       this.activatePreventScroll();
@@ -761,7 +761,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
       if (this.hideOnEscape) {
         this.removeEventListener('keydown', this.onEscapeKeydown);
-        triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
+        document.removeEventListener('keydown', this.onEscapeKeydown);
       }
 
       this.deactivatePreventScroll();
