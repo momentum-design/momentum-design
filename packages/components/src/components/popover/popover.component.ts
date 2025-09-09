@@ -785,7 +785,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *  This method sets the `isHovered` flag to true and shows the popover
    */
   private handleMouseEnter = (event: Event) => {
-    if (this.isEventFromTrigger(event)) return;
+    if (!this.isEventFromTrigger(event)) return;
 
     this.isHovered = true;
     this.show();
@@ -797,7 +797,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *  timer to hide the popover.
    */
   private handleMouseLeave = (event: Event) => {
-    if (this.isEventFromTrigger(event)) return;
+    if (!this.isEventFromTrigger(event)) return;
 
     this.isHovered = false;
     this.startCloseDelay();
@@ -809,7 +809,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *  If the popover is hovered, it will not hide the popover.
    */
   private handleFocusOut = (event: Event) => {
-    if (this.isEventFromTrigger(event)) return;
+    if (!this.isEventFromTrigger(event)) return;
 
     if (!this.isHovered) {
       this.hide();
@@ -821,7 +821,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *  This method checks if the trigger element has visible focus or is being hovered.
    */
   private handleFocusIn = (event: Event) => {
-    if (this.isEventFromTrigger(event)) return;
+    if (!this.isEventFromTrigger(event)) return;
 
     if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
       this.show();
@@ -887,7 +887,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Toggles the popover visibility.
    */
   public togglePopoverVisible = (event: Event) => {
-    if (this.isEventFromTrigger(event)) return;
+    if (!this.isEventFromTrigger(event)) return;
 
     if (this.visible) {
       this.hide();
@@ -987,7 +987,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   protected isEventFromTrigger(event: Event): boolean {
-    return (event.target as HTMLElement)?.id !== this.triggerID;
+    if (event.composed) {
+      return event.composedPath().some(el => (el as HTMLElement)?.id === this.triggerID);
+    }
+    return (event.target as HTMLElement)?.id === this.triggerID;
   }
 
   public override render() {

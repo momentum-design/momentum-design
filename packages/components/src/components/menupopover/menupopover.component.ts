@@ -279,7 +279,7 @@ class MenuPopover extends Popover {
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled') || this.isEventFromTrigger(event)) return;
+    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
     if (this.visible) {
       this.hide();
     } else {
