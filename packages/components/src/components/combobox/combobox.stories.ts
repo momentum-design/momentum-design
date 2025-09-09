@@ -36,6 +36,7 @@ const render = (args: Args) =>
       placement="${args.placement}"
       popover-z-index="${args['popover-z-index']}"
       ?required="${args.required}"
+      ?readonly="${args.readonly}"
       strategy="${args.strategy}"
       value="${args.value}"
     >
@@ -93,6 +94,9 @@ const meta: Meta = {
     'popover-z-index': {
       control: 'number',
     },
+    readonly: {
+      control: 'boolean',
+    },
     required: {
       control: 'boolean',
     },
@@ -133,6 +137,7 @@ export const Example: StoryObj = {
     'help-text': 'Select a country',
     'help-text-type': VALIDATION.DEFAULT,
     disabled: false,
+    readonly: false,
     'no-result-text': '',
     placeholder: 'Start typing',
     'data-aria-label': 'Select a country',
