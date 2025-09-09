@@ -43,7 +43,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    * https://www.w3.org/WAI/ARIA/apg/practices/listbox
    * @internal
    */
-  protected override loop = false;
+  protected override loop: 'true' | 'false' = 'false';
 
   /**
    * The name attribute is used to identify the listbox
