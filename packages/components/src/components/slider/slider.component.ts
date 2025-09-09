@@ -572,7 +572,7 @@ class Slider extends Component {
                   aria-valuemax="${this.max}"
                   aria-valuenow="${this.value ?? this.min}"
                   aria-label="${this.dataAriaLabel ?? this.label ?? ''}"
-                  aria-valuetext="${this.dataAriaValuetext ?? this.valueLabel ?? String(this.valueStart ?? '')}"
+                  aria-valuetext="${this.dataAriaValuetext ?? this.valueLabel ?? String(this.value ?? '')}"
                   tabindex="${this.disabled ? -1 : 0}"
                   @input=${this.onInput}
                   @change=${this.onChange}
