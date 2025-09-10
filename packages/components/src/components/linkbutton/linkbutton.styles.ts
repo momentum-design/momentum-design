@@ -1,5 +1,7 @@
 import { css } from 'lit';
 
+import { hostFocusRingStyles } from '../../utils/styles';
+
 const styles = css`
   :host {
     gap: 0.25rem;
@@ -101,4 +103,4 @@ const styles = css`
   }
 `;
 
-export default [styles];
+export default [styles, ...hostFocusRingStyles()];
