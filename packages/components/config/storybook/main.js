@@ -40,6 +40,7 @@ const config = {
     '@storybook/addon-a11y',
     '@geometricpanda/storybook-addon-badges',
     'storybook-addon-rtl',
+    'storybook-addon-code-preview',
   ],
   framework: {
     name: '@storybook/web-components-vite',

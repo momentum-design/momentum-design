@@ -1,7 +1,7 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
@@ -178,9 +178,7 @@ export const FormField: StoryObj = {
 export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   render: args => {
     const validateCheckboxGroup = (form: HTMLFormElement): boolean => {
-      const checkboxes = Array.from(
-        form.querySelectorAll('mdc-checkbox[name="super-power"]')
-      ) as Checkbox[];
+      const checkboxes = Array.from(form.querySelectorAll('mdc-checkbox[name="super-power"]')) as Checkbox[];
 
       const requiredBox = checkboxes.find(cb => cb.hasAttribute('required'));
       if (!requiredBox) return true;
@@ -209,9 +207,7 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
 
     const handleReset = (event: Event) => {
       const form = event.target as HTMLFormElement;
-      const requiredBox = form.querySelector(
-        'mdc-checkbox[name="super-power"][required]'
-      ) as Checkbox;
+      const requiredBox = form.querySelector('mdc-checkbox[name="super-power"][required]') as Checkbox;
       if (requiredBox) {
         requiredBox.setAttribute('help-text', args['help-text'] || '');
         requiredBox.setAttribute('help-text-type', args['help-text-type'] || 'default');
@@ -239,5 +235,3 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
     'help-text-type': 'default',
   },
 };
-
-

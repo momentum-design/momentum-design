@@ -1,5 +1,5 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { html, TemplateResult } from 'lit';
 
 import '.';

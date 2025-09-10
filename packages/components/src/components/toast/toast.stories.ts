@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '.';
 import '../avatar';
@@ -43,10 +43,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(TOAST_VARIANT),
     },
-    'header-text': { 
-      control: 'text' 
+    'header-text': {
+      control: 'text',
     },
-    'header-tag-name': { 
+    'header-tag-name': {
       control: 'select',
       options: Object.values(VALID_TEXT_TAGS),
     },
@@ -71,7 +71,7 @@ const meta: Meta = {
       '--mdc-toast-elevation-3',
       '--mdc-toast-width',
       '--mdc-toast-padding',
-    ])
+    ]),
   },
 };
 
@@ -94,10 +94,11 @@ export const Example: StoryObj = {
     'header-text': 'Toast Title',
     'show-more-text': 'Show more',
     'show-less-text': 'Show less',
-    children: html`
-      <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
+    children: html` <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
       <mdc-text slot="toast-body-normal" tagname="span">This is a toast message.</mdc-text>
-      <mdc-text slot="toast-body-detailed" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>
+      <mdc-text slot="toast-body-detailed" tagname="span"
+        >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text
+      >
       ${DefaultFooter}`,
   },
 };
@@ -106,39 +107,44 @@ export const AllVariants: StoryObj = {
   name: 'All Variants',
   render: () => html`
     <div style="display: grid; grid-template-columns: repeat(2, 0fr); gap: 2rem;">
-      ${[{
-        ...DefaultArgs,
-        variant: 'success',
-        'header-text': 'Success!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">Your action was successful.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        variant: 'warning',
-        'header-text': 'Warning!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">There was a warning.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        variant: 'error',
-        'header-text': 'Error!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">An error occurred.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        'header-text': 'User Message',
-        children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon>
-        <mdc-text tagname="span" slot="toast-body-normal">New message received.</mdc-text>
-        ${DefaultFooter}`,
-      }].map((args) =>
+      ${[
+        {
+          ...DefaultArgs,
+          variant: 'success',
+          'header-text': 'Success!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">Your action was successful.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          variant: 'warning',
+          'header-text': 'Warning!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">There was a warning.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          variant: 'error',
+          'header-text': 'Error!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">An error occurred.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          'header-text': 'User Message',
+          children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon>
+            <mdc-text tagname="span" slot="toast-body-normal">New message received.</mdc-text>
+            ${DefaultFooter}`,
+        },
+      ].map(args =>
         render({
           ...DefaultArgs,
           ...args,
-        })
+        }),
       )}
     </div>
   `,
-   ...hideAllControls(),
+  ...hideAllControls(),
 };
 
 export const UserJoined: StoryObj = {
@@ -147,7 +153,7 @@ export const UserJoined: StoryObj = {
     ...DefaultArgs,
     'header-text': '',
     children: html`
-      <mdc-avatar slot="content-prefix" src="https://picsum.photos/id/63/256" size=24></mdc-avatar>
+      <mdc-avatar slot="content-prefix" src="https://picsum.photos/id/63/256" size="24"></mdc-avatar>
       <mdc-text tagname="span" slot="toast-body-normal"><b>Username</b> joined the session.</mdc-text>
     `,
   },
@@ -159,11 +165,7 @@ export const Connecting: StoryObj = {
   args: {
     ...DefaultArgs,
     'header-text': 'Connecting',
-    children: html`
-      <mdc-spinner slot="content-prefix" size="small"></mdc-spinner>
-    `,
+    children: html` <mdc-spinner slot="content-prefix" size="small"></mdc-spinner> `,
   },
   ...hideAllControls(),
 };
-
-

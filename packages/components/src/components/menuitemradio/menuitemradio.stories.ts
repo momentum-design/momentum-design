@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -15,7 +15,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style=
 
 const render = (args: Args) =>
   wrapWithDiv(
-    html` <mdc-menuitemradio     
+    html` <mdc-menuitemradio
       @change="${action('onchange')}"
       @click="${action('onclick')}"
       @focus="${action('onfocus')}"
