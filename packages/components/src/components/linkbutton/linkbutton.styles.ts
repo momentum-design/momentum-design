@@ -2,8 +2,17 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-link-color-disabled: var(--mds-color-theme-text-primary-disabled);
     gap: 0.25rem;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    color: var(--mdc-link-color-normal);
+  }
+
+  :host([inverted]) {
+    color: var(--mdc-link-inverted-color-normal);
   }
 
   :host([size='16']) {
@@ -60,8 +69,35 @@ const styles = css`
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
 
+  :host(:hover):not([disabled]) {
+    color: var(--mdc-link-color-hover);
+  }
+
+  :host(:active):not([disabled]) {
+    color: var(--mdc-link-color-active);
+  }
+
+  :host([inverted]:hover):not([disabled]) {
+    color: var(--mdc-link-inverted-color-hover);
+  }
+
+  :host([inverted]:active):not([disabled]) {
+    color: var(--mdc-link-inverted-color-active);
+  }
+
+  :host([disabled]) {
+    color: var(--mdc-link-color-disabled);
+    pointer-events: none;
+    text-decoration: none;
+  }
+
+  :host([inverted][disabled]) {
+    color: var(--mdc-link-inverted-color-disabled);
+  }
+
   :host([soft-disabled]) {
     color: var(--mdc-link-color-disabled);
+    pointer-events: none;
   }
 `;
 
