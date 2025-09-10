@@ -23,6 +23,8 @@ const render = (args: Args) =>
       label="${args.label}"
       indicator="${args.indicator}"
       secondary-label="${args['secondary-label']}"
+      ?controlled="${args.controlled}"
+      ?soft-disabled="${args['soft-disabled']}"
     >
       ${args.children}
     </mdc-menuitemcheckbox>`,
@@ -52,6 +54,12 @@ const meta: Meta = {
     },
     'secondary-label': {
       control: 'text',
+    },
+    controlled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
+      control: 'boolean',
     },
     ...hideControls([
       'data-aria-label',
