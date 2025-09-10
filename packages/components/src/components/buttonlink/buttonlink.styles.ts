@@ -12,9 +12,21 @@ const styles = css`
     padding: unset;
   }
 
-  :host([data-btn-type='pill'])::part(anchor),
-  :host([data-btn-type='pill-with-icon'])::part(anchor) {
-    padding: 0 0.75rem;
+  :host([data-btn-type='pill'][size='24'])::part(anchor),
+  :host([data-btn-type='pill-with-icon'][size='24'])::part(anchor) {
+    padding: 0px 0.625rem;
+  }
+
+  :host([data-btn-type='pill'][size='32'])::part(anchor),
+  :host([data-btn-type='pill-with-icon'][size='32'])::part(anchor),
+  :host([data-btn-type='pill'][size='28'])::part(anchor),
+  :host([data-btn-type='pill-with-icon'][size='28'])::part(anchor) {
+    padding: 0px 0.75rem;
+  }
+
+  :host([data-btn-type='pill'][size='40'])::part(anchor),
+  :host([data-btn-type='pill-with-icon'][size='40'])::part(anchor) {
+    padding: 0px 1rem;
   }
 
   :host([disabled]) {
@@ -33,7 +45,7 @@ const styles = css`
     gap: inherit;
     height: 100%;
     width: 100%;
-    border-radius: 1.25rem;
+    border-radius: inherit;
     border: 0.0625rem solid transparent;
   }
 
