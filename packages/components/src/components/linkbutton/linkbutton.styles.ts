@@ -69,19 +69,19 @@ const styles = css`
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
 
-  :host(:hover):not([disabled]) {
+  :host(:not([disabled]):hover) {
     color: var(--mdc-link-color-hover);
   }
 
-  :host(:active):not([disabled]) {
+  :host(:not([disabled]):active) {
     color: var(--mdc-link-color-active);
   }
 
-  :host([inverted]:hover):not([disabled]) {
+  :host([inverted]:not([disabled]):hover) {
     color: var(--mdc-link-inverted-color-hover);
   }
 
-  :host([inverted]:active):not([disabled]) {
+  :host([inverted]:not([disabled]):active) {
     color: var(--mdc-link-inverted-color-active);
   }
 
