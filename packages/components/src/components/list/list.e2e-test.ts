@@ -7,7 +7,10 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 type SetUpOptions = {
   componentsPage: ComponentsPage;
   children: string;
+  suffix?: string;
   'header-text'?: string;
+  loop?: string;
+  'initial-focus'?: number;
 };
 
 const generateBasicChildren = (count: number) =>
@@ -48,10 +51,13 @@ const setup = async (args: SetUpOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-list>
-        ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
-        ${restArgs.children ? restArgs.children : ''}
-      </mdc-list>
+      <div>
+        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}">
+          ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
+          ${restArgs.children ? restArgs.children : ''}
+        </mdc-list>
+        ${restArgs.suffix ? restArgs.suffix : ''}
+      </div>
     `,
     clearDocument: true,
   });
@@ -137,6 +143,29 @@ test('mdc-list', async ({ componentsPage }) => {
 
         await componentsPage.page.keyboard.press(KEYS.HOME);
         await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+      });
+
+      await test.step('component should not loop navigation when list has loop attribute set to false', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(5) });
+        await list.evaluate(node => node.setAttribute('loop', 'false'));
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('End');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
       });
 
       await test.step('component should navigate inside children of the list items', async () => {
@@ -159,6 +188,93 @@ test('mdc-list', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(list.locator('mdc-checkbox[data-aria-label="checkbox label 2"]')).toBeFocused();
         await expect(list.locator('mdc-listitem[label="List Item 2"]')).not.toBeFocused();
+      });
+    });
+
+    await test.step('focus', async () => {
+      await test.step('component should focus on the item specified in initial-focus attribute', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(5), 'initial-focus': 4 });
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 5"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(list.locator('mdc-listitem[label="List Item 4"]')).toBeFocused();
+
+        // Focus should not be updated on initial-focus attribute change after component is loaded
+        await list.evaluate(node => node.setAttribute('initial-focus', '1'));
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(list.locator('mdc-listitem[label="List Item 4"]')).toBeFocused();
+      });
+
+      await test.step('component should update focus when focused element is removed', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(4) });
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 4"]').evaluate(node => node.remove());
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 2"]').evaluate(node => node.remove());
+        await expect(list.locator('mdc-listitem[label="List Item 3"]')).toBeFocused();
+
+        await list.locator('mdc-listitem[label="List Item 3"]').evaluate(node => node.remove());
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+      });
+
+      await test.step('focus should return to the previously focused item when an item is added', async () => {
+        const list = await setup({
+          componentsPage,
+          children: generateChildren(4),
+          suffix: `<mdc-button id="add-item-button">Add Item</mdc-button>`,
+        });
+
+        await componentsPage.page.locator('#add-item-button').evaluate(node => {
+          node.addEventListener('click', () => {
+            const newItem = document.createElement('mdc-listitem');
+            newItem.setAttribute('label', `Button List Item`);
+
+            const btn = document.createElement('mdc-button');
+            btn.setAttribute('slot', 'trailing-controls');
+            btn.innerText = 'New Button';
+            newItem.appendChild(btn);
+
+            document.querySelector('mdc-list')?.appendChild(newItem);
+          });
+        });
+
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="List Item 1"]')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        // Add new item
+        await list.evaluate(node => {
+          const newItem = document.createElement('mdc-listitem');
+          newItem.setAttribute('label', 'Added List Item');
+          node.appendChild(newItem);
+        });
+        await list.locator('mdc-listitem[label="Added List Item"]').waitFor();
+        await expect(list.locator('mdc-listitem[label="List Item 2"]')).toBeFocused();
+
+        // Focus the add item button
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await expect(componentsPage.page.locator('#add-item-button')).toBeFocused();
+
+        await componentsPage.page.keyboard.press('Enter');
+        await list.locator('mdc-listitem[label="Button List Item"]').waitFor();
+
+        await componentsPage.actionability.pressShiftTab();
+        await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });
     });
   });
