@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
 import '.';
 import '../button';
 import '../divider';
@@ -17,36 +17,39 @@ import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Combobox from './combobox.component';
 
+const wrapper = (contents: TemplateResult) =>
+  html`<div style="width: 25rem; height: 100%; display: flex; align-items: center;">${contents}</div>`;
 const render = (args: Args) =>
-  html` <div style="width: 25rem;">
-    <mdc-combobox
-      @change="${action('onchange')}"
-      @click="${action('onclick')}"
-      @input="${action('oninput')}"
-      @keydown="${action('onkeydown')}"
-      @focus="${action('onfocus')}"
-      backdrop-append-to="${args['backdrop-append-to']}"
-      boundary="${args.boundary}"
-      data-aria-label="${args['data-aria-label']}"
-      ?disabled="${args.disabled}"
-      help-text="${args['help-text']}"
-      help-text-type="${args['help-text-type']}"
-      info-icon-aria-label="${args['info-icon-aria-label']}"
-      label="${args.label}"
-      name="${args.name}"
-      no-result-text="${args['no-result-text']}"
-      placeholder="${args.placeholder}"
-      placement="${args.placement}"
-      popover-z-index="${args['popover-z-index']}"
-      ?required="${args.required}"
-      ?readonly="${args.readonly}"
-      strategy="${args.strategy}"
-      value="${args.value}"
-      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-    >
-      ${args.children}
-    </mdc-combobox>
-  </div>`;
+  html` <mdc-combobox
+    @change="${action('onchange')}"
+    @click="${action('onclick')}"
+    @input="${action('oninput')}"
+    @keydown="${action('onkeydown')}"
+    @focus="${action('onfocus')}"
+    backdrop-append-to="${args['backdrop-append-to']}"
+    boundary="${args.boundary}"
+    data-aria-label="${args['data-aria-label']}"
+    ?disabled="${args.disabled}"
+    help-text="${args['help-text']}"
+    help-text-type="${args['help-text-type']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
+    label="${args.label}"
+    name="${args.name}"
+    no-result-text="${args['no-result-text']}"
+    placeholder="${args.placeholder}"
+    placement="${args.placement}"
+    popover-z-index="${args['popover-z-index']}"
+    ?required="${args.required}"
+    ?readonly="${args.readonly}"
+    strategy="${args.strategy}"
+    value="${args.value}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    validation-message="${args['validation-message']}"
+  >
+    ${args.children}
+  </mdc-combobox>`;
 
 const meta: Meta = {
   title: 'Work In Progress/combobox',
@@ -114,7 +117,17 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'validation-message': {
+      control: 'text',
+    },
+    ...hideControls(['id', 'value', 'validity', 'willValidate', 'default']),
     ...textControls([
       '--mdc-combobox-border-color',
       '--mdc-combobox-icon-color',
@@ -166,6 +179,7 @@ export const Example: StoryObj = {
       </mdc-selectlistbox>
     `,
   },
+  render: args => wrapper(render(args)),
 };
 
 export const AllVariants: StoryObj = {
@@ -226,35 +240,32 @@ export const AllVariants: StoryObj = {
 };
 
 export const ComboboxWithOptionGroups: StoryObj = {
-  render: () => html`
-    <mdc-combobox
-      label="Fruits and Vegetables"
-      placeholder="Type a fruit or vegetable"
-      no-result-text="No results found"
-      data-aria-label="Fruits and Vegetables"
-    >
-      <mdc-selectlistbox>
-        <mdc-optgroup label="Fruit">
-          <mdc-option value="apple" label="Apples"></mdc-option>
-          <mdc-option value="banana" label="Bananas"></mdc-option>
-          <mdc-option value="cherry" label="Cherries"></mdc-option>
-          <mdc-option value="tomato" label="Tomato"></mdc-option>
-        </mdc-optgroup>
-        <mdc-divider></mdc-divider>
-        <mdc-optgroup label="Vegetables">
-          <mdc-option value="artichoke" label="Artichokes"></mdc-option>
-          <mdc-option value="broccoli" label="Broccoli"></mdc-option>
-          <mdc-option value="tomato" label="Tomato"></mdc-option>
-          <mdc-option value="cabbage" label="Cabbages"></mdc-option>
-        </mdc-optgroup>
-        <mdc-divider></mdc-divider>
-        <mdc-optgroup label="Fish">
-          <mdc-option value="tuna" label="Tuna"></mdc-option>
-          <mdc-option value="salmon" label="Salmon"></mdc-option>
-        </mdc-optgroup>
-      </mdc-selectlistbox>
-    </mdc-combobox>
-  `,
+  args: {
+    label: 'Fruits and Vegetables',
+    placeholder: 'Type a fruit or vegetable',
+    'no-result-text': 'No results found',
+    'data-aria-label': 'Fruits and Vegetables',
+    children: html` <mdc-selectlistbox>
+      <mdc-optgroup label="Fruit">
+        <mdc-option value="apple" label="Apples"></mdc-option>
+        <mdc-option value="banana" label="Bananas"></mdc-option>
+        <mdc-option value="cherry" label="Cherries"></mdc-option>
+        <mdc-option value="tomato" label="Tomato"></mdc-option>
+      </mdc-optgroup>
+      <mdc-divider></mdc-divider>
+      <mdc-optgroup label="Vegetables">
+        <mdc-option value="artichoke" label="Artichokes"></mdc-option>
+        <mdc-option value="broccoli" label="Broccoli"></mdc-option>
+        <mdc-option value="tomato" label="Tomato"></mdc-option>
+        <mdc-option value="cabbage" label="Cabbages"></mdc-option>
+      </mdc-optgroup>
+      <mdc-divider></mdc-divider>
+      <mdc-optgroup label="Fish">
+        <mdc-option value="tuna" label="Tuna"></mdc-option>
+        <mdc-option value="salmon" label="Salmon"></mdc-option>
+      </mdc-optgroup>
+    </mdc-selectlistbox>`,
+  },
 };
 
 export const ComboboxWithSelectedValue: StoryObj = {
@@ -319,6 +330,7 @@ export const ComboboxWithForm: StoryObj = {
             @change=${action('avengers combobox onchange')}
             @input=${action('avengers combobox oninput')}
             data-aria-label="Select the avenger"
+            validation-message="You must select an Avenger"
           >
             <mdc-selectlistbox>
               <mdc-option value="ironman" label="Iron Man"></mdc-option>

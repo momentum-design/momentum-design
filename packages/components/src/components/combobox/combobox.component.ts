@@ -26,23 +26,24 @@ import styles from './combobox.styles';
 import type { Placement } from './combobox.types';
 
 /**
- * The Combobox component is a text based dropdown control that allows users to pick an option from a predefined list.
- * The user can type text to filter the options and select the desired option.
+ * The Combobox component is a text-based dropdown control that allows users to select an option from a predefined list.
+ * Users can type text to filter the options and select their desired choice.
  *
- * When the user starts typing, the filter works with startswith search and displays options based on user entered text input.
- * If the user entered text doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
+ * When the user starts typing, the filter uses a "starts with" search and displays options based on the text entered by the user.
+ * If the user entered text that doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
  *
- * If there is text in the `no-result-text` attribute then nothing will be shown.
+ * If there is no text in the `no-result-text` attribute then nothing will be shown.
  *
- * It is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
- * The component ensures accessibility and usability while handling various use cases,
- * including long text truncation with tooltip support.
+ * Combobox is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
+ * The component ensures accessibility and usability while handling various use cases, including long text truncation with tooltip support.
  *
  * Every mdc-option should have a `value` attribute set to ensure proper form submission.
  *
  * To set a default option, use the `selected` attribute on the `mdc-option` element.
  *
  * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-combobox` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
+ *
+ * If you need to use `mdc-tooltip` with any options, make sure to place the tooltip component outside the `mdc-selectlistbox` element. Read more about it in Options documentation.
  *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
@@ -97,13 +98,18 @@ class Combobox
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * The placeholder text which will be shown on the text if provided.
+   * The placement of the popover within Combobox.
+   * This defines the position of the popover relative to the combobox input field.
+   *
+   * Possible values:
+   *  - 'top-start'
+   *  - 'bottom-start'
+   * @default 'bottom-start'
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
 
   /**
    * Text to be displayed when no results are found.
-   *
    * @default undefined
    */
   @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText?: string;
@@ -357,23 +363,36 @@ class Combobox
   }
 
   /**
-   * If the native input is focused, it will focus the visual combobox.
-   * This is to ensure that the visual combobox is focused when the native input is focused.
-   * For example when a form is submitted and the native input is focused,
-   * we want to focus the visual combobox so that the user can see the selected option
-   * and can interact with it.
+   * When the native input is focused, visually highlight the dropdown options (the "visual combobox"),
+   * so users can see which option is active, even though the actual DOM focus remains on the input box.
+   * This ensures that after actions like form submission, users can still interact with the dropdown options
+   * through visual cues, while keyboard focus stays on the input field.
    * @internal
    */
   private handleNativeInputFocus(): void {
     this.visualCombobox.focus();
   }
 
+  /**
+   * Resets the focused option in the dropdown list.
+   * This method removes the 'data-focused' attribute from all options that currently have it,
+   * effectively clearing any visual indication of focus within the dropdown.
+   * It is typically called when the user navigates away from the dropdown or when the dropdown is closed,
+   * ensuring that no option remains visually highlighted as focused.
+   * @internal
+   */
   private resetFocusedOption() {
     this.getAllValidOptions()
       .filter(option => option.hasAttribute('data-focused'))
       .forEach(option => this.updateFocus(option, false));
   }
 
+  /**
+   * Updates the focus state of a specific option in the dropdown list based on 'data-focused' attribute.
+   * @param option The option element to update focus state for.
+   * @param value The new focus state to set (true for focused, false for unfocused).
+   * @returns void
+   */
   private updateFocus(option: Option, value: boolean): void {
     if (option === undefined) return;
     if (value) {
