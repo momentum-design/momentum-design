@@ -13,9 +13,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-presence',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     type: {
       options: Object.values(PRESENCE_TYPE),

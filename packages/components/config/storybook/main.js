@@ -1,45 +1,13 @@
 import dynamicImport from 'vite-plugin-dynamic-import';
-import { configureSort } from 'storybook-multilevel-sort';
-
-configureSort({
-  storyOrder: {
-    consumption: null,
-    styling: null,
-    attributes: null,
-    components: {
-      '**': {
-        docs: null,
-        accessibility: null,
-        example: null,
-      },
-    },
-    widgets: {
-      '**': {
-        docs: null,
-        accessibility: null,
-        example: null,
-      },
-    },
-    'work in progress': {
-      '**': {
-        docs: null,
-        accessibility: null,
-        example: null,
-      },
-    },
-    '**': { default: null },
-  },
-});
 
 const config = {
   stories: ['../../src/docs/*.mdx', '../../src/**/*.accessibility.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
-    '@storybook/addon-controls',
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
+    '@storybook/addon-docs',
     '@storybook/addon-a11y',
-    '@geometricpanda/storybook-addon-badges',
     'storybook-addon-rtl',
+    '@momentum-design/storybook-addon-code-preview',
   ],
   framework: {
     name: '@storybook/web-components-vite',
@@ -60,6 +28,12 @@ const config = {
   },
   docs: {
     autodocs: 'tag',
+  },
+  features: {
+    interactions: false,
+    outline: false,
+    measure: false,
+    tags: false,
   },
   staticDirs: ['./public'],
 };

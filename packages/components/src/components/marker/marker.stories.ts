@@ -19,9 +19,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-marker',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'radio',

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
@@ -26,9 +26,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-chip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     color: {
       control: 'select',

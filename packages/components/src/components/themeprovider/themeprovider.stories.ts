@@ -41,9 +41,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-themeprovider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     themeclass: {
       options: THEMES,

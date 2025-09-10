@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -31,9 +31,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-buttonsimple',
   render,
-  parameters: {
-    badges: ['internal'],
-  },
   argTypes: {
     children: {
       description: 'Text label for the button.',

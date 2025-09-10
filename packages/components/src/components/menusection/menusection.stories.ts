@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -31,9 +31,7 @@ const meta: Meta = {
   title: 'Components/menupopover/menusection',
   tags: ['autodocs'],
   component: 'mdc-menusection',
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     'header-text': {
       control: 'text',
@@ -90,7 +88,11 @@ export const MultipleMenuSections: StoryObj = {
           indicator="checkmark"
           aria-label="Checkbox 7"
         ></mdc-menuitemcheckbox> </mdc-menusection
-      ><mdc-menusection show-divider header-text="Section with checkboxes and radio buttons" @change="${action('onchange')}">
+      ><mdc-menusection
+        show-divider
+        header-text="Section with checkboxes and radio buttons"
+        @change="${action('onchange')}"
+      >
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox1"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox2"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox name="checkbox" label="Checkbox3"></mdc-menuitemcheckbox>

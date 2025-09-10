@@ -1,5 +1,5 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
 
@@ -81,9 +81,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-tablist',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     'active-tab-id': {
       control: 'text',

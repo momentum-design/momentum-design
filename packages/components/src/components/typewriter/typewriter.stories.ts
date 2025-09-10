@@ -2,7 +2,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '.';
 import '../text';
@@ -35,9 +35,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-typewriter',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     children: {
       control: 'text',

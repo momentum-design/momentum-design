@@ -15,9 +15,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-appheader',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,

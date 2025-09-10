@@ -17,9 +17,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-text',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     children: {
       control: 'text',

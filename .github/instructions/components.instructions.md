@@ -145,7 +145,7 @@ The following groups are available:
   - Replace `<option>` with `<mdc-option>`
 
 - **Event Handling**
-  - use `import { action } from '@storybook/addon-actions';` and event bindings like `@click="${action('onclick')}"` for event handling
+  - use `import { action } from 'storybook/actions';` and event bindings like `@click="${action('onclick')}"` for event handling
   
 - **Interactive Stories**: Use proper event handlers and DOM manipulation for dynamic demonstrations
 - **Consistent Styling**: Use consistent spacing (`gap: 12px`, `margin-top: 20px`) and layout patterns
