@@ -17,6 +17,7 @@ type SetupOptions = {
   indicator?: Indicator;
   label?: string;
   secondaryLabel?: string;
+  controlled?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -33,6 +34,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.indicator ? `indicator="${restArgs.indicator}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : 'Checkbox Label'}
           ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
+          ${restArgs.controlled ? 'controlled' : ''}
         >
         </mdc-menuitemcheckbox>
       </div>
@@ -45,214 +47,294 @@ const setup = async (args: SetupOptions) => {
   return menuitemcheckbox;
 };
 
-const expectChecked = async (checkbox: Locator) => {
-  await expect(checkbox).toHaveAttribute('aria-checked', 'true');
-  await expect(checkbox).toHaveAttribute('checked', '');
-};
-
-const expectUnchecked = async (checkbox: Locator) => {
-  await expect(checkbox).toHaveAttribute('aria-checked', 'false');
-  await expect(checkbox).not.toHaveAttribute('checked', '');
-};
-
-const expectDisabled = async (checkbox: Locator) => {
-  await expect(checkbox).toHaveAttribute('aria-disabled', 'true');
-  await expect(checkbox).toHaveAttribute('disabled', '');
-};
-
-const expectSoftDisabled = async (checkbox: Locator) => {
-  await expect(checkbox).toHaveAttribute('aria-disabled', 'true');
-  await expect(checkbox).toHaveAttribute('soft-disabled');
-};
-
-const getChangeEventFiredPromiseFunction = async (componentsPage: ComponentsPage, checkbox: Locator) =>
-  componentsPage.waitForEvent(checkbox, 'change', { timeout: 100 });
-
-const expectChangeEventNotFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) => {
-  await expect(changeEventFiredPromiseFunction).rejects.toBeDefined();
-};
-
-const expectChangeEventFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) =>
-  changeEventFiredPromiseFunction();
-
 test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
   /**
    * FUNCTIONALITY
    */
-  await test.step('functionality', async () => {
-    // Default (unchecked) state
-    await test.step('default state (unchecked) mouse nav', async () => {
-      const checkbox = await setup({ componentsPage });
-      await expect(checkbox).toHaveAttribute('role', ROLE.MENUITEMCHECKBOX);
-      await expectUnchecked(checkbox);
+  const testFunctionality = async (controlled: boolean) => {
+    const expectChecked = async (checkbox: Locator) => {
+      await expect(checkbox).toHaveAttribute('aria-checked', 'true');
+      await expect(checkbox).toHaveAttribute('checked', '');
+      await expect(checkbox.locator('mdc-staticcheckbox')).toHaveAttribute('checked', '');
+    };
 
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await checkbox.click();
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
+    const expectUnchecked = async (checkbox: Locator) => {
+      await expect(checkbox).toHaveAttribute('aria-checked', 'false');
+      await expect(checkbox).not.toHaveAttribute('checked', '');
+      await expect(checkbox.locator('mdc-staticcheckbox')).toBeVisible();
+      await expect(checkbox.locator('mdc-staticcheckbox')).not.toHaveAttribute('checked');
+    };
+
+    const expectDisabled = async (checkbox: Locator) => {
+      await expect(checkbox).toHaveAttribute('aria-disabled', 'true');
+      await expect(checkbox).toHaveAttribute('disabled', '');
+      await expect(checkbox.locator('mdc-staticcheckbox')).toHaveAttribute('disabled', '');
+    };
+
+    const expectSoftDisabled = async (checkbox: Locator) => {
+      await expect(checkbox).toHaveAttribute('aria-disabled', 'true');
+      await expect(checkbox).toHaveAttribute('soft-disabled');
+      await expect(checkbox.locator('mdc-staticcheckbox')).not.toHaveAttribute('disabled');
+    };
+
+    const getChangeEventFiredPromiseFunction = async (componentsPage: ComponentsPage, checkbox: Locator) =>
+      componentsPage.waitForEvent(checkbox, 'change', { timeout: 100 });
+
+    const expectChangeEventNotFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) => {
+      await expect(changeEventFiredPromiseFunction).rejects.toBeDefined();
+    };
+
+    const expectChangeEventFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) =>
+      changeEventFiredPromiseFunction();
+
+    await test.step(`functionality, controlled=${controlled}`, async () => {
+      // Default (unchecked) state
+      await test.step('default state (unchecked) mouse nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled });
+        await expect(checkbox).toHaveAttribute('role', ROLE.MENUITEMCHECKBOX);
+        await expectUnchecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.click();
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectUnchecked(checkbox);
+        } else {
+          await expectChecked(checkbox);
+        }
+      });
+
+      await test.step('default state (unchecked) keyboard nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled });
+        await expect(checkbox).toHaveAttribute('role', ROLE.MENUITEMCHECKBOX);
+        await expectUnchecked(checkbox);
+        let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+
+        await componentsPage.actionability.pressTab();
+        await expect(checkbox).toBeFocused();
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectUnchecked(checkbox);
+        } else {
+          await expectChecked(checkbox);
+        }
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+      });
+
+      await test.step('default state (unchecked) external control', async () => {
+        const checkbox = await setup({ componentsPage, controlled });
+        await expect(checkbox).toHaveAttribute('role', ROLE.MENUITEMCHECKBOX);
+        await expectUnchecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.evaluate(element => element.setAttribute('checked', ''));
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectChecked(checkbox);
+      });
+
+      // Checked state
+      await test.step('checked state mouse nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, checked: true });
+        await expectChecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.click();
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectChecked(checkbox);
+        } else {
+          await expectUnchecked(checkbox);
+        }
+      });
+
+      await test.step('checked state keyboard nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, checked: true });
+        await expectChecked(checkbox);
+        let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+
+        await componentsPage.actionability.pressTab();
+        await expect(checkbox).toBeFocused();
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectChecked(checkbox);
+        } else {
+          await expectUnchecked(checkbox);
+        }
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        await expectChecked(checkbox);
+      });
+
+      await test.step('checked state external control', async () => {
+        const checkbox = await setup({ componentsPage, controlled, checked: true });
+        await expectChecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.evaluate(element => element.removeAttribute('checked'));
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+      });
+
+      // Disabled state
+      await test.step('disabled state mouse nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, disabled: true });
+        await expectDisabled(checkbox);
+        await expectUnchecked(checkbox);
+
+        // Click should not emit change event when disabled
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.click({ force: true });
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+      });
+
+      await test.step('disabled state keyboard nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, disabled: true });
+        await expectDisabled(checkbox);
+        await expectUnchecked(checkbox);
+        let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+
+        // Disabled checkbox cannot be focussed by keyboard, but can be focussed programatically
+        await componentsPage.actionability.pressTab();
+        await expect(checkbox).not.toBeFocused();
+
+        await checkbox.focus();
+        await expect(checkbox).toBeFocused();
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+      });
+
+      await test.step('disabled state external control', async () => {
+        const checkbox = await setup({ componentsPage, controlled, disabled: true });
+        await expectDisabled(checkbox);
+        await expectUnchecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.evaluate(element => element.setAttribute('checked', ''));
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectChecked(checkbox);
+      });
+
+      // Soft Disabled state
+      await test.step('soft disabled state mouse nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, softDisabled: true });
+        await expectSoftDisabled(checkbox);
+        await expectUnchecked(checkbox);
+
+        // Click still emits change event and visually toggles when soft disabled
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.click({ force: true });
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectUnchecked(checkbox);
+        } else {
+          await expectChecked(checkbox);
+        }
+      });
+
+      await test.step('soft disabled state keyboard nav', async () => {
+        const checkbox = await setup({ componentsPage, controlled, softDisabled: true });
+        await expectSoftDisabled(checkbox);
+        await expectUnchecked(checkbox);
+        let changeEventFiredPromiseFunction;
+
+        // Soft disabled checkbox can be focussed by keyboard
+        await componentsPage.actionability.pressTab();
+        await expect(checkbox).toBeFocused();
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        if (controlled) {
+          await expectUnchecked(checkbox);
+        } else {
+          await expectChecked(checkbox);
+        }
+
+        changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        await expectUnchecked(checkbox);
+      });
+
+      await test.step('soft disabled state external control', async () => {
+        const checkbox = await setup({ componentsPage, controlled, softDisabled: true });
+        await expectSoftDisabled(checkbox);
+        await expectUnchecked(checkbox);
+
+        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        await checkbox.evaluate(element => element.setAttribute('checked', ''));
+        await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+        await expectChecked(checkbox);
+      });
     });
-
-    await test.step('default state (unchecked) keyboard nav', async () => {
-      const checkbox = await setup({ componentsPage });
-      await expect(checkbox).toHaveAttribute('role', ROLE.MENUITEMCHECKBOX);
-      await expectUnchecked(checkbox);
-      let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
-
-      await componentsPage.actionability.pressTab();
-      await expect(checkbox).toBeFocused();
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-    });
-
-    // Checked state
-    await test.step('checked state mouse nav', async () => {
-      const checkbox = await setup({ componentsPage, checked: true });
-      await expectChecked(checkbox);
-
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await checkbox.click();
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectChecked(checkbox);
-    });
-
-    await test.step('checked state keyboard nav', async () => {
-      const checkbox = await setup({ componentsPage, checked: true });
-      await expectChecked(checkbox);
-      let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
-
-      await componentsPage.actionability.pressTab();
-      await expect(checkbox).toBeFocused();
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectChecked(checkbox);
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectChecked(checkbox);
-    });
-
-    // Disabled state
-    await test.step('disabled state mouse nav', async () => {
-      const checkbox = await setup({ componentsPage, disabled: true });
-      await expectDisabled(checkbox);
-      await expectUnchecked(checkbox);
-
-      // Click should not emit change event when disabled
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await checkbox.click({ force: true });
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-    });
-
-    await test.step('disabled state keyboard nav', async () => {
-      const checkbox = await setup({ componentsPage, disabled: true });
-      await expectDisabled(checkbox);
-      await expectUnchecked(checkbox);
-      let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
-
-      // Disabled checkbox cannot be focussed by keyboard, but can be focussed programatically
-      await componentsPage.actionability.pressTab();
-      await expect(checkbox).not.toBeFocused();
-
-      await checkbox.focus();
-      await expect(checkbox).toBeFocused();
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-    });
-
-    // Soft Disabled state
-    await test.step('soft disabled state mouse nav', async () => {
-      const checkbox = await setup({ componentsPage, softDisabled: true });
-      await expectSoftDisabled(checkbox);
-      await expectUnchecked(checkbox);
-
-      // Click still emits change event when soft disabled
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await checkbox.click({ force: true });
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-    });
-
-    await test.step('soft disabled state keyboard nav', async () => {
-      const checkbox = await setup({ componentsPage, softDisabled: true });
-      await expectSoftDisabled(checkbox);
-      await expectUnchecked(checkbox);
-      let changeEventFiredPromiseFunction;
-
-      // Soft disabled checkbox can be focussed by keyboard
-      await componentsPage.actionability.pressTab();
-      await expect(checkbox).toBeFocused();
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-
-      changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
-      await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectUnchecked(checkbox);
-    });
-  });
+  };
+  await testFunctionality(true);
+  await testFunctionality(false);
 
   /**
    * INDICATOR TYPES
    */
-  await test.step('indicator types', async () => {
-    // Checkbox indicator
-    await test.step('checkbox indicator, unchecked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.CHECKBOX });
-      await expect(checkbox.locator('mdc-staticcheckbox')).toBeVisible();
-      await expect(checkbox.locator('mdc-staticcheckbox')).not.toHaveAttribute('checked', '');
-    });
+  const testIndicatorTypes = async (controlled: boolean) => {
+    await test.step(`indicator types, controlled=${controlled}`, async () => {
+      // Checkbox indicator
+      await test.step('checkbox indicator, unchecked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.CHECKBOX });
+        await expect(checkbox.locator('mdc-staticcheckbox')).toBeVisible();
+        await expect(checkbox.locator('mdc-staticcheckbox')).not.toHaveAttribute('checked', '');
+      });
 
-    await test.step('checkbox indicator, checked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.CHECKBOX, checked: true });
-      await expect(checkbox.locator('mdc-staticcheckbox')).toHaveAttribute('checked', '');
-    });
+      await test.step('checkbox indicator, checked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.CHECKBOX, checked: true });
+        await expect(checkbox.locator('mdc-staticcheckbox')).toHaveAttribute('checked', '');
+      });
 
-    // Checkmark indicator
-    await test.step('checkmark indicator, unchecked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.CHECKMARK });
-      await expect(checkbox.locator('mdc-icon[name="check-bold"]')).not.toBeVisible();
-    });
+      // Checkmark indicator
+      await test.step('checkmark indicator, unchecked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.CHECKMARK });
+        await expect(checkbox.locator('mdc-icon[name="check-bold"]')).not.toBeVisible();
+      });
 
-    await test.step('checkmark indicator, checked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.CHECKMARK, checked: true });
-      await expect(checkbox.locator('mdc-icon[name="check-bold"]')).toBeVisible();
-    });
+      await test.step('checkmark indicator, checked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.CHECKMARK, checked: true });
+        await expect(checkbox.locator('mdc-icon[name="check-bold"]')).toBeVisible();
+      });
 
-    // Toggle indicator
-    await test.step('toggle indicator, unchecked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.TOGGLE });
-      await expect(checkbox.locator('mdc-statictoggle')).toBeVisible();
-      await expect(checkbox.locator('mdc-statictoggle')).not.toHaveAttribute('checked', '');
-    });
+      // Toggle indicator
+      await test.step('toggle indicator, unchecked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.TOGGLE });
+        await expect(checkbox.locator('mdc-statictoggle')).toBeVisible();
+        await expect(checkbox.locator('mdc-statictoggle')).not.toHaveAttribute('checked', '');
+      });
 
-    await test.step('toggle indicator, checked', async () => {
-      const checkbox = await setup({ componentsPage, indicator: INDICATOR.TOGGLE, checked: true });
-      await expect(checkbox.locator('mdc-statictoggle')).toHaveAttribute('checked', '');
+      await test.step('toggle indicator, checked', async () => {
+        const checkbox = await setup({ componentsPage, controlled, indicator: INDICATOR.TOGGLE, checked: true });
+        await expect(checkbox.locator('mdc-statictoggle')).toHaveAttribute('checked', '');
+      });
     });
-  });
+  };
+  await testIndicatorTypes(true);
+  await testIndicatorTypes(false);
 
   /**
    * VISUAL REGRESSION
