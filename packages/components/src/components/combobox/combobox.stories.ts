@@ -3,16 +3,19 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import '../button';
-import '../tooltip';
 import '../divider';
 import '../optgroup';
 import '../option';
 import '../selectlistbox';
+import '../tooltip';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import type Option from '../option/option.component';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+
+import type Combobox from './combobox.component';
 
 const render = (args: Args) =>
   html` <div style="width: 25rem;">
@@ -344,6 +347,71 @@ export const ComboboxWithForm: StoryObj = {
             </mdc-selectlistbox>
           </mdc-combobox>
           <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  ...hideAllControls(),
+};
+
+export const FormFieldComboboxWithHelpTextValidation: StoryObj = {
+  render: () => {
+    const validateCombobox = (formData: HTMLFormElement): boolean => {
+      const selectedOption = formData.querySelector('mdc-option[aria-selected="true"]:not([disabled])') as Option;
+      const combobox = formData.querySelector('mdc-combobox') as Combobox;
+      if (selectedOption === null) {
+        combobox.setAttribute('help-text', 'This field is required');
+        combobox.setAttribute('help-text-type', 'error');
+        return false;
+      }
+      if (selectedOption.value !== 'super-strength') {
+        combobox.setAttribute('help-text', 'Please select the Super Strength option');
+        combobox.setAttribute('help-text-type', 'warning');
+        return false;
+      }
+      combobox.setAttribute('help-text', 'You now have Super Strength!');
+      combobox.setAttribute('help-text-type', 'success');
+      return true;
+    };
+    const handleReset = (event: Event) => {
+      const combobox = (event?.target as HTMLFormElement).querySelector('mdc-combobox') as Combobox;
+      combobox.setAttribute('help-text', '');
+      combobox.setAttribute('help-text-type', VALIDATION.DEFAULT);
+    };
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = event.target as HTMLFormElement;
+      if (!validateCombobox(formData)) return;
+      action('Form Submitted')({
+        value: {
+          selectedOption: 'super-power',
+        },
+      });
+    };
+    return html`
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+        <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+          <legend>Select your super hero power (with validation)</legend>
+          <mdc-combobox
+            name="super-power"
+            label="Super Power"
+            placeholder="Type super power"
+            data-aria-label="Select a super power"
+            required
+            help-text=""
+            help-text-type="${VALIDATION.DEFAULT}"
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="flight" label="Flight"></mdc-option>
+              <mdc-option value="mind-control" label="Mind Control"></mdc-option>
+              <mdc-option value="super-strength" label="Super strength"></mdc-option>
+              <mdc-option value="tactics" label="Tactics"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <div style="display: flex; gap: 0.25rem;">
             <mdc-button type="submit" size="24">Submit</mdc-button>
             <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
