@@ -1,4 +1,6 @@
-import React, { Fragment, memo, useCallback, useState } from "react";
+import React, { Fragment,  } from "react";
+import { useCallback, useState } from "storybook/preview-api";
+
 import { Result } from "../types";
 import { AddonPanel } from "storybook/internal/components";
 import { Button, Placeholder, TabsState } from "storybook/internal/components";
@@ -16,7 +18,7 @@ export const RequestDataButton = styled(Button)({
   marginTop: "1rem",
 });
 
-export const Panel: React.FC<PanelProps> = memo(function MyPanel(props) {
+export const Panel: React.FC<PanelProps> = function MyPanel(props) {
   const theme = useTheme();
 
   // https://storybook.js.org/docs/react/addons/addons-api#useaddonstate
@@ -87,4 +89,4 @@ export const Panel: React.FC<PanelProps> = memo(function MyPanel(props) {
       </TabsState>
     </AddonPanel>
   );
-});
+};

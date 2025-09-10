@@ -35,9 +35,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-listbox',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     name: {
       control: 'text',

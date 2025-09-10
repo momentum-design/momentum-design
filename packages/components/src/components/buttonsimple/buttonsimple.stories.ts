@@ -31,9 +31,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-buttonsimple',
   render,
-  parameters: {
-    badges: ['internal'],
-  },
   argTypes: {
     children: {
       description: 'Text label for the button.',

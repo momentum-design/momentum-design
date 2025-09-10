@@ -62,9 +62,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-coachmark',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,

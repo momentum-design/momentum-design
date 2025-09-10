@@ -46,9 +46,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-toggletip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     color: {
       control: 'select',

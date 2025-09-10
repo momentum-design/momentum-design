@@ -33,9 +33,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-buttonlink',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     children: {
       description: 'Text label for the buttonLink.',

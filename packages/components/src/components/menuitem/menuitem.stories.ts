@@ -41,9 +41,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-menuitem',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

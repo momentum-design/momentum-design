@@ -1,13 +1,13 @@
 {
-  "name": "storybook-addon-code-preview",
-  "version": "0.0.0",
-  "description": "everything you need to build a Storybook addon",
-  "keywords": [
-    "storybook-addons"
-  ],
+  "name": "@momentum-design/storybook-addon-code-preview",
+  "packageManager": "yarn@3.2.4",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=8.0.0"
+  },
   "type": "module",
   "license": "MIT",
-  "author": "package-author",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -19,7 +19,6 @@
       "import": "./dist/preview.js",
       "require": "./dist/preview.cjs"
     },
-    "./preset": "./dist/preset.cjs",
     "./manager": "./dist/manager.js",
     "./package.json": "./package.json"
   },
@@ -30,14 +29,10 @@
     "*.d.ts"
   ],
   "scripts": {
-    "postinstall": "node scripts/welcome.js",
     "build": "tsup",
     "build:watch": "npm run build -- --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "run-p build:watch \"storybook --quiet\"",
-    "prerelease": "zx scripts/prepublish-checks.js",
-    "release": "npm run build && auto shipit",
-    "eject-ts": "zx scripts/eject-typescript.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -51,7 +46,6 @@
     "@types/react": "^18.2.65",
     "@types/react-dom": "^18.2.21",
     "@vitejs/plugin-react": "^4.2.1",
-    "auto": "^11.1.1",
     "boxen": "^7.1.1",
     "npm-run-all2": "^6.2.3",
     "prettier": "^3.3.3",
@@ -62,14 +56,10 @@
     "ts-dedent": "^2.2.0",
     "tsup": "^8.2.4",
     "typescript": "^5.8.2",
-    "vite": "^5.3.5",
-    "zx": "^8.4.1"
+    "vite": "^5.3.5"
   },
   "peerDependencies": {
     "storybook": "^9.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "bundler": {
     "exportEntries": [
@@ -80,16 +70,6 @@
     ],
     "previewEntries": [
       "src/preview.ts"
-    ],
-    "nodeEntries": [
-      "src/preset.ts"
     ]
-  },
-  "storybook": {
-    "displayName": "Addon Kit",
-    "supportedFrameworks": [
-      "supported-frameworks"
-    ],
-    "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
   }
 }

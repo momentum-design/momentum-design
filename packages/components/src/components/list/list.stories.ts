@@ -69,9 +69,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-list',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     textPassedToListHeader: {
       control: 'text',

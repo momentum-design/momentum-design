@@ -44,9 +44,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-cardcheckbox',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

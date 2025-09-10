@@ -15,9 +15,15 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noImplicitAny": true,
-    "lib": ["es2023", "dom", "dom.iterable"],
+    "lib": [
+      "es2023",
+      "dom",
+      "dom.iterable"
+    ],
     "baseUrl": "../addon-kit-main",
     "rootDir": "./src"
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

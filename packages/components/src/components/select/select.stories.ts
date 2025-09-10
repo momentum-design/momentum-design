@@ -66,9 +66,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-select',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     name: {
       control: 'text',

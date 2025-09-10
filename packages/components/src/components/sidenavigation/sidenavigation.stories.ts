@@ -267,9 +267,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-sidenavigation',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

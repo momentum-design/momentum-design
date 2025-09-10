@@ -81,9 +81,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-tablist',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     'active-tab-id': {
       control: 'text',

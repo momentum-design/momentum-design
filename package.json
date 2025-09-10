@@ -46,7 +46,8 @@
     "fonts": "yarn workspace @momentum-design/fonts",
     "components": "yarn workspace @momentum-design/components",
     "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
-    "utils": "yarn workspace @momentum-design/utils"
+    "utils": "yarn workspace @momentum-design/utils",
+    "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",

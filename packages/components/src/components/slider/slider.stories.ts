@@ -44,9 +44,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-slider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     min: { control: 'number' },
     max: { control: 'number' },

@@ -32,9 +32,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-radiogroup',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,

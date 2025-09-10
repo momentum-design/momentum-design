@@ -38,9 +38,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-toggle',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     size: {
       control: 'inline-radio',

@@ -58,9 +58,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-listitem',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

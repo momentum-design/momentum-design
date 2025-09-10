@@ -212,9 +212,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-popover',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     id: {
       control: 'text',

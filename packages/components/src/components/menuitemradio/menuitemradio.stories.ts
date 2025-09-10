@@ -32,9 +32,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-menuitemradio',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     checked: {
       control: 'boolean',

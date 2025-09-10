@@ -28,9 +28,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-stepperitem',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: { type: 'select' },

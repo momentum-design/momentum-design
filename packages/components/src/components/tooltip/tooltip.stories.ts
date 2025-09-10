@@ -39,9 +39,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-tooltip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     children: {
       control: 'text',

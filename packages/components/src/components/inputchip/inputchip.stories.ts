@@ -21,9 +21,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-inputchip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

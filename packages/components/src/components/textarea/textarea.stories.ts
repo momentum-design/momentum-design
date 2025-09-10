@@ -55,9 +55,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-textarea',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,

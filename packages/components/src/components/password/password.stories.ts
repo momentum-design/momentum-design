@@ -51,9 +51,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-password',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   args: {
     name: 'password',
   },

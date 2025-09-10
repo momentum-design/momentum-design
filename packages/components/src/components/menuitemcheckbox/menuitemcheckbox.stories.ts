@@ -35,9 +35,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-menuitemcheckbox',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     checked: {
       control: 'boolean',

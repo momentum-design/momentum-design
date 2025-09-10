@@ -42,9 +42,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-cardradio',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

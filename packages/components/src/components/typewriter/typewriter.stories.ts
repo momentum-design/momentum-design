@@ -35,9 +35,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-typewriter',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     children: {
       control: 'text',

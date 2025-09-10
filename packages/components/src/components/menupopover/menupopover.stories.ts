@@ -48,9 +48,7 @@ const meta: Meta = {
   title: 'Components/menupopover/menupopover',
   tags: ['autodocs'],
   component: 'mdc-menupopover',
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     id: {
       control: 'text',

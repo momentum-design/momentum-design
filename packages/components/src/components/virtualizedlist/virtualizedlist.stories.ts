@@ -18,9 +18,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-virtualizedlist',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...disableControls(['scrollElementRef', 'virtualizer', 'virtualizerController']),
     virtualizerProps: {

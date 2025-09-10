@@ -18,9 +18,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-statictoggle',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     checked: {
       control: 'boolean',

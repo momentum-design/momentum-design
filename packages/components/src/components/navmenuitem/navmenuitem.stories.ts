@@ -37,9 +37,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-navmenuitem',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     'nav-id': {
       control: 'text',

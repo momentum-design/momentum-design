@@ -22,9 +22,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-filterchip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

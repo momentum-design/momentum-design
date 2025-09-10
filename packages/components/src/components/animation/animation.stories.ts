@@ -23,9 +23,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-animation',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...hideControls(['lottieInstance', 'containerRef', 'animation', 'onCompleteHandler', 'ariaLabelledBy']),
     name: {

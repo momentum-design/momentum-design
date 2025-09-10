@@ -24,9 +24,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-alertchip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     variant: {
       control: 'select',

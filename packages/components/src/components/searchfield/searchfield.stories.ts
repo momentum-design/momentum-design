@@ -43,9 +43,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-searchfield',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

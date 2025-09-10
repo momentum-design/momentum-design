@@ -31,9 +31,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-linksimple',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     children: {
       description: 'Text content to be displayed.',
