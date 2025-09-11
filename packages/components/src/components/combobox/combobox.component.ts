@@ -449,11 +449,25 @@ class Combobox
   private handleBlurChange(): void {
     this.closePopover();
     if (this.filteredValue === this.selectedOption.label) return;
+
     const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
-    // if no option is focused, then mark it invalid and return.
-    if (getLastFocusedOptionIndex === -1) return;
-    this.setSelectedValue(options[getLastFocusedOptionIndex]);
+
+    if (getLastFocusedOptionIndex !== -1) {
+      this.setSelectedValue(options[getLastFocusedOptionIndex]);
+      return;
+    }
+
+    if (
+      getLastFocusedOptionIndex === -1 ||
+      !this.selectedOption.label ||
+      this.selectedOption.label !== this.filteredValue
+    ) {
+      if (this.filteredValue !== '' && this.invalidCustomValueText) {
+        this.helpText = this.invalidCustomValueText;
+        this.helpTextType = VALIDATION.ERROR;
+      }
+    }
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
