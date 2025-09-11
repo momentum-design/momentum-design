@@ -1,6 +1,7 @@
+import React from 'react';
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
-
+import { Title, Subtitle, Description } from '@storybook/blocks';
 import { setCustomElementsManifest } from '@storybook/web-components';
 
 import customElements from '../../dist/custom-elements.json';
@@ -69,6 +70,13 @@ const preview = {
       source: {
         excludeDecorators: true,
       },
+      page: () => (
+        <>
+          <Title />
+          <Subtitle />
+          <Description />
+        </>
+      ),
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
