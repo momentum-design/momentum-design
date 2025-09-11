@@ -22,13 +22,13 @@ const styles = css`
     align-items: unset;
     width: var(--mdc-combobox-width);
   }
-  :host::part(container__base) {
+  :host::part(combobox__base) {
     width: 100%;
     display: flex;
     position: relative;
     border-radius: 0.5rem;
   }
-  :host::part(container__button) {
+  :host::part(combobox__button) {
     position: absolute;
     right: 0;
     padding: 0.5rem;
@@ -36,7 +36,7 @@ const styles = css`
     border-left: 1px solid var(--mdc-combobox-border-color);
     border-radius: 0 0.5rem 0.5rem 0;
   }
-  :host([disabled])::part(container__button) {
+  :host([disabled])::part(combobox__button) {
     cursor: unset;
   }
   :host mdc-input {
@@ -47,53 +47,53 @@ const styles = css`
     --mdc-input-focused-border-color: var(--mdc-combobox-focused-border-color);
     --mdc-input-focused-background-color: var(--mdc-combobox-focused-background-color);
   }
-  :host(:focus-within)::part(container__button) {
+  :host(:focus-within)::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-focused-border-color);
   }
-  :host(:not([disabled]))::part(container__base):hover {
+  :host(:not([disabled]))::part(combobox__base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
   }
-  :host([help-text-type='error'])::part(container__button) {
+  :host([help-text-type='error'])::part(combobox__button) {
     border-color: var(--mdc-combobox-error-border-color);
   }
-  :host([help-text-type='warning'])::part(container__button) {
+  :host([help-text-type='warning'])::part(combobox__button) {
     border-color: var(--mdc-combobox-warning-border-color);
   }
-  :host([help-text-type='success'])::part(container__button) {
+  :host([help-text-type='success'])::part(combobox__button) {
     border-color: var(--mdc-combobox-success-border-color);
   }
-  :host([help-text-type='priority'])::part(container__button) {
+  :host([help-text-type='priority'])::part(combobox__button) {
     border-color: var(--mdc-combobox-primary-border-color);
   }
-  :host(:dir(rtl)[help-text-type='error'])::part(container__button) {
+  :host(:dir(rtl)[help-text-type='error'])::part(combobox__button) {
     border-color: var(--mdc-combobox-error-border-color);
   }
-  :host(:dir(rtl)[help-text-type='warning'])::part(container__button) {
+  :host(:dir(rtl)[help-text-type='warning'])::part(combobox__button) {
     border-color: var(--mdc-combobox-warning-border-color);
   }
-  :host(:dir(rtl)[help-text-type='success'])::part(container__button) {
+  :host(:dir(rtl)[help-text-type='success'])::part(combobox__button) {
     border-color: var(--mdc-combobox-success-border-color);
   }
-  :host(:dir(rtl)[help-text-type='priority'])::part(container__button) {
+  :host(:dir(rtl)[help-text-type='priority'])::part(combobox__button) {
     border-color: var(--mdc-combobox-primary-border-color);
   }
-  :host([disabled])::part(container__button) {
+  :host([disabled])::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-text-color-disabled);
   }
   :host::part(mdc-input) {
     width: calc(100% - 1.5rem);
   }
-  :host(:dir(rtl))::part(container__button) {
+  :host(:dir(rtl))::part(combobox__button) {
     right: unset;
     border-left: unset;
     left: 0;
     border-right: 1px solid var(--mdc-combobox-border-color);
     border-radius: 0.5rem 0 0 0.5rem;
   }
-  :host::part(container__button-icon) {
+  :host::part(combobox__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
-  :host([disabled])::part(container__button-icon) {
+  :host([disabled])::part(combobox__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-text-color-disabled);
   }
   :host::part(no-result-text) {
@@ -132,7 +132,7 @@ const styles = css`
   }
   /* High Contrast Mode */
   @media (forced-colors: active) {
-    :host::part(container__button-icon) {
+    :host::part(combobox__button-icon) {
       --mdc-icon-fill-color: ButtonText;
     }
   }

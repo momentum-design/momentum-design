@@ -21,9 +21,17 @@ import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 
+import {
+  compareOptionWithValue,
+  getAllValidOptions,
+  getVisibleOptions,
+  getFirstSelectedOption,
+  castBooleanToString,
+} from './combobox.utils';
 import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
 import styles from './combobox.styles';
 import type { Placement } from './combobox.types';
+import { ComboboxEventManager } from './combobox.events';
 
 /**
  * The Combobox component is a text-based dropdown control that allows users to select an option from a predefined list.
@@ -78,9 +86,9 @@ import type { Placement } from './combobox.types';
  * @csspart internal-native-input - The internal native input element of the combobox.
  * @csspart mdc-input - The input element of the combobox.
  * @csspart no-result-text - The no result text element of the combobox.
- * @csspart container__base - The base container element of the combobox.
- * @csspart container__button - The button element of the combobox.
- * @csspart container__button-icon - The icon element of the button of the combobox.
+ * @csspart combobox__base - The base container element of the combobox.
+ * @csspart combobox__button - The button element of the combobox.
+ * @csspart combobox__button-icon - The icon element of the button of the combobox.
  */
 class Combobox
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
@@ -215,43 +223,6 @@ class Combobox
     this.isOpen = !this.isOpen;
   }
 
-  private compareOptionWithValue(option: Option, value: string): boolean {
-    const optionValue = option.getAttribute('label') || '';
-    return optionValue.toLowerCase().startsWith(value?.toLowerCase());
-  }
-
-  private getAllValidOptions(): Array<Option> {
-    return Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTION_TAG_NAME) || []);
-  }
-
-  private getVisibleOptions(): Array<Option> {
-    return this.getAllValidOptions().filter(option => this.compareOptionWithValue(option, this.internalValue));
-  }
-
-  private getFirstSelectedOption(): Option | null {
-    return this.slottedListboxes[0]?.querySelector(`${OPTION_TAG_NAME}[selected]:not([disabled])`);
-  }
-
-  private dispatchChange(option: Option): void {
-    this.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { value: option?.value, label: option?.label },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  }
-
-  private dispatchInput(option: Option): void {
-    this.dispatchEvent(
-      new CustomEvent('input', {
-        detail: { value: option?.value, label: option?.label },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  }
-
   private setSelectedValue(option: Option | null): void {
     const newValue = option?.getAttribute('value') || '';
     const newLabel = option?.getAttribute('label') || '';
@@ -267,31 +238,13 @@ class Combobox
 
     this.setInputValidity();
 
-    this.dispatchInput(option!);
-    this.dispatchChange(option!);
+    ComboboxEventManager.onInputCombobox(this, option!);
+    ComboboxEventManager.onChangeCombobox(this, option!);
   }
 
   protected override async firstUpdated(_changedProperties: PropertyValues) {
     await this.updateComplete;
     this.modifyListBoxWrapper();
-
-    const firstSelectedOption = this.getFirstSelectedOption();
-    if (firstSelectedOption) {
-      firstSelectedOption.removeAttribute('selected');
-      this.initialSelectedOption = firstSelectedOption;
-      this.setSelectedValue(firstSelectedOption);
-    } else if (this.value) {
-      const validOption = this.getAllValidOptions().find(option => option.value === this.value);
-      this.setSelectedValue(validOption!);
-    } else if (this.placeholder) {
-      this.setInputValidity();
-    } else {
-      this.setSelectedValue(null);
-    }
-    // For the first, we set the first element only as active.
-    this.getAllValidOptions().forEach(option => {
-      option.setAttribute('tabindex', '-1');
-    });
 
     // set the element to auto focus if autoFocusOnMount is set to true
     // before running the super method, so that the AutoFocusOnMountMixin can use it
@@ -300,6 +253,24 @@ class Combobox
       this.elementToAutoFocus = this.inputElement;
     }
     super.firstUpdated(_changedProperties);
+
+    const slottedListBoxes = this.slottedListboxes;
+    const firstSelectedOption = getFirstSelectedOption(slottedListBoxes);
+    if (firstSelectedOption) {
+      firstSelectedOption.removeAttribute('selected');
+      this.initialSelectedOption = firstSelectedOption;
+      this.setSelectedValue(firstSelectedOption);
+    } else if (this.value) {
+      const validOption = getAllValidOptions(slottedListBoxes).find(option => option.value === this.value);
+      this.setSelectedValue(validOption!);
+    } else if (this.placeholder) {
+      this.setInputValidity();
+    } else {
+      this.setSelectedValue(null);
+    }
+    getAllValidOptions(slottedListBoxes).forEach(option => {
+      option.setAttribute('tabindex', '-1');
+    });
   }
 
   public override updated(changedProperties: PropertyValues): void {
@@ -354,7 +325,7 @@ class Combobox
 
   /** @internal */
   formStateRestoreCallback(state: string): void {
-    const optionToRestoreTo = this.getAllValidOptions().find(
+    const optionToRestoreTo = getAllValidOptions(this.slottedListboxes).find(
       option => option.value === state || option.label === state,
     );
     if (this.selectedOption?.value !== optionToRestoreTo?.value) {
@@ -382,16 +353,15 @@ class Combobox
    * @internal
    */
   private resetFocusedOption() {
-    this.getAllValidOptions()
+    getAllValidOptions(this.slottedListboxes)
       .filter(option => option.hasAttribute('data-focused'))
       .forEach(option => this.updateFocus(option, false));
   }
 
   /**
-   * Updates the focus state of a specific option in the dropdown list based on 'data-focused' attribute.
-   * @param option The option element to update focus state for.
-   * @param value The new focus state to set (true for focused, false for unfocused).
-   * @returns void
+   * Updates the visual focus state of a specific option in the dropdown list based on 'data-focused' attribute.
+   * @param option - The option element to update focus state for.
+   * @param value - The new focus state to set (true for focused, false for unfocused).
    */
   private updateFocus(option: Option, value: boolean): void {
     if (option === undefined) return;
@@ -406,7 +376,7 @@ class Combobox
   private handleBlurChange(): void {
     this.closePopover();
     if (this.value === this.selectedOption.value) return;
-    const options = this.getVisibleOptions();
+    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     // if no option is focused, then mark it invalid and return.
     if (getLastFocusedOptionIndex === -1) return;
@@ -414,7 +384,7 @@ class Combobox
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
-    const options = this.getVisibleOptions();
+    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
       case KEYS.ARROW_DOWN: {
@@ -440,9 +410,7 @@ class Combobox
           this.lastSelectedOptionIndex = options.length - 1;
         } else {
           this.lastSelectedOptionIndex =
-            getLastFocusedOptionIndex - 1 === options.length
-              ? getLastFocusedOptionIndex
-              : getLastFocusedOptionIndex - 1;
+            getLastFocusedOptionIndex <= 0 ? options.length - 1 : getLastFocusedOptionIndex - 1;
         }
         if (getLastFocusedOptionIndex !== -1) {
           this.updateFocus(options[getLastFocusedOptionIndex], false);
@@ -484,9 +452,9 @@ class Combobox
   }
 
   private updateHiddenOptions(): void {
-    const options = this.getAllValidOptions();
+    const options = getAllValidOptions(this.slottedListboxes);
     options.forEach(option => {
-      if (!this.compareOptionWithValue(option, this.internalValue)) {
+      if (!compareOptionWithValue(option, this.internalValue)) {
         option.setAttribute('data-hidden', '');
       } else {
         option.removeAttribute('data-hidden');
@@ -602,14 +570,14 @@ class Combobox
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
         aria-controls="${LISTBOX_ID}"
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-        aria-disabled="${ifDefined(this.disabled)}"
-        aria-expanded="${this.isOpen ? 'true' : 'false'}"
+        aria-disabled="${castBooleanToString(this.disabled)}"
+        aria-expanded="${castBooleanToString(this.isOpen)}"
         aria-haspopup="${ROLE.LISTBOX}"
-        aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
+        aria-invalid="${castBooleanToString(this.helpTextType === VALIDATION.ERROR)}"
         aria-label="${this.dataAriaLabel ?? ''}"
         aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         aria-readonly="${ifDefined(this.readonly)}"
-        aria-required="${this.required ? 'true' : 'false'}"
+        aria-required="${castBooleanToString(this.required)}"
       />
     `;
   }
@@ -621,10 +589,10 @@ class Combobox
   }
 
   public override render() {
-    const options = this.getVisibleOptions();
+    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
     return html`
       ${this.renderLabel()}
-      <div part="container__base" id="${TRIGGER_ID}">
+      <div part="combobox__base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
         <mdc-input
           @click="${() => this.toggleDropdown()}"
@@ -636,15 +604,15 @@ class Combobox
         </mdc-input>
         <mdc-buttonsimple
           @click="${() => this.toggleDropdown()}"
-          part="container__button"
+          part="combobox__button"
           ?disabled="${this.disabled}"
           tabindex="-1"
-          aria-expanded="${this.isOpen ? 'true' : 'false'}"
+          aria-expanded="${castBooleanToString(this.isOpen)}"
           aria-controls="${LISTBOX_ID}"
           aria-label="${this.dataAriaLabel ?? ''}"
         >
           <mdc-icon
-            part="container__button-icon"
+            part="combobox__button-icon"
             name="${this.shouldDisplayPopover(options.length) ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
             size="1"
             length-unit="rem"

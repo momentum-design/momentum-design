@@ -370,7 +370,7 @@ export const ComboboxWithForm: StoryObj = {
 };
 
 export const FormFieldComboboxWithHelpTextValidation: StoryObj = {
-  render: () => {
+  render: (args: Args) => {
     const validateCombobox = (formData: HTMLFormElement): boolean => {
       const selectedOption = formData.querySelector('mdc-option[aria-selected="true"]:not([disabled])') as Option;
       const combobox = formData.querySelector('mdc-combobox') as Combobox;
@@ -408,13 +408,13 @@ export const FormFieldComboboxWithHelpTextValidation: StoryObj = {
         <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
           <legend>Select your super hero power (with validation)</legend>
           <mdc-combobox
-            name="super-power"
-            label="Super Power"
-            placeholder="Type super power"
-            data-aria-label="Select a super power"
-            required
-            help-text=""
-            help-text-type="${VALIDATION.DEFAULT}"
+            name="${args.name}"
+            label="${args.label}"
+            placeholder="${args.placeholder}"
+            data-aria-label="${args['data-aria-label']}"
+            ?required=${args.required}
+            help-text="${args['help-text']}"
+            help-text-type="${args['help-text-type']}"
           >
             <mdc-selectlistbox>
               <mdc-option value="flight" label="Flight"></mdc-option>
@@ -431,5 +431,13 @@ export const FormFieldComboboxWithHelpTextValidation: StoryObj = {
       </form>
     `;
   },
-  ...hideAllControls(),
+  args: {
+    name: 'super-power',
+    label: 'Super Power',
+    placeholder: 'Type super power',
+    required: true,
+    'help-text': '',
+    'help-text-type': VALIDATION.DEFAULT,
+    'data-aria-label': 'Select a super power',
+  },
 };
