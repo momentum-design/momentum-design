@@ -53,12 +53,14 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   /**
    * Href for navigation. The URL that the hyperlink points to
+   * @default #
    */
   @property({ type: String, reflect: true })
   href = '#';
 
   /**
    * Optional target: _blank, _self, _parent, _top and _unfencedTop
+   * @default _self
    */
   @property({ type: String, reflect: true })
   target = '_self';
