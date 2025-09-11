@@ -184,7 +184,6 @@ export const Example: StoryObj = {
 
 export const AllVariants: StoryObj = {
   render: () => html`
-    <div style="display: grid; grid-template-rows: repeat(3, 1fr);  gap: 2rem;"></div>
       <mdc-combobox
         name="country"
         label="Top Countries"
