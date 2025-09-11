@@ -33,6 +33,19 @@ const styles = css`
     line-height: var(--mds-font-apps-body-midsize-medium-line-height);
   }
 
+  :host([disabled])::part(leading-icon),
+  :host([disabled])::part(trailing-icon),
+  :host([soft-disabled])::part(leading-icon),
+  :host([soft-disabled])::part(trailing-icon),
+  :host([disabled])::part(slider-label),
+  :host([disabled])::part(slider-label-start),
+  :host([disabled])::part(slider-label-end),
+  :host([soft-disabled])::part(slider-label),
+  :host([soft-disabled])::part(slider-label-start),
+  :host([soft-disabled])::part(slider-label-end) {
+    color: var(--mds-color-theme-text-primary-disabled);
+  }
+
   :host::part(slider-label) {
     margin-bottom: 0.5rem;
     display: block;
@@ -112,6 +125,18 @@ const styles = css`
     background: var(--mdc-slider-thumb-color);
     border-radius: 50%;
     border: 1px solid var(--mdc-slider-thumb-border-color);
+  }
+
+  :host([disabled]) input[type='range']::-webkit-slider-thumb {
+    cursor: unset;
+  }
+
+  :host([disabled]) input[type='range']::-moz-range-thumb {
+    cursor: unset;
+  }
+
+  :host([disabled]) input[type='range']::-ms-thumb {
+    cursor: unset;
   }
 
   :host(:not([soft-disabled])) input[type='range']:not(:disabled):hover::-webkit-slider-thumb {

@@ -344,7 +344,7 @@ class Slider extends Component {
     const input = source === 'end' ? inputEnd : inputStart;
     const value = Number(input?.value);
 
-    if (typeof value !== 'number' || Number.isNaN(value) || this.max === this.min) {
+    if (typeof value !== 'number' || Number.isNaN(value) || this.max === this.min || this.disabled) {
       return nothing;
     }
     const normalizedValue = (value - this.min) / (this.max - this.min);
