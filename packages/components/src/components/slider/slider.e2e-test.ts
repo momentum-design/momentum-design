@@ -58,6 +58,7 @@ test('mdc-slider', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    await componentsPage.page.setViewportSize({ width: 800, height: 800 });
     const sliderSheet = new StickerSheet(componentsPage, 'mdc-slider', 'margin: 1rem;');
     const options = { createNewRow: true };
 
@@ -488,9 +489,9 @@ test('mdc-slider', async ({ componentsPage }) => {
       const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
       await componentsPage.actionability.pressTab();
       await expect(slider).toBeFocused();
-      await componentsPage.page.mouse.move(650, 15);
-      await componentsPage.page.mouse.down();
       await componentsPage.page.mouse.move(400, 15);
+      await componentsPage.page.mouse.down();
+      await componentsPage.page.mouse.move(250, 15);
       await componentsPage.page.mouse.up();
       await expect(slider).toHaveAttribute('value', '31');
     });
