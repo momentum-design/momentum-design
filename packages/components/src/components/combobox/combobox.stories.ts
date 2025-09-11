@@ -12,7 +12,6 @@ import '../tooltip';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import type Option from '../option/option.component';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Combobox from './combobox.component';
@@ -353,7 +352,7 @@ export const ComboboxWithForm: StoryObj = {
             @change=${action('stones combobox onchange')}
             @input=${action('stones combobox oninput')}
             data-aria-label="How many Infinity Stones exist?"
-            invalid-custom-value-text="Custom values are not allowed Arjun"
+            invalid-custom-value-text="Custom values are not allowed."
           >
             <mdc-selectlistbox>
               <mdc-option value="two" label="Two"></mdc-option>
@@ -377,20 +376,19 @@ export const ComboboxWithForm: StoryObj = {
 export const ComboboxWithHelpTextValidation: StoryObj = {
   render: (args: Args) => {
     const validateCombobox = (formData: HTMLFormElement): boolean => {
-      const selectedOption = formData.querySelector('mdc-option[aria-selected="true"]:not([disabled])') as Option;
       const combobox = formData.querySelector('mdc-combobox') as Combobox;
-      if (selectedOption === null) {
+      if (combobox.value === '') {
         combobox.setAttribute('help-text', 'This field is required');
-        combobox.setAttribute('help-text-type', 'error');
+        combobox.setAttribute('help-text-type', VALIDATION.ERROR);
         return false;
       }
-      if (selectedOption.value !== 'super-strength') {
+      if (combobox.value !== 'super-strength') {
         combobox.setAttribute('help-text', 'Please select the Super Strength option');
-        combobox.setAttribute('help-text-type', 'warning');
+        combobox.setAttribute('help-text-type', VALIDATION.WARNING);
         return false;
       }
       combobox.setAttribute('help-text', 'You now have Super Strength!');
-      combobox.setAttribute('help-text-type', 'success');
+      combobox.setAttribute('help-text-type', VALIDATION.SUCCESS);
       return true;
     };
     const handleReset = (event: Event) => {
@@ -411,7 +409,7 @@ export const ComboboxWithHelpTextValidation: StoryObj = {
     return html`
       <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
         <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
-          <legend>Select your super hero power (with validation)</legend>
+          <legend>Select your super hero power (with custom validation)</legend>
           <mdc-combobox
             name="${args.name}"
             label="${args.label}"
