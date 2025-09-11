@@ -47,6 +47,7 @@ const render = (args: Args) =>
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
     validation-message="${args['validation-message']}"
+    invalid-custom-value-text="${args['invalid-custom-value-text']}"
   >
     ${args.children}
   </mdc-combobox>`;
@@ -127,6 +128,9 @@ const meta: Meta = {
     'validation-message': {
       control: 'text',
     },
+    'invalid-custom-value-text': {
+      control: 'text',
+    },
     ...hideControls(['id', 'value', 'validity', 'willValidate', 'default']),
     ...textControls([
       '--mdc-combobox-border-color',
@@ -164,6 +168,7 @@ export const Example: StoryObj = {
     'data-aria-label': 'Select a country',
     'info-icon-aria-label': 'Required icon label',
     placement: POPOVER_PLACEMENT.BOTTOM_START,
+    'invalid-custom-value-text': 'Custom values are not allowed',
     children: html`
       <mdc-selectlistbox>
         <mdc-option value="arg" label="Argentina"></mdc-option>
@@ -348,6 +353,7 @@ export const ComboboxWithForm: StoryObj = {
             @change=${action('stones combobox onchange')}
             @input=${action('stones combobox oninput')}
             data-aria-label="How many Infinity Stones exist?"
+            invalid-custom-value-text="Custom values are not allowed Arjun"
           >
             <mdc-selectlistbox>
               <mdc-option value="two" label="Two"></mdc-option>
@@ -368,7 +374,7 @@ export const ComboboxWithForm: StoryObj = {
   ...hideAllControls(),
 };
 
-export const FormFieldComboboxWithHelpTextValidation: StoryObj = {
+export const ComboboxWithHelpTextValidation: StoryObj = {
   render: (args: Args) => {
     const validateCombobox = (formData: HTMLFormElement): boolean => {
       const selectedOption = formData.querySelector('mdc-option[aria-selected="true"]:not([disabled])') as Option;

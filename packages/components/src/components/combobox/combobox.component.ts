@@ -123,6 +123,12 @@ class Combobox
   @property({ type: String, attribute: 'no-result-text', reflect: true }) noResultText?: string;
 
   /**
+   * Text to be displayed when no a custom values are selected, without selecting any option from the dropdown
+   * @default undefined
+   */
+  @property({ type: String, attribute: 'invalid-custom-value-text', reflect: true }) invalidCustomValueText?: string;
+
+  /**
    * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
    * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
    * element to be clipped.
@@ -188,10 +194,26 @@ class Combobox
   } = {};
 
   /** @internal */
-  @state() private internalValue = '';
+  @state() private filteredValue = '';
 
   /** @internal */
   private initialSelectedOption: Option | null = null;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.updateComplete
+      .then(() => {
+        if (this.inputElement) {
+          this.setInputValidity();
+          this.internals.setFormValue(this.inputElement.value);
+        }
+      })
+      .catch(error => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
+  }
 
   /**
    * Modifies the listbox wrapper to ensure it has the correct attributes
@@ -232,14 +254,57 @@ class Combobox
       label: newLabel,
     };
     this.value = newValue;
-    this.internalValue = newLabel;
+    this.filteredValue = newLabel;
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
 
     this.setInputValidity();
+    this.resetHelpText();
 
     ComboboxEventManager.onInputCombobox(this, option!);
     ComboboxEventManager.onChangeCombobox(this, option!);
+  }
+
+  /**
+   * Resets the selected value to an empty string and clears the form value.
+   * This method is called when there is a change on the input.
+   */
+  private resetSelectedValue(): void {
+    this.value = '';
+    this.selectedOption = {};
+    this.internals.setFormValue(this.value);
+    this.resetHelpText();
+  }
+
+  private resetHelpText(): void {
+    if (this.invalidCustomValueText && this.helpText === this.invalidCustomValueText) {
+      this.helpText = '';
+      this.helpTextType = VALIDATION.DEFAULT;
+    }
+  }
+
+  /**
+   * This function is called when the attribute changes.
+   * It updates the validity of the input field based on the input field's validity.
+   *
+   * @param name - attribute name
+   * @param old - old value
+   * @param value - new value
+   */
+  override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
+    super.attributeChangedCallback(name, old, value);
+
+    if (name === 'validation-message') {
+      this.updateComplete
+        .then(() => {
+          this.setInputValidity();
+        })
+        .catch(error => {
+          if (this.onerror) {
+            this.onerror(error);
+          }
+        });
+    }
   }
 
   protected override async firstUpdated(_changedProperties: PropertyValues) {
@@ -321,6 +386,14 @@ class Combobox
     if (this.selectedOption?.value !== optionToResetTo?.value) {
       this.setSelectedValue(optionToResetTo);
     }
+    /**
+     *  else if (optionToResetTo === null) {
+      this.resetSelectedValue();
+      this.visualCombobox.value = '';
+      this.setInputValidity();
+      this.requestUpdate();
+    }
+     */
   }
 
   /** @internal */
@@ -375,8 +448,8 @@ class Combobox
 
   private handleBlurChange(): void {
     this.closePopover();
-    if (this.value === this.selectedOption.value) return;
-    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
+    if (this.filteredValue === this.selectedOption.label) return;
+    const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     // if no option is focused, then mark it invalid and return.
     if (getLastFocusedOptionIndex === -1) return;
@@ -384,7 +457,7 @@ class Combobox
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
-    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
+    const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
       case KEYS.ARROW_DOWN: {
@@ -451,10 +524,15 @@ class Combobox
     }
   }
 
+  /**
+   * Updates the hidden state of options based on the current filtered value.
+   * If an option does not match the current filtered value, it is hidden.
+   * Otherwise, it is made visible.
+   */
   private updateHiddenOptions(): void {
     const options = getAllValidOptions(this.slottedListboxes);
     options.forEach(option => {
-      if (!compareOptionWithValue(option, this.internalValue)) {
+      if (!compareOptionWithValue(option, this.filteredValue)) {
         option.setAttribute('data-hidden', '');
       } else {
         option.removeAttribute('data-hidden');
@@ -462,6 +540,11 @@ class Combobox
     });
   }
 
+  /**
+   * Updates the hidden state of option groups label heading based on the current filtered value.
+   * If an option group does not have any visible options, it is hidden (including the divider at the end of option group).
+   * Otherwise, it is made visible.
+   */
   private updateHiddenOptionGroups(): void {
     const optionGroups = Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTIONGROUP_TAG_NAME) || []);
     if (!optionGroups.length) return;
@@ -485,7 +568,8 @@ class Combobox
   }
 
   private handleInputChange(event: Event): void {
-    this.internalValue = (event.target as HTMLInputElement).value;
+    this.filteredValue = (event.target as HTMLInputElement).value;
+    this.resetSelectedValue();
     this.resetFocusedOption();
     this.updateHiddenOptions();
     this.updateHiddenOptionGroups();
@@ -576,7 +660,7 @@ class Combobox
         aria-invalid="${castBooleanToString(this.helpTextType === VALIDATION.ERROR)}"
         aria-label="${this.dataAriaLabel ?? ''}"
         aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-        aria-readonly="${ifDefined(this.readonly)}"
+        aria-readonly="${castBooleanToString(this.readonly)}"
         aria-required="${castBooleanToString(this.required)}"
       />
     `;
@@ -589,7 +673,7 @@ class Combobox
   }
 
   public override render() {
-    const options = getVisibleOptions(this.slottedListboxes, this.internalValue);
+    const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
     return html`
       ${this.renderLabel()}
       <div part="combobox__base" id="${TRIGGER_ID}">
