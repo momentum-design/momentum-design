@@ -987,6 +987,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   protected isEventFromTrigger(event: Event): boolean {
+    if (!this.triggerID) return false;
+
     if (event.composed) {
       return event.composedPath().some(el => (el as HTMLElement)?.id === this.triggerID);
     }
