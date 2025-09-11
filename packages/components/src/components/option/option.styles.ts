@@ -4,6 +4,7 @@ const styles = css`
   :host {
     --mdc-listitem-column-gap: 0.75rem;
     --mdc-option-icon-width: 1rem;
+    flex-shrink: 0;
   }
 
   :host::part(leading-icon),
@@ -16,7 +17,7 @@ const styles = css`
   :host::part(leading-text) {
     flex: 1;
   }
- 
+
   :host::part(leading-icon) {
     margin-inline-end: var(--mdc-listitem-column-gap);
   }
