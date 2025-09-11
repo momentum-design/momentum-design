@@ -32,6 +32,9 @@ import styles from './buttonlink.styles';
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
  * 
  * @csspart anchor - The anchor element that wraps the buttonlink content.
+ * @csspart prefix-icon - The prefix icon element.
+ * @csspart button-text - The slot containing the buttonlink text.
+ * @csspart postfix-icon - The postfix icon element.
  *
  */
 class ButtonLink extends ButtonComponentMixin(Linksimple) {

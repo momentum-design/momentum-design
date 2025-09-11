@@ -28,6 +28,7 @@ import type { LinkSize } from './link.types';
  * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
  * 
  * @csspart anchor - The anchor element that wraps the link content.
+ * @csspart icon - The icon element.
  */
 class Link extends IconNameMixin(Linksimple) {
   /**
@@ -77,6 +78,7 @@ class Link extends IconNameMixin(Linksimple) {
         <slot></slot>
         ${this.iconName
           ? html`<mdc-icon
+              part="icon"
               name="${this.iconName}"
               size="${this.getIconSize()}"
               length-unit="rem"
