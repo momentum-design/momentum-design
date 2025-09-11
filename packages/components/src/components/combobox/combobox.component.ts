@@ -322,7 +322,6 @@ class Combobox
     const slottedListBoxes = this.slottedListboxes;
     const firstSelectedOption = getFirstSelectedOption(slottedListBoxes);
     if (firstSelectedOption) {
-      firstSelectedOption.removeAttribute('selected');
       this.initialSelectedOption = firstSelectedOption;
       this.setSelectedValue(firstSelectedOption);
     } else if (this.value) {
@@ -330,8 +329,6 @@ class Combobox
       this.setSelectedValue(validOption!);
     } else if (this.placeholder) {
       this.setInputValidity();
-    } else {
-      this.setSelectedValue(null);
     }
     getAllValidOptions(slottedListBoxes).forEach(option => {
       option.setAttribute('tabindex', '-1');
@@ -443,7 +440,6 @@ class Combobox
     } else {
       option.removeAttribute('data-focused');
     }
-    option.setAttribute('aria-selected', value.toString());
   }
 
   private handleBlurChange(): void {
@@ -522,7 +518,7 @@ class Combobox
         if (options.length && this.shouldDisplayPopover(options.length)) {
           this.closePopover();
         } else {
-          this.setSelectedValue(null);
+          this.resetSelectedValue();
           // force clear the actual DOM input property
           const input = event.target as HTMLInputElement;
           input.value = '';
