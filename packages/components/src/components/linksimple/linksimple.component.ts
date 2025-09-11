@@ -33,6 +33,8 @@ import styles from './linksimple.styles';
  * @cssproperty --mdc-link-inverted-color-disabled - Color of the inverted link’s child content in the disabled state.
  * @cssproperty --mdc-link-inverted-color-hover - Color of the inverted link’s child content in the hover state.
  * @cssproperty --mdc-link-inverted-color-normal - Color of the inverted link’s child content in the normal state.
+ * 
+ * @csspart anchor - The anchor element that wraps the linksimple content.
  */
 class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**

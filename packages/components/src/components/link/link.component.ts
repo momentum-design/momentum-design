@@ -26,6 +26,8 @@ import type { LinkSize } from './link.types';
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the Link has focus.
  * @event focus - (React: onFocus) Fired when the Link receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
+ * 
+ * @csspart anchor - The anchor element that wraps the link content.
  */
 class Link extends IconNameMixin(Linksimple) {
   /**

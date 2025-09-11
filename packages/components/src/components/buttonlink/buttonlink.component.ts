@@ -30,6 +30,8 @@ import styles from './buttonlink.styles';
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the buttonLink has focus.
  * @event focus - (React: onFocus) Fired when the buttonLink receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
+ * 
+ * @csspart anchor - The anchor element that wraps the buttonlink content.
  *
  */
 class ButtonLink extends ButtonComponentMixin(Linksimple) {

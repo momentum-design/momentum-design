@@ -14,19 +14,19 @@ const styles = css`
 
   :host([data-btn-type='pill'][size='24'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='24'])::part(anchor) {
-    padding: 0px 0.625rem;
+    padding: 0 0.625rem;
   }
 
   :host([data-btn-type='pill'][size='32'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='32'])::part(anchor),
   :host([data-btn-type='pill'][size='28'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='28'])::part(anchor) {
-    padding: 0px 0.75rem;
+    padding: 0 0.75rem;
   }
 
   :host([data-btn-type='pill'][size='40'])::part(anchor),
   :host([data-btn-type='pill-with-icon'][size='40'])::part(anchor) {
-    padding: 0px 1rem;
+    padding: 0 1rem;
   }
 
   :host([disabled]) {
@@ -37,7 +37,6 @@ const styles = css`
   /* Anchor inside ButtonLink */
   :host::part(anchor) {
     color: inherit;
-    font-weight: inherit;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -46,7 +45,7 @@ const styles = css`
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    border: 0.0625rem solid transparent;
+    border: 1px solid transparent;
   }
 
   :host([variant='secondary'])::part(anchor) {
