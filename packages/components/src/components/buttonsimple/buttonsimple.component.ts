@@ -227,6 +227,7 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
+      composed: true,
       view: window,
     });
     this.dispatchEvent(clickEvent);
