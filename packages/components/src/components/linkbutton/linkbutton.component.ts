@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
-import Link from '../link/link.component';
+import Linksimple from '../linksimple/linksimple.component';
 
 import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
 import type { LinkButtonSize } from './linkbutton.types';
@@ -97,7 +97,7 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Link.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Linksimple.styles, ...styles];
 }
 
 export default LinkButton;

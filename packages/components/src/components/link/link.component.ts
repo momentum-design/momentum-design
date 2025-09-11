@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import Linksimple from '../linksimple/linksimple.component';
@@ -25,6 +26,9 @@ import type { LinkSize } from './link.types';
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the Link has focus.
  * @event focus - (React: onFocus) Fired when the Link receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
+ * 
+ * @csspart anchor - The anchor element that wraps the link content.
+ * @csspart icon - The icon element.
  */
 class Link extends IconNameMixin(Linksimple) {
   /**
@@ -57,10 +61,30 @@ class Link extends IconNameMixin(Linksimple) {
 
   public override render() {
     return html`
-      <slot></slot>
-      ${this.iconName
-        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
-        : nothing}
+      <a
+        class="mdc-focus-ring"
+        part="anchor"
+        href="${this.href}"
+        target="${this.target}"
+        rel="${ifDefined(this.rel)}"
+        download="${ifDefined(this.download)}"
+        ping="${ifDefined(this.ping)}"
+        hreflang="${ifDefined(this.hreflang)}"
+        type="${ifDefined(this.type)}"
+        referrerpolicy="${ifDefined(this.referrerpolicy)}"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        tabindex="${this.disabled ? -1 : 0}"
+      >
+        <slot></slot>
+        ${this.iconName
+          ? html`<mdc-icon
+              part="icon"
+              name="${this.iconName}"
+              size="${this.getIconSize()}"
+              length-unit="rem"
+            ></mdc-icon>`
+          : nothing}
+      </a>
     `;
   }
 

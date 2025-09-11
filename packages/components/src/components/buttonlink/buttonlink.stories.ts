@@ -23,8 +23,7 @@ const render = (args: Args) =>
     href="${args.href}"
     target="${args.target}"
     rel="${args.rel}"
-    tabindex="${args.tabIndex}"
-    aria-label="${args['aria-label']}"
+    data-aria-label="${args['data-aria-label']}"
     >${args.children}</mdc-buttonlink
   >`;
 
@@ -72,6 +71,9 @@ const meta: Meta = {
       control: 'text',
     },
     rel: {
+      control: 'text',
+    },
+    'data-aria-label': {
       control: 'text',
     },
     ...hideControls([
@@ -146,5 +148,6 @@ export const IconButtonLink: StoryObj = {
     'prefix-icon': 'placeholder-bold',
     size: ICON_BUTTON_SIZES[32],
     'aria-label': 'icon buttonLink',
+    'data-aria-label': 'icon buttonLink for accessibility',
   },
 };
