@@ -271,7 +271,7 @@ class Combobox
    */
   private resetSelectedValue(): void {
     this.value = '';
-    this.selectedOption = {};
+    this.selectedOption.value = '';
     this.internals.setFormValue(this.value);
     this.resetHelpText();
   }
@@ -468,6 +468,7 @@ class Combobox
         this.helpTextType = VALIDATION.ERROR;
       }
     }
+    this.setInputValidity();
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
