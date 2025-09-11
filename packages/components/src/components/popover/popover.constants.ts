@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import { ROLE } from '../../utils/roles';
 
 const TAG_NAME = utils.constructTagName('popover');
 
@@ -29,6 +30,11 @@ const COLOR = {
   CONTRAST: 'contrast',
 } as const;
 
+const STRATEGY = {
+  ABSOLUTE: 'absolute',
+  FIXED: 'fixed',
+} as const;
+
 const DEFAULTS = {
   PLACEMENT: POPOVER_PLACEMENT.BOTTOM,
   TRIGGER: TRIGGER.CLICK,
@@ -51,7 +57,7 @@ const DEFAULTS = {
   FLIP: true,
   SIZE: false,
   DELAY: '0,0',
-  ROLE: 'dialog',
+  ROLE: ROLE.DIALOG,
   Z_INDEX: 1000,
   DISABLE_ARIA_EXPANDED: false,
   PROPAGATE_EVENT_ON_ESCAPE: false,
@@ -60,4 +66,4 @@ const DEFAULTS = {
   IS_BACKDROP_INVISIBLE: true,
 } as const;
 
-export { TAG_NAME, POPOVER_PLACEMENT, COLOR, TRIGGER, DEFAULTS };
+export { TAG_NAME, POPOVER_PLACEMENT, COLOR, STRATEGY, TRIGGER, DEFAULTS };

@@ -13,6 +13,9 @@ const styles = css`
     color: var(--mdc-optgroup-disabled-color);
     cursor: default;
   }
+  :host([data-hidden]) {
+    display: none;
+  }
 `;
 
 export default [styles];
