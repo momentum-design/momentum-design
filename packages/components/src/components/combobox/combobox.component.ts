@@ -188,12 +188,6 @@ class Combobox
   @state() private lastSelectedOptionIndex = 0;
 
   /** @internal */
-  @state() private selectedOption: {
-    value?: string;
-    label?: string;
-  } = {};
-
-  /** @internal */
   @state() private filteredValue = '';
 
   /** @internal */
@@ -246,17 +240,13 @@ class Combobox
   }
 
   private setSelectedValue(option: Option | null): void {
-    const newValue = option?.getAttribute('value') || '';
-    const newLabel = option?.getAttribute('label') || '';
-    this.selectedOption = {
-      ...this.selectedOption,
-      value: newValue,
-      label: newLabel,
-    };
-    this.value = newValue;
-    this.filteredValue = newLabel;
+    // this.value is the actual value of the component
+    this.value = option?.getAttribute('value') || '';
+    // this.filteredValue is the visible label of the component
+    this.filteredValue = option?.getAttribute('label') || '';
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
+    this.updateSelectedOption(option!);
 
     this.setInputValidity();
     this.resetHelpText();
@@ -271,7 +261,6 @@ class Combobox
    */
   private resetSelectedValue(): void {
     this.value = '';
-    this.selectedOption.value = '';
     this.internals.setFormValue(this.value);
     this.resetHelpText();
   }
@@ -362,7 +351,7 @@ class Combobox
    * @internal
    */
   private setInputValidity() {
-    if (!this.selectedOption.value && this.required) {
+    if (!this.value && this.required) {
       if (this.validationMessage) {
         this.inputElement?.setCustomValidity(this.validationMessage);
       } else {
@@ -380,17 +369,12 @@ class Combobox
    */
   formResetCallback(): void {
     const optionToResetTo = this.initialSelectedOption || null;
-    if (this.selectedOption?.value !== optionToResetTo?.value) {
-      this.setSelectedValue(optionToResetTo);
-    }
-    /**
-     *  else if (optionToResetTo === null) {
-      this.resetSelectedValue();
-      this.visualCombobox.value = '';
-      this.setInputValidity();
-      this.requestUpdate();
-    }
-     */
+    // Restore the selected option
+    this.setSelectedValue(optionToResetTo);
+    // Reset the filtered text (typed value shown in input)
+    this.filteredValue = optionToResetTo?.label ?? '';
+    // Force revalidation after reset
+    this.setInputValidity();
   }
 
   /** @internal */
@@ -398,9 +382,7 @@ class Combobox
     const optionToRestoreTo = getAllValidOptions(this.slottedListboxes).find(
       option => option.value === state || option.label === state,
     );
-    if (this.selectedOption?.value !== optionToRestoreTo?.value) {
-      this.setSelectedValue(optionToRestoreTo || null);
-    }
+    this.setSelectedValue(optionToRestoreTo || null);
   }
 
   /**
@@ -428,6 +410,13 @@ class Combobox
       .forEach(option => this.updateFocus(option, false));
   }
 
+  private updateSelectedOption(newOption: Option): void {
+    getAllValidOptions(this.slottedListboxes).forEach(option => {
+      option.removeAttribute('selected');
+    });
+    newOption?.setAttribute('selected', '');
+  }
+
   /**
    * Updates the visual focus state of a specific option in the dropdown list based on 'data-focused' attribute.
    * @param option - The option element to update focus state for.
@@ -442,9 +431,13 @@ class Combobox
     }
   }
 
+  private isOptionSelected(options: Array<Option>): boolean {
+    if (options.length > 1) return false;
+    return options[0].hasAttribute('selected') || options[0].hasAttribute('aria-selected');
+  }
+
   private handleBlurChange(): void {
     this.closePopover();
-    if (this.filteredValue === this.selectedOption.label) return;
 
     const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
     const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
@@ -455,14 +448,13 @@ class Combobox
     }
 
     if (
-      getLastFocusedOptionIndex === -1 ||
-      !this.selectedOption.label ||
-      this.selectedOption.label !== this.filteredValue
+      getLastFocusedOptionIndex === -1 &&
+      this.filteredValue !== '' &&
+      this.invalidCustomValueText &&
+      !this.isOptionSelected(options)
     ) {
-      if (this.filteredValue !== '' && this.invalidCustomValueText) {
-        this.helpText = this.invalidCustomValueText;
-        this.helpTextType = VALIDATION.ERROR;
-      }
+      this.helpText = this.invalidCustomValueText;
+      this.helpTextType = VALIDATION.ERROR;
     }
     this.setInputValidity();
   }
@@ -625,7 +617,7 @@ class Combobox
         id="${this.inputId}"
         name="${this.name}"
         type="text"
-        .value="${live(this.selectedOption?.value ?? '')}"
+        .value="${live(this.value)}"
         aria-hidden="true"
         part="internal-native-input"
         tabindex="-1"
@@ -651,7 +643,7 @@ class Combobox
         id="${this.id}"
         slot="input"
         ?disabled="${this.disabled}"
-        .value="${this.selectedOption?.label ?? ''}"
+        .value="${live(this.filteredValue)}"
         autocomplete="${AUTO_COMPLETE.OFF}"
         class="input"
         part="mdc-input"
