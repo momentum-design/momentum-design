@@ -8,6 +8,7 @@ const styles = [
     :host {
       --mdc-listitem-column-gap: 0.75rem;
       --mdc-option-icon-width: 1rem;
+      flex-shrink: 0;
     }
 
     :host::part(leading-icon),
