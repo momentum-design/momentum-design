@@ -17,7 +17,12 @@ const render = (args: Args) =>
     href="${args.href}"
     target="${args.target}"
     rel="${args.rel}"
-    tabindex="${args.tabIndex}"
+    download="${args.download}"
+    ping="${args.ping}"
+    hreflang="${args.hreflang}"
+    type="${args.type}"
+    referrerpolicy="${args.referrerpolicy}"
+    data-aria-label="${args['data-aria-label']}"
     >${args.children}</mdc-linksimple
   >`;
 
@@ -55,8 +60,23 @@ const meta: Meta = {
     rel: {
       control: 'text',
     },
-    tabIndex: {
-      control: 'number',
+    download: {
+      control: 'text',
+    },
+    ping: {
+      control: 'text',
+    },
+    hreflang: {
+      control: 'text',
+    },
+    type: {
+      control: 'text',
+    },
+    referrerpolicy: {
+      control: 'text',
+    },
+    'data-aria-label': {
+      control: 'text',
     },
     ...hideControls(['handleNavigation']),
     ...textControls([
@@ -83,7 +103,6 @@ const defaultArgs = {
   href: 'https://www.webex.com',
   target: '_blank',
   rel: 'noopener noreferrer',
-  tabIndex: 0,
 };
 
 export const Example: StoryObj = {

@@ -21,7 +21,7 @@ const render = (args: Args) =>
     href="${args.href}"
     target="${args.target}"
     rel="${args.rel}"
-    tabindex="${args.tabIndex}"
+    data-aria-label="${args['data-aria-label']}"
     >${args.children}</mdc-link
   >`;
 
@@ -66,8 +66,8 @@ const meta: Meta = {
     rel: {
       control: 'text',
     },
-    tabIndex: {
-      control: 'number',
+    'data-aria-label': {
+      control: 'text',
     },
     ...hideControls(['handleNavigation']),
     ...textControls([
@@ -96,7 +96,6 @@ const defaultArgs = {
   href: 'https://www.webex.com',
   target: '_blank',
   rel: 'noopener noreferrer',
-  tabIndex: 0,
 };
 
 export const Example: StoryObj = {

@@ -58,15 +58,23 @@ test('mdc-slider', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    await componentsPage.page.setViewportSize({ width: 800, height: 800 });
     const sliderSheet = new StickerSheet(componentsPage, 'mdc-slider', 'margin: 1rem;');
     const options = { createNewRow: true };
 
     // Single-value slider
-    sliderSheet.setAttributes({ min: 0, max: 100, value: 50, label: 'Volume' });
+    sliderSheet.setAttributes({ min: 0, max: 100, value: 50, label: 'Single Slider' });
     await sliderSheet.createMarkupWithCombination({}, options);
 
     // Range slider
-    sliderSheet.setAttributes({ range: true, min: 0, max: 100, 'value-start': 20, 'value-end': 80, label: 'Range' });
+    sliderSheet.setAttributes({
+      range: true,
+      min: 0,
+      max: 100,
+      'value-start': 20,
+      'value-end': 80,
+      label: 'Range Slider',
+    });
     await sliderSheet.createMarkupWithCombination({}, options);
 
     // Slider with icons
@@ -92,15 +100,33 @@ test('mdc-slider', async ({ componentsPage }) => {
     await sliderSheet.createMarkupWithCombination({}, options);
 
     // Disabled slider
-    sliderSheet.setAttributes({ label: 'Disabled Volume', min: 0, max: 100, value: 50, disabled: true });
+    sliderSheet.setAttributes({
+      label: 'Disabled Volume',
+      min: 0,
+      max: 100,
+      value: 50,
+      disabled: true,
+      'leading-icon': 'speaker-muted-bold',
+      'trailing-icon': 'speaker-bold',
+      'label-start': 'Min',
+      'label-end': 'Max',
+    });
     await sliderSheet.createMarkupWithCombination({}, options);
 
     // Soft-disabled slider
-    sliderSheet.setAttributes({ label: 'Soft Disabled Volume', min: 0, max: 100, value: 50, 'soft-disabled': true });
+    sliderSheet.setAttributes({ label: 'Soft Disabled Slider', min: 0, max: 100, value: 50, 'soft-disabled': true });
     await sliderSheet.createMarkupWithCombination({}, options);
 
     // Slider with step
-    sliderSheet.setAttributes({ label: 'Step Slider', min: 0, max: 100, value: 40, step: 20 });
+    sliderSheet.setAttributes({
+      label: 'Step Slider',
+      min: 0,
+      max: 100,
+      value: 40,
+      step: 20,
+      'label-start': 'Start',
+      'label-end': 'End',
+    });
     await sliderSheet.createMarkupWithCombination({}, options);
 
     sliderSheet.setAttributes({
@@ -463,9 +489,9 @@ test('mdc-slider', async ({ componentsPage }) => {
       const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
       await componentsPage.actionability.pressTab();
       await expect(slider).toBeFocused();
-      await componentsPage.page.mouse.move(650, 15);
-      await componentsPage.page.mouse.down();
       await componentsPage.page.mouse.move(400, 15);
+      await componentsPage.page.mouse.down();
+      await componentsPage.page.mouse.move(250, 15);
       await componentsPage.page.mouse.up();
       await expect(slider).toHaveAttribute('value', '31');
     });

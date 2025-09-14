@@ -6,6 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
+import '../buttongroup';
 import '../option';
 import '../select';
 import '../menupopover';
@@ -14,6 +15,7 @@ import '../dialog';
 import '../list';
 import '../listitem';
 import '../tooltip';
+import '../divider';
 
 import type Popover from '.';
 import type Dialog from '../dialog';
@@ -692,4 +694,125 @@ export const PopoverScrollOverflow: StoryObj = {
       <mdc-listitem label="Item 12"></mdc-listitem>
     </mdc-list>
   `,
+};
+
+export const PopoverInChangingList: StoryObj = {
+  args: {
+    ...Example.args,
+    id: 'popover-scroll-overflow',
+    triggerID: 'trigger-scroll-btn',
+    interactive: true,
+    'focus-trap': true,
+    'focus-back-to-trigger': true,
+    'show-arrow': true,
+    'hide-on-escape': true,
+    'hide-on-outside-click': true,
+    size: true,
+  },
+  render: () => {
+    let btnVersion = 1;
+    const updateButton = () => {
+      btnVersion += 1;
+      const item2 = document.querySelector('#item-2')!;
+      const item2Parent = item2.parentElement!;
+      item2.remove();
+      item2Parent.append(item2);
+
+      let item3 = document.querySelector('#item-3')!;
+      const item3Parent = item3.parentElement!;
+      item3.remove();
+
+      item3 = document.createElement('mdc-button');
+      item3.setAttribute('id', 'item-3');
+      item3.setAttribute('prefix-icon', 'placeholder-bold');
+      item3.innerHTML = `Open v${btnVersion}`;
+      item3Parent.append(item3);
+    };
+
+    let popVersion = 1;
+    const updatePopover = () => {
+      popVersion += 1;
+      const popover2 = document.querySelector('[triggerID="item-2"]')!;
+      const popover2Parent = popover2.parentElement!;
+      popover2.remove();
+      popover2Parent.append(popover2);
+
+      let popover3 = document.querySelector('[triggerID="item-3"]')!;
+      const popover3Parent = popover3.parentElement!;
+      popover3.remove();
+
+      popover3 = (document.getElementById('popover-tpl')! as HTMLTemplateElement).content.cloneNode(
+        true,
+      ) as HTMLElement;
+      popover3.querySelector('div')!.innerHTML = `Item 3 v${popVersion}`;
+      popover3Parent.append(popover3);
+    };
+    return html`
+      <div>
+        <template id="popover-tpl">
+          <mdc-popover focus-back-to-trigger hide-on-escape hide-on-outside-click backdrop show-arrow triggerID="item-3"
+            ><div></div
+          ></mdc-popover>
+        </template>
+        <mdc-text tagname="p">
+          Frameworks might detach and re-attach elements when list content change. <br />
+          If it happens with the trigger but not the popover then it breaks the connection.
+        </mdc-text>
+
+        <mdc-text tagname="p"> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>
+
+        <mdc-buttongroup>
+          <mdc-button @click="${updateButton}">Update Open buttons</mdc-button>
+          <mdc-button @click="${updatePopover}">Update Popovers</mdc-button>
+        </mdc-buttongroup>
+
+        <mdc-divider style="margin-block: 1rem"></mdc-divider>
+
+        <mdc-list style="height: 200px; width: 100%; overflow-y: auto;">
+          <mdc-listitem label="No change after update">
+            <div slot="trailing-controls">
+              <mdc-button id="item-1" prefix-icon="placeholder-bold">Open v${btnVersion}</mdc-button>
+              <mdc-popover
+                focus-back-to-trigger
+                hide-on-escape
+                hide-on-outside-click
+                backdrop
+                show-arrow
+                triggerID="item-1"
+                >Item 1 v${popVersion}</mdc-popover
+              >
+            </div>
+          </mdc-listitem>
+          <mdc-listitem label="Detach / Re-attach after update">
+            <div slot="trailing-controls">
+              <mdc-button id="item-2" prefix-icon="placeholder-bold">Open v${btnVersion}</mdc-button>
+              <mdc-popover
+                focus-back-to-trigger
+                hide-on-escape
+                hide-on-outside-click
+                backdrop
+                show-arrow
+                triggerID="item-2"
+                >Item 2 v${popVersion}</mdc-popover
+              >
+            </div>
+          </mdc-listitem>
+          <mdc-listitem label="Replace with new one after update">
+            <div slot="trailing-controls">
+              <mdc-button id="item-3" prefix-icon="placeholder-bold">Open v${btnVersion}</mdc-button>
+              <mdc-popover
+                focus-back-to-trigger
+                hide-on-escape
+                hide-on-outside-click
+                backdrop
+                show-arrow
+                triggerID="item-3"
+                >Item 3 v${popVersion}</mdc-popover
+              >
+            </div>
+          </mdc-listitem>
+        </mdc-list>
+      </div>
+    `;
+  },
 };
