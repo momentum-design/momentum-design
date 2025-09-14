@@ -185,9 +185,6 @@ class Combobox
   @state() private isOpen = false;
 
   /** @internal */
-  @state() private lastSelectedOptionIndex = 0;
-
-  /** @internal */
   @state() private filteredValue = '';
 
   /** @internal */
@@ -331,7 +328,7 @@ class Combobox
       if (this.disabled || this.readonly) {
         // If the combobox is disabled or readonly,
         // we close the popover if it is open.
-        this.isOpen = false;
+        this.closePopover();
       }
     }
 
@@ -440,15 +437,15 @@ class Combobox
     this.closePopover();
 
     const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
-    const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
+    const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
 
-    if (getLastFocusedOptionIndex !== -1) {
-      this.setSelectedValue(options[getLastFocusedOptionIndex]);
+    if (activeIndex !== -1) {
+      this.setSelectedValue(options[activeIndex]);
       return;
     }
 
     if (
-      getLastFocusedOptionIndex === -1 &&
+      activeIndex === -1 &&
       this.filteredValue !== '' &&
       this.invalidCustomValueText &&
       !this.isOptionSelected(options)
@@ -459,61 +456,48 @@ class Combobox
     this.setInputValidity();
   }
 
+  private updateFocusAndScrollIntoView(options: Option[], oldIndex: number, newIndex: number): void {
+    this.updateFocus(options[oldIndex], false);
+    this.updateFocus(options[newIndex], true);
+    options[newIndex]?.scrollIntoView({ block: 'nearest' });
+  }
+
   private handleInputKeydown(event: KeyboardEvent): void {
     const options = getVisibleOptions(this.slottedListboxes, this.filteredValue);
-    const getLastFocusedOptionIndex = options.findIndex(option => option.hasAttribute('data-focused'));
+    const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
       case KEYS.ARROW_DOWN: {
         this.openPopover();
-        if (getLastFocusedOptionIndex === -1 || getLastFocusedOptionIndex === options.length - 1) {
-          this.lastSelectedOptionIndex = 0;
-        } else {
-          this.lastSelectedOptionIndex =
-            getLastFocusedOptionIndex + 1 === options.length
-              ? getLastFocusedOptionIndex
-              : getLastFocusedOptionIndex + 1;
-        }
-        if (getLastFocusedOptionIndex !== -1) {
-          this.updateFocus(options[getLastFocusedOptionIndex], false);
-        }
-        this.updateFocus(options[this.lastSelectedOptionIndex], true);
+        const newIndex = options.length - 1 === activeIndex ? 0 : activeIndex + 1;
+        this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
         break;
       }
       case KEYS.ARROW_UP: {
         this.openPopover();
-        if (getLastFocusedOptionIndex === -1 || getLastFocusedOptionIndex === 0) {
-          this.lastSelectedOptionIndex = options.length - 1;
-        } else {
-          this.lastSelectedOptionIndex =
-            getLastFocusedOptionIndex <= 0 ? options.length - 1 : getLastFocusedOptionIndex - 1;
-        }
-        if (getLastFocusedOptionIndex !== -1) {
-          this.updateFocus(options[getLastFocusedOptionIndex], false);
-        }
-        this.updateFocus(options[this.lastSelectedOptionIndex], true);
+        const newIndex = activeIndex === -1 || activeIndex === 0 ? options.length - 1 : activeIndex - 1;
+        this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
         break;
       }
       case KEYS.ENTER: {
-        if (getLastFocusedOptionIndex === -1) return;
-        this.setSelectedValue(options[getLastFocusedOptionIndex]);
+        if (activeIndex === -1) return;
+        this.setSelectedValue(options[activeIndex]);
         if (this.isOpen === true) {
           this.closePopover();
         }
         break;
       }
       case KEYS.ESCAPE: {
-        if (getLastFocusedOptionIndex !== -1) {
-          this.updateFocus(options[getLastFocusedOptionIndex], false);
+        if (activeIndex !== -1) {
+          this.updateFocus(options[activeIndex], false);
         }
         if (options.length && this.shouldDisplayPopover(options.length)) {
           this.closePopover();
         } else {
           this.resetSelectedValue();
           // force clear the actual DOM input property
-          const input = event.target as HTMLInputElement;
-          input.value = '';
+          this.filteredValue = '';
         }
         break;
       }
