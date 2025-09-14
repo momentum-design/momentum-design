@@ -1,6 +1,9 @@
-import { Source } from '@storybook/addon-docs/blocks';
+import { SourceContainer } from '@storybook/addon-docs/blocks';
 import React from 'react';
+import { TabsState } from 'storybook/internal/components';
+import { useParameter } from 'storybook/internal/manager-api';
 import { styled } from 'storybook/theming';
+import CodeBlock from './CodeBlock';
 
 const StyledPanel = styled.div`
     width: 50%;
@@ -9,45 +12,41 @@ const StyledPanel = styled.div`
     box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     overflow-y: auto;
-    padding: 16px;
-`;
-
-const PanelHeader = styled.div`
-    font-size: ${(props) => props.theme.typography.size.s2}px;
-    font-weight: ${(props) => props.theme.typography.weight.bold};
-    color: ${(props) => props.theme.color.defaultText};
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid ${(props) => props.theme.appBorderColor};
-`;
-
-const CodeContainer = styled(Source)`
-    background: ${(props) => props.theme.background.hoverable};
-    border: 1px solid ${(props) => props.theme.appBorderColor};
-    border-radius: 4px;
-    padding: 12px;
-    margin: 0;
-    font-family: ${(props) => props.theme.typography.fonts.mono};
-    font-size: ${(props) => props.theme.typography.size.s1}px;
-    color: ${(props) => props.theme.color.defaultText};
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    padding: 8px;
 `;
 
 interface CodePreviewPanelProps {
-    code?: string;
-    title?: string;
+    codeSource: string;
+    channel: any;
 }
 
-export const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({
-    code = '',
-    title = 'Code Preview'
+const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({
+    codeSource,
+    channel
 }) => {
+    const {languages, initialLanguageId} = useParameter<any>('codePreview', {});
+    
+    const baseLanguage = languages?.find((lang: any) => lang.type === 'base');
+    const initialSelected = initialLanguageId || languages?.[0]?.id;
+   
     return (
-        <StyledPanel>
-            <PanelHeader>{title}</PanelHeader>
-            <CodeContainer code={code}></CodeContainer>
-        </StyledPanel>
+        <SourceContainer channel={channel}>
+            <StyledPanel>
+                <TabsState
+                    initial={initialSelected}
+                >
+                    {languages?.map((language: any) => (
+                        <div key={language.id} id={language.id} title={language.label || language.id}>
+                            {language.status === "active" ?
+                                <CodeBlock originalCode={codeSource} currentLanguage={language} baseLanguage={baseLanguage}  />
+                            : <div style={{padding: '25px 0 0 16px'}}>Coming soon!</div>
+                            }
+                        </div>
+                    ))}
+                </TabsState>
+            </StyledPanel>
+        </SourceContainer>
     );
 };
+
+export default CodePreviewPanel;

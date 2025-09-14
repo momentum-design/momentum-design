@@ -74,6 +74,9 @@ const preview = {
           <Description />
         </>
       ),
+      source: {
+        excludeDecorators: true,
+      },
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
@@ -89,6 +92,25 @@ const preview = {
         color: /(background|color)$/i,
         date: /Date$/,
       },
+    },
+    codePreview: {
+      languages: [
+        {
+          id: 'lit',
+          label: 'Lit',
+          format: 'html',
+          type: 'base',
+          status: 'active',
+        },
+        {
+          id: 'react',
+          label: 'React (WIP)',
+          format: 'jsx',
+          type: 'inherit',
+          status: 'wip',
+        },
+      ],
+      initialLanguageId: 'lit',
     },
     options: {
       storySort: {

@@ -18,7 +18,6 @@ import { KEY } from "./constants";
  */
 
 const preview: ProjectAnnotations<Renderer> = {
-  decorators: [],
   initialGlobals: {
     [KEY]: true,
   },

@@ -4,8 +4,9 @@ import { IconButton } from "storybook/internal/components";
 import { ADDON_ID, KEY, TOOL_ID } from "../constants";
 import { TypeIcon } from "@storybook/icons";
 import { Global, styled } from 'storybook/theming';
-import { CodePreviewPanel } from "./CodePreviewPanel";
+import CodePreviewPanel from "./CodePreviewPanel";
 import { createPortal } from "react-dom";
+import { SNIPPET_RENDERED } from "storybook/internal/docs-tools";
 
 const IconButtonLabel = styled.div(({ theme }) => ({
   fontSize: theme.typography.size.s2 - 1,
@@ -13,9 +14,16 @@ const IconButtonLabel = styled.div(({ theme }) => ({
 
 export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
   const [globals, updateGlobals, storyGlobals] = useGlobals();
+  const [codeSource, setCodeSource] = React.useState<string>('');
 
   const isLocked = KEY in storyGlobals;
   const isActive = !!globals[KEY];
+
+  useEffect(() => {
+      return api.on(SNIPPET_RENDERED, (args: any) => {
+          setCodeSource(args.source);
+      });
+  }, [api]);
 
   const toggle = useCallback(() => {
     updateGlobals({
@@ -24,9 +32,7 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
   }, [isActive]);
 
   useEffect(() => {
-    // todo: get source code from current story and pass it to code block
-    console.log(api.getCurrentStoryData().id);
-    
+    // Ensure the addon panel is at the bottom when the tool is active
     api.togglePanelPosition('bottom');
     // Register a shortcut to toggle the addon
     api.setAddonShortcut(ADDON_ID, {
@@ -50,6 +56,8 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
         <TypeIcon />
         <IconButtonLabel>{isActive ? 'Hide Code' : 'Show Code'}</IconButtonLabel>
       </IconButton>
+
+      {/* styling override for 50/50 split in Canvas: */}
       <Global styles={{
           ['#storybook-preview-wrapper']: {
             display: isActive ? 'flex !important' : 'grid',
@@ -59,7 +67,8 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
             width: isActive ? '50% !important' : '100%',
            },
         }}></Global>
-      {isActive && createPortal(<CodePreviewPanel code="<div>test</div>"/>, document.querySelector('#storybook-preview-wrapper')!)}
+      {/* Portaling the CodePreviewPanel into Canvas:  */}
+      {isActive && createPortal(<CodePreviewPanel codeSource={codeSource} channel={api.getChannel()} />, document.querySelector('#storybook-preview-wrapper')!)}
     </>
   );
 });
