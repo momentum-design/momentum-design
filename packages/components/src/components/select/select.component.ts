@@ -14,6 +14,10 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
+import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
+import { ElementStore } from '../../utils/controllers/ElementStore';
+import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -64,9 +68,16 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
 class Select
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends ListNavigationMixin(
+    CaptureDestroyEventForChildElement(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
+  /**
+   * @internal
+   */
+  private itemsStore: ElementStore<Option>;
+
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -154,6 +165,75 @@ class Select
 
   /** @internal */
   private initialSelectedOption: Option | null = null;
+
+  constructor() {
+    super();
+
+    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
+    // This must be initialized after the destroyed event listener
+    // to keep the element in the itemStore in order to move the focus correctly
+    this.itemsStore = new ElementStore<Option>(this, {
+      isValidItem: this.isValidItem,
+    });
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.loop = 'false';
+    this.initialFocus = 0;
+  }
+
+  /**
+   * @internal
+   */
+  get navItems(): HTMLElement[] {
+    return this.itemsStore.items;
+  }
+
+  /** @internal */
+  private isValidItem(item: Element): boolean {
+    return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
+  }
+
+  /**
+   * Update the tabIndex of the list items when a new item is added.
+   *
+   * @internal
+   */
+  private handleCreatedEvent = (event: Event) => {
+    const createdElement = event.target as HTMLElement;
+    if (!this.isValidItem(createdElement)) {
+      return;
+    }
+
+    createdElement.tabIndex = -1;
+  };
+
+  /**
+   * Update the focus when an item is removed.
+   * If there is a next item, focus it. If not, focus the previous item.
+   *
+   * @internal
+   */
+  private handleDestroyEvent = (event: Event) => {
+    const destroyedElement = event.target as HTMLElement;
+    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
+      return;
+    }
+
+    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
+    if (destroyedItemIndex === -1) {
+      return;
+    }
+
+    let newIndex = destroyedItemIndex + 1;
+    if (newIndex >= this.navItems.length) {
+      newIndex = destroyedItemIndex - 1;
+    }
+
+    this.resetTabIndexes(newIndex);
+  };
 
   private getAllValidOptions(): Array<Option> {
     return Array.from(this.slottedListboxes[0]?.querySelectorAll(`${OPTION_TAG_NAME}:not([disabled])`) || []);
@@ -467,76 +547,6 @@ class Select
   }
 
   /**
-   * Handles the keydown event on the select element when the popover is open.
-   * The options are as follows:
-   * - HOME: Sets focus and tabindex on the first option.
-   * - END: Sets focus and tabindex on the last option.
-   * - ARROW_DOWN, ARROW_UP, PAGE_DOWN, PAGE_UP: Handles navigation between options.
-   * @param event - The keyboard event.
-   */
-  private handlePopoverKeydown(event: KeyboardEvent): void {
-    let optionToFocus: Option | null = null;
-    switch (event.key) {
-      case KEYS.HOME: {
-        optionToFocus = this.getFirstValidOption();
-        break;
-      }
-      case KEYS.END: {
-        optionToFocus = this.getLastValidOption();
-        break;
-      }
-      case KEYS.ARROW_DOWN: {
-        const options = this.getAllValidOptions();
-        const currentIndex = options.findIndex(option => option === event.target);
-        const newIndex = Math.min(currentIndex + 1, options.length - 1);
-        optionToFocus = options[newIndex];
-        break;
-      }
-      case KEYS.ARROW_UP: {
-        const options = this.getAllValidOptions();
-        const currentIndex = options.findIndex(option => option === event.target);
-        const newIndex = Math.max(currentIndex - 1, 0);
-        optionToFocus = options[newIndex];
-        break;
-      }
-      case KEYS.PAGE_DOWN: {
-        const options = this.getAllValidOptions();
-        const currentIndex = options.findIndex(option => option === event.target);
-        const newIndex = Math.min(currentIndex + 10, options.length - 1);
-        optionToFocus = options[newIndex];
-        break;
-      }
-      case KEYS.PAGE_UP: {
-        const options = this.getAllValidOptions();
-        const currentIndex = options.findIndex(option => option === event.target);
-        const newIndex = Math.max(currentIndex - 10, 0);
-        optionToFocus = options[newIndex];
-        break;
-      }
-      default:
-        break;
-    }
-
-    if (optionToFocus) {
-      this.focusAndUpdateTabIndexes(optionToFocus);
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }
-
-  /**
-   * Focuses the given option and updates the tabindex for all options.
-   * @param option - The option to focus.
-   * @internal
-   */
-  private focusAndUpdateTabIndexes(option: Option | null): void {
-    if (option) {
-      option.focus();
-      this.updateTabIndexForAllOptions(option);
-    }
-  }
-
-  /**
    * If the native input is focused, it will focus the visual combobox.
    * This is to ensure that the visual combobox is focused when the native input is focused.
    * For example when a form is submitted and the native input is focused,
@@ -630,7 +640,6 @@ class Select
         <mdc-popover
           trigger="manual"
           triggerid="${TRIGGER_ID}"
-          @keydown="${this.handlePopoverKeydown}"
           interactive
           ?visible="${this.displayPopover}"
           role=""
