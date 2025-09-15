@@ -1113,18 +1113,6 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
-          "overlay": {
-            "normal": {
-              "value": "{color.core.white-alpha.80}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            },
-            "inactive": {
-              "value": "{color.core.white-alpha.40}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            }
-          },
           "radial": {
             "0": {
               "value": "{color.core.white-alpha.90}",
