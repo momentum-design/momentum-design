@@ -3,6 +3,7 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { ElementStore } from '../../utils/controllers/ElementStore';
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -97,7 +98,13 @@ class Select
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * The placeholder text which will be shown on the text if provided.
+   * The placement of the popover within Combobox.
+   * This defines the position of the popover relative to the combobox input field.
+   *
+   * Possible values:
+   *  - 'top-start'
+   *  - 'bottom-start'
+   * @default 'bottom-start'
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
 
@@ -159,7 +166,7 @@ class Select
   backdropAppendTo?: string;
 
   /** @internal */
-  @queryAssignedElements({ selector: 'mdc-selectlistbox' }) slottedListboxes!: Array<HTMLElement>;
+  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
   @query(`[id="${TRIGGER_ID}"]`) private visualCombobox!: HTMLDivElement;
@@ -187,6 +194,7 @@ class Select
 
   override connectedCallback(): void {
     super.connectedCallback();
+
     this.loop = 'false';
     this.initialFocus = 0;
   }
