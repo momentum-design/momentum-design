@@ -1092,6 +1092,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "active": {
+            "value": "{color.core.white-alpha.11}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "light": {
             "value": "{color.core.black-alpha.40}",
             "type": "color",

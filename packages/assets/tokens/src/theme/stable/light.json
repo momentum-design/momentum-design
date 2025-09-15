@@ -1093,6 +1093,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "active": {
+            "value": "{color.core.white-alpha.60}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "light": {
             "value": "{color.core.white-alpha.40}",
             "type": "color",
@@ -1481,7 +1486,7 @@
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.black-alpha.4} 0%, {color.core.black-alpha.11} 100%)",
+            "value": "linear-gradient(180deg, {color.core.black-alpha.7} 0%, {color.core.black-alpha.20} 100%)",
             "type": "color",
             "description": "Used for operation pop"
           }

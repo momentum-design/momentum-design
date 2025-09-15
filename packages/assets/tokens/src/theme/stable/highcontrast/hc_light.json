@@ -1052,6 +1052,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "active": {
+            "value": "{color.highcontrast.white.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "light": {
             "value": "{color.highcontrast.white.WindowColor}",
             "type": "color",
