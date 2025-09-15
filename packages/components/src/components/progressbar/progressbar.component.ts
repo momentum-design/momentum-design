@@ -27,16 +27,16 @@ import styles from './progressbar.styles';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @cssproperty --mdc-progressbar-default-background-color - Background color of the progressbar when inactive.
- * @cssproperty --mdc-progressbar-default-active-background-color - Background color of the progressbar when active.
- * @cssproperty --mdc-progressbar-success-background-color - Background color of the progressbar when in success state.
- * @cssproperty --mdc-progressbar-error-background-color - Background color of the progressbar when in error state.
+ * @cssproperty --mdc-progressbar-background-color - Background color of the remaining progressbar portion.
+ * @cssproperty --mdc-progressbar-active-background-color - Background color of the elapsed progressbar portion.
+ * @cssproperty --mdc-progressbar-success-color - Background color of the progressbar when in success state.
+ * @cssproperty --mdc-progressbar-error-color - Background color of the progressbar when in error state.
  * @cssproperty --mdc-progressbar-height - The height of the progressbar.
  * @cssproperty --mdc-progressbar-border-radius - The border radius of the progressbar.
  * @cssproperty --mdc-progressbar-label-color - Color of the progressbar label text.
- * @cssproperty --mdc-progressbar-label-lineheight - Line height of the label text.
- * @cssproperty --mdc-progressbar-label-fontsize - Font size of the label text.
- * @cssproperty --mdc-progressbar-label-fontweight - Font weight of the label text.
+ * @cssproperty --mdc-progressbar-label-line-height - Line height of the label text.
+ * @cssproperty --mdc-progressbar-label-font-size - Font size of the label text.
+ * @cssproperty --mdc-progressbar-label-font-weight - Font weight of the label text.
  * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
  */
 class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {

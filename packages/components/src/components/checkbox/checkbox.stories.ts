@@ -8,6 +8,8 @@ import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
+import type Checkbox from './checkbox.component';
+
 const render = (args: Args) => html`
   <mdc-checkbox
     label="${args.label}"
@@ -16,7 +18,7 @@ const render = (args: Args) => html`
     ?disabled="${args.disabled}"
     name="${args.name}"
     value="${args.value}"
-    ?autofocus="${args.autofocus}"
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
@@ -63,7 +65,7 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    autofocus: {
+    'auto-focus-on-mount': {
       control: 'boolean',
     },
     'toggletip-text': {
@@ -172,3 +174,70 @@ export const FormField: StoryObj = {
     `;
   },
 };
+
+export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
+  render: args => {
+    const validateCheckboxGroup = (form: HTMLFormElement): boolean => {
+      const checkboxes = Array.from(
+        form.querySelectorAll('mdc-checkbox[name="super-power"]')
+      ) as Checkbox[];
+
+      const requiredBox = checkboxes.find(cb => cb.hasAttribute('required'));
+      if (!requiredBox) return true;
+
+      if (!requiredBox.checked) {
+        requiredBox.setAttribute('help-text', 'Please select this required option');
+        requiredBox.setAttribute('help-text-type', 'error');
+        return false;
+      }
+
+      requiredBox.setAttribute('help-text', 'Looks good!');
+      requiredBox.setAttribute('help-text-type', 'success');
+      return true;
+    };
+
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      if (!validateCheckboxGroup(form)) {
+        return;
+      }
+      const formData = new FormData(form);
+      const selectedValues = formData.getAll('super-power');
+      action('Form Submitted')({ value: selectedValues });
+    };
+
+    const handleReset = (event: Event) => {
+      const form = event.target as HTMLFormElement;
+      const requiredBox = form.querySelector(
+        'mdc-checkbox[name="super-power"][required]'
+      ) as Checkbox;
+      if (requiredBox) {
+        requiredBox.setAttribute('help-text', args['help-text'] || '');
+        requiredBox.setAttribute('help-text-type', args['help-text-type'] || 'default');
+      }
+    };
+
+    return html`
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+        <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+          <legend>Select your super hero power (with validation)</legend>
+          <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
+          <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
+          <div style="display: flex; gap: 0.25rem;">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  args: {
+    'help-text': '',
+    'help-text-type': 'default',
+  },
+};
+
+

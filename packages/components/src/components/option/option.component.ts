@@ -23,12 +23,12 @@ import styles from './option.styles';
  * on the right side of the option to indicate that it is selected.
  *
  * The `prefixIcon` property can be used to display an icon on the left side of the option label.
- * We can show a tooltip by setting `tooltip-text` attribute. This will be displayed on hover or focus of the option.
- * The tooltip will be helpful for a long label text which is truncated with ellipsis.
+ *
+ * **Note**: If an option contains a long text, it is recommended to create a tooltip for the option that displays the full text on hover.
+ * Consumers need to add a unique ID to this option and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the option using the `triggerID` attribute.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
- * @dependency mdc-tooltip
  *
  * @tagname mdc-option
  *
@@ -71,6 +71,8 @@ class Option extends FormInternalsMixin(ListItem) {
 
     if (changedProperties.has('selected')) {
       this.setAttribute('aria-selected', `${this.selected}`);
+
+      this.dispatchModifiedEvent(this.selected ? 'selected' : 'unselected');
     }
   }
 
@@ -82,17 +84,20 @@ class Option extends FormInternalsMixin(ListItem) {
           </div>
         `
       : nothing;
-    const selectedIcon = this.selected
-      ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
+    const trailingContent = this.selected
+      ? html`
+            <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
+        `
       : nothing;
-
     return html`
       ${prefixIconContent}
       <div part="leading-text">
         ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
         ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
       </div>
-      <div part="trailing">${selectedIcon}</div>
+      <div part="trailing">
+        ${trailingContent}
+      </div>
     `;
   }
 

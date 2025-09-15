@@ -1,4 +1,4 @@
-import { CSSResult, nothing, PropertyValues, TemplateResult, html } from 'lit';
+import { CSSResult, html, nothing, PropertyValues, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -6,16 +6,14 @@ import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
-import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import { DEFAULTS } from './listitem.constants';
+import { ListItemEventManager } from './listitem.events';
 import styles from './listitem.styles';
 import { ListItemVariants } from './listitem.types';
-import { generateListItemId, generateTooltipId } from './listitem.utils';
-import { ListItemEventManager } from './listitem.events';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
@@ -28,15 +26,12 @@ import { ListItemEventManager } from './listitem.events';
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
  * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
  *
- * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the listitem.
- * The placement of the tooltip can be adjusted using the tooltip-placement attribute.
- * This will be helpful when the listitem text is truncated or
- * when you want to display additional information about the listitem.
+ * **Note**: If a listitem contains a long text, it is recommended to create a tooltip for the listitem that displays the full text on hover.
+ * Consumers need to add a unique ID to this listitem and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the listitem using the `triggerID` attribute.
  *
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
- * @dependency mdc-tooltip
  *
  * @slot leading-controls - slot for list item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for list item primary label.
@@ -72,7 +67,7 @@ import { ListItemEventManager } from './listitem.events';
  * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
-class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
+class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -130,42 +125,30 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled?: boolean;
 
-  /**
-   * The tooltip text is displayed on hover of the list item.
-   */
-  @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
-
-  /**
-   * The tooltip placement of the list item. If the tooltip text is present,
-   * then this tooltip placement will be applied.
-   * @default 'top'
-   */
-  @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
-  tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
-
   constructor() {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
-    this.addEventListener('focusin', this.displayTooltipForLongText.bind(this));
-    this.addEventListener('mouseenter', this.displayTooltipForLongText.bind(this));
-    this.addEventListener('focusout', this.hideTooltipOnLeave.bind(this));
-    this.addEventListener('mouseout', this.hideTooltipOnLeave.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
-    // Add a unique id to the listitem if it does not have one.
-    this.id = this.id || generateListItemId();
-
-    ListItemEventManager.onCreatedListItem(this);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    ListItemEventManager.onDestroyedListItem(this);
+  /**
+   * Handles the click event on the list item.
+   * Prevents click when listitem is disabled
+   * @param event - The mouse event triggered when the list item is clicked.
+   */
+  private handleClick(event: MouseEvent): void {
+    if (this.disabled) {
+      // when disabled, prevent the click event from propagating
+      // and from firing on the host (immediate)
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
   }
 
   /**
@@ -190,63 +173,6 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
-  }
-
-  /**
-   * Handles the click event on the list item.
-   * If the tooltip is open, it has to be closed first.
-   */
-  private handleClick(event: MouseEvent): void {
-    if (this.disabled) {
-      // when disabled, prevent the click event from propagating
-      // and from firing on the host (immediate)
-      event.stopImmediatePropagation();
-      event.preventDefault();
-      return;
-    }
-    // If the tooltip is open, it has to be closed first.
-    this.hideTooltipOnLeave();
-  }
-
-  /**
-   * Display a tooltip for the listitem.
-   * Create the tooltip programmatically after the nearest parent element.
-   */
-  private displayTooltipForLongText(): void {
-    if (!this.tooltipText) {
-      return;
-    }
-
-    // Remove any existing tooltip.
-    this.hideTooltipOnLeave();
-
-    // Create tooltip for the listitem element.
-    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = generateTooltipId();
-    tooltip.textContent = this.tooltipText;
-    tooltip.setAttribute('triggerid', this.id);
-    tooltip.setAttribute('placement', this.tooltipPlacement);
-    tooltip.setAttribute('visible', '');
-    tooltip.setAttribute('show-arrow', '');
-
-    // Set the slot attribute if the parent element has a slot.
-    if (this.parentElement?.hasAttribute('slot')) {
-      tooltip.setAttribute('slot', this.parentElement.getAttribute('slot') || '');
-    }
-
-    // Attach the tooltip programmatically after the nearest parent element.
-    this.parentElement?.after(tooltip);
-  }
-
-  /**
-   * Removes the dynamically created tooltip for long text label on focus or mouse leave.
-   * This is triggered on focusout and mouseout events.
-   */
-  private hideTooltipOnLeave(): void {
-    const existingTooltip = document.querySelector(`${TOOLTIP_TAG_NAME}[triggerid="${this.id}"]`);
-    if (existingTooltip) {
-      existingTooltip.remove();
-    }
   }
 
   /**
@@ -276,9 +202,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
+        this.dispatchModifiedEvent('disabled');
         ListItemEventManager.onDisableListItem(this);
       } else {
         element.removeAttribute('disabled');
+        this.dispatchModifiedEvent('enabled');
         ListItemEventManager.onEnableListItem(this);
       }
     });

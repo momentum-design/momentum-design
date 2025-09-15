@@ -194,7 +194,6 @@ class MenuPopover extends Popover {
 
     this.collectMenuItems();
     this.resetTabIndexes(0);
-    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
   }
 
   /**
@@ -279,8 +278,8 @@ class MenuPopover extends Popover {
    * If the popover is currently visible, it hides the popover; otherwise, it shows the popover.
    * @returns - This method does not return anything.
    */
-  public override togglePopoverVisible = () => {
-    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+  public override togglePopoverVisible = (event: Event) => {
+    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
     if (this.visible) {
       this.hide();
     } else {

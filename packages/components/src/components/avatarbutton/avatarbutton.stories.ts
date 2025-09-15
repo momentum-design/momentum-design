@@ -7,6 +7,7 @@ import { action } from '@storybook/addon-actions';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
@@ -23,6 +24,7 @@ const render = (args: Args) => html`
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
     aria-label=${args['aria-label']}
+    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-avatarbutton>
 `;
 
@@ -61,6 +63,9 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
+    'auto-focus-on-mount': {
+      control: 'boolean',
+    },
     ...hideControls(['active', 'disabled', 'soft-disabled', 'tabIndex', 'role', 'type']),
     ...textControls([
       '--mdc-avatarbutton-overlay-background-color-rest',
@@ -76,7 +81,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    src: 'https://picsum.photos/id/63/256',
+    src: imageFixtures.avatar,
     initials: 'MD',
     size: 88,
     'icon-name': '',

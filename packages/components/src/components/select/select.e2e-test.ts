@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -36,6 +36,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+      <div style="width: 300px;">
       ${isForm ? '<form>' : ''}
       <mdc-select
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -51,7 +52,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
         ${restArgs.children}
       </mdc-select>
       ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
-    `,
+    </div>`,
     clearDocument: true,
   });
 
@@ -70,6 +71,48 @@ test('mdc-select', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
+  await test.step('tooltip for long text option', async () => {
+    await componentsPage.mount({
+      html: `<div><mdc-select placeholder="Select a color" label="Select one color">
+        <mdc-selectlistbox>
+          <mdc-option label="Red"></mdc-option>
+          <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+          <mdc-option
+            id="option-1"
+            label="White and Black are the biggest colors on the spectrum"
+          ></mdc-option>
+          <mdc-option label="Green"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>
+      <mdc-tooltip triggerid="option-1" show-arrow>
+        White and Black are the biggest colors on the spectrum
+      </mdc-tooltip></div>`,
+      clearDocument: true,
+    });
+    const select = componentsPage.page.locator('mdc-select');
+    await select.waitFor();
+
+    // Open the dropdown
+    await select.click();
+    await expect(select.locator('mdc-popover')).toBeVisible();
+
+    // Hover over the long text option
+    const longOption = select.locator('mdc-option#option-1');
+    await longOption.hover();
+
+    // Wait for the tooltip to appear
+    const triggerID = await longOption.getAttribute('id');
+    const tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="${triggerID}"]`);
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveText('White and Black are the biggest colors on the spectrum');
+
+    // Visual regression snapshot of the tooltip
+    await componentsPage.visualRegression.takeScreenshot('mdc-select', {
+      source: 'userflow',
+      fileNameSuffix: 'long-option-tooltip',
+    });
+  });
+
   await test.step('visual-regression', async () => {
     const markUpOptions = { createNewRow: true };
     const selectSheet = new StickerSheet(componentsPage, 'mdc-select', 'padding: 0.25rem');
@@ -150,6 +193,10 @@ test('mdc-select', async ({ componentsPage }) => {
       const select = await setup({ componentsPage, children: defaultChildren() });
       await expect(select).toHaveAttribute('help-text-type', 'default');
       await expect(select).toHaveAttribute('value', 'option1');
+      await expect(select).toHaveAttribute('value', 'option1');
+      await expect(select.locator('[part="base-container"]')).toHaveAttribute('aria-expanded', 'false');
+      await expect(select.locator('[part="base-container"]')).toHaveAttribute('aria-haspopup', 'listbox');
+
       const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
       const textContent = await mdcTextElement.textContent();
       // The first option should be visible by default when no option is selected and placeholder is not defined.
@@ -188,6 +235,33 @@ test('mdc-select', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-select-custom-styling-overrides');
     });
 
+    await test.step('should truncate option text when overflowing', async () => {
+      const customSelectWidth = '400px';
+      const customListBoxWidth = '120px';
+      const select = await setup({ componentsPage, children: defaultChildren() });
+
+      // Override CSS variables for the listbox
+      await componentsPage.page.evaluate(
+        ({ width, listboxWidth }) => {
+          const selectEl = document.querySelector('mdc-select') as Select;
+          if (selectEl) {
+            selectEl.style.setProperty('--mdc-select-width', width);
+            selectEl.style.setProperty('--mdc-select-listbox-width', listboxWidth);
+          }
+        },
+        { width: customSelectWidth, listboxWidth: customListBoxWidth },
+      );
+
+      // Open the dropdown to show the listbox
+      await select.click();
+      await select.locator('mdc-selectlistbox').waitFor({ state: 'visible' });
+
+      await componentsPage.page.waitForTimeout(100); // Wait for the trigger up-down arrow icon to be updated
+
+      // take screenshot to verify the overridden dimensions
+      await componentsPage.visualRegression.takeScreenshot('mdc-select-truncate-overflowing-text');
+    });
+
     await test.step('should have placeholder attribute when no option is selected', async () => {
       const select = await setup({ componentsPage, placeholder: defaultPlaceholder, children: defaultChildren() });
       const mdcTextElement = select.locator('mdc-text[part="base-text "]');
@@ -214,16 +288,16 @@ test('mdc-select', async ({ componentsPage }) => {
     await test.step('mouse/pointer', async () => {
       await test.step('component should open and close dropdown when clicked', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).toBeVisible();
 
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).not.toBeVisible();
       });
 
       await test.step('component should open dropdown and select 2nd option and close popover', async () => {
         const select = await setup({ componentsPage, children: defaultChildren() });
-        await select.locator('div[id="select-base-triggerid"]').click();
+        await select.click();
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.locator('mdc-option').nth(1).click();
@@ -284,7 +358,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await componentsPage.page.mouse.click(0, 0);
 
       // Now select an option and verify form can be submitted
-      await mdcSelect.locator('div[id="select-base-triggerid"]').click();
+      await mdcSelect.click();
       await mdcSelect.locator('mdc-option').nth(1).click();
 
       // Verify the selected value and popover is closed
@@ -330,7 +404,7 @@ test('mdc-select', async ({ componentsPage }) => {
       const resetButton = form.locator('mdc-button[type="reset"]');
 
       // First select an option
-      await mdcSelect.locator('div[id="select-base-triggerid"]').click();
+      await mdcSelect.click();
       await mdcSelect.locator('mdc-option').nth(1).click();
 
       // Verify the selected value
@@ -420,6 +494,130 @@ test('mdc-select', async ({ componentsPage }) => {
         const textContent = await mdcTextElement.textContent();
         expect(textContent?.trim()).toBe('Select an option');
       });
+    });
+
+    await test.step('should update help-text and help-text-type dynamically based on select validity (FormFieldSelectWithHelpTextValidation)', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+              <legend>Select your Avengers and Infinity Stones (with validation)</legend>
+              <mdc-select label="Who is your favorite Avenger?" name="avengers-name" required></mdc-select>
+              <mdc-select label="How many Infinity Stones exist?" name="stone-count" required></mdc-select>
+              <div style="display: flex; gap: 0.25rem;">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const avengerSelect = form.locator('mdc-select[name="avengers-name"]');
+      const stoneSelect = form.locator('mdc-select[name="stone-count"]');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const avengerHelpText = avengerSelect.locator('mdc-text[part="help-text"]');
+      const stoneHelpText = stoneSelect.locator('mdc-text[part="help-text"]');
+
+      // Add options to selects
+      await avengerSelect.evaluate(select => {
+        const el = select as HTMLElement;
+        el.innerHTML = `
+          <mdc-selectlistbox>
+            <mdc-option value="ironman" label="Iron Man"></mdc-option>
+            <mdc-option value="captainamerica" label="Captain America"></mdc-option>
+            <mdc-option value="thor" label="Thor"></mdc-option>
+            <mdc-option value="hulk" selected label="Hulk"></mdc-option>
+            <mdc-option value="blackwidow" label="Black Widow"></mdc-option>
+            <mdc-option value="hawkeye" label="Hawkeye"></mdc-option>
+          </mdc-selectlistbox>
+        `;
+        // @ts-ignore
+        el.updateState();
+      });
+      await stoneSelect.evaluate(select => {
+        const el = select as HTMLElement;
+        el.innerHTML = `
+          <mdc-selectlistbox>
+            <mdc-option value="two" label="Two"></mdc-option>
+            <mdc-option value="three" label="Three"></mdc-option>
+            <mdc-option value="four" label="Four"></mdc-option>
+            <mdc-option value="five" label="Five"></mdc-option>
+            <mdc-option value="six" label="Six"></mdc-option>
+          </mdc-selectlistbox>
+        `;
+      });
+      // Add dynamic help-text handler to the form
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const avengerSelect = formEl.querySelector('mdc-select[name="avengers-name"]');
+          const stoneSelect = formEl.querySelector('mdc-select[name="stone-count"]');
+          const avengerValue = avengerSelect?.getAttribute('value');
+          const stoneValue = stoneSelect?.getAttribute('value');
+          if (avengerSelect) {
+            if (!avengerValue) {
+              avengerSelect.setAttribute('help-text', 'Please select your favorite Avenger');
+              avengerSelect.setAttribute('help-text-type', 'error');
+            } else {
+              avengerSelect.setAttribute('help-text', 'Looks good!');
+              avengerSelect.setAttribute('help-text-type', 'success');
+            }
+          }
+          if (stoneSelect) {
+            if (!stoneValue) {
+              stoneSelect.setAttribute('help-text', 'Please select the number of Infinity Stones');
+              stoneSelect.setAttribute('help-text-type', 'error');
+            } else {
+              stoneSelect.setAttribute('help-text', 'Looks good!');
+              stoneSelect.setAttribute('help-text-type', 'success');
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const avengerSelect = formEl.querySelector('mdc-select[name="avengers-name"]');
+          const stoneSelect = formEl.querySelector('mdc-select[name="stone-count"]');
+          if (avengerSelect) {
+            avengerSelect.setAttribute('help-text', '');
+            avengerSelect.setAttribute('help-text-type', 'default');
+          }
+          if (stoneSelect) {
+            stoneSelect.setAttribute('help-text', '');
+            stoneSelect.setAttribute('help-text-type', 'default');
+          }
+        });
+      });
+
+      // Helper to check help-text and help-text-type
+      async function expectHelpText(selectLocator: Locator, helpTextLocator: Locator, text: string, type: string) {
+        if (text === '') {
+          await expect(helpTextLocator).toHaveCount(0); // no help-text rendered
+        } else {
+          await expect(helpTextLocator).toHaveText(text);
+        }
+        await expect(selectLocator).toHaveAttribute('help-text-type', type);
+      }
+
+      // 1. Submit with both required selects empty
+      await submitButton.click();
+      await expectHelpText(avengerSelect, avengerHelpText, 'Looks good!', 'success');
+      await expectHelpText(stoneSelect, stoneHelpText, 'Please select the number of Infinity Stones', 'error');
+
+      // 2. Select valid options and submit
+      await avengerSelect.locator('div[id="select-base-triggerid"]').click();
+      await avengerSelect.locator('mdc-option').nth(2).click(); // Select Thor
+      await stoneSelect.locator('div[id="select-base-triggerid"]').click();
+      await stoneSelect.locator('mdc-option').nth(4).click(); // Select Six
+      await submitButton.click();
+      await expectHelpText(avengerSelect, avengerHelpText, 'Looks good!', 'success');
+      await expectHelpText(stoneSelect, stoneHelpText, 'Looks good!', 'success');
+
+      // 3. Reset form and check help-text resets
+      await resetButton.click();
+      await expectHelpText(avengerSelect, avengerHelpText, '', 'default');
+      await expectHelpText(stoneSelect, stoneHelpText, '', 'default');
     });
 
     await test.step('keyboard', async () => {

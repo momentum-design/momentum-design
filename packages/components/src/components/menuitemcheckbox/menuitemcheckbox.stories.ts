@@ -6,8 +6,7 @@ import { html } from 'lit';
 import '.';
 import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
 
 import { INDICATOR } from './menuitemcheckbox.constants';
 
@@ -24,8 +23,8 @@ const render = (args: Args) =>
       label="${args.label}"
       indicator="${args.indicator}"
       secondary-label="${args['secondary-label']}"
-      tooltip-text="${args['tooltip-text']}"
-      tooltip-placement="${args['tooltip-placement']}"
+      ?controlled="${args.controlled}"
+      ?soft-disabled="${args['soft-disabled']}"
     >
       ${args.children}
     </mdc-menuitemcheckbox>`,
@@ -56,12 +55,11 @@ const meta: Meta = {
     'secondary-label': {
       control: 'text',
     },
-    'tooltip-text': {
-      control: 'text',
+    controlled: {
+      control: 'boolean',
     },
-    'tooltip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
+    'soft-disabled': {
+      control: 'boolean',
     },
     ...hideControls([
       'data-aria-label',
@@ -69,8 +67,6 @@ const meta: Meta = {
       'tertiary-label',
       'side-header-text',
       'subline-text',
-      'keydown',
-      'keyup',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -80,6 +76,8 @@ const meta: Meta = {
       'trailing-controls',
       'arrow-position',
       'arrow-direction',
+    ]),
+    ...textControls([
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-background-color-active',
@@ -89,7 +87,6 @@ const meta: Meta = {
       '--mdc-listitem-column-gap',
       '--mdc-listitem-padding-left-and-right',
     ]),
-    ...disableControls(['change', 'click', 'focus']),
     ...classArgType,
     ...styleArgType,
   },
@@ -104,8 +101,6 @@ export const Example: StoryObj = {
     label: 'Menu Item',
     disabled: false,
     'secondary-label': '',
-    'tooltip-text': '',
-    'tooltip-placement': POPOVER_PLACEMENT.TOP,
     children: html`<mdc-icon length-unit="rem" name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
   },
 };

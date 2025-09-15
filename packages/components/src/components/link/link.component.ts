@@ -25,6 +25,9 @@ import type { LinkSize } from './link.types';
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the Link has focus.
  * @event focus - (React: onFocus) Fired when the Link receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
+ *
+ * @csspart anchor - The anchor element that wraps the link content.
+ * @csspart icon - The icon element.
  */
 class Link extends IconNameMixin(Linksimple) {
   /**
@@ -55,13 +58,11 @@ class Link extends IconNameMixin(Linksimple) {
     }
   }
 
-  public override render() {
-    return html`
-      <slot></slot>
+  protected override renderAnchorContent() {
+    return html` <slot></slot>
       ${this.iconName
-        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
-        : nothing}
-    `;
+        ? html`<mdc-icon part="icon" name="${this.iconName}" size="${this.getIconSize()}" length-unit="rem"></mdc-icon>`
+        : nothing}`;
   }
 
   public static override styles: Array<CSSResult> = [...Linksimple.styles, ...styles];

@@ -25,7 +25,7 @@ type SetupOptions = {
   target?: string;
   rel?: string;
   children?: any;
-  ariaLabel?: string;
+  dataAriaLabel?: string;
   addPageFooter?: boolean;
 };
 
@@ -69,7 +69,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.href ? `href="${restArgs.href}"` : ''}
           ${restArgs.target ? `target="${restArgs.target}"` : ''}
           ${restArgs.rel ? `rel="${restArgs.rel}"` : ''}
-          ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+          ${restArgs.dataAriaLabel ? `data-data-aria-label="${restArgs.dataAriaLabel}"` : ''}
         ></mdc-buttonlink>
         ${restArgs.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
         `,
@@ -103,7 +103,7 @@ const attributeTestCases = async (args: SetupOptions, buttonlinkType: string) =>
       await expect(buttonlink).toHaveAttribute('size', DEFAULTS.SIZE.toString());
       await expect(buttonlink).toHaveAttribute('color', DEFAULTS.COLOR);
       await expect(buttonlink).toHaveAttribute('variant', DEFAULTS.VARIANT);
-      await expect(buttonlink).toHaveAttribute('href', '#');
+      await expect(buttonlink).not.toHaveAttribute('href');
       await expect(buttonlink).toHaveAttribute('target', '_self');
     });
   });
@@ -140,7 +140,7 @@ const testForButtonLinkSizes = async (args: SetupOptions, buttonlinkType: string
       const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter(size => size !== ICON_BUTTON_SIZES[20]);
       for (const size of iconSizesToTest) {
         await test.step(`attribute size="${size}" should be present on ${buttonlinkType} buttonlink`, async () => {
-          await componentsPage.setAttributes(buttonlink, { size: `${size}`, 'aria-label': 'icon-button-20' });
+          await componentsPage.setAttributes(buttonlink, { size: `${size}`, 'data-aria-label': 'icon-button-20' });
           await expect(buttonlink).toHaveAttribute('size', `${size}`);
         });
       }
@@ -150,7 +150,7 @@ const testForButtonLinkSizes = async (args: SetupOptions, buttonlinkType: string
         await componentsPage.setAttributes(buttonlink, {
           size: `${ICON_BUTTON_SIZES[20]}`,
           variant: BUTTON_VARIANTS.TERTIARY,
-          'aria-label': 'icon-button-20',
+          'data-aria-label': 'icon-button-20',
         });
         await expect(buttonlink).toHaveAttribute('size', `${ICON_BUTTON_SIZES[20]}`);
       });
@@ -321,17 +321,21 @@ test.describe.parallel('mdc-buttonlink', () => {
       const { buttonlinkSheet, commonMount } = await getStickerSheetDetails(componentsPage);
       const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
 
-      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
+      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'data-aria-label': 'icon-button' });
       await commonMount(true);
 
       buttonlinkSheet.setAttributes({
         'prefix-icon': 'placeholder-light',
         variant: BUTTON_VARIANTS.TERTIARY,
-        'aria-label': 'icon-button',
+        'data-aria-label': 'icon-button',
       });
       await buttonlinkSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
 
-      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
+      buttonlinkSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+        disabled: '',
+        'data-aria-label': 'icon-button',
+      });
       await buttonlinkSheet.createMarkupWithCombination({
         size: BUTTON_SIZES,
         variant: BUTTON_VARIANTS,

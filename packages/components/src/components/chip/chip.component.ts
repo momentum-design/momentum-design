@@ -2,9 +2,9 @@ import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { Component } from '../../models';
 import type { IconNames } from '../icon/icon.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import StaticChip from '../staticchip/staticchip.component';
 
 import { DEFAULTS } from './chip.constants';
 import type { ColorType } from './chip.types';
@@ -28,6 +28,13 @@ import styles from './chip.styles';
  * @cssproperty --mdc-chip-color - The color of the chip.
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
  * @cssproperty --mdc-chip-background-color - The background color of the chip.
+ *
+ * @csspart label - The label part of the chip.
+ *
+ * @event click - (React: onClick) This event is dispatched when the chip is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the chip.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the chip.
+ * @event focus - (React: onFocus) This event is dispatched when the chip receives focus.
  *
  */
 class Chip extends IconNameMixin(Buttonsimple) {
@@ -84,7 +91,7 @@ class Chip extends IconNameMixin(Buttonsimple) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...StaticChip.styles, ...styles];
 }
 
 export default Chip;

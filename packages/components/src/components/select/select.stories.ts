@@ -10,6 +10,7 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import '../tooltip';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import type Select from './select.component';
@@ -17,7 +18,7 @@ import type Select from './select.component';
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
+  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: flex-start;">
     ${htmlString}
   </div>
 `;
@@ -48,6 +49,7 @@ const render = (args: Args) =>
       strategy="${args.strategy}"
       popover-z-index="${args['popover-z-index']}"
       backdrop-append-to="${args['backdrop-append-to']}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-selectlistbox>
         <mdc-option value="london" label="London, UK"></mdc-option>
@@ -106,6 +108,9 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'auto-focus-on-mount': {
+      control: 'boolean',
     },
     placement: {
       control: 'select',
@@ -203,15 +208,14 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-select placeholder="Select a color" label="Select one color">
         <mdc-selectlistbox>
           <mdc-option label="Red"></mdc-option>
-          <mdc-option label="Yellow"></mdc-option>
-          <mdc-option
-            label="White and Black are the biggest colors on the spectrum"
-            tooltip-text="White and Black are the biggest colors on the spectrum"
-            tooltip-placement="bottom"
-          ></mdc-option>
+          <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+          <mdc-option id="option-1" label="White and Black are the biggest colors on the spectrum"></mdc-option>
           <mdc-option label="Green"></mdc-option>
         </mdc-selectlistbox>
       </mdc-select>
+      <mdc-tooltip triggerid="option-1" show-arrow>
+        White and Black are the biggest colors on the spectrum
+      </mdc-tooltip>
     `),
   ...hideAllControls(),
 };
@@ -327,6 +331,108 @@ export const SelectWithForm: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+  ...hideAllControls(),
+};
+
+export const SelectWithFormHelpTextValidation: StoryObj = {
+  render: args => {
+    const validateSelects = (form: HTMLFormElement, args: any): boolean => {
+      const avengerSelect = form.querySelector('mdc-select[name="avengers-name"]') as Select;
+      const stoneSelect = form.querySelector('mdc-select[name="stone-count"]') as Select;
+      const avengerValue = avengerSelect.value;
+      const stoneValue = stoneSelect.value;
+      let valid = true;
+      if (args.required && (!avengerValue || avengerValue === '')) {
+        avengerSelect.setAttribute('help-text', 'Please select your favorite Avenger');
+        avengerSelect.setAttribute('help-text-type', 'error');
+        valid = false;
+      } else {
+        avengerSelect.setAttribute('help-text', 'Looks good!');
+        avengerSelect.setAttribute('help-text-type', 'success');
+      }
+      if (args.required && (!stoneValue || stoneValue === '')) {
+        stoneSelect.setAttribute('help-text', 'Please select the Infinity Stone count');
+        stoneSelect.setAttribute('help-text-type', 'error');
+        valid = false;
+      } else {
+        stoneSelect.setAttribute('help-text', 'Looks good!');
+        stoneSelect.setAttribute('help-text-type', 'success');
+      }
+      return valid;
+    };
+
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      if (!validateSelects(form, args)) {
+        return;
+      }
+      const formData = new FormData(form);
+      const selectedStones = formData.get('stone-count');
+      const selectedAvengers = formData.get('avengers-name');
+      action('Form Submitted')({
+        value: {
+          selectedStones,
+          selectedAvengers,
+        },
+      });
+    };
+
+    const handleReset = (event: Event) => {
+      const form = event.target as HTMLFormElement;
+      const avengerSelect = form.querySelector('mdc-select[name="avengers-name"]') as Select;
+      const stoneSelect = form.querySelector('mdc-select[name="stone-count"]') as Select;
+      avengerSelect.setAttribute('help-text', args['help-text'] || '');
+      avengerSelect.setAttribute('help-text-type', args['help-text-type'] || 'default');
+      stoneSelect.setAttribute('help-text', args['help-text'] || '');
+      stoneSelect.setAttribute('help-text-type', args['help-text-type'] || 'default');
+    };
+
+    return html`
+      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+        <fieldset style="display: flex; flex-direction: column; gap: 1rem; height: 20rem; width: 20rem;">
+          <mdc-select
+            name="avengers-name"
+            placeholder="Select the avenger"
+            label="Who is your favorite Avenger?"
+            required
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="ironman" label="Iron Man"></mdc-option>
+              <mdc-option value="captainamerica" label="Captain America"></mdc-option>
+              <mdc-option value="thor" label="Thor"></mdc-option>
+              <mdc-option value="hulk" selected label="Hulk"></mdc-option>
+              <mdc-option value="blackwidow" label="Black Widow"></mdc-option>
+              <mdc-option value="hawkeye" label="Hawkeye"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-select>
+          <mdc-select
+            name="stone-count"
+            placeholder="Select the count"
+            label="How many Infinity Stones exist?"
+            required
+          >
+            <mdc-selectlistbox>
+              <mdc-option value="two" label="Two"></mdc-option>
+              <mdc-option value="three" label="Three"></mdc-option>
+              <mdc-option value="four" label="Four"></mdc-option>
+              <mdc-option value="five" label="Five"></mdc-option>
+              <mdc-option value="six" label="Six"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-select>
+          <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
+  args: {
+    required: true,
+    'help-text': '',
+    'help-text-type': 'default',
   },
   ...hideAllControls(),
 };
