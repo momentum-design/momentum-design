@@ -404,7 +404,7 @@ class Combobox
   private resetFocusedOption() {
     getAllValidOptions(this.slottedListboxes)
       .filter(option => option.hasAttribute('data-focused'))
-      .forEach(option => this.updateFocus(option, false));
+      .forEach(option => this.updateOptionAttributes(option, false));
   }
 
   private updateSelectedOption(newOption: Option): void {
@@ -416,16 +416,19 @@ class Combobox
 
   /**
    * Updates the visual focus state of a specific option in the dropdown list based on 'data-focused' attribute.
+   * It also updates the 'aria-selected' attribute for a11y purposes.
+   *
    * @param option - The option element to update focus state for.
    * @param value - The new focus state to set (true for focused, false for unfocused).
    */
-  private updateFocus(option: Option, value: boolean): void {
+  private updateOptionAttributes(option: Option, value: boolean): void {
     if (option === undefined) return;
     if (value) {
       option.setAttribute('data-focused', '');
     } else {
       option.removeAttribute('data-focused');
     }
+    option.setAttribute('aria-selected', value.toString());
   }
 
   private isOptionSelected(options: Array<Option>): boolean {
@@ -457,8 +460,8 @@ class Combobox
   }
 
   private updateFocusAndScrollIntoView(options: Option[], oldIndex: number, newIndex: number): void {
-    this.updateFocus(options[oldIndex], false);
-    this.updateFocus(options[newIndex], true);
+    this.updateOptionAttributes(options[oldIndex], false);
+    this.updateOptionAttributes(options[newIndex], true);
     options[newIndex]?.scrollIntoView({ block: 'nearest' });
   }
 
@@ -490,13 +493,13 @@ class Combobox
       }
       case KEYS.ESCAPE: {
         if (activeIndex !== -1) {
-          this.updateFocus(options[activeIndex], false);
+          this.updateOptionAttributes(options[activeIndex], false);
         }
         if (options.length && this.shouldDisplayPopover(options.length)) {
           this.closePopover();
         } else {
           this.resetSelectedValue();
-          // force clear the actual DOM input property
+          // clear the visible value
           this.filteredValue = '';
         }
         break;
