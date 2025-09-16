@@ -340,14 +340,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * Refires the scroll event from the internal scroll container to the host element
    */
   private handleScroll(event: Event): void {
-    const scrollElement = this.scrollElementRef.value;
-    if (!scrollElement) {
-      // We really shouldn't get here
-      return;
-    }
-
-    if (this.virtualizer) {
+    if (this.scrollElementRef.value && this.virtualizer) {
+      const scrollElement = this.scrollElementRef.value;
       const lastItemSize = this.virtualizer.options.estimateSize(this.virtualizer.options.count - 1);
+
       this.isAtBottom =
         scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastItemSize;
     }
