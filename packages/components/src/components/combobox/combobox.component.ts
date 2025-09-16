@@ -460,14 +460,21 @@ class Combobox
     option.setAttribute('aria-selected', value.toString());
   }
 
+  /**
+   * Handles the blur event of the combobox.
+   * This method is called when the combobox loses focus.
+   * It checks if the combobox has a focused option and sets the selected value to that option and closes the popover.
+   * If the combobox does not have a focused option and the filtered value is not empty,
+   * it sets the help text to the invalid custom value text and closes the popover.
+   * It also updates the input validity.
+   */
   private handleBlurChange(): void {
-    this.closePopover();
-
     const options = this.getVisibleOptions(this.filteredValue);
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
 
     if (activeIndex !== -1) {
       this.setSelectedValue(options[activeIndex]);
+      this.closePopover();
       return;
     }
 
@@ -479,6 +486,7 @@ class Combobox
     ) {
       this.helpText = this.invalidCustomValueText;
       this.helpTextType = VALIDATION.ERROR;
+      this.closePopover();
     }
     this.setInputValidity();
   }
@@ -586,6 +594,8 @@ class Combobox
     this.resetFocusedOption();
     this.updateHiddenOptions();
     this.updateHiddenOptionGroups();
+    // remove the selected attribute on input change
+    this.getFirstSelectedOption()?.removeAttribute('selected');
     if (this.isOpen === false) {
       this.openPopover();
     }
