@@ -77,6 +77,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   private hiddenIndexes: number[] = [];
 
+  private isAtBottom: boolean = false;
+
   /**
    * Create the virtualizer controller and the virtualizer instance when the component is first connected to the DOM.
    */
@@ -143,6 +145,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.selectedIndex = Math.max(0, Math.min(this.virtualizer.options.count - 1, newSelectedIndex));
       this.requestUpdate();
       await this.updateComplete;
+
+      if (this.isAtBottom) {
+        this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
+
+        return;
+      }
 
       const scrollDifference = this.scrollElementRef.value!.scrollHeight - previousScrollHeight;
       const shouldAdjustScroll =
@@ -332,6 +340,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * Refires the scroll event from the internal scroll container to the host element
    */
   private handleScroll(event: Event): void {
+    const scrollElement = this.scrollElementRef.value;
+    if (!scrollElement) {
+      // We really shouldn't get here
+      return;
+    }
+
+    if (this.virtualizer) {
+      const lastItemSize = this.virtualizer.options.estimateSize(this.virtualizer.options.count - 1);
+      this.isAtBottom =
+        scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastItemSize;
+    }
+
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
