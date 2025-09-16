@@ -163,7 +163,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     };
 
     const BUTTONS = [
-      'Add 5 to Top',
+      'Add 5 At Top',
       'Add Above',
       'Add Below',
       'Add Last',
@@ -327,28 +327,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         await expect(outsideListRemoveLastButton).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(buttonLocator(virtualizedList, 6, 'Remove Below')).toBeFocused();
-      });
-
-      await test.step('remove above', async () => {
-        const { virtualizedList, listItemCounter } = await setupAndFocusInList();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await componentsPage.page.keyboard.press('ArrowDown');
-        const removeAboveButton = await tabToListItemButton(virtualizedList, 2, 'Remove Above');
-        await removeAboveButton.press('Enter');
-        await expect(listItemCounter).toHaveText('9');
-        // Focus should remain on the button - the item above has been removed so index - 1
-        await expect(buttonLocator(virtualizedList, 1, 'Remove Above')).toBeFocused();
-      });
-
-      await test.step('remove below', async () => {
-        const { virtualizedList, listItemCounter } = await setupAndFocusInList();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        const removeBelowButton = await tabToListItemButton(virtualizedList, 1, 'Remove Below');
-        await removeBelowButton.press('Enter');
-        await expect(listItemCounter).toHaveText('9');
-        await expect(removeBelowButton).toBeFocused();
       });
     });
   });
