@@ -130,10 +130,8 @@ class Combobox
   @property({ type: String, attribute: 'invalid-custom-value-text', reflect: true }) invalidCustomValueText?: string;
 
   /**
-   * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
-   * The default is 'clippingAncestors', which are the overflow ancestors which will cause the
-   * element to be clipped.
-   *
+   * This describes the clipping element(s) or area relative to which the overflow of the popover will be checked.
+   * The default is 'clippingAncestors', which are the overflow ancestors that can cause the element to be clipped.
    * Possible values:
    *  - 'clippingAncestors'
    *  - any css selector

@@ -15,6 +15,21 @@ type SetupOptions = {
   name?: string;
   'data-aria-label'?: string;
   'validation-message'?: string;
+  'help-text'?: string;
+  'help-text-type'?: string;
+  readonly?: boolean;
+  value?: string;
+  'no-result-text'?: string;
+  'info-icon-aria-label'?: string;
+  placement?: string;
+  'popover-z-index'?: number;
+  strategy?: string;
+  boundary?: string;
+  'backdrop-append-to'?: string;
+  'auto-focus-on-mount'?: boolean;
+  'toggletip-text'?: string;
+  'toggletip-placement'?: string;
+  'invalid-custom-value-text'?: string;
 };
 
 const defaultLabel = 'Top Countries list';
@@ -47,8 +62,23 @@ const setup = async (args: SetupOptions, isForm = false) => {
           ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.required ? 'required' : ''}
+          ${restArgs.readonly ? 'readonly' : ''}
+          ${restArgs.value ? `value="${restArgs.value}"` : ''}
           ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : 'data-aria-label="Combobox label"'}
           ${restArgs['validation-message'] ? `validation-message="${restArgs['validation-message']}"` : ''}
+          ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+          ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
+          ${restArgs['no-result-text'] ? `no-result-text="${restArgs['no-result-text']}"` : ''}
+          ${restArgs['info-icon-aria-label'] ? `info-icon-aria-label="${restArgs['info-icon-aria-label']}"` : ''}
+          ${restArgs.placement ? `placement="${restArgs.placement}"` : ''}
+          ${restArgs['popover-z-index'] !== undefined ? `popover-z-index="${restArgs['popover-z-index']}"` : ''}
+          ${restArgs.strategy ? `strategy="${restArgs.strategy}"` : ''}
+          ${restArgs.boundary ? `boundary="${restArgs.boundary}"` : ''}
+          ${restArgs['backdrop-append-to'] ? `backdrop-append-to="${restArgs['backdrop-append-to']}"` : ''}
+          ${restArgs['auto-focus-on-mount'] ? 'auto-focus-on-mount' : ''}
+          ${restArgs['toggletip-text'] ? `toggletip-text="${restArgs['toggletip-text']}"` : ''}
+          ${restArgs['toggletip-placement'] ? `toggletip-placement="${restArgs['toggletip-placement']}"` : ''}
+          ${restArgs['invalid-custom-value-text'] ? `invalid-custom-value-text="${restArgs['invalid-custom-value-text']}"` : ''}
         >
           ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}
         </mdc-combobox>
@@ -83,6 +113,65 @@ const setup = async (args: SetupOptions, isForm = false) => {
 
 test.describe('Combobox Feature Scenarios', () => {
   test('mdc-combobox', async ({ componentsPage }) => {
+    /**
+     * ATTRIBUTES
+     */
+    await test.step('attributes', async () => {
+      await test.step('should show toggletip text if provided', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'toggletip-text': 'This is a toggletip',
+        });
+        await expect(combobox).toHaveAttribute('toggletip-text', 'This is a toggletip');
+      });
+
+      await test.step('should set popover z-index if provided', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'popover-z-index': 9999,
+        });
+        await expect(combobox).toHaveAttribute('popover-z-index', '9999');
+      });
+
+      await test.step('should set info icon aria label if provided', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'info-icon-aria-label': 'Info label',
+        });
+        await expect(combobox).toHaveAttribute('info-icon-aria-label', 'Info label');
+      });
+
+      await test.step('should set toggletip placement if provided', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'toggletip-placement': 'top-start',
+        });
+        await expect(combobox).toHaveAttribute('toggletip-placement', 'top-start');
+      });
+
+      await test.step('should set invalid custom value text if provided', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'invalid-custom-value-text': 'Custom not allowed',
+        });
+        await expect(combobox).toHaveAttribute('invalid-custom-value-text', 'Custom not allowed');
+      });
+    });
     /**
      * VISUAL REGRESSION
      */
@@ -501,6 +590,24 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(input).toHaveValue('Bangladesh');
         await expect(dropdown).not.toBeVisible();
         await expect(input).toBeFocused();
+      });
+
+      await test.step('should show no-result-text when no options match', async () => {
+        const { input, options, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-result-text': 'No results found',
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('xyz');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(0);
+        // Should show no-result-text
+        await expect(combobox.locator('[part="no-result-text"]')).toContainText('No results found');
       });
     });
 
