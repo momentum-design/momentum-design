@@ -23,13 +23,6 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
 import type { Placement } from './select.types';
-import {
-  getAllValidOptions,
-  getFirstSelectedOption,
-  getFirstValidOption,
-  getLastValidOption,
-  isValidItem,
-} from './select.utils';
 
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
@@ -188,7 +181,7 @@ class Select
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<Option>(this, {
-      isValidItem,
+      isValidItem: this.isValidItem,
     });
   }
 
@@ -199,11 +192,29 @@ class Select
     this.initialFocus = 0;
   }
 
-  /**
-   * @internal
-   */
-  get navItems(): HTMLElement[] {
+  /** @internal */
+  get navItems(): Option[] {
     return this.itemsStore.items;
+  }
+
+  /** @internal */
+  private isValidItem(item: Element): boolean {
+    return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
+  }
+
+  /** @internal */
+  private getFirstSelectedOption(): Option | undefined {
+    return this.navItems.find(el => el.hasAttribute('selected'));
+  }
+
+  /** @internal */
+  private getFirstOption(): Option {
+    return this.navItems[0];
+  }
+
+  /** @internal */
+  private getLastOption(): Option {
+    return this.navItems[this.navItems.length - 1];
   }
 
   /**
@@ -213,7 +224,7 @@ class Select
    */
   private handleCreatedEvent = (event: Event) => {
     const createdElement = event.target as HTMLElement;
-    if (!isValidItem(createdElement)) {
+    if (!this.isValidItem(createdElement)) {
       return;
     }
 
@@ -228,7 +239,7 @@ class Select
    */
   private handleDestroyEvent = (event: Event) => {
     const destroyedElement = event.target as HTMLElement;
-    if (!isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
+    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
       return;
     }
 
@@ -254,7 +265,7 @@ class Select
     await this.updateComplete;
     this.modifyListBoxWrapper();
 
-    const firstSelectedOption = getFirstSelectedOption(this.slottedListboxes[0]);
+    const firstSelectedOption = this.getFirstSelectedOption();
 
     if (firstSelectedOption) {
       this.initialSelectedOption = firstSelectedOption;
@@ -262,7 +273,7 @@ class Select
       // which is already selected in the DOM on first update
       this.setSelectedOption(firstSelectedOption);
     } else if (!this.placeholder) {
-      const firstValidOption = getFirstValidOption(this.slottedListboxes[0]);
+      const firstValidOption = this.getFirstOption();
       // We will show the first option as selected & fire
       // and event since the selected option changed
       this.setSelectedOption(firstValidOption);
@@ -373,10 +384,9 @@ class Select
    * @param option - The option which tabIndex should be set to 0.
    */
   private updateTabIndexForAllOptions(option?: Option | null): void {
-    const options = getAllValidOptions(this.slottedListboxes[0]);
-    const optionToGetTabIndex0 = option || options[0];
+    const optionToGetTabIndex0 = option || this.getFirstOption();
 
-    options.forEach(option => {
+    this.navItems.forEach(option => {
       option.setAttribute('tabindex', option === optionToGetTabIndex0 ? '0' : '-1');
     });
   }
@@ -387,8 +397,7 @@ class Select
    */
   private updateSelectedInChildOptions(selectedOption: Option | null): void {
     selectedOption?.setAttribute('selected', 'true');
-    const options = getAllValidOptions(this.slottedListboxes[0]);
-    options.forEach(option => {
+    this.navItems.forEach(option => {
       if (option !== selectedOption) {
         option.removeAttribute('selected');
       }
@@ -438,9 +447,7 @@ class Select
 
   /** @internal */
   formStateRestoreCallback(state: string): void {
-    const optionToRestoreTo = getAllValidOptions(this.slottedListboxes[0]).find(
-      option => option.value === state || option.label === state,
-    );
+    const optionToRestoreTo = this.navItems.find(option => option.value === state || option.label === state);
     if (this.selectedOption?.value !== optionToRestoreTo?.value) {
       this.setSelectedOption(optionToRestoreTo || null);
       // fire events to notify the change in case of restore
@@ -516,7 +523,7 @@ class Select
         break;
       case KEYS.HOME: {
         this.displayPopover = true;
-        const firstOption = getFirstValidOption(this.slottedListboxes[0]);
+        const firstOption = this.getFirstOption();
         if (firstOption) {
           firstOption?.focus();
           this.updateTabIndexForAllOptions(firstOption);
@@ -526,7 +533,7 @@ class Select
       }
       case KEYS.END: {
         this.displayPopover = true;
-        const lastOption = getLastValidOption(this.slottedListboxes[0]);
+        const lastOption = this.getLastOption();
         if (lastOption) {
           lastOption.focus();
           this.updateTabIndexForAllOptions(lastOption);
@@ -558,14 +565,14 @@ class Select
    * and that the aria-selected attribute is updated accordingly.
    */
   public updateState(): void {
-    const newSelectedOption = getFirstSelectedOption(this.slottedListboxes[0]);
+    const newSelectedOption = this.getFirstSelectedOption();
 
     if (!this.inputElement) {
       return;
     }
 
     if (!newSelectedOption) {
-      this.setSelectedOption(this.placeholder ? null : getFirstValidOption(this.slottedListboxes[0]));
+      this.setSelectedOption(this.placeholder ? null : this.getFirstOption());
     } else if (this.selectedOption?.value !== newSelectedOption.value) {
       this.setSelectedOption(newSelectedOption);
     }
