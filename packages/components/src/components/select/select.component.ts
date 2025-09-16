@@ -1,9 +1,8 @@
 import type { PropertyValueMap, PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
-import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { ElementStore } from '../../utils/controllers/ElementStore';
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -159,9 +158,6 @@ class Select
   backdropAppendTo?: string;
 
   /** @internal */
-  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
-
-  /** @internal */
   @query(`[id="${TRIGGER_ID}"]`) private visualCombobox!: HTMLDivElement;
 
   /** @internal */
@@ -212,11 +208,6 @@ class Select
     return this.navItems[0];
   }
 
-  /** @internal */
-  private getLastOption(): Option {
-    return this.navItems[this.navItems.length - 1];
-  }
-
   /**
    * Update the tabIndex of the list items when a new item is added.
    *
@@ -263,7 +254,6 @@ class Select
    */
   protected override async firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     await this.updateComplete;
-    this.modifyListBoxWrapper();
 
     const firstSelectedOption = this.getFirstSelectedOption();
 
@@ -307,28 +297,6 @@ class Select
         this.displayPopover = false;
       }
     }
-
-    if (changedProperties.has('dataAriaLabel')) {
-      this.modifyListBoxWrapper();
-    }
-  }
-
-  /**
-   * Modifies the listbox wrapper to ensure it has the correct attributes
-   * and IDs for accessibility.
-   *
-   * Once [ariaOwnsElements](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/ariaOwnsElements) is supported in browsers,
-   * this an be removed and mdc-option can be used directly in the select component with a listbox in a different
-   * shadow root and aria-owns attribute to connect them.
-   */
-  private modifyListBoxWrapper() {
-    const slottedListBox = this.slottedListboxes[0];
-    if (!slottedListBox) {
-      return;
-    }
-    slottedListBox.setAttribute('id', LISTBOX_ID);
-    slottedListBox.setAttribute('aria-label', this.dataAriaLabel || '');
-    slottedListBox.setAttribute('aria-labelledby', TRIGGER_ID);
   }
 
   /**
@@ -364,7 +332,7 @@ class Select
     // set the attribute 'selected' on the option in HTML and remove it from others
     this.updateSelectedInChildOptions(option);
     // update the tabindex for all options
-    this.updateTabIndexForAllOptions(option);
+    this.resetTabIndexes(this.navItems.indexOf(option!));
 
     // set the selected option in the component state
     this.selectedOption = option;
@@ -375,20 +343,6 @@ class Select
     this.inputElement?.setAttribute('value', this.value);
 
     this.setInputValidity();
-  }
-
-  /**
-   * Updates the tabindex of all options.
-   * Sets the tabindex of the selected option to '0' and others to '-1'.
-   *
-   * @param option - The option which tabIndex should be set to 0.
-   */
-  private updateTabIndexForAllOptions(option?: Option | null): void {
-    const optionToGetTabIndex0 = option || this.getFirstOption();
-
-    this.navItems.forEach(option => {
-      option.setAttribute('tabindex', option === optionToGetTabIndex0 ? '0' : '-1');
-    });
   }
 
   /**
@@ -523,21 +477,13 @@ class Select
         break;
       case KEYS.HOME: {
         this.displayPopover = true;
-        const firstOption = this.getFirstOption();
-        if (firstOption) {
-          firstOption?.focus();
-          this.updateTabIndexForAllOptions(firstOption);
-        }
+        this.resetTabIndexAndSetFocus(0);
         event.preventDefault();
         break;
       }
       case KEYS.END: {
         this.displayPopover = true;
-        const lastOption = this.getLastOption();
-        if (lastOption) {
-          lastOption.focus();
-          this.updateTabIndexForAllOptions(lastOption);
-        }
+        this.resetTabIndexAndSetFocus(this.navItems.length - 1);
         event.preventDefault();
         break;
       }
