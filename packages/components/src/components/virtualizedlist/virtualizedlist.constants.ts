@@ -7,6 +7,7 @@ const DEFAULTS = {
   VIRTUALIZER_PROPS: {
     count: 0,
     estimateSize: () => 0,
+    getItemKey: (index: number) => index,
   },
 } as const;
 
