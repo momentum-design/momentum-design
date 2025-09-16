@@ -19,7 +19,6 @@ const styles = css`
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
-    align-items: unset;
     width: var(--mdc-combobox-width);
   }
   :host::part(combobox__base) {
@@ -28,13 +27,21 @@ const styles = css`
     position: relative;
     border-radius: 0.5rem;
   }
-  :host::part(combobox__button) {
-    position: absolute;
-    right: 0;
-    padding: 0.5rem;
+  :host(:dir(ltr))::part(combobox__button) {
     background-color: unset;
-    border-left: 1px solid var(--mdc-combobox-border-color);
     border-radius: 0 0.5rem 0.5rem 0;
+    border-left: 1px solid var(--mdc-combobox-border-color);
+    position: absolute;
+    padding: 0.5rem;
+    right: 0;
+  }
+  :host(:dir(rtl))::part(combobox__button) {
+    background-color: unset;
+    border-radius: 0.5rem 0 0 0.5rem;
+    border-right: 1px solid var(--mdc-combobox-border-color);
+    position: absolute;
+    padding: 0.5rem;
+    left: 0;
   }
   :host([disabled])::part(combobox__button) {
     cursor: unset;
@@ -65,30 +72,11 @@ const styles = css`
   :host([help-text-type='priority'])::part(combobox__button) {
     border-color: var(--mdc-combobox-primary-border-color);
   }
-  :host(:dir(rtl)[help-text-type='error'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-error-border-color);
-  }
-  :host(:dir(rtl)[help-text-type='warning'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-warning-border-color);
-  }
-  :host(:dir(rtl)[help-text-type='success'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-success-border-color);
-  }
-  :host(:dir(rtl)[help-text-type='priority'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-primary-border-color);
-  }
   :host([disabled])::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-text-color-disabled);
   }
   :host::part(mdc-input) {
     width: calc(100% - 1.5rem);
-  }
-  :host(:dir(rtl))::part(combobox__button) {
-    right: unset;
-    border-left: unset;
-    left: 0;
-    border-right: 1px solid var(--mdc-combobox-border-color);
-    border-radius: 0.5rem 0 0 0.5rem;
   }
   :host::part(combobox__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
