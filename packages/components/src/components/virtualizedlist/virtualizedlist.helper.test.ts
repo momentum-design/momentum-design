@@ -166,8 +166,6 @@ class VirtualizedDynamicList extends Component {
 
   counter = 9;
 
-  private virtualizerRef: Ref<VirtualizedList> = createRef();
-
   protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
@@ -237,7 +235,6 @@ class VirtualizedDynamicList extends Component {
     return html`
       <div id="VirtualizedDynamicList--wrapper">
         <mdc-virtualizedlist
-          ${ref(this.virtualizerRef)}
           .virtualizerProps=${this.virtualizerProps}
           @virtualItemsChange=${this.handleVirtualItemsChange}
         >
