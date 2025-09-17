@@ -72,6 +72,7 @@ const DefaultButtons = html`
   <div slot="trailing-actions">
     <mdc-button variant="tertiary" aria-label="Cancel action">Cancel</mdc-button>
     <mdc-button variant="secondary" aria-label="Perform primary action">Action</mdc-button>
+    <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
   </div>
 `;
 
@@ -81,10 +82,7 @@ export const Example: StoryObj = {
     variant: 'informational',
     title: 'System Update Available',
     subtitle: 'A new version is ready to install. Please save your work before proceeding.',
-    children: html`
-      ${DefaultButtons}
-      <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-    `,
+    children: DefaultButtons,
   },
 };
 
@@ -92,62 +90,65 @@ export const AllVariants: StoryObj = {
   name: 'All Variants',
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 1rem;">
-      ${[{
-        ...DefaultArgs,
-        variant: 'custom',
-        title: 'Custom Banner with Slot Icon',
-        subtitle: 'This banner uses a custom icon via slot instead of variant-based icon.',
-        children: html`
-          <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>
-          ${DefaultButtons}
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-        `,
-      }, {
-        ...DefaultArgs,
-        variant: 'informational',
-        title: 'System Update Available',
-        subtitle: 'A new version is ready to install.',
-        children: html`
-          ${DefaultButtons}
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-        `,
-      }, {
-        ...DefaultArgs,
-        variant: 'warning',
-        title: 'Storage Almost Full',
-        subtitle: 'Your storage is 95% full. Consider removing some files.',
-        children: html`
-          ${DefaultButtons}
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-        `,
-      }, {
-        ...DefaultArgs,
-        variant: 'error',
-        title: 'Connection Failed',
-        subtitle: 'Unable to connect to the server. Please try again.',
-        children: html`
-          ${DefaultButtons}
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection" @click="${action('reset')}"></mdc-button>
-        `,
-      }, {
-        ...DefaultArgs,
-        variant: 'success',
-        title: 'Changes Saved',
-        subtitle: 'Your changes have been successfully saved.',
-        children: html`
-          ${DefaultButtons}
-          <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
-        `,
-      }].map((args) =>
-        render({
-          ...DefaultArgs,
-          ...args,
-        })
-      )}
+      ${[
+        {
+          variant: 'custom',
+          title: 'Custom Banner with Slot Icon',
+          subtitle: 'This banner uses a custom icon via slot instead of variant-based icon.',
+          children: html`
+            <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>
+            ${DefaultButtons}
+          `,
+        },
+        {
+          variant: 'informational',
+          title: 'System Update Available',
+          subtitle: 'A new version is ready to install.',
+          children: DefaultButtons,
+        },
+        {
+          variant: 'warning',
+          title: 'Storage Almost Full',
+          subtitle: 'Your storage is 95% full. Consider removing some files.',
+          children: DefaultButtons,
+        },
+        {
+          variant: 'error',
+          title: 'Connection Failed',
+          subtitle: 'Unable to connect to the server. Please try again.',
+          children: html`
+            ${DefaultButtons}
+            <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection" @click="${action('retry')}"></mdc-button>
+          `,
+        },
+        {
+          variant: 'success',
+          title: 'Changes Saved',
+          subtitle: 'Your changes have been successfully saved.',
+          children: DefaultButtons,
+        }
+      ].map((args) => render(args))}
     </div>
   `,
   ...hideAllControls(),
+};
+
+export const TitleOnly: StoryObj = {
+  name: 'Title Only',
+  args: {
+    variant: 'informational',
+    title: 'System Update Available',
+    children: DefaultButtons,
+  },
+};
+
+export const WithoutActions: StoryObj = {
+  name: 'Without Actions',
+  args: {
+    variant: 'informational',
+    title: 'Information Message',
+    subtitle: 'This banner has no action buttons.',
+  },
 };
 
 export const PromotionalBanner: StoryObj = {

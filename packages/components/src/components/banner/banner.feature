@@ -4,18 +4,18 @@ Feature: Banner Accessibility, Appearance, and User Interaction
         Given the banner component is mounted to the page
         And it has default variant="custom"
 
-    Rule: ✅ Attributes
+    Rule: Attributes
 
         Scenario: Banner sets default attributes
             Given the banner component is mounted
             Then the banner should have the "variant" attribute set to "custom"
 
-    Rule: ✅ Rendering and Visual States
+    Rule: Rendering and Visual States
 
         Scenario: Banner accepts allowed variant values
             Given the variant is set to "success" or "warning" or "error" or "informational"
             When the banner is rendered
-            Then the banner should display the the appropriate icon and styling as expected
+            Then the banner should display the appropriate icon and styling as expected
 
         Scenario: Banner renders custom content for custom variant
             Given the banner variant is "custom"
@@ -41,15 +41,16 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             Then no title should be visible
             And no subtitle should be visible
 
-        Scenario: Banner renders with short width and auto-shrinking content (no need to write e2e test, already covered in Visual tests)
-            Given the banner has a short width
+        Scenario: Banner renders with constrained width and wrapping content
+            Given the banner has a constrained width
             And the banner has long title and subtitle
             And the banner has trailing actions
             When the banner is rendered
             Then both title and subtitle should wrap to multiple lines
             And no content should overflow the banner boundaries
+        # Note: This scenario is covered by visual regression tests
 
-    Rule: ✅ Slot Functionality
+    Rule: Slot Functionality
 
         Scenario: Banner uses custom slots to override default content
             Given the banner provides custom content in the leading-icon, leading-text, and trailing-actions slots
@@ -60,7 +61,7 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             And the custom actions should be displayed in place of the default trailing actions
 
         Scenario: Banner uses complete content slot override
-            Given the banner has overrides the content slot
+            Given the banner overrides the content slot
             When the banner is rendered
             Then only the custom content should be displayed
             And all default banner structure (leading, content, trailing) should be overridden
@@ -74,32 +75,43 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             And the text content should contain title and subtitle from properties
             And the trailing section should contain custom action buttons
 
-    Rule: ✅ Focus Management and Navigation
+    Rule: Focus Management and Navigation
 
         Scenario: Focus management with trailing actions
             Given the banner has interactive trailing actions (buttons)
-            When I navigate using Tab key
+            And there is a focusable element before the banner
+            When I focus on the element before the banner
+            And I navigate using Tab key
             Then focus should move to the first trailing action
             When I press Tab again
             Then focus should move to the next trailing action
             When I press Tab again
-            Then focus should move out of the banner
+            Then focus should move to the last trailing action
+            When I press Tab again
+            Then focus should move out of the banner to the element after it
 
-        Scenario: Reverse focus navigation with Shift+Tab (start it from outside)
+        Scenario: Reverse focus navigation with Shift+Tab (start from outside)
             Given the banner has multiple interactive trailing actions (buttons)
-            When I press Shift+Tab
+            And there is a focusable element after the banner
+            When I focus on the element after the banner
+            And I press Shift+Tab
+            Then focus should move to the last trailing action in the banner
+            When I press Shift+Tab again
             Then focus should move to the previous trailing action
             When I press Shift+Tab again
             Then focus should move to the first trailing action
             When I press Shift+Tab again
-            Then focus should move out of the banner
+            Then focus should move out of the banner to the element before it
 
         Scenario: Skip banner when no interactive content
             Given the banner has only text content (no buttons or interactive elements)
-            When I navigate using Tab key
-            Then the banner should not receive focus
+            And there are focusable elements before and after the banner
+            When I focus on the element before the banner
+            And I navigate using Tab key
+            Then focus should skip the banner and move directly to the element after it
+            And the banner itself should not receive focus
 
-    Rule: ✅ Mouse Interactions
+    Rule: Mouse Interactions
 
         Scenario: Click on trailing action buttons (interactive elements)
             Given the banner has trailing action buttons
@@ -108,7 +120,7 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             And the button's action should execute
             And no additional banner events should be triggered
 
-    Rule: ✅ Keyboard Interactions
+    Rule: Keyboard Interactions
 
         Scenario: User activates custom actions using keyboard
             Given the banner has custom action buttons via trailing-actions slot
@@ -116,7 +128,7 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             When "Enter" or "Space" is pressed
             Then the custom action should be activated
 
-    Rule: ✅ ARIA and Screen Reader Accessibility
+    Rule: ARIA and Screen Reader Accessibility
 
         Scenario: Screen reader reads banner content
             Given the banner has title and subtitle

@@ -12,12 +12,15 @@ import type { BannerVariant } from './banner.types';
 import { getIconNameForVariant } from './banner.utils';
 
 /**
- * `mdc-banner` is a container to display short, critical messages that require user action.
- * It typically appears at the top of a page or section and provides contextual information, updates, or alerts.
- * Banners are designed to be noticeable but non-intrusive, helping users stay informed without interrupting their workflow.
+ * `mdc-banner` is a component that allows applications to communicate important messages to users 
+ * and require user action to disappear. It supports different message types with appropriate styling 
+ * and icons, and provides flexibility for customization through title, subtitle, icons, and actions.
+ * 
+ * Banners typically appear at the top of a page or section and provide contextual information, updates, or alerts.
+ * They are designed to be noticeable but non-intrusive, helping users stay informed without interrupting their workflow.
  * 
  * The component supports both structured content via properties and flexible customization via slots:
- * - Use properties (title, subtitle, variant) for standard banner layouts
+ * - Use properties (title, subtitle, variant) for standard banner layouts with automatic icon selection
  * - Use slots for custom content and complete layout control
  * - Combine both approaches for maximum flexibility
  * - Create custom orientations and actions using CSS parts and slots
@@ -66,14 +69,17 @@ class Banner extends Component {
 
   /**
    * Banner subtitle text
+   * Optional supporting text that appears below the title. Only rendered when title is also provided.
    */
   @property({ type: String, reflect: true })
   subtitle?: string;
 
   /**
    * Renders the icon based on the provided icon name.
+   * Used internally to display variant-specific icons.
    *
-   * @param iconName - The name of the icon to render.
+   * @param iconName - The name of the icon to render
+   * @returns Template result containing the icon element, or nothing if no icon name provided
    */
   protected renderIcon(iconName: string) {
     if(!iconName) return nothing;
@@ -88,6 +94,9 @@ class Banner extends Component {
 
   /**
    * Generates a template for the title and subtitle text.
+   * Returns nothing if no title is provided, ensuring subtitle is only shown when title exists.
+   * 
+   * @returns Template result containing title and optional subtitle elements
    */
   protected getTextTitle() {
     if(!this.title) return nothing;
@@ -98,6 +107,15 @@ class Banner extends Component {
   }
 
   public override render() {
+    const hasOnlyTitle = this.title && !this.subtitle;
+    
+    // Set attribute for CSS styling
+    if (hasOnlyTitle) {
+      this.setAttribute('title-only', '');
+    } else {
+      this.removeAttribute('title-only');
+    }
+    
     return html`
       <slot name="content">
         <div part="leading">

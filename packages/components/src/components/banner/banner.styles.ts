@@ -56,6 +56,13 @@ const styles = css`
 
   :host::part(leading-text) {
     flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  :host([title-only])::part(leading) {
+    align-items: center;
   }
 
   :host::part(leading-icon) {

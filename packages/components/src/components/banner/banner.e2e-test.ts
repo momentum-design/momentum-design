@@ -12,22 +12,35 @@ type SetupOptions = {
   title?: string;
   subtitle?: string;
   children?: string;
+  addFocusContext?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
-  const { componentsPage, children, ...restArgs } = args;
+  const { componentsPage, children, addFocusContext = false, ...restArgs } = args;
   let attrs = '';
   Object.entries(restArgs).forEach(([key, value]) => {
     if (value !== undefined) {
       attrs += ` ${key.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`)}="${value}"`;
     }
   });
+  
   await componentsPage.mount({
-    html: `<mdc-banner${attrs}>${children || ''}</mdc-banner>`,
+    html: `
+      ${addFocusContext ? '<div id="wrapper">' : ''}
+      ${addFocusContext ? '<button id="before-banner">Before Banner</button>' : ''}
+      <mdc-banner${attrs}>${children || ''}</mdc-banner>
+      ${addFocusContext ? '<button id="after-banner">After Banner</button>' : ''}
+      ${addFocusContext ? '</div>' : ''}
+    `,
     clearDocument: true,
   });
+  
+  const element = addFocusContext
+    ? componentsPage.page.locator('div#wrapper')
+    : componentsPage.page.locator('mdc-banner');
+  await element.waitFor();
+  
   const banner = componentsPage.page.locator('mdc-banner');
-  await banner.waitFor();
   return banner;
 };
 
@@ -203,6 +216,23 @@ test('mdc-banner', async ({ componentsPage }) => {
       await expect(subtitleText).toHaveCount(0);
     });
 
+    await test.step('banner does not render subtitle without title', async () => {
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.INFORMATIONAL,
+        subtitle: 'Some subtitle text'
+        // No title provided
+      });
+      
+      // No title should be visible
+      const titleText = banner.locator('mdc-text').first();
+      await expect(titleText).toHaveCount(0);
+      
+      // No subtitle should be visible either
+      const subtitleText = banner.locator('mdc-text').nth(1);
+      await expect(subtitleText).toHaveCount(0);
+    });
+
     await test.step('banner renders with both title and subtitle', async () => {
       const banner = await setup({
         componentsPage,
@@ -231,23 +261,6 @@ test('mdc-banner', async ({ componentsPage }) => {
       const defaultIcon = banner.locator('mdc-icon');
       await expect(defaultIcon).toHaveCount(0);
     });
-
-    await test.step('banner does not render subtitle without title', async () => {
-      const banner = await setup({
-        componentsPage,
-        variant: BANNER_VARIANT.INFORMATIONAL,
-        subtitle: 'Some subtitle text'
-        // No title provided
-      });
-      
-      // No title should be visible
-      const titleText = banner.locator('mdc-text').first();
-      await expect(titleText).toHaveCount(0);
-      
-      // No subtitle should be visible either
-      const subtitleText = banner.locator('mdc-text').nth(1);
-      await expect(subtitleText).toHaveCount(0);
-    });
   });
 
   /**
@@ -260,14 +273,14 @@ test('mdc-banner', async ({ componentsPage }) => {
         variant: BANNER_VARIANT.CUSTOM,
         title: 'Custom Icon Banner',
         subtitle: 'Using custom icon slot',
-        children: `<mdc-icon slot="leading-icon" name="sparkle-filled" size="1.5"></mdc-icon>`
+        children: `<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5"></mdc-icon>`
       });
       
       const customIcon = banner.locator('mdc-icon[slot="leading-icon"]');
       const titleText = banner.locator('mdc-text').first();
       
       await expect(customIcon).toBeVisible();
-      await expect(customIcon).toHaveAttribute('name', 'sparkle-filled');
+      await expect(customIcon).toHaveAttribute('name', 'placeholder-bold');
       
       // Icon should be positioned before text content
       const iconBox = await customIcon.boundingBox();
@@ -406,6 +419,7 @@ test('mdc-banner', async ({ componentsPage }) => {
         variant: BANNER_VARIANT.ERROR,
         title: 'Focus Test',
         subtitle: 'Testing focus management',
+        addFocusContext: true,
         children: `
           <div slot="trailing-actions">
             <mdc-button id="first-action" variant="primary">First</mdc-button>
@@ -415,9 +429,15 @@ test('mdc-banner', async ({ componentsPage }) => {
         `
       });
       
+      const beforeButton = componentsPage.page.locator('#before-banner');
+      const afterButton = componentsPage.page.locator('#after-banner');
       const firstButton = banner.locator('#first-action');
       const secondButton = banner.locator('#second-action');
       const thirdButton = banner.locator('#third-action');
+      
+      // Start from before button
+      await beforeButton.focus();
+      await expect(beforeButton).toBeFocused();
       
       // Tab to first action
       await componentsPage.actionability.pressTab();
@@ -431,9 +451,9 @@ test('mdc-banner', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(thirdButton).toBeFocused();
       
-      // Tab out of banner
+      // Tab out of banner to after button
       await componentsPage.actionability.pressTab();
-      // await expect(thirdButton).not.toBeFocused(); // failing for firefox
+      await expect(afterButton).toBeFocused();
     });
 
     await test.step('reverse focus navigation with Shift+Tab', async () => {
@@ -442,6 +462,7 @@ test('mdc-banner', async ({ componentsPage }) => {
         variant: BANNER_VARIANT.WARNING,
         title: 'Reverse Focus Test',
         subtitle: 'Testing Shift+Tab navigation',
+        addFocusContext: true,
         children: `
           <div slot="trailing-actions">
             <mdc-button id="btn-1" variant="primary">Button 1</mdc-button>
@@ -451,26 +472,32 @@ test('mdc-banner', async ({ componentsPage }) => {
         `
       });
       
+      const beforeButton = componentsPage.page.locator('#before-banner');
+      const afterButton = componentsPage.page.locator('#after-banner');
       const button1 = banner.locator('#btn-1');
       const button2 = banner.locator('#btn-2');
       const button3 = banner.locator('#btn-3');
       
-      // First navigate forward to the last button
-      await componentsPage.actionability.pressTab(); // to btn-1
-      await componentsPage.actionability.pressTab(); // to btn-2
-      await componentsPage.actionability.pressTab(); // to btn-3
+      // Start from after button (outside the banner)
+      await afterButton.focus();
+      await expect(afterButton).toBeFocused();
+      
+      // Shift+Tab should go to the last button in banner (btn-3)
+      await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button3).toBeFocused();
       
-      // Now test reverse navigation with Shift+Tab
+      // Shift+Tab to btn-2
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button2).toBeFocused();
       
+      // Shift+Tab to btn-1
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button1).toBeFocused();
       
-      // Shift+Tab again should move focus out of banner (backwards)
+      // Shift+Tab again should move to before button (outside banner)
       await componentsPage.page.keyboard.press('Shift+Tab');
-      // await expect(button1).not.toBeFocused(); // failing for firefox
+      await expect(beforeButton).toBeFocused();
+      await expect(button1).not.toBeFocused();
     });
 
     await test.step('skip banner when no interactive content', async () => {
@@ -478,11 +505,20 @@ test('mdc-banner', async ({ componentsPage }) => {
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
         title: 'Non-Interactive Banner',
-        subtitle: 'Only text content, no buttons'
+        subtitle: 'Only text content, no buttons',
+        addFocusContext: true
       });
       
-      // Try to tab through - banner should not receive focus
+      const beforeButton = componentsPage.page.locator('#before-banner');
+      const afterButton = componentsPage.page.locator('#after-banner');
+      
+      // Start from before button
+      await beforeButton.focus();
+      await expect(beforeButton).toBeFocused();
+      
+      // Tab should skip banner and go directly to after button
       await componentsPage.actionability.pressTab();
+      await expect(afterButton).toBeFocused();
       
       // Banner itself should not be focused
       await expect(banner).not.toBeFocused();
@@ -513,9 +549,14 @@ test('mdc-banner', async ({ componentsPage }) => {
       await expect(primaryButton).toBeVisible();
       await expect(closeButton).toBeVisible();
       
-      // Test that buttons are clickable
+      // Test that buttons are clickable and trigger click events
+      const primaryClickPromise = componentsPage.waitForEvent(primaryButton, 'click');
       await primaryButton.click();
+      await primaryClickPromise;
+      
+      const closeClickPromise = componentsPage.waitForEvent(closeButton, 'click');
       await closeButton.click();
+      await closeClickPromise;
     });
   });
 
@@ -542,9 +583,14 @@ test('mdc-banner', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(actionButton).toBeFocused();
       
-      // Test keyboard activation with Enter and Space
+      // Test keyboard activation with Enter and Space - ensure click events are triggered
+      const enterClickPromise = componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Enter');
+      await enterClickPromise;
+      
+      const spaceClickPromise = componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Space');
+      await spaceClickPromise;
     });
   });
 
