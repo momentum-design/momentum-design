@@ -329,6 +329,11 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * @internal
    */
   protected handleOnChange = (instance: Virtualizer, sync: boolean) => {
+    // If we are at the bottom of the list and not scrolling, keep us at the bottom of the list.
+    if (!sync && this.isAtBottom && this.scrollElementRef.value) {
+      this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
+    }
+
     // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
     // virtualizer's options therefore we need to call it here ourselves.
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -425,7 +430,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       const lastItemSize = this.virtualizer.options.estimateSize(this.virtualizer.options.count - 1);
 
       this.isAtBottom =
-        scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastItemSize;
+        scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastItemSize / 2;
     }
 
     const EventConstructor = event.constructor as typeof Event;
