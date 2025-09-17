@@ -169,7 +169,7 @@ export const Example: StoryObj = {
     placement: POPOVER_PLACEMENT.BOTTOM_START,
     'invalid-custom-value-text': 'Custom values are not allowed',
     children: html`
-      <mdc-selectlistbox>
+      <mdc-selectlistbox aria-label="Top Countries">
         <mdc-option value="arg" label="Argentina"></mdc-option>
         <mdc-option value="aus" label="Australia"></mdc-option>
         <mdc-option value="au" label="Austria"></mdc-option>
@@ -197,7 +197,7 @@ export const AllVariants: StoryObj = {
         data-aria-label="Select a country"
         required
       >
-        <mdc-selectlistbox>
+        <mdc-selectlistbox aria-label="Top Countries">
           <mdc-option value="usa" selected label="America"></mdc-option>
         </mdc-selectlistbox>
       </mdc-combobox>
@@ -208,7 +208,7 @@ export const AllVariants: StoryObj = {
         data-aria-label="Select phone number"
         required
       >
-        <mdc-selectlistbox>
+        <mdc-selectlistbox aria-label="Select phone number">
           <mdc-option selected value="456-198-0253" label="456-198-0253"></mdc-option>
         </mdc-selectlistbox>
       </mdc-combobox>
@@ -229,12 +229,12 @@ export const AllVariants: StoryObj = {
         required
       ></mdc-combobox>
       <mdc-combobox help-text="This is a disabled text." label="Label" data-aria-label="This is a disabled text." placeholder="Disabled text" disabled>
-        <mdc-selectlistbox>
+        <mdc-selectlistbox aria-label="Label">
           <mdc-option value="avenger" selected label="Avengers"></mdc-option>
         </mdc-selectlistbox>
       </mdc-combobox>
       <mdc-combobox help-text="This is a readonly text." label="Label" data-aria-label="This is a readonly text." placeholder="Readonly text" readonly>
-        <mdc-selectlistbox>
+        <mdc-selectlistbox aria-label="Label">
           <mdc-option value="avenger" selected label="Avengers"></mdc-option>
         </mdc-selectlistbox>
       </mdc-combobox>
@@ -248,7 +248,7 @@ export const ComboboxWithOptionGroups: StoryObj = {
     placeholder: 'Type a fruit or vegetable',
     'no-result-text': 'No results found',
     'data-aria-label': 'Fruits and Vegetables',
-    children: html` <mdc-selectlistbox>
+    children: html` <mdc-selectlistbox aria-label="Fruits and Vegetables">
       <mdc-optgroup label="Fruit">
         <mdc-option value="apple" label="Apples"></mdc-option>
         <mdc-option value="banana" label="Bananas"></mdc-option>
@@ -279,7 +279,7 @@ export const ComboboxWithSelectedValue: StoryObj = {
     required: true,
     'data-aria-label': 'Who is your favorite Avenger?',
     children: html`
-      <mdc-selectlistbox>
+      <mdc-selectlistbox aria-label="Select the avenger">
         <mdc-option value="ironman" label="Iron Man"></mdc-option>
         <mdc-option value="captainamerica" label="Captain America"></mdc-option>
         <mdc-option value="thor" label="Thor"></mdc-option>
@@ -299,7 +299,7 @@ export const ComboboxWithLongOptionText: StoryObj = {
       data-aria-label="Select one color"
       style="width: 300px;"
     >
-      <mdc-selectlistbox>
+      <mdc-selectlistbox aria-label="Select a color">
         <mdc-option label="Red"></mdc-option>
         <mdc-option label="Yellow" id="trigger-option"></mdc-option>
         <mdc-option id="option-3" label="White and Black are the biggest colors on the spectrum"></mdc-option>
@@ -339,7 +339,7 @@ export const ComboboxWithForm: StoryObj = {
             data-aria-label="Select the avenger"
             validation-message="You must select an Avenger"
           >
-            <mdc-selectlistbox>
+            <mdc-selectlistbox aria-label="Select the avenger">
               <mdc-option value="ironman" label="Iron Man"></mdc-option>
               <mdc-option value="captainamerica" label="Captain America"></mdc-option>
               <mdc-option value="thor" label="Thor"></mdc-option>
@@ -358,7 +358,7 @@ export const ComboboxWithForm: StoryObj = {
             data-aria-label="How many Infinity Stones exist?"
             invalid-custom-value-text="Custom values are not allowed."
           >
-            <mdc-selectlistbox>
+            <mdc-selectlistbox aria-label="Select the stone count">
               <mdc-option value="two" label="Two"></mdc-option>
               <mdc-option value="three" label="Three"></mdc-option>
               <mdc-option value="four" label="Four"></mdc-option>
