@@ -49,6 +49,8 @@ import type { Placement } from './combobox.types';
  *
  * If you need to use `mdc-tooltip` with any options, make sure to place the tooltip component outside the `mdc-selectlistbox` element. Read more about it in Options documentation.
  *
+ * To understand more about combobox and its patterns, refer to this [WCAG example](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/).
+ *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
