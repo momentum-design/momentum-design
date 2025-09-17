@@ -18,7 +18,7 @@ const BANNER_VARIANT = {
  * Icon names for variants
  */
 const VARIANT_ICON_NAMES = {
-  INFORMATIONAL_ICON_NAME: 'info-badge-filled' as Extract<IconNames, 'info-badge-filled'>,
+  INFORMATIONAL_ICON_NAME: 'info-circle-bold' as Extract<IconNames, 'info-circle-bold'>,
   SUCCESS_ICON_NAME: 'check-circle-bold' as Extract<IconNames, 'check-circle-bold'>,
   WARNING_ICON_NAME: 'warning-bold' as Extract<IconNames, 'warning-bold'>,
   ERROR_ICON_NAME: 'error-legacy-bold' as Extract<IconNames, 'error-legacy-bold'>,

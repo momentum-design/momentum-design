@@ -1,11 +1,10 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { CSSResult} from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import type { TextType } from '../text/text.types';
 
 import { DEFAULTS } from './banner.constants';
 import styles from './banner.styles';
@@ -28,16 +27,15 @@ import { getIconNameForVariant } from './banner.utils';
  *
  * @slot content - Complete content override. When used, replaces all default banner content including icon, title, subtitle, and actions.
  * @slot leading-icon - Custom icon content. Overrides the default variant-based icon.
- * @slot leading-title - Custom title content. Overrides the title property.
- * @slot leading-subtitle - Custom subtitle content. Overrides the subtitle property.
+ * @slot leading-text - Custom text content. Overrides the title and subtitle properties.
  * @slot trailing-actions - Custom action buttons and controls. Use this for dismiss buttons, reset buttons, or any other actions.
  *
  * @tagname mdc-banner
  *
- * @csspart leading - The leading section containing the icon.
- * @csspart content - The center content section containing title and subtitle text.
+ * @csspart leading - The leading section containing the icon and text.
+ * @csspart leading-icon - The icon displayed for variants or custom icon slot.
+ * @csspart leading-text - The leading section containing title and subtitle text.
  * @csspart trailing - The trailing section containing action buttons and controls.
- * @csspart banner-leading-icon - The icon displayed for variants or custom icon slot.
  * @csspart leading-title - The title text of the banner.
  * @csspart leading-subtitle - The subtitle text of the banner.
  *
@@ -83,51 +81,19 @@ class Banner extends Component {
       <mdc-icon
         name="${iconName as IconNames}"
         size="${DEFAULTS.PREFIX_ICON_SIZE}"
-        part="banner-leading-icon"
+        part="leading-icon"
       ></mdc-icon>
     `;
   }
 
   /**
-   * Generates a template for a text slot with the specified content.
-   *
-   * @param slotName - The name of the slot to be used.
-   * @param type - The type of the text element.
-   * @param content - The text content to be displayed within the slot.
-   * @returns A TemplateResult containing a slot with an `mdc-text` element.
+   * Generates a template for the title and subtitle text.
    */
-  protected getText(slotName: string, type: TextType, content?: string): TemplateResult {
+  protected getTextTitle() {
+    if(!this.title) return nothing;
     return html`
-      <slot name="${slotName}">
-        ${content
-          ? html`<mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>`
-          : nothing}
-      </slot>
-    `;
-  }
-
-  /**
-   * Renders the leading section with icon
-   */
-  private renderLeading() {
-    return html`
-      <slot name="leading-icon">
-        ${this.variant !== DEFAULTS.VARIANT 
-          ? this.renderIcon(getIconNameForVariant(this.variant) ?? '')
-          : nothing}
-      </slot>
-    `;
-  }
-
-  /**
-   * Renders the center content section with title and subtitle
-   */
-  private renderContent() {
-    return html`
-      <div part="content">
-        ${this.getText('leading-title', TYPE.BODY_LARGE_REGULAR, this.title)}
-        ${this.getText('leading-subtitle', TYPE.BODY_MIDSIZE_REGULAR, this.subtitle)}
-      </div>
+        <mdc-text part="leading-title" type="${TYPE.BODY_LARGE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${this.title}</mdc-text>
+        ${this.subtitle ? html`<mdc-text part="leading-subtitle" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${this.subtitle}</mdc-text>` : nothing}
     `;
   }
 
@@ -135,9 +101,15 @@ class Banner extends Component {
     return html`
       <slot name="content">
         <div part="leading">
-          ${this.renderLeading()}
+          <slot name="leading-icon">
+            ${this.variant !== DEFAULTS.VARIANT 
+              ? this.renderIcon(getIconNameForVariant(this.variant) ?? '')
+              : nothing}
+          </slot>
+          <slot name="leading-text">
+            <div part="leading-text">${this.getTextTitle()}</div>
+          </slot>
         </div>
-        ${this.renderContent()}
         <div part="trailing">
           <slot name="trailing-actions"></slot>
         </div>

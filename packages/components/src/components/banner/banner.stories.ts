@@ -6,6 +6,7 @@ import { action } from '@storybook/addon-actions';
 import '.';
 import '../button';
 import '../icon';
+import '../link';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -16,8 +17,8 @@ import { BANNER_VARIANT } from './banner.constants';
 const render = (args: Args) => html`
   <mdc-banner
     variant="${ifDefined(args.variant)}"
-    title="${args.title}"
-    subtitle="${args.subtitle}"
+    title="${ifDefined(args.title)}"
+    subtitle="${ifDefined(args.subtitle)}"
     class="${args.class}"
     style="${args.style}"
   >
@@ -68,7 +69,7 @@ const DefaultArgs = {
 };
 
 const DefaultButtons = html`
-  <div slot="trailing-actions" style="display: flex; gap: 12px;">
+  <div slot="trailing-actions">
     <mdc-button variant="tertiary" aria-label="Cancel action">Cancel</mdc-button>
     <mdc-button variant="secondary" aria-label="Perform primary action">Action</mdc-button>
   </div>
@@ -152,21 +153,7 @@ export const AllVariants: StoryObj = {
 export const PromotionalBanner: StoryObj = {
   name: 'Promotional Banner',
   render: () => html`
-    <mdc-banner variant="custom" style="
-      --mdc-banner-background-color: var(--mds-color-theme-background-primary-normal);
-      --mdc-banner-padding: 1.5rem;
-      border: 2px solid var(--mds-color-theme-outline-primary-normal);
-      border-radius: 0.5rem;
-      position: relative;
-    ">
-      <!-- Close button positioned absolutely in top-right corner -->
-      <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Close promotional banner" @click="${action('close')}" style="
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        z-index: 10;
-      "></mdc-button>
-
+    <mdc-banner>
       <!-- Using the content slot to completely override the default banner structure -->
       <div slot="content" style="
         display: grid;
@@ -174,22 +161,27 @@ export const PromotionalBanner: StoryObj = {
         gap: 1.5rem;
         align-items: flex-start;
         width: 100%;
-        padding-right: 2rem;
+        padding: 2rem;
       ">
+        <!-- Close button positioned absolutely in top-right corner -->
+        <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Close promotional banner" @click="${action('close')}" style="
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+        "></mdc-button>
+
         <!-- Left Image -->
         <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%" />
 
         <!-- Center Content Area -->
         <div style="flex: 1; min-width: 0;">
           <!-- Title -->
-          <mdc-text type="heading-large-bold" tagname="h3" style="margin: 0 0 0.75rem 0; color: var(--mds-color-theme-text-primary-normal);">Title text</mdc-text>
+          <mdc-text type="heading-large-bold" tagname="h3">Title text</mdc-text>
           
           <!-- Subtitle text -->
-          <mdc-text type="body-midsize-regular" tagname="p" style="margin: 0 0 1rem 0; color: var(--mds-color-theme-text-secondary-normal); line-height: 1.5;">
+          <mdc-text>
             Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus. 
-            <mdc-text type="body-midsize-medium" tagname="span" style="color: var(--mds-color-theme-text-accent-normal); cursor: pointer;" @click="${action('learn-more')}">
-              Learn more
-            </mdc-text>
+            <mdc-link>Learn more</mdc-link>
           </mdc-text>
           
           <!-- Action buttons -->

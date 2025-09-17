@@ -231,6 +231,23 @@ test('mdc-banner', async ({ componentsPage }) => {
       const defaultIcon = banner.locator('mdc-icon');
       await expect(defaultIcon).toHaveCount(0);
     });
+
+    await test.step('banner does not render subtitle without title', async () => {
+      const banner = await setup({
+        componentsPage,
+        variant: BANNER_VARIANT.INFORMATIONAL,
+        subtitle: 'Some subtitle text'
+        // No title provided
+      });
+      
+      // No title should be visible
+      const titleText = banner.locator('mdc-text').first();
+      await expect(titleText).toHaveCount(0);
+      
+      // No subtitle should be visible either
+      const subtitleText = banner.locator('mdc-text').nth(1);
+      await expect(subtitleText).toHaveCount(0);
+    });
   });
 
   /**
@@ -259,37 +276,28 @@ test('mdc-banner', async ({ componentsPage }) => {
       expect(iconBox!.x).toBeLessThan(titleBox!.x);
     });
 
-    await test.step('banner uses custom leading-title slot', async () => {
+    await test.step('banner uses custom leading-text slot', async () => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.SUCCESS,
         children: `
-          <div slot="leading-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <div slot="leading-text" style="display: flex; flex-direction: column; gap: 0.25rem;">
             <mdc-text type="body-large-bold" tagname="h2">Custom Title Layout</mdc-text>
-            <mdc-icon name="check-circle-bold" size="1"></mdc-icon>
+            <mdc-text type="body-midsize-regular" tagname="p">Custom subtitle content</mdc-text>
           </div>
         `
       });
       
-      const customTitle = banner.locator('[slot="leading-title"]');
-      await expect(customTitle).toBeVisible();
+      const customText = banner.locator('[slot="leading-text"]');
+      await expect(customText).toBeVisible();
       
-      const titleIcon = customTitle.locator('mdc-icon');
-      await expect(titleIcon).toBeVisible();
-      await expect(titleIcon).toHaveAttribute('name', 'check-circle-bold');
-    });
-
-    await test.step('banner uses custom leading-subtitle slot', async () => {
-      const banner = await setup({
-        componentsPage,
-        variant: BANNER_VARIANT.INFORMATIONAL,
-        title: 'Title from property',
-        children: `<mdc-text slot="leading-subtitle" type="body-midsize-medium" tagname="p">Custom subtitle content</mdc-text>`
-      });
+      const titleText = customText.locator('mdc-text').first();
+      const subtitleText = customText.locator('mdc-text').nth(1);
       
-      const customSubtitle = banner.locator('[slot="leading-subtitle"]');
-      await expect(customSubtitle).toBeVisible();
-      await expect(customSubtitle).toHaveText('Custom subtitle content');
+      await expect(titleText).toBeVisible();
+      await expect(titleText).toHaveText('Custom Title Layout');
+      await expect(subtitleText).toBeVisible();
+      await expect(subtitleText).toHaveText('Custom subtitle content');
     });
 
     await test.step('banner uses custom trailing-actions slot', async () => {

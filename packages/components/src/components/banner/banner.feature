@@ -34,6 +34,13 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             When the banner is rendered
             Then both title and subtitle should be visible
 
+        Scenario: Banner does not render subtitle without title
+            Given the banner has no title attribute
+            And the banner has subtitle "Some subtitle text"
+            When the banner is rendered
+            Then no title should be visible
+            And no subtitle should be visible
+
         Scenario: Banner renders with short width and auto-shrinking content (no need to write e2e test, already covered in Visual tests)
             Given the banner has a short width
             And the banner has long title and subtitle
@@ -45,12 +52,11 @@ Feature: Banner Accessibility, Appearance, and User Interaction
     Rule: ✅ Slot Functionality
 
         Scenario: Banner uses custom slots to override default content
-            Given the banner provides custom content in the leading-icon, leading-title, leading-subtitle, and trailing-actions slots
+            Given the banner provides custom content in the leading-icon, leading-text, and trailing-actions slots
             And the banner has a title and subtitle set via properties
             When the banner is rendered
             Then the custom icon should be displayed before the text content, overriding the variant-based icon
-            And the custom title content should be displayed, overriding the title property
-            And the custom subtitle content should be displayed, overriding the subtitle property
+            And the custom text content should be displayed, overriding the title and subtitle properties
             And the custom actions should be displayed in place of the default trailing actions
 
         Scenario: Banner uses complete content slot override
@@ -64,8 +70,8 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             And the banner uses slots for leading-icon and trailing-actions
             When the banner is rendered
             Then both property-based and slot-based content should be displayed
-            And the banner should display leading section with icon
-            And the content section should contain title and subtitle text
+            And the banner should display leading section with icon and text
+            And the text content should contain title and subtitle from properties
             And the trailing section should contain custom action buttons
 
     Rule: ✅ Focus Management and Navigation
