@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
-import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
@@ -18,7 +18,6 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
-import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { ElementStore } from '../../utils/controllers/ElementStore';
@@ -173,9 +172,6 @@ class Combobox
    */
   @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
   backdropAppendTo?: string;
-
-  /** @internal */
-  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
   @query(`[role="${ROLE.COMBOBOX}"]`) private visualCombobox!: HTMLInputElement;
@@ -550,41 +546,45 @@ class Combobox
    * Updates the hidden state of options based on the current filtered value.
    * If an option does not match the current filtered value, it is hidden.
    * Otherwise, it is made visible.
+   * Additionally, it updates the hidden state of option groups and dividers based on the current filtered value.
    */
   private updateHiddenOptions(): void {
     this.navItems.forEach(option => {
       if (!this.compareOptionWithValue(option, this.filteredValue)) {
         option.setAttribute('data-hidden', '');
+        this.hideOptionGroupAndDivider(option);
       } else {
         option.removeAttribute('data-hidden');
+        this.showOptionGroupAndDivider(option);
       }
     });
   }
 
-  /**
-   * Updates the hidden state of option groups label heading based on the current filtered value.
-   * If an option group does not have any visible options, it is hidden (including the divider at the end of option group).
-   * Otherwise, it is made visible.
-   */
-  private updateHiddenOptionGroups(): void {
-    const optionGroups = Array.from(this.slottedListboxes[0]?.querySelectorAll(OPTIONGROUP_TAG_NAME) || []);
-    if (!optionGroups.length) return;
-    optionGroups.forEach(optionGroup => {
-      const optionGroupChildren = Array.from(optionGroup.children)?.filter(
+  private hideOptionGroupAndDivider(option: Option): void {
+    if (option.parentElement?.matches(OPTIONGROUP_TAG_NAME)) {
+      const optionGroupChildren = Array.from(option.parentElement.children)?.filter(
         option => !option.hasAttribute('data-hidden'),
       );
       if (optionGroupChildren.length === 0) {
-        optionGroup.setAttribute('data-hidden', '');
-      } else {
-        optionGroup.removeAttribute('data-hidden');
+        option.parentElement.setAttribute('data-hidden', '');
+        if (option.parentElement.nextElementSibling?.matches(DIVIDER_TAG_NAME)) {
+          option.parentElement.nextElementSibling.setAttribute('data-hidden', '');
+        }
       }
-    });
-    const visibleOptionGroups = optionGroups.filter(optionGroup => !optionGroup.hasAttribute('data-hidden'));
-    const dividers = Array.from(this.slottedListboxes[0]?.querySelectorAll(DIVIDER_TAG_NAME) || []);
-    if (visibleOptionGroups.length <= 1) {
-      dividers.forEach(divider => divider.setAttribute('data-hidden', ''));
-    } else {
-      dividers.forEach(divider => divider.removeAttribute('data-hidden'));
+    }
+  }
+
+  private showOptionGroupAndDivider(option: Option): void {
+    if (option.parentElement?.matches(OPTIONGROUP_TAG_NAME)) {
+      const optionGroupChildren = Array.from(option.parentElement.children)?.filter(
+        option => !option.hasAttribute('data-hidden'),
+      );
+      if (optionGroupChildren.length > 0) {
+        option.parentElement.removeAttribute('data-hidden');
+        if (option.parentElement.nextElementSibling?.matches(DIVIDER_TAG_NAME)) {
+          option.parentElement.nextElementSibling.removeAttribute('data-hidden');
+        }
+      }
     }
   }
 
@@ -593,7 +593,6 @@ class Combobox
     this.resetSelectedValue();
     this.resetFocusedOption();
     this.updateHiddenOptions();
-    this.updateHiddenOptionGroups();
     // remove the selected attribute on input change
     this.getFirstSelectedOption()?.removeAttribute('selected');
     if (this.isOpen === false) {
@@ -611,9 +610,6 @@ class Combobox
 
   private shouldDisplayPopover(optionsLength: number): boolean {
     if (this.disabled || this.readonly) {
-      return false;
-    }
-    if (!this.slottedListboxes[0]) {
       return false;
     }
     if (optionsLength) {
@@ -690,7 +686,7 @@ class Combobox
   }
 
   private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
-    return this.slottedListboxes[0] && optionsLength === 0 && this.noResultText
+    return optionsLength === 0 && this.noResultText
       ? html`<mdc-listitem part="no-result-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
       : nothing;
   }
