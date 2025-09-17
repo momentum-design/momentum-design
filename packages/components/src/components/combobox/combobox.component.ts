@@ -185,6 +185,13 @@ class Combobox
   /** @internal */
   private initialSelectedOption: Option | null = null;
 
+  /**
+   * Flag to suppress blur handling when the user is clicking inside the popover.
+   * (mousedown on options happens before blur — use this to prevent any premature close)
+   * @internal
+   */
+  private suppressBlur = false;
+
   /** @internal */
   get navItems(): Option[] {
     return this.itemsStore.items;
@@ -210,11 +217,7 @@ class Combobox
           this.internals.setFormValue(this.inputElement.value);
         }
       })
-      .catch(error => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
+      .catch(this.handleUpdateError);
   }
 
   private isValidItem(item: Element): boolean {
@@ -245,6 +248,12 @@ class Combobox
   private getVisibleOptions(internalValue: string): Option[] {
     return this.navItems.filter(option => this.compareOptionWithValue(option, internalValue));
   }
+
+  private handleUpdateError = (error: any): void => {
+    if (this.onerror) {
+      this.onerror(error);
+    }
+  };
 
   /**
    * Update the focus when an item is removed.
@@ -318,11 +327,7 @@ class Combobox
         .then(() => {
           this.setInputValidity();
         })
-        .catch(error => {
-          if (this.onerror) {
-            this.onerror(error);
-          }
-        });
+        .catch(this.handleUpdateError);
     }
   }
 
@@ -465,6 +470,13 @@ class Combobox
    * It also updates the input validity.
    */
   private handleBlurChange(): void {
+    // If the user is clicking inside the popover (mousedown happened), avoid closing here.
+    // The mousedown -> blur -> click order would otherwise close the popover before the click handler runs.
+    if (this.suppressBlur) {
+      this.suppressBlur = false;
+      return;
+    }
+
     const options = this.getVisibleOptions(this.filteredValue);
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
 
@@ -482,9 +494,11 @@ class Combobox
     ) {
       this.helpText = this.invalidCustomValueText;
       this.helpTextType = VALIDATION.ERROR;
-      this.closePopover();
     }
+
+    // In common cases (when no selection made and focus moved away), close the popover.
     this.setInputValidity();
+    this.closePopover();
   }
 
   private updateFocusAndScrollIntoView(options: Option[], oldIndex: number, newIndex: number): void {
@@ -600,11 +614,27 @@ class Combobox
     }
   }
 
+  /**
+   * Called on mousedown inside the popover/slot so blur handler doesn't close popover before click.
+   * mousedown happens before blur; we set a flag and let click handler do the selection/close.
+   */
+  private handleOptionsMouseDown(): void {
+    this.suppressBlur = true;
+  }
+
   private handleOptionsClick(event: MouseEvent): void {
-    const option = event.target as Option;
-    if (option && option.tagName === OPTION_TAG_NAME.toUpperCase() && !option.hasAttribute('disabled')) {
+    // ensure we get the actual option element even if the click target is a child node
+    const option = ((event.target as HTMLElement).closest(OPTION_TAG_NAME) as Option) ?? null;
+    if (option && !option.hasAttribute('disabled')) {
       this.setSelectedValue(option);
       this.closePopover();
+      // reset the suppress flag (just in case) and focus the visible combobox input
+      this.suppressBlur = false;
+      this.updateComplete
+        .then(() => {
+          this.visualCombobox?.focus();
+        })
+        .catch(this.handleUpdateError);
     }
   }
 
@@ -746,7 +776,7 @@ class Combobox
           z-index="${ifDefined(this.popoverZIndex)}"
         >
           ${this.renderNoResultsText(options.length)}
-          <slot @mousedown="${this.handleOptionsClick}"></slot>
+          <slot @mousedown="${this.handleOptionsMouseDown}" @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
       ${this.renderHelperText()}
