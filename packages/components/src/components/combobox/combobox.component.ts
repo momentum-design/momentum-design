@@ -628,6 +628,8 @@ class Combobox
     if (option && !option.hasAttribute('disabled')) {
       this.setSelectedValue(option);
       this.closePopover();
+      // Focus on the combobox after click
+      this.updateComplete.then(() => this.handleNativeInputFocus()).catch(this.handleUpdateError);
     }
   }
 
@@ -749,6 +751,7 @@ class Combobox
           }}"
           @closebyoutsideclick="${() => {
             this.closePopover();
+            this.handleNativeInputFocus();
           }}"
           backdrop
           backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
