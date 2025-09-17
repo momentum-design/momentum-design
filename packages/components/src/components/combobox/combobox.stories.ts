@@ -130,7 +130,7 @@ const meta: Meta = {
     'invalid-custom-value-text': {
       control: 'text',
     },
-    ...hideControls(['id', 'value', 'validity', 'willValidate', 'default']),
+    ...hideControls(['id', 'value', 'validity', 'willValidate', 'default', 'itemsStore', 'handleUpdateError']),
     ...textControls([
       '--mdc-combobox-border-color',
       '--mdc-combobox-icon-color',
@@ -293,7 +293,12 @@ export const ComboboxWithSelectedValue: StoryObj = {
 
 export const ComboboxWithLongOptionText: StoryObj = {
   render: () => html`
-    <mdc-combobox placeholder="Type a color" label="Select one color" data-aria-label="Select one color">
+    <mdc-combobox
+      placeholder="Type a color"
+      label="Select one color"
+      data-aria-label="Select one color"
+      style="width: 300px;"
+    >
       <mdc-selectlistbox>
         <mdc-option label="Red"></mdc-option>
         <mdc-option label="Yellow" id="trigger-option"></mdc-option>
