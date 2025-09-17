@@ -515,7 +515,6 @@ class Combobox
 
     // In common cases (when no selection made and focus moved away), close the popover.
     this.setInputValidity();
-    this.closePopover();
   }
 
   private updateFocusAndScrollIntoView(options: Option[], oldIndex: number, newIndex: number): void {
@@ -561,6 +560,10 @@ class Combobox
           // clear the visible value
           this.filteredValue = '';
         }
+        break;
+      }
+      case KEYS.TAB: {
+        this.closePopover();
         break;
       }
       case KEYS.HOME:

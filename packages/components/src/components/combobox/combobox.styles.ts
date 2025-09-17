@@ -117,6 +117,7 @@ const styles = css`
   }
   :host mdc-popover::part(popover-content) {
     max-height: var(--mdc-popover-max-height);
+    outline: none;
   }
   /* High Contrast Mode */
   @media (forced-colors: active) {

@@ -259,7 +259,6 @@ export const ComboboxWithOptionGroups: StoryObj = {
       <mdc-optgroup label="Vegetables">
         <mdc-option value="artichoke" label="Artichokes"></mdc-option>
         <mdc-option value="broccoli" label="Broccoli"></mdc-option>
-        <mdc-option value="tomato" label="Tomato"></mdc-option>
         <mdc-option value="cabbage" label="Cabbages"></mdc-option>
       </mdc-optgroup>
       <mdc-divider></mdc-divider>
