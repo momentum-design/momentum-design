@@ -330,7 +330,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   protected handleOnChange = (instance: Virtualizer, sync: boolean) => {
     // If we are at the bottom of the list and not scrolling, keep us at the bottom of the list.
-    if (!sync && this.isAtBottom && this.scrollElementRef.value) {
+    if (!sync && this.isAtBottom && this.scrollElementRef.value && !this.disableScrollAnchoring) {
       this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
     }
 
