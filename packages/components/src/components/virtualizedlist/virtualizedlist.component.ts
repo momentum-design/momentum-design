@@ -43,13 +43,17 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   /**
    * Object that sets and updates the virtualizer with any relevant props.
-   * There are two required object props in order to get virtualization to work properly.
-   * count - The length of your list that you are virtualizing.
+   * There are three required object props in order to get virtualization to work properly.
+   *
+   * **count** - The length of your list that you are virtualizing.
    * As your list grows/shrinks, this component must be updated with the appropriate value
    * (Same with any other updated prop).
-   * estimateSize - A function that returns the estimated size of your items.
+   *
+   * **estimateSize** - A function that returns the estimated size of your items.
    * If your list is fixed, this will just be the size of your items.
    * If your list is dynamic, try to return approximate the size of each item.
+   *
+   * **getItemKey** - A function that returns a unique key for each item in your list based on its index.
    *
    * A full list of possible props can be in
    * [Tanstack Virtualizer API Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer)
@@ -58,6 +62,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   @property({ type: Object })
   virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
+  /**
+   * Disable automatic scroll anchoring when the list size changes.
+   * By default, the list will attempt to keep the same items in view when the list size changes.
+   * However, if you don't expect the list size to change often, or if you want to handle scroll anchoring yourself,
+   * you can set this prop to true to disable the automatic behavior.
+   *
+   * @default false
+   */
   @property({ type: Boolean })
   disableScrollAnchoring: boolean = false;
 
@@ -67,16 +79,43 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   public scrollElementRef: Ref<HTMLDivElement> = createRef();
 
+  /**
+   * The currently selected index in the list.
+   * If keyboard navigation is being used, this will be the focused item.
+   * If the list is clicked, this will be the last clicked item.
+   * @internal
+   */
   private selectedIndex: number = this.initialFocus;
 
+  /**
+   * The key of the currently selected item.
+   * This is used to keep track where the selected item goes when the list changes size.
+   * @internal
+   */
   private selectedKey: VirtualItem['key'] | null = null;
 
+  /**
+   * The index of the first item in the current virtual items.
+   * @internal
+   */
   private firstIndex: number = 0;
 
+  /**
+   * The key of the first item in the current virtual items.
+   * @internal
+   */
   private firstKey: VirtualItem['key'] | null = null;
 
+  /**
+   * The indexes of items that are not in the current virtual items, but need to be rendered for focus purposes.
+   * @internal
+   */
   private hiddenIndexes: number[] = [];
 
+  /**
+   * Is the scroll position at the bottom of the list?
+   * @internal
+   */
   private isAtBottom: boolean = false;
 
   /**
@@ -112,6 +151,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       return;
     }
 
+    // If we don't have a scroll element yet, just update the options
     if (!this.scrollElementRef.value) {
       this.virtualizer.setOptions({
         ...this.virtualizer.options,
@@ -134,6 +174,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
       const countDifference = Math.abs(this.virtualizerProps.count - oldProps.count);
 
+      // Find the new selected index based on the selected key
       const prevSelectedIndex = this.selectedIndex;
       let newSelectedIndex = this.selectedIndex;
       for (let i = prevSelectedIndex - countDifference; i <= prevSelectedIndex + countDifference; i += 1) {
@@ -143,27 +184,36 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         }
       }
       this.selectedIndex = Math.max(0, Math.min(this.virtualizer.options.count - 1, newSelectedIndex));
+
+      // Wait for the virtualizer to finish updating before we read the new scrollHeight
       this.requestUpdate();
       await this.updateComplete;
 
       if (this.isAtBottom) {
+        // Use this method instead of using scrollToIndex to ensure that refactor in the scroll padding
         this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
 
         return;
       }
 
       const scrollDifference = this.scrollElementRef.value!.scrollHeight - previousScrollHeight;
+      // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
+      // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
       const shouldAdjustScroll =
         (this.focusWithin && prevSelectedIndex < this.selectedIndex) ||
         (!this.focusWithin && this.firstKey !== prevFirstKey);
 
       if (scrollDifference > 0 && shouldAdjustScroll) {
+        // Temporarily disable automatic scroll adjustment on item size change
         this.virtualizer.shouldAdjustScrollPositionOnItemSizeChange = () => false;
+
+        // Update the scroll position to keep the same items in view (and in roughly the same position)
         const scrollTop = previousScrollTop + scrollDifference;
         this.scrollElementRef.value!.scrollTop = scrollTop;
 
         setTimeout(() => {
-          this.virtualizer!.scrollToOffset(scrollTop, { align: 'start' });
+          // Set the scroll position again in case it was changed while the virtualizer was updating
+          this.scrollElementRef.value!.scrollTop = scrollTop;
           this.virtualizer!.shouldAdjustScrollPositionOnItemSizeChange = undefined;
         }, 0);
       }
@@ -172,6 +222,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   /**
    * @returns The virtualizer props merged with necessary internal props.
+   * @internal
    */
   private getVirtualizerProps(): VirtualizerProps & Pick<VirtualizerOptions, 'getScrollElement'> {
     return {
@@ -183,24 +234,27 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   /**
-   * Sets the initial focus of the list based on the `initialFocus` prop and scrolls the item into view.
+   * Sets the initial focus of the list based on the `initial-focus` prop and scrolls the item into view.
    */
   protected override setInitialFocus(): void {
-    const instance = this.virtualizer!;
-
-    this.selectedIndex = Math.max(0, Math.min(instance.options.count - 1, this.initialFocus));
-    this.selectedKey = instance.options.getItemKey(this.selectedIndex);
-
-    instance.scrollToIndex(this.selectedIndex, { align: 'center' });
-
-    // Wait for the virtualizer to render the items before trying to scroll to the index
-    setTimeout(() => {
-      const selectedElement = this.navItems.find(
-        item => this.virtualizer?.indexFromElement(item) === this.selectedIndex,
-      );
-      if (selectedElement) {
-        selectedElement.tabIndex = 0;
+    setTimeout(async () => {
+      if (!this.virtualizer) {
+        return;
       }
+
+      this.selectedIndex = Math.max(0, Math.min(this.virtualizer.options.count - 1, this.initialFocus));
+      this.selectedKey = this.virtualizer.options.getItemKey(this.selectedIndex);
+
+      this.virtualizer.scrollToIndex(this.selectedIndex, { align: 'center' });
+
+      setTimeout(() => {
+        const selectedElement = this.navItems.find(
+          item => this.virtualizer?.indexFromElement(item) === this.selectedIndex,
+        );
+        if (selectedElement) {
+          selectedElement.tabIndex = 0;
+        }
+      }, 1);
     }, 0);
   }
 
@@ -210,6 +264,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.fireVirtualItemsChangeEvent();
   }
 
+  /**
+   * Fires the `virtualItemsChange` event with the current virtual items and a measureElement function.
+   * This is used to inform the parent component of the current virtual items
+   *
+   * @param instance - The virtualizer instance to get the virtual items from. Defaults to the internal virtualizer.
+   * @internal
+   */
   private fireVirtualItemsChangeEvent(instance: Virtualizer = this.virtualizer!): void {
     const virtualItems = instance.getVirtualItems();
 
@@ -223,6 +284,15 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     );
   }
 
+  /**
+   * Provides the element to the virtualizer to measure its size.
+   * In addition if the element is one of the hidden indexes, it moves the element to the correct position for focus purposes.
+   * This means that we can use the browser's own 'scroll on focus' behaviour to refocus the list item when focus is updated.
+   *
+   * @param instance - The virtualizer instance
+   * @param el - The element to measure
+   * @internal
+   */
   private handleMeasureElement = (instance: Virtualizer, el: Element | undefined) => {
     const element = el as HTMLElement | undefined;
     instance.measureElement(element);
@@ -238,6 +308,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       const virtualItems = instance.getVirtualItems();
       const actualItems = virtualItems.filter(({ index }) => !this.hiddenIndexes.includes(index));
 
+      // The scroll element is positioned based on the first item's offset therefore we need to set the location of the
+      // hidden item based on the first actual item.
       const { start } = virtualItems.find(({ index }) => index === elementIndex) ?? {};
       const offset = (start ?? 0) - (actualItems[0]?.start ?? 0);
 
@@ -254,6 +326,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    * @param instance - The virtualizer instance
    * @param sync - Whether the virtualizer is scrolling
+   * @internal
    */
   protected handleOnChange = (instance: Virtualizer, sync: boolean) => {
     // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
@@ -264,11 +337,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   };
 
   /**
-   * Calculates the array of indexes to render. We add the selected index if it's
-   * outside the current range so it can be focused.
+   * Calculates the array of indexes to render. We add the selected index (and +1/-1) if it's
+   * outside the current range so the focus can be kept correctly.
    *
    * @param range - The current range of items being rendered
    * @returns An array of indexes to render, including the selected index if it's outside the current range.
+   * @internal
    */
   protected virtualizerRangeExtractor = (range: Range): number[] => {
     const defaultIndexes = this.virtualizerProps.rangeExtractor?.(range) ?? defaultRangeExtractor(range);
@@ -319,6 +393,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.setSelectedIndex(newIndex);
   }
 
+  /** @internal */
   private setSelectedIndex(navItemIndex: number): void {
     if (!this.virtualizer) {
       return;
@@ -332,12 +407,17 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     }
   }
 
+  /** @internal */
   private setAriaSetSize(element: HTMLElement): void {
     element.setAttribute('aria-setsize', `${this.virtualizer?.options.count ?? -1}`);
   }
 
   /**
-   * Refires the scroll event from the internal scroll container to the host element
+   * Refires the scroll event from the internal scroll container to the host element.
+   * Also updates whether the scroll is at the bottom of the list for scroll anchoring purposes.
+   *
+   * @param event - The scroll event from the internal scroll container.
+   * @internal
    */
   private handleScroll(event: Event): void {
     if (this.scrollElementRef.value && this.virtualizer) {
