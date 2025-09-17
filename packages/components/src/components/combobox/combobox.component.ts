@@ -192,13 +192,6 @@ class Combobox
   /** @internal */
   private initialSelectedOption: Option | null = null;
 
-  /**
-   * Flag to suppress blur handling when the user is clicking inside the popover.
-   * (mousedown on options happens before blur — use this to prevent any premature close)
-   * @internal
-   */
-  private suppressBlur = false;
-
   /** @internal */
   get navItems(): Option[] {
     return this.itemsStore.items;
@@ -487,13 +480,6 @@ class Combobox
    * It also updates the input validity.
    */
   private handleBlurChange(): void {
-    // If the user is clicking inside the popover (mousedown happened), avoid closing here.
-    // The mousedown -> blur -> click order would otherwise close the popover before the click handler runs.
-    if (this.suppressBlur) {
-      this.suppressBlur = false;
-      return;
-    }
-
     const options = this.getVisibleOptions(this.filteredValue);
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
 
@@ -634,27 +620,12 @@ class Combobox
     }
   }
 
-  /**
-   * Called on mousedown inside the popover/slot so blur handler doesn't close popover before click.
-   * mousedown happens before blur; we set a flag and let click handler do the selection/close.
-   */
-  private handleOptionsMouseDown(): void {
-    this.suppressBlur = true;
-  }
-
   private handleOptionsClick(event: MouseEvent): void {
     // ensure we get the actual option element even if the click target is a child node
     const option = ((event.target as HTMLElement).closest(OPTION_TAG_NAME) as Option) ?? null;
     if (option && !option.hasAttribute('disabled')) {
       this.setSelectedValue(option);
       this.closePopover();
-      // reset the suppress flag (just in case) and focus the visible combobox input
-      this.suppressBlur = false;
-      this.updateComplete
-        .then(() => {
-          this.visualCombobox?.focus();
-        })
-        .catch(this.handleUpdateError);
     }
   }
 
@@ -794,7 +765,7 @@ class Combobox
           z-index="${ifDefined(this.popoverZIndex)}"
         >
           ${this.renderNoResultsText(options.length)}
-          <slot @mousedown="${this.handleOptionsMouseDown}" @click="${this.handleOptionsClick}"></slot>
+          <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
       ${this.renderHelperText()}
