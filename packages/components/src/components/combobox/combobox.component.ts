@@ -1,12 +1,16 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
-import { property, query, state } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
+import { ElementStore } from '../../utils/controllers/ElementStore';
 import { KEYS } from '../../utils/keys';
+import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
+import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as DIVIDER_TAG_NAME } from '../divider/divider.constants';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -18,15 +22,12 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
-import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
-import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
-import { ElementStore } from '../../utils/controllers/ElementStore';
-import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
+import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 
-import { AUTOCOMPLETE_LIST, ICON_NAME, LISTBOX_ID, TRIGGER_ID } from './combobox.constants';
+import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
+import { ComboboxEventManager } from './combobox.events';
 import styles from './combobox.styles';
 import type { Placement } from './combobox.types';
-import { ComboboxEventManager } from './combobox.events';
 
 /**
  * The Combobox component is a text-based dropdown control that allows users to select an option from a predefined list.
@@ -175,6 +176,12 @@ class Combobox
 
   /** @internal */
   @query(`[role="${ROLE.COMBOBOX}"]`) private visualCombobox!: HTMLInputElement;
+
+  /** @internal */
+  @query(`[part="combobox__button"]`) private dropDownButton!: HTMLElement;
+
+  /** @internal */
+  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
   @state() private isOpen = false;
@@ -359,6 +366,16 @@ class Combobox
 
   public override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
+
+    if (changedProperties.has('slottedListboxes') || changedProperties.has('isOpen')) {
+      // Ensure the element exists and has the ariaControlsElements property
+      if (this.visualCombobox && 'ariaControlsElements' in this.visualCombobox) {
+        (this.visualCombobox as any).ariaControlsElements = this.slottedListboxes;
+      }
+      if (this.dropDownButton && 'ariaControlsElements' in this.dropDownButton) {
+        (this.dropDownButton as any).ariaControlsElements = this.slottedListboxes;
+      }
+    }
 
     if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
       if (this.disabled || this.readonly) {
@@ -701,7 +718,6 @@ class Combobox
         @keydown=${this.handleInputKeydown}
         @blur="${this.handleBlurChange}"
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
-        aria-controls="${LISTBOX_ID}"
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
         aria-disabled="${this.disabled ? 'true' : 'false'}"
         aria-expanded="${this.isOpen ? 'true' : 'false'}"
@@ -741,7 +757,6 @@ class Combobox
           ?disabled="${this.disabled}"
           tabindex="-1"
           aria-expanded="${this.isOpen ? 'true' : 'false'}"
-          aria-controls="${LISTBOX_ID}"
           aria-label="${this.dataAriaLabel ?? ''}"
         >
           <mdc-icon
