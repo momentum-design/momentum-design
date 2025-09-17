@@ -56,6 +56,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
 
   public override role: string | null = ROLE.LIST;
 
+  /** @internal */
   protected focusWithin = false;
 
   constructor() {
@@ -120,6 +121,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     this.resetTabIndexes(newIndex, this.focusWithin);
   }
 
+  /** @internal */
   private handleFocusEvent = (event: FocusEvent) => {
     // If previously focused element is being removed from the DOM, ignore the focusout event
     if (event.relatedTarget === null) {
