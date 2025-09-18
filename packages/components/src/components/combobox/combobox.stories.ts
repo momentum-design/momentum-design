@@ -52,12 +52,12 @@ const render = (args: Args) =>
   </mdc-combobox>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/combobox',
+  title: 'Components/combobox',
   tags: ['autodocs'],
   component: 'mdc-combobox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'auto-focus-on-mount': {
