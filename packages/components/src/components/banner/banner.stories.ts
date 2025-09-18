@@ -168,44 +168,65 @@ export const PromotionalBanner: StoryObj = {
   render: () => html`
     <mdc-banner>
       <!-- Using the content slot to completely override the default banner structure -->
-      <div slot="content" style="
+      <div 
+        slot="content" 
+        style="
         display: grid;
         grid-template-columns: auto 1fr auto;
         gap: 1.5rem;
         align-items: flex-start;
         width: 100%;
-        padding: 2rem;
+        padding: 0 2rem;
       ">
         <!-- Close button positioned absolutely in top-right corner -->
-        <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Close promotional banner" @click="${action('close')}" style="
+        <mdc-button
+          variant="tertiary"
+          prefix-icon="cancel-bold"
+          size="20"
+          aria-label="Close promotional banner"
+          @click="${action('close')}"
+          style="
           position: absolute;
-          top: 1rem;
           right: 1rem;
         "></mdc-button>
 
         <!-- Left Image -->
-        <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%" />
+        <img 
+          src=${imageFixtures.card} 
+          alt="Promotional image" 
+          style="
+          width: 120px;
+          height: 100%;
+          object-fit: cover;
+        " />
 
         <!-- Center Content Area -->
         <div style="flex: 1; min-width: 0;">
           <!-- Title -->
           <mdc-text type="heading-large-bold" tagname="h3">Title text</mdc-text>
-          
+
           <!-- Subtitle text -->
           <mdc-text>
             Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus. 
             <mdc-link>Learn more</mdc-link>
           </mdc-text>
-          
+
           <!-- Action buttons -->
-          <div style="display: flex; gap: 0.75rem;">
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
             <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}">Label</mdc-button>
             <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}">Label</mdc-button>
           </div>
         </div>
 
         <!-- Right Image -->
-        <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%"/>
+        <img 
+          src=${imageFixtures.card} 
+          alt="Promotional image" 
+          style="
+          width: 120px;
+          height: 100%;
+          object-fit: cover;
+        "/>
       </div>
     </mdc-banner>
   `,
