@@ -1,7 +1,7 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
 
 import '.';
 import '../button';
@@ -47,16 +47,15 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['children']),
+    ...disableControls(['children', 'content', 'leading-icon', 'leading-text', 'trailing-actions']),
     ...textControls([
       '--mdc-banner-background-color',
       '--mdc-banner-border-color',
-      '--mdc-banner-text-color',
       '--mdc-banner-icon-color',
       '--mdc-banner-elevation-3',
       '--mdc-banner-padding',
       '--mdc-banner-gap',
-    ])
+    ]),
   },
 };
 
@@ -72,7 +71,13 @@ const DefaultButtons = html`
   <div slot="trailing-actions">
     <mdc-button variant="tertiary" aria-label="Cancel action">Cancel</mdc-button>
     <mdc-button variant="secondary" aria-label="Perform primary action">Action</mdc-button>
-    <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
+    <mdc-button
+      variant="tertiary"
+      prefix-icon="cancel-bold"
+      size="20"
+      aria-label="Dismiss banner"
+      @click="${action('dismiss')}"
+    ></mdc-button>
   </div>
 `;
 
@@ -118,7 +123,14 @@ export const AllVariants: StoryObj = {
           subtitle: 'Unable to connect to the server. Please try again.',
           children: html`
             ${DefaultButtons}
-            <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection" @click="${action('retry')}"></mdc-button>
+            <mdc-button
+              slot="trailing-actions"
+              variant="tertiary"
+              prefix-icon="reset-bold"
+              size="20"
+              aria-label="Retry connection"
+              @click="${action('retry')}"
+            ></mdc-button>
           `,
         },
         {
@@ -126,8 +138,8 @@ export const AllVariants: StoryObj = {
           title: 'Changes Saved',
           subtitle: 'Your changes have been successfully saved.',
           children: DefaultButtons,
-        }
-      ].map((args) => render(args))}
+        },
+      ].map(args => render(args))}
     </div>
   `,
   ...hideAllControls(),
