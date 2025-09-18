@@ -255,12 +255,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     }, 0);
   }
 
-  protected override willUpdate(changedProperties: PropertyValues<this>): void {
-    super.willUpdate(changedProperties);
-
-    this.fireVirtualItemsChangeEvent();
-  }
-
   /**
    * Fires the `virtualItemsChange` event with the current virtual items and a measureElement function.
    * This is used to inform the parent component of the current virtual items
@@ -336,6 +330,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.updateComplete.then(() => this.requestUpdate());
     this.virtualizerProps.onChange?.(instance, sync);
+
+    this.fireVirtualItemsChangeEvent();
   };
 
   /**
