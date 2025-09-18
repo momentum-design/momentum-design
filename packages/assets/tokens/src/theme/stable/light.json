@@ -1478,6 +1478,13 @@
             "type": "color",
             "description": "Used for operation pop"
           }
+        },
+        "ai": {
+          "normal": {
+            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%);",
+            "type": "color",
+            "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%);\nUsed for AI assistant feature"
+          }
         }
       },
       "control": {
