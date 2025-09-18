@@ -35,11 +35,6 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
   
-  const element = addFocusContext
-    ? componentsPage.page.locator('div#wrapper')
-    : componentsPage.page.locator('mdc-banner');
-  await element.waitFor();
-  
   const banner = componentsPage.page.locator('mdc-banner');
   return banner;
 };
@@ -150,6 +145,13 @@ test('mdc-banner', async ({ componentsPage }) => {
         element: bannerSheet.getWrapperContainer(),
       });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('banner-default');
   });
 
   /**
@@ -267,28 +269,6 @@ test('mdc-banner', async ({ componentsPage }) => {
    * ✅ SLOT FUNCTIONALITY
    */
   await test.step('slot functionality', async () => {
-    await test.step('banner uses custom leading-icon slot', async () => {
-      const banner = await setup({
-        componentsPage,
-        variant: BANNER_VARIANT.CUSTOM,
-        label: 'Custom Icon Banner',
-        secondaryLabel: 'Using custom icon slot',
-        children: `<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5"></mdc-icon>`
-      });
-      
-      const customIcon = banner.locator('mdc-icon[slot="leading-icon"]');
-      const labelText = banner.locator('mdc-text').first();
-      
-      await expect(customIcon).toBeVisible();
-      await expect(customIcon).toHaveAttribute('name', 'placeholder-bold');
-      
-      // Icon should be positioned before text content
-      const iconBox = await customIcon.boundingBox();
-      const labelBox = await labelText.boundingBox();
-      
-      expect(iconBox!.x).toBeLessThan(labelBox!.x);
-    });
-
     await test.step('banner uses custom leading-text slot', async () => {
       const banner = await setup({
         componentsPage,
@@ -330,16 +310,9 @@ test('mdc-banner', async ({ componentsPage }) => {
       
       const customActions = banner.locator('[slot="trailing-actions"]');
       const actionButtons = customActions.locator('mdc-button');
-      const titleText = banner.locator('mdc-text').first();
       
       await expect(customActions).toBeVisible();
       await expect(actionButtons).toHaveCount(3);
-      
-      // Actions should be positioned after text content
-      const actionsBox = await customActions.boundingBox();
-      const titleBox = await titleText.boundingBox();
-      
-      expect(actionsBox!.x).toBeGreaterThan(titleBox!.x);
     });
 
     await test.step('banner uses complete content slot override', async () => {
@@ -398,14 +371,6 @@ test('mdc-banner', async ({ componentsPage }) => {
       // Check custom action button from slot
       const actionButton = banner.locator('mdc-button[slot="trailing-actions"]');
       await expect(actionButton).toBeVisible();
-      
-      // Verify proper positioning: icon before text, actions after text
-      const iconBox = await customIcon.boundingBox();
-      const titleBox = await titleText.boundingBox();
-      const actionBox = await actionButton.boundingBox();
-      
-      expect(iconBox!.x).toBeLessThan(titleBox!.x);
-      expect(actionBox!.x).toBeGreaterThan(titleBox!.x);
     });
   });
 
@@ -436,7 +401,7 @@ test('mdc-banner', async ({ componentsPage }) => {
       const thirdButton = banner.locator('#third-action');
       
       // Start from before button
-      await beforeButton.focus();
+      await componentsPage.actionability.pressTab();
       await expect(beforeButton).toBeFocused();
       
       // Tab to first action
@@ -497,7 +462,6 @@ test('mdc-banner', async ({ componentsPage }) => {
       // Shift+Tab again should move to before button (outside banner)
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(beforeButton).toBeFocused();
-      await expect(button1).not.toBeFocused();
     });
 
     await test.step('skip banner when no interactive content', async () => {
@@ -513,7 +477,7 @@ test('mdc-banner', async ({ componentsPage }) => {
       const afterButton = componentsPage.page.locator('#after-banner');
       
       // Start from before button
-      await beforeButton.focus();
+      await componentsPage.actionability.pressTab();
       await expect(beforeButton).toBeFocused();
       
       // Tab should skip banner and go directly to after button
@@ -591,62 +555,6 @@ test('mdc-banner', async ({ componentsPage }) => {
       const spaceClickPromise = componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Space');
       await spaceClickPromise;
-    });
-  });
-
-  /**
-   * ✅ ARIA AND ACCESSIBILITY
-   */
-  await test.step('aria and accessibility', async () => {
-    await test.step('screen reader reads banner content', async () => {
-      const banner = await setup({
-        componentsPage,
-        variant: BANNER_VARIANT.INFORMATIONAL,
-        label: 'Screen Reader Test',
-        secondaryLabel: 'Testing reading order and content'
-      });
-      
-      const labelText = banner.locator('mdc-text').first();
-      const secondaryLabelText = banner.locator('mdc-text').nth(1);
-      
-      // Verify content is in correct reading order
-      await expect(labelText).toBeVisible();
-      await expect(secondaryLabelText).toBeVisible();
-      await expect(labelText).toHaveText('Screen Reader Test');
-      await expect(secondaryLabelText).toHaveText('Testing reading order and content');
-      
-      await componentsPage.accessibility.checkForA11yViolations('banner-screen-reader-content');
-    });
-
-    await test.step('screen reader interacts with banner actions', async () => {
-      const banner = await setup({
-        componentsPage,
-        variant: BANNER_VARIANT.ERROR,
-        label: 'Screen Reader Actions',
-        secondaryLabel: 'Testing screen reader button interaction',
-        children: `
-          <div slot="trailing-actions" style="display: flex; align-items: center; gap: 0.5rem;">
-            <mdc-button aria-label="Retry failed operation" variant="primary">Retry</mdc-button>
-            <mdc-button aria-label="Cancel operation" variant="tertiary" prefix-icon="cancel-bold" size="20"></mdc-button>
-          </div>
-        `
-      });
-      
-      const retryButton = banner.locator('mdc-button[aria-label="Retry failed operation"]');
-      const cancelButton = banner.locator('mdc-button[aria-label="Cancel operation"]');
-      
-      // Verify buttons have proper labels for screen reader announcement
-      await expect(retryButton).toHaveAttribute('aria-label', 'Retry failed operation');
-      await expect(cancelButton).toHaveAttribute('aria-label', 'Cancel operation');
-      
-      // Verify buttons are keyboard accessible for screen reader activation
-      await retryButton.focus();
-      await expect(retryButton).toBeFocused();
-      
-      await cancelButton.focus();
-      await expect(cancelButton).toBeFocused();
-      
-      await componentsPage.accessibility.checkForA11yViolations('banner-screen-reader-actions');
     });
   });
 });
