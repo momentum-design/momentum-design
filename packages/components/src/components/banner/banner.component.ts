@@ -1,4 +1,4 @@
-import type { CSSResult } from 'lit';
+import type { CSSResult} from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -12,23 +12,23 @@ import type { BannerVariant } from './banner.types';
 import { getIconNameForVariant } from './banner.utils';
 
 /**
- * `mdc-banner` is a component that allows applications to communicate important messages to users
- * and requires user action to dismiss them. It supports different message types with appropriate styling
+ * `mdc-banner` is a component that allows applications to communicate important messages to users 
+ * and require user action to disappear. It supports different message types with appropriate styling 
  * and icons, and provides flexibility for customization through title, subtitle, icons, and actions.
- *
+ * 
  * Banners typically appear at the top of a page or section and provide contextual information, updates, or alerts.
- * They are designed to be noticeable yet non-intrusive, helping users stay informed without interrupting their workflow.
- *
- * This component supports both structured content via properties and flexible customization via slots:
- * - Use the properties (`title`, `subtitle`, `variant`) for standard banner layouts with automatic icon selection.
- * - Use slots for custom content and complete layout control.
- * - Combine both approaches for maximum flexibility.
- * - Create custom orientations and actions using CSS parts and slots.
- *
+ * They are designed to be noticeable but non-intrusive, helping users stay informed without interrupting their workflow.
+ * 
+ * The component supports both structured content via properties and flexible customization via slots:
+ * - Use properties (title, subtitle, variant) for standard banner layouts with automatic icon selection
+ * - Use slots for custom content and complete layout control
+ * - Combine both approaches for maximum flexibility
+ * - Create custom orientations and actions using CSS parts and slots
+ * 
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @slot content - Complete content override. When used, it replaces all default banner content including icon, title, subtitle, and actions.
+ * @slot content - Complete content override. When used, replaces all default banner content including icon, title, subtitle, and actions.
  * @slot leading-icon - Custom icon content. Overrides the default variant-based icon.
  * @slot leading-text - Custom text content. Overrides the title and subtitle properties.
  * @slot trailing-actions - Custom action buttons and controls. Use this for dismiss buttons, reset buttons, or any other actions.
@@ -44,6 +44,7 @@ import { getIconNameForVariant } from './banner.utils';
  *
  * @cssproperty --mdc-banner-background-color - Background color of the banner.
  * @cssproperty --mdc-banner-border-color - Border color of the banner.
+ * @cssproperty --mdc-banner-text-color - Color of the text in the banner.
  * @cssproperty --mdc-banner-icon-color - Color of the icon in the banner.
  * @cssproperty --mdc-banner-elevation-3 - Elevation/shadow of the banner.
  * @cssproperty --mdc-banner-padding - Padding inside the banner.
@@ -51,10 +52,10 @@ import { getIconNameForVariant } from './banner.utils';
  */
 class Banner extends Component {
   /**
-   * The type of banner variant.
-   * - Can be `custom`, `informational`, `warning`, `error`, or `success`.
-   *
-   * Note: When using the `custom` variant, provide your own icon via the `leading-icon` slot; otherwise, no icon will be shown.
+   * Type of banner variant
+   * - Can be `custom`, `informational`, `warning`, `error` or `success`.
+   * 
+   * Note: When using `custom` variant, provide your own icon via the `leading-icon` slot, else no icon will be shown.
    * @default 'custom'
    */
   @property({ type: String, reflect: true })
@@ -81,13 +82,12 @@ class Banner extends Component {
    * @returns Template result containing the icon element, or nothing if no icon name provided
    */
   protected renderIcon(iconName: string) {
-    if (!iconName) return nothing;
+    if(!iconName) return nothing;
     return html`
       <mdc-icon
         name="${iconName as IconNames}"
         size="${DEFAULTS.PREFIX_ICON_SIZE}"
         part="leading-icon"
-        length-unit="rem"
       ></mdc-icon>
     `;
   }
@@ -95,29 +95,34 @@ class Banner extends Component {
   /**
    * Generates a template for the title and subtitle text.
    * Returns nothing if no title is provided, ensuring subtitle is only shown when title exists.
-   *
+   * 
    * @returns Template result containing title and optional subtitle elements
    */
   protected getTextTitle() {
-    if (!this.title) return nothing;
+    if(!this.title) return nothing;
     return html`
-      <mdc-text part="leading-title" type="${TYPE.BODY_LARGE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}"
-        >${this.title}</mdc-text
-      >
-      ${this.subtitle
-        ? html`<mdc-text part="leading-subtitle" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}"
-            >${this.subtitle}</mdc-text
-          >`
-        : nothing}
+        <mdc-text part="leading-title" type="${TYPE.BODY_LARGE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${this.title}</mdc-text>
+        ${this.subtitle ? html`<mdc-text part="leading-subtitle" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${this.subtitle}</mdc-text>` : nothing}
     `;
   }
 
   public override render() {
+    const hasOnlyTitle = this.title && !this.subtitle;
+    
+    // Set attribute for CSS styling
+    if (hasOnlyTitle) {
+      this.setAttribute('title-only', '');
+    } else {
+      this.removeAttribute('title-only');
+    }
+    
     return html`
       <slot name="content">
         <div part="leading">
           <slot name="leading-icon">
-            ${this.variant !== DEFAULTS.VARIANT ? this.renderIcon(getIconNameForVariant(this.variant) ?? '') : nothing}
+            ${this.variant !== DEFAULTS.VARIANT 
+              ? this.renderIcon(getIconNameForVariant(this.variant) ?? '')
+              : nothing}
           </slot>
           <slot name="leading-text">
             <div part="leading-text">${this.getTextTitle()}</div>

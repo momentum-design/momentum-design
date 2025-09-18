@@ -4,7 +4,8 @@ const styles = css`
   :host {
     --mdc-banner-background-color: var(--mds-color-theme-background-solid-primary-normal);
     --mdc-banner-border-color: var(--mds-color-theme-outline-secondary-normal);
-    --mdc-banner-icon-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-banner-text-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-banner-icon-color: var(--mdc-banner-text-color);
     --mdc-banner-elevation-3: var(--mds-elevation-3);
     --mdc-banner-padding: 0.75rem;
     --mdc-banner-gap: 0.5rem;
@@ -60,7 +61,7 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host([title])::part(leading) {
+  :host([title-only])::part(leading) {
     align-items: center;
   }
 
@@ -77,7 +78,7 @@ const styles = css`
     flex-wrap: wrap;
   }
 
-  ::slotted([slot='trailing-actions']) {
+  ::slotted([slot="trailing-actions"]) {
     display: flex;
     align-items: center;
     gap: var(--mdc-banner-gap);
