@@ -1,7 +1,7 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
 
 import '.';
 import '../button';
@@ -47,16 +47,15 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['children']),
+    ...disableControls(['children', 'content', 'leading-icon', 'leading-text', 'trailing-actions']),
     ...textControls([
       '--mdc-banner-background-color',
       '--mdc-banner-border-color',
-      '--mdc-banner-text-color',
       '--mdc-banner-icon-color',
       '--mdc-banner-elevation-3',
       '--mdc-banner-padding',
       '--mdc-banner-gap',
-    ])
+    ]),
   },
 };
 
@@ -72,7 +71,13 @@ const DefaultButtons = html`
   <div slot="trailing-actions">
     <mdc-button variant="tertiary" aria-label="Cancel action">Cancel</mdc-button>
     <mdc-button variant="secondary" aria-label="Perform primary action">Action</mdc-button>
-    <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Dismiss banner" @click="${action('dismiss')}"></mdc-button>
+    <mdc-button
+      variant="tertiary"
+      prefix-icon="cancel-bold"
+      size="20"
+      aria-label="Dismiss banner"
+      @click="${action('dismiss')}"
+    ></mdc-button>
   </div>
 `;
 
@@ -118,7 +123,14 @@ export const AllVariants: StoryObj = {
           subtitle: 'Unable to connect to the server. Please try again.',
           children: html`
             ${DefaultButtons}
-            <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection" @click="${action('retry')}"></mdc-button>
+            <mdc-button
+              slot="trailing-actions"
+              variant="tertiary"
+              prefix-icon="reset-bold"
+              size="20"
+              aria-label="Retry connection"
+              @click="${action('retry')}"
+            ></mdc-button>
           `,
         },
         {
@@ -126,8 +138,8 @@ export const AllVariants: StoryObj = {
           title: 'Changes Saved',
           subtitle: 'Your changes have been successfully saved.',
           children: DefaultButtons,
-        }
-      ].map((args) => render(args))}
+        },
+      ].map(args => render(args))}
     </div>
   `,
   ...hideAllControls(),
@@ -156,20 +168,30 @@ export const PromotionalBanner: StoryObj = {
   render: () => html`
     <mdc-banner>
       <!-- Using the content slot to completely override the default banner structure -->
-      <div slot="content" style="
+      <div
+        slot="content"
+        style="
         display: grid;
         grid-template-columns: auto 1fr auto;
         gap: 1.5rem;
         align-items: flex-start;
         width: 100%;
         padding: 2rem;
-      ">
+      "
+      >
         <!-- Close button positioned absolutely in top-right corner -->
-        <mdc-button variant="tertiary" prefix-icon="cancel-bold" size="20" aria-label="Close promotional banner" @click="${action('close')}" style="
+        <mdc-button
+          variant="tertiary"
+          prefix-icon="cancel-bold"
+          size="20"
+          aria-label="Close promotional banner"
+          @click="${action('close')}"
+          style="
           position: absolute;
           top: 1rem;
           right: 1rem;
-        "></mdc-button>
+        "
+        ></mdc-button>
 
         <!-- Left Image -->
         <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%" />
@@ -178,22 +200,26 @@ export const PromotionalBanner: StoryObj = {
         <div style="flex: 1; min-width: 0;">
           <!-- Title -->
           <mdc-text type="heading-large-bold" tagname="h3">Title text</mdc-text>
-          
+
           <!-- Subtitle text -->
           <mdc-text>
-            Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus. 
+            Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus.
             <mdc-link>Learn more</mdc-link>
           </mdc-text>
-          
+
           <!-- Action buttons -->
           <div style="display: flex; gap: 0.75rem;">
-            <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}">Label</mdc-button>
-            <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}">Label</mdc-button>
+            <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}"
+              >Label</mdc-button
+            >
+            <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}"
+              >Label</mdc-button
+            >
           </div>
         </div>
 
         <!-- Right Image -->
-        <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%"/>
+        <img src=${imageFixtures.card} alt="Promotional image" style="height: 100%" />
       </div>
     </mdc-banner>
   `,
