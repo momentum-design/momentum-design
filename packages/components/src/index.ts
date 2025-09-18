@@ -80,6 +80,7 @@ import VirtualizedList from './components/virtualizedlist';
 import Combobox from './components/combobox';
 import Slider from './components/slider';
 import ListBox from './components/listbox';
+import Banner from './components/banner';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -193,6 +194,7 @@ export {
   Combobox,
   Slider,
   ListBox,
+  Banner
 };
 
 // Types Exports
