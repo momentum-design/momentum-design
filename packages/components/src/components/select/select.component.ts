@@ -229,12 +229,12 @@ class Select
    * @internal
    */
   private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as HTMLElement;
+    const destroyedElement = event.target as Option;
     if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
       return;
     }
 
-    const destroyedItemIndex = this.navItems.indexOf(destroyedElement as Option);
+    const destroyedItemIndex = this.navItems.indexOf(destroyedElement);
     if (destroyedItemIndex === -1) {
       return;
     }
@@ -242,6 +242,12 @@ class Select
     let newIndex = destroyedItemIndex + 1;
     if (newIndex >= this.navItems.length) {
       newIndex = destroyedItemIndex - 1;
+    }
+
+    if (newIndex === -1) {
+      this.displayPopover = false;
+      this.handleNativeInputFocus();
+      return;
     }
 
     this.resetTabIndexes(newIndex);
