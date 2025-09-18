@@ -205,6 +205,10 @@ const styles = [
       line-height: var(--mdc-divider-text-line-height);
       flex-shrink: 0;
     }
+
+    :host([data-hidden]) {
+      display: none;
+    }
   `,
 ];
 
