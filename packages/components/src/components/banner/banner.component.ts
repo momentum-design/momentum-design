@@ -74,10 +74,9 @@ class Banner extends Component {
   secondaryLabel?: string;
 
   /**
-   * Renders the icon based on the provided icon name.
-   * Used internally to display variant-specific icons.
-   *
    * @internal
+   * Renders the icon based on the provided icon name.
+   * 
    * @param iconName - The name of the icon to render
    * @returns Template result containing the icon element, or nothing if no icon name provided
    */
@@ -94,12 +93,13 @@ class Banner extends Component {
   }
 
   /**
+   * @internal
    * Generates a template for the label and secondary label text.
    * Returns nothing if no label is provided, ensuring secondary label is only shown when label exists.
    *
    * @returns Template result containing label and optional secondary label elements
    */
-  protected getTextLabel() {
+  private getTextLabel() {
     if (!this.label) return nothing;
     return html`
       <mdc-text part="leading-label" type="${TYPE.BODY_LARGE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}"
