@@ -129,6 +129,7 @@ Feature: Combobox component
       And I press Tab key once
       Then the combobox input text should still have "aus"
       And the dropdown should be closed
+      And a custom validation message should be displayed
       And the DOM focus should not be on the combobox
 
     Scenario: User leaves the combobox with valid input text and navigates to the first option using the keyboard
