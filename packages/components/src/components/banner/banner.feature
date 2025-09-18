@@ -22,28 +22,28 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             When the banner is rendered
             Then no default leading icon should be displayed
 
-        Scenario: Banner renders with title only
-            Given the title is set to "System Update"
-            And no subtitle is provided
-            Then the banner should render the title
-            And no subtitle should be visible
+        Scenario: Banner renders with label only
+            Given the label is set to "System Update"
+            And no secondary label is provided
+            Then the banner should render the label
+            And no secondary label should be visible
 
-        Scenario: Banner renders with both title and subtitle
-            Given the banner has title "Main Title"
-            And the banner has subtitle "Supporting subtitle"
+        Scenario: Banner renders with both label and secondary label
+            Given the banner has label "Main Label"
+            And the banner has secondary label "Supporting secondary label"
             When the banner is rendered
-            Then both title and subtitle should be visible
+            Then both label and secondary label should be visible
 
-        Scenario: Banner does not render subtitle without title
-            Given the banner has no title attribute
-            And the banner has subtitle "Some subtitle text"
+        Scenario: Banner does not render secondary label without label
+            Given the banner has no label attribute
+            And the banner has secondary label "Some secondary label text"
             When the banner is rendered
-            Then no title should be visible
-            And no subtitle should be visible
+            Then no label should be visible
+            And no secondary label should be visible
 
         Scenario: Banner renders with constrained width and wrapping content
             Given the banner has a constrained width
-            And the banner has long title and subtitle
+            And the banner has long label and secondary label
             And the banner has trailing actions
             When the banner is rendered
             Then both title and subtitle should wrap to multiple lines
@@ -54,10 +54,10 @@ Feature: Banner Accessibility, Appearance, and User Interaction
 
         Scenario: Banner uses custom slots to override default content
             Given the banner provides custom content in the leading-icon, leading-text, and trailing-actions slots
-            And the banner has a title and subtitle set via properties
+            And the banner has a label and secondary label set via properties
             When the banner is rendered
             Then the custom icon should be displayed before the text content, overriding the variant-based icon
-            And the custom text content should be displayed, overriding the title and subtitle properties
+            And the custom text content should be displayed, overriding the label and secondary label properties
             And the custom actions should be displayed in place of the default trailing actions
 
         Scenario: Banner uses complete content slot override
@@ -67,12 +67,12 @@ Feature: Banner Accessibility, Appearance, and User Interaction
             And all default banner structure (leading, content, trailing) should be overridden
 
         Scenario: Banner provides hybrid approach flexibility
-            Given the banner uses properties for title and subtitle
+            Given the banner uses properties for label and secondary label
             And the banner uses slots for leading-icon and trailing-actions
             When the banner is rendered
             Then both property-based and slot-based content should be displayed
             And the banner should display leading section with icon and text
-            And the text content should contain title and subtitle from properties
+            And the text content should contain label and secondary label from properties
             And the trailing section should contain custom action buttons
 
     Rule: Focus Management and Navigation
@@ -131,10 +131,10 @@ Feature: Banner Accessibility, Appearance, and User Interaction
     Rule: ARIA and Screen Reader Accessibility
 
         Scenario: Screen reader reads banner content
-            Given the banner has title and subtitle
+            Given the banner has label and secondary label
             When a screen reader navigates to the banner
-            Then the screen reader should read the title content
-            And the screen reader should read the subtitle content
+            Then the screen reader should read the label content
+            And the screen reader should read the secondary label content
             And the screen reader should read them in the correct order
 
         Scenario: Screen reader interacts with banner actions

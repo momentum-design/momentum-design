@@ -5,7 +5,7 @@ const styles = css`
     --mdc-banner-background-color: var(--mds-color-theme-background-solid-primary-normal);
     --mdc-banner-border-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-banner-icon-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-banner-elevation-3: var(--mds-elevation-3);
+    --mdc-banner-elevation: var(--mds-elevation-3);
     --mdc-banner-padding: 0.75rem;
     --mdc-banner-gap: 0.5rem;
 
@@ -18,7 +18,7 @@ const styles = css`
     background-color: var(--mdc-banner-background-color);
     border: 1px solid var(--mdc-banner-border-color);
     border-radius: 0.5rem;
-    filter: var(--mdc-banner-elevation-3);
+    filter: var(--mdc-banner-elevation);
   }
 
   :host([variant='success']) {
@@ -60,7 +60,7 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host(:not([subtitle]))::part(leading) {
+  :host(:not([secondary-label]))::part(leading) {
     align-items: center;
   }
 

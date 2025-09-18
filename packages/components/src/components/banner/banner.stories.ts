@@ -17,8 +17,8 @@ import { BANNER_VARIANT } from './banner.constants';
 const render = (args: Args) => html`
   <mdc-banner
     variant="${ifDefined(args.variant)}"
-    title="${ifDefined(args.title)}"
-    subtitle="${ifDefined(args.subtitle)}"
+    label="${ifDefined(args.label)}"
+    secondary-label="${ifDefined(args['secondary-label'])}"
     class="${args.class}"
     style="${args.style}"
   >
@@ -27,22 +27,22 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/banner',
+  title: 'Components/banner',
   tags: ['autodocs'],
   component: 'mdc-banner',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
       control: 'select',
       options: Object.values(BANNER_VARIANT),
     },
-    title: {
+    label: {
       control: 'text',
     },
-    subtitle: {
+    'secondary-label': {
       control: 'text',
     },
     ...classArgType,
@@ -52,7 +52,7 @@ const meta: Meta = {
       '--mdc-banner-background-color',
       '--mdc-banner-border-color',
       '--mdc-banner-icon-color',
-      '--mdc-banner-elevation-3',
+      '--mdc-banner-elevation',
       '--mdc-banner-padding',
       '--mdc-banner-gap',
     ]),
@@ -63,8 +63,8 @@ export default meta;
 
 const DefaultArgs = {
   variant: 'custom',
-  title: 'Banner Title',
-  subtitle: 'This is the subtitle of the banner.',
+  label: 'Banner Label',
+  'secondary-label': 'This is the secondary label of the banner.',
 };
 
 const DefaultButtons = html`
@@ -85,8 +85,8 @@ export const Example: StoryObj = {
   args: {
     ...DefaultArgs,
     variant: 'informational',
-    title: 'System Update Available',
-    subtitle: 'A new version is ready to install. Please save your work before proceeding.',
+    label: 'System Update Available',
+    'secondary-label': 'A new version is ready to install. Please save your work before proceeding.',
     children: DefaultButtons,
   },
 };
@@ -98,8 +98,8 @@ export const AllVariants: StoryObj = {
       ${[
         {
           variant: 'custom',
-          title: 'Custom Banner with Slot Icon',
-          subtitle: 'This banner uses a custom icon via slot instead of variant-based icon.',
+          label: 'Custom Banner with Slot Icon',
+          'secondary-label': 'This banner uses a custom icon via slot instead of variant-based icon.',
           children: html`
             <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>
             ${DefaultButtons}
@@ -107,20 +107,20 @@ export const AllVariants: StoryObj = {
         },
         {
           variant: 'informational',
-          title: 'System Update Available',
-          subtitle: 'A new version is ready to install.',
+          label: 'System Update Available',
+          'secondary-label': 'A new version is ready to install.',
           children: DefaultButtons,
         },
         {
           variant: 'warning',
-          title: 'Storage Almost Full',
-          subtitle: 'Your storage is 95% full. Consider removing some files.',
+          label: 'Storage Almost Full',
+          'secondary-label': 'Your storage is 95% full. Consider removing some files.',
           children: DefaultButtons,
         },
         {
           variant: 'error',
-          title: 'Connection Failed',
-          subtitle: 'Unable to connect to the server. Please try again.',
+          label: 'Connection Failed',
+          'secondary-label': 'Unable to connect to the server. Please try again.',
           children: html`
             ${DefaultButtons}
             <mdc-button
@@ -135,8 +135,8 @@ export const AllVariants: StoryObj = {
         },
         {
           variant: 'success',
-          title: 'Changes Saved',
-          subtitle: 'Your changes have been successfully saved.',
+          label: 'Changes Saved',
+          'secondary-label': 'Your changes have been successfully saved.',
           children: DefaultButtons,
         },
       ].map(args => render(args))}
@@ -145,11 +145,11 @@ export const AllVariants: StoryObj = {
   ...hideAllControls(),
 };
 
-export const TitleOnly: StoryObj = {
-  name: 'Title Only',
+export const LabelOnly: StoryObj = {
+  name: 'Label Only',
   args: {
     variant: 'informational',
-    title: 'System Update Available',
+    label: 'System Update Available',
     children: DefaultButtons,
   },
 };
@@ -158,8 +158,8 @@ export const WithoutActions: StoryObj = {
   name: 'Without Actions',
   args: {
     variant: 'informational',
-    title: 'Information Message',
-    subtitle: 'This banner has no action buttons.',
+    label: 'Information Message',
+    'secondary-label': 'This banner has no action buttons.',
   },
 };
 
@@ -202,10 +202,10 @@ export const PromotionalBanner: StoryObj = {
 
         <!-- Center Content Area -->
         <div style="flex: 1; min-width: 0;">
-          <!-- Title -->
-          <mdc-text type="heading-large-bold" tagname="h3">Title text</mdc-text>
+          <!-- Label -->
+          <mdc-text type="heading-large-bold" tagname="h3">Label text</mdc-text>
 
-          <!-- Subtitle text -->
+          <!-- Secondary label text -->
           <mdc-text>
             Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus. 
             <mdc-link>Learn more</mdc-link>

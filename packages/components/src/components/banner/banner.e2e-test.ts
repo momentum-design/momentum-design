@@ -9,8 +9,8 @@ import type { BannerVariant } from './banner.types';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   variant?: BannerVariant;
-  title?: string;
-  subtitle?: string;
+  label?: string;
+  secondaryLabel?: string;
   children?: string;
   addFocusContext?: boolean;
 };
@@ -63,15 +63,15 @@ test('mdc-banner', async ({ componentsPage }) => {
     const bannerSheet = new StickerSheet(componentsPage, 'mdc-banner', 'margin: 1rem 0;');
     const options = { createNewRow: true };
 
-    // Banner with title only
-    bannerSheet.setAttributes({ variant: BANNER_VARIANT.INFORMATIONAL, title: 'System Update' });
+    // Banner with label only
+    bannerSheet.setAttributes({ variant: BANNER_VARIANT.INFORMATIONAL, label: 'System Update' });
     await bannerSheet.createMarkupWithCombination({}, options);
 
-    // Banner with both title and subtitle
+    // Banner with both label and secondary label
     bannerSheet.setAttributes({ 
       variant: BANNER_VARIANT.SUCCESS, 
-      title: 'Main Title', 
-      subtitle: 'Supporting subtitle' 
+      label: 'Main Label', 
+      'secondary-label': 'Supporting secondary label' 
     });
     await bannerSheet.createMarkupWithCombination({}, options);
 
@@ -79,38 +79,38 @@ test('mdc-banner', async ({ componentsPage }) => {
     const variantConfigs = [
       {
         variant: BANNER_VARIANT.CUSTOM,
-        title: 'Custom Banner with Slot Icon',
-        subtitle: 'This banner uses a custom icon via slot instead of variant-based icon.',
+        label: 'Custom Banner with Slot Icon',
+        secondaryLabel: 'This banner uses a custom icon via slot instead of variant-based icon.',
         extraChildren: '<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>'
       },
       {
         variant: BANNER_VARIANT.INFORMATIONAL,
-        title: 'System Update Available',
-        subtitle: 'A new version is ready to install.'
+        label: 'System Update Available',
+        secondaryLabel: 'A new version is ready to install.'
       },
       {
         variant: BANNER_VARIANT.WARNING,
-        title: 'Storage Almost Full',
-        subtitle: 'Your storage is 95% full. Consider removing some files.'
+        label: 'Storage Almost Full',
+        secondaryLabel: 'Your storage is 95% full. Consider removing some files.'
       },
       {
         variant: BANNER_VARIANT.ERROR,
-        title: 'Connection Failed',
-        subtitle: 'Unable to connect to the server. Please try again.',
+        label: 'Connection Failed',
+        secondaryLabel: 'Unable to connect to the server. Please try again.',
         extraButtons: '<mdc-button variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection"></mdc-button>'
       },
       {
         variant: BANNER_VARIANT.SUCCESS,
-        title: 'Changes Saved',
-        subtitle: 'Your changes have been successfully saved.'
+        label: 'Changes Saved',
+        secondaryLabel: 'Your changes have been successfully saved.'
       }
     ];
 
     const createVariantBanner = async (config: typeof variantConfigs[0]) => {
       bannerSheet.setAttributes({ 
         variant: config.variant, 
-        title: config.title, 
-        subtitle: config.subtitle 
+        label: config.label, 
+        'secondary-label': config.secondaryLabel 
       });
       
       const children = (config.extraChildren || '') + 
@@ -138,8 +138,8 @@ test('mdc-banner', async ({ componentsPage }) => {
     // Banner with long text (wrapping) - constrain width to force text wrapping
     bannerSheet.setAttributes({ 
       variant: BANNER_VARIANT.INFORMATIONAL, 
-      title: 'This is an extremely long title that should wrap to multiple lines when the banner has a constrained width',
-      subtitle: 'This is also a very long subtitle with extensive descriptive text that should wrap appropriately',
+      label: 'This is an extremely long label that should wrap to multiple lines when the banner has a constrained width',
+      'secondary-label': 'This is also a very long secondary label with extensive descriptive text that should wrap appropriately',
       style: 'max-width: 400px; margin: 1rem 0;'
     });
     await bannerSheet.createMarkupWithCombination({}, options);
@@ -174,8 +174,8 @@ test('mdc-banner', async ({ componentsPage }) => {
         const banner = await setup({ 
           componentsPage, 
           variant: testCase.variant, 
-          title: `${testCase.variant.charAt(0).toUpperCase() + testCase.variant.slice(1)} Banner`, 
-          subtitle: 'Test subtitle' 
+          label: `${testCase.variant.charAt(0).toUpperCase() + testCase.variant.slice(1)} Banner`, 
+          secondaryLabel: 'Test secondary label' 
         });
         
         await expect(banner).toHaveAttribute('variant', testCase.variant);
@@ -200,61 +200,61 @@ test('mdc-banner', async ({ componentsPage }) => {
    * ✅ RENDERING AND VISUAL STATES
    */
   await test.step('rendering and visual states', async () => {
-    await test.step('banner renders with title only', async () => {
+    await test.step('banner renders with label only', async () => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        title: 'System Update'
+        label: 'System Update'
       });
       
-      const titleText = banner.locator('mdc-text').first();
-      await expect(titleText).toBeVisible();
-      await expect(titleText).toHaveText('System Update');
+      const labelText = banner.locator('mdc-text').first();
+      await expect(labelText).toBeVisible();
+      await expect(labelText).toHaveText('System Update');
       
-      // No subtitle should be visible
-      const subtitleText = banner.locator('mdc-text').nth(1);
-      await expect(subtitleText).toHaveCount(0);
+      // No secondary label should be visible
+      const secondaryLabelText = banner.locator('mdc-text').nth(1);
+      await expect(secondaryLabelText).toHaveCount(0);
     });
 
-    await test.step('banner does not render subtitle without title', async () => {
+    await test.step('banner does not render secondary label without label', async () => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        subtitle: 'Some subtitle text'
-        // No title provided
+        secondaryLabel: 'Some secondary label text'
+        // No label provided
       });
       
-      // No title should be visible
-      const titleText = banner.locator('mdc-text').first();
-      await expect(titleText).toHaveCount(0);
+      // No label should be visible
+      const labelText = banner.locator('mdc-text').first();
+      await expect(labelText).toHaveCount(0);
       
-      // No subtitle should be visible either
-      const subtitleText = banner.locator('mdc-text').nth(1);
-      await expect(subtitleText).toHaveCount(0);
+      // No secondary label should be visible either
+      const secondaryLabelText = banner.locator('mdc-text').nth(1);
+      await expect(secondaryLabelText).toHaveCount(0);
     });
 
-    await test.step('banner renders with both title and subtitle', async () => {
+    await test.step('banner renders with both label and secondary label', async () => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.SUCCESS,
-        title: 'Main Title',
-        subtitle: 'Supporting subtitle'
+        label: 'Main Label',
+        secondaryLabel: 'Supporting secondary label'
       });
       
-      const titleText = banner.locator('mdc-text').first();
-      const subtitleText = banner.locator('mdc-text').nth(1);
+      const labelText = banner.locator('mdc-text').first();
+      const secondaryLabelText = banner.locator('mdc-text').nth(1);
       
-      await expect(titleText).toBeVisible();
-      await expect(titleText).toHaveText('Main Title');
-      await expect(subtitleText).toBeVisible();
-      await expect(subtitleText).toHaveText('Supporting subtitle');
+      await expect(labelText).toBeVisible();
+      await expect(labelText).toHaveText('Main Label');
+      await expect(secondaryLabelText).toBeVisible();
+      await expect(secondaryLabelText).toHaveText('Supporting secondary label');
     });
 
     await test.step('banner renders custom content for custom variant', async () => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.CUSTOM,
-        title: 'Custom Banner'
+        label: 'Custom Banner'
       });
       
       // Custom variant should not have a default icon
@@ -271,22 +271,22 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.CUSTOM,
-        title: 'Custom Icon Banner',
-        subtitle: 'Using custom icon slot',
+        label: 'Custom Icon Banner',
+        secondaryLabel: 'Using custom icon slot',
         children: `<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5"></mdc-icon>`
       });
       
       const customIcon = banner.locator('mdc-icon[slot="leading-icon"]');
-      const titleText = banner.locator('mdc-text').first();
+      const labelText = banner.locator('mdc-text').first();
       
       await expect(customIcon).toBeVisible();
       await expect(customIcon).toHaveAttribute('name', 'placeholder-bold');
       
       // Icon should be positioned before text content
       const iconBox = await customIcon.boundingBox();
-      const titleBox = await titleText.boundingBox();
+      const labelBox = await labelText.boundingBox();
       
-      expect(iconBox!.x).toBeLessThan(titleBox!.x);
+      expect(iconBox!.x).toBeLessThan(labelBox!.x);
     });
 
     await test.step('banner uses custom leading-text slot', async () => {
@@ -317,8 +317,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.ERROR,
-        title: 'Custom Actions',
-        subtitle: 'This banner has custom action buttons',
+        label: 'Custom Actions',
+        secondaryLabel: 'This banner has custom action buttons',
         children: `
           <div slot="trailing-actions" style="display: flex; gap: 0.5rem; align-items: center;">
             <mdc-button variant="primary" size="20">Retry</mdc-button>
@@ -375,8 +375,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.CUSTOM,
-        title: 'Hybrid Banner',
-        subtitle: 'Properties for text, slot for custom icon',
+        label: 'Hybrid Banner',
+        secondaryLabel: 'Properties for text, slot for custom icon',
         children: `
           <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="color: #e74c3c;"></mdc-icon>
           <mdc-button slot="trailing-actions" variant="tertiary" prefix-icon="cancel-bold" size="20">Dismiss</mdc-button>
@@ -417,8 +417,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.ERROR,
-        title: 'Focus Test',
-        subtitle: 'Testing focus management',
+        label: 'Focus Test',
+        secondaryLabel: 'Testing focus management',
         addFocusContext: true,
         children: `
           <div slot="trailing-actions">
@@ -460,8 +460,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.WARNING,
-        title: 'Reverse Focus Test',
-        subtitle: 'Testing Shift+Tab navigation',
+        label: 'Reverse Focus Test',
+        secondaryLabel: 'Testing Shift+Tab navigation',
         addFocusContext: true,
         children: `
           <div slot="trailing-actions">
@@ -504,8 +504,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        title: 'Non-Interactive Banner',
-        subtitle: 'Only text content, no buttons',
+        label: 'Non-Interactive Banner',
+        secondaryLabel: 'Only text content, no buttons',
         addFocusContext: true
       });
       
@@ -533,8 +533,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.WARNING,
-        title: 'Interactive Banner',
-        subtitle: 'Click the buttons to test interactions',
+        label: 'Interactive Banner',
+        secondaryLabel: 'Click the buttons to test interactions',
         children: `
           <div slot="trailing-actions">
             <mdc-button id="primary-action" variant="primary">Primary</mdc-button>
@@ -568,8 +568,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.WARNING,
-        title: 'Keyboard Activation Test',
-        subtitle: 'Test Enter and Space key activation',
+        label: 'Keyboard Activation Test',
+        secondaryLabel: 'Test Enter and Space key activation',
         children: `
           <div slot="trailing-actions">
             <mdc-button id="action-btn" variant="primary">Action</mdc-button>
@@ -602,18 +602,18 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        title: 'Screen Reader Test',
-        subtitle: 'Testing reading order and content'
+        label: 'Screen Reader Test',
+        secondaryLabel: 'Testing reading order and content'
       });
       
-      const titleText = banner.locator('mdc-text').first();
-      const subtitleText = banner.locator('mdc-text').nth(1);
+      const labelText = banner.locator('mdc-text').first();
+      const secondaryLabelText = banner.locator('mdc-text').nth(1);
       
       // Verify content is in correct reading order
-      await expect(titleText).toBeVisible();
-      await expect(subtitleText).toBeVisible();
-      await expect(titleText).toHaveText('Screen Reader Test');
-      await expect(subtitleText).toHaveText('Testing reading order and content');
+      await expect(labelText).toBeVisible();
+      await expect(secondaryLabelText).toBeVisible();
+      await expect(labelText).toHaveText('Screen Reader Test');
+      await expect(secondaryLabelText).toHaveText('Testing reading order and content');
       
       await componentsPage.accessibility.checkForA11yViolations('banner-screen-reader-content');
     });
@@ -622,8 +622,8 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.ERROR,
-        title: 'Screen Reader Actions',
-        subtitle: 'Testing screen reader button interaction',
+        label: 'Screen Reader Actions',
+        secondaryLabel: 'Testing screen reader button interaction',
         children: `
           <div slot="trailing-actions" style="display: flex; align-items: center; gap: 0.5rem;">
             <mdc-button aria-label="Retry failed operation" variant="primary">Retry</mdc-button>
