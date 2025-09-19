@@ -95,16 +95,16 @@ Feature: Toast Accessibility and User Interaction
 
             Examples: Forward tabbing (Tab)
                 | direction | key | start            | end              |
-                | forward   | Tab | close button     | linkbutton       |
-                | forward   | Tab | linkbutton       | secondary button |
+                | forward   | Tab | close button     | tertiary button  |
+                | forward   | Tab | tertiary button  | secondary button |
                 | forward   | Tab | secondary button | primary button   |
                 | forward   | Tab | primary button   | out of the toast |
 
             Examples: Reverse tabbing (Shift+Tab)
                 | direction | key       | start            | end              |
                 | backward  | Shift+Tab | primary button   | secondary button |
-                | backward  | Shift+Tab | secondary button | linkbutton       |
-                | backward  | Shift+Tab | linkbutton       | close button     |
+                | backward  | Shift+Tab | secondary button | tertiary button  |
+                | backward  | Shift+Tab | tertiary button  | close button     |
                 | backward  | Shift+Tab | close button     | out of the toast |
 
         Scenario: User closes toast with keyboard
