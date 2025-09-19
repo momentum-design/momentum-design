@@ -6,11 +6,27 @@ import type { Component } from '../../models';
 
 export type ElementStoreChangeTypes = 'added' | 'removed';
 
-interface ElementStoreOptions {
+interface ElementStoreOptions<TItem extends HTMLElement = HTMLElement> {
   /**
-   * - A function to determine if an item is valid for caching.
+   * Checks if the item is valid.
+   * Invalid items will not be collected or processed.
+   * This method can be overridden by subclasses to define custom validation logic.
+   *
+   * @param item - The item to validate.
+   * @returns - True if the item is valid, false otherwise.
    */
   isValidItem: (item: any) => boolean;
+  /**
+   * Callback function that is called before the store is updated.
+   *
+   * Not called when the store is reset.
+   *
+   * @param item - The item that is being added or removed.
+   * @param changeType - The type of change ('added' or 'removed').
+   * @param index - Index at which the item is added or removed.
+   * @param store - The current state of the store.
+   */
+  onStoreUpdate?: (item: TItem, changeType: ElementStoreChangeTypes, index: number, store: TItem[]) => void;
 }
 
 const defaultIsValidFn = (item: any) => !!item;
@@ -44,15 +60,11 @@ const defaultIsValidFn = (item: any) => !!item;
 export class ElementStore<TItem extends HTMLElement> implements ReactiveController {
   private host: Component;
 
-  /**
-   * Checks if the item is valid.
-   * Invalid items will not be collected or processed.
-   * This method can be overridden by subclasses to define custom validation logic.
-   *
-   * @param item - The item to validate.
-   * @returns - True if the item is valid, false otherwise.
-   */
+  /** Checks if the item is valid. */
   private readonly isValidItem: ElementStoreOptions['isValidItem'];
+
+  /** Callback function that is called before the store is updated. */
+  private readonly onStoreUpdate: ElementStoreOptions['onStoreUpdate'];
 
   /** Stored items */
   private cache: TItem[] = [];
@@ -109,6 +121,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     this.host = host;
     host.addController(this);
     this.isValidItem = options?.isValidItem || defaultIsValidFn;
+    this.onStoreUpdate = options?.onStoreUpdate;
 
     this.host.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
     this.host.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
@@ -177,6 +190,10 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     if (this.isValidItem(newItem) && !this.cache.includes(newItem)) {
       const idx = index === undefined ? this.cache.findIndex(e => isBefore(newItem, e)) : index;
 
+      if (this.onStoreUpdate) {
+        this.onStoreUpdate?.(newItem, 'added', idx === -1 ? this.cache.length : idx, this.cache.slice());
+      }
+
       if (idx === -1) {
         this.cache.push(newItem);
       } else if (idx >= 0) {
@@ -192,7 +209,11 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    */
   public delete(item: Element): void {
     const idx = this.cache.indexOf(item as TItem);
+
     if (idx !== -1) {
+      if (this.onStoreUpdate) {
+        this.onStoreUpdate?.(item as TItem, 'removed', idx, this.cache.slice());
+      }
       this.cache.splice(idx, 1);
     }
   }
