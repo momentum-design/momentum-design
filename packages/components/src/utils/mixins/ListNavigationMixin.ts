@@ -194,7 +194,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
         const currentIndex = this.navItems[index] ? index : 0;
 
         this.navItems[currentIndex].setAttribute('tabindex', '0');
-        this.navItems[currentIndex].focus();
+        this.navItems[currentIndex]?.focus();
       }
     }
 
