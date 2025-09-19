@@ -8,9 +8,9 @@ import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
-import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
+import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -18,6 +18,7 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -173,6 +174,7 @@ class Select
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
@@ -200,7 +202,7 @@ class Select
 
   /** @internal */
   private getFirstSelectedOption(): Option | undefined {
-    return this.navItems.find(el => el.hasAttribute('selected'));
+    return this.navItems.find(option => option.hasAttribute('selected'));
   }
 
   /** @internal */
@@ -221,6 +223,41 @@ class Select
 
     createdElement.tabIndex = -1;
   };
+
+  /**
+   * Update the selected option when an option is modified.
+   *
+   * @internal
+   */
+  private handleModifiedEvent(event: Event): void {
+    const option = event.target as Option;
+    const firstSelectedOption = this.getFirstSelectedOption();
+    switch ((event as LifeCycleModifiedEvent).detail.change) {
+      case 'selected': {
+        // when selected, check if there is any other option is a selected option,
+        // first preference should always be given to the `selected` attribute.
+        // if there is no selected option, then reset it to placeholder or first option
+        if (firstSelectedOption) {
+          this.setSelectedOption(firstSelectedOption);
+        } else {
+          this.setSelectedOption(option);
+        }
+        break;
+      }
+      case 'unselected': {
+        // when unselected, check if there is any other option is a selected option,
+        // if there is no selected option, then reset it to placeholder or first option
+        if (firstSelectedOption) {
+          this.setSelectedOption(firstSelectedOption);
+        } else {
+          this.setSelectedOption(this.placeholder ? null : this.getFirstOption());
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
 
   /**
    * Update the focus when an item is removed.
@@ -335,6 +372,8 @@ class Select
    * @param option - The option element in DOM which gets selected.
    */
   private setSelectedOption(option: Option | null): void {
+    // if the options is already selected, return
+    if (option === this.selectedOption) return;
     // set the attribute 'selected' on the option in HTML and remove it from others
     this.updateSelectedInChildOptions(option);
     // update the tabindex for all options
@@ -508,26 +547,6 @@ class Select
    */
   private handleNativeInputFocus(): void {
     this.visualCombobox.focus();
-  }
-
-  /**
-   * Updates the state of the select component.
-   * This public method should be fired when the selected on the option components is updated from the outside.
-   * It ensures that the selected attribute is set correctly on the options
-   * and that the aria-selected attribute is updated accordingly.
-   */
-  public updateState(): void {
-    const newSelectedOption = this.getFirstSelectedOption();
-
-    if (!this.inputElement) {
-      return;
-    }
-
-    if (!newSelectedOption) {
-      this.setSelectedOption(this.placeholder ? null : this.getFirstOption());
-    } else if (this.selectedOption?.value !== newSelectedOption.value) {
-      this.setSelectedOption(newSelectedOption);
-    }
   }
 
   public override render() {
