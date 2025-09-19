@@ -496,8 +496,8 @@ test('mdc-select', async ({ componentsPage }) => {
           <form id="test-form" novalidate>
             <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
               <legend>Select your Avengers and Infinity Stones (with validation)</legend>
-              <mdc-select label="Who is your favorite Avenger?" name="avengers-name" required></mdc-select>
-              <mdc-select label="How many Infinity Stones exist?" name="stone-count" required></mdc-select>
+              <mdc-select label="Who is your favorite Avenger?" placeholder="Select the avenger" name="avengers-name" required></mdc-select>
+              <mdc-select label="How many Infinity Stones exist?" placeholder="Select the count" name="stone-count" required></mdc-select>
               <div style="display: flex; gap: 0.25rem;">
                 <mdc-button type="submit" size="24">Submit</mdc-button>
                 <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
