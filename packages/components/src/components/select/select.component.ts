@@ -195,6 +195,42 @@ class Select
     return this.itemsStore.items;
   }
 
+  /**
+   * This function is called when the value attribute changes.
+   * It updates the selected option based on the value attribute.
+   *
+   * @param name - attribute name
+   * @param old - old value
+   * @param value - new value
+   */
+  override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+    super.attributeChangedCallback(name, oldValue, newValue);
+
+    if (name === 'value' && oldValue !== newValue && newValue !== this.selectedOption?.value) {
+      const firstSelectedOption = this.getFirstSelectedOption();
+      const valueBasedOption = this.navItems.find(option => option.value === newValue);
+      let optionToSelect: Option | null = null;
+      if (valueBasedOption) {
+        optionToSelect = valueBasedOption;
+      } else if (newValue === '') {
+        optionToSelect = null;
+      } else if (firstSelectedOption) {
+        optionToSelect = firstSelectedOption;
+      } else {
+        return;
+      }
+      this.updateComplete
+        .then(() => {
+          this.setSelectedOption(optionToSelect);
+        })
+        .catch(error => {
+          if (this.onerror) {
+            this.onerror(error);
+          }
+        });
+    }
+  }
+
   /** @internal */
   private isValidItem(item: Element): boolean {
     return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);

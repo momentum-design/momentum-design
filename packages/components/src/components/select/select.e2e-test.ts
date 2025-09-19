@@ -451,7 +451,6 @@ test('mdc-select', async ({ componentsPage }) => {
 
       await test.step('should update selected option when selected attribute is changed from option1 to option2', async () => {
         await componentsPage.page.evaluate(() => {
-          const select = document.querySelector('mdc-select[label="Select an option"]');
           const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
           if (selectListbox) {
             const options = selectListbox.querySelectorAll('mdc-option');
@@ -463,8 +462,6 @@ test('mdc-select', async ({ componentsPage }) => {
                 option.setAttribute('selected', '');
               }
             });
-            // @ts-ignore
-            select.updateState();
           }
         });
 
@@ -474,15 +471,12 @@ test('mdc-select', async ({ componentsPage }) => {
 
       await test.step('should fallback to placeholder when selected attribute get removed', async () => {
         await componentsPage.page.evaluate(() => {
-          const select = document.querySelector('mdc-select[label="Select an option"]');
           const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
           if (selectListbox) {
             const options = selectListbox.querySelectorAll('mdc-option');
             options.forEach(option => {
               option.removeAttribute('selected');
             });
-            // @ts-ignore
-            select.updateState();
           }
         });
 
@@ -534,8 +528,6 @@ test('mdc-select', async ({ componentsPage }) => {
             <mdc-option value="hawkeye" label="Hawkeye"></mdc-option>
           </mdc-selectlistbox>
         `;
-        // @ts-ignore
-        el.updateState();
       });
       await stoneSelect.evaluate(select => {
         const el = select as HTMLElement;

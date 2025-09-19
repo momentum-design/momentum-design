@@ -113,7 +113,7 @@ const meta: Meta = {
     'soft-disabled': {
       control: 'boolean',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'itemsStore']),
     ...textControls([
       '--mdc-select-background-color',
       '--mdc-select-background-color-hover',
@@ -460,7 +460,6 @@ export const SelectWithDynamicOptions: StoryObj = {
 export const SelectWithChangingSelectedAfterMount: StoryObj = {
   render: () => {
     const handleClick = () => {
-      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
       const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
       if (selectListbox) {
         const options = selectListbox.querySelectorAll('mdc-option');
@@ -472,19 +471,16 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
             option.setAttribute('selected', '');
           }
         });
-        select.updateState();
       }
     };
 
     const handleClickRemove = () => {
-      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
       const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
       if (selectListbox) {
         const options = selectListbox.querySelectorAll('mdc-option');
         options.forEach(option => {
           option.removeAttribute('selected');
         });
-        select.updateState();
       }
     };
 
