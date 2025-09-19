@@ -125,6 +125,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled?: boolean;
 
+  @property({ type: Number, reflect: true, attribute: 'data-index' })
+  dataIndex?: number;
+
   constructor() {
     super();
 
@@ -224,6 +227,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
 
     if (changedProperties.has('softDisabled')) {
       this.disableSlottedChildren(this.softDisabled);
+    }
+
+    if (changedProperties.has('dataIndex')) {
+      this.ariaPosInSet = `${this.dataIndex !== undefined ? this.dataIndex + 1 : ''}`;
     }
   }
 
