@@ -1049,6 +1049,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "active": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "light": {
             "value": "{color.highcontrast.black.WindowColor}",
             "type": "color",
@@ -1063,18 +1068,6 @@
             "value": "{color.highcontrast.black.WindowColor}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
-          },
-          "overlay": {
-            "normal": {
-              "value": "{color.highcontrast.black.HotlightColor}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            },
-            "inactive": {
-              "value": "{color.highcontrast.black.WindowColor}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            }
           },
           "radial": {
             "0": {
@@ -1441,6 +1434,13 @@
             "value": "{color.highcontrast.black.WindowTextColor}",
             "type": "color",
             "description": "Used for operation pop"
+          }
+        },
+        "ai": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%);\nUsed for AI assistant feature"
           }
         }
       },
