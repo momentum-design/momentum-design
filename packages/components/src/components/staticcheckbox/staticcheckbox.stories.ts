@@ -19,9 +19,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-staticcheckbox',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     checked: {
       control: 'boolean',

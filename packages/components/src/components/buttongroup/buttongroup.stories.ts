@@ -25,9 +25,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-buttongroup',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     variant: {
       control: 'select',

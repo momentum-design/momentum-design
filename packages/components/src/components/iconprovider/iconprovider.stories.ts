@@ -26,9 +26,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-iconprovider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     'icon-set': {
       control: 'select',

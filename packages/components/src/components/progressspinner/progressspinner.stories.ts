@@ -14,9 +14,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-progressspinner',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     value: {
       control: 'number',

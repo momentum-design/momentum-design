@@ -31,9 +31,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-formfieldwrapper',
   render,
-  parameters: {
-    badges: ['internal'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,

@@ -28,9 +28,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-formfieldgroup',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

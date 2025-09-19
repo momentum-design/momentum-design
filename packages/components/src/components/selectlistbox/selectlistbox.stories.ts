@@ -18,9 +18,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-selectlistbox',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,

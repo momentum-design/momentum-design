@@ -46,4 +46,15 @@ module.exports = {
     '*.figma*',
     'jest.config.js',
   ],
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true, // Always try to resolve types under `<root>@types` directory even if it doesn't contain any source code, like `@types/unist`
+        project: './tsconfig.json',
+      },
+    },
+  },
 };

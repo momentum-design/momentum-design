@@ -152,9 +152,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-skeleton',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
@@ -46,9 +46,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-accordion',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,
