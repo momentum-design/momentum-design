@@ -90,8 +90,8 @@ class Select
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * The placement of the popover within Combobox.
-   * This defines the position of the popover relative to the combobox input field.
+   * The placement of the popover within Select component.
+   * This defines the position of the popover relative to the select input field.
    *
    * Possible values:
    *  - 'top-start'
@@ -234,7 +234,7 @@ class Select
       return;
     }
 
-    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
+    const destroyedItemIndex = this.navItems.indexOf(destroyedElement as Option);
     if (destroyedItemIndex === -1) {
       return;
     }
