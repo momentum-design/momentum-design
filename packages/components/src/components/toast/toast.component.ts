@@ -24,7 +24,6 @@ import type { ToastVariant } from './toast.types';
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
- * @dependency mdc-linkbutton
  *
  * @slot content-prefix - Slot for custom content before the icon (only for custom variant).
  * @slot toast-body-normal - Slot for the main body content of the toast.
@@ -57,6 +56,8 @@ class Toast extends FooterMixin(Component) {
   /**
    * Type of toast
    * - Can be `custom`, `success`, `warning` or `error`.
+   * 
+   * Note: When using the `custom` variant, provide your own icon via the `content-prefix` slot; otherwise, no icon will be shown.
    * @default 'custom'
    */
   @property({ type: String, reflect: true })
@@ -145,7 +146,7 @@ class Toast extends FooterMixin(Component) {
   }
 
   protected renderIcon(iconName: string) {
-    if(!iconName) return nothing;
+    if (!iconName) return nothing;
     return html`
       <mdc-icon
         name="${iconName as IconNames}"
@@ -162,13 +163,14 @@ class Toast extends FooterMixin(Component) {
   private renderToggleDetailButton() {
     if (!this.shouldRenderToggleButton()) return nothing;
     return html`
-      <mdc-linkbutton
+      <mdc-button
+        variant="tertiary"
         part="footer-button-toggle"
         @click="${this.toggleDetailVisibility}"
-        icon-name="${this.isDetailVisible ? DEFAULTS.ARROW_UP_BOLD : DEFAULTS.ARROW_DOWN_BOLD}"
+        postfix-icon="${this.isDetailVisible ? DEFAULTS.ARROW_UP_BOLD : DEFAULTS.ARROW_DOWN_BOLD}"
       >
         ${this.isDetailVisible ? this.showLessText : this.showMoreText}
-      </mdc-linkbutton>
+      </mdc-button>
     `;
   }
 
