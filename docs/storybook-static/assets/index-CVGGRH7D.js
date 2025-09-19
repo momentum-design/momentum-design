@@ -1,0 +1,20 @@
+import{i as x,k as g}from"./lit-element-D5KKan5q.js";import{u as A,C as p,n as E}from"./provider.component-BaQC7CJH.js";import{R as T}from"./roles-CJI3JVG-.js";import{K as i}from"./keys-hFXe221I.js";import{b as f,T as y}from"./listitem.component-Cy9hWtov.js";import{C as O,E as C}from"./CaptureDestroyEventForChildElement-qq7X9vNO.js";const R=c=>{class o extends c{constructor(...e){super(...e),this.loop="true",this.propagateAllKeyEvents=!1,this.initialFocus=0,this.handleNavigationKeyDown=t=>{const n=new Set([i.ARROW_DOWN,i.ARROW_UP,i.HOME,i.END]),r=window.getComputedStyle(this).direction==="rtl",h=this.resolveDirectionKey(t.key,r);if(!n.has(h))return;const l=t.target,s=this.getCurrentIndex(l);if(s!==-1){switch(this.resetTabIndexes(s),h){case i.HOME:{this.resetTabIndexAndSetFocus(0,s);break}case i.END:{this.resetTabIndexAndSetFocus(this.navItems.length-1,s);break}case i.ARROW_DOWN:{const u=this.shouldLoop()?0:s,m=s+1===this.navItems.length?u:s+1;this.resetTabIndexAndSetFocus(m,s);break}case i.ARROW_UP:{const u=this.shouldLoop()?this.navItems.length-1:s,m=s-1===-1?u:s-1;this.resetTabIndexAndSetFocus(m,s);break}}this.propagateAllKeyEvents||(t.stopPropagation(),t.preventDefault())}},this.handleNavigationClick=t=>{const n=this.getCurrentIndex(t.target);this.resetTabIndexes(n)},this.addEventListener("keydown",this.handleNavigationKeyDown),this.addEventListener("click",this.handleNavigationClick)}async firstUpdated(e){super.firstUpdated(e);const t=Math.max(Math.min(this.initialFocus,this.navItems.length-1),0);this.resetTabIndexAndSetFocus(t,void 0,!1)}getCurrentIndex(e){return this.navItems.findIndex(t=>t===e||!!(t.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_CONTAINED_BY))}resetTabIndexes(e){if(this.navItems.length>0){this.navItems.forEach(n=>n.setAttribute("tabindex","-1"));const t=this.navItems[e]?e:0;this.navItems[t].setAttribute("tabindex","0"),this.navItems[t].focus()}}resetTabIndexAndSetFocus(e,t,n=!0){const{navItems:r}=this;if(r.length===0)return;const h=r[e]?e:0,l=r[h];e===t&&l&&l.getAttribute("tabindex")==="0"||(t===void 0?r.forEach(s=>s.setAttribute("tabindex","-1")):r[t]&&r[t].setAttribute("tabindex","-1"),l.setAttribute("tabindex","0"),n&&(l.focus({preventScroll:!0}),l.scrollIntoView({block:"nearest"})))}resolveDirectionKey(e,t){if(!t)return e;switch(e){case i.ARROW_LEFT:return i.ARROW_RIGHT;case i.ARROW_RIGHT:return i.ARROW_LEFT;default:return e}}shouldLoop(){return this.loop!=="false"}}return o},N=x`
+  :host {
+    display: flex;
+    flex-direction: column;
+    scroll-padding-top: 0.25rem;
+    scroll-padding-bottom: 0.25rem;
+  }
+
+  :host::part(container) {
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+    scroll-padding-top: 0.25rem;
+    scroll-padding-bottom: 0.25rem;
+  }
+`,S=[N],_=A.constructTagName("list"),b={LOOP:"true",INITIAL_FOCUS:0};var D=Object.defineProperty,v=(c,o,a,e)=>{for(var t=void 0,n=c.length-1,r;n>=0;n--)(r=c[n])&&(t=r(o,a,t)||t);return t&&D(o,a,t),t};const I=class I extends R(O(p)){constructor(){super(),this.loop=b.LOOP,this.initialFocus=b.INITIAL_FOCUS,this.handleCreatedEvent=o=>{const a=o.target;this.isValidItem(a)&&(a.tabIndex=-1)},this.handleDestroyEvent=o=>{const a=o.target;if(!this.isValidItem(a)||a.tabIndex!==0)return;const e=this.navItems.findIndex(n=>n===a);if(e===-1)return;let t=e+1;t>=this.navItems.length&&(t=e-1),this.resetTabIndexes(t)},this.addEventListener(f.CREATED,this.handleCreatedEvent),this.addEventListener(f.DESTROYED,this.handleDestroyEvent),this.itemsStore=new C(this,{isValidItem:this.isValidItem})}connectedCallback(){super.connectedCallback(),this.setAttribute("role",T.LIST)}get navItems(){return this.itemsStore.items}isValidItem(o){return o.matches(`${y}:not([disabled])`)}render(){return g`
+      <slot name="list-header"></slot>
+      <!-- make the container slot role presentation to keep it ignored in a11y tree -->
+      <slot part="container" role="presentation"></slot>
+    `}};I.styles=[...p.styles,...S];let d=I;v([E({type:String,reflect:!0})],d.prototype,"loop");v([E({type:Number,reflect:!0,attribute:"initial-focus"})],d.prototype,"initialFocus");d.register(_);export{R as L,d as a};
