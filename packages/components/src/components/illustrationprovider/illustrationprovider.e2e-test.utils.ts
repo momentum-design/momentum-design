@@ -17,9 +17,9 @@ class SubComponentIllustrationProvider extends Component {
 
   override render() {
     return html`
-      <p style="margin: 0;">
+      <mdc-text tagname="p" type="body-small-regular" style="margin: 0;">
         ${this.illustrationLabelPrefix}${this.illustrationProviderContext.value?.illustrationSet}
-      </p>
+      </mdc-text>
     `;
   }
 }
