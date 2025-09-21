@@ -57,9 +57,9 @@ const iife = async () => {
       // be available for e2e tests
       `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
+      `${join(process.cwd(), 'src/components/illustrationprovider/illustrationprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/buttonsimple/index.ts')}`,
       `${join(process.cwd(), 'src/components/formfieldwrapper/formfieldwrapper.subcomponent.ts')}`,
-      `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/virtualizedlist/virtualizedlist.helper.test.ts')}`,
       // include playwright-temp index for esbuild to consider it in the path resolve
       `${join(process.cwd(), 'playwright-temp/brandvisuals/index.ts')}`,

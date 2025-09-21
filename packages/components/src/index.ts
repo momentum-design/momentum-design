@@ -27,6 +27,8 @@ import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
 import Icon from './components/icon';
 import IconProvider from './components/iconprovider';
+import Illustration from './components/illustration';
+import IllustrationProvider from './components/illustrationprovider';
 import Input from './components/input';
 import InputChip from './components/inputchip';
 import Link from './components/link';
@@ -110,7 +112,7 @@ import {
   PILL_BUTTON_SIZES,
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
-import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 
 // Components Exports
 export {
@@ -141,6 +143,8 @@ export {
   FormfieldGroup,
   Icon,
   IconProvider,
+  Illustration,
+  IllustrationProvider,
   Input,
   InputChip,
   Link,
@@ -194,7 +198,7 @@ export {
   Combobox,
   Slider,
   ListBox,
-  Banner
+  Banner,
 };
 
 // Types Exports
@@ -231,5 +235,5 @@ export {
   inMemoryCache,
   PILL_BUTTON_SIZES,
   SKELETON_VARIANTS,
-  webAPIIconsCache,
+  webAPIAssetsCache,
 };
