@@ -31,6 +31,7 @@ import type { Placement } from './select.types';
  * Every mdc-option should have a `value` attribute set to ensure proper form submission.
  *
  * To set a default option, use the `selected` attribute on the `mdc-option` element.
+ * You can also set the `value` attribute on the `mdc-select` element to match the value of the desired option. The component will select the corresponding option automatically.
  *
  * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-select` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
  *

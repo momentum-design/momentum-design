@@ -457,7 +457,7 @@ export const SelectWithDynamicOptions: StoryObj = {
   ...hideAllControls(),
 };
 
-export const SelectWithChangingSelectedAfterMount: StoryObj = {
+export const SelectWithChangingSelectedOption: StoryObj = {
   render: () => {
     const handleClick = () => {
       const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
@@ -486,7 +486,7 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
 
     return wrapWithDiv(html`
       <mdc-button @click=${handleClick}>Change Selected to Option 2</mdc-button>
-      <mdc-button @click=${handleClickRemove}>Remove Selected</mdc-button>
+      <mdc-button @click=${handleClickRemove} style="margin: 8px 0;">Remove Selected</mdc-button>
       <mdc-select
         label="Select an option"
         placeholder="Select an option"
@@ -508,27 +508,27 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
   ...hideAllControls(),
 };
 
-export const InvalidOptionSelection: StoryObj = {
+export const SelectWithChangingValueAttribute: StoryObj = {
   render: () => {
     const changeValidOption = () => {
-      const select = document.querySelector('mdc-select[label="Test Select"]') as Select;
+      const select = document.querySelector('mdc-select[label="Select"]') as Select;
       if (select) {
-        select.value = 'test3';
+        select.value = 'option3';
       }
     };
     const changeInvalidOption = () => {
-      const select = document.querySelector('mdc-select[label="Test Select"]') as Select;
+      const select = document.querySelector('mdc-select[label="Select"]') as Select;
       if (select) {
         select.value = 'invalid-option';
       }
     };
-    return html` <mdc-button @click=${changeValidOption}>Change Selected to Test Option 3</mdc-button>
-      <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Change Selected to Invalid Option</mdc-button>
-      <mdc-select label="Test Select" value="test2" placeholder="placeholder">
+    return html` <mdc-button @click=${changeValidOption}>Set value to Option 3</mdc-button>
+      <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Set value to invalid value</mdc-button>
+      <mdc-select label="Select" value="option2" placeholder="Select an Option">
         <mdc-selectlistbox>
-          <mdc-option label="Test Option 1" value="test1"></mdc-option>
-          <mdc-option label="Test Option 2" selected value="test2"></mdc-option>
-          <mdc-option label="Test Option 3" value="test3"></mdc-option>
+          <mdc-option label="Option 1" value="option1"></mdc-option>
+          <mdc-option label="Option 2" selected value="option2"></mdc-option>
+          <mdc-option label="Option 3" value="option3"></mdc-option>
         </mdc-selectlistbox>
       </mdc-select>`;
   },
