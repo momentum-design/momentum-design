@@ -490,6 +490,33 @@ test('mdc-select', async ({ componentsPage }) => {
       });
     });
 
+    await test.step('should update selected option when the value is changed progrmatically', async () => {
+      const select = await setup({
+        componentsPage,
+        label: 'Select an option',
+        value: 'option2',
+        children: `
+          <mdc-selectlistbox>
+            <mdc-option label="Option 1" value="option1"></mdc-option>
+            <mdc-option label="Option 2" value="option2" selected></mdc-option>
+            <mdc-option label="Option 3" value="option3"></mdc-option>
+            <mdc-option label="Option 4" value="option4"></mdc-option>
+          </mdc-selectlistbox>
+        `,
+      });
+
+      const optionsList = select.locator('mdc-option');
+      await expect(optionsList.nth(1)).toHaveAttribute('selected');
+      await componentsPage.page.evaluate(() => {
+        const selectDOM = document.querySelector('mdc-select[label="Select an option"]');
+        if (selectDOM) {
+          selectDOM.setAttribute('value', 'option4');
+        }
+      });
+      await expect(optionsList.nth(1)).not.toHaveAttribute('selected');
+      await expect(optionsList.nth(3)).toHaveAttribute('selected');
+    });
+
     await test.step('should update help-text and help-text-type dynamically based on select validity (FormFieldSelectWithHelpTextValidation)', async () => {
       await componentsPage.mount({
         html: `
