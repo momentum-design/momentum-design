@@ -1,5 +1,5 @@
-import { iconsCache } from '../../utils/icon-cache';
-import type { CacheStrategy } from '../../utils/icon-cache';
+import { assetsCache } from '../../utils/assets-cache';
+import type { CacheStrategy } from '../../utils/assets-cache';
 
 interface Args {
   url: string;
@@ -60,7 +60,7 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
     return fetchIcon(request).then(response => response.text());
   }
 
-  return iconsCache(cacheName, cacheStrategy).then(iconsCache =>
+  return assetsCache(cacheName, cacheStrategy).then(iconsCache =>
     iconsCache
       .get(request)
       .then(responseFromCache => {
