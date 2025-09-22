@@ -81,6 +81,18 @@
               "manifestPath": "../manifest.json"
             }
           }
+        },
+        {
+          "id": "lit-illustrations",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/ts",
+          "format": {
+            "type": "LIT",
+            "config": {
+              "partName": "illustration",
+              "hbsPath": "./config/templates/lit.ts.hbs"
+            }
+          }
         }
       ],
       "type": "assets"
