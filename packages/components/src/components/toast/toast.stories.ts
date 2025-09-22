@@ -27,6 +27,9 @@ const render = (args: Args) => html`
     @close=${action('onclose')}
   >
     ${args.children}
+    ${args['prefix-icon'] ? html`<mdc-icon slot="content-prefix" name="${args['prefix-icon']}" size="1.5"></mdc-icon>` : ''}
+    ${args['normal-body'] ? html`<mdc-text slot="toast-body-normal" tagname="span">${args['normal-body']}</mdc-text>` : ''}
+    ${args['detailed-body'] ? html`<mdc-text slot="toast-body-detailed" tagname="span">${args['detailed-body']}</mdc-text>` : ''}
   </mdc-toast>
 `;
 
@@ -59,10 +62,22 @@ const meta: Meta = {
     'show-less-text': {
       control: 'text',
     },
+    'prefix-icon': {
+      control: 'text',
+      description: 'Icon name for the content prefix (slot: content-prefix). Only for custom variant.',
+    },
+    'normal-body': {
+      control: 'text',
+      description: 'Content for the main body of the toast (slot: toast-body-normal)',
+    },
+    'detailed-body': {
+      control: 'text', 
+      description: 'Content for the detailed body of the toast, shown when expanded (slot: toast-body-detailed)',
+    },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['children']),
-    ...hideControls(['isDetailVisible', 'hasDetailedSlot', 'detailedElements', 'hasFooterButtons']),
+    ...disableControls(['content-prefix', 'toast-body-normal', 'toast-body-detailed', 'footer-button-primary', 'footer-button-secondary', 'footer']),
+    ...hideControls(['children', 'isDetailVisible', 'hasDetailedSlot', 'detailedElements', 'hasFooterButtons']),
     ...textControls([
       '--mdc-toast-background-color',
       '--mdc-toast-border-color',
@@ -94,11 +109,10 @@ export const Example: StoryObj = {
     'header-text': 'Toast Title',
     'show-more-text': 'Show more',
     'show-less-text': 'Show less',
-    children: html`
-      <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
-      <mdc-text slot="toast-body-normal" tagname="span">This is a toast message.</mdc-text>
-      <mdc-text slot="toast-body-detailed" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>
-      ${DefaultFooter}`,
+    'prefix-icon': 'placeholder-bold',
+    'normal-body': 'This is a toast message.',
+    'detailed-body': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    children: html`${DefaultFooter}`,
   },
 };
 
