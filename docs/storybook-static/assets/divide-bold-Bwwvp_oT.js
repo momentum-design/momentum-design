@@ -1,1 +1,0 @@
-import{k as a}from"./lit-element-D5KKan5q.js";const i=()=>a`<svg aria-hidden="true" part="icon" data-name="divide-bold" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 22a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M26 15a1 1 0 1 1 0 2H6a1 1 0 1 1 0-2zM16 7.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5"/></svg>`;export{i as default};
