@@ -45,7 +45,9 @@ const setup = async (options: ToastSetupOptions) => {
     showMoreText && `show-more-text="${showMoreText}"`,
     showLessText && `show-less-text="${showLessText}"`,
     closeButtonAriaLabel && `close-button-aria-label="${closeButtonAriaLabel}"`,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const dir = rtl ? 'dir="rtl"' : '';
 
@@ -226,8 +228,8 @@ test.describe('Toast Feature Scenarios', () => {
           `,
         });
         await expect(toast).toHaveAttribute('show-more-text', SHOW_MORE_TEXT);
-        await expect(toast).toHaveAttribute('show-less-text', SHOW_LESS_TEXT);     
-        const showMoreBtn = componentsPage.page.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        await expect(toast).toHaveAttribute('show-less-text', SHOW_LESS_TEXT);
+        const showMoreBtn = componentsPage.page.locator('mdc-button[part="footer-button-toggle"]');
         await expect(showMoreBtn).toHaveText(SHOW_MORE_TEXT);
       });
     });
@@ -242,7 +244,7 @@ test.describe('Toast Feature Scenarios', () => {
 
         const bodySlot = toast.locator('mdc-text[slot="toast-body-normal"]');
         await expect(bodySlot).toContainText(body);
-        await expect(toast.locator('mdc-linkbutton[part="footer-button-toggle"]')).not.toBeVisible();
+        await expect(toast.locator('mdc-button[part="footer-button-toggle"]')).not.toBeVisible();
       });
 
       await test.step('Toast renders normal and detailed body content', async () => {
@@ -261,7 +263,7 @@ test.describe('Toast Feature Scenarios', () => {
 
         const bodySlot = toast.locator('mdc-text[slot="toast-body-normal"]');
         const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
-        const showMoreBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        const showMoreBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
 
         await expect(bodySlot).toContainText(normalBody);
         await expect(detailedSlot).toHaveText(detailedBody);
@@ -276,7 +278,8 @@ test.describe('Toast Feature Scenarios', () => {
         const toast = await setup({
           componentsPage,
           headerText: 'Action Completed',
-          children: '<mdc-text tagname="span" slot="toast-body-normal">Your file has been successfully uploaded</mdc-text>',
+          children:
+            '<mdc-text tagname="span" slot="toast-body-normal">Your file has been successfully uploaded</mdc-text>',
         });
 
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
@@ -301,7 +304,7 @@ test.describe('Toast Feature Scenarios', () => {
           `,
         });
 
-        const toggleBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
         const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
 
         await expect(toggleBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
@@ -350,7 +353,8 @@ test.describe('Toast Feature Scenarios', () => {
         const toast = await setup({
           componentsPage,
           headerText: 'Action Completed',
-          children: '<mdc-text tagname="span" slot="toast-body-normal">Your file has been successfully uploaded</mdc-text>',
+          children:
+            '<mdc-text tagname="span" slot="toast-body-normal">Your file has been successfully uploaded</mdc-text>',
         });
 
         await componentsPage.actionability.pressTab();
@@ -376,14 +380,14 @@ test.describe('Toast Feature Scenarios', () => {
           `,
         });
 
-        const toggleBtn = toast.locator('mdc-linkbutton[part="footer-button-toggle"]');
+        const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
         const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
 
         await toggleBtn.focus();
         await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
           source: 'userflow',
           fileNameSuffix: 'collapsed-view',
-          element: toast
+          element: toast,
         });
         await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
 
@@ -395,7 +399,7 @@ test.describe('Toast Feature Scenarios', () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
           source: 'userflow',
           fileNameSuffix: 'expanded-view',
-          element: toast
+          element: toast,
         });
         await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
 
@@ -407,7 +411,7 @@ test.describe('Toast Feature Scenarios', () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
           source: 'userflow',
           fileNameSuffix: 'collapsed-view',
-          element: toast
+          element: toast,
         });
       });
     });

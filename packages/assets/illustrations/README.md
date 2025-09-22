@@ -4,7 +4,7 @@
 
 ## Overview
 
-Contains Momentum illustrations as SVGs.
+Contains Momentum illustrations as SVGs and Lit Templates.
 
 ## Consumption
 

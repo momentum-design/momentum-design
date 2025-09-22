@@ -13,7 +13,7 @@ import type { CacheStrategy, IconSet } from './iconprovider.types';
  * Attribute `iconSet` can be set to either `momentum-icons` or `custom-icons`.
  * If `momentum-icons` is selected, the icons will be fetched from the
  * Momentum Design System icon set per a dynamic JS Import (no need to provide a URL).
- * This requires the consumer to have the `@momentum-designs` package installed and the
+ * This requires the consumer to have the `@momentum-design/icons` package installed and the
  * build tooling needs to support dynamic imports.
  *
  * If `custom-icons` is selected, the icons will be fetched from the provided URL.
@@ -118,6 +118,8 @@ class IconProvider extends Provider<IconProviderContext> {
    *
    * If provided, Icons inside the provider will be cached in the
    * cache (determined by `cache-strategy`) with the provided name.
+   *
+   * Icons cache name must be unique, independent from other asset caches.
    *
    * NOTE: `cache-name` requires `cache-strategy` to be set.
    *

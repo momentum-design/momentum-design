@@ -15,7 +15,6 @@ const DEFAULTS = {
   FILE_EXTENSION: 'svg',
   LENGTH_UNIT: 'em',
   SIZE: LENGTH_UNIT_SIZE.em,
-  SHOULD_CACHE: false,
   ICON_SET: 'momentum-icons',
 } as const;
 

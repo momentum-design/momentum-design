@@ -9,6 +9,7 @@ import customElements from '../../dist/custom-elements.json';
 import { themes } from './themes';
 import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
+import { withIllustrationProvider } from './provider/illustrationProvider';
 import { withCssPropertyProvider } from './provider/cssPropertyProvider';
 
 const cssProperties = [];
@@ -133,7 +134,7 @@ const preview = {
     },
     direction: 'ltr',
   },
-  decorators: [withCssPropertyProvider(cssProperties), withThemeProvider, withIconProvider],
+  decorators: [withCssPropertyProvider(cssProperties), withThemeProvider, withIconProvider, withIllustrationProvider],
   globalTypes: {
     theme: {
       description: 'Global theme for components',
