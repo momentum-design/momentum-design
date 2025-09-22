@@ -63,6 +63,8 @@ const styles = [
 
     .mdc-label {
       cursor: pointer;
+      word-break: break-word;
+      white-space: normal;
     }
 
     :host([disabled]) .mdc-radio__label-text,
