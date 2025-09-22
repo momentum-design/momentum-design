@@ -26,7 +26,7 @@ interface ElementStoreOptions<TItem extends HTMLElement = HTMLElement> {
    * @param index - Index at which the item is added or removed.
    * @param store - The current state of the store.
    */
-  onStoreUpdate?: (item: TItem, changeType: ElementStoreChangeTypes, index: number, store: TItem[]) => void;
+  onStoreUpdate?: (item: TItem, changeType: ElementStoreChangeTypes, index: number, store?: TItem[]) => void;
 }
 
 const defaultIsValidFn = (item: any) => !!item;
