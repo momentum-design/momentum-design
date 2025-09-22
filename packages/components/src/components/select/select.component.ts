@@ -3,6 +3,7 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { ElementStore } from '../../utils/controllers/ElementStore';
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -10,6 +11,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
+import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -18,7 +20,6 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -75,11 +76,6 @@ class Select
   )
   implements AssociatedFormControl
 {
-  /**
-   * @internal
-   */
-  private itemsStore: ElementStore<Option>;
-
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -171,17 +167,16 @@ class Select
   /** @internal */
   private initialSelectedOption: Option | null = null;
 
+  /** @internal */
+  private itemsStore = new ElementStore<Option>(this, {
+    isValidItem: this.isValidItem,
+    onStoreUpdate: this.onStoreUpdate,
+  });
+
   constructor() {
     super();
 
-    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
-    // This must be initialized after the destroyed event listener
-    // to keep the element in the itemStore in order to move the focus correctly
-    this.itemsStore = new ElementStore<Option>(this, {
-      isValidItem: this.isValidItem,
-    });
   }
 
   override connectedCallback(): void {
@@ -242,6 +237,36 @@ class Select
   }
 
   /** @internal */
+  private onStoreUpdate(option: HTMLElement, changeType: ElementStoreChangeTypes, index: number): void {
+    switch (changeType) {
+      case 'added':
+        option.setAttribute('tabindex', '-1');
+        break;
+      case 'removed': {
+        if (index === -1 || option.tabIndex !== 0) {
+          return;
+        }
+
+        let newIndex = index + 1;
+        if (newIndex >= this.navItems.length) {
+          newIndex = index - 1;
+        }
+
+        if (newIndex === -1) {
+          this.displayPopover = false;
+          this.handleNativeInputFocus();
+          return;
+        }
+
+        this.resetTabIndexes(newIndex);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  /** @internal */
   private isValidItem(item: Element): boolean {
     return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
   }
@@ -255,20 +280,6 @@ class Select
   private getFirstOption(): Option {
     return this.navItems[0];
   }
-
-  /**
-   * Update the tabIndex of the list items when a new item is added.
-   *
-   * @internal
-   */
-  private handleCreatedEvent = (event: Event) => {
-    const createdElement = event.target as HTMLElement;
-    if (!this.isValidItem(createdElement)) {
-      return;
-    }
-
-    createdElement.tabIndex = -1;
-  };
 
   /**
    * Update the selected option when an option is modified.
@@ -304,37 +315,6 @@ class Select
         break;
     }
   }
-
-  /**
-   * Update the focus when an item is removed.
-   * If there is a next item, focus it. If not, focus the previous item.
-   *
-   * @internal
-   */
-  private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as Option;
-    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
-      return;
-    }
-
-    const destroyedItemIndex = this.navItems.indexOf(destroyedElement);
-    if (destroyedItemIndex === -1) {
-      return;
-    }
-
-    let newIndex = destroyedItemIndex + 1;
-    if (newIndex >= this.navItems.length) {
-      newIndex = destroyedItemIndex - 1;
-    }
-
-    if (newIndex === -1) {
-      this.displayPopover = false;
-      this.handleNativeInputFocus();
-      return;
-    }
-
-    this.resetTabIndexes(newIndex);
-  };
 
   /**
    * Handles the first updated lifecycle event.
