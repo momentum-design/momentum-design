@@ -20,6 +20,7 @@ import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type { PopoverStrategy } from '../popover/popover.types';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -136,7 +137,7 @@ class Select
    * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
    */
   @property({ type: String, reflect: true, attribute: 'strategy' })
-  strategy: 'absolute' | 'fixed' = POPOVER_DEFAULTS.STRATEGY;
+  strategy: PopoverStrategy = POPOVER_DEFAULTS.STRATEGY;
 
   /**
    * The z-index of the popover within Select.
