@@ -390,6 +390,7 @@ const meta: Meta = {
       '--mdc-dialog-description-text-color',
       '--mdc-dialog-elevation-3',
       '--mdc-dialog-width',
+      '--mdc-dialog-height',
     ]),
   },
 };
