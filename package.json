@@ -53,8 +53,8 @@
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@momentum-design/automation": "workspace:^",
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "astro-eslint-parser": "^0.9.0",
     "esbuild": "^0.23.0",
     "eslint": "8.27.0",
@@ -70,7 +70,7 @@
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "syncpack": "^12.4.0",
-    "typescript": "^4.8.4",
+    "typescript": "^5.9.2",
     "yargs": "^17.7.2"
   }
 }
