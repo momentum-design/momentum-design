@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -35,9 +35,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-option',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     disabled: {
       control: 'boolean',

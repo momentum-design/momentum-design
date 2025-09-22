@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
@@ -51,9 +51,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-password',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   args: {
     name: 'password',
   },
