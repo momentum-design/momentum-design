@@ -532,4 +532,5 @@ export const SelectWithChangingValueAttribute: StoryObj = {
         </mdc-selectlistbox>
       </mdc-select>`;
   },
+  ...hideAllControls(),
 };
