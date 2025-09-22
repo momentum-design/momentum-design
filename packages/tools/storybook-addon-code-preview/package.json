@@ -29,9 +29,14 @@
     "*.d.ts"
   ],
   "scripts": {
+    "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
     "build": "tsup",
     "build:watch": "npm run build -- --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn test:prebuild && yarn test:postbuild",
+    "test:postbuild": "echo \"script 'test:postbuild' has not been implemented\"",
+    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "start": "run-p build:watch \"storybook --quiet\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
