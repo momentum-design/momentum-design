@@ -158,7 +158,7 @@
         },
         {
           "id": "lit-brand-visuals-svg",
-          "target": "./dist/svg/**/*.*",
+          "target": "./dist/svg/**/*.svg",
           "destination": "./dist/ts",
           "format": {
             "type": "LIT",

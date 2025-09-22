@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -42,9 +42,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-cardradio',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',

@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { ROLE } from '../../utils/roles';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
@@ -55,7 +56,7 @@ class Option extends FormInternalsMixin(ListItem) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'option';
+    this.role = ROLE.OPTION;
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
     this.setAttribute('aria-selected', `${this.selected}`);
     this.setAttribute('aria-disabled', `${!!this.disabled}`);
@@ -85,9 +86,7 @@ class Option extends FormInternalsMixin(ListItem) {
         `
       : nothing;
     const trailingContent = this.selected
-      ? html`
-            <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
-        `
+      ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
       : nothing;
     return html`
       ${prefixIconContent}
@@ -95,9 +94,7 @@ class Option extends FormInternalsMixin(ListItem) {
         ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
         ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
       </div>
-      <div part="trailing">
-        ${trailingContent}
-      </div>
+      <div part="trailing">${trailingContent}</div>
     `;
   }
 

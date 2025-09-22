@@ -1,7 +1,7 @@
 import React from 'react';
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
-import { Title, Subtitle, Description } from '@storybook/blocks';
+import { Title, Subtitle, Description } from '@storybook/addon-docs/blocks';
 import { setCustomElementsManifest } from '@storybook/web-components';
 
 import customElements from '../../dist/custom-elements.json';
@@ -68,9 +68,6 @@ const preview = {
       },
     },
     docs: {
-      source: {
-        excludeDecorators: true,
-      },
       page: () => (
         <>
           <Title />
@@ -78,62 +75,15 @@ const preview = {
           <Description />
         </>
       ),
+      source: {
+        excludeDecorators: true,
+      },
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
       disable: true,
       grid: {
         disable: true,
-      },
-    },
-    badgesConfig: {
-      wip: {
-        styles: {
-          backgroundColor: '#30240D',
-          borderColor: '#D6B220',
-          color: '#FFFFFFF2',
-        },
-        title: 'Work In Progress',
-        tooltip: {
-          title: 'This Component is Work In Progress',
-          desc: 'Keep an eye on the Release history for updates or provide feedback.',
-        },
-      },
-      stable: {
-        styles: {
-          backgroundColor: '#416116',
-          borderColor: '#93C437',
-          color: '#FFFFFFF2',
-        },
-        title: 'Stable',
-        tooltip: {
-          title: 'This Component is Stable',
-          desc: 'Ready for use.',
-        },
-      },
-      internal: {
-        styles: {
-          backgroundColor: '#0D2C3D',
-          borderColor: '#1D9BF0',
-          color: '#FFFFFFF2',
-        },
-        title: 'Internal',
-        tooltip: {
-          title: 'This Component is Internal',
-          desc: 'This component is not intended for direct consumption.',
-        },
-      },
-      deprecated: {
-        styles: {
-          backgroundColor: '#4F0E10',
-          borderColor: '#FC8B98',
-          color: '#FFFFFFF2',
-        },
-        title: 'Deprecated',
-        tooltip: {
-          title: 'This Component is Deprecated',
-          desc: 'Check the Release history for more information about deprecation or provide feedback.',
-        },
       },
     },
     controls: {
@@ -144,8 +94,43 @@ const preview = {
         date: /Date$/,
       },
     },
+    codePreview: {
+      languages: [
+        {
+          id: 'lit',
+          label: 'Lit',
+          format: 'html',
+          type: 'base',
+          status: 'active',
+        },
+        {
+          id: 'react',
+          label: 'React (WIP)',
+          format: 'jsx',
+          type: 'inherit',
+          status: 'wip',
+        },
+      ],
+      initialLanguageId: 'lit',
+    },
     options: {
-      storySort: (story1, story2) => globalThis['storybook-multilevel-sort:storySort'](story1, story2),
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          'Consumption',
+          'Styling',
+          'Attributes',
+          'Components',
+          ['Docs', 'Accessibility', 'Example'],
+          'Widgets',
+          ['Docs', 'Accessibility', 'Example'],
+          'Work In Progress',
+          ['Docs', 'Accessibility', 'Example'],
+          'Internal',
+          ['Docs', 'Accessibility', 'Example'],
+        ],
+        locales: 'en-US',
+      },
     },
     direction: 'ltr',
   },

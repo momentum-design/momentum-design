@@ -149,7 +149,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * describing the dialog for accessibility
    */
   @property({ type: String, reflect: true, attribute: 'aria-description' })
-  ariaDescription: string | null = null;
+  override ariaDescription: string | null = null;
 
   /**
    * Defines a string value to display as the title of the dialog
