@@ -87,9 +87,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-stepper',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     orientation: {
       control: 'radio',
