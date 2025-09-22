@@ -1,5 +1,5 @@
-type IconCache = Map<string, string>;
-type Registry = Record<string, IconCache>;
+type AssetCache = Map<string, string>;
+type Registry = Record<string, AssetCache>;
 export type CacheStrategy = 'in-memory-cache' | 'web-cache-api';
 
 const registry: Registry = {};
@@ -32,7 +32,7 @@ export const inMemoryCache = async (name: string) => {
  * @param name - name of the cache (used as an identifier)
  * @returns Object with set, get and delete methods
  */
-export const webAPIIconsCache = async (name: string) => {
+export const webAPIAssetsCache = async (name: string) => {
   const cache = await caches.open(name);
 
   return {
@@ -55,10 +55,10 @@ export const webAPIIconsCache = async (name: string) => {
  * @param cacheStrategy - strategy to be used for caching
  * @returns the cache based on the strategy
  */
-export const iconsCache = async (cacheName: string, cacheStrategy: CacheStrategy) => {
+export const assetsCache = async (cacheName: string, cacheStrategy: CacheStrategy) => {
   if (cacheStrategy === 'in-memory-cache') {
     return inMemoryCache(cacheName);
   }
 
-  return webAPIIconsCache(cacheName);
+  return webAPIAssetsCache(cacheName);
 };

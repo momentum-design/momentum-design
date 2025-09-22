@@ -11,33 +11,33 @@ interface Args {
 }
 
 /**
- * Utility function for fetching the icon from the provided `request`.
+ * Utility function for fetching the illustration from the provided `request`.
  * It will throw an error if the response is not ok.
- * @param request - The request object to fetch the icon
+ * @param request - The request object to fetch the illustration
  * @returns Promise<Response> - The response from the fetch
  * @throws Error if the response is not ok
  */
-const fetchIcon = async (request: Request): Promise<Response> =>
+const fetchIllustration = async (request: Request): Promise<Response> =>
   fetch(request).then(response => {
     if (!response.ok) {
-      throw new Error('There was a problem while fetching the icon!');
+      throw new Error('There was a problem while fetching the illustration!');
     }
     return response;
   });
 
 /**
- * Fetches a dynamic SVG icon based on the provided `url`, `name` and `fileExtension`.
+ * Fetches a dynamic SVG illustration based on the provided `url`, `name` and `fileExtension`.
  * The fetch is aborted if the signal is aborted.
  *
- * This function also includes the logic to cache the fetched icon using the In Memory Cache or Web Cache API.
+ * This function also includes the logic to cache the fetched illustration using the In Memory Cache or Web Cache API.
  * If the `cacheStrategy` is set to `web-cache-api` or `in-memory-cache` and `cacheName` is provided,
- * the fetched icon will be cached using the respective cache.
+ * the fetched illustration will be cached using the respective cache.
  *
  * It will throw an error if the response is not ok.
  *
- * @param url - The base url of the icon
- * @param name - The name of the icon
- * @param fileExtension - The file extension of the icon
+ * @param url - The base url of the illustration
+ * @param name - The name of the illustration
+ * @param fileExtension - The file extension of the illustration
  * @param signal - The signal to abort the fetch.
  * It is used to cancel the fetch when the component is disconnected or updated.
  * @param cacheStrategy - The cache strategy to use.
@@ -55,13 +55,13 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
   });
 
   // if there is no cache defined (cacheName and cacheStrategy properly set),
-  // fetch the icon and return the response
+  // fetch the illustration and return the response
   if (!cacheName || !cacheStrategy || !['in-memory-cache', 'web-cache-api'].includes(cacheStrategy)) {
-    return fetchIcon(request).then(response => response.text());
+    return fetchIllustration(request).then(response => response.text());
   }
 
-  return assetsCache(cacheName, cacheStrategy).then(iconsCache =>
-    iconsCache
+  return assetsCache(cacheName, cacheStrategy).then(illustrationsCache =>
+    illustrationsCache
       .get(request)
       .then(responseFromCache => {
         // **If entry in cache, return**
@@ -70,16 +70,16 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
         }
 
         // **Otherwise, fetch and cache if successful**
-        // Both fetchIcon() and iconsCache.set() "consume" the request,
+        // Both fetchIllustration() and illustrationsCache.set() "consume" the request,
         // so we need to make a copy.
         // (see https://developer.mozilla.org/en-US/docs/Web/API/Request/clone)
-        return fetchIcon(request.clone()).then(response => {
+        return fetchIllustration(request.clone()).then(response => {
           // This avoids caching responses that we know are errors
           // (i.e. HTTP status code of 4xx or 5xx).
           if (response.status < 400 && response.headers.has('content-type')) {
             // Call .clone() on the response to save copy to cache.
             // https://developer.mozilla.org/en-US/docs/Web/API/Request/clone
-            return iconsCache.set?.(request, response.clone()).then(() => response.text());
+            return illustrationsCache.set?.(request, response.clone()).then(() => response.text());
           }
           return response.text();
         });
@@ -89,7 +89,7 @@ const svgFetch = async ({ url, name, fileExtension, cacheStrategy, cacheName, re
         // an exception.
         // It will return a normal response object that has the appropriate
         // error code set.
-        throw new Error(`Error in caching the Icon ${name}, ${error}`);
+        throw new Error(`Error in caching the Illustration ${name}, ${error}`);
       }),
   );
 };
