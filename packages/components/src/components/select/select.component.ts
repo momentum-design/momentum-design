@@ -206,12 +206,23 @@ class Select
   override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
     super.attributeChangedCallback(name, oldValue, newValue);
 
-    if (name === 'value' && newValue !== '' && newValue !== oldValue && newValue !== this.selectedOption?.value) {
+    if (
+      name === 'value' &&
+      newValue !== '' &&
+      newValue !== oldValue &&
+      newValue !== this.selectedOption?.value &&
+      this.navItems.length
+    ) {
       const firstSelectedOption = this.getFirstSelectedOption();
+      const firstValidOption = this.getFirstOption();
       const valueBasedOption = this.navItems.find(option => option.value === newValue);
       let optionToSelect: Option | null = null;
       if (valueBasedOption) {
         optionToSelect = valueBasedOption;
+      } else if (this.placeholder) {
+        optionToSelect = null;
+      } else if (firstValidOption) {
+        optionToSelect = firstValidOption;
       } else if (firstSelectedOption) {
         optionToSelect = firstSelectedOption;
       } else {

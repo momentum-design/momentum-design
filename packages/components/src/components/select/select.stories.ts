@@ -507,3 +507,29 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
   },
   ...hideAllControls(),
 };
+
+export const InvalidOptionSelection: StoryObj = {
+  render: () => {
+    const changeValidOption = () => {
+      const select = document.querySelector('mdc-select[label="Test Select"]') as Select;
+      if (select) {
+        select.value = 'test3';
+      }
+    };
+    const changeInvalidOption = () => {
+      const select = document.querySelector('mdc-select[label="Test Select"]') as Select;
+      if (select) {
+        select.value = 'invalid-option';
+      }
+    };
+    return html` <mdc-button @click=${changeValidOption}>Change Selected to Test Option 3</mdc-button>
+      <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Change Selected to Invalid Option</mdc-button>
+      <mdc-select label="Test Select" value="test2" placeholder="placeholder">
+        <mdc-selectlistbox>
+          <mdc-option label="Test Option 1" value="test1"></mdc-option>
+          <mdc-option label="Test Option 2" selected value="test2"></mdc-option>
+          <mdc-option label="Test Option 3" value="test3"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>`;
+  },
+};
