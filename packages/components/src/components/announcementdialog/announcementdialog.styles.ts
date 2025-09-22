@@ -3,6 +3,7 @@ import { css } from 'lit';
 const styles = css`
   :host {
     --mdc-announcementdialog-illustration-background-color: var(--mds-color-theme-background-solid-secondary-normal);
+
     background-image: linear-gradient(
       var(--mdc-announcementdialog-illustration-background-color) 0%,
       var(--mdc-announcementdialog-illustration-background-color) 100%
@@ -30,6 +31,7 @@ const styles = css`
     margin-right: 2rem;
   }
   :host::part(text-container) {
+    color: var(--mdc-dialog-description-text-color);
     width: auto;
     margin-left: 2rem;
     margin-right: 1rem;

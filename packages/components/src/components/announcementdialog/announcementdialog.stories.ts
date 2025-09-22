@@ -40,7 +40,7 @@ const createAnnouncementDialog = (args: Args, content?: TemplateResult, onClose?
     @close="${onClose}"
   >
     ${content}
-    <mdc-text slot="description-container">
+    <mdc-text slot="description-container" type="body-large-regular">
       Introduction sentence.
       <br />
       Feature description.
@@ -119,13 +119,7 @@ const meta: Meta = {
     'header-text': {
       control: 'text',
     },
-    'description-text': {
-      control: 'text',
-    },
     'header-tag-name': {
-      control: 'text',
-    },
-    'description-tag-name': {
       control: 'text',
     },
     'should-focus-trap-wrap': {
@@ -153,6 +147,7 @@ const meta: Meta = {
       },
     },
     ...textControls([
+      '--mdc-announcementdialog-illustration-background-color',
       '--mdc-dialog-primary-background-color',
       '--mdc-dialog-border-color',
       '--mdc-dialog-header-text-color',
@@ -166,28 +161,18 @@ const meta: Meta = {
 
 export default meta;
 
-const commonProperties = {
-  id: 'dialog',
-  'z-index': DIALOG_DEFAULTS.Z_INDEX,
-  role: DIALOG_DEFAULTS.ROLE,
-  triggerId: 'dialog-trigger-btn',
-  'close-button-aria-label': 'Close dialog',
-  visible: false,
-  illustration: 'onezerox-better-threetwozero-onboarding-tertiary',
-  '--mdc-dialog-height': '30rem',
-};
-
-const headerDescriptionProperties = {
-  'header-text': 'Dialog Header',
-  'header-tag-name': DIALOG_DEFAULTS.HEADER_TAG_NAME,
-  'description-text': 'This is a dialog description. It is only present if the header is present.',
-  'description-tag-name': DIALOG_DEFAULTS.DESCRIPTION_TAG_NAME,
-};
-
 export const Example: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
-    ...commonProperties,
-    ...headerDescriptionProperties,
+    'header-text': 'Dialog Header',
+    'header-tag-name': DIALOG_DEFAULTS.HEADER_TAG_NAME,
+    illustration: 'onezerox-better-threetwozero-onboarding-tertiary',
+    visible: false,
+    'close-button-aria-label': 'Close dialog',
+    role: DIALOG_DEFAULTS.ROLE,
+    id: 'dialog',
+    triggerId: 'dialog-trigger-btn',
+    'z-index': DIALOG_DEFAULTS.Z_INDEX,
+    '--mdc-dialog-height': '30rem',
   },
 };

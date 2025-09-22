@@ -47,6 +47,7 @@ import { DEFAULTS } from './announcementdialog.constants';
  * @event close - (React: onClose) Dispatched when the Close Button is clicked or Escape key is pressed
  * (this does not hide the dialog)
  *
+ * @cssproperty --mdc-announcementdialog-illustration-background-color - background color of the illustration section
  * @cssproperty --mdc-dialog-primary-background-color - primary background color of the dialog
  * @cssproperty --mdc-dialog-border-color - border color of the dialog
  * @cssproperty --mdc-dialog-header-text-color - text color of the header/title of the dialog
@@ -69,6 +70,8 @@ class Announcementdialog extends Dialog {
   /**
    * The illustration to display in the announcement dialog.
    * This can be an image URL, icon name, or any other illustration identifier.
+   *
+   * Make sure to choose the right illustration respective the size (the filename includes the size information, i.e. threetwozero = 320px)
    */
   @property({ type: String, reflect: true })
   illustration?: IllustrationNames;
