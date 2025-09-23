@@ -129,7 +129,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      
+
       // Short width test for word wrapping
       radioStickerSheet.setAttributes({
         label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
@@ -139,7 +139,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      
+
       await radioStickerSheet.mountStickerSheet();
 
       await test.step('matches screenshot of radio stickersheet', async () => {

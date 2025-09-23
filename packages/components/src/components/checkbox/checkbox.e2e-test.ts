@@ -100,7 +100,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-    
+
     // Short width test for word wrapping
     checkboxStickerSheet.setAttributes({
       label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
@@ -110,7 +110,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-    
+
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {

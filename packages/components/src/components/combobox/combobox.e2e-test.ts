@@ -29,6 +29,7 @@ type SetupOptions = {
   'auto-focus-on-mount'?: boolean;
   'toggletip-text'?: string;
   'toggletip-placement'?: string;
+  'toggletip-strategy'?: string;
   'invalid-custom-value-text'?: string;
 };
 
@@ -78,6 +79,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
           ${restArgs['auto-focus-on-mount'] ? 'auto-focus-on-mount' : ''}
           ${restArgs['toggletip-text'] ? `toggletip-text="${restArgs['toggletip-text']}"` : ''}
           ${restArgs['toggletip-placement'] ? `toggletip-placement="${restArgs['toggletip-placement']}"` : ''}
+          ${restArgs['toggletip-strategy'] ? `toggletip-strategy="${restArgs['toggletip-strategy']}"` : ''}
           ${restArgs['invalid-custom-value-text'] ? `invalid-custom-value-text="${restArgs['invalid-custom-value-text']}"` : ''}
         >
           ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}

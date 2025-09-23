@@ -526,9 +526,9 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       'help-text-type': VALIDATION,
     });
 
-    inputStickerSheet.setAttributes({ 
-      ...attributes, 
-      value: 'Disabled', 
+    inputStickerSheet.setAttributes({
+      ...attributes,
+      value: 'Disabled',
       disabled: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',

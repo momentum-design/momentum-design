@@ -64,7 +64,7 @@ test('mdc-option', async ({ componentsPage }) => {
       style: 'width: 15rem;',
     });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
-    optionSheet.setAttributes({ 
+    optionSheet.setAttributes({
       label: 'A long text which should be truncated',
       'secondary-label': secondaryLabel,
       'prefix-icon': icon,

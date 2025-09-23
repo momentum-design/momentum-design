@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import type { PopoverPlacement } from '../popover/popover.types';
+import type { PopoverPlacement, PopoverStrategy } from '../popover/popover.types';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
@@ -25,14 +25,17 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  * @dependency mdc-button
  * @dependency mdc-toggletip
  *
- *
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
   /**
-  * Indicates the unique identifier for the native input element. 
-  * Required for acccessibility.
-  * @internal
-  */
+   * Indicates the unique identifier for the native input element.
+   * Required for acccessibility.
+   * @internal
+   */
   protected inputId = `mdc-el-${uuidv4()}`;
 
   /**
@@ -70,6 +73,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
   toggletipPlacement: PopoverPlacement = DEFAULTS.TOGGLETIP_PLACEMENT;
 
+  @property({ type: String, reflect: true, attribute: 'toggletip-strategy' })
+  toggletipStrategy: PopoverStrategy = DEFAULTS.TOGGLETIP_STRATEGY;
+
   /**
    * Aria label for the info icon that is displayed next to the label when `toggletipText` is set.
    * This is used for accessibility purposes to provide a description of the icon.
@@ -91,7 +97,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return this.shouldRenderLabel
-      ? html`<label for="${this.inputId}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
+      ? html`<label for="${this.inputId}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label"
+          >${this.label}</label
+        >`
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
@@ -144,28 +152,32 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   protected renderLabel() {
     if (!this.label) return nothing;
+    const triggerId = `toggletip-trigger-${uuidv4()}`;
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      ${this.toggletipText
-        ? html` <mdc-button
-              part="info-icon-btn"
-              prefix-icon="${DEFAULTS.INFO_ICON}"
-              size="${DEFAULTS.ICON_SIZE}"
-              variant="${BUTTON_VARIANTS.TERTIARY}"
-              aria-label="${ifDefined(this.infoIconAriaLabel)}"
-              ?disabled="${this.disabled}"
-              id="info-icon-id"
-            ></mdc-button>
-            <mdc-toggletip
-              part="label-toggletip"
-              triggerid="info-icon-id"
-              id="label-toggletip-id"
-              placement="${this.toggletipPlacement}"
-              show-arrow
-              >${this.toggletipText}</mdc-toggletip
-            >`
-        : nothing}
+      <slot name="toggletip">
+        ${this.toggletipText
+          ? html` <mdc-button
+                part="info-icon-btn"
+                prefix-icon="${DEFAULTS.INFO_ICON}"
+                size="${DEFAULTS.ICON_SIZE}"
+                variant="${BUTTON_VARIANTS.TERTIARY}"
+                aria-label="${ifDefined(this.infoIconAriaLabel)}"
+                ?disabled="${this.disabled}"
+                id="${triggerId}"
+              ></mdc-button>
+              <mdc-toggletip
+                part="label-toggletip"
+                triggerid="${triggerId}"
+                id="label-toggletip-id"
+                placement="${this.toggletipPlacement}"
+                strategy="${this.toggletipStrategy}"
+                show-arrow
+                >${this.toggletipText}</mdc-toggletip
+              >`
+          : nothing}
+      </slot>
     </div>`;
   }
 
