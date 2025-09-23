@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
+import { disableCSSParts, textControls } from '../../../config/storybook/utils';
 
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
@@ -92,6 +92,17 @@ const meta: Meta = {
       '--mdc-badge-error-foreground-color',
       '--mdc-badge-error-background-color',
       '--mdc-badge-overlay-background-color',
+    ]),
+    ...disableCSSParts([
+      'mdc-badge-dot',
+      'mdc-badge-icon',
+      'mdc-badge-icon__error',
+      'mdc-badge-icon__primary',
+      'mdc-badge-icon__secondary',
+      'mdc-badge-icon__success',
+      'mdc-badge-icon__warning',
+      'mdc-badge-overlay',
+      'mdc-badge-text',
     ]),
     ...classArgType,
     ...styleArgType,
