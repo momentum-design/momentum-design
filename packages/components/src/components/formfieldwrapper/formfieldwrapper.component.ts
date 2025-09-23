@@ -164,6 +164,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
                 size="${DEFAULTS.ICON_SIZE}"
                 variant="${BUTTON_VARIANTS.TERTIARY}"
                 aria-label="${ifDefined(this.infoIconAriaLabel)}"
+                ?disabled="${this.disabled}"
                 id="${triggerId}"
               ></mdc-button>
               <mdc-toggletip

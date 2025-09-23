@@ -51,6 +51,10 @@ const styles = [
       color: var(--mds-color-theme-text-secondary-normal);
     }
 
+    :host::part(info-icon-btn) {
+      align-self: flex-start;
+    }
+
     :host([help-text-type='error']) .mdc-help-text {
       color: var(--mds-color-theme-text-error-normal);
     }

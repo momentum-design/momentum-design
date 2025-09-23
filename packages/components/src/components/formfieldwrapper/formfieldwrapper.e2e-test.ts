@@ -142,6 +142,8 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Disabled Label',
       'help-text': 'Help Text',
       disabled: '',
+      'toggletip-text': 'This is additional toggletip text that provides more context',
+      'info-icon-aria-label': 'Additional information',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // required
@@ -159,6 +161,8 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       'help-text': 'Help Text',
       required: '',
       disabled: '',
+      'toggletip-text': 'This is additional toggletip text that provides more context',
+      'info-icon-aria-label': 'Additional information',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // With long text that gets truncated into an ellipsis
@@ -168,6 +172,8 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       'help-text': 'Help Text',
       required: '',
       style: 'width: 200px',
+      'toggletip-text': 'This is additional toggletip text that provides more context',
+      'info-icon-aria-label': 'Additional information',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // With info-icon and toggletip
