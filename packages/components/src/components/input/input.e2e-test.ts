@@ -597,9 +597,9 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     // disabled input field with value
-    inputStickerSheet.setAttributes({ 
-      ...attributes, 
-      value: 'Disabled', 
+    inputStickerSheet.setAttributes({
+      ...attributes,
+      value: 'Disabled',
       disabled: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',

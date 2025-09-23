@@ -52,6 +52,7 @@ const meta: Meta = {
       'validation-message',
       'toggletip-text',
       'toggletip-placement',
+      'toggletip-strategy',
       'info-icon-aria-label',
     ]),
     ...textControls([

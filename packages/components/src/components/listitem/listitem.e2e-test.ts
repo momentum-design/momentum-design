@@ -146,7 +146,7 @@ test.describe.parallel('mdc-listitem', () => {
         <mdc-badge type="dot"></mdc-badge>
       </div>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
+      await listitemSheet.createMarkupWithCombination({}, options);
       await listitemSheet.mountStickerSheet({ role: 'list' });
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-listitem', {
