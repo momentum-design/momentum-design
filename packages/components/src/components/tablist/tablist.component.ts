@@ -55,6 +55,8 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  * @cssproperty --mdc-tablist-gap - Gap between tabs
  * @cssproperty --mdc-tablist-width - Width of the tablist
  * @cssproperty  --mdc-tablist-arrow-button-margin - Margin value for the arrow button
+ *
+ * @csspart container - The tablist container.
  */
 class TabList extends Component {
   /**
@@ -75,7 +77,7 @@ class TabList extends Component {
    * Has the role of `tablist`.
    * @internal
    */
-  @query('.container')
+  @query('[part="container"]')
   private tabsContainer?: HTMLDivElement;
 
   /**
@@ -535,7 +537,7 @@ class TabList extends Component {
         : nothing}`;
 
     return html` ${arrowButton('backward')}
-      <div class="container" role="${ROLE.TABLIST}" tabindex="-1" aria-label="${ifDefined(this.dataAriaLabel)}">
+      <div part="container" role="${ROLE.TABLIST}" tabindex="-1" aria-label="${ifDefined(this.dataAriaLabel)}">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
