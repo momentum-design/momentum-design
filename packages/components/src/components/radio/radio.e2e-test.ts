@@ -134,7 +134,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       radioStickerSheet.setAttributes({
         label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
         'help-text': 'This is also a very long help text that should wrap properly',
-        style: 'margin: 0.25rem; width: 7.5rem; outline: 2px solid red;',
+        style: 'width: 7.5rem;',
         'toggletip-text': 'This is additional toggletip text that provides more context',
         'info-icon-aria-label': 'Additional information',
       });

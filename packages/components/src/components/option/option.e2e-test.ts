@@ -61,7 +61,7 @@ test('mdc-option', async ({ componentsPage }) => {
     optionSheet.setAttributes({
       'prefix-icon': icon,
       label: 'A long text which should be truncated',
-      style: 'width: 15rem; outline: 2px solid red;',
+      style: 'width: 15rem;',
     });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ 
@@ -69,7 +69,7 @@ test('mdc-option', async ({ componentsPage }) => {
       'secondary-label': secondaryLabel,
       'prefix-icon': icon,
       selected: '',
-      style: 'width: 15rem; outline: 2px solid red;',
+      style: 'width: 15rem;',
     });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
 

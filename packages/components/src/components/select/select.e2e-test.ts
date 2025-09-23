@@ -160,7 +160,7 @@ test('mdc-select', async ({ componentsPage }) => {
     selectSheet.setAttributes({
       label: 'This is a very long label text that should wrap when constrained to a narrow width',
       placeholder: defaultPlaceholder,
-      style: 'width: 7.5rem; outline: 2px solid red;',
+      style: 'width: 7.5rem;',
       'toggletip-text': 'This is additional toggletip text that provides more context',
       'info-icon-aria-label': 'Additional information',
     });

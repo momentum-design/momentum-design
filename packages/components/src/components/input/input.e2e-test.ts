@@ -631,21 +631,12 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     inputStickerSheet.setAttributes({ ...attributes, required: '', placeholder: 'Input is required' });
     await inputStickerSheet.createMarkupWithCombination({});
 
-    // Long text label that is truncated in a small container
-    inputStickerSheet.setAttributes({
-      label: 'This is a large label text',
-      required: '',
-      placeholder: 'placeholder',
-      style: 'width: 200px',
-    });
-    await inputStickerSheet.createMarkupWithCombination({});
-
     // Short width test for word wrapping
     inputStickerSheet.setAttributes({
       label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
       'help-text': 'This is also a very long help text that should wrap properly',
       placeholder: 'Short width placeholder',
-      style: 'width: 7.5rem; outline: 2px solid red;',
+      style: 'width: 7.5rem;',
       'toggletip-text': 'This is additional toggletip text that provides more context',
       'info-icon-aria-label': 'Additional information',
     });
