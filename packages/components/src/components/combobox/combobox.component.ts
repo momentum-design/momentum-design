@@ -4,13 +4,13 @@ import { property, query, queryAssignedElements, state } from 'lit/decorators.js
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
+import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { ElementStore } from '../../utils/controllers/ElementStore';
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
-import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as DIVIDER_TAG_NAME } from '../divider/divider.constants';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -94,9 +94,6 @@ class Combobox
   )
   implements AssociatedFormControl
 {
-  /** @internal */
-  private itemsStore: ElementStore<Option>;
-
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -195,19 +192,14 @@ class Combobox
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
+  private itemsStore = new ElementStore<Option>(this, {
+    isValidItem: this.isValidItem,
+    onStoreUpdate: this.onStoreUpdate,
+  });
+
+  /** @internal */
   get navItems(): Option[] {
     return this.itemsStore.items;
-  }
-
-  constructor() {
-    super();
-
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
-    // This must be initialized after the destroyed event listener
-    // to keep the element in the itemStore in order to move the focus correctly
-    this.itemsStore = new ElementStore<Option>(this, {
-      isValidItem: this.isValidItem,
-    });
   }
 
   override connectedCallback(): void {
@@ -257,20 +249,20 @@ class Combobox
     }
   };
 
+  private onStoreUpdate(option: HTMLElement, changeType: ElementStoreChangeTypes, index: number) {
+    if (changeType === 'removed') {
+      this.handleDestroyEvent(option, index);
+    }
+  }
+
   /**
    * Update the focus when an item is removed.
    * If there is a next item, focus it. If not, focus the previous item.
    *
    * @internal
    */
-  private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as HTMLElement;
-    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
-      return;
-    }
-
-    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
-    if (destroyedItemIndex === -1) {
+  private handleDestroyEvent = (destroyedElement: HTMLElement, destroyedItemIndex: number) => {
+    if (destroyedItemIndex === -1 || destroyedElement.tabIndex !== 0) {
       return;
     }
 
