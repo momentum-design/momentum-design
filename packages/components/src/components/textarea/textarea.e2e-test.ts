@@ -233,10 +233,10 @@ test('mdc-textarea', async ({ componentsPage }) => {
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // disabled textarea field with value
-    textareaStickerSheet.setAttributes({ 
-      ...attributes, 
-      value: 'Disabled', 
-      disabled: '', 
+    textareaStickerSheet.setAttributes({
+      ...attributes,
+      value: 'Disabled',
+      disabled: '',
       cols: 30,
       'toggletip-text': 'This is additional toggletip text that provides more context',
       'info-icon-aria-label': 'Additional information',
