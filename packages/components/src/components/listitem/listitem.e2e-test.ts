@@ -117,7 +117,7 @@ test.describe.parallel('mdc-listitem', () => {
       await listitemSheet.createMarkupWithCombination({}, options);
       listitemSheet.setAttributes({
         label: 'This is a long text which should be truncated',
-        style: 'width: 15rem; outline: 2px solid red;',
+        style: 'width: 15rem;',
       });
       listitemSheet.setChildren(`
       <div slot="leading-controls">
@@ -132,7 +132,7 @@ test.describe.parallel('mdc-listitem', () => {
         'tertiary-label': tertiaryLabel,
         'side-header-text': sideHeaderText,
         'subline-text': sublineText,
-        style: 'width: 50rem; outline: 2px solid red;', // 800px
+        style: 'width: 50rem;',
       });
       listitemSheet.setChildren(`
       <div slot="leading-controls">
