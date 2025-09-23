@@ -11,6 +11,7 @@ import illustrationManifest from '@momentum-design/illustrations/dist/manifest.j
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DIALOG_ROLE, DEFAULTS as DIALOG_DEFAULTS } from '../dialog/dialog.constants';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { ANNOUNCEMENT_DIALOG_SIZE, DEFAULTS } from './announcementdialog.constants';
 
@@ -114,7 +115,8 @@ const meta: Meta = {
       control: 'text',
     },
     'header-tag-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
     },
     'should-focus-trap-wrap': {
       control: 'boolean',

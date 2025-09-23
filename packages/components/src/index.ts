@@ -5,7 +5,7 @@ import AccordionGroup from './components/accordiongroup';
 import AccordionButton from './components/accordionbutton';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
-import Announcementdialog from './components/announcementdialog';
+import AnnouncementDialog from './components/announcementdialog';
 import Appheader from './components/appheader';
 import Avatar from './components/avatar';
 import AvatarButton from './components/avatarbutton';
@@ -122,7 +122,7 @@ export {
   AccordionGroup,
   AlertChip,
   Animation,
-  Announcementdialog,
+  AnnouncementDialog,
   Appheader,
   Avatar,
   AvatarButton,

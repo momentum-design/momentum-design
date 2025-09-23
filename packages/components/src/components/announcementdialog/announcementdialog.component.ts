@@ -7,14 +7,14 @@ import Dialog from '../dialog/dialog.component';
 import type { IllustrationNames } from '../illustration/illustration.types';
 import { DIALOG_VARIANT } from '../dialog/dialog.constants';
 
+import type { AnnouncementDialogSize } from './announcementdialog.types';
 import styles from './announcementdialog.styles';
-import { AnnouncementDialogSize } from './announcementdialog.types';
 import { DEFAULTS } from './announcementdialog.constants';
 
 /**
  * AnnouncementDialog component is a modal dialog that can be used to display announcements, extending the existing Dialog component.
  * It can be used to create custom dialogs where a illustration, content and footer actions are provided by the consumer.
- * The dialog is available in 4 sizes:  medium, large, xlarge. It may also receive custom styling/sizing.
+ * The dialog is available in 4 sizes:  medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
  * The dialog can be controlled solely through the `visible` property, no trigger element is required.
@@ -26,8 +26,6 @@ import { DEFAULTS } from './announcementdialog.constants';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * Dialog component have 2 variants: default and promotional.
- *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
  * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
@@ -38,6 +36,7 @@ import { DEFAULTS } from './announcementdialog.constants';
  * - Reference docs for more info: https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions
  *
  * @dependency mdc-button
+ * @dependency mdc-illustration
  * @dependency mdc-text
  *
  * @tagname mdc-announcementdialog
@@ -76,7 +75,7 @@ import { DEFAULTS } from './announcementdialog.constants';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Announcementdialog extends Dialog {
+class AnnouncementDialog extends Dialog {
   /**
    * The illustration to display in the announcement dialog.
    * This can be an image URL, icon name, or any other illustration identifier.
@@ -129,4 +128,4 @@ class Announcementdialog extends Dialog {
   public static override styles: Array<CSSResult> = [...Dialog.styles, ...styles];
 }
 
-export default Announcementdialog;
+export default AnnouncementDialog;
