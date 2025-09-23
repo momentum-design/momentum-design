@@ -1,19 +1,18 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../text';
+import '../button';
 import { invert } from 'lodash';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import illustrationManifest from '@momentum-design/illustrations/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import { DIALOG_ROLE, DEFAULTS as DIALOG_DEFAULTS } from '../dialog/dialog.constants';
 
 import { ANNOUNCEMENT_DIALOG_SIZE, DEFAULTS } from './announcementdialog.constants';
-
-import '../link';
-import '../button';
 
 const createAnnouncementDialog = (args: Args, content?: TemplateResult, onClose?: () => void) =>
   html`<mdc-announcementdialog
@@ -23,9 +22,7 @@ const createAnnouncementDialog = (args: Args, content?: TemplateResult, onClose?
     z-index="${args['z-index']}"
     close-button-aria-label="${args['close-button-aria-label']}"
     header-text="${args['header-text']}"
-    description-text="${args['description-text']}"
     header-tag-name="${args['header-tag-name']}"
-    description-tag-name="${args['description-tag-name']}"
     role="${args.role}"
     triggerId="${args.triggerId}"
     aria-labelledby="${ifDefined(args['aria-labelledby'])}"
@@ -92,9 +89,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-announcementdialog',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,
@@ -156,6 +150,7 @@ const meta: Meta = {
       '--mdc-dialog-width',
       '--mdc-dialog-height',
     ]),
+    ...hideControls(['variant', 'description-text', 'description-tag-name']),
   },
 };
 

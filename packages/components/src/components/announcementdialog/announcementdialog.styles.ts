@@ -27,14 +27,14 @@ const styles = css`
 
   :host mdc-illustration {
     width: auto;
-    margin-left: 1rem;
-    margin-right: 2rem;
+    margin-inline-start: 1rem;
+    margin-inline-end: 2rem;
   }
-  :host::part(text-container) {
+  :host::part(content-container) {
     color: var(--mdc-dialog-description-text-color);
     width: auto;
-    margin-left: 2rem;
-    margin-right: 1rem;
+    margin-inline-start: 2rem;
+    margin-inline-end: 1rem;
   }
 
   @media (max-width: 27rem) {
@@ -44,9 +44,9 @@ const styles = css`
     :host::part(illustration-container) {
       display: none;
     }
-    :host::part(text-container) {
-      margin-left: 0;
-      margin-right: 0;
+    :host::part(content-container) {
+      margin-inline-start: 0;
+      margin-inline-end: 0;
     }
   }
 `;

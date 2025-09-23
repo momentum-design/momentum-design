@@ -1,17 +1,19 @@
 import { CSSResult, html, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import Dialog from '../dialog/dialog.component';
 import type { IllustrationNames } from '../illustration/illustration.types';
+import { DIALOG_VARIANT } from '../dialog/dialog.constants';
 
 import styles from './announcementdialog.styles';
 import { AnnouncementDialogSize } from './announcementdialog.types';
 import { DEFAULTS } from './announcementdialog.constants';
 
 /**
- * AnnouncementDialog component is a modal dialog that can be used to display announcements.
- * It can be used to create custom dialogs where content for the body and footer actions is provided by the consumer.
+ * AnnouncementDialog component is a modal dialog that can be used to display announcements, extending the existing Dialog component.
+ * It can be used to create custom dialogs where a illustration, content and footer actions are provided by the consumer.
  * The dialog is available in 4 sizes:  medium, large, xlarge. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
@@ -38,7 +40,7 @@ import { DEFAULTS } from './announcementdialog.constants';
  * @dependency mdc-button
  * @dependency mdc-text
  *
- * @tagname mdc-dialog
+ * @tagname mdc-announcementdialog
  *
  * @event shown - (React: onShown) Dispatched when the dialog is shown
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden
@@ -56,8 +58,16 @@ import { DEFAULTS } from './announcementdialog.constants';
  * @cssproperty --mdc-dialog-width - width of the dialog
  * @cssproperty --mdc-dialog-height - height of the dialog
  *
+ * @csspart body - The main body container that holds the illustration and content sections
+ * @csspart illustration-container - The container for the illustration section
+ * @csspart content-container - The container for the content section
+ * @csspart header-text - The header text
+ *
  * @slot header-prefix - Slot for the dialog header content. This can be used to pass custom header content.
  * @slot dialog-body - Slot for the dialog body content
+ * @slot illustration-container - Slot for the illustration container section
+ * @slot content-container - Slot for the content (header, description, etc) section
+ * @slot description-container - Slot for the description in the content (below header) - pass in Text, Links etc as needed.
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
  * within the footer section.
@@ -83,6 +93,11 @@ class Announcementdialog extends Dialog {
   @property({ type: String, reflect: true })
   override size: AnnouncementDialogSize = DEFAULTS.SIZE;
 
+  override connectedCallback() {
+    super.connectedCallback();
+    this.variant = DIALOG_VARIANT.DEFAULT;
+  }
+
   protected override renderHeader() {
     return html`${nothing}`;
   }
@@ -92,11 +107,11 @@ class Announcementdialog extends Dialog {
       <div part="body">
         <div part="illustration-container">
           <slot name="illustration-container">
-            <mdc-illustration name="${this.illustration}"></mdc-illustration>
+            <mdc-illustration name="${ifDefined(this.illustration)}"></mdc-illustration>
           </slot>
         </div>
-        <div part="text-container">
-          <slot name="text-container">
+        <div part="content-container">
+          <slot name="content-container">
             <mdc-text
               part="header-text"
               tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
