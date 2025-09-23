@@ -7,6 +7,7 @@ import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableCSSParts } from '../../../config/storybook/utils';
 
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 
@@ -85,6 +86,7 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
+    ...disableCSSParts(['button-text', 'prefix', 'postfix']),
     ...classArgType,
     ...styleArgType,
   },

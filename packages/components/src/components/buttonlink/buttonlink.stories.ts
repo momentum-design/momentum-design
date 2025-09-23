@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { disableCSSParts, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-buttonlink
@@ -88,7 +88,7 @@ const meta: Meta = {
       '--mdc-link-inverted-color-hover',
       '--mdc-link-inverted-color-normal',
     ]),
-    ...disableControls([]),
+    ...disableCSSParts(['anchor', 'prefix-icon', 'button-text', 'postfix-icon']),
     ...classArgType,
     ...styleArgType,
   },

@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, disableCSSParts, textControls } from '../../../config/storybook/utils';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import '../button';
@@ -49,6 +49,7 @@ const meta: Meta = {
       '--mdc-buttongroup-border-color',
       '--mdc-buttongroup-divider-color',
     ]),
+    ...disableCSSParts(['container']),
   },
 };
 
