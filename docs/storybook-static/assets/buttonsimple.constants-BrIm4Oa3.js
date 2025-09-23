@@ -1,1 +1,0 @@
-import{u as T}from"./iframe-CQNghGpx.js";import{R as s}from"./roles-CJI3JVG-.js";const r=T.constructTagName("buttonsimple"),t={12:12,14:14,16:16,20:20,24:24,28:28,32:32,40:40,48:48,52:52,64:64,72:72,88:88,124:124},o={BUTTON:"button",SUBMIT:"submit",RESET:"reset"},e={SIZE:t[32],TYPE:o.BUTTON,ROLE:s.BUTTON,ARIA_STATE_KEY:"aria-pressed"};export{o as B,e as D,r as T,t as a};
