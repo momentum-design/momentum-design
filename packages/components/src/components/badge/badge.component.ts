@@ -1,6 +1,5 @@
-import type { PropertyValues, TemplateResult } from 'lit';
-import { CSSResult, html } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
+import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -47,6 +46,16 @@ import type { BadgeType, IconVariant } from './badge.types';
  * @cssproperty --mdc-badge-error-foreground-color - The foreground color of the error badge.
  * @cssproperty --mdc-badge-error-background-color - The background color of the error badge.
  * @cssproperty --mdc-badge-overlay-background-color - The background color of the badge overlay.
+ *
+ * @csspart mdc-badge-dot - The dot notification badge.
+ * @csspart mdc-badge-icon - The icon badge.
+ * @csspart mdc-badge-icon__error - The error icon badge.
+ * @csspart mdc-badge-icon__primary - The primary icon badge.
+ * @csspart mdc-badge-icon__secondary - The secondary icon badge.
+ * @csspart mdc-badge-icon__success - The success icon badge.
+ * @csspart mdc-badge-icon__warning - The warning icon badge.
+ * @csspart mdc-badge-overlay - The overlay badge.
+ * @csspart mdc-badge-text - The text badge.
  */
 class Badge extends IconNameMixin(Component) {
   /**
@@ -126,10 +135,7 @@ class Badge extends IconNameMixin(Component) {
   private getBadgeIcon(iconName: string, backgroundClassPostfix: string): TemplateResult {
     return html`
       <mdc-icon
-        class="mdc-badge-icon ${classMap({
-          'mdc-badge-overlay': this.overlay,
-          [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
-        })}"
+        part="mdc-badge-icon ${this.overlay ? 'mdc-badge-overlay' : ''} mdc-badge-icon__${backgroundClassPostfix}"
         name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
@@ -141,7 +147,7 @@ class Badge extends IconNameMixin(Component) {
    * @returns the template result of the dot with mdc-badge-dot class.
    */
   private getBadgeDot(): TemplateResult {
-    return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': this.overlay })}"></div>`;
+    return html`<div part="mdc-badge-dot ${this.overlay ? 'mdc-badge-overlay' : ''}"></div>`;
   }
 
   /**
@@ -153,7 +159,7 @@ class Badge extends IconNameMixin(Component) {
       <mdc-text
         type="${FONT_TYPE.BODY_SMALL_MEDIUM}"
         tagname="${VALID_TEXT_TAGS.DIV}"
-        class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': this.overlay })}"
+        part="mdc-badge-text ${this.overlay ? 'mdc-badge-overlay' : ''}"
       >
         ${this.getCounterText(this.maxCounter, this.counter)}
       </mdc-text>

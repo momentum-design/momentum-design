@@ -25,10 +25,10 @@ const styles = [
 
       color: var(--mdc-badge-primary-foreground-color);
     }
-    .mdc-badge-overlay {
+    :host::part(mdc-badge-overlay) {
       outline: 0.0625rem solid var(--mdc-badge-overlay-background-color);
     }
-    .mdc-badge-text {
+    :host::part(mdc-badge-text) {
       padding: 0 0.25rem;
       border-radius: 6.25rem;
       min-width: 1rem;
@@ -36,46 +36,46 @@ const styles = [
       justify-content: center;
       background-color: var(--mdc-badge-primary-background-color);
     }
-    .mdc-badge-dot {
+    :host::part(mdc-badge-dot) {
       width: 0.75rem;
       height: 0.75rem;
       border-radius: 50%;
       background-color: var(--mdc-badge-primary-background-color);
     }
-    .mdc-badge-icon {
+    :host::part(mdc-badge-icon) {
       padding: 2px;
       border-radius: 50%;
     }
-    .mdc-badge-icon__primary {
+    :host::part(mdc-badge-icon__primary) {
       background-color: var(--mdc-badge-primary-background-color);
       color: var(--mdc-badge-primary-foreground-color);
     }
-    .mdc-badge-icon__success {
+    :host::part(mdc-badge-icon__success) {
       background-color: var(--mdc-badge-success-background-color);
       color: var(--mdc-badge-success-foreground-color);
     }
-    .mdc-badge-icon__warning {
+    :host::part(mdc-badge-icon__warning) {
       background-color: var(--mdc-badge-warning-background-color);
       color: var(--mdc-badge-warning-foreground-color);
     }
-    .mdc-badge-icon__error {
+    :host::part(mdc-badge-icon__error) {
       background-color: var(--mdc-badge-error-background-color);
       color: var(--mdc-badge-error-foreground-color);
     }
-    .mdc-badge-icon__secondary {
+    :host::part(mdc-badge-icon__secondary) {
       background-color: var(--mdc-badge-secondary-background-color);
       color: var(--mdc-badge-secondary-foreground-color);
     }
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      .mdc-badge-dot,
-      .mdc-badge-icon,
-      .mdc-badge-text {
+      :host::part(mdc-badge-dot),
+      :host::part(mdc-badge-icon),
+      :host::part(mdc-badge-text) {
         outline: 0.125rem solid;
       }
 
-      .mdc-badge-dot {
+      :host::part(mdc-badge-dot) {
         background-color: ButtonText;
         outline: none;
       }
