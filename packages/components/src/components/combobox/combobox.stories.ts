@@ -45,6 +45,7 @@ const render = (args: Args) =>
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     validation-message="${args['validation-message']}"
     invalid-custom-value-text="${args['invalid-custom-value-text']}"
   >
@@ -123,6 +124,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'validation-message': {
       control: 'text',

@@ -64,6 +64,8 @@ const styles = [
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+      word-break: break-word;
+      white-space: normal;
     }
 
     :host::part(radio-input) {
@@ -81,6 +83,7 @@ const styles = [
       flex-direction: column;
       justify-content: center;
       gap: 0.25rem;
+      flex: 1;
     }
     :host::part(required-indicator) {
       display: none;

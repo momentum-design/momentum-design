@@ -112,7 +112,7 @@ test.describe('Menuitem Feature Scenarios', () => {
       menuitemSheet.setAttributes({
         label: 'This is an extremely long label text that should wrap or truncate properly inside a fixed width',
         'secondary-label': secondaryLabel,
-        style: 'width: 25rem; outline: 2px solid red;', // 400px
+        style: 'width: 25rem;', // 400px
       });
       menuitemSheet.setChildren(`
         <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>

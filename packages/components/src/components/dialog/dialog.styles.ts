@@ -8,6 +8,7 @@ const styles = css`
     --mdc-dialog-description-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-dialog-elevation-3: var(--mds-elevation-3);
     --mdc-dialog-width: 27rem; /* Default to small */
+    --mdc-dialog-height: auto;
     --mdc-dialog-padding: 1.5rem;
 
     background-color: var(--mdc-dialog-primary-background-color);
@@ -61,6 +62,7 @@ const styles = css`
 
   :host {
     width: var(--mdc-dialog-width);
+    height: var(--mdc-dialog-height);
     max-width: 100%;
   }
 
