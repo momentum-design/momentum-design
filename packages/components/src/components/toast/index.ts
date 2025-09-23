@@ -7,9 +7,9 @@ import '../button';
 Toast.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-toast']: Toast
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-toast']: Toast;
+  }
 }
 
 export default Toast;

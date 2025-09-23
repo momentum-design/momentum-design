@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '.';
 import '../avatar';
@@ -27,9 +27,15 @@ const render = (args: Args) => html`
     @close=${action('onclose')}
   >
     ${args.children}
-    ${args['prefix-icon'] ? html`<mdc-icon slot="content-prefix" name="${args['prefix-icon']}" size="1.5"></mdc-icon>` : ''}
-    ${args['normal-body'] ? html`<mdc-text slot="toast-body-normal" tagname="span">${args['normal-body']}</mdc-text>` : ''}
-    ${args['detailed-body'] ? html`<mdc-text slot="toast-body-detailed" tagname="span">${args['detailed-body']}</mdc-text>` : ''}
+    ${args['prefix-icon']
+      ? html`<mdc-icon slot="content-prefix" name="${args['prefix-icon']}" size="1.5"></mdc-icon>`
+      : ''}
+    ${args['normal-body']
+      ? html`<mdc-text slot="toast-body-normal" tagname="span">${args['normal-body']}</mdc-text>`
+      : ''}
+    ${args['detailed-body']
+      ? html`<mdc-text slot="toast-body-detailed" tagname="span">${args['detailed-body']}</mdc-text>`
+      : ''}
   </mdc-toast>
 `;
 
@@ -38,18 +44,16 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-toast',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     variant: {
       control: 'select',
       options: Object.values(TOAST_VARIANT),
     },
-    'header-text': { 
-      control: 'text' 
+    'header-text': {
+      control: 'text',
     },
-    'header-tag-name': { 
+    'header-tag-name': {
       control: 'select',
       options: Object.values(VALID_TEXT_TAGS),
     },
@@ -71,12 +75,19 @@ const meta: Meta = {
       description: 'Content for the main body of the toast (slot: toast-body-normal)',
     },
     'detailed-body': {
-      control: 'text', 
+      control: 'text',
       description: 'Content for the detailed body of the toast, shown when expanded (slot: toast-body-detailed)',
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['content-prefix', 'toast-body-normal', 'toast-body-detailed', 'footer-button-primary', 'footer-button-secondary', 'footer']),
+    ...disableControls([
+      'content-prefix',
+      'toast-body-normal',
+      'toast-body-detailed',
+      'footer-button-primary',
+      'footer-button-secondary',
+      'footer',
+    ]),
     ...hideControls(['children', 'isDetailVisible', 'hasDetailedSlot', 'detailedElements', 'hasFooterButtons']),
     ...textControls([
       '--mdc-toast-background-color',
@@ -86,7 +97,7 @@ const meta: Meta = {
       '--mdc-toast-elevation-3',
       '--mdc-toast-width',
       '--mdc-toast-padding',
-    ])
+    ]),
   },
 };
 
@@ -120,39 +131,44 @@ export const AllVariants: StoryObj = {
   name: 'All Variants',
   render: () => html`
     <div style="display: grid; grid-template-columns: repeat(2, 0fr); gap: 2rem;">
-      ${[{
-        ...DefaultArgs,
-        variant: 'success',
-        'header-text': 'Success!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">Your action was successful.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        variant: 'warning',
-        'header-text': 'Warning!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">There was a warning.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        variant: 'error',
-        'header-text': 'Error!',
-        children: html`<mdc-text tagname="span" slot="toast-body-normal">An error occurred.</mdc-text>
-        ${DefaultFooter}`,
-      }, {
-        ...DefaultArgs,
-        'header-text': 'User Message',
-        children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon>
-        <mdc-text tagname="span" slot="toast-body-normal">New message received.</mdc-text>
-        ${DefaultFooter}`,
-      }].map((args) =>
+      ${[
+        {
+          ...DefaultArgs,
+          variant: 'success',
+          'header-text': 'Success!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">Your action was successful.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          variant: 'warning',
+          'header-text': 'Warning!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">There was a warning.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          variant: 'error',
+          'header-text': 'Error!',
+          children: html`<mdc-text tagname="span" slot="toast-body-normal">An error occurred.</mdc-text>
+            ${DefaultFooter}`,
+        },
+        {
+          ...DefaultArgs,
+          'header-text': 'User Message',
+          children: html`<mdc-icon name="chat-bold" size="1.5" slot="content-prefix"></mdc-icon>
+            <mdc-text tagname="span" slot="toast-body-normal">New message received.</mdc-text>
+            ${DefaultFooter}`,
+        },
+      ].map(args =>
         render({
           ...DefaultArgs,
           ...args,
-        })
+        }),
       )}
     </div>
   `,
-   ...hideAllControls(),
+  ...hideAllControls(),
 };
 
 export const UserJoined: StoryObj = {
@@ -161,7 +177,7 @@ export const UserJoined: StoryObj = {
     ...DefaultArgs,
     'header-text': '',
     children: html`
-      <mdc-avatar slot="content-prefix" src="https://picsum.photos/id/63/256" size=24></mdc-avatar>
+      <mdc-avatar slot="content-prefix" src="https://picsum.photos/id/63/256" size="24"></mdc-avatar>
       <mdc-text tagname="span" slot="toast-body-normal"><b>Username</b> joined the session.</mdc-text>
     `,
   },
@@ -173,11 +189,7 @@ export const Connecting: StoryObj = {
   args: {
     ...DefaultArgs,
     'header-text': 'Connecting',
-    children: html`
-      <mdc-spinner slot="content-prefix" size="small"></mdc-spinner>
-    `,
+    children: html` <mdc-spinner slot="content-prefix" size="small"></mdc-spinner> `,
   },
   ...hideAllControls(),
 };
-
-

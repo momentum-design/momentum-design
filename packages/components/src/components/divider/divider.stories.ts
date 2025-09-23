@@ -38,9 +38,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-divider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     typeOfChildren: {
       control: 'radio',

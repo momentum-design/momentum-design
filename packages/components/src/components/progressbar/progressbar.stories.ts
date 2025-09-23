@@ -23,9 +23,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-progressbar',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     value: {
       control: 'text',
