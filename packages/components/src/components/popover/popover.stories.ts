@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
-import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { textControls, hideAllControls, hideControls, disableCSSParts } from '../../../config/storybook/utils';
 
 import '../button';
 import '../buttongroup';
@@ -336,6 +336,7 @@ const meta: Meta = {
       'shouldWrapFocus',
       'utils',
     ]),
+    ...disableCSSParts(['popover-close', 'popover-content', 'popover-hover-bridge']),
   },
 };
 
