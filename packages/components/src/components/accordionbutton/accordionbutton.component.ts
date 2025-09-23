@@ -54,12 +54,12 @@ import styles from './accordionbutton.styles';
  * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion button.
  * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion button.
  *
- * @csspart header-section - The header section of the accordion button.
+ * @csspart body-section - The body section of the accordion button.
  * @csspart header-button-section - The header button section of the accordion button.
+ * @csspart header-section - The header section of the accordion button.
  * @csspart leading-header - The leading header of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
- * @csspart body-section - The body section of the accordion button.
  */
 class AccordionButton extends DisabledMixin(Component) {
   /**

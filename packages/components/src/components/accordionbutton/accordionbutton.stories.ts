@@ -6,7 +6,7 @@ import '.';
 import '../button';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, disableCSSParts, hideAllControls, textControls } from '../../../config/storybook/utils';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
 import { VARIANT } from './accordionbutton.constants';
@@ -68,6 +68,14 @@ const meta: Meta = {
       '--mdc-accordionbutton-hover-color',
       '--mdc-accordionbutton-active-color',
       '--mdc-accordionbutton-disabled-color',
+    ]),
+    ...disableCSSParts([
+      'body-section',
+      'header-button-section',
+      'header-section',
+      'leading-header',
+      'trailing-header__icon',
+      'trailing-header',
     ]),
   },
 };

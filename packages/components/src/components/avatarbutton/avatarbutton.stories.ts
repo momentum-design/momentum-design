@@ -6,7 +6,7 @@ import { action } from 'storybook/actions';
 
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { disableCSSParts, hideControls, textControls } from '../../../config/storybook/utils';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
@@ -69,6 +69,7 @@ const meta: Meta = {
       '--mdc-avatarbutton-overlay-background-color-hover',
       '--mdc-avatarbutton-overlay-background-color-active',
     ]),
+    ...disableCSSParts(['overlay', 'content', 'photo', 'presence', 'loading-wrapper', 'loader']),
     ...classArgType,
     ...styleArgType,
   },

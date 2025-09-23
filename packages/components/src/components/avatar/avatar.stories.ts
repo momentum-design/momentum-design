@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { PRESENCE_TYPE } from '../presence/presence.constants';
-import { disableControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, disableCSSParts, textControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
@@ -59,6 +59,7 @@ const meta: Meta = {
       '--mdc-avatar-loading-indicator-foreground-color',
       '--mdc-avatar-loading-overlay-background-color',
     ]),
+    ...disableCSSParts(['content', 'photo', 'presence', 'loading-wrapper', 'loader']),
     ...classArgType,
     ...styleArgType,
   },
