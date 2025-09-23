@@ -11,13 +11,13 @@ const styles = [
       gap: 0.5rem;
     }
     :host([disabled]),
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .mdc-help-text,
+    :host([disabled])::part(label),
+    :host([disabled])::part(help-text),
     :host([disabled])::part(required-indicator),
-    :host([disabled][help-text-type='error']) .mdc-help-text,
-    :host([disabled][help-text-type='success']) .mdc-help-text,
-    :host([disabled][help-text-type='warning']) .mdc-help-text,
-    :host([disabled][help-text-type='priority']) .mdc-help-text {
+    :host([disabled][help-text-type='error'])::part(help-text),
+    :host([disabled][help-text-type='success'])::part(help-text),
+    :host([disabled][help-text-type='warning'])::part(help-text),
+    :host([disabled][help-text-type='priority'])::part(help-text) {
       color: var(--mds-color-theme-text-primary-disabled);
     }
 
@@ -25,42 +25,47 @@ const styles = [
       color: var(--mds-color-theme-text-error-normal);
     }
 
-    .mdc-label-text,
-    .mdc-help-text {
+    :host::part(label-text),
+    :host::part(help-text) {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       width: 100%;
     }
 
-    .mdc-label,
-    .mdc-help-text {
+    :host::part(label) {
+      font-size: var(--mds-font-apps-body-midsize-medium-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-medium-line-height);
+    }
+
+    :host::part(help-text) {
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    .mdc-label {
+    :host::part(label) {
       color: var(--mds-color-theme-text-primary-normal);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .mdc-help-text {
+    :host::part(help-text) {
       color: var(--mds-color-theme-text-secondary-normal);
     }
 
-    :host([help-text-type='error']) .mdc-help-text {
+    :host([help-text-type='error'])::part(help-text) {
       color: var(--mds-color-theme-text-error-normal);
     }
-    :host([help-text-type='warning']) .mdc-help-text {
+    :host([help-text-type='warning'])::part(help-text) {
       color: var(--mds-color-theme-text-warning-normal);
     }
-    :host([help-text-type='success']) .mdc-help-text {
+    :host([help-text-type='success'])::part(help-text) {
       color: var(--mds-color-theme-text-success-normal);
     }
-    :host([help-text-type='priority']) .mdc-help-text {
+    :host([help-text-type='priority'])::part(help-text) {
       color: var(--mds-color-theme-text-accent-normal);
     }
   `,

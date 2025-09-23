@@ -174,7 +174,7 @@ class Checkbox
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
@@ -188,7 +188,7 @@ class Checkbox
         <input
           id="${this.inputId}"
           type="checkbox"
-          class="input"
+          part="checkbox-input"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
           ?required="${this.required}"

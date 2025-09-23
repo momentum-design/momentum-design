@@ -81,6 +81,12 @@ const styles = [
       line-height: var(--mdc-progressbar-label-line-height);
     }
 
+    .mdc-label {
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+    }
+
     :host([help-text-type='default'])::part(help-text) {
       color: var(--mdc-progressbar-help-text-color);
     }
