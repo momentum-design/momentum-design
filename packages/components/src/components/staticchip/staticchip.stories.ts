@@ -15,9 +15,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-staticchip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     color: {
       control: 'select',

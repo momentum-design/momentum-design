@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
@@ -18,7 +18,7 @@ import type Select from './select.component';
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: flex-start;">
+  <div style="height: 100%; width: 20rem; display: flex; flex-direction: column; justify-content: center;">
     ${htmlString}
   </div>
 `;
@@ -51,13 +51,7 @@ const render = (args: Args) =>
       backdrop-append-to="${args['backdrop-append-to']}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
-      <mdc-selectlistbox>
-        <mdc-option value="london" label="London, UK"></mdc-option>
-        <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
-        <mdc-option value="newyork" label="New York, NY"></mdc-option>
-        <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
-        <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
-      </mdc-selectlistbox>
+      ${args.children}
     </mdc-select>
   `);
 
@@ -66,9 +60,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-select',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     name: {
       control: 'text',
@@ -119,7 +111,7 @@ const meta: Meta = {
     'soft-disabled': {
       control: 'boolean',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'itemsStore']),
     ...textControls([
       '--mdc-select-background-color',
       '--mdc-select-background-color-hover',
@@ -155,85 +147,84 @@ export const Example: StoryObj = {
     'help-text-type': '',
     'data-aria-label': 'Select label',
     placement: 'bottom-start',
+    children: html`<mdc-selectlistbox>
+      <mdc-option value="london" label="London, UK"></mdc-option>
+      <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
+      <mdc-option value="newyork" label="New York, NY"></mdc-option>
+      <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
+      <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+    </mdc-selectlistbox>`,
   },
 };
 
 export const SelectWithSecondaryLabel: StoryObj = {
-  render: () =>
-    wrapWithDiv(html`
-      <mdc-select label="Select an option" placeholder="Select an option">
-        <mdc-selectlistbox>
-          <mdc-option label="Option 1" secondary-label="Secondary Label 1"></mdc-option>
-          <mdc-option label="Option 2" secondary-label="Secondary Label 2"></mdc-option>
-          <mdc-option label="Option 3" secondary-label="Secondary Label 3"></mdc-option>
-          <mdc-option label="Option 4" secondary-label="Secondary Label 4"></mdc-option>
-        </mdc-selectlistbox>
-      </mdc-select>
-    `),
-  ...hideAllControls(),
+  args: {
+    label: 'Options and secondary labels',
+    placeholder: 'Select an option',
+    children: html`<mdc-selectlistbox>
+      <mdc-option label="Option 1" secondary-label="Secondary Label 1"></mdc-option>
+      <mdc-option label="Option 2" secondary-label="Secondary Label 2"></mdc-option>
+      <mdc-option label="Option 3" secondary-label="Secondary Label 3"></mdc-option>
+      <mdc-option label="Option 4" secondary-label="Secondary Label 4"></mdc-option>
+    </mdc-selectlistbox>`,
+  },
 };
 
 export const SelectWithGroups: StoryObj = {
-  render: () => html`
-    <div style="height: 35rem;">
-      <mdc-select label="Select an option from the list of groups" data-aria-label="Select an option">
-        <mdc-selectlistbox>
-          <mdc-optgroup label="Fruit">
-            <mdc-option value="apple" label="Apples"></mdc-option>
-            <mdc-option value="banana" label="Bananas"></mdc-option>
-            <mdc-option value="cherry" label="Cherries"></mdc-option>
-            <mdc-option value="damson" label="Damsons"></mdc-option>
-          </mdc-optgroup>
-          <mdc-divider></mdc-divider>
-          <mdc-optgroup label="Vegetables">
-            <mdc-option value="artichoke" label="Artichokes"></mdc-option>
-            <mdc-option value="broccoli" label="Broccoli"></mdc-option>
-            <mdc-option value="cabbage" label="Cabbages"></mdc-option>
-          </mdc-optgroup>
-          <mdc-divider></mdc-divider>
-          <mdc-optgroup label="Fish">
-            <mdc-option value="tuna" label="Tuna"></mdc-option>
-            <mdc-option value="salmon" label="Salmon"></mdc-option>
-          </mdc-optgroup>
-        </mdc-selectlistbox>
-      </mdc-select>
-    </div>
-  `,
-  ...hideAllControls(),
+  args: {
+    label: 'Options with groups',
+    children: html`<mdc-selectlistbox>
+      <mdc-optgroup label="Fruit">
+        <mdc-option value="apple" label="Apples"></mdc-option>
+        <mdc-option value="banana" label="Bananas"></mdc-option>
+        <mdc-option value="cherry" label="Cherries"></mdc-option>
+        <mdc-option value="damson" label="Damsons"></mdc-option>
+      </mdc-optgroup>
+      <mdc-divider></mdc-divider>
+      <mdc-optgroup label="Vegetables">
+        <mdc-option value="artichoke" label="Artichokes"></mdc-option>
+        <mdc-option value="broccoli" label="Broccoli"></mdc-option>
+        <mdc-option value="cabbage" label="Cabbages"></mdc-option>
+      </mdc-optgroup>
+      <mdc-divider></mdc-divider>
+      <mdc-optgroup label="Fish">
+        <mdc-option value="tuna" label="Tuna"></mdc-option>
+        <mdc-option value="salmon" label="Salmon"></mdc-option>
+      </mdc-optgroup>
+    </mdc-selectlistbox>`,
+  },
+  render: (args: Args) => html` <div style="height: 35rem;">${render(args)}</div> `,
 };
 
 export const SelectWithLongOptionText: StoryObj = {
-  render: () =>
-    wrapWithDiv(html`
-      <mdc-select placeholder="Select a color" label="Select one color">
-        <mdc-selectlistbox>
-          <mdc-option label="Red"></mdc-option>
-          <mdc-option label="Yellow" id="trigger-option"></mdc-option>
-          <mdc-option id="option-1" label="White and Black are the biggest colors on the spectrum"></mdc-option>
-          <mdc-option label="Green"></mdc-option>
-        </mdc-selectlistbox>
-      </mdc-select>
-      <mdc-tooltip triggerid="option-1" show-arrow>
-        White and Black are the biggest colors on the spectrum
-      </mdc-tooltip>
-    `),
-  ...hideAllControls(),
+  args: {
+    label: 'Options with long text',
+    placeholder: 'Select one color',
+    children: html`<mdc-selectlistbox>
+      <mdc-option label="Red"></mdc-option>
+      <mdc-option label="Yellow" id="trigger-option"></mdc-option>
+      <mdc-option id="option-1" label="White and Black are the biggest colors on the spectrum"></mdc-option>
+      <mdc-option label="Green"></mdc-option>
+    </mdc-selectlistbox>`,
+  },
+  render: (args: Args) => html`
+    ${render(args)}
+    <mdc-tooltip triggerid="option-1" show-arrow> White and Black are the biggest colors on the spectrum </mdc-tooltip>
+  `,
 };
 
 export const SelectWithIconOptions: StoryObj = {
-  render: () =>
-    wrapWithDiv(html`
-      <mdc-select placeholder="Select an option" label="You are in a meeting">
-        <mdc-selectlistbox>
-          <mdc-option prefix-icon="alert-bold" label="Mute notifications"></mdc-option>
-          <mdc-option prefix-icon="apps-bold" label="Add apps"></mdc-option>
-          <mdc-option prefix-icon="stored-info-bold" label="View direct message policy"></mdc-option>
-          <mdc-option prefix-icon="calendar-day-bold" label="Meeting capabilities"></mdc-option>
-          <mdc-option prefix-icon="exit-room-bold" label="Leave"></mdc-option>
-        </mdc-selectlistbox>
-      </mdc-select>
-    `),
-  ...hideAllControls(),
+  args: {
+    label: 'You are in a meeting',
+    placeholder: 'Select an option',
+    children: html`<mdc-selectlistbox>
+      <mdc-option prefix-icon="alert-bold" label="Mute notifications"></mdc-option>
+      <mdc-option prefix-icon="apps-bold" label="Add apps"></mdc-option>
+      <mdc-option prefix-icon="stored-info-bold" label="View direct message policy"></mdc-option>
+      <mdc-option prefix-icon="calendar-day-bold" label="Meeting capabilities"></mdc-option>
+      <mdc-option prefix-icon="exit-room-bold" label="Leave"></mdc-option>
+    </mdc-selectlistbox>`,
+  },
 };
 
 export const SelectWithStates: StoryObj = {
@@ -464,10 +455,9 @@ export const SelectWithDynamicOptions: StoryObj = {
   ...hideAllControls(),
 };
 
-export const SelectWithChangingSelectedAfterMount: StoryObj = {
+export const SelectWithChangingSelectedOption: StoryObj = {
   render: () => {
     const handleClick = () => {
-      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
       const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
       if (selectListbox) {
         const options = selectListbox.querySelectorAll('mdc-option');
@@ -479,25 +469,22 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
             option.setAttribute('selected', '');
           }
         });
-        select.updateState();
       }
     };
 
     const handleClickRemove = () => {
-      const select = document.querySelector('mdc-select[label="Select an option"]') as Select;
       const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
       if (selectListbox) {
         const options = selectListbox.querySelectorAll('mdc-option');
         options.forEach(option => {
           option.removeAttribute('selected');
         });
-        select.updateState();
       }
     };
 
     return wrapWithDiv(html`
       <mdc-button @click=${handleClick}>Change Selected to Option 2</mdc-button>
-      <mdc-button @click=${handleClickRemove}>Remove Selected</mdc-button>
+      <mdc-button @click=${handleClickRemove} style="margin: 8px 0;">Remove Selected</mdc-button>
       <mdc-select
         label="Select an option"
         placeholder="Select an option"
@@ -515,6 +502,33 @@ export const SelectWithChangingSelectedAfterMount: StoryObj = {
         </mdc-selectlistbox>
       </mdc-select>
     `);
+  },
+  ...hideAllControls(),
+};
+
+export const SelectWithChangingValueAttribute: StoryObj = {
+  render: () => {
+    const changeValidOption = () => {
+      const select = document.querySelector('mdc-select[label="Select"]') as Select;
+      if (select) {
+        select.value = 'option3';
+      }
+    };
+    const changeInvalidOption = () => {
+      const select = document.querySelector('mdc-select[label="Select"]') as Select;
+      if (select) {
+        select.value = 'invalid-option';
+      }
+    };
+    return html` <mdc-button @click=${changeValidOption}>Set value to Option 3</mdc-button>
+      <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Set value to invalid value</mdc-button>
+      <mdc-select label="Select" value="option2" placeholder="Select an Option">
+        <mdc-selectlistbox>
+          <mdc-option label="Option 1" value="option1"></mdc-option>
+          <mdc-option label="Option 2" selected value="option2"></mdc-option>
+          <mdc-option label="Option 3" value="option3"></mdc-option>
+        </mdc-selectlistbox>
+      </mdc-select>`;
   },
   ...hideAllControls(),
 };

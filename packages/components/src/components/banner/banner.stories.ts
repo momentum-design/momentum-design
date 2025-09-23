@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -168,8 +168,8 @@ export const PromotionalBanner: StoryObj = {
   render: () => html`
     <mdc-banner>
       <!-- Using the content slot to completely override the default banner structure -->
-      <div 
-        slot="content" 
+      <div
+        slot="content"
         style="
         display: grid;
         grid-template-columns: auto 1fr auto;
@@ -177,7 +177,8 @@ export const PromotionalBanner: StoryObj = {
         align-items: flex-start;
         width: 100%;
         padding: 0 2rem;
-      ">
+      "
+      >
         <!-- Close button positioned absolutely in top-right corner -->
         <mdc-button
           variant="tertiary"
@@ -188,17 +189,19 @@ export const PromotionalBanner: StoryObj = {
           style="
           position: absolute;
           right: 1rem;
-        "></mdc-button>
+        "
+        ></mdc-button>
 
         <!-- Left Image -->
-        <img 
-          src=${imageFixtures.card} 
-          alt="Promotional image" 
+        <img
+          src=${imageFixtures.card}
+          alt="Promotional image"
           style="
           width: 120px;
           height: 100%;
           object-fit: cover;
-        " />
+        "
+        />
 
         <!-- Center Content Area -->
         <div style="flex: 1; min-width: 0;">
@@ -207,26 +210,31 @@ export const PromotionalBanner: StoryObj = {
 
           <!-- Secondary label text -->
           <mdc-text>
-            Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus. 
+            Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus.
             <mdc-link>Learn more</mdc-link>
           </mdc-text>
 
           <!-- Action buttons -->
           <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-            <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}">Label</mdc-button>
-            <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}">Label</mdc-button>
+            <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}"
+              >Label</mdc-button
+            >
+            <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}"
+              >Label</mdc-button
+            >
           </div>
         </div>
 
         <!-- Right Image -->
-        <img 
-          src=${imageFixtures.card} 
-          alt="Promotional image" 
+        <img
+          src=${imageFixtures.card}
+          alt="Promotional image"
           style="
           width: 120px;
           height: 100%;
           object-fit: cover;
-        "/>
+        "
+        />
       </div>
     </mdc-banner>
   `,

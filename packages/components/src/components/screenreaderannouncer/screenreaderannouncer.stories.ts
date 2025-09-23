@@ -55,9 +55,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-screenreaderannouncer',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     announcement: {
       control: 'text',
