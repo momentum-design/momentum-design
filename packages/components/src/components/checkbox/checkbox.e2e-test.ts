@@ -78,6 +78,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       label: 'Disabled Checkbox Label',
       'help-text': 'This is a help text',
       disabled: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
@@ -85,6 +87,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'help-text': 'This is a help text',
       disabled: true,
       checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
@@ -92,8 +96,21 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'help-text': 'This is a help text',
       disabled: true,
       indeterminate: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    
+    // Short width test for word wrapping
+    checkboxStickerSheet.setAttributes({
+      label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
+      'help-text': 'This is also a very long help text that should wrap properly',
+      style: 'margin: 0.25rem; width: 7.5rem; gap: 0.5rem;',
+      'toggletip-text': 'This is additional toggletip text that provides more context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
