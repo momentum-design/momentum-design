@@ -257,7 +257,6 @@ class Input
     this.updateValue();
     this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
-    /** @internal */
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 

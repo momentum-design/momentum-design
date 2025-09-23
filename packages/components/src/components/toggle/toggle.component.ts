@@ -167,7 +167,6 @@ class Toggle
   private handleChange(event: Event) {
     this.toggleState();
     const EventConstructor = event.constructor as typeof Event;
-    /** @internal */
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 

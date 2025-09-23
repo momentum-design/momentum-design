@@ -166,7 +166,6 @@ class Checkbox
   public handleChange(event: Event): void {
     this.toggleState();
     const EventConstructor = event.constructor as typeof Event;
-    /** @internal */
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
