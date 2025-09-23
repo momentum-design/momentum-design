@@ -307,6 +307,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   private onChange(event: Event) {
     this.updateValue();
     const EventConstructor = event.constructor as typeof Event;
+    /** @internal */
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 

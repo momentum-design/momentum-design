@@ -18,6 +18,7 @@ type SetupOptions = {
   children?: string;
   tooltipText?: string;
   tooltipPlacement?: string;
+  tooltipStrategy?: string;
   disabled?: boolean;
 };
 
@@ -34,6 +35,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.tooltipText ? `toggletip-text="${restArgs.tooltipText}"` : ''}
       ${restArgs.tooltipPlacement ? `toggletip-placement="${restArgs.tooltipPlacement}"` : ''}
+      ${restArgs.tooltipStrategy ? `toggletip-strategy="${restArgs.tooltipStrategy}"` : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,

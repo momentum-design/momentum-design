@@ -9,7 +9,7 @@ import { disableControls, textControls, hideControls } from '../../../config/sto
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Textarea from './textarea.component';
 import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
@@ -44,8 +44,9 @@ const render = (args: Args) =>
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     validation-message="${args['validation-message']}"
-    toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
@@ -132,6 +133,13 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
+    },
+    'resize-button': {
+      control: 'boolean',
     },
     'info-icon-aria-label': {
       control: 'text',

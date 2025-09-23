@@ -60,6 +60,10 @@ import type { Placement } from './combobox.types';
  * @tagname mdc-combobox
  *
  * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
  *
  * @event click - (React: onClick) This event is dispatched when the combobox is clicked.
  * @event change - (React: onChange) This event is dispatched when the combobox is changed.
