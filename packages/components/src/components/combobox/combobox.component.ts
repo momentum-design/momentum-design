@@ -270,6 +270,11 @@ class Combobox
     if (newIndex >= this.navItems.length) {
       newIndex = destroyedItemIndex - 1;
     }
+
+    if (newIndex === -1) {
+      this.closePopover();
+      this.handleNativeInputFocus();
+    }
   };
 
   private setSelectedValue(option: Option | null): void {
