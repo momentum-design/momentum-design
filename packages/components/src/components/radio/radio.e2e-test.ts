@@ -114,6 +114,8 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Disabled Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
       });
 
       // Disabled but checked radio btn
@@ -123,8 +125,19 @@ test('mdc-radio', async ({ componentsPage }) => {
         'help-text': 'This is a help text',
         disabled: true,
         checked: true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+      
+      // Short width test for word wrapping
+      radioStickerSheet.setAttributes({
+        label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
+        'help-text': 'This is also a very long help text that should wrap properly',
+        style: 'margin: 0.25rem; width: 7.5rem; outline: 2px solid red;',
+      });
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+      
       await radioStickerSheet.mountStickerSheet();
 
       await test.step('matches screenshot of radio stickersheet', async () => {

@@ -87,6 +87,7 @@ const styles = [
       flex-direction: column;
       justify-content: center;
       gap: 0.25rem;
+      flex: 1;
     }
     :host::part(required-indicator) {
       display: none;

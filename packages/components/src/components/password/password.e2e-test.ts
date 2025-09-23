@@ -526,7 +526,13 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       'help-text-type': VALIDATION,
     });
 
-    inputStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: true });
+    inputStickerSheet.setAttributes({ 
+      ...attributes, 
+      value: 'Disabled', 
+      disabled: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
     await inputStickerSheet.createMarkupWithCombination({});
 
     await inputStickerSheet.createMarkupWithCombination({});
@@ -559,6 +565,15 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       required: '',
       placeholder: 'placeholder',
       style: 'width: 200px',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // Short width test for word wrapping
+    inputStickerSheet.setAttributes({
+      label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
+      'help-text': 'This is also a very long help text that should wrap properly',
+      placeholder: 'Short width placeholder',
+      style: 'width: 7.5rem; outline: 2px solid red;',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 

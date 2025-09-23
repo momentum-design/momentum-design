@@ -80,7 +80,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return textarea;
 };
 
-test.use({ viewport: { width: 800, height: 1200 } });
+test.use({ viewport: { width: 800, height: 1600 } });
 test('mdc-textarea', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
@@ -233,7 +233,23 @@ test('mdc-textarea', async ({ componentsPage }) => {
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // disabled textarea field with value
-    textareaStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: '', cols: 30 });
+    textareaStickerSheet.setAttributes({ 
+      ...attributes, 
+      value: 'Disabled', 
+      disabled: '', 
+      cols: 30,
+      'toggletip-text': 'This is additional toggletip text that provides more context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // Short width test for word wrapping
+    textareaStickerSheet.setAttributes({
+      ...attributes,
+      label: 'This is a very long label text that should wrap when constrained to a narrow width',
+      style: 'width: 7.5rem; outline: 2px solid red;',
+      cols: 30,
+    });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // readonly textarea field with value
