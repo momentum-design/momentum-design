@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { disableCSSParts, hideControls, textControls } from '../../../config/storybook/utils';
 
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navmenuitem.constants';
 
@@ -37,7 +37,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-navmenuitem',
   render,
-
   argTypes: {
     'nav-id': {
       control: 'text',
@@ -115,6 +114,7 @@ const meta: Meta = {
       'arrow-direction',
       'tabIndex',
     ]),
+    ...disableCSSParts(['arrow', 'badge', 'icon-container', 'text-container', 'trailing-arrow']),
     ...classArgType,
     ...styleArgType,
   },
