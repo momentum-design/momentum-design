@@ -11,17 +11,15 @@ const styles = [
       --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
       --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
 
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+
       flex-direction: row;
       align-items: flex-start;
     }
     :host::part(label) :host::part(checkbox-input) {
       cursor: pointer;
-    }
-
-    :host::part(label) {
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     :host([disabled])::part(label) :host([disabled])::part(checkbox-input) {

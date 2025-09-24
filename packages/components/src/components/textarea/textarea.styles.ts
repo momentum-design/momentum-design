@@ -24,7 +24,7 @@ const styles = [
     }
 
     :host([disabled])::part(textarea),
-    :host([disabled])::part(textarea)::placeholder {
+    :host([disabled]) textarea::placeholder {
       color: var(--mdc-input-disabled-text-color);
     }
 
@@ -85,7 +85,7 @@ const styles = [
       width: 100%;
     }
 
-    :host::part(textarea)::placeholder {
+    textarea::placeholder {
       color: var(--mdc-textarea-text-secondary-normal);
     }
 

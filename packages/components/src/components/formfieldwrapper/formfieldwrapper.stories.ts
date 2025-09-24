@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import { VALIDATION } from './formfieldwrapper.constants';
@@ -68,6 +68,16 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
+    ...textControls([
+      '--mdc-label-font-size',
+      '--mdc-label-font-weight',
+      '--mdc-label-line-height',
+      '--mdc-label-color',
+      '--mdc-help-text-font-size',
+      '--mdc-help-text-font-weight',
+      '--mdc-help-text-line-height',
+      '--mdc-help-text-color',
+    ]),
   },
 };
 
