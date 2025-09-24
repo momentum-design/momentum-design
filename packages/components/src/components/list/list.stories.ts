@@ -173,9 +173,8 @@ export const ListWithRemovalElements: StoryObj = {
       }
     };
 
-    const removeLast = (event: Event) => {
-      const button = event.target as HTMLElement;
-      const items = [...button.closest('mdc-list')!.querySelectorAll('mdc-listitem')];
+    const removeLast = () => {
+      const items = [...document.querySelector('mdc-list')!.querySelectorAll('mdc-listitem')];
 
       items[items.length - 1]?.remove();
     };
@@ -198,6 +197,7 @@ export const ListWithRemovalElements: StoryObj = {
             </mdc-listitem> `,
         )}
       </mdc-list>
+      <mdc-button @click=${removeLast}>Remove Last</mdc-button>
     `;
   },
 };

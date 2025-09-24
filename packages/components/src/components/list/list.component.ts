@@ -39,25 +39,31 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    * and pressing the up arrow on the first item will focus the last item.
    * If 'false', navigation will stop at the first or last item.
    *
-   * @default ''
+   * @default 'true'
    */
   @property({ type: String, reflect: true })
   public override loop: 'true' | 'false' = DEFAULTS.LOOP;
 
   /**
    * The index of the item that should receive focus when the list is first rendered.
-   * If the index is out of bounds, the first item (index 0) will receive focus.
+   * If the index is out of bounds, the focused element will be clamped to the nearest valid index.
    *
    * @default 0
    */
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
+  /** @internal */
+  protected focusWithin = false;
+
   constructor() {
     super();
 
-    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent.bind(this));
+    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent.bind(this));
+    this.addEventListener('focusin', this.handleFocusEvent.bind(this));
+    this.addEventListener('focusout', this.handleFocusEvent.bind(this));
+
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<ListItem>(this, {
@@ -68,7 +74,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   override connectedCallback(): void {
     super.connectedCallback();
     // Set the role attribute for accessibility.
-    this.setAttribute('role', ROLE.LIST);
+    this.role = ROLE.LIST;
   }
 
   /**
@@ -83,14 +89,14 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @internal
    */
-  private handleCreatedEvent = (event: Event) => {
+  protected handleCreatedEvent(event: Event) {
     const createdElement = event.target as HTMLElement;
     if (!this.isValidItem(createdElement)) {
       return;
     }
 
     createdElement.tabIndex = -1;
-  };
+  }
 
   /**
    * Update the focus when an item is removed.
@@ -98,7 +104,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @internal
    */
-  private handleDestroyEvent = (event: Event) => {
+  protected handleDestroyEvent(event: Event) {
     const destroyedElement = event.target as HTMLElement;
     if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
       return;
@@ -114,11 +120,21 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
       newIndex = destroyedItemIndex - 1;
     }
 
-    this.resetTabIndexes(newIndex);
-  };
+    this.resetTabIndexes(newIndex, this.focusWithin);
+  }
 
   /** @internal */
-  private isValidItem(item: Element): boolean {
+  private handleFocusEvent(event: FocusEvent) {
+    // If previously focused element is being removed from the DOM, ignore the focusout event
+    if (event.relatedTarget === null) {
+      return;
+    }
+
+    this.focusWithin = event.type === 'focusin';
+  }
+
+  /** @internal */
+  protected isValidItem(item: Element): boolean {
     return item.matches(`${LISTITEM_TAGNAME}:not([disabled])`);
   }
 
