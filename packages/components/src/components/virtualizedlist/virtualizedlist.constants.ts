@@ -9,6 +9,8 @@ const DEFAULTS = {
     estimateSize: () => 0,
     getItemKey: (index: number) => index,
   },
+  LOOP: 'false',
+  DISABLE_SCROLL_ANCHORING: false,
 } as const;
 
 export { TAG_NAME, DEFAULTS, VIRTUALIZED_WRAPPER_TAG_NAME };

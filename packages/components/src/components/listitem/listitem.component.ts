@@ -130,6 +130,14 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled?: boolean;
 
+  /**
+   * Data attribute to define the index of the list item in a list.
+   * This is used to set the `aria-posinset` attribute for accessibility purposes.
+   *
+   * This will be set by the virtualized list automatically.
+   * It should be a zero-based index.
+   * @default undefined
+   */
   @property({ type: Number, reflect: true, attribute: 'data-index' })
   dataIndex?: number;
 

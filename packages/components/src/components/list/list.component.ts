@@ -54,8 +54,6 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
-  public override role: string | null = ROLE.LIST;
-
   /** @internal */
   protected focusWithin = false;
 
@@ -73,6 +71,12 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     this.itemsStore = new ElementStore<ListItem>(this, {
       isValidItem: this.isValidItem,
     });
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Set the role attribute for accessibility.
+    this.role = ROLE.LIST;
   }
 
   /**
@@ -122,14 +126,14 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   }
 
   /** @internal */
-  private handleFocusEvent = (event: FocusEvent) => {
+  private handleFocusEvent(event: FocusEvent) {
     // If previously focused element is being removed from the DOM, ignore the focusout event
     if (event.relatedTarget === null) {
       return;
     }
 
     this.focusWithin = event.type === 'focusin';
-  };
+  }
 
   /** @internal */
   private handleModifiedEvent = (event: LifeCycleModifiedEvent) => {

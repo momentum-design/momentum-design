@@ -1,8 +1,8 @@
-import { type CSSResult, type PropertyValues, type TemplateResult, html } from 'lit';
+import { type CSSResult, type PropertyValues, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
 import { defaultRangeExtractor, type Range, type VirtualItem } from '@tanstack/virtual-core';
-import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { type Ref, createRef, ref } from 'lit/directives/ref.js';
 
 import List from '../list/list.component';
@@ -37,9 +37,16 @@ import type { VirtualizerProps, VirtualizerOptions, Virtualizer } from './virtua
  * @csspart scroll - The scrollable area of the virtualized list.
  */
 class VirtualizedList extends DataAriaLabelMixin(List) {
-  public override loop: 'true' | 'false' = 'false';
-
-  public override role: string | null = null;
+  /**
+   * Whether to loop navigation when reaching the end of the list.
+   * If 'true', pressing the down arrow on the last item will focus the first item,
+   * and pressing the up arrow on the first item will focus the last item.
+   * If 'false', navigation will stop at the first or last item.
+   *
+   * @default 'false'
+   */
+  @property({ type: String, reflect: true })
+  public override loop: 'true' | 'false' = DEFAULTS.LOOP;
 
   /**
    * Object that sets and updates the virtualizer with any relevant props.
@@ -70,12 +77,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    * @default false
    */
-  @property({ type: Boolean })
-  disableScrollAnchoring: boolean = false;
+  @property({ type: Boolean, attribute: 'disable-scroll-anchoring', reflect: true })
+  disableScrollAnchoring: boolean = DEFAULTS.DISABLE_SCROLL_ANCHORING;
 
   private virtualizerController: VirtualizerController<Element, Element> | null = null;
 
   public virtualizer: Virtualizer | null = null;
+
+  get items(): VirtualItem[] {
+    return this.virtualizer?.getVirtualItems() ?? [];
+  }
+
+  get totalListHeight(): number {
+    return this.virtualizer?.getTotalSize() ?? 0;
+  }
 
   public scrollElementRef: Ref<HTMLDivElement> = createRef();
 
@@ -121,11 +136,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
    * Create the virtualizer controller and the virtualizer instance when the component is first connected to the DOM.
    */
-  public override connectedCallback(): void {
+  override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, this.getVirtualizerProps());
     this.virtualizer = this.virtualizerController.getVirtualizer();
 
     super.connectedCallback();
+
+    // Set the role attribute for accessibility.
+    this.role = null;
   }
 
   /**
@@ -431,43 +449,22 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
-  /**
-   * Renders the virtualized list wrapper that contains the necessary divs
-   *
-   * @returns The template result containing the list wrapper.
-   * @internal
-   */
-  private getVirtualizedListWrapper(): TemplateResult {
-    if (!this.virtualizer) {
-      return html``;
-    }
-
-    const { getVirtualItems, getTotalSize } = this.virtualizer;
-
-    const items = getVirtualItems();
-
-    const containerStyles: Readonly<StyleInfo> = {
-      height: `${getTotalSize()}px`,
-    };
-
-    const transformAnchorIndex = items.findIndex(({ index }) => !this.hiddenIndexes.includes(index));
-
-    const listStyle: Readonly<StyleInfo> = {
-      transform: `translateY(${items[transformAnchorIndex]?.start ?? 0}px)`,
-    };
-
-    return html`<div part="wrapper" style="${styleMap(containerStyles)}">
-      <div part="container" style="${styleMap(listStyle)}" role="list" aria-label="${this.dataAriaLabel ?? ''}">
-        <slot role="presentation"></slot>
-      </div>
-    </div>`;
-  }
-
   public override render() {
+    const transformAnchorIndex = this.items.findIndex(({ index }) => !this.hiddenIndexes.includes(index));
+
     return html`
       <slot name="list-header"></slot>
       <div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.handleScroll} tabindex="-1">
-        ${this.getVirtualizedListWrapper()}
+        <div part="wrapper" style="${styleMap({ height: `${this.totalListHeight}px` })}">
+          <div
+            part="container"
+            style="${styleMap({ transform: `translateY(${this.items[transformAnchorIndex]?.start ?? 0}px)` })}"
+            role="list"
+            aria-label="${this.dataAriaLabel ?? ''}"
+          >
+            <slot role="presentation"></slot>
+          </div>
+        </div>
       </div>
     `;
   }
