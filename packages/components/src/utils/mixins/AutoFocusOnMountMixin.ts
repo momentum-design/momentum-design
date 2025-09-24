@@ -16,7 +16,7 @@ export const AutoFocusOnMountMixin = <T extends Constructor<Component>>(superCla
     /**
      * @internal
      */
-    protected elementToAutoFocus: HTMLElement = this;
+    protected elementToAutoFocus?: HTMLElement | null = null;
 
     /**
      * This property indicates whether the element should receive focus automatically when it is mounted.
@@ -33,7 +33,7 @@ export const AutoFocusOnMountMixin = <T extends Constructor<Component>>(superCla
       if (this.autoFocusOnMount) {
         // wait for the element to be fully updated before focusing
         await this.updateComplete;
-        this.elementToAutoFocus.focus();
+        (this.elementToAutoFocus || this).focus();
       }
     }
   }
