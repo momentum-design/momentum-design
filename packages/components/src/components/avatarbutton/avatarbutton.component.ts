@@ -76,6 +76,7 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
         exportparts="content, photo, presence, loading-wrapper, loader"
         ?is-typing="${this.isTyping}"
         counter="${ifDefined(this.counter)}"
+        max-counter="${ifDefined(this.maxCounter)}"
         icon-name="${ifDefined(this.iconName)}"
         initials="${ifDefined(this.initials)}"
         presence="${ifDefined(this.presence)}"

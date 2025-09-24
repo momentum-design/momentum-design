@@ -14,6 +14,7 @@ import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 const render = (args: Args) => html`
   <mdc-avatar
     counter="${ifDefined(args.counter)}"
+    max-counter="${ifDefined(args['max-counter'])}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
     presence="${args.presence === 'none' ? undefined : ifDefined(args.presence)}"
@@ -50,6 +51,9 @@ const meta: Meta = {
       control: 'text',
     },
     counter: {
+      control: 'number',
+    },
+    'max-counter': {
       control: 'number',
     },
     ...textControls([
@@ -89,7 +93,7 @@ export const Size: StoryObj = {
     </div>
   `,
   argTypes: {
-    ...disableControls(['counter', 'icon-name', 'initials', 'presence', 'size', 'src', 'is-typing']),
+    ...disableControls(['counter', 'max-counter', 'icon-name', 'initials', 'presence', 'size', 'src', 'is-typing']),
   },
 };
 
@@ -110,7 +114,7 @@ export const SizeWithPresence: StoryObj = {
     </div>
   `,
   argTypes: {
-    ...disableControls(['counter', 'icon-name', 'initials', 'size']),
+    ...disableControls(['counter', 'max-counter', 'icon-name', 'initials', 'size']),
   },
   args: {
     src: imageFixtures.avatar,

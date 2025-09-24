@@ -13,6 +13,7 @@ export interface AvatarComponentMixinInterface {
   presence?: PresenceType;
   size: AvatarSize;
   counter?: number;
+  maxCounter: number;
   isTyping: boolean;
 }
 
@@ -71,13 +72,22 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(superClas
 
     /**
      * The counter is the number which can be displayed on the avatar.
-     * The maximum number is 99 and if the given number is greater than 99,
-     * then the avatar will be displayed as `99+`.
+     * The maximum number is defined by `maxCounter` property (default is 99).
+     * If the given number is greater than `maxCounter`,
+     * then the avatar will be displayed as `{maxCounter}+`.
      * If the given number is a negative number,
      * then the avatar will be displayed as `0`.
      */
     @property({ type: Number })
     counter?: number;
+
+    /**
+     * The maximum value for the counter display.
+     * When the counter exceeds this value, it will be displayed as `{maxCounter}+`.
+     * @default 99
+     */
+    @property({ type: Number, attribute: 'max-counter' })
+    maxCounter: number = AVATAR_DEFAULTS.MAX_COUNTER;
 
     /**
      * Represents the typing indicator when the user is typing.

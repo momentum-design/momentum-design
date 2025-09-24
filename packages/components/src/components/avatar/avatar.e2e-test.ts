@@ -14,6 +14,7 @@ import type { AvatarSize } from './avatar.types';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   counter?: number;
+  maxCounter?: number;
   iconName?: IconNames;
   initials?: string;
   size?: AvatarSize;
@@ -26,6 +27,7 @@ const setup = async (args: SetupOptions) => {
     html: `
       <mdc-avatar
         ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
+        ${restArgs.maxCounter ? `max-counter="${restArgs.maxCounter}"` : ''}
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.initials ? `initials="${restArgs.initials}"` : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
@@ -129,13 +131,23 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await expect(presence).not.toBeAttached();
     });
 
-    await test.step('counter should be set to 99+ when more than 99 is passed', async () => {
+    await test.step('counter should use default max-counter (99) when max-counter is not specified', async () => {
       await componentsPage.setAttributes(avatar, {
         counter: '100',
       });
       const mdcTextElement = componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
       expect(textContent?.trim()).toBe('99+');
+    });
+
+    await test.step('counter should respect custom max-counter value', async () => {
+      await componentsPage.setAttributes(avatar, {
+        counter: '250',
+        'max-counter': '200',
+      });
+      const mdcTextElement = componentsPage.page.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe('200+');
     });
 
     await test.step('counter should be set to 0 when a negative value is passed', async () => {

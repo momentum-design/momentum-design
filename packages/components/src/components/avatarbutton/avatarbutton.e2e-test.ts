@@ -13,6 +13,7 @@ import type { IconNames } from '../icon/icon.types';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   counter?: number;
+  maxCounter?: number;
   iconName?: IconNames;
   initials?: string;
   size?: AvatarSize;
@@ -28,6 +29,7 @@ const setup = async (args: SetupOptions) => {
          <mdc-avatarbutton
       aria-label="avatar button"
         ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
+        ${restArgs.maxCounter ? `max-counter="${restArgs.maxCounter}"` : ''}
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.initials ? `initials="${restArgs.initials}"` : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}

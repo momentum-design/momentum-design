@@ -7,7 +7,7 @@ import { Component } from '../../models';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 
-import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
+import { AVATAR_TYPE, DEFAULTS } from './avatar.constants';
 import styles from './avatar.styles';
 import type { AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './avatar.utils';
@@ -30,6 +30,7 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
  * The avatar component is non clickable and non interactive/focusable component.
  * If the avatar is typing, then the loading indicator will be displayed.
  * If the counter type avatar is set to a negative number, then we will display 0.
+ * The counter display limit can be customized using the `max-counter` attribute (default: 99).
  * The presence indicator will be hidden when the counter property is set.
  *
  * @dependency mdc-icon
@@ -155,7 +156,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   /**
    * @internal
    * Generates the text content for counter avatar by converting the given number to a string.
-   * If the counter exceeds the maximum limit of 99, it will return the maximum limit as a string
+   * If the counter exceeds the maximum limit defined by `maxCounter`, it will return the maximum limit as a string
    * followed by a '+' character.
    *
    * @param counter - the number to be converted to a string
@@ -166,8 +167,8 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
     if (counter < 0) {
       return '0';
     }
-    if (counter > MAX_COUNTER) {
-      return `${MAX_COUNTER}+`;
+    if (counter > this.maxCounter) {
+      return `${this.maxCounter}+`;
     }
     return counter.toString();
   }

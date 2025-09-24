@@ -17,6 +17,7 @@ const render = (args: Args) => html`
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
     counter="${ifDefined(args.counter)}"
+    max-counter="${ifDefined(args['max-counter'])}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
     presence="${args.presence === 'none' ? undefined : ifDefined(args.presence)}"
@@ -55,6 +56,9 @@ const meta: Meta = {
       control: 'text',
     },
     counter: {
+      control: 'number',
+    },
+    'max-counter': {
       control: 'number',
     },
     'aria-label': {
