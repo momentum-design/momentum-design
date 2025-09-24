@@ -52,7 +52,7 @@ const styles = css`
     border-color: var(--mdc-popover-inverted-border-color);
   }
 
-  :host([color='contrast']) .popover-close {
+  :host([color='contrast'])::part(popover-close) {
     color: var(--mdc-popover-inverted-text-color);
   }
 
