@@ -1,6 +1,5 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -105,13 +104,7 @@ class Searchfield extends Input {
   public override render() {
     return html`
       ${this.renderLabelElement()}
-      <div
-        class="${classMap({
-          'input-container': true,
-          'mdc-focus-ring': this.isInputFocused,
-        })}"
-        part="input-container"
-      >
+      <div class="${this.isInputFocused ? 'mdc-focus-ring' : ''}" part="input-container">
         ${this.renderLeadingIcon()}
         <div part="scrollable-container" tabindex="-1">
           <div

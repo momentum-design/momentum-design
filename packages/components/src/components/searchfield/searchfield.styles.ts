@@ -7,12 +7,12 @@ const styles = css`
     margin: 0.25rem 0;
   }
 
-  .input {
+  :host::part(input-text) {
     white-space: nowrap;
     min-width: 90%;
   }
 
-  .input::-webkit-search-cancel-button {
+  input::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
