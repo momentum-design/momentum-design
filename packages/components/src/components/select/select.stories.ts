@@ -11,7 +11,7 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
 import '../tooltip';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Select from './select.component';
 
@@ -38,6 +38,7 @@ const render = (args: Args) =>
       data-aria-label="${args['data-aria-label']}"
       toggletip-text="${args['toggletip-text']}"
       toggletip-placement="${args['toggletip-placement']}"
+      toggletip-strategy="${args['toggletip-strategy']}"
       info-icon-aria-label="${args['info-icon-aria-label']}"
       placement="${args.placement}"
       name="${args.name}"
@@ -100,6 +101,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'auto-focus-on-mount': {
       control: 'boolean',

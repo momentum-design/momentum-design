@@ -6,7 +6,7 @@ import { action } from 'storybook/actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Checkbox from './checkbox.component';
 
@@ -28,6 +28,7 @@ const render = (args: Args) => html`
     info-icon-aria-label="${args['info-icon-aria-label']}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
@@ -72,6 +73,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'info-icon-aria-label': {
       control: 'text',
