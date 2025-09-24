@@ -331,7 +331,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="textarea-container mdc-focus-ring" part="textarea-container">
+      <div class="mdc-focus-ring" part="textarea-container">
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"
           part="textarea"

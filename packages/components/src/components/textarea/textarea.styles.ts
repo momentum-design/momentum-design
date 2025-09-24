@@ -85,7 +85,7 @@ const styles = [
       width: 100%;
     }
 
-    .textarea::placeholder {
+    :host::part(textarea)::placeholder {
       color: var(--mdc-textarea-text-secondary-normal);
     }
 

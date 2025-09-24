@@ -80,7 +80,7 @@ const styles = [
       gap: 0.25rem;
     }
 
-    .mdc-label {
+    :host::part(label) {
       word-break: break-word;
       white-space: normal;
     }
