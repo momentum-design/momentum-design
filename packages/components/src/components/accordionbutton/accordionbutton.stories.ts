@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -36,9 +36,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-accordionbutton',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,

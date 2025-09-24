@@ -19,6 +19,7 @@ const DEFAULTS = {
   ICON_SIZE: 20,
   INFO_ICON: 'info-badge-filled' as Extract<IconNames, 'info-badge-filled'>,
   TOGGLETIP_PLACEMENT: 'top',
+  TOGGLETIP_STRATEGY: 'absolute',
 } as const;
 
 const MDC_TEXT_OPTIONS = {

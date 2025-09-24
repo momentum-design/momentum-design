@@ -18,6 +18,7 @@ export const PreventScrollMixin = <T extends Constructor<LitElement>>(superClass
      * Prevent outside scrolling when element is shown.
      *
      * IMPLEMENT THIS IN YOUR COMPONENT.
+     * @internal
      */
     protected abstract preventScroll: boolean;
 

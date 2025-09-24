@@ -1092,6 +1092,11 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "active": {
+            "value": "{color.core.white-alpha.11}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "light": {
             "value": "{color.core.black-alpha.40}",
             "type": "color",
@@ -1106,18 +1111,6 @@
             "value": "{color.core.black-alpha.80}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
-          },
-          "overlay": {
-            "normal": {
-              "value": "{color.core.black-alpha.80}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            },
-            "inactive": {
-              "value": "{color.core.black-alpha.40}",
-              "type": "color",
-              "description": "Used for operation pop: knocked-back effect when signle card is selected"
-            }
           },
           "radial": {
             "0": {
@@ -1484,6 +1477,13 @@
             "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
             "type": "color",
             "description": "Used for operation pop"
+          }
+        },
+        "ai": {
+          "normal": {
+            "type": "color",
+            "value": "linear-gradient(27deg, {color.ai.steelblue} 10.22%, {color.ai.skyblue} 88.93%, {color.ai.aquablue} 162.86%);",
+            "description": "linear-gradient(27deg, #3B76EA 10.22%, #00BCEB 88.93%, #63FFF7 162.86%);\nUsed for AI assistant feature"
           }
         }
       },

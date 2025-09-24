@@ -39,9 +39,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-badge',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     type: {
       control: 'select',

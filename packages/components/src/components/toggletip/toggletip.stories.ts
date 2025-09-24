@@ -3,7 +3,7 @@ import '.';
 import '../avatarbutton';
 import '../link';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { hideControls, textControls } from '../../../config/storybook/utils';
@@ -46,9 +46,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-toggletip',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     color: {
       control: 'select',

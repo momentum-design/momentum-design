@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -7,7 +7,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { textControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Toggle from './toggle.component';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
@@ -19,8 +19,9 @@ const render = (args: Args) => html`
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
     size="${args.size}"
-    toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
@@ -38,9 +39,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-toggle',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     size: {
       control: 'inline-radio',
@@ -80,6 +79,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'info-icon-aria-label': {
       control: 'text',

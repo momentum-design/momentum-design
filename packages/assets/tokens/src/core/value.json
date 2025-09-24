@@ -2060,6 +2060,28 @@
           }
         }
       }
+    },
+    "ai": {
+      "mediumblue": {
+        "value": "#0051AF",
+        "type": "color"
+      },
+      "skyblue": {
+        "value": "#00BCEB",
+        "type": "color"
+      },
+      "green": {
+        "value": "#74BF4B",
+        "type": "color"
+      },
+      "steelblue": {
+        "value": "#0087EA",
+        "type": "color"
+      },
+      "aquablue": {
+        "value": "#63FFF7",
+        "type": "color"
+      }
     }
   }
 }

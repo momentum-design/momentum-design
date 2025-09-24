@@ -1,12 +1,12 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../button';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <mdc-radio
@@ -23,8 +23,9 @@ const render = (args: Args) => html`
     ?readonly=${args.readonly}
     ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
-    toggletip-placement="${args['toggletip-placement']}"
     toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-radio>
@@ -35,9 +36,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-radio',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     readonly: {
       control: { type: 'boolean' },
@@ -72,6 +71,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: { type: 'select' },
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: { type: 'select' },
+      options: Object.values(STRATEGY),
     },
     'info-icon-aria-label': {
       control: { type: 'text' },

@@ -33,6 +33,16 @@ const styles = [
       font-family: inherit;
     }
 
+    :host .input-container:hover {
+      background-color: var(--mdc-input-hover-background-color);
+    }
+
+    :host .input-container:active,
+    :host .input-container:focus-within {
+      background-color: var(--mdc-input-focused-background-color);
+      border-color: var(--mdc-input-focused-border-color);
+    }
+
     :host([readonly]) .leading-icon {
       color: var(--mdc-input-support-text-color);
     }
@@ -89,16 +99,6 @@ const styles = [
     .prefix-text {
       color: var(--mdc-input-support-text-color);
       white-space: nowrap; /* restrict prefix text to be in one line */
-    }
-
-    :host(:not([disabled])) .input-container:hover {
-      background-color: var(--mdc-input-hover-background-color);
-    }
-
-    :host(:not([disabled])) .input-container:active,
-    :host(:not([disabled])) .input-container:focus-within {
-      background-color: var(--mdc-input-focused-background-color);
-      border-color: var(--mdc-input-focused-border-color);
     }
 
     .input::placeholder {

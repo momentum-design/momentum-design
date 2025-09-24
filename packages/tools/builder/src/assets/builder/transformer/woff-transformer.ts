@@ -23,7 +23,7 @@ class WOFFTransformer extends Transformer {
     const { fontName, ...ttf2woffConfig } = this.format.config;
     const filename = `${fontName}.woff`;
     const data = Buffer.from(
-      ttf2woff(TTFFontBuffer, ttf2woffConfig).buffer,
+      ttf2woff(new Uint8Array(TTFFontBuffer), ttf2woffConfig).buffer,
     );
     return {
       data,

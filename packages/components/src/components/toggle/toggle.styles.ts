@@ -61,6 +61,11 @@ const styles = [
       cursor: pointer;
     }
 
+    .mdc-label {
+      word-break: break-word;
+      white-space: normal;
+    }
+
     :host([disabled]) .mdc-label,
     :host([disabled])::part(toggle-input) {
       cursor: default;

@@ -21,9 +21,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-spinner',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,

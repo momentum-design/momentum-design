@@ -5,7 +5,7 @@ import { DIALOG_ROLE, DIALOG_SIZE, DIALOG_VARIANT } from './dialog.constants';
 
 type DialogRole = (typeof DIALOG_ROLE)[number];
 
-type DialogSize = ValueOf<typeof DIALOG_SIZE>;
+type DialogSize = (typeof DIALOG_SIZE)[number];
 
 type DialogVariant = ValueOf<typeof DIALOG_VARIANT>;
 

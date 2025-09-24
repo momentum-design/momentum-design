@@ -12,6 +12,7 @@ export const packagesList = [
   '@momentum-design/builder',
   '@momentum-design/common',
   '@momentum-design/figma-plugin-assets-export',
+  '@momentum-design/storybook-addon-code-preview',
   '@momentum-design/telemetry',
   '@momentum-design/token-builder',
 ];

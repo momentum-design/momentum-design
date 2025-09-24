@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -43,9 +43,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-searchfield',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     label: {
       control: 'text',

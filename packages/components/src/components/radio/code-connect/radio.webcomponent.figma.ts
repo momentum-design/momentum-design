@@ -33,13 +33,6 @@ figma.connect('<FIGMA_RADIO_URL>', {
       Disabled: true,
     }),
   },
-  example: args =>
-    html`<mdc-radio
-      label=${args.label}
-      help-text=${args.helpText}
-      toggletip-text=${args.toggletipText}
-      readonly=${args.readonly}
-      disabled=${args.disabled}
-    ></mdc-radio>`,
+  example: () => html`<mdc-radio></mdc-radio>`,
   imports: ["import '@momentum-design/components/components/radio';"],
 });

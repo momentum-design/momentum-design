@@ -1,6 +1,5 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import Button from '../button/button.component';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
@@ -30,7 +29,7 @@ import styles from './buttonlink.styles';
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the buttonLink has focus.
  * @event focus - (React: onFocus) Fired when the buttonLink receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
- * 
+ *
  * @csspart anchor - The anchor element that wraps the buttonlink content.
  * @csspart prefix-icon - The prefix icon element.
  * @csspart button-text - The slot containing the buttonlink text.
@@ -100,38 +99,15 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
     }
   }
 
-  public override render() {
+  protected override renderAnchorContent() {
     return html`
-      <a
-        class="mdc-focus-ring"
-        part="anchor"
-        href="${this.href}"
-        target="${this.target}"
-        rel="${ifDefined(this.rel)}"
-        download="${ifDefined(this.download)}"
-        ping="${ifDefined(this.ping)}"
-        hreflang="${ifDefined(this.hreflang)}"
-        type="${ifDefined(this.type)}"
-        referrerpolicy="${ifDefined(this.referrerpolicy)}"
-        aria-label="${this.dataAriaLabel ?? ''}"
-        tabindex="${this.disabled ? -1 : 0}"
-      >
-        ${this.prefixIcon
-          ? html`<mdc-icon
-              name="${this.prefixIcon as IconNames}"
-              part="prefix-icon"
-              length-unit="rem"
-            ></mdc-icon>`
-          : ''}
-        <slot @slotchange="${this.inferButtonType}" part="button-text"></slot>
-        ${this.postfixIcon
-          ? html`<mdc-icon
-              name="${this.postfixIcon as IconNames}"
-              part="postfix-icon"
-              length-unit="rem"
-            ></mdc-icon>`
-          : ''}
-      </a>
+      ${this.prefixIcon
+        ? html`<mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon" length-unit="rem"></mdc-icon>`
+        : ''}
+      <slot @slotchange="${this.inferButtonType}" part="button-text"></slot>
+      ${this.postfixIcon
+        ? html`<mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon" length-unit="rem"></mdc-icon>`
+        : ''}
     `;
   }
 

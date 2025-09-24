@@ -38,9 +38,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-accordiongroup',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,

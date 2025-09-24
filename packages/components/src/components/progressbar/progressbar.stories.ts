@@ -23,9 +23,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-progressbar',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     value: {
       control: 'text',
@@ -54,6 +52,7 @@ const meta: Meta = {
       'validation-message',
       'toggletip-text',
       'toggletip-placement',
+      'toggletip-strategy',
       'info-icon-aria-label',
     ]),
     ...textControls([

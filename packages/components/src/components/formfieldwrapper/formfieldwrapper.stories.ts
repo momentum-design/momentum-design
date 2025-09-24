@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import { VALIDATION } from './formfieldwrapper.constants';
 import { ValidationType } from './formfieldwrapper.types';
@@ -21,6 +21,7 @@ const render = (args: Args) =>
     help-text="${args['help-text']}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
+    toggletip-strategy="${args['toggletip-strategy']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
   >
     ${args.children}
@@ -31,9 +32,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-formfieldwrapper',
   render,
-  parameters: {
-    badges: ['internal'],
-  },
   argTypes: {
     ...classArgType,
     ...styleArgType,
@@ -62,6 +60,10 @@ const meta: Meta = {
     'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'toggletip-strategy': {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'info-icon-aria-label': {
       control: 'text',
@@ -109,10 +111,35 @@ export const HelperTextTypes: StoryObj = {
       ${repeat(
         Object.values(VALIDATION),
         (validation: ValidationType) => html`
-          <mdc-subcomponent-formfieldwrapper help-text-type="${validation}" label="Label" help-text="Helper text">
+          <mdc-subcomponent-formfieldwrapper
+            help-text-type="${validation}"
+            label="Label"
+            help-text="Helper text"
+            toggletip-text="toggletip text"
+            info-icon-aria-label="Info icon aria label"
+          >
             [Child component]
           </mdc-subcomponent-formfieldwrapper>
         `,
       )}
     </div>`,
+};
+
+export const WithSlottedToggletip: StoryObj = {
+  render: () => html`
+    <mdc-subcomponent-formfieldwrapper label="Label" help-text="Helper text" help-text-type="default" required>
+      <mdc-button
+        id="toggletip-btn"
+        slot="toggletip"
+        prefix-icon="info-badge-filled"
+        aria-label="Info icon aria label"
+        variant="tertiary"
+        size="20"
+      ></mdc-button>
+      <mdc-toggletip slot="toggletip" triggerid="toggletip-btn">
+        This is a toggletip text provided in the slot
+      </mdc-toggletip>
+      [Child Component]
+    </mdc-subcomponent-formfieldwrapper>
+  `,
 };

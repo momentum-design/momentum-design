@@ -22,9 +22,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-stepperconnector',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     status: {
       control: 'radio',

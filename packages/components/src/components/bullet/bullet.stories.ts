@@ -15,9 +15,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-bullet',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     size: {
       control: 'select',

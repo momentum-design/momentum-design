@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -32,9 +32,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-radiogroup',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     ...classArgType,
     ...styleArgType,
@@ -160,15 +158,11 @@ export const RadioGroupInFormWithHelpTextValidation = () => {
         help-text="Choose a plan that best suits your needs"
         required
       >
-        <mdc-radio
-          value="standard"
-          name="course-plan"
-          data-aria-label="Standard Plan"
-          label="Standard Plan"
-        >
+        <mdc-radio value="standard" name="course-plan" data-aria-label="Standard Plan" label="Standard Plan">
         </mdc-radio>
         <mdc-radio value="premium" name="course-plan" data-aria-label="Premium Plan" label="Premium Plan"> </mdc-radio>
-        <mdc-radio value="enterprise" name="course-plan" data-aria-label="Enterprise Plan" label="Enterprise Plan"> </mdc-radio>
+        <mdc-radio value="enterprise" name="course-plan" data-aria-label="Enterprise Plan" label="Enterprise Plan">
+        </mdc-radio>
       </mdc-radiogroup>
       <br />
       <div style="display: flex; gap: 0.25rem;">

@@ -19,9 +19,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-staticradio',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
+
   argTypes: {
     checked: {
       control: 'boolean',

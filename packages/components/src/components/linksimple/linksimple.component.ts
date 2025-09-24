@@ -1,4 +1,4 @@
-import { PropertyValues, CSSResult, html} from 'lit';
+import { PropertyValues, CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -33,7 +33,7 @@ import styles from './linksimple.styles';
  * @cssproperty --mdc-link-inverted-color-disabled - Color of the inverted link’s child content in the disabled state.
  * @cssproperty --mdc-link-inverted-color-hover - Color of the inverted link’s child content in the hover state.
  * @cssproperty --mdc-link-inverted-color-normal - Color of the inverted link’s child content in the normal state.
- * 
+ *
  * @csspart anchor - The anchor element that wraps the linksimple content.
  */
 class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
@@ -53,10 +53,9 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   /**
    * Href for navigation. The URL that the hyperlink points to
-   * @default #
    */
   @property({ type: String, reflect: true })
-  href = '#';
+  href?: string;
 
   /**
    * Optional target: _blank, _self, _parent, _top and _unfencedTop
@@ -135,7 +134,6 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
     }
   }
 
-
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('disabled')) {
@@ -143,10 +141,19 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
     }
   }
 
+  /**
+   * Protected method to render the anchor content.
+   * Override this method to customize the content inside the anchor tag.
+   * @internal
+   */
+  protected renderAnchorContent() {
+    return html`<slot></slot>`;
+  }
+
   public override render() {
     return html`
       <a
-        class='mdc-focus-ring'
+        class="mdc-focus-ring"
         part="anchor"
         href="${this.href}"
         target="${this.target}"
@@ -159,7 +166,7 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
         aria-label="${this.dataAriaLabel ?? ''}"
         tabindex="${this.disabled ? -1 : 0}"
       >
-        <slot></slot>
+        ${this.renderAnchorContent()}
       </a>
     `;
   }

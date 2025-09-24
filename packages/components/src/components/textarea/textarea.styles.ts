@@ -53,6 +53,7 @@ const styles = [
       border: none;
       outline: none;
       box-sizing: border-box;
+      width: 100%;
     }
 
     :host::part(textarea-container) {

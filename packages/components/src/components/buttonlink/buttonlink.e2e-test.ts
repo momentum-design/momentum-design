@@ -103,7 +103,7 @@ const attributeTestCases = async (args: SetupOptions, buttonlinkType: string) =>
       await expect(buttonlink).toHaveAttribute('size', DEFAULTS.SIZE.toString());
       await expect(buttonlink).toHaveAttribute('color', DEFAULTS.COLOR);
       await expect(buttonlink).toHaveAttribute('variant', DEFAULTS.VARIANT);
-      await expect(buttonlink).toHaveAttribute('href', '#');
+      await expect(buttonlink).not.toHaveAttribute('href');
       await expect(buttonlink).toHaveAttribute('target', '_self');
     });
   });
@@ -331,7 +331,11 @@ test.describe.parallel('mdc-buttonlink', () => {
       });
       await buttonlinkSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
 
-      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'data-aria-label': 'icon-button' });
+      buttonlinkSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+        disabled: '',
+        'data-aria-label': 'icon-button',
+      });
       await buttonlinkSheet.createMarkupWithCombination({
         size: BUTTON_SIZES,
         variant: BUTTON_VARIANTS,
