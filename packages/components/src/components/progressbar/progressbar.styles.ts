@@ -13,11 +13,6 @@ const styles = [
       --mdc-progressbar-height: 0.25rem;
       --mdc-progressbar-border: 0.5px solid transparent;
       --mdc-progressbar-border-radius: var(--mdc-progressbar-height);
-
-      --mdc-progressbar-label-color: var(--mds-color-theme-text-primary-normal);
-      --mdc-progressbar-label-line-height: var(--mds-font-lineheight-body-midsize);
-      --mdc-progressbar-label-font-size: var(--mds-font-size-body-midsize);
-      --mdc-progressbar-label-font-weight: var(--mds-font-weight-regular);
       --mdc-progressbar-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
       width: 100%;
@@ -73,15 +68,8 @@ const styles = [
       border-radius: var(--mdc-progressbar-border-radius);
     }
 
-    :host::part(label-text),
-    :host::part(help-text),
+    :host::part(label),
     :host::part(percentage) {
-      font-size: var(--mdc-progressbar-label-font-size);
-      font-weight: var(--mdc-progressbar-label-font-weight);
-      line-height: var(--mdc-progressbar-label-line-height);
-    }
-
-    .mdc-label {
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);

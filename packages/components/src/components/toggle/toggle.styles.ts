@@ -11,9 +11,6 @@ const styles = [
       --mdc-toggle-width-compact: 2rem;
       --mdc-toggle-height-compact: 1rem;
 
-      --mdc-toggle-label-lineheight: var(--mds-font-lineheight-body-midsize);
-      --mdc-toggle-label-fontsize: var(--mds-font-size-body-midsize);
-      --mdc-toggle-label-fontweight: 400;
       --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
       --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
@@ -48,14 +45,6 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    :host::part(label-text),
-    :host::part(help-text) {
-      font-size: var(--mdc-toggle-label-fontsize);
-      font-weight: var(--mdc-toggle-label-fontweight);
-      line-height: var(--mdc-toggle-label-lineheight);
-      grid-column: 2;
-    }
-
     :host::part(label),
     :host::part(toggle-input) {
       cursor: pointer;
@@ -73,6 +62,7 @@ const styles = [
 
     :host::part(help-text) {
       color: var(--mdc-toggle-help-text-color);
+      grid-column: 2;
     }
 
     :host(:hover:not([disabled]))::part(container) {
@@ -89,11 +79,6 @@ const styles = [
 
     :host(:active:not([disabled])[checked])::part(container) {
       background-color: var(--mdc-toggle-active-pressed-color);
-    }
-
-    :host([disabled])::part(label-text),
-    :host([disabled])::part(help-text) {
-      color: var(--mdc-toggle-label-color-disabled);
     }
   `,
   ...hostFocusRingStyles(true),
