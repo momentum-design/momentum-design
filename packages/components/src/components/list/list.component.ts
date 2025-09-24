@@ -53,8 +53,6 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
-  public override role: string | null = ROLE.LIST;
-
   /** @internal */
   protected focusWithin = false;
 
@@ -63,14 +61,20 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
 
     this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent.bind(this));
     this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent.bind(this));
-    this.addEventListener('focusin', this.handleFocusEvent);
-    this.addEventListener('focusout', this.handleFocusEvent);
+    this.addEventListener('focusin', this.handleFocusEvent.bind(this));
+    this.addEventListener('focusout', this.handleFocusEvent.bind(this));
 
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<ListItem>(this, {
       isValidItem: this.isValidItem,
     });
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Set the role attribute for accessibility.
+    this.role = ROLE.LIST;
   }
 
   /**
@@ -120,14 +124,14 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   }
 
   /** @internal */
-  private handleFocusEvent = (event: FocusEvent) => {
+  private handleFocusEvent(event: FocusEvent) {
     // If previously focused element is being removed from the DOM, ignore the focusout event
     if (event.relatedTarget === null) {
       return;
     }
 
     this.focusWithin = event.type === 'focusin';
-  };
+  }
 
   /** @internal */
   protected isValidItem(item: Element): boolean {
