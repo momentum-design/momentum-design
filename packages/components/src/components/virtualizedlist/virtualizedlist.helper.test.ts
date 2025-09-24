@@ -18,11 +18,15 @@ import type VirtualizedList from './virtualizedlist.component';
 import { VirtualizerProps, type VirtualizedListVirtualItemsChangeEvent } from './virtualizedlist.types';
 
 class VirtualizedWrapper extends Component {
-  @property({ type: Function, attribute: 'onscroll' })
-  override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
+  public override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerProps: VirtualizerProps = { count: 100, estimateSize: () => 100, getItemKey: index => index };
+  virtualizerProps: VirtualizerProps = {
+    count: 100,
+    estimateSize: () => 100,
+    getItemKey: index => index,
+    useAnimationFrameWithResizeObserver: true,
+  };
 
   @property({ type: String })
   story: 'text' | 'interactive' | 'dynamic' = 'text';
@@ -118,7 +122,7 @@ class VirtualizedWrapper extends Component {
       <div part="wrapper">
         <mdc-virtualizedlist
           @scroll=${this.onscroll}
-          @virtualItemsChange=${this.handleVirtualItemsChange}
+          @virtualitemschange=${this.handleVirtualItemsChange}
           .virtualizerProps=${this.virtualizerProps}
           initial-focus=${this.initialFocus}
           loop=${this.loop}
@@ -236,7 +240,7 @@ class VirtualizedDynamicList extends Component {
       <div id="VirtualizedDynamicList--wrapper">
         <mdc-virtualizedlist
           .virtualizerProps=${this.virtualizerProps}
-          @virtualItemsChange=${this.handleVirtualItemsChange}
+          @virtualitemschange=${this.handleVirtualItemsChange}
         >
           ${repeat(
             this.virtualData.virtualItems,
@@ -254,7 +258,7 @@ class VirtualizedDynamicList extends Component {
       <style>
         #VirtualizedDynamicList--wrapper {
           width: 100%;
-          height: 400px;
+          height: calc(100% - 200px);
         }
       </style>
     `;
@@ -590,7 +594,7 @@ class ChatExample extends Component {
         <mdc-virtualizedlist
           ${ref(this.virtualizerRef)}
           .virtualizerProps=${this.virtualizerProps}
-          @virtualItemsChange=${this.handleVirtualItemsChange}
+          @virtualitemschange=${this.handleVirtualItemsChange}
           initial-focus=${this.listItems.length - 1}
           stick-to-bottom
         >
