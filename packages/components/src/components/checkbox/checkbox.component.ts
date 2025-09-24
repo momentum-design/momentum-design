@@ -45,6 +45,7 @@ import styles from './checkbox.styles';
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart checkbox-input - The native checkbox input element.
+ * @csspart text-container - The container for the label and helper text.
  *
  * @cssproperty --mdc-label-font-size - Font size for the label text.
  * @cssproperty --mdc-label-font-weight - Font weight for the label text.

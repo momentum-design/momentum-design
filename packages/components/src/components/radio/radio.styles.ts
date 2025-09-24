@@ -19,6 +19,10 @@ const styles = [
       --mdc-radio-control-active-disabled-background: var(--mds-color-theme-control-active-disabled);
       --mdc-radio-control-inactive-disabled-background: var(--mds-color-theme-control-inactive-disabled);
       --mdc-radio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
+
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     :host(:hover)::part(radio-icon) {
@@ -61,9 +65,6 @@ const styles = [
 
     :host::part(label) {
       cursor: pointer;
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
       word-break: break-word;
       white-space: normal;
     }
