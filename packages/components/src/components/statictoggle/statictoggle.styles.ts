@@ -80,6 +80,9 @@ const styles = [
       :host::part(icon) {
         border: var(--mdc-toggle-border);
       }
+      :host::part(icon) {
+        --mdc-icon-fill-color: CanvasText;
+      }
     }
   `,
 ];
