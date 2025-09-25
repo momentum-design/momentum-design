@@ -48,6 +48,29 @@ import styles from './textarea.styles';
  * @dependency mdc-text
  * @dependency mdc-toggletip
  *
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ *
  * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
  * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
  * @cssproperty --mdc-textarea-disabled-background-color - Background color for the textarea field when disabled

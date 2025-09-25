@@ -49,7 +49,7 @@ class StaticCheckbox extends DisabledMixin(Component) {
       this.checked || this.indeterminate
         ? html`
             <mdc-icon
-              class="icon"
+              part="icon"
               name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
               size="1"
               length-unit="rem"

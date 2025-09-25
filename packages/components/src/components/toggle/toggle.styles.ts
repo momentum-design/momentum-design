@@ -5,21 +5,6 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
-    :host {
-      --mdc-toggle-width: 3rem;
-      --mdc-toggle-height: 1.5rem;
-      --mdc-toggle-width-compact: 2rem;
-      --mdc-toggle-height-compact: 1rem;
-
-      --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
-      --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
-
-      --mdc-toggle-active-hover-color: var(--mds-color-theme-control-active-hover);
-      --mdc-toggle-active-pressed-color: var(--mds-color-theme-control-active-pressed);
-      --mdc-toggle-inactive-hover-color: var(--mds-color-theme-control-inactive-hover);
-      --mdc-toggle-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
-    }
-
     :host([label]),
     :host([help-text]) {
       display: grid;
@@ -60,25 +45,24 @@ const styles = [
       cursor: default;
     }
 
-    :host::part(help-text) {
-      color: var(--mdc-toggle-help-text-color);
+    :host::part(help-text-container) {
       grid-column: 2;
     }
 
     :host(:hover:not([disabled]))::part(container) {
-      background-color: var(--mdc-toggle-inactive-hover-color);
+      --mdc-toggle-inactive-rest-color: var(--mds-color-theme-control-inactive-hover);
     }
 
     :host(:active:not([disabled]))::part(container) {
-      background-color: var(--mdc-toggle-inactive-pressed-color);
+      --mdc-toggle-inactive-rest-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
     :host(:hover:not([disabled])[checked])::part(container) {
-      background-color: var(--mdc-toggle-active-hover-color);
+      --mdc-toggle-active-rest-color: var(--mds-color-theme-control-active-hover);
     }
 
     :host(:active:not([disabled])[checked])::part(container) {
-      background-color: var(--mdc-toggle-active-pressed-color);
+      --mdc-toggle-active-rest-color: var(--mds-color-theme-control-active-pressed);
     }
   `,
   ...hostFocusRingStyles(true),

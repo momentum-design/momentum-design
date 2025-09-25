@@ -36,16 +36,34 @@ import type { ToggleSize } from './toggle.types';
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  * @cssproperty --mdc-toggle-width - Width of the toggle
  * @cssproperty --mdc-toggle-height - Height of the toggle
  * @cssproperty --mdc-toggle-width-compact - Width of the toggle when it's size is compact
  * @cssproperty --mdc-toggle-height-compact - Height of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-label-color-disabled - Color of the toggle label and help text in disabled state
- * @cssproperty --mdc-toggle-help-text-color - Color of the help text label
- * @cssproperty --mdc-toggle-active-hover-color - Background color of the active toggle in hover state
- * @cssproperty --mdc-toggle-active-pressed-color - Background color of the active toggle in pressed state
- * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
- * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
+ * @cssproperty --mdc-toggle-inactive-rest-color - Background color of the inactive toggle in rest state
+ * @cssproperty --mdc-toggle-active-rest-color - Background color of the active toggle in rest state
  */
 class Toggle
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))

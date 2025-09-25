@@ -55,14 +55,8 @@ import styles from './radio.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
- * @cssproperty --mdc-radio-text-disabled-color - color of the label when disabled
- * @cssproperty --mdc-radio-control-inactive-hover - color of the radio button when inactive and hovered
- * @cssproperty --mdc-radio-control-inactive-pressed-color - color of the radio button when inactive and pressed
- * @cssproperty --mdc-radio-control-active-hover-color - color of the radio button when active and hovered
- * @cssproperty --mdc-radio-control-active-pressed-color - color of the radio button when active and pressed
- * @cssproperty --mdc-radio-disabled-border-color - color of the radio button when disabled
- * @cssproperty --mdc-radio-control-active-disabled-background - color of the radio button when active and disabled
- * @cssproperty --mdc-radio-control-inactive-disabled-background - color of the radio button when inactive and disabled
+ * @cssproperty --mdc-radio-control-background-color - Background color of the radio control in rest state
+ * @cssproperty --mdc-radio-control-border-color - Border color of the radio control in rest state
  *
  */
 
@@ -305,6 +299,7 @@ class Radio
     return html`
       <mdc-staticradio
         class="mdc-focus-ring"
+        part="radio-container"
         ?checked="${this.checked}"
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
