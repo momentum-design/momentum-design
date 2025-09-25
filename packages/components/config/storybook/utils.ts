@@ -14,13 +14,6 @@ const disableControls = (keys: Array<string>) => {
 };
 
 /**
- * To automatically disable CSS parts in storybook
- * @param keys - Array of keys to disable
- * @returns Object which can be destructured in argTypes
- */
-const disableCSSParts = (keys: Array<string>) => disableControls(keys.map(key => `Shadow Part Name: "${key}"`));
-
-/**
  * Returns an object to hide all controls in Storybook.
  * This will hide all controls for the specified story,
  * to globally hide all interactive controls.
@@ -80,4 +73,4 @@ const textControls = (keys: Array<string>) => {
   return objectReturnValue;
 };
 
-export { disableControls, disableCSSParts, hideControls, hideAllControls, readOnlyControls, textControls };
+export { disableControls, hideControls, hideAllControls, readOnlyControls, textControls };

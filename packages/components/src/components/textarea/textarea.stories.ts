@@ -5,7 +5,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, textControls, hideControls, disableCSSParts } from '../../../config/storybook/utils';
+import { disableControls, textControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -153,7 +153,6 @@ const meta: Meta = {
       '--mdc-textarea-primary-border-color',
       '--mdc-textarea-text-secondary-normal',
     ]),
-    ...disableCSSParts(['textarea-container']),
   },
 };
 

@@ -2,7 +2,6 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 
-import { disableCSSParts } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import '../button';
 import '../brandvisual';
@@ -17,7 +16,6 @@ const meta: Meta = {
   component: 'mdc-appheader',
   render,
   argTypes: {
-    ...disableCSSParts(['container', 'leading-section', 'center-section', 'trailing-section']),
     ...classArgType,
     ...styleArgType,
   },

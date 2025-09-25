@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableCSSParts, hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 
 import { VARIANTS } from './alertchip.constants';
 
@@ -44,7 +44,6 @@ const meta: Meta = {
       '--mdc-chip-border-color',
       '--mdc-chip-background-color',
     ]),
-    ...disableCSSParts(['icon', 'label']),
   },
 };
 

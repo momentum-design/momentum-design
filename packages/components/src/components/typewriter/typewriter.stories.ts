@@ -15,7 +15,6 @@ import '../selectlistbox';
 import '../option';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { disableCSSParts } from '../../../config/storybook/utils';
 
 import { DEFAULTS } from './typewriter.constants';
 
@@ -60,7 +59,6 @@ const meta: Meta = {
       description:
         'Maximum number of text chunks in queue before dropping oldest chunks. Set to high value for unlimited.',
     },
-    ...disableCSSParts([DEFAULTS.CSS_PART_CONTAINER, DEFAULTS.CSS_PART_TEXT, DEFAULTS.CSS_PART_HIDDEN]),
     ...classArgType,
     ...styleArgType,
   },

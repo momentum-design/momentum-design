@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 
-import { disableControls, textControls, disableCSSParts } from '../../../config/storybook/utils';
+import { disableControls, textControls } from '../../../config/storybook/utils';
 
 import { PRESENCE_TYPE, PRESENCE_SIZE, DEFAULTS } from './presence.constants';
 
@@ -39,24 +39,6 @@ const meta: Meta = {
       '--mdc-presence-quiet-background-color',
       '--mdc-presence-scheduled-background-color',
       '--mdc-presence-overlay-background-color',
-    ]),
-    ...disableCSSParts([
-      'presence-content',
-      'mdc-presence-icon',
-      'mdc-presence-icon__active',
-      'mdc-presence-icon__away',
-      'mdc-presence-icon__away-calling',
-      'mdc-presence-icon__busy',
-      'mdc-presence-icon__dnd',
-      'mdc-presence-icon__meeting',
-      'mdc-presence-icon__on-call',
-      'mdc-presence-icon__on-device',
-      'mdc-presence-icon__on-mobile',
-      'mdc-presence-icon__pause',
-      'mdc-presence-icon__pto',
-      'mdc-presence-icon__presenting',
-      'mdc-presence-icon__quiet',
-      'mdc-presence-icon__scheduled',
     ]),
   },
 };
