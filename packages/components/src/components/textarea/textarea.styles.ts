@@ -5,13 +5,11 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   css`
     :host {
-      --mdc-textarea-disabled-background-color: var(--mds-color-theme-background-input-disabled);
       --mdc-textarea-text-color: var(--mds-color-theme-text-primary-normal);
-      --mdc-textarea-background-color: var(--mds-color-theme-background-primary-ghost);
       --mdc-textarea-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-textarea-background-color: var(--mds-color-theme-background-primary-ghost);
+      --mdc-textarea-container-background-color: var(--mds-color-theme-background-primary-ghost);
       --mdc-textarea-text-secondary-normal: var(--mds-color-theme-text-secondary-normal);
-      --mdc-textarea-hover-background-color: var(--mds-color-theme-background-primary-hover);
-      --mdc-textarea-focused-background-color: var(--mds-color-theme-background-primary-ghost);
       --mdc-textarea-text-font-size: var(--mds-font-size-body-midsize);
       --mdc-textarea-text-line-height: var(--mds-font-lineheight-body-midsize);
     }
@@ -36,6 +34,7 @@ const styles = [
       border: 0.0625rem solid var(--mdc-textarea-border-color);
       overflow: hidden;
       padding: 0.375rem 0.25rem 0.25rem 0.75rem;
+      background-color: var(--mdc-textarea-container-background-color);
     }
 
     :host(:dir(rtl))::part(textarea-container) {
@@ -43,12 +42,12 @@ const styles = [
     }
 
     :host(:not([disabled]))::part(textarea-container):hover {
-      background-color: var(--mdc-textarea-hover-background-color);
+      --mdc-textarea-container-background-color: var(--mds-color-theme-background-primary-hover);
     }
 
     :host(:not([disabled]))::part(textarea-container):active,
     :host(:not([disabled]))::part(textarea-container):focus-within {
-      background-color: var(--mdc-textarea-focused-background-color);
+      --mdc-textarea-container-background-color: var(--mds-color-theme-background-primary-ghost);
       --mdc-textarea-border-color: var(--mds-color-theme-outline-input-active);
     }
 
@@ -95,7 +94,7 @@ const styles = [
     :host([disabled])::part(textarea-container),
     :host([readonly])::part(textarea-container) {
       --mdc-textarea-border-color: var(--mds-color-theme-outline-primary-disabled);
-      background: var(--mdc-textarea-disabled-background-color);
+      --mdc-textarea-container-background-color: var(--mds-color-theme-background-input-disabled);
     }
 
     .hidden {

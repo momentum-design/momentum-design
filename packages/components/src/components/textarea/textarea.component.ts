@@ -71,20 +71,13 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
  *
- * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
- * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
- * @cssproperty --mdc-textarea-disabled-background-color - Background color for the textarea field when disabled
  * @cssproperty --mdc-textarea-text-color - Text color for the textarea field
  * @cssproperty --mdc-textarea-background-color - Background color for the textarea field
  * @cssproperty --mdc-textarea-border-color - Border color for the textarea field
  * @cssproperty --mdc-textarea-text-secondary-normal - Text color for the character counter
- * @cssproperty --mdc-textarea-error-border-color - Border color for the error related help text
- * @cssproperty --mdc-textarea-warning-border-color - Border color for the warning related help text
- * @cssproperty --mdc-textarea-success-border-color - Border color for the success related help text
- * @cssproperty --mdc-textarea-primary-border-color - Border color for the priority related help text
- * @cssproperty --mdc-textarea-hover-background-color - Background color for the textarea container when hover
- * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
- * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
+ * @cssproperty --mdc-textarea-text-font-size - Font size for the textarea field
+ * @cssproperty --mdc-textarea-text-line-height - Line height for the textarea field
+ * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
