@@ -60,22 +60,20 @@ import styles from './input.styles';
  * @csspart toggletip - The toggletip icon button element.
  * @csspart toggletip-text - The toggletip text element.
  *
- * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
- * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
- * @cssproperty --mdc-input-disabled-background-color - Background color for the input field when disabled
- * @cssproperty --mdc-input-border-color - Border color for the input container
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  * @cssproperty --mdc-input-text-color - Text color for the input field
+ * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
- * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
- * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
- * @cssproperty --mdc-input-hover-background-color - Background color for the input field when hovered
- * @cssproperty --mdc-input-focused-background-color - Background color for the input field when focused
- * @cssproperty --mdc-input-focused-border-color - Border color for the input container when focused
- * @cssproperty --mdc-input-error-border-color - Border color for the input container when error
- * @cssproperty --mdc-input-warning-border-color - Border color for the input container when warning
- * @cssproperty --mdc-input-success-border-color - Border color for the input container when success
- * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
+ * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  *
  */
 
