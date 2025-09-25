@@ -11,6 +11,9 @@ import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 import { withIllustrationProvider } from './provider/illustrationProvider';
 import { withCssPropertyProvider } from './provider/cssPropertyProvider';
+import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
+import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
+import { eventsEnhancer } from './enhancers/eventsEnhancer';
 
 const cssProperties = [];
 
@@ -151,5 +154,7 @@ const preview = {
     },
   },
 };
+
+export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, eventsEnhancer];
 
 export default preview;
