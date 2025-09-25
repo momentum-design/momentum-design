@@ -33,7 +33,6 @@ import styles from './progressbar.styles';
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart help-text - The helper/validation text element.
- * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
  *
  * @cssproperty --mdc-label-font-size - Font size for the label text.
@@ -44,14 +43,10 @@ import styles from './progressbar.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
- *
  * @cssproperty --mdc-progressbar-background-color - Background color of the remaining progressbar portion.
- * @cssproperty --mdc-progressbar-active-background-color - Background color of the elapsed progressbar portion.
- * @cssproperty --mdc-progressbar-success-color - Background color of the progressbar when in success state.
- * @cssproperty --mdc-progressbar-error-color - Background color of the progressbar when in error state.
+ * @cssproperty --mdc-progressbar-progress-background-color - Background color of the elapsed progressbar portion.
  * @cssproperty --mdc-progressbar-height - The height of the progressbar.
  * @cssproperty --mdc-progressbar-border-radius - The border radius of the progressbar.
- * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
  */
 class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
   /**

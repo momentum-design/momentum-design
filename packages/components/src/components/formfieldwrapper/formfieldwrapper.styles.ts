@@ -18,17 +18,6 @@ const styles = css`
     gap: 0.5rem;
   }
 
-  :host([disabled]),
-  :host([disabled])::part(label),
-  :host([disabled])::part(help-text-container),
-  :host([disabled])::part(required-indicator),
-  :host([disabled][help-text-type='error'])::part(help-text-container),
-  :host([disabled][help-text-type='success'])::part(help-text-container),
-  :host([disabled][help-text-type='warning'])::part(help-text-container),
-  :host([disabled][help-text-type='priority'])::part(help-text-container) {
-    color: var(--mds-color-theme-text-primary-disabled);
-  }
-
   :host::part(required-indicator) {
     color: var(--mds-color-theme-text-error-normal);
   }
@@ -79,6 +68,13 @@ const styles = css`
   }
   :host([help-text-type='priority']) {
     --mdc-help-text-color: var(--mds-color-theme-text-accent-normal);
+  }
+
+  :host([disabled]),
+  :host([disabled])::part(label),
+  :host([disabled])::part(help-text-container),
+  :host([disabled])::part(required-indicator) {
+    color: var(--mds-color-theme-text-primary-disabled);
   }
 `;
 
