@@ -11,6 +11,7 @@ const styles = [
       border-radius: 50%;
 
       --mdc-staticradio-inner-circle-size: 0.375rem;
+      --mdc-staticradio-text-normal-color: var(--mds-color-theme-text-primary-normal);
       --mdc-staticradio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
       --mdc-staticradio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-staticradio-normal-border-color: var(--mds-color-theme-outline-input-normal);
@@ -74,15 +75,11 @@ const styles = [
 
     :host([readonly]) .icon {
       border-color: var(--mdc-staticradio-normal-border-color);
-      background-color: var(--mdc-staticradio-control-inactive-color);
-    }
-
-    :host([readonly][checked]) .icon {
-      border-color: var(--mdc-staticradio-normal-border-color);
+      background-color: unset;
     }
 
     :host([readonly][checked]) .icon:after {
-      background-color: var(--mdc-staticradio-text-disabled-color);
+      background-color: var(--mdc-staticradio-text-normal-color);
     }
   `,
 ];

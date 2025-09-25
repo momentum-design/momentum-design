@@ -9,6 +9,7 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
   indeterminate?: boolean;
@@ -28,6 +29,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
       >
       </mdc-checkbox>
     `,
@@ -98,6 +100,27 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       indeterminate: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Checked Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      checked: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      indeterminate: true,
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
@@ -172,6 +195,12 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     await test.step('should have disabled attribute when the disabled attribute is passed', async () => {
       await componentsPage.setAttributes(checkbox, { disabled: '' });
       await expect(checkbox.locator('input[type="checkbox"]')).toBeDisabled();
+    });
+
+    await test.step('should have readonly attribute when the readonly attribute is passed', async () => {
+      await componentsPage.setAttributes(checkbox, { readonly: '' });
+      await expect(checkbox).toHaveAttribute('readonly', '');
+      await componentsPage.removeAttribute(checkbox, 'readonly');
     });
   });
 

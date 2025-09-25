@@ -14,6 +14,7 @@ const styles = [
       --mdc-staticcheckbox-icon-color: var(--mds-color-theme-inverted-text-primary-normal);
       --mdc-staticcheckbox-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-staticcheckbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
+      --mdc-staticcheckbox-readonly-border-color: var(--mds-color-theme-outline-primary-normal);
     }
 
     :host([checked])::part(icon-container),
@@ -22,13 +23,16 @@ const styles = [
       border-color: transparent;
     }
 
-    :host([disabled])::part(icon-container) {
+    :host([disabled])::part(icon-container),
+    :host([disabled][readonly])::part(icon-container) {
       border-color: var(--mdc-staticcheckbox-disabled-border-color);
       background: var(--mdc-staticcheckbox-disabled-background-color);
     }
 
     :host([disabled][checked])::part(icon-container),
-    :host([disabled][indeterminate])::part(icon-container) {
+    :host([disabled][indeterminate])::part(icon-container),
+    :host([disabled][readonly][checked])::part(icon-container),
+    :host([disabled][readonly][indeterminate])::part(icon-container) {
       background: var(--mdc-staticcheckbox-disabled-checked-icon-color);
       border: 0.0625rem solid var(--mdc-staticcheckbox-disabled-border-color);
     }
@@ -43,12 +47,22 @@ const styles = [
       border-radius: 0.125rem;
     }
 
+    :host([readonly])::part(icon-container) {
+      border-color: var(--mdc-staticcheckbox-readonly-border-color);
+      background-color: unset;
+    }
+
     .icon {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-icon-color);
     }
 
-    :host([disabled]) .icon {
+    :host([disabled]) .icon,
+    :host([disabled][readonly]) .icon {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
+    }
+
+    :host([readonly]) .icon {
+      --mdc-icon-fill-color: var(--mds-color-theme-text-primary-normal);
     }
 
     /* High Contrast Mode */

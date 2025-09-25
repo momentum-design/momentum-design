@@ -11,6 +11,7 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
   'data-aria-label'?: string;
@@ -29,6 +30,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       >
       </mdc-toggle>
@@ -75,6 +77,12 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('should have disabled attribute when the disabled attribute is true', async () => {
     await componentsPage.setAttributes(toggle, { disabled: 'true' });
     await expect(toggle).toHaveAttribute('disabled', 'true');
+  });
+
+  await test.step('should have readonly attribute when the readonly attribute is passed', async () => {
+    await componentsPage.setAttributes(toggle, { readonly: '' });
+    await expect(toggle).toHaveAttribute('readonly', '');
+    await componentsPage.removeAttribute(toggle, 'readonly');
   });
 };
 
@@ -267,6 +275,20 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       checked: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+
+    toggleStickerSheet.setAttributes({
+      label: 'Read Only Toggle Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+    toggleStickerSheet.setAttributes({
+      label: 'Read Only Checked Toggle Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      checked: true,
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
 

@@ -10,6 +10,7 @@ const styles = [
       --mdc-statictoggle-border-radius: 0.75rem;
       --mdc-statictoggle-border-radius-compact: 0.5rem;
       --mdc-statictoggle-border: 1px solid var(--mds-color-theme-outline-input-normal);
+      --mdc-statictoggle-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
 
       --mdc-statictoggle-inactive-rest-color: var(--mds-color-theme-control-inactive-normal);
       --mdc-statictoggle-inactive-disabled-color: var(--mds-color-theme-control-inactive-disabled);
@@ -57,7 +58,8 @@ const styles = [
       border-radius: 50%;
     }
 
-    :host([disabled]) .icon {
+    :host([disabled]) .icon,
+    :host([disabled][readonly]) .icon {
       --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-disabled);
       background-color: var(--mdc-statictoggle-icon-background-color-disabled);
     }
@@ -66,12 +68,24 @@ const styles = [
       padding: 0.125rem;
     }
 
-    :host([disabled])::part(slider) {
+    :host([disabled])::part(slider),
+    :host([readonly])::part(slider) {
       background-color: var(--mdc-statictoggle-inactive-disabled-color);
+      border-color: var(--mdc-statictoggle-disabled-border-color);
     }
 
-    :host([disabled][checked])::part(slider) {
+    :host([disabled][checked])::part(slider),
+    :host([disabled][readonly][checked])::part(slider) {
       background-color: var(--mdc-statictoggle-active-disabled-color);
+      border-color: transparent;
+    }
+
+    :host([readonly]) .icon {
+      background-color: var(--mdc-statictoggle-icon-background-color-normal);
+    }
+
+    :host([disabled][readonly])::part(slider) {
+      background-color: var(--mdc-statictoggle-inactive-disabled-color);
     }
 
     /* High Contrast Mode */
