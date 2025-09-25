@@ -312,6 +312,14 @@ class Select
         }
         break;
       }
+      case 'enabled': {
+        this.itemsStore.add(option);
+        break;
+      }
+      case 'disabled': {
+        this.itemsStore.delete(option);
+        break;
+      }
       default:
         break;
     }
