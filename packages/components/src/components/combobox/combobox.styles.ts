@@ -9,12 +9,6 @@ const styles = css`
     --mdc-combobox-listbox-height: auto;
     --mdc-combobox-text-color-disabled: var(--mds-color-theme-text-primary-disabled);
     --mdc-combobox-hover-background-color: var(--mds-color-theme-background-primary-hover);
-    --mdc-combobox-error-border-color: var(--mds-color-theme-text-error-normal);
-    --mdc-combobox-warning-border-color: var(--mds-color-theme-text-warning-normal);
-    --mdc-combobox-success-border-color: var(--mds-color-theme-text-success-normal);
-    --mdc-combobox-primary-border-color: var(--mds-color-theme-text-accent-normal);
-    --mdc-combobox-focused-background-color: var(--mds-color-theme-background-primary-ghost);
-    --mdc-combobox-focused-border-color: var(--mds-color-theme-outline-input-active);
 
     display: flex;
     flex-direction: column;
@@ -46,31 +40,17 @@ const styles = css`
   :host([disabled])::part(combobox__button) {
     cursor: unset;
   }
-  :host mdc-input {
-    --mdc-input-error-border-color: var(--mdc-combobox-error-border-color);
-    --mdc-input-warning-border-color: var(--mdc-combobox-warning-border-color);
-    --mdc-input-success-border-color: var(--mdc-combobox-success-border-color);
-    --mdc-input-primary-border-color: var(--mdc-combobox-primary-border-color);
-    --mdc-input-focused-border-color: var(--mdc-combobox-focused-border-color);
-    --mdc-input-focused-background-color: var(--mdc-combobox-focused-background-color);
-  }
   :host(:focus-within)::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-focused-border-color);
   }
   :host(:not([disabled]))::part(combobox__base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
   }
-  :host([help-text-type='error'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-error-border-color);
-  }
-  :host([help-text-type='warning'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-warning-border-color);
-  }
-  :host([help-text-type='success'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-success-border-color);
-  }
+  :host([help-text-type='error'])::part(combobox__button),
+  :host([help-text-type='warning'])::part(combobox__button),
+  :host([help-text-type='success'])::part(combobox__button),
   :host([help-text-type='priority'])::part(combobox__button) {
-    border-color: var(--mdc-combobox-primary-border-color);
+    border-color: var(--mdc-help-text-color);
   }
   :host([disabled])::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-text-color-disabled);

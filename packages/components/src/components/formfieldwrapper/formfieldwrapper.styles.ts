@@ -68,17 +68,16 @@ const styles = css`
   :host::part(info-icon-btn) {
     align-self: flex-start;
   }
-
-  :host([help-text-type='error'])::part(help-text-container) {
+  :host([help-text-type='error']) {
     --mdc-help-text-color: var(--mds-color-theme-text-error-normal);
   }
-  :host([help-text-type='warning'])::part(help-text-container) {
+  :host([help-text-type='warning']) {
     --mdc-help-text-color: var(--mds-color-theme-text-warning-normal);
   }
-  :host([help-text-type='success'])::part(help-text-container) {
+  :host([help-text-type='success']) {
     --mdc-help-text-color: var(--mds-color-theme-text-success-normal);
   }
-  :host([help-text-type='priority'])::part(help-text-container) {
+  :host([help-text-type='priority']) {
     --mdc-help-text-color: var(--mds-color-theme-text-accent-normal);
   }
 `;

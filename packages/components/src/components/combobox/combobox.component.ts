@@ -71,19 +71,21 @@ import type { Placement } from './combobox.types';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the combobox.
  * @event focus - (React: onFocus) This event is dispatched when the combobox receives focus.
  *
+ *  @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  * @cssproperty --mdc-combobox-border-color - The border color of the combobox
  * @cssproperty --mdc-combobox-icon-color - The icon color of the combobox
  * @cssproperty --mdc-combobox-listbox-height - The height of the listbox inside the combobox
  * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
  * @cssproperty --mdc-combobox-width - The width of the combobox
  * @cssproperty --mdc-combobox-hover-background-color - The background color of the combobox when hovered
- * @cssproperty --mdc-combobox-focused-background-color - The background color of the combobox when focused
- * @cssproperty --mdc-combobox-error-border-color - The border color of the combobox when in error state
- * @cssproperty --mdc-combobox-warning-border-color - The border color of the combobox when in warning state
- * @cssproperty --mdc-combobox-success-border-color - The border color of the combobox when in success state
- * @cssproperty --mdc-combobox-primary-border-color - The border color of the combobox when in primary state
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
- * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
  *
  * @csspart internal-native-input - The internal native input element of the combobox.
  * @csspart mdc-input - The input element of the combobox.
@@ -91,6 +93,14 @@ import type { Placement } from './combobox.types';
  * @csspart combobox__base - The base container element of the combobox.
  * @csspart combobox__button - The button element of the combobox.
  * @csspart combobox__button-icon - The icon element of the button of the combobox.
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is hovered.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
  */
 class Combobox
   extends CaptureDestroyEventForChildElement(
