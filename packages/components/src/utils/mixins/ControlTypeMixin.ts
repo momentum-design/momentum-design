@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import ControlTypeProvider from '../../components/controltypeprovider';
 import providerUtils from '../provider';
 import type { ControlType } from '../../components/controltypeprovider/controltypeprovider.types';
+import { DEFAULTS, VALID_VALUES } from '../../components/controltypeprovider/controltypeprovider.constants';
 
 import type { Constructor } from './index.types';
 
@@ -29,11 +30,11 @@ export const ControlTypeMixin = <T extends Constructor<LitElement>>(superClass: 
     public controlType?: ControlType;
 
     override willUpdate() {
-      if (!this.controlType) {
+      if (!(this.controlType && VALID_VALUES.includes(this.controlType))) {
         if (this.controlTypeProviderContext.value) {
           this.controlType = this.controlTypeProviderContext.value;
         } else {
-          this.controlType = 'uncontrolled';
+          this.controlType = DEFAULTS.CONTROL_TYPE;
         }
       }
     }

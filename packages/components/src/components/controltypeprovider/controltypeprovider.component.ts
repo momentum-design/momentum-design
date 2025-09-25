@@ -4,6 +4,7 @@ import { Provider } from '../../models';
 
 import ControlTypeProviderContext from './controltypeprovider.context';
 import type { ControlType } from './controltypeprovider.types';
+import { DEFAULTS, VALID_VALUES } from './controltypeprovider.constants';
 
 /**
  * ContolTypeProvider component, which allows to be consumed from sub components
@@ -31,12 +32,22 @@ class ControlTypeProvider extends Provider<ControlType> {
     return ControlTypeProviderContext;
   }
 
+  private innerControlType: ControlType = DEFAULTS.CONTROL_TYPE;
+
   /**
    * Whether the control type is 'controlled' or 'uncontrolled'
    * @default 'uncontrolled'
    */
-  @property({ type: String, attribute: 'control-type' })
-  controlType: ControlType = 'uncontrolled';
+  @property({ type: String, attribute: 'control-type', reflect: true })
+  set controlType(value: ControlType) {
+    if (VALID_VALUES.includes(value)) {
+      this.innerControlType = value as ControlType;
+    }
+  }
+
+  get controlType() {
+    return this.innerControlType;
+  }
 
   protected override updateContext(): void {
     if (this.context.value !== this.controlType) {

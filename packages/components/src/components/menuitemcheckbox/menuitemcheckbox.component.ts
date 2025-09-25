@@ -88,7 +88,7 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
   private handleMouseClick() {
     if (this.disabled) return;
 
-    if (this.controlType === 'uncontrolled') {
+    if (this.controlType !== 'controlled') {
       this.checked = !this.checked;
     }
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
