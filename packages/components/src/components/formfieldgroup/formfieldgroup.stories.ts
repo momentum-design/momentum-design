@@ -3,7 +3,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, textControls } from '../../../config/storybook/utils';
 import '../checkbox';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -66,6 +66,16 @@ const meta: Meta = {
       control: 'object',
     },
     ...hideControls(['disabled']),
+    ...textControls([
+      '--mdc-label-font-size',
+      '--mdc-label-font-weight',
+      '--mdc-label-line-height',
+      '--mdc-label-color',
+      '--mdc-help-text-font-size',
+      '--mdc-help-text-font-weight',
+      '--mdc-help-text-line-height',
+      '--mdc-help-text-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
