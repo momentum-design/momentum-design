@@ -59,6 +59,7 @@ import styles from './dialog.styles';
  * @cssproperty --mdc-dialog-description-text-color - text color of the below header description of the dialog
  * @cssproperty --mdc-dialog-elevation-3 - elevation of the dialog
  * @cssproperty --mdc-dialog-width - width of the dialog
+ * @cssproperty --mdc-dialog-height - height of the dialog
  *
  * @csspart body - The body section of the dialog.
  * @csspart description-text - The description text of the dialog.
@@ -449,31 +450,51 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     }
   }
 
+  /**
+   * Abstracting the renderHeader to allow for overrides of
+   * extending components
+   * @internal
+   */
+  protected renderHeader() {
+    return this.headerText
+      ? html` <div part="header-section">
+          <div part="header">
+            <slot name="header-prefix"></slot>
+            <mdc-text
+              part="header-text"
+              tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+              type="${TYPE.BODY_LARGE_BOLD}"
+            >
+              ${this.headerText}
+            </mdc-text>
+          </div>
+          ${this.descriptionText
+            ? html`<mdc-text
+                part="description-text"
+                tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                type="${TYPE.BODY_MIDSIZE_REGULAR}"
+              >
+                ${this.descriptionText}
+              </mdc-text>`
+            : nothing}
+        </div>`
+      : nothing;
+  }
+
+  /**
+   * Abstracting the renderBody to allow for overrides of
+   * extending components
+   * @internal
+   */
+  protected renderBody() {
+    return html` <div part="body">
+      <slot name="dialog-body"></slot>
+    </div>`;
+  }
+
   public override render() {
     return html`
-      ${this.headerText
-        ? html` <div part="header-section">
-            <div part="header">
-              <slot name="header-prefix"></slot>
-              <mdc-text
-                part="header-text"
-                tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-                type="${TYPE.BODY_LARGE_BOLD}"
-              >
-                ${this.headerText}
-              </mdc-text>
-            </div>
-            ${this.descriptionText
-              ? html`<mdc-text
-                  part="description-text"
-                  tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-                  type="${TYPE.BODY_MIDSIZE_REGULAR}"
-                >
-                  ${this.descriptionText}
-                </mdc-text>`
-              : nothing}
-          </div>`
-        : nothing}
+      ${this.renderHeader()}
       <mdc-button
         part="dialog-close-btn"
         prefix-icon="${DEFAULTS.CANCEL_ICON}"
@@ -482,10 +503,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
         aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
         @click="${this.closeDialog}"
       ></mdc-button>
-      <div part="body">
-        <slot name="dialog-body"></slot>
-      </div>
-      ${this.renderFooter()}
+      ${this.renderBody()} ${this.renderFooter()}
     `;
   }
 

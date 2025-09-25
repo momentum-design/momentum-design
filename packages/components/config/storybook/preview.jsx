@@ -41,10 +41,12 @@ function refactorCustomElements(customElements) {
         name: `Shadow Part Name: "${part.name}"`,
       }));
 
-      const mappedEvents = declaration.events?.map(event => ({
-        ...event,
-        name: `Event Name: "${event.name}"`,
-      }));
+      const mappedEvents = declaration.events
+        ?.filter(event => !!event.name)
+        .map(event => ({
+          ...event,
+          name: `Event Name: "${event.name}"`,
+        }));
 
       const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap

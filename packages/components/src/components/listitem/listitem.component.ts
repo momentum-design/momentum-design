@@ -207,11 +207,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
     [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
-        this.dispatchModifiedEvent('disabled');
         ListItemEventManager.onDisableListItem(this);
       } else {
         element.removeAttribute('disabled');
-        this.dispatchModifiedEvent('enabled');
         ListItemEventManager.onEnableListItem(this);
       }
     });
@@ -225,6 +223,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
+      this.dispatchModifiedEvent(this.disabled ? 'disabled' : 'enabled');
     }
 
     if (changedProperties.has('softDisabled')) {
