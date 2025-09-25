@@ -10,10 +10,6 @@ const styles = [
       flex-direction: row;
       align-items: start;
       gap: 0.5rem;
-
-      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     :host(:not([readonly]):hover)::part(radio-container) {

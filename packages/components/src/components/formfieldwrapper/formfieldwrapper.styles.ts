@@ -4,9 +4,9 @@ import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    --mdc-label-font-size: var(--mds-font-apps-body-midsize-medium-font-size);
-    --mdc-label-font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
-    --mdc-label-line-height: var(--mds-font-apps-body-midsize-medium-line-height);
+    --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+    --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+    --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     --mdc-label-color: var(--mds-color-theme-text-primary-normal);
     --mdc-help-text-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
     --mdc-help-text-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);

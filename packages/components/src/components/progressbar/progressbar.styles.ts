@@ -65,11 +65,10 @@ const styles = [
       border-radius: var(--mdc-progressbar-border-radius);
     }
 
-    :host::part(label),
     :host::part(percentage) {
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+      font-size: var(--mds-label-font-size);
+      font-weight: var(--mds-label-font-weight);
+      line-height: var(--mds-label-font-height);
     }
 
     @media (forced-colors: active) {
