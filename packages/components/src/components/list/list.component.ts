@@ -10,6 +10,7 @@ import { ElementStore } from '../../utils/controllers/ElementStore';
 import type ListItem from '../listitem';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
+import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
@@ -57,6 +58,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
@@ -115,6 +117,22 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     }
 
     this.resetTabIndexes(newIndex);
+  };
+
+  /** @internal */
+  private handleModifiedEvent = (event: LifeCycleModifiedEvent) => {
+    const item = event.target as ListItem;
+
+    switch (event.detail.change) {
+      case 'enabled':
+        this.itemsStore.add(item);
+        break;
+      case 'disabled':
+        this.itemsStore.delete(item);
+        break;
+      default:
+        break;
+    }
   };
 
   /** @internal */
