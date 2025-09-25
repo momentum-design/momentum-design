@@ -58,6 +58,11 @@ import { ListItemVariants } from './listitem.types';
  * @cssproperty --mdc-listitem-width - Allows customization of the width of the list item.
  * @cssproperty --mdc-listitem-height - Allows customization of the height of the list item.
  *
+ * @csspart leading - Allows customization of the leading part.
+ * @csspart leading-text - Allows customization of the leading text part.
+ * @csspart trailing - Allows customization of the trailing part.
+ * @csspart trailing-text - Allows customization of the trailing text part.
+ *
  * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.

@@ -37,6 +37,11 @@ import styles from './option.styles';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the option.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the option.
  * @event focus - (React: onFocus) This event is dispatched when the option receives focus.
+ *
+ * @csspart leading - Allows customization of the leading part.
+ * @csspart leading-text - Allows customization of the leading text part.
+ * @csspart trailing - Allows customization of the trailing part.
+ * @csspart trailing-text - Allows customization of the trailing text part.
  */
 class Option extends FormInternalsMixin(ListItem) {
   /**
