@@ -75,6 +75,11 @@ const styles = [
       flex-direction: column;
       gap: 0.25rem;
     }
+
+    .mdc-label {
+      word-break: break-word;
+      white-space: normal;
+    }
   `,
   ...hostFocusRingStyles(true),
 ];

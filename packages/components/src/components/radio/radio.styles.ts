@@ -63,6 +63,8 @@ const styles = [
 
     .mdc-label {
       cursor: pointer;
+      word-break: break-word;
+      white-space: normal;
     }
 
     :host([disabled]) .mdc-radio__label-text,
@@ -85,6 +87,7 @@ const styles = [
       flex-direction: column;
       justify-content: center;
       gap: 0.25rem;
+      flex: 1;
     }
     :host::part(required-indicator) {
       display: none;

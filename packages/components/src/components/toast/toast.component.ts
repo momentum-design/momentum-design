@@ -17,14 +17,13 @@ import type { ToastVariant } from './toast.types';
 /**
  * `mdc-toast` is a lightweight, non-blocking alert used to inform users about application processes.
  * It supports success, warning, error, and custom messages, and is designed to be controlled externally.
- * 
+ *
  * **Note**: When using `slot="toast-body-normal"` and `slot="toast-body-detailed"`, it's strongly recommended to wrap the content with `<mdc-text tagname="span">`.
  * If not used, ensure your custom content is styled appropriately to match the design and alignment expectations of the toast component.
- * 
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
- * @dependency mdc-linkbutton
  *
  * @slot content-prefix - Slot for custom content before the icon (only for custom variant).
  * @slot toast-body-normal - Slot for the main body content of the toast.
@@ -34,7 +33,7 @@ import type { ToastVariant } from './toast.types';
  * @slot footer-button-secondary - Slot for passing the secondary variant of `mdc-button` in the footer.
  *
  * @tagname mdc-toast
- * 
+ *
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *
  * @csspart content-container - The container for the toast's main content, including icon, text, and close button.
@@ -57,6 +56,8 @@ class Toast extends FooterMixin(Component) {
   /**
    * Type of toast
    * - Can be `custom`, `success`, `warning` or `error`.
+   *
+   * Note: When using the `custom` variant, provide your own icon via the `content-prefix` slot; otherwise, no icon will be shown.
    * @default 'custom'
    */
   @property({ type: String, reflect: true })
@@ -130,13 +131,16 @@ class Toast extends FooterMixin(Component) {
   }
 
   private updateDetailedSlotPresence() {
-    this.hasDetailedSlot = this.detailedElements?.some((el) => el.textContent?.trim()) ?? false;
+    this.hasDetailedSlot = this.detailedElements?.some(el => el.textContent?.trim()) ?? false;
   }
 
   private updateFooterButtonsPresence() {
-    this.hasFooterButtons = (this.footerButtonPrimary?.length ?? 0) > 0 ||
+    this.hasFooterButtons =
+      (this.footerButtonPrimary?.length ?? 0) > 0 ||
       (this.footerButtonSecondary?.length ?? 0) > 0 ||
-      this.shouldRenderToggleButton() ? 'has-footer-buttons' : '';
+      this.shouldRenderToggleButton()
+        ? 'has-footer-buttons'
+        : '';
   }
 
   protected override firstUpdated(changedProperties: PropertyValues): void {
@@ -145,13 +149,9 @@ class Toast extends FooterMixin(Component) {
   }
 
   protected renderIcon(iconName: string) {
-    if(!iconName) return nothing;
+    if (!iconName) return nothing;
     return html`
-      <mdc-icon
-        name="${iconName as IconNames}"
-        size="${DEFAULTS.PREFIX_ICON_SIZE}"
-        part="toast-prefix-icon"
-      ></mdc-icon>
+      <mdc-icon name="${iconName as IconNames}" size="${DEFAULTS.PREFIX_ICON_SIZE}" part="toast-prefix-icon"></mdc-icon>
     `;
   }
 
@@ -162,30 +162,27 @@ class Toast extends FooterMixin(Component) {
   private renderToggleDetailButton() {
     if (!this.shouldRenderToggleButton()) return nothing;
     return html`
-      <mdc-linkbutton
+      <mdc-button
+        variant="tertiary"
         part="footer-button-toggle"
         @click="${this.toggleDetailVisibility}"
-        icon-name="${this.isDetailVisible ? DEFAULTS.ARROW_UP_BOLD : DEFAULTS.ARROW_DOWN_BOLD}"
+        postfix-icon="${this.isDetailVisible ? DEFAULTS.ARROW_UP_BOLD : DEFAULTS.ARROW_DOWN_BOLD}"
       >
         ${this.isDetailVisible ? this.showLessText : this.showMoreText}
-      </mdc-linkbutton>
+      </mdc-button>
     `;
   }
 
   protected renderHeader() {
     return this.headerText
       ? html`
-          <mdc-text
-            part="toast-header"
-            tagname="${this.headerTagName}"
-            type="${TYPE.BODY_LARGE_BOLD}"
-          >
+          <mdc-text part="toast-header" tagname="${this.headerTagName}" type="${TYPE.BODY_LARGE_BOLD}">
             ${this.headerText}
           </mdc-text>
         `
       : nothing;
   }
-  
+
   protected override handleFooterSlot(tagname: string, variant?: string | undefined): void {
     super.handleFooterSlot(tagname, variant);
     this.updateFooterButtonsPresence();
@@ -211,9 +208,9 @@ class Toast extends FooterMixin(Component) {
   public override render() {
     return html`
       <div part="content-container">
-        ${this.variant === DEFAULTS.VARIANT 
-        ? html`<slot name="content-prefix"></slot>` 
-        : html`${this.renderIcon(getIconNameForVariant(this.variant) ?? '')}`}
+        ${this.variant === DEFAULTS.VARIANT
+          ? html`<slot name="content-prefix"></slot>`
+          : html`${this.renderIcon(getIconNameForVariant(this.variant) ?? '')}`}
         <div part="toast-content">
           ${this.renderHeader()}
           <slot name="toast-body-normal"></slot>
@@ -222,13 +219,13 @@ class Toast extends FooterMixin(Component) {
           </div>
         </div>
         <mdc-button
-            part="toast-close-btn"
-            prefix-icon="${DEFAULTS.CANCEL_ICON}"
-            variant="${DEFAULTS.TERTIARY_BUTTON}"
-            size="${DEFAULTS.CLOSE_ICON_SIZE}"
-            aria-label="${ifDefined(this.closeButtonAriaLabel)}"
-            @click="${this.closeToast}"
-          ></mdc-button>
+          part="toast-close-btn"
+          prefix-icon="${DEFAULTS.CANCEL_ICON}"
+          variant="${DEFAULTS.TERTIARY_BUTTON}"
+          size="${DEFAULTS.CLOSE_ICON_SIZE}"
+          aria-label="${ifDefined(this.closeButtonAriaLabel)}"
+          @click="${this.closeToast}"
+        ></mdc-button>
       </div>
       ${this.renderFooter()}
     `;

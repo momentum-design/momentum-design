@@ -28,9 +28,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-avatar',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     src: {
       control: 'text',
