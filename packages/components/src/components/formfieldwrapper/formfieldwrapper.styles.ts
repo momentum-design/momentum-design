@@ -12,12 +12,12 @@ const styles = [
     }
     :host([disabled]),
     :host([disabled])::part(label),
-    :host([disabled])::part(help-text),
+    :host([disabled])::part(help-text-container),
     :host([disabled])::part(required-indicator),
-    :host([disabled][help-text-type='error'])::part(help-text),
-    :host([disabled][help-text-type='success'])::part(help-text),
-    :host([disabled][help-text-type='warning'])::part(help-text),
-    :host([disabled][help-text-type='priority'])::part(help-text) {
+    :host([disabled][help-text-type='error'])::part(help-text-container),
+    :host([disabled][help-text-type='success'])::part(help-text-container),
+    :host([disabled][help-text-type='warning'])::part(help-text-container),
+    :host([disabled][help-text-type='priority'])::part(help-text-container) {
       color: var(--mds-color-theme-text-primary-disabled);
     }
 
@@ -56,16 +56,16 @@ const styles = [
       align-self: flex-start;
     }
 
-    :host([help-text-type='error'])::part(help-text) {
+    :host([help-text-type='error'])::part(help-text-container) {
       color: var(--mds-color-theme-text-error-normal);
     }
-    :host([help-text-type='warning'])::part(help-text) {
+    :host([help-text-type='warning'])::part(help-text-container) {
       color: var(--mds-color-theme-text-warning-normal);
     }
-    :host([help-text-type='success'])::part(help-text) {
+    :host([help-text-type='success'])::part(help-text-container) {
       color: var(--mds-color-theme-text-success-normal);
     }
-    :host([help-text-type='priority'])::part(help-text) {
+    :host([help-text-type='priority'])::part(help-text-container) {
       color: var(--mds-color-theme-text-accent-normal);
     }
   `,

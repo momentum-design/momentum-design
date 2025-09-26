@@ -45,7 +45,8 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    :host::part(label-text) .mdc-help-text {
+    :host::part(label-text),
+    :host::part(help-text-container) {
       grid-column: 2;
     }
 
