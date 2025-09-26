@@ -980,7 +980,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
-      if (this.trigger.includes('mouseenter') && this.interactive) {
+      if (this.trigger.includes('mouseenter')) {
         this.utils.setupHoverBridge(placement);
       }
     });
