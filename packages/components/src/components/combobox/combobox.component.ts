@@ -781,7 +781,7 @@ class Combobox
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Input.styles, ...FormfieldWrapper.styles, ...styles];
 }
 
 export default Combobox;

@@ -14,13 +14,11 @@ const styles = [
       flex-direction: row;
       align-items: flex-start;
     }
-    .mdc-label,
-    .input {
+    :host::part(label) :host::part(checkbox-input) {
       cursor: pointer;
     }
 
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .input {
+    :host([disabled])::part(label) :host([disabled])::part(checkbox-input) {
       cursor: default;
     }
 
@@ -53,7 +51,7 @@ const styles = [
       position: relative;
     }
 
-    .input {
+    :host::part(checkbox-input) {
       margin: 0;
       padding: 0;
       position: absolute;
@@ -64,19 +62,19 @@ const styles = [
       z-index: 1;
     }
 
-    .input {
+    :host::part(checkbox-input) {
       width: 1rem;
       height: 1rem;
       border-radius: 0.125rem;
     }
 
-    .text-container {
+    :host::part(text-container) {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
-    .mdc-label {
+    :host::part(label) {
       word-break: break-word;
       white-space: normal;
     }

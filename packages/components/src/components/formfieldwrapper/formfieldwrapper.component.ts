@@ -189,7 +189,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.helpText) {
       return nothing;
     }
-    return html`<div class="mdc-help-text" part="help-text">
+    return html`<div class="mdc-help-text" part="help-text-container">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;
