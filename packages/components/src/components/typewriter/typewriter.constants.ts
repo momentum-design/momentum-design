@@ -16,6 +16,7 @@ const DEFAULTS = {
   TEXT_ELEMENT_TAGNAME: TEXT_DEFAULTS.TEXT_ELEMENT_TAGNAME,
   CSS_PART_TEXT: 'text',
   CSS_PART_CONTAINER: 'container',
+  CSS_PART_HIDDEN: 'typewriter-hidden',
   CHILDREN: '',
   SPEED: 'normal',
   CUSTOM_EVENT: {

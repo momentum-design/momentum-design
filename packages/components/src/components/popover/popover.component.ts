@@ -52,6 +52,9 @@ import { PopoverUtils } from './popover.utils';
  *
  * @slot - Default slot for the popover content
  *
+ * @csspart popover-close - The close button of the popover.
+ * @csspart popover-content - The content of the popover.
+ * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
 class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component))) {
   /**
@@ -997,10 +1000,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   public override render() {
     return html`
-      <div class="popover-hover-bridge"></div>
+      <div part="popover-hover-bridge"></div>
       ${this.closeButton
         ? html` <mdc-button
-            class="popover-close"
+            part="popover-close"
             prefix-icon="cancel-bold"
             variant="tertiary"
             size="20"

@@ -61,6 +61,13 @@ import styles from './dialog.styles';
  * @cssproperty --mdc-dialog-width - width of the dialog
  * @cssproperty --mdc-dialog-height - height of the dialog
  *
+ * @csspart body - The body section of the dialog.
+ * @csspart description-text - The description text of the dialog.
+ * @csspart dialog-close-btn - The close button of the dialog.
+ * @csspart header - The header of the dialog.
+ * @csspart header-section - The header section of the dialog.
+ * @csspart header-text - The header text of the dialog.
+ *
  * @slot header-prefix - Slot for the dialog header content. This can be used to pass custom header content.
  * @slot dialog-body - Slot for the dialog body content
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.

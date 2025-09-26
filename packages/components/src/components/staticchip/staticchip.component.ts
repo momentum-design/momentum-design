@@ -25,6 +25,7 @@ import styles from './staticchip.styles';
  * @cssproperty --mdc-chip-border-color - The border color of the static chip.
  * @cssproperty --mdc-chip-background-color - The background color of the static chip.
  *
+ * @csspart label - The label of the static chip.
  */
 class StaticChip extends IconNameMixin(Component) {
   /**

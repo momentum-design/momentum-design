@@ -20,7 +20,7 @@ const styles = [
       width: initial;
     }
 
-    :host .container {
+    :host::part(container) {
       display: flex;
       overflow-x: hidden;
       gap: var(--mdc-tablist-gap);

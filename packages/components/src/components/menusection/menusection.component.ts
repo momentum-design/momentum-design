@@ -26,6 +26,11 @@ import { DEFAULTS } from './menusection.constants';
  *
  * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
  * @event action - (React: onAction) This event is dispatched when a `menuitem` selected.
+ *
+ * @csspart header - The header of the menusection.
+ * @csspart align-header - The header of the menusection when it is aligned to the start.
+ * @csspart container - The container of the menusection.
+ * @csspart divider - The divider of the menusection.
  */
 class MenuSection extends Component {
   /**

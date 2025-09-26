@@ -9,7 +9,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './progressbar.types';
-import { DEFAULTS, VARIANT } from './progressbar.constants';
+import { DEFAULTS, VARIANT, TAG_NAME as PROGRESSBAR_TAGNAME } from './progressbar.constants';
 import styles from './progressbar.styles';
 
 /**
@@ -38,6 +38,14 @@ import styles from './progressbar.styles';
  * @cssproperty --mdc-progressbar-label-font-size - Font size of the label text.
  * @cssproperty --mdc-progressbar-label-font-weight - Font weight of the label text.
  * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
+ *
+ * @csspart gap - The gap between the label and the progressbar.
+ * @csspart inline-label-container - The container of the label in inline variant.
+ * @csspart label-container - The container of the label in inline variant.
+ * @csspart percentage - The container of the label in inline variant.
+ * @csspart progress-bar - The container of the label in inline variant.
+ * @csspart progress-container - The container of the label in inline variant.
+ * @csspart remaining - The container of the remaining progressbar portion.
  */
 class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
   /**
@@ -64,11 +72,11 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
    * - **false**
    * @default false
    */
-  @property({ type: Boolean, attribute: 'error' }) error = false;
+  @property({ type: Boolean }) error = false;
 
   override connectedCallback() {
     super.connectedCallback();
-    this.id = `mdc-progressbar-${uuidv4()}`;
+    this.id = `${PROGRESSBAR_TAGNAME}-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
     this.toggletipText = undefined as unknown as string;
     this.toggletipPlacement = undefined as unknown as PopoverPlacement;

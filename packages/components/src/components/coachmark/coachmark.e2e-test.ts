@@ -87,7 +87,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       await expect(dialog).not.toHaveAttribute('aria-labelledby');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
 
-      const closeDialogButton = componentsPage.page.locator('.popover-close');
+      const closeDialogButton = componentsPage.page.locator('[part="popover-close"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
     });
   });
@@ -111,7 +111,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       await test.step('coachmark should close when clicking on close button', async () => {
         await setup({ componentsPage, open: true });
 
-        await componentsPage.page.locator('.popover-close').click();
+        await componentsPage.page.locator('[part="popover-close"]').click();
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
       });
     });
@@ -120,7 +120,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
         await setup({ componentsPage, open: true });
 
-        const closeButton = componentsPage.page.locator('.popover-close');
+        const closeButton = componentsPage.page.locator('[part="popover-close"]');
         await expect(closeButton).not.toBeFocused();
         await componentsPage.page.keyboard.press('Tab');
         await expect(closeButton).toBeFocused();

@@ -53,6 +53,12 @@ import styles from './navmenuitem.styles';
  * @cssproperty --mdc-navmenuitem-disabled-background-color - Background color of the navmenuitem when disabled.
  * @cssproperty --mdc-navmenuitem-disabled-active-background-color - Background color of the active navmenuitem when disabled.
  * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
+ *
+ * @csspart arrow - The arrow of the navmenuitem.
+ * @csspart badge - The badge of the navmenuitem.
+ * @csspart icon-container - The container of the icon.
+ * @csspart text-container - The container of the text.
+ * @csspart trailing-arrow - The trailing arrow of the navmenuitem.
  */
 class NavMenuItem extends IconNameMixin(MenuItem) {
   /**
@@ -290,15 +296,16 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
   }
 
   private renderArrowIcon(showLabel: boolean | undefined) {
-    const arrowClass = showLabel ? '' : 'arrow';
-
     return html`
-      <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow" class="${arrowClass}"> </mdc-icon>
+      <mdc-icon
+        name=${ICON_NAME.RIGHT_ARROW}
+        length-unit="rem"
+        part="trailing-arrow ${showLabel ? '' : 'arrow'}"
+      ></mdc-icon>
     `;
   }
 
   private renderBadge(showLabel: boolean | undefined) {
-    const badgeClass = showLabel ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
     if (!isValidBadgeType) {
       return nothing;
@@ -306,7 +313,7 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
 
     return html`
       <mdc-badge
-        class="${badgeClass}"
+        part="${showLabel ? '' : 'badge'}"
         type="${ifDefined(this.badgeType)}"
         counter="${ifDefined(this.counter)}"
         max-counter="${this.maxCounter}"

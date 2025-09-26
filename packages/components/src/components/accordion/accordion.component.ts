@@ -52,11 +52,11 @@ import styles from './accordion.styles';
  * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion.
  * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion.
  *
+ * @csspart body-section - The body section of the accordion.
  * @csspart header-section - The header section of the accordion.
  * @csspart leading-header - The leading header of the accordion.
  * @csspart trailing-header - The trailing header of the accordion.
  * @csspart trailing-header__button - The trailing header button of the accordion.
- * @csspart body-section - The body section of the accordion.
  */
 class Accordion extends AccordionButton {
   /** @internal */

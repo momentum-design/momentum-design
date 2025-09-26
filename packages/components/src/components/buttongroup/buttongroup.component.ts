@@ -19,6 +19,8 @@ import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from
  * @cssproperty --mdc-buttongroup-border-radius - The border radius of the buttongroup
  * @cssproperty --mdc-buttongroup-border-color - The border color of the buttongroup
  * @cssproperty --mdc-buttongroup-divider-color - The color of the divider between buttons within the buttongroup
+ *
+ * @csspart container - The container of the buttongroup.
  */
 class ButtonGroup extends Component {
   /**

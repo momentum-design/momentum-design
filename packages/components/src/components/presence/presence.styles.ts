@@ -53,49 +53,49 @@ const styles = [
       height: 2.75rem;
     }
 
-    .mdc-presence-icon {
+    :host::part(mdc-presence-icon) {
       border-radius: 50%;
     }
-    .mdc-presence-icon__active {
+    :host::part(mdc-presence-icon__active) {
       color: var(--mdc-presence-active-background-color);
     }
-    .mdc-presence-icon__away {
+    :host::part(mdc-presence-icon__away) {
       color: var(--mdc-presence-away-background-color);
     }
-    .mdc-presence-icon__away-calling {
+    :host::part(mdc-presence-icon__away-calling) {
       color: var(--mdc-presence-away-calling-background-color);
     }
-    .mdc-presence-icon__busy {
+    :host::part(mdc-presence-icon__busy) {
       color: var(--mdc-presence-busy-background-color);
     }
-    .mdc-presence-icon__dnd {
+    :host::part(mdc-presence-icon__dnd) {
       color: var(--mdc-presence-dnd-background-color);
     }
-    .mdc-presence-icon__meeting {
+    :host::part(mdc-presence-icon__meeting) {
       color: var(--mdc-presence-meeting-background-color);
     }
-    .mdc-presence-icon__on-call {
+    :host::part(mdc-presence-icon__on-call) {
       color: var(--mdc-presence-on-call-background-color);
     }
-    .mdc-presence-icon__on-device {
+    :host::part(mdc-presence-icon__on-device) {
       color: var(--mdc-presence-on-device-background-color);
     }
-    .mdc-presence-icon__on-mobile {
+    :host::part(mdc-presence-icon__on-mobile) {
       color: var(--mdc-presence-on-mobile-background-color);
     }
-    .mdc-presence-icon__pause {
+    :host::part(mdc-presence-icon__pause) {
       color: var(--mdc-presence-pause-background-color);
     }
-    .mdc-presence-icon__pto {
+    :host::part(mdc-presence-icon__pto) {
       color: var(--mdc-presence-pto-background-color);
     }
-    .mdc-presence-icon__presenting {
+    :host::part(mdc-presence-icon__presenting) {
       color: var(--mdc-presence-presenting-background-color);
     }
-    .mdc-presence-icon__quiet {
+    :host::part(mdc-presence-icon__quiet) {
       color: var(--mdc-presence-quiet-background-color);
     }
-    .mdc-presence-icon__scheduled {
+    :host::part(mdc-presence-icon__scheduled) {
       color: var(--mdc-presence-scheduled-background-color);
     }
   `,

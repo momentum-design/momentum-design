@@ -13,7 +13,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-presence',
   render,
-
   argTypes: {
     type: {
       options: Object.values(PRESENCE_TYPE),

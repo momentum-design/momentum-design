@@ -109,6 +109,11 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-pill-inactive-background-color-normal - Background color for inactive pill tab in rest state.
  * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
  * @cssproperty --mdc-tab-pill-inactive-color-disabled - Text and icon color for inactive pill tab in disabled state.
+ *
+ * @csspart container - The container of the tab.
+ * @csspart icon - The icon of the tab.
+ * @csspart indicator - The indicator of the tab.
+ * @csspart text - The text of the tab.
  */
 class Tab extends IconNameMixin(Buttonsimple) {
   /**

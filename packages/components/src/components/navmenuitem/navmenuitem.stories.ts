@@ -37,7 +37,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-navmenuitem',
   render,
-
   argTypes: {
     'nav-id': {
       control: 'text',

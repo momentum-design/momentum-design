@@ -60,6 +60,10 @@ import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
  * @event action - (React: onAction) This event is dispatched when a menuItem selected and the menu closes.
  *
  * @slot default - Contains the menu items to be displayed in the popover
+ *
+ * @csspart popover-close - The close button of the menupopover.
+ * @csspart popover-content - The content of the menupopover.
+ * @csspart popover-hover-bridge - The hover bridge of the menupopover.
  */
 class MenuPopover extends Popover {
   /**

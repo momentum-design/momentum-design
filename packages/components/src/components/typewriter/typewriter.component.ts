@@ -54,6 +54,7 @@ import type {
  *
  * @csspart container - Container for the text element
  * @csspart text - The text element (forwarded to mdc-text)
+ * @csspart typewriter-hidden - The hidden typewriter text
  *
  * @event typing-complete - (React: onTypingComplete) Fired when the typewriter finishes typing all content.
  *   Detail: \{ finalContent: string \}
@@ -475,7 +476,7 @@ class Typewriter extends Component {
           aria-label="${this.originalText}"
           >${this.displayedText}</mdc-text
         >
-        <slot @slotchange=${this.handleSlotChange} class="typewriter-hidden"></slot>
+        <slot @slotchange=${this.handleSlotChange} part="${DEFAULTS.CSS_PART_HIDDEN}"></slot>
       </div>
     `;
   }

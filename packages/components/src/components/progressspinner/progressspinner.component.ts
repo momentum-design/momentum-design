@@ -36,6 +36,12 @@ import styles from './progressspinner.styles';
  * @cssproperty --mdc-progress-success-color - The color of the spinner when in success state.
  * @cssproperty --mdc-progress-error-color - The color of the spinner when in error state.
  *
+ * @csspart error-icon - The error icon of the progressspinner.
+ * @csspart spinner-base - The base of the progressspinner.
+ * @csspart spinner-container - The container of the progressspinner.
+ * @csspart spinner-progress - The progress of the progressspinner.
+ * @csspart spinner-track - The track of the progressspinner.
+ * @csspart success-icon - The success icon of the progressspinner.
  */
 class Progressspinner extends Progressbar {
   override connectedCallback() {
