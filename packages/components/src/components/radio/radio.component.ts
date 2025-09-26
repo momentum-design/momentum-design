@@ -31,14 +31,32 @@ import styles from './radio.styles';
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
- * @cssproperty --mdc-radio-text-disabled-color - color of the label when disabled
- * @cssproperty --mdc-radio-control-inactive-hover - color of the radio button when inactive and hovered
- * @cssproperty --mdc-radio-control-inactive-pressed-color - color of the radio button when inactive and pressed
- * @cssproperty --mdc-radio-control-active-hover-color - color of the radio button when active and hovered
- * @cssproperty --mdc-radio-control-active-pressed-color - color of the radio button when active and pressed
- * @cssproperty --mdc-radio-disabled-border-color - color of the radio button when disabled
- * @cssproperty --mdc-radio-control-active-disabled-background - color of the radio button when active and disabled
- * @cssproperty --mdc-radio-control-inactive-disabled-background - color of the radio button when inactive and disabled
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart text-container - The container for the label and helper text.
+ * @csspart radio-input - The native radio input element.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-radio-control-background-color - Background color of the radio control in rest state
+ * @cssproperty --mdc-radio-control-border-color - Border color of the radio control in rest state
  *
  */
 
@@ -274,19 +292,21 @@ class Radio
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="mdc-radio__label-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
     return html`
       <mdc-staticradio
         class="mdc-focus-ring"
+        part="radio-container"
         ?checked="${this.checked}"
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
       >
         <input
           id="${this.inputId}"
+          part="radio-input"
           type="radio"
           role="${ROLE.RADIO}"
           ?autofocus="${this.autofocus}"
@@ -298,7 +318,6 @@ class Radio
           ?checked=${this.checked}
           ?readonly=${this.readonly}
           ?disabled=${this.disabled}
-          class="mdc-radio__input"
           aria-checked="${this.checked}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-label="${this.dataAriaLabel ?? ''}"

@@ -48,22 +48,32 @@ import styles from './input.styles';
  * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
  * @slot trailing-button - Slot for the trailing button to clear the input field. If not provided, the clear button will be rendered when `trailingButton` property is set to true.
  *
- * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
- * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
- * @cssproperty --mdc-input-disabled-background-color - Background color for the input field when disabled
- * @cssproperty --mdc-input-border-color - Border color for the input container
+ * @csspart input-container - The container that wraps the input field, leading icon, prefix text, and trailing button.
+ * @csspart input-section - The container that wraps the input field and prefix text.
+ * @csspart input-text - The input field element.
+ * @csspart leading-icon - The leading icon element.
+ * @csspart prefix-text - The prefix text element.
+ * @csspart trailing-button - The trailing button element.
+ * @csspart label - The label element.
+ * @csspart helper-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element.
+ * @csspart toggletip - The toggletip icon button element.
+ * @csspart toggletip-text - The toggletip text element.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  * @cssproperty --mdc-input-text-color - Text color for the input field
+ * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
- * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
- * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
- * @cssproperty --mdc-input-hover-background-color - Background color for the input field when hovered
- * @cssproperty --mdc-input-focused-background-color - Background color for the input field when focused
- * @cssproperty --mdc-input-focused-border-color - Border color for the input container when focused
- * @cssproperty --mdc-input-error-border-color - Border color for the input container when error
- * @cssproperty --mdc-input-warning-border-color - Border color for the input container when warning
- * @cssproperty --mdc-input-success-border-color - Border color for the input container when success
- * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
+ * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  *
  */
 
@@ -283,7 +293,6 @@ class Input
     }
     return html`
       <mdc-icon
-        class="leading-icon"
         part="leading-icon"
         name=${this.leadingIcon}
         size="${DEFAULTS.ICON_SIZE_VALUE}"
@@ -309,7 +318,7 @@ class Input
     }
     return html`
       <mdc-text
-        class="prefix-text"
+        part="prefix-text"
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}"
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
         aria-hidden="true"
@@ -357,8 +366,7 @@ class Input
 
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
-      class="input"
-      part="mdc-input"
+      part="input-text"
       id="${this.inputId}"
       name="${this.name}"
       .value="${live(this.value)}"
@@ -386,9 +394,9 @@ class Input
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="input-container mdc-focus-ring" part="input-container">
+      <div class="mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-        <div class="input-section" part="input-section">
+        <div part="input-section">
           <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
           <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
         </div>

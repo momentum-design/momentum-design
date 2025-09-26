@@ -13,7 +13,7 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host::part(label-text) {
+  :host::part(label) {
     font-weight: bold;
   }
 `;
