@@ -3,7 +3,6 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 import { COLOR } from './staticchip.constants';
 
@@ -29,7 +28,6 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...textControls(['--mdc-chip-color', '--mdc-chip-border-color', '--mdc-chip-background-color']),
   },
 };
 

@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import illustrationManifest from '@momentum-design/illustrations/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-illustration
@@ -35,7 +35,6 @@ const meta: Meta = {
     },
     ...hideControls(['illustrationData', 'illustrationProviderContext', 'abortController']),
     ...disableControls(['aria-labelledby']),
-    ...textControls(['--mdc-illustration-size']),
     ...classArgType,
     ...styleArgType,
   },

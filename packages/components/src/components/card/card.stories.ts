@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
@@ -65,7 +65,6 @@ const meta: Meta = {
       options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
-    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },

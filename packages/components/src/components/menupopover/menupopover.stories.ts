@@ -4,7 +4,7 @@ import { html, TemplateResult } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../button';
 import '../buttongroup';
@@ -104,19 +104,6 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
-      '--mdc-popover-arrow-border-radius',
-      '--mdc-popover-arrow-border',
-      '--mdc-popover-primary-background-color',
-      '--mdc-popover-border-color',
-      '--mdc-popover-inverted-background-color',
-      '--mdc-popover-inverted-border-color',
-      '--mdc-popover-inverted-text-color',
-      '--mdc-popover-elevation-3',
-      '--mdc-popover-width',
-      '--mdc-popover-max-width',
-      '--mdc-popover-max-height',
-    ]),
     ...hideControls([
       'arrowElement',
       'backdrop',

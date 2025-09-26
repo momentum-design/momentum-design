@@ -8,7 +8,7 @@ import '../chip';
 import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
@@ -73,12 +73,6 @@ const meta: Meta = {
       options: Object.values(VARIANT),
     },
     ...disableControls(['leading-controls', 'trailing-controls', 'default']),
-    ...textControls([
-      '--mdc-accordionbutton-border-color',
-      '--mdc-accordionbutton-hover-color',
-      '--mdc-accordionbutton-active-color',
-      '--mdc-accordionbutton-disabled-color',
-    ]),
   },
 };
 

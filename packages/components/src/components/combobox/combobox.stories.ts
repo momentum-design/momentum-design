@@ -10,7 +10,7 @@ import '../selectlistbox';
 import '../tooltip';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
@@ -136,21 +136,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['id', 'value', 'validity', 'willValidate', 'default', 'itemsStore', 'handleUpdateError']),
-    ...textControls([
-      '--mdc-combobox-border-color',
-      '--mdc-combobox-icon-color',
-      '--mdc-combobox-width',
-      '--mdc-combobox-listbox-width',
-      '--mdc-combobox-listbox-height',
-      '--mdc-combobox-text-color-disabled',
-      '--mdc-combobox-hover-background-color',
-      '--mdc-combobox-error-border-color',
-      '--mdc-combobox-warning-border-color',
-      '--mdc-combobox-success-border-color',
-      '--mdc-combobox-primary-border-color',
-      '--mdc-combobox-focused-background-color',
-      '--mdc-combobox-focused-border-color',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

@@ -3,7 +3,6 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
 
 const render = (args: Args) =>
@@ -32,23 +31,6 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...textControls([
-      '--mdc-statictoggle-width',
-      '--mdc-statictoggle-height',
-      '--mdc-statictoggle-width-compact',
-      '--mdc-statictoggle-height-compact',
-      '--mdc-statictoggle-border-radius',
-      '--mdc-statictoggle-border-radius-compact',
-      '--mdc-statictoggle-border',
-      '--mdc-statictoggle-inactive-rest-color',
-      '--mdc-statictoggle-inactive-disabled-color',
-      '--mdc-statictoggle-active-rest-color',
-      '--mdc-statictoggle-active-disabled-color',
-      '--mdc-statictoggle-icon-color-normal',
-      '--mdc-statictoggle-icon-color-disabled',
-      '--mdc-statictoggle-icon-background-color-normal',
-      '--mdc-statictoggle-icon-background-color-disabled',
-    ]),
   },
 };
 
