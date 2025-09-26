@@ -47,15 +47,15 @@ import type { BadgeType, IconVariant } from './badge.types';
  * @cssproperty --mdc-badge-error-background-color - The background color of the error badge.
  * @cssproperty --mdc-badge-overlay-background-color - The background color of the badge overlay.
  *
- * @csspart mdc-badge-dot - The dot notification badge.
- * @csspart mdc-badge-icon - The icon badge.
- * @csspart mdc-badge-icon__error - The error icon badge.
- * @csspart mdc-badge-icon__primary - The primary icon badge.
- * @csspart mdc-badge-icon__secondary - The secondary icon badge.
- * @csspart mdc-badge-icon__success - The success icon badge.
- * @csspart mdc-badge-icon__warning - The warning icon badge.
- * @csspart mdc-badge-overlay - The overlay badge.
- * @csspart mdc-badge-text - The text badge.
+ * @csspart badge-dot - The dot notification badge.
+ * @csspart badge-icon - The icon badge.
+ * @csspart badge-icon__error - The error icon badge.
+ * @csspart badge-icon__primary - The primary icon badge.
+ * @csspart badge-icon__secondary - The secondary icon badge.
+ * @csspart badge-icon__success - The success icon badge.
+ * @csspart badge-icon__warning - The warning icon badge.
+ * @csspart badge-overlay - The overlay badge.
+ * @csspart badge-text - The text badge.
  */
 class Badge extends IconNameMixin(Component) {
   /**
@@ -129,13 +129,13 @@ class Badge extends IconNameMixin(Component) {
   /**
    * Method to generate the badge icon.
    * @param iconName - the name of the icon from the icon set
-   * @param backgroundClassPostfix - postfix for the class to style the badge icon.
+   * @param backgroundPartPostfix - postfix for the part to style the badge icon.
    * @returns the template result of the icon.
    */
-  private getBadgeIcon(iconName: string, backgroundClassPostfix: string): TemplateResult {
+  private getBadgeIcon(iconName: string, backgroundPartPostfix: string): TemplateResult {
     return html`
       <mdc-icon
-        part="mdc-badge-icon ${this.overlay ? 'mdc-badge-overlay' : ''} mdc-badge-icon__${backgroundClassPostfix}"
+        part="badge-icon ${this.overlay ? 'badge-overlay' : ''} badge-icon__${backgroundPartPostfix}"
         name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
@@ -144,10 +144,10 @@ class Badge extends IconNameMixin(Component) {
 
   /**
    * Method to generate the badge dot template.
-   * @returns the template result of the dot with mdc-badge-dot class.
+   * @returns the template result of the dot with badge-dot part.
    */
   private getBadgeDot(): TemplateResult {
-    return html`<div part="mdc-badge-dot ${this.overlay ? 'mdc-badge-overlay' : ''}"></div>`;
+    return html`<div part="badge-dot ${this.overlay ? 'badge-overlay' : ''}"></div>`;
   }
 
   /**
@@ -159,7 +159,7 @@ class Badge extends IconNameMixin(Component) {
       <mdc-text
         type="${FONT_TYPE.BODY_SMALL_MEDIUM}"
         tagname="${VALID_TEXT_TAGS.DIV}"
-        part="mdc-badge-text ${this.overlay ? 'mdc-badge-overlay' : ''}"
+        part="badge-text ${this.overlay ? 'badge-overlay' : ''}"
       >
         ${this.getCounterText(this.maxCounter, this.counter)}
       </mdc-text>
