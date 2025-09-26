@@ -18,12 +18,6 @@ const styles = [
       cursor: pointer;
     }
 
-    :host::part(label) {
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
-    }
-
     :host([disabled])::part(label) :host([disabled])::part(checkbox-input) {
       cursor: default;
     }

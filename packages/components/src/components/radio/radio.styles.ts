@@ -61,9 +61,6 @@ const styles = [
 
     :host::part(label) {
       cursor: pointer;
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
       word-break: break-word;
       white-space: normal;
     }

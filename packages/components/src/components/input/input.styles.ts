@@ -29,6 +29,12 @@ const styles = [
       width: 100%;
     }
 
+    :host::part(label) {
+      font-size: var(--mds-font-apps-body-midsize-medium-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-medium-line-height);
+    }
+
     input {
       font-family: inherit;
     }
