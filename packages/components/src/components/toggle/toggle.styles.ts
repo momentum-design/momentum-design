@@ -45,27 +45,26 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    .mdc-label-text,
-    .mdc-help-text {
+    :host::part(label-text) .mdc-help-text {
       grid-column: 2;
     }
 
-    .mdc-label,
+    :host::part(label),
     :host::part(toggle-input) {
       cursor: pointer;
     }
 
-    .mdc-label {
+    :host::part(label) {
       word-break: break-word;
       white-space: normal;
     }
 
-    :host([disabled]) .mdc-label,
+    :host([disabled])::part(label),
     :host([disabled])::part(toggle-input) {
       cursor: default;
     }
 
-    .mdc-help-text {
+    :host::part(help-text) {
       color: var(--mdc-toggle-help-text-color);
     }
 
@@ -85,8 +84,8 @@ const styles = [
       background-color: var(--mdc-toggle-active-pressed-color);
     }
 
-    :host([disabled]) .mdc-label-text,
-    :host([disabled]) .mdc-help-text {
+    :host([disabled])::part(label-text),
+    :host([disabled])::part(help-text) {
       color: var(--mdc-toggle-label-color-disabled);
     }
   `,

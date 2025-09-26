@@ -26,7 +26,7 @@ const styles = [
     }
 
     :host::part(label-text),
-    :host::part(help-text) {
+    :host::part(help-text-container) {
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -34,7 +34,8 @@ const styles = [
     }
 
     :host::part(label),
-    :host::part(help-text) {
+    :host::part(help-text),
+    :host::part(help-text-container) {
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);
@@ -47,7 +48,7 @@ const styles = [
       white-space: nowrap;
     }
 
-    :host::part(help-text) {
+    :host::part(help-text-container) {
       color: var(--mds-color-theme-text-secondary-normal);
     }
 
