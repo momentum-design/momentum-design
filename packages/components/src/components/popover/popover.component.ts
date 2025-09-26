@@ -39,9 +39,9 @@ import { PopoverUtils } from './popover.utils';
  *
  * ### React Popover with append-to attribute
  *
- * React mount the popover based on the virtaul DOM, but when append-to attribute set the popover removes itself
- * and mounts to the specified element. React will do not know about the move and it will do not know about the
- * newly created mdc-popoverportal element either. This throw `NotFoundError` error whent the Popover directly
+ * React mounts the popover based on the virtual DOM, but when the append-to attribute is set, the popover removes itself
+ * and mounts to the specified element. React will not know about the move and will not know about the
+ * newly created mdc-popoverportal element either. This throws a `NotFoundError` error when the Popover is directly
  * added/removed by React, for example:
  *
  * ```tsx
