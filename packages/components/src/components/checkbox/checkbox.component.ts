@@ -63,6 +63,20 @@ class Checkbox
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /**
+   * Determines whether the checkbox is read-only.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the checkbox is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
+
+  /**
    * Automatically focus on the element when the page loads.
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
    * @default false
@@ -142,7 +156,7 @@ class Checkbox
    * the checked property is toggled and the indeterminate property is set to false.
    */
   private toggleState(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.softDisabled) {
       this.checked = !this.checked;
       this.indeterminate = false;
     }
@@ -189,6 +203,8 @@ class Checkbox
         ?checked="${this.checked}"
         ?indeterminate="${this.indeterminate}"
         ?disabled="${this.disabled}"
+        ?readonly="${this.readonly}"
+        ?soft-disabled="${this.softDisabled}"
       >
         <input
           id="${this.inputId}"
@@ -201,8 +217,9 @@ class Checkbox
           aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          tabindex="${this.disabled ? -1 : 0}"
+          tabindex="${this.disabled || this.softDisabled ? -1 : 0}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}

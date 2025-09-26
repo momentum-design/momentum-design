@@ -11,6 +11,7 @@ const styles = [
       border-radius: 50%;
 
       --mdc-staticradio-inner-circle-size: 0.375rem;
+      --mdc-staticradio-text-normal-color: var(--mds-color-theme-text-primary-normal);
       --mdc-staticradio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
       --mdc-staticradio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-staticradio-normal-border-color: var(--mds-color-theme-outline-input-normal);
@@ -29,19 +30,25 @@ const styles = [
     }
 
     :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
+    :host([soft-disabled]) .icon,
+    :host([disabled][readonly]) .icon,
+    :host([soft-disabled][readonly]) .icon {
       border-color: var(--mdc-staticradio-disabled-border-color);
       background: var(--mdc-staticradio-control-inactive-disabled-background);
     }
 
     :host([disabled][checked]) .icon,
-    :host([disabled][readonly][checked]) .icon {
+    :host([soft-disabled][checked]) .icon,
+    :host([disabled][readonly][checked]) .icon,
+    :host([soft-disabled][readonly][checked]) .icon {
       border: var(--mdc-staticradio-control-active-disabled-background);
       background: var(--mdc-staticradio-control-active-disabled-background);
     }
 
     :host([disabled][checked]) .icon:after,
-    :host([disabled][readonly][checked]) .icon:after {
+    :host([soft-disabled][checked]) .icon:after,
+    :host([disabled][readonly][checked]) .icon:after,
+    :host([soft-disabled][readonly][checked]) .icon:after {
       background: var(--mdc-staticradio-inner-circle-disabled-background);
     }
 
@@ -74,15 +81,11 @@ const styles = [
 
     :host([readonly]) .icon {
       border-color: var(--mdc-staticradio-normal-border-color);
-      background-color: var(--mdc-staticradio-control-inactive-color);
-    }
-
-    :host([readonly][checked]) .icon {
-      border-color: var(--mdc-staticradio-normal-border-color);
+      background-color: unset;
     }
 
     :host([readonly][checked]) .icon:after {
-      background-color: var(--mdc-staticradio-text-disabled-color);
+      background-color: var(--mdc-staticradio-text-normal-color);
     }
   `,
 ];

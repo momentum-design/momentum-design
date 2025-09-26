@@ -70,6 +70,20 @@ class Toggle
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
 
+  /**
+   * Determines whether the toggle is read-only.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the toggle is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
+
   override connectedCallback(): void {
     super.connectedCallback();
     // Toggle does not contain helpTextType property.
@@ -144,7 +158,7 @@ class Toggle
    * If the element is not disabled, then the checked property is toggled.
    */
   private toggleState(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.softDisabled) {
       this.checked = !this.checked;
     }
   }
@@ -198,6 +212,8 @@ class Toggle
       <mdc-statictoggle
         ?checked="${this.checked}"
         ?disabled="${this.disabled}"
+        ?readonly="${this.readonly}"
+        ?soft-disabled="${this.softDisabled}"
         size="${this.size}"
         class="mdc-focus-ring"
         part="container"
@@ -213,9 +229,10 @@ class Toggle
           .checked="${this.checked}"
           aria-checked="${this.checked}"
           .disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          tabindex="${this.disabled ? -1 : 0}"
+          tabindex="${this.disabled || this.softDisabled ? -1 : 0}"
           @change="${this.handleChange}"
           @keydown="${this.handleKeyDown}"
         />

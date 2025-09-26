@@ -16,6 +16,8 @@ const render = (args: Args) => html`
     help-text="${args['help-text']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     name="${args.name}"
     value="${args.value}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
@@ -53,6 +55,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'data-aria-label': {
@@ -103,6 +111,8 @@ export const Example: StoryObj = {
     checked: false,
     indeterminate: false,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
     'data-aria-label': 'Agree to all terms and conditions',
   },
 };

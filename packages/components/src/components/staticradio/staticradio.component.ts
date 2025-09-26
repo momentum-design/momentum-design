@@ -8,7 +8,7 @@ import styles from './staticradio.styles';
 
 /**
  * This is a decorative component that is styled to look as a radio.
- * It has 2 properties - checked and disabled.
+ * It has 4 properties - checked, disabled, readonly and soft-disabled.
  *
  * We are using the same styling that has been created for the `mdc-radio` component.
  *
@@ -41,6 +41,13 @@ class StaticRadio extends DisabledMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the radio is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
 
   public override render() {
     return html` <slot></slot>

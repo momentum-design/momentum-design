@@ -30,6 +30,8 @@ const render = (args: Args) => html`
     ?required="${args.required}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
   >
   </mdc-toggle>
 `;
@@ -49,6 +51,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     label: {
@@ -116,6 +124,8 @@ export const Example: StoryObj = {
     checked: false,
     size: DEFAULTS.SIZE,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
     'help-text': '',
   },
 };
