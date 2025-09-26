@@ -565,6 +565,80 @@ export const MultipleSingleLevelPopovers: StoryObj = {
     </div>
   `,
 };
+export const AppendTo: StoryObj = {
+  render: () => {
+    const hover = (event: Event) => {
+      const target = event.target as HTMLElement;
+      target
+        .querySelector('.hover-menu')
+        ?.appendChild(
+          (document.getElementById(target.dataset.tpl!)! as HTMLTemplateElement).content.cloneNode(true) as HTMLElement,
+        );
+    };
+    const leave = (event: Event) => {
+      const menu = (event.target as HTMLElement).querySelector('.hover-menu');
+      menu!.innerHTML = '';
+    };
+
+    return html`
+      <style>
+        .container {
+          width: 25rem;
+          height: 10rem;
+          margin-block-end: 2rem;
+          padding-inline: 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid var(--mds-color-theme-outline-button-normal);
+          background: var(--mdc-chip-background-color);
+          overflow: hidden;
+          position: relative;
+        }
+      </style>
+      <template id="menu-without-append-to-tpl">
+        <mdc-button id="popover-trigger-1">Open popover in the #root</mdc-button>
+        <mdc-popover triggerID="popover-trigger-1" hide-on-outside-click>
+          <mdc-icon name="placeholder-bold" size="5"></mdc-icon>
+        </mdc-popover>
+      </template>
+
+      <template id="menu-with-append-to-tpl">
+        <mdc-button id="popover-trigger-1">Open popover in the #root</mdc-button>
+        <mdc-popover triggerID="popover-trigger-1" hide-on-outside-click append-to="root">
+          <mdc-icon name="placeholder-bold" size="5"></mdc-icon>
+        </mdc-popover>
+      </template>
+
+      <div class="root" id="root">
+        <mdc-text tagname="p"> To breakout stacking context is necessary to use append to. </mdc-text>
+        <mdc-text tagname="p"> Trigger and popover dynamically added to the DOM </mdc-text>
+
+        <mdc-divider style="margin-block: 1rem"></mdc-divider>
+
+        <div class="container" @mouseenter=${hover} @mouseleave=${leave} data-tpl="menu-without-append-to-tpl">
+          <mdc-text tagname="p">Append-to not used, popover clipped</mdc-text>
+          <mdc-text tagname="p" style="color: var(--mds-color-theme-text-primary-disabled);"
+            >Hover on to show the popover trigger</mdc-text
+          >
+          <div class="hover-menu"></div>
+        </div>
+
+        <div
+          class="container"
+          id="container"
+          @mouseenter=${hover}
+          @mouseleave=${leave}
+          data-tpl="menu-with-append-to-tpl"
+        >
+          <mdc-text tagname="p">Popover rendered correctly with append to</mdc-text>
+          <mdc-text tagname="p" style="color: var(--mds-color-theme-text-primary-disabled);"
+            >Hover on to show the popover trigger</mdc-text
+          >
+          <div class="hover-menu"></div>
+        </div>
+      </div>
+    `;
+  },
+};
 
 export const NestedMenu: StoryObj = {
   args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START, triggerID: 'trigger-btn' },
