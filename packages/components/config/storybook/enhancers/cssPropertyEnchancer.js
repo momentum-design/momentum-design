@@ -1,3 +1,8 @@
+/**
+ * Enhances the argTypes by adding text controls for CSS properties
+ * @param context - The story context
+ * @returns The enhanced argTypes
+ */
 export const cssPropertyEnhancer = context => {
   const inferred = context?.argTypes || context?.parameters?.argTypes || {};
   Object.keys(inferred).forEach(key => {
@@ -5,7 +10,7 @@ export const cssPropertyEnhancer = context => {
       inferred[key] = {
         ...inferred[key],
         control: {
-          type: 'text',
+          type: 'text', // text controls for CSS properties
         },
       };
     }

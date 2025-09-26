@@ -1,3 +1,8 @@
+/**
+ * Enhances the argTypes by disabling the controls for CSS shadow part names
+ * @param context - The story context
+ * @returns The enhanced argTypes
+ */
 export const cssPartEnhancer = context => {
   const inferred = context?.argTypes || context?.parameters?.argTypes || {};
   Object.keys(inferred).forEach(key => {
