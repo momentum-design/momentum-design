@@ -38,6 +38,9 @@ import styles from './option.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the option.
  * @event focus - (React: onFocus) This event is dispatched when the option receives focus.
  *
+ * @cssproperty --mdc-listitem-column-gap - gap between columns in the option
+ * @cssproperty --mdc-option-icon-width - width of the icon in the option
+ *
  * @csspart leading - Allows customization of the leading part.
  * @csspart leading-text - Allows customization of the leading text part.
  * @csspart trailing - Allows customization of the trailing part.
