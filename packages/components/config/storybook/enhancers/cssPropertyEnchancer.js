@@ -6,7 +6,7 @@
 export const cssPropertyEnhancer = context => {
   const inferred = context?.argTypes || context?.parameters?.argTypes || {};
   Object.keys(inferred).forEach(key => {
-    if (inferred[key].name.startsWith(`--${context.component}`)) {
+    if (inferred[key].name.startsWith('--mdc-')) {
       inferred[key] = {
         ...inferred[key],
         control: {
