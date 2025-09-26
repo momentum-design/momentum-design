@@ -13,7 +13,7 @@ const styles = [
       padding: 0.25rem 0;
       scroll-padding: 0.25rem 0;
       contain: strict;
-      overflow-anchor: none;
+      overflow-anchor: auto;
     }
 
     :host::part(wrapper) {

@@ -179,7 +179,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
         this.fireChangeEvent(this.virtualizer);
 
-        // count has changed and scroll anchoring is enabled, we need to adjust the scroll position to keep the same items in view.
         if (!this.disableScrollAnchoring && this.scrollElementRef.value) {
           const prevSelectedIndex = this.selectedIndex;
           const prevFirstKey = this.firstKey;
@@ -215,15 +214,9 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
             (!this.focusWithin && this.firstKey !== prevFirstKey);
 
           if (scrollDifference > 0 && shouldAdjustScroll) {
-            // Temporarily disable automatic scroll adjustment on item size change
-            const previousShouldAdjust = this.virtualizer.shouldAdjustScrollPositionOnItemSizeChange;
-            this.virtualizer.shouldAdjustScrollPositionOnItemSizeChange = () => false;
-
             // Update the scroll position to keep the same items in view (and in roughly the same position)
             const scrollTop = previousScrollTop + scrollDifference;
             this.scrollElementRef.value!.scrollTop = scrollTop;
-
-            this.virtualizer.shouldAdjustScrollPositionOnItemSizeChange = previousShouldAdjust;
           }
         }
       }

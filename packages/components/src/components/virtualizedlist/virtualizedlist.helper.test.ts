@@ -25,7 +25,6 @@ class VirtualizedWrapper extends Component {
     count: 100,
     estimateSize: () => 100,
     getItemKey: index => index,
-    useAnimationFrameWithResizeObserver: true,
   };
 
   @property({ type: String })
