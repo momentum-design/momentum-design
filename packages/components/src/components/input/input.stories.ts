@@ -6,7 +6,7 @@ import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import { disableControls, textControls } from '../../../config/storybook/utils';
+import { disableControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Input from './input.component';
@@ -154,24 +154,6 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...textControls([
-      '--mdc-input-disabled-border-color',
-      '--mdc-input-disabled-text-color',
-      '--mdc-input-disabled-background-color',
-      '--mdc-input-border-color',
-      '--mdc-input-text-color',
-      '--mdc-input-background-color',
-      '--mdc-input-selection-background-color',
-      '--mdc-input-selection-text-color',
-      '--mdc-input-support-text-color',
-      '--mdc-input-hover-background-color',
-      '--mdc-input-focused-background-color',
-      '--mdc-input-focused-border-color',
-      '--mdc-input-error-border-color',
-      '--mdc-input-warning-border-color',
-      '--mdc-input-success-border-color',
-      '--mdc-input-primary-border-color',
-    ]),
   },
 };
 

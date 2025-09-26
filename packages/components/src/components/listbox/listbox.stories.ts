@@ -5,7 +5,7 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 
-import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import '../option';
@@ -43,7 +43,6 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    ...textControls(['--mdc-listbox-max-height']),
     ...disableControls(['default']),
     ...classArgType,
     ...styleArgType,

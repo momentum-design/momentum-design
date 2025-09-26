@@ -52,7 +52,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...textControls(['default', '--mdc-accordiongroup-border-color']),
+    ...textControls(['default']),
   },
 };
 

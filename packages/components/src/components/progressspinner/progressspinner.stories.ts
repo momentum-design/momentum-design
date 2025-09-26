@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-progressspinner value="${args.value}" ?error="${args.error}" data-aria-label="${args['data-aria-label']}">
@@ -37,24 +37,6 @@ const meta: Meta = {
       'info-icon-aria-label',
       'variant',
       'id',
-    ]),
-    ...textControls([
-      '--mdc-spinner-size',
-      '--mdc-track-color',
-      '--mdc-progress-color',
-      '--mdc-progress-success-color',
-      '--mdc-progress-error-color',
-      '--mdc-progressbar-default-background-color',
-      '--mdc-progressbar-default-active-background-color',
-      '--mdc-progressbar-success-background-color',
-      '--mdc-progressbar-error-background-color',
-      '--mdc-progressbar-height',
-      '--mdc-progressbar-border-radius',
-      '--mdc-progressbar-label-color',
-      '--mdc-progressbar-label-lineheight',
-      '--mdc-progressbar-label-fontsize',
-      '--mdc-progressbar-label-fontweight',
-      '--mdc-progressbar-help-text-color',
     ]),
     ...classArgType,
     ...styleArgType,

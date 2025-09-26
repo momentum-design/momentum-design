@@ -4,7 +4,6 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 import { SIZE } from './bullet.constants';
 
@@ -20,12 +19,6 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(SIZE),
     },
-    ...textControls([
-      '--mdc-bullet-background-color',
-      '--mdc-bullet-size-small',
-      '--mdc-bullet-size-medium',
-      '--mdc-bullet-size-large',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

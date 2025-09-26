@@ -6,7 +6,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS } from './toggletip.constants';
 
@@ -71,19 +71,6 @@ const meta: Meta = {
     triggerID: {
       control: 'text',
     },
-    ...textControls([
-      '--mdc-toggletip-max-width',
-      '--mdc-toggletip-text-color',
-      '--mdc-toggletip-text-color-contrast',
-      '--mdc-popover-arrow-border-radius',
-      '--mdc-popover-arrow-border',
-      '--mdc-popover-primary-background-color',
-      '--mdc-popover-border-color',
-      '--mdc-popover-inverted-background-color',
-      '--mdc-popover-inverted-border-color',
-      '--mdc-popover-inverted-text-color',
-      '--mdc-popover-elevation-3',
-    ]),
     ...hideControls([
       'id',
       'delay',

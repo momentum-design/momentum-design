@@ -9,7 +9,7 @@ import { action } from 'storybook/actions';
 import illustrationManifest from '@momentum-design/illustrations/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { DIALOG_ROLE, DEFAULTS as DIALOG_DEFAULTS } from '../dialog/dialog.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -142,16 +142,6 @@ const meta: Meta = {
         defaultValue: { summary: 'undefined' },
       },
     },
-    ...textControls([
-      '--mdc-announcementdialog-illustration-background-color',
-      '--mdc-dialog-primary-background-color',
-      '--mdc-dialog-border-color',
-      '--mdc-dialog-header-text-color',
-      '--mdc-dialog-description-text-color',
-      '--mdc-dialog-elevation-3',
-      '--mdc-dialog-width',
-      '--mdc-dialog-height',
-    ]),
     ...hideControls(['variant', 'description-text', 'description-tag-name']),
   },
 };

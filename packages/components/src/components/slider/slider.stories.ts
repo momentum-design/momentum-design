@@ -4,7 +4,6 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-slider
@@ -72,19 +71,6 @@ const meta: Meta = {
     'name-end': { control: 'text', if: { arg: 'range', eq: true } },
     'data-aria-valuetext': { control: 'text', if: { arg: 'range', eq: false } },
     'data-aria-label': { control: 'text' },
-    ...textControls([
-      '--mdc-slider-thumb-color',
-      '--mdc-slider-thumb-border-color',
-      '--mdc-slider-thumb-size',
-      '--mdc-slider-input-size',
-      '--mdc-slider-tick-size',
-      '--mdc-slider-track-height',
-      '--mdc-slider-tick-color',
-      '--mdc-slider-progress-color',
-      '--mdc-slider-track-color',
-      '--mdc-slider-tooltip-left',
-      '--mdc-slider-tick-left',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

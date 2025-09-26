@@ -4,7 +4,6 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 import { MARKER_VARIANTS } from './marker.constants';
 
@@ -25,12 +24,6 @@ const meta: Meta = {
       control: 'radio',
       options: Object.values(MARKER_VARIANTS),
     },
-    ...textControls([
-      '--mdc-marker-solid-background-color',
-      '--mdc-marker-striped-color',
-      '--mdc-marker-striped-background-color',
-      '--mdc-marker-width',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

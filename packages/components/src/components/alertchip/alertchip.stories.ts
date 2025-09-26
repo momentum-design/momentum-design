@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { VARIANTS } from './alertchip.constants';
 
@@ -38,12 +38,6 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active', 'disabled']),
-    ...textControls([
-      '--mdc-chip-color',
-      '--mdc-chip-icon-color',
-      '--mdc-chip-border-color',
-      '--mdc-chip-background-color',
-    ]),
   },
 };
 

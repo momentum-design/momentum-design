@@ -6,7 +6,7 @@ import { html } from 'lit';
 import '.';
 import '../tooltip';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
@@ -80,15 +80,6 @@ const meta: Meta = {
       'trailing-controls',
       'trailing-text-side-header',
       'trailing-text-subline',
-    ]),
-    ...textControls([
-      '--mdc-listitem-background-color-active',
-      '--mdc-listitem-background-color-hover',
-      '--mdc-listitem-default-background-color',
-      '--mdc-listitem-primary-label-color',
-      '--mdc-listitem-secondary-label-color',
-      '--mdc-listitem-disabled-color',
-      '--mdc-listitem-column-gap',
     ]),
     ...disableControls(['default']),
     ...classArgType,

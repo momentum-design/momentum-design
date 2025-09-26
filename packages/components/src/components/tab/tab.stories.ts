@@ -5,7 +5,7 @@ import { html, nothing } from 'lit';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { textControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 import { TAB_VARIANTS } from './tab.constants';
 
@@ -65,58 +65,6 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
-    ...textControls([
-      '--mdc-tab-content-gap',
-      '--mdc-tab-height',
-      '--mdc-tab-glass-active-background-color-disabled',
-      '--mdc-tab-glass-active-background-color-hover',
-      '--mdc-tab-glass-active-background-color-normal',
-      '--mdc-tab-glass-active-background-color-pressed',
-      '--mdc-tab-glass-active-color',
-      '--mdc-tab-glass-active-color-disabled',
-      '--mdc-tab-glass-border-radius',
-      '--mdc-tab-glass-inactive-background-color-disabled',
-      '--mdc-tab-glass-inactive-background-color-hover',
-      '--mdc-tab-glass-inactive-background-color-normal',
-      '--mdc-tab-glass-inactive-background-color-pressed',
-      '--mdc-tab-glass-inactive-color',
-      '--mdc-tab-glass-inactive-color-disabled',
-      '--mdc-tab-line-active-background-color-disabled',
-      '--mdc-tab-line-active-background-color-hover',
-      '--mdc-tab-line-active-background-color-normal',
-      '--mdc-tab-line-active-background-color-pressed',
-      '--mdc-tab-line-active-color',
-      '--mdc-tab-line-active-color-disabled',
-      '--mdc-tab-line-active-indicator-color',
-      '--mdc-tab-line-active-indicator-color-disabled',
-      '--mdc-tab-line-active-indicator-height',
-      '--mdc-tab-line-active-indicator-width',
-      '--mdc-tab-line-border-bottom-left-radius',
-      '--mdc-tab-line-border-bottom-right-radius',
-      '--mdc-tab-line-border-top-left-radius',
-      '--mdc-tab-line-border-top-right-radius',
-      '--mdc-tab-line-inactive-background-color-disabled',
-      '--mdc-tab-line-inactive-background-color-hover',
-      '--mdc-tab-line-inactive-background-color-normal',
-      '--mdc-tab-line-inactive-background-color-pressed',
-      '--mdc-tab-line-inactive-color',
-      '--mdc-tab-line-inactive-color-disabled',
-      '--mdc-tab-padding-left',
-      '--mdc-tab-padding-right',
-      '--mdc-tab-pill-active-background-color-disabled',
-      '--mdc-tab-pill-active-background-color-hover',
-      '--mdc-tab-pill-active-background-color-normal',
-      '--mdc-tab-pill-active-background-color-pressed',
-      '--mdc-tab-pill-active-color',
-      '--mdc-tab-pill-active-color-disabled',
-      '--mdc-tab-pill-border-radius',
-      '--mdc-tab-pill-inactive-background-color-disabled',
-      '--mdc-tab-pill-inactive-background-color-hover',
-      '--mdc-tab-pill-inactive-background-color-normal',
-      '--mdc-tab-pill-inactive-background-color-pressed',
-      '--mdc-tab-pill-inactive-color',
-      '--mdc-tab-pill-inactive-color-disabled',
-    ]),
     ...hideControls(['role', 'size', 'soft-disabled', 'type']),
   },
 };
