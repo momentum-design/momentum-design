@@ -54,7 +54,7 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * @cssproperty --mdc-tablist-gap - Gap between tabs
  * @cssproperty --mdc-tablist-width - Width of the tablist
- * @cssproperty  --mdc-tablist-arrow-button-margin - Margin value for the arrow button
+ * @cssproperty --mdc-tablist-arrow-button-margin - Margin value for the arrow button
  *
  * @csspart container - The tablist container.
  */
