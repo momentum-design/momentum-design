@@ -20,7 +20,9 @@ const styles = [
     }
 
     :host([disabled]) .mdc-label,
-    :host([disabled]) .input {
+    :host([disabled]) .input,
+    :host([soft-disabled]) .mdc-label,
+    :host([soft-disabled]) .input {
       cursor: default;
     }
 
@@ -40,12 +42,15 @@ const styles = [
       background: var(--mdc-checkbox-checked-pressed-icon-color);
     }
 
-    :host([disabled]) mdc-staticcheckbox {
+    :host([disabled]) mdc-staticcheckbox,
+    :host([soft-disabled]) mdc-staticcheckbox {
       background: unset;
     }
 
     :host([disabled][checked])::part(icon-container),
-    :host([disabled][indeterminate])::part(icon-container) {
+    :host([disabled][indeterminate])::part(icon-container),
+    :host([soft-disabled][checked])::part(icon-container),
+    :host([soft-disabled][indeterminate])::part(icon-container) {
       background-color: var(--mdc-checkbox-disabled-checked-icon-color);
     }
 
@@ -79,6 +84,13 @@ const styles = [
     .mdc-label {
       word-break: break-word;
       white-space: normal;
+    }
+
+    :host([disabled]) .mdc-label,
+    :host([disabled]) .mdc-help-text,
+    :host([soft-disabled]) .mdc-label,
+    :host([soft-disabled]) .mdc-help-text {
+      color: var(--mds-color-theme-text-primary-disabled);
     }
   `,
   ...hostFocusRingStyles(true),

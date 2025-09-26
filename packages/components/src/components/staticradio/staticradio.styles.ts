@@ -30,19 +30,25 @@ const styles = [
     }
 
     :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
+    :host([soft-disabled]) .icon,
+    :host([disabled][readonly]) .icon,
+    :host([soft-disabled][readonly]) .icon {
       border-color: var(--mdc-staticradio-disabled-border-color);
       background: var(--mdc-staticradio-control-inactive-disabled-background);
     }
 
     :host([disabled][checked]) .icon,
-    :host([disabled][readonly][checked]) .icon {
+    :host([soft-disabled][checked]) .icon,
+    :host([disabled][readonly][checked]) .icon,
+    :host([soft-disabled][readonly][checked]) .icon {
       border: var(--mdc-staticradio-control-active-disabled-background);
       background: var(--mdc-staticradio-control-active-disabled-background);
     }
 
     :host([disabled][checked]) .icon:after,
-    :host([disabled][readonly][checked]) .icon:after {
+    :host([soft-disabled][checked]) .icon:after,
+    :host([disabled][readonly][checked]) .icon:after,
+    :host([soft-disabled][readonly][checked]) .icon:after {
       background: var(--mdc-staticradio-inner-circle-disabled-background);
     }
 

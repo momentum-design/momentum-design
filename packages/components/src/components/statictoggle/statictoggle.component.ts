@@ -11,7 +11,7 @@ import type { ToggleSize } from './statictoggle.types';
 
 /**
  * This is a decorative component that is styled to look as a toggle. <br/>
- * It has 4 properties - checked, size, disabled and readonly. <br/>
+ * It has 5 properties - checked, size, disabled, readonly and soft-disabled. <br/>
  * We are using the same styling that has been created for the `mdc-toggle` component.
  *
  * @dependency mdc-icon
@@ -57,6 +57,13 @@ class StaticToggle extends DisabledMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the toggle is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
 
   public override render() {
     return html`

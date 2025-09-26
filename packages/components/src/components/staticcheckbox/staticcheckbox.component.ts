@@ -10,7 +10,7 @@ import { ICON_NAME } from './staticcheckbox.constants';
 /**
  * This is a decorative component that is styled to look as a checkbox.
  *
- * It has 4 properties - checked, indeterminate, disabled and readonly.
+ * It has 5 properties - checked, indeterminate, disabled, readonly and soft-disabled.
  *
  * We are using the same styling that has been created for the `mdc-checkbox` component.
  *
@@ -50,6 +50,13 @@ class StaticCheckbox extends DisabledMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the checkbox is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
 
   public override render() {
     const checkboxIconContent =

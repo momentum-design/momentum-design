@@ -24,15 +24,21 @@ const styles = [
     }
 
     :host([disabled])::part(icon-container),
-    :host([disabled][readonly])::part(icon-container) {
+    :host([soft-disabled])::part(icon-container),
+    :host([disabled][readonly])::part(icon-container),
+    :host([soft-disabled][readonly])::part(icon-container) {
       border-color: var(--mdc-staticcheckbox-disabled-border-color);
       background: var(--mdc-staticcheckbox-disabled-background-color);
     }
 
     :host([disabled][checked])::part(icon-container),
     :host([disabled][indeterminate])::part(icon-container),
+    :host([soft-disabled][checked])::part(icon-container),
+    :host([soft-disabled][indeterminate])::part(icon-container),
     :host([disabled][readonly][checked])::part(icon-container),
-    :host([disabled][readonly][indeterminate])::part(icon-container) {
+    :host([disabled][readonly][indeterminate])::part(icon-container),
+    :host([soft-disabled][readonly][checked])::part(icon-container),
+    :host([soft-disabled][readonly][indeterminate])::part(icon-container) {
       background: var(--mdc-staticcheckbox-disabled-checked-icon-color);
       border: 0.0625rem solid var(--mdc-staticcheckbox-disabled-border-color);
     }
@@ -57,7 +63,9 @@ const styles = [
     }
 
     :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
+    :host([soft-disabled]) .icon,
+    :host([disabled][readonly]) .icon,
+    :host([soft-disabled][readonly]) .icon {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
     }
 

@@ -59,7 +59,9 @@ const styles = [
     }
 
     :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
+    :host([soft-disabled]) .icon,
+    :host([disabled][readonly]) .icon,
+    :host([soft-disabled][readonly]) .icon {
       --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-disabled);
       background-color: var(--mdc-statictoggle-icon-background-color-disabled);
     }
@@ -69,13 +71,16 @@ const styles = [
     }
 
     :host([disabled])::part(slider),
+    :host([soft-disabled])::part(slider),
     :host([readonly])::part(slider) {
       background-color: var(--mdc-statictoggle-inactive-disabled-color);
       border-color: var(--mdc-statictoggle-disabled-border-color);
     }
 
     :host([disabled][checked])::part(slider),
-    :host([disabled][readonly][checked])::part(slider) {
+    :host([soft-disabled][checked])::part(slider),
+    :host([disabled][readonly][checked])::part(slider),
+    :host([soft-disabled][readonly][checked])::part(slider) {
       background-color: var(--mdc-statictoggle-active-disabled-color);
       border-color: transparent;
     }
@@ -84,7 +89,8 @@ const styles = [
       background-color: var(--mdc-statictoggle-icon-background-color-normal);
     }
 
-    :host([disabled][readonly])::part(slider) {
+    :host([disabled][readonly])::part(slider),
+    :host([soft-disabled][readonly])::part(slider) {
       background-color: var(--mdc-statictoggle-inactive-disabled-color);
     }
 
