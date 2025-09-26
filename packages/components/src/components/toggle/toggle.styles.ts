@@ -11,9 +11,6 @@ const styles = [
       --mdc-toggle-width-compact: 2rem;
       --mdc-toggle-height-compact: 1rem;
 
-      --mdc-toggle-label-lineheight: var(--mds-font-apps-body-midsize-regular-line-height);
-      --mdc-toggle-label-fontsize: var(--mds-font-apps-body-midsize-regular-font-size);
-      --mdc-toggle-label-fontweight: var(--mds-font-apps-body-midsize-regular-font-weight);
       --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
       --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
@@ -50,9 +47,6 @@ const styles = [
 
     .mdc-label-text,
     .mdc-help-text {
-      font-size: var(--mdc-toggle-label-fontsize);
-      font-weight: var(--mdc-toggle-label-fontweight);
-      line-height: var(--mdc-toggle-label-lineheight);
       grid-column: 2;
     }
 
