@@ -1,0 +1,105 @@
+import{u as h,i as g,C as m,k as b,z as v,n as u}from"./iframe-DbFhe1C8.js";import{h as E}from"./index-CO0us3Ia.js";import"./index-wwme6ITP.js";const _=h.constructTagName("presence"),e={ACTIVE:"active",AWAY:"away",AWAY_CALLING:"away-calling",BUSY:"busy",DND:"dnd",MEETING:"meeting",ON_CALL:"on-call",ON_DEVICE:"on-device",ON_MOBILE:"on-mobile",PAUSE:"pause",PTO:"pto",PRESENTING:"presenting",QUIET:"quiet",SCHEDULED:"scheduled"},r={24:24,32:32,48:48,64:64,72:72,88:88,124:124},s={TYPE:e.ACTIVE,SIZE:r[32]},k=[E,g`
+    :host {
+      --mdc-presence-active-background-color: var(--mds-color-theme-indicator-stable);
+      --mdc-presence-away-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-away-calling-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-busy-background-color: var(--mds-color-theme-indicator-unstable);
+      --mdc-presence-dnd-background-color: var(--mds-color-theme-indicator-attention);
+      --mdc-presence-meeting-background-color: var(--mds-color-theme-indicator-unstable);
+      --mdc-presence-on-call-background-color: var(--mds-color-theme-indicator-unstable);
+      --mdc-presence-on-device-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-on-mobile-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-pause-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-pto-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-presenting-background-color: var(--mds-color-theme-indicator-attention);
+      --mdc-presence-quiet-background-color: var(--mds-color-theme-indicator-locked);
+      --mdc-presence-scheduled-background-color: var(--mds-color-theme-indicator-unstable);
+      --mdc-presence-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
+    }
+
+    :host::part(presence-content) {
+      border-radius: 50%;
+      background-color: var(--mdc-presence-overlay-background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    :host([size='24'])::part(presence-content),
+    :host([size='32'])::part(presence-content),
+    :host([size='48'])::part(presence-content) {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+    :host([size='64'])::part(presence-content) {
+      width: 1.5625rem;
+      height: 1.5625rem;
+    }
+    :host([size='72'])::part(presence-content) {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+    :host([size='88'])::part(presence-content) {
+      width: 2.125rem;
+      height: 2.125rem;
+    }
+    :host([size='124'])::part(presence-content) {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .mdc-presence-icon {
+      border-radius: 50%;
+    }
+    .mdc-presence-icon__active {
+      color: var(--mdc-presence-active-background-color);
+    }
+    .mdc-presence-icon__away {
+      color: var(--mdc-presence-away-background-color);
+    }
+    .mdc-presence-icon__away-calling {
+      color: var(--mdc-presence-away-calling-background-color);
+    }
+    .mdc-presence-icon__busy {
+      color: var(--mdc-presence-busy-background-color);
+    }
+    .mdc-presence-icon__dnd {
+      color: var(--mdc-presence-dnd-background-color);
+    }
+    .mdc-presence-icon__meeting {
+      color: var(--mdc-presence-meeting-background-color);
+    }
+    .mdc-presence-icon__on-call {
+      color: var(--mdc-presence-on-call-background-color);
+    }
+    .mdc-presence-icon__on-device {
+      color: var(--mdc-presence-on-device-background-color);
+    }
+    .mdc-presence-icon__on-mobile {
+      color: var(--mdc-presence-on-mobile-background-color);
+    }
+    .mdc-presence-icon__pause {
+      color: var(--mdc-presence-pause-background-color);
+    }
+    .mdc-presence-icon__pto {
+      color: var(--mdc-presence-pto-background-color);
+    }
+    .mdc-presence-icon__presenting {
+      color: var(--mdc-presence-presenting-background-color);
+    }
+    .mdc-presence-icon__quiet {
+      color: var(--mdc-presence-quiet-background-color);
+    }
+    .mdc-presence-icon__scheduled {
+      color: var(--mdc-presence-scheduled-background-color);
+    }
+  `],y=o=>{switch(o){case e.AWAY:return"recents-presence-badge-filled";case e.AWAY_CALLING:return"away-calling-presence-filled";case e.BUSY:return"busy-presence-bold";case e.DND:return"dnd-presence-badge-filled";case e.MEETING:return"camera-filled";case e.ON_CALL:return"handset-filled";case e.ON_DEVICE:return"generic-device-video-badge-filled";case e.ON_MOBILE:return"phone-badge-filled";case e.PAUSE:return"pause-badge-filled";case e.PTO:return"pto-presence-filled";case e.PRESENTING:return"share-screen-badge-filled";case e.QUIET:return"quiet-hours-presence-filled";case e.SCHEDULED:return"meetings-presence-badge-filled";case e.ACTIVE:default:return"active-presence-small-filled"}},f=o=>({[r[124]]:2.25,[r[88]]:1.625,[r[72]]:1.3125,[r[64]]:1.1875,[r[48]]:.875,[r[32]]:.875,[r[24]]:.875})[o]||.875;var I=Object.defineProperty,d=(o,c,l,T)=>{for(var n=void 0,a=o.length-1,p;a>=0;a--)(p=o[a])&&(n=p(c,l,n)||n);return n&&I(c,l,n),n};const i=class i extends m{constructor(){super(...arguments),this.type=s.TYPE,this.size=s.SIZE,this.currentIconType=s.TYPE}update(c){super.update(c),c.has("size")&&this.setSize(this.size)}setSize(c){this.setAttribute("size",Object.values(r).includes(c)?`${c}`:s.SIZE.toString())}get icon(){const c=y(this.type);return c==="active-presence-small-filled"&&(this.type=s.TYPE),c}handleOnLoad(){this.currentIconType=this.type}handleOnError(){this.onerror&&this.onerror("There was a problem while fetching the icon. Please check the icon name and try again.")}render(){return b`
+      <div part="presence-content">
+        <mdc-icon
+          class="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
+          name="${this.icon}"
+          size="${f(this.size)}"
+          @load="${this.handleOnLoad}"
+          @error="${this.handleOnError}"
+        ></mdc-icon>
+      </div>
+    `}};i.styles=[...m.styles,...k];let t=i;d([u({type:String,reflect:!0})],t.prototype,"type");d([u({type:Number,reflect:!0})],t.prototype,"size");d([v()],t.prototype,"currentIconType");t.register(_);export{s as D,e as P,r as a};
