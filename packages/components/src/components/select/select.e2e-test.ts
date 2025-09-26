@@ -724,6 +724,58 @@ test('mdc-select', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
         await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toBeFocused();
       });
+
+      await test.step('component should navigate in between options list with disabled list items within', async () => {
+        const select = await setup({
+          componentsPage,
+          children: `
+          <mdc-selectlistbox>
+            <mdc-option label="Option 1" value="option1"></mdc-option>
+            <mdc-option label="Option 2" value="option2"></mdc-option>
+            <mdc-option label="Option 3" value="option3"></mdc-option>
+            <mdc-option label="Option 4" value="option4" disabled></mdc-option>
+            <mdc-option label="Option 5" value="option5"></mdc-option>
+          </mdc-selectlistbox>
+        `,
+        });
+
+        // update the Option with label "Option 2" to be disabled after mount
+        await componentsPage.page.evaluate(() => {
+          const selectListbox = document.querySelector('mdc-select mdc-selectlistbox');
+          if (selectListbox) {
+            const options = selectListbox.querySelectorAll('mdc-option');
+            options.forEach((option, idx) => {
+              if (idx === 1) {
+                option.toggleAttribute('disabled');
+              }
+            });
+          }
+        });
+
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option 1' })).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+        // Option 2 is disabled, so focus should move to Option 3
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option 3' })).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+        // Option 4 is disabled, so focus should move to Option 5
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option 5' })).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+        // Option 4 is disabled, so focus should move to Option 3
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option 3' })).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+        // Option 2 is disabled, so focus should move to Option 1
+        await expect(select.locator('mdc-option').filter({ hasText: 'Option 1' })).toBeFocused();
+
+        // press escape to close the popover
+        await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
+      });
     });
   });
 });
