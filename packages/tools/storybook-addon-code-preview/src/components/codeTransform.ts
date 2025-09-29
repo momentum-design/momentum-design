@@ -210,6 +210,9 @@ const reactifyCustomElements = (
       if (attr.name === "class") {
         attr.name = "className";
       }
+      if (attr.name === "aria-label") {
+        attr.name = "ariaLabel";
+      }
     });
 
     if (node.children) {
