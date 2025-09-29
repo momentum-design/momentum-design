@@ -1,3 +1,4 @@
+import type { Package as CustomElementPackage } from "custom-elements-manifest/schema";
 export interface Result {
   divs: DOMRect[];
   styled: DOMRect[];
@@ -16,5 +17,11 @@ export interface SourceLanguage {
   id: Language;
   label: string;
   status: "active";
-  type: "basE";
+  type: "base";
+}
+
+export interface PluginParameters {
+  languages?: SourceLanguage[];
+  initialLanguageId?: Language;
+  customElements?: CustomElementPackage;
 }
