@@ -100,6 +100,7 @@ const preview = {
       },
     },
     codePreview: {
+      customElements,
       languages: [
         {
           id: 'lit',
@@ -110,10 +111,10 @@ const preview = {
         },
         {
           id: 'react',
-          label: 'React (WIP)',
+          label: 'React',
           format: 'jsx',
           type: 'inherit',
-          status: 'wip',
+          status: 'active',
         },
       ],
       initialLanguageId: 'lit',

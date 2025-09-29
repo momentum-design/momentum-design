@@ -1,7 +1,7 @@
-import React, { Fragment,  } from "react";
+import React, { Fragment } from "react";
 import { useCallback, useState } from "storybook/preview-api";
 
-import { Result } from "../types";
+import type { Result } from "../types";
 import { AddonPanel } from "storybook/internal/components";
 import { Button, Placeholder, TabsState } from "storybook/internal/components";
 import { useChannel } from "storybook/manager-api";
