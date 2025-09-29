@@ -11,9 +11,6 @@ const styles = [
       --mdc-toggle-width-compact: 2rem;
       --mdc-toggle-height-compact: 1rem;
 
-      --mdc-toggle-label-lineheight: var(--mds-font-lineheight-body-midsize);
-      --mdc-toggle-label-fontsize: var(--mds-font-size-body-midsize);
-      --mdc-toggle-label-fontweight: 400;
       --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
       --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
@@ -48,30 +45,30 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    .mdc-label-text,
-    .mdc-help-text {
-      font-size: var(--mdc-toggle-label-fontsize);
-      font-weight: var(--mdc-toggle-label-fontweight);
-      line-height: var(--mdc-toggle-label-lineheight);
+    :host::part(label-text),
+    :host::part(help-text-container) {
       grid-column: 2;
     }
 
-    .mdc-label,
+    :host::part(label),
     :host::part(toggle-input) {
       cursor: pointer;
     }
 
-    .mdc-label {
+    :host::part(label) {
       word-break: break-word;
       white-space: normal;
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    :host([disabled]) .mdc-label,
+    :host([disabled])::part(label),
     :host([disabled])::part(toggle-input) {
       cursor: default;
     }
 
-    .mdc-help-text {
+    :host::part(help-text) {
       color: var(--mdc-toggle-help-text-color);
     }
 
@@ -91,8 +88,8 @@ const styles = [
       background-color: var(--mdc-toggle-active-pressed-color);
     }
 
-    :host([disabled]) .mdc-label-text,
-    :host([disabled]) .mdc-help-text {
+    :host([disabled])::part(label-text),
+    :host([disabled])::part(help-text) {
       color: var(--mdc-toggle-label-color-disabled);
     }
   `,

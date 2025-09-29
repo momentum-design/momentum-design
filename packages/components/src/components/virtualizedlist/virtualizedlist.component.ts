@@ -24,6 +24,9 @@ import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
  * @event scroll - (React: onScroll) Event that gets called when user scrolls inside of list.
  *
  * @slot - Client side List with nested list items.
+ *
+ * @csspart container - The container of the virtualized list.
+ * @csspart scroll - The scrollable area of the virtualized list.
  */
 class VirtualizedList extends Component {
   /**
