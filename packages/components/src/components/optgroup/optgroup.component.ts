@@ -7,6 +7,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TAG_NAME as OPTION_TAGNAME } from '../option/option.constants';
 
 import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
@@ -21,6 +22,8 @@ import styles from './optgroup.styles';
  * @slot default - This is a default slot for mdc-option elements.
  *
  * @cssproperty --mdc-optgroup-disabled-color - Allows customization of the disabled option color.
+ *
+ * @csspart header-text - The header text of the optgroup.
  */
 class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**
@@ -29,7 +32,7 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   @property({ type: String, reflect: true }) label?: string;
 
   /** @internal */
-  @queryAssignedElements({ selector: 'mdc-option' })
+  @queryAssignedElements({ selector: OPTION_TAGNAME })
   options!: Array<HTMLElement>;
 
   private setDisabledForAllOptions(): void {
