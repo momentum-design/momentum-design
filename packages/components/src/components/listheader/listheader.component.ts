@@ -17,6 +17,10 @@ import styles from './listheader.styles';
  * @cssproperty --mdc-listheader-height - height of the header
  * @cssproperty --mdc-listheader-padding - padding around the header content
  * @cssproperty --mdc-listheader-gap - gap between content
+ *
+ * @csspart header-text - The header text of list header
+ * @csspart postfix-icon - The postfix icon of list header
+ * @csspart prefix-icon - The prefix icon of list header
  */
 class Listheader extends Component {
   /**

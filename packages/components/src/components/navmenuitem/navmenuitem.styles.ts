@@ -117,13 +117,13 @@ const styles = [
       position: relative;
     }
 
-    :host(:dir(ltr)) .badge {
+    :host(:dir(ltr))::part(badge) {
       position: absolute;
       right: -0.375rem;
       top: -0.375rem;
     }
 
-    :host(:dir(rtl)) .badge {
+    :host(:dir(rtl))::part(badge) {
       position: absolute;
       left: -0.375rem;
       top: -0.375rem;
@@ -138,13 +138,13 @@ const styles = [
       flex-shrink: 0;
     }
 
-    :host(:dir(ltr)) .arrow {
+    :host(:dir(ltr))::part(arrow) {
       position: absolute;
       right: -0.75rem;
       top: 0.875rem;
     }
 
-    :host(:dir(rtl)) .arrow {
+    :host(:dir(rtl))::part(arrow) {
       position: absolute;
       left: -0.75rem;
       top: 0.875rem;
