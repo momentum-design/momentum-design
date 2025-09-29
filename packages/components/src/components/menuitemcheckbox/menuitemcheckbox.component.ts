@@ -55,6 +55,16 @@ import styles from './menuitemcheckbox.styles';
  * @event change - (React: onChange) This event is dispatched when the menuitemcheckbox changes.
  * @event click - (React: onClick) This event is dispatched when the menuitemcheckbox is clicked.
  * @event focus - (React: onFocus) This event is dispatched when the menuitemcheckbox receives focus.
+ *
+ * @cssproperty --mdc-listitem-padding-left-and-right - Controls the padding on the left and right of the menuitemcheckbox.
+ *
+ * @csspart checkmark-icon - Allows customization of the checkmark icon.
+ * @csspart leading - Allows customization of the leading part.
+ * @csspart leading-arrow - Allows customization of leading arrow icon.
+ * @csspart leading-text - Allows customization of the leading text part.
+ * @csspart trailing - Allows customization of the trailing part.
+ * @csspart trailing-arrow - Allows customization of trailing arrow icon.
+ * @csspart trailing-text - Allows customization of the trailing text part.
  */
 class MenuItemCheckbox extends ControlledMixin(MenuItem) {
   /**
