@@ -7,12 +7,12 @@ const styles = [
       position: relative;
     }
 
-    [part='container'] {
+    :host::part(container) {
       display: flex;
       align-items: baseline;
     }
 
-    .typewriter-hidden {
+    :host::part(typewriter-hidden) {
       display: none;
     }
   `,

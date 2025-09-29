@@ -34,6 +34,23 @@ import { getIconValue, getPresenceIconSize } from './presence.utils';
  * @cssproperty --mdc-presence-quiet-background-color - The background color of the presence type quiet.
  * @cssproperty --mdc-presence-scheduled-background-color - The background color of the presence type scheduled.
  * @cssproperty --mdc-presence-overlay-background-color - The background color of the presence type overlay.
+ *
+ * @csspart presence-content - The presence content.
+ * @csspart mdc-presence-icon - The presence icon.
+ * @csspart mdc-presence-icon__active - The presence icon for active.
+ * @csspart mdc-presence-icon__away - The presence icon for away.
+ * @csspart mdc-presence-icon__away-calling - The presence icon for away-calling.
+ * @csspart mdc-presence-icon__busy - The presence icon for busy.
+ * @csspart mdc-presence-icon__dnd - The presence icon for dnd.
+ * @csspart mdc-presence-icon__meeting - The presence icon for meeting.
+ * @csspart mdc-presence-icon__on-call - The presence icon for on-call.
+ * @csspart mdc-presence-icon__on-device - The presence icon for on-device.
+ * @csspart mdc-presence-icon__on-mobile - The presence icon for on-mobile.
+ * @csspart mdc-presence-icon__pause - The presence icon for pause.
+ * @csspart mdc-presence-icon__pto - The presence icon for pto.
+ * @csspart mdc-presence-icon__presenting - The presence icon for presenting.
+ * @csspart mdc-presence-icon__quiet - The presence icon for quiet.
+ * @csspart mdc-presence-icon__scheduled - The presence icon for scheduled.
  */
 class Presence extends Component {
   /**
@@ -124,7 +141,7 @@ class Presence extends Component {
     return html`
       <div part="presence-content">
         <mdc-icon
-          class="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
+          part="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
           name="${this.icon}"
           size="${getPresenceIconSize(this.size)}"
           @load="${this.handleOnLoad}"
