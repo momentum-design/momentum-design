@@ -14,6 +14,13 @@ const styles = [
       flex-direction: row;
       align-items: flex-start;
     }
+
+    :host::part(label) {
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+    }
+
     :host::part(label) :host::part(checkbox-input) {
       cursor: pointer;
     }

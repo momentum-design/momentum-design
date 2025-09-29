@@ -63,6 +63,9 @@ const styles = [
       cursor: pointer;
       word-break: break-word;
       white-space: normal;
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     :host::part(radio-input) {
