@@ -267,7 +267,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await test.step('mouse hovered from trigger to the tooltip content should still keep tooltip visible', async () => {
         await componentsPage.page.mouse.move(40, 20);
         await expect(tooltip).toBeVisible();
-        await componentsPage.page.mouse.move(40, 46);
+        await componentsPage.page.mouse.move(40, 60, { steps: 5 });
         await expect(tooltip).toBeVisible();
         await componentsPage.page.mouse.move(40, 100);
         await expect(tooltip).not.toBeVisible();
