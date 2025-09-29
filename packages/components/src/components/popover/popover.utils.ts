@@ -43,7 +43,7 @@ export class PopoverUtils {
    * @param placement - The placement of the popover.
    */
   setupHoverBridge(placement: string) {
-    const hoverBridge = this.popover.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
+    const hoverBridge = this.popover.renderRoot.querySelector('div[part="popover-hover-bridge"]') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
       left: '',
@@ -59,7 +59,7 @@ export class PopoverUtils {
       switch (side) {
         case 'top':
           hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.bottom = `calc(-1.1 * (${bridgeSize}))`;
+          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
@@ -76,7 +76,7 @@ export class PopoverUtils {
         case 'bottom':
         default:
           hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.top = `calc(-1.1 * (${bridgeSize}))`;
+          hoverBridge.style.top = `calc(-1 * (${bridgeSize}))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
