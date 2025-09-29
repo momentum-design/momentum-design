@@ -31,6 +31,36 @@ type MdcElementMap = Record<
   }
 >;
 
+const HTML_GLOBAL_ATTRIBUTES = [
+  "accesskey",
+  "autocapitalize",
+  "class",
+  "contenteditable",
+  "dir",
+  "draggable",
+  "enterkeyhint",
+  "hidden",
+  "id",
+  "inputmode",
+  "is",
+  "itemid",
+  "itemprop",
+  "itemref",
+  "itemscope",
+  "itemtype",
+  "lang",
+  "nonce",
+  "spellcheck",
+  "style",
+  "tabindex",
+  "title",
+  "translate",
+  "aria-label",
+  "aria-labelledby",
+  "aria-hidden",
+  "role",
+];
+
 // Reference of the custom elements manifest for the htmlAstLitTransformer function
 let customElementsManifest: undefined | CustomElementPackage = undefined;
 
@@ -65,7 +95,6 @@ const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
       const mdcAttrs = mdcElements[node.name]?.attrs || {};
       node.attrs = node.attrs.reduce((attrs, attr: HtmlParserAttrs) => {
         const mdcAttr = mdcAttrs?.[attr.name.toLowerCase()];
-        if (attr.name === "style" && attr.value === "") return attrs;
 
         if (mdcAttr) {
           if (mdcAttr.default === attr.value) {
@@ -76,6 +105,8 @@ const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
           } else if (attr.value === "") {
             return attrs;
           }
+        } else if (HTML_GLOBAL_ATTRIBUTES.includes(attr.name) && attr.value === "") {
+          return attrs;
         }
         attrs.push(attr);
         return attrs;
@@ -139,6 +170,11 @@ const reactifyCustomElements = (node: HtmlAst, mdcElements: MdcElementMap) => {
         }
       });
     }
+    node.attrs?.forEach((attr: HtmlParserAttrs) => {
+      if (attr.name === "class") {
+        attr.name = "className";
+      }
+    });
 
     if (node.children) {
       node.children.forEach(transform);
