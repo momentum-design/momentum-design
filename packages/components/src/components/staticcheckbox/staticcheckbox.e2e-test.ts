@@ -9,6 +9,7 @@ type SetupOptions = {
   indeterminate?: boolean;
   disabled?: boolean;
   readonly?: boolean;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -19,7 +20,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.readonly ? 'readonly' : ''}></mdc-staticcheckbox>
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}></mdc-staticcheckbox>
     `,
     clearDocument: true,
   });
@@ -89,6 +91,11 @@ test('mdc-staticcheckbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(staticcheckbox, { readonly: '' });
       await expect(staticcheckbox).toHaveAttribute('readonly', '');
       await componentsPage.removeAttribute(staticcheckbox, 'readonly');
+    });
+    await test.step('attribute soft-disabled should be present on component when set', async () => {
+      await componentsPage.setAttributes(staticcheckbox, { 'soft-disabled': '' });
+      await expect(staticcheckbox).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(staticcheckbox, 'soft-disabled');
     });
   });
 });

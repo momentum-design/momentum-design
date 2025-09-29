@@ -14,6 +14,7 @@ type SetupOptions = {
   checked?: boolean;
   indeterminate?: boolean;
   'data-aria-label'?: string;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -30,6 +31,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
       >
       </mdc-checkbox>
     `,
@@ -201,6 +203,12 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(checkbox, { readonly: '' });
       await expect(checkbox).toHaveAttribute('readonly', '');
       await componentsPage.removeAttribute(checkbox, 'readonly');
+    });
+
+    await test.step('should have soft-disabled attribute when the soft-disabled attribute is passed', async () => {
+      await componentsPage.setAttributes(checkbox, { 'soft-disabled': '' });
+      await expect(checkbox).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(checkbox, 'soft-disabled');
     });
   });
 

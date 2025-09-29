@@ -11,6 +11,7 @@ type SetupOptions = {
   checked?: boolean;
   disabled?: boolean;
   readonly?: boolean;
+  'soft-disabled'?: boolean;
   size?: ToggleSize;
 };
 
@@ -22,6 +23,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ></mdc-statictoggle>
     `,
@@ -85,6 +87,11 @@ test('mdc-statictoggle', async ({ componentsPage }) => {
       await componentsPage.setAttributes(statictoggle, { readonly: '' });
       await expect(statictoggle).toHaveAttribute('readonly', '');
       await componentsPage.removeAttribute(statictoggle, 'readonly');
+    });
+    await test.step('attribute soft-disabled should be present on component when set', async () => {
+      await componentsPage.setAttributes(statictoggle, { 'soft-disabled': '' });
+      await expect(statictoggle).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(statictoggle, 'soft-disabled');
     });
   });
 });

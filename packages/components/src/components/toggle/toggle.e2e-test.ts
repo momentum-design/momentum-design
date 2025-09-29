@@ -16,6 +16,7 @@ type SetupOptions = {
   checked?: boolean;
   'data-aria-label'?: string;
   size?: string;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -31,6 +32,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       >
       </mdc-toggle>
@@ -83,6 +85,12 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await componentsPage.setAttributes(toggle, { readonly: '' });
     await expect(toggle).toHaveAttribute('readonly', '');
     await componentsPage.removeAttribute(toggle, 'readonly');
+  });
+
+  await test.step('should have soft-disabled attribute when the soft-disabled attribute is passed', async () => {
+    await componentsPage.setAttributes(toggle, { 'soft-disabled': '' });
+    await expect(toggle).toHaveAttribute('soft-disabled', '');
+    await componentsPage.removeAttribute(toggle, 'soft-disabled');
   });
 };
 
