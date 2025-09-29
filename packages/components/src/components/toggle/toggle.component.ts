@@ -40,9 +40,6 @@ import type { ToggleSize } from './toggle.types';
  * @cssproperty --mdc-toggle-height - Height of the toggle
  * @cssproperty --mdc-toggle-width-compact - Width of the toggle when it's size is compact
  * @cssproperty --mdc-toggle-height-compact - Height of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-label-lineheight - Line height of the toggle label
- * @cssproperty --mdc-toggle-label-fontsize - Font size of the toggle label
- * @cssproperty --mdc-toggle-label-fontweight - Font weight of the toggle label
  * @cssproperty --mdc-toggle-label-color-disabled - Color of the toggle label and help text in disabled state
  * @cssproperty --mdc-toggle-help-text-color - Color of the help text label
  * @cssproperty --mdc-toggle-active-hover-color - Background color of the active toggle in hover state

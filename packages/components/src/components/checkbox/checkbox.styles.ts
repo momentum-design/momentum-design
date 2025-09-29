@@ -15,15 +15,21 @@ const styles = [
       flex-direction: row;
       align-items: flex-start;
     }
-    .mdc-label,
-    .input {
+
+    :host::part(label) {
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+    }
+
+    :host::part(label), :host::part(checkbox-input) {
       cursor: pointer;
     }
 
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .input,
-    :host([soft-disabled]) .mdc-label,
-    :host([soft-disabled]) .input {
+    :host([disabled])::part(label),
+    :host([disabled])::part(checkbox-input),
+    :host([soft-disabled])::part(label),
+    :host([soft-disabled])::part(checkbox-input) {
       cursor: default;
     }
 
@@ -32,19 +38,19 @@ const styles = [
       pointer-events: none;
     }
 
-    :host(:hover:not([readonly]):not([soft-disabled])) mdc-staticcheckbox {
+    :host(:hover:not([disabled]):not([readonly]):not([soft-disabled])) mdc-staticcheckbox {
       background: var(--mdc-checkbox-background-color-hover);
     }
-    :host(:active:not([readonly]):not([soft-disabled])) mdc-staticcheckbox {
+    :host(:active:not([disabled]):not([readonly]):not([soft-disabled])) mdc-staticcheckbox {
       background: var(--mdc-checkbox-pressed-icon-color);
     }
 
-    :host([checked]:hover:not([readonly]):not([soft-disabled]))::part(icon-container),
-    :host([indeterminate]:hover:not([readonly]):not([soft-disabled]))::part(icon-container) {
+    :host([checked]:hover:not([disabled]):not([readonly]):not([soft-disabled]))::part(icon-container),
+    :host([indeterminate]:hover:not([disabled]):not([readonly]):not([soft-disabled]))::part(icon-container) {
       background: var(--mdc-checkbox-checked-background-color-hover);
     }
-    :host([checked]:active:not([readonly]):not([soft-disabled]))::part(icon-container),
-    :host([indeterminate]:active:not([readonly]):not([soft-disabled]))::part(icon-container) {
+    :host([checked]:active:not([disabled]):not([readonly]):not([soft-disabled]))::part(icon-container),
+    :host([indeterminate]:active:not([disabled]):not([readonly]):not([soft-disabled]))::part(icon-container) {
       background: var(--mdc-checkbox-checked-pressed-icon-color);
     }
 
@@ -64,7 +70,7 @@ const styles = [
       position: relative;
     }
 
-    .input {
+    :host::part(checkbox-input) {
       margin: 0;
       padding: 0;
       position: absolute;
@@ -75,28 +81,28 @@ const styles = [
       z-index: 1;
     }
 
-    .input {
+    :host::part(checkbox-input) {
       width: 1rem;
       height: 1rem;
       border-radius: 0.125rem;
     }
 
-    .text-container {
+    :host::part(text-container) {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
-    .mdc-label {
+    :host::part(label) {
       word-break: break-word;
       white-space: normal;
     }
 
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .mdc-help-text,
-    :host([soft-disabled]) .mdc-label,
-    :host([soft-disabled]) .mdc-label-text,
-    :host([soft-disabled]) .mdc-help-text {
+    :host([disabled])::part(label),
+    :host([disabled])::part(help-text),
+    :host([soft-disabled])::part(label),
+    :host([soft-disabled])::part(label-text),
+    :host([soft-disabled])::part(help-text) {
       color: var(--mdc-checkbox-disabled-text-color);
     }
   `,

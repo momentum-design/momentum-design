@@ -21,20 +21,20 @@ const styles = [
       --mdc-radio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     }
 
-    :host(:hover:not([readonly]):not([soft-disabled]))::part(radio-icon) {
+    :host(:hover:not([disabled]):not([readonly]):not([soft-disabled])) mdc-staticradio {
       background-color: var(--mdc-radio-control-inactive-hover);
     }
 
-    :host(:active:not([readonly]):not([soft-disabled]))::part(radio-icon) {
+    :host(:active:not([disabled]):not([readonly]):not([soft-disabled])) mdc-staticradio {
       background-color: var(--mdc-radio-control-inactive-pressed-color);
     }
 
-    :host([checked]:hover:not([readonly]):not([soft-disabled]))::part(radio-icon) {
+    :host([checked]:hover:not([disabled]):not([readonly]):not([soft-disabled]))::part(radio-icon) {
       border-color: var(--mdc-radio-control-active-hover-color);
       background-color: var(--mdc-radio-control-active-hover-color);
     }
 
-    :host([checked]:active:not([readonly]):not([soft-disabled]))::part(radio-icon) {
+    :host([checked]:active:not([disabled]):not([readonly]):not([soft-disabled]))::part(radio-icon) {
       border-color: var(--mdc-radio-control-active-pressed-color);
       background-color: var(--mdc-radio-control-active-pressed-color);
     }
@@ -57,12 +57,12 @@ const styles = [
       background-color: var(--mdc-radio-control-active-disabled-background);
     }
 
-    :host([readonly]) .mdc-radio__input,
-    :host([disabled]) .mdc-radio__input,
-    :host([soft-disabled]) .mdc-radio__input,
-    :host([disabled]) .mdc-label,
-    :host([soft-disabled]) .mdc-label,
-    :host([readonly]) .mdc-label {
+    :host([readonly])::part(radio-input),
+    :host([disabled])::part(radio-input),
+    :host([soft-disabled])::part(radio-input),
+    :host([disabled])::part(label),
+    :host([soft-disabled])::part(label),
+    :host([readonly])::part(label) {
       cursor: default;
     }
 
@@ -71,21 +71,24 @@ const styles = [
       pointer-events: none;
     }
 
-    .mdc-label {
+    :host::part(label) {
       cursor: pointer;
       word-break: break-word;
       white-space: normal;
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    :host([disabled]) .mdc-label-text,
-    :host([disabled]) .mdc-help-text,
-    :host([soft-disabled]) .mdc-label,
-    :host([soft-disabled]) .mdc-label-text,
-    :host([soft-disabled]) .mdc-help-text {
+    :host([disabled])::part(label-text),
+    :host([disabled])::part(help-text),
+    :host([soft-disabled])::part(label),
+    :host([soft-disabled])::part(label-text),
+    :host([soft-disabled])::part(help-text) {
       color: var(--mdc-radio-text-disabled-color);
     }
 
-    .mdc-radio__input {
+    :host::part(radio-input) {
       position: absolute;
       opacity: 0;
       margin: 0;
@@ -95,7 +98,7 @@ const styles = [
       z-index: 2;
     }
 
-    .mdc-radio__label-container {
+    :host::part(text-container) {
       display: flex;
       flex-direction: column;
       justify-content: center;
