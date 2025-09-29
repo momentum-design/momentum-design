@@ -4,7 +4,7 @@ import { TabsState } from "storybook/internal/components";
 import { useParameter } from "storybook/internal/manager-api";
 import { styled } from "storybook/theming";
 import CodeBlock from "./CodeBlock";
-import type { CodeSnippetEvent } from "../types";
+import type { CodeSnippetEvent, PluginParameters } from "../types";
 
 const StyledPanel = styled.div`
   width: 50%;
@@ -13,7 +13,10 @@ const StyledPanel = styled.div`
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   overflow-y: auto;
-  padding: 8px;
+`;
+const SourceWrapper = styled.div`
+  margin-top: -25px;
+  margin-bottom: -40px;
 `;
 
 interface CodePreviewPanelProps {
@@ -22,9 +25,9 @@ interface CodePreviewPanelProps {
 }
 
 const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({ snippetEvent, channel }) => {
-  const { languages, initialLanguageId } = useParameter<any>("codePreview", {});
+  const { languages, initialLanguageId, customElements } = useParameter<PluginParameters>("codePreview", {});
 
-  const baseLanguage = languages?.find((lang: any) => lang.type === "base");
+  const baseLanguage = languages?.find((lang) => lang.type === "base");
   const initialSelected = initialLanguageId || languages?.[0]?.id;
 
   return (
@@ -34,7 +37,14 @@ const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({ snippetEvent, chann
           {languages?.map((language: any) => (
             <div key={language.id} id={language.id} title={language.label || language.id}>
               {language.status === "active" ? (
-                <CodeBlock snippet={snippetEvent} currentLanguage={language} baseLanguage={baseLanguage} />
+                <SourceWrapper>
+                  <CodeBlock
+                    snippet={snippetEvent}
+                    currentLanguage={language}
+                    baseLanguage={baseLanguage}
+                    customElements={customElements}
+                  />
+                </SourceWrapper>
               ) : (
                 <div style={{ padding: "25px 0 0 16px" }}>Coming soon!</div>
               )}
