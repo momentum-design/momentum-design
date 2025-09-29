@@ -225,7 +225,11 @@ class Radio
    * Handles the keydown event (Arrow Up/Down/Left/Right) on the radio element.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (this.disabled || this.softDisabled) return;
+    if (this.disabled) return;
+
+    if (this.readonly || this.softDisabled) {
+      event.preventDefault();
+    }
 
     const radios = this.getAllRadiosWithinSameGroup();
     const enabledRadios = radios.filter(radio => !radio.disabled);

@@ -32,6 +32,9 @@ const render = (args: Args) => html`
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-strategy="${args['toggletip-strategy']}"
     @change="${action('onchange')}"
+    @keydown="${action('onkeydown')}"
+    @focus="${action('onfocus')}"
+    @click="${action('onclick')}"
   ></mdc-checkbox>
 `;
 

@@ -18,6 +18,8 @@ const render = (args: Args) => html`
     value="toggleValue"
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
+    @keydown="${action('onkeydown')}"
+    @click="${action('onclick')}"
     size="${args.size}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"

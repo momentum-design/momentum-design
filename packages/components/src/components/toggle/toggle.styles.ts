@@ -73,28 +73,34 @@ const styles = [
       cursor: default;
     }
 
+    :host([readonly]),
+    :host([soft-disabled]) {
+      pointer-events: none;
+    }
+
     .mdc-help-text {
       color: var(--mdc-toggle-help-text-color);
     }
 
-    :host(:hover:not([disabled]):not([soft-disabled]))::part(container) {
+    :host(:hover:not([disabled]):not([readonly]):not([soft-disabled]))::part(container) {
       background-color: var(--mdc-toggle-inactive-hover-color);
     }
 
-    :host(:active:not([disabled]):not([soft-disabled]))::part(container) {
+    :host(:active:not([disabled]):not([readonly]):not([soft-disabled]))::part(container) {
       background-color: var(--mdc-toggle-inactive-pressed-color);
     }
 
-    :host(:hover:not([disabled]):not([soft-disabled])[checked])::part(container) {
+    :host(:hover:not([disabled]):not([readonly]):not([soft-disabled])[checked])::part(container) {
       background-color: var(--mdc-toggle-active-hover-color);
     }
 
-    :host(:active:not([disabled]):not([soft-disabled])[checked])::part(container) {
+    :host(:active:not([disabled]):not([readonly]):not([soft-disabled])[checked])::part(container) {
       background-color: var(--mdc-toggle-active-pressed-color);
     }
 
     :host([disabled]) .mdc-label-text,
     :host([disabled]) .mdc-help-text,
+    :host([soft-disabled]) .mdc-label,
     :host([soft-disabled]) .mdc-label-text,
     :host([soft-disabled]) .mdc-help-text {
       color: var(--mdc-toggle-label-color-disabled);
