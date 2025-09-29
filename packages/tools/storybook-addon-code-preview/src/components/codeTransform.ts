@@ -1,8 +1,10 @@
 import { wrap, keyBy, mapKeys } from "lodash";
-import type { Package as CustomElementPackage, CustomElement, Attribute } from "custom-elements-manifest/schema";
 import type { Parser } from "prettier";
 import prettier from "prettier/standalone.js";
 import * as htmlPlugin from "prettier/plugins/html";
+import * as estreePlugin from "prettier/plugins/estree";
+import * as babelPlugin from "prettier/plugins/babel";
+import type { Package as CustomElementPackage, CustomElement, Attribute } from "custom-elements-manifest/schema";
 
 type HtmlAst = {
   children: HtmlAst[];
@@ -17,16 +19,20 @@ type HtmlParserAttrs = { name: string; value: string | null };
 
 type PrettierParser = Parser<HtmlAst>["parse"];
 
+type AstTransformerOptions = {
+  customElementsManifest?: CustomElementPackage;
+  componentImportCallback: (importSource: string) => void;
+};
+
 type AstTransformer = (
-  originalParser: PrettierParser,
-  ...args: Parameters<PrettierParser>
-) => ReturnType<PrettierParser>;
+  options: AstTransformerOptions,
+) => (originalParser: PrettierParser, ...args: Parameters<PrettierParser>) => ReturnType<PrettierParser>;
 
 type MdcElementMap = Record<
   string,
   {
     name: string;
-    tag: string;
+    tagName: string;
     attrs: Record<string, Attribute>;
   }
 >;
@@ -61,21 +67,23 @@ const HTML_GLOBAL_ATTRIBUTES = [
   "role",
 ];
 
-// Reference of the custom elements manifest for the htmlAstLitTransformer function
-let customElementsManifest: undefined | CustomElementPackage = undefined;
-
-const getMdcElementMap = (): MdcElementMap =>
+/**
+ * Simplify access to the custom elements manifest
+ *
+ * @param customElementsManifest
+ */
+const getMdcElementMap = (customElementsManifest: CustomElementPackage): MdcElementMap =>
   Object.fromEntries(
     customElementsManifest!.modules
       // One declaration per module
       .map((m) => m?.declarations?.[0] as CustomElement)
       .filter((d) => d && d.tagName && d.name)
-      .map((d) => [
-        d.tagName,
+      .map(({ tagName, name, attributes }) => [
+        tagName,
         {
-          name: d.name,
-          tag: d.tagName,
-          attrs: mapKeys(keyBy(d.attributes, "name"), (v: unknown, k: string) => k.toLowerCase()),
+          name,
+          tagName,
+          attrs: mapKeys(keyBy(attributes, "name"), (v: unknown, k: string) => k.toLowerCase()),
         },
       ]),
   );
@@ -88,29 +96,39 @@ const getMdcElementMap = (): MdcElementMap =>
  * - empty style attributes for non-MDC elements
  * @param node
  * @param mdcElements
+ * @param callback
  */
-const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
+const cleanAstHtmlAttributes = (
+  node: HtmlAst,
+  mdcElements: MdcElementMap,
+  callback?: AstTransformerOptions["componentImportCallback"],
+) => {
+  const usedElements = new Set<string>();
   const clean = (node: HtmlAst) => {
-    if (mdcElements[node.name] && node.attrs) {
-      const mdcAttrs = mdcElements[node.name]?.attrs || {};
-      node.attrs = node.attrs.reduce((attrs, attr: HtmlParserAttrs) => {
-        const mdcAttr = mdcAttrs?.[attr.name.toLowerCase()];
+    const mdcElement = mdcElements[node.name]!;
+    if (mdcElement) {
+      usedElements.add(mdcElement.tagName.replace(/^.*?-/, ""));
+      if (node.attrs) {
+        const mdcAttrs = mdcElement.attrs || {};
+        node.attrs = node.attrs.reduce((attrs, attr: HtmlParserAttrs) => {
+          const mdcAttr = mdcAttrs?.[attr.name.toLowerCase()];
 
-        if (mdcAttr) {
-          if (mdcAttr.default === attr.value) {
+          if (mdcAttr) {
+            if (mdcAttr.default === attr.value) {
+              return attrs;
+            }
+            if (/\bboolean\b/.test(mdcAttr.type?.text ?? "") && attr.value === "") {
+              attr.value = null;
+            } else if (attr.value === "") {
+              return attrs;
+            }
+          } else if (HTML_GLOBAL_ATTRIBUTES.includes(attr.name) && attr.value === "") {
             return attrs;
           }
-          if (/\bboolean\b/.test(mdcAttr.type?.text ?? "") && attr.value === "") {
-            attr.value = null;
-          } else if (attr.value === "") {
-            return attrs;
-          }
-        } else if (HTML_GLOBAL_ATTRIBUTES.includes(attr.name) && attr.value === "") {
+          attrs.push(attr);
           return attrs;
-        }
-        attrs.push(attr);
-        return attrs;
-      }, [] as HtmlParserAttrs[]);
+        }, [] as HtmlParserAttrs[]);
+      }
     } else if (node.attrs) {
       node.attrs.forEach((attr: HtmlParserAttrs) => {
         if (attr.name === "style" && attr.value !== "") {
@@ -127,6 +145,14 @@ const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
 
   clean(node);
 
+  if (callback) {
+    callback(
+      Array.from(usedElements)
+        .sort()
+        .map((c) => `import '@momentum-design/components/dist/components/${c}/index.js';`)
+        .join("\n"),
+    );
+  }
   return node;
 };
 
@@ -135,35 +161,45 @@ const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
  *
  * Intercept Prettier's HTML parser to modify the AST before formatting.
  *
- * @param originalParser
- * @param options
+ * @param transformerOptions
  */
-const htmlAstLitTransformer: AstTransformer = async (originalParser, ...options) => {
-  const result = await originalParser(...options);
+const htmlAstLitTransformer: AstTransformer =
+  (transformerOptions) =>
+  async (originalParser, ...options) => {
+    const result = await originalParser(...options);
 
-  if (!customElementsManifest) {
+    if (!transformerOptions.customElementsManifest) {
+      return result;
+    }
+
+    const mdcElements = getMdcElementMap(transformerOptions.customElementsManifest);
+
+    cleanAstHtmlAttributes(result, mdcElements, transformerOptions.componentImportCallback);
+
     return result;
-  }
-
-  const mdcElements = getMdcElementMap();
-
-  cleanAstHtmlAttributes(result, mdcElements);
-
-  return result;
-};
+  };
 
 /**
  * Transforms MDC custom elements to React-friendly format
  *
  * @param node
  * @param mdcElements
+ * @param callback
  */
-const reactifyCustomElements = (node: HtmlAst, mdcElements: MdcElementMap) => {
+
+const reactifyCustomElements = (
+  node: HtmlAst,
+  mdcElements: MdcElementMap,
+  callback?: AstTransformerOptions["componentImportCallback"],
+) => {
+  const usedElements = new Set<string>();
+
   const transform = (node: HtmlAst) => {
     const mdcElement = mdcElements[node.name];
     if (node.name && mdcElement) {
       const mdcAttrs = mdcElement.attrs;
       node.name = mdcElement.name;
+      usedElements.add(mdcElement.name);
       node.attrs?.forEach((attr: HtmlParserAttrs) => {
         if (mdcAttrs[attr.name.toLowerCase()]) {
           attr.name = mdcAttrs[attr.name]!.fieldName ?? attr.name;
@@ -182,38 +218,44 @@ const reactifyCustomElements = (node: HtmlAst, mdcElements: MdcElementMap) => {
   };
 
   transform(node);
+
+  if (callback) {
+    const imports = Array.from(usedElements).sort().join(",");
+    callback(`import { ${imports} } from '@momentum-design/components/dist/react';`);
+  }
 };
 
 /**
  * Transforms the HTML AST for React elements.
  *
- * @param originalParser
- * @param options
+ * @param transformerOptions
  */
-const reactHtmlAstTransformer: AstTransformer = async (originalParser, ...options) => {
-  const result = await originalParser(...options);
+const reactHtmlAstTransformer: AstTransformer =
+  (transformerOptions) =>
+  async (originalParser, ...options) => {
+    const result = await originalParser(...options);
 
-  if (!customElementsManifest) {
+    if (!transformerOptions.customElementsManifest) {
+      return result;
+    }
+    const mdcElements = getMdcElementMap(transformerOptions.customElementsManifest);
+
+    cleanAstHtmlAttributes(result, mdcElements);
+    reactifyCustomElements(result, mdcElements, transformerOptions.componentImportCallback);
     return result;
-  }
-  const mdcElements = getMdcElementMap();
-
-  cleanAstHtmlAttributes(result, mdcElements);
-  reactifyCustomElements(result, mdcElements);
-  return result;
-};
+  };
 
 /**
  * Wraps a Prettier HTML plugin parser to apply an AST transformer
  * @param transformer
  */
-const wrapHtmlPluginParser = (transformer: AstTransformer) => ({
+const wrapHtmlPluginParser = (transformer: AstTransformer) => (options: AstTransformerOptions) => ({
   ...htmlPlugin,
   parsers: {
     ...htmlPlugin.parsers,
     html: {
       ...htmlPlugin.parsers.html,
-      parse: wrap(htmlPlugin.parsers.html.parse, transformer as any),
+      parse: wrap(htmlPlugin.parsers.html.parse, transformer(options) as any),
     },
   },
 });
@@ -227,23 +269,42 @@ export const codeTransform = async (
   originalCode: string = "",
   srcLanguage?: string,
   destLanguage?: string,
-  customElementsJson?: CustomElementPackage,
+  customElementsManifest?: CustomElementPackage,
 ) => {
-  customElementsManifest = customElementsJson;
+  let imports = "";
+  let output = originalCode.trim();
+
   try {
     if (srcLanguage === "lit" && destLanguage === "lit") {
-      return await prettier.format(originalCode.trim(), {
+      output = await prettier.format(originalCode.trim(), {
         parser: "html",
-        plugins: [litHtmlPlugin],
+        plugins: [
+          litHtmlPlugin({
+            customElementsManifest,
+            componentImportCallback: (result: string) => (imports = result),
+          }),
+        ],
       });
     } else if (destLanguage === "react") {
-      return await prettier.format(originalCode.trim(), {
+      output = await prettier.format(originalCode.trim(), {
         parser: "html",
-        plugins: [reactHtmlPlugin],
+        plugins: [
+          reactHtmlPlugin({
+            customElementsManifest,
+            componentImportCallback: (result: string) => (imports = result),
+          }),
+        ],
       });
     }
+
+    imports = await prettier.format(imports.trim(), {
+      parser: "babel",
+      plugins: [estreePlugin, babelPlugin],
+    });
+
+    output = `${imports}\n\n${output.trim()}`;
   } catch (e) {
     console.warn("Code Preview - Prettier code formatting failed", e);
   }
-  return originalCode;
+  return output;
 };
