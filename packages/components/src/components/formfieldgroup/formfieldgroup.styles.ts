@@ -12,10 +12,6 @@ const styles = css`
     flex-direction: column;
     gap: 0.25rem;
   }
-
-  :host::part(label-text) {
-    font-weight: bold;
-  }
 `;
 
 export default [styles];
