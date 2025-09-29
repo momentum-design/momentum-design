@@ -62,6 +62,8 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-hover-background-color - Background color for the textarea container when hover
  * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
  * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
+ *
+ * @csspart textarea-container - The textarea container
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
@@ -331,7 +333,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="textarea-container mdc-focus-ring" part="textarea-container">
+      <div class="mdc-focus-ring" part="textarea-container">
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"
           part="textarea"
