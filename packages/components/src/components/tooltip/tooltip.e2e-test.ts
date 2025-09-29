@@ -15,7 +15,7 @@ type SetupOptions = {
   color?: PopoverColor;
   delay?: string;
   id?: string;
-  offset?: boolean;
+  offset?: number;
   placement?: PopoverPlacement;
   showArrow?: boolean;
   tooltipType?: string;
@@ -240,6 +240,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       id: 'tooltip',
       triggerID: 'trigger-button',
       children: 'Lorem ipsum dolor sit amet.',
+      offset: 15,
     });
     await test.step('focus', async () => {
       await test.step('focusing on trigger button should show tooltip', async () => {
@@ -261,6 +262,14 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await test.step('mouseout out the trigger button should hide the tooltip', async () => {
         await componentsPage.page.mouse.move(1000, 1000);
         await expect(triggerButton).not.toBeFocused();
+        await expect(tooltip).not.toBeVisible();
+      });
+      await test.step('mouse hovered from trigger to the tooltip content should still keep tooltip visible', async () => {
+        await componentsPage.page.mouse.move(40, 20);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 46);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 100);
         await expect(tooltip).not.toBeVisible();
       });
     });

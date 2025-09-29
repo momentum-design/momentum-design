@@ -59,7 +59,7 @@ export class PopoverUtils {
       switch (side) {
         case 'top':
           hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.bottom = `calc(-1.1 * (${bridgeSize}))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
@@ -76,7 +76,7 @@ export class PopoverUtils {
         case 'bottom':
         default:
           hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.top = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.top = `calc(-1.1 * (${bridgeSize}))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
