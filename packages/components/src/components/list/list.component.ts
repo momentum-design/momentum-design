@@ -54,12 +54,18 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
+  @property({ type: Boolean, reflect: true, attribute: 'stay-on-bottom' })
+  public stayOnBottom = false;
+
+  private isAtBottom = false;
+
   constructor() {
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
+    this.addEventListener('scroll', this.handleScroll);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<ListItem>(this, {
@@ -85,13 +91,19 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @internal
    */
-  private handleCreatedEvent = (event: Event) => {
+  private handleCreatedEvent = async (event: Event) => {
     const createdElement = event.target as HTMLElement;
     if (!this.isValidItem(createdElement)) {
       return;
     }
 
     createdElement.tabIndex = -1;
+
+    if (this.stayOnBottom && this.isAtBottom) {
+      await this.updateComplete;
+      console.log(this.scrollTop, this.scrollHeight, this.clientHeight);
+      this.scrollTop = this.scrollHeight;
+    }
   };
 
   /**
@@ -138,6 +150,12 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   /** @internal */
   private isValidItem(item: Element): boolean {
     return item.matches(`${LISTITEM_TAGNAME}:not([disabled])`);
+  }
+
+  private handleScroll(): void {
+    if (this.stayOnBottom) {
+      this.isAtBottom = this.scrollHeight - this.scrollTop <= this.clientHeight + 50;
+    }
   }
 
   public override render() {

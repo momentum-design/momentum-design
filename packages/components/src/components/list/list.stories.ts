@@ -39,7 +39,12 @@ const fakeUserNamesList = [
 ];
 
 const render = (args: Args) =>
-  html` <mdc-list aria-label="${args['aria-label']}" loop="${args.loop}" initial-focus="${args['initial-focus']}">
+  html` <mdc-list
+    aria-label="${args['aria-label']}"
+    loop="${args.loop}"
+    initial-focus="${args['initial-focus']}"
+    ?stay-on-bottom="${args.stayOnBottom}"
+  >
     ${args.textPassedToListHeader
       ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
       : ''}
@@ -86,6 +91,9 @@ const meta: Meta = {
       table: {
         defaultValue: { summary: 'true' },
       },
+    },
+    'stay-on-bottom': {
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
@@ -232,7 +240,12 @@ export const ExpandingList: StoryObj = {
     };
 
     return html`
-      <mdc-list aria-label="${args['aria-label']}" ${ref(listRef)}>
+      <mdc-list
+        aria-label="${args['aria-label']}"
+        ${ref(listRef)}
+        ?stay-on-bottom="${args.stayOnBottom}"
+        style="height: 400px; overflow-y: auto; padding: 0.25rem"
+      >
         ${args.textPassedToListHeader
           ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
           : ''}
