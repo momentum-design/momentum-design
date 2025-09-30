@@ -65,6 +65,20 @@ import styles from './input.styles';
  * @cssproperty --mdc-input-success-border-color - Border color for the input container when success
  * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart leading-icon - The leading icon element that is displayed before the input field.
+ * @csspart prefix-text - The prefix text element that is displayed before the input field.
+ * @csspart input-container - The container for the input field, leading icon, prefix text, and trailing button elements.
+ * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
+ * @csspart input-text - The input field element.
+ * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  */
 
 class Input
@@ -283,7 +297,6 @@ class Input
     }
     return html`
       <mdc-icon
-        class="leading-icon"
         part="leading-icon"
         name=${this.leadingIcon}
         size="${DEFAULTS.ICON_SIZE_VALUE}"
@@ -309,7 +322,7 @@ class Input
     }
     return html`
       <mdc-text
-        class="prefix-text"
+        part="prefix-text"
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}"
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
         aria-hidden="true"
@@ -357,8 +370,7 @@ class Input
 
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
-      class="input"
-      part="mdc-input"
+      part="input-text"
       id="${this.inputId}"
       name="${this.name}"
       .value="${live(this.value)}"
@@ -386,9 +398,9 @@ class Input
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="input-container mdc-focus-ring" part="input-container">
+      <div class="mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-        <div class="input-section" part="input-section">
+        <div part="input-section">
           <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
           <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
         </div>

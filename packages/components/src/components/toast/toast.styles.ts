@@ -74,7 +74,7 @@ const styles = css`
     align-self: stretch;
   }
 
-  .has-footer-buttons {
+  :host::part(has-footer-buttons) {
     margin-top: 1rem;
   }
 
