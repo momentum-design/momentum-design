@@ -16,7 +16,11 @@ class SubComponentControlTypeProvider extends Component {
   private controlTypeProviderContext = providerUtils.consume({ host: this, context: ControlTypeProvider.Context });
 
   override render() {
-    return html` <p style="margin: 0;">${this.controlTypeLabelPrefix}${this.controlTypeProviderContext.value}</p> `;
+    return html`
+      <mdc-text tagname="p" type="body-large-regular"
+        >${this.controlTypeLabelPrefix}${this.controlTypeProviderContext.value}</mdc-text
+      >
+    `;
   }
 }
 
