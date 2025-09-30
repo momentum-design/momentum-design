@@ -30,7 +30,7 @@ const setup = async (args: SetupOptions) => {
     <div id="wrapper" >
       <div style="height: 10vh">
         <mdc-button id="${restArgs.triggerID}">Trigger</mdc-button>
-        <mdc-button>Other button</mdc-button>
+        <mdc-button style="margin-top: 2px;">Other button</mdc-button>
       </div>
       <mdc-tooltip
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
@@ -267,7 +267,9 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await test.step('mouse hovered from trigger to the tooltip content should still keep tooltip visible', async () => {
         await componentsPage.page.mouse.move(40, 20);
         await expect(tooltip).toBeVisible();
-        await componentsPage.page.mouse.move(40, 60, { steps: 2 });
+        await componentsPage.page.mouse.move(40, 45);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 60);
         await expect(tooltip).toBeVisible();
         await componentsPage.page.mouse.move(40, 100);
         await expect(tooltip).not.toBeVisible();
