@@ -22,30 +22,30 @@ const styles = [
       --mdc-staticradio-control-active-disabled-background: var(--mds-color-theme-control-active-disabled);
     }
 
-    .icon:after {
+    .radio-icon:after {
       content: '';
       position: absolute;
       display: none;
     }
 
-    :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
+    :host([disabled])::part(radio-icon),
+    :host([disabled][readonly])::part(radio-icon) {
       border-color: var(--mdc-staticradio-disabled-border-color);
       background: var(--mdc-staticradio-control-inactive-disabled-background);
     }
 
-    :host([disabled][checked]) .icon,
-    :host([disabled][readonly][checked]) .icon {
+    :host([disabled][checked])::part(radio-icon),
+    :host([disabled][readonly][checked])::part(radio-icon) {
       border: var(--mdc-staticradio-control-active-disabled-background);
       background: var(--mdc-staticradio-control-active-disabled-background);
     }
 
-    :host([disabled][checked]) .icon:after,
-    :host([disabled][readonly][checked]) .icon:after {
+    :host([disabled][checked]) .radio-icon:after,
+    :host([disabled][readonly][checked]) .radio-icon:after {
       background: var(--mdc-staticradio-inner-circle-disabled-background);
     }
 
-    .icon {
+    :host::part(radio-icon) {
       position: absolute;
       top: 0;
       left: 0;
@@ -56,12 +56,12 @@ const styles = [
       border-radius: 50%;
     }
 
-    :host([checked]) .icon {
+    :host([checked])::part(radio-icon) {
       border-color: var(--mdc-staticradio-control-active-color);
       background-color: var(--mdc-staticradio-control-active-color);
     }
 
-    :host([checked]) .icon:after {
+    :host([checked]) .radio-icon:after {
       display: block;
       top: 50%;
       left: 50%;
@@ -72,16 +72,16 @@ const styles = [
       background: var(--mdc-staticradio-inner-circle-normal-background);
     }
 
-    :host([readonly]) .icon {
+    :host([readonly])::part(radio-icon) {
       border-color: var(--mdc-staticradio-normal-border-color);
       background-color: var(--mdc-staticradio-control-inactive-color);
     }
 
-    :host([readonly][checked]) .icon {
+    :host([readonly][checked])::part(radio-icon) {
       border-color: var(--mdc-staticradio-normal-border-color);
     }
 
-    :host([readonly][checked]) .icon:after {
+    :host([readonly][checked]) .radio-icon:after {
       background-color: var(--mdc-staticradio-text-disabled-color);
     }
   `,
