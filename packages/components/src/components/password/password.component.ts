@@ -50,6 +50,18 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  * @cssproperty --mdc-input-success-border-color - Border color for the password container when success
  * @cssproperty --mdc-input-primary-border-color - Border color for the password container when primary
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart input-container - The container for the input field, leading icon, prefix text, and trailing button elements.
+ * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
+ * @csspart input-text - The input field element.
+ * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  */
 class Password extends Input {
   /**

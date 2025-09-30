@@ -28,6 +28,10 @@ import { ICON_NAME } from './staticcheckbox.constants';
  * @cssproperty --mdc-staticcheckbox-icon-border-color - Default background color for an unselected checkbox.
  * @cssproperty --mdc-staticcheckbox-icon-color - Icon color for an unselected checkbox.
  *
+ * @csspart icon-container - The container for the checkbox icon.
+ * @csspart checkbox-icon - The checkbox icon.
+ *
+ * @slot - Default slot for adding label text.
  */
 class StaticCheckbox extends DisabledMixin(Component) {
   /**
@@ -49,7 +53,7 @@ class StaticCheckbox extends DisabledMixin(Component) {
       this.checked || this.indeterminate
         ? html`
             <mdc-icon
-              class="icon"
+              part="checkbox-icon"
               name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
               size="1"
               length-unit="rem"

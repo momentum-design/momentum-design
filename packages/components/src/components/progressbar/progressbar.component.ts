@@ -9,7 +9,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './progressbar.types';
-import { DEFAULTS, VARIANT } from './progressbar.constants';
+import { DEFAULTS, VARIANT, TAG_NAME as PROGRESSBAR_TAGNAME } from './progressbar.constants';
 import styles from './progressbar.styles';
 
 /**
@@ -38,6 +38,20 @@ import styles from './progressbar.styles';
  * @cssproperty --mdc-progressbar-label-font-size - Font size of the label text.
  * @cssproperty --mdc-progressbar-label-font-weight - Font weight of the label text.
  * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart gap - The gap between the label and the progressbar.
+ * @csspart inline-label-container - The container of the label in inline variant.
+ * @csspart label-container - The container of the label in inline variant.
+ * @csspart percentage - The container of the label in inline variant.
+ * @csspart progress-bar - The container of the label in inline variant.
+ * @csspart progress-container - The container of the label in inline variant.
+ * @csspart remaining - The container of the remaining progressbar portion.
  */
 class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
   /**
@@ -64,11 +78,11 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
    * - **false**
    * @default false
    */
-  @property({ type: Boolean, attribute: 'error' }) error = false;
+  @property({ type: Boolean }) error = false;
 
   override connectedCallback() {
     super.connectedCallback();
-    this.id = `mdc-progressbar-${uuidv4()}`;
+    this.id = `${PROGRESSBAR_TAGNAME}-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
     this.toggletipText = undefined as unknown as string;
     this.toggletipPlacement = undefined as unknown as PopoverPlacement;

@@ -85,8 +85,16 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
  * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart internal-native-input - The internal native input element of the combobox.
- * @csspart mdc-input - The input element of the combobox.
+ * @csspart input-text - The input element of the combobox.
  * @csspart no-result-text - The no result text element of the combobox.
  * @csspart combobox__base - The base container element of the combobox.
  * @csspart combobox__button - The button element of the combobox.
@@ -690,8 +698,7 @@ class Combobox
         ?disabled="${this.disabled}"
         .value="${live(this.filteredValue)}"
         autocomplete="${AUTO_COMPLETE.OFF}"
-        class="input"
-        part="mdc-input"
+        part="input-text"
         placeholder="${ifDefined(this.placeholder)}"
         role="${ROLE.COMBOBOX}"
         ?readonly="${this.readonly}"
@@ -781,7 +788,7 @@ class Combobox
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Input.styles, ...FormfieldWrapper.styles, ...styles];
 }
 
 export default Combobox;

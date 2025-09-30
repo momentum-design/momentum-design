@@ -3,6 +3,28 @@
 This guide summarizes the common attributes supported across a variety of
 components.
 
+### `readonly` vs `disabled` vs `soft-disabled`
+
+Three state attributes provide different levels of interactivity and accessibility.
+
+#### `readonly`
+- **Focusable**: ✅ Yes
+- **Visual styles**: Normal appearance (not dimmed)
+- **Interactions**: Cannot edit content. Focusing is possible.
+- **Screen Reader**: Fully accessible
+
+#### `disabled`
+- **Focusable**: ❌ No
+- **Visual styles**: Dimmed/grayed out
+- **Interactions**: No interactions are possible.
+- **Screen Reader**: Accessible but announced as "dimmed"
+
+#### `soft-disabled`
+- **Focusable**: ✅ Yes
+- **Visual styles**: Dimmed/grayed out
+- **Interactions**: Focusing is available, rest of the interactions are not possible.
+- **Screen Reader**: Fully accessible
+
 ### `auto-focus-on-mount` Attribute
 
 This attribute is a replacement for the native `autofocus` attribute and should

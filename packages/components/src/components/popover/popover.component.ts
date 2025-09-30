@@ -19,19 +19,55 @@ import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } 
 import { PopoverUtils } from './popover.utils';
 
 /**
- * Popover component is a lightweight floating UI element that displays additional content when triggered.
- * It can be used for tooltips, dropdowns, or contextual menus.
- * The popover automatically positions itself based on available space and
- * supports dynamic height adjustments with scrollable content when needed。
+ * Popover is genric overlay which can be trigered by any actinable element.
  *
- * Note:
- *  - A component (button) can trigger more than one popover, but only one of them should change the
- *    aria-expanded and aria-haspopup, the rest of the popovers must have `disable-aria-expanded` attribute.
+ * It can be used for tooltips, dropdowns, menus or any showing any other contextual content.
+ *
+ * The popover automatically positions itself based on available space and
+ * supports dynamic height adjustments with scrollable content when needed.
+ * It uses [Floating UI](https://floating-ui.com/) for maintaining the position of the popover.
+ *
+ * ## Limitations
+ *
+ * ### On trigger for multiple popovers
+ *
+ * A component (button, etc.) can trigger more than one popover, but only one of them should change the
+ * aria-expanded and aria-haspopup attributes on the trigger.
+ *
+ * To prevent unexpected attribute changes on the trigger `disable-aria-expanded` attribute must be set on all linked
+ * Popoers except one.
+ *
+ * ### React Popover with append-to attribute
+ *
+ * React mounts the popover based on the virtual DOM, but when the append-to attribute is set, the popover removes itself
+ * and mounts to the specified element. React will not know about the move and will not know about the
+ * newly created mdc-popoverportal element either. This throws a `NotFoundError` error when the Popover is directly
+ * added/removed by React, for example:
+ *
+ * ```tsx
+ * const SomeComponent = () => {
+ *    const [isOpen, setIsOpen] = useState(false);
+ *    return (<div>
+ *      {isOpen && <Popover append-to="some-element-id">...</mdc-popover>}
+ *    </div>);
+ * }
+ * ```
+ * As a workaround Popover need to wrap with any other element/component, for example:
+ * ```tsx
+ * const SomeComponent = () => {
+ *    const [isOpen, setIsOpen] = useState(false);
+ *    return (<div>
+ *      {isOpen && <div>
+ *        <Popover append-to="some-element-id">...</mdc-popover>
+ *      <div>}
+ *    </div>);
+ * }
+ * ```
+ * Note the wrapper <div> around the Popover component (React.Fragment does not work).
  *
  * @dependency mdc-button
  *
  * @tagname mdc-popover
- *
  *
  * @event shown - (React: onShown) This event is dispatched when the popover is shown
  * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden
@@ -52,6 +88,9 @@ import { PopoverUtils } from './popover.utils';
  *
  * @slot - Default slot for the popover content
  *
+ * @csspart popover-close - The close button of the popover.
+ * @csspart popover-content - The content of the popover.
+ * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
 class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component))) {
   /**
@@ -419,20 +458,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
   }
 
-  protected override async firstUpdated(changedProperties: PropertyValues) {
-    super.firstUpdated(changedProperties);
-
-    this.style.zIndex = `${this.zIndex}`;
-    this.utils.setupAppendTo();
-
-    PopoverEventManager.onCreatedPopover(this);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.setupTriggerListeners();
-  }
-
   private parseTrigger = () => {
     const triggers = this.trigger?.split(' ') || [];
     const validTriggers = triggers.filter(trigger =>
@@ -456,6 +481,21 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.trigger = newTrigger;
   };
 
+  protected override async firstUpdated(changedProperties: PropertyValues) {
+    super.firstUpdated(changedProperties);
+
+    PopoverEventManager.onCreatedPopover(this);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    this.style.zIndex = `${this.zIndex}`;
+    this.utils.setupAppendTo();
+
+    this.setupTriggerListeners();
+  }
+
   override async disconnectedCallback() {
     super.disconnectedCallback();
 
@@ -476,7 +516,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         this.connectedTooltip.shouldSuppressOpening = false;
       }
     }
-
+    this.utils.cleanupAppendTo();
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
   }
@@ -581,8 +621,12 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       this.setAttribute('z-index', `${this.zIndex}`);
     }
 
-    if (changedProperties.has('append-to')) {
-      this.utils.setupAppendTo();
+    if (changedProperties.has('appendTo')) {
+      if (this.appendTo) {
+        this.utils.setupAppendTo();
+      } else {
+        this.utils.cleanupAppendTo();
+      }
     }
 
     if (
@@ -954,7 +998,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
+      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
       if (this.arrowElement) {
         const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
@@ -997,10 +1041,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   public override render() {
     return html`
-      <div class="popover-hover-bridge"></div>
+      <div part="popover-hover-bridge"></div>
       ${this.closeButton
         ? html` <mdc-button
-            class="popover-close"
+            part="popover-close"
             prefix-icon="cancel-bold"
             variant="tertiary"
             size="20"
@@ -1008,7 +1052,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
             @click="${this.hide}"
           ></mdc-button>`
         : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
+      ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
       <div part="popover-content">
         <slot></slot>
       </div>

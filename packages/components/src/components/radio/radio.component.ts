@@ -40,6 +40,16 @@ import styles from './radio.styles';
  * @cssproperty --mdc-radio-control-active-disabled-background - color of the radio button when active and disabled
  * @cssproperty --mdc-radio-control-inactive-disabled-background - color of the radio button when inactive and disabled
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart radio-input - The native radio input element.
+ * @csspart text-container - The container for the label and helper text elements.
  */
 
 class Radio
@@ -274,7 +284,7 @@ class Radio
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="mdc-radio__label-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
@@ -287,6 +297,7 @@ class Radio
       >
         <input
           id="${this.inputId}"
+          part="radio-input"
           type="radio"
           role="${ROLE.RADIO}"
           ?autofocus="${this.autofocus}"
@@ -298,7 +309,6 @@ class Radio
           ?checked=${this.checked}
           ?readonly=${this.readonly}
           ?disabled=${this.disabled}
-          class="mdc-radio__input"
           aria-checked="${this.checked}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-label="${this.dataAriaLabel ?? ''}"
