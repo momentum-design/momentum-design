@@ -42,6 +42,7 @@ const setup = async (args: SetupOptions) => {
   return checkbox;
 };
 
+test.use({ viewport: { width: 800, height: 1600 } });
 test('mdc-checkbox', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
@@ -245,6 +246,32 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
 
       await checkbox.click();
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('checkbox should be focused but not change state when readonly', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label', readonly: true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(checkbox).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await checkbox.click({ force: true });
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('checkbox should be focused but not change state when soft-disabled', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label', 'soft-disabled': true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(checkbox).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await checkbox.click({ force: true });
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 

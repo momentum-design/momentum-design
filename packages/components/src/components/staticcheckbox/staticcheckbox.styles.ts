@@ -15,6 +15,7 @@ const styles = [
       --mdc-staticcheckbox-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-staticcheckbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
       --mdc-staticcheckbox-readonly-border-color: var(--mds-color-theme-outline-primary-normal);
+      --mdc-staticcheckbox-text-normal-color: var(--mds-color-theme-text-primary-normal);
     }
 
     :host([checked])::part(icon-container),
@@ -70,12 +71,13 @@ const styles = [
     }
 
     :host([readonly]) .icon {
-      --mdc-icon-fill-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-icon-fill-color: var(--mdc-staticcheckbox-text-normal-color);
     }
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host([checked])::part(icon-container) :host([indeterminate])::part(icon-container) {
+      :host([checked])::part(icon-container),
+      :host([indeterminate])::part(icon-container) {
         border: 0.0625rem solid var(--mdc-staticcheckbox-border-color);
       }
     }

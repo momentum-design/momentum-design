@@ -153,6 +153,32 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await expect(toggle).not.toHaveAttribute('checked');
     });
 
+    await test.step('toggle should be focused but not change state when readonly', async () => {
+      const toggle = await setup({ componentsPage, label: 'Toggle label', readonly: true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(toggle).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      await toggle.click({ force: true });
+      await expect(toggle).not.toHaveAttribute('checked');
+    });
+
+    await test.step('toggle should be focused but not change state when soft-disabled', async () => {
+      const toggle = await setup({ componentsPage, label: 'Toggle label', 'soft-disabled': true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(toggle).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      await toggle.click({ force: true });
+      await expect(toggle).not.toHaveAttribute('checked');
+    });
+
     await test.step('toggle should not be Focused or toggled when it is disabled', async () => {
       const toggle = await setup({ componentsPage, label: 'Toggle label', disabled: true });
 
