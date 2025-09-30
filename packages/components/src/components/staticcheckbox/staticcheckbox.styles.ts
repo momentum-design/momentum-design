@@ -59,18 +59,18 @@ const styles = [
       background-color: unset;
     }
 
-    .icon {
+    :host::part(checkbox-icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-icon-color);
     }
 
-    :host([disabled]) .icon,
-    :host([soft-disabled]) .icon,
-    :host([disabled][readonly]) .icon,
-    :host([soft-disabled][readonly]) .icon {
+    :host([disabled])::part(checkbox-icon),
+    :host([soft-disabled])::part(checkbox-icon),
+    :host([disabled][readonly])::part(checkbox-icon),
+    :host([soft-disabled][readonly])::part(checkbox-icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
     }
 
-    :host([readonly]) .icon {
+    :host([readonly])::part(checkbox-icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-text-normal-color);
     }
 

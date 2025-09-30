@@ -23,9 +23,9 @@ const styles = [
       --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
     }
     :host,
-    .input-container,
-    .input-section,
-    .input {
+    :host::part(input-container),
+    :host::part(input-section),
+    :host::part(input-text) {
       width: 100%;
     }
 
@@ -33,42 +33,42 @@ const styles = [
       font-family: inherit;
     }
 
-    :host .input-container:hover {
+    :host::part(input-container):hover {
       background-color: var(--mdc-input-hover-background-color);
     }
 
-    :host .input-container:active,
-    :host .input-container:focus-within {
+    :host::part(input-container):active,
+    :host::part(input-container):focus-within {
       background-color: var(--mdc-input-focused-background-color);
       border-color: var(--mdc-input-focused-border-color);
     }
 
-    :host([readonly]) .leading-icon {
+    :host([readonly])::part(leading-icon) {
       color: var(--mdc-input-support-text-color);
     }
 
-    :host([disabled]) .input,
-    :host([disabled]) .input::placeholder,
-    :host([disabled]) .prefix-text {
+    :host([disabled])::part(input-text),
+    :host([disabled]) input::placeholder,
+    :host([disabled])::part(prefix-text) {
       color: var(--mdc-input-disabled-text-color);
     }
 
-    :host([disabled]) .input-container,
-    :host([readonly]) .input-container,
-    :host([disabled][help-text-type='default']) .input-container,
-    :host([disabled][help-text-type='success']) .input-container,
-    :host([disabled][help-text-type='warning']) .input-container,
-    :host([disabled][help-text-type='error']) .input-container,
-    :host([disabled][help-text-type='priority']) .input-container {
+    :host([disabled])::part(input-container),
+    :host([readonly])::part(input-container),
+    :host([disabled][help-text-type='default'])::part(input-container),
+    :host([disabled][help-text-type='success'])::part(input-container),
+    :host([disabled][help-text-type='warning'])::part(input-container),
+    :host([disabled][help-text-type='error'])::part(input-container),
+    :host([disabled][help-text-type='priority'])::part(input-container) {
       border-color: var(--mdc-input-disabled-border-color);
       background: var(--mdc-input-disabled-background-color);
     }
 
-    .leading-icon {
+    :host::part(leading-icon) {
       aspect-ratio: 1;
     }
 
-    .input-container {
+    :host::part(input-container) {
       height: 2rem;
       border-radius: 0.5rem;
       border: 0.0625rem solid var(--mdc-input-border-color);
@@ -79,46 +79,46 @@ const styles = [
       min-width: 3.25rem;
     }
 
-    .input-section {
+    :host::part(input-section) {
       display: flex;
       gap: 0.25rem;
     }
 
-    .input {
+    :host::part(input-text) {
       border: none;
       color: var(--mdc-input-text-color);
       background-color: var(--mdc-input-background-color);
       outline: none;
     }
 
-    .input::selection {
+    input::selection {
       background-color: var(--mdc-input-selection-background-color);
       color: var(--mdc-input-selection-text-color);
     }
 
-    .prefix-text {
+    :host::part(prefix-text) {
       color: var(--mdc-input-support-text-color);
       white-space: nowrap; /* restrict prefix text to be in one line */
     }
 
-    .input::placeholder {
+    input::placeholder {
       color: var(--mdc-input-support-text-color);
     }
 
-    :host([help-text-type='error']) .input-container,
-    :host([help-text-type='error']) .input-container:focus-within {
+    :host([help-text-type='error'])::part(input-container),
+    :host([help-text-type='error'])::part(input-container):focus-within {
       border-color: var(--mdc-input-error-border-color);
     }
-    :host([help-text-type='warning']) .input-container,
-    :host([help-text-type='warning']) .input-container:focus-within {
+    :host([help-text-type='warning'])::part(input-container),
+    :host([help-text-type='warning'])::part(input-container):focus-within {
       border-color: var(--mdc-input-warning-border-color);
     }
-    :host([help-text-type='success']) .input-container,
-    :host([help-text-type='success']) .input-container:focus-within {
+    :host([help-text-type='success'])::part(input-container),
+    :host([help-text-type='success'])::part(input-container):focus-within {
       border-color: var(--mdc-input-success-border-color);
     }
-    :host([help-text-type='priority']) .input-container,
-    :host([help-text-type='priority']) input-container:focus-within {
+    :host([help-text-type='priority'])::part(input-container),
+    :host([help-text-type='priority'])::part(input-container):focus-within {
       border-color: var(--mdc-input-primary-border-color);
     }
 

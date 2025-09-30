@@ -35,6 +35,11 @@ import type { ToggleSize } from './statictoggle.types';
  * @cssproperty --mdc-statictoggle-icon-color-disabled - Color of the icon in disabled state
  * @cssproperty --mdc-statictoggle-icon-background-color-normal - Background color of the icon in normal state
  * @cssproperty --mdc-statictoggle-icon-background-color-disabled - Background color of the icon in disabled state
+ *
+ * @csspart slider - The slider part of the toggle
+ * @csspart toggle-icon - The icon part of the toggle
+ *
+ * @slot - Default slot for adding label text.
  */
 class StaticToggle extends DisabledMixin(Component) {
   /**
@@ -71,7 +76,7 @@ class StaticToggle extends DisabledMixin(Component) {
       <div part="slider">
         <mdc-icon
           name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
-          class="icon"
+          part="toggle-icon"
           length-unit="rem"
           size="${ICON_SIZE_IN_REM[this.size]}"
         ></mdc-icon>

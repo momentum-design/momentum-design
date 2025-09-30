@@ -46,6 +46,17 @@ import type { ToggleSize } from './toggle.types';
  * @cssproperty --mdc-toggle-active-pressed-color - Background color of the active toggle in pressed state
  * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
  * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart container - The container element that wraps the toggle input.
+ * @csspart toggle-input - The native checkbox input element styled as a toggle switch.
  */
 class Toggle
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))

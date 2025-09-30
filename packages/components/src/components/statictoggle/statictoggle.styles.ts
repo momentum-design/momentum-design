@@ -51,22 +51,22 @@ const styles = [
       border-radius: var(--mdc-statictoggle-border-radius-compact);
     }
 
-    .icon {
+    :host::part(toggle-icon) {
       padding: 0.25rem;
       --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-normal);
       background-color: var(--mdc-statictoggle-icon-background-color-normal);
       border-radius: 50%;
     }
 
-    :host([disabled]) .icon,
-    :host([soft-disabled]) .icon,
-    :host([disabled][readonly]) .icon,
-    :host([soft-disabled][readonly]) .icon {
+    :host([disabled])::part(toggle-icon),
+    :host([soft-disabled])::part(toggle-icon),
+    :host([disabled][readonly])::part(toggle-icon),
+    :host([soft-disabled][readonly])::part(toggle-icon) {
       --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-disabled);
       background-color: var(--mdc-statictoggle-icon-background-color-disabled);
     }
 
-    :host([size='compact']) .icon {
+    :host([size='compact'])::part(toggle-icon) {
       padding: 0.125rem;
     }
 
@@ -85,7 +85,7 @@ const styles = [
       border-color: transparent;
     }
 
-    :host([readonly]) .icon {
+    :host([readonly])::part(toggle-icon) {
       background-color: var(--mdc-statictoggle-icon-background-color-normal);
     }
 
@@ -97,8 +97,11 @@ const styles = [
     /* High Contrast Mode */
     @media (forced-colors: active) {
       :host([checked])::part(slider),
-      .icon {
+      :host::part(toggle-icon) {
         border: var(--mdc-statictoggle-border);
+      }
+      :host::part(toggle-icon) {
+        --mdc-icon-fill-color: CanvasText;
       }
     }
   `,

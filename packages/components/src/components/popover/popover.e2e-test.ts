@@ -1283,6 +1283,7 @@ test('mdc-popover', async ({ componentsPage }) => {
 
       await expect(popover.evaluate(node => node.parentElement?.id)).resolves.toBe('root');
       await expect(container.locator('mdc-popoverportal')).toHaveCount(1);
+      await expect(container.locator('mdc-popoverportal')).not.toBeVisible();
 
       await componentsPage.page.evaluate(async () => {
         const w = window as typeof window & Utils;
@@ -1305,6 +1306,7 @@ test('mdc-popover', async ({ componentsPage }) => {
 
       await expect(popover.evaluate(node => node.parentElement?.id)).resolves.toBe('root');
       await expect(container.locator('mdc-popoverportal')).toHaveCount(1);
+      await expect(container.locator('mdc-popoverportal')).not.toBeVisible();
 
       await componentsPage.page.evaluate(() => {
         const w = window as typeof window & Utils;

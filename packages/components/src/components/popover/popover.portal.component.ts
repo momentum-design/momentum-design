@@ -28,6 +28,7 @@ export class PopoverPortal extends Component {
     super.connectedCallback();
     // We don't want the portal to be focusable or visible for screen readers
     this.ariaHidden = 'true';
+    this.style.display = 'none';
   }
 
   /**

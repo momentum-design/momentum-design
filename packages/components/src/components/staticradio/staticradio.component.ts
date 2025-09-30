@@ -26,6 +26,10 @@ import styles from './staticradio.styles';
  * @cssproperty --mdc-staticradio-control-active-color - color of the radio button when active
  * @cssproperty --mdc-staticradio-control-active-disabled-background - background color of the radio button
  *  when active and disabled
+ *
+ * @csspart radio-icon - The radio icon.
+ *
+ * @slot - Default slot for the label of the radio.
  */
 class StaticRadio extends DisabledMixin(Component) {
   /**
@@ -51,7 +55,7 @@ class StaticRadio extends DisabledMixin(Component) {
 
   public override render() {
     return html` <slot></slot>
-      <span part="radio-icon" class="icon"></span>`;
+      <span part="radio-icon" class="radio-icon"></span>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
