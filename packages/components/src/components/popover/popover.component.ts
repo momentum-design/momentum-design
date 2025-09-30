@@ -998,7 +998,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
+      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
       if (this.arrowElement) {
         const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
@@ -1052,7 +1052,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
             @click="${this.hide}"
           ></mdc-button>`
         : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
+      ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
       <div part="popover-content">
         <slot></slot>
       </div>

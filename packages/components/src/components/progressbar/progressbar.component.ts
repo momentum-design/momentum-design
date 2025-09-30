@@ -39,6 +39,12 @@ import styles from './progressbar.styles';
  * @cssproperty --mdc-progressbar-label-font-weight - Font weight of the label text.
  * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart gap - The gap between the label and the progressbar.
  * @csspart inline-label-container - The container of the label in inline variant.
  * @csspart label-container - The container of the label in inline variant.

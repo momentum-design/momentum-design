@@ -43,6 +43,7 @@ import type { ToastVariant } from './toast.types';
  * @csspart footer - The container for the toast's footer, including toggle and action buttons.
  * @csspart footer-button-toggle - The toggle button for showing/hiding detailed content.
  * @csspart toast-close-btn - The close button for the toast.
+ * @csspart has-footer-buttons - Applied to the footer when it contains buttons or a toggle button.
  *
  * @cssproperty --mdc-toast-background-color - Background color of the toast.
  * @cssproperty --mdc-toast-border-color - Border color of the toast.
@@ -191,7 +192,7 @@ class Toast extends FooterMixin(Component) {
   protected override renderFooter() {
     this.updateFooterButtonsPresence();
     return html` <slot name="footer">
-      <div part="footer" class="${this.hasFooterButtons}">
+      <div part="footer ${this.hasFooterButtons}">
         ${this.renderToggleDetailButton()}
         <slot
           name="footer-button-secondary"

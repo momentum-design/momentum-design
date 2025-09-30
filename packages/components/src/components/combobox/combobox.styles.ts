@@ -75,7 +75,7 @@ const styles = css`
   :host([disabled])::part(combobox__button) {
     border-left: 1px solid var(--mdc-combobox-text-color-disabled);
   }
-  :host::part(mdc-input) {
+  :host::part(input-text) {
     width: calc(100% - 1.5rem);
   }
   :host::part(combobox__button-icon) {

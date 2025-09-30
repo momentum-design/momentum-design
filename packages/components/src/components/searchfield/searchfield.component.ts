@@ -25,6 +25,14 @@ import { DEFAULTS } from './searchfield.constants';
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
  * @slot filters - Slot for input chips
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart leading-icon - The leading icon element that is displayed before the input field.
+ * @csspart input-container - The container for the input field, leading icon, prefix text, and trailing button elements.
+ * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
+ * @csspart input-text - The input field element.
+ * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  */
 class Searchfield extends Input {
   @queryAssignedElements({ slot: 'filters' })
@@ -107,7 +115,6 @@ class Searchfield extends Input {
       ${this.renderLabelElement()}
       <div
         class="${classMap({
-          'input-container': true,
           'mdc-focus-ring': this.isInputFocused,
         })}"
         part="input-container"
