@@ -67,7 +67,13 @@ const testToRun = async ({
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations(`control-type-provider-${type}`, true);
+    let testResultName;
+    if (nestedControlType) {
+      testResultName = `control-type-provider-${type}-${nestedControlType}-in-${controlType}`;
+    } else {
+      testResultName = `control-type-provider-${type}-${controlType}`;
+    }
+    await componentsPage.accessibility.checkForA11yViolations(testResultName, true);
   });
 
   /**
@@ -75,8 +81,12 @@ const testToRun = async ({
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      const screenshotName = `mdc-controltypeprovider-${type}`;
-
+      let screenshotName;
+      if (nestedControlType) {
+        screenshotName = `mdc-controltypeprovider-${type}-${nestedControlType}-in-${controlType}`;
+      } else {
+        screenshotName = `mdc-controltypeprovider-${type}-${controlType}`;
+      }
       await componentsPage.visualRegression.takeScreenshot(screenshotName);
     });
   });
