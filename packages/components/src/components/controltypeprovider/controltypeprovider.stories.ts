@@ -19,9 +19,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-controltypeprovider',
   render,
-  parameters: {
-    badges: ['stable'],
-  },
   argTypes: {
     'control-type': {
       control: 'select',

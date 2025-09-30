@@ -11,7 +11,10 @@ import { DEFAULTS, VALID_VALUES } from './controltypeprovider.constants';
  * (see `providerUtils.consume` for how to consume)
  *
  * attribute 'control-type' sets the default control type for all consumers
+    - 'controlled' the consumer component will not handle any interaction itself, e.g. toggling a checkbox.
+    - 'uncontrolled' the consumer component will handle interactions
  *
+ * ControlTypeMixin allows components to consume this context
  * note that this is intended to be set once, ControlTypeMixin will not update on changes to control-type
  *
  * @tagname mdc-controltypeprovider

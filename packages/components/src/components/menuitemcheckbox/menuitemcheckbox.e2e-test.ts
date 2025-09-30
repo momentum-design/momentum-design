@@ -56,7 +56,7 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
    * FUNCTIONALITY
    */
 
-  type TestFunctonalityOptions = {
+  type TestFunctionalityOptions = {
     controlType: string | undefined;
     expectedControlType: ControlType;
     providedControlType?: ControlType;
@@ -68,7 +68,7 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     expectedControlType,
     providedControlType,
     testAllFunctionality = false,
-  }: TestFunctonalityOptions) => {
+  }: TestFunctionalityOptions) => {
     const expectChecked = async (checkbox: Locator) => {
       await expect(checkbox).toHaveAttribute('aria-checked', 'true');
       await expect(checkbox).toHaveAttribute('checked', '');
