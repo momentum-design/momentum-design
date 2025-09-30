@@ -274,7 +274,7 @@ class Radio
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="mdc-radio__label-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
@@ -287,6 +287,7 @@ class Radio
       >
         <input
           id="${this.inputId}"
+          part="radio-input"
           type="radio"
           role="${ROLE.RADIO}"
           ?autofocus="${this.autofocus}"
@@ -298,7 +299,6 @@ class Radio
           ?checked=${this.checked}
           ?readonly=${this.readonly}
           ?disabled=${this.disabled}
-          class="mdc-radio__input"
           aria-checked="${this.checked}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-label="${this.dataAriaLabel ?? ''}"

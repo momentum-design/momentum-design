@@ -1128,4 +1128,192 @@ test('mdc-popover', async ({ componentsPage }) => {
       });
     });
   });
+
+  /**
+   * DYNAMIC CONTENT
+   */
+  await test.step('popover handle dynamic content changes', async () => {
+    await componentsPage.mount({
+      html: `<div id="root">
+            <div id="container"></div>
+        </div>`,
+      clearDocument: true,
+    });
+
+    type Utils = {
+      $: (id: string) => HTMLElement;
+      wait: (ms: number) => Promise<void>;
+      rmById: (id: string) => void;
+      createPopover: (attrs?: Record<string, string>) => void;
+      createTrigger: () => void;
+      init: () => void;
+    };
+
+    // Prepare script to add popover and trigger dynamically
+    await componentsPage.page.evaluate(async () => {
+      const w = window as typeof window & Utils;
+
+      w.$ = id => document.getElementById(id)!;
+
+      w.wait = (ms: number) =>
+        new Promise(resolve => {
+          setTimeout(resolve, ms);
+        });
+
+      w.rmById = (id: string) => {
+        const el = w.$(id);
+        if (el && el.parentNode) {
+          el.parentNode.removeChild(el);
+        }
+      };
+
+      w.createPopover = (attrs = {}) => {
+        const container = w.$('container');
+        if (container) {
+          const popover = document.createElement('mdc-popover');
+          popover.setAttribute('id', 'runtime-popover');
+          popover.setAttribute('triggerid', 'runtime-trigger');
+          Object.entries(attrs).forEach(([key, value]) => {
+            popover.setAttribute(key, value);
+          });
+          popover.innerHTML = 'Runtime Popover Content';
+          container.appendChild(popover);
+        }
+      };
+
+      w.createTrigger = () => {
+        const container = w.$('container');
+        if (container) {
+          const trigger = document.createElement('mdc-button');
+          trigger.setAttribute('id', 'runtime-trigger');
+          trigger.textContent = 'Runtime Trigger';
+          container.appendChild(trigger);
+        }
+      };
+
+      w.init = () => {
+        w.$('root').innerHTML = `<div id="container"></div>`;
+      };
+    });
+
+    const container = componentsPage.page.locator('#container');
+    const popover = componentsPage.page.locator('#runtime-popover');
+    const trigger = componentsPage.page.locator('#runtime-trigger');
+
+    await test.step('popover created befor trigger', async () => {
+      await componentsPage.page.evaluate(async () => {
+        const w = window as typeof window & Utils;
+        w.init();
+
+        w.createPopover();
+        await w.wait(100);
+        w.createTrigger();
+      });
+
+      // Wait for the trigger to be available
+      await expect(trigger).toBeVisible();
+
+      // Click the trigger to open the popover
+      await trigger.click();
+      await expect(popover).toBeVisible();
+
+      // Click the trigger again to close the popover
+      await trigger.click();
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('Remove and re-create popover', async () => {
+      await componentsPage.page.evaluate(async () => {
+        const w = window as typeof window & Utils;
+
+        w.init();
+
+        w.createTrigger();
+        w.createPopover();
+        w.rmById('runtime-popover');
+        await w.wait(100);
+        w.createPopover();
+      });
+
+      // Wait for the trigger to be available
+      await expect(trigger).toBeVisible();
+
+      // Click the trigger to open the popover
+      await trigger.click();
+      await expect(popover).toBeVisible();
+
+      // Click the trigger again to close the popover
+      await trigger.click();
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('Remove and re-create trigger', async () => {
+      await componentsPage.page.evaluate(async () => {
+        const w = window as typeof window & Utils;
+
+        w.init();
+
+        w.createTrigger();
+        w.createPopover();
+        w.rmById('runtime-trigger');
+        await w.wait(100);
+        w.createTrigger();
+      });
+
+      // Wait for the trigger to be available
+      await expect(trigger).toBeVisible();
+
+      // Click the trigger to open the popover
+      await trigger.click();
+      await expect(popover).toBeVisible();
+
+      // Click the trigger again to close the popover
+      await trigger.click();
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('Append to attribute mount and unmount the popover correctly', async () => {
+      await componentsPage.page.evaluate(async () => {
+        const w = window as typeof window & Utils;
+
+        w.init();
+        w.createTrigger();
+        w.createPopover({ 'append-to': 'root' });
+      });
+
+      await expect(popover.evaluate(node => node.parentElement?.id)).resolves.toBe('root');
+      await expect(container.locator('mdc-popoverportal')).toHaveCount(1);
+
+      await componentsPage.page.evaluate(async () => {
+        const w = window as typeof window & Utils;
+
+        w.rmById('container');
+      });
+
+      await expect(popover).toHaveCount(0);
+      await expect(container.locator('mdc-popoverportal')).toHaveCount(0);
+    });
+
+    await test.step('Removing of appended popover will remove the corresponding portal element as well', async () => {
+      await componentsPage.page.evaluate(() => {
+        const w = window as typeof window & Utils;
+
+        w.init();
+        w.createTrigger();
+        w.createPopover({ 'append-to': 'root' });
+      });
+
+      await expect(popover.evaluate(node => node.parentElement?.id)).resolves.toBe('root');
+      await expect(container.locator('mdc-popoverportal')).toHaveCount(1);
+
+      await componentsPage.page.evaluate(() => {
+        const w = window as typeof window & Utils;
+
+        w.rmById('runtime-popover');
+      });
+
+      await expect(popover).toHaveCount(0);
+      await expect(container.locator('mdc-popoverportal')).toHaveCount(0);
+    });
+  });
 });
