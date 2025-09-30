@@ -168,7 +168,7 @@ class Checkbox
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (this.readonly || this.softDisabled) {
+    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
       event.preventDefault();
     }
 

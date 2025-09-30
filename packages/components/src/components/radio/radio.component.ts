@@ -227,7 +227,7 @@ class Radio
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.disabled) return;
 
-    if (this.readonly || this.softDisabled) {
+    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
       event.preventDefault();
     }
 
