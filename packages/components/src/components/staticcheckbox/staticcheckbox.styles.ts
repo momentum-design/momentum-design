@@ -43,11 +43,11 @@ const styles = [
       border-radius: 0.125rem;
     }
 
-    :host::part(icon) {
+    :host::part(checkbox-icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-icon-color);
     }
 
-    :host([disabled])::part(icon) {
+    :host([disabled])::part(checkbox-icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
     }
 
