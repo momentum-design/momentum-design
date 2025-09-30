@@ -43,17 +43,18 @@ const styles = [
       border-radius: 0.125rem;
     }
 
-    .icon {
+    :host::part(icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-icon-color);
     }
 
-    :host([disabled]) .icon {
+    :host([disabled])::part(icon) {
       --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
     }
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host([checked])::part(icon-container) :host([indeterminate])::part(icon-container) {
+      :host([checked])::part(icon-container),
+      :host([indeterminate])::part(icon-container) {
         border: 0.0625rem solid var(--mdc-staticcheckbox-border-color);
       }
     }
