@@ -20,7 +20,7 @@ type SetupOptions = {
   delay?: string;
   zIndex?: number;
   visible?: boolean;
-  offset?: boolean;
+  offset?: number;
   interactive?: boolean;
   focusTrap?: boolean;
   showArrow?: boolean;
