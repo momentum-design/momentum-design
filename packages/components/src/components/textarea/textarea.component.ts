@@ -63,7 +63,18 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
  * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart character-counter - The character counter element that is displayed when the `max-character-limit` property is set.
+ * @csspart textarea-footer - The container for the help text and character counter elements.
  * @csspart textarea-container - The textarea container
+ * @csspart textarea - The textarea field element.
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
