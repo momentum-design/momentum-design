@@ -57,7 +57,7 @@ export class PopoverUtils {
    * @param placement - The placement of the popover.
    */
   setupHoverBridge(placement: string) {
-    const hoverBridge = this.popover.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
+    const hoverBridge = this.popover.renderRoot.querySelector('div[part="popover-hover-bridge"]') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
       left: '',

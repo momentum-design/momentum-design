@@ -83,7 +83,7 @@ const getMdcElementMap = (customElementsManifest: CustomElementPackage): MdcElem
         {
           name,
           tagName,
-          attrs: mapKeys(keyBy(attributes, "name"), (v: unknown, k: string) => k.toLowerCase()),
+          attrs: mapKeys(keyBy(attributes, "name"), (_: unknown, k: string) => k.toLowerCase()),
         },
       ]),
   );
@@ -96,18 +96,13 @@ const getMdcElementMap = (customElementsManifest: CustomElementPackage): MdcElem
  * - empty style attributes for non-MDC elements
  * @param node
  * @param mdcElements
- * @param callback
  */
-const cleanAstHtmlAttributes = (
-  node: HtmlAst,
-  mdcElements: MdcElementMap,
-  callback?: AstTransformerOptions["componentImportCallback"],
-) => {
+const cleanAstHtmlAttributes = (node: HtmlAst, mdcElements: MdcElementMap) => {
   const usedElements = new Set<string>();
   const clean = (node: HtmlAst) => {
     const mdcElement = mdcElements[node.name]!;
     if (mdcElement) {
-      usedElements.add(mdcElement.tagName.replace(/^.*?-/, ""));
+      usedElements.add(mdcElement.tagName);
       if (node.attrs) {
         const mdcAttrs = mdcElement.attrs || {};
         node.attrs = node.attrs.reduce((attrs, attr: HtmlParserAttrs) => {
@@ -145,15 +140,9 @@ const cleanAstHtmlAttributes = (
 
   clean(node);
 
-  if (callback) {
-    callback(
-      Array.from(usedElements)
-        .sort()
-        .map((c) => `import '@momentum-design/components/dist/components/${c}/index.js';`)
-        .join("\n"),
-    );
-  }
-  return node;
+  const importedComponents = Array.from(usedElements).sort();
+
+  return { importedComponents, ast: node };
 };
 
 /**
@@ -164,17 +153,25 @@ const cleanAstHtmlAttributes = (
  * @param transformerOptions
  */
 const htmlAstLitTransformer: AstTransformer =
-  (transformerOptions) =>
+  ({ customElementsManifest, componentImportCallback }) =>
   async (originalParser, ...options) => {
     const result = await originalParser(...options);
 
-    if (!transformerOptions.customElementsManifest) {
+    if (!customElementsManifest) {
       return result;
     }
 
-    const mdcElements = getMdcElementMap(transformerOptions.customElementsManifest);
+    const mdcElements = getMdcElementMap(customElementsManifest);
 
-    cleanAstHtmlAttributes(result, mdcElements, transformerOptions.componentImportCallback);
+    const { importedComponents } = cleanAstHtmlAttributes(result, mdcElements);
+
+    if (componentImportCallback) {
+      componentImportCallback(
+        importedComponents
+          .map((c) => `import '@momentum-design/components/dist/components/${c.replace(/^.*?-/, "")}/index.js';`)
+          .join(`\n`),
+      );
+    }
 
     return result;
   };
@@ -184,22 +181,14 @@ const htmlAstLitTransformer: AstTransformer =
  *
  * @param node
  * @param mdcElements
- * @param callback
  */
 
-const reactifyCustomElements = (
-  node: HtmlAst,
-  mdcElements: MdcElementMap,
-  callback?: AstTransformerOptions["componentImportCallback"],
-) => {
-  const usedElements = new Set<string>();
-
+const reactifyCustomElements = (node: HtmlAst, mdcElements: MdcElementMap) => {
   const transform = (node: HtmlAst) => {
     const mdcElement = mdcElements[node.name];
     if (node.name && mdcElement) {
       const mdcAttrs = mdcElement.attrs;
       node.name = mdcElement.name;
-      usedElements.add(mdcElement.name);
       node.attrs?.forEach((attr: HtmlParserAttrs) => {
         if (mdcAttrs[attr.name.toLowerCase()]) {
           attr.name = mdcAttrs[attr.name]!.fieldName ?? attr.name;
@@ -221,11 +210,6 @@ const reactifyCustomElements = (
   };
 
   transform(node);
-
-  if (callback) {
-    const imports = Array.from(usedElements).sort().join(",");
-    callback(`import { ${imports} } from '@momentum-design/components/dist/react';`);
-  }
 };
 
 /**
@@ -234,17 +218,22 @@ const reactifyCustomElements = (
  * @param transformerOptions
  */
 const reactHtmlAstTransformer: AstTransformer =
-  (transformerOptions) =>
+  ({ customElementsManifest, componentImportCallback }) =>
   async (originalParser, ...options) => {
     const result = await originalParser(...options);
 
-    if (!transformerOptions.customElementsManifest) {
+    if (!customElementsManifest) {
       return result;
     }
-    const mdcElements = getMdcElementMap(transformerOptions.customElementsManifest);
+    const mdcElements = getMdcElementMap(customElementsManifest);
 
-    cleanAstHtmlAttributes(result, mdcElements);
-    reactifyCustomElements(result, mdcElements, transformerOptions.componentImportCallback);
+    const { importedComponents } = cleanAstHtmlAttributes(result, mdcElements);
+    reactifyCustomElements(result, mdcElements);
+
+    if (componentImportCallback) {
+      const imports = importedComponents.map((c) => mdcElements[c]!.name).join(",");
+      componentImportCallback(`import { ${imports} } from '@momentum-design/components/dist/react';`);
+    }
     return result;
   };
 
