@@ -104,7 +104,7 @@ class MenuItem extends ListItem {
    */
   override handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER) {
-      this.triggerClickEvent();
+      this.triggerClickEvent(event);
       event.preventDefault();
     }
   }
@@ -123,7 +123,7 @@ class MenuItem extends ListItem {
    */
   private handleKeyUp(event: KeyboardEvent): void {
     if (event.key === KEYS.SPACE) {
-      this.triggerClickEvent();
+      this.triggerClickEvent(event);
       event.preventDefault();
     }
   }

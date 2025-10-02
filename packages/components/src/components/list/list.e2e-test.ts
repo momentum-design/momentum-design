@@ -270,7 +270,7 @@ test('mdc-list', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(componentsPage.page.locator('#add-item-button')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
         await list.locator('mdc-listitem[label="Button List Item"]').waitFor();
 
         await componentsPage.actionability.pressShiftTab();
@@ -395,6 +395,103 @@ test('mdc-list', async ({ componentsPage }) => {
       await expect(componentsPage.page.locator('mdc-button')).toBeFocused();
       await componentsPage.actionability.pressShiftTab();
       await expect(listitems.nth(2)).toBeFocused();
+    });
+  });
+
+  await test.step('should keep the focus on interactive elements inside list items', async () => {
+    const testSteps = async (html: string) => {
+      await componentsPage.mount({
+        html,
+        clearDocument: true,
+      });
+
+      const list = componentsPage.page.locator('mdc-list');
+      await list.waitFor();
+      const listItems = list.locator('mdc-listitem');
+
+      await componentsPage.actionability.pressTab();
+      await expect(listItems.first()).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+
+      const firstInteractive = listItems.first().locator('mdc-button');
+      await expect(firstInteractive).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(firstInteractive).toBeFocused();
+
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [listItems.nth(1)]);
+      await componentsPage.actionability.pressTab();
+
+      const secondInteractive = listItems.nth(1).locator('mdc-toggle');
+      await expect(secondInteractive).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+      await expect(secondInteractive).toBeFocused();
+      await expect(secondInteractive).toHaveAttribute('checked');
+
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [listItems.nth(2)]);
+      await componentsPage.actionability.pressTab();
+
+      const thirdInteractive = listItems.nth(2).locator('mdc-button');
+      await expect(thirdInteractive).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      const menuItem = listItems.nth(2).locator('mdc-menuitem');
+      await expect(menuItem).toBeFocused();
+      await menuItem.click();
+
+      await expect(thirdInteractive).toBeFocused();
+    };
+
+    await test.step('when stock list item used', async () => {
+      await testSteps(`<mdc-list>
+        <mdc-listitem label="List item with button">
+          List item with button
+          <mdc-button slot="trailing-controls" variant="secondary">Action</mdc-button>
+        </mdc-listitem>
+        <mdc-listitem label="List item with toggle">
+          List item with toggle
+          <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+        </mdc-listitem>
+        <mdc-listitem label="List item with badge">
+          List item with menu
+          <div slot="trailing-controls">
+            <mdc-button id="copy-menu-trigger-1" variant="secondary" prefix-icon="more-bold"></mdc-button>
+            <mdc-menupopover triggerID="copy-menu-trigger-1" placement="bottom" show-arrow>
+              <mdc-menuitem label="Copy"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        </mdc-listitem>
+      </mdc-list>
+      `);
+    });
+
+    await test.step('when list item with custom content used', async () => {
+      await testSteps(`
+        <mdc-list>
+          <mdc-listitem label="List item with button">
+            <div slot="content">
+              List item with button
+              <mdc-button slot="trailing-controls" variant="secondary">Action</mdc-button>
+            </div>
+          </mdc-listitem>
+          <mdc-listitem label="List item with toggle">
+            <div slot="content">
+              List item with toggle
+              <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+            </div>
+          </mdc-listitem>
+          <mdc-listitem label="List item with badge">
+            <div slot="content">
+              List item with menu
+              <div slot="trailing-controls">
+                <mdc-button id="copy-menu-trigger-2" variant="secondary" prefix-icon="more-bold"></mdc-button>
+                <mdc-menupopover triggerID="copy-menu-trigger-2" placement="bottom" show-arrow>
+                  <mdc-menuitem label="Copy"></mdc-menuitem>
+                </mdc-menupopover>
+              </div>
+            </div>
+          </mdc-listitem>
+        </mdc-list>
+       `);
     });
   });
 });
