@@ -11,6 +11,7 @@ import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 import { withIllustrationProvider } from './provider/illustrationProvider';
 import { withCssPropertyProvider } from './provider/cssPropertyProvider';
+import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
@@ -48,10 +49,18 @@ function refactorCustomElements(customElements) {
           name: `Event Name: "${event.name}"`,
         }));
 
+      const mappedSlots = declaration.slots?.map(slot =>
+        slot.name === 'default' ? slot : { ...slot, name: `Slot Name: "${slot.name}"` },
+      );
       const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap
       const filteredMembers = declaration.members?.filter?.(member => !attributesMap.has(member.name)) ?? [];
-      Object.assign(declaration, { members: filteredMembers, cssParts: mappedParts, events: mappedEvents });
+      Object.assign(declaration, {
+        members: filteredMembers,
+        cssParts: mappedParts,
+        events: mappedEvents,
+        slots: mappedSlots,
+      });
     });
   });
 
@@ -140,7 +149,13 @@ const preview = {
     },
     direction: 'ltr',
   },
-  decorators: [withCssPropertyProvider(cssProperties), withThemeProvider, withIconProvider, withIllustrationProvider],
+  decorators: [
+    storyDescription,
+    withCssPropertyProvider(cssProperties),
+    withThemeProvider,
+    withIconProvider,
+    withIllustrationProvider,
+  ],
   globalTypes: {
     theme: {
       description: 'Global theme for components',
