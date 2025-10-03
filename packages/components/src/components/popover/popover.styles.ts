@@ -71,7 +71,7 @@ const styles = css`
     pointer-events: auto;
   }
 
-  .popover-arrow {
+  :host::part(popover-arrow) {
     position: absolute;
     width: 1rem;
     height: 1rem;

@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import type { IconNames } from '../icon/icon.types';
 
 const TAG_NAME = utils.constructTagName('badge');
 
@@ -12,25 +13,14 @@ const TYPE = {
 } as const;
 
 const ICON_NAMES_LIST = {
-  SUCCESS_ICON_NAME: 'check-circle-badge-filled',
-  WARNING_ICON_NAME: 'warning-badge-filled',
-  ERROR_ICON_NAME: 'error-legacy-badge-filled',
+  SUCCESS_ICON_NAME: 'check-circle-badge-filled' as Extract<IconNames, 'check-circle-badge-filled'>,
+  WARNING_ICON_NAME: 'warning-badge-filled' as Extract<IconNames, 'warning-badge-filled'>,
+  ERROR_ICON_NAME: 'error-legacy-badge-filled' as Extract<IconNames, 'error-legacy-badge-filled'>,
 } as const;
 
 const ICON_VARIANT = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
-} as const;
-
-const ICON_STATE = {
-  SUCCESS: 'success',
-  WARNING: 'warning',
-  ERROR: 'error',
-} as const;
-
-const BACKGROUND_STYLES = {
-  ...ICON_VARIANT,
-  ...ICON_STATE,
 } as const;
 
 const DEFAULTS = {
@@ -41,4 +31,4 @@ const DEFAULTS = {
   ICON_SIZE: 1,
 } as const;
 
-export { TAG_NAME, DEFAULTS, TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST, BACKGROUND_STYLES };
+export { TAG_NAME, DEFAULTS, TYPE, ICON_VARIANT, ICON_NAMES_LIST };

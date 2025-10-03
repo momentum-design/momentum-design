@@ -580,6 +580,12 @@ export const AppendTo: StoryObj = {
           overflow: hidden;
           position: relative;
         }
+        .hover-menu {
+          display: flex;
+        }
+        .hover-menu > * {
+          flex: 1 1 50%;
+        }
       </style>
       <template id="menu-without-append-to-tpl">
         <mdc-button id="popover-trigger-1">Open popover in the #root</mdc-button>

@@ -533,7 +533,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       document.addEventListener('click', this.togglePopoverVisible, { capture: true });
     }
     if (this.trigger.includes('mouseenter')) {
-      const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
+      const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
       hoverBridge?.addEventListener('mouseenter', this.show);
       document.addEventListener('mouseenter', this.handleMouseEnter, { capture: true });
       document.addEventListener('mouseleave', this.handleMouseLeave, { capture: true });
@@ -555,7 +555,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     // click trigger
     document.removeEventListener('click', this.togglePopoverVisible, { capture: true });
     // mouseenter trigger
-    const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
+    const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
     hoverBridge?.removeEventListener('mouseenter', this.show);
     document.removeEventListener('mouseenter', this.handleMouseEnter, { capture: true });
     document.removeEventListener('mouseleave', this.handleMouseLeave, { capture: true });
@@ -998,7 +998,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
+      this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
       if (this.arrowElement) {
         const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
@@ -1024,7 +1024,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
-      if (this.trigger.includes('mouseenter') && this.interactive) {
+      if (this.trigger.includes('mouseenter')) {
         this.utils.setupHoverBridge(placement);
       }
     });
@@ -1052,7 +1052,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
             @click="${this.hide}"
           ></mdc-button>`
         : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
+      ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
       <div part="popover-content">
         <slot></slot>
       </div>

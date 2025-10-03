@@ -23,6 +23,8 @@ import '../toggle';
 import '../select';
 import '../selectlistbox';
 import '../option';
+import '../menupopover';
+import '../menuitem';
 import type List from '.';
 
 const fakeUserNamesList = [
@@ -289,4 +291,69 @@ export const ScrollingList: StoryObj = {
           </mdc-listitem>`,
       )}
     </mdc-list>`,
+};
+
+export const ListWithInteractiveElements: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="h1" type="heading-large-bold">Interactive Elements in list</mdc-text>
+          <ul>
+            <li>Interactive elements are focusable inside list items</li>
+            <li>
+              Clicking or pressing Enter/Space on them should change the selected row in the list without moving focus
+            </li>
+          </ul>`,
+      },
+    },
+  },
+  render: () => html`
+    <mdc-text tagname="h2" type="heading-midsize-bold">With stock list items</mdc-text>
+    <mdc-list>
+      <mdc-listitem label="List item with button">
+        List item with button
+        <mdc-button slot="trailing-controls" variant="secondary">Action</mdc-button>
+      </mdc-listitem>
+      <mdc-listitem label="List item with toggle">
+        List item with toggle
+        <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+      </mdc-listitem>
+      <mdc-listitem label="List item with badge">
+        List item with menu
+        <div slot="trailing-controls">
+          <mdc-button id="copy-menu-trigger-1" variant="secondary" prefix-icon="more-bold"></mdc-button>
+          <mdc-menupopover triggerID="copy-menu-trigger-1" placement="bottom" show-arrow>
+            <mdc-menuitem label="Copy"></mdc-menuitem>
+          </mdc-menupopover>
+        </div>
+      </mdc-listitem>
+    </mdc-list>
+
+    <mdc-text tagname="h2" type="heading-midsize-bold">With customised list items</mdc-text>
+    <mdc-list>
+      <mdc-listitem label="List item with button">
+        <div slot="content">
+          List item with button
+          <mdc-button slot="trailing-controls" variant="secondary">Action</mdc-button>
+        </div>
+      </mdc-listitem>
+      <mdc-listitem label="List item with toggle">
+        <div slot="content">
+          List item with toggle
+          <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+        </div>
+      </mdc-listitem>
+      <mdc-listitem label="List item with badge">
+        <div slot="content">
+          List item with menu
+          <div slot="trailing-controls">
+            <mdc-button id="copy-menu-trigger-2" variant="secondary" prefix-icon="more-bold"></mdc-button>
+            <mdc-menupopover triggerID="copy-menu-trigger-2" placement="bottom" show-arrow>
+              <mdc-menuitem label="Copy"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        </div>
+      </mdc-listitem>
+    </mdc-list>
+  `,
 };

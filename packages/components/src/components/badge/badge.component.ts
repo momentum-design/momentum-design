@@ -9,7 +9,7 @@ import { ROLE } from '../../utils/roles';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-import { DEFAULTS, ICON_NAMES_LIST, ICON_STATE, ICON_VARIANT, TYPE as BADGE_TYPE } from './badge.constants';
+import { DEFAULTS, ICON_NAMES_LIST, ICON_VARIANT, TYPE as BADGE_TYPE } from './badge.constants';
 import styles from './badge.styles';
 import type { BadgeType, IconVariant } from './badge.types';
 
@@ -49,11 +49,6 @@ import type { BadgeType, IconVariant } from './badge.types';
  *
  * @csspart badge-dot - The dot notification badge.
  * @csspart badge-icon - The icon badge.
- * @csspart badge-icon__error - The error icon badge.
- * @csspart badge-icon__primary - The primary icon badge.
- * @csspart badge-icon__secondary - The secondary icon badge.
- * @csspart badge-icon__success - The success icon badge.
- * @csspart badge-icon__warning - The warning icon badge.
  * @csspart badge-overlay - The overlay badge.
  * @csspart badge-text - The text badge.
  */
@@ -129,13 +124,12 @@ class Badge extends IconNameMixin(Component) {
   /**
    * Method to generate the badge icon.
    * @param iconName - the name of the icon from the icon set
-   * @param backgroundPartPostfix - postfix for the part to style the badge icon.
    * @returns the template result of the icon.
    */
-  private getBadgeIcon(iconName: string, backgroundPartPostfix: string): TemplateResult {
+  private getBadgeIcon(iconName: string): TemplateResult {
     return html`
       <mdc-icon
-        part="badge-icon ${this.overlay ? 'badge-overlay' : ''} badge-icon__${backgroundPartPostfix}"
+        part="badge-icon ${this.overlay ? 'badge-overlay' : ''}"
         name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
@@ -190,18 +184,18 @@ class Badge extends IconNameMixin(Component) {
     if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
       this.variant = DEFAULTS.VARIANT;
     }
-    const { iconName, type, variant } = this;
+    const { iconName, type } = this;
     switch (type) {
       case BADGE_TYPE.ICON:
-        return this.getBadgeIcon(iconName || '', variant);
+        return this.getBadgeIcon(iconName || '');
       case BADGE_TYPE.COUNTER:
         return this.getBadgeCounterText();
       case BADGE_TYPE.SUCCESS:
-        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, ICON_STATE.SUCCESS);
+        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME);
       case BADGE_TYPE.WARNING:
-        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, ICON_STATE.WARNING);
+        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME);
       case BADGE_TYPE.ERROR:
-        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, ICON_STATE.ERROR);
+        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME);
       case BADGE_TYPE.DOT:
       default:
         this.type = BADGE_TYPE.DOT;

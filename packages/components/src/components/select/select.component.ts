@@ -70,6 +70,21 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-width - The width of the select.
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart container - The container element that wraps the visual combobox and the dropdown icon.
+ * @csspart base-container - The container element that wraps the visual combobox, dropdown icon, and the popover.
+ * @csspart selected-icon - The icon element that is displayed next to the selected option in the dropdown list.
+ * @csspart base-text - The text element that displays the selected option or placeholder in the visual combobox.
+ * @csspart icon-container - The container element that wraps the dropdown icon.
+ * @csspart native-input - The native hidden input element.
  */
 class Select
   extends ListNavigationMixin(
