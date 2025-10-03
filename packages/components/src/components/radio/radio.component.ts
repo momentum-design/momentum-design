@@ -70,6 +70,13 @@ class Radio
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
 
+  /**
+   * Determines whether the radio is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
+
   override connectedCallback(): void {
     super.connectedCallback();
     // Radio does not contain helpTextType property.
@@ -190,7 +197,7 @@ class Radio
    * Dispatches the change event.
    */
   private handleChange(): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readonly || this.softDisabled) return;
 
     const radios = this.getAllRadiosWithinSameGroup();
     radios.forEach(radio => {
@@ -229,6 +236,10 @@ class Radio
    */
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.disabled) return;
+
+    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
 
     const radios = this.getAllRadiosWithinSameGroup();
     const enabledRadios = radios.filter(radio => !radio.disabled);
@@ -294,6 +305,7 @@ class Radio
         ?checked="${this.checked}"
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
+        ?soft-disabled="${this.softDisabled}"
       >
         <input
           id="${this.inputId}"

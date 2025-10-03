@@ -11,10 +11,12 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
   'data-aria-label'?: string;
   size?: string;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -29,6 +31,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       >
       </mdc-toggle>
@@ -75,6 +79,18 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('should have disabled attribute when the disabled attribute is true', async () => {
     await componentsPage.setAttributes(toggle, { disabled: 'true' });
     await expect(toggle).toHaveAttribute('disabled', 'true');
+  });
+
+  await test.step('should have readonly attribute when the readonly attribute is passed', async () => {
+    await componentsPage.setAttributes(toggle, { readonly: '' });
+    await expect(toggle).toHaveAttribute('readonly', '');
+    await componentsPage.removeAttribute(toggle, 'readonly');
+  });
+
+  await test.step('should have soft-disabled attribute when the soft-disabled attribute is passed', async () => {
+    await componentsPage.setAttributes(toggle, { 'soft-disabled': '' });
+    await expect(toggle).toHaveAttribute('soft-disabled', '');
+    await componentsPage.removeAttribute(toggle, 'soft-disabled');
   });
 };
 
@@ -134,6 +150,32 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await expect(toggle).toHaveAttribute('checked');
 
       await toggle.click();
+      await expect(toggle).not.toHaveAttribute('checked');
+    });
+
+    await test.step('toggle should be focused but not change state when readonly', async () => {
+      const toggle = await setup({ componentsPage, label: 'Toggle label', readonly: true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(toggle).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      await toggle.click({ force: true });
+      await expect(toggle).not.toHaveAttribute('checked');
+    });
+
+    await test.step('toggle should be focused but not change state when soft-disabled', async () => {
+      const toggle = await setup({ componentsPage, label: 'Toggle label', 'soft-disabled': true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(toggle).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      await toggle.click({ force: true });
       await expect(toggle).not.toHaveAttribute('checked');
     });
 
@@ -267,6 +309,20 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       checked: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+
+    toggleStickerSheet.setAttributes({
+      label: 'Read Only Toggle Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+    toggleStickerSheet.setAttributes({
+      label: 'Read Only Checked Toggle Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      checked: true,
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
 

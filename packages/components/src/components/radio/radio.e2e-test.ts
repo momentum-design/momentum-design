@@ -14,6 +14,7 @@ type SetupOptions = {
   checked?: boolean;
   'data-aria-label'?: string;
   secondRadioBtn?: boolean;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -29,6 +30,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.checked ? 'checked' : ''}
           ${restArgs.readonly ? 'readonly' : ''}
+          ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
           ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         >
         </mdc-radio>
@@ -205,8 +207,32 @@ test('mdc-radio', async ({ componentsPage }) => {
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
 
-        await radio.click();
-        await expect(radio).not.toHaveAttribute('checked');
+        await componentsPage.page.keyboard.press('Space');
+        await expect(radio).not.toBeChecked();
+
+        await radio.click({ force: true });
+        await expect(radio).not.toBeChecked();
+      });
+
+      await test.step('radio should be focused but not change state when soft-disabled', async () => {
+        await setup({
+          componentsPage,
+          label: 'Standard Plan for student',
+          name: 'student-plan',
+          value: 'standard',
+          'soft-disabled': true,
+        });
+       const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        
+        await componentsPage.actionability.pressTab();
+        await expect(radio).toBeFocused();
+        await expect(radio).not.toBeChecked();
+
+        await componentsPage.page.keyboard.press('Space');
+        await expect(radio).not.toBeChecked();
+
+        await radio.click({ force: true });
+        await expect(radio).not.toBeChecked();
       });
 
       await test.step('navigate and select between radio buttons using arrow keys.', async () => {
@@ -319,12 +345,21 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // readonly
-      await test.step('attribute disabled should be present on radio', async () => {
+      await test.step('attribute readonly should be present on radio', async () => {
         await componentsPage.setAttributes(radio, {
           readonly: '',
         });
         await expect(radio).toHaveAttribute('readonly');
         await componentsPage.removeAttribute(radio, 'readonly');
+      });
+
+      // soft-disabled
+      await test.step('attribute soft-disabled should be present on radio', async () => {
+        await componentsPage.setAttributes(radio, {
+          'soft-disabled': '',
+        });
+        await expect(radio).toHaveAttribute('soft-disabled');
+        await componentsPage.removeAttribute(radio, 'soft-disabled');
       });
     });
   });

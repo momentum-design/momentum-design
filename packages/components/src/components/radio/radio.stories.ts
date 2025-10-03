@@ -21,6 +21,7 @@ const render = (args: Args) => html`
     ?checked=${args.checked}
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
+    ?soft-disabled=${args['soft-disabled']}
     ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
     toggletip-text="${args['toggletip-text']}"
@@ -42,6 +43,9 @@ const meta: Meta = {
       control: { type: 'boolean' },
     },
     disabled: {
+      control: { type: 'boolean' },
+    },
+    'soft-disabled': {
       control: { type: 'boolean' },
     },
     checked: {
@@ -106,6 +110,7 @@ export const Example: StoryObj = {
     checked: false,
     readonly: false,
     disabled: false,
+    'soft-disabled': false,
   },
 };
 

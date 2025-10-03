@@ -8,6 +8,8 @@ type SetupOptions = {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -17,7 +19,9 @@ const setup = async (args: SetupOptions) => {
       <mdc-staticcheckbox
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
-        ${restArgs.disabled ? 'disabled' : ''}></mdc-staticcheckbox>
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}></mdc-staticcheckbox>
     `,
     clearDocument: true,
   });
@@ -42,6 +46,12 @@ test('mdc-staticcheckbox', async ({ componentsPage }) => {
     staticcheckboxStickerSheet.setAttributes({ checked: '', disabled: '' });
     await staticcheckboxStickerSheet.createMarkupWithCombination({});
     staticcheckboxStickerSheet.setAttributes({ indeterminate: '', disabled: '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ readonly: '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ checked: '', readonly: '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ indeterminate: '', readonly: '' });
     await staticcheckboxStickerSheet.createMarkupWithCombination({});
     await staticcheckboxStickerSheet.mountStickerSheet();
     const container = staticcheckboxStickerSheet.getWrapperContainer();
@@ -76,6 +86,16 @@ test('mdc-staticcheckbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(staticcheckbox, { disabled: '' });
       await expect(staticcheckbox).toHaveAttribute('disabled', '');
       await componentsPage.removeAttribute(staticcheckbox, 'disabled');
+    });
+    await test.step('attribute readonly should be present on component when set', async () => {
+      await componentsPage.setAttributes(staticcheckbox, { readonly: '' });
+      await expect(staticcheckbox).toHaveAttribute('readonly', '');
+      await componentsPage.removeAttribute(staticcheckbox, 'readonly');
+    });
+    await test.step('attribute soft-disabled should be present on component when set', async () => {
+      await componentsPage.setAttributes(staticcheckbox, { 'soft-disabled': '' });
+      await expect(staticcheckbox).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(staticcheckbox, 'soft-disabled');
     });
   });
 });
