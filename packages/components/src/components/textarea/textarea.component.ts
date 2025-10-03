@@ -63,7 +63,8 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
  * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
  *
- * @csspart textarea-container - The textarea container
+ * @csspart textarea-container - The textarea container.
+ * @csspart textarea - The textarea input element.
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
@@ -129,12 +130,24 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
 
   /**
+   * announcement to be made when the max character limit is set.
+   * if the number of characters in the textarea are more than 90% of the max character limit,
+   * the announcement will be made.
+   * The number of characters and the max character will be announced in this format.
+   * `%{number-of-characters} of %{max-character-limit} characters typed.`
+   * Ex: "93 of 100 characters typed."
+   */
+  @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
+
+  /**
    * @internal
    * The textarea element
    */
   @query('textarea') override inputElement!: HTMLTextAreaElement;
 
   private characterLimitExceedingFired: boolean = false;
+
+  private ariaLiveAnnouncer?: string;
 
   protected get textarea(): HTMLTextAreaElement {
     return this.inputElement;
@@ -294,6 +307,26 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   private updateValue() {
     this.value = this.textarea.value;
     this.internals.setFormValue(this.textarea.value);
+    this.announceMaxLengthWarning();
+  }
+
+  /**
+   * Announces the character limit warning based on the current value length.
+   * If the value length exceeds the max character limit, the help text is announced (if help text is present).
+   * If the value length does not exceed the max character limit, then the character limit announcement is announced.
+   */
+  private announceMaxLengthWarning() {
+    this.ariaLiveAnnouncer = '';
+    if (!this.maxCharacterLimit || this.value.length === 0) {
+      return;
+    }
+    if (this.helpText && this.value.length > this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = this.helpText;
+    } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = this.characterLimitAnnouncement
+        .replace('%{number-of-characters}', this.value.length.toString())
+        .replace('%{max-character-limit}', this.maxCharacterLimit.toString());
+    }
   }
 
   /**
@@ -357,6 +390,11 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
         ></textarea>
+        <mdc-screenreaderannouncer
+          identity="${this.inputId}"
+          announcement="${ifDefined(this.ariaLiveAnnouncer)}"
+          data-aria-live="polite"
+        ></mdc-screenreaderannouncer>
       </div>
       ${this.renderTextareaFooter()}
     `;
