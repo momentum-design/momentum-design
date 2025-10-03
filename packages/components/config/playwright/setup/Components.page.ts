@@ -109,7 +109,7 @@ class ComponentsPage {
           if (rootElement) {
             // delete children of textContent before mounting the passed in html:
             if (args.clearDocument) {
-              rootElement.textContent = '';
+              rootElement.innerHTML = '';
             }
             rootElement.appendChild(htmlToElement(args.html));
           }
