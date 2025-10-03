@@ -95,6 +95,9 @@ class ScreenreaderAnnouncer extends Component {
    */
   private ariaLiveAnnouncementIds: Array<string> = [];
 
+  /** @internal */
+  private debounceTime = 500;
+
   /**
    * Announces the given announcement to the screen reader.
    *
@@ -186,14 +189,36 @@ class ScreenreaderAnnouncer extends Component {
     this.clearTimeOutsAndAnnouncements();
   }
 
+  /**
+   * Returns a debounced version of the provided callback function.
+   * The returned function will delay calling the provided callback function
+   * by the specified timeout (in milliseconds). The default timeout is 500 ms.
+   * If the returned function is called again before the timeout has expired,
+   * the timeout will be reset.
+   *
+   * @param callback - The function to debounce.
+   * @param timeout - The timeout in milliseconds.
+   */
+  private debounceAnnouncement(callback: Function, timeout: number): Function {
+    let timer: number;
+    return (...args: any[]) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        callback.apply(this, args);
+      }, timeout);
+    };
+  }
+
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     if (changedProperties.has('identity') && this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
       this.createAnnouncementAriaLiveRegion();
     }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
-      this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
-      this.announcement = '';
+      this.debounceAnnouncement(() => {
+        this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
+        this.announcement = '';
+      }, this.debounceTime)();
     }
   }
 
