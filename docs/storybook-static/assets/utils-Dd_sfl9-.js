@@ -1,0 +1,1 @@
+const r=e=>{const t={};return e.forEach(o=>{t[o]={control:!1}}),t},a=()=>({parameters:{controls:{disable:!0}}}),n=e=>{const t={};return e.forEach(o=>{t[o]={table:{disable:!0}}}),t},s=e=>{const t={};return e.forEach(o=>{t[o]={table:{readonly:!0}}}),t};export{n as a,r as d,a as h,s as r};
