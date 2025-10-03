@@ -7,7 +7,7 @@ import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { ControlledMixin } from '../../utils/mixins/ControlledMixin';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 
 import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
@@ -66,7 +66,7 @@ import styles from './menuitemcheckbox.styles';
  * @csspart trailing-arrow - Allows customization of trailing arrow icon.
  * @csspart trailing-text - Allows customization of the trailing text part.
  */
-class MenuItemCheckbox extends ControlledMixin(MenuItem) {
+class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
   /**
    * The checked attribute is used to indicate that the menuitemcheckbox is checked or not.
    * @default false
@@ -98,7 +98,7 @@ class MenuItemCheckbox extends ControlledMixin(MenuItem) {
   private handleMouseClick() {
     if (this.disabled) return;
 
-    if (!this.controlled) {
+    if (this.controlType !== 'controlled') {
       this.checked = !this.checked;
     }
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
