@@ -164,8 +164,15 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected handleNavigationClick = (event: MouseEvent) => {
-      const newIndex = this.getCurrentIndex(event.target);
-      this.resetTabIndexes(newIndex);
+      const target = event.target as HTMLElement;
+      const newIndex = this.getCurrentIndex(target);
+
+      if (newIndex !== -1) {
+        // When user clicked on a focusable element inside the item, we update the navigation index, but
+        // keep the focus on the clicked element.
+        const focusNewItem = !(this.navItems[newIndex] !== target && document.activeElement === event.target);
+        this.resetTabIndexAndSetFocus(newIndex, undefined, focusNewItem);
+      }
     };
 
     /**
@@ -174,12 +181,14 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param target - The target element that triggered the event.
      * @returns - The index of the current item in the `navItems` array.
      */
-    private getCurrentIndex(target: EventTarget | null): number {
+    private getCurrentIndex(target: HTMLElement | null): number {
+      if (!target) return -1;
+
       return this.navItems.findIndex(
         node =>
           node === target ||
           // eslint-disable-next-line no-bitwise
-          !!(node.compareDocumentPosition(target as HTMLElement) & Node.DOCUMENT_POSITION_CONTAINED_BY),
+          !!(node.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_CONTAINED_BY),
       );
     }
 
