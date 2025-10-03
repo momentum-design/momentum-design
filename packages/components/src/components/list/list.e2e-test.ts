@@ -436,7 +436,7 @@ test('mdc-list', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press(KEYS.ENTER);
       const menuItem = listItems.nth(2).locator('mdc-menuitem');
       await expect(menuItem).toBeFocused();
-      await menuItem.click();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
 
       await expect(thirdInteractive).toBeFocused();
     };
