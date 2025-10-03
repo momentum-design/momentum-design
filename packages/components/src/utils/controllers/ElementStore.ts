@@ -130,8 +130,8 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
   }
 
   hostDisconnected() {
-    this.host.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
-    this.host.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
+    this.host.removeEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
+    this.host.removeEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
     // This is a shortcut, because after the removal of the parent the children will emit the destroyed event,
     // but it is less performant also we want to skip the onStoreUpdate calls after disconnection
     // re-connection of the element will fill the cache again
