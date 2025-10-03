@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
@@ -83,16 +83,6 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls(['help-text-type']),
-    ...textControls([
-      '--mdc-radio-text-disabled-color',
-      '--mdc-radio-control-inactive-hover',
-      '--mdc-radio-control-inactive-pressed-color',
-      '--mdc-radio-control-active-hover-color',
-      '--mdc-radio-control-active-pressed-color',
-      '--mdc-radio-control-active-disabled-background',
-      '--mdc-radio-control-inactive-disabled-background',
-      '--mdc-radio-disabled-border-color',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

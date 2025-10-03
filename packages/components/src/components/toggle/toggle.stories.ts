@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
@@ -88,18 +88,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['help-text-type', 'id']),
-    ...textControls([
-      '--mdc-toggle-width',
-      '--mdc-toggle-height',
-      '--mdc-toggle-width-compact',
-      '--mdc-toggle-height-compact',
-      '--mdc-toggle-label-color-disabled',
-      '--mdc-toggle-help-text-color',
-      '--mdc-toggle-active-hover-color',
-      '--mdc-toggle-active-pressed-color',
-      '--mdc-toggle-inactive-hover-color',
-      '--mdc-toggle-inactive-pressed-color',
-    ]),
     ...classArgType,
     ...styleArgType,
   },

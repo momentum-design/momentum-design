@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
-import { textControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
 import '../buttongroup';
@@ -311,19 +311,6 @@ const meta: Meta = {
     'disable-aria-expanded': {
       control: 'boolean',
     },
-    ...textControls([
-      '--mdc-popover-arrow-border-radius',
-      '--mdc-popover-arrow-border',
-      '--mdc-popover-primary-background-color',
-      '--mdc-popover-border-color',
-      '--mdc-popover-inverted-background-color',
-      '--mdc-popover-inverted-border-color',
-      '--mdc-popover-inverted-text-color',
-      '--mdc-popover-elevation-3',
-      '--mdc-popover-max-width',
-      '--mdc-popover-max-height',
-      '--mdc-popover-width',
-    ]),
     ...hideControls([
       'arrowElement',
       'onOutsidePopoverClick',

@@ -3,7 +3,6 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 import { SKELETON_VARIANTS, DEFAULTS } from './skeleton.constants';
 
@@ -158,7 +157,6 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(SKELETON_VARIANTS),
     },
-    ...textControls(['--mdc-skeleton-background-color', '--mdc-skeleton-height', '--mdc-skeleton-width']),
     ...classArgType,
     ...styleArgType,
   },

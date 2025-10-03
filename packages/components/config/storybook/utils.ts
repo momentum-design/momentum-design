@@ -56,21 +56,4 @@ const readOnlyControls = (keys: Array<string>) => {
   return objectReturnValue;
 };
 
-/**
- * To automatically set text controls in storybook
- * @param keys - Array of keys to set as text controls
- * @returns Object which can be destructured in argTypes
- */
-const textControls = (keys: Array<string>) => {
-  const objectReturnValue: Record<string, any> = {};
-  keys.forEach(key => {
-    objectReturnValue[key] = {
-      control: {
-        type: 'text',
-      },
-    };
-  });
-  return objectReturnValue;
-};
-
-export { disableControls, hideControls, hideAllControls, readOnlyControls, textControls };
+export { disableControls, hideControls, hideAllControls, readOnlyControls };
