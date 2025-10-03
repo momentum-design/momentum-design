@@ -259,7 +259,7 @@ class Select
         option.setAttribute('tabindex', '-1');
         break;
       case 'removed': {
-        if (index === -1 || option.tabIndex !== 0) {
+        if (!this.navItems || index === -1 || option.tabIndex !== 0) {
           return;
         }
 
