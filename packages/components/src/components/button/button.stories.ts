@@ -106,6 +106,13 @@ export const Example: StoryObj = {
     tabIndex: 0,
     inverted: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: html`<h1>Another description on the story, overriding the comments</h1>`,
+      },
+    },
+  },
 };
 
 export const PillButton: StoryObj = {
