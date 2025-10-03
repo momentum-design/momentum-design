@@ -3,7 +3,6 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-staticcheckbox
@@ -32,17 +31,6 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...textControls([
-      '--mdc-staticcheckbox-border-color',
-      '--mdc-staticcheckbox-checked-background-color',
-      '--mdc-staticcheckbox-disabled-background-color',
-      '--mdc-checkbox-disabled-border-color',
-      '--mdc-checkbox-disabled-checked-icon-color',
-      '--mdc-staticcheckbox-disabled-icon-color',
-      '--mdc-staticcheckbox-icon-background-color',
-      '--mdc-staticcheckbox-icon-border-color',
-      '--mdc-staticcheckbox-icon-color',
-    ]),
   },
 };
 

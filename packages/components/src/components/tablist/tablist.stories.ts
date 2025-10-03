@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
 
-import { disableControls, textControls } from '../../../config/storybook/utils';
+import { disableControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 import '../tab';
@@ -95,7 +95,6 @@ const meta: Meta = {
       options: Object.values(TAB_VARIANTS),
     },
     ...disableControls(['Default']),
-    ...textControls(['--mdc-tablist-gap', '--mdc-tablist-width', '--mdc-tablist-arrow-button-margin']),
   },
 };
 

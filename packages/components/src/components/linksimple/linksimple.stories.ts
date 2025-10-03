@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 
-import { hideControls, readOnlyControls, textControls } from '../../../config/storybook/utils';
+import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html`<mdc-linksimple
@@ -79,17 +79,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['handleNavigation']),
-    ...textControls([
-      '--mdc-link-border-radius',
-      '--mdc-link-color-active',
-      '--mdc-link-color-disabled',
-      '--mdc-link-color-hover',
-      '--mdc-link-color-normal',
-      '--mdc-link-inverted-color-active',
-      '--mdc-link-inverted-color-disabled',
-      '--mdc-link-inverted-color-hover',
-      '--mdc-link-inverted-color-normal',
-    ]),
   },
 };
 

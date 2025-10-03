@@ -10,7 +10,7 @@ import '../link';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 
 import { BANNER_VARIANT } from './banner.constants';
 
@@ -48,14 +48,6 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...disableControls(['children', 'content', 'leading-icon', 'leading-text', 'trailing-actions']),
-    ...textControls([
-      '--mdc-banner-background-color',
-      '--mdc-banner-border-color',
-      '--mdc-banner-icon-color',
-      '--mdc-banner-elevation',
-      '--mdc-banner-padding',
-      '--mdc-banner-gap',
-    ]),
   },
 };
 

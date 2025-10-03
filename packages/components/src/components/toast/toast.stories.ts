@@ -9,7 +9,7 @@ import '../spinner';
 import '../button';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { TOAST_VARIANT } from './toast.constants';
@@ -89,15 +89,6 @@ const meta: Meta = {
       'footer',
     ]),
     ...hideControls(['children', 'isDetailVisible', 'hasDetailedSlot', 'detailedElements', 'hasFooterButtons']),
-    ...textControls([
-      '--mdc-toast-background-color',
-      '--mdc-toast-border-color',
-      '--mdc-toast-header-text-color',
-      '--mdc-toast-icon-color',
-      '--mdc-toast-elevation-3',
-      '--mdc-toast-width',
-      '--mdc-toast-padding',
-    ]),
   },
 };
 

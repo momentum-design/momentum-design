@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navmenuitem.constants';
 
@@ -76,19 +76,6 @@ const meta: Meta = {
     'tooltip-text': {
       control: 'text',
     },
-    ...textControls([
-      '--mdc-navmenuitem-color',
-      '--mdc-navmenuitem-border-color',
-      '--mdc-navmenuitem-disabled-color',
-      '--mdc-navmenuitem-expanded-width',
-      '--mdc-navmenuitem-hover-background-color',
-      '--mdc-navmenuitem-hover-active-background-color',
-      '--mdc-navmenuitem-pressed-background-color',
-      '--mdc-navmenuitem-pressed-active-background-color',
-      '--mdc-navmenuitem-disabled-background-color',
-      '--mdc-navmenuitem-disabled-active-background-color',
-      '--mdc-navmenuitem-rest-active-background-color',
-    ]),
     ...hideControls([
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-background-color-hover',
