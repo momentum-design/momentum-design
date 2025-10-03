@@ -33,7 +33,6 @@ import styles from './avatarbutton.styles';
  * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state
  * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state
  * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state
- * @cssproperty --mdc-button-height - Height for button size
  *
  * @csspart overlay - The overlay part of the avatar button.
  * @csspart content - The main content of the avatar.

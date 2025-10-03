@@ -26,7 +26,6 @@ import type { VariantType } from './alertchip.types';
  * @cssproperty --mdc-chip-icon-color - The color of the icon
  * @cssproperty --mdc-chip-border-color - The border color of the alertchip
  * @cssproperty --mdc-chip-background-color - The background color of the alertchip
- * @cssproperty --mdc-button-height - Height for button size
  *
  * @csspart icon - The alert icon
  * @csspart label - The text label of the alertchip
