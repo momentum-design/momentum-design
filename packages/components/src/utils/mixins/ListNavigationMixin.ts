@@ -15,9 +15,11 @@ export declare abstract class ListNavigationMixinInterface {
 
   protected abstract get navItems(): HTMLElement[];
 
-  protected resetTabIndexes(index: number): void;
+  protected resetTabIndexes(index: number, focusElement?: boolean): void;
 
   protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
+
+  protected setInitialFocus(): void;
 }
 
 /**
@@ -90,6 +92,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected override async firstUpdated(changedProperties: PropertyValues) {
       super.firstUpdated(changedProperties);
 
+      this.setInitialFocus();
+    }
+
+    protected setInitialFocus() {
       const indexToFocus = Math.max(Math.min(this.initialFocus, this.navItems.length - 1), 0);
       this.resetTabIndexAndSetFocus(indexToFocus, undefined, false);
     }
@@ -197,13 +203,15 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      *
      * @param index - The index of the currently focused item.
      */
-    protected resetTabIndexes(index: number) {
+    protected resetTabIndexes(index: number, focusElement = true) {
       if (this.navItems.length > 0) {
         this.navItems.forEach(item => item.setAttribute('tabindex', '-1'));
         const currentIndex = this.navItems[index] ? index : 0;
 
         this.navItems[currentIndex].setAttribute('tabindex', '0');
-        this.navItems[currentIndex]?.focus();
+        if (focusElement) {
+          this.navItems[currentIndex]?.focus();
+        }
       }
     }
 
