@@ -50,6 +50,8 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @csspart button-text - Text label of the button, passed in default slot
  * @csspart prefix - Content before the text label, passed in `prefix` slot
  * @csspart postfix - Content after the text label, passed in `postfix` slot
+ *
+ * @cssproperty --mdc-button-height - Height for button size
  */
 class Button extends ButtonComponentMixin(Buttonsimple) {
   /**

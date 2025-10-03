@@ -24,6 +24,8 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
  * @tagname mdc-buttonsimple
+ *
+ * @cssproperty --mdc-button-height - Height for button size
  */
 class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component))) {
   /**

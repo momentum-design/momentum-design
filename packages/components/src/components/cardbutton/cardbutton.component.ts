@@ -43,6 +43,7 @@ import styles from './cardbutton.styles';
  * @csspart text - The text part of the card
  *
  * @cssproperty --mdc-card-width - The width of the card
+ * @cssproperty --mdc-button-height - Height for button size
  */
 class CardButton extends CardComponentMixin(Buttonsimple) {
   override connectedCallback(): void {

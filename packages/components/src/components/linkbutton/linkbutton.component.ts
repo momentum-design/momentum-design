@@ -38,11 +38,12 @@ import styles from './linkbutton.styles';
  * @cssproperty --mdc-link-inverted-color-disabled - Color of the inverted linkbutton’s child content in the disabled state.
  * @cssproperty --mdc-link-inverted-color-hover - Color of the inverted linkbutton’s child content in the hover state.
  * @cssproperty --mdc-link-inverted-color-normal - Color of the inverted linkbutton’s child content in the normal state.
+ * @cssproperty --mdc-button-height - Height for button size
  */
 class LinkButton extends IconNameMixin(Buttonsimple) {
   /**
    * Sets the size of the linkbutton.
-   * Acceptable values: 
+   * Acceptable values:
    * - 12
    * - 14
    * - 16
@@ -67,7 +68,7 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
 
   override connectedCallback() {
     super.connectedCallback();
-    
+
     this.active = undefined as unknown as boolean;
     this.role = DEFAULTS.ROLE;
   }
