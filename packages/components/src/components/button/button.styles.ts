@@ -2,10 +2,12 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-button-font-size: initial;
-    --mdc-button-line-height: initial;
     --mdc-button-prefix-icon-size: 1rem;
     --mdc-button-postfix-icon-size: 1rem;
+    --mdc-button-line-height-size-40: var(--mds-font-lineheight-body-large);
+    --mdc-button-line-height-size-32: var(--mds-font-lineheight-body-large);
+    --mdc-button-line-height-size-28: var(--mds-font-lineheight-body-midsize);
+    --mdc-button-line-height-size-24: var(--mds-font-lineheight-body-small);
 
     background: var(
       --mdc-button-background-color
@@ -111,26 +113,26 @@ const styles = css`
     padding: unset;
   }
   :host([size='40']) {
-    --mdc-button-font-size: var(--mds-font-size-body-large);
-    --mdc-button-line-height: var(--mds-font-lineheight-body-large);
+    font-size: var(--mds-font-size-body-large);
+    line-height: var(--mdc-button-line-height-size-40);
     padding: 0 1rem;
     gap: 0.5rem;
   }
   :host([size='32']) {
-    --mdc-button-font-size: var(--mds-font-size-body-large);
-    --mdc-button-line-height: var(--mds-font-lineheight-body-large);
+    font-size: var(--mds-font-size-body-large);
+    line-height: var(--mdc-button-line-height-size-32);
     padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size='28']) {
-    --mdc-button-font-size: var(--mds-font-size-body-midsize);
-    --mdc-button-line-height: var(--mds-font-lineheight-body-midsize);
+    font-size: var(--mds-font-size-body-midsize);
+    line-height: var(--mdc-button-line-height-size-28);
     padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size='24']) {
-    --mdc-button-font-size: var(--mds-font-size-body-small);
-    --mdc-button-line-height: var(--mds-font-lineheight-body-small);
+    font-size: var(--mds-font-size-body-small);
+    line-height: var(--mdc-button-line-height-size-24);
     padding: 0 0.625rem;
     gap: 0.25rem;
   }
