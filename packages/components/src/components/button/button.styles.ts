@@ -2,7 +2,8 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-button-line-height: unset;
+    --mdc-button-font-size: initial;
+    --mdc-button-line-height: initial;
     --mdc-button-prefix-icon-size: 1rem;
     --mdc-button-postfix-icon-size: 1rem;
 
@@ -110,25 +111,25 @@ const styles = css`
     padding: unset;
   }
   :host([size='40']) {
-    font-size: var(--mds-font-size-body-large);
+    --mdc-button-font-size: var(--mds-font-size-body-large);
     --mdc-button-line-height: var(--mds-font-lineheight-body-large);
     padding: 0 1rem;
     gap: 0.5rem;
   }
   :host([size='32']) {
-    font-size: var(--mds-font-size-body-large);
+    --mdc-button-font-size: var(--mds-font-size-body-large);
     --mdc-button-line-height: var(--mds-font-lineheight-body-large);
     padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size='28']) {
-    font-size: var(--mds-font-size-body-midsize);
+    --mdc-button-font-size: var(--mds-font-size-body-midsize);
     --mdc-button-line-height: var(--mds-font-lineheight-body-midsize);
     padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size='24']) {
-    font-size: var(--mds-font-size-body-small);
+    --mdc-button-font-size: var(--mds-font-size-body-small);
     --mdc-button-line-height: var(--mds-font-lineheight-body-small);
     padding: 0 0.625rem;
     gap: 0.25rem;
