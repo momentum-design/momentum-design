@@ -74,20 +74,6 @@ class Checkbox
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /**
-   * Determines whether the checkbox is read-only.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) readonly = false;
-
-  /**
-   * Determines whether the checkbox is soft-disabled.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
-
-  /**
    * Automatically focus on the element when the page loads.
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
    * @default false

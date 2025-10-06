@@ -63,20 +63,6 @@ class Radio
    */
   @property({ type: Boolean, reflect: true }) checked = false;
 
-  /**
-   * Determines whether the radio is read-only.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) readonly = false;
-
-  /**
-   * Determines whether the radio is soft-disabled.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
-
   override connectedCallback(): void {
     super.connectedCallback();
     // Radio does not contain helpTextType property.

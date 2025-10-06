@@ -78,23 +78,9 @@ class Toggle
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
 
-  /**
-   * Determines whether the toggle is read-only.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) readonly = false;
-
-  /**
-   * Determines whether the toggle is soft-disabled.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) softDisabled = false;
-
   override connectedCallback(): void {
     super.connectedCallback();
-    // Toggle does not contain helpTextType property.
+    // Toggle does not contain helpTextType property.   
     this.helpTextType = undefined as unknown as ValidationType;
   }
 
