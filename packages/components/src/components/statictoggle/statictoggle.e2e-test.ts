@@ -50,6 +50,11 @@ test('mdc-statictoggle', async ({ componentsPage }) => {
     await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
     stickerSheet.setAttributes({ checked: '', readonly: '' });
     await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ checked: '', 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    
     await stickerSheet.mountStickerSheet();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-statictoggle', {

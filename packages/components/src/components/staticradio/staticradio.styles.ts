@@ -34,7 +34,7 @@ const styles = [
     :host([disabled][readonly])::part(radio-icon),
     :host([soft-disabled][readonly])::part(radio-icon) {
       border-color: var(--mdc-staticradio-disabled-border-color);
-      background: var(--mdc-staticradio-control-inactive-disabled-background);
+      background-color: var(--mdc-staticradio-control-inactive-disabled-background);
     }
 
     :host([disabled][checked])::part(radio-icon),
@@ -42,14 +42,14 @@ const styles = [
     :host([disabled][readonly][checked])::part(radio-icon),
     :host([soft-disabled][readonly][checked])::part(radio-icon) {
       border: var(--mdc-staticradio-control-active-disabled-background);
-      background: var(--mdc-staticradio-control-active-disabled-background);
+      background-color: var(--mdc-staticradio-control-active-disabled-background);
     }
 
     :host([disabled][checked]) .radio-icon:after,
     :host([soft-disabled][checked]) .radio-icon:after,
     :host([disabled][readonly][checked]) .radio-icon:after,
     :host([soft-disabled][readonly][checked]) .radio-icon:after {
-      background: var(--mdc-staticradio-inner-circle-disabled-background);
+      background-color: var(--mdc-staticradio-inner-circle-disabled-background);
     }
 
     :host::part(radio-icon) {
@@ -76,7 +76,7 @@ const styles = [
       width: var(--mdc-staticradio-inner-circle-size);
       height: var(--mdc-staticradio-inner-circle-size);
       border-radius: 50%;
-      background: var(--mdc-staticradio-inner-circle-normal-background);
+      background-color: var(--mdc-staticradio-inner-circle-normal-background);
     }
 
     :host([readonly])::part(radio-icon) {

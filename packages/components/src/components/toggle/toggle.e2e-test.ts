@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
@@ -135,10 +136,10 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(toggle).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(toggle).toHaveAttribute('checked');
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(toggle).not.toHaveAttribute('checked');
     });
 
@@ -159,7 +160,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(toggle).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(toggle).not.toHaveAttribute('checked');
 
       await toggle.click({ force: true });
@@ -172,7 +173,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(toggle).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(toggle).not.toHaveAttribute('checked');
 
       await toggle.click({ force: true });

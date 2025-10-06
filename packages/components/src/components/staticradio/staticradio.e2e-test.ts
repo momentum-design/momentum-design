@@ -47,6 +47,10 @@ test('mdc-staticradio', async ({ componentsPage }) => {
     await staticradioStickerSheet.createMarkupWithCombination({});
     staticradioStickerSheet.setAttributes({ checked: '', readonly: '', disabled: '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ 'soft-disabled': '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ checked: '', 'soft-disabled': '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
 
     await staticradioStickerSheet.mountStickerSheet();
     const container = staticradioStickerSheet.getWrapperContainer();

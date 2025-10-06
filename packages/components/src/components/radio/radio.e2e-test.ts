@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -195,7 +196,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
 
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(radio).toBeChecked();
       });
 
@@ -229,7 +230,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
 
-        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(radio).not.toBeChecked();
 
         await radio.click({ force: true });
@@ -250,7 +251,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
 
-        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(radio).not.toBeChecked();
 
         await radio.click({ force: true });

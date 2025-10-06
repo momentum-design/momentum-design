@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -265,10 +266,10 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
@@ -288,7 +289,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
 
       await checkbox.click({ force: true });
@@ -301,7 +302,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
 
       await checkbox.click({ force: true });

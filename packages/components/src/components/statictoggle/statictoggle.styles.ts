@@ -28,7 +28,7 @@ const styles = [
     :host::part(slider) {
       width: var(--mdc-statictoggle-width);
       height: var(--mdc-statictoggle-height);
-      background: var(--mdc-statictoggle-inactive-rest-color);
+      background-color: var(--mdc-statictoggle-inactive-rest-color);
       border-radius: var(--mdc-statictoggle-border-radius);
       border: var(--mdc-statictoggle-border);
       display: flex;

@@ -20,7 +20,7 @@ const styles = [
 
     :host([checked])::part(icon-container),
     :host([indeterminate])::part(icon-container) {
-      background: var(--mdc-staticcheckbox-checked-background-color);
+      background-color: var(--mdc-staticcheckbox-checked-background-color);
       border-color: transparent;
     }
 
@@ -29,7 +29,7 @@ const styles = [
     :host([disabled][readonly])::part(icon-container),
     :host([soft-disabled][readonly])::part(icon-container) {
       border-color: var(--mdc-staticcheckbox-disabled-border-color);
-      background: var(--mdc-staticcheckbox-disabled-background-color);
+      background-color: var(--mdc-staticcheckbox-disabled-background-color);
     }
 
     :host([disabled][checked])::part(icon-container),
@@ -40,7 +40,7 @@ const styles = [
     :host([disabled][readonly][indeterminate])::part(icon-container),
     :host([soft-disabled][readonly][checked])::part(icon-container),
     :host([soft-disabled][readonly][indeterminate])::part(icon-container) {
-      background: var(--mdc-staticcheckbox-disabled-checked-icon-color);
+      background-color: var(--mdc-staticcheckbox-disabled-checked-icon-color);
       border: 0.0625rem solid var(--mdc-staticcheckbox-disabled-border-color);
     }
 
@@ -48,7 +48,7 @@ const styles = [
       display: flex;
       align-items: center;
       border: 0.0625rem solid var(--mdc-staticcheckbox-icon-border-color);
-      background: var(--mdc-staticcheckbox-icon-background-color);
+      background-color: var(--mdc-staticcheckbox-icon-background-color);
       width: 1rem;
       height: 1rem;
       border-radius: 0.125rem;

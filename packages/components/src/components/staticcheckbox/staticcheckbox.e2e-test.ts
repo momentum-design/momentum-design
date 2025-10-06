@@ -53,6 +53,13 @@ test('mdc-staticcheckbox', async ({ componentsPage }) => {
     await staticcheckboxStickerSheet.createMarkupWithCombination({});
     staticcheckboxStickerSheet.setAttributes({ indeterminate: '', readonly: '' });
     await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ 'soft-disabled': '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ checked: '', 'soft-disabled': '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    staticcheckboxStickerSheet.setAttributes({ indeterminate: '', 'soft-disabled': '' });
+    await staticcheckboxStickerSheet.createMarkupWithCombination({});
+    
     await staticcheckboxStickerSheet.mountStickerSheet();
     const container = staticcheckboxStickerSheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
