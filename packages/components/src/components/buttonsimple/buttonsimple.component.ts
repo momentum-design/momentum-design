@@ -26,7 +26,7 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * @tagname mdc-buttonsimple
  *
  * @cssproperty --mdc-button-height - Height for button size
- * @cssproperty --mdc-button-background-color - Background color of the button
+ * @cssproperty --mdc-button-background - Background color of the button
  * @cssproperty --mdc-button-border-color - Borer color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  */

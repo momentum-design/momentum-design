@@ -52,7 +52,7 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @csspart postfix - Content after the text label, passed in `postfix` slot
  *
  * @cssproperty --mdc-button-height - Height for button size
- * @cssproperty --mdc-button-background-color - Background color of the button
+ * @cssproperty --mdc-button-background - Background of the button
  * @cssproperty --mdc-button-border-color - Borer color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  * @cssproperty --mdc-button-prefix-icon-size - Size of the prefix icon

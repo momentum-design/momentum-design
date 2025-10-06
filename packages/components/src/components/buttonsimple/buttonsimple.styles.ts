@@ -7,7 +7,7 @@ const styles = [
   css`
     :host {
       --mdc-button-height: unset;
-      --mdc-button-background-color: transparent;
+      --mdc-button-background: transparent;
       --mdc-button-border-color: transparent;
       --mdc-button-text-color: unset;
 
@@ -15,7 +15,7 @@ const styles = [
       cursor: pointer;
       user-select: none;
 
-      background-color: var(--mdc-button-background-color);
+      background-color: var(--mdc-button-background);
       color: var(--mdc-button-text-color);
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       height: var(--mdc-button-height);
@@ -24,7 +24,7 @@ const styles = [
 
     :host([disabled]),
     :host([soft-disabled]) {
-      --mdc-button-background-color: var(--mds-color-theme-text-primary-disabled);
+      --mdc-button-background: var(--mds-color-theme-text-primary-disabled);
     }
     :host([size='124']) {
       --mdc-button-height: 7.75rem;

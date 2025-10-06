@@ -10,7 +10,7 @@ const styles = css`
     --mdc-button-line-height-size-24: var(--mds-font-lineheight-body-small);
 
     background: var(
-      --mdc-button-background-color
+      --mdc-button-background
     ); /* Using background instead of background-color since gradients are not supported in background-color */
     border-color: var(--mdc-button-border-color);
     border-radius: 1.25rem;
@@ -49,33 +49,33 @@ const styles = css`
 
   :host([active][color='default']:not([variant='primary'])) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-active-normal);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-active-normal);
   }
   :host([active][color='default']:not([variant='primary']):hover) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-active-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-active-hover);
   }
   :host([active][color='default']:not([variant='primary']):active),
   :host([active][color='default']:not([variant='primary']).pressed) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-active-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-active-pressed);
   }
   :host([active][color='default']:not([variant='primary'])[disabled]),
   :host([active][color='default']:not([variant='primary'])[soft-disabled]) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-active-disabled);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-active-disabled);
   }
 
   :host([variant='primary']) {
-    --mdc-button-background-color: var(--mds-color-theme-button-primary-normal);
+    --mdc-button-background: var(--mds-color-theme-button-primary-normal);
     --mdc-button-text-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
   :host([variant='primary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-primary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-primary-hover);
   }
   :host([variant='primary']:active),
   :host([variant='primary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-primary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-primary-pressed);
   }
 
   :host([variant='secondary']) {
@@ -83,11 +83,11 @@ const styles = css`
     --mdc-button-border-color: var(--mds-color-theme-outline-button-normal);
   }
   :host([variant='secondary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([variant='secondary']:active),
   :host([variant='secondary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([variant='tertiary']) {
@@ -95,11 +95,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
   }
   :host([variant='tertiary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([variant='tertiary']:active),
   :host([variant='tertiary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([size='64'][data-btn-type='icon']),
@@ -143,14 +143,14 @@ const styles = css`
 
   :host([color='accent'][variant='primary']) {
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-button-background-color: var(--mds-color-theme-button-accent-normal);
+    --mdc-button-background: var(--mds-color-theme-button-accent-normal);
   }
   :host([color='accent'][variant='primary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-accent-hover);
+    --mdc-button-background: var(--mds-color-theme-button-accent-hover);
   }
   :host([color='accent'][variant='primary']:active),
   :host([color='accent'][variant='primary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-accent-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-accent-pressed);
   }
 
   :host([color='accent'][variant='secondary']) {
@@ -158,23 +158,23 @@ const styles = css`
     --mdc-button-border-color: var(--mds-color-theme-outline-theme-normal);
   }
   :host([color='accent'][variant='secondary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([color='accent'][variant='secondary']:active),
   :host([color='accent'][variant='secondary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([color='positive'][variant='primary']) {
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-button-background-color: var(--mds-color-theme-button-join-normal);
+    --mdc-button-background: var(--mds-color-theme-button-join-normal);
   }
   :host([color='positive'][variant='primary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-join-hover);
+    --mdc-button-background: var(--mds-color-theme-button-join-hover);
   }
   :host([color='positive'][variant='primary']:active),
   :host([color='positive'][variant='primary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-join-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-join-pressed);
   }
 
   :host([color='positive'][variant='secondary']) {
@@ -182,23 +182,23 @@ const styles = css`
     --mdc-button-border-color: var(--mds-color-theme-outline-join-normal);
   }
   :host([color='positive'][variant='secondary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([color='positive'][variant='secondary']:active),
   :host([color='positive'][variant='secondary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([color='negative'][variant='primary']) {
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-button-background-color: var(--mds-color-theme-button-cancel-normal);
+    --mdc-button-background: var(--mds-color-theme-button-cancel-normal);
   }
   :host([color='negative'][variant='primary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-cancel-hover);
+    --mdc-button-background: var(--mds-color-theme-button-cancel-hover);
   }
   :host([color='negative'][variant='primary']:active),
   :host([color='negative'][variant='primary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-cancel-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-cancel-pressed);
   }
 
   :host([color='negative'][variant='secondary']) {
@@ -206,23 +206,23 @@ const styles = css`
     --mdc-button-border-color: var(--mds-color-theme-outline-cancel-normal);
   }
   :host([color='negative'][variant='secondary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([color='negative'][variant='secondary']:active),
   :host([color='negative'][variant='secondary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([color='promotional'][variant='primary']) {
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-button-background-color: var(--mds-color-theme-common-button-promotion-normal);
+    --mdc-button-background: var(--mds-color-theme-common-button-promotion-normal);
   }
   :host([color='promotional'][variant='primary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-common-button-promotion-hover);
+    --mdc-button-background: var(--mds-color-theme-common-button-promotion-hover);
   }
   :host([color='promotional'][variant='primary']:active),
   :host([color='promotional'][variant='primary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-common-button-promotion-active);
+    --mdc-button-background: var(--mds-color-theme-common-button-promotion-active);
   }
 
   :host([color='promotional'][variant='secondary']) {
@@ -230,36 +230,36 @@ const styles = css`
     --mdc-button-border-color: var(--mds-color-theme-outline-promotion-normal);
   }
   :host([color='promotional'][variant='secondary']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
   :host([color='promotional'][variant='secondary']:active),
   :host([color='promotional'][variant='secondary'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
   :host([inverted][variant='primary'][color='default']) {
     --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-button-background-color: var(--mds-color-theme-inverted-button-primary-normal);
+    --mdc-button-background: var(--mds-color-theme-inverted-button-primary-normal);
   }
 
   :host([inverted][variant='primary'][color='default']:hover) {
-    --mdc-button-background-color: var(--mds-color-theme-inverted-button-primary-hover);
+    --mdc-button-background: var(--mds-color-theme-inverted-button-primary-hover);
   }
 
   :host([inverted][variant='primary'][color='default']:active),
   :host([inverted][variant='primary'][color='default'].pressed) {
-    --mdc-button-background-color: var(--mds-color-theme-inverted-button-primary-pressed);
+    --mdc-button-background: var(--mds-color-theme-inverted-button-primary-pressed);
   }
   :host([inverted][variant='primary'][color='default'][disabled]),
   :host([inverted][variant='primary'][color='default'][soft-disabled]) {
-    --mdc-button-background-color: var(--mds-color-theme-inverted-button-primary-disabled);
+    --mdc-button-background: var(--mds-color-theme-inverted-button-primary-disabled);
     --mdc-button-text-color: var(--mds-color-theme-inverted-text-primary-disabled);
     cursor: auto;
   }
 
   :host([variant='primary'][disabled]),
   :host([variant='primary'][soft-disabled]) {
-    --mdc-button-background-color: var(--mds-color-theme-button-primary-disabled);
+    --mdc-button-background: var(--mds-color-theme-button-primary-disabled);
     --mdc-button-text-color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
   }
@@ -267,13 +267,13 @@ const styles = css`
   :host([variant='secondary'][soft-disabled]) {
     --mdc-button-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-button-border-color: var(--mds-color-theme-outline-primary-disabled);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-disabled);
     cursor: auto;
   }
   :host([variant='tertiary'][disabled]),
   :host([variant='tertiary'][soft-disabled]) {
     --mdc-button-text-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-button-background-color: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-button-background: var(--mds-color-theme-button-secondary-disabled);
     cursor: auto;
   }
 

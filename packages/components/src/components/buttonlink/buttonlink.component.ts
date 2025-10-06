@@ -36,7 +36,7 @@ import styles from './buttonlink.styles';
  * @csspart postfix-icon - The postfix icon element.
  *
  * @cssproperty --mdc-button-height - Height for button size
- * @cssproperty --mdc-button-background-color - Background color of the button
+ * @cssproperty --mdc-button-background - Background color of the button
  * @cssproperty --mdc-button-border-color - Borer color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  * @cssproperty --mdc-button-line-height - Line height of the button text
