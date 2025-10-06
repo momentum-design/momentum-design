@@ -316,6 +316,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       label: 'Read Only Toggle Label',
       'help-text': 'This is a help text',
       readonly: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     toggleStickerSheet.setAttributes({
@@ -323,6 +325,26 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       'help-text': 'This is a help text',
       readonly: true,
       checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+
+    toggleStickerSheet.setAttributes({
+      label: 'Soft Disabled Toggle Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
+    toggleStickerSheet.setAttributes({
+      label: 'Soft Disabled Selected Toggle Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
 

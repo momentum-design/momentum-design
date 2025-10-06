@@ -107,9 +107,38 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
     checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Selected Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      indeterminate: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
+    checkboxStickerSheet.setAttributes({
       label: 'Read Only Checkbox Label',
       'help-text': 'This is a help text',
       readonly: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
@@ -117,6 +146,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'help-text': 'This is a help text',
       readonly: true,
       checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
@@ -124,6 +155,8 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       'help-text': 'This is a help text',
       readonly: true,
       indeterminate: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 

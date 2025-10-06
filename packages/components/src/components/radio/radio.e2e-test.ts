@@ -99,6 +99,8 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
       });
 
       // Readonly but checked radio btn
@@ -108,6 +110,8 @@ test('mdc-radio', async ({ componentsPage }) => {
         'help-text': 'This is a help text',
         readonly: true,
         checked: true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
       });
 
       // Disabled radio btn
@@ -126,6 +130,24 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Disabled Selected Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
+        checked: true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
+      });
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
+      radioStickerSheet.setAttributes({
+        label: 'Soft Disabled Radio Label',
+        'help-text': 'This is a help text',
+        'soft-disabled': true,
+        'toggletip-text': 'This is a toggletip that provides additional context',
+        'info-icon-aria-label': 'Additional information',
+      });
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+      radioStickerSheet.setAttributes({
+        label: 'Soft Disabled Selected Radio Label',
+        'help-text': 'This is a help text',
+        'soft-disabled': true,
         checked: true,
         'toggletip-text': 'This is a toggletip that provides additional context',
         'info-icon-aria-label': 'Additional information',
