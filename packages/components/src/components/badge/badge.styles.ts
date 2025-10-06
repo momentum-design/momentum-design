@@ -46,25 +46,25 @@ const styles = [
       padding: 2px;
       border-radius: 50%;
     }
-    :host::part(badge-icon__primary) {
+    :host([type='icon'][variant='primary'])::part(badge-icon) {
       background-color: var(--mdc-badge-primary-background-color);
       color: var(--mdc-badge-primary-foreground-color);
     }
-    :host::part(badge-icon__success) {
+    :host([type='icon'][variant='secondary'])::part(badge-icon) {
+      background-color: var(--mdc-badge-secondary-background-color);
+      color: var(--mdc-badge-secondary-foreground-color);
+    }
+    :host([type='success'])::part(badge-icon) {
       background-color: var(--mdc-badge-success-background-color);
       color: var(--mdc-badge-success-foreground-color);
     }
-    :host::part(badge-icon__warning) {
+    :host([type='warning'])::part(badge-icon) {
       background-color: var(--mdc-badge-warning-background-color);
       color: var(--mdc-badge-warning-foreground-color);
     }
-    :host::part(badge-icon__error) {
+    :host([type='error'])::part(badge-icon) {
       background-color: var(--mdc-badge-error-background-color);
       color: var(--mdc-badge-error-foreground-color);
-    }
-    :host::part(badge-icon__secondary) {
-      background-color: var(--mdc-badge-secondary-background-color);
-      color: var(--mdc-badge-secondary-foreground-color);
     }
 
     /* High Contrast Mode */

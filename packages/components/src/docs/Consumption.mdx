@@ -30,18 +30,9 @@ or
 yarn add @momentum-design/components
 ```
 
-## Supporting packages for Momentum Design System
+## Checklist
 
-The **ThemeProvider** component will switch themes based on the Momentum Tokens
-defined in:
-[Theme Tokens Stable](https://momentum-design.github.io/momentum-design/en/tokens/theme-stable/)
-
-The **IconsProvider** component will use the Icons defined in:
-[Icons Asset Browser](https://momentum-design.github.io/momentum-design/en/tokens/icons/)
-
-## PreRequisites
-
-- The following stylesheets need to be included:
+- Ensure that all required stylesheets are included in your project:
 
   ```javascript
   import '@momentum-design/fonts/dist/css/fonts.css';
@@ -72,43 +63,25 @@ The **IconsProvider** component will use the Icons defined in:
   import '@momentum-design/tokens/dist/css/components/complete.css';
   ```
 
-- `mds-typography` class needs to be set on the root element for proper font
-  usage.
-- Providers allow configuration for all the Momentum Design Components contained
-  within the provider.
-  <br />
-  1. IconProvider sets the icon source and icons configuration. (refer to
-  [**Icon
-  Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs)).
-  <br />
-  2. ThemeProvider sets the theme class. (refer to [**Theme
-  Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs)).
-- Your build config needs to be able to have file loaders for CSS and WOFF2.
+- Set the `mds-typography` class on the root element of your application.
+- Make sure to set `-webkit-font-smoothing` and `-moz-osx-font-smoothing` on
+  root / body to match Figma:
 
-**Example:**
+  ```css
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ```
 
-```html
-<html>
-  <head>
-    <link rel="stylesheet" href="@momentum-design/fonts/dist/css/fonts.css" />
-    <link
-      rel="stylesheet"
-      href="@momentum-design/tokens/dist/css/components/complete.css"
-    />
-  </head>
-  <!-- mds-typography needs to be set on the root for proper Font usage -->
-  <body class="mds-typography">
-    <!-- Providers need to be used to use the Components -->
-    <mdc-themeprovider themeclass="mds-theme-stable-darkWebex">
-      <mdc-iconprovider ...>
-        <!-- Momentum Design Components -->
-        <mdc-component-name ... />
-        ...
-      </mdc-iconprovider>
-    </mdc-themeprovider>
-  </body>
-</html>
-```
+- Wrap your application or component tree with the
+  [**Theme Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs)
+  and
+  [**Icon Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs)
+  components to ensure proper theming and icon configuration.
+- Verify that your build configuration supports file loaders for CSS and WOFF2
+  files.
+- Test the components in different themes to ensure they render correctly.
 
 ## Performance recommendations
 

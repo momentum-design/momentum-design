@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, LINKBUTTON_SIZES } from './linkbutton.constants';
 
@@ -69,17 +69,6 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...hideControls(['active', 'role', 'type', 'ariaStateKey']),
-    ...textControls([
-      '--mdc-link-border-radius',
-      '--mdc-link-color-active',
-      '--mdc-link-color-disabled',
-      '--mdc-link-color-hover',
-      '--mdc-link-color-normal',
-      '--mdc-link-inverted-color-active',
-      '--mdc-link-inverted-color-disabled',
-      '--mdc-link-inverted-color-hover',
-      '--mdc-link-inverted-color-normal',
-    ]),
   },
 };
 
