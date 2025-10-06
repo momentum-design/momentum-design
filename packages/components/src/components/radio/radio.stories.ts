@@ -6,6 +6,7 @@ import { action } from 'storybook/actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../button';
+import '../radiogroup';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
@@ -106,22 +107,20 @@ export const Example: StoryObj = {
 
 export const withNameGroup: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
-      Radio Group for selecting plans
+    <mdc-radiogroup label="Radio Group for selecting plans">
       <mdc-radio name="plan" value="option1" label="Standard Plan"></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
       <mdc-radio name="plan" value="option3" label="Premium Plan"></mdc-radio>
       <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Business Plan"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Enterprise Plan"></mdc-radio>
-    </div>
-    <div style="display: flex; flex-direction: column; margin-top: 10px">
-      Radio Group for selecting billing cycle
+    </mdc-radiogroup>
+    <mdc-radiogroup label="Radio Group for selecting billing cycle" style="margin-top: 2rem;">
       <mdc-radio name="billing-cycle" value="option1" label="Weekly" disabled></mdc-radio>
       <mdc-radio name="billing-cycle" value="option1" label="Monthly" checked></mdc-radio>
       <mdc-radio name="billing-cycle" value="option2" label="Quaterly"></mdc-radio>
       <mdc-radio name="billing-cycle" value="option2" label="Yearly"></mdc-radio>
-    </div>
+    </mdc-radiogroup>
   `,
   parameters: {
     docs: {
