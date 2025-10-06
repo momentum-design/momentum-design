@@ -4,7 +4,7 @@ import { action } from 'storybook/actions';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
 import '../menuitem';
@@ -279,11 +279,6 @@ const meta: Meta = {
     'parent-nav-tooltip-text': {
       control: 'text',
     },
-    ...textControls([
-      '--mdc-sidenavigation-expanded-width',
-      '--mdc-sidenavigation-collapsed-width',
-      '--mdc-sidenavigation-vertical-divider-button-z-index',
-    ]),
     ...hideControls(['Context']),
     ...classArgType,
     ...styleArgType,

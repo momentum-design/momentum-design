@@ -5,7 +5,7 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, textControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -145,22 +145,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['characterLimitExceedingFired', 'textarea', 'validity', 'willValidate']),
-    ...textControls([
-      '--mdc-textarea-disabled-border-color',
-      '--mdc-textarea-disabled-text-color',
-      '--mdc-textarea-disabled-background-color',
-      '--mdc-textarea-border-color',
-      '--mdc-textarea-text-color',
-      '--mdc-textarea-background-color',
-      '--mdc-textarea-hover-background-color',
-      '--mdc-textarea-focused-background-color',
-      '--mdc-textarea-focused-border-color',
-      '--mdc-textarea-error-border-color',
-      '--mdc-textarea-warning-border-color',
-      '--mdc-textarea-success-border-color',
-      '--mdc-textarea-primary-border-color',
-      '--mdc-textarea-text-secondary-normal',
-    ]),
   },
 };
 

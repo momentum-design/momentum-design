@@ -163,21 +163,32 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
    */
   protected handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
-      this.triggerClickEvent();
-      event.preventDefault();
+      const eventDispatched = this.triggerClickEvent(event);
+      if (eventDispatched) {
+        event.preventDefault();
+      }
     }
   }
 
   /**
    * Triggers a click event on the list item.
+   *
+   * @param event - The event that triggered the click.
+   * @returns - Returns true if the click event was dispatched, false otherwise.
    */
-  protected triggerClickEvent() {
+  protected triggerClickEvent(event: Event): boolean {
+    const target = event.target as HTMLElement;
+    // Do not emit click event when the target is a focusable element inside the list item.
+    if (target !== this && document.activeElement === event.target) {
+      return false;
+    }
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
       view: window,
     });
     this.dispatchEvent(clickEvent);
+    return true;
   }
 
   /**
