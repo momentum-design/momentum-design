@@ -91,11 +91,6 @@ class Input
   @property({ type: String }) placeholder = '';
 
   /**
-   * readonly attribute of the input field. If true, the input field is read-only.
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The prefix text that is displayed before the input field. It has a max length of 10 characters.
    * When the prefix text is set, make sure to set the 'data-aria-label'
    * attribute with the appropriate value for accessibility.
