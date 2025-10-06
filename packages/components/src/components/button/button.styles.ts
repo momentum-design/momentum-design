@@ -238,7 +238,7 @@ const styles = css`
   }
 
   :host([inverted][variant='primary'][color='default']) {
-    --mdc-button-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-button-background-color: var(--mds-color-theme-inverted-button-primary-normal);
   }
 
