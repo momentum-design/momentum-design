@@ -329,7 +329,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     }
     return html`
       <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
-        ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
+        ${this.value.length}/${this.maxCharacterLimit}
       </mdc-text>
     `;
   }
