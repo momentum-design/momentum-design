@@ -28,6 +28,7 @@ import styles from './chip.styles';
  * @cssproperty --mdc-chip-color - The color of the chip.
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
  * @cssproperty --mdc-chip-background-color - The background color of the chip.
+ * @cssproperty --mdc-button-height - Height for button size
  *
  * @csspart label - The label part of the chip.
  *
