@@ -98,12 +98,6 @@ class Select
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the select field. If true, the select is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The placement of the popover within Select component.
    * This defines the position of the popover relative to the select input field.
    *
@@ -113,16 +107,6 @@ class Select
    * @default 'bottom-start'
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
-
-  /**
-   * Indicates whether the select is soft disabled.
-   * When set to `true`, the select appears visually disabled but still allows
-   * focus.
-   *
-   * @default undefined
-   */
-  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
-  softDisabled?: boolean;
 
   /**
    * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
