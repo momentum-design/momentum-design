@@ -11,6 +11,7 @@ import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 import { withIllustrationProvider } from './provider/illustrationProvider';
 import { withCssPropertyProvider } from './provider/cssPropertyProvider';
+import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
@@ -148,7 +149,13 @@ const preview = {
     },
     direction: 'ltr',
   },
-  decorators: [withCssPropertyProvider(cssProperties), withThemeProvider, withIconProvider, withIllustrationProvider],
+  decorators: [
+    storyDescription,
+    withCssPropertyProvider(cssProperties),
+    withThemeProvider,
+    withIconProvider,
+    withIllustrationProvider,
+  ],
   globalTypes: {
     theme: {
       description: 'Global theme for components',

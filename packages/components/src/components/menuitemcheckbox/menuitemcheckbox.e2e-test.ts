@@ -400,18 +400,18 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     await componentsPage.mount({
       html: `
         <div role="${ROLE.MENU}" style="display: flex; flex-direction: column; gap: 0.5rem">
-          <mdc-menuitemcheckbox label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox soft-disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox checked soft-disabled label="Menu Item Checkbox"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" soft-disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked soft-disabled label="Menu Item Checkbox Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Default Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked label="Checked Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox disabled label="Disabled Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox soft-disabled label="Soft Disabled Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked disabled label="Checked Disabled Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox checked soft-disabled label="Checked Soft Disabled Menu Item Checkbox"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" label="Default Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked label="Checked Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" disabled label="Disabled Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" soft-disabled label="Soft Disabled Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked disabled label="Checked Disabled Toggle Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.TOGGLE}" checked soft-disabled label="Checked Soft Disabled Toggle Indicator"></mdc-menuitemcheckbox>
         </div>
       `,
       clearDocument: true,
@@ -420,18 +420,18 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     await componentsPage.mount({
       html: `
         <div role="${ROLE.MENU}" style="display: flex; flex-direction: column; gap: 0.25rem">
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" soft-disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked soft-disabled label="Menu Item Checkbox None Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" soft-disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked soft-disabled label="Menu Item Checkbox Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" label="Default None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked label="Checked None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" disabled label="Disabled None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" soft-disabled label="Soft Disabled None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked disabled label="Checked Disabled None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.NONE}" checked soft-disabled label="Checked Soft Disabled None Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" label="Default Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked label="Checked Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" disabled label="Disabled Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" soft-disabled label="Soft Disabled Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked disabled label="Checked Disabled Checkmark Indicator"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox indicator="${INDICATOR.CHECKMARK}" checked soft-disabled label="Checked Soft Disabled Checkmark Indicator"></mdc-menuitemcheckbox>
         </div>
       `,
       clearDocument: true,

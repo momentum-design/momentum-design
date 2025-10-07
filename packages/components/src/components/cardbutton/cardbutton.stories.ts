@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
@@ -91,7 +91,6 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls(['children', 'active', 'size']),
-    ...textControls(['--mdc-card-width']),
     ...classArgType,
     ...styleArgType,
   },

@@ -3,13 +3,14 @@ import '.';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-staticcheckbox
     ?checked="${args.checked}"
     ?indeterminate="${args.indeterminate}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     class="${args.class}"
     style="${args.style}"
   ></mdc-staticcheckbox>`;
@@ -30,19 +31,14 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
+      control: 'boolean',
+    },
     ...classArgType,
     ...styleArgType,
-    ...textControls([
-      '--mdc-staticcheckbox-border-color',
-      '--mdc-staticcheckbox-checked-background-color',
-      '--mdc-staticcheckbox-disabled-background-color',
-      '--mdc-checkbox-disabled-border-color',
-      '--mdc-checkbox-disabled-checked-icon-color',
-      '--mdc-staticcheckbox-disabled-icon-color',
-      '--mdc-staticcheckbox-icon-background-color',
-      '--mdc-staticcheckbox-icon-border-color',
-      '--mdc-staticcheckbox-icon-color',
-    ]),
   },
 };
 
@@ -53,5 +49,7 @@ export const Example: StoryObj = {
     checked: false,
     indeterminate: false,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
   },
 };

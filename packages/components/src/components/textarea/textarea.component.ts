@@ -84,12 +84,6 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the textarea field. If true, the textarea field is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The rows attribute specifies the visible number of lines in a text area.
    * @default 5
    */
@@ -329,7 +323,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     }
     return html`
       <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
-        ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
+        ${this.value.length}/${this.maxCharacterLimit}
       </mdc-text>
     `;
   }

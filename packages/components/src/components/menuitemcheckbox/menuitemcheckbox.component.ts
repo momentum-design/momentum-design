@@ -123,6 +123,7 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
           slot="leading-controls"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
         ></mdc-staticcheckbox>
       `;
     }
@@ -143,6 +144,7 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
           slot="trailing-controls"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
           size="${TOGGLE_SIZE.COMPACT}"
         ></mdc-statictoggle>
       `;

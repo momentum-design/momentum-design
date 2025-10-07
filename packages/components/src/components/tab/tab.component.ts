@@ -45,6 +45,7 @@ import styles from './tab.styles';
  *
  * @tagname mdc-tab
  *
+ * @cssproperty --mdc-button-height - Height for button size
  * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
  * @cssproperty --mdc-tab-height - Height of the tab.
  * @cssproperty --mdc-tab-glass-active-background-color-disabled - Background color for active glass tab

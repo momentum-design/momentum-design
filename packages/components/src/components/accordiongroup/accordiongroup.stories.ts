@@ -8,7 +8,6 @@ import '../avatarbutton';
 import '../chip';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 
@@ -52,7 +51,6 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
-    ...textControls(['default', '--mdc-accordiongroup-border-color']),
   },
 };
 
