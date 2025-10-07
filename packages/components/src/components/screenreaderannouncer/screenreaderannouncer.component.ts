@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Component } from '../../models';
+import { debounce } from '../../utils/debounce';
 
 import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
@@ -84,6 +85,14 @@ class ScreenreaderAnnouncer extends Component {
   timeout: number = DEFAULTS.TIMEOUT;
 
   /**
+   * The debounce time for announcements.
+   *
+   * @default 500
+   */
+  @property({ type: Number, reflect: true, attribute: 'debounce-time' })
+  debounceTime: number = DEFAULTS.DEBOUNCE;
+
+  /**
    * Array to store timeOutIds for clearing timeouts later.
    * @internal
    */
@@ -94,9 +103,6 @@ class ScreenreaderAnnouncer extends Component {
    * @internal
    */
   private ariaLiveAnnouncementIds: Array<string> = [];
-
-  /** @internal */
-  private debounceTime = 500;
 
   /**
    * Announces the given announcement to the screen reader.
@@ -189,33 +195,13 @@ class ScreenreaderAnnouncer extends Component {
     this.clearTimeOutsAndAnnouncements();
   }
 
-  /**
-   * Returns a debounced version of the provided callback function.
-   * The returned function will delay calling the provided callback function
-   * by the specified timeout (in milliseconds). The default timeout is 500 ms.
-   * If the returned function is called again before the timeout has expired,
-   * the timeout will be reset.
-   *
-   * @param callback - The function to debounce.
-   * @param timeout - The timeout in milliseconds.
-   */
-  private debounceAnnouncement(callback: Function, timeout: number): Function {
-    let timer: number;
-    return (...args: any[]) => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        callback.apply(this, args);
-      }, timeout);
-    };
-  }
-
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     if (changedProperties.has('identity') && this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
       this.createAnnouncementAriaLiveRegion();
     }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
-      this.debounceAnnouncement(() => {
+      debounce(() => {
         this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
         this.announcement = '';
       }, this.debounceTime)();
