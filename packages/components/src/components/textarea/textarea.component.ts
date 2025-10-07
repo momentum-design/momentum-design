@@ -129,17 +129,16 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: Number }) minlength?: number;
 
   /**
-   * maximum character limit for the textarea field for character counter.
+   * The maximum character limit for the textarea field for character counter.
    */
   @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
 
   /**
-   * announcement to be made when the max character limit is set.
-   * if the number of characters in the textarea are more than 90% of the max character limit,
-   * the announcement will be made.
-   * The number of characters and the max character will be announced in this format.
-   * `%{number-of-characters} of %{max-character-limit} characters typed.`
-   * Ex: "93 of 100 characters typed."
+   * Template string for the announcement that will be read by screen readers when the max character limit is set.
+   * Consumers must use the placeholders `%{number-of-characters}` and `%{max-character-limit}` in the string,
+   * which will be dynamically replaced with the actual values at runtime.
+   * For example: `%{number-of-characters} out of %{max-character-limit} characters are typed.`
+   * Example output: "93 out of 140 characters are typed."
    */
   @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
 
