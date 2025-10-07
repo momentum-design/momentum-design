@@ -66,9 +66,9 @@ const styles = [
     }
 
     :host::part(percentage) {
-      font-size: var(--mds-label-font-size);
-      font-weight: var(--mds-label-font-weight);
-      line-height: var(--mds-label-font-height);
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     @media (forced-colors: active) {
