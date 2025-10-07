@@ -3,6 +3,10 @@
 import winston from 'winston';
 import { LoggerMetadata, TransportOptions, Transports } from '../common/types';
 
+interface ExtendedLogInfo extends winston.Logform.TransformableInfo {
+  metadata?: LoggerMetadata;
+}
+
 const generateMetadata = (pkg: string, file: string): LoggerMetadata => ({ pkg, file });
 
 const LOGGER_FORMAT = winston.format.combine(
@@ -18,7 +22,7 @@ const LOGGER_FORMAT = winston.format.combine(
   }),
   winston.format.errors({ stack: true }),
   winston.format.ms(),
-  winston.format.printf((logInfo: winston.Logform.TransformableInfo) => {
+  winston.format.printf((logInfo: ExtendedLogInfo) => {
     return `${logInfo.level}|${logInfo.label}/${logInfo.metadata?.pkg || 'NA'}+${logInfo.metadata?.file || 'NA'}@${logInfo.timestamp}:${logInfo.ms}->${logInfo.message}};`;
   }),
 );
