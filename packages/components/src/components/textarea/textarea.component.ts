@@ -84,12 +84,6 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the textarea field. If true, the textarea field is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The rows attribute specifies the visible number of lines in a text area.
    * @default 5
    */

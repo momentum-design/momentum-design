@@ -9,6 +9,8 @@ const render = (args: Args) =>
   html` <mdc-statictoggle
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     size="${args.size}"
   ></mdc-statictoggle>`;
 
@@ -23,6 +25,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     size: {
@@ -40,6 +48,8 @@ export const Example: StoryObj = {
   args: {
     checked: false,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
     size: TOGGLE_SIZE.DEFAULT,
   },
 };

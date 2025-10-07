@@ -10,6 +10,8 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   checked?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
+  'soft-disabled'?: boolean;
   size?: ToggleSize;
 };
 
@@ -20,6 +22,8 @@ const setup = async (args: SetupOptions) => {
       <mdc-statictoggle
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ></mdc-statictoggle>
     `,
@@ -42,6 +46,15 @@ test('mdc-statictoggle', async ({ componentsPage }) => {
     await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
     stickerSheet.setAttributes({ disabled: '' });
     await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ readonly: '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ checked: '', readonly: '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    stickerSheet.setAttributes({ checked: '', 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    
     await stickerSheet.mountStickerSheet();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-statictoggle', {
@@ -74,6 +87,16 @@ test('mdc-statictoggle', async ({ componentsPage }) => {
       await componentsPage.setAttributes(statictoggle, { disabled: '' });
       await expect(statictoggle).toHaveAttribute('disabled', '');
       await componentsPage.removeAttribute(statictoggle, 'disabled');
+    });
+    await test.step('attribute readonly should be present on component when set', async () => {
+      await componentsPage.setAttributes(statictoggle, { readonly: '' });
+      await expect(statictoggle).toHaveAttribute('readonly', '');
+      await componentsPage.removeAttribute(statictoggle, 'readonly');
+    });
+    await test.step('attribute soft-disabled should be present on component when set', async () => {
+      await componentsPage.setAttributes(statictoggle, { 'soft-disabled': '' });
+      await expect(statictoggle).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(statictoggle, 'soft-disabled');
     });
   });
 });
