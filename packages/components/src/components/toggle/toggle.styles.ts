@@ -5,6 +5,7 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
+    /* Base styles and CSS custom properties */
     :host {
       --mdc-toggle-width: 3rem;
       --mdc-toggle-height: 1.5rem;
@@ -20,6 +21,7 @@ const styles = [
       --mdc-toggle-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
+    /* Grid layout for labeled toggles */
     :host([label]),
     :host([help-text]) {
       display: grid;
@@ -34,6 +36,12 @@ const styles = [
       row-gap: 0rem;
     }
 
+    :host::part(label-text),
+    :host::part(help-text-container) {
+      grid-column: 2;
+    }
+
+    /* Component structure and layout */
     :host::part(toggle-input) {
       margin: 0;
       padding: 0;
@@ -45,16 +53,6 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    :host::part(label-text),
-    :host::part(help-text-container) {
-      grid-column: 2;
-    }
-
-    :host::part(label),
-    :host::part(toggle-input) {
-      cursor: pointer;
-    }
-
     :host::part(label) {
       word-break: break-word;
       white-space: normal;
@@ -63,33 +61,62 @@ const styles = [
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    :host([disabled])::part(label),
-    :host([disabled])::part(toggle-input) {
-      cursor: default;
-    }
-
     :host::part(help-text) {
       color: var(--mdc-toggle-help-text-color);
     }
 
-    :host(:hover:not([disabled]))::part(container) {
+    /* Default interactive states */
+    :host::part(label),
+    :host::part(toggle-input) {
+      cursor: pointer;
+    }
+
+    :host(:hover)::part(container) {
       background-color: var(--mdc-toggle-inactive-hover-color);
     }
 
-    :host(:active:not([disabled]))::part(container) {
+    :host(:active)::part(container) {
       background-color: var(--mdc-toggle-inactive-pressed-color);
     }
 
-    :host(:hover:not([disabled])[checked])::part(container) {
+    :host([checked]:hover)::part(container) {
       background-color: var(--mdc-toggle-active-hover-color);
     }
 
-    :host(:active:not([disabled])[checked])::part(container) {
+    :host([checked]:active)::part(container) {
       background-color: var(--mdc-toggle-active-pressed-color);
     }
 
+    /* Readonly state - disables pointer events */
+    :host([readonly]),
+    :host([soft-disabled]) {
+      pointer-events: none;
+    }
+
+    /* Disabled states override interactive styles */
+    :host([disabled])::part(label),
+    :host([disabled])::part(toggle-input),
+    :host([soft-disabled])::part(label),
+    :host([soft-disabled])::part(toggle-input) {
+      cursor: default;
+    }
+
+    :host([disabled]:hover)::part(container),
+    :host([disabled]:active)::part(container),
+    :host([disabled][checked]:hover)::part(container),
+    :host([disabled][checked]:active)::part(container),
+    :host([soft-disabled]:hover)::part(container),
+    :host([soft-disabled]:active)::part(container),
+    :host([soft-disabled][checked]:hover)::part(container),
+    :host([soft-disabled][checked]:active)::part(container) {
+      background-color: unset;
+    }
+
     :host([disabled])::part(label-text),
-    :host([disabled])::part(help-text) {
+    :host([disabled])::part(help-text),
+    :host([soft-disabled])::part(label),
+    :host([soft-disabled])::part(label-text),
+    :host([soft-disabled])::part(help-text) {
       color: var(--mdc-toggle-label-color-disabled);
     }
   `,

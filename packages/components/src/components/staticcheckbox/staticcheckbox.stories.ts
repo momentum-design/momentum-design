@@ -9,6 +9,8 @@ const render = (args: Args) =>
     ?checked="${args.checked}"
     ?indeterminate="${args.indeterminate}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     class="${args.class}"
     style="${args.style}"
   ></mdc-staticcheckbox>`;
@@ -29,6 +31,12 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
+      control: 'boolean',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -41,5 +49,7 @@ export const Example: StoryObj = {
     checked: false,
     indeterminate: false,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
   },
 };
