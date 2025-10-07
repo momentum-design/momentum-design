@@ -167,6 +167,12 @@ class Select
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
+  private searchTimeout: number | undefined;
+
+  /** @internal */
+  private searchString = '';
+
+  /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
     onStoreUpdate: this.onStoreUpdate,
@@ -525,6 +531,49 @@ class Select
     event.stopPropagation();
   }
 
+  private debounceSearchKey(letter: string): string {
+    if (this.searchTimeout) {
+      window.clearTimeout(this.searchTimeout);
+    }
+
+    this.searchTimeout = window.setTimeout(() => {
+      // for every 500ms, we will reset the search string.
+      this.searchString = '';
+    }, 500);
+
+    // add most recent letter to saved search string
+    this.searchString += letter;
+    return this.searchString;
+  }
+
+  private filterOptionsBySearchKey(searchKey: string): Option[] {
+    return this.navItems.filter(option =>
+      option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()),
+    );
+  }
+
+  /**
+   * Handles the selection of an option based on the filter string.
+   * It will select the first option from the filtered list if it is not empty.
+   * If the filtered list is empty, it will do nothing.
+   * @param searchKey - The filter string to search for options.
+   */
+  private handleSelectedOptionBasedOnFilter(searchKey: string): void {
+    // First, we search for an exact match with then entire search key
+    const filteredResults = this.filterOptionsBySearchKey(searchKey);
+    if (filteredResults.length) {
+      // If the key is an exact match, then we set the first option
+      this.setSelectedOption(filteredResults[0]);
+    } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
+      // If the key is same, then we cycle through all options which start with the same letter
+      const currentIndex = this.navItems.indexOf(this.selectedOption!) || 0;
+      const nextOptionFromList = this.navItems[currentIndex + 1];
+      const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(searchKey[0]);
+      const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
+      this.setSelectedOption(nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0]);
+    }
+  }
+
   /**
    * Handles the keydown event on the select element when the popover is closed.
    * The options are as follows:
@@ -565,8 +614,13 @@ class Select
         event.preventDefault();
         break;
       }
-      default:
+      default: {
+        if (event.key.length === 1) {
+          this.displayPopover = true;
+          this.handleSelectedOptionByKeyInput(event.key);
+        }
         break;
+      }
     }
   }
 
@@ -580,6 +634,17 @@ class Select
    */
   private handleNativeInputFocus(): void {
     this.visualCombobox.focus();
+  }
+
+  private handleSelectedOptionByKeyInput(searchKey: string): void {
+    const searchString = this.debounceSearchKey(searchKey);
+    this.handleSelectedOptionBasedOnFilter(searchString);
+  }
+
+  private handleKeydownPopover(event: KeyboardEvent): void {
+    if (event.key.length === 1) {
+      this.handleSelectedOptionByKeyInput(event.key);
+    }
   }
 
   public override render() {
@@ -654,6 +719,7 @@ class Select
           focus-back-to-trigger
           focus-trap
           size
+          @keydown="${this.handleKeydownPopover}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
