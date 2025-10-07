@@ -49,6 +49,7 @@ const render = (args: Args) =>
     toggletip-strategy="${args['toggletip-strategy']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     max-character-limit="${ifDefined(args['max-character-limit'])}"
+    character-limit-announcement="${ifDefined(args['character-limit-announcement'])}"
   ></mdc-textarea>`;
 
 const meta: Meta = {
@@ -142,6 +143,9 @@ const meta: Meta = {
       control: 'boolean',
     },
     'info-icon-aria-label': {
+      control: 'text',
+    },
+    'character-limit-announcement': {
       control: 'text',
     },
     ...hideControls(['characterLimitExceedingFired', 'textarea', 'validity', 'willValidate']),
@@ -272,7 +276,13 @@ export const AllVariants: StoryObj = {
 };
 
 export const TextareaWithCharacterCounter: StoryObj = {
-  render: () => {
+  args: {
+    required: true,
+    placeholder: `Write what's on your mind`,
+    'max-character-limit': 75,
+    'character-limit-announcement': '%{number-of-characters} out of %{max-character-limit} characters are typed.',
+  },
+  render: (args: Args) => {
     let helpText = '';
     let helpTextType: ValidationType = VALIDATION.DEFAULT;
 
@@ -311,9 +321,10 @@ export const TextareaWithCharacterCounter: StoryObj = {
             @limitexceeded=${handleCharacterLimitCheck}
             help-text="${helpText}"
             help-text-type="${helpTextType}"
-            required
-            max-character-limit="75"
-            placeholder="Write what's on your mind"
+            ?required="${args.required}"
+            max-character-limit="${args['max-character-limit']}"
+            placeholder="${args.placeholder}"
+            character-limit-announcement="${args['character-limit-announcement']}"
           ></mdc-textarea>
           <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
             <mdc-button type="submit" size="24">Submit</mdc-button>
