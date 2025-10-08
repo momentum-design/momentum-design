@@ -86,7 +86,7 @@ class ScreenreaderAnnouncer extends Component {
   timeout: number = DEFAULTS.TIMEOUT;
 
   /**
-   * The debounce time for announcements.
+   * The debounce time delay in milliseconds for announcements.
    *
    * @default 500
    */
