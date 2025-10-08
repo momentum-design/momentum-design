@@ -8,30 +8,22 @@ import type { TypedCustomEvent } from '../../utils/types';
 
 import type VirtualizedList from './virtualizedlist.component';
 
-type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
-type VirtualizedListVirtualItemsChangeEvent = TypedCustomEvent<
+export type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
+export type VirtualizedListVirtualItemsChangeEvent = TypedCustomEvent<
   VirtualizedList,
   {
     virtualItems: Array<VirtualItem>;
     measureElement: (node: Element | null | undefined) => void;
   }
 >;
+export type VirtualData = VirtualizedListVirtualItemsChangeEvent['detail'];
 
-interface Events {
+export interface Events {
   onScrollEvent: VirtualizedListScrollEvent;
   onVirtualItemsChangeEvent: VirtualizedListVirtualItemsChangeEvent;
 }
 
-type Virtualizer = TanstackVirtualizer<Element, Element>;
-type VirtualizerOptions = TanstackVirtualizerOptions<Element, Element>;
-type VirtualizerProps = Omit<Partial<VirtualizerOptions>, 'getScrollElement'> &
+export type Virtualizer = TanstackVirtualizer<Element, Element>;
+export type VirtualizerOptions = TanstackVirtualizerOptions<Element, Element>;
+export type VirtualizerProps = Omit<Partial<VirtualizerOptions>, 'getScrollElement'> &
   Required<Pick<VirtualizerOptions, 'count' | 'estimateSize' | 'getItemKey'>>;
-
-export type {
-  Events,
-  VirtualizedListScrollEvent,
-  VirtualizedListVirtualItemsChangeEvent,
-  Virtualizer,
-  VirtualizerProps,
-  VirtualizerOptions,
-};
