@@ -1,6 +1,6 @@
 import { CSSResult, html, PropertyValues, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
@@ -9,6 +9,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
+import { DEFAULTS as CARD_DEFAULTS } from '../card/card.constants';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -223,6 +224,20 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   /** @internal */
   protected lastActiveElement: HTMLElement | null = null;
 
+  /**
+   * @internal
+   * Track whether the footer has content to conditionally apply spacing
+   */
+  @state()
+  private hasFooterContent: string = '';
+
+  /**
+   * @internal
+   * Track whether the header has content to conditionally apply spacing
+   */
+  @state()
+  private hasHeaderContent: string = '';
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -307,6 +322,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
       changedProperties.has('descriptionText')
     ) {
       this.setupAriaLabelledDescribedBy();
+      this.updateHeaderContentPresence();
     }
 
     if (changedProperties.has('focusTrap')) {
@@ -487,9 +503,59 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * @internal
    */
   protected renderBody() {
-    return html` <div part="body">
+    return html` <div part="body ${this.hasHeaderContent}">
       <slot name="dialog-body"></slot>
     </div>`;
+  }
+
+  /**
+   * Updates the hasFooterContent state to track footer presence for conditional styling
+   * @internal
+   */
+  private updateFooterContentPresence() {
+    this.hasFooterContent =
+      (this.footerButtonPrimary?.length ?? 0) > 0 ||
+      (this.footerButtonSecondary?.length ?? 0) > 0 ||
+      (this.footerLink?.length ?? 0) > 0
+        ? 'has-footer-content'
+        : '';
+  }
+
+  /**
+   * Updates the hasHeaderContent state to track header presence for conditional styling
+   * @internal
+   */
+  private updateHeaderContentPresence() {
+    this.hasHeaderContent = this.headerText ? 'has-header-content' : '';
+  }
+
+  /**
+   * Override the FooterMixin's handleFooterSlot to update footer content presence
+   * @internal
+   */
+  protected override handleFooterSlot(tagname: string, variant?: string | undefined): void {
+    super.handleFooterSlot(tagname, variant);
+    this.updateFooterContentPresence();
+  }
+
+  /**
+   * Override the FooterMixin's renderFooter to apply conditional styling
+   * @internal
+   */
+  protected override renderFooter() {
+    return html` <slot name="footer">
+      <div part="footer ${this.hasFooterContent}">
+        <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(CARD_DEFAULTS.LINK)}></slot>
+        <slot
+          name="footer-button-secondary"
+          @slotchange=${() => this.handleFooterSlot(CARD_DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
+        ></slot>
+        <slot
+          name="footer-button-primary"
+          @slotchange=${() => this.handleFooterSlot(CARD_DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
+        ></slot>
+      </div>
+    </slot>`;
   }
 
   public override render() {

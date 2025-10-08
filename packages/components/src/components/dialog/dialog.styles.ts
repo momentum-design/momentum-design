@@ -20,7 +20,6 @@ const styles = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
     position: absolute;
     right: 50%;
     bottom: 50%;
@@ -103,11 +102,19 @@ const styles = css`
     width: 100%;
   }
 
+  :host::part(has-header-content) {
+    margin-top: 1rem;
+  }
+
   :host::part(footer) {
     display: flex;
     gap: 0.5rem;
     align-items: center;
     justify-content: flex-end;
+  }
+
+  :host::part(has-footer-content) {
+    margin-top: 1rem;
   }
 
   :host::part(dialog-close-btn) {
