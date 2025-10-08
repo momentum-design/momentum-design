@@ -115,12 +115,6 @@ class Combobox
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the combobox field. If true, the combobox is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The placement of the popover within Combobox.
    * This defines the position of the popover relative to the combobox input field.
    *

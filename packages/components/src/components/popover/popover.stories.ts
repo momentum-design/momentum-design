@@ -21,6 +21,7 @@ import type Popover from '.';
 import type Dialog from '../dialog';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
   <mdc-popover
@@ -78,7 +79,7 @@ const createTrigger = (triggerID: string, text: String) => html`
 
 const render = (args: Args) => html`
   ${createTrigger(args.triggerID, 'Click me!')}
-  ${createPopover(args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
+  ${createPopover(args, html`<mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Lorem ipsum dolor sit amet.</mdc-text>`)}
 `;
 
 const renderInteractive = (args: Args) => html`
@@ -136,9 +137,12 @@ const renderHideOnBlur = (args: Args) => html`
 
 const renderMultiple = (args: Args) => html`
   ${createTrigger('popover-trigger-multiple', 'Click/ Hover me!')}
-  ${createPopover(args, html`<mdc-text>Interactive content on click</mdc-text>`)}
+  ${createPopover(
+    args,
+    html`<mdc-text tagname=${VALID_TEXT_TAGS.SPAN} style="width: 13rem;">Interactive content on click</mdc-text>`,
+  )}
   <mdc-tooltip id="popover2" triggerID="popover-trigger-multiple" show-arrow hide-on-escape>
-    <mdc-text>Description tooltip on mouseenter</mdc-text>
+    <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Description tooltip on mouseenter</mdc-text>
   </mdc-tooltip>
 `;
 
@@ -146,7 +150,8 @@ const renderNested = (args: Args) => html`
   ${createTrigger('popover-trigger-nested', 'Click me!')}
   ${createPopover(
     args,
-    html`<mdc-text>Popover Level 1</mdc-text> <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
+    html`<mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover Level 1</mdc-text>
+      <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
   )}
   <mdc-popover
     id="popover2"
@@ -161,7 +166,7 @@ const renderNested = (args: Args) => html`
     hide-on-escape
     hide-on-outside-click
   >
-    <mdc-text>Popover Level 2</mdc-text>
+    <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover Level 2</mdc-text>
     <mdc-button id="popover-trigger-3">Hover me!</mdc-button>
   </mdc-popover>
 
@@ -175,7 +180,7 @@ const renderNested = (args: Args) => html`
     hide-on-escape
     hide-on-outside-click
   >
-    <mdc-text>Description tooltip on mouseenter</mdc-text>
+    <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Description tooltip on mouseenter</mdc-text>
   </mdc-popover>
 `;
 
@@ -205,7 +210,7 @@ const renderBackdrop = (args: Args) => html`
     hide-on-escape
     hide-on-outside-click
   >
-    <mdc-text>Popover 2</mdc-text>
+    <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover 2</mdc-text>
   </mdc-popover>
 `;
 
@@ -471,6 +476,17 @@ export const popoverWithBackdrop: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: html`This example shows how to use the \`backdrop\` property to create a modal popover.<br />
+          The backdrop will cover the rest of the page and prevent interaction with other elements while the popover is
+          open. Clicking outside the popover or pressing the escape key will close the popover.<br />
+          Note that the popover attached to "Click Me!" button has the backdrop enabled, while the other popover does
+          not have the backdrop enabled and can be interacted with while the modal popover is open.`,
+      },
+    },
+  },
 };
 
 export const popoverWithSelect: StoryObj = {
@@ -534,19 +550,19 @@ export const MultipleSingleLevelPopovers: StoryObj = {
       <div class="child">
         <mdc-button id="popover-trigger-1">Click me!</mdc-button>
         <mdc-popover triggerID="popover-trigger-1" hide-on-outside-click>
-          <mdc-text>Popover Level 1 Trigger 1</mdc-text>
+          <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover Level 1 Trigger 1</mdc-text>
         </mdc-popover>
       </div>
       <div class="child">
         <mdc-button id="popover-trigger-2">Click me!</mdc-button>
         <mdc-popover triggerID="popover-trigger-2" hide-on-outside-click>
-          <mdc-text>Popover Level 1 Trigger 2</mdc-text>
+          <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover Level 1 Trigger 2</mdc-text>
         </mdc-popover>
       </div>
       <div class="child">
         <mdc-button id="popover-trigger-3">Click me!</mdc-button>
         <mdc-popover triggerID="popover-trigger-3" hide-on-outside-click>
-          <mdc-text>Popover Level 1 Trigger 3</mdc-text>
+          <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Popover Level 1 Trigger 3</mdc-text>
         </mdc-popover>
       </div>
     </div>
@@ -602,14 +618,14 @@ export const AppendTo: StoryObj = {
       </template>
 
       <div class="root" id="root">
-        <mdc-text tagname="p"> To breakout stacking context is necessary to use append to. </mdc-text>
-        <mdc-text tagname="p"> Trigger and popover dynamically added to the DOM </mdc-text>
+        <mdc-text> To breakout stacking context is necessary to use append to. </mdc-text>
+        <mdc-text> Trigger and popover dynamically added to the DOM </mdc-text>
 
         <mdc-divider style="margin-block: 1rem"></mdc-divider>
 
         <div class="container" @mouseenter=${hover} @mouseleave=${leave} data-tpl="menu-without-append-to-tpl">
-          <mdc-text tagname="p">Append-to not used, popover clipped</mdc-text>
-          <mdc-text tagname="p" style="color: var(--mds-color-theme-text-primary-disabled);"
+          <mdc-text>Append-to not used, popover clipped</mdc-text>
+          <mdc-text style="color: var(--mds-color-theme-text-primary-disabled);"
             >Hover on to show the popover trigger</mdc-text
           >
           <div class="hover-menu"></div>
@@ -622,8 +638,8 @@ export const AppendTo: StoryObj = {
           @mouseleave=${leave}
           data-tpl="menu-with-append-to-tpl"
         >
-          <mdc-text tagname="p">Popover rendered correctly with append to</mdc-text>
-          <mdc-text tagname="p" style="color: var(--mds-color-theme-text-primary-disabled);"
+          <mdc-text>Popover rendered correctly with append to</mdc-text>
+          <mdc-text style="color: var(--mds-color-theme-text-primary-disabled);"
             >Hover on to show the popover trigger</mdc-text
           >
           <div class="hover-menu"></div>
@@ -702,8 +718,15 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
         dialog.visible = false;
       }}
     >
-      <mdc-text slot="dialog-body">Dialog content goes here.</mdc-text>
-      <mdc-button slot="footer">Close</mdc-button>
+      <mdc-text tagname=${VALID_TEXT_TAGS.SPAN} slot="dialog-body">Dialog content goes here.</mdc-text>
+      <mdc-button
+        slot="footer"
+        @click=${() => {
+          const dialog = document.getElementById('popover-dialog') as Dialog;
+          dialog.visible = false;
+        }}
+        >Close</mdc-button
+      >
     </mdc-dialog>
   `,
 };
@@ -732,19 +755,19 @@ export const PopoverScrollOverflow: StoryObj = {
             args,
             html`
               <div style="height: 300px; overflow-y: auto;">
-                <mdc-text
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}
                   >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
                   et dolore magna aliqua.</mdc-text
                 >
-                <mdc-text>More content...</mdc-text>
-                <mdc-text>Even more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
-                <mdc-text>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>More content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>Even more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
+                <mdc-text tagname=${VALID_TEXT_TAGS.SPAN}>And some more content...</mdc-text>
               </div>
             `,
           )}
@@ -821,12 +844,12 @@ export const PopoverInChangingList: StoryObj = {
             ><div></div
           ></mdc-popover>
         </template>
-        <mdc-text tagname="p">
+        <mdc-text>
           Frameworks might detach and re-attach elements when list content change. <br />
           If it happens with the trigger but not the popover then it breaks the connection.
         </mdc-text>
 
-        <mdc-text tagname="p"> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>
+        <mdc-text> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>
 
         <mdc-buttongroup>
           <mdc-button @click="${updateButton}">Update Open buttons</mdc-button>

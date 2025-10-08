@@ -120,7 +120,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
       await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '100' });
       await expect(mdcTextarea).toHaveAttribute('max-character-limit', '100');
       const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
-      await expect(characterCounter).toHaveText('00/100');
+      await expect(characterCounter).toHaveText('0/100');
       await componentsPage.removeAttribute(mdcTextarea, 'max-character-counter');
     });
 
@@ -327,7 +327,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
     await test.step('component should have character counter when max-character-limit is set', async () => {
       await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '10', value: '' });
       const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
-      await expect(characterCounter).toHaveText('00/10');
+      await expect(characterCounter).toHaveText('0/10');
       await textareaElement.fill('This is a long text');
       await expect(textareaElement).toHaveValue('This is a long text');
       await expect(characterCounter).toHaveText('19/10');

@@ -149,11 +149,11 @@ class Checkbox
 
   /**
    * Toggles the state of the checkbox element.
-   * If the element is not disabled, then
+   * If the element is not disabled, soft-disabled, or readonly, then
    * the checked property is toggled and the indeterminate property is set to false.
    */
   private toggleState(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.softDisabled && !this.readonly) {
       this.checked = !this.checked;
       this.indeterminate = false;
     }
@@ -165,6 +165,10 @@ class Checkbox
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
+    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+
     if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
@@ -200,6 +204,8 @@ class Checkbox
         ?checked="${this.checked}"
         ?indeterminate="${this.indeterminate}"
         ?disabled="${this.disabled}"
+        ?readonly="${this.readonly}"
+        ?soft-disabled="${this.softDisabled}"
       >
         <input
           id="${this.inputId}"
@@ -212,6 +218,7 @@ class Checkbox
           aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
           tabindex="${this.disabled ? -1 : 0}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"

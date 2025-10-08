@@ -8,6 +8,7 @@ type SetupOptions = {
   checked?: boolean;
   readonly?: boolean;
   disabled?: boolean;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -17,7 +18,8 @@ const setup = async (args: SetupOptions) => {
         <mdc-staticradio 
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
-        ${restArgs.disabled ? 'disabled' : ''}></mdc-staticradio>
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}></mdc-staticradio>
       `,
     clearDocument: true,
   });
@@ -44,6 +46,10 @@ test('mdc-staticradio', async ({ componentsPage }) => {
     staticradioStickerSheet.setAttributes({ checked: '', disabled: '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
     staticradioStickerSheet.setAttributes({ checked: '', readonly: '', disabled: '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ 'soft-disabled': '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ checked: '', 'soft-disabled': '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
 
     await staticradioStickerSheet.mountStickerSheet();
@@ -75,6 +81,16 @@ test('mdc-staticradio', async ({ componentsPage }) => {
       await componentsPage.setAttributes(staticradio, { disabled: '' });
       await expect(staticradio).toHaveAttribute('disabled', '');
       await componentsPage.removeAttribute(staticradio, 'disabled');
+    });
+    await test.step('attribute soft-disabled should be present on component when set', async () => {
+      await componentsPage.setAttributes(staticradio, { 'soft-disabled': '' });
+      await expect(staticradio).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(staticradio, 'soft-disabled');
+    });
+    await test.step('attribute readonly should be present on component when set', async () => {
+      await componentsPage.setAttributes(staticradio, { readonly: '' });
+      await expect(staticradio).toHaveAttribute('readonly', '');
+      await componentsPage.removeAttribute(staticradio, 'readonly');
     });
   });
 });

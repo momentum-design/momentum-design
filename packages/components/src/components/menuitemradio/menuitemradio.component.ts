@@ -151,6 +151,7 @@ class MenuItemRadio extends MenuItem {
           slot="leading-controls"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
         ></mdc-staticradio>
       `;
     }

@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -9,10 +10,12 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
   indeterminate?: boolean;
   'data-aria-label'?: string;
+  'soft-disabled'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -28,6 +31,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
       >
       </mdc-checkbox>
     `,
@@ -38,6 +43,7 @@ const setup = async (args: SetupOptions) => {
   return checkbox;
 };
 
+test.use({ viewport: { width: 800, height: 1600 } });
 test('mdc-checkbox', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
@@ -95,6 +101,60 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       label: 'Disabled Indeterminate Checkbox Label',
       'help-text': 'This is a help text',
       disabled: true,
+      indeterminate: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
+    checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Selected Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Soft Disabled Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      'soft-disabled': true,
+      indeterminate: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Checked Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
+      checked: true,
+      'toggletip-text': 'This is a toggletip that provides additional context',
+      'info-icon-aria-label': 'Additional information',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Read Only Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      readonly: true,
       indeterminate: true,
       'toggletip-text': 'This is a toggletip that provides additional context',
       'info-icon-aria-label': 'Additional information',
@@ -173,6 +233,18 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(checkbox, { disabled: '' });
       await expect(checkbox.locator('input[type="checkbox"]')).toBeDisabled();
     });
+
+    await test.step('should have readonly attribute when the readonly attribute is passed', async () => {
+      await componentsPage.setAttributes(checkbox, { readonly: '' });
+      await expect(checkbox).toHaveAttribute('readonly', '');
+      await componentsPage.removeAttribute(checkbox, 'readonly');
+    });
+
+    await test.step('should have soft-disabled attribute when the soft-disabled attribute is passed', async () => {
+      await componentsPage.setAttributes(checkbox, { 'soft-disabled': '' });
+      await expect(checkbox).toHaveAttribute('soft-disabled', '');
+      await componentsPage.removeAttribute(checkbox, 'soft-disabled');
+    });
   });
 
   /**
@@ -194,10 +266,10 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
 
-      await componentsPage.page.keyboard.press('Space');
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
@@ -208,6 +280,32 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
 
       await checkbox.click();
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('checkbox should be focused but not change state when readonly', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label', readonly: true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(checkbox).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await checkbox.click({ force: true });
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('checkbox should be focused but not change state when soft-disabled', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label', 'soft-disabled': true });
+
+      await componentsPage.actionability.pressTab();
+      await expect(checkbox).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await checkbox.click({ force: true });
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
