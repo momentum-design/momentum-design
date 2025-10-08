@@ -5,6 +5,7 @@ import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
 import type { ThemeClass } from './types';
 import Actionability from './utils/actionability';
+import { DebugUtils } from './utils/debugUtils';
 
 const componentsDevPageTitle = 'Momentum Components Dev Page';
 const htmlRootElementSelector = '#root';
@@ -21,6 +22,7 @@ interface ComponentsPage {
   visualRegression: VisualRegression;
   page: Page;
   testInfo: TestInfo;
+  debugUtils: DebugUtils;
 }
 
 /**
@@ -38,6 +40,7 @@ class ComponentsPage {
     this.accessibility = new Accessibility(this.page, this.testInfo);
     this.actionability = new Actionability(this.page);
     this.visualRegression = new VisualRegression(this.page);
+    this.debugUtils = new DebugUtils(this.page);
   }
 
   /**

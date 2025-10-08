@@ -15,7 +15,7 @@ import '../buttongroup';
 import '../avatar';
 import '../textarea';
 import type VirtualizedList from './virtualizedlist.component';
-import { VirtualizerProps, type VirtualizedListVirtualItemsChangeEvent } from './virtualizedlist.types';
+import { VirtualizerProps, type VirtualizedListVirtualItemsChangeEvent, VirtualData } from './virtualizedlist.types';
 
 class VirtualizedWrapper extends Component {
   public override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
@@ -24,7 +24,7 @@ class VirtualizedWrapper extends Component {
   virtualizerProps: VirtualizerProps = {
     count: 100,
     estimateSize: () => 100,
-    getItemKey: index => index,
+    getItemKey: index => this.listItemTexts[index],
   };
 
   @property({ type: String })
@@ -37,7 +37,7 @@ class VirtualizedWrapper extends Component {
   initialFocus: number = 0;
 
   @state()
-  virtualData: VirtualizedListVirtualItemsChangeEvent['detail'] = { virtualItems: [], measureElement: () => null };
+  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
 
   @state()
   listItemTexts = new Array(this.virtualizerProps.count).fill(true).map((_, index) => `list item number ${index}`);
@@ -49,7 +49,6 @@ class VirtualizedWrapper extends Component {
 
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
-
     if (changedProperties.has('virtualizerProps')) {
       this.updateListItemTextArray();
     }
@@ -70,15 +69,11 @@ class VirtualizedWrapper extends Component {
 
   private renderItem(index: number) {
     if (this.story === 'text') {
-      return html`<mdc-listitem
-        data-index=${index}
-        ref=${ref(this.virtualData.measureElement)}
-        label="${this.listItemTexts[index]}"
-      ></mdc-listitem> `;
+      return html`<mdc-listitem data-index=${index} label="${this.listItemTexts[index]}"></mdc-listitem> `;
     }
     if (this.story === 'interactive') {
       return html`
-        <mdc-listitem data-index=${index} ${ref(this.virtualData.measureElement)}>
+        <mdc-listitem data-index=${index}>
           <span slot="leading-text-primary-label">${this.listItemTexts[index]}</span>
           <mdc-button
             slot="trailing-controls"
@@ -92,11 +87,7 @@ class VirtualizedWrapper extends Component {
     }
     if (this.story === 'dynamic') {
       return html`
-        <mdc-listitem
-          data-index=${index}
-          style="--mdc-listitem-height: ${50 + (index % 5) * 10}px"
-          ${ref(this.virtualData.measureElement)}
-        >
+        <mdc-listitem data-index=${index} style="--mdc-listitem-height: ${50 + (index % 5) * 10}px">
           <span slot="leading-text-primary-label">${this.listItemTexts[index]}</span>
           <mdc-button
             slot="trailing-controls"
@@ -159,31 +150,24 @@ VirtualizedWrapper.register('mdc-virtualizedwrapper');
 
 class VirtualizedDynamicList extends Component {
   @state()
-  listItems: string[] = new Array(10).fill(true).map((_, index) => `list item number ${index}`);
+  listItems: string[] = new Array(20).fill(true).map((_, index) => `list item number ${index}`);
 
   @state()
-  virtualData: VirtualizedListVirtualItemsChangeEvent['detail'] = { virtualItems: [], measureElement: () => null };
+  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
 
   @state()
-  virtualizerProps: VirtualizerProps = { count: 0, estimateSize: () => 0, getItemKey: index => index };
+  virtualizerProps: VirtualizerProps = { count: 0, estimateSize: () => 0, getItemKey: index => this.listItems[index] };
 
-  counter = 9;
+  counter = this.listItems.length;
 
-  protected override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    if (changedProperties.has('listItems')) {
-      this.virtualizerProps = {
-        count: this.listItems.length,
-        estimateSize: () => 50,
-        getItemKey: (index: number) => this.listItems[index],
-      };
-    }
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.updateVirtualProps();
   }
 
   private generateListItem(index: number, label: string): TemplateResult {
     return html`
-      <mdc-listitem data-index=${index} label=${label} ${ref(this.virtualData.measureElement)}>
+      <mdc-listitem data-index=${index} label=${label}>
         <mdc-buttongroup slot="trailing-controls">
           <mdc-button variant="primary" color="positive" @click=${() => this.addItem(0, 5)}>Add 5 At Top</mdc-button>
           <mdc-button variant="primary" color="positive" @click=${() => this.addItem(index)}>Add Above</mdc-button>
@@ -216,6 +200,7 @@ class VirtualizedDynamicList extends Component {
         ...this.listItems.slice(index, this.listItems.length),
       ];
     }
+    this.updateVirtualProps();
   }
 
   protected removeItem(index?: number): void {
@@ -224,15 +209,20 @@ class VirtualizedDynamicList extends Component {
     } else {
       this.listItems = [...this.listItems.slice(0, index), ...this.listItems.slice(index + 1, this.listItems.length)];
     }
+    this.updateVirtualProps();
+  }
+
+  private updateVirtualProps() {
+    this.virtualizerProps = {
+      count: this.listItems.length,
+      estimateSize: () => 44,
+      getItemKey: (index: number) => this.listItems[index],
+    };
   }
 
   private handleVirtualItemsChange = (event: VirtualizedListVirtualItemsChangeEvent) => {
     this.virtualData = event.detail;
   };
-
-  protected override createRenderRoot(): HTMLElement | DocumentFragment {
-    return this;
-  }
 
   protected override render(): TemplateResult {
     return html`
@@ -380,12 +370,12 @@ class ChatExample extends Component {
   listItems: string[] = this.getOrderedMessageKeys();
 
   @state()
-  virtualData: VirtualizedListVirtualItemsChangeEvent['detail'] = { virtualItems: [], measureElement: () => null };
+  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
 
   @state()
   virtualizerProps: VirtualizerProps = {
     count: this.listItems.length,
-    estimateSize: () => 55,
+    estimateSize: () => 48,
     getItemKey: index => this.listItems[index],
   };
 

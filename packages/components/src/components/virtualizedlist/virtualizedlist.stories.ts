@@ -12,7 +12,7 @@ const render = (args: Args) =>
     .virtualizerProps=${args.virtualizerProps}
     story=${args.story}
     .onscroll=${action('scroll')}
-    initial-focus=${args['initial-focus']}
+    initial-focus="90"
   ></mdc-virtualizedwrapper>`;
 
 const meta: Meta = {
@@ -40,21 +40,21 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    virtualizerProps: { count: 200, estimateSize: () => 24, overscan: 30 },
+    virtualizerProps: { count: 200, estimateSize: () => 36, overscan: 30, 'initial-focus': 90 },
     story: 'text',
   },
 };
 
 export const Interactive: StoryObj = {
   args: {
-    virtualizerProps: { count: 200, estimateSize: () => 75 },
+    virtualizerProps: { count: 200, estimateSize: () => 48 },
     story: 'interactive',
   },
 };
 
 export const InteractiveStartAtBottom: StoryObj = {
   args: {
-    virtualizerProps: { count: 200, estimateSize: () => 75 },
+    virtualizerProps: { count: 200, estimateSize: () => 48 },
     story: 'interactive',
     'initial-focus': 199,
   },

@@ -6,11 +6,12 @@ import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
-import { ElementStore } from '../../utils/controllers/ElementStore';
+import { ElementStore, ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import type ListItem from '../listitem';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
+import type { BaseArray } from '../../utils/offsetArray';
 
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
@@ -60,9 +61,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   constructor() {
     super();
 
-    this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleCreatedEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     this.addEventListener('focusin', this.handleFocusEvent);
     this.addEventListener('focusout', this.handleFocusEvent);
 
@@ -70,59 +69,35 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<ListItem>(this, {
       isValidItem: this.isValidItem,
+      onStoreUpdate: this.onElementStoreUpdate.bind(this),
     });
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-    // Set the role attribute for accessibility.
     this.role = ROLE.LIST;
   }
 
   /**
    * @internal
    */
-  get navItems(): HTMLElement[] {
+  get navItems(): BaseArray<HTMLElement> {
     return this.itemsStore.items;
   }
 
-  /**
-   * Update the tabIndex of the list items when a new item is added.
-   *
-   * @internal
-   */
-  protected handleCreatedEvent(event: Event) {
-    const createdElement = event.target as HTMLElement;
-    if (!this.isValidItem(createdElement)) {
-      return;
+  protected onElementStoreUpdate(item: ListItem, changeType: ElementStoreChangeTypes, index: number) {
+    if (changeType === 'added') {
+      // Update the tabIndex of the list items when a new item is added.
+      // eslint-disable-next-line no-param-reassign
+      item.tabIndex = -1;
+    } else if (changeType === 'removed' && item.tabIndex === 0) {
+      let newIndex = index + 1;
+      if (newIndex >= this.navItems.length) {
+        newIndex = index - 1;
+      }
+
+      this.resetTabIndexes(newIndex, this.focusWithin);
     }
-
-    createdElement.tabIndex = -1;
-  }
-
-  /**
-   * Update the focus when an item is removed.
-   * If there is a next item, focus it. If not, focus the previous item.
-   *
-   * @internal
-   */
-  protected handleDestroyEvent(event: CustomEvent) {
-    const destroyedElement = event.detail.originalTarget as HTMLElement;
-    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
-      return;
-    }
-
-    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
-    if (destroyedItemIndex === -1) {
-      return;
-    }
-
-    let newIndex = destroyedItemIndex + 1;
-    if (newIndex >= this.navItems.length) {
-      newIndex = destroyedItemIndex - 1;
-    }
-
-    this.resetTabIndexes(newIndex, this.focusWithin);
   }
 
   /** @internal */

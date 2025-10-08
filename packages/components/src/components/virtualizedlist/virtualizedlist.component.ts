@@ -7,6 +7,9 @@ import { type Ref, createRef, ref } from 'lit/directives/ref.js';
 
 import List from '../list/list.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
+import { Interval } from '../../utils/range';
+import { type BaseArray, OffsetArray } from '../../utils/offsetArray';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -84,14 +87,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   public virtualizer: Virtualizer | null = null;
 
-  get items(): VirtualItem[] {
-    return this.virtualizer?.getVirtualItems() ?? [];
-  }
-
-  get totalListHeight(): number {
-    return this.virtualizer?.getTotalSize() ?? 0;
-  }
-
   public scrollElementRef: Ref<Element> = createRef();
 
   /**
@@ -134,13 +129,39 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   private isAtBottom: boolean = false;
 
   /**
+   * The current virtual items being rendered.
+   */
+  get items(): VirtualItem[] {
+    return this.virtualizer?.getVirtualItems() ?? [];
+  }
+
+  private cachedNavItems: OffsetArray<HTMLElement> | null = null;
+
+  override get navItems(): BaseArray<HTMLElement> {
+    if (this.cachedNavItems?.items !== super.navItems) {
+      this.cachedNavItems = new OffsetArray(
+        super.navItems,
+        () => this.items[0].index,
+        () => this.virtualizerProps.count,
+      );
+    }
+    return this.cachedNavItems;
+  }
+
+  /**
+   * The total height of the list based on the virtualizer's calculations.
+   */
+  get totalListHeight(): number {
+    return this.virtualizer?.getTotalSize() ?? 0;
+  }
+
+  /**
    * Create the virtualizer controller and the virtualizer instance when the component is first connected to the DOM.
    */
   override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, {
       ...this.virtualizerProps,
       horizontal: false,
-      debug: true,
       getScrollElement: () => this.scrollElementRef.value || null,
       onChange: this.handleOnChange.bind(this),
       rangeExtractor: this.virtualizerRangeExtractor.bind(this),
@@ -154,6 +175,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.role = null;
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.virtualizerController = null;
+    this.virtualizer = null;
+  }
+
   /**
    * This override is necessary to update the virtualizer with relevant props
    * if the client updates any props (most commonly, count). Updating the options
@@ -163,62 +191,59 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     super.update(changedProperties);
 
     if (changedProperties.has('virtualizerProps')) {
-      if (!this.virtualizer) {
-        return;
-      }
-      const oldProps = changedProperties.get('virtualizerProps') as VirtualizerProps | undefined;
+      await this.handleVirtualizerPropsUpdate(changedProperties.get('virtualizerProps') as VirtualizerProps);
+    }
+  }
 
-      this.virtualizer.setOptions({
-        ...this.virtualizer.options,
-        ...this.virtualizerProps,
+  async handleVirtualizerPropsUpdate(prevProps: VirtualizerProps) {
+    const { virtualizer } = this;
+
+    if (!virtualizer) return;
+
+    const prevMeasurements = virtualizer.measurementsCache.slice();
+
+    virtualizer.setOptions({
+      ...virtualizer.options,
+      ...this.virtualizerProps,
+    });
+
+    this.fireChangeEvent(virtualizer);
+
+    const scrollEl = this.scrollElementRef.value;
+    if (!this.disableScrollAnchoring && scrollEl && prevMeasurements.length > 0) {
+      const countDiff = Math.abs(this.virtualizerProps.count - (prevProps?.count ?? 0));
+      const prevSelectedIndex = this.selectedIndex;
+      const prevFirstKey = this.firstKey;
+
+      const searchRange = new Interval(prevSelectedIndex - countDiff, prevSelectedIndex + countDiff, {
+        includeEnd: true,
       });
 
-      // If the count has changed:
-      if (this.virtualizerProps.count !== oldProps?.count) {
-        this.navItems.forEach(this.setAriaSetSize.bind(this));
+      // Wait for the virtualizer to finish updating before we read the new scrollHeight
+      this.requestUpdate();
+      await this.updateComplete;
 
-        this.fireChangeEvent(this.virtualizer);
+      if (this.isAtBottom) {
+        scrollEl.scrollTop = scrollEl.scrollHeight;
+      }
 
-        if (!this.disableScrollAnchoring && this.scrollElementRef.value) {
-          const prevSelectedIndex = this.selectedIndex;
-          const prevFirstKey = this.firstKey;
-          const previousScrollTop = this.scrollElementRef.value.scrollTop;
-          const previousScrollHeight = this.scrollElementRef.value.scrollHeight;
-          const countDifference = Math.abs(this.virtualizerProps.count - (oldProps?.count || 0));
+      const newSelectedIndex =
+        Array.from(searchRange).find(i => virtualizer.options.getItemKey(i) === this.selectedKey) ?? this.selectedIndex;
 
-          let newSelectedIndex = this.selectedIndex;
-          for (let i = prevSelectedIndex - countDifference; i <= prevSelectedIndex + countDifference; i += 1) {
-            if (this.virtualizer.options.getItemKey(i) === this.selectedKey) {
-              newSelectedIndex = i;
-              break;
-            }
-          }
-          this.selectedIndex = Math.max(0, Math.min(this.virtualizer.options.count - 1, newSelectedIndex));
+      this.selectedIndex = Math.max(0, Math.min(virtualizer.options.count - 1, newSelectedIndex));
 
-          // Wait for the virtualizer to finish updating before we read the new scrollHeight
-          this.requestUpdate();
-          await this.updateComplete;
+      // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
+      // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
+      const shouldAdjustScroll =
+        (this.focusWithin && prevSelectedIndex !== this.selectedIndex) ||
+        (!this.focusWithin && this.firstKey !== prevFirstKey);
 
-          if (this.isAtBottom) {
-            // Use this method instead of using scrollToIndex to ensure that refactor in the scroll padding
-            this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
+      // Update the scroll position to keep the same items in view (and in roughly the same position)
+      if (shouldAdjustScroll) {
+        const scrollDiff =
+          virtualizer.measurementsCache[this.selectedIndex].end - prevMeasurements[prevSelectedIndex].end;
 
-            return;
-          }
-
-          const scrollDifference = this.scrollElementRef.value!.scrollHeight - previousScrollHeight;
-          // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
-          // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
-          const shouldAdjustScroll =
-            (this.focusWithin && prevSelectedIndex < this.selectedIndex) ||
-            (!this.focusWithin && this.firstKey !== prevFirstKey);
-
-          if (scrollDifference > 0 && shouldAdjustScroll) {
-            // Update the scroll position to keep the same items in view (and in roughly the same position)
-            const scrollTop = previousScrollTop + scrollDifference;
-            this.scrollElementRef.value!.scrollTop = scrollTop;
-          }
-        }
+        scrollEl.scrollTop += scrollDiff;
       }
     }
   }
@@ -228,23 +253,21 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   protected override setInitialFocus(): void {
     setTimeout(async () => {
-      if (!this.virtualizer) {
-        return;
+      if (!this.virtualizer) return;
+
+      const { options, scrollToIndex } = this.virtualizer;
+
+      this.selectedIndex = Math.max(0, Math.min(options.count - 1, this.initialFocus));
+      this.selectedKey = options.getItemKey(this.selectedIndex);
+
+      scrollToIndex(this.selectedIndex, { align: 'center' });
+
+      // We try to set the tabIndex immediately,
+      // but if the items haven't been rendered, yet we leave the work to onValidElementAdded
+      const selectedElement = this.navItems.find(this.isElementSelected, this);
+      if (selectedElement) {
+        selectedElement.tabIndex = 0;
       }
-
-      this.selectedIndex = Math.max(0, Math.min(this.virtualizer.options.count - 1, this.initialFocus));
-      this.selectedKey = this.virtualizer.options.getItemKey(this.selectedIndex);
-
-      this.virtualizer.scrollToIndex(this.selectedIndex, { align: 'center' });
-
-      setTimeout(() => {
-        const selectedElement = this.navItems.find(
-          item => this.virtualizer?.indexFromElement(item) === this.selectedIndex,
-        );
-        if (selectedElement) {
-          selectedElement.tabIndex = 0;
-        }
-      }, 1);
     }, 0);
   }
 
@@ -295,8 +318,9 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   protected handleOnChange(instance: Virtualizer, sync: boolean) {
     // If we are at the bottom of the list and not scrolling, keep us at the bottom of the list.
-    if (!sync && this.isAtBottom && this.scrollElementRef.value && !this.disableScrollAnchoring) {
-      this.scrollElementRef.value.scrollTop = this.scrollElementRef.value.scrollHeight;
+    const scrollEl = this.scrollElementRef.value;
+    if (!sync && this.isAtBottom && scrollEl && !this.disableScrollAnchoring) {
+      scrollEl.scrollTop = scrollEl.scrollHeight;
     }
 
     // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
@@ -355,22 +379,30 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     return defaultIndexes;
   }
 
-  protected override handleCreatedEvent(event: Event): void {
-    super.handleCreatedEvent(event);
+  protected override onElementStoreUpdate(item: HTMLElement, changeType: ElementStoreChangeTypes): void {
+    if (changeType === 'added') {
+      const tabable = this.isElementSelected(item);
+      // eslint-disable-next-line no-param-reassign
+      item.tabIndex = tabable ? 0 : -1;
 
-    const element = event.target as HTMLElement;
-    if (!this.isValidItem(element)) {
-      return;
+      this.setAriaSetSize(item);
+    } else if (changeType === 'removed') {
+      if (item.tabIndex === 0) {
+        // We must queue the reset because onElementStoreUpdate called before the `navItems` updated,
+        // but `resetTabIndexes` expecting the updated vertical list.
+        queueMicrotask(() => {
+          this.resetTabIndexes(this.selectedIndex, this.focusWithin);
+        });
+      }
     }
-
-    this.setAriaSetSize(element);
   }
 
-  protected override resetTabIndexes(index: number, focusElement = true): void {
-    super.resetTabIndexes(index, focusElement);
-    this.setSelectedIndex(index);
+  /** @internal */
+  private isElementSelected(item: HTMLElement): boolean {
+    return this.virtualizer?.indexFromElement(item) === this.selectedIndex;
   }
 
+  /** @internal */
   protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void {
     super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
     this.setSelectedIndex(newIndex);
@@ -378,12 +410,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   /** @internal */
   private setSelectedIndex(navItemIndex: number): void {
-    if (!this.virtualizer) {
-      return;
-    }
-
-    const node = this.navItems[navItemIndex];
-    if (node) {
+    const node = this.navItems.at(navItemIndex);
+    if (this.virtualizer && node) {
       const virtualizedIndex = this.virtualizer.indexFromElement(node) ?? -1;
       this.selectedIndex = virtualizedIndex;
       this.selectedKey = this.virtualizer.options.getItemKey(virtualizedIndex);
@@ -399,18 +427,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * Refires the scroll event from the internal scroll container to the host element.
    * Also updates whether the scroll is at the bottom of the list for scroll anchoring purposes.
    *
-   * @param event - The scroll event from the internal scroll container.
    * @internal
    */
-  private handleScroll(event: Event): void {
+  private handleScroll(): void {
     if (this.scrollElementRef.value && this.virtualizer) {
       const scrollElement = this.scrollElementRef.value;
 
-      this.isAtBottom = scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + 50;
-    }
+      const lastElementSize =
+        this.virtualizer.measurementsCache.at(0)?.size ??
+        this.virtualizerProps.estimateSize(this.virtualizerProps.count - 1) ??
+        0;
 
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
+      this.isAtBottom =
+        scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastElementSize / 2;
+    }
   }
 
   public override render() {
