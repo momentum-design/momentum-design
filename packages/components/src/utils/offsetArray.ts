@@ -20,13 +20,13 @@ export interface BaseArray<TItem>
 export class OffsetArray<TItem> implements BaseArray<TItem> {
   public readonly items: BaseArray<TItem>;
 
-  private readonly offset: () => number = () => 0;
+  private readonly getIndex: (item: TItem) => number = () => 0;
 
   private lengthFn: () => number;
 
-  constructor(items: BaseArray<TItem>, offset: () => number, length: () => number) {
+  constructor(items: BaseArray<TItem>, getIndex: (item: TItem) => number, length: () => number) {
     this.items = items;
-    this.offset = offset;
+    this.getIndex = getIndex;
     this.lengthFn = length;
   }
 
@@ -35,28 +35,25 @@ export class OffsetArray<TItem> implements BaseArray<TItem> {
   }
 
   at(index: number): TItem | undefined {
-    const offsetIndex = index - this.offset();
-    return this.items.at(offsetIndex);
+    return this.items.find(item => this.getIndex(item) === index);
   }
 
   map<U>(cb: (value: TItem, index: number, array: TItem[]) => U, thisArg?: any): U[] {
-    return this.items.map((value, index, array) => cb.call(thisArg, value, index + this.offset(), array));
+    return this.items.map((value, _index, array) => cb.call(thisArg, value, this.getIndex(value), array));
   }
 
   forEach(cb: (value: TItem, index: number, array: TItem[]) => void, thisArg?: any): void {
-    this.items.forEach((value, index, array) => {
-      cb.call(thisArg, value, index + this.offset(), array);
+    this.items.forEach((value, _index, array) => {
+      cb.call(thisArg, value, this.getIndex(value), array);
     });
   }
 
   findIndex(predicate: (value: TItem, index: number, obj: TItem[]) => boolean, thisArg?: any): number {
-    const index = this.items.findIndex((value, index, obj) =>
-      predicate.call(thisArg, value, index + this.offset(), obj),
-    );
-    return index === -1 ? -1 : index + this.offset();
+    const item = this.items.find((value, _index, obj) => predicate.call(thisArg, value, this.getIndex(value), obj));
+    return !item ? -1 : this.getIndex(item);
   }
 
   find(predicate: (value: TItem, index: number, obj: TItem[]) => boolean, thisArg?: any): TItem | undefined {
-    return this.items.find((value, index, obj) => predicate.call(thisArg, value, index + this.offset(), obj));
+    return this.items.find((value, _index, obj) => predicate.call(thisArg, value, this.getIndex(value), obj));
   }
 }
