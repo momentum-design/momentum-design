@@ -546,6 +546,13 @@ class Select
     return this.searchString;
   }
 
+  private updateSelectedOptionAndMoveFocus(newSelectedOption: Option): void {
+    this.setSelectedOption(newSelectedOption);
+    window.requestAnimationFrame(() => {
+      newSelectedOption.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
   private filterOptionsBySearchKey(searchKey: string): Option[] {
     return this.navItems.filter(option =>
       option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()),
@@ -563,14 +570,16 @@ class Select
     const filteredResults = this.filterOptionsBySearchKey(searchKey);
     if (filteredResults.length) {
       // If the key is an exact match, then we set the first option
-      this.setSelectedOption(filteredResults[0]);
+      this.updateSelectedOptionAndMoveFocus(filteredResults[0]);
     } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
       // If the key is same, then we cycle through all options which start with the same letter
       const currentIndex = this.navItems.indexOf(this.selectedOption!) || 0;
       const nextOptionFromList = this.navItems[currentIndex + 1];
       const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(searchKey[0]);
       const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
-      this.setSelectedOption(nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0]);
+      this.updateSelectedOptionAndMoveFocus(
+        nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0],
+      );
     }
   }
 
@@ -590,11 +599,6 @@ class Select
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
-        this.displayPopover = true;
-        // Prevent the default browser behavior of scrolling down
-        event.preventDefault();
-        event.stopPropagation();
-        break;
       case KEYS.ENTER:
       case KEYS.SPACE:
         this.displayPopover = true;
