@@ -31,6 +31,7 @@ const defaultChildren = (selected?: boolean) => `
     <mdc-option value="option3" label="Option Label 3"></mdc-option>
   </mdc-selectlistbox>
 `;
+const mockFruits = ['Apple', 'Banana', 'Blackberry', 'Blueberry', 'Cherry', 'Mango', 'Orange'];
 
 const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
@@ -775,6 +776,63 @@ test('mdc-select', async ({ componentsPage }) => {
         // press escape to close the popover
         await componentsPage.page.keyboard.press(KEYS.ESCAPE);
         await expect(select.locator('mdc-popover')).not.toBeVisible();
+      });
+
+      const setupArguments = {
+        componentsPage,
+        children: `
+        <mdc-selectlistbox>
+          ${mockFruits.map(fruit => `<mdc-option label="${fruit}"></mdc-option>`).join('\n')}
+        </mdc-selectlistbox>
+      `,
+      };
+
+      await test.step('component should select an option by typing a letter', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('b');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+      });
+
+      await test.step('component should type multiple characters and filters selection', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('b');
+        await componentsPage.page.keyboard.press('l');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toHaveAttribute('selected');
+      });
+
+      await test.step('component search resets after 500ms of inactivity', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('b');
+        await componentsPage.page.keyboard.press('l');
+        await componentsPage.page.waitForTimeout(500);
+        await componentsPage.page.keyboard.press('a');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).not.toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toHaveAttribute('selected');
+      });
+
+      await test.step('component options should circle letter selection', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('b');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+        await componentsPage.page.keyboard.press('b');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toHaveAttribute('selected');
+        await componentsPage.page.keyboard.press('b');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blueberry' })).toHaveAttribute('selected');
+        await componentsPage.page.keyboard.press('b');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+      });
+
+      await test.step('component should select first option if the letter doesn`t match any option', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('z');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toHaveAttribute('selected');
       });
     });
   });
