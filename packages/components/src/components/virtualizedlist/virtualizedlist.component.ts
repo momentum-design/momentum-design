@@ -139,9 +139,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   override get navItems(): BaseArray<HTMLElement> {
     if (this.cachedNavItems?.items !== super.navItems) {
-      this.cachedNavItems = new OffsetArray(
+      const attrName = this.virtualizer?.options?.indexAttribute ?? 'data-index';
+      this.cachedNavItems = new OffsetArray<HTMLElement>(
         super.navItems,
-        () => this.items[0].index,
+        e => Number(e.getAttribute(attrName)),
         () => this.virtualizerProps.count,
       );
     }
@@ -272,43 +273,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   /**
-   * Provides the element to the virtualizer to measure its size.
-   * In addition if the element is one of the hidden indexes, it moves the element to the correct position for focus purposes.
-   * This means that we can use the browser's own 'scroll on focus' behaviour to refocus the list item when focus is updated.
-   *
-   * @param instance - The virtualizer instance
-   * @param el - The element to measure
-   * @internal
-   */
-  private handleMeasureElement = (instance: Virtualizer, el: Element | undefined) => {
-    const element = el as HTMLElement | undefined;
-
-    if (!element) {
-      return;
-    }
-
-    instance.measureElement(element);
-
-    const elementIndex = instance.indexFromElement(element);
-    if (this.hiddenIndexes.includes(elementIndex)) {
-      element.setAttribute('data-virtualized-hidden', 'true');
-
-      const virtualItems = instance.getVirtualItems();
-      const actualItems = virtualItems.filter(({ index }) => !this.hiddenIndexes.includes(index));
-
-      // The scroll element is positioned based on the first item's offset therefore we need to set the location of the
-      // hidden item based on the first actual item.
-      const { start } = virtualItems.find(({ index }) => index === elementIndex) ?? {};
-      const offset = (start ?? 0) - (actualItems[0]?.start ?? 0);
-
-      element.style.setProperty('--mdc-virtualizedlist-hidden-top', `${offset}px`);
-    } else {
-      element.removeAttribute('data-virtualized-hidden');
-      element.style.removeProperty('--mdc-virtualizedlist-hidden-top');
-    }
-  };
-
-  /**
    * Handle the virtualizer's onChange event to emit the virtualitemschange event
    * This is called when the internal state of the virtualizer changes.
    *
@@ -335,7 +299,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   private fireChangeEvent(virtualizerInstance: Virtualizer) {
     const eventDetails = {
       virtualItems: virtualizerInstance.getVirtualItems(),
-      measureElement: (el: Element | undefined) => this.handleMeasureElement(virtualizerInstance, el),
+      measureElement: virtualizerInstance.measureElement,
     };
 
     this.dispatchEvent(
@@ -352,11 +316,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * @internal
    */
   protected virtualizerRangeExtractor(range: Range): number[] {
-    const defaultIndexes = this.virtualizerProps.rangeExtractor?.(range) ?? defaultRangeExtractor(range);
+    const { navItems, virtualizerProps, virtualizer } = this;
+    const defaultIndexes = virtualizerProps.rangeExtractor?.(range) ?? defaultRangeExtractor(range);
+
+    this.hiddenIndexes.forEach(index => {
+      const el = navItems.at(index);
+      if (el) {
+        el.removeAttribute('data-virtualized-hidden');
+        el.style.removeProperty('--mdc-virtualizedlist-hidden-top');
+      }
+    });
 
     this.firstIndex = range.startIndex;
     this.firstKey = this.virtualizer?.options.getItemKey(this.firstIndex) ?? null;
-    this.hiddenIndexes = [];
+    this.hiddenIndexes.length = 0;
 
     const stickyIndexes = [this.selectedIndex - 1, this.selectedIndex, this.selectedIndex + 1];
 
@@ -364,19 +337,39 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       if (!defaultIndexes.includes(index)) {
         if (index < range.startIndex && index >= 0) {
           defaultIndexes.unshift(index);
+          this.hiddenIndexes.push(index);
         }
 
-        if (index > range.endIndex && index < (this.virtualizer?.options.count ?? 0)) {
+        if (index > range.endIndex && index < (virtualizer?.options.count ?? 0)) {
           defaultIndexes.push(index);
+          this.hiddenIndexes.push(index);
         }
-
-        this.hiddenIndexes.push(index);
       }
     });
+    this.updateHiddenItemsPosition();
 
     defaultIndexes.sort((a, b) => a - b);
 
     return defaultIndexes;
+  }
+
+  updateHiddenItemsPosition() {
+    const { navItems, virtualizerProps, virtualizer } = this;
+
+    if (!virtualizer || virtualizerProps.count === 0) return;
+
+    const { measurementsCache, range } = virtualizer;
+
+    this.hiddenIndexes.forEach(index => {
+      const el = navItems.at(index);
+      if (el) {
+        const first = measurementsCache[range?.startIndex ?? 0];
+        const current = measurementsCache[index];
+
+        el.setAttribute('data-virtualized-hidden', 'true');
+        el.style.setProperty('--mdc-virtualizedlist-hidden-top', `${current.start - first.start}px`);
+      }
+    });
   }
 
   protected override onElementStoreUpdate(item: HTMLElement, changeType: ElementStoreChangeTypes): void {
