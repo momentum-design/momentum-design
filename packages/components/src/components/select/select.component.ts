@@ -546,13 +546,26 @@ class Select
     return this.searchString;
   }
 
+  /**
+   * Updates the selected option and moves the focus to the newly selected option.
+   * It updates the selected option and then uses requestAnimationFrame to scroll the newly selected option into view.
+   * @param newSelectedOption - The new option to select.
+   */
   private updateSelectedOptionAndMoveFocus(newSelectedOption: Option): void {
     this.setSelectedOption(newSelectedOption);
     window.requestAnimationFrame(() => {
-      newSelectedOption.scrollIntoView({ block: 'nearest' });
+      newSelectedOption.scrollIntoView({ block: 'center' });
     });
   }
 
+  /**
+   * Filters the given option labels based on the given search key.
+   * It returns a new array of options that have labels starting with the given search key case-insensitive.
+   *
+   * @param options - The options to filter.
+   * @param searchKey - The search key to filter by.
+   * @returns The filtered options.
+   */
   private filterOptionsBySearchKey(options: Option[], searchKey: string): Option[] {
     return options.filter(option => option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()));
   }
