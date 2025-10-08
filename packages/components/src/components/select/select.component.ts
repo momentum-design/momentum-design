@@ -553,10 +553,8 @@ class Select
     });
   }
 
-  private filterOptionsBySearchKey(searchKey: string): Option[] {
-    return this.navItems.filter(option =>
-      option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()),
-    );
+  private filterOptionsBySearchKey(options: Option[], searchKey: string): Option[] {
+    return options.filter(option => option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()));
   }
 
   /**
@@ -566,16 +564,17 @@ class Select
    * @param searchKey - The filter string to search for options.
    */
   private handleSelectedOptionBasedOnFilter(searchKey: string): void {
+    const startIndex = this.navItems.indexOf(this.selectedOption!) + 1;
+    const orderedOptions = [...this.navItems.slice(startIndex), ...this.navItems.slice(0, startIndex)];
     // First, we search for an exact match with then entire search key
-    const filteredResults = this.filterOptionsBySearchKey(searchKey);
+    const filteredResults = this.filterOptionsBySearchKey(orderedOptions, searchKey);
     if (filteredResults.length) {
       // If the key is an exact match, then we set the first option
       this.updateSelectedOptionAndMoveFocus(filteredResults[0]);
     } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
       // If the key is same, then we cycle through all options which start with the same letter
-      const currentIndex = this.navItems.indexOf(this.selectedOption!) || 0;
-      const nextOptionFromList = this.navItems[currentIndex + 1];
-      const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(searchKey[0]);
+      const nextOptionFromList = this.navItems[startIndex];
+      const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(orderedOptions, searchKey[0]);
       const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
       this.updateSelectedOptionAndMoveFocus(
         nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0],
@@ -586,10 +585,10 @@ class Select
   /**
    * Handles the keydown event on the select element when the popover is closed.
    * The options are as follows:
-   * - ARROW_DOWN, ARROW_UP, SPACE: Opens the popover and prevents the default scrolling behavior.
-   * - ENTER: Opens the popover, prevents default scrolling, and submits the form if the popover is closed.
+   * - ARROW_DOWN, ARROW_UP, ENTER, SPACE: Opens the popover and prevents the default scrolling behavior.
    * - HOME: Opens the popover and sets focus and tabindex on the first option.
    * - END: Opens the popover and sets focus and tabindex on the last option.
+   * - Any key: Opens the popover and sets focus on the first option which starts with the key.
    * @param event - The keyboard event.
    */
   private handleKeydownCombobox(event: KeyboardEvent): void {
