@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Component } from '../../models';
 import { debounce } from '../../utils/debounce';
+import type { Debounced } from '../../utils/debounce';
 
 import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
@@ -105,7 +106,7 @@ class ScreenreaderAnnouncer extends Component {
   private ariaLiveAnnouncementIds: Array<string> = [];
 
   /** @internal */
-  private debouncedAnnounce?: Function;
+  private debouncedAnnounce?: Debounced<() => void>;
 
   /**
    * Announces the given announcement to the screen reader.
@@ -213,12 +214,18 @@ class ScreenreaderAnnouncer extends Component {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.clearTimeOutsAndAnnouncements();
+    // cancel any pending debounced action and clear DOM timeouts
+    this.debouncedAnnounce?.cancel();
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     if (changedProperties.has('identity') && this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
       this.createAnnouncementAriaLiveRegion();
+    }
+    if (changedProperties.has('debounceTime')) {
+      // Reinitiate debounced function if debounceTime changed
+      this.setupDebouncedAnnounce();
     }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
       this.debouncedAnnounce?.();

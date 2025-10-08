@@ -1,3 +1,5 @@
+export type Debounced<T extends (...args: any[]) => any> = ((...args: Parameters<T>) => void) & { cancel: () => void };
+
 /**
  * Returns a debounced version of the provided callback function.
  * The returned function will delay calling the provided callback function
@@ -7,14 +9,27 @@
  *
  * @param callback - The function to debounce.
  * @param timeout - The timeout in milliseconds (default 500ms).
- * @returns - The debounced function.
+ * @returns - The debounced function & cancel function.
  */
-export const debounce = (callback: Function, timeout = 500): Function => {
-  let timer: number;
-  return (...args: any[]) => {
-    window.clearTimeout(timer);
+export function debounce<T extends (...args: any[]) => any>(callback: T, timeout = 500): Debounced<T> {
+  let timer: number | undefined;
+
+  const debounced = ((...args: Parameters<T>) => {
+    if (timer !== undefined) {
+      window.clearTimeout(timer);
+    }
     timer = window.setTimeout(() => {
-      callback.apply(this, args);
+      timer = undefined;
+      callback(...args);
     }, timeout);
+  }) as Debounced<T>;
+
+  debounced.cancel = () => {
+    if (timer !== undefined) {
+      window.clearTimeout(timer);
+      timer = undefined;
+    }
   };
-};
+
+  return debounced;
+}
