@@ -104,6 +104,9 @@ class ScreenreaderAnnouncer extends Component {
    */
   private ariaLiveAnnouncementIds: Array<string> = [];
 
+  /** @internal */
+  private debouncedAnnounce?: Function;
+
   /**
    * Announces the given announcement to the screen reader.
    *
@@ -122,8 +125,8 @@ class ScreenreaderAnnouncer extends Component {
     if (announcement.length > 0) {
       const announcementId = `mdc-screenreaderannouncer-announcement-${uuidv4()}`;
       const announcementContainer = document.createElement('div');
-      announcementContainer.id = announcementId;
-      announcementContainer.ariaLive = ariaLive;
+      announcementContainer.setAttribute('id', announcementId);
+      announcementContainer.setAttribute('aria-live', ariaLive);
       document.getElementById(this.identity)?.appendChild(announcementContainer);
       const timeOutId = window.setTimeout(() => {
         const announcementElement = document.createElement('p');
@@ -182,12 +185,29 @@ class ScreenreaderAnnouncer extends Component {
     }
   }
 
+  /**
+   * Creates a single debounced function that will read the latest this.announcement when executed.
+   *
+   * This function is used to debounce the announcement so that it will only be made after
+   * this.debounceTime milliseconds have passed since the last time this.announcement was updated.
+   */
+  private setupDebouncedAnnounce() {
+    // create single debounced function that will read latest this.announcement when executed
+    this.debouncedAnnounce = debounce(() => {
+      if (this.announcement.length > 0) {
+        this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
+        this.announcement = '';
+      }
+    }, this.debounceTime);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
     }
     this.createAnnouncementAriaLiveRegion();
+    this.setupDebouncedAnnounce();
   }
 
   override disconnectedCallback(): void {
@@ -201,10 +221,7 @@ class ScreenreaderAnnouncer extends Component {
       this.createAnnouncementAriaLiveRegion();
     }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
-      debounce(() => {
-        this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
-        this.announcement = '';
-      }, this.debounceTime)();
+      this.debouncedAnnounce?.();
     }
   }
 

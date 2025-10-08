@@ -339,9 +339,9 @@ export const TextareaWithCharacterCounter: StoryObj = {
       description: {
         story:
           'To add a character counter to the textarea, use the `max-character-limit` attribute. ' +
-          'The character counter will be displayed below the textarea with the max character limit.' +
-          'User needs to listen to the `limitexceeded` event to handle the character limit check.' +
-          'The event will contain the current character count, the max character limit & current value of the textarea.' +
+          'The character counter will be displayed below the textarea with the max character limit. ' +
+          'User needs to listen to the `limitexceeded` event to handle the character limit check. ' +
+          'The event will contain the current character count, the max character limit & current value of the textarea. ' +
           'Based on which the user can update the help text and help text type dynamically.',
       },
     },
