@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../badge';
+import '../brandvisual';
 import { html, nothing } from 'lit';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -135,5 +136,36 @@ export const IconOnlyTab: StoryObj = {
   },
   argTypes: {
     ...hideControls(['text']),
+  },
+};
+
+export const CustomPrefixSlot: StoryObj = {
+  render: (args: Args) =>
+    html`<div role="tablist">
+      <mdc-tab
+        @click="${action('onclick')}"
+        @keydown="${action('onkeydown')}"
+        @keyup="${action('onkeyup')}"
+        @focus="${action('onfocus')}"
+        @activechange="${action('onactivechange')}"
+        ?active="${args.active}"
+        aria-label="${ifDefined(args.text ? nothing : 'Label')}"
+        ?disabled="${args.disabled}"
+        ?soft-disabled="${args['soft-disabled']}"
+        tabIndex="${ifDefined(args.tabIndex)}"
+        text="${ifDefined(args.text)}"
+        variant="${ifDefined(args.variant)}"
+        tab-id="tab1"
+        ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+      >
+        <mdc-brandvisual style="width: 1rem;" slot="prefix" name="webex-symbol-common-color-gradient"></mdc-brandvisual>
+      </mdc-tab>
+    </div>`,
+  args: {
+    ...defaultArgs,
+    'icon-name': undefined, // Remove default icon-name since we're using custom slot
+  },
+  argTypes: {
+    ...hideControls(['icon-name']),
   },
 };
