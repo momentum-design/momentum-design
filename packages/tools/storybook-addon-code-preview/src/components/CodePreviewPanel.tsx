@@ -5,6 +5,8 @@ import { useParameter } from "storybook/internal/manager-api";
 import { styled } from "storybook/theming";
 import CodeBlock from "./CodeBlock";
 import type { CodeSnippetEvent, PluginParameters } from "../types";
+import { GitHubTool } from "./GitHubTool";
+import type { API } from "storybook/manager-api";
 
 const StyledPanel = styled.div`
   width: 50%;
@@ -19,12 +21,20 @@ const SourceWrapper = styled.div`
   margin-bottom: -40px;
 `;
 
+const StyledGitHubTool = styled.div`
+  position: absolute;
+  top: 0.375rem;
+  right: 0.75rem;
+  z-index: 10;
+`;
+
 interface CodePreviewPanelProps {
   snippetEvent: CodeSnippetEvent;
   channel: any;
+  api: API;
 }
 
-const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({ snippetEvent, channel }) => {
+const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({ snippetEvent, channel, api }) => {
   const { languages, initialLanguageId, customElements } = useParameter<PluginParameters>("codePreview", {});
 
   const baseLanguage = languages?.find((lang) => lang.type === "base");
@@ -51,6 +61,9 @@ const CodePreviewPanel: React.FC<CodePreviewPanelProps> = ({ snippetEvent, chann
             </div>
           ))}
         </TabsState>
+        <StyledGitHubTool>
+          <GitHubTool api={api} />
+        </StyledGitHubTool>
       </StyledPanel>
     </SourceContainer>
   );

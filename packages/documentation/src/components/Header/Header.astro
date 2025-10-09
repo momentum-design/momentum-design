@@ -5,6 +5,7 @@ import { getLanguageFromURL } from '../../languages';
 import MomentumLogo from './MomentumLogo.astro';
 import SkipToContent from './SkipToContent.astro';
 import Search from './Search';
+import GitHubTool from './GitHubTool';
 
 const currentPage = Astro.url.pathname;
 
@@ -33,6 +34,9 @@ const menu = CONFIG.MAIN_MENU[langCode];
           );
         })
       }
+    </div>
+    <div class="github-tool">
+      <GitHubTool client:load />
     </div>
     <div class="search-item">
       <Search client:idle />
