@@ -10,6 +10,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { Interval } from '../../utils/range';
 import { type BaseArray, OffsetArray } from '../../utils/offsetArray';
+import { KEYS } from '../../utils/keys';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -220,6 +221,11 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         includeEnd: true,
       });
 
+      const newSelectedIndex =
+        Array.from(searchRange).find(i => virtualizer.options.getItemKey(i) === this.selectedKey) ?? this.selectedIndex;
+
+      this.selectedIndex = Math.max(0, Math.min(virtualizer.options.count - 1, newSelectedIndex));
+
       // Wait for the virtualizer to finish updating before we read the new scrollHeight
       this.requestUpdate();
       await this.updateComplete;
@@ -227,11 +233,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       if (this.isAtBottom) {
         scrollEl.scrollTop = scrollEl.scrollHeight;
       }
-
-      const newSelectedIndex =
-        Array.from(searchRange).find(i => virtualizer.options.getItemKey(i) === this.selectedKey) ?? this.selectedIndex;
-
-      this.selectedIndex = Math.max(0, Math.min(virtualizer.options.count - 1, newSelectedIndex));
 
       // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
       // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
@@ -396,18 +397,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   /** @internal */
-  protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void {
-    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
-    this.setSelectedIndex(newIndex);
-  }
-
-  /** @internal */
-  private setSelectedIndex(navItemIndex: number): void {
-    const node = this.navItems.at(navItemIndex);
-    if (this.virtualizer && node) {
-      const virtualizedIndex = this.virtualizer.indexFromElement(node) ?? -1;
-      this.selectedIndex = virtualizedIndex;
-      this.selectedKey = this.virtualizer.options.getItemKey(virtualizedIndex);
+  private setSelectedIndex(newIndex: number): void {
+    if (this.virtualizer) {
+      this.selectedIndex = newIndex;
+      this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
     }
   }
 
@@ -434,6 +427,26 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.isAtBottom =
         scrollElement.scrollHeight - scrollElement.scrollTop <= scrollElement.clientHeight + lastElementSize / 2;
     }
+  }
+
+  protected override handleNavigationKeyDown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case KEYS.HOME: {
+        // Move focus to the first item
+        this.setSelectedIndex(0);
+        this.virtualizer?.scrollToIndex?.(0, { align: 'start' });
+        break;
+      }
+      case KEYS.END: {
+        // Move focus to the last item
+        const selectedItem = this.virtualizerProps.count - 1;
+        this.setSelectedIndex(selectedItem);
+        this.virtualizer?.scrollToIndex?.(this.virtualizerProps.count, { align: 'end' });
+        break;
+      }
+      default:
+    }
+    super.handleNavigationKeyDown(event);
   }
 
   public override render() {
