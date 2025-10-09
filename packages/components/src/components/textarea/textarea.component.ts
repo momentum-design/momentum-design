@@ -1,6 +1,6 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property, query } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -148,9 +148,11 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    */
   @query('textarea') override inputElement!: HTMLTextAreaElement;
 
-  private characterLimitExceedingFired: boolean = false;
+  /** @internal */
+  @state() private ariaLiveAnnouncer?: string;
 
-  private ariaLiveAnnouncer?: string;
+  /** @internal */
+  private characterLimitExceedingFired: boolean = false;
 
   protected get textarea(): HTMLTextAreaElement {
     return this.inputElement;
@@ -324,7 +326,14 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
       return;
     }
     if (this.helpText && this.value.length > this.maxCharacterLimit) {
-      this.ariaLiveAnnouncer = this.helpText;
+      // We need to assign the same value multiple times, when the input reaches the max limit,
+      // Lit does a `===` strict comparison and doesn't update the value
+      // Hence we need to manually wait for the update to complete and then assign the value.
+      this.updateComplete
+        .then(() => {
+          this.ariaLiveAnnouncer = this.helpText;
+        })
+        .catch(() => {});
     } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
       this.ariaLiveAnnouncer = this.characterLimitAnnouncement
         .replace('%{number-of-characters}', this.value.length.toString())
