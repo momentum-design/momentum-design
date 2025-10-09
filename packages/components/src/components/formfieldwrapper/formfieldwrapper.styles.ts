@@ -12,6 +12,7 @@ const styles = css`
     --mdc-help-text-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
     --mdc-help-text-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     --mdc-help-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-required-indicator-color: var(--mds-color-theme-text-error-normal);
 
     flex-direction: column;
     align-items: flex-start;
@@ -19,7 +20,7 @@ const styles = css`
   }
 
   :host::part(required-indicator) {
-    color: var(--mds-color-theme-text-error-normal);
+    color: var(--mdc-required-indicator-color);
   }
 
   :host::part(label-text),
@@ -71,10 +72,10 @@ const styles = css`
   }
 
   :host([disabled]),
-  :host([disabled])::part(label),
-  :host([disabled])::part(help-text-container),
-  :host([disabled])::part(required-indicator) {
-    color: var(--mds-color-theme-text-primary-disabled);
+  :host([soft-disabled]) {
+    --mdc-label-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-help-text-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-required-indicator-color: var(--mds-color-theme-text-primary-disabled);
   }
 `;
 

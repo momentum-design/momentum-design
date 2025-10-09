@@ -44,6 +44,7 @@ import styles from './checkbox.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  *
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
@@ -60,6 +61,7 @@ import styles from './checkbox.styles';
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart checkbox-input - The native checkbox input element.
  * @csspart text-container - The container for the label and helper text elements.
+ * @csspart static-checkbox - The static checkbox element.
  */
 class Checkbox
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
@@ -208,6 +210,7 @@ class Checkbox
   public override render() {
     return html`
       <mdc-staticcheckbox
+        part="static-checkbox"
         class="mdc-focus-ring"
         ?checked="${this.checked}"
         ?indeterminate="${this.indeterminate}"

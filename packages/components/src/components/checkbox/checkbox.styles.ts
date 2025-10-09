@@ -6,19 +6,12 @@ const styles = [
   css`
     /* Base styles and CSS custom properties */
     :host {
-      --mdc-checkbox-background-color-hover: var(--mds-color-theme-control-inactive-hover);
-      --mdc-checkbox-pressed-icon-color: var(--mds-color-theme-control-inactive-pressed);
-      --mdc-checkbox-checked-pressed-icon-color: var(--mds-color-theme-control-active-pressed);
-      --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
-      --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
-      --mdc-checkbox-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
-
       flex-direction: row;
       align-items: flex-start;
     }
 
     /* Component structure and layout */
-    :host mdc-staticcheckbox {
+    :host::part(static-checkbox) {
       position: relative;
     }
 
@@ -31,8 +24,8 @@ const styles = [
       opacity: 0.1%;
       overflow: visible;
       z-index: 1;
-      width: 1rem;
-      height: 1rem;
+      width: var(--mdc-checkbox-size);
+      height: var(--mdc-checkbox-size);
       border-radius: 0.125rem;
     }
 
@@ -56,22 +49,22 @@ const styles = [
       cursor: pointer;
     }
 
-    :host(:hover) mdc-staticcheckbox {
-      background-color: var(--mdc-checkbox-background-color-hover);
+    :host(:hover)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-hover);
     }
 
-    :host(:active) mdc-staticcheckbox {
-      background-color: var(--mdc-checkbox-pressed-icon-color);
+    :host(:active)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
-    :host([checked]:hover)::part(icon-container),
-    :host([indeterminate]:hover)::part(icon-container) {
-      background-color: var(--mdc-checkbox-checked-background-color-hover);
+    :host([checked]:hover)::part(static-checkbox),
+    :host([indeterminate]:hover)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-hover);
     }
 
-    :host([checked]:active)::part(icon-container),
-    :host([indeterminate]:active)::part(icon-container) {
-      background-color: var(--mdc-checkbox-checked-pressed-icon-color);
+    :host([checked]:active)::part(static-checkbox),
+    :host([indeterminate]:active)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
     /* Readonly state - disables pointer events */
@@ -86,26 +79,6 @@ const styles = [
     :host([soft-disabled])::part(label),
     :host([soft-disabled])::part(checkbox-input) {
       cursor: default;
-    }
-
-    :host([disabled]) mdc-staticcheckbox,
-    :host([soft-disabled]) mdc-staticcheckbox {
-      background-color: unset;
-    }
-
-    :host([disabled][checked])::part(icon-container),
-    :host([disabled][indeterminate])::part(icon-container),
-    :host([soft-disabled][checked])::part(icon-container),
-    :host([soft-disabled][indeterminate])::part(icon-container) {
-      background-color: var(--mdc-checkbox-disabled-checked-icon-color);
-    }
-
-    :host([disabled])::part(label),
-    :host([disabled])::part(help-text),
-    :host([soft-disabled])::part(label),
-    :host([soft-disabled])::part(label-text),
-    :host([soft-disabled])::part(help-text) {
-      color: var(--mdc-checkbox-disabled-text-color);
     }
   `,
   ...hostFocusRingStyles(true),
