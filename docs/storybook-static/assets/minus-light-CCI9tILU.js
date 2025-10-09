@@ -1,1 +1,0 @@
-import{k as t}from"./iframe-gl2AV23u.js";import"./preload-helper-C1FmrZbK.js";const o=()=>t`<svg aria-hidden="true" part="icon" data-name="minus-light" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M26 16.5H6a.5.5 0 0 1 0-1h20a.5.5 0 0 1 0 1"/></svg>`;export{o as default};
