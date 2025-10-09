@@ -1,0 +1,53 @@
+# Introduction
+
+Welcome to **Momentum Design Components** – the component library for Cisco's enterprise collaboration design system. This guide provides comprehensive instructions for integrating and using `@momentum-design/components` in your web applications.
+It serves as the single source of truth for Cisco's design language, powering products like Webex and other enterprise collaboration tools. 
+
+For all the details regarding the release, please visit:
+[**release history**](https://github.com/momentum-design/momentum-design/releases).
+
+If you would like to provide any feedback, please raise an
+[**issue**](https://github.com/momentum-design/momentum-design/issues).
+
+## 🌐 Browser Support
+
+Momentum Design supports the **latest two versions** of the following browsers:
+
+<div style={{display: "flex", gap: "1rem", alignItems: "center", margin: "1.5rem 0", flexWrap: "wrap"}}>
+  <div style={{textAlign: "center"}}>
+    <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" alt="Chrome" style={{width: "48px", height: "48px"}} />
+    <div style={{marginTop: "0.25rem", fontSize: "0.875rem", fontWeight: "600"}}>Chrome</div>
+  </div>
+  <div style={{textAlign: "center"}}>
+    <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" alt="Edge" style={{width: "48px", height: "48px"}} />
+    <div style={{marginTop: "0.25rem", fontSize: "0.875rem", fontWeight: "600"}}>Edge</div>
+  </div>
+  <div style={{textAlign: "center"}}>
+    <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" alt="Firefox" style={{width: "48px", height: "48px"}} />
+    <div style={{marginTop: "0.25rem", fontSize: "0.875rem", fontWeight: "600"}}>Firefox</div>
+  </div>
+  <div style={{textAlign: "center"}}>
+    <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/safari/safari_48x48.png" alt="Safari" style={{width: "48px", height: "48px"}} />
+    <div style={{marginTop: "0.25rem", fontSize: "0.875rem", fontWeight: "600"}}>Safari</div>
+  </div>
+</div>
+
+Critical bug fixes in earlier versions will be addressed based on their severity and impact.
+
+> ⚠️ **Note:**  
+> Momentum Design does **not support Internet Explorer 11** or **pre-Chromium Edge**.  
+> While web components can be partially polyfilled for legacy browsers, this is **outside the scope** of this project.  
+> If you’re using Momentum Design in such browsers, you’re gonna have a bad time. ⛷
+
+
+## Performance recommendations
+
+- Use a CSS minifier in the build process to reduce the size of the CSS files.
+
+## Compatibility
+
+- Webpack 4 (refer to
+  [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4))
+
+- TypeScript > 4.7 (refer to
+  [**Best Practices**](https://stackoverflow.com/a/70020984))

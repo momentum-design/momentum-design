@@ -2,7 +2,8 @@ import React from "react";
 import { addons, types } from "storybook/manager-api";
 
 import { Tool } from "./components/Tool";
-import { ADDON_ID, TOOL_ID } from "./constants";
+import { GitHubTool } from "./components/GitHubTool";
+import { ADDON_ID, TOOL_ID, GITHUB_TOOL_ID } from "./constants";
 
 addons.setConfig({
   panelPosition: 'bottom',
@@ -23,4 +24,14 @@ addons.register(ADDON_ID, (api) => {
       !!((viewMode && viewMode.match(/^(story)$/))),
     render: () => <Tool api={api} />,
   });
+
+  // Register a dynamic GitHub toolbar button
+  addons.add(GITHUB_TOOL_ID, {
+    type: types.TOOL,
+    title: "GitHub",
+    match: ({ viewMode }) =>
+      !!((viewMode && viewMode.match(/^(story|docs)$/))),
+    render: () => <GitHubTool api={api} />,
+  });
 });
+
