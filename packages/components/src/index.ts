@@ -22,6 +22,7 @@ import CardRadio from './components/cardradio';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
+import ControlTypeProvider from './components/controltypeprovider';
 import Dialog from './components/dialog';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
@@ -139,6 +140,7 @@ export {
   Checkbox,
   Chip,
   Coachmark,
+  ControlTypeProvider,
   Dialog,
   Divider,
   FilterChip,
