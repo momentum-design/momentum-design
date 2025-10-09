@@ -64,12 +64,15 @@ export const CaptureDestroyEventForChildElement = <T extends Constructor<LitElem
       if (event.target && event.type === LIFE_CYCLE_EVENTS.DESTROYED) {
         event.target.removeEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleItemRemovedEvent);
         // Re-dispatch the destroy event to allow parent components to handle it.
-        // We need to create a new event instance, otherwise we will get an error:
+        // We need to create a new custom event instance, otherwise we will get an error:
         // Uncaught InvalidStateError: Failed to execute 'dispatchEvent' on 'EventTarget': The event is already being dispatched.
-        const evt = new Event(event.type, { bubbles: event.bubbles, composed: event.composed });
-        // Also, we need to make sure `dispatchEvent` will not change the target of the event.
-        Object.defineProperty(evt, 'target', { set() {}, get: () => event.target });
-        this.dispatchEvent(evt);
+        this.dispatchEvent(
+          new CustomEvent(event.type, {
+            bubbles: event.bubbles,
+            composed: event.composed,
+            detail: { originalTarget: event.target },
+          }),
+        );
       }
     };
   }
