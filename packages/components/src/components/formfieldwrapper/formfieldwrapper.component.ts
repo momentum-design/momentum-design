@@ -38,6 +38,15 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
   /**
@@ -96,14 +105,14 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * Determines whether the form field is read-only.
    * @default false
    */
-  @property({ type: Boolean, reflect: true }) 
+  @property({ type: Boolean, reflect: true })
   readonly = false;
 
   /**
    * Determines whether the form field is soft-disabled.
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' }) 
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled = false;
 
   /** @internal */
@@ -175,7 +184,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.label) return nothing;
     const triggerId = `toggletip-trigger-${uuidv4()}`;
     const shouldDisableToggletip = this.disabled || this.softDisabled;
-    
+
     return html`<div part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
