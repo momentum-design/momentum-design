@@ -23,7 +23,7 @@ class VirtualizedWrapper extends Component {
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerProps: VirtualizerProps = {
     count: 100,
-    estimateSize: () => 100,
+    estimateSize: () => this.itemSize,
     getItemKey: index => this.listItemTexts[index],
   };
 
@@ -32,6 +32,9 @@ class VirtualizedWrapper extends Component {
 
   @property({ type: String, reflect: true })
   loop: 'true' | 'false' = 'false';
+
+  @property({ type: Number, reflect: true, attribute: 'item-size' })
+  itemSize: number = 36;
 
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   initialFocus: number = 0;
@@ -51,6 +54,10 @@ class VirtualizedWrapper extends Component {
     super.update(changedProperties);
     if (changedProperties.has('virtualizerProps')) {
       this.updateListItemTextArray();
+    }
+
+    if (changedProperties.has('itemSize')) {
+      this.virtualizerProps = { ...this.virtualizerProps, estimateSize: () => this.itemSize };
     }
   }
 
@@ -215,7 +222,7 @@ class VirtualizedDynamicList extends Component {
   private updateVirtualProps() {
     this.virtualizerProps = {
       count: this.listItems.length,
-      estimateSize: () => 44,
+      estimateSize: () => 48,
       getItemKey: (index: number) => this.listItems[index],
     };
   }

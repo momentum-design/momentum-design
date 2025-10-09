@@ -21,6 +21,8 @@ export declare abstract class ListNavigationMixinInterface {
   protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
 
   protected setInitialFocus(): void;
+
+  protected handleNavigationKeyDown(event: KeyboardEvent): void;
 }
 
 /**
@@ -81,7 +83,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     constructor(...rest: any[]) {
       super(...rest);
 
-      this.addEventListener('keydown', this.handleNavigationKeyDown);
+      this.addEventListener('keydown', this.handleNavigationKeyDown.bind(this));
       this.addEventListener('click', this.handleNavigationClick);
     }
 
@@ -112,7 +114,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param event - The keyboard event triggered by user interaction.
      * @internal
      */
-    protected handleNavigationKeyDown = (event: KeyboardEvent) => {
+    protected handleNavigationKeyDown(event: KeyboardEvent) {
       const keysToHandle = new Set([KEYS.ARROW_DOWN, KEYS.ARROW_UP, KEYS.HOME, KEYS.END]);
       const isRtl = window.getComputedStyle(this).direction === 'rtl';
       const targetKey = this.resolveDirectionKey(event.key, isRtl);
@@ -161,7 +163,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
         event.stopPropagation();
         event.preventDefault();
       }
-    };
+    }
 
     /**
      * Handles click events on the navigation items.

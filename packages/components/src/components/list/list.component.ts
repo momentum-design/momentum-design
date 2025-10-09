@@ -103,11 +103,9 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   /** @internal */
   private handleFocusEvent(event: FocusEvent) {
     // If previously focused element is being removed from the DOM, ignore the focusout event
-    if (event.relatedTarget === null) {
-      return;
+    if (event.relatedTarget !== null) {
+      this.focusWithin = event.type === 'focusin';
     }
-
-    this.focusWithin = event.type === 'focusin';
   }
 
   /** @internal */

@@ -40,7 +40,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    virtualizerProps: { count: 200, estimateSize: () => 36, overscan: 30, 'initial-focus': 90 },
+    virtualizerProps: { count: 200, estimateSize: () => 36, overscan: 30 },
     story: 'text',
   },
 };
