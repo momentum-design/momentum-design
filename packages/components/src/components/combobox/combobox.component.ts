@@ -77,13 +77,15 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
  * @cssproperty --mdc-combobox-width - The width of the combobox
  * @cssproperty --mdc-combobox-hover-background-color - The background color of the combobox when hovered
- * @cssproperty --mdc-combobox-focused-background-color - The background color of the combobox when focused
- * @cssproperty --mdc-combobox-error-border-color - The border color of the combobox when in error state
- * @cssproperty --mdc-combobox-warning-border-color - The border color of the combobox when in warning state
- * @cssproperty --mdc-combobox-success-border-color - The border color of the combobox when in success state
- * @cssproperty --mdc-combobox-primary-border-color - The border color of the combobox when in primary state
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
- * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -113,12 +115,6 @@ class Combobox
    * The placeholder text which will be shown on the text if provided.
    */
   @property({ type: String }) placeholder?: string;
-
-  /**
-   * readonly attribute of the combobox field. If true, the combobox is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
 
   /**
    * The placement of the popover within Combobox.

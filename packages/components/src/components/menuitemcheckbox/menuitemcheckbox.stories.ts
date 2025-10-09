@@ -6,7 +6,7 @@ import { html } from 'lit';
 import '.';
 import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls, textControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import { INDICATOR } from './menuitemcheckbox.constants';
 
@@ -74,16 +74,6 @@ const meta: Meta = {
       'trailing-controls',
       'arrow-position',
       'arrow-direction',
-    ]),
-    ...textControls([
-      '--mdc-listitem-default-background-color',
-      '--mdc-listitem-background-color-hover',
-      '--mdc-listitem-background-color-active',
-      '--mdc-listitem-primary-label-color',
-      '--mdc-listitem-secondary-label-color',
-      '--mdc-listitem-disabled-color',
-      '--mdc-listitem-column-gap',
-      '--mdc-listitem-padding-left-and-right',
     ]),
     ...classArgType,
     ...styleArgType,

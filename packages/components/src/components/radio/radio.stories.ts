@@ -4,8 +4,9 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
+import '../radiogroup';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
@@ -21,6 +22,7 @@ const render = (args: Args) => html`
     ?checked=${args.checked}
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
+    ?soft-disabled=${args['soft-disabled']}
     ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
     toggletip-text="${args['toggletip-text']}"
@@ -42,6 +44,9 @@ const meta: Meta = {
       control: { type: 'boolean' },
     },
     disabled: {
+      control: { type: 'boolean' },
+    },
+    'soft-disabled': {
       control: { type: 'boolean' },
     },
     checked: {
@@ -83,16 +88,6 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls(['help-text-type']),
-    ...textControls([
-      '--mdc-radio-text-disabled-color',
-      '--mdc-radio-control-inactive-hover',
-      '--mdc-radio-control-inactive-pressed-color',
-      '--mdc-radio-control-active-hover-color',
-      '--mdc-radio-control-active-pressed-color',
-      '--mdc-radio-control-active-disabled-background',
-      '--mdc-radio-control-inactive-disabled-background',
-      '--mdc-radio-disabled-border-color',
-    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -106,27 +101,26 @@ export const Example: StoryObj = {
     checked: false,
     readonly: false,
     disabled: false,
+    'soft-disabled': false,
   },
 };
 
 export const withNameGroup: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
-      Radio Group for selecting plans
+    <mdc-radiogroup label="Radio Group for selecting plans">
       <mdc-radio name="plan" value="option1" label="Standard Plan"></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
       <mdc-radio name="plan" value="option3" label="Premium Plan"></mdc-radio>
       <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Business Plan"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Enterprise Plan"></mdc-radio>
-    </div>
-    <div style="display: flex; flex-direction: column; margin-top: 10px">
-      Radio Group for selecting billing cycle
+    </mdc-radiogroup>
+    <mdc-radiogroup label="Radio Group for selecting billing cycle" style="margin-top: 2rem;">
       <mdc-radio name="billing-cycle" value="option1" label="Weekly" disabled></mdc-radio>
       <mdc-radio name="billing-cycle" value="option1" label="Monthly" checked></mdc-radio>
       <mdc-radio name="billing-cycle" value="option2" label="Quaterly"></mdc-radio>
       <mdc-radio name="billing-cycle" value="option2" label="Yearly"></mdc-radio>
-    </div>
+    </mdc-radiogroup>
   `,
   parameters: {
     docs: {

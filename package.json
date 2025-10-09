@@ -49,6 +49,9 @@
     "utils": "yarn workspace @momentum-design/utils",
     "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview"
   },
+  "resolutions": {
+    "form-data": "^4.0.4"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",

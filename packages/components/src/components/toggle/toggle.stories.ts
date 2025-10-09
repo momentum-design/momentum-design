@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { textControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
@@ -18,6 +18,8 @@ const render = (args: Args) => html`
     value="toggleValue"
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
+    @keydown="${action('onkeydown')}"
+    @click="${action('onclick')}"
     size="${args.size}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
@@ -30,6 +32,8 @@ const render = (args: Args) => html`
     ?required="${args.required}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
   >
   </mdc-toggle>
 `;
@@ -49,6 +53,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     label: {
@@ -88,18 +98,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['help-text-type', 'id']),
-    ...textControls([
-      '--mdc-toggle-width',
-      '--mdc-toggle-height',
-      '--mdc-toggle-width-compact',
-      '--mdc-toggle-height-compact',
-      '--mdc-toggle-label-color-disabled',
-      '--mdc-toggle-help-text-color',
-      '--mdc-toggle-active-hover-color',
-      '--mdc-toggle-active-pressed-color',
-      '--mdc-toggle-inactive-hover-color',
-      '--mdc-toggle-inactive-pressed-color',
-    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -113,6 +111,8 @@ export const Example: StoryObj = {
     checked: false,
     size: DEFAULTS.SIZE,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
     'help-text': '',
   },
 };

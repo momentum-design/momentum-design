@@ -45,6 +45,7 @@ import styles from './tab.styles';
  *
  * @tagname mdc-tab
  *
+ * @cssproperty --mdc-button-height - Height for button size
  * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
  * @cssproperty --mdc-tab-height - Height of the tab.
  * @cssproperty --mdc-tab-glass-active-background-color-disabled - Background color for active glass tab
@@ -167,7 +168,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
-    this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 

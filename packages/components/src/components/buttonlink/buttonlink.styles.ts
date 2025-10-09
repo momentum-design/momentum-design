@@ -49,12 +49,12 @@ const styles = css`
   }
 
   :host([variant='secondary'])::part(anchor) {
-    border-color: var(--mdc-button-secondary-border-color);
+    border-color: var(--mdc-button-border-color);
   }
 
   :host([variant='secondary'][disabled])::part(anchor),
   :host([variant='secondary'][soft-disabled])::part(anchor) {
-    border-color: var(--mdc-button-secondary-disabled-border-color);
+    border-color: var(--mdc-button-border-color);
   }
 `;
 

@@ -55,21 +55,10 @@ import type { Placement } from './select.types';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  *
- * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
- * @cssproperty --mdc-select-background-color-hover - The background color of the combobox of select when hovered.
- * @cssproperty --mdc-select-background-color-active - The background color of the combobox of select when active.
- * @cssproperty --mdc-select-background-color-disabled - The background color of the combobox of select when disabled.
- * @cssproperty --mdc-select-text-color - The text color of the select.
- * @cssproperty --mdc-select-text-color-selected - The text color of the selected option in the select.
- * @cssproperty --mdc-select-text-color-disabled - The text color of the select when disabled.
- * @cssproperty --mdc-select-border-color - The border color of the select.
- * @cssproperty --mdc-select-border-color-disabled - The border color of the select when disabled.
- * @cssproperty --mdc-select-border-color-success - The border color of the select when in success state.
- * @cssproperty --mdc-select-border-color-warning - The border color of the select when in warning state.
- * @cssproperty --mdc-select-border-color-error - The border color of the select when in error state.
- * @cssproperty --mdc-select-width - The width of the select.
- * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
- * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -79,12 +68,21 @@ import type { Placement } from './select.types';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart container - The container element that wraps the visual combobox and the dropdown icon.
- * @csspart base-container - The container element that wraps the visual combobox, dropdown icon, and the popover.
- * @csspart selected-icon - The icon element that is displayed next to the selected option in the dropdown list.
- * @csspart base-text - The text element that displays the selected option or placeholder in the visual combobox.
- * @csspart icon-container - The container element that wraps the dropdown icon.
- * @csspart native-input - The native hidden input element.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
+ * @cssproperty --mdc-select-text-color - The text color of the select.
+ * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-width - The width of the select.
+ * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
+ * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
 class Select
   extends ListNavigationMixin(
@@ -98,12 +96,6 @@ class Select
   @property({ type: String }) placeholder?: string;
 
   /**
-   * readonly attribute of the select field. If true, the select is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
-
-  /**
    * The placement of the popover within Select component.
    * This defines the position of the popover relative to the select input field.
    *
@@ -113,16 +105,6 @@ class Select
    * @default 'bottom-start'
    */
   @property({ type: String, reflect: true }) placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
-
-  /**
-   * Indicates whether the select is soft disabled.
-   * When set to `true`, the select appears visually disabled but still allows
-   * focus.
-   *
-   * @default undefined
-   */
-  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
-  softDisabled?: boolean;
 
   /**
    * This describes the clipping element(s) or area that overflow of the used popover will be checked relative to.
