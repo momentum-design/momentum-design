@@ -20,6 +20,7 @@ type SetupOptions = {
 };
 
 const ICON_PLACEHOLDER = 'placeholder-bold';
+const BRAND_VISUAL_NAME = 'webex-symbol-common-color-gradient';
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -106,6 +107,30 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.setAttributes(tab, { 'icon-name': ICON_PLACEHOLDER });
         await expect(tab.locator('mdc-icon')).toHaveAttribute('name', ICON_PLACEHOLDER);
         await componentsPage.removeAttribute(tab, 'icon-name');
+      });
+
+      // custom icon slot with brand-visual
+      await test.step('custom icon slot with brand-visual should work', async () => {
+        // Mount a new tab with brand-visual in icon slot
+        await componentsPage.mount({
+          html: `
+          <div id="wrapper" role="tablist">
+            <mdc-tab text="Custom Icon Tab" tab-id="custom-icon-tab">
+              <mdc-brandvisual slot="icon" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>
+            </mdc-tab>
+          </div>
+          `,
+          clearDocument: true,
+        });
+
+        const customIconTab = componentsPage.page.locator('mdc-tab');
+        await customIconTab.waitFor();
+
+        // Check that brand-visual is rendered in the icon slot
+        const brandVisual = customIconTab.locator('mdc-brandvisual[slot="icon"]');
+        await expect(brandVisual).toBeVisible();
+        await expect(brandVisual).toHaveAttribute('name', BRAND_VISUAL_NAME);
+        await expect(brandVisual).toHaveAttribute('slot', 'icon');
       });
 
       // tabIndex
@@ -283,6 +308,26 @@ test('mdc-tab', async ({ componentsPage }) => {
       active: '',
       'soft-disabled': '',
     });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual icon slot - not active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="icon" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: 'Brand Visual Inactive', 'icon-name': '', 'aria-label': '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual icon slot - active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="icon" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: 'Brand Visual Active', 'icon-name': '', 'aria-label': '', active: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual icon slot only - not active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="icon" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: '', 'icon-name': '', 'aria-label': 'Brand Visual Only Inactive' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual icon slot only - active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="icon" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: '', 'icon-name': '', 'aria-label': 'Brand Visual Only Active', active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     await stickerSheet.mountStickerSheet();
