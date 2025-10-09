@@ -1,7 +1,7 @@
 import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -14,6 +14,7 @@ import '../tooltip';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Select from './select.component';
+import * as CountriesList from './select.utils.json';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -519,4 +520,17 @@ export const SelectWithChangingValueAttribute: StoryObj = {
       </mdc-select>`;
   },
   ...hideAllControls(),
+};
+
+export const SelectCountriesList: StoryObj = {
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-select label="Select a country" placeholder="Select a country">
+        <mdc-selectlistbox>
+          ${CountriesList.countries.map(({ name: country }) =>
+            country ? html`<mdc-option label="${country}"></mdc-option>` : nothing,
+          )}
+        </mdc-selectlistbox>
+      </mdc-select>
+    `),
 };

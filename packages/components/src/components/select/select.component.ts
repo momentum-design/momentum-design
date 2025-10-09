@@ -168,6 +168,12 @@ class Select
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
+  private searchTimeout: number | undefined;
+
+  /** @internal */
+  private searchString = '';
+
+  /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
     onStoreUpdate: this.onStoreUpdate,
@@ -526,13 +532,77 @@ class Select
     event.stopPropagation();
   }
 
+  private debounceSearchKey(letter: string): string {
+    if (this.searchTimeout) {
+      window.clearTimeout(this.searchTimeout);
+    }
+
+    this.searchTimeout = window.setTimeout(() => {
+      // for every 500ms, we will reset the search string.
+      this.searchString = '';
+    }, 500);
+
+    // add most recent letter to saved search string
+    this.searchString += letter;
+    return this.searchString;
+  }
+
+  /**
+   * Updates the selected option and moves the focus to the newly selected option.
+   * It updates the selected option and then uses requestAnimationFrame to scroll the newly selected option into view.
+   * @param newSelectedOption - The new option to select.
+   */
+  private updateSelectedOptionAndMoveFocus(newSelectedOption: Option): void {
+    this.setSelectedOption(newSelectedOption);
+    window.requestAnimationFrame(() => {
+      newSelectedOption.scrollIntoView({ block: 'center' });
+    });
+  }
+
+  /**
+   * Filters the given option labels based on the given search key.
+   * It returns a new array of options that have labels starting with the given search key case-insensitive.
+   *
+   * @param options - The options to filter.
+   * @param searchKey - The search key to filter by.
+   * @returns The filtered options.
+   */
+  private filterOptionsBySearchKey(options: Option[], searchKey: string): Option[] {
+    return options.filter(option => option.getAttribute('label')?.toLowerCase().startsWith(searchKey.toLowerCase()));
+  }
+
+  /**
+   * Handles the selection of an option based on the filter string.
+   * It will select the first option from the filtered list if it is not empty.
+   * If the filtered list is empty, it will do nothing.
+   * @param searchKey - The filter string to search for options.
+   */
+  private handleSelectedOptionBasedOnFilter(searchKey: string): void {
+    const startIndex = this.navItems.indexOf(this.selectedOption!) + 1;
+    const orderedOptions = [...this.navItems.slice(startIndex), ...this.navItems.slice(0, startIndex)];
+    // First, we search for an exact match with then entire search key
+    const filteredResults = this.filterOptionsBySearchKey(orderedOptions, searchKey);
+    if (filteredResults.length) {
+      // If the key is an exact match, then we set the first option
+      this.updateSelectedOptionAndMoveFocus(filteredResults[0]);
+    } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
+      // If the key is same, then we cycle through all options which start with the same letter
+      const nextOptionFromList = this.navItems[startIndex];
+      const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(orderedOptions, searchKey[0]);
+      const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
+      this.updateSelectedOptionAndMoveFocus(
+        nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0],
+      );
+    }
+  }
+
   /**
    * Handles the keydown event on the select element when the popover is closed.
    * The options are as follows:
-   * - ARROW_DOWN, ARROW_UP, SPACE: Opens the popover and prevents the default scrolling behavior.
-   * - ENTER: Opens the popover, prevents default scrolling, and submits the form if the popover is closed.
+   * - ARROW_DOWN, ARROW_UP, ENTER, SPACE: Opens the popover and prevents the default scrolling behavior.
    * - HOME: Opens the popover and sets focus and tabindex on the first option.
    * - END: Opens the popover and sets focus and tabindex on the last option.
+   * - Any key: Opens the popover and sets focus on the first option which starts with the key.
    * @param event - The keyboard event.
    */
   private handleKeydownCombobox(event: KeyboardEvent): void {
@@ -542,11 +612,6 @@ class Select
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
-        this.displayPopover = true;
-        // Prevent the default browser behavior of scrolling down
-        event.preventDefault();
-        event.stopPropagation();
-        break;
       case KEYS.ENTER:
       case KEYS.SPACE:
         this.displayPopover = true;
@@ -566,8 +631,13 @@ class Select
         event.preventDefault();
         break;
       }
-      default:
+      default: {
+        if (event.key.length === 1) {
+          this.displayPopover = true;
+          this.handleSelectedOptionByKeyInput(event.key);
+        }
         break;
+      }
     }
   }
 
@@ -581,6 +651,17 @@ class Select
    */
   private handleNativeInputFocus(): void {
     this.visualCombobox.focus();
+  }
+
+  private handleSelectedOptionByKeyInput(searchKey: string): void {
+    const searchString = this.debounceSearchKey(searchKey);
+    this.handleSelectedOptionBasedOnFilter(searchString);
+  }
+
+  private handleKeydownPopover(event: KeyboardEvent): void {
+    if (event.key.length === 1) {
+      this.handleSelectedOptionByKeyInput(event.key);
+    }
   }
 
   public override render() {
@@ -655,6 +736,7 @@ class Select
           focus-back-to-trigger
           focus-trap
           size
+          @keydown="${this.handleKeydownPopover}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
