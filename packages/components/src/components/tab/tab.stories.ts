@@ -20,6 +20,7 @@ const render = (args: Args) =>
       ?active="${args.active}"
       aria-label="${ifDefined(args.text ? nothing : 'Label')}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       icon-name="${ifDefined(args['icon-name'])}"
       tabIndex="${ifDefined(args.tabIndex)}"
       text="${ifDefined(args.text)}"
@@ -44,6 +45,9 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
+    'soft-disabled': {
+      control: 'boolean',
+    },
     'icon-name': {
       control: 'text',
     },
@@ -65,7 +69,7 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
-    ...hideControls(['role', 'size', 'soft-disabled', 'type']),
+    ...hideControls(['role', 'size', 'type']),
   },
 };
 

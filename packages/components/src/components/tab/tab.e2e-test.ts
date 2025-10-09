@@ -11,6 +11,7 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   active?: boolean;
   disabled?: boolean;
+  softDisabled?: boolean;
   iconName?: IconNames;
   role?: string;
   tabIndex?: number;
@@ -28,6 +29,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-tab
         ${restArgs.active ? 'active' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.softDisabled ? 'soft-disabled' : ''}
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.tabIndex ? `tabindex="${restArgs.tabIndex}"` : ''}
         ${restArgs.text ? `text="${restArgs.text}"` : ''}
@@ -48,7 +50,7 @@ const setup = async (args: SetupOptions) => {
   return tab;
 };
 
-test.use({ viewport: { width: 400, height: 700 } });
+test.use({ viewport: { width: 800, height: 1000 } });
 test('mdc-tab', async ({ componentsPage }) => {
   const tab = await setup({ componentsPage });
   await componentsPage.setAttributes(tab, { text: 'Label' });
@@ -84,8 +86,19 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.setAttributes(tab, { disabled: '' });
         await expect(tab).toHaveAttribute('disabled');
         await expect(tab).toHaveAttribute('tabindex', '-1');
+        await expect(tab).toHaveAttribute('aria-disabled', 'true');
         await componentsPage.removeAttribute(tab, 'disabled');
         await expect(tab).toHaveAttribute('tabindex', '0');
+        await expect(tab).not.toHaveAttribute('aria-disabled');
+      });
+
+      // soft-disabled
+      await test.step('attribute soft-disabled should be present on tab', async () => {
+        await componentsPage.setAttributes(tab, { 'soft-disabled': '' });
+        await expect(tab).toHaveAttribute('soft-disabled');
+        await expect(tab).toHaveAttribute('aria-disabled', 'true');
+        await componentsPage.removeAttribute(tab, 'soft-disabled');
+        await expect(tab).not.toHaveAttribute('aria-disabled');
       });
 
       // icon-name
@@ -142,75 +155,133 @@ test('mdc-tab', async ({ componentsPage }) => {
     stickerSheet.setChildren('<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>');
 
     // Tabs with label, badge and icon - not active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER });
+    stickerSheet.setAttributes({ text: 'Inactive', 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label, badge and icon - active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, active: '' });
-    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
-
-    // Tabs with label, badge and icon - not active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, disabled: '' });
+    stickerSheet.setAttributes({ text: 'Active', 'icon-name': ICON_PLACEHOLDER, active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label, badge and icon - active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, active: '', disabled: '' });
+    stickerSheet.setAttributes({ text: 'Active Disabled', 'icon-name': ICON_PLACEHOLDER, active: '', disabled: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label, badge and icon - not active - disabled
+    stickerSheet.setAttributes({ text: 'Inactive Disabled', 'icon-name': ICON_PLACEHOLDER, disabled: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label, badge and icon - active - soft-disabled
+    stickerSheet.setAttributes({
+      text: 'Active Soft Disabled',
+      'icon-name': ICON_PLACEHOLDER,
+      active: '',
+      'soft-disabled': '',
+    });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label, badge and icon - not active - soft-disabled
+    stickerSheet.setAttributes({ text: 'Inactive Soft Disabled', 'icon-name': ICON_PLACEHOLDER, 'soft-disabled': '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Remove badge from tab
     stickerSheet.setChildren('');
 
     // Tabs with label and icon - not active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER });
+    stickerSheet.setAttributes({ text: 'Inactive', 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label and icon - active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, active: '' });
+    stickerSheet.setAttributes({ text: 'Active', 'icon-name': ICON_PLACEHOLDER, active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label and icon - not active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, disabled: '' });
+    stickerSheet.setAttributes({ text: 'Inactive Disabled', 'icon-name': ICON_PLACEHOLDER, disabled: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label and icon - active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': ICON_PLACEHOLDER, active: '', disabled: '' });
+    stickerSheet.setAttributes({ text: 'Active Disabled', 'icon-name': ICON_PLACEHOLDER, active: '', disabled: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label and icon - not active - soft-disabled
+    stickerSheet.setAttributes({ text: 'Inactive Soft Disabled', 'icon-name': ICON_PLACEHOLDER, 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label and icon - active - soft-disabled
+    stickerSheet.setAttributes({
+      text: 'Active Soft Disabled',
+      'icon-name': ICON_PLACEHOLDER,
+      active: '',
+      'soft-disabled': '',
+    });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label - not active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': '' });
+    stickerSheet.setAttributes({ text: 'Inactive', 'icon-name': '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label - active
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': '', active: '' });
+    stickerSheet.setAttributes({ text: 'Active', 'icon-name': '', active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label - not active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': '', disabled: '' });
+    stickerSheet.setAttributes({ text: 'Inactive Disabled', 'icon-name': '', disabled: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with label - active - disabled
-    stickerSheet.setAttributes({ text: 'Label', 'icon-name': '', active: '', disabled: '' });
+    stickerSheet.setAttributes({ text: 'Active Disabled', 'icon-name': '', active: '', disabled: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label - not active - soft-disabled
+    stickerSheet.setAttributes({ text: 'Inactive Soft Disabled', 'icon-name': '', 'soft-disabled': '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with label - active - soft-disabled
+    stickerSheet.setAttributes({ text: 'Active Soft Disabled', 'icon-name': '', active: '', 'soft-disabled': '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with icon only - not active
-    stickerSheet.setAttributes({ text: '', 'icon-name': ICON_PLACEHOLDER, 'aria-label': 'Label' });
+    stickerSheet.setAttributes({ text: '', 'icon-name': ICON_PLACEHOLDER, 'aria-label': 'Inactive' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with icon only - active
-    stickerSheet.setAttributes({ text: '', 'icon-name': ICON_PLACEHOLDER, 'aria-label': 'Label', active: '' });
+    stickerSheet.setAttributes({ text: '', 'icon-name': ICON_PLACEHOLDER, 'aria-label': 'Active', active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with icon only - not active - disabled
-    stickerSheet.setAttributes({ text: '', 'icon-name': ICON_PLACEHOLDER, 'aria-label': 'Label', disabled: '' });
+    stickerSheet.setAttributes({
+      text: '',
+      'icon-name': ICON_PLACEHOLDER,
+      'aria-label': 'Inactive Disabled',
+      disabled: '',
+    });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     // Tabs with icon only - active - disabled
     stickerSheet.setAttributes({
       text: '',
       'icon-name': ICON_PLACEHOLDER,
-      'aria-label': 'Label',
+      'aria-label': 'Active Disabled',
       active: '',
       disabled: '',
+    });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with icon only - not active - soft-disabled
+    stickerSheet.setAttributes({
+      text: '',
+      'icon-name': ICON_PLACEHOLDER,
+      'aria-label': 'Inactive Soft Disabled',
+      'soft-disabled': '',
+    });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with icon only - active - soft-disabled
+    stickerSheet.setAttributes({
+      text: '',
+      'icon-name': ICON_PLACEHOLDER,
+      'aria-label': 'Active Soft Disabled',
+      active: '',
+      'soft-disabled': '',
     });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
