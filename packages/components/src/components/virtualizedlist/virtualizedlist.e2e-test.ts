@@ -3,13 +3,16 @@ import { expect, type Locator } from '@playwright/test';
 
 import { test } from '../../../config/playwright/setup';
 
+import { VirtualizerProps } from './virtualizedlist.types';
+
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
   await test.step('basic text list', async () => {
     type SetupOptions = {
       loop?: 'true' | 'false';
       initialFocus?: number;
       story?: 'text' | 'interactive';
-      virtualizerProps?: object;
+      virtualizerProps?: Partial<VirtualizerProps>;
+      itemSize?: number;
     };
 
     const setup = async (args: SetupOptions) => {
@@ -19,10 +22,11 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         html: `
         <div>
           <mdc-virtualizedwrapper
+            item-size="${args.itemSize ?? 36}"
             ${loop !== undefined ? `loop="${loop}"` : ''}
             ${initialFocus !== undefined ? `initial-focus="${initialFocus}"` : ''}
             ${story !== undefined ? `story="${story}"` : ''}
-            ${virtualizerProps !== undefined ? `virtualizer-props='${JSON.stringify(virtualizerProps)}'` : ''}
+            .virtualizerProps=${virtualizerProps}
           ></mdc-virtualizedwrapper>
           <mdc-button>after</mdc-button>
         </div>
@@ -54,8 +58,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     await test.step('should handle initial focus correctly', async () => {
-      const virtualizedList = await setup({ story: 'text', initialFocus: 90 });
-      await componentsPage.page.pause();
+      const virtualizedList = await setup({ story: 'text', initialFocus: 90, itemSize: 36 });
       // Check that item with index 10 is visible and focused
       const focusedItem = virtualizedList.locator('mdc-listitem[data-index="90"][tabindex="0"]');
       await expect(focusedItem).toBeVisible();
@@ -101,27 +104,28 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const virtualizedList = await setup({ story: 'text', initialFocus: 0 });
       await expect(virtualizedList.locator('mdc-listitem[data-index="0"][tabindex="0"]')).toBeVisible();
 
+      await componentsPage.page.pause();
       await componentsPage.actionability.pressTab();
+
       await expect(virtualizedList.locator('mdc-listitem[data-index="0"]')).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await componentsPage.page.keyboard.press('ArrowDown');
 
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await componentsPage.page.keyboard.press('ArrowDown');
       await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
-
       await componentsPage.actionability.pressTab();
+
       await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).not.toBeFocused();
-
       await componentsPage.actionability.pressShiftTab();
-      await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
 
+      await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
       const scrollContainer = virtualizedList.locator('[part="scroll"]');
+
       await scrollContainer.evaluate(el => {
         // eslint-disable-next-line no-param-reassign
         el.scrollTop = 1000;
       });
-
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();
       await componentsPage.page.keyboard.press('ArrowDown');
@@ -234,7 +238,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
         await addAboveButton.press('Enter');
         await expect(listItemCounter).toHaveText('21');
-        await listItemLocator(virtualizedList, 0, 10).waitFor({ state: 'visible' });
+        await listItemLocator(virtualizedList, 0, 21).waitFor({ state: 'visible' });
         // Focus should remain on the button - the item will be shifted down
         await expect(buttonLocator(virtualizedList, 1, 'Add Above')).toBeFocused();
 
@@ -259,10 +263,12 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         }
 
         let addAboveButton = await tabToListItemButton(virtualizedList, 5, 'Add Above');
+        const initialBBox = await addAboveButton.boundingBox();
         for (let i = 0; i < 10; i += 1) {
           await expect(addAboveButton).toBeFocused();
           await addAboveButton.press('Enter');
           addAboveButton = buttonLocator(virtualizedList, 6 + i, 'Add Above');
+          expect(await addAboveButton.boundingBox()).not.toEqual(initialBBox);
         }
       });
 
@@ -273,14 +279,15 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
         await addBelowButton.press('Enter');
         await expect(listItemCounter).toHaveText('21');
-        await listItemLocator(virtualizedList, 1, 10).waitFor({ state: 'visible' });
+
+        await listItemLocator(virtualizedList, 1, 21).waitFor({ state: 'visible' });
         // Focus should remain on the button
         await expect(addBelowButton).toBeFocused();
 
         // Check that pressing down goes to the new item
         await componentsPage.page.keyboard.press('ArrowDown');
         await (await tabToListItemButton(virtualizedList, 1, 'Add Below')).press('Enter');
-        await listItemLocator(virtualizedList, 2, 11).waitFor({ state: 'visible' });
+        await listItemLocator(virtualizedList, 2, 22).waitFor({ state: 'visible' });
 
         // Lets tab out of the list item
         await tabOutOfListFromListItem('Add Below');
