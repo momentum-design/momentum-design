@@ -86,21 +86,19 @@ class Option extends FormInternalsMixin(ListItem) {
   }
 
   public override render() {
-    const prefixIconContent = this.prefixIcon
-      ? html`
-          <div part="leading-icon">
-            <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
-          </div>
-        `
-      : nothing;
+    const leadingContent = this.prefixIcon
+      ? html` <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon> `
+      : this.renderLeadingControls();
     const trailingContent = this.selected
       ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
       : nothing;
     return html`
-      ${prefixIconContent}
-      <div part="leading-text">
-        ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-        ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+      <div part="leading">
+        ${leadingContent}
+        <div part="leading-text">
+          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+        </div>
       </div>
       <div part="trailing">${trailingContent}</div>
     `;
