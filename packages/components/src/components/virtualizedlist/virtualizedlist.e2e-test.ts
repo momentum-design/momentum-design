@@ -120,22 +120,18 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await componentsPage.actionability.pressShiftTab();
 
       await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
-      const scrollContainer = virtualizedList.locator('[part="scroll"]');
 
-      await scrollContainer.evaluate(el => {
-        // eslint-disable-next-line no-param-reassign
-        el.scrollTop = 1000;
-      });
+      await virtualizedList.hover();
+      await componentsPage.page.mouse.wheel(0, 1000); // deltaX, deltaY
+
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();
       await componentsPage.page.keyboard.press('ArrowDown');
       await componentsPage.debugUtils.logActiveElement();
       await expect(virtualizedList.locator('mdc-listitem[data-index="5"]')).toBeFocused();
 
-      await scrollContainer.evaluate(el => {
-        // eslint-disable-next-line no-param-reassign
-        el.scrollTop = 1000;
-      });
+      await virtualizedList.hover();
+      await componentsPage.page.mouse.wheel(0, 100); // deltaX, deltaY
 
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="5"]').waitFor();
