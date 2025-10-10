@@ -13,7 +13,7 @@ import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray
 import { KEYS } from '../../utils/keys';
 
 import styles from './virtualizedlist.styles';
-import { DEFAULTS } from './virtualizedlist.constants';
+import { DEFAULTS, IS_AT_BOTTOM_THRESHOLD } from './virtualizedlist.constants';
 import type { VirtualizerProps, Virtualizer } from './virtualizedlist.types';
 
 /**
@@ -165,7 +165,24 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * - 're-evaluate' - The scroll position needs to be re-evaluated on the next scroll event.
    * @internal
    */
-  private isAtBottom: 'no' | 'yes' | 're-evaluate' = this.revertList ? 'yes' : 'no';
+  private isAtBottomValue: 'no' | 'yes' | 're-evaluate' = 'no';
+
+  get isAtBottom(): 'no' | 'yes' | 're-evaluate' {
+    return this.isAtBottomValue;
+  }
+
+  set isAtBottom(value: 'no' | 'yes' | 're-evaluate') {
+    if (this.isAtBottomValue !== value) {
+      this.isAtBottomValue = value;
+      if (value === 'yes') {
+        this.scrollToBottom();
+      } else {
+        cancelAnimationFrame(this.atBottomTimer);
+      }
+    }
+  }
+
+  private atBottomTimer: number = -1;
 
   /**
    * The current virtual items being rendered.
@@ -227,6 +244,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     // Set the role attribute for accessibility.
     this.role = null;
+
+    this.isAtBottom = this.revertList && !this.disableScrollAnchoring ? 'yes' : 'no';
   }
 
   override disconnectedCallback(): void {
@@ -353,11 +372,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.updateComplete.then(() => this.requestUpdate());
     this.emitChangeEvent();
-
-    const scrollEL = this.scrollElementRef.value;
-    if (this.isAtBottom === 'yes' && scrollEL && this.totalListHeight >= scrollEL.clientHeight) {
-      scrollEL.scrollTop = scrollEL.scrollHeight;
-    }
   }
 
   private emitChangeEvent() {
@@ -468,6 +482,9 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   /** @internal */
   private setSelectedIndex(newIndex: number): void {
     if (this.virtualizer) {
+      if (newIndex + 1 === this.virtualizer.options.count) {
+        this.isAtBottom = 'yes';
+      }
       this.selectedIndex = newIndex;
       this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
     }
@@ -490,6 +507,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // Skip the current Scroll event to prevent shattering
     if (this.isAtBottom === 're-evaluate') {
       this.isAtBottom = 'no';
+      return;
     }
 
     // Check if we are at the bottom of the list
@@ -501,7 +519,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       scrollEl.scrollHeight > scrollEl.clientHeight
     ) {
       const { clientHeight, scrollHeight, scrollTop } = scrollEl;
-      this.isAtBottom = scrollHeight - scrollTop <= clientHeight ? 'yes' : 'no';
+      this.isAtBottom = scrollHeight - scrollTop <= clientHeight + IS_AT_BOTTOM_THRESHOLD ? 'yes' : 'no';
     }
   }
 
@@ -527,6 +545,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       default:
     }
     super.handleNavigationKeyDown(event);
+  }
+
+  private scrollToBottom(): void {
+    cancelAnimationFrame(this.atBottomTimer);
+    if (this.isAtBottom === 'yes') {
+      const scrollEl = this.scrollElementRef.value;
+
+      if (scrollEl && this.totalListHeight > scrollEl.clientHeight) {
+        scrollEl.scrollTop += Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
+      }
+      this.atBottomTimer = requestAnimationFrame(this.scrollToBottom.bind(this));
+    }
   }
 
   public override render() {
