@@ -1,0 +1,1 @@
+import{n as a}from"./iframe-D1RECH4Q.js";var l=Object.defineProperty,o=(n,r,t,d)=>{for(var e=void 0,s=n.length-1,i;s>=0;s--)(i=n[s])&&(e=i(r,t,e)||e);return e&&l(r,t,e),e};const p=n=>{class r extends n{}return o([a({reflect:!0,type:Boolean})],r.prototype,"disabled"),r};export{p as D};
