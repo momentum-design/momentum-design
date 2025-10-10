@@ -3,7 +3,7 @@ import { PropertyValues } from 'lit';
 
 import type { Component } from '../../models';
 import { KEYS } from '../keys';
-import type { BaseArray } from '../offsetArray';
+import type { BaseArray } from '../virtualIndexArray';
 
 import type { Constructor } from './index.types';
 

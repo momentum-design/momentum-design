@@ -13,7 +13,6 @@ export type VirtualizedListVirtualItemsChangeEvent = TypedCustomEvent<
   VirtualizedList,
   {
     virtualItems: Array<VirtualItem>;
-    measureElement: (node: Element | null | undefined) => void;
   }
 >;
 export type VirtualData = VirtualizedListVirtualItemsChangeEvent['detail'];

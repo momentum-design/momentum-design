@@ -1,269 +1,21 @@
-// eslint-disable-next-line max-classes-per-file
-import { CSSResult, PropertyValues, TemplateResult, css, html } from 'lit';
-import { property, state } from 'lit/decorators.js';
-import { VirtualItem } from '@tanstack/virtual-core';
-import { createRef, ref, type Ref } from 'lit/directives/ref.js';
+import { html, PropertyValues, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import type { VirtualItem } from '@tanstack/virtual-core';
 
-import { Component } from '../../models';
+import { Component } from '../../../models';
+import '../../list';
+import '../../listitem';
+import '../../button';
+import '../../buttongroup';
+import '../../avatar';
+import '../../textarea';
+import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
+import VirtualizedList from '../virtualizedlist.component';
 
-import '../list';
-import '../listitem';
-import '../button';
-import '../buttongroup';
-import '../avatar';
-import '../textarea';
-import type VirtualizedList from './virtualizedlist.component';
-import { VirtualizerProps, type VirtualizedListVirtualItemsChangeEvent, VirtualData } from './virtualizedlist.types';
-
-class VirtualizedWrapper extends Component {
-  public override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
-
-  @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerProps: VirtualizerProps = {
-    count: 100,
-    estimateSize: () => this.itemSize,
-    getItemKey: index => this.listItemTexts[index],
-  };
-
-  @property({ type: String })
-  story: 'text' | 'interactive' | 'dynamic' = 'text';
-
-  @property({ type: String, reflect: true })
-  loop: 'true' | 'false' = 'false';
-
-  @property({ type: Number, reflect: true, attribute: 'item-size' })
-  itemSize: number = 36;
-
-  @property({ type: Number, reflect: true, attribute: 'initial-focus' })
-  initialFocus: number = 0;
-
-  @state()
-  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
-
-  @state()
-  listItemTexts = new Array(this.virtualizerProps.count).fill(true).map((_, index) => `list item number ${index}`);
-
-  constructor() {
-    super();
-    this.onscroll = null;
-  }
-
-  public override update(changedProperties: PropertyValues) {
-    super.update(changedProperties);
-    if (changedProperties.has('virtualizerProps')) {
-      this.updateListItemTextArray();
-    }
-
-    if (changedProperties.has('itemSize')) {
-      this.virtualizerProps = { ...this.virtualizerProps, estimateSize: () => this.itemSize };
-    }
-  }
-
-  public override connectedCallback() {
-    super.connectedCallback();
-    if (this.virtualizerProps?.count) {
-      this.updateListItemTextArray();
-    }
-  }
-
-  private updateListItemTextArray() {
-    this.listItemTexts = new Array(this.virtualizerProps?.count)
-      .fill(true)
-      .map((_, index) => `list item number ${index}`);
-  }
-
-  private renderItem(index: number) {
-    if (this.story === 'text') {
-      return html`<mdc-listitem data-index=${index} label="${this.listItemTexts[index]}"></mdc-listitem> `;
-    }
-    if (this.story === 'interactive') {
-      return html`
-        <mdc-listitem data-index=${index}>
-          <span slot="leading-text-primary-label">${this.listItemTexts[index]}</span>
-          <mdc-button
-            slot="trailing-controls"
-            color="positive"
-            prefix-icon="data-range-selection-bold"
-            aria-label="mock label"
-          ></mdc-button>
-          <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
-        </mdc-listitem>
-      `;
-    }
-    if (this.story === 'dynamic') {
-      return html`
-        <mdc-listitem data-index=${index} style="--mdc-listitem-height: ${50 + (index % 5) * 10}px">
-          <span slot="leading-text-primary-label">${this.listItemTexts[index]}</span>
-          <mdc-button
-            slot="trailing-controls"
-            color="positive"
-            prefix-icon="data-range-selection-bold"
-            aria-label="mock label"
-          ></mdc-button>
-          <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
-        </mdc-listitem>
-      `;
-    }
-
-    return html``;
-  }
-
-  private handleVirtualItemsChange = (event: VirtualizedListVirtualItemsChangeEvent) => {
-    this.virtualData = event.detail;
-  };
-
-  override render() {
-    return html`
-      <div part="wrapper">
-        <mdc-virtualizedlist
-          @scroll=${this.onscroll}
-          @virtualitemschange=${this.handleVirtualItemsChange}
-          .virtualizerProps=${this.virtualizerProps}
-          initial-focus=${this.initialFocus}
-          loop=${this.loop}
-        >
-          ${repeat(
-            this.virtualData.virtualItems,
-            ({ key }) => key,
-            ({ index }) => this.renderItem(index),
-          )}
-        </mdc-virtualizedlist>
-      </div>
-    `;
-  }
-
-  public static override styles: Array<CSSResult> = [
-    ...Component.styles,
-    css`
-      :host([story='text'])::part(wrapper) {
-        width: 500px;
-        height: 500px;
-      }
-      :host([story='interactive'])::part(wrapper) {
-        width: 100%;
-        height: 500px;
-      }
-      :host([story='dynamic'])::part(wrapper) {
-        width: 100%;
-        height: 500px;
-      }
-    `,
-  ];
-}
-
-VirtualizedWrapper.register('mdc-virtualizedwrapper');
-
-class VirtualizedDynamicList extends Component {
-  @state()
-  listItems: string[] = new Array(20).fill(true).map((_, index) => `list item number ${index}`);
-
-  @state()
-  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
-
-  @state()
-  virtualizerProps: VirtualizerProps = { count: 0, estimateSize: () => 0, getItemKey: index => this.listItems[index] };
-
-  counter = this.listItems.length;
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.updateVirtualProps();
-  }
-
-  private generateListItem(index: number, label: string): TemplateResult {
-    return html`
-      <mdc-listitem data-index=${index} label=${label}>
-        <mdc-buttongroup slot="trailing-controls">
-          <mdc-button variant="primary" color="positive" @click=${() => this.addItem(0, 5)}>Add 5 At Top</mdc-button>
-          <mdc-button variant="primary" color="positive" @click=${() => this.addItem(index)}>Add Above</mdc-button>
-          <mdc-button variant="primary" color="positive" @click=${() => this.addItem(index + 1)}>Add Below</mdc-button>
-          <mdc-button variant="primary" color="positive" @click=${() => this.addItem()}>Add Last</mdc-button>
-        </mdc-buttongroup>
-        <mdc-buttongroup slot="trailing-controls">
-          <mdc-button variant="primary" color="negative" @click=${() => this.removeItem(index)}>Remove This</mdc-button>
-          <mdc-button variant="primary" color="negative" @click=${() => this.removeItem(index - 1)}
-            >Remove Above</mdc-button
-          >
-          <mdc-button variant="primary" color="negative" @click=${() => this.removeItem(index + 1)}
-            >Remove Below</mdc-button
-          >
-        </mdc-buttongroup>
-      </mdc-listitem>
-    `;
-  }
-
-  protected addItem(index?: number, count = 1): void {
-    // eslint-disable-next-line no-return-assign
-    const newItems = new Array(count).fill(true).map(() => `list item number ${(this.counter += 1)}`);
-
-    if (index === undefined) {
-      this.listItems = [...this.listItems, ...newItems];
-    } else {
-      this.listItems = [
-        ...this.listItems.slice(0, index),
-        ...newItems,
-        ...this.listItems.slice(index, this.listItems.length),
-      ];
-    }
-    this.updateVirtualProps();
-  }
-
-  protected removeItem(index?: number): void {
-    if (index === undefined) {
-      this.listItems = this.listItems.slice(0, -1);
-    } else {
-      this.listItems = [...this.listItems.slice(0, index), ...this.listItems.slice(index + 1, this.listItems.length)];
-    }
-    this.updateVirtualProps();
-  }
-
-  private updateVirtualProps() {
-    this.virtualizerProps = {
-      count: this.listItems.length,
-      estimateSize: () => 48,
-      getItemKey: (index: number) => this.listItems[index],
-    };
-  }
-
-  private handleVirtualItemsChange = (event: VirtualizedListVirtualItemsChangeEvent) => {
-    this.virtualData = event.detail;
-  };
-
-  protected override render(): TemplateResult {
-    return html`
-      <div id="VirtualizedDynamicList--wrapper">
-        <mdc-virtualizedlist
-          .virtualizerProps=${this.virtualizerProps}
-          @virtualitemschange=${this.handleVirtualItemsChange}
-        >
-          ${repeat(
-            this.virtualData.virtualItems,
-            ({ key }) => key,
-            ({ index }) => this.generateListItem(index, this.listItems[index]),
-          )}
-        </mdc-virtualizedlist>
-      </div>
-      <div style="margin-top: 1rem;">
-        <div>Current List Size: <span data-test="counter">${this.listItems.length}</span></div>
-        <div style="display: flex; gap: 0.25rem;">
-          <mdc-button @click=${() => this.removeItem()}>Remove Last</mdc-button>
-        </div>
-      </div>
-      <style>
-        #VirtualizedDynamicList--wrapper {
-          width: 100%;
-          height: calc(100% - 200px);
-        }
-      </style>
-    `;
-  }
-}
-
-VirtualizedDynamicList.register('mdc-virtualizeddynamiclist');
-
-class ChatExample extends Component {
+export class ChatExample extends Component {
   @state()
   chatMessages: Record<string, { name: string; message: string; parent?: string }> = {
     msg_001: { name: 'Alice Johnson', message: 'Hey team! Just finished the quarterly report. Ready for review.' },
@@ -377,7 +129,7 @@ class ChatExample extends Component {
   listItems: string[] = this.getOrderedMessageKeys();
 
   @state()
-  virtualData: VirtualData = { virtualItems: [], measureElement: () => null };
+  virtualData: VirtualData = { virtualItems: [] };
 
   @state()
   virtualizerProps: VirtualizerProps = {
@@ -554,7 +306,7 @@ class ChatExample extends Component {
     const message = this.chatMessages[this.listItems[index]];
 
     return html`
-      <mdc-listitem data-index=${index} ${ref(this.virtualData.measureElement)}>
+      <mdc-listitem data-index=${index}>
         <div
           slot="content"
           style=${styleMap({
@@ -643,8 +395,6 @@ ChatExample.register('mdc-virtualizedlist-chat-example');
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-virtualizedwrapper']: VirtualizedWrapper;
-    ['mdc-virtualizeddynamiclist']: VirtualizedDynamicList;
     ['mdc-virtualizedlist-chat-example']: ChatExample;
   }
 }

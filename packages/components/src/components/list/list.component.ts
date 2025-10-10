@@ -11,7 +11,7 @@ import type ListItem from '../listitem';
 import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import type { BaseArray } from '../../utils/offsetArray';
+import type { BaseArray } from '../../utils/virtualIndexArray';
 
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
