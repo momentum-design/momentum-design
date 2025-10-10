@@ -57,6 +57,7 @@ import styles from './formfieldgroup.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  */
 class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
   /**

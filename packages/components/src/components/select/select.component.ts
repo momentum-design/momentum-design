@@ -77,6 +77,7 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
  * @cssproperty --mdc-select-text-color - The text color of the select.
  * @cssproperty --mdc-select-border-color - The border color of the select.

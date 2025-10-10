@@ -43,6 +43,7 @@ import styles from './progressbar.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-progressbar-background-color - Background color of the remaining progressbar portion.
  * @cssproperty --mdc-progressbar-progress-background-color - Background color of the elapsed progressbar portion.
  * @cssproperty --mdc-progressbar-height - The height of the progressbar.
