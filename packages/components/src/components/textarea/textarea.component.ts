@@ -48,20 +48,10 @@ import styles from './textarea.styles';
  * @dependency mdc-text
  * @dependency mdc-toggletip
  *
- * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
- * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
- * @cssproperty --mdc-textarea-disabled-background-color - Background color for the textarea field when disabled
- * @cssproperty --mdc-textarea-text-color - Text color for the textarea field
- * @cssproperty --mdc-textarea-background-color - Background color for the textarea field
- * @cssproperty --mdc-textarea-border-color - Border color for the textarea field
- * @cssproperty --mdc-textarea-text-secondary-normal - Text color for the character counter
- * @cssproperty --mdc-textarea-error-border-color - Border color for the error related help text
- * @cssproperty --mdc-textarea-warning-border-color - Border color for the warning related help text
- * @cssproperty --mdc-textarea-success-border-color - Border color for the success related help text
- * @cssproperty --mdc-textarea-primary-border-color - Border color for the priority related help text
- * @cssproperty --mdc-textarea-hover-background-color - Background color for the textarea container when hover
- * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
- * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -71,10 +61,22 @@ import styles from './textarea.styles';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart character-counter - The character counter element that is displayed when the `max-character-limit` property is set.
- * @csspart textarea-footer - The container for the help text and character counter elements.
- * @csspart textarea-container - The textarea container
- * @csspart textarea - The textarea field element.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-textarea-text-color - Text color for the textarea field
+ * @cssproperty --mdc-textarea-background-color - Background color for the textarea field
+ * @cssproperty --mdc-textarea-border-color - Border color for the textarea field
+ * @cssproperty --mdc-textarea-text-secondary-normal - Text color for the character counter
+ * @cssproperty --mdc-textarea-text-font-size - Font size for the textarea field
+ * @cssproperty --mdc-textarea-text-line-height - Line height for the textarea field
+ * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {

@@ -35,7 +35,6 @@ const render = (args: Args) =>
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    ?resize-button="${args['resize-button']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
@@ -138,9 +137,6 @@ const meta: Meta = {
     'toggletip-strategy': {
       control: 'select',
       options: Object.values(STRATEGY),
-    },
-    'resize-button': {
-      control: 'boolean',
     },
     'info-icon-aria-label': {
       control: 'text',
