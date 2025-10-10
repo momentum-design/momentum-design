@@ -65,7 +65,7 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
       {/* Portaling the CodePreviewPanel into Canvas:  */}
       {isActive &&
         createPortal(
-          <CodePreviewPanel snippetEvent={codeSnippetEvent} channel={api.getChannel()} />,
+          <CodePreviewPanel snippetEvent={codeSnippetEvent} channel={api.getChannel()} api={api} />,
           document.querySelector("#storybook-preview-wrapper")!,
         )}
     </>

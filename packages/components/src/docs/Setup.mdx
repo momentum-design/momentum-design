@@ -1,16 +1,3 @@
-# Consumption
-
-This consumption guide for the Global Web Library, `@momentum-design/components`
-provides detailed instructions on how to effectively access and utilize these
-components in your web applications, specifically focusing on Web Components and
-React.
-
-For all the details regarding the release, please visit:
-[**release history**](https://github.com/momentum-design/momentum-design/releases).
-
-If you would like to provide any feedback, please raise an
-[**issue**](https://github.com/momentum-design/momentum-design/issues).
-
 ## Installation
 
 To install the library, add the following NPM dependency to your `package.json`
@@ -83,18 +70,6 @@ yarn add @momentum-design/components
   files.
 - Test the components in different themes to ensure they render correctly.
 
-## Performance recommendations
-
-- Use a CSS minifier in the build process to reduce the size of the CSS files.
-
-## Compatibility
-
-- Webpack 4 (refer to
-  [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4))
-
-- TypeScript > 4.7 (refer to
-  [**Best Practices**](https://stackoverflow.com/a/70020984))
-
 ## Usage
 
 Note: All code examples below can work with TypeScript versions lower than 4.7
@@ -136,38 +111,4 @@ import { Avatar } from '@momentum-design/components/react';
 ...
 
 <Avatar />
-```
-
-## Styling
-
-### CSS Variables
-
-Each component has a set of CSS variables that can be used to change the
-appearance of the component. Refer to the individual component documentation for
-a list of available CSS variables.
-
-```css
-mdc-component {
-  --mdc-component-variable: value;
-}
-```
-
-### Classes and Styles
-
-For more advanced styling, you can use the `class` and `style` attributes on the
-component.
-
-```html
-<mdc-component class="custom-class" style="color: red;"></mdc-component>
-```
-
-### CSS Parts
-
-Web Components are encapsulated and cannot be styled directly. To style
-something inside the shadow DOM, use the `::part` pseudo-element (if available).
-
-```css
-mdc-component::part(part-name) {
-  color: red;
-}
 ```
