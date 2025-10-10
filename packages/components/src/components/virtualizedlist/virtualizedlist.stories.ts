@@ -4,7 +4,10 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import './virtualizedlist.helper.test';
+import './helpers/chatExample';
+import './helpers/virtualizedDynamicList';
+import './helpers/virtualizedDynamicListContent';
+import './helpers/virtualizedWrapper';
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
@@ -66,4 +69,16 @@ export const Dynamic: StoryObj = {
 
 export const Chat: StoryObj = {
   render: () => html` <mdc-virtualizedlist-chat-example></mdc-virtualizedlist-chat-example>`,
+};
+
+export const DynamicContent: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story: html`<p>AI chat like example to test revers list with dynamically changing content height.</p>
+          <p>Every second message is an "AI" answer updated over time.</p>`,
+      },
+    },
+  },
+  render: () => html` <mdc-virtualizeddynamiclistcontent></mdc-virtualizeddynamiclistcontent>`,
 };

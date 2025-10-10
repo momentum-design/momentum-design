@@ -129,6 +129,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();
       await componentsPage.page.keyboard.press('ArrowDown');
+      await componentsPage.debugUtils.logActiveElement();
       await expect(virtualizedList.locator('mdc-listitem[data-index="5"]')).toBeFocused();
 
       await scrollContainer.evaluate(el => {
