@@ -5,7 +5,6 @@ import { html } from 'lit';
 
 import '.';
 import '../tooltip';
-import '../icon';
 import '../avatar';
 import '../button';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
