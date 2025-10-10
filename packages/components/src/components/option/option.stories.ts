@@ -150,17 +150,3 @@ export const OptionWithLeadingControls: StoryObj = {
     `,
   },
 };
-
-export const TEst: StoryObj = {
-  render: () => html`
-    <mdc-option prefix-icon="placeholder-bold" label="Option 1"></mdc-option><br /><br />
-    <mdc-option prefix-icon="placeholder-bold" label="Option 2">
-      <mdc-avatar slot="leading-controls" presence="active" src="${imageFixtures.avatar}"></mdc-avatar>
-      <mdc-button slot="leading-controls">Click me</mdc-button> </mdc-option
-    ><br /><br />
-    <mdc-option prefix-icon="placeholder-bold" label="Option 3">
-      <mdc-icon slot="leading-controls" name="user-bold"></mdc-icon>
-      <mdc-button slot="leading-controls">No clicking</mdc-button>
-    </mdc-option>
-  `,
-};
