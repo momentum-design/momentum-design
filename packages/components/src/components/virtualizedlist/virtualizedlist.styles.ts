@@ -10,10 +10,9 @@ const styles = [
       height: 100%;
       width: 100%;
       overflow-y: auto;
-      padding: 0.25rem 0;
       scroll-padding: 0.25rem 0;
       contain: strict;
-      overflow-anchor: auto;
+      overflow-anchor: none;
     }
 
     :host::part(wrapper) {

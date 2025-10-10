@@ -2,22 +2,19 @@ export interface BaseArray<TItem>
   extends Pick<Array<TItem>, 'length' | 'forEach' | 'findIndex' | 'map' | 'at' | 'find'> {}
 
 /**
- * A wrapper around an array that applies an offset to the index when accessing items.
- * This is useful when you want to create a view of an array that starts at a specific index
- *
- * for example in virtualized lists.
+ * A wrapper around an array that applies a "virtual" index to the index when accessing items.
+ * This is useful when the array is just a view of the real data and the real data has gaps in the indexes.
  *
  * @example
  * ```ts
- * const originalArray = [10, 20, 30, 40, 50];
- * const offset = 2;
- * const offsetArray = new OffsetArray(originalArray, () => offset);
+ * const originalArray = [{realIndex: 2, value: 10}, {realIndex: 3, value: 20}];
+ * const offsetArray = new OffsetArray(originalArray, (item) => item.realIndex);
  *
  * console.log(offsetArray.at(0)); // Output: undefined
- * console.log(offsetArray.at(2)); // Output: 10 (originalArray[0])
+ * console.log(offsetArray.at(2).value); // Output: 10
  * ```
  */
-export class OffsetArray<TItem> implements BaseArray<TItem> {
+export class VirtualIndexArray<TItem> implements BaseArray<TItem> {
   public readonly items: BaseArray<TItem>;
 
   private readonly getIndex: (item: TItem) => number = () => 0;
