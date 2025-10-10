@@ -57,27 +57,27 @@ const styles = [
     @media (forced-colors: active) {
       :host([checked]),
       :host([indeterminate]) {
-        --mdc-checkbox-background-color: Highlight;
-        --mdc-checkbox-border-color: Highlight;
-        --mdc-checkbox-icon-color: GrayText;
+        --mdc-checkbox-background-color: SelectedItem;
+        --mdc-checkbox-border-color: SelectedItemText;
+        --mdc-checkbox-icon-color: SelectedItemText;
       }
       :host([readonly]) {
-        --mdc-checkbox-border-color: GrayText;
-        --mdc-checkbox-icon-color: GrayText;
+        --mdc-checkbox-border-color: Highlight;
+        --mdc-checkbox-icon-color: HighlightText;
       }
       :host([disabled]),
       :host([soft-disabled]) {
-        --mdc-checkbox-background-color: Highlight;
+        --mdc-checkbox-background-color: GrayText;
         --mdc-checkbox-border-color: GrayText;
-        --mdc-checkbox-icon-color: Highlight;
+        --mdc-checkbox-icon-color: GrayText;
       }
       :host([disabled][checked]),
       :host([disabled][indeterminate]),
       :host([soft-disabled][checked]),
       :host([soft-disabled][indeterminate]) {
-        --mdc-checkbox-background-color: Highlight;
+        --mdc-checkbox-background-color: GrayText;
         --mdc-checkbox-border-color: GrayText;
-        --mdc-checkbox-icon-color: Highlight;
+        --mdc-checkbox-icon-color: GrayText;
       }
     }
   `,

@@ -90,7 +90,7 @@ const styles = [
       :host([disabled][checked]),
       :host([soft-disabled][checked]) {
         --mdc-radio-outer-circle-border-color: GrayText;
-        --mdc-radio-outer-circle-background-color: ButtonFace;
+        --mdc-radio-outer-circle-background-color: GrayText;
         --mdc-radio-inner-circle-background-color: GrayText;
       }
     }
