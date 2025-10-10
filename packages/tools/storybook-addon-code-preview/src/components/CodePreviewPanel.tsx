@@ -26,6 +26,14 @@ const StyledGitHubTool = styled.div`
   top: 0.375rem;
   right: 0.75rem;
   z-index: 10;
+
+  button {
+    background-color: #1170cf;
+  }
+
+  button:hover {
+    background-color: #0353a8;
+  }
 `;
 
 interface CodePreviewPanelProps {

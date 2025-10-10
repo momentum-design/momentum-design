@@ -1,21 +1,10 @@
 /* GitHubTool styles - matches Storybook version */
 .github-tool-button {
-  padding: 0.5rem;
-  color: var(--theme-text-body-secondary);
   cursor: pointer;
-  font-family: inherit;
-  line-height: inherit;
-}
-
-.github-tool-button:hover {
-  color: var(--theme-text);
 }
 
 .github-tool-icon {
   width: 18px;
   height: 18px;
-}
-
-.github-tool-label {
-  font-weight: 500;
+  fill: currentColor;
 }

@@ -48,6 +48,7 @@ export const GitHubTool = memo(function GitHubToolSelector({ api }: { api: API }
       key={GITHUB_TOOL_ID}
       title={`View ${componentName || 'component'} source on GitHub`}
       onClick={openGitHub}
+      variant="solid"
     >
       <GithubIcon />
       <IconButtonLabel>View Source</IconButtonLabel>
