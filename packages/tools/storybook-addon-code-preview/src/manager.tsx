@@ -24,4 +24,3 @@ addons.register(ADDON_ID, (api) => {
     render: () => <Tool api={api} />,
   });
 });
-

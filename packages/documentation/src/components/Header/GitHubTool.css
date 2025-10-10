@@ -1,23 +1,14 @@
 /* GitHubTool styles - matches Storybook version */
 .github-tool-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  min-width: fit-content;
-  height: 2rem;
   padding: 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: transparent;
-  color: var(--color-text-primary, #1f2937);
+  color: var(--theme-text-body-secondary);
   cursor: pointer;
-  transition: background-color 0.2s ease;
   font-family: inherit;
+  line-height: inherit;
 }
 
 .github-tool-button:hover {
-  background-color: var(--color-background-hover, #f3f4f6);
+  color: var(--theme-text);
 }
 
 .github-tool-icon {
