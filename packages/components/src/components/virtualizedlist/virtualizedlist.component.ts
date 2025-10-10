@@ -1,81 +1,226 @@
-import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
+import { type CSSResult, type PropertyValues, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
-import { Virtualizer, VirtualItem } from '@tanstack/virtual-core';
-import { StyleInfo } from 'lit/directives/style-map.js';
-import { Ref, createRef, ref } from 'lit/directives/ref.js';
+import { defaultRangeExtractor, type Range, type VirtualItem } from '@tanstack/virtual-core';
+import { styleMap } from 'lit/directives/style-map.js';
+import { type Ref, createRef, ref } from 'lit/directives/ref.js';
 
-import { Component } from '../../models';
+import List from '../list/list.component';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
+import { Interval } from '../../utils/range';
+import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray';
+import { KEYS } from '../../utils/keys';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
-import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
+import type { VirtualizerProps, Virtualizer } from './virtualizedlist.types';
 
 /**
- * `mdc-virtualizedlist` component for creating custom virtualized lists.
- * IMPORTANT: This component does not create it's own list/list items.
- * Use the setlistdata callback prop to update client state in order to
- * Pass list/listitems as a child of this component, which this will virtuailze
- * This implementation handles dynamic lists as well as fixed sized lists.
+ * `mdc-virtualizedlist` is an extension of the `mdc-list` component that adds virtualization capabilities using
+ * the Tanstack Virtual library.
+ *
+ * `virtualizerProps` is a required prop that requires at least two properties to be set: `count` and `estimateSize`.
+ * `count` is the total number of items in the list, and `estimateSize` is a function that returns the estimated
+ * size (in pixels) of each item in the list.
+ *
+ * The `virtualitemschange` event provides the current virtual items and a measureElement function to help with
+ * dynamic sizing. This should be listened to in order to render the correct virtualized items.
+ *
  * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
+ *
+ * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
  *
  * @tagname mdc-virtualizedlist
  *
  * @event scroll - (React: onScroll) Event that gets called when user scrolls inside of list.
+ * @event virtualitemschange - (React: onVirtualItemsChange) Event that gets called when the virtual items change.
  *
- * @slot - Client side List with nested list items.
+ * @slot default - This is a default/unnamed slot, where listitems can be placed.
+ * @slot list-header - This slot is used to pass a header for the list, which can be a `mdc-listheader` component.
  *
  * @csspart container - The container of the virtualized list.
  * @csspart scroll - The scrollable area of the virtualized list.
  */
-class VirtualizedList extends Component {
+class VirtualizedList extends DataAriaLabelMixin(List) {
+  /**
+   * Whether to loop navigation when reaching the end of the list.
+   * If 'true', pressing the down arrow on the last item will focus the first item,
+   * and pressing the up arrow on the first item will focus the last item.
+   * If 'false', navigation will stop at the first or last item.
+   *
+   * @default 'false'
+   */
+  @property({ type: String, reflect: true })
+  public override loop: 'true' | 'false' = DEFAULTS.LOOP;
+
   /**
    * Object that sets and updates the virtualizer with any relevant props.
-   * There are two required object props in order to get virtualization to work properly.
-   * count - The length of your list that you are virtualizing.
+   * There are three required object props in order to get virtualization to work properly.
+   *
+   * **count** - The length of your list that you are virtualizing.
    * As your list grows/shrinks, this component must be updated with the appropriate value
    * (Same with any other updated prop).
-   * estimateSize - A function that returns the estimated size of your items.
+   *
+   * **estimateSize** - A function that returns the estimated size of your items.
    * If your list is fixed, this will just be the size of your items.
    * If your list is dynamic, try to return approximate the size of each item.
+   *
+   * **getItemKey** - A function that returns a unique key for each item in your list based on its index.
    *
    * A full list of possible props can be in
    * [Tanstack Virtualizer API Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer)
    *
    */
-  @property({ type: Object, attribute: 'virtualizerprops' })
+  @property({ type: Object })
   virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
   /**
-   * Callback that gets envoked when updates to the virtualizer interally occur.
-   * This must be implemented in such a way that this function will trigger update to parent.
+   * Disable automatic scroll anchoring when the list size changes.
+   * By default, the list will attempt to keep the same items in view when the list size changes.
+   * However, if you don't expect the list size to change often, or if you want to handle scroll anchoring yourself,
+   * you can set this prop to true to disable the automatic behavior.
    *
-   * virtualItems - Array that will be what the client displays on screen. Use this to render
-   * a List of your choosing with these items nested inside as your ListItems.
-   * measureElement - Ref to pass to each ListItem rendered client side.
-   * Each ListItem should also be be passed key and a data-index (which can be found on the virtualItem).
-   * listStyle - This should be passed as the style attribute to your List.
+   * @default false
    */
-  @property({ type: Function, attribute: 'setlistdata' })
-  setlistdata: (({ virtualItems, measureElement, listStyle }: SetListDataProps) => void) | null;
+  @property({ type: Boolean, attribute: 'disable-scroll-anchoring', reflect: true })
+  disableScrollAnchoring: boolean = DEFAULTS.DISABLE_SCROLL_ANCHORING;
 
   /**
+   * When true, the list will observe size changes of its items and re-measure them as needed.
+   * This is useful if your list items can change size dynamically (e.g., due to content changes or window resizing).
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'observe-size-changes' })
+  observeSizeChanges: boolean = false;
+
+  /**
+   * When true, the list will render in reverse order, with the last item at the bottom.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'revert-list' })
+  revertList: boolean = false;
+
+  /**
+   *
    * @internal
    */
-  private virtualizerController: VirtualizerController<Element, Element> | null;
+  private virtualizerController: VirtualizerController<Element, Element> | null = null;
 
-  public scrollElementRef: Ref<HTMLDivElement> = createRef();
+  /**
+   * The virtualizer instance created by the VirtualizerController.
+   * @internal
+   */
+  public virtualizer: Virtualizer | null = null;
 
-  public virtualizer: Virtualizer<Element, Element> | null;
+  /**
+   * A ref to the scrollable element within the list.
+   */
+  public scrollElementRef: Ref<Element> = createRef();
 
-  public virtualItems: Array<VirtualItem> = [];
+  /**
+   * The currently selected index in the list.
+   * If keyboard navigation is being used, this will be the focused item.
+   * If the list is clicked, this will be the last clicked item.
+   * @internal
+   */
+  private selectedIndex: number = this.initialFocus;
+
+  /**
+   * The key of the currently selected item.
+   * This is used to keep track where the selected item goes when the list changes size.
+   * @internal
+   */
+  private selectedKey: VirtualItem['key'] | null = null;
+
+  /**
+   * The index of the first item in the current virtual items.
+   * @internal
+   */
+  private firstIndex: number = 0;
+
+  /**
+   * The key of the first item in the current virtual items.
+   * @internal
+   */
+  private firstKey: VirtualItem['key'] | null = null;
+
+  /**
+   * The indexes of items that are not in the current virtual items, but need to be rendered for focus purposes.
+   * @internal
+   */
+  private hiddenIndexes: number[] = [];
+
+  /**
+   * Is the scroll position at the bottom of the list?
+   *
+   * - 'no' - The scroll position is not at the bottom of the list.
+   * - 'yes' - The scroll position is at the bottom of the list.
+   * - 're-evaluate' - The scroll position needs to be re-evaluated on the next scroll event.
+   * @internal
+   */
+  private isAtBottom: 'no' | 'yes' | 're-evaluate' = this.revertList ? 'yes' : 'no';
+
+  /**
+   * The current virtual items being rendered.
+   */
+  get items(): VirtualItem[] {
+    return this.virtualizer?.getVirtualItems() ?? [];
+  }
+
+  private cachedNavItems: VirtualIndexArray<HTMLElement> | null = null;
+
+  override get navItems(): BaseArray<HTMLElement> {
+    if (this.cachedNavItems?.items !== super.navItems) {
+      const attrName = this.virtualizer?.options?.indexAttribute ?? 'data-index';
+      this.cachedNavItems = new VirtualIndexArray<HTMLElement>(
+        super.navItems,
+        e => Number(e.getAttribute(attrName)),
+        () => this.virtualizerProps.count,
+      );
+    }
+    return this.cachedNavItems;
+  }
+
+  /**
+   * The total height of the list based on the virtualizer's calculations.
+   */
+  get totalListHeight(): number {
+    return this.virtualizer?.getTotalSize() ?? 0;
+  }
 
   constructor() {
     super();
+    this.addEventListener('wheel', e => {
+      if (e.deltaY < 0) this.isAtBottom = 're-evaluate';
+    });
+  }
+
+  /**
+   * Create the virtualizer controller and the virtualizer instance when the component is first connected to the DOM.
+   */
+  override connectedCallback(): void {
+    this.virtualizerController = new VirtualizerController(this, {
+      ...this.virtualizerProps,
+      horizontal: false,
+      getScrollElement: () => this.scrollElementRef.value || null,
+      onChange: this.handleOnChange.bind(this),
+      rangeExtractor: this.virtualizerRangeExtractor.bind(this),
+    });
+
+    this.virtualizer = this.virtualizerController.getVirtualizer();
+
+    super.connectedCallback();
+
+    // Set the role attribute for accessibility.
+    this.role = null;
+
+    this.scrollToBottom();
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
     this.virtualizerController = null;
     this.virtualizer = null;
-    this.setlistdata = null;
-    this.onscroll = null;
   }
 
   /**
@@ -83,98 +228,337 @@ class VirtualizedList extends Component {
    * if the client updates any props (most commonly, count). Updating the options
    * this way ensures we don't initialize a new virtualizer upon very prop change.
    */
-  public override update(changedProperties: PropertyValues): void {
+  public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
-    if (changedProperties.get('virtualizerProps')) {
-      this.setVirtualizerOptions();
+    if (changedProperties.has('virtualizerProps')) {
+      await this.handleVirtualizerPropsUpdate(changedProperties.get('virtualizerProps') as VirtualizerProps);
+    }
+
+    if (changedProperties.has('observeSizeChanges')) {
+      this.navItems.forEach(item => {
+        if (this.observeSizeChanges) {
+          this.virtualizer?.measureElement?.(item);
+        }
+      });
+    }
+
+    if (changedProperties.has('revertList') && this.revertList) {
+      this.isAtBottom = 'yes';
+      this.scrollToBottom();
     }
   }
 
-  /**
-   * This is needed in order to ensure the initial render happens
-   */
-  public override firstUpdated(changedProperties: PropertyValues): void {
-    super.firstUpdated(changedProperties);
-    this.setVirtualizerOptions();
-  }
+  async handleVirtualizerPropsUpdate(prevProps: VirtualizerProps) {
+    const { virtualizer } = this;
 
-  /**
-   * @internal
-   * Update virtuailzer with the union of the two virtualizer options (current, passed in).
-   */
-  private setVirtualizerOptions(): void {
-    this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerProps });
-    this.requestUpdate();
-  }
+    if (!virtualizer) return;
 
-  public override connectedCallback(): void {
-    this.virtualizerController = new VirtualizerController(this, {
-      count: this.virtualizerProps.count!,
-      estimateSize: this.virtualizerProps?.estimateSize!,
-      getScrollElement: () => this.scrollElementRef.value || null,
+    const prevMeasurements = virtualizer.measurementsCache.slice();
+
+    virtualizer.setOptions({
+      ...virtualizer.options,
       ...this.virtualizerProps,
     });
 
-    super.connectedCallback();
-  }
-
-  /**
-   * @internal
-   * Renders the list wrapper and invokes the callback which eventually will render in the slot.
-   * Uses getTotalSize to update the height of the wrapper. This value is equal to the total size
-   * OR the total estimated size (if you haven't physically scrolled the entire list)
-   * Passes the virtualItems, measureElement, and listStyle to callback for client to pass in as child
-   *
-   * @returns The template result containing the list wrapper.
-   */
-  private getVirtualizedListWrapper(virtualizerController: VirtualizerController<Element, Element>): TemplateResult {
-    this.virtualizer = virtualizerController.getVirtualizer();
-
-    const { getTotalSize, getVirtualItems, measureElement } = this.virtualizer;
-
-    const newVirtualItems = getVirtualItems();
-
-    // Only update client if there's a difference in virtual items
-    if (newVirtualItems !== this.virtualItems) {
-      this.virtualItems = newVirtualItems;
-
-      const virtualItems = getVirtualItems();
-      // this style is required to be rendered by the client side list in order to handle scrolling properly
-      const listStyle: Readonly<StyleInfo> = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
-      };
-
-      // pass back data to client for rendering
-      if (this.setlistdata) {
-        this.setlistdata({ virtualItems, measureElement, listStyle });
-      }
+    // Change in the length of the dataset is, does not count as TanStack Virtual's internal state change
+    // so we need to manually call the onChange handler to ensure the list updates correctly.
+    if (this.virtualizerProps.count !== prevProps.count) {
+      this.emitChangeEvent();
     }
 
-    return html`<div part="container" style="height: ${getTotalSize()}px;">
-      <slot></slot>
-    </div>`;
+    const scrollEl = this.scrollElementRef.value;
+    if (!this.disableScrollAnchoring && scrollEl && prevMeasurements.length > 0) {
+      const countDiff = Math.abs(this.virtualizerProps.count - (prevProps?.count ?? 0));
+      const prevSelectedIndex = this.selectedIndex;
+      const prevFirstKey = this.firstKey;
+
+      const searchRange = new Interval(prevSelectedIndex - countDiff, prevSelectedIndex + countDiff, {
+        includeEnd: true,
+      });
+
+      const newSelectedIndex =
+        Array.from(searchRange).find(i => virtualizer.options.getItemKey(i) === this.selectedKey) ?? this.selectedIndex;
+
+      this.selectedIndex = Math.max(0, Math.min(virtualizer.options.count - 1, newSelectedIndex));
+
+      // Wait for the virtualizer to finish updating before we read the new scrollHeight
+      this.requestUpdate();
+      await this.updateComplete;
+
+      if (this.isAtBottom === 'yes') return;
+
+      // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
+      // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
+      const shouldAdjustScroll =
+        (this.focusWithin && prevSelectedIndex !== this.selectedIndex) ||
+        (!this.focusWithin && this.firstKey !== prevFirstKey);
+
+      // Update the scroll position to keep the same items in view (and in roughly the same position)
+      if (shouldAdjustScroll) {
+        const scrollDiff =
+          virtualizer.measurementsCache[this.selectedIndex].end - prevMeasurements[prevSelectedIndex].end;
+
+        scrollEl.scrollTop += scrollDiff;
+      }
+    }
   }
 
   /**
-   * Refires the scroll event from the internal scroll container to the host element
+   * Sets the initial focus of the list based on the `initial-focus` prop and scrolls the item into view.
    */
-  private handleScroll(event: Event): void {
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
+  protected override setInitialFocus(): void {
+    setTimeout(async () => {
+      if (!this.virtualizer) return;
+
+      const { options, scrollToIndex } = this.virtualizer;
+
+      this.selectedIndex = Math.max(0, Math.min(options.count - 1, this.initialFocus));
+      this.selectedKey = options.getItemKey(this.selectedIndex);
+
+      scrollToIndex(this.selectedIndex, { align: 'center' });
+
+      // We try to set the tabIndex immediately,
+      // but if the items haven't been rendered, yet we leave the work to onValidElementAdded
+      const selectedElement = this.navItems.find(this.isElementSelected, this);
+      if (selectedElement) {
+        selectedElement.tabIndex = 0;
+      }
+    }, 0);
+  }
+
+  /**
+   * Handle the virtualizer's onChange event to emit the virtualitemschange event
+   * This is called when the internal state of the virtualizer changes.
+   *
+   * @internal
+   */
+  protected handleOnChange() {
+    // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
+    // virtualizer's options therefore we need to call it here ourselves.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.updateComplete.then(() => this.requestUpdate());
+    this.emitChangeEvent();
+  }
+
+  private emitChangeEvent() {
+    this.virtualizerProps.onChange?.(this.virtualizer!, this.virtualizer!.isScrolling);
+
+    const eventDetails = {
+      virtualizer: this.virtualizer,
+      virtualItems: this.virtualizer?.getVirtualItems?.() ?? [],
+    };
+
+    this.dispatchEvent(
+      new CustomEvent('virtualitemschange', { detail: eventDetails, bubbles: false, cancelable: false }),
+    );
+  }
+
+  /**
+   * Calculates the array of indexes to render. We add the selected index (and +1/-1) if it's
+   * outside the current range so the focus can be kept correctly.
+   *
+   * @param range - The current range of items being rendered
+   * @returns An array of indexes to render, including the selected index if it's outside the current range.
+   * @internal
+   */
+  protected virtualizerRangeExtractor(range: Range): number[] {
+    const { navItems, virtualizerProps, virtualizer } = this;
+    const defaultIndexes = virtualizerProps.rangeExtractor?.(range) ?? defaultRangeExtractor(range);
+
+    this.hiddenIndexes.forEach(index => {
+      const el = navItems.at(index);
+      if (el) {
+        el.removeAttribute('data-virtualized-hidden');
+        el.style.removeProperty('--mdc-virtualizedlist-hidden-top');
+      }
+    });
+
+    this.firstIndex = range.startIndex;
+    this.firstKey = this.virtualizer?.options.getItemKey(this.firstIndex) ?? null;
+    this.hiddenIndexes.length = 0;
+
+    const stickyIndexes = [this.selectedIndex - 1, this.selectedIndex, this.selectedIndex + 1];
+
+    stickyIndexes.forEach(index => {
+      if (!defaultIndexes.includes(index)) {
+        if (index < range.startIndex && index >= 0) {
+          defaultIndexes.unshift(index);
+          this.hiddenIndexes.push(index);
+        }
+
+        if (index > range.endIndex && index < (virtualizer?.options.count ?? 0)) {
+          defaultIndexes.push(index);
+          this.hiddenIndexes.push(index);
+        }
+      }
+    });
+    this.updateHiddenItemsPosition();
+
+    defaultIndexes.sort((a, b) => a - b);
+
+    return defaultIndexes;
+  }
+
+  updateHiddenItemsPosition() {
+    const { navItems, virtualizerProps, virtualizer } = this;
+
+    if (!virtualizer || virtualizerProps.count === 0) return;
+
+    const { measurementsCache, range } = virtualizer;
+
+    this.hiddenIndexes.forEach(index => {
+      const el = navItems.at(index);
+      if (el) {
+        const first = measurementsCache[range?.startIndex ?? 0];
+        const current = measurementsCache[index];
+
+        el.setAttribute('data-virtualized-hidden', 'true');
+        el.style.setProperty('--mdc-virtualizedlist-hidden-top', `${current.start - first.start}px`);
+      }
+    });
+  }
+
+  protected override onElementStoreUpdate(item: HTMLElement, changeType: ElementStoreChangeTypes): void {
+    if (changeType === 'added') {
+      const tabable = this.isElementSelected(item);
+      // eslint-disable-next-line no-param-reassign
+      item.tabIndex = tabable ? 0 : -1;
+
+      if (this.observeSizeChanges) {
+        this.virtualizer?.measureElement?.(item);
+      }
+
+      this.setAriaSetSize(item);
+    } else if (changeType === 'removed') {
+      if (item.tabIndex === 0) {
+        // We must queue the reset because onElementStoreUpdate called before the `navItems` updated,
+        // but `resetTabIndexes` expecting the updated vertical list.
+        queueMicrotask(() => {
+          this.resetTabIndexes(this.selectedIndex, this.focusWithin);
+        });
+      }
+    }
+  }
+
+  /** @internal */
+  private isElementSelected(item: HTMLElement): boolean {
+    return this.virtualizer?.indexFromElement(item) === this.selectedIndex;
+  }
+
+  /** @internal */
+  private setSelectedIndex(newIndex: number): void {
+    if (this.virtualizer) {
+      this.selectedIndex = newIndex;
+      this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
+    }
+  }
+
+  /** @internal */
+  private setAriaSetSize(element: HTMLElement): void {
+    element.setAttribute('aria-setsize', `${this.virtualizer?.options.count ?? -1}`);
+  }
+
+  /**
+   * Refires the scroll event from the internal scroll container to the host element.
+   * Also updates whether the scroll is at the bottom of the list for scroll anchoring purposes.
+   *
+   * @internal
+   */
+  private handleScroll(): void {
+    const prevIsAtBottom = this.isAtBottom;
+    const scrollEl = this.scrollElementRef.value;
+
+    // Skip the current Scroll event to prevent shattering
+    if (this.isAtBottom === 're-evaluate') {
+      this.isAtBottom = 'no';
+    }
+
+    // Check if we are at the bottom of the list
+    if (
+      !this.disableScrollAnchoring &&
+      scrollEl &&
+      this.virtualizer &&
+      this.isAtBottom === 'no' &&
+      scrollEl.scrollHeight > scrollEl.clientHeight
+    ) {
+      const { clientHeight, scrollHeight, scrollTop } = scrollEl;
+      this.isAtBottom = scrollHeight - scrollTop <= clientHeight ? 'yes' : 'no';
+    }
+
+    //
+    if (prevIsAtBottom !== this.isAtBottom && this.isAtBottom === 'yes') {
+      this.scrollToBottom();
+    }
+  }
+
+  protected override handleNavigationKeyDown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case KEYS.HOME: {
+        // Move focus to the first item
+        this.setSelectedIndex(0);
+        this.virtualizer?.scrollToIndex?.(0, { align: 'start' });
+        break;
+      }
+      case KEYS.END: {
+        // Move focus to the last item
+        const selectedItem = this.virtualizerProps.count - 1;
+        this.setSelectedIndex(selectedItem);
+        this.virtualizer?.scrollToIndex?.(this.virtualizerProps.count, { align: 'end' });
+        break;
+      }
+      case KEYS.ARROW_UP: {
+        this.isAtBottom = 're-evaluate';
+        break;
+      }
+      default:
+    }
+    super.handleNavigationKeyDown(event);
+  }
+
+  private scrollToBottom(): void {
+    if (this.isAtBottom === 'yes') {
+      const scrollEl = this.scrollElementRef.value;
+      if (scrollEl) {
+        scrollEl.scrollTop += Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
+      }
+      requestAnimationFrame(this.scrollToBottom.bind(this));
+    }
   }
 
   public override render() {
-    return html`<div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.handleScroll}>
-      ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
-    </div>`;
+    const visibleItems = this.items.filter(({ index }) => !this.hiddenIndexes.includes(index));
+
+    const firstItemOffset = visibleItems.at(0)?.start ?? 0;
+    const lastItemOffset = visibleItems.at(-1)?.end ?? 0;
+    const clientHeight = this.scrollElementRef.value?.clientHeight ?? 0;
+    let initialOffset = 0;
+    if (this.revertList && lastItemOffset < clientHeight) {
+      initialOffset = clientHeight - (lastItemOffset - firstItemOffset);
+    }
+
+    const scrollHeight = this.revertList ? Math.max(this.totalListHeight, clientHeight) : this.totalListHeight;
+
+    return html`
+      <slot name="list-header"></slot>
+      <div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.handleScroll} tabindex="-1">
+        <div part="wrapper" style="${styleMap({ height: `${scrollHeight}px` })}">
+          <div
+            part="container"
+            style="${styleMap({
+              transform: `translateY(${initialOffset + firstItemOffset}px)`,
+            })} })}"
+            role="list"
+            aria-label="${this.dataAriaLabel ?? ''}"
+          >
+            <slot role="presentation"></slot>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...List.styles, ...styles];
 }
 
 export default VirtualizedList;

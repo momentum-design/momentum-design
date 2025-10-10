@@ -3148,7 +3148,7 @@ __metadata:
     "@storybook/addon-links": ^9.1.5
     "@storybook/web-components": ^9.1.5
     "@storybook/web-components-vite": ^9.1.5
-    "@tanstack/lit-virtual": ^3.11.3
+    "@tanstack/lit-virtual": ^3.13.2
     axe-html-reporter: ^2.2.11
     chalk: ^4.1.2
     concurrently: ^8.2.2
@@ -4174,21 +4174,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/lit-virtual@npm:^3.11.3":
-  version: 3.11.3
-  resolution: "@tanstack/lit-virtual@npm:3.11.3"
+"@tanstack/lit-virtual@npm:^3.13.2":
+  version: 3.13.12
+  resolution: "@tanstack/lit-virtual@npm:3.13.12"
   dependencies:
-    "@tanstack/virtual-core": 3.11.3
+    "@tanstack/virtual-core": 3.13.12
   peerDependencies:
     lit: ^3.1.0
-  checksum: aff5f994220c067047091c7d11cbe12c84eaeeee4a90a9b91926f58024b9ff0c72cc2be3d4e3236acce9ce68d04b8c1ce2e099b437afca029e1a7b35c66fe8df
+  checksum: bc3cddf28e275411deeda106a355322ccaf6493fc3da89258bf7a4e94ced69f4b2955bcd4be4f36d29eaafbfce8f631157edbe925cfc984286bf8aeb2551bd11
   languageName: node
   linkType: hard
 
-"@tanstack/virtual-core@npm:3.11.3":
-  version: 3.11.3
-  resolution: "@tanstack/virtual-core@npm:3.11.3"
-  checksum: 43dacdd27802de45c0ccdb34a4cba5f47c7b5aab1cc920a9851e382074fc9099419cc4b014afab74791672e4837afe0ef6ecf47e344267b457858dd982ffac57
+"@tanstack/virtual-core@npm:3.13.12":
+  version: 3.13.12
+  resolution: "@tanstack/virtual-core@npm:3.13.12"
+  checksum: bef2c3138543a2088fff7d4fa46624d07403b18d92ec5a7271e187457851535031a79bc78ac655355a221d5549ef3b5674a3b249d2531f4c17c93107498c8438
   languageName: node
   linkType: hard
 
