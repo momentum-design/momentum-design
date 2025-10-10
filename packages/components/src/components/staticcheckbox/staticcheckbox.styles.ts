@@ -42,6 +42,7 @@ const styles = [
       --mdc-checkbox-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-disabled);
       --mdc-checkbox-icon-color: var(--mds-color-theme-text-primary-disabled);
+      cursor: default;
     }
 
     :host([disabled][checked]),

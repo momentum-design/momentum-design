@@ -73,14 +73,6 @@ const styles = [
     :host([soft-disabled]) {
       pointer-events: none;
     }
-
-    /* Disabled states override interactive styles */
-    :host([disabled])::part(label),
-    :host([disabled])::part(toggle-input),
-    :host([soft-disabled])::part(label),
-    :host([soft-disabled])::part(toggle-input) {
-      cursor: default;
-    }
   `,
   ...hostFocusRingStyles(true),
 ];

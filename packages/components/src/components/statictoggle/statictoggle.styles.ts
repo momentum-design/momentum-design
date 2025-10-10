@@ -65,6 +65,7 @@ const styles = [
       --mdc-toggle-icon-background-color: var(--mds-color-theme-common-text-primary-disabled);
       --mdc-toggle-border-color: var(--mds-color-theme-outline-primary-disabled);
       --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-disabled);
+      cursor: default;
     }
 
     :host([checked][disabled]),

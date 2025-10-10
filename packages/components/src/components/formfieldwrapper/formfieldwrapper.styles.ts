@@ -76,6 +76,8 @@ const styles = css`
     --mdc-label-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-help-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-required-indicator-color: var(--mds-color-theme-text-primary-disabled);
+    pointer-events: none;
+    cursor: default;
   }
 `;
 
