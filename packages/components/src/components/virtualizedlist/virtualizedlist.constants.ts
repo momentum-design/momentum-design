@@ -1,9 +1,9 @@
 import utils from '../../utils/tag-name';
 
-const TAG_NAME = utils.constructTagName('virtualizedlist');
-const VIRTUALIZED_WRAPPER_TAG_NAME = utils.constructTagName('virtualizedwrapper');
-
-const DEFAULTS = {
+export const TAG_NAME = utils.constructTagName('virtualizedlist');
+export const VIRTUALIZED_WRAPPER_TAG_NAME = utils.constructTagName('virtualizedwrapper');
+export const IS_AT_BOTTOM_THRESHOLD = 16;
+export const DEFAULTS = {
   VIRTUALIZER_PROPS: {
     count: 0,
     estimateSize: () => 0,
@@ -12,5 +12,3 @@ const DEFAULTS = {
   LOOP: 'false',
   DISABLE_SCROLL_ANCHORING: false,
 } as const;
-
-export { TAG_NAME, DEFAULTS, VIRTUALIZED_WRAPPER_TAG_NAME };

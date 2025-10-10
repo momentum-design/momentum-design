@@ -71,7 +71,7 @@ class VirtualizedDynamicListContent extends Component {
     this.listItems[this.listItems.length - 1] += `${words}`;
     this.requestUpdate();
 
-    this.timerId = setTimeout(this.addChunks, rnd(150, 1500));
+    this.timerId = setTimeout(this.addChunks, rnd(5, 200));
   };
 
   override connectedCallback(): void {
