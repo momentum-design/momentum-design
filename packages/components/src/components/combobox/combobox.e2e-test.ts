@@ -173,7 +173,27 @@ test.describe('Combobox Feature Scenarios', () => {
         });
         await expect(combobox).toHaveAttribute('invalid-custom-value-text', 'Custom not allowed');
       });
+
+      await test.step('should render component when an option is removed from dom', async () => {
+        const { combobox, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions, // default length is 6.
+        });
+
+        await componentsPage.page.evaluate(async () => {
+          const combobox = document.getElementsByTagName('mdc-combobox')[0];
+          combobox.getElementsByTagName('mdc-option')[0].remove();
+        });
+
+        await test.step('should render the component and options length get updated', async () => {
+          await expect(combobox).toBeVisible();
+          await expect(options).toHaveCount(5);
+        });
+      });
     });
+
     /**
      * VISUAL REGRESSION
      */
