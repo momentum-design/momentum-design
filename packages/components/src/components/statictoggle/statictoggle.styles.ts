@@ -81,6 +81,28 @@ const styles = [
         --mdc-toggle-icon-color: CanvasText;
         border: 1px solid var(--mdc-toggle-border-color);
       }
+      :host([checked]) {
+        --mdc-toggle-border-color: Highlight;
+        --mdc-toggle-background-color: Highlight;
+      }
+      :host([readonly]) {
+        --mdc-toggle-border-color: GrayText;
+        --mdc-toggle-background-color: Canvas;
+      }
+      :host([disabled]),
+      :host([soft-disabled]) {
+        --mdc-toggle-icon-color: GrayText;
+        --mdc-toggle-icon-background-color: Canvas;
+        --mdc-toggle-border-color: GrayText;
+        --mdc-toggle-background-color: Canvas;
+      }
+      :host([checked][disabled]),
+      :host([checked][soft-disabled]) {
+        --mdc-toggle-icon-color: GrayText;
+        --mdc-toggle-icon-background-color: Canvas;
+        --mdc-toggle-border-color: Highlight;
+        --mdc-toggle-background-color: Highlight;
+      }
     }
   `,
 ];

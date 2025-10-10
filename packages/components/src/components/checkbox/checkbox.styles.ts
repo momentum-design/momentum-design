@@ -4,13 +4,11 @@ import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [
   css`
-    /* Base styles and CSS custom properties */
     :host {
       flex-direction: row;
       align-items: flex-start;
     }
 
-    /* Component structure and layout */
     :host::part(static-checkbox) {
       position: relative;
     }
@@ -43,7 +41,6 @@ const styles = [
       white-space: normal;
     }
 
-    /* Default interactive states */
     :host::part(label),
     :host::part(checkbox-input) {
       cursor: pointer;
@@ -67,8 +64,8 @@ const styles = [
       --mdc-checkbox-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
-    /* Readonly state - disables pointer events */
     :host([readonly]),
+    :host([disabled]),
     :host([soft-disabled]) {
       pointer-events: none;
     }

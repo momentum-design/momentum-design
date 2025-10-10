@@ -40,9 +40,9 @@ const styles = [
     :host::part(label) {
       word-break: break-word;
       white-space: normal;
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     /* Default interactive states */
@@ -69,6 +69,7 @@ const styles = [
 
     /* Readonly state - disables pointer events */
     :host([readonly]),
+    :host([disabled]),
     :host([soft-disabled]) {
       pointer-events: none;
     }

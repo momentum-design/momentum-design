@@ -56,8 +56,24 @@ const styles = [
     @media (forced-colors: active) {
       :host([checked]),
       :host([indeterminate]) {
-        --mdc-checkbox-border-color: var(--mds-color-theme-outline-button-normal);
-        --mdc-checkbox-icon-color: var(--mds-color-theme-outline-button-normal);
+        --mdc-checkbox-border-color: Highlight;
+        --mdc-checkbox-icon-color: Highlight;
+      }
+      :host([readonly]) {
+        --mdc-checkbox-border-color: GrayText;
+        --mdc-checkbox-icon-color: GrayText;
+      }
+      :host([disabled]),
+      :host([soft-disabled]) {
+        --mdc-checkbox-border-color: GrayText;
+        --mdc-checkbox-icon-color: GrayText;
+      }
+      :host([disabled][checked]),
+      :host([disabled][indeterminate]),
+      :host([soft-disabled][checked]),
+      :host([soft-disabled][indeterminate]) {
+        --mdc-checkbox-border-color: GrayText;
+        --mdc-checkbox-icon-color: GrayText;
       }
     }
   `,
