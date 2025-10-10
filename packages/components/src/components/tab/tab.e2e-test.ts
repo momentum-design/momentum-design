@@ -20,6 +20,7 @@ type SetupOptions = {
 };
 
 const ICON_PLACEHOLDER = 'placeholder-bold';
+const BRAND_VISUAL_NAME = 'webex-symbol-common-color-gradient';
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -50,7 +51,7 @@ const setup = async (args: SetupOptions) => {
   return tab;
 };
 
-test.use({ viewport: { width: 800, height: 1000 } });
+test.use({ viewport: { width: 800, height: 1200 } });
 test('mdc-tab', async ({ componentsPage }) => {
   const tab = await setup({ componentsPage });
   await componentsPage.setAttributes(tab, { text: 'Label' });
@@ -106,6 +107,30 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.setAttributes(tab, { 'icon-name': ICON_PLACEHOLDER });
         await expect(tab.locator('mdc-icon')).toHaveAttribute('name', ICON_PLACEHOLDER);
         await componentsPage.removeAttribute(tab, 'icon-name');
+      });
+
+      // custom prefix slot with brand-visual
+      await test.step('custom prefix slot with brand-visual should work', async () => {
+        // Mount a new tab with brand-visual in prefix slot
+        await componentsPage.mount({
+          html: `
+          <div id="wrapper" role="tablist">
+            <mdc-tab text="Custom Prefix Tab" tab-id="custom-prefix-tab">
+              <mdc-brandvisual slot="prefix" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>
+            </mdc-tab>
+          </div>
+          `,
+          clearDocument: true,
+        });
+
+        const customPrefixTab = componentsPage.page.locator('mdc-tab');
+        await customPrefixTab.waitFor();
+
+        // Check that brand-visual is rendered in the prefix slot
+        const brandVisual = customPrefixTab.locator('mdc-brandvisual[slot="prefix"]');
+        await expect(brandVisual).toBeVisible();
+        await expect(brandVisual).toHaveAttribute('name', BRAND_VISUAL_NAME);
+        await expect(brandVisual).toHaveAttribute('slot', 'prefix');
       });
 
       // tabIndex
@@ -283,6 +308,26 @@ test('mdc-tab', async ({ componentsPage }) => {
       active: '',
       'soft-disabled': '',
     });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual prefix slot - not active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="prefix" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: 'Brand Visual Inactive', 'icon-name': '', 'aria-label': '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual prefix slot - active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="prefix" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: 'Brand Visual Active', 'icon-name': '', 'aria-label': '', active: '' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual prefix slot only - not active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="prefix" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: '', 'icon-name': '', 'aria-label': 'Brand Visual Only Inactive' });
+    await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
+
+    // Tabs with custom brand-visual prefix slot only - active
+    stickerSheet.setChildren(`<mdc-brandvisual slot="prefix" name="${BRAND_VISUAL_NAME}" style="width: 1rem;"></mdc-brandvisual>`);
+    stickerSheet.setAttributes({ text: '', 'icon-name': '', 'aria-label': 'Brand Visual Only Active', active: '' });
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     await stickerSheet.mountStickerSheet();
