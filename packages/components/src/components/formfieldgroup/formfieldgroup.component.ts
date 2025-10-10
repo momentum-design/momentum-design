@@ -48,6 +48,15 @@ import styles from './formfieldgroup.styles';
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart container - Formfieldgroup host container
  * @csspart group-header - This contains the label and help text for the group
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
  */
 class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
   /**

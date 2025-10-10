@@ -168,7 +168,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
-    this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 
