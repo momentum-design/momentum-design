@@ -57,6 +57,7 @@ const styles = [
     @media (forced-colors: active) {
       :host([checked]),
       :host([indeterminate]) {
+        --mdc-checkbox-background-color: Highlight;
         --mdc-checkbox-border-color: Highlight;
         --mdc-checkbox-icon-color: Highlight;
       }
@@ -66,6 +67,7 @@ const styles = [
       }
       :host([disabled]),
       :host([soft-disabled]) {
+        --mdc-checkbox-background-color: ButtonFace;
         --mdc-checkbox-border-color: GrayText;
         --mdc-checkbox-icon-color: GrayText;
       }
@@ -73,6 +75,7 @@ const styles = [
       :host([disabled][indeterminate]),
       :host([soft-disabled][checked]),
       :host([soft-disabled][indeterminate]) {
+        --mdc-checkbox-background-color: ButtonFace;
         --mdc-checkbox-border-color: GrayText;
         --mdc-checkbox-icon-color: GrayText;
       }

@@ -78,7 +78,6 @@ const styles = [
       :host([checked]) {
         --mdc-radio-outer-circle-border-color: Highlight;
         --mdc-radio-outer-circle-background-color: Highlight;
-        --mdc-radio-inner-circle-background-color: Highlight;
       }
       :host([readonly]),
       :host([readonly][checked]) {
