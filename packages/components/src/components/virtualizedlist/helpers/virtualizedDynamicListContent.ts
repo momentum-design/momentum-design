@@ -141,6 +141,7 @@ class VirtualizedDynamicListContent extends Component {
           ${ref(this.virtualizerRef)}
           observe-size-changes
           revert-list
+          monotonously-grow
           .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
         >

@@ -100,6 +100,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   revertList: boolean = false;
 
   /**
+   * When true, the total height of the list will only increase and never decrease.
+   *
+   * Change in the count of items reset the last total height measurement.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'monotonously-grow' })
+  monotonouslyGrow: boolean = false;
+
+  /**
    *
    * @internal
    */
@@ -183,8 +191,15 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
    * The total height of the list based on the virtualizer's calculations.
    */
+  private lastTotalListHeight = 0;
+
   get totalListHeight(): number {
-    return this.virtualizer?.getTotalSize() ?? 0;
+    const currentTotalSize = this.virtualizer?.getTotalSize() ?? 0;
+    if (this.monotonouslyGrow && currentTotalSize < this.lastTotalListHeight) {
+      return this.lastTotalListHeight;
+    }
+    this.lastTotalListHeight = currentTotalSize;
+    return currentTotalSize;
   }
 
   constructor() {
@@ -212,8 +227,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     // Set the role attribute for accessibility.
     this.role = null;
-
-    this.scrollToBottom();
   }
 
   override disconnectedCallback(): void {
@@ -245,7 +258,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     if (changedProperties.has('revertList') && this.revertList) {
       this.isAtBottom = 'yes';
-      this.scrollToBottom();
     }
   }
 
@@ -263,8 +275,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     // Change in the length of the dataset is, does not count as TanStack Virtual's internal state change
     // so we need to manually call the onChange handler to ensure the list updates correctly.
-    if (this.virtualizerProps.count !== prevProps.count) {
+    if (this.virtualizerProps.count !== prevProps?.count) {
       this.emitChangeEvent();
+      // Reset the last total height measurement so it can grow again from the new list size.
+      this.lastTotalListHeight = 0;
     }
 
     const scrollEl = this.scrollElementRef.value;
@@ -339,6 +353,11 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.updateComplete.then(() => this.requestUpdate());
     this.emitChangeEvent();
+
+    const scrollEL = this.scrollElementRef.value;
+    if (this.isAtBottom === 'yes' && scrollEL && this.totalListHeight >= scrollEL.clientHeight) {
+      scrollEL.scrollTop = scrollEL.scrollHeight;
+    }
   }
 
   private emitChangeEvent() {
@@ -466,7 +485,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * @internal
    */
   private handleScroll(): void {
-    const prevIsAtBottom = this.isAtBottom;
     const scrollEl = this.scrollElementRef.value;
 
     // Skip the current Scroll event to prevent shattering
@@ -484,11 +502,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     ) {
       const { clientHeight, scrollHeight, scrollTop } = scrollEl;
       this.isAtBottom = scrollHeight - scrollTop <= clientHeight ? 'yes' : 'no';
-    }
-
-    //
-    if (prevIsAtBottom !== this.isAtBottom && this.isAtBottom === 'yes') {
-      this.scrollToBottom();
     }
   }
 
@@ -516,25 +529,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     super.handleNavigationKeyDown(event);
   }
 
-  private scrollToBottom(): void {
-    if (this.isAtBottom === 'yes') {
-      const scrollEl = this.scrollElementRef.value;
-      if (scrollEl) {
-        scrollEl.scrollTop += Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
-      }
-      requestAnimationFrame(this.scrollToBottom.bind(this));
-    }
-  }
-
   public override render() {
     const visibleItems = this.items.filter(({ index }) => !this.hiddenIndexes.includes(index));
 
     const firstItemOffset = visibleItems.at(0)?.start ?? 0;
-    const lastItemOffset = visibleItems.at(-1)?.end ?? 0;
     const clientHeight = this.scrollElementRef.value?.clientHeight ?? 0;
     let initialOffset = 0;
-    if (this.revertList && lastItemOffset < clientHeight) {
-      initialOffset = clientHeight - (lastItemOffset - firstItemOffset);
+    if (this.revertList && clientHeight > this.totalListHeight) {
+      initialOffset = clientHeight - this.totalListHeight;
     }
 
     const scrollHeight = this.revertList ? Math.max(this.totalListHeight, clientHeight) : this.totalListHeight;
