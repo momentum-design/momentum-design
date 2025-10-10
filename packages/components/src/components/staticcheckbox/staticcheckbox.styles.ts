@@ -59,7 +59,7 @@ const styles = [
       :host([indeterminate]) {
         --mdc-checkbox-background-color: Highlight;
         --mdc-checkbox-border-color: Highlight;
-        --mdc-checkbox-icon-color: Highlight;
+        --mdc-checkbox-icon-color: GrayText;
       }
       :host([readonly]) {
         --mdc-checkbox-border-color: GrayText;
@@ -67,17 +67,17 @@ const styles = [
       }
       :host([disabled]),
       :host([soft-disabled]) {
-        --mdc-checkbox-background-color: ButtonFace;
+        --mdc-checkbox-background-color: Highlight;
         --mdc-checkbox-border-color: GrayText;
-        --mdc-checkbox-icon-color: GrayText;
+        --mdc-checkbox-icon-color: Highlight;
       }
       :host([disabled][checked]),
       :host([disabled][indeterminate]),
       :host([soft-disabled][checked]),
       :host([soft-disabled][indeterminate]) {
-        --mdc-checkbox-background-color: ButtonFace;
+        --mdc-checkbox-background-color: Highlight;
         --mdc-checkbox-border-color: GrayText;
-        --mdc-checkbox-icon-color: GrayText;
+        --mdc-checkbox-icon-color: Highlight;
       }
     }
   `,
