@@ -14,10 +14,8 @@
 .github-tool-icon {
   width: 18px;
   height: 18px;
-  fill: currentColor;
 }
 
 .github-tool-label {
-  font-size: 1rem;
   font-weight: 500;
 }
