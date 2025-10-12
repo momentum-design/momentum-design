@@ -1,7 +1,6 @@
-import type { CSSResult, PropertyValues } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
@@ -85,22 +84,21 @@ class Option extends FormInternalsMixin(ListItem) {
     }
   }
 
+  private renderIcon(slotName: string, iconName: string): TemplateResult {
+    return html` <mdc-icon length-unit="rem" slot="${slotName}" name="${iconName}"></mdc-icon> `;
+  }
+
   public override render() {
-    const prefixIconContent = this.prefixIcon
-      ? html`
-          <div part="leading-icon">
-            <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
-          </div>
-        `
-      : nothing;
-    const trailingContent = this.selected
-      ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
-      : nothing;
+    const trailingContent = this.selected ? this.renderIcon('trailing-controls', SELECTED_ICON_NAME) : nothing;
     return html`
-      ${prefixIconContent}
-      <div part="leading-text">
-        ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-        ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+      <div part="leading">
+        <slot name="leading-controls">
+          ${this.prefixIcon ? this.renderIcon('leading-controls', this.prefixIcon) : nothing}
+        </slot>
+        <div part="leading-text">
+          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+        </div>
       </div>
       <div part="trailing">${trailingContent}</div>
     `;
