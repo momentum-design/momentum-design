@@ -21,6 +21,8 @@ import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
+import { debounce } from '../../utils/debounce';
+import type { Debounced } from '../../utils/debounce';
 
 import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -167,7 +169,7 @@ class Select
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
-  private searchTimeout: number | undefined;
+  private debounceSearch?: Debounced<() => void>;
 
   /** @internal */
   private searchString = '';
@@ -189,6 +191,13 @@ class Select
 
     this.loop = 'false';
     this.initialFocus = 0;
+    this.setupDebounceSearch();
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    // cancel any pending debounced action and clear DOM timeouts
+    this.debounceSearch?.cancel();
   }
 
   /** @internal */
@@ -420,6 +429,12 @@ class Select
 
     // set the selected option in the component state
     this.selectedOption = option;
+    // When an option is selected, we need to scroll on to it (if the dropdown is open).
+    window.requestAnimationFrame(() => {
+      if (this.displayPopover) {
+        this.selectedOption?.scrollIntoView({ block: 'center' });
+      }
+    });
 
     // update all form related values
     this.value = this.selectedOption?.value ?? '';
@@ -531,31 +546,18 @@ class Select
     event.stopPropagation();
   }
 
-  private debounceSearchKey(letter: string): string {
-    if (this.searchTimeout) {
-      window.clearTimeout(this.searchTimeout);
-    }
-
-    this.searchTimeout = window.setTimeout(() => {
+  private setupDebounceSearch(): void {
+    this.debounceSearch = debounce(() => {
       // for every 500ms, we will reset the search string.
       this.searchString = '';
     }, 500);
+  }
 
+  private debounceSearchKey(letter: string): string {
+    this.debounceSearch?.();
     // add most recent letter to saved search string
     this.searchString += letter;
     return this.searchString;
-  }
-
-  /**
-   * Updates the selected option and moves the focus to the newly selected option.
-   * It updates the selected option and then uses requestAnimationFrame to scroll the newly selected option into view.
-   * @param newSelectedOption - The new option to select.
-   */
-  private updateSelectedOptionAndMoveFocus(newSelectedOption: Option): void {
-    this.setSelectedOption(newSelectedOption);
-    window.requestAnimationFrame(() => {
-      newSelectedOption.scrollIntoView({ block: 'center' });
-    });
   }
 
   /**
@@ -583,15 +585,13 @@ class Select
     const filteredResults = this.filterOptionsBySearchKey(orderedOptions, searchKey);
     if (filteredResults.length) {
       // If the key is an exact match, then we set the first option
-      this.updateSelectedOptionAndMoveFocus(filteredResults[0]);
+      this.setSelectedOption(filteredResults[0]);
     } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
       // If the key is same, then we cycle through all options which start with the same letter
       const nextOptionFromList = this.navItems[startIndex];
       const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(orderedOptions, searchKey[0]);
       const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
-      this.updateSelectedOptionAndMoveFocus(
-        nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0],
-      );
+      this.setSelectedOption(nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0]);
     }
   }
 
