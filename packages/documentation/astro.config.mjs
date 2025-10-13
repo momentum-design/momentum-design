@@ -27,7 +27,7 @@ export default defineConfig({
     react(),
     mdx(),
   ],
-  site: 'https://momentum-design',
+  site: 'https://momentum.design',
   vite: {
     build: {
       rollupOptions: {
