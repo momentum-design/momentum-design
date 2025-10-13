@@ -64,6 +64,10 @@ const styles = [
       --mdc-checkbox-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
+    :host([help-text-type='error'])::part(static-checkbox) {
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-cancel-normal);
+    }
+
     :host([readonly]),
     :host([disabled]),
     :host([soft-disabled]) {
