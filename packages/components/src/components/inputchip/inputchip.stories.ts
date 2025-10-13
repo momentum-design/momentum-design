@@ -1,9 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../avatar';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
 const render = (args: Args) =>
   html` <mdc-inputchip
@@ -119,4 +121,36 @@ export const WithRemove: StoryObj = {
       clear-aria-label="Clear"
     ></mdc-inputchip>`;
   },
+};
+
+export const WithAvatar: StoryObj = {
+  render: () =>
+    html` <mdc-inputchip label="John Doe" clear-aria-label="Remove John Doe" @remove="${action('remove')}">
+      <mdc-avatar slot="prefix" size="20" initials="JD"></mdc-avatar>
+    </mdc-inputchip>`,
+};
+
+export const WithAvatarPhoto: StoryObj = {
+  render: () =>
+    html` <mdc-inputchip label="Jane Smith" clear-aria-label="Remove Jane Smith" @remove="${action('remove')}">
+      <mdc-avatar slot="prefix" size="20" src="${imageFixtures.avatar}" initials="JS"></mdc-avatar>
+    </mdc-inputchip>`,
+};
+
+export const AvatarVariants: StoryObj = {
+  render: () =>
+    html` <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <mdc-inputchip label="John Doe" clear-aria-label="Clear" @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" size="20" initials="JD"></mdc-avatar>
+      </mdc-inputchip>
+      <mdc-inputchip label="Jane Smith" clear-aria-label="Clear" @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" size="20" src="${imageFixtures.avatar}" initials="JS"></mdc-avatar>
+      </mdc-inputchip>
+      <mdc-inputchip label="Team Lead" clear-aria-label="Clear" error @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" size="20" icon-name="user-regular"></mdc-avatar>
+      </mdc-inputchip>
+      <mdc-inputchip label="Alex Johnson" clear-aria-label="Clear" disabled @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" size="20" initials="AJ"></mdc-avatar>
+      </mdc-inputchip>
+    </div>`,
 };

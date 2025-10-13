@@ -15,6 +15,7 @@ const getPresenceSize = (size: AvatarSize): PresenceSize => {
     [AVATAR_SIZE[48]]: PRESENCE_SIZE[48],
     [AVATAR_SIZE[32]]: PRESENCE_SIZE[32],
     [AVATAR_SIZE[24]]: PRESENCE_SIZE[24],
+    [AVATAR_SIZE[20]]: PRESENCE_SIZE[20],
   };
   return avatarPresenceSizeMap[size] || PRESENCE_SIZE[32]; // default size of presence
 };
@@ -28,6 +29,7 @@ const getAvatarIconSize = (size: AvatarSize): number => {
     [AVATAR_SIZE[48]]: 1.75,
     [AVATAR_SIZE[32]]: 1.25,
     [AVATAR_SIZE[24]]: 1,
+    [AVATAR_SIZE[20]]: 0.875,
   };
   return avatarIconSizeMap[size] || 1.25; // default size of icon
 };
@@ -41,6 +43,7 @@ const getAvatarTextFontSize = (size: AvatarSize): TextType => {
     [AVATAR_SIZE[48]]: FONT_TYPE.HEADING_SMALL_MEDIUM,
     [AVATAR_SIZE[32]]: FONT_TYPE.BODY_MIDSIZE_MEDIUM,
     [AVATAR_SIZE[24]]: FONT_TYPE.BODY_SMALL_MEDIUM,
+    [AVATAR_SIZE[20]]: FONT_TYPE.BODY_SMALL_MEDIUM,
   };
   return avatarTextFontSizeMap[size] || FONT_TYPE.BODY_MIDSIZE_MEDIUM; // default size of text font
 };

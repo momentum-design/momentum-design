@@ -30,6 +30,7 @@ const styles = [
       justify-content: center;
       align-items: center;
     }
+    :host([size='20'])::part(presence-content),
     :host([size='24'])::part(presence-content),
     :host([size='32'])::part(presence-content),
     :host([size='48'])::part(presence-content) {

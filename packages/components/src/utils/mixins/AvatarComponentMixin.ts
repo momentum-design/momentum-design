@@ -56,6 +56,7 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(superClas
 
     /**
      * Acceptable values include (size in px unit):
+     * - 20
      * - 24
      * - 32
      * - 48
