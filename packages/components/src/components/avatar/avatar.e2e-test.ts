@@ -48,6 +48,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     const avatarStickerSheet = new StickerSheet(componentsPage, 'mdc-avatar');
     const src = imageFixtures.avatar;
 
+    // Basic avatar types
     await test.step('should add initials based avatar on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ initials: 'XS' });
       await avatarStickerSheet.createMarkupWithCombination({
@@ -77,6 +78,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
     });
 
+    // Presence combinations
     await test.step('should add initials with presence on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ initials: 'AB', presence: PRESENCE_TYPE.ACTIVE });
       await avatarStickerSheet.createMarkupWithCombination({
@@ -91,9 +93,16 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
     });
 
-    await test.step('should add presence based avatar on sticker sheet', async () => {
+    await test.step('should add icon with presence on sticker sheet', async () => {
       const presenceType = PRESENCE_TYPE.ACTIVE;
       avatarStickerSheet.setAttributes({ presence: presenceType });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add image with presence on sticker sheet', async () => {
+      avatarStickerSheet.setAttributes({ src, presence: PRESENCE_TYPE.ACTIVE });
       await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
