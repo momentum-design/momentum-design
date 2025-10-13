@@ -17,7 +17,7 @@ const styles = css`
     background-position: right;
   }
   :host::part(body) {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0px, 1fr));
   }
