@@ -315,7 +315,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(checkbox).not.toBeFocused();
 
-      await checkbox.click();
+      await checkbox.click({ force: true });
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
