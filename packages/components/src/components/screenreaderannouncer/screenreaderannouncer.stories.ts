@@ -26,6 +26,7 @@ const render = (args: Args) => html`
     delay="${args.delay}"
     identity="${args.identity}"
     timeout="${args.timeout}"
+    debounce-time="${args['debounce-time']}"
   >
   </mdc-screenreaderannouncer>
   <mdc-text type="body-midsize-regular"
@@ -73,6 +74,9 @@ const meta: Meta = {
     timeout: {
       control: 'number',
     },
+    'debounce-time': {
+      control: 'number',
+    },
   },
 };
 
@@ -84,6 +88,7 @@ const defaultArgs = {
   delay: DEFAULTS.DELAY,
   identity: '',
   timeout: DEFAULTS.TIMEOUT,
+  'debounce-time': DEFAULTS.DEBOUNCE,
 };
 
 export const Example: StoryObj = {

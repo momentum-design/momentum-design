@@ -1,6 +1,6 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property, query } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -132,9 +132,18 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: Number }) minlength?: number;
 
   /**
-   * maximum character limit for the textarea field for character counter.
+   * The maximum character limit for the textarea field for character counter.
    */
   @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
+
+  /**
+   * Template string for the announcement that will be read by screen readers when the max character limit is set.
+   * Consumers must use the placeholders `%{number-of-characters}` and `%{max-character-limit}` in the string,
+   * which will be dynamically replaced with the actual values at runtime.
+   * For example: `%{number-of-characters} out of %{max-character-limit} characters are typed.`
+   * Example output: "93 out of 140 characters are typed."
+   */
+  @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
 
   /**
    * @internal
@@ -142,6 +151,10 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    */
   @query('textarea') override inputElement!: HTMLTextAreaElement;
 
+  /** @internal */
+  @state() private ariaLiveAnnouncer?: string;
+
+  /** @internal */
   private characterLimitExceedingFired: boolean = false;
 
   protected get textarea(): HTMLTextAreaElement {
@@ -302,6 +315,33 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   private updateValue() {
     this.value = this.textarea.value;
     this.internals.setFormValue(this.textarea.value);
+    this.announceMaxLengthWarning();
+  }
+
+  /**
+   * Announces the character limit warning based on the current value length.
+   * If the value length exceeds the max character limit, the help text is announced (if help text is present).
+   * If the value length does not exceed the max character limit, then the character limit announcement is announced.
+   */
+  private announceMaxLengthWarning() {
+    this.ariaLiveAnnouncer = '';
+    if (!this.maxCharacterLimit || this.value.length === 0) {
+      return;
+    }
+    if (this.helpText && this.value.length > this.maxCharacterLimit) {
+      // We need to assign the same value multiple times, when the input reaches the max limit,
+      // Lit does a `===` strict comparison and doesn't update the value
+      // Hence we need to manually wait for the update to complete and then assign the value.
+      this.updateComplete
+        .then(() => {
+          this.ariaLiveAnnouncer = this.helpText;
+        })
+        .catch(() => {});
+    } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = this.characterLimitAnnouncement
+        .replace('%{number-of-characters}', this.value.length.toString())
+        .replace('%{max-character-limit}', this.maxCharacterLimit.toString());
+    }
   }
 
   /**
@@ -365,6 +405,11 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
         ></textarea>
+        <mdc-screenreaderannouncer
+          identity="${this.inputId}"
+          announcement="${ifDefined(this.ariaLiveAnnouncer)}"
+          data-aria-live="polite"
+        ></mdc-screenreaderannouncer>
       </div>
       ${this.renderTextareaFooter()}
     `;

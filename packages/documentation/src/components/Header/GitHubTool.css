@@ -1,0 +1,10 @@
+/* GitHubTool styles - matches Storybook version */
+.github-tool-button {
+  cursor: pointer;
+}
+
+.github-tool-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}

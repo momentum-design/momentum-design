@@ -16,7 +16,7 @@ const copyToDest = (srcDir, destDir) => {
 // only copy one brand visuals file to use for all screenshots etc
 if (process.argv[2] === 'playwright') {
   const brandvisualsExampleFile = require.resolve(
-    '@momentum-design/brand-visuals/dist/ts/webex-logo-lockup-dark-color-gradient-horizontal.ts',
+    '@momentum-design/brand-visuals/dist/ts/webex-symbol-common-color-gradient.ts',
   );
 
   copyToDest(brandvisualsExampleFile, playwrightPublicDist);

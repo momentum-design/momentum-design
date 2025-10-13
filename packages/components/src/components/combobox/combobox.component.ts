@@ -272,9 +272,9 @@ class Combobox
    *
    * @internal
    */
-  private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as HTMLElement;
-    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
+  private handleDestroyEvent = (event: CustomEvent) => {
+    const destroyedElement = event.detail.originalTarget as HTMLElement;
+    if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
       return;
     }
 
