@@ -122,7 +122,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
 
       await virtualizedList.hover();
-      await componentsPage.page.mouse.wheel(0, 1000); // deltaX, deltaY
+      await componentsPage.page.mouse.wheel(0, -1000); // deltaX, deltaY
 
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();

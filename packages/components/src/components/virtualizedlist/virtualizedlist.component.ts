@@ -1,7 +1,7 @@
 import { type CSSResult, type PropertyValues, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
-import { property } from 'lit/decorators.js';
-import { defaultRangeExtractor, type Range, type VirtualItem } from '@tanstack/virtual-core';
+import { property, eventOptions } from 'lit/decorators.js';
+import { defaultRangeExtractor, type Range, ScrollToOptions, type VirtualItem } from '@tanstack/virtual-core';
 import { styleMap } from 'lit/directives/style-map.js';
 import { type Ref, createRef, ref } from 'lit/directives/ref.js';
 
@@ -44,17 +44,6 @@ import type { VirtualizerProps, Virtualizer } from './virtualizedlist.types';
  */
 class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
-   * Whether to loop navigation when reaching the end of the list.
-   * If 'true', pressing the down arrow on the last item will focus the first item,
-   * and pressing the up arrow on the first item will focus the last item.
-   * If 'false', navigation will stop at the first or last item.
-   *
-   * @default 'false'
-   */
-  @property({ type: String, reflect: true })
-  public override loop: 'true' | 'false' = DEFAULTS.LOOP;
-
-  /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are three required object props in order to get virtualization to work properly.
    *
@@ -73,7 +62,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    */
   @property({ type: Object })
-  virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
+  public virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
+
+  /**
+   * Whether to loop navigation when reaching the end of the list.
+   * If 'true', pressing the down arrow on the last item will focus the first item,
+   * and pressing the up arrow on the first item will focus the last item.
+   * If 'false', navigation will stop at the first or last item.
+   *
+   * @default 'false'
+   */
+  @property({ type: String, reflect: true })
+  public override loop: 'true' | 'false' = DEFAULTS.LOOP;
 
   /**
    * Disable automatic scroll anchoring when the list size changes.
@@ -84,34 +84,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * @default false
    */
   @property({ type: Boolean, attribute: 'disable-scroll-anchoring', reflect: true })
-  disableScrollAnchoring: boolean = DEFAULTS.DISABLE_SCROLL_ANCHORING;
+  public disableScrollAnchoring: boolean = DEFAULTS.DISABLE_SCROLL_ANCHORING;
 
   /**
    * When true, the list will observe size changes of its items and re-measure them as needed.
    * This is useful if your list items can change size dynamically (e.g., due to content changes or window resizing).
    */
   @property({ type: Boolean, reflect: true, attribute: 'observe-size-changes' })
-  observeSizeChanges: boolean = false;
+  public observeSizeChanges: boolean = false;
 
   /**
    * When true, the list will render in reverse order, with the last item at the bottom.
    */
   @property({ type: Boolean, reflect: true, attribute: 'revert-list' })
-  revertList: boolean = false;
-
-  /**
-   * When true, the total height of the list will only increase and never decrease.
-   *
-   * Change in the count of items reset the last total height measurement.
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'monotonously-grow' })
-  monotonouslyGrow: boolean = false;
-
-  /**
-   *
-   * @internal
-   */
-  private virtualizerController: VirtualizerController<Element, Element> | null = null;
+  public revertList: boolean = false;
 
   /**
    * The virtualizer instance created by the VirtualizerController.
@@ -123,6 +109,30 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * A ref to the scrollable element within the list.
    */
   public scrollElementRef: Ref<Element> = createRef();
+
+  /**
+   * The current virtual items being rendered.
+   */
+  get items(): VirtualItem[] {
+    return this.virtualizer?.getVirtualItems() ?? [];
+  }
+
+  override get navItems(): BaseArray<HTMLElement> {
+    if (this.cachedNavItems?.items !== super.navItems) {
+      const attrName = this.virtualizer?.options?.indexAttribute ?? 'data-index';
+      this.cachedNavItems = new VirtualIndexArray<HTMLElement>(
+        super.navItems,
+        e => Number(e.getAttribute(attrName)),
+        () => this.virtualizerProps.count,
+      );
+    }
+    return this.cachedNavItems;
+  }
+
+  /**
+   * @internal
+   */
+  private virtualizerController: VirtualizerController<Element, Element> | null = null;
 
   /**
    * The currently selected index in the list.
@@ -165,64 +175,55 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * - 're-evaluate' - The scroll position needs to be re-evaluated on the next scroll event.
    * @internal
    */
-  private isAtBottomValue: 'no' | 'yes' | 're-evaluate' = 'no';
+  private atBottomValue: 'no' | 'yes' | 're-evaluate' = 'no';
 
-  get isAtBottom(): 'no' | 'yes' | 're-evaluate' {
-    return this.isAtBottomValue;
+  /**
+   * Getter for atBottom
+   * @internal
+   */
+  private get atBottom(): 'no' | 'yes' | 're-evaluate' {
+    return this.atBottomValue;
   }
 
-  set isAtBottom(value: 'no' | 'yes' | 're-evaluate') {
-    if (this.isAtBottomValue !== value) {
-      this.isAtBottomValue = value;
+  /**
+   * Setter for atBottom to handle side effects when the value changes.
+   * @param value - new value for atBottom
+   *
+   * @internal
+   */
+  private set atBottom(value: 'no' | 'yes' | 're-evaluate') {
+    if (this.atBottomValue !== value || (value === 'yes' && this.atBottomTimer === -1)) {
+      this.atBottomValue = value;
       if (value === 'yes') {
         this.scrollToBottom();
       } else {
-        cancelAnimationFrame(this.atBottomTimer);
+        this.clearScrollToBottomTimer();
       }
     }
   }
 
   private atBottomTimer: number = -1;
 
-  /**
-   * The current virtual items being rendered.
-   */
-  get items(): VirtualItem[] {
-    return this.virtualizer?.getVirtualItems() ?? [];
-  }
-
   private cachedNavItems: VirtualIndexArray<HTMLElement> | null = null;
-
-  override get navItems(): BaseArray<HTMLElement> {
-    if (this.cachedNavItems?.items !== super.navItems) {
-      const attrName = this.virtualizer?.options?.indexAttribute ?? 'data-index';
-      this.cachedNavItems = new VirtualIndexArray<HTMLElement>(
-        super.navItems,
-        e => Number(e.getAttribute(attrName)),
-        () => this.virtualizerProps.count,
-      );
-    }
-    return this.cachedNavItems;
-  }
 
   /**
    * The total height of the list based on the virtualizer's calculations.
+   * @internal
    */
-  private lastTotalListHeight = 0;
-
-  get totalListHeight(): number {
-    const currentTotalSize = this.virtualizer?.getTotalSize() ?? 0;
-    if (this.monotonouslyGrow && currentTotalSize < this.lastTotalListHeight) {
-      return this.lastTotalListHeight;
-    }
-    this.lastTotalListHeight = currentTotalSize;
-    return currentTotalSize;
+  private get totalListHeight(): number {
+    return this.virtualizer?.getTotalSize() ?? 0;
   }
+
+  /**
+   * Last recorded scroll position to help determine scroll direction.
+   * @internal
+   */
+  private lastScrollPosition = 0;
 
   constructor() {
     super();
     this.addEventListener('wheel', e => {
-      if (e.deltaY < 0) this.isAtBottom = 're-evaluate';
+      if (e.deltaY < 0) this.atBottom = 're-evaluate';
     });
   }
 
@@ -234,7 +235,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       ...this.virtualizerProps,
       horizontal: false,
       getScrollElement: () => this.scrollElementRef.value || null,
-      onChange: this.handleOnChange.bind(this),
+      onChange: this.onVListStateChangeHandler.bind(this),
       rangeExtractor: this.virtualizerRangeExtractor.bind(this),
     });
 
@@ -245,12 +246,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // Set the role attribute for accessibility.
     this.role = null;
 
-    this.isAtBottom = this.revertList && !this.disableScrollAnchoring ? 'yes' : 'no';
+    this.atBottom = this.revertList && !this.disableScrollAnchoring ? 'yes' : 'no';
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
+    this.clearScrollToBottomTimer();
     this.virtualizerController = null;
     this.virtualizer = null;
   }
@@ -275,11 +277,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       });
     }
 
-    if (changedProperties.has('revertList') && this.revertList) {
-      this.isAtBottom = 'yes';
+    if (changedProperties.has('revertList') && this.revertList && !this.disableScrollAnchoring) {
+      this.atBottom = 'yes';
     }
   }
 
+  /**
+   * Handles updates to the virtualizerProps property.
+   * @param prevProps - The previous virtualizerProps before the update.
+   * @internal
+   */
   async handleVirtualizerPropsUpdate(prevProps: VirtualizerProps) {
     const { virtualizer } = this;
 
@@ -296,8 +303,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // so we need to manually call the onChange handler to ensure the list updates correctly.
     if (this.virtualizerProps.count !== prevProps?.count) {
       this.emitChangeEvent();
-      // Reset the last total height measurement so it can grow again from the new list size.
-      this.lastTotalListHeight = 0;
     }
 
     const scrollEl = this.scrollElementRef.value;
@@ -319,7 +324,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.requestUpdate();
       await this.updateComplete;
 
-      if (this.isAtBottom === 'yes') return;
+      if (this.atBottom === 'yes') return;
 
       // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
       // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
@@ -358,20 +363,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         selectedElement.tabIndex = 0;
       }
     }, 0);
-  }
-
-  /**
-   * Handle the virtualizer's onChange event to emit the virtualitemschange event
-   * This is called when the internal state of the virtualizer changes.
-   *
-   * @internal
-   */
-  protected handleOnChange() {
-    // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
-    // virtualizer's options therefore we need to call it here ourselves.
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.updateComplete.then(() => this.requestUpdate());
-    this.emitChangeEvent();
   }
 
   private emitChangeEvent() {
@@ -452,6 +443,22 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     });
   }
 
+  /** @internal */
+  private isElementSelected(item: HTMLElement): boolean {
+    return this.virtualizer?.indexFromElement(item) === this.selectedIndex;
+  }
+
+  /** @internal */
+  private setSelectedIndex(newIndex: number): void {
+    if (this.virtualizer) {
+      if (newIndex + 1 === this.virtualizer.options.count) {
+        this.atBottom = 'yes';
+      }
+      this.selectedIndex = newIndex;
+      this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
+    }
+  }
+
   protected override onElementStoreUpdate(item: HTMLElement, changeType: ElementStoreChangeTypes): void {
     if (changeType === 'added') {
       const tabable = this.isElementSelected(item);
@@ -474,25 +481,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     }
   }
 
-  /** @internal */
-  private isElementSelected(item: HTMLElement): boolean {
-    return this.virtualizer?.indexFromElement(item) === this.selectedIndex;
-  }
+  /**
+   * Handle the virtualizer's onChange event to emit the virtualitemschange event
+   * This is called when the internal state of the virtualizer changes.
+   *
+   * @internal
+   */
+  protected async onVListStateChangeHandler() {
+    // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
+    // virtualizer's options therefore we need to call it here ourselves.
+    await this.updateComplete;
+    this.requestUpdate();
 
-  /** @internal */
-  private setSelectedIndex(newIndex: number): void {
-    if (this.virtualizer) {
-      if (newIndex + 1 === this.virtualizer.options.count) {
-        this.isAtBottom = 'yes';
-      }
-      this.selectedIndex = newIndex;
-      this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
-    }
-  }
-
-  /** @internal */
-  private setAriaSetSize(element: HTMLElement): void {
-    element.setAttribute('aria-setsize', `${this.virtualizer?.options.count ?? -1}`);
+    this.checkAtBottom();
+    this.emitChangeEvent();
   }
 
   /**
@@ -501,25 +503,31 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    * @internal
    */
-  private handleScroll(): void {
-    const scrollEl = this.scrollElementRef.value;
+  @eventOptions({ passive: true })
+  private onScrollHandler(event: Event): void {
+    const scrollEl = event.target as HTMLElement;
 
     // Skip the current Scroll event to prevent shattering
-    if (this.isAtBottom === 're-evaluate') {
-      this.isAtBottom = 'no';
-      return;
+    if (this.atBottom === 're-evaluate' || scrollEl.scrollTop < this.lastScrollPosition) {
+      this.atBottom = 'no';
+    } else {
+      // Check if we are at the bottom of the list
+      this.checkAtBottom();
     }
+    this.lastScrollPosition = scrollEl.scrollTop;
+  }
 
-    // Check if we are at the bottom of the list
+  private checkAtBottom(): void {
+    const scrollEl = this.scrollElementRef.value;
     if (
       !this.disableScrollAnchoring &&
       scrollEl &&
       this.virtualizer &&
-      this.isAtBottom === 'no' &&
-      scrollEl.scrollHeight > scrollEl.clientHeight
+      this.atBottom === 'no' &&
+      scrollEl.scrollHeight > scrollEl.clientHeight - IS_AT_BOTTOM_THRESHOLD
     ) {
       const { clientHeight, scrollHeight, scrollTop } = scrollEl;
-      this.isAtBottom = scrollHeight - scrollTop <= clientHeight + IS_AT_BOTTOM_THRESHOLD ? 'yes' : 'no';
+      this.atBottom = scrollHeight - scrollTop <= clientHeight + IS_AT_BOTTOM_THRESHOLD ? 'yes' : 'no';
     }
   }
 
@@ -539,7 +547,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         break;
       }
       case KEYS.ARROW_UP: {
-        this.isAtBottom = 're-evaluate';
+        this.atBottom = 're-evaluate';
         break;
       }
       default:
@@ -547,39 +555,65 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     super.handleNavigationKeyDown(event);
   }
 
+  /** @internal */
+  private setAriaSetSize(element: HTMLElement): void {
+    element.setAttribute('aria-setsize', `${this.virtualizer?.options.count ?? -1}`);
+  }
+
+  /**
+   * Scrolls to the bottom of the list if `atBottom` is 'yes'.
+   * @internal
+   */
   private scrollToBottom(): void {
-    cancelAnimationFrame(this.atBottomTimer);
-    if (this.isAtBottom === 'yes') {
+    this.clearScrollToBottomTimer();
+    if (this.atBottom === 'yes') {
       const scrollEl = this.scrollElementRef.value;
 
       if (scrollEl && this.totalListHeight > scrollEl.clientHeight) {
-        scrollEl.scrollTop += Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
+        const diff = Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
+        // console.log('rAF');
+        // if (diff <= 1) {
+        //   scrollEl.scrollTop = scrollEl.scrollHeight;
+        //   return;
+        // }
+        scrollEl.scrollTop += diff;
       }
       this.atBottomTimer = requestAnimationFrame(this.scrollToBottom.bind(this));
     }
+  }
+
+  private clearScrollToBottomTimer(): void {
+    cancelAnimationFrame(this.atBottomTimer);
+    this.atBottomTimer = -1;
+  }
+
+  public scrollToIndex(index: number, options?: ScrollToOptions): void {
+    this.virtualizer!.scrollToIndex?.(index, options);
+    this.atBottom = index + 1 === this.virtualizerProps.count ? 'yes' : 'no';
   }
 
   public override render() {
     const visibleItems = this.items.filter(({ index }) => !this.hiddenIndexes.includes(index));
 
     const firstItemOffset = visibleItems.at(0)?.start ?? 0;
-    const clientHeight = this.scrollElementRef.value?.clientHeight ?? 0;
-    let initialOffset = 0;
-    if (this.revertList && clientHeight > this.totalListHeight) {
-      initialOffset = clientHeight - this.totalListHeight;
-    }
 
-    const scrollHeight = this.revertList ? Math.max(this.totalListHeight, clientHeight) : this.totalListHeight;
+    const scrollEl = this.scrollElementRef.value;
+    let initialOffset = 0;
+    if (this.revertList && scrollEl) {
+      if (scrollEl.clientHeight >= this.totalListHeight) {
+        initialOffset = this.clientHeight - this.totalListHeight;
+      }
+    }
 
     return html`
       <slot name="list-header"></slot>
-      <div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.handleScroll} tabindex="-1">
-        <div part="wrapper" style="${styleMap({ height: `${scrollHeight}px` })}">
+      <div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.onScrollHandler} tabindex="-1">
+        <div part="wrapper" style="${styleMap({ height: `${this.totalListHeight}px` })}">
           <div
             part="container"
             style="${styleMap({
               transform: `translateY(${initialOffset + firstItemOffset}px)`,
-            })} })}"
+            })}"
             role="list"
             aria-label="${this.dataAriaLabel ?? ''}"
           >
