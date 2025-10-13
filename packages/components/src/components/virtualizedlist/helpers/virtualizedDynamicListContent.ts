@@ -1,4 +1,4 @@
-import { css, CSSResult, html, TemplateResult } from 'lit';
+import { css, CSSResult, html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
@@ -28,7 +28,7 @@ const rnd = (min: number, max: number) => min + Math.floor(Math.random() * max);
 
 class VirtualizedDynamicListContent extends Component {
   @state()
-  listItems: string[] = [];
+  listItems: { key: string; data: string }[] = [];
 
   @state()
   virtualData: VirtualData = { virtualItems: [] };
@@ -38,7 +38,7 @@ class VirtualizedDynamicListContent extends Component {
     useAnimationFrameWithResizeObserver: true,
     count: 0,
     estimateSize: () => 36,
-    getItemKey: index => this.listItems[index],
+    getItemKey: index => this.listItems[index]?.key,
   };
 
   private virtualizerRef: Ref<VirtualizedList> = createRef();
@@ -63,12 +63,12 @@ class VirtualizedDynamicListContent extends Component {
     words += brk > 6 ? '.\n' : '';
     words += brk > 8 ? '\n' : '';
 
-    const lastChar = this.listItems.at(-1)?.at(-1);
+    const lastChar = this.listItems.at(-1)?.data?.at(-1);
     if (!lastChar || lastChar === '\n') {
       words = words.charAt(0).toUpperCase() + words.slice(1);
     }
 
-    this.listItems[this.listItems.length - 1] += `${words}`;
+    this.listItems[this.listItems.length - 1].data += `${words}`;
     this.requestUpdate();
 
     this.timerId = setTimeout(this.addChunks, rnd(5, 200));
@@ -89,20 +89,20 @@ class VirtualizedDynamicListContent extends Component {
 
   onNext = async () => {
     if (this.isClippyNext) {
-      this.listItems.push('');
+      this.listItems.push({ key: this.listItems.length.toString(), data: '' });
       this.addChunks();
     } else {
       clearTimeout(this.timerId);
       this.counter += 1;
-      this.listItems.push(`Question #${this.counter}`);
+      this.listItems.push({ key: this.listItems.length.toString(), data: `Question #${this.counter}` });
     }
     this.isClippyNext = !this.isClippyNext;
     this.virtualizerProps = { ...this.virtualizerProps, count: this.listItems.length };
 
     await this.updateComplete;
-    this.virtualizerRef.value!.virtualizer!.scrollToIndex(this.listItems.length - 1, {
+    this.virtualizerRef.value!.scrollToIndex(this.listItems.length - 1, {
       align: 'end',
-      behavior: 'smooth',
+      behavior: 'auto',
     });
   };
 
@@ -126,7 +126,7 @@ class VirtualizedDynamicListContent extends Component {
     this.virtualizerProps = {
       count: this.listItems.length,
       estimateSize: () => 48,
-      getItemKey: (index: number) => this.listItems[index],
+      getItemKey: (index: number) => this.listItems[index]?.key,
     };
   }
 
@@ -145,11 +145,13 @@ class VirtualizedDynamicListContent extends Component {
           .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
         >
-          ${repeat(
-            this.virtualData.virtualItems,
-            ({ key }) => key,
-            ({ index }) => this.generateListItem(index, this.listItems[index]),
-          )}
+          ${this.listItems.length
+            ? repeat(
+                this.virtualData.virtualItems,
+                ({ key }) => key,
+                ({ index }) => this.generateListItem(index, this.listItems[index].data),
+              )
+            : nothing}
         </mdc-virtualizedlist>
       </div>
       <div style="margin-top: 1rem;">
