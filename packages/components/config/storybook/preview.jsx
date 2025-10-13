@@ -132,7 +132,8 @@ const preview = {
       storySort: {
         method: 'alphabetical',
         order: [
-          'Consumption',
+          'Introduction',
+          'Setup',
           'Styling',
           'Attributes',
           'Components',
