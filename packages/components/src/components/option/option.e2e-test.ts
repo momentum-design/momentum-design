@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -57,6 +58,16 @@ test('mdc-option', async ({ componentsPage }) => {
     optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '' });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '', disabled: '' });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({
+      label: 'It`s chai time',
+      selected: '',
+    });
+    optionSheet.setChildren(`<mdc-avatar
+        slot="leading-controls"
+        size="24"
+        src="${imageFixtures.avatar}"
+      ></mdc-avatar>`);
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({
       'prefix-icon': icon,

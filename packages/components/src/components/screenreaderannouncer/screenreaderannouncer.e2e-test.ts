@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions) => {
   const wrapper = componentsPage.page.locator('div#wrapper');
   await wrapper.waitFor();
 
-  const screenReaderAnnouncer = await componentsPage.page.locator('mdc-screenreaderannouncer').first();
+  const screenReaderAnnouncer = componentsPage.page.locator('mdc-screenreaderannouncer').first();
   return { screenReaderAnnouncer };
 };
 
@@ -72,7 +72,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
 
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
 
-        const ariaLiveRegion = await componentsPage.page
+        const ariaLiveRegion = componentsPage.page
           .locator('[id="mdc-screenreaderannouncer-identity"]')
           .first()
           .locator('div');
@@ -91,7 +91,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         });
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
 
-        const ariaLiveRegion = await componentsPage.page
+        const ariaLiveRegion = componentsPage.page
           .locator('[id="mdc-screenreaderannouncer-identity"]')
           .first()
           .locator('div');
@@ -110,7 +110,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         });
 
         await expect(screenReaderAnnouncer).toHaveAttribute('identity', 'test-identity');
-        const identityAriaLiveRegion = await componentsPage.page.locator('[id="test-identity"]').first().locator('div');
+        const identityAriaLiveRegion = componentsPage.page.locator('[id="test-identity"]').first().locator('div');
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
         await expect(identityAriaLiveRegion.first().locator('p').first()).toHaveText('Test Announcement 3');
         await expect(identityAriaLiveRegion.first()).toHaveAttribute('aria-live', 'polite');
@@ -126,7 +126,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(screenReaderAnnouncer).toHaveCSS('visibility', 'hidden');
       });
       await test.step('screen reader announcer aria live region is visually hidden', async () => {
-        const ariaLiveRegion = await componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
+        const ariaLiveRegion = componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
 
         await expect(ariaLiveRegion).toHaveCSS('clip', 'rect(0px, 0px, 0px, 0px)');
         await expect(ariaLiveRegion).toHaveCSS('clip-path', 'inset(50%)');
@@ -150,7 +150,7 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
           timeout: '1000',
         });
 
-        const ariaLiveRegion = await componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
+        const ariaLiveRegion = componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
         const announcement = ariaLiveRegion.locator('div').first().locator('p').first();
         await expect(announcement).toHaveText('Test Announcement 4');
         await expect(componentsPage.page.getByText('Test Announcement 4')).not.toBeVisible();
@@ -158,16 +158,26 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
 
       await test.step('make multiple announcements', async () => {
         const { screenReaderAnnouncer } = await setup({ componentsPage });
-        const announcements = ['Test Announcement 5', 'Test Announcement 6'];
+        const announcements = [
+          'Test Announcement 5',
+          'Test Announcement 6',
+          'Test Announcement 7',
+          'Test Announcement 8',
+        ];
 
         await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[0], delay: '10' });
-        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[1], delay: '1000' });
+        // add debounce time off 500ms + 10ms (for delay)
+        await componentsPage.page.waitForTimeout(510);
+        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[1], delay: '0' });
+        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[2], delay: '0' });
+        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[3], delay: '1000' });
 
-        const ariaLiveRegion = await componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
+        const ariaLiveRegion = componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
 
         const announcementElements = ariaLiveRegion.locator('div').locator('p');
-        await expect(announcementElements.nth(0)).toHaveText('Test Announcement 5');
-        await expect(announcementElements.nth(1)).toHaveText('Test Announcement 6');
+        await expect(announcementElements.nth(0)).toHaveText(announcements[0]);
+        // announce 1st and 2nd get cancelled as there are announced immediately.
+        await expect(announcementElements.nth(1)).toHaveText(announcements[3]);
       });
     });
   });

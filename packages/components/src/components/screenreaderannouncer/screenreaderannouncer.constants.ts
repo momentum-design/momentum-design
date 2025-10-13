@@ -13,6 +13,7 @@ const DEFAULTS = {
   DELAY: 150,
   IDENTITY: 'mdc-screenreaderannouncer-identity',
   TIMEOUT: 20_000,
+  DEBOUNCE: 500,
 } as const;
 
 export { ARIA_LIVE_VALUES, DEFAULTS, TAG_NAME };

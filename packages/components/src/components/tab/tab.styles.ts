@@ -120,7 +120,8 @@ const styles = [
       visibility: hidden;
     }
 
-    :host([disabled]) {
+    :host([disabled]),
+    :host([soft-disabled]) {
       cursor: default;
     }
 
@@ -138,7 +139,8 @@ const styles = [
       background-color: var(--mdc-tab-glass-inactive-background-color-pressed);
     }
 
-    :host([variant='glass'][disabled]) {
+    :host([variant='glass'][disabled]),
+    :host([variant='glass'][soft-disabled]) {
       background-color: var(--mdc-tab-glass-inactive-background-color-disabled);
       color: var(--mdc-tab-glass-inactive-color-disabled);
     }
@@ -156,7 +158,8 @@ const styles = [
       background-color: var(--mdc-tab-glass-active-background-color-pressed);
     }
 
-    :host([variant='glass'][active][disabled]) {
+    :host([variant='glass'][active][disabled]),
+    :host([variant='glass'][active][soft-disabled]) {
       background-color: var(--mdc-tab-glass-active-background-color-disabled);
       color: var(--mdc-tab-glass-active-color-disabled);
     }
@@ -178,7 +181,8 @@ const styles = [
       background-color: var(--mdc-tab-line-inactive-background-color-pressed);
     }
 
-    :host([variant='line'][disabled]) {
+    :host([variant='line'][disabled]),
+    :host([variant='line'][soft-disabled]) {
       background-color: var(--mdc-tab-line-inactive-background-color-disabled);
       color: var(--mdc-tab-line-inactive-color-disabled);
     }
@@ -201,12 +205,14 @@ const styles = [
       background-color: var(--mdc-tab-line-active-background-color-pressed);
     }
 
-    :host([variant='line'][active][disabled]) {
+    :host([variant='line'][active][disabled]),
+    :host([variant='line'][active][soft-disabled]) {
       background-color: var(--mdc-tab-line-active-background-color-disabled);
       color: var(--mdc-tab-line-active-color-disabled);
     }
 
-    :host([variant='line'][active][disabled])::part(indicator) {
+    :host([variant='line'][active][disabled])::part(indicator),
+    :host([variant='line'][active][soft-disabled])::part(indicator) {
       background-color: var(--mdc-tab-line-active-indicator-color-disabled);
     }
 
@@ -224,7 +230,8 @@ const styles = [
       background-color: var(--mdc-tab-pill-inactive-background-color-pressed);
     }
 
-    :host([variant='pill'][disabled]) {
+    :host([variant='pill'][disabled]),
+    :host([variant='pill'][soft-disabled]) {
       background-color: var(--mdc-tab-pill-inactive-background-color-disabled);
       color: var(--mdc-tab-pill-inactive-color-disabled);
     }
@@ -242,7 +249,8 @@ const styles = [
       background-color: var(--mdc-tab-pill-active-background-color-pressed);
     }
 
-    :host([variant='pill'][active][disabled]) {
+    :host([variant='pill'][active][disabled]),
+    :host([variant='pill'][active][soft-disabled]) {
       background-color: var(--mdc-tab-pill-active-background-color-disabled);
       color: var(--mdc-tab-pill-active-color-disabled);
     }

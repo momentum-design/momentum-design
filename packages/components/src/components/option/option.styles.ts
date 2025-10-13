@@ -11,7 +11,6 @@ const styles = [
       flex-shrink: 0;
     }
 
-    :host::part(leading-icon),
     :host::part(trailing) {
       display: flex;
       align-items: center;
@@ -22,9 +21,6 @@ const styles = [
       flex: 1;
     }
 
-    :host::part(leading-icon) {
-      margin-inline-end: var(--mdc-listitem-column-gap);
-    }
     :host::part(trailing) {
       margin-inline-start: var(--mdc-listitem-column-gap);
     }

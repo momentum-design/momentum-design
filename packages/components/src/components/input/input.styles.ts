@@ -5,22 +5,12 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   css`
     :host {
-      --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
-      --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
-      --mdc-input-disabled-background-color: var(--mds-color-theme-background-input-disabled);
-      --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
       --mdc-input-text-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
       --mdc-input-background-color: var(--mds-color-theme-background-primary-ghost);
-      --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
-      --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
       --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
-      --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
-      --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-ghost);
-      --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
-      --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
-      --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
-      --mdc-input-success-border-color: var(--mds-color-theme-text-success-normal);
-      --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
+      --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
+      --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
     }
     :host,
     :host::part(input-container),
@@ -29,39 +19,22 @@ const styles = [
       width: 100%;
     }
 
-    input {
+    :host::part(input-text) {
       font-family: inherit;
     }
 
+    :host::part(input-container) {
+      background-color: var(--mdc-input-background-color);
+      border-color: var(--mdc-input-border-color);
+    }
+
     :host::part(input-container):hover {
-      background-color: var(--mdc-input-hover-background-color);
+      --mdc-input-background-color: var(--mds-color-theme-background-primary-hover);
     }
 
     :host::part(input-container):active,
     :host::part(input-container):focus-within {
-      background-color: var(--mdc-input-focused-background-color);
-      border-color: var(--mdc-input-focused-border-color);
-    }
-
-    :host([readonly])::part(leading-icon) {
-      color: var(--mdc-input-support-text-color);
-    }
-
-    :host([disabled])::part(input-text),
-    :host([disabled]) input::placeholder,
-    :host([disabled])::part(prefix-text) {
-      color: var(--mdc-input-disabled-text-color);
-    }
-
-    :host([disabled])::part(input-container),
-    :host([readonly])::part(input-container),
-    :host([disabled][help-text-type='default'])::part(input-container),
-    :host([disabled][help-text-type='success'])::part(input-container),
-    :host([disabled][help-text-type='warning'])::part(input-container),
-    :host([disabled][help-text-type='error'])::part(input-container),
-    :host([disabled][help-text-type='priority'])::part(input-container) {
-      border-color: var(--mdc-input-disabled-border-color);
-      background: var(--mdc-input-disabled-background-color);
+      --mdc-input-border-color: var(--mds-color-theme-outline-input-active);
     }
 
     :host::part(leading-icon) {
@@ -87,11 +60,11 @@ const styles = [
     :host::part(input-text) {
       border: none;
       color: var(--mdc-input-text-color);
-      background-color: var(--mdc-input-background-color);
+      background-color: inherit;
       outline: none;
     }
 
-    input::selection {
+    :host::part(input-text)::selection {
       background-color: var(--mdc-input-selection-background-color);
       color: var(--mdc-input-selection-text-color);
     }
@@ -105,21 +78,31 @@ const styles = [
       color: var(--mdc-input-support-text-color);
     }
 
+    :host([disabled]) {
+      --mdc-input-text-color: var(--mds-color-theme-text-primary-disabled);
+      --mdc-input-support-text-color: var(--mds-color-theme-text-primary-disabled);
+      --mdc-input-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-input-background-color: var(--mds-color-theme-background-input-disabled);
+    }
+
+    :host([readonly])::part(leading-icon) {
+      color: var(--mdc-input-support-text-color);
+    }
+
+    :host([readonly])::part(input-container) {
+      --mdc-input-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-input-background-color: var(--mds-color-theme-background-input-disabled);
+    }
+
     :host([help-text-type='error'])::part(input-container),
-    :host([help-text-type='error'])::part(input-container):focus-within {
-      border-color: var(--mdc-input-error-border-color);
-    }
+    :host([help-text-type='error'])::part(input-container):focus-within,
     :host([help-text-type='warning'])::part(input-container),
-    :host([help-text-type='warning'])::part(input-container):focus-within {
-      border-color: var(--mdc-input-warning-border-color);
-    }
+    :host([help-text-type='warning'])::part(input-container):focus-within,
     :host([help-text-type='success'])::part(input-container),
-    :host([help-text-type='success'])::part(input-container):focus-within {
-      border-color: var(--mdc-input-success-border-color);
-    }
+    :host([help-text-type='success'])::part(input-container):focus-within,
     :host([help-text-type='priority'])::part(input-container),
     :host([help-text-type='priority'])::part(input-container):focus-within {
-      border-color: var(--mdc-input-primary-border-color);
+      border-color: var(--mdc-help-text-color);
     }
 
     .hidden {

@@ -168,7 +168,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
-    this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 
@@ -251,9 +250,11 @@ class Tab extends IconNameMixin(Buttonsimple) {
   public override render() {
     return html`
       <div part="container">
-        ${this.iconName
-          ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
-          : nothing}
+        <slot name="prefix">
+          ${this.iconName
+            ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+            : nothing}
+        </slot>
         ${this.text
           ? html` <mdc-text
               type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}

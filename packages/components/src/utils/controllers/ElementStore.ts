@@ -152,8 +152,8 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *
    * @param event - The event triggered when an item is destroyed.
    */
-  protected itemDestroyHandler = (event: Event) => {
-    this.delete(event.target as TItem);
+  protected itemDestroyHandler = (event: CustomEvent) => {
+    this.delete(event.detail.originalTarget as TItem);
   };
 
   /**

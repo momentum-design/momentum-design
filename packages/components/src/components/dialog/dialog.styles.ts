@@ -20,11 +20,29 @@ const styles = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
     position: absolute;
     right: 50%;
     bottom: 50%;
     transform: translate(50%, 50%);
+  }
+
+  :host > [part="body"]:first-of-type {
+    margin-top: 0;
+  }
+
+  :host > [part="dialog-close-btn"] {
+    margin-top: 0;
+  }
+
+  :host > slot[name="footer"] {
+    margin-top: 0;
+  }
+
+  slot[name="footer-link"]::slotted(*),
+  slot[name="footer-button-primary"]::slotted(*),
+  slot[name="footer-button-secondary"]::slotted(*),
+  slot[name="footer"]::slotted(*) {
+    margin-top: 1rem;
   }
 
   :host([variant='promotional']) {
@@ -101,6 +119,7 @@ const styles = css`
     align-items: center;
     height: 100%;
     width: 100%;
+    margin-top: 1rem;
   }
 
   :host::part(footer) {

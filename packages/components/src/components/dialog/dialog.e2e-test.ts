@@ -11,7 +11,7 @@ type SetupOptions = {
   triggerId?: string;
   zIndex?: number;
   visible?: boolean;
-  size?: boolean;
+  size?: string;
   variant?: string;
   closeButtonAriaLabel?: string;
   ariaLabel?: string;
@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.triggerId ? `triggerId="${restArgs.triggerId}"` : ''}
         ${restArgs.zIndex ? `z-index="${restArgs.zIndex}"` : ''}
         ${restArgs.visible ? `visible="${restArgs.visible}"` : ''}
-        ${restArgs.size ? 'size' : ''}
+        ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
         ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
@@ -159,13 +159,89 @@ test('mdc-dialog', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await setup({ componentsPage, ...dialogWithAllSlots });
-      await componentsPage.visualRegression.takeScreenshot('mdc-dialog', { element: dialog });
+    // Test all sizes with complete content (header + body + footer)
+    await test.step('size variations', async () => {
+      await test.step('matches screenshot for size: small', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-small', { element: dialog });
+      });
+
+      await test.step('matches screenshot for size: medium', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, size: 'medium' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-medium', { element: dialog });
+      });
+
+      await test.step('matches screenshot for size: large', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, size: 'large' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-large', { element: dialog });
+      });
+
+      await test.step('matches screenshot for size: xlarge', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, size: 'xlarge' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-xlarge', { element: dialog });
+      });
+
+      await test.step('matches screenshot for size: fullscreen', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, size: 'fullscreen' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-fullscreen', { element: dialog });
+      });
     });
-    await test.step('matches screenshot of element with variant', async () => {
-      await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional' });
-      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
+
+    // Test variants (only small size)
+    await test.step('variant variations', async () => {
+      await test.step('matches screenshot for default variant', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, variant: 'default', size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-default', { element: dialog });
+      });
+      
+      await test.step('matches screenshot for promotional variant', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional', size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
+      });
+    });
+
+    // Test content variations (only small size)
+    await test.step('content variations', async () => {
+      await test.step('matches screenshot for dialog without header', async () => {
+        const dialogWithoutHeader = {
+          ...dialogWithAllSlots,
+          headerText: undefined,
+          descriptionText: undefined,
+          ariaLabel: 'dialog without header'
+        };
+        const { dialog } = await setup({ componentsPage, ...dialogWithoutHeader, size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-no-header', { element: dialog });
+      });
+
+      await test.step('matches screenshot for dialog without footer', async () => {
+        const dialogWithoutFooter = {
+          ...dialogWithAllSlots,
+          children: `
+            <div slot="dialog-body">
+              <p>This is the body content of the dialog without footer.</p>
+            </div>
+          `
+        };
+        const { dialog } = await setup({ componentsPage, ...dialogWithoutFooter, size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-no-footer', { element: dialog });
+      });
+
+      await test.step('matches screenshot for dialog with body only', async () => {
+        const dialogBodyOnly = {
+          ...dialogWithAllSlots,
+          headerText: undefined,
+          descriptionText: undefined,
+          ariaLabel: 'dialog with body only',
+          children: `
+            <div slot="dialog-body">
+              <p>This is the body content of the dialog with only body content.</p>
+              <p>No header and no footer elements are provided.</p>
+            </div>
+          `
+        };
+        const { dialog } = await setup({ componentsPage, ...dialogBodyOnly, size: 'small' });
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-body-only', { element: dialog });
+      });
     });
   });
 

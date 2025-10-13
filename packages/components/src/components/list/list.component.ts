@@ -100,8 +100,8 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    *
    * @internal
    */
-  private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as HTMLElement;
+  private handleDestroyEvent = (event: CustomEvent) => {
+    const destroyedElement = event.detail.originalTarget as HTMLElement;
     if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
       return;
     }

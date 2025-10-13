@@ -3,6 +3,8 @@ import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Component } from '../../models';
+import { debounce } from '../../utils/debounce';
+import type { Debounced } from '../../utils/debounce';
 
 import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
@@ -84,6 +86,14 @@ class ScreenreaderAnnouncer extends Component {
   timeout: number = DEFAULTS.TIMEOUT;
 
   /**
+   * The debounce time delay in milliseconds for announcements.
+   *
+   * @default 500
+   */
+  @property({ type: Number, reflect: true, attribute: 'debounce-time' })
+  debounceTime: number = DEFAULTS.DEBOUNCE;
+
+  /**
    * Array to store timeOutIds for clearing timeouts later.
    * @internal
    */
@@ -94,6 +104,9 @@ class ScreenreaderAnnouncer extends Component {
    * @internal
    */
   private ariaLiveAnnouncementIds: Array<string> = [];
+
+  /** @internal */
+  private debouncedAnnounce?: Debounced<() => void>;
 
   /**
    * Announces the given announcement to the screen reader.
@@ -113,8 +126,8 @@ class ScreenreaderAnnouncer extends Component {
     if (announcement.length > 0) {
       const announcementId = `mdc-screenreaderannouncer-announcement-${uuidv4()}`;
       const announcementContainer = document.createElement('div');
-      announcementContainer.id = announcementId;
-      announcementContainer.ariaLive = ariaLive;
+      announcementContainer.setAttribute('id', announcementId);
+      announcementContainer.setAttribute('aria-live', ariaLive);
       document.getElementById(this.identity)?.appendChild(announcementContainer);
       const timeOutId = window.setTimeout(() => {
         const announcementElement = document.createElement('p');
@@ -173,17 +186,36 @@ class ScreenreaderAnnouncer extends Component {
     }
   }
 
+  /**
+   * Creates a single debounced function that will read the latest this.announcement when executed.
+   *
+   * This function is used to debounce the announcement so that it will only be made after
+   * this.debounceTime milliseconds have passed since the last time this.announcement was updated.
+   */
+  private setupDebouncedAnnounce() {
+    // create single debounced function that will read latest this.announcement when executed
+    this.debouncedAnnounce = debounce(() => {
+      if (this.announcement.length > 0) {
+        this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
+        this.announcement = '';
+      }
+    }, this.debounceTime);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
     }
     this.createAnnouncementAriaLiveRegion();
+    this.setupDebouncedAnnounce();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.clearTimeOutsAndAnnouncements();
+    // cancel any pending debounced action and clear DOM timeouts
+    this.debouncedAnnounce?.cancel();
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -191,9 +223,12 @@ class ScreenreaderAnnouncer extends Component {
       this.identity = DEFAULTS.IDENTITY;
       this.createAnnouncementAriaLiveRegion();
     }
+    if (changedProperties.has('debounceTime')) {
+      // Reinitiate debounced function if debounceTime changed
+      this.setupDebouncedAnnounce();
+    }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
-      this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
-      this.announcement = '';
+      this.debouncedAnnounce?.();
     }
   }
 
