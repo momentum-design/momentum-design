@@ -86,7 +86,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
     });
 
-    await test.step('should not add counter with presence on sticker sheet', async () => {
+    await test.step('should add counter without presence on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ counter: 50, presence: PRESENCE_TYPE.ACTIVE });
       await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
