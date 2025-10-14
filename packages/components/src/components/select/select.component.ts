@@ -429,12 +429,6 @@ class Select
 
     // set the selected option in the component state
     this.selectedOption = option;
-    // When an option is selected, we need to scroll on to it (if the dropdown is open).
-    window.requestAnimationFrame(() => {
-      if (this.displayPopover) {
-        this.selectedOption?.scrollIntoView({ block: 'center' });
-      }
-    });
 
     // update all form related values
     this.value = this.selectedOption?.value ?? '';
@@ -583,16 +577,19 @@ class Select
     const orderedOptions = [...this.navItems.slice(startIndex), ...this.navItems.slice(0, startIndex)];
     // First, we search for an exact match with then entire search key
     const filteredResults = this.filterOptionsBySearchKey(orderedOptions, searchKey);
+    let newOption: Option | null = null;
     if (filteredResults.length) {
       // If the key is an exact match, then we set the first option
-      this.setSelectedOption(filteredResults[0]);
+      [newOption] = filteredResults;
     } else if (searchKey.split('').every(letter => letter === searchKey[0])) {
       // If the key is same, then we cycle through all options which start with the same letter
       const nextOptionFromList = this.navItems[startIndex];
       const optionsWhichStartWithSameLetter = this.filterOptionsBySearchKey(orderedOptions, searchKey[0]);
       const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
-      this.setSelectedOption(nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0]);
+      newOption = nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0];
     }
+    this.setSelectedOption(newOption);
+    this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.indexOf(newOption!));
   }
 
   /**
@@ -614,20 +611,16 @@ class Select
       case KEYS.ENTER:
       case KEYS.SPACE:
         this.displayPopover = true;
-        // Prevent the default browser behavior of scrolling down
-        event.preventDefault();
         event.stopPropagation();
         break;
       case KEYS.HOME: {
         this.displayPopover = true;
-        this.resetTabIndexAndSetFocus(0);
-        event.preventDefault();
+        this.resetTabIndexAndSetFocusAfterUpdate(0);
         break;
       }
       case KEYS.END: {
         this.displayPopover = true;
-        this.resetTabIndexAndSetFocus(this.navItems.length - 1);
-        event.preventDefault();
+        this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
         break;
       }
       default: {
@@ -637,6 +630,18 @@ class Select
         }
         break;
       }
+    }
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  private resetTabIndexAndSetFocusAfterUpdate(newOptionIndex: number): void {
+    if (this.displayPopover) {
+      // We need to reset the tabindex after the component renders,
+      // so that the dropdown will open and the focus can be set.
+      window.requestAnimationFrame(() => {
+        this.resetTabIndexAndSetFocus(newOptionIndex);
+      });
     }
   }
 
