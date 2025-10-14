@@ -3,34 +3,23 @@ import { css } from 'lit';
 const styles = [
   css`
     :host {
-      --mdc-statictoggle-width: 3rem;
-      --mdc-statictoggle-height: 1.5rem;
-      --mdc-statictoggle-width-compact: 2rem;
-      --mdc-statictoggle-height-compact: 1rem;
-      --mdc-statictoggle-border-radius: 0.75rem;
-      --mdc-statictoggle-border-radius-compact: 0.5rem;
-      --mdc-statictoggle-border: 1px solid var(--mds-color-theme-outline-input-normal);
-      --mdc-statictoggle-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-toggle-width: 3rem;
+      --mdc-toggle-height: 1.5rem;
+      --mdc-toggle-border-radius: 0.75rem;
+      --mdc-toggle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-normal);
+      --mdc-toggle-icon-color: var(--mds-color-theme-common-inverted-text-primary-normal);
+      --mdc-toggle-icon-background-color: var(--mds-color-theme-common-text-primary-normal);
 
-      --mdc-statictoggle-inactive-rest-color: var(--mds-color-theme-control-inactive-normal);
-      --mdc-statictoggle-inactive-disabled-color: var(--mds-color-theme-control-inactive-disabled);
-      --mdc-statictoggle-active-rest-color: var(--mds-color-theme-control-active-normal);
-      --mdc-statictoggle-active-disabled-color: var(--mds-color-theme-control-active-disabled);
-
-      --mdc-statictoggle-icon-color-normal: var(--mds-color-theme-common-inverted-text-primary-normal);
-      --mdc-statictoggle-icon-color-disabled: var(--mds-color-theme-common-inverted-text-primary-disabled);
-      --mdc-statictoggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
-      --mdc-statictoggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
-
-      border-radius: var(--mdc-statictoggle-border-radius);
+      border-radius: var(--mdc-toggle-border-radius);
     }
 
     :host::part(slider) {
-      width: var(--mdc-statictoggle-width);
-      height: var(--mdc-statictoggle-height);
-      background-color: var(--mdc-statictoggle-inactive-rest-color);
-      border-radius: var(--mdc-statictoggle-border-radius);
-      border: var(--mdc-statictoggle-border);
+      width: var(--mdc-toggle-width);
+      height: var(--mdc-toggle-height);
+      background-color: var(--mdc-toggle-background-color);
+      border: 1px solid var(--mdc-toggle-border-color);
+      border-radius: var(--mdc-toggle-border-radius);
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -39,69 +28,71 @@ const styles = [
       padding: 1px;
     }
 
-    :host([checked])::part(slider) {
-      background-color: var(--mdc-statictoggle-active-rest-color);
-      justify-content: flex-end;
-      border-color: transparent;
-    }
-
-    :host([size='compact'])::part(slider) {
-      width: var(--mdc-statictoggle-width-compact);
-      height: var(--mdc-statictoggle-height-compact);
-      border-radius: var(--mdc-statictoggle-border-radius-compact);
-    }
-
     :host::part(toggle-icon) {
       padding: 0.25rem;
-      --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-normal);
-      background-color: var(--mdc-statictoggle-icon-background-color-normal);
+      --mdc-icon-fill-color: var(--mdc-toggle-icon-color);
+      background-color: var(--mdc-toggle-icon-background-color);
       border-radius: 50%;
     }
 
-    :host([disabled])::part(toggle-icon),
-    :host([soft-disabled])::part(toggle-icon),
-    :host([disabled][readonly])::part(toggle-icon),
-    :host([soft-disabled][readonly])::part(toggle-icon) {
-      --mdc-icon-fill-color: var(--mdc-statictoggle-icon-color-disabled);
-      background-color: var(--mdc-statictoggle-icon-background-color-disabled);
+    :host([size='compact'])::part(slider) {
+      --mdc-toggle-width: 2rem;
+      --mdc-toggle-height: 1rem;
+      --mdc-toggle-border-radius: 0.5rem;
     }
 
     :host([size='compact'])::part(toggle-icon) {
       padding: 0.125rem;
     }
 
-    :host([disabled])::part(slider),
-    :host([soft-disabled])::part(slider),
-    :host([readonly])::part(slider) {
-      background-color: var(--mdc-statictoggle-inactive-disabled-color);
-      border-color: var(--mdc-statictoggle-disabled-border-color);
+    :host([checked]) {
+      --mdc-toggle-border-color: transparent;
+      --mdc-toggle-background-color: var(--mds-color-theme-control-active-normal);
+    }
+    :host([checked])::part(slider) {
+      justify-content: flex-end;
     }
 
-    :host([disabled][checked])::part(slider),
-    :host([soft-disabled][checked])::part(slider),
-    :host([disabled][readonly][checked])::part(slider),
-    :host([soft-disabled][readonly][checked])::part(slider) {
-      background-color: var(--mdc-statictoggle-active-disabled-color);
-      border-color: transparent;
+    :host([readonly]) {
+      --mdc-toggle-icon-background-color: var(--mds-color-theme-common-text-primary-normal);
+      --mdc-toggle-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-disabled);
     }
 
-    :host([readonly])::part(toggle-icon) {
-      background-color: var(--mdc-statictoggle-icon-background-color-normal);
+    :host([disabled]),
+    :host([soft-disabled]) {
+      --mdc-toggle-icon-color: var(--mds-color-theme-common-inverted-text-primary-disabled);
+      --mdc-toggle-icon-background-color: var(--mds-color-theme-common-text-primary-disabled);
+      --mdc-toggle-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-disabled);
+      cursor: default;
     }
 
-    :host([disabled][readonly])::part(slider),
-    :host([soft-disabled][readonly])::part(slider) {
-      background-color: var(--mdc-statictoggle-inactive-disabled-color);
+    :host([checked][disabled]),
+    :host([checked][soft-disabled]) {
+      --mdc-toggle-icon-color: var(--mds-color-theme-common-inverted-text-primary-disabled);
+      --mdc-toggle-icon-background-color: var(--mds-color-theme-common-text-primary-disabled);
+      --mdc-toggle-border-color: transparent;
+      --mdc-toggle-background-color: var(--mds-color-theme-control-active-disabled);
     }
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host([checked])::part(slider),
       :host::part(toggle-icon) {
-        border: var(--mdc-statictoggle-border);
+        --mdc-toggle-icon-color: CanvasText;
+        border: 1px solid var(--mdc-toggle-border-color);
       }
-      :host::part(toggle-icon) {
-        --mdc-icon-fill-color: CanvasText;
+
+      :host([checked]) {
+        --mdc-toggle-icon-color: SelectedItemText;
+        --mdc-toggle-border-color: SelectedItem;
+        --mdc-toggle-background-color: SelectedItem;
+      }
+
+      :host([disabled])::part(toggle-icon),
+      :host([soft-disabled])::part(toggle-icon) {
+        --mdc-toggle-icon-color: GrayText;
+        border: 1px solid GrayText;
       }
     }
   `,

@@ -14,18 +14,11 @@ import styles from './staticradio.styles';
  *
  * @tagname mdc-staticradio
  *
- * @cssproperty --mdc-staticradio-inner-circle-size - size of the inner circle
- * @cssproperty --mdc-staticradio-text-disabled-color - color of the label when disabled
- * @cssproperty --mdc-staticradio-normal-border-color - color of the radio button border when normal
- * @cssproperty --mdc-staticradio-disabled-border-color - color of the radio button border when disabled
- * @cssproperty --mdc-staticradio-inner-circle-normal-background - background color of the inner circle when normal
- * @cssproperty --mdc-staticradio-inner-circle-disabled-background - background color of the inner circle when disabled
- * @cssproperty --mdc-staticradio-control-inactive-color - color of the radio button when inactive
- * @cssproperty --mdc-staticradio-control-inactive-disabled-background - background color of the radio button when
- *  inactive and disabled
- * @cssproperty --mdc-staticradio-control-active-color - color of the radio button when active
- * @cssproperty --mdc-staticradio-control-active-disabled-background - background color of the radio button
- *  when active and disabled
+ * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-size - size of the outer circle
+ * @cssproperty --mdc-radio-inner-circle-background-color - background color of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-border-color - border color of the outer circle
+ * @cssproperty --mdc-radio-outer-circle-background-color - background color of the outer circle
  *
  * @csspart radio-icon - The radio icon.
  *

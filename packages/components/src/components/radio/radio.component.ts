@@ -31,14 +31,11 @@ import styles from './radio.styles';
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
- * @cssproperty --mdc-radio-text-disabled-color - color of the label when disabled
- * @cssproperty --mdc-radio-control-inactive-hover - color of the radio button when inactive and hovered
- * @cssproperty --mdc-radio-control-inactive-pressed-color - color of the radio button when inactive and pressed
- * @cssproperty --mdc-radio-control-active-hover-color - color of the radio button when active and hovered
- * @cssproperty --mdc-radio-control-active-pressed-color - color of the radio button when active and pressed
- * @cssproperty --mdc-radio-disabled-border-color - color of the radio button when disabled
- * @cssproperty --mdc-radio-control-active-disabled-background - color of the radio button when active and disabled
- * @cssproperty --mdc-radio-control-inactive-disabled-background - color of the radio button when inactive and disabled
+ * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-size - size of the outer circle
+ * @cssproperty --mdc-radio-inner-circle-background-color - background color of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-border-color - border color of the outer circle
+ * @cssproperty --mdc-radio-outer-circle-background-color - background color of the outer circle
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -292,6 +289,7 @@ class Radio
         ?disabled="${this.disabled}"
         ?readonly="${this.readonly}"
         ?soft-disabled="${this.softDisabled}"
+        part="static-radio"
       >
         <input
           id="${this.inputId}"

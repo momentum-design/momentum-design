@@ -56,6 +56,7 @@ import styles from './input.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-input-text-color - Text color for the input field
  * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
