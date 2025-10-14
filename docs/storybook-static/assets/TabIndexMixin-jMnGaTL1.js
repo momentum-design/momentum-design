@@ -1,1 +1,0 @@
-import{n as i}from"./iframe-DmLJKHqi.js";var o=Object.defineProperty,p=(t,r,n,u)=>{for(var e=void 0,s=t.length-1,a;s>=0;s--)(a=t[s])&&(e=a(r,n,e)||e);return e&&o(r,n,e),e};const f=t=>{class r extends t{constructor(){super(...arguments),this.tabIndex=0}}return p([i({reflect:!0,type:Number})],r.prototype,"tabIndex"),r};export{f as T};
