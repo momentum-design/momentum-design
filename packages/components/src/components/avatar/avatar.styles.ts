@@ -12,31 +12,31 @@ const styles = [
       --mdc-avatar-loading-indicator-foreground-color: var(--mdc-avatar-default-foreground-color);
       --mdc-avatar-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
     }
-    :host([size='124'])::part(content) {
+    :host([size='124']) {
       width: 7.75rem;
       height: 7.75rem;
     }
-    :host([size='88'])::part(content) {
+    :host([size='88']) {
       width: 5.5rem;
       height: 5.5rem;
     }
-    :host([size='72'])::part(content) {
+    :host([size='72']) {
       width: 4.5rem;
       height: 4.5rem;
     }
-    :host([size='64'])::part(content) {
+    :host([size='64']) {
       width: 4rem;
       height: 4rem;
     }
-    :host([size='48'])::part(content) {
+    :host([size='48']) {
       width: 3rem;
       height: 3rem;
     }
-    :host([size='32'])::part(content) {
+    :host([size='32']) {
       width: 2rem;
       height: 2rem;
     }
-    :host([size='24'])::part(content) {
+    :host([size='24']) {
       width: 1.5rem;
       height: 1.5rem;
     }
@@ -63,10 +63,7 @@ const styles = [
     :host([size='24'])::part(loader) {
       transform: scale(0.3);
     }
-    :host([size='20'])::part(loader) {
-      transform: scale(0.25);
-    }
-    :host::part(content) {
+    :host {
       width: 2rem;
       height: 2rem;
       background-color: var(--mdc-avatar-default-background-color);
@@ -167,7 +164,7 @@ const styles = [
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host::part(content) {
+      :host {
         outline: 0.125rem solid;
       }
     }
