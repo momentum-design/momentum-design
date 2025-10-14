@@ -50,8 +50,6 @@ export const Example: StoryObj = {
   args: {
     label: 'Input Chip',
     'clear-aria-label': 'Clear',
-    error: false,
-    disabled: false,
   },
 };
 
@@ -60,8 +58,6 @@ export const WithIcon: StoryObj = {
     label: 'Input Chip',
     'icon-name': 'placeholder-bold',
     'clear-aria-label': 'Clear',
-    error: false,
-    disabled: false,
   },
 };
 
@@ -70,7 +66,6 @@ export const Error: StoryObj = {
     label: 'Input Chip',
     'clear-aria-label': 'Clear',
     error: true,
-    disabled: false,
   },
 };
 
@@ -78,7 +73,6 @@ export const Disabled: StoryObj = {
   args: {
     label: 'Input Chip',
     'clear-aria-label': 'Clear',
-    error: false,
     disabled: true,
   },
 };
@@ -123,34 +117,20 @@ export const WithRemove: StoryObj = {
   },
 };
 
-export const WithAvatar: StoryObj = {
-  render: () =>
-    html` <mdc-inputchip label="John Doe" clear-aria-label="Remove John Doe" @remove="${action('remove')}">
-      <mdc-avatar slot="prefix" size="20" initials="JD"></mdc-avatar>
-    </mdc-inputchip>`,
-};
-
-export const WithAvatarPhoto: StoryObj = {
-  render: () =>
-    html` <mdc-inputchip label="Jane Smith" clear-aria-label="Remove Jane Smith" @remove="${action('remove')}">
-      <mdc-avatar slot="prefix" size="20" src="${imageFixtures.avatar}" initials="JS"></mdc-avatar>
-    </mdc-inputchip>`,
-};
-
-export const AvatarVariants: StoryObj = {
+export const WithAvatarVariants: StoryObj = {
   render: () =>
     html` <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-      <mdc-inputchip label="John Doe" clear-aria-label="Clear" @remove="${action('remove')}">
-        <mdc-avatar slot="prefix" size="20" initials="JD"></mdc-avatar>
+      <mdc-inputchip label="Avatar Img" clear-aria-label="Clear" @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>
       </mdc-inputchip>
-      <mdc-inputchip label="Jane Smith" clear-aria-label="Clear" @remove="${action('remove')}">
-        <mdc-avatar slot="prefix" size="20" src="${imageFixtures.avatar}" initials="JS"></mdc-avatar>
+      <mdc-inputchip label="Avatar Error Img" clear-aria-label="Clear" error @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AE"></mdc-avatar>
       </mdc-inputchip>
-      <mdc-inputchip label="Team Lead" clear-aria-label="Clear" error @remove="${action('remove')}">
-        <mdc-avatar slot="prefix" size="20" icon-name="user-regular"></mdc-avatar>
+      <mdc-inputchip label="Avatar Disabled Img" clear-aria-label="Clear" disabled @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AD"></mdc-avatar>
       </mdc-inputchip>
-      <mdc-inputchip label="Alex Johnson" clear-aria-label="Clear" disabled @remove="${action('remove')}">
-        <mdc-avatar slot="prefix" size="20" initials="AJ"></mdc-avatar>
+      <mdc-inputchip label="Avatar Error Disabled Img" clear-aria-label="Clear" error disabled @remove="${action('remove')}">
+        <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="ED"></mdc-avatar>
       </mdc-inputchip>
     </div>`,
 };
