@@ -127,7 +127,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();
       await componentsPage.page.keyboard.press('ArrowDown');
-      await componentsPage.debugUtils.logActiveElement();
       await expect(virtualizedList.locator('mdc-listitem[data-index="5"]')).toBeFocused();
 
       await virtualizedList.hover();
@@ -246,8 +245,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await componentsPage.actionability.pressTab();
 
-        await componentsPage.debugUtils.logActiveElement();
-
         // Focus should loop back to the Remove Last button
         await expect(componentsPage.page.locator('mdc-button:has-text("Remove Last")')).toBeFocused();
       });
@@ -299,7 +296,9 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
         // go to the last item
         await componentsPage.page.keyboard.press('End');
-        const addToBottomButton = await tabToListItemButton(virtualizedList, 9, 'Add Last');
+        await listItemLocator(virtualizedList, 19, 19).waitFor({ state: 'visible' });
+        await componentsPage.page.pause();
+        const addToBottomButton = await tabToListItemButton(virtualizedList, 19, 'Add Last');
 
         // Add several items to the bottom
         for (let i = 0; i < COUNT; i += 1) {

@@ -1,4 +1,4 @@
-import { css, CSSResult, html, PropertyValues } from 'lit';
+import { html, PropertyValues } from 'lit';
 import { state, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -125,26 +125,22 @@ export class VirtualizedWrapper extends Component {
           )}
         </mdc-virtualizedlist>
       </div>
+      <style>
+        :host([story='text'])::part(wrapper) {
+          width: 500px;
+          height: 500px;
+        }
+        :host([story='interactive'])::part(wrapper) {
+          width: 100%;
+          height: 500px;
+        }
+        :host([story='dynamic'])::part(wrapper) {
+          width: 100%;
+          height: 500px;
+        }
+      </style>
     `;
   }
-
-  public static override styles: Array<CSSResult> = [
-    ...Component.styles,
-    css`
-      :host([story='text'])::part(wrapper) {
-        width: 500px;
-        height: 500px;
-      }
-      :host([story='interactive'])::part(wrapper) {
-        width: 100%;
-        height: 500px;
-      }
-      :host([story='dynamic'])::part(wrapper) {
-        width: 100%;
-        height: 500px;
-      }
-    `,
-  ];
 }
 
 VirtualizedWrapper.register('mdc-virtualizedwrapper');
