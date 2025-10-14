@@ -16,7 +16,7 @@ export const IconTable = ({ icons }: Props) => {
     () => (
       <div className="iconGrid">
         {Object.entries(icons).map(([key, path]) => {
-          const finalPath = `${path.replace('./svg', '/momentum-design/icons')}`;
+          const finalPath = `${path.replace('./svg', '/icons')}`;
           return (
             <div className="iconWrapper">
               <img className={(!key.includes('colored') && 'icon') || ''} src={finalPath} />

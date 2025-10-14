@@ -31,7 +31,7 @@ export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 // eslint-disable-next-line max-len
 export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/documentation/src/pages';
 
-export const COMMUNITY_INVITE_URL = '/momentum-design/en';
+export const COMMUNITY_INVITE_URL = '/en';
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
@@ -44,24 +44,24 @@ export const ALGOLIA = {
 export type Sidebar = Record<typeof KNOWN_LANGUAGE_CODES[number], Record<string, { text: string; link: string }[]>>;
 export const SIDEBAR: Sidebar = {
   en: {
-    Momentum: [{ text: 'Introduction', link: 'momentum-design/en/docs/momentum/introduction' }],
+    Momentum: [{ text: 'Introduction', link: 'en/docs/momentum/introduction' }],
     'Developer Tooling': [
-      { text: 'Token Builder', link: 'momentum-design/en/docs/developer-tooling/token-builder/README.md' },
-      { text: 'Automation', link: 'momentum-design/en/docs/developer-tooling/automation/README.md' },
-      { text: 'Builder', link: 'momentum-design/en/docs/developer-tooling/builder/README.md' },
-      { text: 'Common', link: 'momentum-design/en/docs/developer-tooling/common/README.md' },
-      { text: 'Fonts', link: 'momentum-design/en/docs/developer-tooling/fonts/README.md' },
-      { text: 'Icons', link: 'momentum-design/en/docs/developer-tooling/icons/README.md' },
-      { text: 'Illustrations', link: 'momentum-design/en/docs/developer-tooling/illustrations/README.md' },
-      { text: 'Telemetry', link: 'momentum-design/en/docs/developer-tooling/telemetry/README.md' },
-      { text: 'Tokens', link: 'momentum-design/en/docs/developer-tooling/tokens/README.md' },
-      { text: 'Animations', link: 'momentum-design/en/docs/developer-tooling/animations/README.md' },
+      { text: 'Token Builder', link: 'en/docs/developer-tooling/token-builder/README.md' },
+      { text: 'Automation', link: 'en/docs/developer-tooling/automation/README.md' },
+      { text: 'Builder', link: 'en/docs/developer-tooling/builder/README.md' },
+      { text: 'Common', link: 'en/docs/developer-tooling/common/README.md' },
+      { text: 'Fonts', link: 'en/docs/developer-tooling/fonts/README.md' },
+      { text: 'Icons', link: 'en/docs/developer-tooling/icons/README.md' },
+      { text: 'Illustrations', link: 'en/docs/developer-tooling/illustrations/README.md' },
+      { text: 'Telemetry', link: 'en/docs/developer-tooling/telemetry/README.md' },
+      { text: 'Tokens', link: 'en/docs/developer-tooling/tokens/README.md' },
+      { text: 'Animations', link: 'en/docs/developer-tooling/animations/README.md' },
     ],
     'API Reference': [
-      { text: 'Token Builder', link: 'momentum-design/en/docs/api-reference/token-builder' },
-      { text: 'Telemetry', link: 'momentum-design/en/docs/api-reference/telemetry' },
-      { text: 'Common', link: 'momentum-design/en/docs/api-reference/common' },
-      { text: 'Builder', link: 'momentum-design/en/docs/api-reference/builder' },
+      { text: 'Token Builder', link: 'en/docs/api-reference/token-builder' },
+      { text: 'Telemetry', link: 'en/docs/api-reference/telemetry' },
+      { text: 'Common', link: 'en/docs/api-reference/common' },
+      { text: 'Builder', link: 'en/docs/api-reference/builder' },
     ],
   },
 };
@@ -74,19 +74,19 @@ export type Menu = Record<
 export const MAIN_MENU: Menu = {
   en: {
     Home: {
-      index: 'momentum-design/en',
+      index: 'en',
       submenu: [],
     },
     Tokens: {
-      index: 'momentum-design/en/tokens',
+      index: 'en/tokens',
       submenu: [],
     },
     Assets: {
-      index: 'momentum-design/en/assets',
+      index: 'en/assets',
       submenu: [],
     },
     Components: {
-      index: 'momentum-design/en/components',
+      index: 'en/components',
       submenu: [],
     },
   },

@@ -5,8 +5,8 @@ export const Home = () => (
   <div className="wrapper">
     <div className="banner">
       <div className="illustrationWrapper">
-        <img src="/momentum-design/header-illustration.svg" className="heroIllustration" />
-        <img src="/momentum-design/hero-gradient.svg" className="heroGradient" />
+        <img src="/header-illustration.svg" className="heroIllustration" />
+        <img src="/hero-gradient.svg" className="heroGradient" />
       </div>
       <div className="textWrapper">
         <h1>Momentum Design System</h1>

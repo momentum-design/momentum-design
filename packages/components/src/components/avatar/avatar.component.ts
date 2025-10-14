@@ -47,7 +47,6 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
  * @cssproperty --mdc-avatar-loading-overlay-background-color -
  *  Allows customization of the loading overlay background color.
  *
- * @csspart content - The main content of the avatar.
  * @csspart photo - The photo of the avatar.
  * @csspart presence - The presence indicator of the avatar.
  * @csspart loading-wrapper - The wrapper for the loading indicator.
@@ -58,6 +57,11 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
    * @internal
    */
   @state() private isPhotoLoaded = false;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('aria-hidden', 'true');
+  }
 
   /**
    * @internal
@@ -301,10 +305,8 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   public override render(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
     return html`
-      <div part="content" aria-hidden="true">
-        ${this.getPhotoPlaceHolderContent(type)} ${this.getTemplateBasedOnType(type)} ${this.getLoadingContent()}
-        ${this.getPresenceTemplateBasedOnType(type)}
-      </div>
+      ${this.getPhotoPlaceHolderContent(type)} ${this.getTemplateBasedOnType(type)} ${this.getLoadingContent()}
+      ${this.getPresenceTemplateBasedOnType(type)}
     `;
   }
 
