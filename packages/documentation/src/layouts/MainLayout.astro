@@ -15,6 +15,11 @@ const currentPage = Astro.url.pathname;
 const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
 ---
 
+<script>
+  import '@momentum-design/components/dist/components/themeprovider/index.js';
+  import '@momentum-design/components/dist/components/iconprovider/index.js';
+</script>
+
 <html dir={frontmatter.dir ?? 'ltr'} lang={frontmatter.lang ?? 'en-us'} class="initial">
   <head>
     <HeadCommon />
@@ -24,32 +29,46 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
     </title>
     <style>
 			body {
-        position: fixed;
-        height: 100%;
+        height: 100vh;
 				width: 100%;
-				display: grid;
-				grid-template-rows: var(--theme-navbar-height) 1fr;
-				--gutter: 0.5rem;
-				--doc-padding: 2rem;
-			}
-
+        overflow: hidden;
+      }
 			.layout {
-				padding: 0 1rem;
-				display: grid;
-				margin: 0 auto;
 				width: 100%;
-        overflow-y: auto;
 			}
+      .scroll-wrapper {
+        overflow-y: scroll;
+      }
+      .background-wrapper {
+        background: url('/background.webp');
+        background-attachment: scroll;
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
 
     </style>
   </head>
-  <body>
-    <Header />
-    <main class="layout">
-      <div id="grid-main">
-        <slot />
-      </div>
-    </main>
-    <Footer path={currentFile} />
+  <body class="mds-typography mds-effect">
+    <mdc-themeprovider themeclass="mds-theme-stable-darkWebex" style="display: contents;">
+      <mdc-iconprovider
+        icon-set="custom-icons"
+        url="./icons"
+        cache-name="momentum-website-icons"
+        cache-strategy="web-cache-api"
+      >
+        <div class="scroll-wrapper">
+          <div class="background-wrapper">
+            <Header />
+            <main class="layout">
+              <div id="grid-main">
+                <slot />
+              </div>
+            </main>
+            <Footer path={currentFile} />
+          </div>
+        </div>
+      </mdc-iconprovider>
+    </mdc-themeprovider>
   </body>
 </html>

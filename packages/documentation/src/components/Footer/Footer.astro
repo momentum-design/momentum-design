@@ -1,5 +1,9 @@
+<script>
+  import '@momentum-design/components/dist/components/brandvisual/index.js';
+</script>
+
 <footer>
-© {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
+  <mdc-brandvisual class="cisco-footer-logo" name="cisco-logo-dark-bw"></mdc-brandvisual> © {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
 </footer>
 
 <style>
@@ -11,5 +15,10 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
+  }
+
+  .cisco-footer-logo {
+    width: 35px;
+    margin-right: 10px;
   }
 </style>

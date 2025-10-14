@@ -19,7 +19,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
   <SkipToContent />
   <nav class="nav-wrapper" title="Top Navigation">
     <div class="logo flex">
-      <MomentumLogo height={40} />
+      <MomentumLogo height={48} />
     </div>
     <div class="main-menu" style={{ alignItems: 'center' }}>
       {
@@ -43,17 +43,34 @@ const menu = CONFIG.MAIN_MENU[langCode];
 </header>
 
 <style>
+    @keyframes add-blur {
+    from {
+      backdrop-filter: none;
+      background: transparent;
+      box-shadow: none;
+      border-bottom-color: transparent;
+    }
+    to {
+      backdrop-filter: blur(60px);
+      background: rgba(0, 0, 0, 0.11);
+      box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.50);
+      border-bottom-color: var(--mds-color-theme-outline-glass-normal);
+    }
+  }
   header {
     z-index: 11;
     height: var(--theme-navbar-height);
     width: 100%;
-    background-color: var(--theme-navbar-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     position: sticky;
     top: 0;
+    animation: add-blur linear both;
+    animation-timeline: scroll();
+    animation-range: 0 25vh;
+    border-bottom: 1px solid var(--mds-color-theme-outline-glass-normal);
   }
 
   .logo {
@@ -107,7 +124,20 @@ const menu = CONFIG.MAIN_MENU[langCode];
     justify-content: space-between;
     gap: 2.5rem;
     width: 100%;
-    padding: 0 1rem;
+    max-width: 60%;
+  }
+
+  @media (max-width: 1920px) {
+  .nav-wrapper {
+    max-width: 1160px;
+  }
+}
+
+  .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--mds-color-theme-text-primary-normal);
   }
 
   @media (max-width: 580px) {
