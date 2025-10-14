@@ -14,22 +14,43 @@ import { KEYS } from '../../utils/keys';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS, IS_AT_BOTTOM_THRESHOLD } from './virtualizedlist.constants';
-import type { VirtualizerProps, Virtualizer } from './virtualizedlist.types';
+import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.types';
 
 /**
  * `mdc-virtualizedlist` is an extension of the `mdc-list` component that adds virtualization capabilities using
  * the Tanstack Virtual library.
  *
+ * This component is thin wrapper around the Tanstack libray to provide additional funtionalities such as
+ * keyboard navigation, focus management, scroll anchoring and accessibility features.
+ *
+ * To keep the component framework-agnostic, the rendering of the list items is left to the consumer.
+ *
+ * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
+ *
+ * ## Setup
+ *
  * `virtualizerProps` is a required prop that requires at least two properties to be set: `count` and `estimateSize`.
  * `count` is the total number of items in the list, and `estimateSize` is a function that returns the estimated
  * size (in pixels) of each item in the list.
  *
- * The `virtualitemschange` event provides the current virtual items and a measureElement function to help with
- * dynamic sizing. This should be listened to in order to render the correct virtualized items.
+ * ## Best practices
  *
- * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
+ * ### List updates
+ *
+ * Tanstack needs only the count of the items in the list and the size of each item to perform virtualization.
+ * List updates happens when
+ * - when `virtualizerProps` property of the component instance changes
+ * - when `observe-size-changes` is set and the item's size changes (it uses ResizeObserver internally)
+ * - when `component.visualiser.measure` called manually.
+ *
+ * ### Header
  *
  * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
+ *
+ * ### Lists with dynamic content
+ *
+ * Unique keys for the list items are critical for dynamically changing list items or item's content.
+ * If the key change with the content it will cause scrollbar and content shuttering.
  *
  * @tagname mdc-virtualizedlist
  *
@@ -77,7 +98,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   /**
    * Disable automatic scroll anchoring when the list size changes.
-   * By default, the list will attempt to keep the same items in view when the list size changes.
+   * By default, list scrolled to the very end it keeps the scroll position  otherwise
+   * it try hold the scroll position on the last selected when list updates.
    * However, if you don't expect the list size to change often, or if you want to handle scroll anchoring yourself,
    * you can set this prop to true to disable the automatic behavior.
    *
@@ -94,14 +116,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   public observeSizeChanges: boolean = false;
 
   /**
-   * When true, the list will render in reverse order, with the last item at the bottom.
+   * When true, the list items will be aligned to the bottom of the list, and it anchors scroll to the bottom
+   * until the first user scroll interaction.
+   *
+   * Note: It does not affect on the rendering order, the first item is still at the top of the list.
    */
   @property({ type: Boolean, reflect: true, attribute: 'revert-list' })
   public revertList: boolean = false;
 
   /**
    * The virtualizer instance created by the VirtualizerController.
-   * @internal
    */
   public virtualizer: Virtualizer | null = null;
 
@@ -175,13 +199,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * - 're-evaluate' - The scroll position needs to be re-evaluated on the next scroll event.
    * @internal
    */
-  private atBottomValue: 'no' | 'yes' | 're-evaluate' = 'no';
+  private atBottomValue: AtBottomValue = 'no';
 
   /**
    * Getter for atBottom
    * @internal
    */
-  private get atBottom(): 'no' | 'yes' | 're-evaluate' {
+  private get atBottom(): AtBottomValue {
     return this.atBottomValue;
   }
 
@@ -191,7 +215,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    * @internal
    */
-  private set atBottom(value: 'no' | 'yes' | 're-evaluate') {
+  private set atBottom(value: AtBottomValue) {
     if (this.atBottomValue !== value || (value === 'yes' && this.atBottomTimer === -1)) {
       this.atBottomValue = value;
       if (value === 'yes') {
@@ -291,7 +315,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     const { virtualizer } = this;
 
     if (!virtualizer) return;
-
     const prevMeasurements = virtualizer.measurementsCache.slice();
 
     virtualizer.setOptions({
@@ -318,7 +341,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       const newSelectedIndex =
         Array.from(searchRange).find(i => virtualizer.options.getItemKey(i) === this.selectedKey) ?? this.selectedIndex;
 
-      this.selectedIndex = Math.max(0, Math.min(virtualizer.options.count - 1, newSelectedIndex));
+      this.setSelectedIndex(newSelectedIndex);
 
       // Wait for the virtualizer to finish updating before we read the new scrollHeight
       this.requestUpdate();
@@ -349,10 +372,9 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     setTimeout(async () => {
       if (!this.virtualizer) return;
 
-      const { options, scrollToIndex } = this.virtualizer;
+      const { scrollToIndex } = this.virtualizer;
 
-      this.selectedIndex = Math.max(0, Math.min(options.count - 1, this.initialFocus));
-      this.selectedKey = options.getItemKey(this.selectedIndex);
+      this.setSelectedIndex(this.initialFocus);
 
       scrollToIndex(this.selectedIndex, { align: 'center' });
 
@@ -451,11 +473,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   /** @internal */
   private setSelectedIndex(newIndex: number): void {
     if (this.virtualizer) {
-      if (newIndex + 1 === this.virtualizer.options.count) {
+      const { count, getItemKey } = this.virtualizer.options;
+
+      this.selectedIndex = Math.max(0, Math.min(count - 1, newIndex));
+      this.selectedKey = getItemKey(newIndex);
+      if (this.selectedIndex + 1 === count) {
         this.atBottom = 'yes';
       }
-      this.selectedIndex = newIndex;
-      this.selectedKey = this.virtualizer.options.getItemKey(newIndex);
     }
   }
 
@@ -532,18 +556,19 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   protected override handleNavigationKeyDown(event: KeyboardEvent): void {
+    const { focusWithin } = this;
     switch (event.key) {
       case KEYS.HOME: {
         // Move focus to the first item
-        this.setSelectedIndex(0);
         this.virtualizer?.scrollToIndex?.(0, { align: 'start' });
+        this.resetTabIndexes(0, focusWithin);
         break;
       }
       case KEYS.END: {
         // Move focus to the last item
         const selectedItem = this.virtualizerProps.count - 1;
-        this.setSelectedIndex(selectedItem);
-        this.virtualizer?.scrollToIndex?.(this.virtualizerProps.count, { align: 'end' });
+        this.virtualizer?.scrollToIndex?.(selectedItem, { align: 'end' });
+        this.resetTabIndexes(selectedItem, focusWithin);
         break;
       }
       case KEYS.ARROW_UP: {
@@ -553,6 +578,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       default:
     }
     super.handleNavigationKeyDown(event);
+  }
+
+  protected override resetTabIndexes(index: number, focusElement = true) {
+    super.resetTabIndexes(index, focusElement);
+    this.setSelectedIndex(index);
+  }
+
+  protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void {
+    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
+    this.setSelectedIndex(newIndex);
   }
 
   /** @internal */
@@ -571,11 +606,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
       if (scrollEl && this.totalListHeight > scrollEl.clientHeight) {
         const diff = Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
-        // console.log('rAF');
-        // if (diff <= 1) {
-        //   scrollEl.scrollTop = scrollEl.scrollHeight;
-        //   return;
-        // }
         scrollEl.scrollTop += diff;
       }
       this.atBottomTimer = requestAnimationFrame(this.scrollToBottom.bind(this));

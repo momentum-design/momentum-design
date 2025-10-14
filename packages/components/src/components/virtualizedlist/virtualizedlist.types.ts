@@ -26,3 +26,5 @@ export type Virtualizer = TanstackVirtualizer<Element, Element>;
 export type VirtualizerOptions = TanstackVirtualizerOptions<Element, Element>;
 export type VirtualizerProps = Omit<Partial<VirtualizerOptions>, 'getScrollElement'> &
   Required<Pick<VirtualizerOptions, 'count' | 'estimateSize' | 'getItemKey'>>;
+
+export type AtBottomValue = 'no' | 'yes' | 're-evaluate';

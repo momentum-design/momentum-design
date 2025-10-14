@@ -115,6 +115,10 @@ class VirtualizedDynamicList extends Component {
       </style>
     `;
   }
+
+  override createRenderRoot() {
+    return this;
+  }
 }
 
 VirtualizedDynamicList.register('mdc-virtualizeddynamiclist');

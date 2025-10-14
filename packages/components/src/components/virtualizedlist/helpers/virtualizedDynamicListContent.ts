@@ -1,4 +1,4 @@
-import { css, CSSResult, html, nothing, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
@@ -136,12 +136,11 @@ class VirtualizedDynamicListContent extends Component {
 
   protected override render(): TemplateResult {
     return html`
-      <div id="VirtualizedDynamicList--wrapper">
+      <div class="vlist-dynamic-content--wrapper">
         <mdc-virtualizedlist
           ${ref(this.virtualizerRef)}
           observe-size-changes
           revert-list
-          monotonously-grow
           .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
         >
@@ -153,38 +152,39 @@ class VirtualizedDynamicListContent extends Component {
               )
             : nothing}
         </mdc-virtualizedlist>
-      </div>
-      <div style="margin-top: 1rem;">
-        <div style="display: flex; gap: 0.25rem;">
-          <mdc-button @click=${this.onNext}>Get next message</mdc-button>
-          <mdc-button variant="secondary" @click=${this.reset}>Reset</mdc-button>
+        <div style="margin-top: 1rem;">
+          <div style="display: flex; gap: 0.25rem;">
+            <mdc-button @click=${this.onNext}>Get next message</mdc-button>
+            <mdc-button variant="secondary" @click=${this.reset}>Reset</mdc-button>
+          </div>
         </div>
       </div>
-      <style></style>
+
+      <style>
+        .vlist-dynamic-content--wrapper {
+          width: 100%;
+          margin-block: 1rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        mdc-virtualizedlist {
+          width: 640px;
+          height: 480px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 1rem;
+        }
+        pre {
+          text-wrap: auto;
+        }
+      </style>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [
-    css`
-      :host {
-        width: 100%;
-        margin-block: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      mdc-virtualizedlist {
-        width: 640px;
-        height: 480px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 1rem;
-      }
-      pre {
-        text-wrap: auto;
-      }
-    `,
-  ];
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
+    return this;
+  }
 }
 
 VirtualizedDynamicListContent.register('mdc-virtualizeddynamiclistcontent');
