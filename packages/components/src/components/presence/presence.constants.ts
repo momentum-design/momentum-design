@@ -21,7 +21,6 @@ const PRESENCE_TYPE = {
 
 
 const PRESENCE_SIZE = {
-  20: 20,
   24: 24,
   32: 32,
   48: 48,

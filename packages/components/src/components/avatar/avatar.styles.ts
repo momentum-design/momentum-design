@@ -40,10 +40,6 @@ const styles = [
       width: 1.5rem;
       height: 1.5rem;
     }
-    :host([size='20'])::part(content) {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
     :host([size='124'])::part(loader) {
       transform: scale(1.5);
     }
@@ -111,11 +107,6 @@ const styles = [
     :host([size='24'])::part(presence) {
       bottom: -0.1875rem;
       right: -0.1875rem;
-    }
-
-    :host([size='20'])::part(presence) {
-      bottom: -0.21875rem;
-      right: -0.21875rem;
     }
 
     :host::part(loading-wrapper) {
