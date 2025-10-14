@@ -244,6 +244,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   private lastScrollPosition = 0;
 
+  /**
+   * List of functions executed aster the virtualizer finishes scrolling.
+   * @internal
+   */
+  private endOfScrollQueue: Array<() => void> = [];
+
   constructor() {
     super();
     this.addEventListener('wheel', e => {
@@ -511,11 +517,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    *
    * @internal
    */
-  protected async onVListStateChangeHandler() {
+  protected async onVListStateChangeHandler(_: Virtualizer, isScrolling: boolean) {
     // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
     // virtualizer's options therefore we need to call it here ourselves.
     await this.updateComplete;
     this.requestUpdate();
+
+    if (!isScrolling && this.endOfScrollQueue.length > 0) {
+      this.endOfScrollQueue.forEach(fn => fn());
+      this.endOfScrollQueue.length = 0;
+    }
 
     this.checkAtBottom();
     this.emitChangeEvent();
@@ -556,19 +567,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   protected override handleNavigationKeyDown(event: KeyboardEvent): void {
-    const { focusWithin } = this;
     switch (event.key) {
       case KEYS.HOME: {
         // Move focus to the first item
         this.virtualizer?.scrollToIndex?.(0, { align: 'start' });
-        this.resetTabIndexes(0, focusWithin);
+        this.endOfScrollQueue.push(() => this.resetTabIndexes(0));
         break;
       }
       case KEYS.END: {
         // Move focus to the last item
         const selectedItem = this.virtualizerProps.count - 1;
         this.virtualizer?.scrollToIndex?.(selectedItem, { align: 'end' });
-        this.resetTabIndexes(selectedItem, focusWithin);
+        this.endOfScrollQueue.push(() => this.resetTabIndexes(selectedItem));
         break;
       }
       case KEYS.ARROW_UP: {
