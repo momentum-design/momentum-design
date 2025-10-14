@@ -6,6 +6,7 @@ import lottie, { AnimationItem } from 'lottie-web/build/player/lottie_light';
 import animationManifest from '@momentum-design/animations/dist/manifest';
 
 import { Component } from '../../models';
+import { ROLE } from '../../utils/roles';
 
 import styles from './animation.styles';
 import type { AnimationNames, LoopType } from './animation.types';
@@ -55,7 +56,7 @@ class Animation extends Component {
    * Aria-labelledby attribute to be set for accessibility
    */
   @property({ type: String, attribute: 'aria-labelledby' })
-  ariaLabelledBy: string | null = null;
+  ariaLabelledby: string | null = null;
 
   /**
    * Lottie animation instance
@@ -144,8 +145,8 @@ class Animation extends Component {
       this.getAnimationData();
     }
 
-    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledBy')) {
-      this.role = this.ariaLabel || this.ariaLabelledBy ? 'img' : null;
+    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledby')) {
+      this.role = this.ariaLabel || this.ariaLabelledby ? ROLE.IMG : null;
     }
   }
 
