@@ -104,7 +104,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const virtualizedList = await setup({ story: 'text', initialFocus: 0 });
       await expect(virtualizedList.locator('mdc-listitem[data-index="0"][tabindex="0"]')).toBeVisible();
 
-      await componentsPage.page.pause();
       await componentsPage.actionability.pressTab();
 
       await expect(virtualizedList.locator('mdc-listitem[data-index="0"]')).toBeFocused();
@@ -234,7 +233,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
         await addAboveButton.press('Enter');
         await expect(listItemCounter).toHaveText('21');
-        await listItemLocator(virtualizedList, 0, 21).waitFor({ state: 'visible' });
+        await listItemLocator(virtualizedList, 0, 20).waitFor({ state: 'visible' });
         // Focus should remain on the button - the item will be shifted down
         await expect(buttonLocator(virtualizedList, 1, 'Add Above')).toBeFocused();
 
@@ -274,14 +273,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         await addBelowButton.press('Enter');
         await expect(listItemCounter).toHaveText('21');
 
-        await listItemLocator(virtualizedList, 1, 21).waitFor({ state: 'visible' });
+        await listItemLocator(virtualizedList, 1, 20).waitFor({ state: 'visible' });
         // Focus should remain on the button
         await expect(addBelowButton).toBeFocused();
 
         // Check that pressing down goes to the new item
         await componentsPage.page.keyboard.press('ArrowDown');
         await (await tabToListItemButton(virtualizedList, 1, 'Add Below')).press('Enter');
-        await listItemLocator(virtualizedList, 2, 22).waitFor({ state: 'visible' });
+        await listItemLocator(virtualizedList, 2, 21).waitFor({ state: 'visible' });
 
         // Lets tab out of the list item
         await tabOutOfListFromListItem('Add Below');
@@ -296,8 +295,9 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
         // go to the last item
         await componentsPage.page.keyboard.press('End');
-        await listItemLocator(virtualizedList, 19, 19).waitFor({ state: 'visible' });
-        await componentsPage.page.pause();
+
+        await expect(listItemLocator(virtualizedList, 19, 19)).toBeFocused();
+
         const addToBottomButton = await tabToListItemButton(virtualizedList, 19, 'Add Last');
 
         // Add several items to the bottom
@@ -305,14 +305,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
           await addToBottomButton.press('Enter');
         }
         await expect(addToBottomButton).toBeFocused();
-        await expect(listItemCounter).toHaveText(`${10 + COUNT}`);
+        await expect(listItemCounter).toHaveText(`${20 + COUNT}`);
 
         // Check that they are all navigable to
         for (let i = 0; i < COUNT; i += 1) {
           await componentsPage.page.keyboard.press('ArrowDown');
-          await expect(virtualizedList.locator(`mdc-listitem[data-index="${10 + i}"]`)).toHaveAttribute(
+          await expect(virtualizedList.locator(`mdc-listitem[data-index="${19 + i}"]`)).toHaveAttribute(
             'label',
-            `list item number ${10 + i}`,
+            `list item number ${19 + i}`,
           );
         }
       });
@@ -327,10 +327,12 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         await expect(listItemLocator(virtualizedList, 1, 2)).toBeFocused();
 
         await componentsPage.page.keyboard.press('End');
-        const bottomRemoveButton = await tabToListItemButton(virtualizedList, 8, 'Remove This');
+        await expect(listItemLocator(virtualizedList, 18, 19)).toBeFocused();
+        const bottomRemoveButton = await tabToListItemButton(virtualizedList, 18, 'Remove This');
         await bottomRemoveButton.press('Enter');
+        await expect(listItemLocator(virtualizedList, 17, 18)).toBeFocused();
         await expect(listItemCounter).toHaveText('18');
-        await expect(listItemLocator(virtualizedList, 7, 8)).toBeFocused();
+        await expect(listItemLocator(virtualizedList, 17, 18)).toBeFocused();
 
         const outsideListRemoveLastButton = componentsPage.page.locator('mdc-button:has-text("Remove Last")');
         await tabOutOfListFromListItem();
@@ -340,7 +342,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         await expect(listItemCounter).toHaveText('17');
         await expect(outsideListRemoveLastButton).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
-        await expect(buttonLocator(virtualizedList, 6, 'Remove Below')).toBeFocused();
+        await expect(buttonLocator(virtualizedList, 16, 'Remove Below')).toBeFocused();
       });
     });
   });

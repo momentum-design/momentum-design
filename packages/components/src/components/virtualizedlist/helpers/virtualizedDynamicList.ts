@@ -52,7 +52,11 @@ class VirtualizedDynamicList extends Component {
 
   protected addItem(index?: number, count = 1): void {
     // eslint-disable-next-line no-return-assign
-    const newItems = new Array(count).fill(true).map(() => `list item number ${(this.counter += 1)}`);
+    const newItems = new Array(count).fill(true).map(() => {
+      const item = `list item number ${this.counter}`;
+      this.counter += 1;
+      return item;
+    });
 
     if (index === undefined) {
       this.listItems = [...this.listItems, ...newItems];
