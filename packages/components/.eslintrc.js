@@ -1,11 +1,23 @@
 const config = require('../../.eslintrc.js');
 
+const noRestrictedSyntaxRules = [
+  {
+    selector: "MemberExpression[property.name='ariaLabelledBy']",
+    message: 'Use "ariaLabelledby" (lowercase b) instead of "ariaLabelledBy".',
+  },
+  {
+    selector: "MemberExpression[property.name='ariaDescribedBy']",
+    message: 'Use "ariaDescribedby" (lowercase b) instead of "ariaDescribedBy".',
+  },
+];
+
 module.exports = {
   ...config,
   extends: [...config.extends, 'plugin:lit/recommended', 'prettier'],
   parserOptions: { ...config.parserOptions, project: ['./tsconfig.json', './src/tsconfig.json'], projectService: true },
   rules: {
     ...config.rules,
+    'no-restricted-syntax': ['error', ...noRestrictedSyntaxRules],
     '@typescript-eslint/no-floating-promises': 'error',
     'no-redeclare': 'off',
     'implicit-arrow-linebreak': 'off',
