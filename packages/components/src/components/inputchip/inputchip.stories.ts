@@ -6,6 +6,7 @@ import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
+import { hideAllControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-inputchip
@@ -133,4 +134,5 @@ export const WithAvatarVariants: StoryObj = {
         <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="ED"></mdc-avatar>
       </mdc-inputchip>
     </div>`,
+  ...hideAllControls(),
 };
