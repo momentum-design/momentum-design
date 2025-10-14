@@ -82,7 +82,15 @@ const styles = [
         --mdc-toggle-icon-color: CanvasText;
         border: 1px solid var(--mdc-toggle-border-color);
       }
-      :host([disabled])::part(toggle-icon) {
+
+      :host([checked]) {
+        --mdc-toggle-icon-color: SelectedItemText;
+        --mdc-toggle-border-color: SelectedItemText;
+        --mdc-toggle-background-color: SelectedItem;
+      }
+
+      :host([disabled])::part(toggle-icon),
+      :host([soft-disabled])::part(toggle-icon) {
         --mdc-toggle-icon-color: GrayText;
         border: 1px solid GrayText;
       }
