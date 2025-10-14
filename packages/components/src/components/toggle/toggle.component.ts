@@ -52,7 +52,7 @@ import type { ToggleSize } from './toggle.types';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart static-toggle - The contstatic-toggle element that wraps the toggle input.
+ * @csspart static-toggle - The static-toggle element that wraps the toggle input.
  * @csspart toggle-input - The native checkbox input element styled as a toggle switch.
  */
 class Toggle
