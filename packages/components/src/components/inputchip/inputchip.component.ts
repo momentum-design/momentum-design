@@ -12,8 +12,8 @@ import { DEFAULTS } from './inputchip.constants';
 /**
  * mdc-inputchip component is an interactive chip that consumers can use to represent an input.
  *
- * - It supports a leading icon via the `icon-name` property.
- * - It supports a prefix slot for avatars or other custom content (takes precedence over icon-name).
+ * - It supports a leading icon along with label.
+ * - It supports a prefix slot for avatars (takes precedence over icon-name).
  * - It supports an error state for validation.
  * - It supports a close button to remove the chip.
  *
