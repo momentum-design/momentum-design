@@ -85,7 +85,7 @@ const styles = [
 
       :host([checked]) {
         --mdc-toggle-icon-color: SelectedItemText;
-        --mdc-toggle-border-color: SelectedItemText;
+        --mdc-toggle-border-color: SelectedItem;
         --mdc-toggle-background-color: SelectedItem;
       }
 
