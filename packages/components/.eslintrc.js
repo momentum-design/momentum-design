@@ -6,8 +6,16 @@ const noRestrictedSyntaxRules = [
     message: 'Use "ariaLabelledby" (lowercase b) instead of "ariaLabelledBy".',
   },
   {
+    selector: "MemberExpression[property.name='arialabelledby']",
+    message: 'Use "ariaLabelledby" (lowercase l and b) instead of "arialabelledby".',
+  },
+  {
     selector: "MemberExpression[property.name='ariaDescribedBy']",
     message: 'Use "ariaDescribedby" (lowercase b) instead of "ariaDescribedBy".',
+  },
+  {
+    selector: "MemberExpression[property.name='ariadescribedby']",
+    message: 'Use "ariaDescribedby" (lowercase d and b) instead of "ariadescribedby".',
   },
 ];
 
