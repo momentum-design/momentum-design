@@ -82,6 +82,10 @@ const styles = [
         --mdc-toggle-icon-color: CanvasText;
         border: 1px solid var(--mdc-toggle-border-color);
       }
+      :host([disabled])::part(toggle-icon) {
+        --mdc-toggle-icon-color: GrayText;
+        border: 1px solid GrayText;
+      }
     }
   `,
 ];

@@ -75,7 +75,6 @@ const styles = [
       :host([disabled][indeterminate]),
       :host([soft-disabled][checked]),
       :host([soft-disabled][indeterminate]) {
-        --mdc-checkbox-background-color: GrayText;
         --mdc-checkbox-border-color: GrayText;
         --mdc-checkbox-icon-color: GrayText;
       }

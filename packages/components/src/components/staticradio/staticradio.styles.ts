@@ -76,22 +76,26 @@ const styles = [
 
     @media (forced-colors: active) {
       :host([checked]) {
-        --mdc-radio-outer-circle-border-color: Highlight;
-        --mdc-radio-outer-circle-background-color: Highlight;
+        --mdc-radio-outer-circle-border-color: SelectedItem;
+        --mdc-radio-outer-circle-background-color: SelectedItem;
       }
       :host([readonly]),
       :host([readonly][checked]) {
-        --mdc-radio-inner-circle-background-color: GrayText;
-        --mdc-radio-outer-circle-border-color: GrayText;
+        --mdc-radio-inner-circle-background-color: Highlight;
+        --mdc-radio-outer-circle-border-color: Highlight;
         --mdc-radio-outer-circle-background-color: ButtonFace;
       }
       :host([disabled]),
-      :host([soft-disabled]),
+      :host([soft-disabled]) {
+        --mdc-radio-outer-circle-border-color: GrayText;
+        --mdc-radio-outer-circle-background-color: GrayText;
+        --mdc-radio-inner-circle-background-color: GrayText;
+      }
+
       :host([disabled][checked]),
       :host([soft-disabled][checked]) {
         --mdc-radio-outer-circle-border-color: GrayText;
         --mdc-radio-outer-circle-background-color: GrayText;
-        --mdc-radio-inner-circle-background-color: GrayText;
       }
     }
   `,
