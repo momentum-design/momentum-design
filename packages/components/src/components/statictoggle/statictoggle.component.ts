@@ -20,21 +20,13 @@ import type { ToggleSize } from './statictoggle.types';
  *
  * @slot default - This is a default/unnamed slot
  *
- * @cssproperty --mdc-statictoggle-width - Width of the toggle
- * @cssproperty --mdc-statictoggle-height - Height of the toggle
- * @cssproperty --mdc-statictoggle-width-compact - Width of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-height-compact - Height of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-border-radius - Border radius of the toggle
- * @cssproperty --mdc-statictoggle-border-radius-compact - Border radius of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-border - Border of the toggle
- * @cssproperty --mdc-statictoggle-inactive-rest-color - Background color of the inactive toggle in rest state
- * @cssproperty --mdc-statictoggle-inactive-disabled-color - Background color of the inactive toggle in disabled state
- * @cssproperty --mdc-statictoggle-active-rest-color - Background color of the active toggle in rest state
- * @cssproperty --mdc-statictoggle-active-disabled-color - Background color of the active toggle in disabled state
- * @cssproperty --mdc-statictoggle-icon-color-normal - Color of the icon in normal state
- * @cssproperty --mdc-statictoggle-icon-color-disabled - Color of the icon in disabled state
- * @cssproperty --mdc-statictoggle-icon-background-color-normal - Background color of the icon in normal state
- * @cssproperty --mdc-statictoggle-icon-background-color-disabled - Background color of the icon in disabled state
+ * @cssproperty --mdc-toggle-width - The width of the toggle
+ * @cssproperty --mdc-toggle-height - The height of the toggle
+ * @cssproperty --mdc-toggle-border-radius - The border radius of the toggle
+ * @cssproperty --mdc-toggle-border-color - The border color of the toggle
+ * @cssproperty --mdc-toggle-background-color - The background color of the toggle
+ * @cssproperty --mdc-toggle-icon-color - The icon color of the toggle
+ * @cssproperty --mdc-toggle-icon-background-color - The icon background color of the toggle
  *
  * @csspart slider - The slider part of the toggle
  * @csspart toggle-icon - The icon part of the toggle

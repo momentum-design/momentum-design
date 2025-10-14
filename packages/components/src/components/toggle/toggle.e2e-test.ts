@@ -186,7 +186,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(toggle).not.toBeFocused();
 
-      await toggle.click();
+      await toggle.click({ force: true });
       await expect(toggle).not.toHaveAttribute('checked');
     });
 
