@@ -1046,10 +1046,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @internal
    */
   protected isRtl(): boolean {
-    return (
-      document.querySelector('html')?.getAttribute('dir') === 'rtl' || 
-      window.getComputedStyle(this).direction === 'rtl'
-    );
+    return window.getComputedStyle(this).direction === 'rtl';
   }
 
   /**
