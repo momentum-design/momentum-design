@@ -159,6 +159,14 @@ class Input
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
+  /**
+   * Defines a id pointing to the element which describes the input element.
+   * The AriaDescribedby attribute to be set for accessibility.
+   * @default null
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-describedby' })
+  dataAriaDescribedby: string | null = null;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.updateComplete
@@ -372,7 +380,9 @@ class Input
       ?readonly="${this.readonly}"
       ?required="${this.required}"
       type="${type}"
-      aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+      aria-describedby="${ifDefined(
+        this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : (this.dataAriaDescribedby ?? ''),
+      )}"
       aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
       placeholder=${ifDefined(placeholderText)}
       minlength=${ifDefined(this.minlength)}
