@@ -1,9 +1,7 @@
 import { type CSSResult, type PropertyValues, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
-import { property, eventOptions } from 'lit/decorators.js';
+import { property, eventOptions, query } from 'lit/decorators.js';
 import { defaultRangeExtractor, type Range, ScrollToOptions, type VirtualItem } from '@tanstack/virtual-core';
-import { styleMap } from 'lit/directives/style-map.js';
-import { type Ref, createRef, ref } from 'lit/directives/ref.js';
 
 import List from '../list/list.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -132,7 +130,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
    * A ref to the scrollable element within the list.
    */
-  public scrollElementRef: Ref<Element> = createRef();
+  @query('[part="scroll"]', true)
+  public $scroll!: HTMLElement;
+
+  @query('[part="wrapper"]', true)
+  public $wrapper!: HTMLElement;
+
+  @query('[part="container"]', true)
+  public $container!: HTMLElement;
 
   /**
    * The current virtual items being rendered.
@@ -264,7 +269,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.virtualizerController = new VirtualizerController(this, {
       ...this.virtualizerProps,
       horizontal: false,
-      getScrollElement: () => this.scrollElementRef.value || null,
+      getScrollElement: () => this.$scroll as Element,
       onChange: this.onVListStateChangeHandler.bind(this),
       rangeExtractor: this.virtualizerRangeExtractor.bind(this),
     });
@@ -334,8 +339,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.emitChangeEvent();
     }
 
-    const scrollEl = this.scrollElementRef.value;
-    if (!this.disableScrollAnchoring && scrollEl && prevMeasurements.length > 0) {
+    if (!this.disableScrollAnchoring && prevMeasurements.length > 0) {
       const countDiff = Math.abs(this.virtualizerProps.count - (prevProps?.count ?? 0));
       const prevSelectedIndex = this.selectedIndex;
       const prevFirstKey = this.firstKey;
@@ -366,7 +370,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         const scrollDiff =
           virtualizer.measurementsCache[this.selectedIndex].end - prevMeasurements[prevSelectedIndex].end;
 
-        scrollEl.scrollTop += scrollDiff;
+        this.$scroll.scrollTop += scrollDiff;
       }
     }
   }
@@ -518,6 +522,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * @internal
    */
   protected async onVListStateChangeHandler(_: Virtualizer, isScrolling: boolean) {
+    this.syncUI();
     // Request an update, this is in Tanstack's VirtualizerController but gets overridden when updating the
     // virtualizer's options therefore we need to call it here ourselves.
     await this.updateComplete;
@@ -553,15 +558,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   private checkAtBottom(): void {
-    const scrollEl = this.scrollElementRef.value;
+    const { clientHeight, scrollHeight, scrollTop } = this.$scroll;
     if (
       !this.disableScrollAnchoring &&
-      scrollEl &&
       this.virtualizer &&
       this.atBottom === 'no' &&
-      scrollEl.scrollHeight > scrollEl.clientHeight - IS_AT_BOTTOM_THRESHOLD
+      scrollHeight > clientHeight - IS_AT_BOTTOM_THRESHOLD
     ) {
-      const { clientHeight, scrollHeight, scrollTop } = scrollEl;
       this.atBottom = scrollHeight - scrollTop <= clientHeight + IS_AT_BOTTOM_THRESHOLD ? 'yes' : 'no';
     }
   }
@@ -612,11 +615,11 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   private scrollToBottom(): void {
     this.clearScrollToBottomTimer();
     if (this.atBottom === 'yes') {
-      const scrollEl = this.scrollElementRef.value;
+      const { clientHeight, scrollHeight, scrollTop } = this.$scroll;
 
-      if (scrollEl && this.totalListHeight > scrollEl.clientHeight) {
-        const diff = Math.floor((scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop) / 10);
-        scrollEl.scrollTop += diff;
+      if (this.totalListHeight > clientHeight) {
+        const diff = Math.floor((scrollHeight - clientHeight - scrollTop) / 10);
+        this.$scroll.scrollTop += diff;
       }
       this.atBottomTimer = requestAnimationFrame(this.scrollToBottom.bind(this));
     }
@@ -632,31 +635,29 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.atBottom = index + 1 === this.virtualizerProps.count ? 'yes' : 'no';
   }
 
-  public override render() {
-    const visibleItems = this.items.filter(({ index }) => !this.hiddenIndexes.includes(index));
+  private syncUI() {
+    const visibleItems = this.items.find(({ index }) => !this.hiddenIndexes.includes(index));
 
-    const firstItemOffset = visibleItems.at(0)?.start ?? 0;
+    const firstItemOffset = visibleItems?.start ?? 0;
 
-    const scrollEl = this.scrollElementRef.value;
     let initialOffset = 0;
-    if (this.revertList && scrollEl) {
-      if (scrollEl.clientHeight >= this.totalListHeight) {
+    if (this.revertList) {
+      if (this.$scroll.clientHeight >= this.totalListHeight) {
         initialOffset = this.clientHeight - this.totalListHeight;
       }
     }
 
+    this.$scroll.style.overflowY = initialOffset > 0 ? `hidden` : '';
+    this.$wrapper.style.height = `${this.totalListHeight}px`;
+    this.$container.style.transform = `translateY(${initialOffset + firstItemOffset}px)`;
+  }
+
+  public override render() {
     return html`
       <slot name="list-header"></slot>
-      <div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.onScrollHandler} tabindex="-1">
-        <div part="wrapper" style="${styleMap({ height: `${this.totalListHeight}px` })}">
-          <div
-            part="container"
-            style="${styleMap({
-              transform: `translateY(${initialOffset + firstItemOffset}px)`,
-            })}"
-            role="list"
-            aria-label="${this.dataAriaLabel ?? ''}"
-          >
+      <div part="scroll" tabindex="-1" @scroll="${this.onScrollHandler}">
+        <div part="wrapper">
+          <div part="container" role="list" aria-label="${this.dataAriaLabel ?? ''}">
             <slot role="presentation"></slot>
           </div>
         </div>
