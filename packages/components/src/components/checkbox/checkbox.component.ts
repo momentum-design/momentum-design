@@ -91,6 +91,10 @@ class Checkbox
    */
   @property({ type: Boolean, reflect: true }) override autofocus = false;
 
+  /**
+   * The type of help text/validation. It can be 'default' or 'error'.
+   * @default 'default'
+   */
   @property({ type: String, reflect: true, attribute: 'help-text-type' })
   override helpTextType: CheckboxValidationType = CHECKBOX_VALIDATION.DEFAULT;
 
