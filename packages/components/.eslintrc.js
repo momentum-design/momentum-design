@@ -2,19 +2,23 @@ const config = require('../../.eslintrc.js');
 
 const noRestrictedSyntaxRules = [
   {
-    selector: "MemberExpression[property.name='ariaLabelledBy']",
+    selector:
+      "Identifier[name='ariaLabelledBy'], Literal[value='ariaLabelledBy'], MemberExpression[property.name='ariaLabelledBy']",
     message: 'Use "ariaLabelledby" (lowercase b) instead of "ariaLabelledBy".',
   },
   {
-    selector: "MemberExpression[property.name='arialabelledby']",
+    selector:
+      "Identifier[name='arialabelledby'], Literal[value='arialabelledby'], MemberExpression[property.name='arialabelledby']",
     message: 'Use "ariaLabelledby" (lowercase l and b) instead of "arialabelledby".',
   },
   {
-    selector: "MemberExpression[property.name='ariaDescribedBy']",
+    selector:
+      "Identifier[name='ariaDescribedBy'], Literal[value='ariaDescribedBy'], MemberExpression[property.name='ariaDescribedBy']",
     message: 'Use "ariaDescribedby" (lowercase b) instead of "ariaDescribedBy".',
   },
   {
-    selector: "MemberExpression[property.name='ariadescribedby']",
+    selector:
+      "Identifier[name='ariadescribedby'], Literal[value='ariadescribedby'], MemberExpression[property.name='ariadescribedby']",
     message: 'Use "ariaDescribedby" (lowercase d and b) instead of "ariadescribedby".',
   },
 ];
