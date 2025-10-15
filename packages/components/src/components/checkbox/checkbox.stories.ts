@@ -9,11 +9,13 @@ import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Checkbox from './checkbox.component';
+import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 const render = (args: Args) => html`
   <mdc-checkbox
     label="${args.label}"
     help-text="${args['help-text']}"
+    help-text-type="${args['help-text-type']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
@@ -50,6 +52,10 @@ const meta: Meta = {
     },
     'help-text': {
       control: 'text',
+    },
+    'help-text-type': {
+      control: 'radio',
+      options: Object.values(CHECKBOX_VALIDATION),
     },
     checked: {
       control: 'boolean',
@@ -92,7 +98,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'id', 'internals']),
+    ...hideControls(['id', 'internals']),
     ...classArgType,
     ...styleArgType,
   },
@@ -110,12 +116,14 @@ export const Example: StoryObj = {
     readonly: false,
     'soft-disabled': false,
     'data-aria-label': 'Agree to all terms and conditions',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
 export const WithoutLabel: StoryObj = {
   args: {
     'data-aria-label': 'This is a checkbox with no label',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -123,6 +131,7 @@ export const HelperText: StoryObj = {
   args: {
     label: 'Email Opt In',
     'help-text': 'I agree to receiving monthly promotional emails.',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -131,6 +140,7 @@ export const Indeterminate: StoryObj = {
     label: 'Checkbox Label',
     'help-text': 'Checkbox Help Text',
     indeterminate: true,
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -199,7 +209,7 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
       }
 
       requiredBox.setAttribute('help-text', 'Looks good!');
-      requiredBox.setAttribute('help-text-type', 'success');
+      requiredBox.setAttribute('help-text-type', 'default');
       return true;
     };
 
@@ -241,6 +251,6 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   },
   args: {
     'help-text': '',
-    'help-text-type': 'default',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
