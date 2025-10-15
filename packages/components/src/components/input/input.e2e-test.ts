@@ -32,6 +32,7 @@ type SetupOptions = {
   list?: string;
   size?: number;
   dataAriaLabel?: string;
+  dataAriaDescribedby?: string;
   clearAriaLabel?: string;
   secondButtonForFocus?: boolean;
 };
@@ -66,6 +67,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.dataAriaDescribedby ? `data-aria-describedby="${restArgs.dataAriaDescribedby}"` : ''}
       ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ></mdc-input>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
@@ -97,6 +99,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     label: 'Label',
     helpText: 'Help Text',
     secondButtonForFocus: true,
+    dataAriaDescribedby: 'custom-helper-text-id', // custom aria-describedby
   });
 
   /**
@@ -114,8 +117,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(helpText).toHaveText('Help Text');
       await expect(input).toHaveAttribute('prefix-text', 'Prefix');
       await expect(input).toHaveAttribute('data-aria-label', 'prefix');
+      await expect(input).toHaveAttribute('data-aria-describedby', 'custom-helper-text-id');
       const inputEl = input.locator('input');
       await expect(inputEl).toHaveAttribute('aria-label', 'prefix');
+      await expect(inputEl).toHaveAttribute('aria-describedby', 'helper-text-id');
       await expect(input).toHaveAttribute('leading-icon', 'placeholder-bold');
       const icon = input.locator('mdc-icon');
       await expect(icon).toHaveAttribute('name', 'placeholder-bold');
@@ -194,16 +199,16 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.removeAttribute(input, 'autocomplete');
     });
 
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(input, { direname: 'ltr' });
-      await expect(input).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(input, 'direname');
+    await test.step('attribute dirname should be present on component', async () => {
+      await componentsPage.setAttributes(input, { dirname: 'ltr' });
+      await expect(input).toHaveAttribute('dirname', 'ltr');
+      await componentsPage.removeAttribute(input, 'dirname');
     });
 
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(input, { direname: 'ltr' });
-      await expect(input).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(input, 'direname');
+    await test.step('attribute dirname should be present on component', async () => {
+      await componentsPage.setAttributes(input, { dirname: 'ltr' });
+      await expect(input).toHaveAttribute('dirname', 'ltr');
+      await componentsPage.removeAttribute(input, 'dirname');
     });
 
     await test.step('attribute pattern should be present on component', async () => {
@@ -216,6 +221,16 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.setAttributes(input, { list: 'browsers' });
       await expect(input).toHaveAttribute('list', 'browsers');
       await componentsPage.removeAttribute(input, 'list');
+    });
+
+    await test.step('attribute data-aria-describedby should be present on component if help-text is not set', async () => {
+      await componentsPage.setAttributes(input, { 'data-aria-describedby': 'this-is-a-test-id' });
+      await componentsPage.removeAttribute(input, 'help-text');
+      await expect(input).toHaveAttribute('data-aria-describedby', 'this-is-a-test-id');
+      const inputEl = input.locator('input');
+      await expect(inputEl).toHaveAttribute('aria-describedby', 'this-is-a-test-id');
+      await componentsPage.removeAttribute(input, 'data-aria-describedby');
+      await componentsPage.setAttributes(input, { helpText: 'Help Text' });
     });
   });
 
