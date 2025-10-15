@@ -1014,8 +1014,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
       if (!triggerElement) return;
 
+      const adjustedPlacement = this.adjustPlacementForRtl(this.placement);
       const { x, y, middlewareData, placement } = await computePosition(triggerElement, this, {
-        placement: this.placement,
+        placement: adjustedPlacement,
         middleware,
         strategy: this.strategy,
       });
@@ -1037,6 +1038,39 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       return event.composedPath().some(el => (el as HTMLElement)?.id === this.triggerID);
     }
     return (event.target as HTMLElement)?.id === this.triggerID;
+  }
+
+  /**
+   * Detects if the current layout is in RTL (right-to-left) mode.
+   * @returns True if RTL, false if LTR
+   * @internal
+   */
+  protected isRtl(): boolean {
+    return (
+      document.querySelector('html')?.getAttribute('dir') === 'rtl' || 
+      window.getComputedStyle(this).direction === 'rtl'
+    );
+  }
+
+  /**
+   * Adjusts the placement for RTL layouts by flipping left/right directions.
+   * @param placement - The original placement value
+   * @returns The adjusted placement for RTL or original placement for LTR
+   * @internal
+   */
+  protected adjustPlacementForRtl(placement: PopoverPlacement): PopoverPlacement {
+    if (!this.isRtl()) {
+      return placement;
+    }
+    switch (placement) {
+      case POPOVER_PLACEMENT.LEFT: return POPOVER_PLACEMENT.RIGHT;
+      case POPOVER_PLACEMENT.LEFT_START: return POPOVER_PLACEMENT.RIGHT_START;
+      case POPOVER_PLACEMENT.LEFT_END: return POPOVER_PLACEMENT.RIGHT_END;
+      case POPOVER_PLACEMENT.RIGHT: return POPOVER_PLACEMENT.LEFT;
+      case POPOVER_PLACEMENT.RIGHT_START: return POPOVER_PLACEMENT.LEFT_START;
+      case POPOVER_PLACEMENT.RIGHT_END: return POPOVER_PLACEMENT.LEFT_END;
+      default: return placement;
+    }
   }
 
   public override render() {
