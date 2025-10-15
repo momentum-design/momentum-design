@@ -33,6 +33,11 @@ const styles = css`
     --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
   }
+
+  ::slotted(mdc-avatar[slot='prefix']){
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 `;
 
 export default [hostFitContentStyles, styles];
