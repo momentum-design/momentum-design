@@ -10,6 +10,7 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  'help-text-type'?: string;
   readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
@@ -27,6 +28,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+        ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
         ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
@@ -66,6 +68,12 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     checkboxStickerSheet.setAttributes({
       label: 'Indeterminate Checkbox Label',
       indeterminate: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+    checkboxStickerSheet.setAttributes({
+      label: 'Unselected Error Checkbox Label',
+      'help-text': 'This is a error message',
+      'help-text-type': 'error',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
@@ -209,6 +217,12 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       const mdcText = componentsPage.page.locator('mdc-text');
       const textContent = await mdcText.textContent();
       expect(textContent?.trim()).toBe('This is a help text');
+    });
+
+    await test.step('should have help-text-type attribute when the help-text-type attribute is passed', async () => {
+      await componentsPage.setAttributes(checkbox, { 'help-text-type': 'error' });
+      await expect(checkbox).toHaveAttribute('help-text-type', 'error');
+      await componentsPage.removeAttribute(checkbox, 'help-text-type');
     });
 
     await test.step(`should have icon element with minus-bold icon name,
@@ -361,7 +375,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
               if (helpTextEl) helpTextEl.textContent = 'Please select this required option';
             } else {
               requiredBox.setAttribute('help-text', 'Looks good!');
-              requiredBox.setAttribute('help-text-type', 'success');
+              requiredBox.setAttribute('help-text-type', 'default');
               if (helpTextEl) helpTextEl.textContent = 'Looks good!';
             }
           }
@@ -391,12 +405,13 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(requiredInput).not.toHaveAttribute('checked');
       await submitButton.click();
       await expectHelpText('Please select this required option', 'error');
+      await expect(requiredCheckbox).toHaveAttribute('help-text-type', 'error');
 
       // 2. Check required and submit
       await requiredInput.click();
       await expect(requiredInput).toBeChecked();
       await submitButton.click();
-      await expectHelpText('Looks good!', 'success');
+      await expectHelpText('Looks good!', 'default');
 
       // 3. Reset form and check help-text resets
       await resetButton.click();
