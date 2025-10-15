@@ -32,8 +32,8 @@ environments versus GitHub Workflow:
 
 - On Local:
   - You can run functional tests locally (for easier debugging) or in Docker.
-  - Update snapshot images (golden images) only using Docker with the official
-    Playwright image, via the provided yarn scripts.
+  - Update snapshot images (golden images) only using Docker or Podman with the
+    official
   - Uses `playwright.config.ts`, relying on local and a web server.
 - On Github Workflow:
   - GitHub Workflow build the Playwright Docker image to run all tests,

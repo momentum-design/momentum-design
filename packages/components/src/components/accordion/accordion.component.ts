@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValues } from 'lit';
 import { html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
+import { queryAssignedElements, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { ROLE } from '../../utils/roles';
@@ -68,6 +68,18 @@ class Accordion extends AccordionButton {
   trailingControlsSlot!: Array<HTMLElement>;
 
   /**
+   * Aria-label attribute for the trigger button when accordion is collapsed.
+   */
+  @property({ type: String, attribute: 'open-button-aria-label' })
+  openButtonAriaLabel?: string;
+
+  /**
+   * Aria-label attribute for the trigger button when accordion is expanded.
+   */
+  @property({ type: String, attribute: 'close-button-aria-label' })
+  closeButtonAriaLabel?: string;
+
+  /**
    * Handles property changes for the accordion.
    * If the disabled property is updated, applies the same disabled state to all elements in the leading and trailing controls slots.
    * @param changedProperties - The changed properties of the accordion.
@@ -112,7 +124,7 @@ class Accordion extends AccordionButton {
             @click="${this.handleHeaderClick}"
             aria-controls="${this.bodySectionId}"
             aria-expanded="${this.expanded}"
-            title="${ifDefined(this.headerText)}"
+            aria-label="${ifDefined(this.expanded ? this.closeButtonAriaLabel : this.openButtonAriaLabel)}"
             prefix-icon="${this.getArrowIconName()}"
             variant="${BUTTON_VARIANTS.TERTIARY}"
             size="${ICON_BUTTON_SIZES[20]}"
