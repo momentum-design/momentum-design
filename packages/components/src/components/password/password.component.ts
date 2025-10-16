@@ -33,22 +33,39 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  * @dependency mdc-button
  * @dependency mdc-toggletip
  *
- * @cssproperty --mdc-input-disabled-border-color - Border color for the password container when disabled
- * @cssproperty --mdc-input-disabled-text-color - Text color for the password field when disabled
- * @cssproperty --mdc-input-disabled-background-color - Background color for the password field when disabled
- * @cssproperty --mdc-input-border-color - Border color for the password container
- * @cssproperty --mdc-input-text-color - Text color for the password field
- * @cssproperty --mdc-input-background-color - Background color for the password field
- * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ * @slot input - Slot for the input element. If not provided, the input field will be rendered.
+ * @slot input-leading-icon - Slot for the leading icon before the input field. If not provided, the `leadingIcon` property will be used to render the leading icon.
+ * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
+ * @slot trailing-button - Slot for the trailing button to clear the input field. If not provided, the clear button will be rendered when `trailingButton` property is set to true.
+ *
+ * @csspart input-container - The container that wraps the input field, leading icon, prefix text, and trailing button.
+ * @csspart input-section - The container that wraps the input field and prefix text.
+ * @csspart input-text - The input field element.
+ * @csspart trailing-button - The trailing button element.
+ * @csspart label - The label element.
+ * @csspart helper-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element.
+ * @csspart toggletip - The toggletip icon button element.
+ * @csspart toggletip-text - The toggletip text element.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
+ * @cssproperty --mdc-input-text-color - Text color for the input field
+ * @cssproperty --mdc-input-border-color - Border color for the input container
+ * @cssproperty --mdc-input-background-color - Background color for the input field
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
- * @cssproperty --mdc-input-support-text-color - Text color for the help text
- * @cssproperty --mdc-input-hover-background-color - Background color for the password field when hovered
- * @cssproperty --mdc-input-focused-background-color - Background color for the password field when focused
- * @cssproperty --mdc-input-focused-border-color - Border color for the password container when focused
- * @cssproperty --mdc-input-error-border-color - Border color for the password container when error
- * @cssproperty --mdc-input-warning-border-color - Border color for the password container when warning
- * @cssproperty --mdc-input-success-border-color - Border color for the password container when success
- * @cssproperty --mdc-input-primary-border-color - Border color for the password container when primary
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  *
  */
 class Password extends Input {

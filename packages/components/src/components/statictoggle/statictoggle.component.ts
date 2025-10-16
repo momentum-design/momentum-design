@@ -11,7 +11,7 @@ import type { ToggleSize } from './statictoggle.types';
 
 /**
  * This is a decorative component that is styled to look as a toggle. <br/>
- * It has 3 properties - checked, size and disabled. <br/>
+ * It has 5 properties - checked, size, disabled, readonly and soft-disabled. <br/>
  * We are using the same styling that has been created for the `mdc-toggle` component.
  *
  * @dependency mdc-icon
@@ -20,21 +20,18 @@ import type { ToggleSize } from './statictoggle.types';
  *
  * @slot default - This is a default/unnamed slot
  *
- * @cssproperty --mdc-statictoggle-width - Width of the toggle
- * @cssproperty --mdc-statictoggle-height - Height of the toggle
- * @cssproperty --mdc-statictoggle-width-compact - Width of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-height-compact - Height of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-border-radius - Border radius of the toggle
- * @cssproperty --mdc-statictoggle-border-radius-compact - Border radius of the toggle when it's size is compact
- * @cssproperty --mdc-statictoggle-border - Border of the toggle
- * @cssproperty --mdc-statictoggle-inactive-rest-color - Background color of the inactive toggle in rest state
- * @cssproperty --mdc-statictoggle-inactive-disabled-color - Background color of the inactive toggle in disabled state
- * @cssproperty --mdc-statictoggle-active-rest-color - Background color of the active toggle in rest state
- * @cssproperty --mdc-statictoggle-active-disabled-color - Background color of the active toggle in disabled state
- * @cssproperty --mdc-statictoggle-icon-color-normal - Color of the icon in normal state
- * @cssproperty --mdc-statictoggle-icon-color-disabled - Color of the icon in disabled state
- * @cssproperty --mdc-statictoggle-icon-background-color-normal - Background color of the icon in normal state
- * @cssproperty --mdc-statictoggle-icon-background-color-disabled - Background color of the icon in disabled state
+ * @cssproperty --mdc-toggle-width - The width of the toggle
+ * @cssproperty --mdc-toggle-height - The height of the toggle
+ * @cssproperty --mdc-toggle-border-radius - The border radius of the toggle
+ * @cssproperty --mdc-toggle-border-color - The border color of the toggle
+ * @cssproperty --mdc-toggle-background-color - The background color of the toggle
+ * @cssproperty --mdc-toggle-icon-color - The icon color of the toggle
+ * @cssproperty --mdc-toggle-icon-background-color - The icon background color of the toggle
+ *
+ * @csspart slider - The slider part of the toggle
+ * @csspart toggle-icon - The icon part of the toggle
+ *
+ * @slot - Default slot for adding label text.
  */
 class StaticToggle extends DisabledMixin(Component) {
   /**
@@ -51,13 +48,27 @@ class StaticToggle extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true }) size: ToggleSize = DEFAULTS.SIZE;
 
+  /**
+   * Determines whether the toggle is read-only.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the toggle is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
+
   public override render() {
     return html`
       <slot></slot>
       <div part="slider">
         <mdc-icon
           name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
-          class="icon"
+          part="toggle-icon"
           length-unit="rem"
           size="${ICON_SIZE_IN_REM[this.size]}"
         ></mdc-icon>

@@ -1,10 +1,24 @@
 import { ROLE } from '../../utils/roles';
 
 import type Popover from './popover.component';
+import { PopoverPortal, TAG_NAME as POPOVER_PORTAL_TAG_NAME } from './popover.portal.component';
 
 export class PopoverUtils {
   /** @internal */
   private popover: Popover;
+
+  /**
+   * The portal element used when the popover is appended to another container.
+   * @internal
+   */
+  private portalElement: PopoverPortal | null = null;
+
+  /**
+   * Flag to indicate if the popover was diconnected because it was appended to another container, or
+   * it was actually removed from the DOM.
+   * @internal
+   */
+  private disconnectAfterAppendTo: boolean = false;
 
   /** @internal */
   private arrowPixelChange: boolean = false;
@@ -43,7 +57,7 @@ export class PopoverUtils {
    * @param placement - The placement of the popover.
    */
   setupHoverBridge(placement: string) {
-    const hoverBridge = this.popover.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
+    const hoverBridge = this.popover.renderRoot.querySelector('div[part="popover-hover-bridge"]') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
       left: '',
@@ -90,11 +104,30 @@ export class PopoverUtils {
    */
   setupAppendTo() {
     if (this.popover.appendTo) {
-      const appendToElement = document.getElementById(this.popover.appendTo);
-      if (appendToElement) {
-        appendToElement.appendChild(this.popover);
+      const appendToEl = document.getElementById(this.popover.appendTo);
+      if (appendToEl && !Array.from(appendToEl.children).includes(this.popover)) {
+        this.disconnectAfterAppendTo = true;
+
+        this.portalElement = document.createElement(POPOVER_PORTAL_TAG_NAME) as PopoverPortal;
+        this.portalElement.onDisconnect = () => {
+          this.popover.remove();
+          this.portalElement = null;
+        };
+        this.popover.parentElement?.appendChild?.(this.portalElement);
+        appendToEl.appendChild(this.popover);
       }
     }
+  }
+
+  /**
+   * Remove portal component to when the popover appended to somewhere else and removed from the DOM
+   */
+  cleanupAppendTo() {
+    if (!this.disconnectAfterAppendTo && this.portalElement) {
+      this.portalElement.remove();
+    }
+
+    this.disconnectAfterAppendTo = false;
   }
 
   /**

@@ -77,16 +77,27 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
  * @cssproperty --mdc-combobox-width - The width of the combobox
  * @cssproperty --mdc-combobox-hover-background-color - The background color of the combobox when hovered
- * @cssproperty --mdc-combobox-focused-background-color - The background color of the combobox when focused
- * @cssproperty --mdc-combobox-error-border-color - The border color of the combobox when in error state
- * @cssproperty --mdc-combobox-warning-border-color - The border color of the combobox when in warning state
- * @cssproperty --mdc-combobox-success-border-color - The border color of the combobox when in success state
- * @cssproperty --mdc-combobox-primary-border-color - The border color of the combobox when in primary state
  * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
- * @cssproperty --mdc-combobox-focused-border-color - The border color of the combobox when focused
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart internal-native-input - The internal native input element of the combobox.
- * @csspart mdc-input - The input element of the combobox.
+ * @csspart input-text - The input element of the combobox.
  * @csspart no-result-text - The no result text element of the combobox.
  * @csspart combobox__base - The base container element of the combobox.
  * @csspart combobox__button - The button element of the combobox.
@@ -105,12 +116,6 @@ class Combobox
    * The placeholder text which will be shown on the text if provided.
    */
   @property({ type: String }) placeholder?: string;
-
-  /**
-   * readonly attribute of the combobox field. If true, the combobox is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
 
   /**
    * The placement of the popover within Combobox.
@@ -267,9 +272,9 @@ class Combobox
    *
    * @internal
    */
-  private handleDestroyEvent = (event: Event) => {
-    const destroyedElement = event.target as HTMLElement;
-    if (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0) {
+  private handleDestroyEvent = (event: CustomEvent) => {
+    const destroyedElement = event.detail.originalTarget as HTMLElement;
+    if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
       return;
     }
 
@@ -690,8 +695,7 @@ class Combobox
         ?disabled="${this.disabled}"
         .value="${live(this.filteredValue)}"
         autocomplete="${AUTO_COMPLETE.OFF}"
-        class="input"
-        part="mdc-input"
+        part="input-text"
         placeholder="${ifDefined(this.placeholder)}"
         role="${ROLE.COMBOBOX}"
         ?readonly="${this.readonly}"
@@ -781,7 +785,7 @@ class Combobox
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Input.styles, ...FormfieldWrapper.styles, ...styles];
 }
 
 export default Combobox;

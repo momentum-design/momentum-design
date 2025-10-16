@@ -2,72 +2,84 @@ import { css } from 'lit';
 
 import { hostFitContentStyles } from '../../utils/styles';
 
-const styles = [
-  hostFitContentStyles,
-  css`
-    :host {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    :host([disabled]),
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .mdc-help-text,
-    :host([disabled])::part(required-indicator),
-    :host([disabled][help-text-type='error']) .mdc-help-text,
-    :host([disabled][help-text-type='success']) .mdc-help-text,
-    :host([disabled][help-text-type='warning']) .mdc-help-text,
-    :host([disabled][help-text-type='priority']) .mdc-help-text {
-      color: var(--mds-color-theme-text-primary-disabled);
-    }
+const styles = css`
+  :host {
+    --mdc-label-font-size: var(--mds-font-apps-body-midsize-medium-font-size);
+    --mdc-label-font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
+    --mdc-label-line-height: var(--mds-font-apps-body-midsize-medium-line-height);
+    --mdc-label-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-help-text-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+    --mdc-help-text-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+    --mdc-help-text-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+    --mdc-help-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-required-indicator-color: var(--mds-color-theme-text-error-normal);
 
-    :host::part(required-indicator) {
-      color: var(--mds-color-theme-text-error-normal);
-    }
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 
-    .mdc-label-text,
-    .mdc-help-text {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      width: 100%;
-    }
+  :host::part(required-indicator) {
+    color: var(--mdc-required-indicator-color);
+  }
 
-    .mdc-label,
-    .mdc-help-text {
-      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
-    }
+  :host::part(label-text),
+  :host::part(help-text-container) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
 
-    .mdc-label {
-      color: var(--mds-color-theme-text-primary-normal);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+  :host::part(label) {
+    font-size: var(--mdc-label-font-size);
+    font-weight: var(--mdc-label-font-weight);
+    line-height: var(--mdc-label-line-height);
+  }
 
-    .mdc-help-text {
-      color: var(--mds-color-theme-text-secondary-normal);
-    }
+  :host::part(help-text),
+  :host::part(help-text-container) {
+    font-size: var(--mdc-help-text-font-size);
+    font-weight: var(--mdc-help-text-font-weight);
+    line-height: var(--mdc-help-text-line-height);
+  }
 
-    :host::part(info-icon-btn) {
-      align-self: flex-start;
-    }
+  :host::part(label) {
+    color: var(--mdc-label-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-    :host([help-text-type='error']) .mdc-help-text {
-      color: var(--mds-color-theme-text-error-normal);
-    }
-    :host([help-text-type='warning']) .mdc-help-text {
-      color: var(--mds-color-theme-text-warning-normal);
-    }
-    :host([help-text-type='success']) .mdc-help-text {
-      color: var(--mds-color-theme-text-success-normal);
-    }
-    :host([help-text-type='priority']) .mdc-help-text {
-      color: var(--mds-color-theme-text-accent-normal);
-    }
-  `,
-];
+  :host::part(help-text-container) {
+    color: var(--mdc-help-text-color);
+  }
 
-export default styles;
+  :host::part(info-icon-btn) {
+    align-self: flex-start;
+  }
+  :host([help-text-type='error']) {
+    --mdc-help-text-color: var(--mds-color-theme-text-error-normal);
+  }
+  :host([help-text-type='warning']) {
+    --mdc-help-text-color: var(--mds-color-theme-text-warning-normal);
+  }
+  :host([help-text-type='success']) {
+    --mdc-help-text-color: var(--mds-color-theme-text-success-normal);
+  }
+  :host([help-text-type='priority']) {
+    --mdc-help-text-color: var(--mds-color-theme-text-accent-normal);
+  }
+
+  :host([disabled]),
+  :host([soft-disabled]) {
+    --mdc-label-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-help-text-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-required-indicator-color: var(--mds-color-theme-text-primary-disabled);
+    color: var(--mds-color-theme-text-primary-disabled);
+    pointer-events: none;
+    cursor: default;
+  }
+`;
+
+export default [hostFitContentStyles, styles];

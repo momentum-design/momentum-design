@@ -8,24 +8,21 @@ import styles from './staticradio.styles';
 
 /**
  * This is a decorative component that is styled to look as a radio.
- * It has 2 properties - checked and disabled.
+ * It has 4 properties - checked, disabled, readonly and soft-disabled.
  *
  * We are using the same styling that has been created for the `mdc-radio` component.
  *
  * @tagname mdc-staticradio
  *
- * @cssproperty --mdc-staticradio-inner-circle-size - size of the inner circle
- * @cssproperty --mdc-staticradio-text-disabled-color - color of the label when disabled
- * @cssproperty --mdc-staticradio-normal-border-color - color of the radio button border when normal
- * @cssproperty --mdc-staticradio-disabled-border-color - color of the radio button border when disabled
- * @cssproperty --mdc-staticradio-inner-circle-normal-background - background color of the inner circle when normal
- * @cssproperty --mdc-staticradio-inner-circle-disabled-background - background color of the inner circle when disabled
- * @cssproperty --mdc-staticradio-control-inactive-color - color of the radio button when inactive
- * @cssproperty --mdc-staticradio-control-inactive-disabled-background - background color of the radio button when
- *  inactive and disabled
- * @cssproperty --mdc-staticradio-control-active-color - color of the radio button when active
- * @cssproperty --mdc-staticradio-control-active-disabled-background - background color of the radio button
- *  when active and disabled
+ * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-size - size of the outer circle
+ * @cssproperty --mdc-radio-inner-circle-background-color - background color of the inner circle
+ * @cssproperty --mdc-radio-outer-circle-border-color - border color of the outer circle
+ * @cssproperty --mdc-radio-outer-circle-background-color - background color of the outer circle
+ *
+ * @csspart radio-icon - The radio icon.
+ *
+ * @slot - Default slot for the label of the radio.
  */
 class StaticRadio extends DisabledMixin(Component) {
   /**
@@ -42,9 +39,16 @@ class StaticRadio extends DisabledMixin(Component) {
    */
   @property({ type: Boolean, reflect: true }) readonly = false;
 
+  /**
+   * Determines whether the radio is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
+
   public override render() {
     return html` <slot></slot>
-      <span part="radio-icon" class="icon"></span>`;
+      <span part="radio-icon" class="radio-icon"></span>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

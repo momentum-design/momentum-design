@@ -9,7 +9,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './progressbar.types';
-import { DEFAULTS, VARIANT } from './progressbar.constants';
+import { DEFAULTS, VARIANT, TAG_NAME as PROGRESSBAR_TAGNAME } from './progressbar.constants';
 import styles from './progressbar.styles';
 
 /**
@@ -27,17 +27,27 @@ import styles from './progressbar.styles';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-progressbar-background-color - Background color of the remaining progressbar portion.
- * @cssproperty --mdc-progressbar-active-background-color - Background color of the elapsed progressbar portion.
- * @cssproperty --mdc-progressbar-success-color - Background color of the progressbar when in success state.
- * @cssproperty --mdc-progressbar-error-color - Background color of the progressbar when in error state.
+ * @cssproperty --mdc-progressbar-progress-background-color - Background color of the elapsed progressbar portion.
  * @cssproperty --mdc-progressbar-height - The height of the progressbar.
  * @cssproperty --mdc-progressbar-border-radius - The border radius of the progressbar.
- * @cssproperty --mdc-progressbar-label-color - Color of the progressbar label text.
- * @cssproperty --mdc-progressbar-label-line-height - Line height of the label text.
- * @cssproperty --mdc-progressbar-label-font-size - Font size of the label text.
- * @cssproperty --mdc-progressbar-label-font-weight - Font weight of the label text.
- * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
  */
 class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
   /**
@@ -68,7 +78,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
 
   override connectedCallback() {
     super.connectedCallback();
-    this.id = `mdc-progressbar-${uuidv4()}`;
+    this.id = `${PROGRESSBAR_TAGNAME}-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
     this.toggletipText = undefined as unknown as string;
     this.toggletipPlacement = undefined as unknown as PopoverPlacement;

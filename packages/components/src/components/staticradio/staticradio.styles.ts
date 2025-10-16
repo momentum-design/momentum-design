@@ -3,86 +3,100 @@ import { css } from 'lit';
 const styles = [
   css`
     :host {
+      --mdc-radio-inner-circle-size: 0.375rem;
+      --mdc-radio-outer-circle-size: 1rem;
+      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-normal);
+      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-normal);
+
       display: block;
       position: relative;
       width: 1rem;
       height: 1rem;
       margin: 0.125rem 0;
       border-radius: 50%;
-
-      --mdc-staticradio-inner-circle-size: 0.375rem;
-      --mdc-staticradio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
-      --mdc-staticradio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
-      --mdc-staticradio-normal-border-color: var(--mds-color-theme-outline-input-normal);
-      --mdc-staticradio-inner-circle-normal-background: var(--mds-color-theme-inverted-text-primary-normal);
-      --mdc-staticradio-inner-circle-disabled-background: var(--mds-color-theme-inverted-text-primary-disabled);
-      --mdc-staticradio-control-inactive-color: var(--mds-color-theme-control-inactive-normal);
-      --mdc-staticradio-control-inactive-disabled-background: var(--mds-color-theme-control-inactive-disabled);
-      --mdc-staticradio-control-active-color: var(--mds-color-theme-control-active-normal);
-      --mdc-staticradio-control-active-disabled-background: var(--mds-color-theme-control-active-disabled);
     }
 
-    .icon:after {
+    :host::part(radio-icon) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--mdc-radio-outer-circle-size);
+      height: var(--mdc-radio-outer-circle-size);
+      border: 0.0625rem solid var(--mdc-radio-outer-circle-border-color);
+      background-color: var(--mdc-radio-outer-circle-background-color);
+      border-radius: 50%;
+    }
+
+    .radio-icon:after {
       content: '';
       position: absolute;
       display: none;
     }
 
-    :host([disabled]) .icon,
-    :host([disabled][readonly]) .icon {
-      border-color: var(--mdc-staticradio-disabled-border-color);
-      background: var(--mdc-staticradio-control-inactive-disabled-background);
+    :host([checked]) {
+      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-control-active-normal);
+      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-normal);
     }
 
-    :host([disabled][checked]) .icon,
-    :host([disabled][readonly][checked]) .icon {
-      border: var(--mdc-staticradio-control-active-disabled-background);
-      background: var(--mdc-staticradio-control-active-disabled-background);
-    }
-
-    :host([disabled][checked]) .icon:after,
-    :host([disabled][readonly][checked]) .icon:after {
-      background: var(--mdc-staticradio-inner-circle-disabled-background);
-    }
-
-    .icon {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1rem;
-      height: 1rem;
-      border: 0.0625rem solid var(--mdc-staticradio-normal-border-color);
-      background-color: var(--mdc-staticradio-control-inactive-color);
-      border-radius: 50%;
-    }
-
-    :host([checked]) .icon {
-      border-color: var(--mdc-staticradio-control-active-color);
-      background-color: var(--mdc-staticradio-control-active-color);
-    }
-
-    :host([checked]) .icon:after {
+    :host([checked]) .radio-icon:after {
       display: block;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: var(--mdc-staticradio-inner-circle-size);
-      height: var(--mdc-staticradio-inner-circle-size);
+      width: var(--mdc-radio-inner-circle-size);
+      height: var(--mdc-radio-inner-circle-size);
       border-radius: 50%;
-      background: var(--mdc-staticradio-inner-circle-normal-background);
+      background-color: var(--mdc-radio-inner-circle-background-color);
     }
 
-    :host([readonly]) .icon {
-      border-color: var(--mdc-staticradio-normal-border-color);
-      background-color: var(--mdc-staticradio-control-inactive-color);
+    :host([readonly]) {
+      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-radio-outer-circle-background-color: transparent;
     }
 
-    :host([readonly][checked]) .icon {
-      border-color: var(--mdc-staticradio-normal-border-color);
+    :host([readonly][checked]) {
+      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-radio-outer-circle-background-color: transparent;
     }
 
-    :host([readonly][checked]) .icon:after {
-      background-color: var(--mdc-staticradio-text-disabled-color);
+    :host([disabled]),
+    :host([soft-disabled]) {
+      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-disabled);
+    }
+
+    :host([disabled][checked]),
+    :host([soft-disabled][checked]) {
+      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-disabled);
+      --mdc-radio-outer-circle-border-color: transparent;
+      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-disabled);
+    }
+
+    @media (forced-colors: active) {
+      :host([checked]) {
+        --mdc-radio-outer-circle-border-color: SelectedItem;
+        --mdc-radio-outer-circle-background-color: SelectedItem;
+      }
+      :host([readonly]),
+      :host([readonly][checked]) {
+        --mdc-radio-inner-circle-background-color: Highlight;
+        --mdc-radio-outer-circle-border-color: Highlight;
+        --mdc-radio-outer-circle-background-color: ButtonFace;
+      }
+      :host([disabled]),
+      :host([soft-disabled]) {
+        --mdc-radio-outer-circle-border-color: GrayText;
+        --mdc-radio-outer-circle-background-color: GrayText;
+        --mdc-radio-inner-circle-background-color: GrayText;
+      }
+
+      :host([disabled][checked]),
+      :host([soft-disabled][checked]) {
+        --mdc-radio-outer-circle-border-color: GrayText;
+        --mdc-radio-outer-circle-background-color: GrayText;
+      }
     }
   `,
 ];

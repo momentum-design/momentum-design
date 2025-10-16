@@ -1,6 +1,6 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property, query } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -48,20 +48,36 @@ import styles from './textarea.styles';
  * @dependency mdc-text
  * @dependency mdc-toggletip
  *
- * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
- * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
- * @cssproperty --mdc-textarea-disabled-background-color - Background color for the textarea field when disabled
+ * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
+ * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
+ * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
+ * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-textarea-text-color - Text color for the textarea field
  * @cssproperty --mdc-textarea-background-color - Background color for the textarea field
  * @cssproperty --mdc-textarea-border-color - Border color for the textarea field
  * @cssproperty --mdc-textarea-text-secondary-normal - Text color for the character counter
- * @cssproperty --mdc-textarea-error-border-color - Border color for the error related help text
- * @cssproperty --mdc-textarea-warning-border-color - Border color for the warning related help text
- * @cssproperty --mdc-textarea-success-border-color - Border color for the success related help text
- * @cssproperty --mdc-textarea-primary-border-color - Border color for the priority related help text
- * @cssproperty --mdc-textarea-hover-background-color - Background color for the textarea container when hover
- * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
- * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
+ * @cssproperty --mdc-textarea-text-font-size - Font size for the textarea field
+ * @cssproperty --mdc-textarea-text-line-height - Line height for the textarea field
+ * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
 class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
@@ -69,12 +85,6 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * The placeholder text that is displayed when the textarea field is empty.
    */
   @property({ type: String }) placeholder?: string;
-
-  /**
-   * readonly attribute of the textarea field. If true, the textarea field is read-only.
-   * @default false
-   */
-  @property({ type: Boolean }) readonly = false;
 
   /**
    * The rows attribute specifies the visible number of lines in a text area.
@@ -122,9 +132,18 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: Number }) minlength?: number;
 
   /**
-   * maximum character limit for the textarea field for character counter.
+   * The maximum character limit for the textarea field for character counter.
    */
   @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
+
+  /**
+   * Template string for the announcement that will be read by screen readers when the max character limit is set.
+   * Consumers must use the placeholders `%{number-of-characters}` and `%{max-character-limit}` in the string,
+   * which will be dynamically replaced with the actual values at runtime.
+   * For example: `%{number-of-characters} out of %{max-character-limit} characters are typed.`
+   * Example output: "93 out of 140 characters are typed."
+   */
+  @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
 
   /**
    * @internal
@@ -132,6 +151,10 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    */
   @query('textarea') override inputElement!: HTMLTextAreaElement;
 
+  /** @internal */
+  @state() private ariaLiveAnnouncer?: string;
+
+  /** @internal */
   private characterLimitExceedingFired: boolean = false;
 
   protected get textarea(): HTMLTextAreaElement {
@@ -292,6 +315,33 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   private updateValue() {
     this.value = this.textarea.value;
     this.internals.setFormValue(this.textarea.value);
+    this.announceMaxLengthWarning();
+  }
+
+  /**
+   * Announces the character limit warning based on the current value length.
+   * If the value length exceeds the max character limit, the help text is announced (if help text is present).
+   * If the value length does not exceed the max character limit, then the character limit announcement is announced.
+   */
+  private announceMaxLengthWarning() {
+    this.ariaLiveAnnouncer = '';
+    if (!this.maxCharacterLimit || this.value.length === 0) {
+      return;
+    }
+    if (this.helpText && this.value.length > this.maxCharacterLimit) {
+      // We need to assign the same value multiple times, when the input reaches the max limit,
+      // Lit does a `===` strict comparison and doesn't update the value
+      // Hence we need to manually wait for the update to complete and then assign the value.
+      this.updateComplete
+        .then(() => {
+          this.ariaLiveAnnouncer = this.helpText;
+        })
+        .catch(() => {});
+    } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = this.characterLimitAnnouncement
+        .replace('%{number-of-characters}', this.value.length.toString())
+        .replace('%{max-character-limit}', this.maxCharacterLimit.toString());
+    }
   }
 
   /**
@@ -316,7 +366,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     }
     return html`
       <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
-        ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
+        ${this.value.length}/${this.maxCharacterLimit}
       </mdc-text>
     `;
   }
@@ -331,7 +381,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="textarea-container mdc-focus-ring" part="textarea-container">
+      <div class="mdc-focus-ring" part="textarea-container">
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"
           part="textarea"
@@ -355,6 +405,11 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
         ></textarea>
+        <mdc-screenreaderannouncer
+          identity="${this.inputId}"
+          announcement="${ifDefined(this.ariaLiveAnnouncer)}"
+          data-aria-live="polite"
+        ></mdc-screenreaderannouncer>
       </div>
       ${this.renderTextareaFooter()}
     `;

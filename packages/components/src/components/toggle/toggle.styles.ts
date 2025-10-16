@@ -5,24 +5,7 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
-    :host {
-      --mdc-toggle-width: 3rem;
-      --mdc-toggle-height: 1.5rem;
-      --mdc-toggle-width-compact: 2rem;
-      --mdc-toggle-height-compact: 1rem;
-
-      --mdc-toggle-label-lineheight: var(--mds-font-lineheight-body-midsize);
-      --mdc-toggle-label-fontsize: var(--mds-font-size-body-midsize);
-      --mdc-toggle-label-fontweight: 400;
-      --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
-      --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
-
-      --mdc-toggle-active-hover-color: var(--mds-color-theme-control-active-hover);
-      --mdc-toggle-active-pressed-color: var(--mds-color-theme-control-active-pressed);
-      --mdc-toggle-inactive-hover-color: var(--mds-color-theme-control-inactive-hover);
-      --mdc-toggle-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
-    }
-
+    /* Grid layout for labeled toggles */
     :host([label]),
     :host([help-text]) {
       display: grid;
@@ -37,6 +20,12 @@ const styles = [
       row-gap: 0rem;
     }
 
+    :host::part(label-text),
+    :host::part(help-text-container) {
+      grid-column: 2;
+    }
+
+    /* Component structure and layout */
     :host::part(toggle-input) {
       margin: 0;
       padding: 0;
@@ -48,52 +37,41 @@ const styles = [
       height: var(--mdc-toggle-height);
     }
 
-    .mdc-label-text,
-    .mdc-help-text {
-      font-size: var(--mdc-toggle-label-fontsize);
-      font-weight: var(--mdc-toggle-label-fontweight);
-      line-height: var(--mdc-toggle-label-lineheight);
-      grid-column: 2;
+    :host::part(label) {
+      word-break: break-word;
+      white-space: normal;
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    .mdc-label,
+    /* Default interactive states */
+    :host::part(label),
     :host::part(toggle-input) {
       cursor: pointer;
     }
 
-    .mdc-label {
-      word-break: break-word;
-      white-space: normal;
+    :host(:hover)::part(static-toggle) {
+      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-hover);
     }
 
-    :host([disabled]) .mdc-label,
-    :host([disabled])::part(toggle-input) {
-      cursor: default;
+    :host(:active)::part(static-toggle) {
+      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
-    .mdc-help-text {
-      color: var(--mdc-toggle-help-text-color);
+    :host([checked]:hover)::part(static-toggle) {
+      --mdc-toggle-background-color: var(--mds-color-theme-control-active-hover);
     }
 
-    :host(:hover:not([disabled]))::part(container) {
-      background-color: var(--mdc-toggle-inactive-hover-color);
+    :host([checked]:active)::part(static-toggle) {
+      --mdc-toggle-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
-    :host(:active:not([disabled]))::part(container) {
-      background-color: var(--mdc-toggle-inactive-pressed-color);
-    }
-
-    :host(:hover:not([disabled])[checked])::part(container) {
-      background-color: var(--mdc-toggle-active-hover-color);
-    }
-
-    :host(:active:not([disabled])[checked])::part(container) {
-      background-color: var(--mdc-toggle-active-pressed-color);
-    }
-
-    :host([disabled]) .mdc-label-text,
-    :host([disabled]) .mdc-help-text {
-      color: var(--mdc-toggle-label-color-disabled);
+    /* Readonly state - disables pointer events */
+    :host([readonly]),
+    :host([disabled]),
+    :host([soft-disabled]) {
+      pointer-events: none;
     }
   `,
   ...hostFocusRingStyles(true),

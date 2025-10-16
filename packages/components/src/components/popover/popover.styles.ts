@@ -52,7 +52,7 @@ const styles = css`
     border-color: var(--mdc-popover-inverted-border-color);
   }
 
-  :host([color='contrast']) .popover-close {
+  :host([color='contrast'])::part(popover-close) {
     color: var(--mdc-popover-inverted-text-color);
   }
 
@@ -64,14 +64,14 @@ const styles = css`
     max-height: var(--mdc-popover-max-height);
   }
 
-  .popover-hover-bridge {
+  :host::part(popover-hover-bridge) {
     position: absolute;
     transform: translateX(-50%);
     background: transparent;
     pointer-events: auto;
   }
 
-  .popover-arrow {
+  :host::part(popover-arrow) {
     position: absolute;
     width: 1rem;
     height: 1rem;
@@ -81,7 +81,7 @@ const styles = css`
     border: var(--mdc-popover-arrow-border);
   }
 
-  .popover-close {
+  :host::part(popover-close) {
     box-sizing: border-box;
     position: absolute;
     right: 0.75rem;
@@ -90,7 +90,7 @@ const styles = css`
     z-index: 9999;
   }
 
-  :host(:dir(rtl)) .popover-close {
+  :host(:dir(rtl))::part(popover-close) {
     right: auto;
     left: 0.75rem;
   }

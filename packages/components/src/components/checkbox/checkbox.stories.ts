@@ -4,18 +4,22 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Checkbox from './checkbox.component';
+import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 const render = (args: Args) => html`
   <mdc-checkbox
     label="${args.label}"
     help-text="${args['help-text']}"
+    help-text-type="${args['help-text-type']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     name="${args.name}"
     value="${args.value}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
@@ -30,6 +34,9 @@ const render = (args: Args) => html`
     toggletip-placement="${args['toggletip-placement']}"
     toggletip-strategy="${args['toggletip-strategy']}"
     @change="${action('onchange')}"
+    @keydown="${action('onkeydown')}"
+    @focus="${action('onfocus')}"
+    @click="${action('onclick')}"
   ></mdc-checkbox>
 `;
 
@@ -46,6 +53,10 @@ const meta: Meta = {
     'help-text': {
       control: 'text',
     },
+    'help-text-type': {
+      control: 'radio',
+      options: Object.values(CHECKBOX_VALIDATION),
+    },
     checked: {
       control: 'boolean',
     },
@@ -53,6 +64,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'data-aria-label': {
@@ -81,14 +98,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'id', 'internals']),
-    ...textControls([
-      '--mdc-checkbox-background-color-hover',
-      '--mdc-checkbox-checked-background-color-hover',
-      '--mdc-checkbox-checked-pressed-icon-color',
-      '--mdc-checkbox-pressed-icon-color',
-      '--mdc-checkbox-disabled-checked-icon-color',
-    ]),
+    ...hideControls(['id', 'internals']),
     ...classArgType,
     ...styleArgType,
   },
@@ -103,13 +113,17 @@ export const Example: StoryObj = {
     checked: false,
     indeterminate: false,
     disabled: false,
+    readonly: false,
+    'soft-disabled': false,
     'data-aria-label': 'Agree to all terms and conditions',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
 export const WithoutLabel: StoryObj = {
   args: {
     'data-aria-label': 'This is a checkbox with no label',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -117,6 +131,7 @@ export const HelperText: StoryObj = {
   args: {
     label: 'Email Opt In',
     'help-text': 'I agree to receiving monthly promotional emails.',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -125,6 +140,7 @@ export const Indeterminate: StoryObj = {
     label: 'Checkbox Label',
     'help-text': 'Checkbox Help Text',
     indeterminate: true,
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };
 
@@ -193,7 +209,7 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
       }
 
       requiredBox.setAttribute('help-text', 'Looks good!');
-      requiredBox.setAttribute('help-text-type', 'success');
+      requiredBox.setAttribute('help-text-type', 'default');
       return true;
     };
 
@@ -235,6 +251,6 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   },
   args: {
     'help-text': '',
-    'help-text-type': 'default',
+    'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
 };

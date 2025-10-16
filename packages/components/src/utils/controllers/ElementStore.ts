@@ -6,7 +6,7 @@ import type { Component } from '../../models';
 
 export type ElementStoreChangeTypes = 'added' | 'removed';
 
-interface ElementStoreOptions<TItem extends HTMLElement = HTMLElement> {
+interface ElementStoreOptions<TItem extends HTMLElement> {
   /**
    * Checks if the item is valid.
    * Invalid items will not be collected or processed.
@@ -24,9 +24,9 @@ interface ElementStoreOptions<TItem extends HTMLElement = HTMLElement> {
    * @param item - The item that is being added or removed.
    * @param changeType - The type of change ('added' or 'removed').
    * @param index - Index at which the item is added or removed.
-   * @param store - The current state of the store.
+   * @param items - Items in the store before the change.
    */
-  onStoreUpdate?: (item: TItem, changeType: ElementStoreChangeTypes, index: number, store?: TItem[]) => void;
+  onStoreUpdate?: (item: TItem, changeType: ElementStoreChangeTypes, index: number, items: TItem[]) => void;
 }
 
 const defaultIsValidFn = (item: any) => !!item;
@@ -61,10 +61,10 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
   private host: Component;
 
   /** Checks if the item is valid. */
-  private readonly isValidItem: ElementStoreOptions['isValidItem'];
+  private readonly isValidItem: ElementStoreOptions<TItem>['isValidItem'];
 
   /** Callback function that is called before the store is updated. */
-  private readonly onStoreUpdate: ElementStoreOptions['onStoreUpdate'];
+  private readonly onStoreUpdate: ElementStoreOptions<TItem>['onStoreUpdate'];
 
   /** Stored items */
   private cache: TItem[] = [];
@@ -117,19 +117,26 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * @param host - The host component that this controller is attached to.
    * @param options - Element store options
    */
-  constructor(host: Component, options?: ElementStoreOptions) {
+  constructor(host: Component, options?: ElementStoreOptions<TItem>) {
     this.host = host;
     host.addController(this);
     this.isValidItem = options?.isValidItem || defaultIsValidFn;
     this.onStoreUpdate = options?.onStoreUpdate;
+  }
 
+  hostConnected() {
     this.host.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
     this.host.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
   }
 
-  hostConnected() {}
-
-  hostDisconnected() {}
+  hostDisconnected() {
+    this.host.removeEventListener(LIFE_CYCLE_EVENTS.CREATED, this.itemCreationHandler);
+    this.host.removeEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.itemDestroyHandler);
+    // This is a shortcut, because after the removal of the parent the children will emit the destroyed event,
+    // but it is less performant also we want to skip the onStoreUpdate calls after disconnection
+    // re-connection of the element will fill the cache again
+    this.reset();
+  }
 
   /**
    * Handles the item creation event.
@@ -145,8 +152,8 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *
    * @param event - The event triggered when an item is destroyed.
    */
-  protected itemDestroyHandler = (event: Event) => {
-    this.delete(event.target as TItem);
+  protected itemDestroyHandler = (event: CustomEvent) => {
+    this.delete(event.detail.originalTarget as TItem);
   };
 
   /**
@@ -224,8 +231,8 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *
    * @param items - The items to set in the cache.
    */
-  protected reset(items: TItem[]): void {
+  protected reset(items?: TItem[]): void {
     this.cache.length = 0;
-    this.cache.push(...(items || []));
+    if (items) this.cache.push(...items);
   }
 }

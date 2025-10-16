@@ -3,10 +3,11 @@ import { useGlobals, type API } from "storybook/manager-api";
 import { IconButton } from "storybook/internal/components";
 import { ADDON_ID, KEY, TOOL_ID } from "../constants";
 import { TypeIcon } from "@storybook/icons";
-import { Global, styled } from 'storybook/theming';
+import { Global, styled } from "storybook/theming";
 import CodePreviewPanel from "./CodePreviewPanel";
 import { createPortal } from "react-dom";
 import { SNIPPET_RENDERED } from "storybook/internal/docs-tools";
+import type { CodeSnippetEvent } from "../types";
 
 const IconButtonLabel = styled.div(({ theme }) => ({
   fontSize: theme.typography.size.s2 - 1,
@@ -14,15 +15,13 @@ const IconButtonLabel = styled.div(({ theme }) => ({
 
 export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
   const [globals, updateGlobals, storyGlobals] = useGlobals();
-  const [codeSource, setCodeSource] = React.useState<string>('');
+  const [codeSnippetEvent, setCodeSnippetEvent] = React.useState<CodeSnippetEvent>({ id: "", args: {}, source: "" });
 
   const isLocked = KEY in storyGlobals;
   const isActive = !!globals[KEY];
 
   useEffect(() => {
-      return api.on(SNIPPET_RENDERED, (args: any) => {
-          setCodeSource(args.source);
-      });
+    return api.on(SNIPPET_RENDERED, setCodeSnippetEvent);
   }, [api]);
 
   const toggle = useCallback(() => {
@@ -33,7 +32,7 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
 
   useEffect(() => {
     // Ensure the addon panel is at the bottom when the tool is active
-    api.togglePanelPosition('bottom');
+    api.togglePanelPosition("bottom");
     // Register a shortcut to toggle the addon
     api.setAddonShortcut(ADDON_ID, {
       label: "Toggle Code [C]",
@@ -46,29 +45,29 @@ export const Tool = memo(function MyAddonSelector({ api }: { api: API }) {
 
   return (
     <>
-      <IconButton
-        key={TOOL_ID}
-        active={isActive}
-        disabled={isLocked}
-        title="Toggle Code Preview"
-        onClick={toggle}
-      >
+      <IconButton key={TOOL_ID} active={isActive} disabled={isLocked} title="Toggle Code Preview" onClick={toggle}>
         <TypeIcon />
-        <IconButtonLabel>{isActive ? 'Hide Code' : 'Show Code'}</IconButtonLabel>
+        <IconButtonLabel>{isActive ? "Hide Code" : "Show Code"}</IconButtonLabel>
       </IconButton>
 
       {/* styling override for 50/50 split in Canvas: */}
-      <Global styles={{
-          ['#storybook-preview-wrapper']: {
-            display: isActive ? 'flex !important' : 'grid',
-            placeItems: isActive ? 'unset !important' : 'center',
+      <Global
+        styles={{
+          ["#storybook-preview-wrapper"]: {
+            display: isActive ? "flex !important" : "grid",
+            placeItems: isActive ? "unset !important" : "center",
           },
-          ['iframe']: { 
-            width: isActive ? '50% !important' : '100%',
-           },
-        }}></Global>
+          ["iframe"]: {
+            width: isActive ? "50% !important" : "100%",
+          },
+        }}
+      ></Global>
       {/* Portaling the CodePreviewPanel into Canvas:  */}
-      {isActive && createPortal(<CodePreviewPanel codeSource={codeSource} channel={api.getChannel()} />, document.querySelector('#storybook-preview-wrapper')!)}
+      {isActive &&
+        createPortal(
+          <CodePreviewPanel snippetEvent={codeSnippetEvent} channel={api.getChannel()} api={api} />,
+          document.querySelector("#storybook-preview-wrapper")!,
+        )}
     </>
   );
 });

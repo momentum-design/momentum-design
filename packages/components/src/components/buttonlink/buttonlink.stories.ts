@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-buttonlink
@@ -73,22 +73,7 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls([
-      'icon-name',
-      'inline',
-      'inverted',
-      'handleNavigation',
-      '--mdc-link-border-radius',
-      '--mdc-link-color-active',
-      '--mdc-link-color-disabled',
-      '--mdc-link-color-hover',
-      '--mdc-link-color-normal',
-      '--mdc-link-inverted-color-active',
-      '--mdc-link-inverted-color-disabled',
-      '--mdc-link-inverted-color-hover',
-      '--mdc-link-inverted-color-normal',
-    ]),
-    ...disableControls([]),
+    ...hideControls(['icon-name', 'inline', 'inverted', 'handleNavigation']),
     ...classArgType,
     ...styleArgType,
   },

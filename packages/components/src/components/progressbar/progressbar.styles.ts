@@ -7,18 +7,10 @@ const styles = [
   css`
     :host {
       --mdc-progressbar-background-color: var(--mds-color-theme-control-indicator-inactive-normal);
-      --mdc-progressbar-active-background-color: var(--mds-color-theme-control-active-normal);
-      --mdc-progressbar-success-color: var(--mds-color-theme-indicator-stable);
-      --mdc-progressbar-error-color: var(--mds-color-theme-indicator-attention);
+      --mdc-progressbar-progress-background-color: var(--mds-color-theme-control-active-normal);
       --mdc-progressbar-height: 0.25rem;
       --mdc-progressbar-border: 0.5px solid transparent;
       --mdc-progressbar-border-radius: var(--mdc-progressbar-height);
-
-      --mdc-progressbar-label-color: var(--mds-color-theme-text-primary-normal);
-      --mdc-progressbar-label-line-height: var(--mds-font-lineheight-body-midsize);
-      --mdc-progressbar-label-font-size: var(--mds-font-size-body-midsize);
-      --mdc-progressbar-label-font-weight: var(--mds-font-weight-regular);
-      --mdc-progressbar-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
       width: 100%;
     }
@@ -53,17 +45,17 @@ const styles = [
 
     :host::part(progress-bar) {
       height: 100%;
-      background-color: var(--mdc-progressbar-active-background-color);
+      background-color: var(--mdc-progressbar-progress-background-color);
       border-radius: var(--mdc-progressbar-border-radius);
       transition: width 0.3s ease-in-out;
     }
 
     :host::part(success) {
-      background-color: var(--mdc-progressbar-success-color);
+      --mdc-progressbar-progress-background-color: var(--mds-color-theme-indicator-stable);
     }
 
     :host::part(error) {
-      background-color: var(--mdc-progressbar-error-color);
+      --mdc-progressbar-progress-background-color: var(--mds-color-theme-indicator-attention);
     }
 
     :host::part(remaining) {
@@ -73,16 +65,10 @@ const styles = [
       border-radius: var(--mdc-progressbar-border-radius);
     }
 
-    :host::part(label-text),
-    :host::part(help-text),
     :host::part(percentage) {
-      font-size: var(--mdc-progressbar-label-font-size);
-      font-weight: var(--mdc-progressbar-label-font-weight);
-      line-height: var(--mdc-progressbar-label-line-height);
-    }
-
-    :host([help-text-type='default'])::part(help-text) {
-      color: var(--mdc-progressbar-help-text-color);
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     @media (forced-colors: active) {

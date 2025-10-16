@@ -5,7 +5,7 @@ import '../text';
 import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, textControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 
@@ -66,21 +66,6 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(DIRECTIONS),
     },
-    ...textControls([
-      '--mdc-divider-background-color',
-      '--mdc-divider-width',
-      '--mdc-divider-horizontal-gradient',
-      '--mdc-divider-vertical-gradient',
-      '--mdc-divider-text-size',
-      '--mdc-divider-text-color',
-      '--mdc-divider-text-margin',
-      '--mdc-divider-grabber-button-background-color-normal',
-      '--mdc-divider-grabber-button-background-color-hover',
-      '--mdc-divider-grabber-button-background-color-pressed',
-      '--mdc-divider-grabber-button-border-color',
-      '--mdc-divider-grabber-button-border-radius',
-      '--mdc-divider-text-line-height',
-    ]),
     ...classArgType,
     ...styleArgType,
     ...hideControls(['observer']),

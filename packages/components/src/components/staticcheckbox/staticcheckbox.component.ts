@@ -10,7 +10,7 @@ import { ICON_NAME } from './staticcheckbox.constants';
 /**
  * This is a decorative component that is styled to look as a checkbox.
  *
- * It has 3 properties - checked, indeterminate and disabled.
+ * It has 5 properties - checked, indeterminate, disabled, readonly and soft-disabled.
  *
  * We are using the same styling that has been created for the `mdc-checkbox` component.
  *
@@ -18,16 +18,15 @@ import { ICON_NAME } from './staticcheckbox.constants';
  *
  * @dependency mdc-icon
  *
- * @cssproperty --mdc-staticcheckbox-border-color - Border color in high contrast.
- * @cssproperty --mdc-staticcheckbox-checked-background-color - Background color for a selected checkbox.
- * @cssproperty --mdc-staticcheckbox-disabled-background-color - Background color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-border-color - Border color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a disabled, selected checkbox.
- * @cssproperty --mdc-staticcheckbox-disabled-icon-color - Icon color for a disabled checkbox.
- * @cssproperty --mdc-staticcheckbox-icon-background-color - Background color for an unselected checkbox.
- * @cssproperty --mdc-staticcheckbox-icon-border-color - Default background color for an unselected checkbox.
- * @cssproperty --mdc-staticcheckbox-icon-color - Icon color for an unselected checkbox.
+ * @cssproperty --mdc-checkbox-border-color - Controls the border color of the checkbox.
+ * @cssproperty --mdc-checkbox-background-color - Controls the background color of the checkbox.
+ * @cssproperty --mdc-checkbox-icon-color - Controls the icon color of the checkbox.
+ * @cssproperty --mdc-checkbox-size - Controls the size of the checkbox.
  *
+ * @csspart icon-container - The container for the checkbox icon.
+ * @csspart checkbox-icon - The checkbox icon.
+ *
+ * @slot - Default slot for adding label text.
  */
 class StaticCheckbox extends DisabledMixin(Component) {
   /**
@@ -44,12 +43,26 @@ class StaticCheckbox extends DisabledMixin(Component) {
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
+  /**
+   * Determines whether the checkbox is read-only.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Determines whether the checkbox is soft-disabled.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true }) softDisabled = false;
+
   public override render() {
     const checkboxIconContent =
       this.checked || this.indeterminate
         ? html`
             <mdc-icon
-              class="icon"
+              part="checkbox-icon"
               name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
               size="1"
               length-unit="rem"

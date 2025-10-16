@@ -5,55 +5,15 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   css`
     :host {
-      --mdc-checkbox-background-color-hover: var(--mds-color-theme-control-inactive-hover);
-      --mdc-checkbox-pressed-icon-color: var(--mds-color-theme-control-inactive-pressed);
-      --mdc-checkbox-checked-pressed-icon-color: var(--mds-color-theme-control-active-pressed);
-      --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
-      --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
-
       flex-direction: row;
       align-items: flex-start;
     }
-    .mdc-label,
-    .input {
-      cursor: pointer;
-    }
 
-    :host([disabled]) .mdc-label,
-    :host([disabled]) .input {
-      cursor: default;
-    }
-
-    :host(:hover) mdc-staticcheckbox {
-      background: var(--mdc-checkbox-background-color-hover);
-    }
-    :host(:active) mdc-staticcheckbox {
-      background: var(--mdc-checkbox-pressed-icon-color);
-    }
-
-    :host([checked]:hover)::part(icon-container),
-    :host([indeterminate]:hover)::part(icon-container) {
-      background: var(--mdc-checkbox-checked-background-color-hover);
-    }
-    :host([checked]:active)::part(icon-container),
-    :host([indeterminate]:active)::part(icon-container) {
-      background: var(--mdc-checkbox-checked-pressed-icon-color);
-    }
-
-    :host([disabled]) mdc-staticcheckbox {
-      background: unset;
-    }
-
-    :host([disabled][checked])::part(icon-container),
-    :host([disabled][indeterminate])::part(icon-container) {
-      background-color: var(--mdc-checkbox-disabled-checked-icon-color);
-    }
-
-    :host mdc-staticcheckbox {
+    :host::part(static-checkbox) {
       position: relative;
     }
 
-    .input {
+    :host::part(checkbox-input) {
       margin: 0;
       padding: 0;
       position: absolute;
@@ -62,23 +22,56 @@ const styles = [
       opacity: 0.1%;
       overflow: visible;
       z-index: 1;
-    }
-
-    .input {
-      width: 1rem;
-      height: 1rem;
+      width: var(--mdc-checkbox-size);
+      height: var(--mdc-checkbox-size);
       border-radius: 0.125rem;
     }
 
-    .text-container {
+    :host::part(text-container) {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
-    .mdc-label {
+    :host::part(label) {
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
       word-break: break-word;
       white-space: normal;
+    }
+
+    :host::part(label),
+    :host::part(checkbox-input) {
+      cursor: pointer;
+    }
+
+    :host(:hover)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-hover);
+    }
+
+    :host(:active)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-pressed);
+    }
+
+    :host([checked]:hover)::part(static-checkbox),
+    :host([indeterminate]:hover)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-hover);
+    }
+
+    :host([checked]:active)::part(static-checkbox),
+    :host([indeterminate]:active)::part(static-checkbox) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-pressed);
+    }
+
+    :host([help-text-type='error'])::part(static-checkbox) {
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-cancel-normal);
+    }
+
+    :host([readonly]),
+    :host([disabled]),
+    :host([soft-disabled]) {
+      pointer-events: none;
     }
   `,
   ...hostFocusRingStyles(true),

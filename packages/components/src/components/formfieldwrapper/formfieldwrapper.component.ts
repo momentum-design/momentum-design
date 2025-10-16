@@ -29,6 +29,25 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
  * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
  * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ *
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
   /**
@@ -83,6 +102,20 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'info-icon-aria-label' })
   infoIconAriaLabel?: string;
 
+  /**
+   * Determines whether the form field is read-only.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  readonly = false;
+
+  /**
+   * Determines whether the form field is soft-disabled.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
+  softDisabled = false;
+
   /** @internal */
   protected shouldRenderLabel: Boolean = true;
 
@@ -97,9 +130,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return this.shouldRenderLabel
-      ? html`<label for="${this.inputId}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label"
-          >${this.label}</label
-        >`
+      ? html`<label for="${this.inputId}" id="${DEFAULTS.HEADING_ID}" part="label">${this.label}</label>`
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
@@ -147,13 +178,15 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   }
 
   /**
-   * renders the mdc-label-text container that contains the label and labelInfoToggleTip.
+   * renders the label container that contains the label and labelInfoToggleTip.
    * @returns void
    */
   protected renderLabel() {
     if (!this.label) return nothing;
     const triggerId = `toggletip-trigger-${uuidv4()}`;
-    return html`<div class="mdc-label-text" part="label-text">
+    const shouldDisableToggletip = this.disabled || this.softDisabled;
+
+    return html`<div part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
       <slot name="toggletip">
@@ -164,7 +197,8 @@ class FormfieldWrapper extends DisabledMixin(Component) {
                 size="${DEFAULTS.ICON_SIZE}"
                 variant="${BUTTON_VARIANTS.TERTIARY}"
                 aria-label="${ifDefined(this.infoIconAriaLabel)}"
-                ?disabled="${this.disabled}"
+                ?disabled="${shouldDisableToggletip}"
+                ?soft-disabled="${this.softDisabled}"
                 id="${triggerId}"
               ></mdc-button>
               <mdc-toggletip
@@ -182,14 +216,14 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   }
 
   /**
-   * renders the mdc-help-text container that contains the helpertext icon and helpertext.
+   * renders the help-text container that contains the helpertext icon and helpertext.
    * @returns void
    */
   protected renderHelperText() {
     if (!this.helpText) {
       return nothing;
     }
-    return html`<div class="mdc-help-text" part="help-text">
+    return html`<div part="help-text-container">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;

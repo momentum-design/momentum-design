@@ -36,19 +36,24 @@ import type { ToggleSize } from './toggle.types';
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
- * @cssproperty --mdc-toggle-width - Width of the toggle
- * @cssproperty --mdc-toggle-height - Height of the toggle
- * @cssproperty --mdc-toggle-width-compact - Width of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-height-compact - Height of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-label-lineheight - Line height of the toggle label
- * @cssproperty --mdc-toggle-label-fontsize - Font size of the toggle label
- * @cssproperty --mdc-toggle-label-fontweight - Font weight of the toggle label
- * @cssproperty --mdc-toggle-label-color-disabled - Color of the toggle label and help text in disabled state
- * @cssproperty --mdc-toggle-help-text-color - Color of the help text label
- * @cssproperty --mdc-toggle-active-hover-color - Background color of the active toggle in hover state
- * @cssproperty --mdc-toggle-active-pressed-color - Background color of the active toggle in pressed state
- * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
- * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
+ * @cssproperty --mdc-toggle-width - The width of the toggle
+ * @cssproperty --mdc-toggle-height - The height of the toggle
+ * @cssproperty --mdc-toggle-border-radius - The border radius of the toggle
+ * @cssproperty --mdc-toggle-border-color - The border color of the toggle
+ * @cssproperty --mdc-toggle-background-color - The background color of the toggle
+ * @cssproperty --mdc-toggle-icon-color - The icon color of the toggle
+ * @cssproperty --mdc-toggle-icon-background-color - The icon background color of the toggle
+ *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart static-toggle - The static-toggle element that wraps the toggle input.
+ * @csspart toggle-input - The native checkbox input element styled as a toggle switch.
  */
 class Toggle
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
@@ -141,10 +146,10 @@ class Toggle
 
   /**
    * Toggles the state of the toggle element.
-   * If the element is not disabled, then the checked property is toggled.
+   * If the element is not disabled, soft-disabled, or readonly, then the checked property is toggled.
    */
   private toggleState(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.softDisabled && !this.readonly) {
       this.checked = !this.checked;
     }
   }
@@ -155,6 +160,10 @@ class Toggle
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
+    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+
     if (event.key === KEYS.ENTER) {
       this.form?.requestSubmit();
     }
@@ -198,9 +207,11 @@ class Toggle
       <mdc-statictoggle
         ?checked="${this.checked}"
         ?disabled="${this.disabled}"
+        ?readonly="${this.readonly}"
+        ?soft-disabled="${this.softDisabled}"
         size="${this.size}"
         class="mdc-focus-ring"
-        part="container"
+        part="static-toggle"
       >
         <input
           id="${this.inputId}"
@@ -213,6 +224,7 @@ class Toggle
           .checked="${this.checked}"
           aria-checked="${this.checked}"
           .disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-label="${this.dataAriaLabel ?? ''}"
           tabindex="${this.disabled ? -1 : 0}"

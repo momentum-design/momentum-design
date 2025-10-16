@@ -15,7 +15,7 @@ type SetupOptions = {
   color?: PopoverColor;
   delay?: string;
   id?: string;
-  offset?: boolean;
+  offset?: number;
   placement?: PopoverPlacement;
   showArrow?: boolean;
   tooltipType?: string;
@@ -30,7 +30,7 @@ const setup = async (args: SetupOptions) => {
     <div id="wrapper" >
       <div style="height: 10vh">
         <mdc-button id="${restArgs.triggerID}">Trigger</mdc-button>
-        <mdc-button>Other button</mdc-button>
+        <mdc-button style="margin-top: 2px;">Other button</mdc-button>
       </div>
       <mdc-tooltip
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
@@ -240,6 +240,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       id: 'tooltip',
       triggerID: 'trigger-button',
       children: 'Lorem ipsum dolor sit amet.',
+      offset: 15,
     });
     await test.step('focus', async () => {
       await test.step('focusing on trigger button should show tooltip', async () => {
@@ -261,6 +262,16 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await test.step('mouseout out the trigger button should hide the tooltip', async () => {
         await componentsPage.page.mouse.move(1000, 1000);
         await expect(triggerButton).not.toBeFocused();
+        await expect(tooltip).not.toBeVisible();
+      });
+      await test.step('mouse hovered from trigger to the tooltip content should still keep tooltip visible', async () => {
+        await componentsPage.page.mouse.move(40, 20);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 45);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 60);
+        await expect(tooltip).toBeVisible();
+        await componentsPage.page.mouse.move(40, 100);
         await expect(tooltip).not.toBeVisible();
       });
     });

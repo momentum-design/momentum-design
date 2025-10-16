@@ -6,61 +6,56 @@ const styles = [
   hostFitContentStyles,
   css`
     :host {
-      border: 0.0625rem solid transparent;
+      --mdc-button-height: unset;
+      --mdc-button-background: transparent;
+      --mdc-button-border-color: transparent;
+      --mdc-button-text-color: unset;
+
+      border: 0.0625rem solid var(--mdc-button-border-color);
       cursor: pointer;
       user-select: none;
 
-      background-color: var(--mds-color-theme-text-primary-normal);
-      color: var(--mds-color-theme-inverted-text-secondary-normal);
+      background-color: var(--mdc-button-background);
+      color: var(--mdc-button-text-color);
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      height: var(--mdc-button-height);
       outline: none;
-
-      --mdc-button-height-size-124: 7.75rem;
-      --mdc-button-height-size-88: 5.5rem;
-      --mdc-button-height-size-72: 4.5rem;
-      --mdc-button-height-size-64: 4rem;
-      --mdc-button-height-size-52: 3.25rem;
-      --mdc-button-height-size-40: 2.5rem;
-      --mdc-button-height-size-32: 2rem;
-      --mdc-button-height-size-28: 1.75rem;
-      --mdc-button-height-size-24: 1.5rem;
-      --mdc-button-height-size-20: 1.25rem;
     }
 
     :host([disabled]),
     :host([soft-disabled]) {
-      background-color: var(--mds-color-theme-text-primary-disabled);
+      --mdc-button-background: var(--mds-color-theme-text-primary-disabled);
     }
     :host([size='124']) {
-      height: var(--mdc-button-height-size-124);
+      --mdc-button-height: 7.75rem;
     }
     :host([size='88']) {
-      height: var(--mdc-button-height-size-88);
+      --mdc-button-height: 5.5rem;
     }
     :host([size='72']) {
-      height: var(--mdc-button-height-size-72);
+      --mdc-button-height: 4.5rem;
     }
     :host([size='64']) {
-      height: var(--mdc-button-height-size-64);
+      --mdc-button-height: 4rem;
     }
     :host([size='52']) {
-      height: var(--mdc-button-height-size-52);
+      --mdc-button-height: 3.25rem;
     }
     :host([size='40']) {
-      height: var(--mdc-button-height-size-40);
+      --mdc-button-height: 2.5rem;
     }
     :host([size='32']) {
-      height: var(--mdc-button-height-size-32);
+      --mdc-button-height: 2rem;
     }
     :host([size='28']) {
-      height: var(--mdc-button-height-size-28);
+      --mdc-button-height: 1.75rem;
       font-size: var(--mds-font-size-body-midsize);
     }
     :host([size='24']) {
-      height: var(--mdc-button-height-size-24);
+      --mdc-button-height: 1.5rem;
     }
     :host([size='20']) {
-      height: var(--mdc-button-height-size-20);
+      --mdc-button-height: 1.25rem;
     }
   `,
   ...hostFocusRingStyles(),

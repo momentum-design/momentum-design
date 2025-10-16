@@ -7,7 +7,7 @@ import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { ControlledMixin } from '../../utils/mixins/ControlledMixin';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 
 import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
@@ -55,8 +55,18 @@ import styles from './menuitemcheckbox.styles';
  * @event change - (React: onChange) This event is dispatched when the menuitemcheckbox changes.
  * @event click - (React: onClick) This event is dispatched when the menuitemcheckbox is clicked.
  * @event focus - (React: onFocus) This event is dispatched when the menuitemcheckbox receives focus.
+ *
+ * @cssproperty --mdc-listitem-padding-left-and-right - Controls the padding on the left and right of the menuitemcheckbox.
+ *
+ * @csspart checkmark-icon - Allows customization of the checkmark icon.
+ * @csspart leading - Allows customization of the leading part.
+ * @csspart leading-arrow - Allows customization of leading arrow icon.
+ * @csspart leading-text - Allows customization of the leading text part.
+ * @csspart trailing - Allows customization of the trailing part.
+ * @csspart trailing-arrow - Allows customization of trailing arrow icon.
+ * @csspart trailing-text - Allows customization of the trailing text part.
  */
-class MenuItemCheckbox extends ControlledMixin(MenuItem) {
+class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
   /**
    * The checked attribute is used to indicate that the menuitemcheckbox is checked or not.
    * @default false
@@ -88,7 +98,7 @@ class MenuItemCheckbox extends ControlledMixin(MenuItem) {
   private handleMouseClick() {
     if (this.disabled) return;
 
-    if (!this.controlled) {
+    if (this.controlType !== 'controlled') {
       this.checked = !this.checked;
     }
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
@@ -113,6 +123,7 @@ class MenuItemCheckbox extends ControlledMixin(MenuItem) {
           slot="leading-controls"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
         ></mdc-staticcheckbox>
       `;
     }
@@ -133,6 +144,7 @@ class MenuItemCheckbox extends ControlledMixin(MenuItem) {
           slot="trailing-controls"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
           size="${TOGGLE_SIZE.COMPACT}"
         ></mdc-statictoggle>
       `;

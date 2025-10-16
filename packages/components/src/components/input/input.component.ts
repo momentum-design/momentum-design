@@ -48,23 +48,36 @@ import styles from './input.styles';
  * @slot input-prefix-text - Slot for the prefix text before the input field. If not provided, the `prefixText` property will be used to render the prefix text.
  * @slot trailing-button - Slot for the trailing button to clear the input field. If not provided, the clear button will be rendered when `trailingButton` property is set to true.
  *
- * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
- * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
- * @cssproperty --mdc-input-disabled-background-color - Background color for the input field when disabled
- * @cssproperty --mdc-input-border-color - Border color for the input container
+ * @cssproperty --mdc-label-font-size - Font size for the label text.
+ * @cssproperty --mdc-label-font-weight - Font weight for the label text.
+ * @cssproperty --mdc-label-line-height - Line height for the label text.
+ * @cssproperty --mdc-label-color - Color for the label text.
+ * @cssproperty --mdc-help-text-font-size - Font size for the help text.
+ * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
+ * @cssproperty --mdc-help-text-line-height - Line height for the help text.
+ * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  * @cssproperty --mdc-input-text-color - Text color for the input field
+ * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
- * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
- * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
- * @cssproperty --mdc-input-hover-background-color - Background color for the input field when hovered
- * @cssproperty --mdc-input-focused-background-color - Background color for the input field when focused
- * @cssproperty --mdc-input-focused-border-color - Border color for the input container when focused
- * @cssproperty --mdc-input-error-border-color - Border color for the input container when error
- * @cssproperty --mdc-input-warning-border-color - Border color for the input container when warning
- * @cssproperty --mdc-input-success-border-color - Border color for the input container when success
- * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
+ * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  *
+ * @csspart label - The label element.
+ * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
+ * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
+ * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart help-text - The helper/validation text element.
+ * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
+ * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart leading-icon - The leading icon element that is displayed before the input field.
+ * @csspart prefix-text - The prefix text element that is displayed before the input field.
+ * @csspart input-container - The container for the input field, leading icon, prefix text, and trailing button elements.
+ * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
+ * @csspart input-text - The input field element.
+ * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  */
 
 class Input
@@ -75,11 +88,6 @@ class Input
    * The placeholder text that is displayed when the input field is empty.
    */
   @property({ type: String }) placeholder = '';
-
-  /**
-   * readonly attribute of the input field. If true, the input field is read-only.
-   */
-  @property({ type: Boolean }) readonly = false;
 
   /**
    * The prefix text that is displayed before the input field. It has a max length of 10 characters.
@@ -150,6 +158,14 @@ class Input
    * @default ''
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
+
+  /**
+   * Defines a id pointing to the element which describes the input element.
+   * The AriaDescribedby attribute to be set for accessibility.
+   * @default null
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-describedby' })
+  dataAriaDescribedby: string | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -283,7 +299,6 @@ class Input
     }
     return html`
       <mdc-icon
-        class="leading-icon"
         part="leading-icon"
         name=${this.leadingIcon}
         size="${DEFAULTS.ICON_SIZE_VALUE}"
@@ -309,7 +324,7 @@ class Input
     }
     return html`
       <mdc-text
-        class="prefix-text"
+        part="prefix-text"
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}"
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
         aria-hidden="true"
@@ -357,8 +372,7 @@ class Input
 
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
-      class="input"
-      part="mdc-input"
+      part="input-text"
       id="${this.inputId}"
       name="${this.name}"
       .value="${live(this.value)}"
@@ -366,7 +380,9 @@ class Input
       ?readonly="${this.readonly}"
       ?required="${this.required}"
       type="${type}"
-      aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+      aria-describedby="${ifDefined(
+        this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : (this.dataAriaDescribedby ?? ''),
+      )}"
       aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
       placeholder=${ifDefined(placeholderText)}
       minlength=${ifDefined(this.minlength)}
@@ -386,9 +402,9 @@ class Input
   public override render() {
     return html`
       ${this.renderLabel()}
-      <div class="input-container mdc-focus-ring" part="input-container">
+      <div class="mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-        <div class="input-section" part="input-section">
+        <div part="input-section">
           <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
           <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
         </div>

@@ -1,0 +1,114 @@
+## Installation
+
+To install the library, add the following NPM dependency to your `package.json`
+with the required version number:
+
+- [**@momentum-design/components**](https://github.com/momentum-design/momentum-design/tree/main/packages/components) -
+  Components Package.
+  [NPMJS Package](https://www.npmjs.com/package/@momentum-design/components)
+
+In order to install, run the following command:
+
+```bash
+npm install @momentum-design/components
+
+or
+
+yarn add @momentum-design/components
+```
+
+## Checklist
+
+- Ensure that all required stylesheets are included in your project:
+
+  ```javascript
+  import '@momentum-design/fonts/dist/css/fonts.css';
+  import '@momentum-design/tokens/dist/css/typography/complete.css';
+  import '@momentum-design/tokens/dist/css/effect/complete.css';
+  import '@momentum-design/tokens/dist/css/typography/complete.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
+
+  // in case you would like to use additional themes, use the following:
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-bronze-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-indigo-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-jade-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-lavender-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/dark-rose-stable.css';
+
+  import '@momentum-design/tokens/dist/css/theme/webex/light-bronze-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/light-indigo-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/light-jade-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/light-lavender-stable.css';
+  import '@momentum-design/tokens/dist/css/theme/webex/light-rose-stable.css';
+  ```
+
+  or short (`components/complete.css` includes all the above files):
+
+  ```javascript
+  import '@momentum-design/fonts/dist/css/fonts.css';
+  import '@momentum-design/tokens/dist/css/components/complete.css';
+  ```
+
+- Set the `mds-typography` class on the root element of your application.
+- Make sure to set `-webkit-font-smoothing` and `-moz-osx-font-smoothing` on
+  root / body to match Figma:
+
+  ```css
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ```
+
+- Wrap your application or component tree with the
+  [**Theme Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs)
+  and
+  [**Icon Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs)
+  components to ensure proper theming and icon configuration.
+- Verify that your build configuration supports file loaders for CSS and WOFF2
+  files.
+- Test the components in different themes to ensure they render correctly.
+
+## Usage
+
+Note: All code examples below can work with TypeScript versions lower than 4.7
+by adding dist into the import path. For detailed information about each
+component, refer to the
+[**individual component documentation.**](https://momentum-design.github.io/en/components/)
+
+### Top-level Import
+
+Import the browser bundle on the top of the app:
+
+```javascript
+// index.html
+
+<script src="@momentum-design/components/browser/index.js"></script>
+
+...
+
+<mdc-avatar></mdc-avatar>
+```
+
+### Component Import
+
+#### Web Components
+
+```javascript
+import '@momentum-design/components/components/avatar';
+
+...
+
+<mdc-avatar></mdc-avatar>
+```
+
+#### React
+
+```javascript
+import { Avatar } from '@momentum-design/components/react';
+
+...
+
+<Avatar />
+```

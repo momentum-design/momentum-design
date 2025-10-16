@@ -47,6 +47,13 @@ import styles from './menuitem.styles';
  * @event disabled - (React: onDisabled) This event is dispatched after the menuitem is disabled
  * @event created - (React: onCreated) This event is dispatched after the menuitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the menuitem is destroyed (removed from the DOM)
+ *
+ * @csspart leading - Allows customization of the leading part.
+ * @csspart leading-arrow - Allows customization of leading arrow icon.
+ * @csspart leading-text - Allows customization of the leading text part.
+ * @csspart trailing - Allows customization of the trailing part.
+ * @csspart trailing-arrow - Allows customization of trailing arrow icon.
+ * @csspart trailing-text - Allows customization of the trailing text part.
  */
 class MenuItem extends ListItem {
   /**
@@ -97,7 +104,7 @@ class MenuItem extends ListItem {
    */
   override handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER) {
-      this.triggerClickEvent();
+      this.triggerClickEvent(event);
       event.preventDefault();
     }
   }
@@ -116,7 +123,7 @@ class MenuItem extends ListItem {
    */
   private handleKeyUp(event: KeyboardEvent): void {
     if (event.key === KEYS.SPACE) {
-      this.triggerClickEvent();
+      this.triggerClickEvent(event);
       event.preventDefault();
     }
   }
