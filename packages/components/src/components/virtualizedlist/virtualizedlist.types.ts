@@ -1,5 +1,5 @@
 import type {
-  VirtualItem,
+  VirtualItem as TanstackVirtualItem,
   Virtualizer as TanstackVirtualizer,
   VirtualizerOptions as TanstackVirtualizerOptions,
 } from '@tanstack/virtual-core';
@@ -8,6 +8,7 @@ import type { TypedCustomEvent } from '../../utils/types';
 
 import type VirtualizedList from './virtualizedlist.component';
 
+export type VirtualItem = TanstackVirtualItem;
 export type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
 export type VirtualizedListVirtualItemsChangeEvent = TypedCustomEvent<
   VirtualizedList,

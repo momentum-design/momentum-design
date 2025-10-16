@@ -13,6 +13,7 @@ import { KEYS } from '../../utils/keys';
 import styles from './virtualizedlist.styles';
 import { DEFAULTS, IS_AT_BOTTOM_THRESHOLD } from './virtualizedlist.constants';
 import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.types';
+import { defaultMeasureElement } from './virtualizedlist.utils';
 
 /**
  * `mdc-virtualizedlist` is an extension of the `mdc-list` component that adds virtualization capabilities using
@@ -267,6 +268,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, {
+      measureElement: defaultMeasureElement,
       ...this.virtualizerProps,
       horizontal: false,
       getScrollElement: () => this.$scroll as Element,
@@ -614,7 +616,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   private scrollToBottom(): void {
     this.clearScrollToBottomTimer();
-    if (this.atBottom === 'yes') {
+    if (this.atBottom === 'yes' && this.$scroll) {
       const { clientHeight, scrollHeight, scrollTop } = this.$scroll;
 
       if (this.totalListHeight > clientHeight) {
