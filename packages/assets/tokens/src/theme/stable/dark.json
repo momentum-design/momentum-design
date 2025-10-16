@@ -667,13 +667,19 @@
           "active": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.20}"
+            "value": "{color.core.white-alpha.30}"
           },
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.core.white-alpha.0}",
             "description": ""
+          },
+          "subtle": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.black-alpha.7}",
+            "description": "Used in the Agent/Supervisor Desktop"
           }
         },
         "accent": {
