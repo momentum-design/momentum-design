@@ -674,6 +674,11 @@
             "type": "color",
             "value": "{color.core.black-alpha.0}",
             "description": ""
+          },
+          "subtle": {
+            "value": "{color.core.white-alpha.7}",
+            "type": "color",
+            "description": "Used in the Agent/Supervisor Desktop"
           }
         },
         "accent": {

@@ -633,6 +633,10 @@
             "type": "color",
             "value": "{color.highcontrast.black.GrayTextColor}",
             "description": ""
+          },
+          "subtle": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color"
           }
         },
         "accent": {

@@ -2,11 +2,13 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import * as CONTROL_TYPE_CONSTANTS from '../controltypeprovider/controltypeprovider.constants';
 
 import { INDICATOR } from './menuitemcheckbox.constants';
 
@@ -23,7 +25,7 @@ const render = (args: Args) =>
       label="${args.label}"
       indicator="${args.indicator}"
       secondary-label="${args['secondary-label']}"
-      ?controlled="${args.controlled}"
+      control-type=${ifDefined(args['control-type'])}
       ?soft-disabled="${args['soft-disabled']}"
     >
       ${args.children}
@@ -53,8 +55,9 @@ const meta: Meta = {
     'secondary-label': {
       control: 'text',
     },
-    controlled: {
-      control: 'boolean',
+    'control-type': {
+      control: 'select',
+      options: [undefined, ...CONTROL_TYPE_CONSTANTS.VALID_VALUES],
     },
     'soft-disabled': {
       control: 'boolean',

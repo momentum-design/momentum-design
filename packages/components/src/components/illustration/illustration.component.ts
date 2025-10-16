@@ -4,6 +4,7 @@ import { property, state } from 'lit/decorators.js';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IllustrationProvider from '../illustrationprovider/illustrationprovider.component';
+import { ROLE } from '../../utils/roles';
 
 import styles from './illustration.styles';
 import { svgFetch } from './illustration.utils';
@@ -200,8 +201,8 @@ class Illustration extends Component {
       });
     }
 
-    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledBy')) {
-      this.role = this.ariaLabel || this.ariaLabelledby ? 'img' : null;
+    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledby')) {
+      this.role = this.ariaLabel || this.ariaLabelledby ? ROLE.IMG : null;
     }
   }
 

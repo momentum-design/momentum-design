@@ -68,6 +68,7 @@ const styles = [
       position: relative;
       display: grid;
       place-items: center;
+      flex-shrink: 0;
     }
     :host::part(photo) {
       border-radius: 100vh;

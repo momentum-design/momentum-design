@@ -3,82 +3,80 @@ import { css } from 'lit';
 const styles = [
   css`
     :host {
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-normal);
+      --mdc-checkbox-icon-color: var(--mds-color-theme-inverted-text-primary-normal);
+      --mdc-checkbox-size: 1rem;
       margin: 0.125rem 0;
       border-radius: 0.125rem;
-      --mdc-staticcheckbox-border-color: var(--mds-color-theme-outline-button-normal);
-      --mdc-staticcheckbox-checked-background-color: var(--mds-color-theme-control-active-normal);
-      --mdc-staticcheckbox-disabled-background-color: var(--mds-color-theme-control-inactive-disabled);
-      --mdc-staticcheckbox-disabled-icon-color: var(--mds-color-theme-text-primary-disabled);
-      --mdc-staticcheckbox-icon-background-color: var(--mds-color-theme-control-inactive-normal);
-      --mdc-staticcheckbox-icon-border-color: var(--mds-color-theme-outline-input-normal);
-      --mdc-staticcheckbox-icon-color: var(--mds-color-theme-inverted-text-primary-normal);
-      --mdc-staticcheckbox-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
-      --mdc-staticcheckbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
-      --mdc-staticcheckbox-readonly-border-color: var(--mds-color-theme-outline-primary-normal);
-      --mdc-staticcheckbox-text-normal-color: var(--mds-color-theme-text-primary-normal);
-    }
-
-    :host([checked])::part(icon-container),
-    :host([indeterminate])::part(icon-container) {
-      background-color: var(--mdc-staticcheckbox-checked-background-color);
-      border-color: transparent;
-    }
-
-    :host([disabled])::part(icon-container),
-    :host([soft-disabled])::part(icon-container),
-    :host([disabled][readonly])::part(icon-container),
-    :host([soft-disabled][readonly])::part(icon-container) {
-      border-color: var(--mdc-staticcheckbox-disabled-border-color);
-      background-color: var(--mdc-staticcheckbox-disabled-background-color);
-    }
-
-    :host([disabled][checked])::part(icon-container),
-    :host([disabled][indeterminate])::part(icon-container),
-    :host([soft-disabled][checked])::part(icon-container),
-    :host([soft-disabled][indeterminate])::part(icon-container),
-    :host([disabled][readonly][checked])::part(icon-container),
-    :host([disabled][readonly][indeterminate])::part(icon-container),
-    :host([soft-disabled][readonly][checked])::part(icon-container),
-    :host([soft-disabled][readonly][indeterminate])::part(icon-container) {
-      background-color: var(--mdc-staticcheckbox-disabled-checked-icon-color);
-      border: 0.0625rem solid var(--mdc-staticcheckbox-disabled-border-color);
     }
 
     :host::part(icon-container) {
       display: flex;
       align-items: center;
-      border: 0.0625rem solid var(--mdc-staticcheckbox-icon-border-color);
-      background-color: var(--mdc-staticcheckbox-icon-background-color);
-      width: 1rem;
-      height: 1rem;
+      border: 0.0625rem solid var(--mdc-checkbox-border-color);
+      background-color: var(--mdc-checkbox-background-color);
+      width: var(--mdc-checkbox-size);
+      height: var(--mdc-checkbox-size);
       border-radius: 0.125rem;
     }
 
-    :host([readonly])::part(icon-container) {
-      border-color: var(--mdc-staticcheckbox-readonly-border-color);
-      background-color: unset;
-    }
-
     :host::part(checkbox-icon) {
-      --mdc-icon-fill-color: var(--mdc-staticcheckbox-icon-color);
+      --mdc-icon-fill-color: var(--mdc-checkbox-icon-color);
     }
 
-    :host([disabled])::part(checkbox-icon),
-    :host([soft-disabled])::part(checkbox-icon),
-    :host([disabled][readonly])::part(checkbox-icon),
-    :host([soft-disabled][readonly])::part(checkbox-icon) {
-      --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
+    :host([checked]),
+    :host([indeterminate]) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-normal);
+      --mdc-checkbox-border-color: transparent;
     }
 
-    :host([readonly])::part(checkbox-icon) {
-      --mdc-icon-fill-color: var(--mdc-staticcheckbox-text-normal-color);
+    :host([readonly]) {
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-primary-normal);
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-disabled);
+      --mdc-checkbox-icon-color: var(--mds-color-theme-text-primary-normal);
+    }
+
+    :host([disabled]),
+    :host([soft-disabled]) {
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-inactive-disabled);
+      --mdc-checkbox-icon-color: var(--mds-color-theme-text-primary-disabled);
+      cursor: default;
+    }
+
+    :host([disabled][checked]),
+    :host([disabled][indeterminate]),
+    :host([soft-disabled][checked]),
+    :host([soft-disabled][indeterminate]) {
+      --mdc-checkbox-background-color: var(--mds-color-theme-control-active-disabled);
+      --mdc-checkbox-border-color: var(--mds-color-theme-outline-primary-disabled);
     }
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host([checked])::part(icon-container),
-      :host([indeterminate])::part(icon-container) {
-        border: 0.0625rem solid var(--mdc-staticcheckbox-border-color);
+      :host([checked]),
+      :host([indeterminate]) {
+        --mdc-checkbox-background-color: SelectedItem;
+        --mdc-checkbox-border-color: SelectedItemText;
+        --mdc-checkbox-icon-color: SelectedItemText;
+      }
+      :host([readonly]) {
+        --mdc-checkbox-border-color: Highlight;
+        --mdc-checkbox-icon-color: HighlightText;
+      }
+      :host([disabled]),
+      :host([soft-disabled]) {
+        --mdc-checkbox-background-color: GrayText;
+        --mdc-checkbox-border-color: GrayText;
+        --mdc-checkbox-icon-color: GrayText;
+      }
+      :host([disabled][checked]),
+      :host([disabled][indeterminate]),
+      :host([soft-disabled][checked]),
+      :host([soft-disabled][indeterminate]) {
+        --mdc-checkbox-border-color: GrayText;
+        --mdc-checkbox-icon-color: GrayText;
       }
     }
   `,

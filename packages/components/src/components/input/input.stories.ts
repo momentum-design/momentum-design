@@ -51,6 +51,7 @@ const render = (args: Args) => {
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}"
+    data-aria-describedby="${ifDefined(args['data-aria-describedby'])}"
   ></mdc-input>`;
 };
 
@@ -137,6 +138,9 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    'data-aria-describedby': {
+      control: 'text',
+    },
     'toggletip-text': {
       control: 'text',
     },
@@ -176,6 +180,7 @@ export const Example: StoryObj = {
     autocapitalize: 'off',
     'clear-aria-label': 'clear input',
     'data-aria-label': '',
+    'data-aria-describedby': '',
   },
 };
 

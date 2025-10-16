@@ -13,6 +13,7 @@ import { DEFAULTS } from './inputchip.constants';
  * mdc-inputchip component is an interactive chip that consumers can use to represent an input.
  *
  * - It supports a leading icon along with label.
+ * - It supports a prefix slot for avatars (takes precedence over icon-name).
  * - It supports an error state for validation.
  * - It supports a close button to remove the chip.
  *
@@ -23,6 +24,8 @@ import { DEFAULTS } from './inputchip.constants';
  * @dependency mdc-text
  *
  * @event remove - This event is dispatched when the close button is activated. It bubbles and is composed.
+ *
+ * @slot prefix - A slot for prefix content such as avatars.
  *
  * @csspart label - The label part of the chip.
  * @csspart icon - The icon part of the chip.
@@ -55,12 +58,17 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /**
-   * Renders the icon element if available.
-   * @returns The icon element if available, otherwise nothing.
+   * Renders the prefix content, supporting both icons and slot content.
+   * @returns The prefix content if available, otherwise nothing.
    */
-  private renderIcon() {
-    if (!this.iconName) return nothing;
-    return html` <mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
+  private renderPrefix() {
+    return html`
+      <slot name="prefix">
+        ${this.iconName
+          ? html`<mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon>`
+          : nothing}
+      </slot>
+    `;
   }
 
   /**
@@ -73,7 +81,7 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
 
   public override render() {
     return html`
-      ${this.renderIcon()}
+      ${this.renderPrefix()}
       ${this.label
         ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
             >${this.label}</mdc-text

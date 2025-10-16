@@ -10,7 +10,7 @@ Feature: Password Component
   Scenario: Show/Hide button replaces Clear button
     Given the password component is rendered
     Then the trailing button should be a show/hide button instead of a clear button
-    And the button should use the showHideButtonAriaLabel attribute for accessibility
+    And the button should use the showButtonAriaLabel & hideButtonAriaLabel attribute for accessibility
 
   Scenario: Toggle password visibility
     Given the password component is rendered

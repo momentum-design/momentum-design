@@ -24,7 +24,7 @@ const meta: Meta = {
   component: 'mdc-animation',
   render,
   argTypes: {
-    ...hideControls(['lottieInstance', 'containerRef', 'animation', 'onCompleteHandler', 'ariaLabelledBy']),
+    ...hideControls(['lottieInstance', 'containerRef', 'animation', 'onCompleteHandler', 'ariaLabelledby']),
     name: {
       control: 'select',
       options: Object.values(invert(animationManifest)),

@@ -9,7 +9,7 @@ type SetupOptions = {
   name: IconNames;
   size?: number;
   ariaLabel?: string;
-  ariaLabelledBy?: string;
+  ariaLabelledby?: string;
   lengthUnit?: string;
   tabindex?: number;
 };
@@ -21,7 +21,7 @@ const setup = async (args: SetupOptions) => {
       name="${restArgs.name}" 
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-      ${restArgs.ariaLabelledBy ? `aria-labelledby="${restArgs.ariaLabelledBy}"` : ''}
+      ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
     >
     </mdc-icon>
@@ -60,7 +60,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
 test('mdc-icon', async ({ componentsPage }) => {
   const name = 'accessibility-regular';
   const ariaLabel = 'test aria label';
-  const ariaLabelledBy = 'testId';
+  const ariaLabelledby = 'testId';
   await setup({ componentsPage, name });
 
   /**
@@ -133,11 +133,11 @@ test('mdc-icon', async ({ componentsPage }) => {
         componentsPage,
         name,
         ariaLabel,
-        ariaLabelledBy,
+        ariaLabelledby,
       });
       await expect(iconWithRole).toHaveAttribute('name', name);
       await expect(iconWithRole).toHaveAttribute('style', '--computed-icon-size: 1em;');
-      await expect(iconWithRole).toHaveAttribute('aria-labelledby', ariaLabelledBy);
+      await expect(iconWithRole).toHaveAttribute('aria-labelledby', ariaLabelledby);
       await expect(iconWithRole).toHaveAttribute('role', 'img');
     });
 

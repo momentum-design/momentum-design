@@ -8,9 +8,10 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 import styles from './checkbox.styles';
+import type { CheckboxValidationType } from './checkbox.types';
+import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 /**
  * Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
@@ -44,6 +45,7 @@ import styles from './checkbox.styles';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  *
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
@@ -60,6 +62,7 @@ import styles from './checkbox.styles';
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
  * @csspart checkbox-input - The native checkbox input element.
  * @csspart text-container - The container for the label and helper text elements.
+ * @csspart static-checkbox - The static checkbox element.
  */
 class Checkbox
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
@@ -88,11 +91,12 @@ class Checkbox
    */
   @property({ type: Boolean, reflect: true }) override autofocus = false;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    // Checkbox does not contain helpTextType property.
-    this.helpTextType = undefined as unknown as ValidationType;
-  }
+  /**
+   * The type of help text/validation. It can be 'default' or 'error'.
+   * @default 'default'
+   */
+  @property({ type: String, reflect: true, attribute: 'help-text-type' })
+  override helpTextType: CheckboxValidationType = CHECKBOX_VALIDATION.DEFAULT;
 
   protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     // set the element to auto focus if autoFocusOnMount is set to true
@@ -208,6 +212,7 @@ class Checkbox
   public override render() {
     return html`
       <mdc-staticcheckbox
+        part="static-checkbox"
         class="mdc-focus-ring"
         ?checked="${this.checked}"
         ?indeterminate="${this.indeterminate}"

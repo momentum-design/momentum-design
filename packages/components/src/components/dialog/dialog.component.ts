@@ -149,7 +149,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * describing the dialog for accessibility
    */
   @property({ type: String, reflect: true, attribute: 'aria-describedby' })
-  ariaDescribedBy: string | null = null;
+  ariaDescribedby: string | null = null;
 
   /**
    * Defines a string value for the aria-description attribute that refers to the element
@@ -300,8 +300,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
     if (
       changedProperties.has('ariaLabel') ||
-      changedProperties.has('ariaLabelledBy') ||
-      changedProperties.has('ariaDescribedBy') ||
+      changedProperties.has('ariaLabelledby') ||
+      changedProperties.has('ariaDescribedby') ||
       changedProperties.has('ariaDescription') ||
       changedProperties.has('headerText') ||
       changedProperties.has('descriptionText')
@@ -351,7 +351,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     }
 
     // If aria-describedby or aria-description is already set, do not override it
-    if (!this.ariaDescribedBy && !this.ariaDescription) {
+    if (!this.ariaDescribedby && !this.ariaDescription) {
       if (this.descriptionText) {
         this.setAttribute('aria-description', this.descriptionText);
       } else if (this.triggerId) {

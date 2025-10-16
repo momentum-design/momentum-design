@@ -16,6 +16,8 @@ const render = (args: Args) =>
   html` <mdc-subcomponent-formfieldwrapper
     label="${args.label}"
     ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+    ?soft-disabled="${args['soft-disabled']}"
     ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -52,6 +54,12 @@ const meta: Meta = {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'toggletip-text': {

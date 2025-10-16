@@ -86,6 +86,7 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
  * @cssproperty --mdc-help-text-line-height - Line height for the help text.
  * @cssproperty --mdc-help-text-color - Color for the help text.
+ * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.

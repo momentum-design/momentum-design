@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import type { IconNames } from '../icon/icon.types';
 
 type SetupOptions = {
@@ -97,10 +98,51 @@ test('mdc-inputchip', async ({ componentsPage }) => {
       'icon-name': 'placeholder-bold',
     });
     await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setChildren(`<mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>`);
+    inputchipStickerSheet.setAttributes({
+      label: 'Avatar Img',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setChildren(`<mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AE"></mdc-avatar>`);
+    inputchipStickerSheet.setAttributes({
+      label: 'Avatar Error Img',
+      error: '',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setChildren(`<mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AD"></mdc-avatar>`);
+    inputchipStickerSheet.setAttributes({
+      label: 'Avatar Disabled Img',
+      disabled: '',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
+    inputchipStickerSheet.setChildren(`<mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="ED"></mdc-avatar>`);
+    inputchipStickerSheet.setAttributes({
+      label: 'Avatar Error Disabled Img',
+      error: '',
+      disabled: '',
+      'clear-aria-label': 'Clear',
+    });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+
     await inputchipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
     });
     const container = inputchipStickerSheet.getWrapperContainer();
+    
+    // Wait for avatar images to load
+    const avatars = await container.locator('mdc-avatar[src]').all();
+    await Promise.all(avatars.map(async (avatarComp) => {
+      const image = avatarComp.locator('img');
+      await image.waitFor();
+    }));
+
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-inputchip', { element: container });
     });
@@ -141,6 +183,22 @@ test('mdc-inputchip', async ({ componentsPage }) => {
 
     await test.step('attribute icon-name should be present on component by default', async () => {
       await expect(inputchip).toHaveAttribute('icon-name', 'placeholder-bold');
+    });
+
+    await test.step('prefix slot should take precedence over icon-name', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-inputchip label="Avatar Img" clear-aria-label="Clear" icon-name="placeholder-bold">
+            <mdc-avatar slot="prefix" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>
+          </mdc-inputchip>
+        `,
+        clearDocument: true,
+      });
+      
+      const inputchipWithAvatar = componentsPage.page.locator('mdc-inputchip');
+      const avatar = inputchipWithAvatar.locator('mdc-avatar[slot="prefix"]');
+      await avatar.waitFor();
+      await expect(avatar).toBeVisible();
     });
   });
 

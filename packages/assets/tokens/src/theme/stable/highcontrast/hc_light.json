@@ -636,6 +636,10 @@
             "type": "color",
             "value": "{color.highcontrast.white.GrayTextColor}",
             "description": ""
+          },
+          "subtle": {
+            "value": "{color.highcontrast.white.WindowColor}",
+            "type": "color"
           }
         },
         "accent": {

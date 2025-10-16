@@ -27,7 +27,8 @@ type SetupOptions = {
   pattern?: string;
   list?: string;
   size?: number;
-  showHideButtonAriaLabel?: string;
+  showButtonAriaLabel?: string;
+  hideButtonAriaLabel?: string;
   secondButtonForFocus?: boolean;
 };
 
@@ -56,7 +57,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      ${restArgs.showHideButtonAriaLabel ? `show-hide-button-aria-label="${restArgs.showHideButtonAriaLabel}"` : ''}
+      ${restArgs.showButtonAriaLabel ? `show-button-aria-label="${restArgs.showButtonAriaLabel}"` : ''}
+      ${restArgs.hideButtonAriaLabel ? `hide-button-aria-label="${restArgs.hideButtonAriaLabel}"` : ''}
       ></mdc-password>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
@@ -81,7 +83,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     placeholder: 'Placeholder',
     maxlength: 10,
     minlength: 5,
-    showHideButtonAriaLabel: 'show-hide button aria-label',
+    showButtonAriaLabel: 'show button aria-label',
+    hideButtonAriaLabel: 'hide button aria-label',
     label: 'Label',
     helpText: 'Help Text',
     secondButtonForFocus: true,
@@ -105,7 +108,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).toHaveAttribute('help-text', 'Help Text');
       const helpText = password.locator('mdc-text[part="help-text"]');
       await expect(helpText).toHaveText('Help Text');
-      await expect(password).toHaveAttribute('show-hide-button-aria-label', 'show-hide button aria-label');
+      await expect(password).toHaveAttribute('show-button-aria-label', 'show button aria-label');
+      await expect(password).toHaveAttribute('hide-button-aria-label', 'hide button aria-label');
     });
 
     await test.step('should the required attribute be present in the component when it sets', async () => {
@@ -148,15 +152,18 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(password).toHaveAttribute('size', '10');
     });
 
-    await test.step('should the show-hide-button-aria-label attribute be present in the component when it sets', async () => {
+    await test.step('should the show- & hide-button-aria-label attribute be present in the component when it sets', async () => {
       await setup(defaultSetupOptions);
       await componentsPage.setAttributes(password, {
-        'show-hide-button-aria-label': 'show/hide password',
+        'show-button-aria-label': 'show password',
+        'hide-button-aria-label': 'hide password',
         value: 'test',
       });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
       await expect(trailingButton).toBeVisible();
-      await expect(trailingButton).toHaveAttribute('aria-label', 'show/hide password');
+      await expect(trailingButton).toHaveAttribute('aria-label', 'show password');
+      await trailingButton.click();
+      await expect(trailingButton).toHaveAttribute('aria-label', 'hide password');
     });
 
     await test.step('should the autofocus attribute be present in the component when it sets', async () => {
@@ -186,7 +193,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await setup({
         componentsPage,
         trailingButton: true,
-        showHideButtonAriaLabel: 'show/hide button',
+        showButtonAriaLabel: 'show button',
+        hideButtonAriaLabel: 'hide button',
         secondButtonForFocus: true,
       });
       const showHideButton = password.locator('mdc-button[part="trailing-button"]');
@@ -210,7 +218,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         componentsPage,
         readonly: true,
         value: 'Readonly',
-        showHideButtonAriaLabel: 'show/hide password',
+        showButtonAriaLabel: 'show button',
+        hideButtonAriaLabel: 'hide button',
         secondButtonForFocus: true,
       });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
@@ -226,7 +235,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     await test.step('should the password element type toggle between text and password when the trailingbutton is clicked', async () => {
       password = await setup({
         componentsPage,
-        showHideButtonAriaLabel: 'show/hide password',
+        showButtonAriaLabel: 'show button',
+        hideButtonAriaLabel: 'hide button',
         secondButtonForFocus: true,
       });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
@@ -253,7 +263,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         componentsPage,
         value: 'this is readonly data',
         readonly: true,
-        showHideButtonAriaLabel: 'show/hide password',
+        showButtonAriaLabel: 'show button',
+        hideButtonAriaLabel: 'hide button',
         secondButtonForFocus: true,
       });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
@@ -428,7 +439,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
               maxlength="10"
               help-text="Please provide a valid password"
               help-text-type="default"
-              show-hide-button-aria-label="Show or hide password"
+              show-button-aria-label="Show password"
+              hide-button-aria-label="Hide password"
             ></mdc-password>
             <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
               <mdc-button type="submit" size="24">Submit</mdc-button>
@@ -517,7 +529,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       placeholder: 'Placeholder',
       label: 'Label',
       'help-text': 'Help Text',
-      'show-hide-button-aria-label': 'show/hide password',
+      'show-button-aria-label': 'show password',
+      'hide-button-aria-label': 'hide password',
     };
     const inputStickerSheet = new StickerSheet(componentsPage, 'mdc-password');
 
