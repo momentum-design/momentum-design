@@ -18,7 +18,8 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  * - `password` field - contains the value
  * - `help-text` or `validation-message` - displayed below the password field.
  * - `help-text-type` - type of the help text, can be 'default', 'error', 'warning', 'success', 'priority'.
- * - `show-hide-button-aria-label` - aria label for the trailing show/hide button.
+ * - `show-button-aria-label` - aria label for the trailing show button.
+ * - `hide-button-aria-label` - aria label for the trailing hide button.
  * - all the attributes of the native password field.
  *
  * @tagname mdc-password
@@ -70,10 +71,16 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
  */
 class Password extends Input {
   /**
-   * Aria label for the show or hide password icon button.
+   * Aria label for the show password icon button.
    */
-  @property({ type: String, attribute: 'show-hide-button-aria-label' })
-  showHideButtonAriaLabel = '';
+  @property({ type: String, attribute: 'show-button-aria-label' })
+  showButtonAriaLabel = '';
+
+  /**
+   * Aria label for the hide password icon button.
+   */
+  @property({ type: String, attribute: 'hide-button-aria-label' })
+  hideButtonAriaLabel = '';
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -117,7 +124,7 @@ class Password extends Input {
         ?disabled=${this.disabled || this.readonly || !showBtn}
         size="${DEFAULTS.ICON_SIZE}"
         @click=${this.toggleShowPassword}
-        aria-label=${this.showHideButtonAriaLabel}
+        aria-label=${this.showPassword ? this.hideButtonAriaLabel : this.showButtonAriaLabel}
         prefix-icon=${this.showPassword ? PASSWORD_VISIBILITY_ICONS.HIDE_BOLD : PASSWORD_VISIBILITY_ICONS.SHOW_BOLD}
       ></mdc-button>
     `;
