@@ -667,7 +667,7 @@
           "active": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.20}"
+            "value": "{color.core.white-alpha.30}"
           },
           "disabled": {
             "parent": "theme/stable/dark",
