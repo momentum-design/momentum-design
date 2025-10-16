@@ -3,22 +3,22 @@ const config = require('../../.eslintrc.js');
 const noRestrictedSyntaxRules = [
   {
     selector:
-      "Identifier[name='ariaLabelledBy'], Literal[value='ariaLabelledBy'], MemberExpression[property.name='ariaLabelledBy']",
+      "Identifier[name='ariaLabelledBy'], Literal[value='ariaLabelledBy'], MemberExpression[property.name='ariaLabelledBy'], TemplateElement[value.raw=/\\ariaLabelledBy/]",
     message: 'Use "ariaLabelledby" (lowercase b) instead of "ariaLabelledBy".',
   },
   {
     selector:
-      "Identifier[name='arialabelledby'], Literal[value='arialabelledby'], MemberExpression[property.name='arialabelledby']",
+      "Identifier[name='arialabelledby'], Literal[value='arialabelledby'], MemberExpression[property.name='arialabelledby'], TemplateElement[value.raw=/\\arialabelledby/]",
     message: 'Use "ariaLabelledby" (lowercase l and b) instead of "arialabelledby".',
   },
   {
     selector:
-      "Identifier[name='ariaDescribedBy'], Literal[value='ariaDescribedBy'], MemberExpression[property.name='ariaDescribedBy']",
+      "Identifier[name='ariaDescribedBy'], Literal[value='ariaDescribedBy'], MemberExpression[property.name='ariaDescribedBy'], TemplateElement[value.raw=/\\ariaDescribedBy/]",
     message: 'Use "ariaDescribedby" (lowercase b) instead of "ariaDescribedBy".',
   },
   {
     selector:
-      "Identifier[name='ariadescribedby'], Literal[value='ariadescribedby'], MemberExpression[property.name='ariadescribedby']",
+      "Identifier[name='ariadescribedby'], Literal[value='ariadescribedby'], MemberExpression[property.name='ariadescribedby'], TemplateElement[value.raw=/\\ariadescribedby/]",
     message: 'Use "ariaDescribedby" (lowercase d and b) instead of "ariadescribedby".',
   },
 ];
