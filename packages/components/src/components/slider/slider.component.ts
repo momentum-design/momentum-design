@@ -193,9 +193,8 @@ class Slider extends Component {
 
   /**
    * Whether to hide the tooltip when the thumb is focused or hovered.
-   * @default false
    */
-  @property({ reflect: true, type: Boolean, attribute: 'hide-tooltip' }) hideTooltip = DEFAULTS.HIDE_TOOLTIP;
+  @property({ reflect: true, type: Boolean, attribute: 'hide-tooltip' }) hideTooltip?: boolean;
 
   /**
    * Targets all the input components with type='range'

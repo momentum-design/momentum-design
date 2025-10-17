@@ -3,6 +3,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 
 import '.';
+import '../popover';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
