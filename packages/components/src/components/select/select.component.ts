@@ -166,6 +166,9 @@ class Select
   @state() displayPopover = false;
 
   /** @internal */
+  private animationFrameId?: number;
+
+  /** @internal */
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
@@ -198,6 +201,8 @@ class Select
     super.disconnectedCallback();
     // cancel any pending debounced action and clear DOM timeouts
     this.debounceSearch?.cancel();
+    // cancel any pending animation frames
+    window.cancelAnimationFrame(this.animationFrameId!);
   }
 
   /** @internal */
@@ -637,9 +642,18 @@ class Select
 
   private resetTabIndexAndSetFocusAfterUpdate(newOptionIndex: number): void {
     if (this.displayPopover) {
-      // We need to reset the tabindex after the component renders,
-      // so that the dropdown will open and the focus can be set.
-      window.requestAnimationFrame(() => {
+      // When the popover is opened (`this.displayPopover` is true), the underlying DOM (especially
+      // the select listbox inside the popover) may not yet be fully rendered or attached to the layout tree.
+      // Calling `resetTabIndexAndSetFocus()` immediately in the same frame would fail because
+      // the listbox or its scroll container might still have a height of `0` or not be ready for focus.
+      // Wrapping the call inside `window.requestAnimationFrame()` defers the execution until the next
+      // browser paint cycle — ensuring that:
+      //   1. The DOM updates from Lit’s rendering cycle are flushed.
+      //   2. The popover and its scroll container are laid out and measurable.
+      //   3. The correct element can safely receive focus and scroll into view.
+      this.animationFrameId = window.requestAnimationFrame(() => {
+        // We need to reset the tabindex after the component renders,
+        // so that the dropdown will open and the focus can be set.
         this.resetTabIndexAndSetFocus(newOptionIndex);
       });
     }
