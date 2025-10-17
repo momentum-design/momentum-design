@@ -642,6 +642,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     const firstItemOffset = visibleItems?.start ?? 0;
 
+    window.getComputedStyle(this);
     let initialOffset = 0;
     if (this.revertList) {
       if (this.$scroll.clientHeight >= this.totalListHeight) {
@@ -649,7 +650,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       }
     }
 
-    this.$scroll.style.overflowY = initialOffset > 0 ? `hidden` : '';
     this.$wrapper.style.height = `${this.totalListHeight}px`;
     this.$container.style.transform = `translateY(${initialOffset + firstItemOffset}px)`;
   }

@@ -13,6 +13,7 @@ const styles = [
       scroll-padding: 0.25rem 0;
       contain: strict;
       overflow-anchor: none;
+      scrollbar-gutter: stable;
     }
 
     ::slotted([data-virtualized-hidden]) {
