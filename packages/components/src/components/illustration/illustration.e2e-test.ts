@@ -8,7 +8,7 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   name: IllustrationNames;
   ariaLabel?: string;
-  ariaLabelledBy?: string;
+  ariaLabelledby?: string;
 };
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -18,7 +18,7 @@ const setup = async (args: SetupOptions) => {
     <mdc-illustration 
       name="${restArgs.name}" 
       ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-      ${restArgs.ariaLabelledBy ? `aria-labelledby="${restArgs.ariaLabelledBy}"` : ''}
+      ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
     >
     </mdc-illustration>
       `,
@@ -48,7 +48,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
 test('mdc-illustration', async ({ componentsPage }) => {
   const name = 'astronaut-avatar-onetwozero-empty-primary';
   const ariaLabel = 'test aria label';
-  const ariaLabelledBy = 'testId';
+  const ariaLabelledby = 'testId';
   await setup({ componentsPage, name });
 
   /**
@@ -104,10 +104,10 @@ test('mdc-illustration', async ({ componentsPage }) => {
         componentsPage,
         name,
         ariaLabel,
-        ariaLabelledBy,
+        ariaLabelledby,
       });
       await expect(illustrationWithRole).toHaveAttribute('name', name);
-      await expect(illustrationWithRole).toHaveAttribute('aria-labelledby', ariaLabelledBy);
+      await expect(illustrationWithRole).toHaveAttribute('aria-labelledby', ariaLabelledby);
       await expect(illustrationWithRole).toHaveAttribute('role', 'img');
     });
 

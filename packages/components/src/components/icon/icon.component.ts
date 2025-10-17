@@ -95,7 +95,7 @@ class Icon extends Component {
    * Aria-labelledby attribute to be set for accessibility
    */
   @property({ type: String, attribute: 'aria-labelledby' })
-  ariaLabelledBy: string | null = null;
+  ariaLabelledby: string | null = null;
 
   private readonly iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
@@ -240,8 +240,8 @@ class Icon extends Component {
       });
     }
 
-    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledBy')) {
-      this.role = this.ariaLabel || this.ariaLabelledBy ? 'img' : null;
+    if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledby')) {
+      this.role = this.ariaLabel || this.ariaLabelledby ? 'img' : null;
     }
 
     if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {
