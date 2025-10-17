@@ -13,6 +13,7 @@ export interface ControlTypeMixinInterface {
 }
 
 export const ControlTypeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+  // The tests for this mixin are in the menuitemcheckbox component
   class InnerMixinClass extends superClass {
     private readonly controlTypeProviderContext = providerUtils.consume({
       host: this,

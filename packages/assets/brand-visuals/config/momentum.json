@@ -110,9 +110,31 @@
           }
         },
         {
-          "id": "copy-backgrounds",
+          "id": "copy-png-backgrounds",
           "target": "./src/backgrounds/*.png",
           "destination": "./dist/png",
+          "copyOnly": true,
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            },
+            {
+              "searchValue": " ",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "COPY_IMAGE",
+            "config": {
+              "mergePaths": true
+            }
+          }
+        },
+        {
+          "id": "copy-svg-backgrounds",
+          "target": "./src/backgrounds/*.svg",
+          "destination": "./dist/svg",
           "copyOnly": true,
           "fileNameReplacePatterns": [
             {

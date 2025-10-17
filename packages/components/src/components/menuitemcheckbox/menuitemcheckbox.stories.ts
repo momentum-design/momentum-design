@@ -25,7 +25,7 @@ const render = (args: Args) =>
       label="${args.label}"
       indicator="${args.indicator}"
       secondary-label="${args['secondary-label']}"
-      control-type=${ifDefined(args['control-type'])}
+      control-type="${ifDefined(args['control-type'])}"
       ?soft-disabled="${args['soft-disabled']}"
     >
       ${args.children}

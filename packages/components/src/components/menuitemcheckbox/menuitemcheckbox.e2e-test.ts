@@ -314,7 +314,10 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     testAllFunctionality: true,
   });
 
-  // the below functionality tests are really testing the behaviour of the ControlTypeMixin
+  /**
+   * ControlTypeMixin FUNCTIONALITY - NB THIS IS THE ONLY PLACE THIS IS TESTED
+   */
+
   await testFunctionality({ controlType: undefined, expectedControlType: 'uncontrolled' });
   await testFunctionality({ controlType: 'invalid', expectedControlType: 'uncontrolled' });
   await testFunctionality({
