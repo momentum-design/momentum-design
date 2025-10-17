@@ -70,13 +70,13 @@ class Accordion extends AccordionButton {
   /**
    * Aria-label attribute for the trigger button when accordion is collapsed.
    */
-  @property({ type: String, attribute: 'open-button-aria-label' })
+  @property({ type: String, attribute: 'open-button-aria-label', reflect: true })
   openButtonAriaLabel?: string;
 
   /**
    * Aria-label attribute for the trigger button when accordion is expanded.
    */
-  @property({ type: String, attribute: 'close-button-aria-label' })
+  @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel?: string;
 
   /**

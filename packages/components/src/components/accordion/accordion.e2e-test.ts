@@ -43,8 +43,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
-        ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : defaultCloseButtonAriaLabel}
-        ${restArgs.openButtonAriaLabel ? `open-button-aria-label="${restArgs.openButtonAriaLabel}"` : defaultOpenButtonAriaLabel}
+        ${`close-button-aria-label="${restArgs.closeButtonAriaLabel ? restArgs.closeButtonAriaLabel : defaultCloseButtonAriaLabel}"`}
+        ${`open-button-aria-label="${restArgs.openButtonAriaLabel ? restArgs.openButtonAriaLabel : defaultOpenButtonAriaLabel}"`}
         header-text="${restArgs.headerText ?? defaultHeaderText}"
       >
         ${restArgs.children}
