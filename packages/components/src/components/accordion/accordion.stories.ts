@@ -76,11 +76,9 @@ const meta: Meta = {
     },
     'open-button-aria-label': {
       control: 'text',
-      description: 'Aria-label attribute for the trigger button when accordion is collapsed.',
     },
     'close-button-aria-label': {
       control: 'text',
-      description: 'Aria-label attribute for the trigger button when accordion is expanded.',
     },
     ...disableControls(['leading-controls', 'trailing-controls', 'default']),
   },
