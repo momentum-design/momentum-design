@@ -26,7 +26,7 @@ const WORDS = [
 
 const rnd = (min: number, max: number) => min + Math.floor(Math.random() * max);
 
-class VirtualizedDynamicListContent extends Component {
+class VirtualizedDynamicListContentStoriesUtils extends Component {
   @state()
   listItems: { key: string; data: string }[] = [];
 
@@ -139,10 +139,11 @@ class VirtualizedDynamicListContent extends Component {
       <div class="vlist-dynamic-content--wrapper">
         <mdc-virtualizedlist
           ${ref(this.virtualizerRef)}
-          observe-size-changes
-          revert-list
           .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
+          observe-size-changes
+          revert-list
+          scroll-anchoring
         >
           ${this.listItems.length
             ? repeat(
@@ -187,10 +188,10 @@ class VirtualizedDynamicListContent extends Component {
   }
 }
 
-VirtualizedDynamicListContent.register('mdc-virtualizeddynamiclistcontent');
+VirtualizedDynamicListContentStoriesUtils.register('mdc-virtualizeddynamiclistcontent');
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-virtualizeddynamiclistcontent']: VirtualizedDynamicListContent;
+    ['mdc-virtualizeddynamiclistcontent']: VirtualizedDynamicListContentStoriesUtils;
   }
 }

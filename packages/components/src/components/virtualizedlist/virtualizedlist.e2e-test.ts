@@ -49,8 +49,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const itemCount = await listItems.count();
 
       // Should be less than total count (100) due to virtualization
-      expect(itemCount).toBeLessThan(100);
-      expect(itemCount).toBeGreaterThan(0);
+      expect(itemCount).toBe(99);
 
       // Check that first visible item has correct text
       const firstItem = listItems.first();
@@ -125,6 +124,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="4"]').waitFor();
+      await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeVisible();
       await componentsPage.page.keyboard.press('ArrowDown');
       await expect(virtualizedList.locator('mdc-listitem[data-index="5"]')).toBeFocused();
 
@@ -133,6 +133,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       // Selected item should still be in the DOM after scrolling
       await virtualizedList.locator('mdc-listitem[data-index="5"]').waitFor();
+      await expect(virtualizedList.locator('mdc-listitem[data-index="5"]')).toBeVisible();
       await componentsPage.page.keyboard.press('ArrowUp');
       await expect(virtualizedList.locator('mdc-listitem[data-index="4"]')).toBeFocused();
     });

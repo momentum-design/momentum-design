@@ -22,27 +22,10 @@ const styles = css`
     font-feature-settings: var(--mdc-themeprovider-font-feature-settings);
   }
 
+  /** Scrollbar Theme for Chrome, Edge, and Firefox. This has limited support on other browsers.
+    https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color for more details */
   * {
     scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
-  }
-
-  /** Scrollbar Theme for Chrome, Edge, and Firefox */
-  @supports (scrollbar-color: auto) {
-    * {
-      scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
-    }
-  }
-
-  /* and for Safari */
-  @supports selector(::-webkit-scrollbar) {
-    *::-webkit-scrollbar {
-      width: 8px;
-      background: var(--mdc-themeprovider-scrollbar-track-color);
-    }
-    *::-webkit-scrollbar-thumb {
-      background: var(--mdc-themeprovider-scrollbar-thumb-color);
-      border-radius: 4px;
-    }
   }
 `;
 
