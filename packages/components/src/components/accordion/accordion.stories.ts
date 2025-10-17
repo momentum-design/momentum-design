@@ -35,6 +35,8 @@ const render = (args: Args) =>
     data-aria-level="${args['data-aria-level']}"
     header-text="${args['header-text']}"
     prefix-icon="${args['prefix-icon']}"
+    open-button-aria-label="${args.openButtonAriaLabel}"
+    close-button-aria-label="${args.closeButtonAriaLabel}"
     size="${args.size}"
     variant="${args.variant}"
   >
@@ -71,6 +73,12 @@ const meta: Meta = {
     variant: {
       control: 'select',
       options: Object.values(VARIANT),
+    },
+    'open-button-aria-label': {
+      control: 'text',
+    },
+    'close-button-aria-label': {
+      control: 'text',
     },
     ...disableControls(['leading-controls', 'trailing-controls', 'default']),
   },
