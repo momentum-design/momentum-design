@@ -20,7 +20,7 @@ const render = (args: Args) =>
   ></mdc-alertchip>`;
 
 const meta: Meta = {
-  title: 'Components/chip/alert',
+  title: 'Components/chip/alertchip',
   tags: ['autodocs'],
   component: 'mdc-alertchip',
   render,

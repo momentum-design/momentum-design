@@ -22,7 +22,7 @@ const render = (args: Args) =>
   ></mdc-chip>`;
 
 const meta: Meta = {
-  title: 'Components/chip/label',
+  title: 'Components/chip/chip',
   tags: ['autodocs'],
   component: 'mdc-chip',
   render,

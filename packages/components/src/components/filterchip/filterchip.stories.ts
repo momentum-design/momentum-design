@@ -18,7 +18,7 @@ const render = (args: Args) =>
   ></mdc-filterchip>`;
 
 const meta: Meta = {
-  title: 'Components/chip/filter',
+  title: 'Components/chip/filterchip',
   tags: ['autodocs'],
   component: 'mdc-filterchip',
   render,
