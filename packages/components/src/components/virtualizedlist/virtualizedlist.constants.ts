@@ -2,7 +2,6 @@ import utils from '../../utils/tag-name';
 
 export const TAG_NAME = utils.constructTagName('virtualizedlist');
 export const VIRTUALIZED_WRAPPER_TAG_NAME = utils.constructTagName('virtualizedwrapper');
-export const IS_AT_BOTTOM_THRESHOLD = 16;
 export const DEFAULTS = {
   VIRTUALIZER_PROPS: {
     count: 0,
@@ -10,5 +9,6 @@ export const DEFAULTS = {
     getItemKey: (index: number) => index,
   },
   LOOP: 'false',
-  DISABLE_SCROLL_ANCHORING: false,
+  SCROLL_ANCHORING: false,
+  IS_AT_BOTTOM_THRESHOLD: 16,
 } as const;

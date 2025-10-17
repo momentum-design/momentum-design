@@ -4,18 +4,18 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import './helpers/chatExample';
-import './helpers/virtualizedDynamicList';
-import './helpers/virtualizedDynamicListContent';
-import './helpers/virtualizedWrapper';
+import './helpers/chatExample.stories.utils';
+import './helpers/virtualizedDynamicList.stories.utils';
+import './helpers/virtualizedDynamicListContent.stories.utils';
+import './helpers/virtualizedWrapper.stories.utils';
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-virtualizedwrapper
     .virtualizerProps=${args.virtualizerProps}
-    story=${args.story}
     .onscroll=${action('scroll')}
-    initial-focus="90"
+    story=${args.story}
+    initial-focus="${args['initial-focus'] || 0}"
   ></mdc-virtualizedwrapper>`;
 
 const meta: Meta = {
@@ -56,6 +56,9 @@ export const Interactive: StoryObj = {
 };
 
 export const InteractiveStartAtBottom: StoryObj = {
+  argTypes: {
+    ...hideControls(['initial-focus']),
+  },
   args: {
     virtualizerProps: { count: 200, estimateSize: () => 48 },
     story: 'interactive',

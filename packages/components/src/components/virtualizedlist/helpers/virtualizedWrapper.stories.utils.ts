@@ -11,7 +11,7 @@ import '../../avatar';
 import '../../textarea';
 import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
 
-export class VirtualizedWrapper extends Component {
+export class VirtualizedWrapperStoriesUtils extends Component {
   public override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
@@ -143,10 +143,10 @@ export class VirtualizedWrapper extends Component {
   }
 }
 
-VirtualizedWrapper.register('mdc-virtualizedwrapper');
+VirtualizedWrapperStoriesUtils.register('mdc-virtualizedwrapper');
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-virtualizedwrapper']: VirtualizedWrapper;
+    ['mdc-virtualizedwrapper']: VirtualizedWrapperStoriesUtils;
   }
 }

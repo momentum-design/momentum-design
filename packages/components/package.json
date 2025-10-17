@@ -37,7 +37,7 @@
     "analyze:style": "stylelint \"./src/**/*.styles.ts\" --config config/stylelint/stylelint.config.js",
     "dev": "concurrently --raw --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
     "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",
-    "dev:storybook": "yarn copy:storybook && storybook dev --host 0.0.0.0 -p 6006 -c config/storybook",
+    "dev:storybook": "yarn copy:storybook && storybook dev -p 6006 -c config/storybook",
     "build": "concurrently --names 'components,browser,storybook' -c 'blue.bold,magenta.bold,cyan.bold' 'yarn:build:components' 'yarn:build:browser' && yarn build:storybook",
     "build:components": "yarn build:manifest && yarn build:react && yarn build:module",
     "build:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest.config.js",

@@ -15,7 +15,7 @@ import '../../textarea';
 import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
 import VirtualizedList from '../virtualizedlist.component';
 
-export class ChatExample extends Component {
+export class ChatExampleStoriesUtils extends Component {
   @state()
   chatMessages: Record<string, { name: string; message: string; parent?: string }> = {
     msg_001: { name: 'Alice Johnson', message: 'Hey team! Just finished the quarterly report. Ready for review.' },
@@ -341,10 +341,10 @@ export class ChatExample extends Component {
       <div id="VirtualizedDynamicList--wrapper">
         <mdc-virtualizedlist
           ${ref(this.virtualizerRef)}
-          .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
+          .virtualizerProps=${this.virtualizerProps}
           initial-focus=${this.listItems.length - 1}
-          stick-to-bottom
+          scroll-anchoring
         >
           ${repeat(this.virtualData.virtualItems, ({ key }) => key, this.generateListItem.bind(this))}
         </mdc-virtualizedlist>
@@ -391,10 +391,10 @@ export class ChatExample extends Component {
   }
 }
 
-ChatExample.register('mdc-virtualizedlist-chat-example');
+ChatExampleStoriesUtils.register('mdc-virtualizedlist-chat-example');
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-virtualizedlist-chat-example']: ChatExample;
+    ['mdc-virtualizedlist-chat-example']: ChatExampleStoriesUtils;
   }
 }

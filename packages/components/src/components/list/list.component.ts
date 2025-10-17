@@ -81,7 +81,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   /**
    * @internal
    */
-  get navItems(): BaseArray<HTMLElement> {
+  protected get navItems(): BaseArray<HTMLElement> {
     return this.itemsStore.items;
   }
 

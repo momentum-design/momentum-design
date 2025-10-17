@@ -11,7 +11,7 @@ import '../../avatar';
 import '../../textarea';
 import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
 
-class VirtualizedDynamicList extends Component {
+class VirtualizedDynamicListStoriesUtils extends Component {
   @state()
   listItems: string[] = new Array(20).fill(true).map((_, index) => `list item number ${index}`);
 
@@ -82,7 +82,7 @@ class VirtualizedDynamicList extends Component {
   private updateVirtualProps() {
     this.virtualizerProps = {
       count: this.listItems.length,
-      estimateSize: () => 48,
+      estimateSize: () => 44,
       getItemKey: (index: number) => this.listItems[index],
     };
   }
@@ -97,6 +97,7 @@ class VirtualizedDynamicList extends Component {
         <mdc-virtualizedlist
           .virtualizerProps=${this.virtualizerProps}
           @virtualitemschange=${this.handleVirtualItemsChange}
+          scroll-anchoring
         >
           ${repeat(
             this.virtualData.virtualItems,
@@ -125,10 +126,10 @@ class VirtualizedDynamicList extends Component {
   }
 }
 
-VirtualizedDynamicList.register('mdc-virtualizeddynamiclist');
+VirtualizedDynamicListStoriesUtils.register('mdc-virtualizeddynamiclist');
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-virtualizeddynamiclist']: VirtualizedDynamicList;
+    ['mdc-virtualizeddynamiclist']: VirtualizedDynamicListStoriesUtils;
   }
 }
