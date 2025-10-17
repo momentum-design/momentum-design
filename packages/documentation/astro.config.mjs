@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 // https://astro.build/config
 import mdx from '@astrojs/mdx';
 import path from 'path';
+import { rewriteDynamicImportsRollup } from './config/vite/dynamicImportsPlugin.js';
 
 // `import.meta.resolve` provides accurate, stable paths for the icons and illustrations packages,
 // ensuring reliable path resolution for tasks like copying files, compared to using relative paths.
@@ -56,6 +57,7 @@ export default defineConfig({
               },
             ],
           }),
+          rewriteDynamicImportsRollup({ packageName: 'brand-visuals' }),
         ],
       },
     },

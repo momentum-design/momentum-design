@@ -1,6 +1,7 @@
 /* GitHubTool styles - matches Storybook version */
 .github-tool-button {
   cursor: pointer;
+  background: transparent;
 }
 
 .github-tool-icon {

@@ -1,12 +1,14 @@
 {
   "extends": "../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
+    "jsx": "react",
     "outDir": "./dist/",
     "module": "ES2020",
     "target": "ES2020"
   },
   "plugins": [],
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "@momentum-design/components"
   ]
 }
