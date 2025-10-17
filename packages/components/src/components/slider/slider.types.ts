@@ -11,4 +11,4 @@ interface Events {
   onChangeEvent: SliderChangeEvent;
 }
 
-export type { Events, ThumbStateType };
+export type { Events, ThumbStateType, SliderChangeEvent };

@@ -97,6 +97,7 @@ import type { TextType as TypewriterType } from './components/typewriter/typewri
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
+import type { SliderChangeEvent } from './components/slider/slider.types';
 import type {
   InputInputEvent,
   InputChangeEvent,
@@ -221,6 +222,7 @@ export type {
   SelectInputEvent,
   SpinnerSize,
   SpinnerVariant,
+  SliderChangeEvent,
   TextType,
   TypewriterType,
   InputInputEvent,
