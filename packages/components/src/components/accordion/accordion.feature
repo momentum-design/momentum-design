@@ -63,6 +63,7 @@ Feature: Accordion Component
       Then the accordion header button should have role="button"
       And proper aria-expanded states should be maintained
       And proper aria-controls should reference the content section
+      And an accessible name provided by aria-label or aria-labelledby is given to the trigger button
 
     Scenario: Disabled state
       Given the accordion is disabled
@@ -92,6 +93,7 @@ Feature: Accordion Component
       When the component initializes
       Then the accordion should be expanded
       And aria-expanded state should be true
+      And aria-label of trigger button should be about closing the accordion
       And content should be visible
 
     Scenario: Toggle state persistence
@@ -99,6 +101,7 @@ Feature: Accordion Component
       When toggling visibility multiple times
       Then the state should persist
       And aria-expanded state should be properly updated
+      And aria-label of trigger button should be proparly updated
 
   Rule: ✅ Error Handling
 

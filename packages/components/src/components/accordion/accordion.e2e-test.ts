@@ -18,6 +18,8 @@ type SetupOptions = {
   headerText?: string;
   prefixIcon?: string;
   children?: string;
+  closeButtonAriaLabel?: string;
+  openButtonAriaLabel?: string;
 };
 
 const defaultHeaderText = 'Header';
@@ -28,6 +30,8 @@ const defaultContent = `<mdc-chip slot="leading-controls" label="Label"></mdc-ch
   <mdc-chip slot="trailing-controls" label="Label"></mdc-chip>
   <mdc-badge slot="trailing-controls" type="counter" counter="911" max-counter="99"></mdc-badge>
   Lorem ipsum sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua`;
+const defaultCloseButtonAriaLabel = 'Close';
+const defaultOpenButtonAriaLabel = 'Open';
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -39,6 +43,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+        ${`close-button-aria-label="${restArgs.closeButtonAriaLabel ? restArgs.closeButtonAriaLabel : defaultCloseButtonAriaLabel}"`}
+        ${`open-button-aria-label="${restArgs.openButtonAriaLabel ? restArgs.openButtonAriaLabel : defaultOpenButtonAriaLabel}"`}
         header-text="${restArgs.headerText ?? defaultHeaderText}"
       >
         ${restArgs.children}
@@ -68,13 +74,20 @@ test.describe('Accordion Feature Scenarios', () => {
       const options = { createNewRow: true };
 
       // Default accordion (collapsed)
-      accordionSheet.setAttributes({ 'header-text': defaultHeaderText, 'prefix-icon': defaultPrefixIcon });
+      accordionSheet.setAttributes({
+        'header-text': defaultHeaderText,
+        'prefix-icon': defaultPrefixIcon,
+        'open-button-aria-label': defaultOpenButtonAriaLabel,
+        'close-button-aria-label': defaultCloseButtonAriaLabel,
+      });
       await accordionSheet.createMarkupWithCombination({}, options);
 
       // Expanded accordion
       accordionSheet.setAttributes({
         'header-text': defaultHeaderText,
         'prefix-icon': defaultPrefixIcon,
+        'open-button-aria-label': defaultOpenButtonAriaLabel,
+        'close-button-aria-label': defaultCloseButtonAriaLabel,
         expanded: true,
       });
       accordionSheet.setChildren(defaultContent);
@@ -84,6 +97,8 @@ test.describe('Accordion Feature Scenarios', () => {
       accordionSheet.setAttributes({
         'header-text': defaultHeaderText,
         'prefix-icon': defaultPrefixIcon,
+        'open-button-aria-label': defaultOpenButtonAriaLabel,
+        'close-button-aria-label': defaultCloseButtonAriaLabel,
         disabled: true,
       });
       await accordionSheet.createMarkupWithCombination({}, options);
@@ -116,6 +131,7 @@ test.describe('Accordion Feature Scenarios', () => {
           'role',
           ROLE.HEADING,
         );
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(headerButtonSection).toHaveAttribute('role', ROLE.BUTTON);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
       });
@@ -146,6 +162,7 @@ test.describe('Accordion Feature Scenarios', () => {
         });
 
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultCloseButtonAriaLabel);
         await expect(content).toBeVisible();
       });
 
@@ -184,6 +201,7 @@ test.describe('Accordion Feature Scenarios', () => {
 
         // Initially collapsed
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
         await expect(content).not.toBeVisible();
 
@@ -192,6 +210,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await headerButtonSection.click();
         await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultCloseButtonAriaLabel);
         await expect(accordion).toHaveAttribute('expanded');
         await expect(content).toBeVisible();
         await expect(content).toHaveAttribute('role', ROLE.REGION);
@@ -201,6 +220,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await headerButtonSection.click();
         await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
         await expect(content).not.toBeVisible();
       });
@@ -217,6 +237,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await headerButtonSection.press(KEYS.ENTER);
         await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultCloseButtonAriaLabel);
         await expect(accordion).toHaveAttribute('expanded');
         await expect(content).toBeVisible();
         await expect(content).toHaveAttribute('role', ROLE.REGION);
@@ -226,6 +247,7 @@ test.describe('Accordion Feature Scenarios', () => {
         await headerButtonSection.press(KEYS.SPACE);
         await waitForShownEvent();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
         await expect(content).not.toBeVisible();
       });
@@ -238,12 +260,14 @@ test.describe('Accordion Feature Scenarios', () => {
         // Should not expand when clicked
         await headerButtonSection.click({ force: true });
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(content).not.toBeVisible();
 
         // Should not respond to keyboard
         await headerButtonSection.focus();
         await headerButtonSection.press(KEYS.ENTER);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(content).not.toBeVisible();
       });
     });
