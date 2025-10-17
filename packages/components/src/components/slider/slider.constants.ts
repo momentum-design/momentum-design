@@ -15,6 +15,7 @@ const DEFAULTS = {
   STATE: THUMBSTATE.UNDEFINED,
   ICON_SIZE: 1.25,
   ICON_LENGTH_UNIT: 'rem',
+  HIDE_TOOLTIP: false,
 } as const;
 
 export { TAG_NAME, DEFAULTS, THUMBSTATE };

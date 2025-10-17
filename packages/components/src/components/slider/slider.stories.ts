@@ -35,6 +35,9 @@ const render = (args: Args) => html`
     name-end="${args['name-end']}"
     data-aria-valuetext="${args['data-aria-valuetext']}"
     data-aria-label="${args['data-aria-label']}"
+    ?hide-tooltip="${args['hide-tooltip']}"
+    class="${args.class}"
+    style="${args.style}"
   ></mdc-slider>
 `;
 
@@ -71,6 +74,7 @@ const meta: Meta = {
     'name-end': { control: 'text', if: { arg: 'range', eq: true } },
     'data-aria-valuetext': { control: 'text', if: { arg: 'range', eq: false } },
     'data-aria-label': { control: 'text' },
+    'hide-tooltip': { control: 'boolean' },
     ...classArgType,
     ...styleArgType,
   },
@@ -104,6 +108,7 @@ export const Example: StoryObj = {
     'name-end': '',
     'data-aria-valuetext': '',
     'data-aria-label': '',
+    'hide-tooltip': false,
     class: '',
     style: '',
   },

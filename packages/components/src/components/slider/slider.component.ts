@@ -192,6 +192,12 @@ class Slider extends Component {
   @property({ reflect: true, type: String, attribute: 'end-aria-valuetext' }) endAriaValueText?: string;
 
   /**
+   * Whether to hide the tooltip when the thumb is focused or hovered.
+   * @default false
+   */
+  @property({ reflect: true, type: Boolean, attribute: 'hide-tooltip' }) hideTooltip = DEFAULTS.HIDE_TOOLTIP;
+
+  /**
    * Targets all the input components with type='range'
    * @internal
    */
@@ -343,8 +349,13 @@ class Slider extends Component {
     const [inputStart, inputEnd] = this.inputElements;
     const input = source === 'end' ? inputEnd : inputStart;
     const value = Number(input?.value);
-
-    if (typeof value !== 'number' || Number.isNaN(value) || this.max === this.min || this.disabled) {
+    if (
+      typeof value !== 'number' ||
+      Number.isNaN(value) ||
+      this.max === this.min ||
+      this.disabled ||
+      this.hideTooltip
+    ) {
       return nothing;
     }
     const normalizedValue = (value - this.min) / (this.max - this.min);
