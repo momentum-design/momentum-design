@@ -1,22 +1,31 @@
-import { VirtualItem, VirtualizerOptions } from '@tanstack/virtual-core';
-import { StyleInfo } from 'lit/directives/style-map.js';
+import type {
+  VirtualItem as TanstackVirtualItem,
+  Virtualizer as TanstackVirtualizer,
+  VirtualizerOptions as TanstackVirtualizerOptions,
+} from '@tanstack/virtual-core';
 
 import type { TypedCustomEvent } from '../../utils/types';
 
 import type VirtualizedList from './virtualizedlist.component';
 
-interface SetListDataProps {
-  virtualItems: Array<VirtualItem>;
-  measureElement: (node: Element | null | undefined) => void;
-  listStyle: Readonly<StyleInfo>;
-}
+export type VirtualItem = TanstackVirtualItem;
+export type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
+export type VirtualizedListVirtualItemsChangeEvent = TypedCustomEvent<
+  VirtualizedList,
+  {
+    virtualItems: Array<VirtualItem>;
+  }
+>;
+export type VirtualData = VirtualizedListVirtualItemsChangeEvent['detail'];
 
-type VirtualizedListScrollEvent = TypedCustomEvent<VirtualizedList>;
-
-interface Events {
+export interface Events {
   onScrollEvent: VirtualizedListScrollEvent;
+  onVirtualItemsChangeEvent: VirtualizedListVirtualItemsChangeEvent;
 }
 
-type VirtualizerProps = Partial<VirtualizerOptions<Element, Element>>;
+export type Virtualizer = TanstackVirtualizer<Element, Element>;
+export type VirtualizerOptions = TanstackVirtualizerOptions<Element, Element>;
+export type VirtualizerProps = Omit<Partial<VirtualizerOptions>, 'getScrollElement'> &
+  Required<Pick<VirtualizerOptions, 'count' | 'estimateSize' | 'getItemKey'>>;
 
-export type { Events, VirtualizedListScrollEvent, VirtualizerProps, SetListDataProps };
+export type AtBottomValue = 'no' | 'yes' | 're-evaluate';
