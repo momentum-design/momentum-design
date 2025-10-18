@@ -13,8 +13,7 @@
 }
 
 .backgroundGradient {
-  height: calc(100% - 2rem);
-  padding: 1rem;
+  height: 100%;
   background: var(--mds-color-theme-background-gradient-primary-normal);
 }
 
