@@ -36,16 +36,21 @@ import '../../../src/components/divider';
 export const storyDescription = (story, context) => {
   const docs = get(context, 'parameters.docs.description.story');
   if (!docs) {
-    return story();
+    return html` <div style="padding: 1rem; height: calc(100% - 2rem);">${story()}</div> `;
   }
+
+  let content;
 
   if (typeof docs !== 'string') {
-    return html`<mdc-text>${docs}</mdc-text>
-      <mdc-divider style="margin-block: 1rem"></mdc-divider>
-      ${story()}`;
+    content = html` <mdc-text>${docs}</mdc-text> `;
   }
 
-  return html`${docs}
-    <mdc-divider style="margin-block: 1rem"></mdc-divider>
-    ${story()}`;
+  content = html` ${docs} `;
+
+  return html`
+    <div style="height: calc(100% - 2rem)">
+      <div style="padding: 1rem; background: #262626; border-bottom: 1px solid #ffffff4d;">${content}</div>
+      <div style="padding: 1rem">${story()}</div>
+    </div>
+  `;
 };
