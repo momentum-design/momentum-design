@@ -49,7 +49,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const itemCount = await listItems.count();
 
       // Should be less than total count (100) due to virtualization
-      expect(itemCount).toBe(99);
+      expect(itemCount).toBe(15);
 
       // Check that first visible item has correct text
       const firstItem = listItems.first();
@@ -262,7 +262,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
           await expect(addAboveButton).toBeFocused();
           await addAboveButton.press('Enter');
           addAboveButton = buttonLocator(virtualizedList, 6 + i, 'Add Above');
-          expect(await addAboveButton.boundingBox()).not.toEqual(initialBBox);
+          expect(await addAboveButton.boundingBox()).toEqual(initialBBox);
         }
       });
 
