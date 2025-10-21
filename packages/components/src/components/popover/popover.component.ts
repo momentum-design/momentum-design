@@ -401,10 +401,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
 
   /**
-   * If a tooltip is connected to the same trigger element,
-   * this property will keep the connected tooltip closed if this popover is open.
-   * This is useful when you want to show a popover with a tooltip
-   * but you don't want the tooltip to be shown at the same time.
+   * Controls the visibility of a connected tooltip when this popover is open.
+   * - If set to `true`, the tooltip remains open alongside the popover.
+   * - If set to `false`, the tooltip will be closed when the popover opens.
+   * Useful for scenarios where both a popover and a tooltip are linked to the same trigger element.
    */
   @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-open' })
   keepConnectedTooltipOpen: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_OPEN;
