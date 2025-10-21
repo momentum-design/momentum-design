@@ -54,7 +54,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
-    ?keep-connected-tooltip-closed="${args['keep-connected-tooltip-closed']}"
+    ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -413,6 +413,7 @@ export const interactiveMultiple: StoryObj = {
     'close-button': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'keep-connected-tooltip-open': false,
   },
 };
 
@@ -689,7 +690,7 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
     'show-arrow': true,
     'hide-on-escape': true,
     'hide-on-outside-click': true,
-    'keep-connected-tooltip-closed': true,
+    'keep-connected-tooltip-open': true,
   },
   render: args => html`
     ${createTrigger(args.triggerID, 'Click me!')}
