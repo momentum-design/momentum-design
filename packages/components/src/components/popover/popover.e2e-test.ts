@@ -830,7 +830,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(trigger).toBeFocused();
   });
 
-  await test.step('Tooltip and popover with keepConnectedTooltipClosed', async () => {
+  await test.step('Tooltip and popover with keepConnectedTooltipOpen as false', async () => {
     await componentsPage.mount({
       html: `
         <div style="height: 500px; width: 500px; display: 
@@ -850,7 +850,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
             interactive 
             focus-trap
             placement="top"
-            keep-connected-tooltip-closed
           >Click Popover</mdc-popover>
         </div>
       `,
