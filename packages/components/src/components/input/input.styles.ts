@@ -15,11 +15,13 @@ const styles = [
     :host,
     :host::part(input-container),
     :host::part(input-section),
-    :host::part(input-text) {
+    :host::part(input-text),
+    ::slotted(input) {
       width: 100%;
     }
 
-    :host::part(input-text) {
+    :host::part(input-text),
+    ::slotted(input) {
       font-family: inherit;
     }
 
@@ -57,14 +59,16 @@ const styles = [
       gap: 0.25rem;
     }
 
-    :host::part(input-text) {
+    :host::part(input-text),
+    ::slotted(input) {
       border: none;
       color: var(--mdc-input-text-color);
       background-color: inherit;
       outline: none;
     }
 
-    :host::part(input-text)::selection {
+    :host::part(input-text)::selection,
+    ::slotted(input)::selection {
       background-color: var(--mdc-input-selection-background-color);
       color: var(--mdc-input-selection-text-color);
     }
