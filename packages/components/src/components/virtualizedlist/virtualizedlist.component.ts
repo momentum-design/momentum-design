@@ -380,6 +380,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     // so we need to manually call the onChange handler to ensure the list updates correctly.
     if (this.virtualizerProps.count !== prevProps?.count) {
       this.emitChangeEvent();
+      this.syncUI();
     }
 
     if (this.scrollAnchoring && prevMeasurements.length > 0) {
@@ -432,13 +433,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
       this.setSelectedIndex(this.initialFocus);
 
+      if (this.selectedIndex >= this.navItems.length) {
+        return;
+      }
+
       scrollToIndex(this.selectedIndex, { align: 'center' });
 
       // We try to set the tabIndex immediately,
       // but if the items haven't been rendered, yet we leave the work to onValidElementAdded
       const selectedElement = this.navItems.find(this.isElementSelected, this);
+
       if (selectedElement) {
-        selectedElement.tabIndex = 0;
+        this.resetTabIndexes(this.selectedIndex, false);
       }
     }, 0);
   }
@@ -647,6 +653,18 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void {
+    const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
+
+    if (elementToFocus === undefined) {
+      this.scrollToIndex(newIndex, {});
+      this.endOfScrollQueue.push(() => {
+        super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
+        this.setSelectedIndex(newIndex);
+      });
+
+      return;
+    }
+
     super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
     this.setSelectedIndex(newIndex);
   }

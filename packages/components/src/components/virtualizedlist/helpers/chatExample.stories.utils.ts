@@ -293,7 +293,7 @@ export class ChatExampleStoriesUtils extends Component {
       this.listItems = this.getOrderedMessageKeys();
       this.virtualizerProps = {
         count: this.listItems.length,
-        estimateSize: () => 50,
+        estimateSize: () => 48,
         getItemKey: (index: number) => this.listItems[index],
       };
     }
