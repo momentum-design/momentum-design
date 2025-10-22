@@ -52,6 +52,7 @@ const render = (args: Args) =>
       popover-z-index="${args['popover-z-index']}"
       backdrop-append-to="${args['backdrop-append-to']}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+      ?should-flip="${args['should-flip']}"
     >
       ${args.children}
     </mdc-select>
@@ -115,6 +116,9 @@ const meta: Meta = {
       options: ['bottom-start', 'top-start'],
     },
     'soft-disabled': {
+      control: 'boolean',
+    },
+    'should-flip': {
       control: 'boolean',
     },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'itemsStore']),

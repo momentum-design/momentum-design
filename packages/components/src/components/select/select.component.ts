@@ -152,6 +152,12 @@ class Select
   popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
 
   /**
+   * Determines whether the dropdown should flip its position when it hits the boundary.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'should-flip' }) shouldFlip = false;
+
+  /**
    * ID of the element where the backdrop will be appended to.
    * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
    * If not set, the backdrop will be appended to the parent element of the select.
@@ -776,6 +782,7 @@ class Select
           focus-trap
           size
           @keydown="${this.handleKeydownPopover}"
+          ?flip="${this.shouldFlip}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
