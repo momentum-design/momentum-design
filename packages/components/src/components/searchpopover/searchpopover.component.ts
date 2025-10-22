@@ -112,6 +112,13 @@ class Searchpopover extends Searchfield {
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
   popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
 
+  /**
+   * The aria-label for the popover within Searchpopover.
+   * Use to provide an accessible name for the popover i.e. "Search results".
+   */
+  @property({ type: String, reflect: true, attribute: 'popover-aria-label' })
+  popoverAriaLabel?: string;
+
   protected override renderInputElement() {
     const placeholderText = this.hasInputChips ? '' : this.placeholder;
 
@@ -184,6 +191,7 @@ class Searchpopover extends Searchfield {
         focus-back-to-trigger
         size
         placement="${this.placement}"
+        aria-label="${ifDefined(this.popoverAriaLabel)}"
         disable-aria-expanded
         z-index="${ifDefined(this.popoverZIndex)}"
         exportparts="popover-content"
