@@ -30,8 +30,10 @@ const styles = css`
     z-index: -1;
   }
   :host::part(container) {
+    height: 2rem;
     width: 100%;
     position: relative;
+    display: flex;
   }
   :host ::slotted(mdc-selectlistbox) {
     display: flex;
@@ -48,6 +50,7 @@ const styles = css`
     gap: 0.375rem;
     align-items: center;
     user-select: none;
+    width: 100%;
   }
   :host::part(base-container):hover {
     --mdc-select-background-color: var(--mds-color-theme-background-primary-hover);
@@ -56,7 +59,7 @@ const styles = css`
     --mdc-select-background-color: var(--mds-color-theme-background-primary-active);
   }
   :host::part(base-text) {
-    height: 1.3125rem;
+    height: 100%;
     width: 100%;
     color: var(--mdc-select-text-color);
     overflow: hidden;
@@ -69,10 +72,15 @@ const styles = css`
   :host::part(selected-icon) {
     flex-shrink: 0;
   }
-  :host::part(icon-container) {
-    margin-left: auto;
-    display: flex;
-    padding: 2px;
+  :host(:dir(ltr))::part(icon-container) {
+    padding: 0.5rem;
+    position: absolute;
+    right: 0;
+  }
+  :host(:dir(rtl))::part(icon-container) {
+    padding: 0.5rem;
+    position: absolute;
+    left: 0;
   }
 
   /* Popover height, width & padding overrides */
