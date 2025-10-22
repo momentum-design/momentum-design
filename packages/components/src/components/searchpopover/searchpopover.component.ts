@@ -1,36 +1,43 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
-import { queryAssignedElements, state } from 'lit/decorators.js';
+import { CSSResult, html } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 
-import Input from '../input/input.component';
-import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import Searchfield from '../searchfield/searchfield.component';
 import { KEYS } from '../../utils/keys';
+import { POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { ROLE } from '../../utils/roles';
 
-import styles from './searchfield.styles';
-import { DEFAULTS } from './searchfield.constants';
+import styles from './searchpopover.styles';
+import { DEFAULTS, TRIGGER_ID, POPOVER_ID } from './searchpopover.constants';
+import type { Placement } from './searchpopover.types';
 
 /**
- * `mdc-searchfield` component is used as an input field for search functionality.
+ * `mdc-searchpopover` widget is a combination of the Searchfield and Popover components, connected to ensure
+ * proper accessibility. This component should be used when search results or suggestions need to be displayed
+ * in a popover below the search input field, where the search results hold individual actions like navigating to a
+ * a different url etc.
+ *
+ * - Don't use this when search results are displayed inline on the page -> use Searchfield component instead.
+ * - Don't use this when a list of options is filtered based on the search input -> use Combobox component instead.
  *
  * It supports `mdc-inputchip` as filters.
  *
- * This component is built by extending the `mdc-input` component.
+ * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
  *
- * **Accessibility:**
- *
- * NOTE: this component should not be used in combination with a Popover or Listbox component.
- * Search results should be shown permanently on the page if using this component.
- *
- * For a search field that opens a Popover, use the `mdc-searchpopover` widget instead.
- *
- * @tagname mdc-searchfield
+ * @tagname mdc-searchpopover
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
  * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
+ * @event shown - (React: onShown) This event is dispatched when the popover is shown
+ * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden
  *
+ * @slot default - Default slot (=children) for the popover content
  * @slot filters - Slot for input chips
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
@@ -56,6 +63,9 @@ import { DEFAULTS } from './searchfield.constants';
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
+ * @cssproperty --mdc-searchpopover-width - Width of the searchpopover component
+ * @cssproperty --mdc-searchpopover-popover-width - Width of the popover within the searchpopover component
+ * @cssproperty --mdc-searchpopover-popover-height - Height of the popover within the searchpopover component
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -71,82 +81,72 @@ import { DEFAULTS } from './searchfield.constants';
  * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
  * @csspart input-text - The input field element.
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
+ * @csspart popover-content - The popover content element.
  */
-class Searchfield extends Input {
-  @queryAssignedElements({ slot: 'filters' })
-  inputChips?: Array<HTMLElement>;
+class Searchpopover extends Searchfield {
+  /**
+   * Whether to display the popover.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'display-popover' })
+  displayPopover?: boolean = DEFAULTS.DISPLAY_POPOVER;
 
   /**
-   * @internal
+   * The placement of the popover within Searchpopover component.
+   * This defines the position of the popover relative to the search input field.
+   *
+   * Possible values:
+   *  - 'top-start'
+   *  - 'bottom-start'
+   * @default 'bottom-start'
    */
-  @state() isInputFocused = false;
+  @property({ type: String, reflect: true })
+  placement: Placement = POPOVER_PLACEMENT.BOTTOM_START;
 
   /**
-   * @internal
+   * The z-index of the popover within Searchpopover.
+   *
+   * Override this to make sure this stays on top of other components.
+   * @default 1000
    */
-  @state() hasInputChips = false;
+  @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
+  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
 
-  /**
-   * Handles the keydown event of the search field.
-   * If the key pressed is 'Enter', it submits the form.
-   * If the key pressed is 'Escape', it clears the input text.
-   * @param event - Keyboard event
-   */
-  override handleKeyDown(event: KeyboardEvent) {
-    super.handleKeyDown(event);
-    if (event.key === KEYS.ESCAPE) {
-      this.clearInputText();
-    }
-  }
+  protected override renderInputElement() {
+    const placeholderText = this.hasInputChips ? '' : this.placeholder;
 
-  override connectedCallback() {
-    super.connectedCallback();
-    this.leadingIcon = DEFAULTS.ICON;
-    this.trailingButton = DEFAULTS.CLOSE_BTN;
-    this.helpText = undefined as unknown as string;
-    this.helpTextType = undefined as unknown as ValidationType;
-    this.required = undefined as unknown as boolean;
-    this.validationMessage = undefined as unknown as string;
-    this.prefixText = undefined as unknown as string;
-  }
-
-  /**
-   * This method is used to render the input chips inside filters slot.
-   * It will remove any elements that are not input chips.
-   * @internal
-   */
-  protected renderInputChips() {
-    this.hasInputChips = !!this.inputChips?.length;
-    if (this.inputChips) {
-      this.inputChips.forEach(element => {
-        if (!element.matches(DEFAULTS.INPUT_CHIP_TAG)) {
-          element.remove();
-        }
-      });
-    }
-  }
-
-  /**
-   * This sets the focus ring state based on the input focus state.
-   * Eventually, this logic has to be omitted and achieved using CSS instead.
-   * @override
-   */
-  protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
-    this.inputElement.onfocus = () => {
-      this.isInputFocused = true;
-    };
-    this.inputElement.onblur = () => {
-      this.isInputFocused = false;
-    };
-    super.firstUpdated(_changedProperties);
-  }
-
-  override clearInputText() {
-    super.clearInputText();
-    this.inputChips?.forEach(element => {
-      // Dispatch the custom 'remove' event from inputChip
-      element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
-    });
+    return html`<input
+      aria-label="${this.dataAriaLabel ?? ''}"
+      part="input-text"
+      id="${this.inputId}"
+      name="${this.name}"
+      .value="${live(this.value)}"
+      ?disabled="${this.disabled}"
+      ?readonly="${this.readonly}"
+      ?required="${this.required}"
+      type="${DEFAULTS.TYPE}"
+      aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+      aria-controls="${POPOVER_ID}"
+      aria-owns="${POPOVER_ID}"
+      aria-haspopup="${ROLE.DIALOG}"
+      aria-describedby="${ifDefined(
+        this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : (this.dataAriaDescribedby ?? ''),
+      )}"
+      aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
+      placeholder=${ifDefined(placeholderText)}
+      minlength=${ifDefined(this.minlength)}
+      maxlength=${ifDefined(this.maxlength)}
+      autocapitalize=${this.autocapitalize}
+      autocomplete=${this.autocomplete}
+      dirname=${ifDefined(this.dirname)}
+      pattern=${ifDefined(this.pattern)}
+      list=${ifDefined(this.list)}
+      size=${ifDefined(this.size)}
+      @input=${this.onInput}
+      @change=${this.onChange}
+      @keydown=${this.handleKeyDown}
+      role=${ifDefined(ROLE.COMBOBOX)}
+    />`;
   }
 
   public override render() {
@@ -157,6 +157,7 @@ class Searchfield extends Input {
           'mdc-focus-ring': this.isInputFocused,
         })}"
         part="input-container"
+        id="${TRIGGER_ID}"
       >
         ${this.renderLeadingIcon()}
         <div part="scrollable-container" tabindex="-1">
@@ -168,14 +169,31 @@ class Searchfield extends Input {
           >
             <slot name="filters" @slotchange=${this.renderInputChips}></slot>
           </div>
-          ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
+          ${this.renderInputElement()}
         </div>
         ${this.renderTrailingButton(this.hasInputChips)}
       </div>
+      <mdc-popover
+        triggerID="${TRIGGER_ID}"
+        id="${POPOVER_ID}"
+        trigger="manual"
+        interactive
+        ?visible=${this.displayPopover}
+        hide-on-outside-click
+        hide-on-escape
+        focus-back-to-trigger
+        size
+        placement="${this.placement}"
+        disable-aria-expanded
+        z-index="${ifDefined(this.popoverZIndex)}"
+        exportparts="popover-content"
+      >
+        <slot></slot>
+      </mdc-popover>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Input.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Searchfield.styles, ...styles];
 }
 
-export default Searchfield;
+export default Searchpopover;

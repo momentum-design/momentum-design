@@ -58,6 +58,7 @@ import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
+import Searchpopover from './components/searchpopover';
 import Select from './components/select';
 import SelectListbox from './components/selectlistbox';
 import SideNavigation from './components/sidenavigation';
@@ -184,6 +185,7 @@ export {
   RadioGroup,
   ScreenreaderAnnouncer,
   Searchfield,
+  Searchpopover,
   Select,
   SelectListbox,
   SideNavigation,
