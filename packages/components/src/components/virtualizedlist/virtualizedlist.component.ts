@@ -403,7 +403,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.requestUpdate();
       await this.updateComplete;
 
-      if (this.atBottom === 'yes') return;
+      if (this.atBottom === 'yes') {
+        this.scrollToBottom();
+        return;
+      }
 
       // If the user has focus within the list, use the selected index as the anchor point for scroll adjustment.
       // If the user does not have focus within the list, use the first visible item as the anchor point for scroll adjustment.
@@ -665,8 +668,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       const { clientHeight, scrollHeight, scrollTop } = this.scrollRef;
 
       if (this.totalListHeight > clientHeight) {
-        const diff = Math.floor((scrollHeight - clientHeight - scrollTop) / 10);
-        this.scrollRef.scrollTop += diff;
+        this.scrollRef.scrollTop += scrollHeight - clientHeight - scrollTop;
       }
       this.atBottomTimer = requestAnimationFrame(this.scrollToBottom.bind(this));
     }
