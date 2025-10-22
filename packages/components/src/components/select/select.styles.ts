@@ -60,7 +60,8 @@ const styles = css`
   }
   :host::part(base-text) {
     height: 100%;
-    width: 100%;
+    /* 2rem is the complete width of dropdown icon */
+    width: calc(100% - 2rem);
     color: var(--mdc-select-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
