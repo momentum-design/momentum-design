@@ -16,6 +16,10 @@ const styles = [
       scrollbar-gutter: stable;
     }
 
+    :host::part(wrapper) {
+      padding: 0 0.25rem;
+    }
+
     ::slotted([data-virtualized-hidden]) {
       position: absolute !important;
       top: var(--mdc-virtualizedlist-hidden-top) !important;

@@ -290,9 +290,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   constructor() {
     super();
-    this.addEventListener('wheel', e => {
-      if (e.deltaY < 0) this.atBottom = 're-evaluate';
-    });
+    this.addEventListener('wheel', this.handleWheelEvent.bind(this));
   }
 
   /**
@@ -300,7 +298,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, {
-      // measureElement: defaultMeasureElement,
       ...this.virtualizerProps,
       horizontal: false,
       getScrollElement: () => this.scrollRef as Element,
@@ -613,7 +610,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       this.scrollAnchoring &&
       this.virtualizer &&
       this.atBottom === 'no' &&
-      scrollHeight > clientHeight - this.atBottomThreshold
+      scrollHeight > clientHeight - this.atBottomThreshold &&
+      !this.virtualizer.isScrolling
     ) {
       this.atBottom = scrollHeight - scrollTop <= clientHeight + this.atBottomThreshold ? 'yes' : 'no';
     }
@@ -699,6 +697,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     this.wrapperRef.style.height = `${this.totalListHeight}px`;
     this.containerRef.style.transform = `translateY(${initialOffset + firstItemOffset}px)`;
+  }
+
+  private handleWheelEvent(e: WheelEvent) {
+    if (e.deltaY < 0) this.atBottom = 're-evaluate';
   }
 
   public override render() {
