@@ -251,9 +251,9 @@ class Input
   /**
    * Handles the input event of the input field.
    * Updates the value and sets the validity of the input field.
-   *
+   * @internal
    */
-  private onInput() {
+  protected onInput() {
     this.updateValue();
     this.setInputValidity();
     this.checkValidity();
@@ -268,8 +268,9 @@ class Input
    * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
    *
    * @param event - Event which contains information about the value change.
+   * @internal
    */
-  private onChange(event: Event) {
+  protected onChange(event: Event) {
     this.updateValue();
     this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
