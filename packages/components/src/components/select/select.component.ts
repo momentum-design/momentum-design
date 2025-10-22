@@ -93,6 +93,9 @@ class Select
   )
   implements AssociatedFormControl
 {
+  /** @internal */
+  private itemsStore: ElementStore<Option>;
+
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -177,16 +180,14 @@ class Select
   /** @internal */
   private searchString = '';
 
-  /** @internal */
-  private itemsStore = new ElementStore<Option>(this, {
-    isValidItem: this.isValidItem,
-    onStoreUpdate: this.onStoreUpdate,
-  });
-
   constructor() {
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
+    this.itemsStore = new ElementStore<Option>(this, {
+      isValidItem: this.isValidItem,
+      onStoreUpdate: this.onStoreUpdate,
+    });
   }
 
   override connectedCallback(): void {
@@ -256,39 +257,55 @@ class Select
   }
 
   /** @internal */
-  private onStoreUpdate(option: HTMLElement, changeType: ElementStoreChangeTypes, index: number): void {
+  private onStoreUpdate = (
+    option: Option,
+    changeType: ElementStoreChangeTypes,
+    index: number,
+    options: Option[],
+  ): void => {
     switch (changeType) {
       case 'added':
         option.setAttribute('tabindex', '-1');
         break;
       case 'removed': {
-        if (index === -1 || option.tabIndex !== 0) {
+        if (index === -1 || options.length === 0) {
           return;
         }
 
         let newIndex = index + 1;
-        if (newIndex >= this.navItems.length) {
+        if (newIndex >= options.length) {
           newIndex = index - 1;
         }
 
-        if (newIndex === -1) {
+        if (newIndex === -1 && this.displayPopover) {
           this.displayPopover = false;
           this.handleNativeInputFocus();
           return;
         }
 
-        this.resetTabIndexes(newIndex);
+        if (option.tabIndex === 0) {
+          this.resetTabIndexes(newIndex);
+        }
+
+        if (option.hasAttribute('selected')) {
+          let newOption: Option | null = null;
+          // If there is no placeholder, then we set the first option as selected option.
+          // If the the first option is about to removed then we set the next (second) option as selected.
+          // The next (second) option will become first one, when the option is fully removed.
+          if (!this.placeholder) {
+            newOption = index === 0 ? options[newIndex] : options[0];
+          }
+          this.setSelectedOption(newOption);
+        }
         break;
       }
       default:
         break;
     }
-  }
+  };
 
   /** @internal */
-  private isValidItem(item: Element): boolean {
-    return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
-  }
+  private isValidItem = (item: Element): boolean => item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
 
   /** @internal */
   private getFirstSelectedOption(): Option | undefined {

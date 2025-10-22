@@ -835,5 +835,58 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toHaveAttribute('selected');
       });
     });
+
+    await test.step('should handle option removal', async () => {
+      await test.step('when a selected option is removed then placeholder should be set', async () => {
+        const select = await setup({
+          componentsPage,
+          children: defaultChildren(true),
+          placeholder: defaultPlaceholder,
+        });
+        await componentsPage.page.evaluate(() => {
+          const selectListbox = document.querySelector('mdc-select mdc-selectlistbox');
+          if (selectListbox) {
+            const options = selectListbox.querySelectorAll('mdc-option');
+            options[1].remove(); // Remove selected option
+          }
+        });
+        const mdcTextElement = select.locator('mdc-text[part="base-text "]');
+        const textContent = await mdcTextElement.textContent();
+        expect(textContent?.trim()).toBe(defaultPlaceholder);
+      });
+
+      await test.step('when a selected option is removed then first option should be selected', async () => {
+        const select = await setup({ componentsPage, children: defaultChildren(true) });
+        await componentsPage.page.evaluate(() => {
+          const selectListbox = document.querySelector('mdc-select mdc-selectlistbox');
+          if (selectListbox) {
+            const options = selectListbox?.querySelectorAll('mdc-option');
+            options[1].remove(); // Remove selected option
+          }
+        });
+        await expect(select.locator('mdc-option').first()).toHaveAttribute('selected');
+        await expect(select).toHaveAttribute('value', 'option1');
+      });
+
+      await test.step('when a focused option is removed then the next option should be focused via tabindex', async () => {
+        const select = await setup({ componentsPage, children: defaultChildren(false) });
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Focus 1st option
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Focus 2nd option
+        await expect(select.locator('mdc-option').nth(1)).toBeFocused();
+        await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('tabindex', '0');
+        await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('value', 'option2');
+        await componentsPage.page.evaluate(() => {
+          const selectListbox = document.querySelector('mdc-select mdc-selectlistbox');
+          if (selectListbox) {
+            const options = selectListbox.querySelectorAll('mdc-option');
+            options[1].remove(); // Remove second option.
+          }
+        });
+        // After removing 2nd option, the 3rd option will be second.
+        await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('tabindex', '0');
+        await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('value', 'option3');
+      });
+    });
   });
 });
