@@ -106,6 +106,13 @@ import type {
   InputClearEvent,
 } from './components/input/input.types';
 import type { VirtualizedListScrollEvent } from './components/virtualizedlist/virtualizedlist.types';
+import type {
+  TextareaInputEvent,
+  TextareaChangeEvent,
+  TextareaFocusEvent,
+  TextareaBlurEvent,
+  TextareaLimitExceededEvent,
+} from './components/textarea/textarea.types';
 
 // Constants / Utils Imports
 import {
@@ -231,6 +238,11 @@ export type {
   InputBlurEvent,
   InputClearEvent,
   VirtualizedListScrollEvent,
+  TextareaInputEvent,
+  TextareaChangeEvent,
+  TextareaFocusEvent,
+  TextareaBlurEvent,
+  TextareaLimitExceededEvent,
 };
 
 // Constants / Utils Exports

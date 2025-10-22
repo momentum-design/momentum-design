@@ -7,12 +7,27 @@ type WrapType = ValueOf<typeof WRAP>;
 
 type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
 
+type TextareaInputEvent = OverrideEventTarget<InputEvent, Textarea>;
+type TextareaChangeEvent = TypedCustomEvent<Textarea>;
+type TextareaFocusEvent = OverrideEventTarget<FocusEvent, Textarea>;
+type TextareaBlurEvent = OverrideEventTarget<FocusEvent, Textarea>;
+type TextareaLimitExceededEvent = TypedCustomEvent<Textarea>;
+
 interface Events {
-  onInputEvent: OverrideEventTarget<InputEvent, Textarea>;
-  onChangeEvent: TypedCustomEvent<Textarea>;
-  onFocusEvent: OverrideEventTarget<FocusEvent, Textarea>;
-  onBlurEvent: OverrideEventTarget<FocusEvent, Textarea>;
-  onLimitExceededEvent: TypedCustomEvent<Textarea>;
+  onInputEvent: TextareaInputEvent;
+  onChangeEvent: TextareaChangeEvent;
+  onFocusEvent: TextareaFocusEvent;
+  onBlurEvent: TextareaBlurEvent;
+  onLimitExceededEvent: TextareaLimitExceededEvent;
 }
 
-export type { WrapType, AutoCompleteType, Events };
+export type {
+  WrapType,
+  AutoCompleteType,
+  Events,
+  TextareaInputEvent,
+  TextareaChangeEvent,
+  TextareaFocusEvent,
+  TextareaBlurEvent,
+  TextareaLimitExceededEvent,
+};
