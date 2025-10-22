@@ -13,7 +13,6 @@ import '../../buttongroup';
 import '../../avatar';
 import '../../textarea';
 import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
-import VirtualizedList from '../virtualizedlist.component';
 
 export class ChatExampleStoriesUtils extends Component {
   @state()
@@ -177,8 +176,6 @@ export class ChatExampleStoriesUtils extends Component {
   ];
   // End AI-Assisted
 
-  private virtualizerRef: Ref<VirtualizedList> = createRef();
-
   private getOrderedMessageKeys(): string[] {
     const allKeys = Object.keys(this.chatMessages);
     const topLevelKeys = allKeys.filter(key => !this.chatMessages[key].parent);
@@ -340,7 +337,6 @@ export class ChatExampleStoriesUtils extends Component {
     return html`
       <div id="VirtualizedDynamicList--wrapper">
         <mdc-virtualizedlist
-          ${ref(this.virtualizerRef)}
           @virtualitemschange=${this.handleVirtualItemsChange}
           .virtualizerProps=${this.virtualizerProps}
           initial-focus=${this.listItems.length - 1}

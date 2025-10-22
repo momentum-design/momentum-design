@@ -87,7 +87,7 @@ class VirtualizedDynamicListContentStoriesUtils extends Component {
     this.reset();
   }
 
-  onNext = async () => {
+  onNext = async (goToBottom: boolean) => {
     if (this.isClippyNext) {
       this.listItems.push({ key: this.listItems.length.toString(), data: '' });
       this.addChunks();
@@ -99,11 +99,13 @@ class VirtualizedDynamicListContentStoriesUtils extends Component {
     this.isClippyNext = !this.isClippyNext;
     this.virtualizerProps = { ...this.virtualizerProps, count: this.listItems.length };
 
-    await this.updateComplete;
-    this.virtualizerRef.value!.scrollToIndex(this.listItems.length - 1, {
-      align: 'end',
-      behavior: 'auto',
-    });
+    if (goToBottom) {
+      await this.updateComplete;
+      this.virtualizerRef.value!.scrollToIndex(this.listItems.length - 1, {
+        align: 'end',
+        behavior: 'auto',
+      });
+    }
   };
 
   private reset = () => {
@@ -155,7 +157,8 @@ class VirtualizedDynamicListContentStoriesUtils extends Component {
         </mdc-virtualizedlist>
         <div style="margin-top: 1rem;">
           <div style="display: flex; gap: 0.25rem;">
-            <mdc-button @click=${this.onNext}>Get next message</mdc-button>
+            <mdc-button @click=${() => this.onNext(true)}>Go to next message</mdc-button>
+            <mdc-button @click=${() => this.onNext(false)}>Add next message</mdc-button>
             <mdc-button variant="secondary" @click=${this.reset}>Reset</mdc-button>
           </div>
         </div>
