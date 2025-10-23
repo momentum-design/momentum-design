@@ -20,8 +20,8 @@ import type { Placement } from './searchpopover.types';
  * in a popover below the search input field, where the search results hold individual actions like navigating to a
  * a different url etc.
  *
- * - Don't use this when search results are displayed inline on the page -> use Searchfield component instead.
- * - Don't use this when a list of options is filtered based on the search input -> use Combobox component instead.
+ * - Don't use this when search results are displayed inline on the page -\> use Searchfield component instead.
+ * - Don't use this when a list of options is filtered based on the search input -\> use Combobox component instead.
  *
  * It supports `mdc-inputchip` as filters.
  *

@@ -28,6 +28,7 @@ type SetupOptions = {
   clearAriaLabel?: string;
   displayPopover?: boolean;
   children?: string;
+  popoverAriaLabel?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -56,6 +57,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
         ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
         ${restArgs.displayPopover ? 'display-popover' : ''}
+        ${restArgs.popoverAriaLabel ? `popover-aria-label="${restArgs.popoverAriaLabel}"` : ''}
       >
         ${restArgs.children}
       </mdc-searchpopover>
@@ -81,6 +83,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       label: 'Label',
       value: 'Result',
       'display-popover': true,
+      'popover-aria-label': 'Search results',
     };
     const searchpopoverStickerSheet = new StickerSheet(componentsPage, 'mdc-searchpopover');
 
@@ -196,6 +199,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
     });
 
     await test.step('aria attributes set on input & popover', async () => {
+      await componentsPage.setAttributes(searchpopover, { 'popover-aria-label': 'Search results' });
       const inputEl = searchpopover.locator('input');
       const popoverEl = searchpopover.locator('mdc-popover');
       const popoverId = await popoverEl.getAttribute('id');
@@ -204,11 +208,6 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(inputEl).toHaveAttribute('aria-owns', popoverId!);
       await expect(inputEl).toHaveAttribute('aria-expanded', 'true');
       await expect(inputEl).toHaveAttribute('aria-haspopup', 'dialog');
-    });
-
-    await test.step('popover has correct aria-label', async () => {
-      await componentsPage.setAttributes(searchpopover, { 'popover-aria-label': 'Search results' });
-      const popoverEl = searchpopover.locator('mdc-popover');
       await expect(popoverEl).toHaveAttribute('aria-label', 'Search results');
     });
   });
