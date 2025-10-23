@@ -16,6 +16,13 @@ import { DEFAULTS } from './searchfield.constants';
  *
  * This component is built by extending the `mdc-input` component.
  *
+ * **Accessibility:**
+ *
+ * NOTE: this component should not be used in combination with a Popover or Listbox component.
+ * Search results should be shown permanently on the page if using this component.
+ *
+ * For a search field that opens a Popover, use the `mdc-searchpopover` widget instead.
+ *
  * @tagname mdc-searchfield
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
@@ -106,8 +113,9 @@ class Searchfield extends Input {
   /**
    * This method is used to render the input chips inside filters slot.
    * It will remove any elements that are not input chips.
+   * @internal
    */
-  private renderInputChips() {
+  protected renderInputChips() {
     this.hasInputChips = !!this.inputChips?.length;
     if (this.inputChips) {
       this.inputChips.forEach(element => {
