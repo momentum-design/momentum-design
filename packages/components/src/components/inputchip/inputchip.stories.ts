@@ -19,7 +19,7 @@ const render = (args: Args) =>
   ></mdc-inputchip>`;
 
 const meta: Meta = {
-  title: 'Components/chip/input',
+  title: 'Components/chip/inputchip',
   tags: ['autodocs'],
   component: 'mdc-inputchip',
   render,
