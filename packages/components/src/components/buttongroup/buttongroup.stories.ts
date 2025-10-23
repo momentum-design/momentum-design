@@ -4,9 +4,11 @@ import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
+import { AnimationNames } from '../animation/animation.types';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import '../button';
+import '../animation';
 import '../popover';
 import '../tooltip';
 
@@ -176,15 +178,21 @@ export const AllVariantsAndOrientations: StoryObj = {
     </div>`,
 };
 
-export const CustomStory: StoryObj = {
+export const EmojiReactionsGroup: StoryObj = {
   render: () => html`
-    <mdc-buttongroup variant="primary">
-      <mdc-button prefix-icon="placeholder-bold" aria-label="icon button">Pre Order</mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold" aria-label="icon button"></mdc-button> </mdc-buttongroup
-    ><br />
-    <mdc-buttongroup variant="secondary">
-      <mdc-button prefix-icon="placeholder-bold" aria-label="icon button">Pre Order</mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold" aria-label="icon button"></mdc-button>
+    <mdc-buttongroup variant="secondary" size="40" orientation="horizontal">
+      ${['thumb_up_yellow', 'smile', 'wow', 'sad', 'slow_down', 'speed_up', 'raise_hand_yellow'].map(
+        animationName => html`
+          <mdc-button>
+            <mdc-animation
+              name="${animationName as AnimationNames}"
+              loop="true"
+              slot="prefix"
+              style="height: 2rem; width: 2rem; flex-shrink: 0;"
+            ></mdc-animation>
+          </mdc-button>
+        `,
+      )}
     </mdc-buttongroup>
   `,
 };
