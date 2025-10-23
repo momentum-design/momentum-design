@@ -175,3 +175,16 @@ export const AllVariantsAndOrientations: StoryObj = {
       </mdc-buttongroup>
     </div>`,
 };
+
+export const CustomStory: StoryObj = {
+  render: () => html`
+    <mdc-buttongroup variant="primary">
+      <mdc-button prefix-icon="placeholder-bold" aria-label="icon button">Pre Order</mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" aria-label="icon button"></mdc-button> </mdc-buttongroup
+    ><br />
+    <mdc-buttongroup variant="secondary">
+      <mdc-button prefix-icon="placeholder-bold" aria-label="icon button">Pre Order</mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" aria-label="icon button"></mdc-button>
+    </mdc-buttongroup>
+  `,
+};

@@ -59,7 +59,7 @@ const styles = css`
     position: absolute;
     height: 100%;
     border-inline-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
-    inset-inline-end: calc(var(--mdc-buttongroup-border-width) / 2);
+    inset-inline-start: 100%;
   }
   :host([variant='secondary'][orientation='vertical']) ::slotted(mdc-button:not(:last-of-type))::after {
     content: '';
@@ -101,6 +101,17 @@ const styles = css`
   }
   :host([compact][orientation='horizontal'][size='40']) ::slotted(mdc-button) {
     width: 2.5rem;
+  }
+  /* Adjust padding for first button in horizontal secondary buttongroup */
+  :host([variant='secondary'][orientation='horizontal'][size='24']) ::slotted(mdc-button:first-of-type) {
+    padding-left: calc(0.625rem - 1px);
+  }
+  :host([variant='secondary'][orientation='horizontal'][size='28']) ::slotted(mdc-button:first-of-type),
+  :host([variant='secondary'][orientation='horizontal'][size='32']) ::slotted(mdc-button:first-of-type) {
+    padding-left: calc(0.75rem - 1px);
+  }
+  :host([variant='secondary'][orientation='horizontal'][size='40']) ::slotted(mdc-button:first-of-type) {
+    padding-left: calc(1rem - 1px);
   }
 `;
 
