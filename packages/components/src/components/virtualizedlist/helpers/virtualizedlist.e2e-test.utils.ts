@@ -34,6 +34,9 @@ export class VirtualizedListE2E extends Component {
   @property({ type: Boolean, reflect: true, attribute: 'observe-size-changes' })
   observeSizeChanges: boolean = false;
 
+  @property({ type: Boolean, reflect: true, attribute: 'scroll-anchoring' })
+  scrollAnchoring: boolean = false;
+
   @state()
   private items: Item[] = [];
 
@@ -56,6 +59,7 @@ export class VirtualizedListE2E extends Component {
       id: generateUUID(),
       message: `Initial Message ${i}`,
     }));
+    this.virtualizerProps = this.getVirtualizerProps();
   }
 
   protected override update(changedProperties: PropertyValues): void {
@@ -69,7 +73,7 @@ export class VirtualizedListE2E extends Component {
   private getVirtualizerProps(): VirtualizerProps {
     return {
       count: this.items.length,
-      estimateSize: () => 36,
+      estimateSize: () => 40,
       getItemKey: index => this.items[index]?.id,
     };
   }
@@ -168,6 +172,7 @@ export class VirtualizedListE2E extends Component {
         revert-list=${ifDefined(this.revertList ? 'true' : undefined)}
         initial-focus=${ifDefined(this.initialFocus)}
         observe-size-changes=${ifDefined(this.observeSizeChanges ? 'true' : undefined)}
+        scroll-anchoring=${ifDefined(this.scrollAnchoring ? 'true' : undefined)}
       >
         ${repeat(this.virtualData.virtualItems, ({ key }) => key, this.generateListItem.bind(this))}
       </mdc-virtualizedlist>
