@@ -28,6 +28,7 @@ type SetupOptions = {
   clearAriaLabel?: string;
   displayPopover?: boolean;
   children?: string;
+  popoverAriaLabel?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -56,6 +57,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
         ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
         ${restArgs.displayPopover ? 'display-popover' : ''}
+        ${restArgs.popoverAriaLabel ? `popover-aria-label="${restArgs.popoverAriaLabel}"` : ''}
       >
         ${restArgs.children}
       </mdc-searchpopover>
@@ -81,6 +83,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       label: 'Label',
       value: 'Result',
       'display-popover': true,
+      'popover-aria-label': 'Search results',
     };
     const searchpopoverStickerSheet = new StickerSheet(componentsPage, 'mdc-searchpopover');
 
@@ -177,16 +180,10 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await componentsPage.removeAttribute(searchpopover, 'autocomplete');
     });
 
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(searchpopover, { direname: 'ltr' });
-      await expect(searchpopover).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(searchpopover, 'direname');
-    });
-
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(searchpopover, { direname: 'ltr' });
-      await expect(searchpopover).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(searchpopover, 'direname');
+    await test.step('attribute dirname should be present on component', async () => {
+      await componentsPage.setAttributes(searchpopover, { dirname: 'ltr' });
+      await expect(searchpopover).toHaveAttribute('dirname', 'ltr');
+      await componentsPage.removeAttribute(searchpopover, 'dirname');
     });
 
     await test.step('attribute pattern should be present on component', async () => {
@@ -202,6 +199,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
     });
 
     await test.step('aria attributes set on input & popover', async () => {
+      await componentsPage.setAttributes(searchpopover, { 'popover-aria-label': 'Search results' });
       const inputEl = searchpopover.locator('input');
       const popoverEl = searchpopover.locator('mdc-popover');
       const popoverId = await popoverEl.getAttribute('id');
@@ -210,6 +208,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(inputEl).toHaveAttribute('aria-owns', popoverId!);
       await expect(inputEl).toHaveAttribute('aria-expanded', 'true');
       await expect(inputEl).toHaveAttribute('aria-haspopup', 'dialog');
+      await expect(popoverEl).toHaveAttribute('aria-label', 'Search results');
     });
   });
 
