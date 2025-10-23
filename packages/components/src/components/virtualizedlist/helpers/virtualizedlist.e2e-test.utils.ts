@@ -4,6 +4,7 @@ import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { VirtualItem } from '@tanstack/virtual-core';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { Component } from '../../../models';
 import '..';
@@ -14,6 +15,8 @@ import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerPr
 function generateUUID(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
+
+type Item = { id: string; message: string; size?: number };
 
 export class VirtualizedListE2E extends Component {
   @property({ type: Number, reflect: true, attribute: 'initial-item-count' })
@@ -28,8 +31,11 @@ export class VirtualizedListE2E extends Component {
   @property({ type: Boolean, reflect: true, attribute: 'revert-list' })
   revertList: boolean = false;
 
+  @property({ type: Boolean, reflect: true, attribute: 'observe-size-changes' })
+  observeSizeChanges: boolean = false;
+
   @state()
-  private items: { id: string; message: string }[] = [];
+  private items: Item[] = [];
 
   @state()
   private virtualData: VirtualData = { virtualItems: [] };
@@ -77,10 +83,11 @@ export class VirtualizedListE2E extends Component {
    * @param message - The message content for the item
    * @param index - Optional index to insert at. If not provided, adds to the end
    */
-  public addItem(message: string, index?: number): (typeof this.items)[number] {
+  public addItem(message: string, index?: number, options: Omit<Item, 'id' | 'message'> = {}): Item {
     const newItem = {
       id: generateUUID(),
       message,
+      ...options,
     };
 
     if (index === undefined) {
@@ -104,11 +111,20 @@ export class VirtualizedListE2E extends Component {
     this.items = this.items.filter(item => item.id !== id);
   }
 
+  public removeIndex(index: number): void {
+    if (index < 0 || index >= this.items.length) {
+      return;
+    }
+    const newItems = [...this.items];
+    newItems.splice(index, 1);
+    this.items = newItems;
+  }
+
   /**
    * Update an item in the list by ID
    */
-  public updateItem(id: string, message: string): void {
-    this.items = this.items.map(item => (item.id === id ? { ...item, message } : item));
+  public updateItem(id: string, object: Partial<Omit<Item, 'id'>>): void {
+    this.items = this.items.map(item => (item.id === id ? { ...item, ...object } : item));
   }
 
   /**
@@ -130,10 +146,14 @@ export class VirtualizedListE2E extends Component {
   }
 
   private generateListItem({ index }: VirtualItem): TemplateResult {
-    const { message } = this.items[index];
+    const { message, size } = this.items[index];
 
     return html`
-      <mdc-listitem data-index=${index} label=${message}>
+      <mdc-listitem
+        data-index=${index}
+        label=${message}
+        style=${styleMap({ '--mdc-listitem-height': size ? `${size}px` : undefined })}
+      >
         <mdc-button slot="trailing-controls" variant="secondary" size="24">Label</mdc-button>
       </mdc-listitem>
     `;
@@ -147,6 +167,7 @@ export class VirtualizedListE2E extends Component {
         loop=${ifDefined(this.loop ? 'true' : undefined)}
         revert-list=${ifDefined(this.revertList ? 'true' : undefined)}
         initial-focus=${ifDefined(this.initialFocus)}
+        observe-size-changes=${ifDefined(this.observeSizeChanges ? 'true' : undefined)}
       >
         ${repeat(this.virtualData.virtualItems, ({ key }) => key, this.generateListItem.bind(this))}
       </mdc-virtualizedlist>
@@ -156,6 +177,7 @@ export class VirtualizedListE2E extends Component {
           height: 300px;
           display: flex;
           flex-direction: column;
+          border: 1px solid var(--mds-color-theme-text-secondary-normal);
         }
       </style>`;
   }

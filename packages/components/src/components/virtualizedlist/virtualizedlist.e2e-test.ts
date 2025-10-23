@@ -13,9 +13,10 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     revertList?: true;
     initialItemCount?: number;
     initialFocus?: number;
+    observeSizeChanges?: true;
   };
 
-  const setup = async ({ loop, revertList, initialItemCount, initialFocus }: SetupOptions = {}) => {
+  const setup = async ({ loop, revertList, initialItemCount, initialFocus, observeSizeChanges }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
         <div>
@@ -24,6 +25,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
             ${revertList ? 'revert-list' : ''}
             ${initialItemCount !== undefined ? `initial-item-count="${initialItemCount}"` : ''}
             ${initialFocus !== undefined ? `initial-focus="${initialFocus}"` : ''}
+            ${observeSizeChanges ? 'observe-size-changes' : ''}
           ></mdc-virtualizedlist-e2e>
           <mdc-button>after</mdc-button>
         </div>
@@ -82,32 +84,35 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(lastRenderedItem).toHaveAttribute('aria-setsize', '25');
   });
 
+  await test.step('keyboard', async () => {
+    const { vlist } = await setup({ initialItemCount: 20 });
+
+    await componentsPage.page.keyboard.press('Tab');
+    await expect(listItemLocator(vlist, 0)).toBeFocused();
+
+    // Navigate far enough down the list to check scrolling
+    for (let i = 1; i <= 15; i += 1) {
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(listItemLocator(vlist, i)).toBeFocused();
+      await expect(listItemLocator(vlist, i)).toBeInViewport();
+    }
+
+    for (let i = 14; i >= 5; i -= 1) {
+      await componentsPage.page.keyboard.press('ArrowUp');
+      await expect(listItemLocator(vlist, i)).toBeFocused();
+      await expect(listItemLocator(vlist, i)).toBeInViewport();
+    }
+
+    await componentsPage.page.keyboard.press('End');
+    await expect(listItemLocator(vlist, 19)).toBeFocused();
+    await expect(listItemLocator(vlist, 19)).toBeInViewport();
+
+    await componentsPage.page.keyboard.press('Home');
+    await expect(listItemLocator(vlist, 0)).toBeFocused();
+    await expect(listItemLocator(vlist, 0)).toBeInViewport();
+  });
+
   await test.step('focus', async () => {
-    await test.step('focused element remains in viewport after scroll and is focused again on tab', async () => {
-      const { vlist } = await setup({ initialItemCount: 25 });
-
-      await componentsPage.actionability.pressTab();
-      await expect(listItemLocator(vlist, 0)).toBeFocused();
-
-      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
-        listItemLocator(vlist, 1),
-        listItemLocator(vlist, 2),
-        listItemLocator(vlist, 3),
-      ]);
-
-      await componentsPage.actionability.pressTab();
-      await componentsPage.actionability.pressTab();
-      await expect(componentsPage.page.getByText('after')).toBeFocused();
-
-      await scrollList(vlist, 400);
-      await expect(listItemLocator(vlist, 3)).toBeVisible();
-      await expect(listItemLocator(vlist, 3)).not.toBeInViewport();
-
-      await componentsPage.actionability.pressShiftTab();
-      await expect(listItemLocator(vlist, 3)).toBeInViewport();
-      await expect(listItemLocator(vlist, 3).locator('mdc-button')).toBeFocused();
-    });
-
     await test.step('ArrowUp works correctly', async () => {
       const { vlist } = await setup({ initialItemCount: 25, initialFocus: 3 });
 
@@ -141,9 +146,75 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await expect(listItemLocator(vlist, 4)).toBeFocused();
       await expect(listItemLocator(vlist, 4)).toBeInViewport();
     });
-  });
 
-  await test.step('scrolling', async () => {});
+    await test.step('focused element remains in viewport after scroll and is focused again on tab', async () => {
+      const { vlist } = await setup({ initialItemCount: 25 });
+
+      await componentsPage.actionability.pressTab();
+      await expect(listItemLocator(vlist, 0)).toBeFocused();
+
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+        listItemLocator(vlist, 1),
+        listItemLocator(vlist, 2),
+        listItemLocator(vlist, 3),
+      ]);
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.getByText('after')).toBeFocused();
+
+      await scrollList(vlist, 400);
+      await expect(listItemLocator(vlist, 3)).toBeVisible();
+      await expect(listItemLocator(vlist, 3)).not.toBeInViewport();
+
+      await componentsPage.actionability.pressShiftTab();
+      await expect(listItemLocator(vlist, 3)).toBeInViewport();
+      await expect(listItemLocator(vlist, 3).locator('mdc-button')).toBeFocused();
+    });
+
+    const testcases = [
+      { visible: true, focused: true },
+      { visible: true, focused: false },
+      { visible: false, focused: true },
+      { visible: false, focused: false },
+    ];
+    for (const { visible, focused } of testcases) {
+      await test.step(`active item removed (visible=${visible}, focused=${focused})`, async () => {
+        const { wrapper, vlist } = await setup({ initialItemCount: 50, initialFocus: 1 });
+
+        await componentsPage.actionability.pressTab();
+        await expect(listItemLocator(vlist, 1)).toBeFocused();
+
+        if (!focused) {
+          await componentsPage.actionability.pressTab();
+          await componentsPage.actionability.pressTab();
+          await expect(componentsPage.page.getByText('after')).toBeFocused();
+        }
+
+        if (!visible) {
+          await scrollList(vlist, 400);
+        }
+
+        await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+          wrapperEl.removeIndex(1);
+        });
+
+        if (!focused) {
+          await componentsPage.actionability.pressShiftTab();
+          await componentsPage.actionability.pressShiftTab();
+        } else if (!visible) {
+          // Tab to button in listitem and then back to the listitem itself
+          await componentsPage.actionability.pressTab();
+          await componentsPage.actionability.pressShiftTab();
+        }
+
+        // Focus should keep at index 1
+        await expect(listItemLocator(vlist, 1)).toBeVisible();
+        await expect(listItemLocator(vlist, 1)).toBeInViewport();
+        await expect(listItemLocator(vlist, 1)).toBeFocused();
+      });
+    }
+  });
 
   await test.step('attributes', async () => {
     await test.step('loop', async () => {
@@ -203,10 +274,21 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await test.step('set focus when element is not in the DOM', async () => {
         const { vlist } = await setup({ initialItemCount: 100, initialFocus: 50 });
 
-        await componentsPage.actionability.pressTab();
-        await expect(listItemLocator(vlist, 50)).toBeFocused();
+        // The initial focus should be visible and in the viewport before tabbing to the list
         await expect(listItemLocator(vlist, 50)).toBeVisible();
         await expect(listItemLocator(vlist, 50)).toBeInViewport();
+        await componentsPage.actionability.pressTab();
+        await expect(listItemLocator(vlist, 50)).toBeFocused();
+      });
+
+      await test.step('initial focus should still be focusable after scrolling before tabbing to the list', async () => {
+        const { vlist } = await setup({ initialItemCount: 100, initialFocus: 50 });
+
+        await scrollList(vlist, -1000);
+        await expect(listItemLocator(vlist, 50)).toBeVisible();
+        await expect(listItemLocator(vlist, 50)).not.toBeInViewport();
+        await componentsPage.actionability.pressTab();
+        await expect(listItemLocator(vlist, 50)).toBeFocused();
       });
     });
 
@@ -230,6 +312,49 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-virtualizedlist-revert-list-5', {
         element: wrapper,
       });
+    });
+
+    await test.step('observe-size-changes', async () => {
+      const { wrapper, vlist } = await setup({ observeSizeChanges: true });
+
+      const messageIds = await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        const msgIds: string[] = [];
+
+        for (let i = 0; i < 5; i += 1) {
+          const { id } = wrapperEl.addItem(`Message ${i}`, undefined, { size: 36 });
+
+          msgIds.push(id);
+        }
+
+        return msgIds;
+      });
+
+      const wrapperHeight = await vlist.evaluate(
+        (vlistEl: VirtualizedList) =>
+          vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
+      );
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E, updateId: string) => {
+        wrapperEl.updateItem(updateId, { size: 500 });
+      }, messageIds[2]);
+
+      await componentsPage.page.pause();
+      await expect(listItemLocator(vlist, 4)).not.toBeVisible();
+      await scrollList(vlist, 700);
+      await expect(listItemLocator(vlist, 4)).toBeVisible();
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E, updateId: string) => {
+        wrapperEl.updateItem(updateId, { size: 36 });
+      }, messageIds[2]);
+
+      await expect(listItemLocator(vlist, 0)).toBeVisible();
+
+      expect(
+        await vlist.evaluate(
+          (vlistEl: VirtualizedList) =>
+            vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
+        ),
+      ).toBe(wrapperHeight);
     });
   });
 });
