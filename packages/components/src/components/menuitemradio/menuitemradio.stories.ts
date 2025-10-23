@@ -2,12 +2,14 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../menusection';
 import '../divider';
+import * as CONTROL_TYPE_CONSTANTS from '../controltypeprovider/controltypeprovider.constants';
 
 import { INDICATOR } from './menuitemradio.constants';
 
@@ -25,6 +27,7 @@ const render = (args: Args) =>
       indicator="${args.indicator}"
       label="${args.label}"
       secondary-label="${args['secondary-label']}"
+      control-type="${ifDefined(args['control-type'])}"
     ></mdc-menuitemradio>`,
   );
 
@@ -53,6 +56,9 @@ const meta: Meta = {
     },
     'soft-disabled': {
       control: 'boolean',
+    'control-type': {
+      control: 'select',
+      options: [undefined, ...CONTROL_TYPE_CONSTANTS.VALID_VALUES],
     },
     ...hideControls([
       'data-aria-label',

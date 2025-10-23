@@ -401,13 +401,13 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
 
   /**
-   * If a tooltip is connected to the same trigger element,
-   * this property will keep the connected tooltip closed if this popover is open.
-   * This is useful when you want to show a popover with a tooltip
-   * but you don't want the tooltip to be shown at the same time.
+   * Controls the visibility of a connected tooltip when this popover is open.
+   * - If set to `true`, the tooltip remains open alongside the popover.
+   * - If set to `false`, the tooltip will be closed when the popover opens.
+   * Useful for scenarios where both a popover and a tooltip are linked to the same trigger element.
    */
-  @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-closed' })
-  keepConnectedTooltipClosed: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_CLOSED;
+  @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-open' })
+  keepConnectedTooltipOpen: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_OPEN;
 
   public arrowElement: HTMLElement | null = null;
 
@@ -511,7 +511,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     // clean timer if there is one set:
     this.cancelCloseDelay();
 
-    if (this.keepConnectedTooltipClosed) {
+    if (!this.keepConnectedTooltipOpen) {
       if (this.connectedTooltip) {
         this.connectedTooltip.shouldSuppressOpening = false;
       }
@@ -736,7 +736,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         popoverStack.push(this);
       }
 
-      if (this.keepConnectedTooltipClosed) {
+      if (!this.keepConnectedTooltipOpen) {
         // If this popover gets visible and keepConnectedTooltipsClosed is true,
         // we need to close the connected tooltip.
         if (this.connectedTooltip) {
@@ -815,7 +815,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         triggerElement?.focus();
       }
 
-      if (this.keepConnectedTooltipClosed) {
+      if (!this.keepConnectedTooltipOpen) {
         if (this.connectedTooltip) {
           this.connectedTooltip.shouldSuppressOpening = false;
         }
@@ -1060,13 +1060,20 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       return placement;
     }
     switch (placement) {
-      case POPOVER_PLACEMENT.LEFT: return POPOVER_PLACEMENT.RIGHT;
-      case POPOVER_PLACEMENT.LEFT_START: return POPOVER_PLACEMENT.RIGHT_START;
-      case POPOVER_PLACEMENT.LEFT_END: return POPOVER_PLACEMENT.RIGHT_END;
-      case POPOVER_PLACEMENT.RIGHT: return POPOVER_PLACEMENT.LEFT;
-      case POPOVER_PLACEMENT.RIGHT_START: return POPOVER_PLACEMENT.LEFT_START;
-      case POPOVER_PLACEMENT.RIGHT_END: return POPOVER_PLACEMENT.LEFT_END;
-      default: return placement;
+      case POPOVER_PLACEMENT.LEFT:
+        return POPOVER_PLACEMENT.RIGHT;
+      case POPOVER_PLACEMENT.LEFT_START:
+        return POPOVER_PLACEMENT.RIGHT_START;
+      case POPOVER_PLACEMENT.LEFT_END:
+        return POPOVER_PLACEMENT.RIGHT_END;
+      case POPOVER_PLACEMENT.RIGHT:
+        return POPOVER_PLACEMENT.LEFT;
+      case POPOVER_PLACEMENT.RIGHT_START:
+        return POPOVER_PLACEMENT.LEFT_START;
+      case POPOVER_PLACEMENT.RIGHT_END:
+        return POPOVER_PLACEMENT.LEFT_END;
+      default:
+        return placement;
     }
   }
 

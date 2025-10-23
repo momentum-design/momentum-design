@@ -139,7 +139,8 @@ export class PopoverUtils {
         this.popover.ariaLabel =
           this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
       }
-      if (!this.popover.ariaLabelledby) {
+      if (!this.popover.ariaLabelledby && !this.popover.ariaLabel) {
+        // If no aria-label is provided, link the popover to the trigger element via aria-labelledby
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
     }

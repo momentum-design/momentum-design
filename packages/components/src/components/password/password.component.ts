@@ -73,13 +73,13 @@ class Password extends Input {
   /**
    * Aria label for the show password icon button.
    */
-  @property({ type: String, attribute: 'show-button-aria-label' })
+  @property({ type: String, attribute: 'show-button-aria-label', reflect: true })
   showButtonAriaLabel = '';
 
   /**
    * Aria label for the hide password icon button.
    */
-  @property({ type: String, attribute: 'hide-button-aria-label' })
+  @property({ type: String, attribute: 'hide-button-aria-label', reflect: true })
   hideButtonAriaLabel = '';
 
   /**

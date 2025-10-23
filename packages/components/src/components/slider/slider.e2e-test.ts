@@ -32,6 +32,7 @@ type SetupOptions = {
   'name-end'?: string;
   'data-aria-valuetext'?: string;
   'data-aria-label'?: string;
+  'hide-tooltip'?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -349,6 +350,14 @@ test('mdc-slider', async ({ componentsPage }) => {
       await expect(tooltip).toBeVisible();
       await expect(tooltip).toHaveText('50');
     });
+
+    await test.step('slider should not have tooltip when hide-tooltip is set to true', async () => {
+      const slider = await setup({ componentsPage, min: 0, max: 100, value: 50, 'hide-tooltip': true });
+      await componentsPage.actionability.pressTab();
+      await expect(slider).toBeFocused();
+      const tooltip = slider.locator('div[part="slider-tooltip"]');
+      await expect(tooltip).toHaveCount(0);
+    });
   });
 
   /**
@@ -485,6 +494,7 @@ test('mdc-slider', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(tooltip).toHaveText('80');
     });
+
     await test.step('drag thumb to change value', async () => {
       const slider = await setup({ componentsPage, min: 0, max: 100, value: 50 });
       await componentsPage.actionability.pressTab();
