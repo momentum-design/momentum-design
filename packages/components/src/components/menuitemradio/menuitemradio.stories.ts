@@ -56,6 +56,7 @@ const meta: Meta = {
     },
     'soft-disabled': {
       control: 'boolean',
+    },
     'control-type': {
       control: 'select',
       options: [undefined, ...CONTROL_TYPE_CONSTANTS.VALID_VALUES],
