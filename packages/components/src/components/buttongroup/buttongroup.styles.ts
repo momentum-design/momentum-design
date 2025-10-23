@@ -102,17 +102,6 @@ const styles = css`
   :host([compact][orientation='horizontal'][size='40']) ::slotted(mdc-button) {
     width: 2.5rem;
   }
-  /* Adjust padding for first button in horizontal secondary buttongroup */
-  :host([variant='secondary'][orientation='horizontal'][size='24']) ::slotted(mdc-button:first-of-type) {
-    padding-left: calc(0.625rem - 1px);
-  }
-  :host([variant='secondary'][orientation='horizontal'][size='28']) ::slotted(mdc-button:first-of-type),
-  :host([variant='secondary'][orientation='horizontal'][size='32']) ::slotted(mdc-button:first-of-type) {
-    padding-left: calc(0.75rem - 1px);
-  }
-  :host([variant='secondary'][orientation='horizontal'][size='40']) ::slotted(mdc-button:first-of-type) {
-    padding-left: calc(1rem - 1px);
-  }
 `;
 
 export default [hostFitContentStyles, styles];
