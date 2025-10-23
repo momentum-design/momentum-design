@@ -56,6 +56,7 @@ const render = (args: Args) => {
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     ?display-popover="${args['display-popover']}"
+    popover-aria-label="${ifDefined(args['popover-aria-label'])}"
   >
     <mdc-list> ${Array.from(filteredItems).map(item => html`<mdc-listitem label="${item}"></mdc-listitem>`)} </mdc-list>
   </mdc-searchpopover>`;
@@ -125,6 +126,9 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    'popover-aria-label': {
+      control: 'text',
+    },
     ...hideControls([
       'prefix-text',
       'help-text',
@@ -150,6 +154,7 @@ export const Example: StoryObj = {
     value: 'Banana',
     label: 'Fruits',
     placeholder: 'Placeholder',
+    'popover-aria-label': 'Search results',
     disabled: false,
     'clear-aria-label': 'Clear',
   },
