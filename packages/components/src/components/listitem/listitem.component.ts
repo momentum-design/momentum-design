@@ -130,6 +130,18 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled?: boolean;
 
+  /**
+   * Data attribute to define the index of the list item in a list.
+   * This also set the `aria-posinset` attribute for accessibility purposes.
+   *
+   * It is required when the list item is used inside a virtualized list where the items are not sequentially rendered.
+   * It should be a zero-based index.
+   *
+   * @default undefined
+   */
+  @property({ type: Number, reflect: true, attribute: 'data-index' })
+  dataIndex?: number;
+
   constructor() {
     super();
 
@@ -239,6 +251,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
 
     if (changedProperties.has('softDisabled')) {
       this.disableSlottedChildren(this.softDisabled);
+    }
+
+    if (changedProperties.has('dataIndex')) {
+      this.ariaPosInSet = `${this.dataIndex !== undefined ? this.dataIndex + 1 : ''}`;
     }
   }
 
