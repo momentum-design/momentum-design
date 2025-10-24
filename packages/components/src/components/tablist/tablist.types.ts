@@ -10,4 +10,4 @@ interface Events {
 
 type ArrowButtonDirectionType = ValueOf<typeof ARROW_BUTTON_DIRECTION>;
 
-export { ArrowButtonDirectionType, Events, TablistChangeEvent };
+export type { ArrowButtonDirectionType, Events, TablistChangeEvent };
