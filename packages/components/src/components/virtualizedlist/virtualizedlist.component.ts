@@ -709,7 +709,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     let initialOffset = 0;
     if (this.revertList) {
       if (this.scrollRef.clientHeight >= this.totalListHeight) {
-        console.log(this.scrollRef.clientHeight, this.totalListHeight, firstItemOffset);
         initialOffset = this.scrollRef.clientHeight - this.totalListHeight;
       }
     }
