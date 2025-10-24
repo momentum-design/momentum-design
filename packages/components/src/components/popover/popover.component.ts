@@ -409,6 +409,15 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-open' })
   keepConnectedTooltipOpen: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_OPEN;
 
+  /**
+   * Whether to update the position of the Popover on every animation frame if required.
+   * While optimized for performance, it should be used sparingly and with caution.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
+  animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
+
   public arrowElement: HTMLElement | null = null;
 
   /** @internal */
@@ -1009,26 +1018,33 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     middleware.push(offset(popoverOffset));
 
-    this.floatingUICleanupFunction = autoUpdate(triggerElement, this, async () => {
-      const { triggerElement } = this;
+    this.floatingUICleanupFunction = autoUpdate(
+      triggerElement,
+      this,
+      async () => {
+        const { triggerElement } = this;
 
-      if (!triggerElement) return;
+        if (!triggerElement) return;
 
-      const adjustedPlacement = this.adjustPlacementForRtl(this.placement);
-      const { x, y, middlewareData, placement } = await computePosition(triggerElement, this, {
-        placement: adjustedPlacement,
-        middleware,
-        strategy: this.strategy,
-      });
+        const adjustedPlacement = this.adjustPlacementForRtl(this.placement);
+        const { x, y, middlewareData, placement } = await computePosition(triggerElement, this, {
+          placement: adjustedPlacement,
+          middleware,
+          strategy: this.strategy,
+        });
 
-      this.utils.updatePopoverStyle(x, y);
-      if (middlewareData.arrow && this.arrowElement) {
-        this.utils.updateArrowStyle(middlewareData.arrow, placement);
-      }
-      if (this.trigger.includes('mouseenter')) {
-        this.utils.setupHoverBridge(placement);
-      }
-    });
+        this.utils.updatePopoverStyle(x, y);
+        if (middlewareData.arrow && this.arrowElement) {
+          this.utils.updateArrowStyle(middlewareData.arrow, placement);
+        }
+        if (this.trigger.includes('mouseenter')) {
+          this.utils.setupHoverBridge(placement);
+        }
+      },
+      {
+        animationFrame: this.animationFrame,
+      },
+    );
   };
 
   protected isEventFromTrigger(event: Event): boolean {
