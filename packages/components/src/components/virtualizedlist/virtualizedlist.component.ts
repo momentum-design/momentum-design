@@ -9,6 +9,7 @@ import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementSto
 import { Interval } from '../../utils/range';
 import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray';
 import { KEYS } from '../../utils/keys';
+import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -291,6 +292,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   constructor() {
     super();
     this.addEventListener('wheel', this.handleWheelEvent.bind(this));
+    this.addEventListener(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, this.handleElementFirstUpdateCompleted.bind(this));
   }
 
   /**
@@ -552,10 +554,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       // eslint-disable-next-line no-param-reassign
       item.tabIndex = tabable ? 0 : -1;
 
-      if (this.observeSizeChanges) {
-        this.virtualizer?.measureElement?.(item);
-      }
-
       this.setAriaSetSize(item);
     } else if (changeType === 'removed') {
       if (item.tabIndex === 0) {
@@ -567,6 +565,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       }
     }
   }
+
+  protected handleElementFirstUpdateCompleted = (event: Event) => {
+    if (this.observeSizeChanges && this.navItems.find(el => el === event.target) !== undefined) {
+      this.virtualizer?.measureElement?.(event.target as Element);
+    }
+  };
 
   /**
    * Handle the virtualizer's onChange event to emit the virtualitemschange event
