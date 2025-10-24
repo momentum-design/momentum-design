@@ -595,7 +595,7 @@ class Select
    * @param searchKey - The filter string to search for options.
    */
   private handleSelectedOptionBasedOnFilter(searchKey: string): void {
-    const startIndex = this.navItems.indexOf(this.selectedOption!) + 1;
+    const startIndex = this.navItems.findIndex(option => option.tabIndex === 0) + 1;
     const orderedOptions = [...this.navItems.slice(startIndex), ...this.navItems.slice(0, startIndex)];
     // First, we search for an exact match with then entire search key
     const filteredResults = this.filterOptionsBySearchKey(orderedOptions, searchKey);
@@ -610,8 +610,9 @@ class Select
       const nextPossibleOption = optionsWhichStartWithSameLetter.filter(option => option === nextOptionFromList);
       newOption = nextPossibleOption.length ? nextPossibleOption[0] : optionsWhichStartWithSameLetter[0];
     }
-    this.setSelectedOption(newOption);
-    this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.indexOf(newOption!));
+    if (this.navItems.indexOf(newOption!) !== -1) {
+      this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.indexOf(newOption!));
+    }
   }
 
   /**
