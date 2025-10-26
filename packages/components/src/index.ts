@@ -124,6 +124,7 @@ import {
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
+import type { TablistChangeEvent } from './components/tablist/tablist.types';
 
 // Components Exports
 export {
@@ -240,6 +241,7 @@ export type {
   InputBlurEvent,
   InputClearEvent,
   VirtualizedListScrollEvent,
+  TablistChangeEvent,
   TextareaInputEvent,
   TextareaChangeEvent,
   TextareaFocusEvent,

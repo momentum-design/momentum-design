@@ -3,6 +3,7 @@ import { PropertyValues } from 'lit';
 
 import type { Component } from '../../models';
 import { KEYS } from '../keys';
+import type { BaseArray } from '../virtualIndexArray';
 
 import type { Constructor } from './index.types';
 
@@ -13,11 +14,15 @@ export declare abstract class ListNavigationMixinInterface {
 
   protected initialFocus: number;
 
-  protected abstract get navItems(): HTMLElement[];
+  protected abstract get navItems(): BaseArray<HTMLElement>;
 
-  protected resetTabIndexes(index: number): void;
+  protected resetTabIndexes(index: number, focusElement?: boolean): void;
 
   protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
+
+  protected setInitialFocus(): void;
+
+  protected handleNavigationKeyDown(event: KeyboardEvent): void;
 }
 
 /**
@@ -73,12 +78,12 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * Get list items from the passed property
      * @internal
      */
-    protected abstract get navItems(): HTMLElement[];
+    protected abstract get navItems(): BaseArray<HTMLElement>;
 
     constructor(...rest: any[]) {
       super(...rest);
 
-      this.addEventListener('keydown', this.handleNavigationKeyDown);
+      this.addEventListener('keydown', this.handleNavigationKeyDown.bind(this));
       this.addEventListener('click', this.handleNavigationClick);
     }
 
@@ -90,6 +95,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected override async firstUpdated(changedProperties: PropertyValues) {
       super.firstUpdated(changedProperties);
 
+      this.setInitialFocus();
+    }
+
+    protected setInitialFocus() {
       const indexToFocus = Math.max(Math.min(this.initialFocus, this.navItems.length - 1), 0);
       this.resetTabIndexAndSetFocus(indexToFocus, undefined, false);
     }
@@ -105,7 +114,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param event - The keyboard event triggered by user interaction.
      * @internal
      */
-    protected handleNavigationKeyDown = (event: KeyboardEvent) => {
+    protected handleNavigationKeyDown(event: KeyboardEvent) {
       const keysToHandle = new Set([KEYS.ARROW_DOWN, KEYS.ARROW_UP, KEYS.HOME, KEYS.END]);
       const isRtl = window.getComputedStyle(this).direction === 'rtl';
       const targetKey = this.resolveDirectionKey(event.key, isRtl);
@@ -154,7 +163,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
         event.stopPropagation();
         event.preventDefault();
       }
-    };
+    }
 
     /**
      * Handles click events on the navigation items.
@@ -170,7 +179,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       if (newIndex !== -1) {
         // When user clicked on a focusable element inside the item, we update the navigation index, but
         // keep the focus on the clicked element.
-        const focusNewItem = !(this.navItems[newIndex] !== target && document.activeElement === event.target);
+        const focusNewItem = !(this.navItems.at(newIndex) !== target && document.activeElement === event.target);
         this.resetTabIndexAndSetFocus(newIndex, undefined, focusNewItem);
       }
     };
@@ -196,14 +205,20 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * Reset all tabindex to -1 and set the tabindex of the current item to 0
      *
      * @param index - The index of the currently focused item.
+     * @param focusElement - Call focus() on the current item or not.
      */
-    protected resetTabIndexes(index: number) {
+    protected resetTabIndexes(index: number, focusElement = true) {
       if (this.navItems.length > 0) {
         this.navItems.forEach(item => item.setAttribute('tabindex', '-1'));
-        const currentIndex = this.navItems[index] ? index : 0;
+        const currentIndex = this.navItems.at(index) ? index : 0;
+        const currentItem = this.navItems.at(currentIndex) ?? this.navItems.find(Boolean)!;
 
-        this.navItems[currentIndex].setAttribute('tabindex', '0');
-        this.navItems[currentIndex]?.focus();
+        if (currentItem) {
+          currentItem.setAttribute('tabindex', '0');
+          if (focusElement) {
+            currentItem.focus();
+          }
+        }
       }
     }
 
@@ -221,8 +236,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       if (navItems.length === 0) return;
 
       // Ensure newIndex is valid
-      const newIdx = navItems[newIndex] ? newIndex : 0;
-      const newItem = navItems[newIdx];
+      const newItem = navItems.at(newIndex) ?? navItems.find(Boolean)!;
 
       if (newIndex === oldIndex && newItem && newItem.getAttribute('tabindex') === '0') {
         return;
@@ -230,9 +244,9 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
 
       if (oldIndex === undefined) {
         navItems.forEach(item => item.setAttribute('tabindex', '-1'));
-      } else if (navItems[oldIndex]) {
+      } else if (navItems.at(oldIndex)) {
         // Reset tabindex of the old item
-        navItems[oldIndex].setAttribute('tabindex', '-1');
+        navItems.at(oldIndex)!.setAttribute('tabindex', '-1');
       }
 
       newItem.setAttribute('tabindex', '0');
