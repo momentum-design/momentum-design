@@ -40,7 +40,13 @@ export const LifeCycleMixin = <T extends Constructor<LitElement>>(superClass: T)
   class InnerMixinClass extends superClass {
     override connectedCallback(): void {
       super.connectedCallback();
+
       this.dispatchEvent(new Event(LIFE_CYCLE_EVENTS.CREATED, { bubbles: true, composed: true }));
+
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.updateComplete.then(() => {
+        this.dispatchEvent(new Event(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, { bubbles: true, composed: true }));
+      });
     }
 
     override disconnectedCallback(): void {
