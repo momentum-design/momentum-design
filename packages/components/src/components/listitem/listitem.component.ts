@@ -148,8 +148,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
    * @param event - The mouse event triggered when the list item is clicked.
    */
   private handleClick(event: MouseEvent): void {
-    if (this.disabled || this.softDisabled) {
-      // when disabled or soft-disabled, prevent the click event from propagating
+    if (this.disabled) {
+      // when disabled, prevent the click event from propagating
       // and from firing on the host (immediate)
       event.stopImmediatePropagation();
       event.preventDefault();

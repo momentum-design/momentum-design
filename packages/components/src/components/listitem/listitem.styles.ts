@@ -64,11 +64,6 @@ const styles = css`
     color: var(--mdc-listitem-disabled-color);
     cursor: default;
   }
-
-  :host([disabled]),
-  :host([soft-disabled]) {
-    pointer-events: none;
-  }
   :host(:hover) {
     background-color: var(--mdc-listitem-background-color-hover);
   }
