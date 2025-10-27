@@ -178,6 +178,9 @@ class Select
   private debounceSearch?: Debounced<() => void>;
 
   /** @internal */
+  private debounceTime = 500;
+
+  /** @internal */
   private searchString = '';
 
   constructor() {
@@ -566,7 +569,7 @@ class Select
     this.debounceSearch = debounce(() => {
       // for every 500ms, we will reset the search string.
       this.searchString = '';
-    }, 500);
+    }, this.debounceTime);
   }
 
   private debounceSearchKey(letter: string): string {
