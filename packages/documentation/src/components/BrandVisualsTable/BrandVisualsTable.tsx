@@ -92,6 +92,10 @@ export const Pagination = () => {
 
   return (
     <div>
+      <p className="noteText">
+        Note: Backgrounds are chosen based on the color of the brand visual for better visualisation
+        and are not part of the Brand Visual asset.
+      </p>
       <div class="headerTextWrapper">
         <p>Total Brand Visuals in the library - {Object.keys(brandvisualsManifest).length}</p>
         <p>Current Page: {currentPage}</p>

@@ -146,3 +146,8 @@
   margin-top: -40px;
   margin-bottom: 60px;
 }
+
+.noteText {
+  margin-bottom: 1rem;
+  font-style: italic;
+}
