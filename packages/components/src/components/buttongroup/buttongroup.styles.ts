@@ -66,7 +66,7 @@ const styles = css`
     position: absolute;
     width: 100%;
     border-block-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
-    inset-block-end: calc(var(--mdc-buttongroup-border-width) / 2);
+    inset-block-end: 0%;
   }
 
   :host([orientation='vertical']) ::slotted(mdc-button:first-of-type) {
