@@ -4,6 +4,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
 import { TOAST_VARIANT } from './toast.constants';
 
@@ -114,7 +115,7 @@ test.describe('Toast Feature Scenarios', () => {
       });
 
       // Avatar prefix
-      const src = 'https://picsum.photos/id/63/256';
+      const src = imageFixtures.avatar;
       toastSheet.setAttributes({ ...COMMON_ATTRS, 'header-text': '' });
       toastSheet.setChildren(`
         <mdc-avatar slot="content-prefix" src="${src}" size="24"></mdc-avatar>
