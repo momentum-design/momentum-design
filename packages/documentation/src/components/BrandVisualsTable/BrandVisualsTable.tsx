@@ -5,31 +5,38 @@ import './BrandVisualsTable.css';
 
 type Props = {
   brandvisuals: object;
-  type: string;
 };
 
-export const BrandvisualsTable = ({ brandvisuals, type }: Props) => {
+const getBackgroundClass = (key: string) => {
+  if (key.includes('-dark-') || key.endsWith('-dark')) {
+    return 'brandvisualsGrid-dark';
+  }
+  if (key.includes('-light-') || key.endsWith('-light')) {
+    return 'brandvisualsGrid-light';
+  }
+  return '';
+};
+
+export const BrandvisualsTable = ({ brandvisuals }: Props) => {
   if (Object.entries(brandvisuals).length === 0) {
     return <p>No Brand Visuals found...</p>;
   }
 
-  const classNameSuffix = type === '' ? 'light' : type;
-
   const render = useMemo(
     () => (
-      <div className={`brandvisualsGrid grid192 brandvisualsGrid-${classNameSuffix}`}>
+      <div className="brandvisualsGrid grid192">
         {Object.entries(brandvisuals).map(([key, path]) => {
-          let finalPath = `${path.replace('./png', '/brand-visuals')}`;
-          finalPath = `${finalPath.replace('./svg', '/brand-visuals')}`;
+          const finalPath = path.replace(/^\.\/(?:png|svg)/, '/brand-visuals');
+          const backgroundClass = getBackgroundClass(key);
 
           return (
-            <div className="brandvisualsWrapper">
+            <div className={`brandvisualsWrapper ${backgroundClass}`} key={key}>
               <div className="nameAnchor">
                 <div className="nameWrapper">
-                  <code >{key}</code>
+                  <code>{key}</code>
                 </div>
               </div>
-              <img src={finalPath} className="brandvisualsImg" />
+              <img src={finalPath} className="brandvisualsImg" alt={key} />
             </div>
           );
         })}
@@ -44,7 +51,6 @@ export const BrandvisualsTable = ({ brandvisuals, type }: Props) => {
 export const Pagination = () => {
   const PAGE_SIZE = 50;
   const [currentPage, setCurrentPage] = useState(1);
-  const [type, setType] = useState('dark');
   const [query, setQuery] = useState('');
 
   const onQueryChange = useCallback(
@@ -63,27 +69,10 @@ export const Pagination = () => {
     setCurrentPage((page) => (currentPage === 1 ? 1 : page - 1));
   }, [setCurrentPage, currentPage]);
 
-  const onTypeChange = useCallback(
-    (event: any) => {
-      setType(event?.target?.value);
-      setCurrentPage(1);
-    },
-    [setType],
-  );
-
-  const filterByType = useCallback((key: string) => {
-    // Empty string means 'Other' type
-    if (type === '') {
-      return !key.includes('dark') && !key.includes('light');
-    }
-    return key.includes(type);
-  }, [type]);
-
-  const filteredItems = useMemo(
-    () => Object.entries(brandvisualsManifest).filter(([key]) => (
-      query ? key.includes(query) && filterByType(key) : filterByType(key))),
-    [brandvisualsManifest, filterByType, query],
-  );
+  const filteredItems = useMemo(() => {
+    const entries = Object.entries(brandvisualsManifest);
+    return entries.filter(([key]) => (query ? key.includes(query) : true));
+  }, [brandvisualsManifest, query]);
 
   const paginatedItems = useMemo(
     () => filteredItems.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
@@ -109,14 +98,9 @@ export const Pagination = () => {
       </div>
       <div className="brandvisualsFilters">
         <input placeholder="Search by Brand Visual name" className="queryInput" type="text" onInput={onQueryChange} />
-        <select placeholder="Type" className="typeSelect" value={type} onChange={onTypeChange}>
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
-          <option value="">Other</option>
-        </select>
       </div>
       {!!query && <div className="query">Searching for: {query}</div>}
-      <BrandvisualsTable brandvisuals={paginatedItems} type={type} />
+      <BrandvisualsTable brandvisuals={paginatedItems} />
       <div className="paginationButtons">
         <button disabled={currentPage === 1} onClick={onClickPrev}>
           Prev
