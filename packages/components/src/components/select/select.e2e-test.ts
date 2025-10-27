@@ -782,7 +782,7 @@ test('mdc-select', async ({ componentsPage }) => {
         componentsPage,
         children: `
         <mdc-selectlistbox>
-          ${mockFruits.map(fruit => `<mdc-option label="${fruit}"></mdc-option>`).join('\n')}
+          ${mockFruits.map(fruit => `<mdc-option value="${fruit.toLowerCase()}" label="${fruit}"></mdc-option>`).join('\n')}
         </mdc-selectlistbox>
       `,
       };
@@ -791,7 +791,7 @@ test('mdc-select', async ({ componentsPage }) => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
       });
 
       await test.step('component should type multiple characters and filters selection', async () => {
@@ -799,8 +799,8 @@ test('mdc-select', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');
         await componentsPage.page.keyboard.press('l');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toHaveAttribute('selected');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toBeFocused();
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toBeFocused();
       });
 
       await test.step('component search resets after 500ms of inactivity', async () => {
@@ -810,29 +810,41 @@ test('mdc-select', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('l');
         await componentsPage.page.waitForTimeout(500);
         await componentsPage.page.keyboard.press('a');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toHaveAttribute('selected');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).not.toHaveAttribute('selected');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).not.toBeFocused();
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).not.toBeFocused();
+        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toBeFocused();
       });
 
       await test.step('component options should circle letter selection', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
         await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toBeFocused();
         await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blueberry' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Blueberry' })).toBeFocused();
         await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toHaveAttribute('selected');
+        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
       });
 
-      await test.step('component should select first option if the letter doesn`t match any option', async () => {
+      await test.step('component should focus first option if the letter doesn`t match any option', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('z');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toHaveAttribute('selected');
+        // When no option matches with user entered text and there is no selected option then, first option should be focused
+        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toBeFocused();
+      });
+
+      await test.step('component should not change focus of already selected option if the letter doesn`t match any option', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('c');
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expect(select.locator('mdc-option').filter({ hasText: 'Cherry' })).toHaveAttribute('selected');
+        await componentsPage.page.keyboard.press('z');
+        // When no option matches with user entered text then the current selected option should be focused.
+        await expect(select.locator('mdc-option').filter({ hasText: 'Cherry' })).toBeFocused();
       });
     });
 
