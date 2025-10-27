@@ -4,7 +4,7 @@ import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
-import { AnimationNames } from '../animation/animation.types';
+import type { AnimationNames } from '../animation/animation.types';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import '../button';
