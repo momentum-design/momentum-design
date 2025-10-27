@@ -46,15 +46,26 @@ yarn add @momentum-design/components
   or short (`components/complete.css` includes all the above files):
 
   ```javascript
+  // JavaScript
   import '@momentum-design/fonts/dist/css/fonts.css';
   import '@momentum-design/tokens/dist/css/components/complete.css';
   ```
 
-- Set the `mds-typography` class on the root element of your application.
+- Set the `mds-typography` & `mds-elevation` class on the root element of your
+  application, i.e.:
+
+  ```html
+  <!-- HTML -->
+  <body class="mds-typography mds-elevation">
+    ...
+  </body>
+  ```
+
 - Make sure to set `-webkit-font-smoothing` and `-moz-osx-font-smoothing` on
   root / body to match Figma:
 
   ```css
+  /* CSS */
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -81,14 +92,16 @@ component, refer to the
 
 Import the browser bundle on the top of the app:
 
-```javascript
-// index.html
-
+```html
+<!-- HTML -->
 <script src="@momentum-design/components/browser/index.js"></script>
 
 ...
-
-<mdc-avatar></mdc-avatar>
+<body class="mds-typography mds-elevation">
+  <!-- Wrap your app with ThemeProvider & other asset providers as mentioned above -->
+  <!-- Your app code here -->
+  <mdc-avatar></mdc-avatar>
+</body>
 ```
 
 ### Component Import
@@ -96,19 +109,30 @@ Import the browser bundle on the top of the app:
 #### Web Components
 
 ```javascript
+// before TS 4.7:
+import '@momentum-design/components/dist/components/avatar';
+
+// TS 4.7 and above:
 import '@momentum-design/components/components/avatar';
 
 ...
-
-<mdc-avatar></mdc-avatar>
+export class MyComponent {
+  render() {
+    return (
+      <mdc-avatar></mdc-avatar>
+    );
+  }
+}
 ```
 
 #### React
 
 ```javascript
+// before TS 4.7:
+import { Avatar } from '@momentum-design/components/dist/react';
+
+// TS 4.7 and above:
 import { Avatar } from '@momentum-design/components/react';
 
-...
-
-<Avatar />
+export const MyComponent = () => <Avatar />;
 ```
