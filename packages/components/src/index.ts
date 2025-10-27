@@ -58,6 +58,7 @@ import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
+import Searchpopover from './components/searchpopover';
 import Select from './components/select';
 import SelectListbox from './components/selectlistbox';
 import SideNavigation from './components/sidenavigation';
@@ -123,6 +124,7 @@ import {
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
+import type { TablistChangeEvent } from './components/tablist/tablist.types';
 
 // Components Exports
 export {
@@ -184,6 +186,7 @@ export {
   RadioGroup,
   ScreenreaderAnnouncer,
   Searchfield,
+  Searchpopover,
   Select,
   SelectListbox,
   SideNavigation,
@@ -238,6 +241,7 @@ export type {
   InputBlurEvent,
   InputClearEvent,
   VirtualizedListScrollEvent,
+  TablistChangeEvent,
   TextareaInputEvent,
   TextareaChangeEvent,
   TextareaFocusEvent,

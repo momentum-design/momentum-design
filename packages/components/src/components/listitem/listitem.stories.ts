@@ -4,7 +4,7 @@ import { html, TemplateResult } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../avatar';
 import '../badge';
@@ -94,6 +94,7 @@ const meta: Meta = {
       'trailing-text-subline',
       'trailing-controls',
     ]),
+    ...hideControls(['data-index']),
     ...classArgType,
     ...styleArgType,
   },
