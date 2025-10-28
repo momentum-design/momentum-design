@@ -24,7 +24,7 @@ import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
 
-import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
+import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
 import type { Placement } from './select.types';
 
@@ -155,7 +155,8 @@ class Select
    * Determines whether the dropdown should flip its position when it hits the boundary.
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'should-flip' }) shouldFlip = false;
+  @property({ type: Boolean, reflect: true, attribute: 'disable-flipping' }) disableFlipping: boolean =
+    DEFAULTS.DISABLE_FLIPPING;
 
   /**
    * ID of the element where the backdrop will be appended to.
@@ -782,7 +783,7 @@ class Select
           focus-trap
           size
           @keydown="${this.handleKeydownPopover}"
-          ?flip="${this.shouldFlip}"
+          ?flip="${this.disableFlipping}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
