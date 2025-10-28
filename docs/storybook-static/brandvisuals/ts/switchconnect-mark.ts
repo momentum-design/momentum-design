@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="brandvisual" data-name="switchconnect-mark" xmlns="http://www.w3.org/2000/svg" width="26" height="27" fill="none" viewBox="0 0 26 27"><path fill="#1E3060" d="M24.999 13.77v11.235c-6.168 0-11.235-5.067-11.235-11.235S18.84 2.535 24.999 2.535z"/><path fill="#2CB563" d="M7.387 20.158a6.388 6.388 0 1 0 0-12.777 6.388 6.388 0 0 0 0 12.777"/></svg>`;
+  html`<svg aria-hidden="true" part="brandvisual" data-name="switchconnect-mark" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 26 26"><path fill="#1E3060" d="M24.999 13v11.235c-6.168 0-11.235-5.067-11.235-11.235S18.84 1.765 24.999 1.765z"/><path fill="#2CB563" d="M7.387 19.388a6.389 6.389 0 1 0 0-12.777 6.389 6.389 0 0 0 0 12.777"/></svg>`;
 
 export default icon;

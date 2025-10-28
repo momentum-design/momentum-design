@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="brandvisual" data-name="voicepilot-mark" xmlns="http://www.w3.org/2000/svg" width="32" height="33" fill="none" viewBox="0 0 32 33"><g clip-path="url(#a)"><path fill="#962221" d="M32 3 7.884 19.787 5.002 24.2z"/><path fill="url(#b)" d="M32 3 15.604 29.266 0 10.403"/><path fill="#EF4023" d="M29.05 4.808 7.884 19.788 5.002 24.2l-.104-7.874z"/></g><defs><linearGradient id="b" x1=".463" x2="32.807" y1="17.636" y2="15.556" gradientUnits="userSpaceOnUse"><stop stop-color="#EF4823"/><stop offset=".99" stop-color="#FED700"/></linearGradient><clipPath id="a"><path fill="#fff" d="M0 .393h32v32H0z"/></clipPath></defs></svg>`;
+  html`<svg aria-hidden="true" part="brandvisual" data-name="voicepilot-mark" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><g clip-path="url(#a)"><path fill="#962221" d="M32 2.607 7.884 19.394l-2.882 4.412z"/><path fill="url(#b)" d="M32 2.607 15.604 28.872 0 10.01"/><path fill="#EF4023" d="M29.05 4.414 7.884 19.394l-2.883 4.412-.104-7.873z"/></g><defs><linearGradient id="b" x1=".463" x2="32.807" y1="17.242" y2="15.162" gradientUnits="userSpaceOnUse"><stop stop-color="#EF4823"/><stop offset=".99" stop-color="#FED700"/></linearGradient><clipPath id="a"><path fill="#fff" d="M0 0h32v32H0z"/></clipPath></defs></svg>`;
 
 export default icon;

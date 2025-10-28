@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="brandvisual" data-name="swiftmatch-bw" xmlns="http://www.w3.org/2000/svg" width="33" height="33" fill="none" viewBox="0 0 33 33"><g fill="#0F0F0F" clip-path="url(#a)"><path d="M31.57 16.947h-4.449a5.54 5.54 0 0 1-5.511 4.982H10.53a5.54 5.54 0 0 1-5.512-4.982H.57c.292 8.304 7.12 14.946 15.5 14.946s15.209-6.642 15.5-14.946M31.57 15.84h-4.449a5.54 5.54 0 0 0-5.511-4.982H10.53A5.54 5.54 0 0 0 5.02 15.84H.57C.862 7.536 7.69.893 16.07.893S31.28 7.536 31.57 15.84"/><path d="M12.747 16.393a2.215 2.215 0 1 1-4.43-.001 2.215 2.215 0 0 1 4.43.001M21.61 18.608a2.215 2.215 0 1 0 0-4.43 2.215 2.215 0 0 0 0 4.43"/></g><defs><clipPath id="a"><path fill="#fff" d="M.07.393h32v32h-32z"/></clipPath></defs></svg>`;
+  html`<svg aria-hidden="true" part="brandvisual" data-name="swiftmatch-bw" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><g fill="#0F0F0F" clip-path="url(#a)"><path d="M31.5 16.554h-4.449a5.54 5.54 0 0 1-5.512 4.982H10.461a5.54 5.54 0 0 1-5.512-4.982H.5C.792 24.858 7.62 31.5 16 31.5s15.208-6.642 15.5-14.946M31.5 15.446h-4.449a5.54 5.54 0 0 0-5.512-4.982H10.461a5.54 5.54 0 0 0-5.512 4.982H.5C.792 7.142 7.62.5 16 .5s15.208 6.642 15.5 14.946"/><path d="M12.677 16a2.215 2.215 0 1 1-4.43-.001 2.215 2.215 0 0 1 4.43.001M21.54 18.214a2.215 2.215 0 1 0 0-4.43 2.215 2.215 0 0 0 0 4.43"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h32v32H0z"/></clipPath></defs></svg>`;
 
 export default icon;
