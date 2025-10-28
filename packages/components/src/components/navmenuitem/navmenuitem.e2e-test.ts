@@ -61,7 +61,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
      * VISUAL REGRESSION
      */
     await test.step('visual-regression', async () => {
-      const navmenuitemSheet = new StickerSheet(componentsPage, 'mdc-navmenuitem', 'margin: 0.25rem 0;');
+      const navmenuitemSheet = new StickerSheet(componentsPage, 'mdc-navmenuitem', 'margin: 1rem;');
       const options = { createNewRow: true };
 
       // Basic navmenuitem with label and icon
@@ -152,6 +152,17 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         active: true,
         'badge-type': 'counter',
         counter: 3,
+      });
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
+
+      // NavMenuItem with dot badge (collapsed)
+      navmenuitemSheet.setAttributes({
+        label: primaryLabel,
+        'icon-name': iconName,
+        'nav-id': navId,
+        active: true,
+        'badge-type': 'dot',
+        'aria-label': primaryLabel,
       });
       await navmenuitemSheet.createMarkupWithCombination({}, options);
 
