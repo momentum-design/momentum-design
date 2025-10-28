@@ -73,15 +73,10 @@ const styles = css`
   :host::part(selected-icon) {
     flex-shrink: 0;
   }
-  :host(:dir(ltr))::part(icon-container) {
+  :host::part(icon-container) {
     padding: 0.5rem;
     position: absolute;
-    right: 0;
-  }
-  :host(:dir(rtl))::part(icon-container) {
-    padding: 0.5rem;
-    position: absolute;
-    left: 0;
+    inset-inline-end: 0%;
   }
 
   /* Popover height, width & padding overrides */
