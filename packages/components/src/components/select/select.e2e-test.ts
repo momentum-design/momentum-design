@@ -781,17 +781,18 @@ test('mdc-select', async ({ componentsPage }) => {
       const setupArguments = {
         componentsPage,
         children: `
-        <mdc-selectlistbox>
-          ${mockFruits.map(fruit => `<mdc-option value="${fruit.toLowerCase()}" label="${fruit}"></mdc-option>`).join('\n')}
-        </mdc-selectlistbox>
-      `,
+          <mdc-selectlistbox>
+            ${mockFruits.map(fruit => `<mdc-option value="${fruit.toLowerCase()}" label="${fruit}"></mdc-option>`).join('\n')}
+          </mdc-selectlistbox>
+        `,
       };
 
       await test.step('component should focus an option by typing a letter', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('b', [
+          select.locator('mdc-option').filter({ hasText: 'Banana' }),
+        ]);
       });
 
       await test.step('component should type multiple characters and filters options', async () => {
@@ -818,33 +819,35 @@ test('mdc-select', async ({ componentsPage }) => {
       await test.step('component options should cycle letter based option focus', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
-        await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blackberry' })).toBeFocused();
-        await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Blueberry' })).toBeFocused();
-        await componentsPage.page.keyboard.press('b');
-        await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('b', [
+          select.locator('mdc-option').filter({ hasText: 'Banana' }),
+          select.locator('mdc-option').filter({ hasText: 'Blackberry' }),
+          select.locator('mdc-option').filter({ hasText: 'Blueberry' }),
+          select.locator('mdc-option').filter({ hasText: 'Banana' }),
+        ]);
       });
 
       await test.step('component should focus first option if the letter doesn`t match any option', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press('z');
         // When no option matches with user entered text and there is no selected option then, first option should be focused
-        await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('z', [
+          select.locator('mdc-option').filter({ hasText: 'Apple' }),
+        ]);
       });
 
       await test.step('component should not change focus of already selected option if the letter doesn`t match any option', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press('c');
+        await componentsPage.actionability.pressAndCheckFocus('c', [
+          select.locator('mdc-option').filter({ hasText: 'Cherry' }),
+        ]);
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-option').filter({ hasText: 'Cherry' })).toHaveAttribute('selected');
-        await componentsPage.page.keyboard.press('z');
         // When no option matches with user entered text then the current selected option should be focused.
-        await expect(select.locator('mdc-option').filter({ hasText: 'Cherry' })).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('z', [
+          select.locator('mdc-option').filter({ hasText: 'Cherry' }),
+        ]);
       });
     });
 
