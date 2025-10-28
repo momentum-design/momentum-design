@@ -787,14 +787,14 @@ test('mdc-select', async ({ componentsPage }) => {
       `,
       };
 
-      await test.step('component should select an option by typing a letter', async () => {
+      await test.step('component should focus an option by typing a letter', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');
         await expect(select.locator('mdc-option').filter({ hasText: 'Banana' })).toBeFocused();
       });
 
-      await test.step('component should type multiple characters and filters selection', async () => {
+      await test.step('component should type multiple characters and filters options', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');
@@ -815,7 +815,7 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-option').filter({ hasText: 'Apple' })).toBeFocused();
       });
 
-      await test.step('component options should circle letter selection', async () => {
+      await test.step('component options should cycle letter based option focus', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('b');

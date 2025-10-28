@@ -226,39 +226,45 @@ Feature: Select component
       And the select component is not disabled or readonly
       And the popover (dropdown) is initially closed
 
-    Scenario: Open select dropdown and select option by typing a letter
+    Scenario: Open select dropdown and focus option by typing a letter
       Given the select has focus
       When the user presses the key "b"
       Then the popover should open
-      And the first option starting with "b" (Banana) should be selected
-      And the selected option should be scrolled into view
+      And the first option starting with "b" (Banana) should be focused
+      And the focused option should be scrolled into view
 
-    Scenario: Typing multiple characters filters selection
+    Scenario: Typing multiple characters filters options
       Given the select has focus
       When the user types "b" then "l" within 500 milliseconds
       Then the popover should open
-      And the first option starting with "BL" (Blueberry) should be selected
-      And the selected option should be scrolled into view
+      And the first option starting with "BL" (Blueberry) should be focused
+      And the focused option should be scrolled into view
 
     Scenario: Search resets after 500ms of inactivity
       Given the select has focus
       When the user types "b" and waits for more than 500 milliseconds
       And then presses "a"
       Then the search should start fresh with "a"
-      And the first option starting with "a" (Apple) should be selected
-      And the selected option should be scrolled into view
+      And the first option starting with "a" (Apple) should be focused
+      And the focused option should be scrolled into view
 
     Scenario: Typing the same letter repeatedly cycles through matches
       Given the select has focus
       When the user presses "b" thrice quickly within 500 milliseconds
       Then the popover should open
-      And the first "b" press should select Banana
-      And the second "b" press should select the next option starting with "b" (Blackberry)
-      And the third "b" press should select the next option starting with "b" (Blueberry)
-      And the newly selected option should be scrolled into view
+      And the first "b" press should focus Banana
+      And the second "b" press should focus the next option starting with "b" (Blackberry)
+      And the third "b" press should focus the next option starting with "b" (Blueberry)
+      And the newly focused option should be scrolled into view
 
-    Scenario: Typing a letter which doesn't match any option should be handled
+    Scenario: Typing a letter which doesn't match any option should focus first option
       Given the select has focus
       When the user presses the key "x"
       Then the popover should open
-      And the first option of the dropdown should be selected as there is no option which starts with letter "x"
+      And the first option of the dropdown should be focused as there is no option which starts with letter "x"
+
+    Scenario: Typing a letter which doesn't match any option should focus already selected option (if exists)
+      Given the select has focus
+      When the user presses the key "x"
+      Then the popover should open
+      And the already selected option should be focused as there is no option which starts with letter "x"
