@@ -50,6 +50,9 @@ test('mdc-alertchip', async ({ componentsPage }) => {
     alertchipStickerSheet.setAttributes({ label: 'Alert' });
     await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
 
+    alertchipStickerSheet.setAttributes({ label: 'Long label', style: 'width: 6.5rem' });
+    await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
+
     alertchipStickerSheet.setAttributes({ 'aria-label': 'Icon Only' });
     await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
 
