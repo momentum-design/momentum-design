@@ -9,6 +9,7 @@ import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
   type SetupOptions = {
+    listHeader?: string;
     loop?: true;
     revertList?: true;
     initialItemCount?: number;
@@ -18,6 +19,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
   };
 
   const setup = async ({
+    listHeader,
     loop,
     revertList,
     initialItemCount,
@@ -35,6 +37,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
             ${initialFocus !== undefined ? `initial-focus="${initialFocus}"` : ''}
             ${observeSizeChanges ? 'observe-size-changes' : ''}
             ${scrollAnchoring ? 'scroll-anchoring' : ''}
+            ${listHeader ? `list-header="${listHeader}"` : ''}
           ></mdc-virtualizedlist-e2e>
           <mdc-button>after</mdc-button>
         </div>
@@ -69,6 +72,28 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).toHaveAttribute('at-bottom-threshold', DEFAULTS.IS_AT_BOTTOM_THRESHOLD.toString());
     await expect(vlist).toHaveAttribute('loop', DEFAULTS.LOOP);
     await expect(vlist).not.toHaveAttribute('scroll-anchoring');
+    await expect(vlist).not.toHaveAttribute('revert-list');
+    await expect(vlist).not.toHaveAttribute('observe-size-changes');
+  });
+
+  await test.step('renders correctly with list header', async () => {
+    const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
+      element: wrapper,
+    });
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      for (let i = 0; i < 25; i += 1) {
+        wrapperEl.addItem(`Message ${i}`);
+      }
+    });
+
+    await scrollList(vlist, 180);
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
+      element: wrapper,
+    });
   });
 
   await test.step('list populates correctly', async () => {
