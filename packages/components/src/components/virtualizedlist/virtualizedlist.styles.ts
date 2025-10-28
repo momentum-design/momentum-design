@@ -2,14 +2,28 @@ import { css } from 'lit';
 
 const styles = [
   css`
+    :host {
+      height: 100%;
+    }
+
     :host::part(scroll) {
       height: 100%;
       width: 100%;
       overflow-y: auto;
+      scroll-padding: 0.25rem 0;
+      contain: strict;
+      overflow-anchor: none;
+      scrollbar-gutter: stable;
     }
-    :host::part(container) {
-      position: relative;
-      width: 100%;
+
+    :host::part(wrapper) {
+      padding: 0 0.25rem;
+    }
+
+    ::slotted([data-virtualized-hidden]) {
+      position: absolute !important;
+      top: var(--mdc-virtualizedlist-hidden-top) !important;
+      left: 0 !important;
     }
   `,
 ];
