@@ -120,6 +120,16 @@ class SideNavigation extends Provider<SideNavigationContext> {
   @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
   parentNavTooltipText?: string;
 
+  /**
+   * Controls the visibility behavior of the grabber button and divider for flexible variant.
+   * When false (default), the flexible sidenav appears like fixed-expanded without grabber.
+   * When true, the grabber and divider appear on hover over the sidenav
+   * and remain visible when focusing inside the SideNav.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'show-grabber-on-hover' })
+  showGrabberOnHover: boolean = false;
+
   constructor() {
     super({
       context: SideNavigationContext.context,
@@ -132,7 +142,29 @@ class SideNavigation extends Provider<SideNavigationContext> {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.NAVIGATION;
+    if (this.showGrabberOnHover) {
+      this.addEventListener('pointerdown', this.handlePointerDown);
+      this.addEventListener('keydown', this.handleKeyDown);
+    }
   }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.showGrabberOnHover) {
+      this.removeEventListener('pointerdown', this.handlePointerDown);
+      this.removeEventListener('keydown', this.handleKeyDown);
+    }
+  }
+
+  private handlePointerDown = (): void => {
+    this.setAttribute('data-mouse-interaction', 'true');
+  };
+
+  private handleKeyDown = (event: KeyboardEvent): void => {
+    if (event.key === 'Tab' || event.key.startsWith('Arrow')) {
+      this.removeAttribute('data-mouse-interaction');
+    }
+  };
 
   public static get Context() {
     return SideNavigationContext.context;
@@ -253,8 +285,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (this.variant === VARIANTS.HIDDEN) {
       return html``;
     }
+    
     return html`
-      <div part="side-navigation-container" id="side-nav-container">
+      <div
+        part="side-navigation-container"
+        id="side-nav-container"
+      >
         <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
           <slot name="scrollable-section">
             <mdc-menubar>
@@ -279,7 +315,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </div>
         </div>
       </div>
-      ${this.variant === VARIANTS.FLEXIBLE
+      ${this.variant === VARIANTS.FLEXIBLE && this.showGrabberOnHover
         ? html`<mdc-divider
             part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}

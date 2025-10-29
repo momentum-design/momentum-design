@@ -70,6 +70,23 @@ const styles = css`
   :host::part(vertical-divider-button) {
     z-index: var(--mdc-sidenavigation-vertical-divider-button-z-index);
   }
+
+  /* Hidden by default */
+  :host([show-grabber-on-hover])::part(vertical-divider),
+  :host([show-grabber-on-hover])::part(vertical-divider-button) {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  /* Show on hover or keyboard focus (not when mouse interaction is active) */
+  :host([show-grabber-on-hover]:hover)::part(vertical-divider),
+  :host([show-grabber-on-hover]:hover)::part(vertical-divider-button),
+  :host([show-grabber-on-hover]:focus-within:not([data-mouse-interaction]))::part(vertical-divider),
+  :host([show-grabber-on-hover]:focus-within:not([data-mouse-interaction]))::part(vertical-divider-button) {
+    opacity: 1;
+    pointer-events: all;
+  }
 `;
 
 export default [styles];
