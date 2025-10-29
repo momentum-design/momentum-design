@@ -120,16 +120,13 @@
 }
 
 .brandvisualsFilters {
-  display: grid;
-  grid-template-columns: 1fr max-content;
-  gap: 1rem;
+  display: flex;
   align-items: center;
   height: 2rem;
   margin-bottom: 3.5rem;
 }
 
 .queryInput {
-  padding: 0.5rem;
   font-size: 1rem;
   border-radius: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.50);
@@ -144,25 +141,13 @@
   text-decoration: none;
 }
 
-.typeSelect {
-  padding: 0.5rem;
-  font-size: 1rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.50);
-  background-color: rgba(255, 255, 255, 0.00);
-  padding: 5.5px 6px 5.5px 12px;
-}
-
-.typeSelect:focus {
-  outline: 0.125rem solid #64b4fa;
-  outline-offset: 0.125rem;
-  text-decoration: none;
-}
-
 .query {
   display: block;
   margin-top: -40px;
   margin-bottom: 60px;
+}
+
+.noteText {
+  margin-bottom: 1rem;
+  font-style: italic;
 }
