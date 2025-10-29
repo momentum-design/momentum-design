@@ -20,7 +20,7 @@ const render = (args: Args) => html`
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
-      ?show-grabber-on-hover="${args['show-grabber-on-hover']}"
+      ?show-grabber="${args['show-grabber']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -133,7 +133,7 @@ const renderNestedSideNavigation = (args: Args) => {
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
-      ?show-grabber-on-hover="${args['show-grabber-on-hover']}"
+      ?show-grabber="${args['show-grabber']}"
       @activechange="${action('onactivechange')}"
     >
       <!-- Upper Nav (scrollable section) -->
@@ -281,8 +281,9 @@ const meta: Meta = {
     'parent-nav-tooltip-text': {
       control: 'text',
     },
-    'show-grabber-on-hover': {
+    'show-grabber': {
       control: 'boolean',
+      if: { arg: 'variant', eq: 'flexible' },
     },
     ...hideControls(['Context']),
     ...classArgType,
@@ -298,7 +299,7 @@ export const Example: StoryObj = {
     'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
     'parent-nav-tooltip-text': 'Contains active navmenuitem',
-    'show-grabber-on-hover': false,
+    'show-grabber': false,
   },
 };
 
@@ -306,12 +307,5 @@ export const NestedSideNavigation: StoryObj = {
   render: renderNestedSideNavigation,
   args: {
     ...Example.args,
-  },
-};
-
-export const ShowGrabberOnHover: StoryObj = {
-  args: {
-    ...Example.args,
-    'show-grabber-on-hover': true,
   },
 };

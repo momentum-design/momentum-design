@@ -121,10 +121,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   parentNavTooltipText?: string;
 
   /**
-   * Controls the visibility behavior of the grabber button and divider for flexible variant.
-   * When false (default), the flexible sidenav appears like fixed-expanded without grabber.
-   * When true, the grabber and divider appear on hover over the sidenav
-   * and remain visible when focusing inside the SideNav.
+   * Shows grabber button and divider on hover and keyboard focus for flexible variant only.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'show-grabber' })
