@@ -289,6 +289,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   private endOfScrollQueue: Array<() => void> = [];
 
+  /**
+   * Resize observer to monitor size changes of the component.
+   * @internal
+   */
   private resizeObserver: ResizeObserver;
 
   constructor() {
