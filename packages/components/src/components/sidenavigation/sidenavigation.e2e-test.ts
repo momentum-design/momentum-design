@@ -17,7 +17,6 @@ const takeSnapshot = async (
 // Setup function to mount sidenavigation and return locators
 const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const expanded = variant !== 'fixed-collapsed';
-  const showGrabber = variant === 'flexible' ? 'show-grabber' : '';
   const html = `
     <div style="height: 90vh; margin: 1rem">
       <mdc-sidenavigation
@@ -26,7 +25,6 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
         footer-text="%Customer Name%"
         grabber-btn-aria-label="Toggle Side navigation"
         parent-nav-tooltip-text="Contains active navmenuitem"
-        ${showGrabber}
       >
         <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Meetings" slot="scrollable-menubar"></mdc-navmenuitem>
         <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp"></mdc-navmenuitem>

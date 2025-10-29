@@ -71,21 +71,14 @@ const styles = css`
     z-index: var(--mdc-sidenavigation-vertical-divider-button-z-index);
   }
 
-  /* Hidden by default */
-  :host([show-grabber])::part(vertical-divider),
-  :host([show-grabber])::part(vertical-divider-button) {
+  :host([variant='flexible-on-hover'])::part(vertical-divider),
+  :host([variant='flexible-on-hover'])::part(vertical-divider-button) {
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease-in-out;
   }
 
-  /* Show on hover or keyboard focus (not when mouse interaction is active) */
-  :host([show-grabber]:hover)::part(vertical-divider),
-  :host([show-grabber]:hover)::part(vertical-divider-button),
-  :host([show-grabber]:focus-within:not([data-mouse-interaction]))::part(vertical-divider),
-  :host([show-grabber]:focus-within:not([data-mouse-interaction]))::part(vertical-divider-button) {
+  :host(.grabber-visible[variant='flexible-on-hover'])::part(vertical-divider),
+  :host(.grabber-visible[variant='flexible-on-hover'])::part(vertical-divider-button) {
     opacity: 1;
-    pointer-events: all;
   }
 `;
 

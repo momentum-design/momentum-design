@@ -19,7 +19,7 @@ import styles from './sidenavigation.styles';
  * typically used in layouts with persistent or collapsible sidebars.
  *
  * ## Features:
- * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
+ * - Supports five layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, `flexible-on-hover`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
  * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
@@ -80,10 +80,11 @@ import styles from './sidenavigation.styles';
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   /**
-   * Four variants of the sideNavigation
+   * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
    * - **fixed-expanded**: Shows icons with labels and has fixed width, 15rem.
    * - **flexible**: Toggles between collapsed/expanded states.
+   * - **flexible-on-hover**: Similar to flexible, but the grabber button is only visible on hover or focus.
    * - **hidden**: Removes the sidenavigation from the DOM.
    * @default flexible
    */
@@ -120,13 +121,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
   @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
   parentNavTooltipText?: string;
 
-  /**
-   * Shows grabber button and divider on hover and keyboard focus for flexible variant only.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'show-grabber' })
-  showGrabber: boolean = false;
-
   constructor() {
     super({
       context: SideNavigationContext.context,
@@ -139,28 +133,49 @@ class SideNavigation extends Provider<SideNavigationContext> {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.NAVIGATION;
-    if (this.showGrabber) {
-      this.addEventListener('pointerdown', this.handlePointerDown);
-      this.addEventListener('keydown', this.handleKeyDown);
-    }
+    this.setupFlexibleOnHoverListeners();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this.showGrabber) {
-      this.removeEventListener('pointerdown', this.handlePointerDown);
-      this.removeEventListener('keydown', this.handleKeyDown);
-    }
+    this.removeFlexibleOnHoverListeners();
   }
 
-  private handlePointerDown = (): void => {
-    this.setAttribute('data-mouse-interaction', 'true');
+  /**
+   * Sets up event listeners for flexible-on-hover variant.
+   * Only adds listeners if the variant is flexible-on-hover.
+   * @internal
+   */
+  private setupFlexibleOnHoverListeners = (): void => {
+    if (this.variant === VARIANTS.FLEXIBLE_ON_HOVER) {
+      this.addEventListener('mouseover', this.showGrabberButton);
+      this.addEventListener('mouseleave', this.hideGrabberButton);
+      this.addEventListener('focusin', this.showGrabberButton);
+      this.addEventListener('focusout', this.handleFocusOut);
+    }
   };
 
-  private handleKeyDown = (event: KeyboardEvent): void => {
-    if ([KEYS.TAB, KEYS.ARROW_UP, KEYS.ARROW_DOWN, KEYS.ARROW_LEFT, KEYS.ARROW_RIGHT].includes(event.key)) {
-      this.removeAttribute('data-mouse-interaction');
-    }
+  /**
+   * Removes event listeners for flexible-on-hover variant.
+   * Safe to call regardless of current variant.
+   * @internal
+   */
+  private removeFlexibleOnHoverListeners = (): void => {
+    this.removeEventListener('mouseover', this.showGrabberButton);
+    this.removeEventListener('mouseleave', this.hideGrabberButton);
+    this.removeEventListener('focusin', this.showGrabberButton);
+    this.removeEventListener('focusout', this.handleFocusOut);
+  };
+
+   /** @internal */
+  private showGrabberButton = (): void => this.classList.add('grabber-visible');
+
+   /** @internal */
+  private hideGrabberButton = (): void => this.classList.remove('grabber-visible');
+
+   /** @internal */
+  private handleFocusOut = (e: FocusEvent): void => {
+    if (!this.contains(e.relatedTarget as Node)) this.hideGrabberButton();
   };
 
   public static get Context() {
@@ -172,6 +187,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+
+      // Re-setup listeners when variant changes
+      this.removeFlexibleOnHoverListeners();
+      this.setupFlexibleOnHoverListeners();
 
       // hard set expanded state for fixed variants:
       switch (this.variant) {
@@ -193,8 +212,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    if (this.variant === VARIANTS.FLEXIBLE && this.expanded === undefined) {
-      // if on first update the variant is flexible and expanded is not set, default to expanded true
+    if ((this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER) && this.expanded === undefined) {
       this.expanded = true;
       this.updateContext();
     }
@@ -312,7 +330,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </div>
         </div>
       </div>
-      ${this.variant === VARIANTS.FLEXIBLE && this.showGrabber
+      ${(this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER)
         ? html`<mdc-divider
             part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
