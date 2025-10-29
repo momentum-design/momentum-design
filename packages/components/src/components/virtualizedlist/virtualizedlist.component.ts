@@ -293,14 +293,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    * Resize observer to monitor size changes of the component.
    * @internal
    */
-  private resizeObserver: ResizeObserver;
+  private resizeObserver: ResizeObserver | null = null;
 
   constructor() {
     super();
     this.addEventListener('wheel', this.handleWheelEvent.bind(this));
     this.addEventListener(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, this.handleElementFirstUpdateCompleted.bind(this));
-
-    this.resizeObserver = new ResizeObserver(this.handleResizeObserverCallback.bind(this));
   }
 
   /**
@@ -324,6 +322,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
     this.atBottom = this.revertList && this.scrollAnchoring ? 'yes' : 'no';
 
+    this.resizeObserver = new ResizeObserver(this.handleResizeObserverCallback.bind(this));
     this.resizeObserver.observe(this);
   }
 
@@ -334,7 +333,10 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.virtualizerController = null;
     this.virtualizer = null;
 
-    this.resizeObserver.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
 
   /**
