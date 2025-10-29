@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 
 import styles from './alertchip.styles';
 import { DEFAULTS } from './alertchip.constants';
@@ -35,7 +36,7 @@ import type { VariantType } from './alertchip.types';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the chip.
  * @event focus - (React: onFocus) This event is dispatched when the chip receives focus.
  */
-class AlertChip extends Buttonsimple {
+class AlertChip extends IconNameMixin(Buttonsimple) {
   /**
    * The variant of the alertchip. It supports 5 variants
    * - neutral
@@ -67,7 +68,7 @@ class AlertChip extends Buttonsimple {
 
   public override render() {
     return html`
-      <mdc-icon part="icon" name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
+      <mdc-icon part="icon" name="${this.iconName || getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
       ${this.label
         ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
             >${this.label}</mdc-text

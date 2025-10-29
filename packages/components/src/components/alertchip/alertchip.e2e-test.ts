@@ -13,6 +13,7 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   label: string;
   variant?: VariantType;
+  iconName?: string;
   secondChipForFocus?: boolean;
 };
 
@@ -25,6 +26,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-alertchip
         label="${restArgs.label}"
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+        ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
       ></mdc-alertchip>
       ${restArgs.secondChipForFocus ? '<mdc-alertchip label="Chip"></mdc-alertchip></div>' : ''}
     `,
@@ -48,6 +50,9 @@ test('mdc-alertchip', async ({ componentsPage }) => {
     const alertchipStickerSheet = new StickerSheet(componentsPage, 'mdc-alertchip');
 
     alertchipStickerSheet.setAttributes({ label: 'Alert' });
+    await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
+
+    alertchipStickerSheet.setAttributes({ label: 'Custom Icon', 'icon-name': 'placeholder-bold' });
     await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
 
     alertchipStickerSheet.setAttributes({ label: 'Long label', style: 'width: 6.5rem' });
