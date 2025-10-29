@@ -158,7 +158,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   };
 
   private handleKeyDown = (event: KeyboardEvent): void => {
-    if (event.key === 'Tab' || event.key.startsWith('Arrow')) {
+    if ([KEYS.TAB, KEYS.ARROW_UP, KEYS.ARROW_DOWN, KEYS.ARROW_LEFT, KEYS.ARROW_RIGHT].includes(event.key)) {
       this.removeAttribute('data-mouse-interaction');
     }
   };
