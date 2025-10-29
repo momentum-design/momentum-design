@@ -92,11 +92,11 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
 
   /**
    * Handles click events to toggle checked state
-   * If the menuitemcheckbox is disabled, it does nothing.
+   * If the menuitemcheckbox is disabled or soft-disabled, it does nothing.
    * If the menuitemcheckbox is not disabled, it toggles checked if uncontrolled, and dispatches the 'change' event.
    */
   private handleMouseClick() {
-    if (this.disabled) return;
+    if (this.disabled || this.softDisabled) return;
 
     if (this.controlType !== 'controlled') {
       this.checked = !this.checked;

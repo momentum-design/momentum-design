@@ -118,11 +118,12 @@ class MenuItemRadio extends ControlTypeMixin(MenuItem) {
 
   /**
    * Handles click events to set checked state and uncheck siblings in the same group and container.
+   * If the menuitemradio is disabled, soft-disabled, or already checked, it does nothing.
    * If the menuitemradio is not checked, it sets its checked state to `true`
    * and sets all other menuitemradio elements of the same group with checked state to `false`.
    */
   private handleMouseClick() {
-    if (this.disabled || this.checked) return;
+    if (this.disabled || this.softDisabled || this.checked) return;
 
     if (this.controlType !== 'controlled') {
       this.updateOtherRadiosCheckedState();
