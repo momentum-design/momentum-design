@@ -158,12 +158,13 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('soft disabled state', async () => {
       const radio = await setup({ componentsPage, softDisabled: true });
       await expectSoftDisabled(radio);
+      await expectUnchecked(radio);
 
-      // Click should change state when soft disabled
+      // Click should not change state when soft disabled
       const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, radio);
       await radio.click({ force: true });
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
-      await expectChecked(radio);
+      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expectUnchecked(radio);
     });
   });
 

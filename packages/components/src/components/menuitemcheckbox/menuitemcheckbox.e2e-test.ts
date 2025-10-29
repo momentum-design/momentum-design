@@ -258,15 +258,11 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await expectSoftDisabled(checkbox);
           await expectUnchecked(checkbox);
 
-          // Click still emits change event and visually toggles when soft disabled
+          // Click does not emit change event and visually toggles when soft disabled
           const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.click({ force: true });
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
-          if (expectedControlType === 'controlled') {
-            await expectUnchecked(checkbox);
-          } else {
-            await expectChecked(checkbox);
-          }
+          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expectUnchecked(checkbox);
         });
 
         await test.step('soft disabled state keyboard nav', async () => {
@@ -281,16 +277,12 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
 
           changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.SPACE);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
-          if (expectedControlType === 'controlled') {
-            await expectUnchecked(checkbox);
-          } else {
-            await expectChecked(checkbox);
-          }
+          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expectUnchecked(checkbox);
 
           changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
           await expectUnchecked(checkbox);
         });
 
