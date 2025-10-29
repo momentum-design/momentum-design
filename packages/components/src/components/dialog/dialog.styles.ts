@@ -26,22 +26,22 @@ const styles = css`
     transform: translate(50%, 50%);
   }
 
-  :host > [part="body"]:first-of-type {
+  :host > [part='body']:first-of-type {
     margin-top: 0;
   }
 
-  :host > [part="dialog-close-btn"] {
+  :host > [part='dialog-close-btn'] {
     margin-top: 0;
   }
 
-  :host > slot[name="footer"] {
+  :host > slot[name='footer'] {
     margin-top: 0;
   }
 
-  slot[name="footer-link"]::slotted(*),
-  slot[name="footer-button-primary"]::slotted(*),
-  slot[name="footer-button-secondary"]::slotted(*),
-  slot[name="footer"]::slotted(*) {
+  slot[name='footer-link']::slotted(*),
+  slot[name='footer-button-primary']::slotted(*),
+  slot[name='footer-button-secondary']::slotted(*),
+  slot[name='footer']::slotted(*) {
     margin-top: 1rem;
   }
 
@@ -82,6 +82,8 @@ const styles = css`
     width: var(--mdc-dialog-width);
     height: var(--mdc-dialog-height);
     max-width: 100%;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
   }
 
   :host::part(header-section),
@@ -119,7 +121,8 @@ const styles = css`
     align-items: center;
     height: 100%;
     width: 100%;
-    margin-top: 1rem;
+    padding-top: 1rem;
+    overflow-y: auto;
   }
 
   :host::part(footer) {
