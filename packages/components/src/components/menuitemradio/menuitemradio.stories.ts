@@ -23,6 +23,7 @@ const render = (args: Args) =>
       @focus="${action('onfocus')}"
       ?checked="${args.checked}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       indicator="${args.indicator}"
       label="${args.label}"
       secondary-label="${args['secondary-label']}"
@@ -52,6 +53,9 @@ const meta: Meta = {
     },
     'secondary-label': {
       control: 'text',
+    },
+    'soft-disabled': {
+      control: 'boolean',
     },
     'control-type': {
       control: 'select',
