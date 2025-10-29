@@ -20,6 +20,16 @@ const styles = css`
     background-color: var(--mdc-chip-background-color);
   }
 
+  :host::part(icon) {
+    flex-shrink: 0;
+  }
+
+  :host::part(label) {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
   :host([color='cobalt']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-theme-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-label-cobalt-normal);

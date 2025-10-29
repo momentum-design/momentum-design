@@ -78,7 +78,7 @@ class Chip extends IconNameMixin(Buttonsimple) {
    */
   private renderIcon() {
     if (!this.iconName) return nothing;
-    return html` <mdc-icon name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
+    return html` <mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
   }
 
   public override render() {
