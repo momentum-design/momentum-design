@@ -102,6 +102,9 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
   await test.step('popovers should render correctly when defined inside the listitems', async () => {
     const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
 
+    await expect(listItemLocator(vlist, 24)).toBeVisible();
+    await expect(listItemLocator(vlist, 24)).toBeInViewport();
+
     await componentsPage.actionability.pressTab();
     await componentsPage.actionability.pressTab();
 
@@ -443,12 +446,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       await expect(listItemLocator(vlist, 0)).toBeVisible();
 
-      expect(
-        await vlist.evaluate(
-          (vlistEl: VirtualizedList) =>
-            vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
-        ),
-      ).toBe(wrapperHeight);
+      await expect(async () => {
+        expect(
+          await vlist.evaluate(
+            (vlistEl: VirtualizedList) =>
+              vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
+          ),
+        ).toBe(wrapperHeight);
+      }).toPass();
     });
   });
 
