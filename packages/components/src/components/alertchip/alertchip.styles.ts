@@ -23,10 +23,14 @@ const styles = css`
 
   :host::part(label) {
     color: var(--mdc-chip-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   :host::part(icon) {
     color: var(--mdc-chip-icon-color);
+    flex-shrink: 0;
   }
 
   :host([variant='neutral']:hover) {

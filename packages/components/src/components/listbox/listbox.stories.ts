@@ -61,10 +61,10 @@ export const ListboxWithSecondaryLabel: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <mdc-listbox label="Select an option" placeholder="Select an option">
-        <mdc-option label="Option 1" secondary-label="Secondary Label 1"></mdc-option>
-        <mdc-option label="Option 2" secondary-label="Secondary Label 2"></mdc-option>
-        <mdc-option label="Option 3" secondary-label="Secondary Label 3"></mdc-option>
-        <mdc-option label="Option 4" secondary-label="Secondary Label 4"></mdc-option>
+        <mdc-option label="Option 1" secondary-label="Secondary Label 1" value="Option1"></mdc-option>
+        <mdc-option label="Option 2" secondary-label="Secondary Label 2" value="Option2"></mdc-option>
+        <mdc-option label="Option 3" secondary-label="Secondary Label 3" value="Option3"></mdc-option>
+        <mdc-option label="Option 4" secondary-label="Secondary Label 4" value="Option4"></mdc-option>
       </mdc-listbox>
     `),
   ...hideAllControls(),
@@ -101,14 +101,15 @@ export const ListboxWithLongOptionText: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <mdc-listbox placeholder="Select a color" label="Select one color">
-        <mdc-option label="Red"></mdc-option>
-        <mdc-option label="Yellow"></mdc-option>
+        <mdc-option label="Red" value="red"></mdc-option>
+        <mdc-option label="Yellow" value="yellow"></mdc-option>
         <mdc-option
           label="White and Black are the biggest colors on the spectrum"
           tooltip-text="White and Black are the biggest colors on the spectrum"
           tooltip-placement="bottom"
+          value="whiteblack"
         ></mdc-option>
-        <mdc-option label="Green"></mdc-option>
+        <mdc-option label="Green" value="green"></mdc-option>
       </mdc-listbox>
     `),
   ...hideAllControls(),
@@ -118,11 +119,11 @@ export const ListboxWithIconOptions: StoryObj = {
   render: () =>
     wrapWithDiv(html`
       <mdc-listbox placeholder="Select an option" label="You are in a meeting">
-        <mdc-option prefix-icon="alert-bold" label="Mute notifications"></mdc-option>
-        <mdc-option prefix-icon="apps-bold" label="Add apps"></mdc-option>
-        <mdc-option prefix-icon="stored-info-bold" label="View direct message policy"></mdc-option>
-        <mdc-option prefix-icon="calendar-day-bold" label="Meeting capabilities"></mdc-option>
-        <mdc-option prefix-icon="exit-room-bold" label="Leave"></mdc-option>
+        <mdc-option prefix-icon="alert-bold" label="Mute notifications" value="mute"></mdc-option>
+        <mdc-option prefix-icon="apps-bold" label="Add apps" value="apps"></mdc-option>
+        <mdc-option prefix-icon="stored-info-bold" label="View direct message policy" value="message"></mdc-option>
+        <mdc-option prefix-icon="calendar-day-bold" label="Meeting capabilities" value="meeting"></mdc-option>
+        <mdc-option prefix-icon="exit-room-bold" label="Leave" value="leave"></mdc-option>
       </mdc-listbox>
     `),
   ...hideAllControls(),
@@ -137,7 +138,10 @@ export const ListboxWithFixedHeight = {
   render: (args: Args) =>
     wrapWithDiv(html`
       <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="--mdc-listbox-max-height: 30rem">
-        ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
+        ${Array.from(
+          { length: 1000 },
+          (_, i) => html`<mdc-option label="Option Label ${i + 1}" value="option${i + 1}"></mdc-option>`,
+        )}
       </mdc-listbox>
     `),
   argTypes: {
@@ -147,11 +151,14 @@ export const ListboxWithFixedHeight = {
 
 export const ListboxWithDynamicOptions: StoryObj = {
   render: () => {
-    const options = Array.from({ length: 10 }, (_, i) => html`<mdc-option label="Option ${i + 1}"></mdc-option>`);
+    const options = Array.from(
+      { length: 10 },
+      (_, i) => html`<mdc-option label="Option ${i + 1}" value="option${i + 1}"></mdc-option>`,
+    );
     let extraOption: TemplateResult | null = null;
 
     setTimeout(() => {
-      extraOption = html`<mdc-option label="Delayed Option"></mdc-option>`;
+      extraOption = html`<mdc-option label="Delayed Option" value="optionDelayed"></mdc-option>`;
       const listbox = document.querySelector('mdc-listbox[label="Select option"]');
       if (listbox) {
         const option = document.createElement('mdc-option');

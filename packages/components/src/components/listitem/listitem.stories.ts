@@ -35,6 +35,7 @@ const wrapWithList = (args: Args, content?: TemplateResult) =>
       tertiary-label="${args['tertiary-label']}"
       side-header-text="${args['side-header-text']}"
       subline-text="${args['subline-text']}"
+      ?active="${args.active}"
       >${content ?? ''}</mdc-listitem
     >
   </mdc-list>`;
@@ -85,6 +86,9 @@ const meta: Meta = {
     'soft-disabled': {
       control: 'boolean',
     },
+    active: {
+      control: 'boolean',
+    },
     ...disableControls([
       'leading-controls',
       'leading-text-primary-label',
@@ -111,6 +115,7 @@ export const Example: StoryObj = {
     'side-header-text': 'Header Text',
     'subline-text': 'Subline Text',
     disabled: false,
+    active: false,
   },
 };
 

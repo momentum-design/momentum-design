@@ -16,6 +16,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     variant="${args.variant}"
     label="${args.label}"
+    icon-name="${args['icon-name']}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-alertchip>`;
 
@@ -30,6 +31,9 @@ const meta: Meta = {
       options: Object.values(VARIANTS),
     },
     label: {
+      control: 'text',
+    },
+    'icon-name': {
       control: 'text',
     },
     'auto-focus-on-mount': {
@@ -47,6 +51,14 @@ export const Example: StoryObj = {
   args: {
     variant: VARIANTS.NEUTRAL,
     label: 'Alert',
+  },
+};
+
+export const WithIcon: StoryObj = {
+  args: {
+    variant: VARIANTS.INFORMATIONAL,
+    label: 'Announcement',
+    'icon-name': 'announcement-regular',
   },
 };
 
