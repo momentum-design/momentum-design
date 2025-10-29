@@ -15,6 +15,7 @@ type SetUpOptions = {
   'subline-text'?: string;
   disabled?: boolean;
   softDisabled?: boolean;
+  active?: boolean;
   children?: string;
 };
 
@@ -33,6 +34,7 @@ const setup = async (args: SetUpOptions) => {
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.softDisabled ? 'soft-disabled' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.active ? 'active' : ''}
         ${restArgs['secondary-label'] ? `secondary-label="${restArgs['secondary-label']}"` : ''}
         ${restArgs['tertiary-label'] ? `tertiary-label="${restArgs['tertiary-label']}"` : ''}
         ${restArgs['side-header-text'] ? `side-header-text="${restArgs['side-header-text']}"` : ''}
@@ -74,6 +76,18 @@ test.describe.parallel('mdc-listitem', () => {
         'tertiary-label': tertiaryLabel,
       });
       await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        active: true,
+        label: primaryLabel,
+        'secondary-label': secondaryLabel,
+        'tertiary-label': tertiaryLabel,
+      });
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        label: primaryLabel,
+        'secondary-label': secondaryLabel,
+        'tertiary-label': tertiaryLabel,
+      });
       listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox checked data-aria-label="${primaryLabel}"></mdc-checkbox>
