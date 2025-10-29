@@ -24,6 +24,12 @@ Feature: StaticChip Accessibility, Appearance, and User Interaction
       Then the icon should be visible before the label
       And the layout should be properly aligned
 
+    Scenario: Render staticchip with icon and long label
+      Given the staticchip has a label "Long label"
+      And the staticchip has icon-name set
+      When the staticchip is rendered
+      Then the icon should be visible and the text should be styled with ellipsis if it overflows
+
     Scenario: Render staticchip with different colors
       Given the staticchip has color attribute set to each supported value
       When the staticchip is rendered
