@@ -50,6 +50,9 @@ test('mdc-staticchip', async ({ componentsPage }) => {
     chipStickerSheet.setAttributes({ label: 'Chip', 'icon-name': 'placeholder-bold' });
     await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
 
+    chipStickerSheet.setAttributes({ label: 'Long label', 'icon-name': 'placeholder-bold', style: 'width: 6.5rem' });
+    await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
+
     await chipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
     });
