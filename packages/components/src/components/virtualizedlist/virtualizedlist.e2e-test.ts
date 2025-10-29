@@ -337,21 +337,60 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await test.step('revert-list', async () => {
       const { wrapper, vlist } = await setup({ revertList: true });
 
-      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-        wrapperEl.addItem(`Message 1`);
+      await test.step('new items are rendered at the bottom', async () => {
+        await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+          wrapperEl.addItem(`Message 1`);
+        });
+
+        // 299 = Height of wrapper = 300px - 1px for border
+        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
       });
 
-      // 299 = Height of wrapper = 300px - 1px for border
-      expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+      /* eslint-disable no-param-reassign */
+      await test.step('resizing the list keeps the bottom item in view', async () => {
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '200px';
+        });
 
-      for (let i = 2; i <= 5; i += 1) {
-        await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
-          wrapperEl.addItem(`Message ${index}`);
-        }, i);
-      }
+        await expect(async () => {
+          // 199 = Height of wrapper = 200px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(199);
+        }).toPass();
 
-      // 299 = Height of wrapper = 300px - 1px for border
-      expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '400px';
+        });
+
+        await expect(async () => {
+          // 399 = Height of wrapper = 400px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(399);
+        }).toPass();
+
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '';
+        });
+
+        await expect(async () => {
+          // 299 = Height of wrapper = 300px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+        }).toPass();
+      });
+      /* eslint-enable no-param-reassign */
+
+      await test.step('added items appear below existing items and is still at the bottom', async () => {
+        for (let i = 2; i <= 5; i += 1) {
+          await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
+            wrapperEl.addItem(`Message ${index}`);
+          }, i);
+        }
+
+        // 299 = Height of wrapper = 300px - 1px for border
+        expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+      });
+
+      await test.step('', async () => {
+        // TODO
+      });
     });
 
     await test.step('observe-size-changes', async () => {

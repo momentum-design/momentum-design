@@ -289,10 +289,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   private endOfScrollQueue: Array<() => void> = [];
 
+  private resizeObserver: ResizeObserver;
+
   constructor() {
     super();
     this.addEventListener('wheel', this.handleWheelEvent.bind(this));
     this.addEventListener(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, this.handleElementFirstUpdateCompleted.bind(this));
+
+    this.resizeObserver = new ResizeObserver(this.handleResizeObserverCallback.bind(this));
   }
 
   /**
@@ -315,6 +319,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.role = null;
 
     this.atBottom = this.revertList && this.scrollAnchoring ? 'yes' : 'no';
+
+    this.resizeObserver.observe(this);
   }
 
   override disconnectedCallback(): void {
@@ -323,6 +329,8 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.clearScrollToBottomTimer();
     this.virtualizerController = null;
     this.virtualizer = null;
+
+    this.resizeObserver.disconnect();
   }
 
   /**
@@ -723,6 +731,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   private handleWheelEvent(e: WheelEvent) {
     if (e.deltaY < 0) this.atBottom = 're-evaluate';
+  }
+
+  private handleResizeObserverCallback() {
+    requestAnimationFrame(() => {
+      // If revertList is true and we are positioning the items at the bottom, we need to sync the UI
+      // to update the transforms
+      if (this.revertList && this.scrollRef.clientHeight >= this.totalListHeight) {
+        this.syncUI();
+      }
+    });
   }
 
   public override render() {
