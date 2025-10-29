@@ -127,8 +127,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * and remain visible when focusing inside the SideNav.
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'show-grabber-on-hover' })
-  showGrabberOnHover: boolean = false;
+  @property({ type: Boolean, reflect: true, attribute: 'show-grabber' })
+  showGrabber: boolean = false;
 
   constructor() {
     super({
@@ -142,7 +142,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.NAVIGATION;
-    if (this.showGrabberOnHover) {
+    if (this.showGrabber) {
       this.addEventListener('pointerdown', this.handlePointerDown);
       this.addEventListener('keydown', this.handleKeyDown);
     }
@@ -150,7 +150,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this.showGrabberOnHover) {
+    if (this.showGrabber) {
       this.removeEventListener('pointerdown', this.handlePointerDown);
       this.removeEventListener('keydown', this.handleKeyDown);
     }
@@ -315,7 +315,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </div>
         </div>
       </div>
-      ${this.variant === VARIANTS.FLEXIBLE && this.showGrabberOnHover
+      ${this.variant === VARIANTS.FLEXIBLE && this.showGrabber
         ? html`<mdc-divider
             part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
