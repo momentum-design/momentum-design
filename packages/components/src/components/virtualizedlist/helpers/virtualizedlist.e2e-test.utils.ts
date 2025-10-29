@@ -41,6 +41,9 @@ export class VirtualizedListE2E extends Component {
   @property({ type: String, reflect: true, attribute: 'list-header' })
   listHeader: string = '';
 
+  @property({ type: Boolean, reflect: true, attribute: 'with-tooltip' })
+  withTooltip: boolean = false;
+
   @state()
   private items: Item[] = [];
 
@@ -162,7 +165,12 @@ export class VirtualizedListE2E extends Component {
         label=${message}
         style=${styleMap({ '--mdc-listitem-height': size ? `${size}px` : undefined })}
       >
-        <mdc-button slot="trailing-controls" variant="secondary" size="24">Label</mdc-button>
+        <mdc-button slot="trailing-controls" variant="secondary" size="24" id="btn-${index}">Label</mdc-button>
+        ${this.withTooltip
+          ? html`<mdc-tooltip triggerid="btn-${index}" slot="trailing-text-side-header"
+              >Tooltip for item ${index}</mdc-tooltip
+            >`
+          : nothing}
       </mdc-listitem>
     `;
   }

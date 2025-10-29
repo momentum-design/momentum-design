@@ -16,6 +16,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     initialFocus?: number;
     observeSizeChanges?: true;
     scrollAnchoring?: true;
+    withTooltip?: true;
   };
 
   const setup = async ({
@@ -26,6 +27,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     initialFocus,
     observeSizeChanges,
     scrollAnchoring,
+    withTooltip,
   }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
@@ -38,6 +40,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
             ${observeSizeChanges ? 'observe-size-changes' : ''}
             ${scrollAnchoring ? 'scroll-anchoring' : ''}
             ${listHeader ? `list-header="${listHeader}"` : ''}
+            ${withTooltip ? 'with-tooltip' : ''}
           ></mdc-virtualizedlist-e2e>
           <mdc-button>after</mdc-button>
         </div>
@@ -92,6 +95,20 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await scrollList(vlist, 180);
 
     await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
+      element: wrapper,
+    });
+  });
+
+  await test.step('popovers should render correctly when defined inside the listitems', async () => {
+    const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
+
+    await componentsPage.actionability.pressTab();
+    await componentsPage.actionability.pressTab();
+
+    await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
+    await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
       element: wrapper,
     });
   });
@@ -388,8 +405,17 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
       });
 
-      await test.step('', async () => {
-        // TODO
+      await test.step('normal scrolling starts after enough items to fill the viewport', async () => {
+        for (let i = 6; i <= 10; i += 1) {
+          await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
+            wrapperEl.addItem(`Message ${index}`);
+          }, i);
+        }
+
+        // 1px for the border
+        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().top)).toBe(1);
+        // The last element should be below the bottom of the list viewport
+        expect(await listItemLocator(vlist, 8).evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(299);
       });
     });
 
