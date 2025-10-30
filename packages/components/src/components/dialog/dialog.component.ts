@@ -34,9 +34,6 @@ import styles from './dialog.styles';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * **Note**: Use `?` prefix in lit template (eg.: `?visible=true/false`)
- * See in [Boolean attribute expression](https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions)
- *
  * ## Accessibility
  *
  * Some attributes have to be explicitly set by the consumer of the component:
