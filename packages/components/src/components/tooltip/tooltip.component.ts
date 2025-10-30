@@ -1,6 +1,6 @@
 import type { PropertyValues } from '@lit/reactive-element';
 import type { CSSResult } from 'lit';
-import { property, queryAssignedNodes } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ROLE } from '../../utils/roles';
@@ -41,9 +41,6 @@ class Tooltip extends Popover {
   @property({ type: String, attribute: 'tooltip-type', reflect: true })
   tooltipType: TooltipType = DEFAULTS.TOOLTIP_TYPE;
 
-  @queryAssignedNodes()
-  private defaultSlotNodes!: Array<Node>;
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.backdrop = false;
@@ -65,18 +62,6 @@ class Tooltip extends Popover {
     this.focusBackToTrigger = false;
     this.size = false;
     this.disableAriaExpanded = true;
-  }
-
-  /**
-   * @returns The tooltip text.
-   */
-  private getTooltipText(): string {
-    return (
-      this.defaultSlotNodes
-        ?.map(node => node.textContent)
-        .join(' ')
-        ?.trim() || ''
-    );
   }
 
   /**
@@ -137,7 +122,6 @@ class Tooltip extends Popover {
     }
 
     if (this.triggerElement) {
-      const tooltipText = this.getTooltipText();
       switch (this.tooltipType) {
         case TOOLTIP_TYPES.DESCRIPTION:
           if (previousTooltipType === TOOLTIP_TYPES.LABEL) {
@@ -158,9 +142,6 @@ class Tooltip extends Popover {
             this.triggerElement.removeAttribute('aria-labelledby');
           }
           break;
-      }
-      if (tooltipText.length > 0 && this.tooltipType !== TOOLTIP_TYPES.NONE && !this.ariaLabel) {
-        this.ariaLabel = tooltipText;
       }
     }
   }
