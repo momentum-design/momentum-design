@@ -17,6 +17,7 @@ import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
+import { withSpatialNavigationProvider } from './provider/spatialNavigationProvider';
 
 const cssProperties = [];
 
@@ -156,6 +157,7 @@ const preview = {
     storyDescription,
     withCssPropertyProvider(cssProperties),
     withThemeProvider,
+    withSpatialNavigationProvider,
     withIconProvider,
     withIllustrationProvider,
   ],
@@ -170,6 +172,20 @@ const preview = {
         // Array of plain string values or MenuItem shape (see below)
         items: themes.map(theme => theme.displayName),
         // Change title based on selected value
+        dynamicTitle: true,
+      },
+    },
+    spatialNavigation: {
+      description: 'Enable or disable spatial navigation',
+      defaultValue: 'disabled',
+      toolbar: {
+        title: 'Spatial Navigation',
+        icon: 'diamond',
+        items: [
+          { value: 'arrows', title: 'Spatial Nav On - Arrow keys + Enter + Esc' },
+          { value: 'awsd', title: 'Spatial Nav On - AWSD + E + Q' },
+          { value: 'disabled', title: 'Spatial Nav Off' },
+        ],
         dynamicTitle: true,
       },
     },

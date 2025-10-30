@@ -249,6 +249,8 @@ class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  public static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default AccordionButton;

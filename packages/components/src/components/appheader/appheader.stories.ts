@@ -7,6 +7,7 @@ import '../button';
 import '../brandvisual';
 import '../chip';
 import '../avatar';
+import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 const meta: Meta = {
   title: 'Components/appheader',
@@ -51,3 +52,5 @@ export const Example: StoryObj = {
       </div>
     </mdc-appheader>`,
 };
+
+export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper(Example);

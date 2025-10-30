@@ -15,6 +15,7 @@ import { hideControls, hideAllControls } from '../../../config/storybook/utils';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { BUTTON_SIZES } from '../buttonsimple/buttonsimple.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 import { BANNER_VARIANT } from './banner.constants';
 
@@ -219,3 +220,5 @@ export const PromotionalBanner: StoryObj = {
   },
   ...hideAllControls(),
 };
+
+export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper({ ...meta, ...Example });
