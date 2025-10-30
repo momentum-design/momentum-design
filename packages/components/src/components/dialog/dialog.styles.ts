@@ -76,6 +76,7 @@ const styles = css`
     height: 100%;
     border: none;
     border-radius: 0;
+    max-height: 100vh;
   }
 
   :host {
