@@ -21,6 +21,10 @@ import styles from './dialog.styles';
  * The dialog is available in 5 sizes: small, medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
+ * Dialog component have 2 variants: default and promotional.
+ *
+ * ## Visibility
+ *
  * The dialog can be controlled solely through the `visible` property, no trigger element is required.
  * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
  * remember the previously focused element before the dialog was opened.
@@ -30,16 +34,21 @@ import styles from './dialog.styles';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * Dialog component have 2 variants: default and promotional.
+ * ## Accessibility
  *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
+ * Some attributes have to be explicitly set by the consumer of the component:
  *
  * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
  * - Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
  *
- * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
- * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
- * - Reference docs for more info: https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions
+ * ## Responsive design
+ *
+ * Dialog has few built in logic to prevent content clipping on small screens
+ *
+ * - maximum height limited to the viewport height
+ * - dialog body has `overflow: auto` by default
+ * - dialog itself also has `overflow: auto`, it activates only when the body can not shrink more
+ *
  *
  * @dependency mdc-button
  * @dependency mdc-text
