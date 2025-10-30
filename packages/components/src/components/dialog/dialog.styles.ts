@@ -27,7 +27,7 @@ const styles = css`
   }
 
   :host > [part='body']:first-of-type {
-    margin-top: 0;
+    padding-top: 0;
   }
 
   :host > [part='dialog-close-btn'] {

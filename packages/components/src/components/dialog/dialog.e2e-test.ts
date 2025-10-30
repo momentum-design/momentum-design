@@ -90,7 +90,7 @@ const dialogWithAllSlots = {
   descriptionText: 'Dialog Description',
   children: `
     <div slot="dialog-body">
-      <mdc-text>This is the body content of the dialog.</mdc-text>
+      <p>This is the body content of the dialog.</p>
     </div>
     <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
     <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
