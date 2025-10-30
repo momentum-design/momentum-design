@@ -6,6 +6,7 @@ const VARIANTS = {
   FIXED_EXPANDED: 'fixed-expanded',
   FIXED_COLLAPSED: 'fixed-collapsed',
   FLEXIBLE: 'flexible',
+  FLEXIBLE_ON_HOVER: 'flexible-on-hover',
   HIDDEN: 'hidden',
 };
 

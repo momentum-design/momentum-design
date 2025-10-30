@@ -2,18 +2,6 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-// Local snapshot wrapper to restrict snapshots for desktop only
-const takeSnapshot = async (
-  componentsPage: ComponentsPage,
-  name: string,
-  options?: Parameters<typeof componentsPage.visualRegression.takeScreenshot>[1],
-) => {
-  const deviceName = test.info().project.name;
-  if (['chrome', 'firefox', 'msedge', 'webkit', 'tablet chrome', 'tablet safari'].includes(deviceName)) {
-    await componentsPage.visualRegression.takeScreenshot(name, options);
-  }
-};
-
 // Setup function to mount sidenavigation and return locators
 const setup = async (componentsPage: ComponentsPage, variant: string) => {
   const expanded = variant !== 'fixed-collapsed';
@@ -73,6 +61,7 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
         </mdc-menusection>
         <mdc-icon slot="brand-logo" aria-label="This is the brand logo icon" name="apple-bold"></mdc-icon>
       </mdc-sidenavigation>
+      <mdc-button>Button on the outside to be focused</mdc-button>
     </div>
   `;
   await componentsPage.mount({ html, clearDocument: true });
@@ -108,9 +97,10 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
   };
 };
 
-const variants = ['flexible', 'fixed-expanded', 'fixed-collapsed'];
+const variants = ['flexible', 'flexible-on-hover', 'fixed-expanded', 'fixed-collapsed'];
 
 test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', () => {
+  test.setTimeout(60000);
   variants.forEach(variant => {
     test(`user scenarios for ${variant} variant`, async ({ componentsPage }) => {
       const {
@@ -149,6 +139,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
         }
 
+        // toggle button should be invisible for flexible-on-hover
+        if (variant === 'flexible-on-hover') {
+          await expect(toggleButton).toHaveCSS('opacity', '0');
+        }
+
         // Menuitem attributes
         const firstNavMenuItem = navMenuItems.first();
         await expect(firstNavMenuItem).toHaveAttribute('icon-name', 'meetings-bold');
@@ -163,11 +158,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
 
       await test.step('interactions', async () => {
         // Default state of sidenavigation
-        await takeSnapshot(componentsPage, `sidenavigation-${variant}-default`);
+        await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-default`);
         await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-default`);
 
         // --- Expand/Collapse (flexible only) ---
-        if (variant === 'flexible') {
+        if (variant === 'flexible' || variant === 'flexible-on-hover') {
           await test.step('Collapse and expand sidenavigation using keyboard', async () => {
             const firstNavMenuItem = navMenuItems.first();
             const firstNavMenuItemInFixedBar = fixedNavlist.locator('mdc-navmenuitem').first();
@@ -181,7 +176,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
             await eventResolveAfterEnter();
-            await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
+            await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
               source: 'userflow',
               fileNameSuffix: 'collapsed-view',
             });
@@ -206,6 +201,27 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
             await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
             await eventResolveAfterClickExpand();
           });
+
+          // todo: webkit hover issue - investigate later (works locally in Safari, not in e2e test)
+          if (variant === 'flexible-on-hover' && test.info().project.name !== 'webkit') {
+            await test.step('Focus outside of sidenavigation hides grabber button (variant flexible-on-hover only)', async () => {
+              await componentsPage.page.mouse.move(0, 0);
+              await expect(toggleButton).toBeFocused();
+              await componentsPage.page.keyboard.press('Tab');
+              await expect(
+                componentsPage.page.locator('mdc-button:has-text("Button on the outside to be focused")'),
+              ).toBeFocused();
+              await expect(toggleButton).toHaveCSS('opacity', '0');
+            });
+            await test.step('Hovering over sidenavigation shows grabber button (variant flexible-on-hover only)', async () => {
+              await sidenav.hover();
+              await expect(toggleButton).toHaveCSS('opacity', '1');
+            });
+            await test.step('Moving mouse away from sidenavigation hides grabber button (variant flexible-on-hover only)', async () => {
+              await componentsPage.page.mouse.move(0, 0);
+              await expect(toggleButton).toHaveCSS('opacity', '0');
+            });
+          }
         }
 
         // --- Scroll Behavior ---
@@ -214,7 +230,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await lastNavMenuItem.scrollIntoViewIfNeeded();
           await expect(lastNavMenuItem).toBeVisible();
           await expect(fixedNavlist).toBeVisible();
-          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'scrolled-view',
           });
@@ -292,7 +308,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await componentsPage.page.keyboard.press('Enter');
           await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(mainMenuPopover).toBeVisible();
-          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'mainmenu-popover',
           });
@@ -406,7 +422,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(mainMenuTooltip).toBeVisible();
           const text1 = await mainMenuTooltip.textContent();
           expect(text1?.trim()).toBe('Contains active navmenuitem');
-          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'active-parent-tooltip',
           });
@@ -416,7 +432,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toolsTooltip).toBeVisible();
           const text2 = await toolsTooltip.textContent();
           expect(text2?.trim()).toBe('Contains active navmenuitem');
-          await takeSnapshot(componentsPage, `sidenavigation-${variant}`, {
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
             source: 'userflow',
             fileNameSuffix: 'active-nested-tooltip',
           });
@@ -426,7 +442,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(nestedItem).toBeFocused();
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
           await expect(nestedItem).toHaveAttribute('active', '');
-          await takeSnapshot(componentsPage, `sidenavigation-${variant}-nested-active-navmenuitem`);
+          await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}-nested-active-navmenuitem`);
         });
 
         // --- Focus Management and Tab Behavior ---

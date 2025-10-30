@@ -26,7 +26,8 @@ const styles = css`
 
   :host::part(scrollable-section) {
     flex-grow: 1;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem 0;
     min-height: 0;
   }
@@ -69,6 +70,16 @@ const styles = css`
 
   :host::part(vertical-divider-button) {
     z-index: var(--mdc-sidenavigation-vertical-divider-button-z-index);
+  }
+
+  :host([variant='flexible-on-hover'])::part(vertical-divider),
+  :host([variant='flexible-on-hover'])::part(vertical-divider-button) {
+    opacity: 0;
+  }
+
+  :host([data-grabber-visible][variant='flexible-on-hover'])::part(vertical-divider),
+  :host([data-grabber-visible][variant='flexible-on-hover'])::part(vertical-divider-button) {
+    opacity: 1;
   }
 `;
 

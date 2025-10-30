@@ -19,7 +19,7 @@ import styles from './sidenavigation.styles';
  * typically used in layouts with persistent or collapsible sidebars.
  *
  * ## Features:
- * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
+ * - Supports five layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, `flexible-on-hover`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
  * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
@@ -80,10 +80,11 @@ import styles from './sidenavigation.styles';
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   /**
-   * Four variants of the sideNavigation
+   * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
    * - **fixed-expanded**: Shows icons with labels and has fixed width, 15rem.
    * - **flexible**: Toggles between collapsed/expanded states.
+   * - **flexible-on-hover**: Similar to flexible, but the grabber button is only visible on hover or focus.
    * - **hidden**: Removes the sidenavigation from the DOM.
    * @default flexible
    */
@@ -132,7 +133,86 @@ class SideNavigation extends Provider<SideNavigationContext> {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.NAVIGATION;
+    this.setupFlexibleOnHoverListeners();
   }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeFlexibleOnHoverListeners();
+  }
+
+  private isHovered: boolean = false;
+
+  private isFocused: boolean = false;
+
+  /** @internal */
+  private handleMouseEnter() {
+    this.isHovered = true;
+    this.showGrabberButton();
+  }
+
+  /** @internal */
+  private handleMouseLeave() {
+    this.isHovered = false;
+    if (!this.isFocused) {
+      this.hideGrabberButton();
+    }
+  }
+
+  /** @internal */
+  private handleFocusIn(e: FocusEvent): void {
+    // Only set focus if the sidenavigation itself or a focus-visible element inside it is focused
+    if (e.target === this || (e.target as HTMLElement)?.matches(':focus-visible')) {
+      this.isFocused = true;
+      this.showGrabberButton();
+    }
+  }
+
+  /** @internal */
+  private handleFocusOut(e: FocusEvent): void {
+    if (!this.contains(e.relatedTarget as Node)) {
+      this.isFocused = false;
+      if (!this.isHovered) {
+        this.hideGrabberButton();
+      }
+    }
+  }
+
+  /** @internal */
+  private showGrabberButton() {
+    this.toggleAttribute('data-grabber-visible', true);
+  }
+
+  /** @internal */
+  private hideGrabberButton() {
+    this.toggleAttribute('data-grabber-visible', false);
+  }
+
+  /**
+   * Sets up event listeners for flexible-on-hover variant.
+   * Only adds listeners if the variant is flexible-on-hover.
+   * @internal
+   */
+  private setupFlexibleOnHoverListeners = (): void => {
+    if (this.variant === VARIANTS.FLEXIBLE_ON_HOVER) {
+      this.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+      this.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+      this.addEventListener('focusin', this.handleFocusIn.bind(this));
+      this.addEventListener('focusout', this.handleFocusOut.bind(this));
+    }
+  };
+
+  /**
+   * Removes event listeners for flexible-on-hover variant.
+   * Safe to call regardless of current variant.
+   * @internal
+   */
+  private removeFlexibleOnHoverListeners = (): void => {
+    this.removeEventListener('mouseenter', this.handleMouseEnter.bind(this));
+    this.removeEventListener('mouseleave', this.handleMouseLeave.bind(this));
+    this.removeEventListener('focusin', this.handleFocusIn.bind(this));
+    this.removeEventListener('focusout', this.handleFocusOut.bind(this));
+  };
 
   public static get Context() {
     return SideNavigationContext.context;
@@ -143,6 +223,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+
+      // Re-setup listeners when variant changes
+      this.removeFlexibleOnHoverListeners();
+      this.setupFlexibleOnHoverListeners();
 
       // hard set expanded state for fixed variants:
       switch (this.variant) {
@@ -164,8 +248,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    if (this.variant === VARIANTS.FLEXIBLE && this.expanded === undefined) {
-      // if on first update the variant is flexible and expanded is not set, default to expanded true
+    if (
+      (this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER) &&
+      this.expanded === undefined
+    ) {
       this.expanded = true;
       this.updateContext();
     }
@@ -253,6 +339,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (this.variant === VARIANTS.HIDDEN) {
       return html``;
     }
+
     return html`
       <div part="side-navigation-container" id="side-nav-container">
         <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
@@ -279,7 +366,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </div>
         </div>
       </div>
-      ${this.variant === VARIANTS.FLEXIBLE
+      ${this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER
         ? html`<mdc-divider
             part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
