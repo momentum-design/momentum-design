@@ -25,6 +25,10 @@ const styles = [
       top: var(--mdc-virtualizedlist-hidden-top) !important;
       left: 0 !important;
     }
+
+    ::slotted(mdc-listitem) {
+      position: relative;
+    }
   `,
 ];
 
