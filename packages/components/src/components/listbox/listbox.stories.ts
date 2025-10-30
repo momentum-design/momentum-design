@@ -11,6 +11,8 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import '../option';
 import '../optgroup';
 import '../divider';
+import '../virtualizedlist';
+import './helpers/listboxVirtualizedList.stories.utils';
 import ListBox from './listbox.component';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
@@ -131,22 +133,16 @@ export const ListboxWithIconOptions: StoryObj = {
 
 export const ListboxWithFixedHeight = {
   args: {
-    height: '18rem',
+    '--mdc-listbox-max-height': '18rem',
     placeholder: 'Select an option',
     label: 'Select option',
   },
   render: (args: Args) =>
     wrapWithDiv(html`
-      <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="--mdc-listbox-max-height: 30rem">
-        ${Array.from(
-          { length: 1000 },
-          (_, i) => html`<mdc-option label="Option Label ${i + 1}" value="option${i + 1}"></mdc-option>`,
-        )}
+      <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="overflow: hidden">
+        <mdc-listboxvirtualizedlist></mdc-listboxvirtualizedlist>
       </mdc-listbox>
     `),
-  argTypes: {
-    ...disableControls(['name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
-  },
 };
 
 export const ListboxWithDynamicOptions: StoryObj = {
