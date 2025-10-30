@@ -5,6 +5,7 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = css`
   :host {
     --mdc-listitem-default-background-color: var(--mds-color-theme-background-primary-ghost);
+    --mdc-listitem-default-active-background-color: var(--mds-color-theme-background-primary-active);
     --mdc-listitem-background-color-hover: var(--mds-color-theme-background-primary-hover);
     --mdc-listitem-background-color-active: var(--mds-color-theme-background-primary-active);
     --mdc-listitem-primary-label-color: var(--mds-color-theme-text-primary-normal);
@@ -63,6 +64,9 @@ const styles = css`
     background-color: unset;
     color: var(--mdc-listitem-disabled-color);
     cursor: default;
+  }
+  :host([active]) {
+    background-color: var(--mdc-listitem-default-active-background-color);
   }
   :host(:hover) {
     background-color: var(--mdc-listitem-background-color-hover);

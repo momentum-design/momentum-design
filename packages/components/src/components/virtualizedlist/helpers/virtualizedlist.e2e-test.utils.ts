@@ -1,5 +1,5 @@
 // Start AI-Assisted
-import { html, PropertyValues, TemplateResult } from 'lit';
+import { html, nothing, PropertyValues, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -10,6 +10,7 @@ import { Component } from '../../../models';
 import '..';
 import '../../list';
 import '../../listitem';
+import '../../listheader';
 import { VirtualData, type VirtualizedListVirtualItemsChangeEvent, VirtualizerProps } from '../virtualizedlist.types';
 
 function generateUUID(): string {
@@ -36,6 +37,12 @@ export class VirtualizedListE2E extends Component {
 
   @property({ type: Boolean, reflect: true, attribute: 'scroll-anchoring' })
   scrollAnchoring: boolean = false;
+
+  @property({ type: String, reflect: true, attribute: 'list-header' })
+  listHeader: string = '';
+
+  @property({ type: Boolean, reflect: true, attribute: 'with-tooltip' })
+  withTooltip: boolean = false;
 
   @state()
   private items: Item[] = [];
@@ -158,7 +165,12 @@ export class VirtualizedListE2E extends Component {
         label=${message}
         style=${styleMap({ '--mdc-listitem-height': size ? `${size}px` : undefined })}
       >
-        <mdc-button slot="trailing-controls" variant="secondary" size="24">Label</mdc-button>
+        <mdc-button slot="trailing-controls" variant="secondary" size="24" id="btn-${index}">Label</mdc-button>
+        ${this.withTooltip
+          ? html`<mdc-tooltip triggerid="btn-${index}" slot="trailing-text-side-header"
+              >Tooltip for item ${index}</mdc-tooltip
+            >`
+          : nothing}
       </mdc-listitem>
     `;
   }
@@ -174,6 +186,9 @@ export class VirtualizedListE2E extends Component {
         observe-size-changes=${ifDefined(this.observeSizeChanges ? 'true' : undefined)}
         scroll-anchoring=${ifDefined(this.scrollAnchoring ? 'true' : undefined)}
       >
+        ${this.listHeader
+          ? html`<mdc-listheader slot="list-header" header-text="${this.listHeader}"></mdc-listheader>`
+          : nothing}
         ${repeat(this.virtualData.virtualItems, ({ key }) => key, this.generateListItem.bind(this))}
       </mdc-virtualizedlist>
       <style>
