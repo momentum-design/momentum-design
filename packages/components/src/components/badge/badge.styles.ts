@@ -23,7 +23,6 @@ const styles = [
 
       --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
 
-      /* Default dot badge size - can be overridden by parent components */
       --mdc-badge-dot-width: 0.75rem;
       --mdc-badge-dot-height: 0.75rem;
 
