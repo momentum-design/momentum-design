@@ -205,7 +205,6 @@ class Select
 
     this.loop = 'false';
     this.initialFocus = 0;
-    this.disableFlipping = DEFAULTS.DISABLE_FLIPPING;
     this.setupDebounceSearch();
   }
 

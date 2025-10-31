@@ -228,7 +228,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(popover).toHaveAttribute('triggerid', TRIGGER_ID);
       await expect(popover).toHaveAttribute('interactive');
       await expect(popover).not.toHaveAttribute('visible');
-      await expect(popover).toHaveAttribute('role', '');
+      await expect(popover).not.toHaveAttribute('role');
       await expect(popover).toHaveAttribute('backdrop');
       await expect(popover).toHaveAttribute('hide-on-outside-click');
       await expect(popover).toHaveAttribute('hide-on-escape');

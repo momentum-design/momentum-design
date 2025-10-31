@@ -490,9 +490,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Flip attribute', async () => {
-      await expect(popover).toHaveAttribute('flip');
-      await componentsPage.removeAttribute(popover, 'flip');
       await expect(popover).not.toHaveAttribute('flip');
+      await componentsPage.setAttributes(popover, { flip: 'true' });
+      await expect(popover).toHaveAttribute('flip');
     });
 
     await test.step('Display arrow attribute', async () => {
