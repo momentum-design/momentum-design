@@ -204,7 +204,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).not.toHaveAttribute('focus-trap');
     await expect(popover).not.toHaveAttribute('show-arrow');
     await expect(popover).toHaveAttribute('color', DEFAULTS.COLOR);
-    await expect(popover).toHaveAttribute('flip');
+    await expect(popover).not.toHaveAttribute('flip');
     await expect(popover).not.toHaveAttribute('size');
     await expect(popover).not.toHaveAttribute('backdrop');
     await expect(popover).not.toHaveAttribute('close-button');

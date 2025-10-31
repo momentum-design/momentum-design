@@ -94,7 +94,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
 
     await expect(toggletip).not.toHaveAttribute('visible');
     await expect(toggletip).not.toHaveAttribute('enabledPreventScroll');
-    await expect(toggletip).toHaveAttribute('flip');
+    await expect(toggletip).not.toHaveAttribute('flip');
     await expect(toggletip).not.toHaveAttribute('prevent-scroll');
     await expect(toggletip).not.toHaveAttribute('close-button');
     await expect(toggletip).toHaveAttribute('hide-on-outside-click');

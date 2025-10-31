@@ -35,7 +35,7 @@ Feature: Popover Component
 
     Scenario: Flip attribute
       Given a popover component which is visible,
-      When the `flip` attribute is set to `true`,
+      When the `flip` attribute is set to `false`,
       Then the floating popover should change the placement based on the availability of viewport.
 
     Scenario: Display arrow

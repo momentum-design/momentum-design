@@ -55,7 +55,7 @@ class Tooltip extends Popover {
     this.trigger = 'mouseenter focusin';
 
     this.preventScroll = false;
-    this.flip = true;
+    this.flip = false;
     this.preventScroll = false;
     this.closeButton = false;
     this.hideOnOutsideClick = false;
