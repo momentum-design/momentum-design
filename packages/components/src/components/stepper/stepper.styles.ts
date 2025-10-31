@@ -39,6 +39,10 @@ const styles = css`
     padding-top: 0.9375rem;
     margin: 0 -3rem;
   }
+
+  :host([orientation='vertical'][variant='stacked']) ::slotted(mdc-stepperitem) {
+    --mdc-stepperitem-label-padding-inline: 0.5rem;
+  }
 `;
 
 export default [hostFitContentStyles, styles];
