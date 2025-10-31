@@ -25,7 +25,7 @@ type SetupOptions = {
   focusTrap?: boolean;
   showArrow?: boolean;
   color?: PopoverColor;
-  flip?: boolean;
+  disableFlip?: boolean;
   size?: boolean;
   backdrop?: boolean;
   closeButton?: boolean;
@@ -64,7 +64,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.focusTrap ? 'focus-trap' : ''}
         ${restArgs.showArrow ? 'show-arrow' : ''}
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
-        ${restArgs.flip ? 'flip' : ''}
+        ${restArgs.disableFlip ? 'disable-flip' : ''}
         ${restArgs.size ? 'size' : ''}
         ${restArgs.backdrop ? 'backdrop' : ''}
         ${restArgs.closeButton ? 'close-button' : ''}
@@ -204,7 +204,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).not.toHaveAttribute('focus-trap');
     await expect(popover).not.toHaveAttribute('show-arrow');
     await expect(popover).toHaveAttribute('color', DEFAULTS.COLOR);
-    await expect(popover).toHaveAttribute('flip');
+    await expect(popover).not.toHaveAttribute('disable-flip');
     await expect(popover).not.toHaveAttribute('size');
     await expect(popover).not.toHaveAttribute('backdrop');
     await expect(popover).not.toHaveAttribute('close-button');
@@ -236,7 +236,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       'focus-trap': '',
       'show-arrow': '',
       color: COLOR.CONTRAST,
-      flip: 'false',
+      'disable-flip': 'false',
       size: '',
       backdrop: '',
       'close-button': '',
@@ -261,7 +261,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).toHaveAttribute('focus-trap');
     await expect(popover).toHaveAttribute('show-arrow');
     await expect(popover).toHaveAttribute('color', COLOR.CONTRAST);
-    await expect(popover).toHaveAttribute('flip', 'false');
+    await expect(popover).toHaveAttribute('disable-flip', 'false');
     await expect(popover).toHaveAttribute('size');
     await expect(popover).toHaveAttribute('backdrop');
     await expect(popover).toHaveAttribute('close-button');
@@ -489,10 +489,10 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.TOP);
     });
 
-    await test.step('Flip attribute', async () => {
-      await expect(popover).toHaveAttribute('flip');
-      await componentsPage.removeAttribute(popover, 'flip');
-      await expect(popover).not.toHaveAttribute('flip');
+    await test.step('Disable Flip attribute', async () => {
+      await expect(popover).not.toHaveAttribute('disable-flip');
+      await componentsPage.setAttributes(popover, { 'disable-flip': 'true' });
+      await expect(popover).toHaveAttribute('disable-flip');
     });
 
     await test.step('Display arrow attribute', async () => {

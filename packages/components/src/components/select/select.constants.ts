@@ -10,4 +10,8 @@ const ARROW_ICON = {
 const TRIGGER_ID = 'select-base-triggerid';
 const LISTBOX_ID = 'select-listbox';
 
-export { ARROW_ICON, TAG_NAME, TRIGGER_ID, LISTBOX_ID };
+const DEFAULTS = {
+  DISABLE_FLIP: false,
+} as const;
+
+export { ARROW_ICON, DEFAULTS, TAG_NAME, TRIGGER_ID, LISTBOX_ID };

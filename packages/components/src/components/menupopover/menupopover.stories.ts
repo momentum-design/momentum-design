@@ -24,7 +24,7 @@ const createPopover = (args: Args, content: TemplateResult = html``) => html`
     placement="${args.placement}"
     ?visible="${args.visible}"
     .offset="${args.offset ?? 0}"
-    ?flip="${args.flip}"
+    ?disable-flip="${args['disable-flip']}"
     ?size="${args.size}"
     z-index="${args['z-index']}"
     delay="${args.delay}"
@@ -75,7 +75,7 @@ const meta: Meta = {
     delay: {
       control: 'text',
     },
-    flip: {
+    'disable-flip': {
       control: 'boolean',
     },
     size: {
@@ -218,7 +218,7 @@ export const Example: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     'disable-aria-expanded': false,
   },
   render: args => html`

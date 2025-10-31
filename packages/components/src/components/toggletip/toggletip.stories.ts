@@ -78,7 +78,7 @@ const meta: Meta = {
       'triggerElement',
       'trigger',
       'z-index',
-      'flip',
+      'disable-flip',
       'role',
       'visible',
       'focus-trap',

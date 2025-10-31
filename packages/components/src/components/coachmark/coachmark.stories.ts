@@ -32,7 +32,7 @@ const render = (args: Args) => html`
       ?interactive=${args.interactive}
       ?focus-trap=${args['focus-trap']}
       ?show-arrow=${args['show-arrow']}
-      ?flip=${args.flip}
+      ?disable-flip=${args['disable-flip']}
       ?size=${args.size}
       ?backdrop=${args.backdrop}
       ?close-button=${args['close-button']}
@@ -93,7 +93,7 @@ export const Example: StoryObj = {
     'hide-on-outside-click': POPOVER_DEFAULTS.HIDE_ON_CLICK_OUTSIDE,
     'focus-back-to-trigger': POPOVER_DEFAULTS.FOCUS_BACK,
     backdrop: POPOVER_DEFAULTS.BACKDROP,
-    flip: POPOVER_DEFAULTS.FLIP,
+    'disable-flip': POPOVER_DEFAULTS.DISABLE_FLIP,
     size: POPOVER_DEFAULTS.SIZE,
     'z-index': POPOVER_DEFAULTS.Z_INDEX,
     role: POPOVER_DEFAULTS.ROLE,

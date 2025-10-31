@@ -30,8 +30,10 @@ const styles = css`
     z-index: -1;
   }
   :host::part(container) {
+    height: 2rem;
     width: 100%;
     position: relative;
+    display: flex;
   }
   :host ::slotted(mdc-selectlistbox) {
     display: flex;
@@ -48,6 +50,7 @@ const styles = css`
     gap: 0.375rem;
     align-items: center;
     user-select: none;
+    width: 100%;
   }
   :host::part(base-container):hover {
     --mdc-select-background-color: var(--mds-color-theme-background-primary-hover);
@@ -56,8 +59,9 @@ const styles = css`
     --mdc-select-background-color: var(--mds-color-theme-background-primary-active);
   }
   :host::part(base-text) {
-    height: 1.3125rem;
-    width: 100%;
+    height: 100%;
+    /* 2rem is the complete width of dropdown icon */
+    width: calc(100% - 2rem);
     color: var(--mdc-select-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -70,9 +74,9 @@ const styles = css`
     flex-shrink: 0;
   }
   :host::part(icon-container) {
-    margin-left: auto;
-    display: flex;
-    padding: 2px;
+    padding: 0.5rem;
+    position: absolute;
+    inset-inline-end: 0%;
   }
 
   /* Popover height, width & padding overrides */

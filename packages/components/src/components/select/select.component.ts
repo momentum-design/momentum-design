@@ -18,13 +18,13 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
 
-import { ARROW_ICON, LISTBOX_ID, TRIGGER_ID } from './select.constants';
+import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
 import type { Placement } from './select.types';
 
@@ -150,6 +150,12 @@ class Select
    */
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
   popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+
+  /**
+   * Determines whether the dropdown should flip its position when it hits the boundary.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'disable-flip' }) disableFlip: boolean = DEFAULTS.DISABLE_FLIP;
 
   /**
    * ID of the element where the backdrop will be appended to.
@@ -740,13 +746,13 @@ class Select
           >
             ${this.selectedOption?.label ?? this.placeholder}
           </mdc-text>
-          <div part="icon-container">
-            <mdc-icon
-              size="1"
-              length-unit="rem"
-              name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
-            ></mdc-icon>
-          </div>
+        </div>
+        <div part="icon-container">
+          <mdc-icon
+            size="1"
+            length-unit="rem"
+            name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
+          ></mdc-icon>
         </div>
         <input
           id="${this.inputId}"
@@ -763,7 +769,7 @@ class Select
           aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
         />
         <mdc-popover
-          trigger="manual"
+          trigger="${TRIGGER.MANUAL}"
           triggerid="${TRIGGER_ID}"
           interactive
           ?visible="${this.displayPopover}"
@@ -776,6 +782,7 @@ class Select
           focus-trap
           size
           @keydown="${this.handleKeydownPopover}"
+          ?disable-flip="${this.disableFlip}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
