@@ -18,7 +18,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type Option from '../option/option.component';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
@@ -205,6 +205,7 @@ class Select
 
     this.loop = 'false';
     this.initialFocus = 0;
+    this.disableFlipping = DEFAULTS.DISABLE_FLIPPING;
     this.setupDebounceSearch();
   }
 
@@ -770,7 +771,7 @@ class Select
           aria-disabled="${ifDefined(this.disabled || this.softDisabled)}"
         />
         <mdc-popover
-          trigger="manual"
+          trigger="${TRIGGER.MANUAL}"
           triggerid="${TRIGGER_ID}"
           interactive
           ?visible="${this.displayPopover}"
