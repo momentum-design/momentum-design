@@ -235,7 +235,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(popover).toHaveAttribute('focus-back-to-trigger');
       await expect(popover).toHaveAttribute('focus-trap');
       await expect(popover).toHaveAttribute('size');
-      await expect(popover).not.toHaveAttribute('flip');
+      await expect(popover).not.toHaveAttribute('disable-flip');
       await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
       await expect(popover).toHaveAttribute('z-index', '1000');
     });

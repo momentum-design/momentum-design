@@ -33,9 +33,9 @@ Feature: Popover Component
       Then it should be placed below the trigger element by default,
       And the placement can be modified using the `placement` attribute to top, left, right, bottom, etc.
 
-    Scenario: Flip attribute
+    Scenario: Disable Flip attribute
       Given a popover component which is visible,
-      When the `flip` attribute is set to `false`,
+      When the `disable-flip` attribute is set to `false`,
       Then the floating popover should change the placement based on the availability of viewport.
 
     Scenario: Display arrow

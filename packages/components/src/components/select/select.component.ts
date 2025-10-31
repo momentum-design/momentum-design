@@ -155,8 +155,7 @@ class Select
    * Determines whether the dropdown should flip its position when it hits the boundary.
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'disable-flipping' }) disableFlipping: boolean =
-    DEFAULTS.DISABLE_FLIPPING;
+  @property({ type: Boolean, reflect: true, attribute: 'disable-flip' }) disableFlip: boolean = DEFAULTS.DISABLE_FLIP;
 
   /**
    * ID of the element where the backdrop will be appended to.
@@ -783,7 +782,7 @@ class Select
           focus-trap
           size
           @keydown="${this.handleKeydownPopover}"
-          ?flip="${this.disableFlipping}"
+          ?disable-flip="${this.disableFlip}"
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"

@@ -319,8 +319,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Changes the placement of popover to keep it in view when scrolling.
    * @default false
    */
-  @property({ type: Boolean, reflect: true })
-  flip: boolean = DEFAULTS.FLIP;
+  @property({ type: Boolean, reflect: true, attribute: 'disable-flip' })
+  disableFlip: boolean = DEFAULTS.DISABLE_FLIP;
 
   /**
    * Changes the size of popover to keep it in view when scrolling.
@@ -973,7 +973,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     ];
     let popoverOffset = this.offset;
 
-    if (!this.flip) {
+    if (!this.disableFlip) {
       middleware.push(
         flip({
           boundary,

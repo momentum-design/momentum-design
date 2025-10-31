@@ -87,7 +87,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).not.toHaveAttribute('visible');
     await expect(tooltip).not.toHaveAttribute('enabledFocusTrap');
     await expect(tooltip).not.toHaveAttribute('enabledPreventScroll');
-    await expect(tooltip).not.toHaveAttribute('flip');
+    await expect(tooltip).not.toHaveAttribute('disable-flip');
     await expect(tooltip).not.toHaveAttribute('focus-trap');
     await expect(tooltip).not.toHaveAttribute('prevent-scroll');
     await expect(tooltip).not.toHaveAttribute('close-button');
