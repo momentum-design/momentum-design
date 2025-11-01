@@ -12,6 +12,7 @@ const styles = [
       --mdc-textarea-text-secondary-normal: var(--mds-color-theme-text-secondary-normal);
       --mdc-textarea-text-font-size: var(--mds-font-size-body-midsize);
       --mdc-textarea-text-line-height: var(--mds-font-lineheight-body-midsize);
+      width: 100%;
     }
 
     :host::part(textarea) {
@@ -35,6 +36,7 @@ const styles = [
       overflow: hidden;
       padding: 0.375rem 0.25rem 0.25rem 0.75rem;
       background-color: var(--mdc-textarea-container-background-color);
+      width: 100%;
     }
 
     :host(:dir(rtl))::part(textarea-container) {
