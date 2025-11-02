@@ -321,13 +321,28 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
       });
 
-      await test.step('component should show tooltip when the listitem is focused and tooltip text is passed', async () => {
+      await test.step('component should not show tooltip when the listitem is expanded, focused and tooltip text is passed', async () => {
         const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
           'nav-id': navId,
           'show-label': true,
+          'tooltip-text': 'This is a tooltip Text',
+        });
+        await componentsPage.actionability.pressTab();
+        await expect(navmenuitem).toBeFocused();
+        const tooltip = componentsPage.page.locator('mdc-tooltip');
+        await expect(tooltip).toBeHidden();
+      });
+
+      await test.step('component should show tooltip when the listitem is collapsed, focused and tooltip text is passed', async () => {
+        const navmenuitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'icon-name': iconName,
+          'nav-id': navId,
+          'show-label': false,
           'tooltip-text': 'This is a tooltip Text',
         });
         await componentsPage.actionability.pressTab();

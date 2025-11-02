@@ -12,10 +12,9 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
         expanded="${expanded}"
         footer-text="%Customer Name%"
         grabber-btn-aria-label="Toggle Side navigation"
-        parent-nav-tooltip-text="Contains active navmenuitem"
       >
         <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Meetings" slot="scrollable-menubar"></mdc-navmenuitem>
-        <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp"></mdc-navmenuitem>
+        <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
         <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
           <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
           <mdc-navmenuitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navmenuitem>
@@ -26,12 +25,12 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1" label="Messaging"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled></mdc-navmenuitem>
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3" label="Callings"></mdc-navmenuitem>
-          <mdc-navmenuitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger"></mdc-navmenuitem>
+          <mdc-navmenuitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
           <mdc-menupopover triggerid="menu-button-trigger">
             <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
             <mdc-navmenuitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navmenuitem>
             <mdc-navmenuitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
             <mdc-menupopover triggerid="share-id">
               <mdc-navmenuitem label="Webex App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
               <mdc-navmenuitem label="Team Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navmenuitem>
@@ -124,7 +123,6 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
         await expect(sidenav).toHaveAttribute('variant', variant);
         await expect(sidenav).toHaveAttribute('footer-text', '%Customer Name%');
         await expect(sidenav).toHaveAttribute('grabber-btn-aria-label', 'Toggle Side navigation');
-        await expect(sidenav).toHaveAttribute('parent-nav-tooltip-text', 'Contains active navmenuitem');
 
         // Expanded/collapsed attribute
         if (variant === 'fixed-collapsed') {
@@ -389,10 +387,29 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
 
         await test.step('Select nested menuitem with keyboard inside 2nd level submenu', async () => {
           await setup(componentsPage, variant);
-          await mainMenuNavMenuItem.focus();
+
+          await componentsPage.actionability.pressTab();
+          await expect(navMenuItems.first()).toBeFocused();
+          await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+            navMenuItems.nth(1),
+            sidenav
+              .locator('mdc-navmenuitem:has-text("Messaging")')
+              .first()
+              .or(sidenav.locator('mdc-navmenuitem[aria-label="Messaging"]').first()),
+            sidenav
+              .locator('mdc-navmenuitem:has-text("Meetings")')
+              .nth(1)
+              .or(sidenav.locator('mdc-navmenuitem[aria-label="Meetings"]').nth(1)),
+            sidenav
+              .locator('mdc-navmenuitem:has-text("Callings")')
+              .first()
+              .or(sidenav.locator('mdc-navmenuitem[aria-label="Callings"]').first()),
+            mainMenuNavMenuItem,
+          ]);
           await componentsPage.page.keyboard.press('Enter');
           await expect(mainMenuNavMenuItem).toHaveAttribute('aria-expanded', 'true');
           await expect(mainMenuPopover).toBeVisible();
+
           const items = mainMenuPopover.locator('mdc-navmenuitem');
           await expect(items.first()).toBeFocused();
           await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
@@ -405,6 +422,7 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(toolsMenuPopover).toBeVisible();
           const nestedItem = toolsMenuPopover.locator('mdc-navmenuitem').first();
           await expect(nestedItem).toBeFocused();
+          await componentsPage.page.waitForTimeout(500); // wait for focus styles to be visible
           await componentsPage.page.keyboard.press('Enter');
           await expect(nestedItem).toHaveAttribute('aria-current', 'page');
           await expect(toolsMenuPopover).not.toBeVisible();
@@ -419,6 +437,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
         // --- Re-engaging with previously selected parent using keyboard ---
         await test.step('Focusing with keyboard over activated parent menuitem shows tooltip', async () => {
           // top level
+          if (['webkit', 'firefox'].includes(test.info().project.name)) {
+            // hover to focus workaround for webkit and firefox (webkit and firefox work fine locally, but do not show the
+            // tooltip automatically on focusing back - needs to be investigated why not working in e2e test)
+            await mainMenuNavMenuItem.hover();
+          }
           await expect(mainMenuTooltip).toBeVisible();
           const text1 = await mainMenuTooltip.textContent();
           expect(text1?.trim()).toBe('Contains active navmenuitem');

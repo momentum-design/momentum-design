@@ -227,33 +227,12 @@ test('mdc-navbuttonlink', async ({ componentsPage }) => {
     });
     await navbuttonlinkSheet.createMarkupWithCombination({}, options);
 
-    // navbuttonlink with dot badge
+    // navbuttonlink with postfix icon expanded
     navbuttonlinkSheet.setAttributes({
       label: primaryLabel,
       'icon-name': iconName,
       'show-label': true,
-      'badge-type': 'dot',
-    });
-    await navbuttonlinkSheet.createMarkupWithCombination({}, options);
-
-    // navbuttonlink with counter badge
-    navbuttonlinkSheet.setAttributes({
-      label: primaryLabel,
-      'icon-name': iconName,
-      'show-label': true,
-      'badge-type': 'counter',
-      counter: 5,
-    });
-    await navbuttonlinkSheet.createMarkupWithCombination({}, options);
-
-    // navbuttonlink with high counter badge
-    navbuttonlinkSheet.setAttributes({
-      label: primaryLabel,
-      'icon-name': iconName,
-      'show-label': true,
-      'badge-type': 'counter',
-      counter: 150,
-      'max-counter': 99,
+      'postfix-icon': 'pop-out-bold',
     });
     await navbuttonlinkSheet.createMarkupWithCombination({}, options);
 
@@ -275,22 +254,11 @@ test('mdc-navbuttonlink', async ({ componentsPage }) => {
     });
     await navbuttonlinkSheet.createMarkupWithCombination({}, options);
 
-    // Active navbuttonlink with badge (collapsed)
+    // navbuttonlink (collapsed)
     navbuttonlinkSheet.setAttributes({
       label: primaryLabel,
       'icon-name': iconName,
       active: true,
-      'badge-type': 'counter',
-      counter: 3,
-    });
-    await navbuttonlinkSheet.createMarkupWithCombination({}, options);
-
-    // navbuttonlink with dot badge (collapsed)
-    navbuttonlinkSheet.setAttributes({
-      label: primaryLabel,
-      'icon-name': iconName,
-      active: true,
-      'badge-type': 'dot',
       'aria-label': primaryLabel,
     });
     await navbuttonlinkSheet.createMarkupWithCombination({}, options);

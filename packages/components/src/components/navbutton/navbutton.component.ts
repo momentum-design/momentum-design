@@ -41,6 +41,13 @@ class Navbutton extends NavComponentMixin(Buttonsimple) {
       this.renderDynamicTooltip();
     }
 
+    if (changedProperties.has('showLabel')) {
+      // If collapsed and aria-label is not set, use visible label
+      if (!this.showLabel && !this.getAttribute('aria-label')?.length && this.label) {
+        this.setAttribute('aria-label', this.label);
+      }
+    }
+
     const context = this.sideNavigationContext?.value;
     if (!context) return;
 

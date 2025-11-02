@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -27,7 +28,7 @@ const render = (args: Args) => html`
       ?active=${args.active}
       ?show-label=${args['show-label']}
       ?disable-aria-current=${args['disable-aria-current']}
-      aria-label=${args['aria-label']}
+      aria-label=${ifDefined(args['aria-label'])}
       tooltip-text=${args['tooltip-text']}
       tooltip-placement=${args['tooltip-placement']}
       tooltip-boundary-padding=${args['tooltip-boundary-padding']}

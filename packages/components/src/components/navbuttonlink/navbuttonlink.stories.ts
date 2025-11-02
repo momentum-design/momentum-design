@@ -7,7 +7,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '.';
 import { hideControls } from '../../../config/storybook/utils';
-import '../link';
 import '../tooltip';
 
 const render = (args: Args) => html`
@@ -31,16 +30,6 @@ const render = (args: Args) => html`
     class="${ifDefined(args.class)}"
     style="${ifDefined(args.style)}"
     >${args.children}</mdc-navbuttonlink
-  >
-  <mdc-link
-    id="mdc-link-tooltip"
-    rel="noopener"
-    href="https://momentum.design/components/sidenavigation/navbuttonlink/"
-    target="_blank"
-    >Documentation</mdc-link
-  >
-  <mdc-tooltip triggerid="mdc-link-tooltip" placement="top" open-on-all-focusin
-    >This is a tooltip for the navbuttonlink component.</mdc-tooltip
   >
 `;
 

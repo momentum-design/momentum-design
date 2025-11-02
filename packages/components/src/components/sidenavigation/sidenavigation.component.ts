@@ -143,24 +143,24 @@ class SideNavigation extends Provider<SideNavigationContext> {
   private isFocused: boolean = false;
 
   /** @internal */
-  private handleMouseEnter() {
+  private handleMouseEnter = () => {
     this.isHovered = true;
     this.showGrabberButton();
-  }
+  };
 
   /** @internal */
-  private handleMouseLeave() {
+  private handleMouseLeave = () => {
     this.isHovered = false;
     if (!this.isFocused) {
       this.hideGrabberButton();
     }
-  }
+  };
 
   /** @internal */
-  private handleFocusIn(e: FocusEvent): void {
+  private handleFocusIn = (e: FocusEvent): void => {
     if (!this.isFocused) {
       if (this.navMenuItems.find(item => item === e.target)) {
-        // if target of focusin event is navMenuItem and it has not a visible focus, do not proceed further
+        // if target of focusin event is navMenuItem and it has not a visible focus, do not proceed further.
         // this is to avoid showing grabber button on click events
         if (!(e.target as HTMLElement).matches(':focus-visible')) {
           return;
@@ -169,17 +169,17 @@ class SideNavigation extends Provider<SideNavigationContext> {
       this.isFocused = true;
       this.showGrabberButton();
     }
-  }
+  };
 
   /** @internal */
-  private handleFocusOut(e: FocusEvent): void {
+  private handleFocusOut = (e: FocusEvent): void => {
     if (!this.contains(e.relatedTarget as Node)) {
       this.isFocused = false;
       if (!this.isHovered) {
         this.hideGrabberButton();
       }
     }
-  }
+  };
 
   /** @internal */
   private showGrabberButton() {
@@ -198,10 +198,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   private setupFlexibleOnHoverListeners = (): void => {
     if (this.variant === VARIANTS.FLEXIBLE_ON_HOVER) {
-      this.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
-      this.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
-      this.addEventListener('focusin', this.handleFocusIn.bind(this));
-      this.addEventListener('focusout', this.handleFocusOut.bind(this));
+      this.addEventListener('mouseenter', this.handleMouseEnter);
+      this.addEventListener('mouseleave', this.handleMouseLeave);
+      this.addEventListener('focusin', this.handleFocusIn);
+      this.addEventListener('focusout', this.handleFocusOut);
     }
   };
 
@@ -211,10 +211,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * @internal
    */
   private removeFlexibleOnHoverListeners = (): void => {
-    this.removeEventListener('mouseenter', this.handleMouseEnter.bind(this));
-    this.removeEventListener('mouseleave', this.handleMouseLeave.bind(this));
-    this.removeEventListener('focusin', this.handleFocusIn.bind(this));
-    this.removeEventListener('focusout', this.handleFocusOut.bind(this));
+    this.removeEventListener('mouseenter', this.handleMouseEnter);
+    this.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.removeEventListener('focusin', this.handleFocusIn);
+    this.removeEventListener('focusout', this.handleFocusOut);
   };
 
   public static get Context() {

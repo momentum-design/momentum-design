@@ -1,4 +1,4 @@
-import type { CSSResult, PropertyValues } from 'lit';
+import type { CSSResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
@@ -130,12 +130,23 @@ class NavMenuItem extends IconNameMixin(NavComponentMixin(MenuItem)) {
   protected override updated(changedProperties: Map<string, any>): void {
     super.updated(changedProperties);
 
+    if (changedProperties.has('active')) {
+      this.modifyIconName(this.active);
+    }
+
     if (
       changedProperties.has('tooltipText') ||
       changedProperties.has('showLabel') ||
       changedProperties.has('hasActiveChild')
     ) {
       this.renderDynamicTooltip();
+    }
+
+    if (changedProperties.has('showLabel')) {
+      // If collapsed and aria-label is not set, use visible label
+      if (!this.showLabel && !this.getAttribute('aria-label')?.length && this.label) {
+        this.setAttribute('aria-label', this.label);
+      }
     }
 
     const context = this.sideNavigationContext?.value;
@@ -189,13 +200,6 @@ class NavMenuItem extends IconNameMixin(NavComponentMixin(MenuItem)) {
   private handleClickEvent(): void {
     if (this.disabled) return;
     this.emitNavMenuItemActiveChange(this.active as boolean);
-  }
-
-  public override update(changedProperties: PropertyValues) {
-    super.update(changedProperties);
-    if (changedProperties.has('active')) {
-      this.modifyIconName(this.active);
-    }
   }
 
   private renderArrowIcon(showLabel: boolean | undefined) {

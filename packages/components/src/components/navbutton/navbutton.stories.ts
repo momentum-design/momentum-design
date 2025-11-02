@@ -22,7 +22,7 @@ const render = (args: Args) =>
     badge-type="${args['badge-type']}"
     counter=${args.counter}
     max-counter="${args['max-counter']}"
-    aria-label=${args['aria-label']}
+    aria-label=${ifDefined(args['aria-label'])}
     tooltip-text=${args['tooltip-text']}
     tooltip-placement=${args['tooltip-placement']}
     tooltip-boundary-padding=${args['tooltip-boundary-padding']}

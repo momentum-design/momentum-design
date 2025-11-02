@@ -84,7 +84,7 @@ const styles = [
       --mdc-icon-size: var(--mdc-navbuttonlink-postfix-icon-size);
     }
   `,
-  ...hostFocusRingStyles(),
+  ...hostFocusRingStyles(true),
 ];
 
 export default styles;

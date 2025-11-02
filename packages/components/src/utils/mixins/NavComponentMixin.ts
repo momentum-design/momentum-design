@@ -211,6 +211,7 @@ export const NavComponentMixin = <T extends Constructor<Component>>(superClass: 
           type="${ifDefined(this.badgeType)}"
           counter="${ifDefined(this.counter)}"
           max-counter="${this.maxCounter}"
+          aria-hidden="true"
         >
         </mdc-badge>
       `;
