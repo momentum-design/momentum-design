@@ -48,9 +48,9 @@ export const storyDescription = (story, context) => {
   content = html` ${docs} `;
 
   return html`
-    <div style="height: calc(100% - 2rem)">
+    <div style="height: calc(100% - 2rem); display: flex; flex-direction: column;">
       <div style="padding: 1rem; background: #262626; border-bottom: 1px solid #ffffff4d;">${content}</div>
-      <div style="padding: 1rem">${story()}</div>
+      <div style="padding: 1rem; flex: 1 0 auto;">${story()}</div>
     </div>
   `;
 };

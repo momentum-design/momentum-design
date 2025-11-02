@@ -46,6 +46,8 @@ import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
 import MenuSection from './components/menusection';
+import NavButton from './components/navbutton';
+import NavButtonLink from './components/navbuttonlink';
 import NavMenuItem from './components/navmenuitem';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
@@ -174,6 +176,8 @@ export {
   MenuItemRadio,
   MenuPopover,
   MenuSection,
+  NavButton,
+  NavButtonLink,
   NavMenuItem,
   OptGroup,
   Option,

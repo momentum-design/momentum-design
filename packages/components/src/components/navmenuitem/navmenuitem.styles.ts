@@ -8,7 +8,6 @@ const styles = [
     :host {
       --mdc-navmenuitem-color: var(--mds-color-theme-text-primary-normal);
       --mdc-navmenuitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
-      --mdc-navmenuitem-border-color: var(--mds-color-theme-outline-button-normal);
       --mdc-navmenuitem-expanded-width: 12.75rem;
 
       /* Background color when in default (normal) or active state */
@@ -26,7 +25,6 @@ const styles = [
       gap: 0.5rem;
       padding: 0.5rem;
       color: var(--mdc-navmenuitem-color);
-      border-color: var(--mdc-navmenuitem-border-color);
       border-radius: 0.5rem;
       cursor: pointer;
     }

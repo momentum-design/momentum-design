@@ -1,9 +1,9 @@
+/* eslint-disable no-param-reassign */
 import { createContext } from '@lit/context';
 
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import type NavMenuItem from '../navmenuitem/navmenuitem.component';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { TAG_NAME } from './sidenavigation.constants';
 
@@ -14,14 +14,11 @@ class SideNavigationContext {
 
   private currentActiveNavMenuItem?: NavMenuItem;
 
-  public parentNavTooltipText?: string;
-
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
-  constructor(defaultVariant?: string, defaultExpanded?: boolean, defaultParentNavTooltipText?: string) {
+  constructor(defaultVariant?: string, defaultExpanded?: boolean) {
     this.variant = defaultVariant;
     this.expanded = defaultExpanded;
-    this.parentNavTooltipText = defaultParentNavTooltipText;
   }
 
   public hasSiblingWithTriggerId(navMenuItem: NavMenuItem | undefined) {
@@ -78,8 +75,7 @@ class SideNavigationContext {
 
       const previousParents = this.getParentNavMenuItems(this.currentActiveNavMenuItem);
       previousParents.forEach(parent => {
-        parent.removeAttribute('tooltip-text');
-        parent.removeAttribute('tooltip-placement');
+        parent.hasActiveChild = false;
         parent.removeAttribute('active');
       });
     }
@@ -93,8 +89,7 @@ class SideNavigationContext {
 
     const newParents = this.getParentNavMenuItems(navMenuItem);
     newParents.forEach(parent => {
-      parent.setAttribute('tooltip-text', this.parentNavTooltipText || '');
-      parent.setAttribute('tooltip-placement', POPOVER_PLACEMENT.BOTTOM);
+      parent.hasActiveChild = true;
       parent.setAttribute('active', '');
     });
   }

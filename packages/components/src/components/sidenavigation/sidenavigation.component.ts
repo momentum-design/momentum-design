@@ -101,9 +101,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
   /**
    * Determines whether the sideNavigation is expanded or not.
    *
-   * @internal
+   * NOTE: For `fixed-collapsed` and `fixed-expanded` variants, this property is hard set to `false` and `true` respectively.
+   * For `flexible` and `flexible-on-hover` variants, this property can be toggled / controlled from parent.
+   *
+   * @default true
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'expanded' })
   expanded?: boolean;
 
   /**
@@ -114,12 +117,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   @property({ type: String, reflect: true, attribute: 'grabber-btn-aria-label' })
   grabberBtnAriaLabel?: string;
-
-  /**
-   * Tooltip text shown on parent nav items when a child is active.
-   */
-  @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
-  parentNavTooltipText?: string;
 
   constructor() {
     super({
@@ -161,8 +158,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /** @internal */
   private handleFocusIn(e: FocusEvent): void {
-    // Only set focus if the sidenavigation itself or a focus-visible element inside it is focused
-    if (e.target === this || (e.target as HTMLElement)?.matches(':focus-visible')) {
+    if (!this.isFocused) {
+      if (this.navMenuItems.find(item => item === e.target)) {
+        // if target of focusin event is navMenuItem and it has not a visible focus, do not proceed further
+        // this is to avoid showing grabber button on click events
+        if (!(e.target as HTMLElement).matches(':focus-visible')) {
+          return;
+        }
+      }
       this.isFocused = true;
       this.showGrabberButton();
     }
@@ -264,14 +267,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Is called on every re-render, see Provider class
    */
   protected updateContext(): void {
-    if (
-      this.context.value.variant !== this.variant ||
-      this.context.value.expanded !== this.expanded ||
-      this.context.value.parentNavTooltipText !== this.parentNavTooltipText
-    ) {
+    if (this.context.value.variant !== this.variant || this.context.value.expanded !== this.expanded) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
-      this.context.value.parentNavTooltipText = this.parentNavTooltipText;
       this.context.updateObservers();
     }
   }
@@ -323,8 +321,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
    *
    * @internal
    */
-  private toggleSideNavigation(): void {
+  private toggleSideNavigation(e: PointerEvent): void {
     this.expanded = !this.expanded;
+    if (this.expanded === false && this.variant === VARIANTS.FLEXIBLE_ON_HOVER && e.pointerType === 'mouse') {
+      // If collapsing via mouse click when in flexible-on-hover mode, reset hover/focus states
+      this.isHovered = false;
+      this.isFocused = false;
+      this.hideGrabberButton();
+    }
     this.dispatchEvent(new CustomEvent('toggle', { detail: { expanded: this.expanded } }));
   }
 
@@ -358,7 +362,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </slot>
           <div part="brand-logo-container">
             <slot name="brand-logo"></slot>
-            ${this.expanded
+            ${this.expanded && this.footerText
               ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="footer-text"
                   >${this.footerText}</mdc-text
                 >`

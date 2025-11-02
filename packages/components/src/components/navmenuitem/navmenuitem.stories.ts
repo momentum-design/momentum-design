@@ -5,6 +5,7 @@ import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navmenuitem.constants';
 
@@ -28,6 +29,8 @@ const render = (args: Args) => html`
       ?disable-aria-current=${args['disable-aria-current']}
       aria-label=${args['aria-label']}
       tooltip-text=${args['tooltip-text']}
+      tooltip-placement=${args['tooltip-placement']}
+      tooltip-boundary-padding=${args['tooltip-boundary-padding']}
     ></mdc-navmenuitem>
   </div>
 `;
@@ -38,6 +41,12 @@ const meta: Meta = {
   component: 'mdc-navmenuitem',
   render,
   argTypes: {
+    'show-label': {
+      control: 'boolean',
+    },
+    active: {
+      control: 'boolean',
+    },
     'nav-id': {
       control: 'text',
     },
@@ -58,13 +67,17 @@ const meta: Meta = {
       control: 'text',
       description: 'Label text displayed for the nav item.',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'tooltip-boundary-padding': {
+      control: 'number',
+    },
     disabled: {
-      control: 'boolean',
-    },
-    active: {
-      control: 'boolean',
-    },
-    'show-label': {
       control: 'boolean',
     },
     'aria-label': {
@@ -72,9 +85,6 @@ const meta: Meta = {
     },
     'disable-aria-current': {
       control: 'boolean',
-    },
-    'tooltip-text': {
-      control: 'text',
     },
     ...hideControls([
       '--mdc-listitem-default-background-color',
@@ -110,14 +120,14 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'show-label': true,
+    active: false,
     'nav-id': '1',
     'icon-name': 'placeholder-bold',
     'badge-type': ALLOWED_BADGE_TYPES.COUNTER,
     counter: 3,
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
-    active: false,
-    'show-label': true,
     label: 'Dashboard',
   },
 };
