@@ -14,13 +14,11 @@ import { DEFAULTS } from './menusection.constants';
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
  *
- * This component supports a mix of `menuitem`, `menuitemcheckbox`, and `menuitemradio` components.
+ * This component supports a mix of `menuitem`, `menuitemcheckbox`, and `menuitemradio` components. MenuSection can not be nested.
  *
  * - If multiple `menuitemradio` components are slotted into the section, the group enforces a single-selection rule:
  *   only one radio item can be selected at a time.
  * - If `menuitemcheckbox` components are included, their checked state can be toggled independently.
- *
- * **Note**: Nested `mdc-menusection` components are not well supported and should be avoided.
  *
  * @tagname mdc-menusection
  *
