@@ -20,6 +20,18 @@ Feature: AlertChip Accessibility, Appearance, and User Interaction
       Then the label should be visible
       And the alertchip should have proper ARIA attributes
 
+    Scenario: Render alertchip with icon and label
+      Given the alertchip has a label "Label"
+      And the alertchip has icon-name set
+      When the alertchip is rendered
+      Then the mentioned icon should be visible before the label
+
+    Scenario: Render alertchip with icon and long label
+      Given the alertchip has a label "Long label"
+      And the alertchip has icon-name set
+      When the alertchip is rendered
+      Then the icon should be visible and the text should be styled with ellipsis if it overflows
+
     Scenario: Render alertchip with different variants
       Given the alertchip has variant attribute set to each supported value
       When the alertchip is rendered

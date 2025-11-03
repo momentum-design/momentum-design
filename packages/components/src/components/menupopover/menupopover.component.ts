@@ -334,7 +334,7 @@ class MenuPopover extends Popover {
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
     // is handled separately in the respective handler.
-    if (!isValidMenuItem(target) || !event.isTrusted) return;
+    if (!isValidMenuItem(target) || !event.isTrusted || target.hasAttribute('soft-disabled')) return;
 
     // If the target has a submenu, show it and close other submenus on the same level
     if (this.getSubMenuPopoverOfTarget(target)) {
@@ -476,7 +476,7 @@ class MenuPopover extends Popover {
         break;
       }
       case KEYS.ENTER: {
-        if (!this.getSubMenuPopoverOfTarget(target)) {
+        if (!this.getSubMenuPopoverOfTarget(target) && !target.hasAttribute('soft-disabled')) {
           this.closeAllMenuPopovers();
           this.fireMenuItemAction(target);
           isKeyHandled = true;
@@ -521,7 +521,7 @@ class MenuPopover extends Popover {
     switch (event.key) {
       case KEYS.SPACE: {
         // If the target is a menu item, trigger its click event
-        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`)) {
+        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) && !target.hasAttribute('soft-disabled')) {
           // only close all menu popovers if the target is not opening a menu popover
           if (!this.getSubMenuPopoverOfTarget(target)) {
             this.closeAllMenuPopovers();

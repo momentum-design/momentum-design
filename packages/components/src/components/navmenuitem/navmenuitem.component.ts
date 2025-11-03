@@ -68,7 +68,7 @@ class NavMenuItem extends IconNameMixin(MenuItem) {
    * @default undefined
    */
   @property({ type: Boolean, reflect: true })
-  active?: boolean;
+  override active?: boolean;
 
   /**
    * Type of the badge

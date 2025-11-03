@@ -46,6 +46,8 @@ import type { BadgeType, IconVariant } from './badge.types';
  * @cssproperty --mdc-badge-error-foreground-color - The foreground color of the error badge.
  * @cssproperty --mdc-badge-error-background-color - The background color of the error badge.
  * @cssproperty --mdc-badge-overlay-background-color - The background color of the badge overlay.
+ * @cssproperty --mdc-badge-dot-width - The width of the dot badge. Default is 0.75rem (12px).
+ * @cssproperty --mdc-badge-dot-height - The height of the dot badge. Default is 0.75rem (12px).
  *
  * @csspart badge-dot - The dot notification badge.
  * @csspart badge-icon - The icon badge.

@@ -9,21 +9,25 @@ import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
   type SetupOptions = {
+    listHeader?: string;
     loop?: true;
     revertList?: true;
     initialItemCount?: number;
     initialFocus?: number;
     observeSizeChanges?: true;
     scrollAnchoring?: true;
+    withTooltip?: true;
   };
 
   const setup = async ({
+    listHeader,
     loop,
     revertList,
     initialItemCount,
     initialFocus,
     observeSizeChanges,
     scrollAnchoring,
+    withTooltip,
   }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
@@ -35,6 +39,8 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
             ${initialFocus !== undefined ? `initial-focus="${initialFocus}"` : ''}
             ${observeSizeChanges ? 'observe-size-changes' : ''}
             ${scrollAnchoring ? 'scroll-anchoring' : ''}
+            ${listHeader ? `list-header="${listHeader}"` : ''}
+            ${withTooltip ? 'with-tooltip' : ''}
           ></mdc-virtualizedlist-e2e>
           <mdc-button>after</mdc-button>
         </div>
@@ -69,6 +75,45 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).toHaveAttribute('at-bottom-threshold', DEFAULTS.IS_AT_BOTTOM_THRESHOLD.toString());
     await expect(vlist).toHaveAttribute('loop', DEFAULTS.LOOP);
     await expect(vlist).not.toHaveAttribute('scroll-anchoring');
+    await expect(vlist).not.toHaveAttribute('revert-list');
+    await expect(vlist).not.toHaveAttribute('observe-size-changes');
+  });
+
+  await test.step('renders correctly with list header', async () => {
+    const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
+      element: wrapper,
+    });
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      for (let i = 0; i < 25; i += 1) {
+        wrapperEl.addItem(`Message ${i}`);
+      }
+    });
+
+    await scrollList(vlist, 180);
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
+      element: wrapper,
+    });
+  });
+
+  await test.step('popovers should render correctly when defined inside the listitems', async () => {
+    const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
+
+    await expect(listItemLocator(vlist, 24)).toBeVisible();
+    await expect(listItemLocator(vlist, 24)).toBeInViewport();
+
+    await componentsPage.actionability.pressTab();
+    await componentsPage.actionability.pressTab();
+
+    await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
+    await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
+
+    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
+      element: wrapper,
+    });
   });
 
   await test.step('list populates correctly', async () => {
@@ -312,21 +357,69 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await test.step('revert-list', async () => {
       const { wrapper, vlist } = await setup({ revertList: true });
 
-      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-        wrapperEl.addItem(`Message 1`);
+      await test.step('new items are rendered at the bottom', async () => {
+        await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+          wrapperEl.addItem(`Message 1`);
+        });
+
+        // 299 = Height of wrapper = 300px - 1px for border
+        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
       });
 
-      // 299 = Height of wrapper = 300px - 1px for border
-      expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+      /* eslint-disable no-param-reassign */
+      await test.step('resizing the list keeps the bottom item in view', async () => {
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '200px';
+        });
 
-      for (let i = 2; i <= 5; i += 1) {
-        await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
-          wrapperEl.addItem(`Message ${index}`);
-        }, i);
-      }
+        await expect(async () => {
+          // 199 = Height of wrapper = 200px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(199);
+        }).toPass();
 
-      // 299 = Height of wrapper = 300px - 1px for border
-      expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '400px';
+        });
+
+        await expect(async () => {
+          // 399 = Height of wrapper = 400px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(399);
+        }).toPass();
+
+        await vlist.evaluate((vlistEl: VirtualizedList) => {
+          vlistEl.style.height = '';
+        });
+
+        await expect(async () => {
+          // 299 = Height of wrapper = 300px - 1px for border
+          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+        }).toPass();
+      });
+      /* eslint-enable no-param-reassign */
+
+      await test.step('added items appear below existing items and is still at the bottom', async () => {
+        for (let i = 2; i <= 5; i += 1) {
+          await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
+            wrapperEl.addItem(`Message ${index}`);
+          }, i);
+        }
+
+        // 299 = Height of wrapper = 300px - 1px for border
+        expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(299);
+      });
+
+      await test.step('normal scrolling starts after enough items to fill the viewport', async () => {
+        for (let i = 6; i <= 10; i += 1) {
+          await wrapper.evaluate((wrapperEl: VirtualizedListE2E, index) => {
+            wrapperEl.addItem(`Message ${index}`);
+          }, i);
+        }
+
+        // 1px for the border
+        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().top)).toBe(1);
+        // The last element should be below the bottom of the list viewport
+        expect(await listItemLocator(vlist, 8).evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(299);
+      });
     });
 
     await test.step('observe-size-changes', async () => {
@@ -353,12 +446,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       await expect(listItemLocator(vlist, 0)).toBeVisible();
 
-      expect(
-        await vlist.evaluate(
-          (vlistEl: VirtualizedList) =>
-            vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
-        ),
-      ).toBe(wrapperHeight);
+      await expect(async () => {
+        expect(
+          await vlist.evaluate(
+            (vlistEl: VirtualizedList) =>
+              vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
+          ),
+        ).toBe(wrapperHeight);
+      }).toPass();
     });
   });
 
