@@ -51,8 +51,6 @@ import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
  *
  * Menu does not close when:
  * - Space key pressed on a menu item radio or menu item checkbox
- * 
- * **Note**: Nested `mdc-menusection` components are not well supported and should be avoided.
  *
  * @tagname mdc-menupopover
  *
