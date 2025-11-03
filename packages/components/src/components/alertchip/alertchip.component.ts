@@ -47,7 +47,7 @@ class AlertChip extends IconNameMixin(Buttonsimple) {
    *
    * @default neutral
    */
-  @property({ type: String }) variant: VariantType = DEFAULTS.VARIANT;
+  @property({ type: String, reflect: true }) variant: VariantType = DEFAULTS.VARIANT;
 
   /**
    * The visible label text of the alertchip.
