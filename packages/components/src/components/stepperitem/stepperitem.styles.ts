@@ -50,7 +50,6 @@ const styles = css`
 
   :host([variant='stacked'])::part(label-container) {
     width: 8.75rem;
-    padding: 0.25rem var(--mdc-stepperitem-label-padding-inline, 0);
   }
 
   :host([variant='stacked'])::part(label),
