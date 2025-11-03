@@ -29,6 +29,12 @@ Feature: Chip Accessibility, Appearance, and User Interaction
       Then the icon should be visible before the label
       And the layout should be properly aligned
 
+    Scenario: Render chip with icon and long label
+      Given the chip has a label "Long label"
+      And the chip has icon-name set
+      When the chip is rendered
+      Then the icon should be visible and the text should be styled with ellipsis if it overflows
+
     Scenario: Render chip with different colors
       Given the chip has color attribute set to each supported value
       When the chip is rendered

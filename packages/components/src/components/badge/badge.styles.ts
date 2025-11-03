@@ -23,6 +23,9 @@ const styles = [
 
       --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
 
+      --mdc-badge-dot-width: 0.75rem;
+      --mdc-badge-dot-height: 0.75rem;
+
       color: var(--mdc-badge-primary-foreground-color);
     }
     :host::part(badge-overlay) {
@@ -37,8 +40,8 @@ const styles = [
       background-color: var(--mdc-badge-primary-background-color);
     }
     :host::part(badge-dot) {
-      width: 0.75rem;
-      height: 0.75rem;
+      width: var(--mdc-badge-dot-width);
+      height: var(--mdc-badge-dot-height);
       border-radius: 50%;
       background-color: var(--mdc-badge-primary-background-color);
     }

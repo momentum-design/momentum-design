@@ -155,7 +155,6 @@ export const Example: StoryObj = {
     name: 'textarea',
     label: 'Label',
     rows: DEFAULTS.ROWS,
-    cols: DEFAULTS.COLS,
     wrap: DEFAULTS.WRAP,
     required: true,
     placeholder: 'Placeholder',
@@ -174,7 +173,6 @@ const commonArgs = {
   name: 'textarea',
   label: 'Label',
   rows: DEFAULTS.ROWS,
-  cols: DEFAULTS.COLS,
   wrap: DEFAULTS.WRAP,
 };
 

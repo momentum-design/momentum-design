@@ -41,7 +41,7 @@ const styles = css`
     cursor: unset;
   }
   :host(:focus-within)::part(combobox__button) {
-    border-left: 1px solid var(--mdc-combobox-focused-border-color);
+    border-inline-start-color: var(--mdc-combobox-border-color);
   }
   :host(:not([disabled]))::part(combobox__base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
@@ -53,7 +53,7 @@ const styles = css`
     border-color: var(--mdc-help-text-color);
   }
   :host([disabled])::part(combobox__button) {
-    border-left: 1px solid var(--mdc-combobox-text-color-disabled);
+    border-inline-start-color: var(--mdc-combobox-text-color-disabled);
   }
   :host::part(mdc-input) {
     width: calc(100% - 1.5rem);

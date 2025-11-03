@@ -149,6 +149,17 @@ const styles = [
       left: -0.75rem;
       top: 0.875rem;
     }
+
+    :host mdc-badge {
+      --mdc-badge-dot-width: 1rem;
+      --mdc-badge-dot-height: 1rem;
+    }
+
+    @media (forced-colors: active) {
+      :host(:not([in-menupopover]))::before {
+        background-color: ButtonText;
+      }
+    }
   `,
   ...hostFocusRingStyles(),
 ];
