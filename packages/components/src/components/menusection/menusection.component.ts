@@ -20,6 +20,8 @@ import { DEFAULTS } from './menusection.constants';
  *   only one radio item can be selected at a time.
  * - If `menuitemcheckbox` components are included, their checked state can be toggled independently.
  *
+ * **Note**: Nested `mdc-menusection` components are not well supported and should be avoided.
+ *
  * @tagname mdc-menusection
  *
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
