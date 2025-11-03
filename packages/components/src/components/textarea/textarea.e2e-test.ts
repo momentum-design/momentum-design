@@ -80,7 +80,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return textarea;
 };
 
-test.use({ viewport: { width: 800, height: 1600 } });
+test.use({ viewport: { width: 800, height: 2000 } });
 test('mdc-textarea', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
@@ -204,7 +204,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
       rows: 3,
-      cols: 12,
+      style: 'width: 135px',
     };
     const textareaStickerSheet = new StickerSheet(componentsPage, 'mdc-textarea');
 
@@ -213,12 +213,12 @@ test('mdc-textarea', async ({ componentsPage }) => {
       'help-text-type': VALIDATION,
     });
 
-    // textarea field with rows set to 7 & cols to 30
-    textareaStickerSheet.setAttributes({ ...attributes, rows: 5, cols: 30 });
+    // textarea field with rows set to 5 & width to 330px
+    textareaStickerSheet.setAttributes({ ...attributes, rows: 5, style: 'width: 330px; margin-top: 0.5rem' });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 100
-    textareaStickerSheet.setAttributes({ ...attributes, 'max-character-limit': 100, value: 'Example Text', cols: 30 });
+    textareaStickerSheet.setAttributes({ ...attributes, 'max-character-limit': 100, value: 'Example Text', style: 'width: 330px; margin-top: 0.5rem' });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 10 & value exceeding the limit
@@ -228,7 +228,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
       value: 'This is a long text',
       'help-text': 'Input must not exceed 10 characters',
       'help-text-type': 'error',
-      cols: 30,
+      style: 'width: 330px; margin-top: 0.5rem',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -237,7 +237,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
       ...attributes,
       value: 'Disabled',
       disabled: '',
-      cols: 30,
+      style: 'width: 330px; margin-top: 0.5rem',
       'toggletip-text': 'This is additional toggletip text that provides more context',
       'info-icon-aria-label': 'Additional information',
     });
@@ -247,15 +247,14 @@ test('mdc-textarea', async ({ componentsPage }) => {
     textareaStickerSheet.setAttributes({
       ...attributes,
       label: 'This is a very long label text that should wrap when constrained to a narrow width',
-      style: 'width: 7.5rem;',
-      cols: 30,
+      style: 'width: 7.5rem; margin-top: 0.5rem',
       'toggletip-text': 'This is additional toggletip text that provides more context',
       'info-icon-aria-label': 'Additional information',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // readonly textarea field with value
-    textareaStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: '', cols: 30 });
+    textareaStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: '', style: 'width: 330px; margin-top: 0.5rem' });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea that is marked required
@@ -263,7 +262,16 @@ test('mdc-textarea', async ({ componentsPage }) => {
       ...attributes,
       required: 'required',
       placeholder: 'Textarea is required',
-      cols: 30,
+      style: 'width: 330px; margin-top: 0.5rem',
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // textarea field with long help-text for word wrapping
+    textareaStickerSheet.setAttributes({
+      ...attributes,
+      'help-text': 'This is a very long help text that should wrap appropriately when the textarea has a constrained width to ensure readability',
+      'help-text-type': 'info',
+      style: 'width: 330px; margin-top: 0.5rem',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
