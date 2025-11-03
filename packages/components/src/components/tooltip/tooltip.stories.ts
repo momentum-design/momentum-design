@@ -75,7 +75,7 @@ const meta: Meta = {
     ...hideControls([
       'trigger',
       'z-index',
-      'flip',
+      'disable-flip',
       'role',
       'focus-trap',
       'prevent-scroll',

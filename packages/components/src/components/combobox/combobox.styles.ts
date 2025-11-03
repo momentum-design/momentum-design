@@ -55,9 +55,6 @@ const styles = css`
   :host([disabled])::part(combobox__button) {
     border-inline-start-color: var(--mdc-combobox-text-color-disabled);
   }
-  :host::part(mdc-input) {
-    width: calc(100% - 1.5rem);
-  }
   :host::part(combobox__button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
@@ -66,6 +63,10 @@ const styles = css`
   }
   :host::part(no-result-text) {
     pointer-events: none;
+  }
+  :host::part(input-text) {
+    /* 2rem is the complete width of dropdown button */
+    width: calc(100% - 2rem);
   }
   :host([disabled]) input,
   :host([disabled]) mdc-input {
