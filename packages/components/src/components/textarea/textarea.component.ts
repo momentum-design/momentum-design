@@ -9,6 +9,7 @@ import type { AutoCapitalizeType } from '../input/input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { KEYS } from '../../utils/keys';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
@@ -156,6 +157,12 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
 
   /** @internal */
   private characterLimitExceedingFired: boolean = false;
+
+  /** @internal */
+  private resizeStartY: number = 0;
+
+  /** @internal */
+  private resizeStartRows: number = 0;
 
   protected get textarea(): HTMLTextAreaElement {
     return this.inputElement;
@@ -378,6 +385,77 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     return html` <div part="textarea-footer">${this.renderHelperText()} ${this.renderCharacterCounter()}</div> `;
   }
 
+  /**
+   * Handles the resize button keydown event for keyboard-based resizing.
+   * @param event - The keyboard event.
+   */
+  private handleResizeKeyDown(event: KeyboardEvent) {
+    const currentRows = this.rows || DEFAULTS.ROWS;
+    let newRows: number | undefined;
+
+    if (event.key === KEYS.ARROW_UP) {
+      newRows = Math.max(1, currentRows - 1);
+    } else if (event.key === KEYS.ARROW_DOWN) {
+      newRows = currentRows + 1;
+    }
+
+    if (newRows !== undefined) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.rows = newRows;
+    }
+  }
+
+  /**
+   * Handles the start of pointer-based resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerDown = (event: PointerEvent) => {
+    const resizeButton = event.currentTarget as HTMLElement;
+    if (!resizeButton) return;
+
+    event.preventDefault();
+
+    this.resizeStartY = event.clientY;
+    this.resizeStartRows = this.rows || DEFAULTS.ROWS;
+
+    resizeButton.setPointerCapture(event.pointerId);
+    resizeButton.addEventListener('pointermove', this.handlePointerMove);
+    resizeButton.addEventListener('pointerup', this.handlePointerUp);
+    resizeButton.addEventListener('lostpointercapture', this.handlePointerUp);
+  };
+
+  /**
+   * Handles pointer movement during resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerMove = (event: PointerEvent) => {
+    if (!this.textarea) return;
+
+    const deltaY = event.clientY - this.resizeStartY;
+    const lineHeight = parseFloat(window.getComputedStyle(this.textarea).lineHeight);
+    const rowsChange = Math.round(deltaY / lineHeight);
+
+    this.rows = Math.max(1, this.resizeStartRows + rowsChange);
+  };
+
+  /**
+   * Handles the end of pointer-based resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerUp = (event: PointerEvent) => {
+    const resizeButton = event.currentTarget as HTMLElement;
+    if (!resizeButton) return;
+
+    if (event.type === 'pointerup' && resizeButton.hasPointerCapture(event.pointerId)) {
+      resizeButton.releasePointerCapture(event.pointerId);
+    }
+
+    resizeButton.removeEventListener('pointermove', this.handlePointerMove);
+    resizeButton.removeEventListener('pointerup', this.handlePointerUp);
+    resizeButton.removeEventListener('lostpointercapture', this.handlePointerUp);
+  };
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -410,6 +488,20 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
         ></mdc-screenreaderannouncer>
+        ${
+          !this.disabled &&
+          !this.readonly &&
+          html`
+            <mdc-button
+              class="resize-button own-focus-ring"
+              variant="tertiary"
+              size="20"
+              prefix-icon="resize-corner-regular"
+              @keydown=${this.handleResizeKeyDown}
+              @pointerdown=${this.handlePointerDown}
+            ></mdc-button>
+          `
+        }
       </div>
       ${this.renderTextareaFooter()}
     `;
