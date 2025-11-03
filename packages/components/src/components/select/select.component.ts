@@ -637,34 +637,40 @@ class Select
     if (this.disabled || this.softDisabled || this.readonly) {
       return;
     }
+
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
       case KEYS.ENTER:
       case KEYS.SPACE:
         this.displayPopover = true;
+        event.preventDefault();
         event.stopPropagation();
         break;
       case KEYS.HOME: {
         this.displayPopover = true;
         this.resetTabIndexAndSetFocusAfterUpdate(0);
+        event.preventDefault();
+        event.stopPropagation();
         break;
       }
       case KEYS.END: {
         this.displayPopover = true;
         this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
+        event.preventDefault();
+        event.stopPropagation();
         break;
       }
       default: {
         if (event.key.length === 1) {
           this.displayPopover = true;
           this.handleSelectedOptionByKeyInput(event.key);
+          event.preventDefault();
+          event.stopPropagation();
         }
         break;
       }
     }
-    event.preventDefault();
-    event.stopPropagation();
   }
 
   private resetTabIndexAndSetFocusAfterUpdate(newOptionIndex: number): void {
