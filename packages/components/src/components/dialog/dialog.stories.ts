@@ -13,6 +13,7 @@ import '../popover';
 import '../tooltip';
 import '../list';
 import '../listitem';
+import '../textarea';
 
 const createDialog = (args: Args, content: TemplateResult, onClose: () => void) =>
   html`<mdc-dialog
@@ -109,6 +110,14 @@ const dialogWithIframeContent = () => html`
     <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
     <iframe src="https://example.com" width="100%" height="300px"></iframe>
     <mdc-button>This is a mdc-button after the Iframe</mdc-button>
+  </div>
+`;
+
+const dialogWithTextarea = () => html`
+  <div slot="dialog-body">
+    <p>This is the body content of the dialog with a textarea. Try out pressing Tab to see the Focus Trap in action.</p>
+    <mdc-textarea label="Type something here..." rows="4" cols="50"></mdc-textarea>
+    <mdc-button>This is a mdc-button after the Textarea</mdc-button>
   </div>
 `;
 
@@ -256,6 +265,20 @@ const renderDialogWithinDialog = (args: Args) => {
       `,
       onClose,
     )}
+  `;
+};
+
+const renderDialogWithTextarea = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)} ${createDialog(args, dialogWithTextarea(), onClose)}
   `;
 };
 
@@ -565,6 +588,14 @@ export const DialogWithIframe: StoryObj = {
 
 export const DialogWithList: StoryObj = {
   render: renderDialogWithList,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[1],
+  },
+};
+
+export const DialogWithTextarea: StoryObj = {
+  render: renderDialogWithTextarea,
   args: {
     ...commonProperties,
     size: DIALOG_SIZE[1],

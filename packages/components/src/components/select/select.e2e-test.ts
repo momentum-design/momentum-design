@@ -3,8 +3,10 @@ import { expect, Locator } from '@playwright/test';
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 
 import type Select from './select.component';
+import { TRIGGER_ID } from './select.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -217,6 +219,25 @@ test('mdc-select', async ({ componentsPage }) => {
       const arrowIcon = select.locator('mdc-icon[name="arrow-down-bold"]');
       await arrowIcon.waitFor();
       expect(arrowIcon).toBeDefined();
+    });
+
+    await test.step('should have default attributes on select dropdown popover', async () => {
+      const select = await setup({ componentsPage, children: defaultChildren() });
+      const popover = select.locator('mdc-popover');
+      await expect(popover).toHaveAttribute('trigger', TRIGGER.MANUAL);
+      await expect(popover).toHaveAttribute('triggerid', TRIGGER_ID);
+      await expect(popover).toHaveAttribute('interactive');
+      await expect(popover).not.toHaveAttribute('visible');
+      await expect(popover).not.toHaveAttribute('role');
+      await expect(popover).toHaveAttribute('backdrop');
+      await expect(popover).toHaveAttribute('hide-on-outside-click');
+      await expect(popover).toHaveAttribute('hide-on-escape');
+      await expect(popover).toHaveAttribute('focus-back-to-trigger');
+      await expect(popover).toHaveAttribute('focus-trap');
+      await expect(popover).toHaveAttribute('size');
+      await expect(popover).not.toHaveAttribute('disable-flip');
+      await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
+      await expect(popover).toHaveAttribute('z-index', '1000');
     });
 
     await test.step('should respect select width, listbox width and height overrides via CSS variables', async () => {
@@ -902,6 +923,15 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('tabindex', '0');
         await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('value', 'option3');
       });
+    });
+
+    await test.step('should handle tab correctly when dropdown is closed', async () => {
+      const form = await setup({ componentsPage, children: defaultChildren() }, true);
+      await componentsPage.actionability.pressTab();
+      await expect(form.locator('mdc-select')).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+      await expect(form.locator('mdc-button')).toBeFocused();
     });
   });
 });
