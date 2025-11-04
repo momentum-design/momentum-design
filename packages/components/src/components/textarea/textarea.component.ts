@@ -91,7 +91,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * The rows attribute specifies the visible number of lines in a text area.
    * @default 5
    */
-  @property({ type: Number }) rows?: number = DEFAULTS.ROWS;
+  @property({ type: Number, reflect: true }) rows?: number = DEFAULTS.ROWS;
 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
@@ -145,6 +145,13 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * Example output: "93 out of 140 characters are typed."
    */
   @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
+
+  /**
+   * Provides an accessible label for the resize button.
+   * This value is used to set the `aria-label` attribute for the button.
+   * @default ''
+   */
+  @property({ type: String, attribute: 'resize-button-aria-label' }) resizeButtonAriaLabel?: string;
 
   /**
    * @internal
@@ -390,6 +397,9 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * @param event - The keyboard event.
    */
   private handleResizeKeyDown(event: KeyboardEvent) {
+    if (this.readonly) {
+      return;
+    }
     const currentRows = this.rows || DEFAULTS.ROWS;
     let newRows: number | undefined;
 
@@ -411,6 +421,9 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * @param event - The pointer event.
    */
   private handlePointerDown = (event: PointerEvent) => {
+    if (this.readonly) {
+      return;
+    }
     const resizeButton = event.currentTarget as HTMLElement;
     if (!resizeButton) return;
 
@@ -488,20 +501,17 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
         ></mdc-screenreaderannouncer>
-        ${
-          !this.disabled &&
-          !this.readonly &&
-          html`
-            <mdc-button
-              class="resize-button own-focus-ring"
-              variant="tertiary"
-              size="20"
-              prefix-icon="resize-corner-regular"
-              @keydown=${this.handleResizeKeyDown}
-              @pointerdown=${this.handlePointerDown}
-            ></mdc-button>
-          `
-        }
+        <mdc-button
+          part="resize-button"
+          class="own-focus-ring"
+          variant="tertiary"
+          size="24"
+          prefix-icon="resize-corner-regular"
+          aria-label=${this.resizeButtonAriaLabel ?? ''}
+          ?disabled="${this.disabled || this.readonly}"
+          @keydown=${this.handleResizeKeyDown}
+          @pointerdown=${this.handlePointerDown}
+        ></mdc-button>
       </div>
       ${this.renderTextareaFooter()}
     `;

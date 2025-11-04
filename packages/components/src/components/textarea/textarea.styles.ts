@@ -105,7 +105,7 @@ const styles = [
       pointer-events: none;
     }
 
-    .resize-button {
+    :host::part(resize-button) {
       position: absolute;
       bottom: 0.25rem;
       right: 0.25rem;
@@ -115,15 +115,20 @@ const styles = [
       border-radius: 50%;
     }
 
-    .resize-button:focus-visible {
+    :host::part(resize-button):focus-visible {
       opacity: 1;
     }
 
-    :host(:dir(rtl)) .resize-button {
+    :host(:dir(rtl))::part(resize-button) {
       left: 0.25rem;
       right: unset;
       cursor: nesw-resize;
       transform: scaleX(-1);
+    }
+
+    :host([readonly])::part(resize-button),
+    :host([disabled])::part(resize-button) {
+      cursor: default;
     }
   `,
   ...hostFocusRingStyles(true),
