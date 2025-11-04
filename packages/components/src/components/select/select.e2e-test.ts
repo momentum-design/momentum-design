@@ -924,5 +924,14 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('value', 'option3');
       });
     });
+
+    await test.step('should handle tab correctly when dropdown is closed', async () => {
+      const form = await setup({ componentsPage, children: defaultChildren() }, true);
+      await componentsPage.actionability.pressTab();
+      await expect(form.locator('mdc-select')).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+      await expect(form.locator('mdc-button')).toBeFocused();
+    });
   });
 });
