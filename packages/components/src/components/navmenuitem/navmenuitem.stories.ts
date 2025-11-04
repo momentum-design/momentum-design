@@ -28,6 +28,7 @@ const render = (args: Args) => html`
       ?active=${args.active}
       ?show-label=${args['show-label']}
       ?disable-aria-current=${args['disable-aria-current']}
+      ?cannot-activate=${args['cannot-activate']}
       aria-label=${ifDefined(args['aria-label'])}
       tooltip-text=${args['tooltip-text']}
       tooltip-placement=${args['tooltip-placement']}
@@ -46,6 +47,9 @@ const meta: Meta = {
       control: 'boolean',
     },
     active: {
+      control: 'boolean',
+    },
+    'cannot-activate': {
       control: 'boolean',
     },
     'nav-id': {

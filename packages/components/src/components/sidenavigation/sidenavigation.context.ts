@@ -64,7 +64,7 @@ class SideNavigationContext {
   public setCurrentActiveNavMenuItem(navMenuItem: NavMenuItem | undefined) {
     const isSameItem = this.currentActiveNavMenuItem?.navId === navMenuItem?.navId;
     const shouldSkip =
-      navMenuItem?.disableAriaCurrent || this.hasSiblingWithTriggerId(navMenuItem) || navMenuItem?.softDisabled;
+      navMenuItem?.cannotActivate || this.hasSiblingWithTriggerId(navMenuItem) || navMenuItem?.softDisabled;
 
     if (isSameItem || shouldSkip) return;
 
@@ -84,7 +84,9 @@ class SideNavigationContext {
     if (!navMenuItem) return;
 
     this.currentActiveNavMenuItem = navMenuItem;
-    navMenuItem.setAttribute('aria-current', 'page');
+    if (!navMenuItem?.disableAriaCurrent) {
+      navMenuItem.setAttribute('aria-current', 'page');
+    }
     navMenuItem.setAttribute('active', '');
 
     const newParents = this.getParentNavMenuItems(navMenuItem);

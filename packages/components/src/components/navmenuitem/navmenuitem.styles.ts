@@ -20,6 +20,7 @@ const styles = [
       --mdc-navmenuitem-disabled-active-background-color: var(--mds-color-theme-button-secondary-active-disabled);
 
       position: relative;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -27,6 +28,22 @@ const styles = [
       color: var(--mdc-navmenuitem-color);
       border-radius: 0.5rem;
       cursor: pointer;
+    }
+
+    :host::part(icon) {
+      display: block;
+    }
+
+    :host([active])::part(icon) {
+      display: none;
+    }
+
+    :host::part(filled-icon) {
+      display: none;
+    }
+
+    :host([active])::part(filled-icon) {
+      display: block;
     }
 
     :host(:not([in-menupopover])) {
@@ -136,15 +153,27 @@ const styles = [
       flex-shrink: 0;
     }
 
-    :host(:dir(ltr))::part(arrow) {
+    :host([show-label]:dir(ltr))::part(arrow) {
       position: absolute;
       right: -0.75rem;
       top: 0.875rem;
     }
 
-    :host(:dir(rtl))::part(arrow) {
+    :host([show-label]:dir(rtl))::part(arrow) {
       position: absolute;
       left: -0.75rem;
+      top: 0.875rem;
+    }
+
+    :host(:dir(ltr))::part(arrow) {
+      position: absolute;
+      right: -0.25rem;
+      top: 0.875rem;
+    }
+
+    :host(:dir(rtl))::part(arrow) {
+      position: absolute;
+      left: -0.25rem;
       top: 0.875rem;
     }
 

@@ -77,6 +77,7 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-expanded-width - width of the sideNavigation when expanded
  * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collapsed
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
+ * @cssproperty --mdc-sidenavigation-top-padding - padding for the top of the scrollable section - note: if setting to 0 focus ring might be cut off
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   /**
@@ -93,6 +94,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /**
    * Displays footer text in the bottom section of the sidenavigation.
+   *
+   * Note: if footerText is not provided, the bottom brand logo section will not be rendered.
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'footer-text' })
@@ -117,6 +120,13 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   @property({ type: String, reflect: true, attribute: 'grabber-btn-aria-label' })
   grabberBtnAriaLabel?: string;
+
+  /**
+   * Hides the divider between the scrollable and fixed sections when set to true.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-fixed-section-divider' })
+  hideFixedSectionDivider: boolean = false;
 
   constructor() {
     super({
@@ -166,6 +176,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           return;
         }
       }
+
       this.isFocused = true;
       this.showGrabberButton();
     }
@@ -346,28 +357,37 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
     return html`
       <div part="side-navigation-container" id="side-nav-container">
-        <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
+        <div part="scrollable-section" @keydown=${this.preventScrollOnSpace}>
           <slot name="scrollable-section">
-            <mdc-menubar>
+            <mdc-menubar part="scrollable-menubar">
               <slot name="scrollable-menubar"></slot>
             </mdc-menubar>
           </slot>
         </div>
-        <mdc-divider variant="gradient" part="separator"></mdc-divider>
+        ${!this.hideFixedSectionDivider
+          ? html`<mdc-divider variant="gradient" part="separator"></mdc-divider>`
+          : nothing}
         <div part="fixed-section">
           <slot name="fixed-section">
-            <mdc-menubar>
+            <mdc-menubar part="fixed-menubar">
               <slot name="fixed-menubar"></slot>
             </mdc-menubar>
           </slot>
-          <div part="brand-logo-container">
-            <slot name="brand-logo"></slot>
-            ${this.expanded && this.footerText
-              ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="footer-text"
-                  >${this.footerText}</mdc-text
-                >`
-              : nothing}
-          </div>
+          ${this.footerText
+            ? html`
+                <div part="brand-logo-container">
+                  <slot name="brand-logo"></slot>
+                  ${this.expanded
+                    ? html` <mdc-text
+                        type=${TYPE.BODY_MIDSIZE_MEDIUM}
+                        tagname=${VALID_TEXT_TAGS.SPAN}
+                        part="footer-text"
+                        >${this.footerText}</mdc-text
+                      >`
+                    : nothing}
+                </div>
+              `
+            : nothing}
         </div>
       </div>
       ${this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER

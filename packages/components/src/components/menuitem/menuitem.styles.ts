@@ -7,7 +7,7 @@ const styles = css`
   }
   :host::part(trailing-arrow),
   :host::part(leading-arrow) {
-    --mdc-icon-size: 1.25rem;
+    --mdc-icon-size: 1rem;
   }
 `;
 

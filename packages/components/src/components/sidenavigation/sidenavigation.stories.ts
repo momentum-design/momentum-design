@@ -10,8 +10,6 @@ import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
 import '../menuitem';
 import '../menupopover';
 import '../navmenuitem';
-import '../navbutton';
-import '../navbuttonlink';
 import '../icon';
 import '../menusection';
 import '../banner';
@@ -23,6 +21,7 @@ const render = (args: Args) => html`
       variant="${args.variant}"
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -125,11 +124,12 @@ const render = (args: Args) => html`
 `;
 
 const renderMixedSideNavigation = (args: Args) => html`
-  <div style="height: 100%; margin: 1rem">
+  <div style="height: calc(100vh - 320px); margin: 1rem">
     <mdc-sidenavigation
       ?expanded="${args.expanded}"
       variant="${args.variant}"
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -166,18 +166,41 @@ const renderMixedSideNavigation = (args: Args) => html`
       </mdc-menusection>
 
       <!-- Lower Nav (Fixed section) -->
-      <mdc-menusection slot="fixed-section">
-        <mdc-navbutton icon-name="settings-bold" nav-id="23" label="Settings" tooltip-text="Settings"></mdc-navbutton>
-        <mdc-navbuttonlink
+      <mdc-menusection slot="fixed-menubar" show-divider>
+        <mdc-navmenuitem
+          icon-name="settings-bold"
+          nav-id="13"
+          label="Settings"
+          tooltip-text="Settings"
+          cannot-activate
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="help-circle-bold"
+          nav-id="14"
+          label="Help"
+          tooltip-text="Help, opens a new tab"
+          cannot-activate
+          tooltip-appearance="always"
+          @click="${() => window.open('https://momentum.design', '_blank')}"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+      <mdc-menusection slot="fixed-menubar">
+        <mdc-navmenuitem
+          icon-name="settings-bold"
+          nav-id="23"
+          label="Settings"
+          tooltip-text="Settings"
+          cannot-activate
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
           icon-name="help-circle-bold"
           nav-id="24"
           label="Help"
-          postfix-icon="pop-out-bold"
-          href="https://momentum.design"
-          target="_blank"
-          rel="noopener noreferrer"
           tooltip-text="Help, opens a new tab"
-        ></mdc-navbuttonlink>
+          cannot-activate
+          tooltip-appearance="always"
+          @click="${() => window.open('https://momentum.design', '_blank')}"
+        ></mdc-navmenuitem>
       </mdc-menusection>
     </mdc-sidenavigation>
   </div>
@@ -193,6 +216,7 @@ const renderNestedSideNavigation = (args: Args) => {
       variant="${args.variant}"
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
       @activechange="${action('onactivechange')}"
     >
       <!-- Upper Nav (scrollable section) -->
@@ -339,7 +363,6 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-sidenavigation',
   render,
-
   argTypes: {
     expanded: {
       control: 'boolean',
@@ -350,6 +373,9 @@ const meta: Meta = {
     },
     'grabber-btn-aria-label': {
       control: 'text',
+    },
+    'hide-fixed-section-divider': {
+      control: 'boolean',
     },
     ...hideControls(['Context']),
     ...classArgType,
@@ -374,18 +400,17 @@ export const Mixed: StoryObj = {
     docs: {
       description: {
         story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
-            The Mixed Side Navigation example demonstrates the use of both NavMenuItems (in a menubar, top section) and
-            NavButtons, NavButtonLinks (in a group, bottom section).
+            The Mixed Side Navigation example demonstrates the use of NavMenuItems which either can be activated (when
+            changing content on the screen like "Messaging") or cannot be activated (when opening external links or
+            opening dialogs like "Help"). NavMenuItems that cannot be activated need to have the 'cannot-activate'
+            attribute set to true.
             <br />
           </mdc-text>
           <mdc-banner
-            variant="warning"
-            label="For A11 compliance, NavMenuItems should be used in the *-menubar slots, 
-            and NavButtons/NavButtonLinks should be used in the *-section slots. 
-            The '*-menubar' slots are wrapping NavMenuItems in a menubar role, while 
-            the '*-section' slots are wrapping NavButtons/NavButtonLinks in a group role.
-            A mix of menuitems and navbuttons within the same menubar/group is not recommended. 
-            Use menuitems only in menubars, and navbuttons / navbuttonlinks only in groups."
+            variant="informational"
+            label="As a A11y recommendation, NavMenuItems that cannot be activated must have a tooltip-text provided (including
+            information like 'Opens a new tab') and tooltip-appearance set to 'always' to indicate to users that clicking on
+            the NavMenuItem will redirect to a new tab."
           ></mdc-banner> `,
       },
     },
@@ -395,6 +420,7 @@ export const Mixed: StoryObj = {
     variant: DEFAULTS.VARIANT,
     'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
+    'hide-fixed-section-divider': true,
   },
 };
 
