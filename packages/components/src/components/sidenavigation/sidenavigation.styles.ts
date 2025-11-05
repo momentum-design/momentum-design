@@ -3,7 +3,7 @@ import { css } from 'lit';
 const styles = css`
   :host {
     --mdc-sidenavigation-expanded-width: 14.5rem;
-    --mdc-sidenavigation-expanded-left-padding: 0.75rem;
+    --mdc-sidenavigation-expanded-left-padding: 1rem;
     --mdc-sidenavigation-expanded-right-padding: 1rem;
     --mdc-sidenavigation-collapsed-width: 4.5rem;
     --mdc-sidenavigation-collapsed-left-padding: 1rem;
