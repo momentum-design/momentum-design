@@ -35,6 +35,7 @@ const render = (args: Args) =>
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
+    ?resizable="${args.resizable}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
@@ -83,6 +84,9 @@ const meta: Meta = {
       control: 'boolean',
     },
     disabled: {
+      control: 'boolean',
+    },
+    resizable: {
       control: 'boolean',
     },
     rows: {
@@ -167,6 +171,7 @@ export const Example: StoryObj = {
     'help-text-type': VALIDATION.DEFAULT,
     readonly: false,
     disabled: false,
+    resizable: true,
     autocapitalize: AUTO_CAPITALIZE.OFF,
     autocomplete: AUTO_COMPLETE.OFF,
     'data-aria-label': '',
@@ -179,6 +184,7 @@ const commonArgs = {
   label: 'Label',
   rows: DEFAULTS.ROWS,
   wrap: DEFAULTS.WRAP,
+  resizable: true,
 };
 
 export const DisabledTextarea: StoryObj = {
@@ -230,6 +236,7 @@ export const AllVariants: StoryObj = {
             help-text="${validation} helper text"
             placeholder="Placeholder"
             value="${validation}_value"
+            resizable
             resize-button-aria-label="Resize textarea"
           ></mdc-textarea>`,
       )}
@@ -239,6 +246,7 @@ export const AllVariants: StoryObj = {
         help-text-type="default"
         required
         placeholder="Textarea is required"
+        resizable
         resize-button-aria-label="Resize textarea"
       ></mdc-textarea>
       <mdc-textarea
@@ -249,6 +257,7 @@ export const AllVariants: StoryObj = {
         readonly
         placeholder="Placeholder"
         max-character-limit="75"
+        resizable
         resize-button-aria-label="Resize textarea"
       ></mdc-textarea>
       <mdc-textarea
@@ -258,6 +267,7 @@ export const AllVariants: StoryObj = {
         help-text-type="error"
         placeholder="Placeholder"
         max-character-limit="75"
+        resizable
         resize-button-aria-label="Resize textarea"
         >Momentum is how webex design the future of work. This design system exist to create a shared design language.
       </mdc-textarea>
@@ -284,6 +294,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
     placeholder: `Write what's on your mind`,
     'max-character-limit': 75,
     'character-limit-announcement': '%{number-of-characters} out of %{max-character-limit} characters are typed.',
+    resizable: true,
   },
   render: (args: Args) => {
     let helpText = '';
@@ -328,6 +339,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
             max-character-limit="${args['max-character-limit']}"
             placeholder="${args.placeholder}"
             character-limit-announcement="${args['character-limit-announcement']}"
+            resizable
             resize-button-aria-label="Resize textarea"
           ></mdc-textarea>
           <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
@@ -372,6 +384,7 @@ export const TextareaInsideForm: StoryObj = {
             required
             placeholder="Write what's on your mind"
             validation-message="Tweet is required"
+            resizable
             resize-button-aria-label="Resize textarea"
           ></mdc-textarea>
           <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
@@ -433,6 +446,7 @@ export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
             required
             placeholder="Write what's on your mind"
             max-character-limit="${MAX_CHAR_LIMIT}"
+            resizable
             resize-button-aria-label="Resize textarea"
           ></mdc-textarea>
           <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
@@ -448,5 +462,6 @@ export const TextareaInsideFormWithHelpTextValidation: StoryObj = {
     'help-text': '',
     'help-text-type': 'default',
     'max-character-limit': 75,
+    resizable: true,
   },
 };

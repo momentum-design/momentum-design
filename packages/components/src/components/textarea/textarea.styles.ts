@@ -108,7 +108,7 @@ const styles = [
     :host::part(resize-button) {
       position: absolute;
       bottom: 0.25rem;
-      right: 0.25rem;
+      inset-inline-end: 0.25rem;
       cursor: nwse-resize;
       opacity: 0.5;
       z-index: 1;
@@ -120,8 +120,6 @@ const styles = [
     }
 
     :host(:dir(rtl))::part(resize-button) {
-      left: 0.25rem;
-      right: unset;
       cursor: nesw-resize;
       transform: scaleX(-1);
     }

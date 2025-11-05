@@ -59,6 +59,11 @@ import styles from './textarea.styles';
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
  * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
  * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart textarea - The textarea element.
+ * @csspart textarea-container - The container element that wraps the textarea and resize button.
+ * @csspart textarea-footer - The footer element that contains the character counter.
+ * @csspart character-counter - The character counter element.
+ * @csspart resize-button - The resize button element (shown when `resizable` is true).
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
@@ -145,6 +150,13 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * Example output: "93 out of 140 characters are typed."
    */
   @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
+
+  /**
+   * Controls whether the textarea is resizable via the resize button.
+   * When set to false, the resize button will be hidden.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) resizable: boolean = false;
 
   /**
    * Provides an accessible label for the resize button.
@@ -501,17 +513,19 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
         ></mdc-screenreaderannouncer>
-        <mdc-button
-          part="resize-button"
-          class="own-focus-ring"
-          variant="tertiary"
-          size="24"
-          prefix-icon="resize-corner-regular"
-          aria-label=${this.resizeButtonAriaLabel ?? ''}
-          ?disabled="${this.disabled || this.readonly}"
-          @keydown=${this.handleResizeKeyDown}
-          @pointerdown=${this.handlePointerDown}
-        ></mdc-button>
+        ${this.resizable ? html`
+          <mdc-button
+            part="resize-button"
+            class="own-focus-ring"
+            variant="tertiary"
+            size="24"
+            prefix-icon="resize-corner-regular"
+            aria-label=${this.resizeButtonAriaLabel ?? ''}
+            ?disabled="${this.disabled || this.readonly}"
+            @keydown=${this.handleResizeKeyDown}
+            @pointerdown=${this.handlePointerDown}
+          ></mdc-button>
+        ` : nothing}
       </div>
       ${this.renderTextareaFooter()}
     `;
