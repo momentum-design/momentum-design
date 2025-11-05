@@ -22,7 +22,17 @@ const styles = [
 
     :host::part(input-text),
     ::slotted(input) {
-      font-family: inherit;
+      /* Unset default native input placeholder padding */
+      padding-block: unset;
+      padding-inline: unset;
+
+      /* Set midsize regular font family to native input text */
+      font-family: var(--mdc-themeprovider-font-family);
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+      text-decoration: var(--mds-font-apps-body-midsize-regular-text-decoration);
+      text-transform: var(--mds-font-apps-body-midsize-regular-text-case);
     }
 
     :host::part(input-container) {
