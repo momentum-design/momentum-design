@@ -17,6 +17,7 @@ type SetupOptions = {
   'nav-id'?: string;
   'show-label'?: boolean;
   'aria-label'?: string;
+  'cannot-activate'?: boolean;
   'disable-aria-current'?: boolean;
   children?: string;
 };
@@ -43,6 +44,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs['nav-id'] ? `nav-id="${restArgs['nav-id']}"` : ''}
         ${restArgs['show-label'] ? 'show-label' : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
+        ${restArgs['cannot-activate'] ? 'cannot-activate' : ''}
         ${restArgs['disable-aria-current'] ? 'disable-aria-current' : ''}
       >
         ${restArgs.children ?? ''}
@@ -167,6 +169,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
       await navmenuitemSheet.createMarkupWithCombination({}, options);
 
       await navmenuitemSheet.mountStickerSheet({ role: 'navigation' });
+
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-navmenuitem', {
           element: navmenuitemSheet.getWrapperContainer(),
@@ -202,7 +205,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         const text = componentsPage.page.locator('mdc-text');
-        const icon = componentsPage.page.locator('mdc-icon');
+        const icon = componentsPage.page.locator('mdc-icon[part="regular-icon"]');
 
         await text.waitFor();
         await icon.waitFor();
@@ -233,7 +236,8 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         await test.step('should modify icon to filled variant when active', async () => {
-          const icon = componentsPage.page.locator('mdc-icon');
+          const icon = componentsPage.page.locator('mdc-icon[part="filled-icon"]');
+          await icon.waitFor();
           const iconNameAttr = await icon.getAttribute('name');
           expect(iconNameAttr).toBe('placeholder-filled');
         });
@@ -250,7 +254,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         const text = componentsPage.page.locator('mdc-text');
-        const icon = componentsPage.page.locator('mdc-icon');
+        const icon = componentsPage.page.locator('mdc-icon[part="regular-icon"]');
 
         await icon.waitFor();
 
@@ -321,13 +325,28 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
       });
 
-      await test.step('component should show tooltip when the listitem is focused and tooltip text is passed', async () => {
+      await test.step('component should not show tooltip when the listitem is expanded, focused and tooltip text is passed', async () => {
         const navmenuitem = await setup({
           componentsPage,
           label: primaryLabel,
           'icon-name': iconName,
           'nav-id': navId,
           'show-label': true,
+          'tooltip-text': 'This is a tooltip Text',
+        });
+        await componentsPage.actionability.pressTab();
+        await expect(navmenuitem).toBeFocused();
+        const tooltip = componentsPage.page.locator('mdc-tooltip');
+        await expect(tooltip).toBeHidden();
+      });
+
+      await test.step('component should show tooltip when the listitem is collapsed, focused and tooltip text is passed', async () => {
+        const navmenuitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'icon-name': iconName,
+          'nav-id': navId,
+          'show-label': false,
           'tooltip-text': 'This is a tooltip Text',
         });
         await componentsPage.actionability.pressTab();
@@ -352,10 +371,26 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           active: true,
         });
 
-        const eventPromise = componentsPage.waitForEvent(navmenuitem, 'activechange');
+        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
         await navmenuitem.click();
 
         await eventPromise;
+      });
+
+      await test.step('click on cannot-activate navmenuitem should not fire activechange event', async () => {
+        const navmenuitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'icon-name': iconName,
+          'nav-id': navId,
+          'show-label': true,
+          'cannot-activate': true,
+        });
+
+        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
+        await navmenuitem.click();
+
+        await componentsPage.expectPromiseTimesOut(eventPromise(), true);
       });
 
       await test.step('click on disabled navmenuitem', async () => {

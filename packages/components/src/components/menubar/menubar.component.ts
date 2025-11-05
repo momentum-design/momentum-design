@@ -358,7 +358,7 @@ class MenuBar extends Component {
   }
 
   public override render() {
-    return html`<slot role="${ROLE.GROUP}"></slot>`;
+    return html`<slot></slot>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

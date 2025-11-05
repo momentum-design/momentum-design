@@ -2,9 +2,15 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-sidenavigation-expanded-width: 15rem;
+    --mdc-sidenavigation-expanded-width: 14.5rem;
+    --mdc-sidenavigation-expanded-left-padding: 1rem;
+    --mdc-sidenavigation-expanded-right-padding: 1rem;
     --mdc-sidenavigation-collapsed-width: 4.5rem;
+    --mdc-sidenavigation-collapsed-left-padding: 1rem;
+    --mdc-sidenavigation-collapsed-right-padding: 1rem;
     --mdc-sidenavigation-vertical-divider-button-z-index: auto;
+    --mdc-sidenavigation-top-padding: 1rem;
+    --mdc-sidenavigation-bottom-padding: 1rem;
 
     display: flex;
     height: 100%;
@@ -26,9 +32,33 @@ const styles = css`
 
   :host::part(scrollable-section) {
     flex-grow: 1;
-    overflow: auto;
-    padding: 1rem 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--mdc-sidenavigation-top-padding) 0;
     min-height: 0;
+  }
+
+  :host::part(scrollable-menubar) {
+    width: 100%;
+  }
+
+  ::slotted([slot='scrollable-menubar']) {
+    --mdc-menusection-divider-margin-block: 0.5rem 0.75rem;
+    --mdc-menusection-gap: 0.25rem;
+  }
+
+  ::slotted(mdc-navmenuitem[slot='scrollable-menubar']) {
+    margin-bottom: 0.25rem;
+  }
+
+  :host([expanded]) ::slotted([slot='scrollable-menubar']) {
+    --mdc-menusection-divider-width: var(--mdc-sidenavigation-expanded-width);
+    --mdc-menusection-header-padding: 0.25rem calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem) 0
+      calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem);
+  }
+
+  :host(:not([expanded])) ::slotted([slot='scrollable-menubar']) {
+    --mdc-menusection-divider-width: var(--mdc-sidenavigation-collapsed-width);
   }
 
   :host::part(fixed-section) {
@@ -36,8 +66,27 @@ const styles = css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-bottom: 1rem;
+    padding-bottom: var(--mdc-sidenavigation-bottom-padding);
     gap: 0.5rem;
+  }
+
+  :host::part(fixed-menubar) {
+    width: 100%;
+  }
+
+  ::slotted([slot='fixed-menubar']) {
+    --mdc-menusection-divider-margin-block: 0.5rem 0.75rem;
+    --mdc-menusection-gap: 0.25rem;
+  }
+
+  :host([expanded]) ::slotted([slot='fixed-menubar']) {
+    --mdc-menusection-divider-width: var(--mdc-sidenavigation-expanded-width);
+    --mdc-menusection-header-padding: 0.25rem calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem) 0
+      calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem);
+  }
+
+  :host(:not([expanded])) ::slotted([slot='fixed-menubar']) {
+    --mdc-menusection-divider-width: var(--mdc-sidenavigation-collapsed-width);
   }
 
   :host::part(brand-logo-container) {
@@ -48,12 +97,20 @@ const styles = css`
     border-radius: 1.25rem;
   }
 
-  :host(:dir(ltr))::part(brand-logo-container) {
-    padding: 0.5rem 0rem 0.5rem 1.5rem;
+  :host([expanded]:dir(ltr))::part(brand-logo-container) {
+    padding: 0.5rem 0rem 0.5rem calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem);
   }
 
-  :host(:dir(rtl))::part(brand-logo-container) {
-    padding: 0.5rem 1.5rem 0.5rem 0rem;
+  :host([expanded]:dir(rtl))::part(brand-logo-container) {
+    padding: 0.5rem calc(var(--mdc-sidenavigation-expanded-left-padding) + 0.5rem) 0.5rem 0rem;
+  }
+
+  :host(:not([expanded]):dir(ltr))::part(brand-logo-container) {
+    padding: 0.5rem 0rem 0.5rem calc(var(--mdc-sidenavigation-collapsed-left-padding) + 0.5rem);
+  }
+
+  :host(:not([expanded]):dir(rtl))::part(brand-logo-container) {
+    padding: 0.5rem calc(var(--mdc-sidenavigation-collapsed-left-padding) + 0.5rem) 0.5rem 0rem;
   }
 
   ::slotted([slot='brand-logo']) {
@@ -64,11 +121,22 @@ const styles = css`
   }
 
   :host::part(separator) {
+    flex-shrink: 0;
     margin-bottom: 0.75rem;
   }
 
   :host::part(vertical-divider-button) {
     z-index: var(--mdc-sidenavigation-vertical-divider-button-z-index);
+  }
+
+  :host([variant='flexible-on-hover'])::part(vertical-divider),
+  :host([variant='flexible-on-hover'])::part(vertical-divider-button) {
+    opacity: 0;
+  }
+
+  :host([data-grabber-visible][variant='flexible-on-hover'])::part(vertical-divider),
+  :host([data-grabber-visible][variant='flexible-on-hover'])::part(vertical-divider-button) {
+    opacity: 1;
   }
 `;
 

@@ -2,21 +2,24 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    --mdc-menusection-divider-margin-block: 0.25rem;
+    --mdc-menusection-gap: 0rem;
+    --mdc-menusection-divider-width: 100%;
+    --mdc-menusection-header-padding: 0.5rem 1.75rem;
+
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: var(--mdc-menusection-gap);
   }
 
   :host::part(divider) {
-    margin-block: 0.25rem;
+    width: var(--mdc-menusection-divider-width);
+    margin-block: var(--mdc-menusection-divider-margin-block);
   }
 
-  :host(:dir(ltr))::part(align-header) {
-    padding-left: 1.75rem;
-  }
-
-  :host(:dir(rtl))::part(align-header) {
-    padding-right: 1.75rem;
+  :host::part(align-header) {
+    --mdc-listheader-padding: var(--mdc-menusection-header-padding);
   }
 `;
 
