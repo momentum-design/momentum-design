@@ -131,7 +131,20 @@ export const ListboxWithIconOptions: StoryObj = {
   ...hideAllControls(),
 };
 
-export const ListboxWithFixedHeight = {
+export const ListboxWithVirtualizedList: StoryObj = {
+  args: {
+    placeholder: 'Select an option',
+    label: 'Select option',
+  },
+  render: (args: Args) =>
+    wrapWithDiv(html`
+      <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="overflow: hidden">
+        <mdc-listboxvirtualizedlist></mdc-listboxvirtualizedlist>
+      </mdc-listbox>
+    `),
+};
+
+export const ListboxWithFixedHeight: StoryObj = {
   args: {
     '--mdc-listbox-max-height': '18rem',
     placeholder: 'Select an option',
@@ -140,7 +153,7 @@ export const ListboxWithFixedHeight = {
   render: (args: Args) =>
     wrapWithDiv(html`
       <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="overflow: hidden">
-        <mdc-listboxvirtualizedlist></mdc-listboxvirtualizedlist>
+        ${Array.from({ length: 1000 }).map((_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
       </mdc-listbox>
     `),
 };

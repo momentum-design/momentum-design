@@ -77,7 +77,7 @@ class Option extends FormInternalsMixin(ListItem) {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('selected')) {
+    if (changedProperties.has('selected') && this.ariaSelected !== this.selected.toString()) {
       this.setAttribute('aria-selected', `${this.selected}`);
 
       this.dispatchModifiedEvent(this.selected ? 'selected' : 'unselected');

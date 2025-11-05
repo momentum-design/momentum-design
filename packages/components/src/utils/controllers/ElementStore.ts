@@ -195,7 +195,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     const newItem = item as TItem;
 
     if (this.isValidItem(newItem) && !this.cache.includes(newItem)) {
-      const idx = index === undefined ? this.cache.findIndex(e => isBefore(newItem, e)) : index;
+      const idx = index === undefined ? this.cache.findIndex(e => isBefore(e, newItem)) : index;
 
       if (this.onStoreUpdate) {
         this.onStoreUpdate?.(newItem, 'added', idx === -1 ? this.cache.length : idx, this.cache.slice());
