@@ -84,7 +84,6 @@ const styles = css`
     height: var(--mdc-dialog-height);
     max-width: 100%;
     max-height: calc(100vh - 2rem);
-    overflow-y: auto;
   }
 
   :host::part(header-section),
@@ -123,7 +122,6 @@ const styles = css`
     height: 100%;
     width: 100%;
     padding-top: 1rem;
-    overflow-y: auto;
   }
 
   :host::part(footer) {

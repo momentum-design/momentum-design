@@ -138,6 +138,22 @@ const dialogWithIframe = {
   `,
 };
 
+const dialogWithTextarea = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <div slot="dialog-body">
+      <mdc-textarea label="Type something here..." rows="4" cols="50"></mdc-textarea>
+    </div>
+  `,
+};
+
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -246,6 +262,14 @@ test('mdc-dialog', async ({ componentsPage }) => {
         };
         const { dialog } = await setup({ componentsPage, ...dialogBodyOnly, size: 'small' });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-body-only', { element: dialog });
+      });
+
+      await test.step('matches screenshot for dialog with a focused textarea in body', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithTextarea, size: 'small' });
+        await componentsPage.page.pause();
+        await componentsPage.actionability.pressTab();
+
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-with-textarea', { element: dialog });
       });
     });
   });
