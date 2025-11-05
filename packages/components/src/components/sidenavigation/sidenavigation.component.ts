@@ -357,7 +357,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
     return html`
       <div part="side-navigation-container" id="side-nav-container">
-        <div part="scrollable-section" @keydown=${this.preventScrollOnSpace}>
+        <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
           <slot name="scrollable-section">
             <mdc-menubar part="scrollable-menubar">
               <slot name="scrollable-menubar"></slot>
