@@ -181,6 +181,27 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
   }
 
   /**
+   * Implements binary search on the cache, to get the index of the nearest newItem position.
+   *
+   * @param cache - The array which contains the list of dom node elements.
+   * @param newItem - The new node element which is needed to be added in the list item.
+   * @returns - The index of the existing element which is the nearest one to the new item.
+   */
+  private getIndexToInsertInCache(newItem: TItem): number {
+    let begin = 0;
+    let end = this.cache.length - 1;
+    while (begin <= end) {
+      const middle = Math.floor((begin + end) / 2);
+      if (isBefore(this.cache[middle], newItem)) {
+        begin = middle + 1;
+      } else {
+        end = middle - 1;
+      }
+    }
+    return begin;
+  }
+
+  /**
    * Adds an item to the cache at the specified index.
    * When the index
    *  is `undefined`, the item is added automatically keeping the DOM order.
@@ -195,7 +216,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     const newItem = item as TItem;
 
     if (this.isValidItem(newItem) && !this.cache.includes(newItem)) {
-      const idx = index === undefined ? this.cache.findIndex(e => isBefore(e, newItem)) : index;
+      const idx = index === undefined ? this.getIndexToInsertInCache(newItem) : index;
 
       if (this.onStoreUpdate) {
         this.onStoreUpdate?.(newItem, 'added', idx === -1 ? this.cache.length : idx, this.cache.slice());

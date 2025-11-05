@@ -152,7 +152,7 @@ export const ListboxWithFixedHeight: StoryObj = {
   },
   render: (args: Args) =>
     wrapWithDiv(html`
-      <mdc-listbox placeholder="${args.placeholder}" label="${args.label}" style="overflow: hidden">
+      <mdc-listbox placeholder="${args.placeholder}" label="${args.label}">
         ${Array.from({ length: 1000 }).map((_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
       </mdc-listbox>
     `),
