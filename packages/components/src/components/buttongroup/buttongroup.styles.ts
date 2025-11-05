@@ -59,14 +59,14 @@ const styles = css`
     position: absolute;
     height: 100%;
     border-inline-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
-    inset-inline-end: calc(var(--mdc-buttongroup-border-width) / 2);
+    inset-inline-start: 100%;
   }
   :host([variant='secondary'][orientation='vertical']) ::slotted(mdc-button:not(:last-of-type))::after {
     content: '';
     position: absolute;
     width: 100%;
     border-block-end: var(--mdc-buttongroup-border-width) solid var(--mdc-buttongroup-divider-color);
-    inset-block-end: calc(var(--mdc-buttongroup-border-width) / 2);
+    inset-block-end: 0%;
   }
 
   :host([orientation='vertical']) ::slotted(mdc-button:first-of-type) {

@@ -130,6 +130,29 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
   @property({ type: Boolean, reflect: true, attribute: 'soft-disabled' })
   softDisabled?: boolean;
 
+  /**
+   * Data attribute to define the index of the list item in a list.
+   * This also set the `aria-posinset` attribute for accessibility purposes.
+   *
+   * It is required when the list item is used inside a virtualized list where the items are not sequentially rendered.
+   * It should be a zero-based index.
+   *
+   * @default undefined
+   */
+  @property({ type: Number, reflect: true, attribute: 'data-index' })
+  dataIndex?: number;
+
+  /**
+   * Indicates whether the list item is active.
+   * When set to true, the list item appears in a active state.
+   *
+   * NOTE: this is a visual state only, it does not affect the behavior or a11y of the list item.
+   *
+   * @default undefined
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'active' })
+  active?: boolean;
+
   constructor() {
     super();
 
@@ -240,6 +263,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
     if (changedProperties.has('softDisabled')) {
       this.disableSlottedChildren(this.softDisabled);
     }
+
+    if (changedProperties.has('dataIndex')) {
+      this.ariaPosInSet = `${this.dataIndex !== undefined ? this.dataIndex + 1 : ''}`;
+    }
   }
 
   /**
@@ -290,7 +317,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
         <div part="leading">
           ${this.renderLeadingControls()}
           <div part="leading-text">
-            ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+            ${this.getText(
+              'leading-text-primary-label',
+              this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_REGULAR,
+              this.label,
+            )}
             ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
             ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
           </div>

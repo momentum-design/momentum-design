@@ -38,7 +38,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
-    ?flip=${args.flip}
+    ?disable-flip=${args['disable-flip']}
     ?size=${args.size}
     ?backdrop=${args.backdrop}
     ?close-button=${args['close-button']}
@@ -54,7 +54,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
-    ?keep-connected-tooltip-closed="${args['keep-connected-tooltip-closed']}"
+    ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -250,7 +250,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(COLOR),
     },
-    flip: {
+    'disable-flip': {
       control: 'boolean',
     },
     size: {
@@ -342,7 +342,7 @@ export const Example: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     'show-arrow': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
@@ -364,7 +364,7 @@ export const interactiveContent: StoryObj = {
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     size: true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
@@ -382,7 +382,7 @@ export const interactiveHover: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
@@ -403,7 +403,7 @@ export const interactiveMultiple: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     'focus-trap': true,
     interactive: true,
     'focus-back-to-trigger': true,
@@ -413,6 +413,7 @@ export const interactiveMultiple: StoryObj = {
     'close-button': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'keep-connected-tooltip-open': false,
   },
 };
 
@@ -426,7 +427,7 @@ export const nestedPopover: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': 10,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
@@ -448,7 +449,7 @@ export const hideOnBlur: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
@@ -467,7 +468,7 @@ export const popoverWithBackdrop: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
-    flip: DEFAULTS.FLIP,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
     interactive: true,
     'show-arrow': true,
     backdrop: true,
@@ -689,7 +690,7 @@ export const PopoverWithTooltipAndDialog: StoryObj = {
     'show-arrow': true,
     'hide-on-escape': true,
     'hide-on-outside-click': true,
-    'keep-connected-tooltip-closed': true,
+    'keep-connected-tooltip-open': true,
   },
   render: args => html`
     ${createTrigger(args.triggerID, 'Click me!')}

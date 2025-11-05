@@ -317,10 +317,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Changes the placement of popover to keep it in view when scrolling.
-   * @default true
+   * @default false
    */
-  @property({ type: Boolean, reflect: true })
-  flip: boolean = DEFAULTS.FLIP;
+  @property({ type: Boolean, reflect: true, attribute: 'disable-flip' })
+  disableFlip: boolean = DEFAULTS.DISABLE_FLIP;
 
   /**
    * Changes the size of popover to keep it in view when scrolling.
@@ -401,13 +401,22 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
 
   /**
-   * If a tooltip is connected to the same trigger element,
-   * this property will keep the connected tooltip closed if this popover is open.
-   * This is useful when you want to show a popover with a tooltip
-   * but you don't want the tooltip to be shown at the same time.
+   * Controls the visibility of a connected tooltip when this popover is open.
+   * - If set to `true`, the tooltip remains open alongside the popover.
+   * - If set to `false`, the tooltip will be closed when the popover opens.
+   * Useful for scenarios where both a popover and a tooltip are linked to the same trigger element.
    */
-  @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-closed' })
-  keepConnectedTooltipClosed: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_CLOSED;
+  @property({ type: Boolean, reflect: true, attribute: 'keep-connected-tooltip-open' })
+  keepConnectedTooltipOpen: boolean = DEFAULTS.KEEP_CONNECTED_TOOLTIP_OPEN;
+
+  /**
+   * Whether to update the position of the Popover on every animation frame if required.
+   * While optimized for performance, it should be used sparingly and with caution.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
+  animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
 
   public arrowElement: HTMLElement | null = null;
 
@@ -511,7 +520,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     // clean timer if there is one set:
     this.cancelCloseDelay();
 
-    if (this.keepConnectedTooltipClosed) {
+    if (!this.keepConnectedTooltipOpen) {
       if (this.connectedTooltip) {
         this.connectedTooltip.shouldSuppressOpening = false;
       }
@@ -736,7 +745,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         popoverStack.push(this);
       }
 
-      if (this.keepConnectedTooltipClosed) {
+      if (!this.keepConnectedTooltipOpen) {
         // If this popover gets visible and keepConnectedTooltipsClosed is true,
         // we need to close the connected tooltip.
         if (this.connectedTooltip) {
@@ -815,7 +824,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         triggerElement?.focus();
       }
 
-      if (this.keepConnectedTooltipClosed) {
+      if (!this.keepConnectedTooltipOpen) {
         if (this.connectedTooltip) {
           this.connectedTooltip.shouldSuppressOpening = false;
         }
@@ -867,7 +876,11 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   private handleFocusIn = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
 
-    if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
+    if (
+      this.triggerElement?.matches(':focus-visible') ||
+      this.triggerElement?.shadowRoot?.querySelector('.mdc-focus-ring')?.matches(':focus-visible') ||
+      this.isHovered
+    ) {
       this.show();
     }
   };
@@ -964,7 +977,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     ];
     let popoverOffset = this.offset;
 
-    if (this.flip) {
+    if (!this.disableFlip) {
       middleware.push(
         flip({
           boundary,
@@ -1009,26 +1022,33 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     middleware.push(offset(popoverOffset));
 
-    this.floatingUICleanupFunction = autoUpdate(triggerElement, this, async () => {
-      const { triggerElement } = this;
+    this.floatingUICleanupFunction = autoUpdate(
+      triggerElement,
+      this,
+      async () => {
+        const { triggerElement } = this;
 
-      if (!triggerElement) return;
+        if (!triggerElement) return;
 
-      const adjustedPlacement = this.adjustPlacementForRtl(this.placement);
-      const { x, y, middlewareData, placement } = await computePosition(triggerElement, this, {
-        placement: adjustedPlacement,
-        middleware,
-        strategy: this.strategy,
-      });
+        const adjustedPlacement = this.adjustPlacementForRtl(this.placement);
+        const { x, y, middlewareData, placement } = await computePosition(triggerElement, this, {
+          placement: adjustedPlacement,
+          middleware,
+          strategy: this.strategy,
+        });
 
-      this.utils.updatePopoverStyle(x, y);
-      if (middlewareData.arrow && this.arrowElement) {
-        this.utils.updateArrowStyle(middlewareData.arrow, placement);
-      }
-      if (this.trigger.includes('mouseenter')) {
-        this.utils.setupHoverBridge(placement);
-      }
-    });
+        this.utils.updatePopoverStyle(x, y);
+        if (middlewareData.arrow && this.arrowElement) {
+          this.utils.updateArrowStyle(middlewareData.arrow, placement);
+        }
+        if (this.trigger.includes('mouseenter')) {
+          this.utils.setupHoverBridge(placement);
+        }
+      },
+      {
+        animationFrame: this.animationFrame,
+      },
+    );
   };
 
   protected isEventFromTrigger(event: Event): boolean {
@@ -1060,13 +1080,20 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       return placement;
     }
     switch (placement) {
-      case POPOVER_PLACEMENT.LEFT: return POPOVER_PLACEMENT.RIGHT;
-      case POPOVER_PLACEMENT.LEFT_START: return POPOVER_PLACEMENT.RIGHT_START;
-      case POPOVER_PLACEMENT.LEFT_END: return POPOVER_PLACEMENT.RIGHT_END;
-      case POPOVER_PLACEMENT.RIGHT: return POPOVER_PLACEMENT.LEFT;
-      case POPOVER_PLACEMENT.RIGHT_START: return POPOVER_PLACEMENT.LEFT_START;
-      case POPOVER_PLACEMENT.RIGHT_END: return POPOVER_PLACEMENT.LEFT_END;
-      default: return placement;
+      case POPOVER_PLACEMENT.LEFT:
+        return POPOVER_PLACEMENT.RIGHT;
+      case POPOVER_PLACEMENT.LEFT_START:
+        return POPOVER_PLACEMENT.RIGHT_START;
+      case POPOVER_PLACEMENT.LEFT_END:
+        return POPOVER_PLACEMENT.RIGHT_END;
+      case POPOVER_PLACEMENT.RIGHT:
+        return POPOVER_PLACEMENT.LEFT;
+      case POPOVER_PLACEMENT.RIGHT_START:
+        return POPOVER_PLACEMENT.LEFT_START;
+      case POPOVER_PLACEMENT.RIGHT_END:
+        return POPOVER_PLACEMENT.LEFT_END;
+      default:
+        return placement;
     }
   }
 

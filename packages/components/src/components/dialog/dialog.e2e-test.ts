@@ -138,6 +138,22 @@ const dialogWithIframe = {
   `,
 };
 
+const dialogWithTextarea = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <div slot="dialog-body">
+      <mdc-textarea label="Type something here..." rows="4" cols="50"></mdc-textarea>
+    </div>
+  `,
+};
+
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog, triggerButton } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -193,9 +209,14 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, variant: 'default', size: 'small' });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-default', { element: dialog });
       });
-      
+
       await test.step('matches screenshot for promotional variant', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional', size: 'small' });
+        const { dialog } = await setup({
+          componentsPage,
+          ...dialogWithCustomHeader,
+          variant: 'promotional',
+          size: 'small',
+        });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
       });
     });
@@ -207,7 +228,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
           ...dialogWithAllSlots,
           headerText: undefined,
           descriptionText: undefined,
-          ariaLabel: 'dialog without header'
+          ariaLabel: 'dialog without header',
         };
         const { dialog } = await setup({ componentsPage, ...dialogWithoutHeader, size: 'small' });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-no-header', { element: dialog });
@@ -220,7 +241,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
             <div slot="dialog-body">
               <p>This is the body content of the dialog without footer.</p>
             </div>
-          `
+          `,
         };
         const { dialog } = await setup({ componentsPage, ...dialogWithoutFooter, size: 'small' });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-no-footer', { element: dialog });
@@ -237,10 +258,18 @@ test('mdc-dialog', async ({ componentsPage }) => {
               <p>This is the body content of the dialog with only body content.</p>
               <p>No header and no footer elements are provided.</p>
             </div>
-          `
+          `,
         };
         const { dialog } = await setup({ componentsPage, ...dialogBodyOnly, size: 'small' });
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-body-only', { element: dialog });
+      });
+
+      await test.step('matches screenshot for dialog with a focused textarea in body', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithTextarea, size: 'small' });
+        await componentsPage.page.pause();
+        await componentsPage.actionability.pressTab();
+
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-with-textarea', { element: dialog });
       });
     });
   });

@@ -1,7 +1,7 @@
 import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -14,6 +14,7 @@ import '../tooltip';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Select from './select.component';
+import * as CountriesList from './select.utils.json';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -51,6 +52,7 @@ const render = (args: Args) =>
       popover-z-index="${args['popover-z-index']}"
       backdrop-append-to="${args['backdrop-append-to']}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+      ?disable-flipping="${args['disable-flipping']}"
     >
       ${args.children}
     </mdc-select>
@@ -114,6 +116,9 @@ const meta: Meta = {
       options: ['bottom-start', 'top-start'],
     },
     'soft-disabled': {
+      control: 'boolean',
+    },
+    'disable-flipping': {
       control: 'boolean',
     },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'itemsStore']),
@@ -519,4 +524,17 @@ export const SelectWithChangingValueAttribute: StoryObj = {
       </mdc-select>`;
   },
   ...hideAllControls(),
+};
+
+export const SelectCountriesList: StoryObj = {
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-select label="Select a country" placeholder="Select a country">
+        <mdc-selectlistbox>
+          ${CountriesList.countries.map(({ name: country }) =>
+            country ? html`<mdc-option label="${country}"></mdc-option>` : nothing,
+          )}
+        </mdc-selectlistbox>
+      </mdc-select>
+    `),
 };

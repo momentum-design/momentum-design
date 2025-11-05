@@ -32,8 +32,8 @@ environments versus GitHub Workflow:
 
 - On Local:
   - You can run functional tests locally (for easier debugging) or in Docker.
-  - Update snapshot images (golden images) only using Docker with the official
-    Playwright image, via the provided yarn scripts.
+  - Update snapshot images (golden images) only using Docker or Podman with the
+    official Playwright image, via the provided yarn scripts.
   - Uses `playwright.config.ts`, relying on local and a web server.
 - On Github Workflow:
   - GitHub Workflow build the Playwright Docker image to run all tests,
@@ -162,6 +162,63 @@ on Docker. To quickly execute it in VSCode, use the VSCode Task
      yarn components test:e2e:docker:update-snapshot:webkit XXX.e2e-test.ts # run only on webkit with update snapshots
      yarn components test:e2e:docker:update-snapshot:msedge XXX.e2e-test.ts # run only on msedge with update snapshots
    ```
+
+### Update Visual Regression snapshots using GitHub Actions Workflow
+
+If you're experiencing inconsistencies with Docker on your local system, you can use the GitHub Actions workflow to update snapshots. This workflow runs in a consistent Docker environment and automatically commits the updated snapshots to your branch.
+
+#### Important Prerequisites
+
+⚠️ **CRITICAL**: Always run this workflow on your **forked repository** (origin), not directly on the main momentum-design repository. The workflow is designed to work with your fork and will typically fail if run on the main repository.
+
+#### Initial Setup
+
+Before you can use the workflow, you need to set up a GitHub Container Registry (GHCR) token:
+
+1. **Create a Personal Access Token (PAT)** (if you don't already have one):
+   
+   - Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+   - Generate a new token with `write:packages` access
+   - Save the token value securely (you'll need it in the next step)
+
+2. **Add the token as a repository secret**:
+   
+   - Go to your **forked repository** on GitHub
+   - Navigate to Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - **Name**: `GHCR_TOKEN` (must match this exact name)
+   - **Secret**: Paste your Personal Access Token value
+   - Click "Add secret"
+
+> **Note**: This is the same Personal Access Token you use for Docker login in your terminal when following the local Docker testing steps.
+
+#### Running the Workflow
+
+1. **Navigate to Actions tab** in your forked repository
+
+2. **Select the workflow**:
+   - Click on "Update Visual Regression Snapshots" from the workflow list
+
+3. **Run the workflow**:
+   - Click the "Run workflow" dropdown button
+   - Select the branch you want to update snapshots for (e.g., `test-menuitem`)
+   - **Component name** (optional): 
+     - Leave empty to update all components
+     - Specify one component: `menuitem`
+     - Specify multiple components: `menuitem menusection`
+   - **Other arguments** (optional): Any additional arguments you want to pass to the update command
+   - Click "Run workflow" to start
+
+4. **Monitor the workflow**:
+   - The workflow will pull the Docker image from GHCR
+   - Run the snapshot update process
+   - Check for any missing or outdated snapshots
+   - Commit and push the changes automatically
+
+5. **Review the changes**:
+   - Once the workflow completes successfully, a commit will be pushed by `github-actions[bot]`
+   - The commit message will be: `chore: updated snapshots for component [component-name]`
+   - Review the updated snapshot files in your branch
 
 #### Testing method
 

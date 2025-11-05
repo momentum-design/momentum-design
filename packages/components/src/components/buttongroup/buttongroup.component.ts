@@ -8,9 +8,24 @@ import styles from './buttongroup.styles';
 import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from './buttongroup.types';
 
 /**
- * buttongroup component, is a styled wrapper for multiple buttons.
+ * buttongroup component, is a wrapper to group multiple buttons.
  * It can support icon buttons, combination of icon and pill buttons, and text buttons.
- * They are available in horizontal and vertical orientation.
+ * Button group can be positioned in horizontal orientation and vertical orientation.
+ *
+ * The sizes of buttons within the button group can be set using the `size` attribute on the button group,
+ * which will apply the size to all buttons within the group.
+ *
+ * Buttons of sizes 24, 28, 32, and 40 are only supported inside a button group. Default size is 28.
+ *
+ * The variant of buttons within the button group can be set using the `variant` attribute on the button group,
+ * which will apply the variant to all buttons within the group. Default variant is `primary`.
+ *
+ * All buttons are placed horizontally by default. To change the orientation to vertical, set the `orientation` attribute to `vertical`.
+ *
+ * Things to note:
+ * - Button group will allow only `mdc-button` components as its direct children.
+ * - Button group will set the `size` and `variant` attributes on the buttons within it,
+ *   so any `size` or `variant` set directly on any button will be overridden.
  *
  * @tagname mdc-buttongroup
  *

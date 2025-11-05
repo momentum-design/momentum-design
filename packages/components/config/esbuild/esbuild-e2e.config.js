@@ -61,7 +61,7 @@ const iife = async () => {
       `${join(process.cwd(), 'src/components/buttonsimple/index.ts')}`,
       `${join(process.cwd(), 'src/components/formfieldwrapper/formfieldwrapper.subcomponent.ts')}`,
       `${join(process.cwd(), 'src/components/controltypeprovider/controltypeprovider.e2e-test.utils.ts')}`,
-      `${join(process.cwd(), 'src/components/virtualizedlist/virtualizedlist.helper.test.ts')}`,
+      `${join(process.cwd(), 'src/components/virtualizedlist/helpers/virtualizedlist.e2e-test.utils.ts')}`,
       // include playwright-temp index for esbuild to consider it in the path resolve
       `${join(process.cwd(), 'playwright-temp/brandvisuals/index.ts')}`,
     ],

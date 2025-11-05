@@ -5,13 +5,16 @@ components.
 
 ### `readonly` vs `disabled` vs `soft-disabled`
 
-Three state attributes provide different levels of interactivity, accessibility, and intent.  
+Three state attributes provide different levels of interactivity, accessibility,
+and intent.  
 Use the following to choose the right one:
 
 #### `readonly`
+
 - **Focusable**: ✅ Yes
 - **Visual styles**: Normal appearance (not dimmed)
-- **Interactions**: Content is visible but cannot be edited. Users can still focus the field.
+- **Interactions**: Content is visible but cannot be edited. Users can still
+  focus the field.
 - **Screen Reader**: Fully accessible
 - **Use when**:
   - Displaying pre-filled data the user cannot change (e.g., system IDs).
@@ -19,9 +22,11 @@ Use the following to choose the right one:
   - Users need to focus the field to copy its value but not modify it.
 
 #### `disabled`
+
 - **Focusable**: ❌ No
 - **Visual styles**: Dimmed/grayed out
-- **Interactions**: No interaction at all (not focusable, not editable, not selectable)
+- **Interactions**: No interaction at all (not focusable, not editable, not
+  selectable)
 - **Screen Reader**: Accessible but announced as "dimmed"
 - **Use when**:
   - The input or action is not applicable in the current context.
@@ -29,22 +34,29 @@ Use the following to choose the right one:
   - Example: A “Submit” button before required fields are completed.
 
 #### `soft-disabled`
+
 - **Focusable**: ✅ Yes
 - **Visual styles**: Dimmed/grayed out
-- **Interactions**: Focusable, but editing is blocked. Can display a tooltip or helper text to explain why.
+- **Interactions**: Focusable, but editing is blocked. Can display a tooltip or
+  helper text to explain why.
 - **Screen Reader**: Fully accessible
+- **Events**: When using soft disabled, consumers must ensure that the element behaves like a 
+  disabled element, allowing only focus and preventing any interactions (clicks or 
+  keyboard actions) from triggering unintended actions.
 - **Use when**:
   - Input/action is temporarily unavailable but still important to discover.
-  - Users need to understand why the field is unavailable (e.g., “Upgrade plan to enable”).
+  - Users need to understand why the field is unavailable (e.g., “Upgrade plan
+    to enable”).
   - You want users to know the control exists and could become available later.
 
 ---
 
 #### Design Guidance
-- Use **readonly** for locked values the user must see or copy.  
-- Use **disabled** to completely remove a control from the interaction flow.  
-- Use **soft-disabled** when discoverability and explanation are important.  
-- Always provide context (tooltip or helper text) for **soft-disabled** states.   
+
+- Use **readonly** for locked values the user must see or copy.
+- Use **disabled** to completely remove a control from the interaction flow.
+- Use **soft-disabled** when discoverability and explanation are important.
+- Always provide context (tooltip or helper text) for **soft-disabled** states.
 
 ---
 
@@ -59,3 +71,23 @@ The same accessibility concerns for `autofocus` apply to this attribute as well.
 
 <br /> See MDN: [Accessibility concerns for
 autofocus](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns).
+
+---
+
+### `control-type` Attribute
+
+This attribute can be set to `controlled` or `uncontrolled`
+
+- `controlled` components should be used if your application is expecting to
+  control the state/value of the component, e.g. when you click on a checkbox,
+  it will only fire the onChange event. The application will be responsible to
+  capture the onChange event, process it and then set or unset the checked
+  attribute on the component. React apps tend to work this way.
+
+- `uncontrolled` components should be used if your application is expecting the
+  component to change its own state/value e.g. a checkbox will toggle its
+  checked state and appearance on click, as well as firing the onChange event.
+
+Components using the `ControlTypeMixin` default to `uncontrolled`, but this
+default can be changed by using a `ControlTypeProvider` with attribute
+`controlType="controlled"`

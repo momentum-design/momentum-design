@@ -60,6 +60,9 @@ test('mdc-chip', async ({ componentsPage }) => {
     chipStickerSheet.setAttributes({ label: 'Chip', 'icon-name': 'placeholder-bold' });
     await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
 
+    chipStickerSheet.setAttributes({ label: 'Long label', 'icon-name': 'placeholder-bold', style: 'width: 6.5rem' });
+    await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
+
     chipStickerSheet.setAttributes({ label: 'Disabled', disabled: '' });
     await chipStickerSheet.createMarkupWithCombination({});
 

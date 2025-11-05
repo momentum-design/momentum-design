@@ -1,5 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../banner';
+import '../text';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
@@ -373,5 +375,32 @@ export const FormFieldInputWithCustomValidationMessage: StoryObj = {
         </fieldset>
       </form>
     `;
+  },
+};
+
+export const SlottedInputElement: StoryObj = {
+  render: () => html`
+    <mdc-input>
+      <input slot="input" type="number" aria-label="Custom aria-label on slotted input element" value="42" />
+    </mdc-input>
+  `,
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
+            In the example below a native input element is slotted into the mdc-input component (see code preview).<br />
+            This allows for more control over the input element itself, such as setting a different type or adding
+            custom attributes directly to the input.<br />
+          </mdc-text>
+          <mdc-banner
+            variant="warning"
+            label="When using a slotted input, certain features of mdc-input (like validation messages, a11y) 
+          may need to be handled manually."
+          ></mdc-banner> `,
+      },
+    },
+    controls: {
+      disable: true,
+    },
   },
 };

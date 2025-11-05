@@ -15,12 +15,24 @@ const styles = [
     :host,
     :host::part(input-container),
     :host::part(input-section),
-    :host::part(input-text) {
+    :host::part(input-text),
+    ::slotted(input) {
       width: 100%;
     }
 
-    :host::part(input-text) {
-      font-family: inherit;
+    :host::part(input-text),
+    ::slotted(input) {
+      /* Unset default native input placeholder padding */
+      padding-block: unset;
+      padding-inline: unset;
+
+      /* Set midsize regular font family to native input text */
+      font-family: var(--mdc-themeprovider-font-family);
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+      text-decoration: var(--mds-font-apps-body-midsize-regular-text-decoration);
+      text-transform: var(--mds-font-apps-body-midsize-regular-text-case);
     }
 
     :host::part(input-container) {
@@ -57,14 +69,16 @@ const styles = [
       gap: 0.25rem;
     }
 
-    :host::part(input-text) {
+    :host::part(input-text),
+    ::slotted(input) {
       border: none;
       color: var(--mdc-input-text-color);
       background-color: inherit;
       outline: none;
     }
 
-    :host::part(input-text)::selection {
+    :host::part(input-text)::selection,
+    ::slotted(input)::selection {
       background-color: var(--mdc-input-selection-background-color);
       color: var(--mdc-input-selection-text-color);
     }

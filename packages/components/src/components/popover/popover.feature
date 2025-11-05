@@ -33,9 +33,9 @@ Feature: Popover Component
       Then it should be placed below the trigger element by default,
       And the placement can be modified using the `placement` attribute to top, left, right, bottom, etc.
 
-    Scenario: Flip attribute
+    Scenario: Disable Flip attribute
       Given a popover component which is visible,
-      When the `flip` attribute is set to `true`,
+      When the `disable-flip` attribute is set to `false`,
       Then the floating popover should change the placement based on the availability of viewport.
 
     Scenario: Display arrow
@@ -210,9 +210,8 @@ Feature: Popover Component
       Then the second popover should close,
       And the first popover should open (since focus is back on the trigger).
 
-    Scenario: Tooltip and Popover on same trigger with keepConnectedTooltipClosed attribute as true
+    Scenario: Tooltip and Popover on same trigger with keepConnectedTooltipOpen attribute as false
       Given a trigger element with a popover and a tooltip attached
-      And the popover has the `keep-connected-tooltip-closed` attribute set to `true`
       When the trigger is clicked,
       Then the popover should open,
       And the tooltip should closed.

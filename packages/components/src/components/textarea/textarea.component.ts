@@ -94,9 +94,9 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
-   * @default 40
+   * @default undefined
    */
-  @property({ type: Number }) cols?: number = DEFAULTS.COLS;
+  @property({ type: Number }) cols?: number;
 
   /**
    * The wrap attribute specifies how the text in a text area is to be wrapped when submitted in a form.

@@ -12,14 +12,16 @@ import '../menupopover';
 import '../navmenuitem';
 import '../icon';
 import '../menusection';
+import '../banner';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation
+      ?expanded="${args.expanded}"
       variant="${args.variant}"
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
-      parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -121,6 +123,89 @@ const render = (args: Args) => html`
   </div>
 `;
 
+const renderMixedSideNavigation = (args: Args) => html`
+  <div style="height: calc(100vh - 320px); margin: 1rem">
+    <mdc-sidenavigation
+      ?expanded="${args.expanded}"
+      variant="${args.variant}"
+      grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
+      @activechange="${action('onactivechange')}"
+      @toggle="${action('ontoggle')}"
+    >
+      <!-- Upper Nav (scrollable section) -->
+      <mdc-menusection slot="scrollable-menubar" show-divider>
+        <mdc-navmenuitem
+          badge-type="counter"
+          counter="2"
+          max-counter="66"
+          icon-name="chat-bold"
+          nav-id="1"
+          label="Messaging"
+          tooltip-text="Messaging"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="meetings-bold"
+          nav-id="2"
+          label="Meetings"
+          tooltip-text="Meetings"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <mdc-menusection slot="scrollable-menubar" header-text="Section 1">
+        <mdc-navmenuitem icon-name="chat-bold" nav-id="4" label="Messaging" tooltip-text="Messaging"></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="meetings-bold"
+          nav-id="5"
+          label="Meetings"
+          tooltip-text="Meetings"
+          badge-type="counter"
+          counter="2"
+          max-counter="66"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <!-- Lower Nav (Fixed section) -->
+      <mdc-menusection slot="fixed-menubar" show-divider>
+        <mdc-navmenuitem
+          icon-name="settings-bold"
+          nav-id="13"
+          label="Settings"
+          tooltip-text="Settings"
+          cannot-activate
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="help-circle-bold"
+          nav-id="14"
+          label="Help"
+          tooltip-text="Help, opens a new tab"
+          cannot-activate
+          tooltip-appearance="always"
+          @click="${() => window.open('https://momentum.design', '_blank')}"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+      <mdc-menusection slot="fixed-menubar">
+        <mdc-navmenuitem
+          icon-name="settings-bold"
+          nav-id="23"
+          label="Settings"
+          tooltip-text="Settings"
+          cannot-activate
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="help-circle-bold"
+          nav-id="24"
+          label="Help"
+          tooltip-text="Help, opens a new tab"
+          cannot-activate
+          tooltip-appearance="always"
+          @click="${() => window.open('https://momentum.design', '_blank')}"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+    </mdc-sidenavigation>
+  </div>
+`;
+
 const renderNestedSideNavigation = (args: Args) => {
   const showAlert = () => {
     // eslint-disable-next-line no-alert
@@ -131,12 +216,12 @@ const renderNestedSideNavigation = (args: Args) => {
       variant="${args.variant}"
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
-      parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
       @activechange="${action('onactivechange')}"
     >
       <!-- Upper Nav (scrollable section) -->
-        <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Main Meetings" slot="scrollable-menubar"></mdc-navmenuitem>
-        <mdc-navmenuitem icon-name="audio-call-bold" nav-id="verify2" label="Main Calling" slot="scrollable-menubar" id="temp"></mdc-navmenuitem>
+        <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Main Meetings" slot="scrollable-menubar" tooltip-text="Meetings"></mdc-navmenuitem>
+        <mdc-navmenuitem icon-name="audio-call-bold" nav-id="verify2" label="Main Calling" slot="scrollable-menubar" id="temp" tooltip-text="Calling" is-active-parent-tooltip-text="Calling, contains active navmenuitem"></mdc-navmenuitem>
         <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
           <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
           <mdc-navmenuitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navmenuitem>
@@ -151,8 +236,10 @@ const renderNestedSideNavigation = (args: Args) => {
             icon-name="chat-bold"
             nav-id="1"
             label="Messaging"
+            tooltip-text="Messaging"
           ></mdc-navmenuitem>
-          <mdc-navmenuitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled></mdc-navmenuitem>
+          <mdc-navmenuitem icon-name="meetings-bold" nav-id="2" label="Meetings" soft-disabled 
+            tooltip-text="Meetings"></mdc-navmenuitem>
           <mdc-navmenuitem
             badge-type="counter"
             counter="2"
@@ -160,8 +247,17 @@ const renderNestedSideNavigation = (args: Args) => {
             icon-name="audio-call-bold"
             nav-id="3"
             label="Callings"
+            tooltip-text="Callings"
           ></mdc-navmenuitem>
-          <mdc-navmenuitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger"></mdc-navmenuitem>
+          <mdc-navmenuitem
+            icon-name="more-circle-bold"
+            nav-id="4"
+            label="More"
+            id="menu-button-trigger"
+            tooltip-text="More"
+            is-active-parent-tooltip-text="More, contains active navmenuitem"
+            >
+          </mdc-navmenuitem>
           <mdc-menupopover triggerid="menu-button-trigger">
             <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
             <mdc-navmenuitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navmenuitem>
@@ -173,7 +269,7 @@ const renderNestedSideNavigation = (args: Args) => {
               max-counter="66"
               icon-name="placeholder-bold"
             ></mdc-navmenuitem>
-            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
             <mdc-menupopover triggerid="share-id">
               <mdc-navmenuitem
                 label="Webex App Hub"
@@ -267,8 +363,10 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-sidenavigation',
   render,
-
   argTypes: {
+    expanded: {
+      control: 'boolean',
+    },
     variant: {
       control: 'select',
       options: Object.values(VARIANTS),
@@ -276,8 +374,8 @@ const meta: Meta = {
     'grabber-btn-aria-label': {
       control: 'text',
     },
-    'parent-nav-tooltip-text': {
-      control: 'text',
+    'hide-fixed-section-divider': {
+      control: 'boolean',
     },
     ...hideControls(['Context']),
     ...classArgType,
@@ -289,10 +387,40 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    expanded: true,
     variant: DEFAULTS.VARIANT,
     'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
-    'parent-nav-tooltip-text': 'Contains active navmenuitem',
+  },
+};
+
+export const Mixed: StoryObj = {
+  render: renderMixedSideNavigation,
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
+            The Mixed Side Navigation example demonstrates the use of NavMenuItems which either can be activated (when
+            changing content on the screen like "Messaging") or cannot be activated (when opening external links or
+            opening dialogs like "Help"). NavMenuItems that cannot be activated need to have the 'cannot-activate'
+            attribute set to true.
+            <br />
+          </mdc-text>
+          <mdc-banner
+            variant="informational"
+            label="As a A11y recommendation, NavMenuItems that cannot be activated must have a tooltip-text provided (including
+            information like 'Opens a new tab') and tooltip-appearance set to 'always' to indicate to users that clicking on
+            the NavMenuItem will redirect to a new tab."
+          ></mdc-banner> `,
+      },
+    },
+  },
+  args: {
+    expanded: true,
+    variant: DEFAULTS.VARIANT,
+    'footer-text': '%Customer Name%',
+    'grabber-btn-aria-label': 'Toggle Side navigation',
+    'hide-fixed-section-divider': true,
   },
 };
 
