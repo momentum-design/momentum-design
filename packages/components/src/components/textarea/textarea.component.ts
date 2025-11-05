@@ -35,6 +35,15 @@ import styles from './textarea.styles';
  * help-text attribute with the error message using limitexceeded event.
  * The same help-text value will be used for the validation message to be displayed.
  *
+ * **Accessibility Best Practices:**
+ * - Always provide a `label` for screen readers to identify the textarea's purpose
+ * - Use `help-text` to provide additional context or instructions
+ * - When using `resizable` attribute, always include `resize-button-aria-label` for the resize button
+ * - When using `max-character-limit`, consider providing `character-limit-announcement` for screen reader updates
+ * - Use appropriate `help-text-type` (error, warning, success) to convey validation state
+ * - Ensure `validation-message` is set for form validation errors
+ * - The resize button (when enabled) supports keyboard navigation via Arrow Up/Down keys
+ *
  * @tagname mdc-textarea
  *
  * @event input - (React: onInput) This event is dispatched when the value of the textarea field changes (every press).
