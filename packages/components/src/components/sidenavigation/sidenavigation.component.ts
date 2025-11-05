@@ -59,13 +59,17 @@ import styles from './sidenavigation.styles';
  * @tagname mdc-sidenavigation
  *
  * @slot scrollable-section - Slot for the scrollable content area of the side navigation.
+ * @slot scrollable-menubar - Slot for the menubar inside the scrollable section.
  * @slot fixed-section - Slot for the fixed content area of the side navigation.
+ * @slot fixed-menubar - Slot for the menubar inside the fixed section.
  * @slot brand-logo - Slot for the brand logo (e.g., icon or img).
  *
  * @csspart side-navigation-container - The main container wrapping the entire side navigation.
  * @csspart scrollable-section - The scrollable section of the side navigation.
- * @csspart fixed-section - The fixed section of the side navigation.
+ * @csspart scrollable-menubar - The menubar inside the scrollable section.
  * @csspart separator - The divider between the scrollable and fixed sections.
+ * @csspart fixed-section - The fixed section of the side navigation.
+ * @csspart fixed-menubar - The menubar inside the fixed section.
  * @csspart brand-logo-container - The container wrapping the brand logo and footer text.
  * @csspart footer-text - The footer text label in the fixed section.
  * @csspart vertical-divider - The vertical divider between the scrollable and fixed sections.
@@ -75,9 +79,14 @@ import styles from './sidenavigation.styles';
  * @event activechange - (React: onActiveChange) Dispatched when the active state of a nested navmenuitem changes.
  *
  * @cssproperty --mdc-sidenavigation-expanded-width - width of the sideNavigation when expanded
+ * @cssproperty --mdc-sidenavigation-expanded-left-padding - padding for the left side of navmenuitems, when expanded
+ * @cssproperty --mdc-sidenavigation-expanded-right-padding - padding for the right side of navmenuitems, when expanded
  * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collapsed
- * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
+ * @cssproperty --mdc-sidenavigation-collapsed-left-padding - padding for the left side of navmenuitems, when collapsed
+ * @cssproperty --mdc-sidenavigation-collapsed-right-padding - padding for the right side of navmenuitems, when collapsed
  * @cssproperty --mdc-sidenavigation-top-padding - padding for the top of the scrollable section - note: if setting to 0 focus ring might be cut off
+ * @cssproperty --mdc-sidenavigation-bottom-padding - padding for the bottom of the scrollable section
+ * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   /**

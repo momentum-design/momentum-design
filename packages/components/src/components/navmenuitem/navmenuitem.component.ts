@@ -44,16 +44,21 @@ import styles from './navmenuitem.styles';
  * @event focus - (React: onFocus) This event is dispatched when the navmenuitem receives focus.
  * @event activechange - (React: onActiveChange) Dispatched when the active state of the navmenuitem changes.
  *
+ * @cssproperty --mdc-navmenuitem-in-sidenav-expanded-width - Width of the navmenuitem when expanded.
+ * @cssproperty --mdc-navmenuitem-in-sidenav-expanded-margin-left - Left margin of the navmenuitem, when expanded.
+ * @cssproperty --mdc-navmenuitem-in-sidenav-expanded-margin-right - Right margin of the navmenuitem, when expanded.
+ * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-width - Width of the navmenuitem when collapsed.
+ * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-left - Left margin of the navmenuitem, when collapsed.
+ * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-right - Right margin of the navmenuitem, when collapsed.
  * @cssproperty --mdc-navmenuitem-color - Text color of the navmenuitem in its normal state.
  * @cssproperty --mdc-navmenuitem-disabled-color - Text color of the navmenuitem when disabled.
- * @cssproperty --mdc-navmenuitem-expanded-width - Width of the navmenuitem when expanded.
+ * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
  * @cssproperty --mdc-navmenuitem-hover-background-color - Background color of the navmenuitem when hovered.
  * @cssproperty --mdc-navmenuitem-hover-active-background-color - Background color of the active navmenuitem when hovered.
  * @cssproperty --mdc-navmenuitem-pressed-background-color - Background color of the navmenuitem when pressed.
  * @cssproperty --mdc-navmenuitem-pressed-active-background-color - Background color of the active navmenuitem when pressed.
  * @cssproperty --mdc-navmenuitem-disabled-background-color - Background color of the navmenuitem when disabled.
  * @cssproperty --mdc-navmenuitem-disabled-active-background-color - Background color of the active navmenuitem when disabled.
- * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
  *
  * @csspart arrow - The arrow of the navmenuitem.
  * @csspart badge - The badge of the navmenuitem.
@@ -64,7 +69,8 @@ import styles from './navmenuitem.styles';
 class NavMenuItem extends MenuItem {
   /**
    * The navmenuitem's active state indicates whether it is currently toggled on (active) or off (inactive).
-   * If cannotActivate is set to true, do not use this property.
+   * If cannotActivate is set to true, the surrounding SideNavigation will
+   * not set this property when the navmenuitem is clicked.
    *
    * @default undefined
    */
@@ -238,7 +244,7 @@ class NavMenuItem extends MenuItem {
 
     if (changedProperties.has('showLabel')) {
       // If collapsed and aria-label is not set, use visible label
-      if (!this.showLabel && !this.getAttribute('aria-label')?.length && this.label) {
+      if (!this.showLabel && !this.getAttribute('aria-label') && this.label) {
         this.setAttribute('aria-label', this.label);
       }
     }
@@ -362,7 +368,7 @@ class NavMenuItem extends MenuItem {
     const context = this.sideNavigationContext?.value;
     return html`
       <div part="icon-container">
-        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="icon"></mdc-icon>
+        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="regular-icon"></mdc-icon>
         ${!this.cannotActivate
           ? html`<mdc-icon
               name="${this.getFilledIconName()}"
@@ -386,12 +392,7 @@ class NavMenuItem extends MenuItem {
           `
         : nothing}
       ${context?.hasSiblingWithTriggerId(this)
-        ? html` <mdc-icon
-            name=${ICON_NAME.RIGHT_ARROW}
-            length-unit="rem"
-            part="trailing-arrow ${this.showLabel ? '' : 'arrow'}"
-          >
-          </mdc-icon>`
+        ? html` <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow"> </mdc-icon>`
         : nothing}
     `;
   }

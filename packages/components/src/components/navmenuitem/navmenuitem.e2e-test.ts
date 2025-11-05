@@ -205,7 +205,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         const text = componentsPage.page.locator('mdc-text');
-        const icon = componentsPage.page.locator('mdc-icon[part="icon"]');
+        const icon = componentsPage.page.locator('mdc-icon[part="regular-icon"]');
 
         await text.waitFor();
         await icon.waitFor();
@@ -254,7 +254,7 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         const text = componentsPage.page.locator('mdc-text');
-        const icon = componentsPage.page.locator('mdc-icon[part="icon"]');
+        const icon = componentsPage.page.locator('mdc-icon[part="regular-icon"]');
 
         await icon.waitFor();
 
