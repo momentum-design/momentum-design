@@ -876,7 +876,11 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   private handleFocusIn = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
 
-    if (this.triggerElement?.matches(':focus-visible') || this.isHovered) {
+    if (
+      this.triggerElement?.matches(':focus-visible') ||
+      this.triggerElement?.shadowRoot?.querySelector('.mdc-focus-ring')?.matches(':focus-visible') ||
+      this.isHovered
+    ) {
       this.show();
     }
   };

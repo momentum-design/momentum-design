@@ -6,10 +6,15 @@ const styles = [
   hostFitContentStyles,
   css`
     :host {
+      --mdc-navmenuitem-in-sidenav-expanded-width: var(--mdc-sidenavigation-expanded-width, 100%);
+      --mdc-navmenuitem-in-sidenav-expanded-margin-left: var(--mdc-sidenavigation-expanded-left-padding, 1rem);
+      --mdc-navmenuitem-in-sidenav-expanded-margin-right: var(--mdc-sidenavigation-expanded-right-padding, 1rem);
+      --mdc-navmenuitem-in-sidenav-collapsed-width: var(--mdc-sidenavigation-collapsed-width, fit-content);
+      --mdc-navmenuitem-in-sidenav-collapsed-margin-left: var(--mdc-sidenavigation-collapsed-left-padding, 1rem);
+      --mdc-navmenuitem-in-sidenav-collapsed-margin-right: var(--mdc-sidenavigation-collapsed-right-padding, 1rem);
+
       --mdc-navmenuitem-color: var(--mds-color-theme-text-primary-normal);
       --mdc-navmenuitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
-      --mdc-navmenuitem-border-color: var(--mds-color-theme-outline-button-normal);
-      --mdc-navmenuitem-expanded-width: 12.75rem;
 
       /* Background color when in default (normal) or active state */
       --mdc-navmenuitem-rest-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
@@ -21,30 +26,62 @@ const styles = [
       --mdc-navmenuitem-disabled-active-background-color: var(--mds-color-theme-button-secondary-active-disabled);
 
       position: relative;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem;
       color: var(--mdc-navmenuitem-color);
-      border-color: var(--mdc-navmenuitem-border-color);
       border-radius: 0.5rem;
       cursor: pointer;
+    }
+
+    :host::part(icon-container) {
+      position: relative;
+    }
+
+    :host([active]:not([cannot-activate]))::part(regular-icon) {
+      display: none;
+    }
+
+    :host([active]:not([cannot-activate]))::part(filled-icon) {
+      display: block;
+    }
+
+    :host::part(regular-icon) {
+      display: block;
+    }
+
+    :host::part(filled-icon) {
+      display: none;
+    }
+
+    :host([in-menupopover]) {
+      width: 100%;
     }
 
     :host(:not([in-menupopover])) {
       border-radius: 1.25rem;
     }
 
-    :host(:not([in-menupopover]):dir(ltr)) {
-      margin-left: 1rem;
+    :host([show-label]:not([in-menupopover])) {
+      width: calc(
+        var(--mdc-navmenuitem-in-sidenav-expanded-width) - var(--mdc-navmenuitem-in-sidenav-expanded-margin-left) - var(
+            --mdc-navmenuitem-in-sidenav-expanded-margin-right
+          )
+      );
+
+      margin-inline-start: var(--mdc-navmenuitem-in-sidenav-expanded-margin-left);
     }
 
-    :host(:not([in-menupopover]):dir(rtl)) {
-      margin-right: 1rem;
-    }
+    :host(:not([show-label]):not([in-menupopover])) {
+      width: calc(
+        var(--mdc-navmenuitem-in-sidenav-collapsed-width) - var(--mdc-navmenuitem-in-sidenav-collapsed-margin-left) - var(
+            --mdc-navmenuitem-in-sidenav-collapsed-margin-right
+          )
+      );
 
-    :host([show-label]) {
-      width: var(--mdc-navmenuitem-expanded-width);
+      margin-inline-start: var(--mdc-navmenuitem-in-sidenav-collapsed-margin-left);
     }
 
     :host([active]) {
@@ -88,13 +125,23 @@ const styles = [
       visibility: hidden;
     }
 
-    :host(:dir(ltr))::before {
-      left: -1rem;
+    :host([show-label]:dir(ltr))::before {
+      left: calc(-1 * var(--mdc-navmenuitem-in-sidenav-expanded-margin-left));
       border-radius: 0 0.25rem 0.25rem 0;
     }
 
-    :host(:dir(rtl))::before {
-      right: -1rem;
+    :host([show-label]:dir(rtl))::before {
+      right: calc(-1 * var(--mdc-navmenuitem-in-sidenav-expanded-margin-left));
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+
+    :host(:not([show-label]):dir(ltr))::before {
+      left: calc(-1 * var(--mdc-navmenuitem-in-sidenav-collapsed-margin-left));
+      border-radius: 0 0.25rem 0.25rem 0;
+    }
+
+    :host(:not([show-label]):dir(rtl))::before {
+      right: calc(-1 * var(--mdc-navmenuitem-in-sidenav-collapsed-margin-left));
       border-radius: 0.25rem 0 0 0.25rem;
     }
 
@@ -113,10 +160,6 @@ const styles = [
       white-space: nowrap;
     }
 
-    :host::part(icon-container) {
-      position: relative;
-    }
-
     :host(:dir(ltr))::part(badge) {
       position: absolute;
       right: -0.375rem;
@@ -131,23 +174,15 @@ const styles = [
 
     :host(:not([show-label]))::part(trailing-arrow) {
       --mdc-icon-size: 0.75rem;
+      flex-shrink: 0;
+
+      position: absolute;
+      inset-inline-end: -0.25rem;
+      top: 0.875rem;
     }
 
     :host([show-label])::part(trailing-arrow) {
-      --mdc-icon-size: 1rem;
       flex-shrink: 0;
-    }
-
-    :host(:dir(ltr))::part(arrow) {
-      position: absolute;
-      right: -0.75rem;
-      top: 0.875rem;
-    }
-
-    :host(:dir(rtl))::part(arrow) {
-      position: absolute;
-      left: -0.75rem;
-      top: 0.875rem;
     }
 
     :host mdc-badge {
