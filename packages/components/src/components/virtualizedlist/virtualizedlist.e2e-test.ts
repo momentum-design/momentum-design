@@ -86,7 +86,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
 
       await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
-        element: wrapper,
+        element: vlist,
       });
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
@@ -98,12 +98,12 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await scrollList(vlist, 180);
 
       await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
-        element: wrapper,
+        element: vlist,
       });
     });
 
     await test.step('popovers should render correctly when defined inside the listitems', async () => {
-      const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
+      const { vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
 
       await expect(listItemLocator(vlist, 24)).toBeVisible();
       await expect(listItemLocator(vlist, 24)).toBeInViewport();
@@ -115,7 +115,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
 
       await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
-        element: wrapper,
+        element: vlist,
       });
     });
 
@@ -552,7 +552,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       const initialTopPosition = await getTopPositionOfItem(listItemLocator(vlist, 50));
       await componentsPage.visualRegression.takeScreenshot('mdc-virtualizedlist-scroll-anchoring-initial', {
-        element: wrapper,
+        element: vlist,
       });
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
