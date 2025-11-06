@@ -77,14 +77,14 @@ class Option extends FormInternalsMixin(ListItem) {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('selected') && this.ariaSelected !== this.selected.toString()) {
+    if (changedProperties.has('selected')) {
       this.setAttribute('aria-selected', `${this.selected}`);
 
       this.dispatchModifiedEvent(this.selected ? 'selected' : 'unselected');
     }
   }
 
-  private renderIcon(slotName: string, iconName: string): TemplateResult {
+  private renderIcon(slotName: string, iconName: IconNames): TemplateResult {
     return html` <mdc-icon length-unit="rem" slot="${slotName}" name="${iconName}"></mdc-icon> `;
   }
 
