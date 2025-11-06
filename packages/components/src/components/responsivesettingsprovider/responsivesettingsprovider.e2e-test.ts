@@ -114,7 +114,7 @@ const testToRun = async ({
     // SUBCOMPONENT
     await expect(subComponentLocator).toBeVisible();
     await expect(subComponentLocator).toContainText(
-      `ResponsiveSettingsProvider settings: ${JSON.stringify(expectedResponsiveSettings, null, 3)}`,
+      `ResponsiveSettingsProvider settings: ${JSON.stringify(expectedResponsiveSettings)}`,
     );
 
     await toHaveAllAttributes(responsiveSettingsProvider, expectedResponsiveSettings);
@@ -122,7 +122,7 @@ const testToRun = async ({
     if (type === 'nested') {
       await expect(nestedSubComponentLocator).toBeVisible();
       await expect(nestedSubComponentLocator).toContainText(
-        `ResponsiveSettingsProvider settings: ${JSON.stringify(expectedNestedResponsiveSettings, null, 3)}`,
+        `ResponsiveSettingsProvider settings: ${JSON.stringify(expectedNestedResponsiveSettings)}`,
       );
 
       await toHaveAllAttributes(nestedResponsiveSettingsProvider, expectedNestedResponsiveSettings!);

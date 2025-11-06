@@ -21,7 +21,7 @@ class SubComponentResponsiveSettingsProvider extends Component {
   override render() {
     return html`
       <mdc-text tagname="p" type="body-large-regular"
-        ><pre>${this.labelPrefix} ${JSON.stringify(this.responsiveSettingsContext.value, null, 3)}<pre></mdc-text
+        >${this.labelPrefix} ${JSON.stringify(this.responsiveSettingsContext.value)}</mdc-text
       >
     `;
   }
