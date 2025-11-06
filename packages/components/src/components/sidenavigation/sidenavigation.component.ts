@@ -19,7 +19,7 @@ import styles from './sidenavigation.styles';
  * typically used in layouts with persistent or collapsible sidebars.
  *
  * ## Features:
- * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
+ * - Supports five layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, `flexible-on-hover`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
  * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
@@ -59,13 +59,17 @@ import styles from './sidenavigation.styles';
  * @tagname mdc-sidenavigation
  *
  * @slot scrollable-section - Slot for the scrollable content area of the side navigation.
+ * @slot scrollable-menubar - Slot for the menubar inside the scrollable section.
  * @slot fixed-section - Slot for the fixed content area of the side navigation.
+ * @slot fixed-menubar - Slot for the menubar inside the fixed section.
  * @slot brand-logo - Slot for the brand logo (e.g., icon or img).
  *
  * @csspart side-navigation-container - The main container wrapping the entire side navigation.
  * @csspart scrollable-section - The scrollable section of the side navigation.
- * @csspart fixed-section - The fixed section of the side navigation.
+ * @csspart scrollable-menubar - The menubar inside the scrollable section.
  * @csspart separator - The divider between the scrollable and fixed sections.
+ * @csspart fixed-section - The fixed section of the side navigation.
+ * @csspart fixed-menubar - The menubar inside the fixed section.
  * @csspart brand-logo-container - The container wrapping the brand logo and footer text.
  * @csspart footer-text - The footer text label in the fixed section.
  * @csspart vertical-divider - The vertical divider between the scrollable and fixed sections.
@@ -75,15 +79,22 @@ import styles from './sidenavigation.styles';
  * @event activechange - (React: onActiveChange) Dispatched when the active state of a nested navmenuitem changes.
  *
  * @cssproperty --mdc-sidenavigation-expanded-width - width of the sideNavigation when expanded
+ * @cssproperty --mdc-sidenavigation-expanded-left-padding - padding for the left side of navmenuitems, when expanded
+ * @cssproperty --mdc-sidenavigation-expanded-right-padding - padding for the right side of navmenuitems, when expanded
  * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collapsed
+ * @cssproperty --mdc-sidenavigation-collapsed-left-padding - padding for the left side of navmenuitems, when collapsed
+ * @cssproperty --mdc-sidenavigation-collapsed-right-padding - padding for the right side of navmenuitems, when collapsed
+ * @cssproperty --mdc-sidenavigation-top-padding - padding for the top of the scrollable section - note: if setting to 0 focus ring might be cut off
+ * @cssproperty --mdc-sidenavigation-bottom-padding - padding for the bottom of the scrollable section
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   /**
-   * Four variants of the sideNavigation
+   * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
    * - **fixed-expanded**: Shows icons with labels and has fixed width, 15rem.
    * - **flexible**: Toggles between collapsed/expanded states.
+   * - **flexible-on-hover**: Similar to flexible, but the grabber button is only visible on hover or focus.
    * - **hidden**: Removes the sidenavigation from the DOM.
    * @default flexible
    */
@@ -92,6 +103,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /**
    * Displays footer text in the bottom section of the sidenavigation.
+   *
+   * Note: if footerText is not provided, the bottom brand logo section will not be rendered.
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'footer-text' })
@@ -100,9 +113,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
   /**
    * Determines whether the sideNavigation is expanded or not.
    *
-   * @internal
+   * NOTE: For `fixed-collapsed` and `fixed-expanded` variants, this property is hard set to `false` and `true` respectively.
+   * For `flexible` and `flexible-on-hover` variants, this property can be toggled / controlled from parent.
+   *
+   * @default true
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'expanded' })
   expanded?: boolean;
 
   /**
@@ -115,10 +131,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
   grabberBtnAriaLabel?: string;
 
   /**
-   * Tooltip text shown on parent nav items when a child is active.
+   * Hides the divider between the scrollable and fixed sections when set to true.
+   * @default false
    */
-  @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
-  parentNavTooltipText?: string;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-fixed-section-divider' })
+  hideFixedSectionDivider: boolean = false;
 
   constructor() {
     super({
@@ -132,7 +149,93 @@ class SideNavigation extends Provider<SideNavigationContext> {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.NAVIGATION;
+    this.setupFlexibleOnHoverListeners();
   }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeFlexibleOnHoverListeners();
+  }
+
+  private isHovered: boolean = false;
+
+  private isFocused: boolean = false;
+
+  /** @internal */
+  private handleMouseEnter = () => {
+    this.isHovered = true;
+    this.showGrabberButton();
+  };
+
+  /** @internal */
+  private handleMouseLeave = () => {
+    this.isHovered = false;
+    if (!this.isFocused) {
+      this.hideGrabberButton();
+    }
+  };
+
+  /** @internal */
+  private handleFocusIn = (e: FocusEvent): void => {
+    if (!this.isFocused) {
+      if (this.navMenuItems.find(item => item === e.target)) {
+        // if target of focusin event is navMenuItem and it has not a visible focus, do not proceed further.
+        // this is to avoid showing grabber button on click events
+        if (!(e.target as HTMLElement).matches(':focus-visible')) {
+          return;
+        }
+      }
+
+      this.isFocused = true;
+      this.showGrabberButton();
+    }
+  };
+
+  /** @internal */
+  private handleFocusOut = (e: FocusEvent): void => {
+    if (!this.contains(e.relatedTarget as Node)) {
+      this.isFocused = false;
+      if (!this.isHovered) {
+        this.hideGrabberButton();
+      }
+    }
+  };
+
+  /** @internal */
+  private showGrabberButton() {
+    this.toggleAttribute('data-grabber-visible', true);
+  }
+
+  /** @internal */
+  private hideGrabberButton() {
+    this.toggleAttribute('data-grabber-visible', false);
+  }
+
+  /**
+   * Sets up event listeners for flexible-on-hover variant.
+   * Only adds listeners if the variant is flexible-on-hover.
+   * @internal
+   */
+  private setupFlexibleOnHoverListeners = (): void => {
+    if (this.variant === VARIANTS.FLEXIBLE_ON_HOVER) {
+      this.addEventListener('mouseenter', this.handleMouseEnter);
+      this.addEventListener('mouseleave', this.handleMouseLeave);
+      this.addEventListener('focusin', this.handleFocusIn);
+      this.addEventListener('focusout', this.handleFocusOut);
+    }
+  };
+
+  /**
+   * Removes event listeners for flexible-on-hover variant.
+   * Safe to call regardless of current variant.
+   * @internal
+   */
+  private removeFlexibleOnHoverListeners = (): void => {
+    this.removeEventListener('mouseenter', this.handleMouseEnter);
+    this.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.removeEventListener('focusin', this.handleFocusIn);
+    this.removeEventListener('focusout', this.handleFocusOut);
+  };
 
   public static get Context() {
     return SideNavigationContext.context;
@@ -143,6 +246,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+
+      // Re-setup listeners when variant changes
+      this.removeFlexibleOnHoverListeners();
+      this.setupFlexibleOnHoverListeners();
 
       // hard set expanded state for fixed variants:
       switch (this.variant) {
@@ -164,8 +271,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    if (this.variant === VARIANTS.FLEXIBLE && this.expanded === undefined) {
-      // if on first update the variant is flexible and expanded is not set, default to expanded true
+    if (
+      (this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER) &&
+      this.expanded === undefined
+    ) {
       this.expanded = true;
       this.updateContext();
     }
@@ -178,14 +287,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Is called on every re-render, see Provider class
    */
   protected updateContext(): void {
-    if (
-      this.context.value.variant !== this.variant ||
-      this.context.value.expanded !== this.expanded ||
-      this.context.value.parentNavTooltipText !== this.parentNavTooltipText
-    ) {
+    if (this.context.value.variant !== this.variant || this.context.value.expanded !== this.expanded) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
-      this.context.value.parentNavTooltipText = this.parentNavTooltipText;
       this.context.updateObservers();
     }
   }
@@ -237,8 +341,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
    *
    * @internal
    */
-  private toggleSideNavigation(): void {
+  private toggleSideNavigation(e: PointerEvent): void {
     this.expanded = !this.expanded;
+    if (this.expanded === false && this.variant === VARIANTS.FLEXIBLE_ON_HOVER && e.pointerType === 'mouse') {
+      // If collapsing via mouse click when in flexible-on-hover mode, reset hover/focus states
+      this.isHovered = false;
+      this.isFocused = false;
+      this.hideGrabberButton();
+    }
     this.dispatchEvent(new CustomEvent('toggle', { detail: { expanded: this.expanded } }));
   }
 
@@ -253,33 +363,43 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (this.variant === VARIANTS.HIDDEN) {
       return html``;
     }
+
     return html`
       <div part="side-navigation-container" id="side-nav-container">
         <div part="scrollable-section" tabindex="-1" @keydown=${this.preventScrollOnSpace}>
           <slot name="scrollable-section">
-            <mdc-menubar>
+            <mdc-menubar part="scrollable-menubar">
               <slot name="scrollable-menubar"></slot>
             </mdc-menubar>
           </slot>
         </div>
-        <mdc-divider variant="gradient" part="separator"></mdc-divider>
+        ${!this.hideFixedSectionDivider
+          ? html`<mdc-divider variant="gradient" part="separator"></mdc-divider>`
+          : nothing}
         <div part="fixed-section">
           <slot name="fixed-section">
-            <mdc-menubar>
+            <mdc-menubar part="fixed-menubar">
               <slot name="fixed-menubar"></slot>
             </mdc-menubar>
           </slot>
-          <div part="brand-logo-container">
-            <slot name="brand-logo"></slot>
-            ${this.expanded
-              ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} part="footer-text"
-                  >${this.footerText}</mdc-text
-                >`
-              : nothing}
-          </div>
+          ${this.footerText
+            ? html`
+                <div part="brand-logo-container">
+                  <slot name="brand-logo"></slot>
+                  ${this.expanded
+                    ? html` <mdc-text
+                        type=${TYPE.BODY_MIDSIZE_MEDIUM}
+                        tagname=${VALID_TEXT_TAGS.SPAN}
+                        part="footer-text"
+                        >${this.footerText}</mdc-text
+                      >`
+                    : nothing}
+                </div>
+              `
+            : nothing}
         </div>
       </div>
-      ${this.variant === VARIANTS.FLEXIBLE
+      ${this.variant === VARIANTS.FLEXIBLE || this.variant === VARIANTS.FLEXIBLE_ON_HOVER
         ? html`<mdc-divider
             part="vertical-divider"
             orientation=${DIVIDER_ORIENTATION.VERTICAL}

@@ -31,6 +31,11 @@ import { DEFAULTS } from './menusection.constants';
  * @csspart align-header - The header of the menusection when it is aligned to the start.
  * @csspart container - The container of the menusection.
  * @csspart divider - The divider of the menusection.
+ *
+ * @cssproperty --mdc-menusection-divider-margin-block - Sets the margin block of the divider.
+ * @cssproperty --mdc-menusection-gap - Sets the gap between items in the menusection.
+ * @cssproperty --mdc-menusection-divider-width - Sets the width of the divider.
+ * @cssproperty --mdc-menusection-header-padding - Sets the padding of the header, if present.
  */
 class MenuSection extends Component {
   /**
