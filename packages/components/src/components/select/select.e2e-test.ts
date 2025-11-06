@@ -577,6 +577,32 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(optionsList.nth(3)).toHaveAttribute('selected');
     });
 
+    await test.step('should have only one selected option in the select', async () => {
+      const select = await setup({
+        componentsPage,
+        label: 'Select an option',
+        placeholder: 'Select an option',
+        children: `
+          <mdc-selectlistbox>
+            <mdc-option label="Option 1" value="option1" selected></mdc-option>
+            <mdc-option label="Option 2" value="option2"></mdc-option>
+            <mdc-option label="Option 3" value="option3"></mdc-option>
+          </mdc-selectlistbox>
+        `,
+      });
+      await expect(select).toHaveAttribute('value', 'option1');
+      await componentsPage.page.evaluate(() => {
+        const selectListbox = document.querySelector('mdc-select[label="Select an option"] mdc-selectlistbox');
+        const options = selectListbox?.querySelectorAll('mdc-option');
+        options?.forEach((option, index) => {
+          if (index === 2) option.setAttribute('selected', '');
+        });
+      });
+      await expect(select.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
+      await expect(select.locator('mdc-option').nth(2)).toHaveAttribute('selected');
+      await expect(select).toHaveAttribute('value', 'option3');
+    });
+
     await test.step('should update help-text and help-text-type dynamically based on select validity (FormFieldSelectWithHelpTextValidation)', async () => {
       await componentsPage.mount({
         html: `
@@ -907,9 +933,10 @@ test('mdc-select', async ({ componentsPage }) => {
       await test.step('when a focused option is removed then the next option should be focused via tabindex', async () => {
         const select = await setup({ componentsPage, children: defaultChildren(false) });
         await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Focus 1st option
-        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Focus 2nd option
-        await expect(select.locator('mdc-option').nth(1)).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_DOWN, [
+          select.locator('mdc-option').nth(0),
+          select.locator('mdc-option').nth(1),
+        ]);
         await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('tabindex', '0');
         await expect(select.locator('mdc-option').nth(1)).toHaveAttribute('value', 'option2');
         await componentsPage.page.evaluate(() => {

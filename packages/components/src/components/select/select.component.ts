@@ -339,7 +339,7 @@ class Select
         // when selected, check if there is any other option is a selected option,
         // first preference should always be given to the `selected` attribute.
         // if there is no selected option, then reset it to placeholder or first option
-        if (firstSelectedOption) {
+        if (firstSelectedOption && firstSelectedOption !== this.selectedOption) {
           this.setSelectedOption(firstSelectedOption);
         } else {
           this.setSelectedOption(option);
