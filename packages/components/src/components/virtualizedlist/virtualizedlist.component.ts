@@ -724,15 +724,17 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     const firstItemOffset = visibleItems?.start ?? 0;
 
     window.getComputedStyle(this);
-    let initialOffset = 0;
-    if (this.revertList) {
-      if (this.scrollRef.clientHeight >= this.totalListHeight) {
-        initialOffset = this.scrollRef.clientHeight - this.totalListHeight;
-      }
+    let translateY;
+    if (this.revertList && this.scrollRef.clientHeight >= this.totalListHeight) {
+      const initialOffset = this.scrollRef.clientHeight - this.totalListHeight;
+
+      translateY = `calc(${initialOffset + firstItemOffset}px - var(--mdc-focus-ring-outer-width) * 2)`;
+    } else {
+      translateY = `${firstItemOffset}px`;
     }
 
     this.wrapperRef.style.height = `${this.totalListHeight}px`;
-    this.containerRef.style.transform = `translateY(${initialOffset + firstItemOffset}px)`;
+    this.containerRef.style.transform = `translateY(${translateY})`;
   }
 
   private handleWheelEvent(e: WheelEvent) {
