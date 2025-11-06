@@ -185,15 +185,16 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    *
    * @param cache - The array which contains the list of dom node elements.
    * @param newItem - The new node element which is needed to be added in the list item.
-   * @returns
-   *  - The index of the existing element which is the nearest one to the new item.
-   *  - If the index is -1, then the item is added at the end of cache.
+   * @returns either:
+   *  - the index where the new item need to be inserted or
+   *  - -1 when the item must be appended to the end of the list item.
    */
   private getIndexToInsertInCache(newItem: TItem): number {
     // If the new item is located at the last place, then we can check the last -1 cache item and return if valid
-    if (this.cache.length && !isAfter(this.cache.at(-1)!, newItem)) {
+    if (!this.cache.length || !isAfter(this.cache.at(-1)!, newItem)) {
       return -1;
     }
+    // Fall back to binary search
     let begin = 0;
     let end = this.cache.length - 1;
     while (begin <= end) {
