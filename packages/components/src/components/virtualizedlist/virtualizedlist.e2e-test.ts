@@ -548,54 +548,36 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         observeSizeChanges: true,
       });
 
-      const doActionAndScreenshot = async (action: () => Promise<void>, screenshotName: string) => {
-        await action();
-        await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-scroll-anchoring-${screenshotName}`, {
-          element: wrapper,
-        });
-      };
-
       await componentsPage.actionability.pressTab();
 
+      const initialTopPosition = await getTopPositionOfItem(listItemLocator(vlist, 50));
       await componentsPage.visualRegression.takeScreenshot('mdc-virtualizedlist-scroll-anchoring-initial', {
         element: wrapper,
       });
 
-      await doActionAndScreenshot(
-        () =>
-          wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-            wrapperEl.addItem('New Message after Focused Item', 51);
-          }),
-        'add-after-focused-item',
-      );
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        wrapperEl.addItem('New Message after Focused Item', 51);
+      });
       await expect(listItemLocator(vlist, 51)).toContainText('New Message after Focused Item');
+      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
 
-      await doActionAndScreenshot(
-        () =>
-          wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-            wrapperEl.addItem('New Message before Focused Item', 50);
-          }),
-        'add-before-focused-item',
-      );
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        wrapperEl.addItem('New Message before Focused Item', 50);
+      });
       await expect(listItemLocator(vlist, 50)).toContainText('New Message before Focused Item');
+      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
 
-      await doActionAndScreenshot(
-        () =>
-          wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-            wrapperEl.removeIndex(52);
-          }),
-        'remove-after-focused-item',
-      );
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        wrapperEl.removeIndex(52);
+      });
       await expect(listItemLocator(vlist, 52)).toContainText('Initial Message 51');
+      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
 
-      await doActionAndScreenshot(
-        () =>
-          wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-            wrapperEl.removeIndex(50);
-          }),
-        'remove-before-focused-item',
-      );
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        wrapperEl.removeIndex(50);
+      });
       await expect(listItemLocator(vlist, 50)).toContainText('Initial Message 50');
+      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
 
       await componentsPage.page.keyboard.press('End');
       await expect(listItemLocator(vlist, 99)).toBeFocused();
