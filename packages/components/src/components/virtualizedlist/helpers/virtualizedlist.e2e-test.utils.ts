@@ -44,6 +44,9 @@ export class VirtualizedListE2E extends Component {
   @property({ type: Boolean, reflect: true, attribute: 'with-tooltip' })
   withTooltip: boolean = false;
 
+  @property({ type: String, reflect: true, attribute: 'data-aria-label' })
+  dataAriaLabel?: string;
+
   @state()
   private items: Item[] = [];
 
@@ -185,6 +188,7 @@ export class VirtualizedListE2E extends Component {
         initial-focus=${ifDefined(this.initialFocus)}
         observe-size-changes=${ifDefined(this.observeSizeChanges ? 'true' : undefined)}
         scroll-anchoring=${ifDefined(this.scrollAnchoring ? 'true' : undefined)}
+        data-aria-label=${ifDefined(this.dataAriaLabel)}
       >
         ${this.listHeader
           ? html`<mdc-listheader slot="list-header" header-text="${this.listHeader}"></mdc-listheader>`

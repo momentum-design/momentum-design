@@ -17,6 +17,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges?: true;
     scrollAnchoring?: true;
     withTooltip?: true;
+    dataAriaLabel?: string;
   };
 
   const setup = async ({
@@ -28,6 +29,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges,
     scrollAnchoring,
     withTooltip,
+    dataAriaLabel,
   }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
@@ -41,6 +43,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
             ${scrollAnchoring ? 'scroll-anchoring' : ''}
             ${listHeader ? `list-header="${listHeader}"` : ''}
             ${withTooltip ? 'with-tooltip' : ''}
+            ${dataAriaLabel ? `data-aria-label="${dataAriaLabel}"` : ''}
           ></mdc-virtualizedlist-e2e>
           <mdc-button>after</mdc-button>
         </div>
@@ -89,7 +92,18 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).not.toHaveAttribute('scroll-anchoring');
     await expect(vlist).not.toHaveAttribute('revert-list');
     await expect(vlist).not.toHaveAttribute('observe-size-changes');
-    await expect(vlist).not.toHaveAttribute('aria-label');
+
+    const containerPart = vlist.locator('[part="container"]');
+    await expect(containerPart).toHaveAttribute('role', 'list');
+    await expect(containerPart).not.toHaveAttribute('aria-label');
+  });
+
+  await test.step('renders with dataAriaLabel when provided', async () => {
+    await componentsPage.page.pause();
+    const { vlist } = await setup({ dataAriaLabel: 'Custom Aria Label' });
+
+    const containerPart = vlist.locator('[part="container"]');
+    await expect(containerPart).toHaveAttribute('aria-label', 'Custom Aria Label');
   });
 
   // Check that the list populates correctly first, including checking if the height of listitems hasn't changed
