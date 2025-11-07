@@ -56,6 +56,7 @@ import Progressbar from './components/progressbar';
 import Progressspinner from './components/progressspinner';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
+import ResponsiveSettingsProvider from './components/responsivesettingsprovider';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Searchpopover from './components/searchpopover';
@@ -184,6 +185,7 @@ export {
   Progressspinner,
   Radio,
   RadioGroup,
+  ResponsiveSettingsProvider,
   ScreenreaderAnnouncer,
   Searchfield,
   Searchpopover,
