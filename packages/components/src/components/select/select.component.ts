@@ -752,13 +752,13 @@ class Select
           >
             ${this.selectedOption?.label ?? this.placeholder}
           </mdc-text>
-        </div>
-        <div part="icon-container">
-          <mdc-icon
-            size="1"
-            length-unit="rem"
-            name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
-          ></mdc-icon>
+          <div part="icon-container">
+            <mdc-icon
+              size="1"
+              length-unit="rem"
+              name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
+            ></mdc-icon>
+          </div>
         </div>
         <input
           id="${this.inputId}"
