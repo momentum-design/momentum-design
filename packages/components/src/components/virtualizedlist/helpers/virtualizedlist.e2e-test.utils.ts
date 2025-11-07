@@ -195,8 +195,6 @@ export class VirtualizedListE2E extends Component {
         #vlist {
           width: 300px;
           height: 300px;
-          display: flex;
-          flex-direction: column;
           border: 1px solid var(--mds-color-theme-text-secondary-normal);
         }
       </style>`;

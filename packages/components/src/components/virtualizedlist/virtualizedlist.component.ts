@@ -729,7 +729,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       const initialOffset = this.scrollRef.clientHeight - this.totalListHeight;
 
       // Adjust the translateY to account for focus ring / neccessary padding
-      translateY = `calc(${initialOffset + firstItemOffset}px - var(--mdc-focus-ring-outer-width) * 2)`;
+      translateY = `calc(${initialOffset + firstItemOffset}px - var(--mdc-virtualizedlist-focusring-padding) * 2)`;
     } else {
       translateY = `${firstItemOffset}px`;
     }

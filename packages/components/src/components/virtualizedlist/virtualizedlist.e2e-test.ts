@@ -69,7 +69,17 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     }, distance);
   };
 
-  const calculateExpectedClientRectBottom = (height: number) => height - 1 - 5; // 1px for border and 5px (=0.3125rem) for padding
+  const getPositionOfItem = async (vlistLocator: Locator, itemIndex: number, measurementPoint: 'top' | 'bottom') => {
+    const vlistPosition = await vlistLocator.evaluate(el => el.getBoundingClientRect().top);
+    const itemPosition = await listItemLocator(vlistLocator, itemIndex).evaluate(
+      (el, prop) => el.getBoundingClientRect()[prop],
+      measurementPoint,
+    );
+
+    return itemPosition - vlistPosition;
+  };
+
+  const calculateExpectedClientRectBottom = (height: number) => height - 1 - 4; // 1px for border + 4px for padding
 
   await test.step('renders with default attributes', async () => {
     const { vlist } = await setup();
@@ -79,6 +89,38 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).not.toHaveAttribute('scroll-anchoring');
     await expect(vlist).not.toHaveAttribute('revert-list');
     await expect(vlist).not.toHaveAttribute('observe-size-changes');
+    await expect(vlist).not.toHaveAttribute('aria-label');
+  });
+
+  // Check that the list populates correctly first, including checking if the height of listitems hasn't changed
+  await test.step('list populates correctly', async () => {
+    const { wrapper, vlist } = await setup();
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      for (let i = 0; i < 25; i += 1) {
+        wrapperEl.addItem(`Message ${i}`);
+      }
+    });
+
+    // Flag test
+    // This is fails, the height of the listitems has been updated
+    expect(await listItemLocator(vlist, 0).evaluate(el => getComputedStyle(el).height)).toBe('40px');
+
+    // 300px / 40px = 7.5 -> 8 items + 1 overflow
+    expect(await vlist.locator('mdc-listitem').count()).toBe(9);
+
+    const firstItem = listItemLocator(vlist, 0);
+    await expect(firstItem).toHaveAttribute('data-index', '0');
+    await expect(firstItem).toHaveAttribute('aria-posinset', '1');
+    await expect(firstItem).toHaveAttribute('aria-setsize', '25');
+
+    const lastRenderedItem = listItemLocator(vlist, 8);
+    await expect(lastRenderedItem).toHaveAttribute('data-index', '8');
+    await expect(lastRenderedItem).toHaveAttribute('aria-posinset', '9');
+    await expect(lastRenderedItem).toHaveAttribute('aria-setsize', '25');
+
+    await componentsPage.actionability.pressTab();
+    await expect(firstItem).toBeFocused();
   });
 
   await test.step('visual regression', async () => {
@@ -148,36 +190,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         element: vlist,
       });
     });
-  });
-
-  await test.step('list populates correctly', async () => {
-    const { wrapper, vlist } = await setup();
-
-    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-      for (let i = 0; i < 25; i += 1) {
-        wrapperEl.addItem(`Message ${i}`);
-      }
-    });
-
-    // Flag test
-    // This is fails, the height of the listitems has been updated
-    expect(await listItemLocator(vlist, 0).evaluate(el => getComputedStyle(el).height)).toBe('40px');
-
-    // 300px / 40px = 7.5 -> 8 items + 1 overflow
-    expect(await vlist.locator('mdc-listitem').count()).toBe(9);
-
-    const firstItem = listItemLocator(vlist, 0);
-    await expect(firstItem).toHaveAttribute('data-index', '0');
-    await expect(firstItem).toHaveAttribute('aria-posinset', '1');
-    await expect(firstItem).toHaveAttribute('aria-setsize', '25');
-
-    const lastRenderedItem = listItemLocator(vlist, 8);
-    await expect(lastRenderedItem).toHaveAttribute('data-index', '8');
-    await expect(lastRenderedItem).toHaveAttribute('aria-posinset', '9');
-    await expect(lastRenderedItem).toHaveAttribute('aria-setsize', '25');
-
-    await componentsPage.actionability.pressTab();
-    await expect(firstItem).toBeFocused();
   });
 
   await test.step('keyboard', async () => {
@@ -396,9 +408,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
           wrapperEl.addItem(`Message 1`);
         });
 
-        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-          calculateExpectedClientRectBottom(300),
-        );
+        expect(await getPositionOfItem(vlist, 0, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
       });
 
       /* eslint-disable no-param-reassign */
@@ -408,30 +418,24 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         });
 
         await expect(async () => {
-          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-            calculateExpectedClientRectBottom(200),
-          );
-        }).toPass();
+          expect(await getPositionOfItem(vlist, 0, 'bottom')).toBe(calculateExpectedClientRectBottom(200));
+        }).toPass({ timeout: 200 });
 
         await vlist.evaluate((vlistEl: VirtualizedList) => {
           vlistEl.style.height = '400px';
         });
 
         await expect(async () => {
-          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-            calculateExpectedClientRectBottom(400),
-          );
-        }).toPass();
+          expect(await getPositionOfItem(vlist, 0, 'bottom')).toBe(calculateExpectedClientRectBottom(400));
+        }).toPass({ timeout: 200 });
 
         await vlist.evaluate((vlistEl: VirtualizedList) => {
           vlistEl.style.height = '';
         });
 
         await expect(async () => {
-          expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-            calculateExpectedClientRectBottom(300),
-          );
-        }).toPass();
+          expect(await getPositionOfItem(vlist, 0, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
+        }).toPass({ timeout: 200 });
       });
       /* eslint-enable no-param-reassign */
 
@@ -442,9 +446,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
           }, i);
         }
 
-        expect(await listItemLocator(vlist, 4).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-          calculateExpectedClientRectBottom(300),
-        );
+        expect(await getPositionOfItem(vlist, 4, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
       });
 
       await test.step('normal scrolling starts after enough items to fill the viewport', async () => {
@@ -454,11 +456,9 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
           }, i);
         }
 
-        // 1px for the border + 5px for padding
-        expect(await listItemLocator(vlist, 0).evaluate(el => el.getBoundingClientRect().top)).toBe(6);
-        expect(await listItemLocator(vlist, 8).evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(
-          calculateExpectedClientRectBottom(300),
-        );
+        // 1px for the border + 4px for the padding
+        expect(await getPositionOfItem(vlist, 0, 'top')).toBe(5);
+        expect(await getPositionOfItem(vlist, 8, 'top')).toBeGreaterThan(calculateExpectedClientRectBottom(300));
       });
     });
 
@@ -493,40 +493,38 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
               vlistEl.shadowRoot?.querySelector<HTMLDivElement>('[part="wrapper"]')?.style?.height,
           ),
         ).toBe(wrapperHeight);
-      }).toPass();
+      }).toPass({ timeout: 200 });
     });
   });
 
   await test.step('scroll anchoring', async () => {
-    const getTopPositionOfItem = (locator: Locator) => locator.evaluate(el => el.getBoundingClientRect().top);
-
     await test.step('observe-size-changes = false', async () => {
       const { wrapper, vlist } = await setup({ scrollAnchoring: true, initialItemCount: 100, initialFocus: 50 });
 
       await componentsPage.actionability.pressTab();
       await expect(listItemLocator(vlist, 50)).toBeFocused();
 
-      const initialTopPosition = await getTopPositionOfItem(listItemLocator(vlist, 50));
+      const initialTopPosition = await getPositionOfItem(vlist, 50, 'top');
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.addItem('New Message after Focused Item', 51);
       });
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 50, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.addItem('New Message before Focused Item', 50);
       });
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 51, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.removeIndex(52);
       });
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 51, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.removeIndex(50);
       });
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 50, 'top')).toBe(initialTopPosition);
 
       await componentsPage.page.keyboard.press('End');
       await expect(listItemLocator(vlist, 99)).toBeFocused();
@@ -535,9 +533,9 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         wrapperEl.addItem('New Message at Bottom');
       });
 
-      expect(await listItemLocator(vlist, 100).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-        calculateExpectedClientRectBottom(300),
-      );
+      await expect(async () => {
+        expect(await getPositionOfItem(vlist, 100, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
+      }).toPass({ timeout: 200 });
     });
 
     await test.step('observe-size-changes = true', async () => {
@@ -550,7 +548,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
       await componentsPage.actionability.pressTab();
 
-      const initialTopPosition = await getTopPositionOfItem(listItemLocator(vlist, 50));
+      const initialTopPosition = await getPositionOfItem(vlist, 50, 'top');
       await componentsPage.visualRegression.takeScreenshot('mdc-virtualizedlist-scroll-anchoring-initial', {
         element: vlist,
       });
@@ -559,25 +557,25 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
         wrapperEl.addItem('New Message after Focused Item', 51);
       });
       await expect(listItemLocator(vlist, 51)).toContainText('New Message after Focused Item');
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 50, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.addItem('New Message before Focused Item', 50);
       });
       await expect(listItemLocator(vlist, 50)).toContainText('New Message before Focused Item');
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 51, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.removeIndex(52);
       });
       await expect(listItemLocator(vlist, 52)).toContainText('Initial Message 51');
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 51))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 51, 'top')).toBe(initialTopPosition);
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         wrapperEl.removeIndex(50);
       });
       await expect(listItemLocator(vlist, 50)).toContainText('Initial Message 50');
-      expect(await getTopPositionOfItem(listItemLocator(vlist, 50))).toBe(initialTopPosition);
+      expect(await getPositionOfItem(vlist, 50, 'top')).toBe(initialTopPosition);
 
       await componentsPage.page.keyboard.press('End');
       await expect(listItemLocator(vlist, 99)).toBeFocused();
@@ -591,20 +589,16 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       );
 
       await expect(async () => {
-        expect(await listItemLocator(vlist, 100).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-          calculateExpectedClientRectBottom(300),
-        );
-      }).toPass();
+        expect(await getPositionOfItem(vlist, 100, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
+      }).toPass({ timeout: 200 });
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E, updateId: string) => {
         wrapperEl.updateItem(updateId, { size: 200 });
       }, bottomMessage.id);
 
       await expect(async () => {
-        expect(await listItemLocator(vlist, 100).evaluate(el => el.getBoundingClientRect().bottom)).toBe(
-          calculateExpectedClientRectBottom(300),
-        );
-      }).toPass();
+        expect(await getPositionOfItem(vlist, 100, 'bottom')).toBe(calculateExpectedClientRectBottom(300));
+      }).toPass({ timeout: 200 });
     });
   });
 });
