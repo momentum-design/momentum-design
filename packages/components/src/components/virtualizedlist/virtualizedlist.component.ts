@@ -2,6 +2,7 @@ import { type CSSResult, type PropertyValues, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property, eventOptions, query } from 'lit/decorators.js';
 import { defaultRangeExtractor, type Range, ScrollToOptions, type VirtualItem } from '@tanstack/virtual-core';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import List from '../list/list.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -757,7 +758,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       <slot name="list-header"></slot>
       <div part="scroll" tabindex="-1" @scroll="${this.onScrollHandler}">
         <div part="wrapper">
-          <div part="container" role="list" aria-label="${this.dataAriaLabel ?? ''}">
+          <div part="container" role="list" aria-label="${ifDefined(this.dataAriaLabel)}">
             <slot role="presentation"></slot>
           </div>
         </div>
