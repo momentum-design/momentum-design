@@ -1,7 +1,7 @@
 import { createContext } from '@lit/context';
 
 import { DEFAULTS, TAG_NAME } from './responsivesettingsprovider.constants';
-import {
+import type {
   ResponsiveMediaType,
   ResponsivePopoverPositions,
   ResponsiveSettings,

@@ -3,7 +3,7 @@ import { expect, Locator } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-import { ResponsiveSettings } from './responsivesettingsprovider.types';
+import type { ResponsiveSettings } from './responsivesettingsprovider.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;

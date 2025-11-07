@@ -1,6 +1,6 @@
 import utils from '../../utils/tag-name';
 
-import { ResponsiveMediaType, ResponsivePopoverPositions } from './responsivesettingsprovider.types';
+import type { ResponsiveMediaType, ResponsivePopoverPositions } from './responsivesettingsprovider.types';
 
 export const TAG_NAME = utils.constructTagName('responsivesettingsprovider');
 
