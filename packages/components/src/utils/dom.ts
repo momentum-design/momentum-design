@@ -1,6 +1,21 @@
 /* eslint-disable max-classes-per-file,no-bitwise */
 
 /**
+ * nodeB precedes nodeA in either a pre-order depth-first traversal of a tree containing both
+ * (e.g., as a descendant or preceding sibling or a descendant of a preceding sibling or
+ * preceding sibling of an ancestor) or (if they are disconnected) in an arbitrary but
+ * consistent ordering.
+ *
+ * @param nodeA - The first node to compare.
+ * @param nodeB - The second node to compare.
+ * @returns - True if nodeA is after nodeB, false otherwise.
+ *
+ * @see [compareDocumentPosition](https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition)
+ */
+export const isAfter = (nodeA: Element, nodeB: Element): boolean =>
+  !!(nodeA.compareDocumentPosition(nodeB) & Node.DOCUMENT_POSITION_PRECEDING);
+
+/**
  * nodeB follows nodeA in either a pre-order depth-first traversal of a tree containing both
  * (e.g., as a descendant or following sibling or a descendant of a following sibling or
  * following sibling of an ancestor) or (if they are disconnected) in an arbitrary but

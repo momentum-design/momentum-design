@@ -84,7 +84,7 @@ class Option extends FormInternalsMixin(ListItem) {
     }
   }
 
-  private renderIcon(slotName: string, iconName: string): TemplateResult {
+  private renderIcon(slotName: string, iconName: IconNames): TemplateResult {
     return html` <mdc-icon length-unit="rem" slot="${slotName}" name="${iconName}"></mdc-icon> `;
   }
 

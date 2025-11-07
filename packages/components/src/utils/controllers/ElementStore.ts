@@ -1,7 +1,7 @@
 import { ReactiveController } from 'lit';
 
 import { LIFE_CYCLE_EVENTS } from '../mixins/lifecycle/lifecycle.contants';
-import { isBefore } from '../dom';
+import { isAfter, isBefore } from '../dom';
 import type { Component } from '../../models';
 
 export type ElementStoreChangeTypes = 'added' | 'removed';
@@ -181,6 +181,34 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
   }
 
   /**
+   * Implements binary search on the cache, to get the index of the nearest newItem position.
+   *
+   * @param cache - The array which contains the list of dom node elements.
+   * @param newItem - The new node element which is needed to be added in the list item.
+   * @returns either:
+   *  - the index where the new item need to be inserted or
+   *  - -1 when the item must be appended to the end of the list item.
+   */
+  private getIndexToInsertInCache(newItem: TItem): number {
+    // If the new item is located at the last place, then we can check the last -1 cache item and return if valid
+    if (!this.cache.length || !isAfter(this.cache.at(-1)!, newItem)) {
+      return -1;
+    }
+    // Fall back to binary search
+    let begin = 0;
+    let end = this.cache.length - 1;
+    while (begin <= end) {
+      const middle = Math.floor((begin + end) / 2);
+      if (isBefore(this.cache[middle], newItem)) {
+        begin = middle + 1;
+      } else {
+        end = middle - 1;
+      }
+    }
+    return begin;
+  }
+
+  /**
    * Adds an item to the cache at the specified index.
    * When the index
    *  is `undefined`, the item is added automatically keeping the DOM order.
@@ -195,7 +223,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
     const newItem = item as TItem;
 
     if (this.isValidItem(newItem) && !this.cache.includes(newItem)) {
-      const idx = index === undefined ? this.cache.findIndex(e => isBefore(newItem, e)) : index;
+      const idx = index === undefined ? this.getIndexToInsertInCache(newItem) : index;
 
       if (this.onStoreUpdate) {
         this.onStoreUpdate?.(newItem, 'added', idx === -1 ? this.cache.length : idx, this.cache.slice());
