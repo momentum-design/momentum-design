@@ -285,6 +285,15 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
       this.handleValueChange();
       this.handleCharacterOverflowStateChange();
     }
+    // When helpText is set by consumer after limitexceeded event, announce it if over limit
+    if (changedProperties.has('helpText') && this.helpText && this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = '';
+      this.updateComplete
+        .then(() => {
+          this.ariaLiveAnnouncer = this.helpText;
+        })
+        .catch(() => {});
+    }
   }
 
   /**
@@ -527,6 +536,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           identity="${this.inputId}"
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
+          debounce-time="1500"
         ></mdc-screenreaderannouncer>
         ${this.resizable ? html`
           <mdc-button
