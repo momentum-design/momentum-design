@@ -9,6 +9,9 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
+import providerUtils from '../../utils/provider';
+import ResponsiveSettingsContext from '../responsivesettingsprovider/responsiveSettingsContext';
+import ResponsiveSettingsProvider from '../responsivesettingsprovider';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -88,6 +91,14 @@ import styles from './dialog.styles';
  * using the footer-link and footer-button slots is preferred
  */
 class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component)))) {
+  /** @internal */
+  protected readonly responsiveSettingsContext = providerUtils.consume<typeof ResponsiveSettingsContext.context>({
+    host: this,
+    context: ResponsiveSettingsProvider.Context,
+    subscribe: true,
+    callback: () => this.requestUpdate('size'),
+  });
+
   /**
    * The unique ID of the dialog
    */
@@ -120,12 +131,21 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   zIndex: number = DEFAULTS.Z_INDEX;
 
+  /** @internal */
+  protected internalSize: DialogSize = DEFAULTS.SIZE;
+
   /**
    * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), 'large' (992px width), 'xlarge' (90% width) or 'fullscreen' (100% width).
    * @default small
    */
   @property({ type: String, reflect: true })
-  size: DialogSize = DEFAULTS.SIZE;
+  get size(): DialogSize {
+    return this.responsiveSettingsContext?.value?.forceFullscreenDialog ? 'fullscreen' : this.internalSize;
+  }
+
+  set size(value: DialogSize) {
+    this.internalSize = value;
+  }
 
   /**
    * The variant of the dialog, can be 'default' or 'promotional'

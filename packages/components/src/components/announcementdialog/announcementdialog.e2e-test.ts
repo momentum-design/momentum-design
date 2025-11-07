@@ -288,4 +288,58 @@ test('mdc-announcementdialog', async ({ componentsPage }) => {
       });
     });
   });
+
+  /**
+   * RESPONSIVE SETTINGS
+   */
+  await test.step('responsive settings', async () => {
+    const setup = async ({ size, forceFullScreenDialog }: { size?: string; forceFullScreenDialog?: boolean }) => {
+      await componentsPage.mount({
+        html: `
+      <div id="wrapper">
+          <mdc-responsivesettingsprovider id="responsive-settings-provider" ${forceFullScreenDialog ? 'force-fullscreen-dialog' : ''}>
+              <mdc-announcementdialog id="dialog" ${size ? `size="${size}"` : ''}>Hello dialog!</mdc-announcementdialog>
+          </mdc-responsivesettingsprovider>
+      </div>
+      `,
+        clearDocument: true,
+      });
+
+      const dialog = componentsPage.page.locator(`#dialog`);
+      const responsiveSettings = componentsPage.page.locator(`#responsive-settings-provider`);
+      return { dialog, responsiveSettings };
+    };
+
+    await test.step('force-fullscreen-dialog responsive settings changes dialog size settings', async () => {
+      const { dialog } = await setup({ forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step("responsive settings takes priority over dialog's size attribute", async () => {
+      const { dialog } = await setup({ size: 'medium', forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step('dialog size reacts on responsive settings changes', async () => {
+      const { dialog } = await setup({ size: 'medium', forceFullScreenDialog: false });
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
+
+      await componentsPage.page.evaluate(() => {
+        const rsp = document.querySelector(`#responsive-settings-provider`)!;
+        rsp.setAttribute('force-fullscreen-dialog', '');
+      });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+
+      await componentsPage.page.evaluate(() => {
+        const rsp = document.querySelector(`#responsive-settings-provider`)!;
+        rsp.removeAttribute('force-fullscreen-dialog');
+      });
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
+    });
+  });
 });
