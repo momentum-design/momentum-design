@@ -32,6 +32,8 @@ const render = (args: Args) => html`
       aria-label=${ifDefined(args['aria-label'])}
       tooltip-text=${args['tooltip-text']}
       tooltip-placement=${args['tooltip-placement']}
+      tooltip-type=${args['tooltip-type']}
+      tooltip-appearance=${args['tooltip-appearance']}
       tooltip-boundary-padding=${args['tooltip-boundary-padding']}
     ></mdc-navmenuitem>
   </div>
@@ -78,6 +80,14 @@ const meta: Meta = {
     'tooltip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'tooltip-type': {
+      control: 'select',
+      options: ['description', 'label', 'none'],
+    },
+    'tooltip-appearance': {
+      control: 'select',
+      options: ['when-collapsed', 'always'],
     },
     'tooltip-boundary-padding': {
       control: 'number',

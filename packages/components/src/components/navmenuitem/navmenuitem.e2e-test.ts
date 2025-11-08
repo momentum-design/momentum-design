@@ -13,6 +13,7 @@ type SetupOptions = {
   'badge-type'?: string;
   counter?: number;
   'tooltip-text'?: string;
+  'tooltip-type'?: string;
   'max-counter'?: number;
   'nav-id'?: string;
   'show-label'?: boolean;
@@ -41,6 +42,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
         ${restArgs['max-counter'] ? `max-counter="${restArgs['max-counter']}"` : ''}
         ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
+        ${restArgs['tooltip-type'] ? `tooltip-type="${restArgs['tooltip-type']}"` : ''}
         ${restArgs['nav-id'] ? `nav-id="${restArgs['nav-id']}"` : ''}
         ${restArgs['show-label'] ? 'show-label' : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
@@ -231,8 +233,9 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           active: true,
         });
 
-        await test.step('should have active attribute', async () => {
+        await test.step('should have active attribute & aria-current="page"', async () => {
           await expect(navmenuitem).toHaveAttribute('active');
+          await expect(navmenuitem).toHaveAttribute('aria-current', 'page');
         });
 
         await test.step('should modify icon to filled variant when active', async () => {
@@ -512,6 +515,22 @@ test.describe('NavMenuItem Feature Scenarios', () => {
         });
 
         await expect(navmenuitem).toHaveAttribute('aria-label', primaryLabel);
+      });
+
+      await test.step('depending on tooltip type aria-describedby or aria-label is set', async () => {
+        // When tooltip-text is provided and tooltip-type is not "none", no aria-labelledby and aria-describedby should be set
+        const navmenuitemWithTooltip = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'icon-name': iconName,
+          'nav-id': navId,
+          'show-label': false,
+          'tooltip-text': 'This is a tooltip',
+          'tooltip-type': 'none',
+        });
+
+        await expect(navmenuitemWithTooltip).not.toHaveAttribute('aria-labelledby');
+        await expect(navmenuitemWithTooltip).not.toHaveAttribute('aria-describedby');
       });
     });
 

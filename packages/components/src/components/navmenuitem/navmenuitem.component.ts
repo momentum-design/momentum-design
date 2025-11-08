@@ -1,4 +1,4 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -14,6 +14,7 @@ import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
+import type { TooltipType } from '../tooltip/tooltip.types';
 
 import type { BadgeType } from './navmenuitem.types';
 import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME } from './navmenuitem.constants';
@@ -170,6 +171,17 @@ class NavMenuItem extends MenuItem {
   tooltipPlacement: PopoverPlacement = 'right';
 
   /**
+   * The type of tooltip to display.
+   * Options are 'description', 'label', or 'none'.
+   *
+   * Choose none to not apply any aria-attributes - this
+   * is useful if the navmenuitem has a aria-label already set.
+   * @default undefined
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-type' })
+  tooltipType?: TooltipType;
+
+  /**
    * The appearance behavior of the tooltip.
    * Options are 'when-collapsed' (default) or 'always'.
    *
@@ -231,6 +243,14 @@ class NavMenuItem extends MenuItem {
     this.removeTooltip();
   }
 
+  protected override firstUpdated(_changedProperties: PropertyValues): void {
+    super.firstUpdated(_changedProperties);
+    // if active on initial render, set aria-current
+    if (this.active && !this.disableAriaCurrent && !this.cannotActivate) {
+      this.setAttribute('aria-current', 'page');
+    }
+  }
+
   protected override updated(changedProperties: Map<string, any>): void {
     super.updated(changedProperties);
 
@@ -279,6 +299,9 @@ class NavMenuItem extends MenuItem {
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('show-arrow', '');
     tooltip.setAttribute('placement', this.tooltipPlacement);
+    if (this.tooltipType) {
+      tooltip.setAttribute('tooltip-type', this.tooltipType);
+    }
     tooltip.setAttribute('boundary-padding', this.tooltipBoundaryPadding?.toString() || '0');
 
     // Set the slot attribute if the parent element has a slot.
