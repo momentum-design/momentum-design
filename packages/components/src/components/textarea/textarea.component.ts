@@ -9,6 +9,7 @@ import type { AutoCapitalizeType } from '../input/input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { KEYS } from '../../utils/keys';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
@@ -34,6 +35,21 @@ import styles from './textarea.styles';
  * help-text attribute with the error message using limitexceeded event.
  * The same help-text value will be used for the validation message to be displayed.
  *
+ * ### Accessibility 
+ * 
+ * #### Resize
+ *  
+ * Accessible text area resizing can be turned on with the `resizable`. 
+ * It is strongly recommended to set the `resize-button-aria-label` attribute as well to describe what it is and what are the shortcuts (up/down arrows) of the button.
+ * 
+ * #### Best practices
+ * 
+ * - Always provide a `label` for screen readers to identify the textarea's purpose
+ * - Use `help-text` to provide additional context or instructions
+ * - When using `max-character-limit`, consider providing `character-limit-announcement` for screen reader updates
+ * - Use appropriate `help-text-type` (error, warning, success) to convey validation state
+ * - Ensure `validation-message` is set for form validation errors
+ *
  * @tagname mdc-textarea
  *
  * @event input - (React: onInput) This event is dispatched when the value of the textarea field changes (every press).
@@ -58,6 +74,11 @@ import styles from './textarea.styles';
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
  * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
  * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
+ * @csspart textarea - The textarea element.
+ * @csspart textarea-container - The container element that wraps the textarea and resize button.
+ * @csspart textarea-footer - The footer element that contains the character counter.
+ * @csspart character-counter - The character counter element.
+ * @csspart resize-button - The resize button element (shown when `resizable` is true).
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
@@ -90,7 +111,7 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
    * The rows attribute specifies the visible number of lines in a text area.
    * @default 5
    */
-  @property({ type: Number }) rows?: number = DEFAULTS.ROWS;
+  @property({ type: Number, reflect: true }) rows?: number = DEFAULTS.ROWS;
 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
@@ -146,6 +167,20 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
   @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
 
   /**
+   * Controls whether the textarea is resizable via the resize button.
+   * When set to false, the resize button will be hidden.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) resizable: boolean = false;
+
+  /**
+   * Provides an accessible label for the resize button.
+   * This value is used to set the `aria-label` attribute for the button.
+   * @default ''
+   */
+  @property({ type: String, attribute: 'resize-button-aria-label' }) resizeButtonAriaLabel?: string;
+
+  /**
    * @internal
    * The textarea element
    */
@@ -156,6 +191,12 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
 
   /** @internal */
   private characterLimitExceedingFired: boolean = false;
+
+  /** @internal */
+  private resizeStartY: number = 0;
+
+  /** @internal */
+  private resizeStartRows: number = 0;
 
   protected get textarea(): HTMLTextAreaElement {
     return this.inputElement;
@@ -378,6 +419,83 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     return html` <div part="textarea-footer">${this.renderHelperText()} ${this.renderCharacterCounter()}</div> `;
   }
 
+  /**
+   * Handles the resize button keydown event for keyboard-based resizing.
+   * @param event - The keyboard event.
+   */
+  private handleResizeKeyDown(event: KeyboardEvent) {
+    if (this.readonly) {
+      return;
+    }
+    const currentRows = this.rows || DEFAULTS.ROWS;
+    let newRows: number | undefined;
+
+    if (event.key === KEYS.ARROW_UP) {
+      newRows = Math.max(1, currentRows - 1);
+    } else if (event.key === KEYS.ARROW_DOWN) {
+      newRows = currentRows + 1;
+    }
+
+    if (newRows !== undefined) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.rows = newRows;
+    }
+  }
+
+  /**
+   * Handles the start of pointer-based resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerDown = (event: PointerEvent) => {
+    if (this.readonly) {
+      return;
+    }
+    const resizeButton = event.currentTarget as HTMLElement;
+    if (!resizeButton) return;
+
+    event.preventDefault();
+
+    this.resizeStartY = event.clientY;
+    this.resizeStartRows = this.rows || DEFAULTS.ROWS;
+
+    resizeButton.setPointerCapture(event.pointerId);
+    resizeButton.addEventListener('pointermove', this.handlePointerMove);
+    resizeButton.addEventListener('pointerup', this.handlePointerUp);
+    resizeButton.addEventListener('lostpointercapture', this.handlePointerUp);
+  };
+
+  /**
+   * Handles pointer movement during resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerMove = (event: PointerEvent) => {
+    if (!this.textarea) return;
+
+    const deltaY = event.clientY - this.resizeStartY;
+    const lineHeight = parseFloat(window.getComputedStyle(this.textarea).lineHeight);
+    const rowsChange = Math.round(deltaY / lineHeight);
+
+    this.rows = Math.max(1, this.resizeStartRows + rowsChange);
+  };
+
+  /**
+   * Handles the end of pointer-based resizing.
+   * @param event - The pointer event.
+   */
+  private handlePointerUp = (event: PointerEvent) => {
+    const resizeButton = event.currentTarget as HTMLElement;
+    if (!resizeButton) return;
+
+    if (event.type === 'pointerup' && resizeButton.hasPointerCapture(event.pointerId)) {
+      resizeButton.releasePointerCapture(event.pointerId);
+    }
+
+    resizeButton.removeEventListener('pointermove', this.handlePointerMove);
+    resizeButton.removeEventListener('pointerup', this.handlePointerUp);
+    resizeButton.removeEventListener('lostpointercapture', this.handlePointerUp);
+  };
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -410,6 +528,19 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
         ></mdc-screenreaderannouncer>
+        ${this.resizable ? html`
+          <mdc-button
+            part="resize-button"
+            class="own-focus-ring"
+            variant="tertiary"
+            size="24"
+            prefix-icon="resize-corner-regular"
+            aria-label=${this.resizeButtonAriaLabel ?? ''}
+            ?disabled="${this.disabled || this.readonly}"
+            @keydown=${this.handleResizeKeyDown}
+            @pointerdown=${this.handlePointerDown}
+          ></mdc-button>
+        ` : nothing}
       </div>
       ${this.renderTextareaFooter()}
     `;

@@ -678,7 +678,7 @@
           "subtle": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.black-alpha.7}",
+            "value": "{color.core.white-alpha.7}",
             "description": "Used in the Agent/Supervisor Desktop"
           }
         },

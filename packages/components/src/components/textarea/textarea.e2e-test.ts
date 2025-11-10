@@ -33,6 +33,8 @@ type SetupOptions = {
   autocomplete?: AutoCompleteType;
   dirname?: string;
   dataAriaLabel?: string;
+  resizable?: boolean;
+  resizeButtonAriaLabel?: string;
   secondButtonForFocus?: boolean;
 };
 
@@ -64,6 +66,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.resizable ? 'resizable' : ''}
+      ${restArgs.resizeButtonAriaLabel ? `resize-button-aria-label="${restArgs.resizeButtonAriaLabel}"` : ''}
       ></mdc-textarea>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
@@ -192,6 +196,26 @@ test('mdc-textarea', async ({ componentsPage }) => {
       await expect(mdcTextarea).toHaveAttribute('dirname', 'ltr');
       await componentsPage.removeAttribute(mdcTextarea, 'dirname');
     });
+
+    await test.step('attribute resizable should control resize button visibility', async () => {
+      const resizeButton = mdcTextarea.locator('mdc-button[part="resize-button"]');
+      await expect(resizeButton).toHaveCount(0);
+      await componentsPage.setAttributes(mdcTextarea, { resizable: '' });
+      await expect(resizeButton).toHaveCount(1);
+      await expect(resizeButton).toBeVisible();
+      await componentsPage.removeAttribute(mdcTextarea, 'resizable');
+    });
+
+    await test.step('attribute resize-button-aria-label should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { resizable: '' });
+      const resizeButton = mdcTextarea.locator('mdc-button[part="resize-button"]');
+      await expect(resizeButton).toHaveAttribute('aria-label', '');
+      await componentsPage.setAttributes(mdcTextarea, { 'resize-button-aria-label': 'Resize textarea' });
+      await expect(mdcTextarea).toHaveAttribute('resize-button-aria-label', 'Resize textarea');
+      await expect(resizeButton).toHaveAttribute('aria-label', 'Resize textarea');
+      await componentsPage.removeAttribute(mdcTextarea, 'resize-button-aria-label');
+      await componentsPage.removeAttribute(mdcTextarea, 'resizable');
+    });
   });
 
   /**
@@ -205,6 +229,8 @@ test('mdc-textarea', async ({ componentsPage }) => {
       'help-text': 'Help Text',
       rows: 3,
       style: 'width: 135px',
+      resizable: '',
+      'resize-button-aria-label': 'Resize textarea',
     };
     const textareaStickerSheet = new StickerSheet(componentsPage, 'mdc-textarea');
 
@@ -300,35 +326,165 @@ test('mdc-textarea', async ({ componentsPage }) => {
       placeholder: 'Placeholder',
       label: 'Label',
       helpText: 'Help Text',
+      resizable: true,
       secondButtonForFocus: true,
     });
     const textareaElement = mdcTextarea.locator('textarea');
+    const resizeButton = mdcTextarea.locator('mdc-button[part="resize-button"]');
+    
+    // Helper function to simulate pointer drag on resize button
+    const simulateResizeDrag = async (rowChange: number) => {
+      const resizeBtn = mdcTextarea.locator('mdc-button[part="resize-button"]');
+      const textareaEl = mdcTextarea.locator('textarea');
+      
+      const lineHeight = await textareaEl.evaluate((el) => parseFloat(window.getComputedStyle(el).lineHeight));
+      const box = await resizeBtn.boundingBox();
+      if (!box) throw new Error('Resize button not found');
+      
+      const centerX = box.x + box.width / 2;
+      const centerY = box.y + box.height / 2;
+      
+      await componentsPage.page.mouse.move(centerX, centerY);
+      await componentsPage.page.mouse.down();
+      await componentsPage.page.mouse.move(centerX, centerY + lineHeight * rowChange, { steps: 5 });
+      await componentsPage.page.mouse.up();
+    };
+    
     await test.step('component should be focusable with tab', async () => {
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).toBeFocused();
       await textareaElement.fill('test');
       await expect(textareaElement).toHaveValue('test');
       await componentsPage.actionability.pressTab();
+      await expect(resizeButton).toBeFocused();
+      await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).not.toBeFocused();
     });
 
     await test.step('readonly component should be focusable with tab but not editable', async () => {
-      await setup({ componentsPage, value: 'Readonly', readonly: true, secondButtonForFocus: true });
+      await setup({ componentsPage, value: 'Readonly', readonly: true, resizable: true, secondButtonForFocus: true });
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).toBeFocused();
       await expect(textareaElement).toHaveValue('Readonly');
       await textareaElement.press('A');
       await expect(textareaElement).toHaveValue('Readonly');
       await componentsPage.actionability.pressTab();
+      await expect(resizeButton).not.toBeFocused();
+      await expect(resizeButton).toBeDisabled();
+      await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).not.toBeFocused();
       await componentsPage.removeAttribute(mdcTextarea, 'readonly');
     });
 
     await test.step('component should not be focusable when disabled', async () => {
-      await setup({ componentsPage, disabled: true, value: 'Disabled' });
+      await setup({ componentsPage, disabled: true, value: 'Disabled', resizable: true });
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).not.toBeFocused();
       await expect(textareaElement).toHaveValue('Disabled');
+      await expect(resizeButton).toBeDisabled();
+      await componentsPage.removeAttribute(mdcTextarea, 'disabled');
+    });
+
+    await test.step('resize button should be functional with keyboard (ArrowUp/ArrowDown)', async () => {
+      await setup({
+        componentsPage,
+        value: 'Test textarea',
+        rows: 5,
+        resizable: true,
+        resizeButtonAriaLabel: 'Resize',
+        secondButtonForFocus: true,
+      });
+      const resizeBtn = mdcTextarea.locator('mdc-button[part="resize-button"]');
+      
+      // Tab to textarea, then tab to resize button
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(resizeBtn).toBeFocused();
+      
+      // Press ArrowDown to increase rows
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(mdcTextarea).toHaveAttribute('rows', '6');
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(mdcTextarea).toHaveAttribute('rows', '7');
+      
+      // Press ArrowUp to decrease rows
+      await componentsPage.page.keyboard.press('ArrowUp');
+      await expect(mdcTextarea).toHaveAttribute('rows', '6');
+      await componentsPage.page.keyboard.press('ArrowUp');
+      await expect(mdcTextarea).toHaveAttribute('rows', '5');
+    });
+
+    await test.step('resize button keyboard interaction should not work when readonly', async () => {
+      await setup({
+        componentsPage,
+        value: 'Readonly textarea',
+        rows: 5,
+        readonly: true,
+        resizable: true,
+        resizeButtonAriaLabel: 'Resize',
+        secondButtonForFocus: true,
+      });
+
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      // Should skip the disabled resize button
+      await expect(mdcTextarea).not.toBeFocused(); 
+      // Verify rows haven't changed
+      await expect(mdcTextarea).toHaveAttribute('rows', '5');
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+    });
+
+    await test.step('resize button should work with pointer/mouse drag', async () => {
+      await setup({
+        componentsPage,
+        value: 'Test textarea',
+        rows: 5,
+        resizable: true,
+        resizeButtonAriaLabel: 'Resize',
+        secondButtonForFocus: true,
+      });
+      
+      // Drag down by 2 line heights to increase rows
+      await simulateResizeDrag(2);
+      await expect(mdcTextarea).toHaveAttribute('rows', '7');
+      // Drag up by 1 line height to decrease rows
+      await simulateResizeDrag(-1);
+      await expect(mdcTextarea).toHaveAttribute('rows', '6');
+    });
+
+    await test.step('resize button pointer interaction should not work when readonly', async () => {
+      await setup({
+        componentsPage,
+        value: 'Readonly textarea',
+        rows: 5,
+        readonly: true,
+        resizable: true,
+        resizeButtonAriaLabel: 'Resize',
+        secondButtonForFocus: true,
+      });
+      
+      // Try to drag - should not change rows
+      await simulateResizeDrag(2);
+      await expect(mdcTextarea).toHaveAttribute('rows', '5');
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+    });
+
+    await test.step('resize button pointer interaction should not work when disabled', async () => {
+      await setup({
+        componentsPage,
+        value: 'Disabled textarea',
+        rows: 5,
+        disabled: true,
+        resizable: true,
+        resizeButtonAriaLabel: 'Resize',
+        secondButtonForFocus: true,
+      });
+      
+      // Try to drag - should not change rows
+      await simulateResizeDrag(2);
+      await expect(mdcTextarea).toHaveAttribute('rows', '5');
       await componentsPage.removeAttribute(mdcTextarea, 'disabled');
     });
 

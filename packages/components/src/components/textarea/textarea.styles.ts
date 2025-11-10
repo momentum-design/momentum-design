@@ -37,6 +37,7 @@ const styles = [
       padding: 0.375rem 0.25rem 0.25rem 0.75rem;
       background-color: var(--mdc-textarea-container-background-color);
       width: 100%;
+      position: relative;
     }
 
     :host(:dir(rtl))::part(textarea-container) {
@@ -102,6 +103,30 @@ const styles = [
     .hidden {
       opacity: 0;
       pointer-events: none;
+    }
+
+    :host::part(resize-button) {
+      position: absolute;
+      bottom: 0.25rem;
+      inset-inline-end: 0.25rem;
+      cursor: nwse-resize;
+      opacity: 0.5;
+      z-index: 1;
+      border-radius: 50%;
+    }
+
+    :host::part(resize-button):focus-visible {
+      opacity: 1;
+    }
+
+    :host(:dir(rtl))::part(resize-button) {
+      cursor: nesw-resize;
+      transform: scaleX(-1);
+    }
+
+    :host([readonly])::part(resize-button),
+    :host([disabled])::part(resize-button) {
+      cursor: default;
     }
   `,
   ...hostFocusRingStyles(true),
