@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -334,7 +334,16 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
-  zIndex: number = DEFAULTS.Z_INDEX;
+  get zIndex(): number {
+    if (this.internalZIndex === undefined || Number.isNaN(this.internalZIndex)) {
+      return DEFAULTS.Z_INDEX + this.popoverDepth * 3;
+    }
+    return this.internalZIndex;
+  }
+
+  set zIndex(value: number) {
+    this.internalZIndex = value;
+  }
 
   /**
    * Element ID that the popover append to.
@@ -440,6 +449,12 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
+
+  /** @internal */
+  private internalZIndex?: number = DEFAULTS.Z_INDEX;
+
+  /** @internal */
+  @state() private popoverDepth = 0;
 
   /** @internal */
   private get connectedTooltip() {
@@ -627,7 +642,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (changedProperties.has('zIndex')) {
-      this.setAttribute('z-index', `${this.zIndex}`);
+      this.setAttribute('z-index', `${this.internalZIndex}`);
     }
 
     if (changedProperties.has('appendTo')) {
@@ -742,7 +757,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     if (newValue && !this.shouldSuppressOpening) {
       if (popoverStack.peek() !== this) {
-        popoverStack.push(this);
+        this.popoverDepth = popoverStack.push(this);
       }
 
       if (!this.keepConnectedTooltipOpen) {

@@ -17,9 +17,11 @@ class PopoverStack {
    * Adds a popover to the stack
    *
    * @param popover - Popover instance
+   * @returns The length of the stack after adding the popover
    */
-  push(popover: Popover) {
+  push(popover: Popover): number {
     this.stack.push(popover);
+    return this.stack.length - 1;
   }
 
   /**
