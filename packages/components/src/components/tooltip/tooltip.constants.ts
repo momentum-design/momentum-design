@@ -7,7 +7,7 @@ const TOOLTIP_TYPES = {
   DESCRIPTION: 'description',
   LABEL: 'label',
   NONE: 'none',
-};
+} as const;
 
 const DEFAULTS = {
   BACKDROP: false,
