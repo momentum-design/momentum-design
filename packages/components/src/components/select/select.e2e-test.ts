@@ -601,6 +601,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(select.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
       await expect(select.locator('mdc-option').nth(2)).toHaveAttribute('selected');
       await expect(select).toHaveAttribute('value', 'option3');
+      await expect(select.locator('mdc-option[selected]')).toHaveCount(1);
     });
 
     await test.step('should update help-text and help-text-type dynamically based on select validity (FormFieldSelectWithHelpTextValidation)', async () => {
