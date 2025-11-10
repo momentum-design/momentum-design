@@ -96,10 +96,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     host: this,
     context: ResponsiveSettingsProvider.Context,
     subscribe: true,
-    // Force update size attribute when the context value changes
-    // We cannot do it in the `updated` lifecycle method because do not know from its parameters the update was triggered by context change or not
-    // Also, calling requestUpdate here will be merged with the context change update cycle, so no extra re-render will be triggered
-    callback: () => this.requestUpdate('size'),
+    syncProperties: ['size'],
   });
 
   /**
