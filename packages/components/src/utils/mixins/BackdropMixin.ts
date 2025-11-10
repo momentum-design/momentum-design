@@ -119,8 +119,8 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
         position: element.style.position,
       };
 
-      // Set the z-index and position to ensure the element is above the backdrop
-      element.style.zIndex = `${this.zIndex}`;
+      // Set the z-index and position to ensure the element is on the same level with the backdrop
+      element.style.zIndex = `${this.zIndex - 1}`;
       // Only set the position to relative if it is not already set to fixed or absolute
       if (!['fixed', 'absolute'].includes(window.getComputedStyle(element).position)) {
         element.style.position = 'relative';
