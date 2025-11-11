@@ -77,6 +77,96 @@ class Git {
     return null;
   }
 
+  /**
+   * Check if a package has changes to source files that affect dist output.
+   * Excludes test files, stories, documentation, and tooling changes.
+   *
+   * @param packagePath - Absolute path to package directory
+   * @param sinceCommit - Git commit SHA to compare against (optional, defaults to HEAD~1)
+   * @returns Promise - True if package has distributable changes
+   */
+  public static async hasDistAffectingChanges(
+    packagePath: string,
+    sinceCommit?: string,
+  ): Promise<boolean> {
+    const commitRange = sinceCommit ? `${sinceCommit}..HEAD` : 'HEAD~1..HEAD';
+
+    // Patterns that affect dist output
+    const includePatterns = [
+      'src/**',
+      'config/esbuild/**',
+      'config/typescript/**',
+      'tsconfig.json',
+      'package.json',
+    ];
+
+    // Patterns that don't affect dist output
+    const excludePatterns = [
+      '**/*.test.*',
+      '**/*.spec.*',
+      '**/*.stories.*',
+      '**/README.md',
+      '**/CONTRIBUTING.md',
+      '**/LEARNINGS.md',
+      '**/SCRIPTS.md',
+      '**/TESTING.md',
+      'scripts/**',
+      'config/playwright/**',
+      'config/storybook/**',
+      'conventions/**',
+      'jest.config.*',
+      'playwright.config.*',
+      'prettier.config.*',
+      '.eslintrc.*',
+      'playwright-report/**',
+      'playwright-temp/**',
+      'test-results/**',
+      'pngFixtures/**',
+    ];
+
+    try {
+      // Build git diff command with include patterns
+      const includeArgs = includePatterns
+        .map((pattern) => `"${packagePath}/${pattern}"`)
+        .join(' ');
+
+      // Build git diff command with exclude patterns
+      const excludeArgs = excludePatterns
+        .map((pattern) => `":!${packagePath}/${pattern}"`)
+        .join(' ');
+
+      const command = `git diff --name-only ${commitRange} -- ${includeArgs} ${excludeArgs}`;
+      const changes = await Execute.run(command);
+
+      return changes.trim().length > 0;
+    } catch (error) {
+      logger.warn(`Failed to check dist-affecting changes for ${packagePath}: ${error}`);
+      // On error, assume changes exist to avoid blocking releases
+      return true;
+    }
+  }
+
+  /**
+   * Filter packages to only those with dist-affecting changes.
+   *
+   * @param packagePaths - Array of absolute package paths
+   * @param sinceCommit - Git commit SHA to compare against (optional)
+   * @returns Promise - Filtered array of package paths with changes
+   */
+  public static async getPackagesWithDistChanges(
+    packagePaths: Array<string>,
+    sinceCommit?: string,
+  ): Promise<Array<string>> {
+    const results = await Promise.all(
+      packagePaths.map(async (packagePath) => {
+        const hasChanges = await Git.hasDistAffectingChanges(packagePath, sinceCommit);
+        return hasChanges ? packagePath : null;
+      }),
+    );
+
+    return results.filter((path): path is string => path !== null);
+  }
+
   public static get CONSTANTS(): typeof CONSTANTS {
     return structuredClone(CONSTANTS);
   }

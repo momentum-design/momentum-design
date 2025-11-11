@@ -18,6 +18,11 @@ const OPTIONS: CommandOptions = {
     describe: 'filter for dependent packages',
     type: 'boolean',
   },
+  'dist-only': {
+    alias: 'do',
+    describe: 'filter for packages with dist-affecting changes only (excludes test/config/docs)',
+    type: 'boolean',
+  },
   packages: {
     alias: 'p',
     describe: 'list of limited packages to process',

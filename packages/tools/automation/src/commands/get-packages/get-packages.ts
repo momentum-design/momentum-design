@@ -15,6 +15,7 @@ class GetPackages extends Command {
 
   public static process(config: Config): Promise<PackageCollection> {
     const { changed, dependent, packages, packagesPath, scope } = config;
+    const distOnly = config['dist-only'];
     const packageCollection = new PackageCollection({ packagesPath });
     let promise: Promise<string | undefined>;
 
@@ -26,12 +27,38 @@ class GetPackages extends Command {
     }
 
     return promise.then(
-      (parsedChanged) => PackageCollection.getAllPackageDetails({ scope, since: parsedChanged }),
+      (parsedChanged) => {
+        // Filter by dist-affecting changes if flag is set
+        if (distOnly && parsedChanged) {
+          return PackageCollection.getAllPackageDetails({ scope, since: parsedChanged })
+            .then(async (allPackageDetails) => {
+              let packageDetails = packages?.length
+                ? allPackageDetails.filter(
+                  (eachPackage: ListItem) => packages.find((name) => name === eachPackage.name),
+                )
+                : allPackageDetails;
+
+              const packagePaths = packageDetails.map((pkg) => pkg.location);
+              const pathsWithDistChanges = await Git.getPackagesWithDistChanges(packagePaths, parsedChanged);
+
+              packageDetails = packageDetails.filter(
+                (pkg) => pathsWithDistChanges.includes(pkg.location),
+              );
+
+              return packageDetails;
+            });
+        }
+
+        return PackageCollection.getAllPackageDetails({ scope, since: parsedChanged })
+          .then((allPackageDetails) => {
+            const packageDetails = packages?.length
+              ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
+              : allPackageDetails;
+            return packageDetails;
+          });
+      },
     ).then(
-      (allPackageDetails) => {
-        const packageDetails = packages?.length
-          ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
-          : allPackageDetails;
+      (packageDetails) => {
         const finalPackages = packageDetails.map((eachPackage: ListItem) => {
           const [scope, name] = eachPackage.name.split('/');
 

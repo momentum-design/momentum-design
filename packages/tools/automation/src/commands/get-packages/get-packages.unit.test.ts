@@ -81,4 +81,75 @@ describe('Get Packages', () => {
       jest.restoreAllMocks();
     });
   });
+
+  describe('dist-only filter', () => {
+    let getAllPackageDetailsSpy: jest.SpyInstance;
+    let parseSpy: jest.SpyInstance;
+    let listSpy: jest.SpyInstance;
+    let getPackagesWithDistChangesSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      listSpy = jest.spyOn(Git, 'list').mockImplementation(() => Promise.resolve(
+        [
+          { commit: 'fake-commit-1' },
+          { commit: 'fake-commit-2' },
+        ],
+      ));
+      parseSpy = jest.spyOn(Command, 'parse').mockImplementation(() => ({
+        changed: '',
+        'commit-index': 1,
+        dependent: undefined,
+        'dist-only': true,
+        packages: undefined,
+        packagesPath: './packages',
+        scope: '@momentum-design',
+      }));
+      getAllPackageDetailsSpy = jest.spyOn(PackageCollection, 'getAllPackageDetails')
+        .mockImplementation(() => Promise.resolve(
+          [
+            {
+              location: 'packages/tools/automation',
+              name: '@momentum-design/automation',
+            },
+            {
+              location: 'packages/components',
+              name: '@momentum-design/components',
+            },
+          ],
+        ));
+      getPackagesWithDistChangesSpy = jest.spyOn(Git, 'getPackagesWithDistChanges')
+        .mockImplementation(() => Promise.resolve(['packages/components']));
+    });
+
+    it('should filter packages to only those with dist-affecting changes', async () => {
+      const results = await GetPackages.execute();
+      expect(parseSpy).toHaveBeenCalled();
+      expect(listSpy).toHaveBeenCalledWith(1);
+      expect(getAllPackageDetailsSpy).toHaveBeenCalledWith({ scope: '@momentum-design', since: 'fake-commit-2' });
+      expect(getPackagesWithDistChangesSpy).toHaveBeenCalledWith(
+        ['packages/tools/automation', 'packages/components'],
+        'fake-commit-2',
+      );
+      expect(results).toEqual(JSON.stringify(['@momentum-design/components']));
+    });
+
+    it('should skip dist filtering when dist-only is false', async () => {
+      parseSpy = jest.spyOn(Command, 'parse').mockImplementation(() => ({
+        changed: '',
+        'commit-index': 1,
+        dependent: undefined,
+        'dist-only': false,
+        packages: undefined,
+        packagesPath: './packages',
+        scope: '@momentum-design',
+      }));
+      const results = await GetPackages.execute();
+      expect(getPackagesWithDistChangesSpy).not.toHaveBeenCalled();
+      expect(results).toEqual(JSON.stringify(['@momentum-design/automation', '@momentum-design/components']));
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+  });
 });
