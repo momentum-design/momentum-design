@@ -27,35 +27,24 @@ class GetPackages extends Command {
     }
 
     return promise.then(
-      (parsedChanged) => {
+      async (parsedChanged) => {
+        const allPackageDetails = await PackageCollection.getAllPackageDetails({ scope, since: parsedChanged });
+
+        let packageDetails = packages?.length
+          ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
+          : allPackageDetails;
+
         // Filter by dist-affecting changes if flag is set
         if (distOnly && parsedChanged) {
-          return PackageCollection.getAllPackageDetails({ scope, since: parsedChanged })
-            .then(async (allPackageDetails) => {
-              let packageDetails = packages?.length
-                ? allPackageDetails.filter(
-                  (eachPackage: ListItem) => packages.find((name) => name === eachPackage.name),
-                )
-                : allPackageDetails;
+          const packagePaths = packageDetails.map((pkg) => pkg.location);
+          const pathsWithDistChanges = await Git.getPackagesWithDistChanges(packagePaths, parsedChanged);
 
-              const packagePaths = packageDetails.map((pkg) => pkg.location);
-              const pathsWithDistChanges = await Git.getPackagesWithDistChanges(packagePaths, parsedChanged);
-
-              packageDetails = packageDetails.filter(
-                (pkg) => pathsWithDistChanges.includes(pkg.location),
-              );
-
-              return packageDetails;
-            });
+          packageDetails = packageDetails.filter(
+            (pkg) => pathsWithDistChanges.includes(pkg.location),
+          );
         }
 
-        return PackageCollection.getAllPackageDetails({ scope, since: parsedChanged })
-          .then((allPackageDetails) => {
-            const packageDetails = packages?.length
-              ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
-              : allPackageDetails;
-            return packageDetails;
-          });
+        return packageDetails;
       },
     ).then(
       (packageDetails) => {
