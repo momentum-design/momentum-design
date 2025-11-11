@@ -136,6 +136,50 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(ariaLiveRegion).toHaveCSS('white-space', 'nowrap');
         await expect(ariaLiveRegion).toHaveCSS('width', '1px');
       });
+
+      await test.step('aria live region is created in dialog shadow root with textarea', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-dialog visible aria-label="Test Dialog">
+              <div slot="dialog-body">
+                <mdc-textarea
+                  id="test-textarea"
+                  label="Test Input"
+                  max-character-limit="50"
+                  character-limit-announcement="%{number-of-characters} of %{max-character-limit} characters used"
+                  value="Test">
+                </mdc-textarea>
+              </div>
+            </mdc-dialog>
+          `,
+          clearDocument: true,
+        });
+
+        const dialog = componentsPage.page.locator('mdc-dialog').first();
+        await dialog.waitFor();
+
+        const textarea = dialog.locator('mdc-textarea#test-textarea').first();
+        await textarea.waitFor();
+
+        // Check that aria-live region was created in dialog's shadow root (not document.body)
+        // The region is created on mount by the textarea's internal screenreaderannouncer
+        const { regionInShadowRoot, regionInBody } = await componentsPage.page.evaluate(() => {
+          const dialog = document.querySelector('mdc-dialog');
+          const textarea = document.querySelector('mdc-textarea');
+          
+          // Get textarea's inputId to find the correct region
+          const textareaEl = textarea?.shadowRoot?.querySelector('textarea');
+          const inputId = textareaEl?.id;
+          
+          const inShadow = dialog?.shadowRoot?.getElementById(inputId || '') !== null;
+          const inBody = document.getElementById(inputId || '') !== null;
+          
+          return { regionInShadowRoot: inShadow, regionInBody: inBody };
+        });
+
+        await expect(regionInShadowRoot).toBe(true);
+        await expect(regionInBody).toBe(false);
+      });
     });
     /**
      * ANNOUNCEMENTS
@@ -178,6 +222,57 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(announcementElements.nth(0)).toHaveText(announcements[0]);
         // announce 1st and 2nd get cancelled as there are announced immediately.
         await expect(announcementElements.nth(1)).toHaveText(announcements[3]);
+      });
+
+      await test.step('make announcement with textarea inside dialog', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-dialog visible aria-label="Test Dialog">
+              <div slot="dialog-body">
+                <mdc-textarea
+                  id="test-textarea"
+                  label="Test Input"
+                  max-character-limit="50"
+                  character-limit-announcement="%{number-of-characters} of %{max-character-limit} characters used"
+                  value="Test">
+                </mdc-textarea>
+              </div>
+            </mdc-dialog>
+          `,
+          clearDocument: true,
+        });
+
+        const dialog = componentsPage.page.locator('mdc-dialog').first();
+        await dialog.waitFor();
+
+        const textarea = dialog.locator('mdc-textarea#test-textarea').first();
+        const textareaInput = textarea.locator('textarea').first();
+
+        // Type to trigger announcement
+        await textareaInput.focus();
+        await textareaInput.fill('Test input');
+
+        // Wait for announcement (debounce: 500ms + delay override by textarea: 500ms + buffer: 200ms)
+        await componentsPage.page.waitForTimeout(1200);
+
+        // Verify the announcement content is present in the dialog's shadow root
+        const announcementContent = await componentsPage.page.evaluate(() => {
+          const dialog = document.querySelector('mdc-dialog');
+          const textarea = document.querySelector('mdc-textarea');
+          const textareaEl = textarea?.shadowRoot?.querySelector('textarea');
+          const inputId = textareaEl?.id;
+
+          const region = dialog?.shadowRoot?.getElementById(inputId || '');
+          const announcementDiv = region?.querySelector('div[aria-live]');
+          const announcementText = announcementDiv?.querySelector('p')?.textContent;
+
+          return announcementText;
+        });
+
+        // Should contain character count information (10 characters of 50 max)
+        await expect(announcementContent).toBeTruthy();
+        await expect(announcementContent).toContain('10');
+        await expect(announcementContent).toContain('50');
       });
     });
   });
