@@ -169,6 +169,8 @@ jobs:
     needs: [build, generate-package-matrix]
     if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
     runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check-dist.outputs.should_publish }}
 
     strategy:
       matrix:
@@ -282,6 +284,7 @@ jobs:
   create-release:
      name: ( ${{ matrix.package }} ) Create Release
      needs: [deploy-npmjs, generate-package-matrix]
+     if: ${{ needs.deploy-npmjs.outputs.should_publish == 'true' }}
      runs-on: ubuntu-latest
 
      strategy:
