@@ -94,9 +94,10 @@ class Git {
     // Patterns that affect dist output
     const includePatterns = [
       'src/**',
-      'config/esbuild/**',
-      'config/typescript/**',
+      'config/**',
+      'scripts/makeReact.js',
       'tsconfig.json',
+      'esbuild.config.js',
       'package.json',
     ];
 
@@ -104,24 +105,31 @@ class Git {
     const excludePatterns = [
       '**/*.test.*',
       '**/*.spec.*',
+      '**/*.e2e-test.*',
       '**/*.stories.*',
       '**/README.md',
       '**/CONTRIBUTING.md',
       '**/LEARNINGS.md',
       '**/SCRIPTS.md',
       '**/TESTING.md',
-      'scripts/**',
+      'conventions/**',
       'config/playwright/**',
       'config/storybook/**',
-      'conventions/**',
+      'config/plop/**',
+      'config/lint-staged/**',
+      'config/stylelint/**',
+      'config/code-connect/**',
+      'config/custom-elements-manifest*',
       'jest.config.*',
       'playwright.config.*',
       'prettier.config.*',
+      '.prettierignore',
       '.eslintrc.*',
       'playwright-report/**',
       'playwright-temp/**',
       'test-results/**',
       'pngFixtures/**',
+      'storybook-static/**',
     ];
 
     try {
