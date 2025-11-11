@@ -285,19 +285,9 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
       this.handleValueChange();
       this.handleCharacterOverflowStateChange();
     }
-    // When helpText is set by consumer after limitexceeded event, announce it if over limit
-    if (
-      changedProperties.has('helpText') &&
-      this.helpText &&
-      this.maxCharacterLimit &&
-      this.value.length > this.maxCharacterLimit
-    ) {
-      this.ariaLiveAnnouncer = '';
-      this.updateComplete
-        .then(() => {
-          this.ariaLiveAnnouncer = this.helpText;
-        })
-        .catch(() => {});
+    // When helpText gets changed, we need to re-announce the max length warning
+    if (changedProperties.has('helpText')) {
+      this.announceMaxLengthWarning();
     }
   }
 
