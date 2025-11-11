@@ -593,4 +593,52 @@ test('mdc-dialog', async ({ componentsPage }) => {
       // End AI-Assisted
     });
   });
+
+  /**
+   * RESPONSIVE SETTINGS
+   */
+  await test.step('responsive settings', async () => {
+    const setup = async ({ size, forceFullScreenDialog }: { size?: string; forceFullScreenDialog?: boolean }) => {
+      await componentsPage.mount({
+        html: `
+      <div id="wrapper">
+          <mdc-responsivesettingsprovider id="responsive-settings-provider" ${forceFullScreenDialog ? 'force-fullscreen-dialog' : ''}>
+              <mdc-dialog id="dialog" ${size ? `size="${size}"` : ''}>Hello dialog!</mdc-dialog>
+          </mdc-responsivesettingsprovider>
+      </div>
+      `,
+        clearDocument: true,
+      });
+
+      const dialog = componentsPage.page.locator(`#dialog`);
+      const responsiveSettings = componentsPage.page.locator(`#responsive-settings-provider`);
+      return { dialog, responsiveSettings };
+    };
+
+    await test.step('force-fullscreen-dialog responsive settings changes dialog size settings', async () => {
+      const { dialog } = await setup({ forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step("responsive settings takes priority over dialog's size attribute", async () => {
+      const { dialog } = await setup({ size: 'medium', forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step('dialog size reacts on responsive settings changes', async () => {
+      const { dialog, responsiveSettings } = await setup({ size: 'medium', forceFullScreenDialog: false });
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
+
+      await componentsPage.setAttributes(responsiveSettings, { 'force-fullscreen-dialog': 'true' });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+
+      await componentsPage.removeAttribute(responsiveSettings, 'force-fullscreen-dialog');
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
+    });
+  });
 });
