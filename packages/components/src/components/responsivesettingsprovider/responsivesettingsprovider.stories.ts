@@ -7,6 +7,7 @@ import '../menuitem';
 import '../menuitemradio';
 import '../menuitemcheckbox';
 import '../dialog';
+import '../announcementdialog';
 
 import { hideControls } from '../../../config/storybook/utils';
 
@@ -48,6 +49,8 @@ export const Example: StoryObj = {
   render: args => {
     const hideDialog = () => document.getElementById('dialog-id')!.removeAttribute('visible');
     const showDialog = () => document.getElementById('dialog-id')!.toggleAttribute('visible');
+    const hideAnnouncement = () => document.getElementById('announcement-id')!.removeAttribute('visible');
+    const showAnnouncement = () => document.getElementById('announcement-id')!.toggleAttribute('visible');
 
     return html`
       <mdc-responsivesettingsprovider
@@ -62,6 +65,7 @@ export const Example: StoryObj = {
           <mdc-button id="popover-trigger">Popover trigger</mdc-button>
           <mdc-button id="menu-trigger">Menu trigger</mdc-button>
           <mdc-button @click="${showDialog}">Dialog trigger</mdc-button>
+          <mdc-button @click="${showAnnouncement}">Announcement trigger</mdc-button>
         </div>
         <mdc-popover triggerID="popover-trigger" placement="bottom" show-arrow>
           <div style="padding: 1rem; max-width: 200px;">
@@ -99,19 +103,26 @@ export const Example: StoryObj = {
           </mdc-menupopover>
         </mdc-menupopover>
 
-        <mdc-dialog
-          id="dialog-id"
-          triggerID="dialog-trigger"
-          aria-labelledby="dialog-title"
-          aria-describedby="dialog-desc"
-          @close="${hideDialog}"
-        >
+        <mdc-dialog id="dialog-id" @close="${hideDialog}">
           <h2 id="dialog-title" slot="dialog-header">Responsive Dialog</h2>
           <div id="dialog-desc" slot="dialog-body">
             This dialog should open in fullscreen mode on smaller screens if the ResponsiveSettingsProvider is
             configured to do so.
           </div>
         </mdc-dialog>
+        <mdc-announcementdialog id="announcement-id" @close="${hideAnnouncement}">
+          <h2 id="dialog-title" slot="dialog-header">Responsive Announcement Dialog</h2>
+          <mdc-text slot="description-container" type="body-large-regular">
+            Introduction sentence.
+            <br />
+            Feature description.
+            <br />
+            Promote the feature, add some delight 🎉 and let the user know any top level information but don't be
+            instructional or technical.
+            <br />
+            Max 8 lines of copy with or without breaks.
+          </mdc-text>
+        </mdc-announcementdialog>
       </mdc-responsivesettingsprovider>
     `;
   },
