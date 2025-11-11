@@ -7,6 +7,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (skip actual npm publish)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
@@ -216,7 +225,17 @@ jobs:
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
         if: steps.check-dist.outputs.should_publish == 'true'
-        run: yarn workspace ${{ matrix.package }} publish:npmjs
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would publish ${{ matrix.package }}"
+            yarn workspace ${{ matrix.package }} pack --dry-run
+          else
+            yarn workspace ${{ matrix.package }} publish:npmjs
+          fi
+
+      - name: Skip Publish (dist unchanged)
+        if: steps.check-dist.outputs.should_publish == 'false'
+        run: echo "Skipping publish for ${{ matrix.package }} - dist unchanged"
 
   dispatch-telemetry:
     name: ( ${{ matrix.package }} ) Dispatch Telemetry
