@@ -6,7 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
-const MAX_COUNTER_LIST = [9, 99, 999];
+const MAX_COUNTER_LIST = [9, 99, 999, 9990]; // Added test value
 
 const render = (args: Args) => html`
   <mdc-badge

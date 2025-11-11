@@ -7,6 +7,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (skip actual npm publish)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
@@ -79,12 +88,12 @@ jobs:
           key: automation-dist-${{ env.rid }}
 
   generate-package-matrix:
-    name: Generate Package Matrix
-    needs: build-automation
+    name: Generate Package Matrix with Dist Changes
+    needs: [build-automation, build]
     runs-on: ubuntu-latest
 
     outputs:
-      packages: ${{ steps.generate-package-matrix.outputs.packages }}
+      packages: ${{ steps.filter-packages.outputs.packages }}
 
     steps:
       - uses: actions/checkout@v4
@@ -108,19 +117,53 @@ jobs:
           path: '**/automation/dist'
           key: automation-dist-${{ env.rid }}
 
+      - name: Uncache Dist
+        uses: actions/cache@v4
+        with:
+          path: '**/dist'
+          key: dist-${{ env.rid }}
+
       - name: Synchronize Packages
         run: yarn
 
       - name: Update Main Branch
-        run: |
-          git fetch origin main --unshallow
+        run: git fetch origin main --unshallow
 
-      - id: generate-package-matrix
-        name: Generate Package Matrix
+      - name: Get Changed Packages
+        id: get-packages
         run: echo "packages=$(yarn md-automation -- --command get-packages --changed --commit-index 1 --dependent)" >> $GITHUB_OUTPUT
 
-      - name: Display Package Matrix
-        run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+      - name: Filter Packages with Dist Changes
+        id: filter-packages
+        run: |
+          CHANGED_PACKAGES='${{ steps.get-packages.outputs.packages }}'
+          echo "Changed packages: $CHANGED_PACKAGES"
+          
+          if [ "$CHANGED_PACKAGES" = "[]" ] || [ -z "$CHANGED_PACKAGES" ]; then
+            echo "packages=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          FILTERED="[]"
+          for PKG in $(echo "$CHANGED_PACKAGES" | jq -r '.[]'); do
+            PKG_PATH=$(yarn workspaces list --json | jq -r "select(.name == \"$PKG\") | .location")
+            
+            # Skip private packages
+            IS_PRIVATE=$(cat "$PKG_PATH/package.json" | jq -r '.private // false')
+            if [ "$IS_PRIVATE" = "true" ]; then
+              echo "Skipping private package: $PKG"
+              continue
+            fi
+            
+            if bash .github/scripts/compare-dist.sh "$PKG" "$PKG_PATH"; then
+              FILTERED=$(echo "$FILTERED" | jq --arg pkg "$PKG" '. + [$pkg]')
+            fi
+          done
+          
+          echo "packages=$(echo $FILTERED | jq -c .)" >> $GITHUB_OUTPUT
+
+      - name: Display Filtered Packages
+        run: echo "Packages with dist changes - ${{ steps.filter-packages.outputs.packages }}"
 
   build:
     name: Build
@@ -191,8 +234,7 @@ jobs:
         run: yarn
 
       - name: Update Main Branch
-        run: |
-          git fetch origin main --unshallow
+        run: git fetch origin main --unshallow
 
       - name: Increment Packages
         run: yarn md-automation -- --command increment-packages --packages ${{ matrix.package }}
@@ -203,7 +245,13 @@ jobs:
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
-        run: yarn workspace ${{ matrix.package }} publish:npmjs
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would publish ${{ matrix.package }}"
+            yarn workspace ${{ matrix.package }} pack --dry-run
+          else
+            yarn workspace ${{ matrix.package }} publish:npmjs
+          fi
 
   dispatch-telemetry:
     name: ( ${{ matrix.package }} ) Dispatch Telemetry
@@ -250,6 +298,7 @@ jobs:
   create-release:
      name: ( ${{ matrix.package }} ) Create Release
      needs: [deploy-npmjs, generate-package-matrix]
+     if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
      runs-on: ubuntu-latest
 
      strategy:
