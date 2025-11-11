@@ -194,15 +194,28 @@ jobs:
         run: |
           git fetch origin main --unshallow
 
+      - name: Check if dist changed
+        id: check-dist
+        run: |
+          PKG_PATH=$(yarn workspaces list --json | jq -r "select(.name == \"${{ matrix.package }}\") | .location")
+          if bash .github/scripts/compare-dist.sh "${{ matrix.package }}" "$PKG_PATH"; then
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Increment Packages
+        if: steps.check-dist.outputs.should_publish == 'true'
         run: yarn md-automation -- --command increment-packages --packages ${{ matrix.package }}
         env:
            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Yarn
+        if: steps.check-dist.outputs.should_publish == 'true'
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
+        if: steps.check-dist.outputs.should_publish == 'true'
         run: yarn workspace ${{ matrix.package }} publish:npmjs
 
   dispatch-telemetry:
