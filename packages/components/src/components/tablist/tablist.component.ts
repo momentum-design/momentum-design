@@ -60,9 +60,9 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  */
 class TabList extends Component {
   /**
-   * ID of the active tab, defaults to the first tab if not provided temp
+   * ID of the active tab, defaults to the first tab if not provided
    */
-  @property({ type: String, attribute: 'active-tab-id', reflect: true })
+  @property({ type: String, attribute: 'active-tab-id' })
   activeTabId?: string;
 
   /**
