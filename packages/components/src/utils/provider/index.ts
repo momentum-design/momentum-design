@@ -7,7 +7,7 @@ type ConsumeOptions<C extends Context<unknown, unknown>> = Options<C> & {
   /**
    * List of properties which need update when context changes
    *
-   * Foe example a property getter depends on the context value and the property must be reflected to attribute.
+   * For example a property getter depends on the context value and the property must be reflected to attribute.
    *
    * Background: Lit does not track dependencies between context consumers and properties, so
    * we need to manually request an update for those properties.
@@ -24,7 +24,11 @@ const consume = <C extends Context<unknown, unknown>>(options: ConsumeOptions<C>
   const contextCallback =
     (callback || syncProperties) &&
     ((value: ContextType<C>) => {
-      if (syncProperties) syncProperties.forEach(prop => host.requestUpdate(prop));
+      if (syncProperties) {
+        syncProperties.forEach(prop => {
+          host.requestUpdate(prop);
+        });
+      }
 
       callback?.(value);
     });

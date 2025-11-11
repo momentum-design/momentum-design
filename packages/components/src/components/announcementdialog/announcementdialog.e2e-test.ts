@@ -323,21 +323,15 @@ test('mdc-announcementdialog', async ({ componentsPage }) => {
     });
 
     await test.step('dialog size reacts on responsive settings changes', async () => {
-      const { dialog } = await setup({ size: 'medium', forceFullScreenDialog: false });
+      const { dialog, responsiveSettings } = await setup({ size: 'medium', forceFullScreenDialog: false });
 
       await expect(dialog).toHaveAttribute('size', 'medium');
 
-      await componentsPage.page.evaluate(() => {
-        const rsp = document.querySelector(`#responsive-settings-provider`)!;
-        rsp.setAttribute('force-fullscreen-dialog', '');
-      });
+      await componentsPage.setAttributes(responsiveSettings, { 'force-fullscreen-dialog': 'true' });
 
       await expect(dialog).toHaveAttribute('size', 'fullscreen');
 
-      await componentsPage.page.evaluate(() => {
-        const rsp = document.querySelector(`#responsive-settings-provider`)!;
-        rsp.removeAttribute('force-fullscreen-dialog');
-      });
+      await componentsPage.removeAttribute(responsiveSettings, 'force-fullscreen-dialog');
 
       await expect(dialog).toHaveAttribute('size', 'medium');
     });
