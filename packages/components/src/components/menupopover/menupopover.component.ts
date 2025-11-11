@@ -236,34 +236,13 @@ class MenuPopover extends Popover {
   }
 
   /**
-   * Closes all menu popovers in the stack.
-   * This method is used to ensure that when a menu item is clicked,
-   * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the `popoverStack` and hides each popover until the stack is empty.
-   *
-   * @param until - The popover to close until.
-   */
-  private closeAllMenuPopovers(until?: Element): void {
-    while (popoverStack.peek() !== until) {
-      if (!isValidMenuPopover(popoverStack.peek() as Element)) break;
-
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-      } else {
-        break;
-      }
-    }
-  }
-
-  /**
    * Handles outside click events to close the popover.
    * This method checks if the click occurred outside the popover and its trigger element.
    * If so, it closes the popover by calling `closeAllMenuPopovers`.
    * It also checks if the click was on the backdrop element (if present) to close the popover.
    * @param event - The mouse event that triggered the outside click.
    */
-  override onOutsidePopoverClick = (event: MouseEvent): void => {
+  override onOutsidePopoverClick = async (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
     const path = event.composedPath();
     const insidePopoverClick =
@@ -271,7 +250,7 @@ class MenuPopover extends Popover {
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
-      this.closeAllMenuPopovers();
+      await this.closeAllPopovers();
     }
   };
 
@@ -324,7 +303,7 @@ class MenuPopover extends Popover {
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
    * @param event - The mouse event that triggered the click.
    */
-  private handleMouseClick(event: MouseEvent): void {
+  private async handleMouseClick(event: MouseEvent): Promise<void> {
     const target = event.target as HTMLElement;
     // stopPropagation to prevent the click from bubbling up to parent elements
     event.stopPropagation();
@@ -339,7 +318,7 @@ class MenuPopover extends Popover {
       this.closeOtherSubMenusOnSameLevel(target);
       return;
     }
-    this.closeAllMenuPopovers();
+    await this.closeAllPopovers();
     this.fireMenuItemAction(target);
   }
 
@@ -410,7 +389,7 @@ class MenuPopover extends Popover {
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
-  private handleKeyDown = (event: KeyboardEvent) => {
+  private handleKeyDown = async (event: KeyboardEvent) => {
     let isKeyHandled = false;
 
     this.collectMenuItems();
@@ -475,7 +454,7 @@ class MenuPopover extends Popover {
       }
       case KEYS.ENTER: {
         if (!this.getSubMenuPopoverOfTarget(target) && !target.hasAttribute('soft-disabled')) {
-          this.closeAllMenuPopovers();
+          await this.closeAllPopovers();
           this.fireMenuItemAction(target);
           isKeyHandled = true;
         }
@@ -511,7 +490,7 @@ class MenuPopover extends Popover {
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
    */
-  private handleKeyUp = (event: KeyboardEvent) => {
+  private handleKeyUp = async (event: KeyboardEvent) => {
     let isKeyHandled = false;
 
     const target = event.target as HTMLElement;
@@ -519,10 +498,13 @@ class MenuPopover extends Popover {
     switch (event.key) {
       case KEYS.SPACE: {
         // If the target is a menu item, trigger its click event
-        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) && !target.hasAttribute('soft-disabled')) {
+        if (
+          !target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) &&
+          !target.hasAttribute('soft-disabled')
+        ) {
           // only close all menu popovers if the target is not opening a menu popover
           if (!this.getSubMenuPopoverOfTarget(target)) {
-            this.closeAllMenuPopovers();
+            await this.closeAllPopovers();
             this.fireMenuItemAction(target);
             isKeyHandled = true;
           }

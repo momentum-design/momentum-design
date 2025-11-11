@@ -311,6 +311,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
     }
   }
 
+  override get textContent() {
+    return this.label ?? this.ariaLabel ?? '';
+  }
+
   public override render() {
     return html`
       <slot name="content">

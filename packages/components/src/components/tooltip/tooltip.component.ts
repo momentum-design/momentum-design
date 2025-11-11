@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { ResponsivePopoverPositions } from '../responsivesettingsprovider/responsivesettingsprovider.types';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -62,6 +63,15 @@ class Tooltip extends Popover {
     this.focusBackToTrigger = false;
     this.size = false;
     this.disableAriaExpanded = true;
+  }
+
+  override get responsivePopoverPositioning(): ResponsivePopoverPositions {
+    // Tooltips should always use 'float' positioning for responsive popover positioning
+    return 'float';
+  }
+
+  override set responsivePopoverPositioning(_value: ResponsivePopoverPositions) {
+    // Do nothing
   }
 
   /**

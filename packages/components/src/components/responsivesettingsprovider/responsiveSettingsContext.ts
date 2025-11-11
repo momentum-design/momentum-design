@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import { createContext } from '@lit/context';
 
 import { DEFAULTS, TAG_NAME } from './responsivesettingsprovider.constants';
@@ -8,6 +9,8 @@ import type {
 } from './responsivesettingsprovider.types';
 
 class ResponsiveSettingsContext {
+  public id: string = `mdc-responsivesettingsprovider-${v4()}`;
+
   public media: ResponsiveMediaType = DEFAULTS.MEDIA;
 
   public forceFullscreenDialog: boolean = DEFAULTS.FORCE_FULLSCREEN_DIALOG;

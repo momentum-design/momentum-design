@@ -19,9 +19,8 @@ class PopoverStack {
    * @param popover - Popover instance
    * @returns The new depth of the stack
    */
-  push(popover: Popover): number {
-    this.stack.push(popover);
-    return this.stack.length;
+  push(popover: Popover) {
+    return this.stack.push(popover);
   }
 
   /**
