@@ -59,7 +59,7 @@ const styles = css`
     --mdc-select-background-color: var(--mds-color-theme-background-primary-active);
   }
   :host::part(base-text) {
-    height: 100%;
+    height: 1.3125rem;
     /* 2rem is the complete width of dropdown icon */
     width: calc(100% - 2rem);
     color: var(--mdc-select-text-color);
