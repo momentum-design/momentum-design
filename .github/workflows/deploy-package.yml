@@ -7,15 +7,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Run in dry-run mode (skip actual npm publish)'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
@@ -245,13 +236,7 @@ jobs:
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
-        run: |
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            echo "DRY RUN: Would publish ${{ matrix.package }}"
-            yarn workspace ${{ matrix.package }} pack --dry-run
-          else
-            yarn workspace ${{ matrix.package }} publish:npmjs
-          fi
+        run: yarn workspace ${{ matrix.package }} publish:npmjs
 
   dispatch-telemetry:
     name: ( ${{ matrix.package }} ) Dispatch Telemetry

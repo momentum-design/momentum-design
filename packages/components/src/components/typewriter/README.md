@@ -4,7 +4,7 @@ The `mdc-typewriter` component provides a typewriter effect for text content,
 creating a progressive typing animation. It uses the `mdc-text` component
 internally and adds animation capabilities with full accessibility support.
 
-## Usage temp
+## Usage
 
 ```html
 <mdc-typewriter
