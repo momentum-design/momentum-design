@@ -29,8 +29,16 @@ TMP=$(mktemp -d)
 trap "rm -rf $TMP" EXIT
 
 cd "$TMP"
-npm pack "$PKG@$VERSION" --silent > /dev/null
-tar -xzf ./*.tgz
+echo "Downloading $PKG@$VERSION..."
+TARBALL=$(npm pack "$PKG@$VERSION" 2>&1 | tail -n 1)
+echo "Downloaded: $TARBALL"
+
+if [ ! -f "$TARBALL" ]; then
+  echo "ERROR: Failed to download package tarball"
+  exit 2
+fi
+
+tar -xzf "$TARBALL"
 
 if [ ! -d "package/dist" ]; then
   echo "WARNING: No dist/ folder in published package - will publish"

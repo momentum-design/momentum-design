@@ -152,7 +152,7 @@ jobs:
             fi
           done
           
-          echo "packages=$FILTERED" >> $GITHUB_OUTPUT
+          echo "packages=$(echo $FILTERED | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Display Filtered Packages
         run: echo "Packages with dist changes - ${{ steps.filter-packages.outputs.packages }}"
@@ -290,6 +290,7 @@ jobs:
   create-release:
      name: ( ${{ matrix.package }} ) Create Release
      needs: [deploy-npmjs, generate-package-matrix]
+     if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
      runs-on: ubuntu-latest
 
      strategy:

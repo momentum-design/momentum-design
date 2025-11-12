@@ -104,7 +104,7 @@ class TabList extends Component {
   /**
    * @internal
    */
-  @state() private showForwardArrowButton: boolean = true;
+  @state() private showForwardArrowButton: boolean = false;
 
   /**
    * @internal
