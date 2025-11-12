@@ -147,6 +147,14 @@ jobs:
           FILTERED="[]"
           for PKG in $(echo "$CHANGED_PACKAGES" | jq -r '.[]'); do
             PKG_PATH=$(yarn workspaces list --json | jq -r "select(.name == \"$PKG\") | .location")
+            
+            # Skip private packages
+            IS_PRIVATE=$(cat "$PKG_PATH/package.json" | jq -r '.private // false')
+            if [ "$IS_PRIVATE" = "true" ]; then
+              echo "Skipping private package: $PKG"
+              continue
+            fi
+            
             if bash .github/scripts/compare-dist.sh "$PKG" "$PKG_PATH"; then
               FILTERED=$(echo "$FILTERED" | jq --arg pkg "$PKG" '. + [$pkg]')
             fi

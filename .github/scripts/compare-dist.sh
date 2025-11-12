@@ -30,11 +30,12 @@ trap "rm -rf $TMP" EXIT
 
 cd "$TMP"
 echo "Downloading $PKG@$VERSION..."
-TARBALL=$(npm pack "$PKG@$VERSION" 2>&1 | tail -n 1)
+TARBALL=$(npm pack "$PKG@$VERSION" 2>&1 | grep -E '\.tgz$' | tail -n 1)
 echo "Downloaded: $TARBALL"
 
-if [ ! -f "$TARBALL" ]; then
+if [ -z "$TARBALL" ] || [ ! -f "$TARBALL" ]; then
   echo "ERROR: Failed to download package tarball"
+  ls -la
   exit 2
 fi
 
