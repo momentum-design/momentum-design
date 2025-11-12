@@ -118,5 +118,14 @@ module.exports = {
         }
       },
     },
+    {
+      name: 'momentum-sort-modules',
+      packageLinkPhase({ customElementsManifest }) {
+        // Sort modules array to ensure deterministic output
+        if (customElementsManifest?.modules) {
+          customElementsManifest.modules.sort((a, b) => a.path.localeCompare(b.path));
+        }
+      },
+    },
   ],
 };
