@@ -31,7 +31,10 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      * IMPLEMENT THIS IN YOUR COMPONENT.
      *
      * The z-index of the component where the backdrop will be attached to.
-     * The backdrop itself will have a z-index of `zIndex - 1`.
+     *
+     * The backdrop itself will have a z-index of `zIndex - 2`.
+     * The trigger element of the backdrop will have a z-index of `zIndex - 1`,
+     * to make sure that it is above the backdrop and clickable.
      */
     abstract zIndex: number;
 

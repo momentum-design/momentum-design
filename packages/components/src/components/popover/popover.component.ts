@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -19,7 +19,7 @@ import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } 
 import { PopoverUtils } from './popover.utils';
 
 /**
- * Popover is genric overlay which can be trigered by any actinable element.
+ * Popover is generic overlay which can be triggered by any actionable element.
  *
  * It can be used for tooltips, dropdowns, menus or any showing any other contextual content.
  *
@@ -35,7 +35,7 @@ import { PopoverUtils } from './popover.utils';
  * aria-expanded and aria-haspopup attributes on the trigger.
  *
  * To prevent unexpected attribute changes on the trigger `disable-aria-expanded` attribute must be set on all linked
- * Popoers except one.
+ * Popovers except one.
  *
  * ### React Popover with append-to attribute
  *
@@ -334,16 +334,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
-  get zIndex(): number {
-    if (this.internalZIndex === undefined || Number.isNaN(this.internalZIndex)) {
-      return DEFAULTS.Z_INDEX + this.popoverDepth * 3;
-    }
-    return this.internalZIndex;
-  }
-
-  set zIndex(value: number) {
-    this.internalZIndex = value;
-  }
+  zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
    * Element ID that the popover append to.
@@ -449,12 +440,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
-
-  /** @internal */
-  private internalZIndex?: number = DEFAULTS.Z_INDEX;
-
-  /** @internal */
-  @state() private popoverDepth = 0;
 
   /** @internal */
   private get connectedTooltip() {
@@ -642,7 +627,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (changedProperties.has('zIndex')) {
-      this.setAttribute('z-index', `${this.internalZIndex}`);
+      this.setAttribute('z-index', `${this.zIndex}`);
     }
 
     if (changedProperties.has('appendTo')) {
@@ -757,7 +742,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     if (newValue && !this.shouldSuppressOpening) {
       if (popoverStack.peek() !== this) {
-        this.popoverDepth = popoverStack.push(this);
+        popoverStack.push(this);
       }
 
       if (!this.keepConnectedTooltipOpen) {

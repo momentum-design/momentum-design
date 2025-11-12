@@ -1066,6 +1066,70 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).not.toBeVisible();
     await expect(trigger).toBeFocused();
   });
+
+  await test.step('Popover should determine z-index for backdrop with default values', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="display: flex; height: 100%; flex-direction: column; justify-content: center;">
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-popover id="parent-popover" triggerID="trigger" backdrop>
+            <p>Popover content</p>
+            <mdc-button id="nested-popover-trigger">Action</mdc-button>
+            <mdc-popover id="nested-popover" triggerID="nested-popover-trigger" backdrop>
+              <p>Nested Popover content</p>
+            </mdc-popover>
+          </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const trigger = componentsPage.page.locator('#trigger');
+    await trigger.click();
+
+    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '1000');
+    await expect(trigger).toHaveCSS('z-index', '999');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '998');
+
+    const nestedPopoverTrigger = componentsPage.page.locator('#nested-popover-trigger');
+    await nestedPopoverTrigger.waitFor();
+    await nestedPopoverTrigger.click();
+
+    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '1000');
+    await expect(nestedPopoverTrigger).toHaveCSS('z-index', '999');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]').first()).toHaveCSS('z-index', '998');
+  });
+
+  await test.step('Popover should determine z-index for backdrop with custom z-index values', async () => {
+    await componentsPage.mount({
+      html: `
+        <div style="display: flex; height: 100%; flex-direction: column; justify-content: center;">
+          <mdc-button id="trigger">Trigger</mdc-button>
+          <mdc-popover id="parent-popover" triggerID="trigger" backdrop z-index="2500">
+            <p>Popover content</p>
+            <mdc-button id="nested-popover-trigger">Action</mdc-button>
+            <mdc-popover id="nested-popover" triggerID="nested-popover-trigger" backdrop z-index="3500">
+              <p>Nested Popover content</p>
+            </mdc-popover>
+          </mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const trigger = componentsPage.page.locator('#trigger');
+    await trigger.click();
+
+    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '2500');
+    await expect(trigger).toHaveCSS('z-index', '2499');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '2498');
+
+    const nestedPopoverTrigger = componentsPage.page.locator('#nested-popover-trigger');
+    await nestedPopoverTrigger.waitFor();
+    await nestedPopoverTrigger.click();
+
+    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '3500');
+    await expect(nestedPopoverTrigger).toHaveCSS('z-index', '3499');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]').first()).toHaveCSS('z-index', '2498');
+  });
 };
 
 test('mdc-popover', async ({ componentsPage }) => {
