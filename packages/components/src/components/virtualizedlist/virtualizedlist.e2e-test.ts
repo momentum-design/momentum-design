@@ -165,16 +165,16 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     await test.step('clicking on item which is half visible does not snap the scroll', async () => {
-      const { wrapper, vlist } = await setup({ itemHeight: 400 });
+      const { wrapper, vlist } = await setup({ itemHeight: 350 });
 
       await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
         for (let i = 0; i < 10; i += 1) {
-          wrapperEl.addItem(`Message ${i}`, undefined, { size: 400 });
+          wrapperEl.addItem(`Message ${i}`, undefined, { size: 350 });
         }
       });
 
-      await scrollList(vlist, 4400);
-      await scrollList(vlist, -300);
+      await scrollList(vlist, 4000);
+      await scrollList(vlist, -100);
 
       const listScrollTop = await vlist.evaluate((vlistEl: VirtualizedList) => {
         const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
