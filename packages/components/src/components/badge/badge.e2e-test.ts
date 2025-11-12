@@ -14,7 +14,7 @@ type SetupOptions = {
   counter?: number;
   maxCounter?: number;
   ariaLabel?: string;
-  testWorkflow?: boolean; // Test property to verify no dist change
+  testWorkflow2?: boolean; // Test property to verify no dist change
 };
 
 const setup = async (args: SetupOptions) => {
