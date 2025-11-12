@@ -29,7 +29,7 @@ const DEFAULTS = {
   MAX_COUNTER_LIMIT: 999,
   VARIANT: ICON_VARIANT.PRIMARY,
   ICON_SIZE: 1,
-  TEST_WORKFLOW: 'temp', // Test value to trigger dist change
+  TEST_WORKFLOW: 'test1', // Test value to trigger dist change
 } as const;
 
 export { TAG_NAME, DEFAULTS, TYPE, ICON_VARIANT, ICON_NAMES_LIST };

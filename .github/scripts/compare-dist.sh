@@ -30,15 +30,21 @@ trap "rm -rf $TMP" EXIT
 
 cd "$TMP"
 echo "Downloading $PKG@$VERSION..."
-TARBALL=$(npm pack "$PKG@$VERSION" 2>&1 | grep -E '\.tgz$' | tail -n 1)
-echo "Downloaded: $TARBALL"
 
-if [ -z "$TARBALL" ] || [ ! -f "$TARBALL" ]; then
-  echo "ERROR: Failed to download package tarball"
+# npm pack downloads the tarball - just find it after download
+npm pack "$PKG@$VERSION" > /dev/null 2>&1
+
+# Find the actual .tgz file that was downloaded
+TARBALL=$(find . -maxdepth 1 -name "*.tgz" -type f | head -n 1)
+
+if [ -z "$TARBALL" ]; then
+  echo "ERROR: No tarball found after npm pack"
+  echo "Files in directory:"
   ls -la
   exit 2
 fi
 
+echo "Found tarball: $TARBALL"
 tar -xzf "$TARBALL"
 
 if [ ! -d "package/dist" ]; then
