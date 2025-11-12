@@ -59,7 +59,8 @@ if [ ! -d "$NEW_DIST" ]; then
 fi
 
 set +e  # Disable exit on error for diff
-diff -qr "package/dist" "$NEW_DIST" > /dev/null 2>&1
+# Exclude *.tsbuildinfo files - they're build cache and not published to npm
+diff -qr --exclude="*.tsbuildinfo" "package/dist" "$NEW_DIST" > /dev/null 2>&1
 DIFF_EXIT=$?
 set -e  # Re-enable exit on error
 
@@ -68,6 +69,6 @@ if [ $DIFF_EXIT -eq 0 ]; then
   exit 1
 else
   echo "dist/ changed - will publish"
-  diff -qr "package/dist" "$NEW_DIST" | head -n 5 || true
+  diff -qr --exclude="*.tsbuildinfo" "package/dist" "$NEW_DIST" | head -n 5 || true
   exit 0
 fi
