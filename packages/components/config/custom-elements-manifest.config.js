@@ -124,6 +124,20 @@ module.exports = {
         // Sort modules array to ensure deterministic output
         if (customElementsManifest?.modules) {
           customElementsManifest.modules.sort((a, b) => a.path.localeCompare(b.path));
+
+          // Also sort declarations and exports within each module
+          customElementsManifest.modules.forEach(module => {
+            if (module.declarations) {
+              module.declarations.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+            }
+            if (module.exports) {
+              module.exports.sort((a, b) => {
+                const aKey = a.name || a.declaration?.name || '';
+                const bKey = b.name || b.declaration?.name || '';
+                return aKey.localeCompare(bKey);
+              });
+            }
+          });
         }
       },
     },
