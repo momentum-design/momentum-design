@@ -35,15 +35,15 @@ import styles from './textarea.styles';
  * help-text attribute with the error message using limitexceeded event.
  * The same help-text value will be used for the validation message to be displayed.
  *
- * ### Accessibility 
- * 
+ * ### Accessibility
+ *
  * #### Resize
- *  
- * Accessible text area resizing can be turned on with the `resizable`. 
+ *
+ * Accessible text area resizing can be turned on with the `resizable`.
  * It is strongly recommended to set the `resize-button-aria-label` attribute as well to describe what it is and what are the shortcuts (up/down arrows) of the button.
- * 
+ *
  * #### Best practices
- * 
+ *
  * - Always provide a `label` for screen readers to identify the textarea's purpose
  * - Use `help-text` to provide additional context or instructions
  * - When using `max-character-limit`, consider providing `character-limit-announcement` for screen reader updates
@@ -285,31 +285,9 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
       this.handleValueChange();
       this.handleCharacterOverflowStateChange();
     }
-  }
-
-  /**
-   * This function is called when the attribute changes.
-   * It updates the validity of the textarea field based on the textarea field's validity.
-   *
-   * @param name - attribute name
-   * @param old - old value
-   * @param value - new value
-   */
-  override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
-    super.attributeChangedCallback(name, old, value);
-
-    const validationRelatedAttributes = ['maxlength', 'minlength', 'required'];
-
-    if (validationRelatedAttributes.includes(name)) {
-      this.updateComplete
-        .then(() => {
-          this.setTextareaValidity();
-        })
-        .catch(error => {
-          if (this.onerror) {
-            this.onerror(error);
-          }
-        });
+    // When helpText gets changed, we need to re-announce the max length warning
+    if (changedProperties.has('helpText')) {
+      this.announceMaxLengthWarning();
     }
   }
 
@@ -527,20 +505,23 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
           identity="${this.inputId}"
           announcement="${ifDefined(this.ariaLiveAnnouncer)}"
           data-aria-live="polite"
+          delay="500"
         ></mdc-screenreaderannouncer>
-        ${this.resizable ? html`
-          <mdc-button
-            part="resize-button"
-            class="own-focus-ring"
-            variant="tertiary"
-            size="24"
-            prefix-icon="resize-corner-regular"
-            aria-label=${this.resizeButtonAriaLabel ?? ''}
-            ?disabled="${this.disabled || this.readonly}"
-            @keydown=${this.handleResizeKeyDown}
-            @pointerdown=${this.handlePointerDown}
-          ></mdc-button>
-        ` : nothing}
+        ${this.resizable
+          ? html`
+              <mdc-button
+                part="resize-button"
+                class="own-focus-ring"
+                variant="tertiary"
+                size="24"
+                prefix-icon="resize-corner-regular"
+                aria-label=${this.resizeButtonAriaLabel ?? ''}
+                ?disabled="${this.disabled || this.readonly}"
+                @keydown=${this.handleResizeKeyDown}
+                @pointerdown=${this.handlePointerDown}
+              ></mdc-button>
+            `
+          : nothing}
       </div>
       ${this.renderTextareaFooter()}
     `;
