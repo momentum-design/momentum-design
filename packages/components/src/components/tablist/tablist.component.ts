@@ -62,7 +62,7 @@ class TabList extends Component {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
-  @property({ type: String, attribute: 'active-tab-id' })
+  @property({ type: String, attribute: 'active-tab-id', reflect: true })
   activeTabId?: string;
 
   /**
@@ -104,7 +104,7 @@ class TabList extends Component {
   /**
    * @internal
    */
-  @state() private showForwardArrowButton: boolean = false;
+  @state() private showForwardArrowButton: boolean = true;
 
   /**
    * @internal
