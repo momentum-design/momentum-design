@@ -12,10 +12,10 @@ import type { BannerVariant } from './banner.types';
 import { getIconNameForVariant } from './banner.utils';
 
 /**
- * `mdc-banner` is a component that allows applications to communicate important messages to users 
- * and requires user action to dismiss them. It supports different message types with appropriate styling 
+ * `mdc-banner` is a component that allows applications to communicate important messages to users
+ * and requires user action to dismiss them. It supports different message types with appropriate styling
  * and icons, and provides flexibility for customization through label, secondary label, icons, and actions.
- * 
+ *
  * They are designed to be noticeable yet non-intrusive, helping users stay informed without interrupting their workflow.
  *
  * This component supports both structured content via properties and flexible customization via slots:
@@ -23,7 +23,7 @@ import { getIconNameForVariant } from './banner.utils';
  * - Use slots for custom content and complete layout control.
  * - Combine both approaches for maximum flexibility.
  * - Create custom orientations and actions using CSS parts and slots.
- * 
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
@@ -43,6 +43,7 @@ import { getIconNameForVariant } from './banner.utils';
  *
  * @cssproperty --mdc-banner-background-color - Background color of the banner.
  * @cssproperty --mdc-banner-border-color - Border color of the banner.
+ * @cssproperty --mdc-banner-border-width - Border width of the banner.
  * @cssproperty --mdc-banner-icon-color - Color of the icon in the banner.
  * @cssproperty --mdc-banner-elevation - Elevation/shadow of the banner.
  * @cssproperty --mdc-banner-padding - Padding inside the banner.
@@ -67,7 +68,7 @@ class Banner extends Component {
 
   /**
    * Banner secondary label text
-   * 
+   *
    * Note: Optional supporting text that appears below the label. Only rendered when label is also provided.
    */
   @property({ type: String, reflect: true, attribute: 'secondary-label' })
@@ -76,7 +77,7 @@ class Banner extends Component {
   /**
    * @internal
    * Renders the icon based on the provided icon name.
-   * 
+   *
    * @param iconName - The name of the icon to render
    * @returns Template result containing the icon element, or nothing if no icon name provided
    */
@@ -102,11 +103,14 @@ class Banner extends Component {
   private getTextLabel() {
     if (!this.label) return nothing;
     return html`
-      <mdc-text part="leading-label" type="${TYPE.BODY_LARGE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}"
+      <mdc-text part="leading-label" type="${TYPE.BODY_MIDSIZE_MEDIUM}" tagname="${VALID_TEXT_TAGS.SPAN}"
         >${this.label}</mdc-text
       >
       ${this.secondaryLabel
-        ? html`<mdc-text part="leading-secondary-label" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}"
+        ? html`<mdc-text
+            part="leading-secondary-label"
+            type="${TYPE.BODY_MIDSIZE_REGULAR}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
             >${this.secondaryLabel}</mdc-text
           >`
         : nothing}

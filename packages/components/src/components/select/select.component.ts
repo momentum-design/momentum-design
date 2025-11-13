@@ -339,7 +339,7 @@ class Select
         // when selected, check if there is any other option is a selected option,
         // first preference should always be given to the `selected` attribute.
         // if there is no selected option, then reset it to placeholder or first option
-        if (firstSelectedOption) {
+        if (firstSelectedOption && firstSelectedOption !== this.selectedOption) {
           this.setSelectedOption(firstSelectedOption);
         } else {
           this.setSelectedOption(option);
@@ -752,13 +752,13 @@ class Select
           >
             ${this.selectedOption?.label ?? this.placeholder}
           </mdc-text>
-        </div>
-        <div part="icon-container">
-          <mdc-icon
-            size="1"
-            length-unit="rem"
-            name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
-          ></mdc-icon>
+          <div part="icon-container">
+            <mdc-icon
+              size="1"
+              length-unit="rem"
+              name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
+            ></mdc-icon>
+          </div>
         </div>
         <input
           id="${this.inputId}"
