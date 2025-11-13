@@ -1086,17 +1086,17 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     const trigger = componentsPage.page.locator('#trigger');
     await trigger.click();
 
-    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '1000');
-    await expect(trigger).toHaveCSS('z-index', '999');
-    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '998');
+    await expect(componentsPage.page.locator('#parent-popover')).toHaveCSS('z-index', '1003');
+    await expect(trigger).toHaveCSS('z-index', '1002');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]')).toHaveCSS('z-index', '1001');
 
     const nestedPopoverTrigger = componentsPage.page.locator('#nested-popover-trigger');
     await nestedPopoverTrigger.waitFor();
     await nestedPopoverTrigger.click();
 
-    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '1000');
-    await expect(nestedPopoverTrigger).toHaveCSS('z-index', '999');
-    await expect(componentsPage.page.locator('div[class="popover-backdrop"]').first()).toHaveCSS('z-index', '998');
+    await expect(componentsPage.page.locator('#nested-popover')).toHaveCSS('z-index', '1006');
+    await expect(nestedPopoverTrigger).toHaveCSS('z-index', '1005');
+    await expect(componentsPage.page.locator('div[class="popover-backdrop"]').nth(1)).toHaveCSS('z-index', '1001');
   });
 
   await test.step('Popover should determine z-index for backdrop with custom z-index values', async () => {
