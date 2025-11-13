@@ -19,7 +19,7 @@ import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } 
 import { PopoverUtils } from './popover.utils';
 
 /**
- * Popover is genric overlay which can be trigered by any actinable element.
+ * Popover is generic overlay which can be triggered by any actionable element.
  *
  * It can be used for tooltips, dropdowns, menus or any showing any other contextual content.
  *
@@ -35,7 +35,7 @@ import { PopoverUtils } from './popover.utils';
  * aria-expanded and aria-haspopup attributes on the trigger.
  *
  * To prevent unexpected attribute changes on the trigger `disable-aria-expanded` attribute must be set on all linked
- * Popoers except one.
+ * Popovers except one.
  *
  * ### React Popover with append-to attribute
  *
@@ -330,11 +330,31 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   size: boolean = DEFAULTS.SIZE;
 
   /**
-   * The z-index of the popover.
-   * @default 1000
+   * The effective z-index of the popover.
+   *
+   * If no explicit `z-index` value is provided, then we calculate
+   * z-index based on the popover’s nesting depth (`popoverDepth`)
+   * to ensure proper stacking order among multiple popovers.
+   *
+   * The formula used is: `DEFAULTS.Z_INDEX + (popoverDepth * 3)`.
+   * This approach guarantees that each nested popover appears above its parent.
+   * Ex: A root-level popover has a z-index of 1000,
+   *    its first-level child popover will have a z-index of 1003,
+   *    and a second-level child popover will have a z-index of 1006, and so on.
+   *
+   * When a value is explicitly set, it overrides the internally computed value.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
-  zIndex: number = DEFAULTS.Z_INDEX;
+  get zIndex() {
+    if (this.internalZIndex === undefined || !Number.isInteger(this.internalZIndex)) {
+      return DEFAULTS.Z_INDEX + this.popoverDepth * 3;
+    }
+    return this.internalZIndex;
+  }
+
+  set zIndex(value: number) {
+    this.internalZIndex = value;
+  }
 
   /**
    * Element ID that the popover append to.
@@ -441,6 +461,22 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
 
+  /**
+   * The internal z-index of the popover.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
+   * At root-level popover starts with a depth of `0`. Each subsequent
+   * child popover increases the depth by one.
+   *
+   * This value is used to compute stacking order (z-index) dynamically,
+   * ensuring that nested popovers appear above their parent popovers.
+   * @internal
+   */
+  private popoverDepth: number = 0;
+
   /** @internal */
   private get connectedTooltip() {
     const connectedTooltips = (this.getRootNode() as Document | ShadowRoot).querySelectorAll(
@@ -499,7 +535,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   override connectedCallback(): void {
     super.connectedCallback();
 
-    this.style.zIndex = `${this.zIndex}`;
     this.utils.setupAppendTo();
 
     this.setupTriggerListeners();
@@ -626,10 +661,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       this.setAttribute('color', Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR);
     }
 
-    if (changedProperties.has('zIndex')) {
-      this.setAttribute('z-index', `${this.zIndex}`);
-    }
-
     if (changedProperties.has('appendTo')) {
       if (this.appendTo) {
         this.utils.setupAppendTo();
@@ -742,7 +773,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     if (newValue && !this.shouldSuppressOpening) {
       if (popoverStack.peek() !== this) {
-        popoverStack.push(this);
+        this.popoverDepth = popoverStack.push(this);
+        // request update to trigger zIndex recalculation
+        this.requestUpdate('zIndex');
       }
 
       if (!this.keepConnectedTooltipOpen) {
@@ -1098,6 +1131,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   }
 
   public override render() {
+    this.style.zIndex = `${this.zIndex}`;
     return html`
       <div part="popover-hover-bridge"></div>
       ${this.closeButton
