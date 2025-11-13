@@ -103,7 +103,10 @@ class Banner extends Component {
   private getTextLabel() {
     if (!this.label) return nothing;
     return html`
-      <mdc-text part="leading-label" type="${TYPE.BODY_MIDSIZE_MEDIUM}" tagname="${VALID_TEXT_TAGS.SPAN}"
+      <mdc-text
+        part="leading-label"
+        type="${this.secondaryLabel ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}"
+        tagname="${VALID_TEXT_TAGS.SPAN}"
         >${this.label}</mdc-text
       >
       ${this.secondaryLabel
