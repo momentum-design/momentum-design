@@ -236,3 +236,28 @@ Feature: Popover Component
       And the popover should close,
       And the tooltip should close
       And the focus move into the dialog.
+
+    Scenario: Popover should determine z-index for backdrop with default values
+      Given a trigger element with a popover and a nested popover inside it,
+      And both popovers have backdrop enabled,
+      When the parent popover is opened,
+      Then its z-index should be 1000 (default).
+      And the popover trigger element should have z-index of 1000 - 1 = 999.
+      And its backdrop container z-index should be 1000 - 2 = 998.
+      When the nested popover is opened,
+      Then its z-index should be 1000 (default).
+      And the popover trigger element should have z-index of 1000 - 1 = 999.
+      And its backdrop container z-index should be 1000 - 2 = 998.
+
+    Scenario: Popover should determine z-index for backdrop with custom z-index values
+      Given a trigger element with a popover and a nested popover inside it,
+      And the popover has z-index of 2500 and nested popover has z-index of 3500,
+      And both popovers have backdrop enabled,
+      When the parent popover is opened,
+      Then its z-index should be 2500.
+      And the popover trigger element should have z-index of 2500 - 1 = 2549.
+      And its backdrop container z-index should be 2500 - 2 = 2548.
+      When the nested popover is opened,
+      Then its z-index should be 3500 (default).
+      And the popover trigger element should have z-index of 3500 - 1 = 3549.
+      And its backdrop container z-index should be 3500 - 2 = 3548.

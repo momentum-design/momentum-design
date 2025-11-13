@@ -31,7 +31,10 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      * IMPLEMENT THIS IN YOUR COMPONENT.
      *
      * The z-index of the component where the backdrop will be attached to.
-     * The backdrop itself will have a z-index of `zIndex - 1`.
+     *
+     * The backdrop itself will have a z-index of `zIndex - 2`.
+     * The trigger element of the backdrop will have a z-index of `zIndex - 1`,
+     * to make sure that it is above the backdrop and clickable.
      */
     abstract zIndex: number;
 
@@ -76,7 +79,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
           background: ${
             this.isBackdropInvisible ? `transparent` : `var(--mds-color-theme-common-overlays-secondary-normal)`
           };
-          z-index: ${this.zIndex - 1};
+          z-index: ${this.zIndex - 2};
         }
       `;
       backdrop.appendChild(styleElement);
@@ -120,7 +123,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
       };
 
       // Set the z-index and position to ensure the element is above the backdrop
-      element.style.zIndex = `${this.zIndex}`;
+      element.style.zIndex = `${this.zIndex - 1}`;
       // Only set the position to relative if it is not already set to fixed or absolute
       if (!['fixed', 'absolute'].includes(window.getComputedStyle(element).position)) {
         element.style.position = 'relative';
