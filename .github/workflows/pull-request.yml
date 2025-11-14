@@ -5,7 +5,7 @@ on:
   pull_request_target:
     branches:
       - main
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, labeled]
   workflow_dispatch:
 
 env:
@@ -50,10 +50,10 @@ jobs:
 
           if [[ "$TITLE" =~ $REGEX ]]
           then
-            echo "Pull request title is valid."
+            echo "✅ Pull request title is valid."
             exit 0
           else
-            echo "Title must follow semantic commit message format.\nPlease use one of the following to start the title with: feat,docs,chore,fix,refactor,test,style,perf,revert,build,ci"
+            echo "❌ Title must follow semantic commit message format. \\nPlease use one of the following to start the title with: \`feat\`,\`docs\`,\`chore\`,\`fix\`,\`refactor\`,\`test\`,\`style\`,\`perf\`,\`revert\`,\`build\`,\`ci\`"
             exit 1
           fi
 
@@ -73,10 +73,10 @@ jobs:
           
           if [[ -z $DESCRIPTION ]];
           then
-            echo 'Description matters and should not be empty. Provide detail with what was changed, why it was changed and how it will impact our consumers.'
+            echo '❌ Description matters and should not be empty. Provide detail with what was changed, why it was changed and how it will impact our consumers.'
             exit 1
           else
-            echo 'Pull request description is valid.'
+            echo '✅ Pull request description is valid.'
             exit 0
           fi
 
