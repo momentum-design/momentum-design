@@ -1,39 +1,39 @@
 animations:
-  files:
-    - "packages/assets/animations/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/animations/**
 
 brand-visuals:
-  files:
-    - "packages/assets/brand-visuals/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/brand-visuals/**
 
 fonts:
-  files:
-    - "packages/assets/fonts/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/fonts/**
 
 icons:
-  files:
-    - "packages/assets/icons/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/icons/**
 
 illustrations:
-  files:
-    - "packages/assets/illustrations/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/illustrations/**
 
 tokens:
-  files:
-    - "packages/assets/tokens/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/tokens/**
 
 utils:
-  files:
-    - "packages/assets/utils/**"
+- changed-files:
+  - any-glob-to-any-file: packages/assets/utils/**
 
 components:
-  files:
-    - "packages/components/**"
+- changed-files:
+  - any-glob-to-any-file: packages/components/**
 
 docs:
-  files:
-    - "packages/documentation/**"
+- changed-files:
+  - any-glob-to-any-file: packages/documentation/**
 
 tools:
-  files:
-    - "packages/tools/**"
+- changed-files:
+  - any-glob-to-any-file: packages/tools/**
