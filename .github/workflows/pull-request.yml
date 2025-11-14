@@ -64,8 +64,10 @@ jobs:
 
     steps:
       - name: Check Pull Request Description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body || '' }}
         run: |
-          DESCRIPTION="$(echo ${{ github.event.pull_request.body }} | xargs)"
+          DESCRIPTION="$(echo $PR_BODY | xargs -0)"
 
           echo "PR Description: $DESCRIPTION"
           
