@@ -5,7 +5,6 @@ on:
   pull_request_target:
     branches:
       - main
-      # do not add "labeled" type here, it will trigger the workflow on every label change (double run cause of mergeable.yml)
     types: [opened, reopened, synchronize]
   workflow_dispatch:
 
@@ -13,8 +12,75 @@ env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
 
 jobs:
+  configure-labels:
+    name: Configure Labels and Core Team Review
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler.yml
+          sync-labels: true
+      - name: Add Core Team Label for Core Team Members Review
+        if: >
+          github.event.requested_team != null &&
+          github.event.requested_team.slug == 'momentum-design-engineers'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
+            -d '{"labels":["Author: Core Team"]}'
+
+  validate-title:
+    name: Validate Pull Request Title
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Pull Request Title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          REGEX="^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$"
+
+          echo "PR Title: $TITLE"
+
+          if [[ "$TITLE" =~ $REGEX ]]
+          then
+            echo "Pull request title is valid."
+            exit 0
+          else
+            echo "Title must follow semantic commit message format.\nPlease use one of the following to start the title with: feat,docs,chore,fix,refactor,test,style,perf,revert,build,ci"
+            exit 1
+          fi
+
+  validate-description:
+    name: Validate Pull Request Description
+    needs: validate-title
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Pull Request Description
+        run: |
+          DESCRIPTION="$(echo ${{ github.event.pull_request.body }} | xargs)"
+
+          echo "PR Description: $DESCRIPTION"
+          
+          if [[ -z $DESCRIPTION ]];
+          then
+            echo 'Description matters and should not be empty. Provide detail with what was changed, why it was changed and how it will impact our consumers.'
+            exit 1
+          else
+            echo 'Pull request description is valid.'
+            exit 0
+          fi
+
   validate-action:
     name: Validate Action
+    needs: validate-description
     runs-on: ubuntu-latest
 
     steps:
