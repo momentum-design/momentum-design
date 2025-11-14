@@ -5,14 +5,33 @@ on:
   pull_request_target:
     branches:
       - main
-      # do not add "labeled" type here, it will trigger the workflow on every label change (double run cause of mergeable.yml)
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, labelled]
   workflow_dispatch:
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
 
 jobs:
+  configure-labels:
+    name: Configure Labels and Core Team Review
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
+      - name: Add Core Team Label for Core Team Members Review
+        if: >
+          github.event.requested_team != null &&
+          github.event.requested_team.slug == 'momentum-design-engineers'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
+            -d '{"labels":["Author: Core Team"]}'
+
   validate-title:
     name: Validate Pull Request Title
     runs-on: ubuntu-latest

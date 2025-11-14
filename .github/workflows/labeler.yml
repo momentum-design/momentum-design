@@ -1,0 +1,29 @@
+animations:
+  - "packages/assets/animations/**"
+
+brand-visuals:
+  - "packages/assets/brand-visuals/**"
+
+fonts:
+  - "packages/assets/fonts/**"
+
+icons:
+  - "packages/assets/icons/**"
+
+illustrations:
+  - "packages/assets/illustrations/**"
+
+tokens:
+  - "packages/assets/tokens/**"
+
+utils:
+  - "packages/assets/utils/**"
+
+components:
+  - "packages/components/**"
+
+docs:
+  - "packages/documentation/**"
+
+tools:
+  - "packages/tools/**"
