@@ -13,8 +13,30 @@ env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
 
 jobs:
+  validate-description:
+    name: Validate Pull Request Description
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Pull Request Description
+        run: |
+          DESCRIPTION="${{ github.event.pull_request.body }}"
+          
+          echo "PR Description:"
+          echo "$DESCRIPTION"
+
+          if [[ -z $(echo $DESCRIPTION | xargs) ]]
+          then
+            echo 'Description matters and should not be empty. Provide detail with what was changed, why it was changed and how it will impact our consumers.'
+            exit 0
+          else
+            echo 'Pull request description is valid.'
+            exit 1
+          fi
+
   validate-action:
     name: Validate Action
+    needs: validate-description
     runs-on: ubuntu-latest
 
     steps:
