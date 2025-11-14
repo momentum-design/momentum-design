@@ -20,6 +20,9 @@ function generateUUID(): string {
 type Item = { id: string; message: string; size?: number };
 
 export class VirtualizedListE2E extends Component {
+  @property({ type: Number, reflect: true, attribute: 'item-height' })
+  itemHeight: number = 40;
+
   @property({ type: Number, reflect: true, attribute: 'initial-item-count' })
   initialItemCount: number = 0;
 
@@ -72,7 +75,7 @@ export class VirtualizedListE2E extends Component {
   protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('items')) {
+    if (changedProperties.has('items') || changedProperties.has('itemHeight')) {
       this.virtualizerProps = this.getVirtualizerProps();
     }
   }
@@ -80,7 +83,7 @@ export class VirtualizedListE2E extends Component {
   private getVirtualizerProps(): VirtualizerProps {
     return {
       count: this.items.length,
-      estimateSize: () => 40,
+      estimateSize: () => this.itemHeight,
       getItemKey: index => this.items[index]?.id,
     };
   }

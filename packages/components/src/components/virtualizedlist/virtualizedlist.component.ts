@@ -556,9 +556,6 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
       this.selectedIndex = Math.max(0, Math.min(count - 1, newIndex));
       this.selectedKey = getItemKey(newIndex);
-      if (this.scrollAnchoring && this.selectedIndex + 1 === count) {
-        this.atBottom = 'yes';
-      }
     }
   }
 
@@ -670,20 +667,25 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.setSelectedIndex(index);
   }
 
-  protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void {
+  protected override resetTabIndexAndSetFocus(
+    newIndex: number,
+    oldIndex?: number,
+    focusNewItem = true,
+    scrollToNewItem = focusNewItem,
+  ): void {
     const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
 
     if (elementToFocus === undefined) {
       this.scrollToIndex(newIndex, {});
       this.endOfScrollQueue.push(() => {
-        super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
+        super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
         this.setSelectedIndex(newIndex);
       });
 
       return;
     }
 
-    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem);
+    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
     this.setSelectedIndex(newIndex);
   }
 

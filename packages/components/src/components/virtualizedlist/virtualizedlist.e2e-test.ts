@@ -9,6 +9,7 @@ import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
   type SetupOptions = {
+    itemHeight?: number;
     listHeader?: string;
     loop?: true;
     revertList?: true;
@@ -17,9 +18,11 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges?: true;
     scrollAnchoring?: true;
     withTooltip?: true;
+    buttonLocation?: 'trailing' | 'content';
   };
 
   const setup = async ({
+    itemHeight = 40,
     listHeader,
     loop,
     revertList,
@@ -28,11 +31,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges,
     scrollAnchoring,
     withTooltip,
+    buttonLocation = 'trailing',
   }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
         <div>
           <mdc-virtualizedlist-e2e
+            item-height="${itemHeight}"
+            button-location="${buttonLocation}"
             ${loop ? 'loop' : ''}
             ${revertList ? 'revert-list' : ''}
             ${initialItemCount !== undefined ? `initial-item-count="${initialItemCount}"` : ''}
@@ -144,6 +150,47 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
     await componentsPage.actionability.pressTab();
     await expect(firstItem).toBeFocused();
+  });
+
+  await test.step('interaction', async () => {
+    await test.step('clicking on item focuses it', async () => {
+      const { vlist } = await setup({ initialItemCount: 20 });
+
+      const itemToClick = listItemLocator(vlist, 5);
+      await itemToClick.click();
+
+      await expect(itemToClick).toBeFocused();
+      await expect(itemToClick).toHaveAttribute('tabindex', '0');
+      await expect(itemToClick).toBeInViewport();
+    });
+
+    await test.step('clicking on item which is half visible does not snap the scroll', async () => {
+      const { wrapper, vlist } = await setup({ itemHeight: 350 });
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        for (let i = 0; i < 10; i += 1) {
+          wrapperEl.addItem(`Message ${i}`, undefined, { size: 350 });
+        }
+      });
+
+      await scrollList(vlist, 4000);
+      await scrollList(vlist, -100);
+
+      const listScrollTop = await vlist.evaluate((vlistEl: VirtualizedList) => {
+        const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
+        return scrollEl?.scrollTop;
+      });
+
+      // Click the top left corner of the item to avoid playwright scrolling
+      await listItemLocator(vlist, 9).click({ position: { x: 0, y: 0 } });
+
+      const newListScrollTop = await vlist.evaluate((vlistEl: VirtualizedList) => {
+        const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
+        return scrollEl?.scrollTop;
+      });
+
+      expect(newListScrollTop).toBe(listScrollTop);
+    });
   });
 
   await test.step('keyboard', async () => {

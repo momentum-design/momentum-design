@@ -18,7 +18,12 @@ export declare abstract class ListNavigationMixinInterface {
 
   protected resetTabIndexes(index: number, focusElement?: boolean): void;
 
-  protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem?: boolean): void;
+  protected resetTabIndexAndSetFocus(
+    newIndex: number,
+    oldIndex?: number,
+    focusNewItem?: boolean,
+    scrollToNewItem?: boolean,
+  ): void;
 
   protected setInitialFocus(): void;
 
@@ -180,7 +185,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
         // When user clicked on a focusable element inside the item, we update the navigation index, but
         // keep the focus on the clicked element.
         const focusNewItem = !(this.navItems.at(newIndex) !== target && document.activeElement === event.target);
-        this.resetTabIndexAndSetFocus(newIndex, undefined, focusNewItem);
+        this.resetTabIndexAndSetFocus(newIndex, undefined, focusNewItem, false);
       }
     };
 
@@ -230,7 +235,12 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param focusNewItem - Call focus() on the new item or not. It should be false during firstUpdate
      * @returns - This method does not return anything.
      */
-    protected resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number, focusNewItem = true) {
+    protected resetTabIndexAndSetFocus(
+      newIndex: number,
+      oldIndex?: number,
+      focusNewItem = true,
+      scrollToNewItem = true,
+    ) {
       const { navItems } = this;
 
       if (navItems.length === 0) return;
@@ -253,7 +263,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
 
       if (focusNewItem) {
         newItem.focus({ preventScroll: true });
-        newItem.scrollIntoView({ block: 'nearest' });
+
+        if (scrollToNewItem) {
+          newItem.scrollIntoView({ block: 'nearest' });
+        }
       }
     }
 
