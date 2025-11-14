@@ -17,6 +17,7 @@ See [our script documentation](./SCRIPTS.md)
 
 ## 🚀 Project Structure
 
+
 We're using Astro as a static site generator.
 Inside the project, you'll see the following folders and files:
 

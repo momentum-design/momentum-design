@@ -12,6 +12,7 @@ Any _**product-specific assets must be independently managed by the respective p
 
 ## Criteria for Inclusion
 
+
 **Relevancy**: Only assets that are commonly used across multiple Webex products will be eligible.
 **Approval**: All assets must undergo a brand and quality approval process before they can be added.
 **Utility**: Assets should be designed to meet the needs of multiple teams and reflect the brand’s visual identity.
