@@ -66,6 +66,7 @@ const styles = css`
 
   :host::part(leading-icon) {
     color: var(--mdc-banner-icon-color);
+    flex-shrink: 0;
   }
 
   :host::part(trailing) {
