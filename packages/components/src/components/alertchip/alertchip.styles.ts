@@ -108,6 +108,13 @@ const styles = css`
   :host([variant='informational']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-active);
   }
+
+  /* High Contrast Mode */
+  @media (forced-colors: active) {
+    :host([variant='neutral'])::part(icon) {
+      --mdc-chip-icon-color: ButtonText;
+    }
+  }
 `;
 
 export default [hostFitContentStyles, styles, ...hostFocusRingStyles()];

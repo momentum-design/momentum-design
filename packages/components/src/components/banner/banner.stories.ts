@@ -93,7 +93,7 @@ export const AllVariants: StoryObj = {
           label: 'Custom Banner with Slot Icon',
           'secondary-label': 'This banner uses a custom icon via slot instead of variant-based icon.',
           children: html`
-            <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>
+            <mdc-icon slot="leading-icon" name="placeholder-bold" size="1.25"></mdc-icon>
             ${DefaultButtons}
           `,
         },

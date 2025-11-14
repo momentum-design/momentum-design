@@ -90,7 +90,21 @@ class AnnouncementDialog extends Dialog {
    * @default medium
    */
   @property({ type: String, reflect: true })
-  override size: AnnouncementDialogSize = DEFAULTS.SIZE;
+  override get size(): AnnouncementDialogSize {
+    return this.responsiveSettingsContext?.value?.forceFullscreenDialog
+      ? 'fullscreen'
+      : (this.internalSize as AnnouncementDialogSize);
+  }
+
+  override set size(value: AnnouncementDialogSize) {
+    this.internalSize = value;
+  }
+
+  constructor() {
+    super();
+
+    this.internalSize = DEFAULTS.SIZE;
+  }
 
   override connectedCallback() {
     super.connectedCallback();
