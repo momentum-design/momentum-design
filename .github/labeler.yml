@@ -1,29 +1,39 @@
 animations:
-  - "packages/assets/animations/**"
+  files:
+    - "packages/assets/animations/**"
 
 brand-visuals:
-  - "packages/assets/brand-visuals/**"
+  files:
+    - "packages/assets/brand-visuals/**"
 
 fonts:
-  - "packages/assets/fonts/**"
+  files:
+    - "packages/assets/fonts/**"
 
 icons:
-  - "packages/assets/icons/**"
+  files:
+    - "packages/assets/icons/**"
 
 illustrations:
-  - "packages/assets/illustrations/**"
+  files:
+    - "packages/assets/illustrations/**"
 
 tokens:
-  - "packages/assets/tokens/**"
+  files:
+    - "packages/assets/tokens/**"
 
 utils:
-  - "packages/assets/utils/**"
+  files:
+    - "packages/assets/utils/**"
 
 components:
-  - "packages/components/**"
+  files:
+    - "packages/components/**"
 
 docs:
-  - "packages/documentation/**"
+  files:
+    - "packages/documentation/**"
 
 tools:
-  - "packages/tools/**"
+  files:
+    - "packages/tools/**"
