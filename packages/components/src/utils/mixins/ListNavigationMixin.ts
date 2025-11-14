@@ -239,7 +239,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       newIndex: number,
       oldIndex?: number,
       focusNewItem = true,
-      scrollToNewItem = focusNewItem,
+      scrollToNewItem = true,
     ) {
       const { navItems } = this;
 
