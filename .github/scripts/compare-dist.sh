@@ -1,4 +1,5 @@
 #!/bin/bash
+# Compare dist/ with main branch (Option 2: checkout main, build, compare)
 # Exit 0 = dist changed (publish), 1 = same (skip), 2 = error
 
 set -euo pipefail
@@ -17,58 +18,93 @@ fi
 echo "Checking dist changes for: $PKG"
 echo "Path: $PKG_PATH"
 
-if ! npm view "$PKG" version &> /dev/null; then
-  echo "No previous version found on npm - will publish"
+# Check if we're on main branch - if so, always publish (nothing to compare)
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
+  echo "On main/master branch - will publish"
   exit 0
 fi
 
-VERSION=$(npm view "$PKG" version)
-echo "Published version: $VERSION"
+# Check if main branch exists, otherwise try master
+if git show-ref --verify --quiet refs/heads/master; then
+  MAIN_BRANCH="master"
+elif git show-ref --verify --quiet refs/heads/main; then
+  MAIN_BRANCH="main"
+else
+  echo "ERROR: Neither master nor main branch found"
+  exit 2
+fi
 
+echo "Comparing with $MAIN_BRANCH branch..."
+
+# Create temporary directory and setup cleanup
 TMP=$(mktemp -d)
-trap "rm -rf $TMP" EXIT
+REPO_ROOT=$(git rev-parse --show-toplevel)
+MAIN_WORKTREE="$TMP/main"
 
-cd "$TMP"
-echo "Downloading $PKG@$VERSION..."
+# Cleanup function to remove worktree and temp directory
+cleanup() {
+  cd "$REPO_ROOT" 2>/dev/null || true
+  git worktree remove "$MAIN_WORKTREE" --force 2>/dev/null || true
+  rm -rf "$TMP" 2>/dev/null || true
+}
+trap cleanup EXIT
 
-# npm pack downloads the tarball - just find it after download
-npm pack "$PKG@$VERSION" > /dev/null 2>&1
+# Get the package directory relative to repo root
+PKG_REL_PATH="${PKG_PATH#$REPO_ROOT/}"
 
-# Find the actual .tgz file that was downloaded
-TARBALL=$(find . -maxdepth 1 -name "*.tgz" -type f | head -n 1)
+echo "Checking out $MAIN_BRANCH:$PKG_REL_PATH to temp directory..."
 
-if [ -z "$TARBALL" ]; then
-  echo "ERROR: No tarball found after npm pack"
-  echo "Files in directory:"
-  ls -la
-  exit 2
-fi
+# Use git worktree to checkout main in a separate directory
+git worktree add --detach "$MAIN_WORKTREE" "$MAIN_BRANCH" > /dev/null 2>&1
 
-echo "Found tarball: $TARBALL"
-tar -xzf "$TARBALL"
+# Build the main version
+MAIN_PKG_PATH="$MAIN_WORKTREE/$PKG_REL_PATH"
 
-if [ ! -d "package/dist" ]; then
-  echo "WARNING: No dist/ folder in published package - will publish"
+if [ ! -d "$MAIN_PKG_PATH" ]; then
+  echo "WARNING: Package doesn't exist in $MAIN_BRANCH - will publish (new package)"
   exit 0
 fi
 
-NEW_DIST="$PKG_PATH/dist"
-if [ ! -d "$NEW_DIST" ]; then
-  echo "ERROR: dist/ folder missing in local build"
+# Install dependencies in main worktree
+echo "Installing dependencies in main worktree..."
+cd "$MAIN_WORKTREE"
+if ! yarn install --frozen-lockfile > /dev/null 2>&1; then
+  echo "WARNING: Failed to install dependencies in $MAIN_BRANCH - will publish"
+  exit 0
+fi
+
+echo "Building $PKG and its dependencies..."
+# Use -R (recursive) and --topological-dev to build only this package and what it needs
+if ! yarn workspaces foreach -R --topological-dev --from "$PKG" run build > /dev/null 2>&1; then
+  echo "WARNING: Failed to build $MAIN_BRANCH version - will publish"
+  exit 0
+fi
+
+MAIN_DIST="$MAIN_PKG_PATH/dist"
+if [ ! -d "$MAIN_DIST" ]; then
+  echo "WARNING: No dist/ in $MAIN_BRANCH build - will publish"
+  exit 0
+fi
+
+# Check current branch dist
+CURRENT_DIST="$PKG_PATH/dist"
+if [ ! -d "$CURRENT_DIST" ]; then
+  echo "ERROR: dist/ folder missing in current build"
   exit 2
 fi
 
-set +e  # Disable exit on error for diff
-# Exclude *.tsbuildinfo files - they're build cache and not published to npm
-diff -qr --exclude="*.tsbuildinfo" "package/dist" "$NEW_DIST" > /dev/null 2>&1
+# Compare the dist directories (exclude tsbuildinfo - build cache files)
+set +e
+DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" "$MAIN_DIST" "$CURRENT_DIST" 2>&1)
 DIFF_EXIT=$?
-set -e  # Re-enable exit on error
+set -e
 
 if [ $DIFF_EXIT -eq 0 ]; then
-  echo "dist/ unchanged - skipping publish"
+  echo "dist/ unchanged from $MAIN_BRANCH - skipping publish"
   exit 1
 else
-  echo "dist/ changed - will publish"
-  diff -qr --exclude="*.tsbuildinfo" "package/dist" "$NEW_DIST" | head -n 5 || true
+  echo "dist/ changed from $MAIN_BRANCH - will publish"
+  echo "$DIFF_OUTPUT" | head -n 5 || true
   exit 0
 fi
