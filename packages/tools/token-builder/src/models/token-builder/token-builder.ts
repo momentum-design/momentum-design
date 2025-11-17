@@ -58,7 +58,7 @@ class TokenBuilder {
       })
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
-        
+
         // Register custom file header without timestamp for deterministic builds
         StyleDictionary.registerFileHeader({
           name: 'deterministic',
@@ -66,7 +66,7 @@ class TokenBuilder {
             'Do not edit directly',
           ],
         });
-        
+
         registerTransforms(StyleDictionary, {
           expand: { composition: true, typography: true, border: true, shadow: configObj.shadow ?? true },
           excludeParentKeys: false,
