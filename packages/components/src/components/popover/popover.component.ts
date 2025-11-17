@@ -473,19 +473,26 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Getter/setter used to make it possible to overrider it later.
    * @internal
    */
-  private internalResponsivePopoverPositioning: ResponsivePopoverPositions = DEFAULTS.POPOVER_POSITIONING;
+  private internalResponsivePopoverPositioning?: ResponsivePopoverPositions;
 
   /**
    * Responsive popover positioning.
+   * This is a read-only property which is synced with the
+   * nearest <mdc-responsivesettingsprovider> context provider.
+   *
    * @default 'float'
    */
   @property({ type: String, attribute: 'responsive-popover-positioning', reflect: true })
   public get responsivePopoverPositioning(): ResponsivePopoverPositions {
-    return this.internalResponsivePopoverPositioning;
+    return (
+      this.internalResponsivePopoverPositioning ??
+      this.responsiveSettingsContext?.value?.popoverPositioning ??
+      DEFAULTS.POPOVER_POSITIONING
+    );
   }
 
-  public set responsivePopoverPositioning(value: ResponsivePopoverPositions) {
-    this.internalResponsivePopoverPositioning = value;
+  public set responsivePopoverPositioning(_value: ResponsivePopoverPositions) {
+    // Do nothing
   }
 
   public arrowElement: HTMLElement | null = null;
@@ -756,14 +763,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       }
     }
 
-    if (this.responsivePopoverPositioning !== this.responsiveSettingsContext.value?.popoverPositioning) {
-      this.responsivePopoverPositioning =
-        this.responsiveSettingsContext?.value?.popoverPositioning ?? DEFAULTS.POPOVER_POSITIONING;
-    }
-
     if (changedProperties.has('responsivePopoverPositioning') && this.responsiveSettingsContext.value) {
       await this.utils.setupResponsivePopoverPositioning(
-        changedProperties.get('responsivePopoverPositioning'),
         this.responsivePopoverPositioning,
         this.responsiveSettingsContext.value,
       );
@@ -775,7 +776,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *
    * @param event - The mouse event.
    */
-  protected onOutsidePopoverClick = (event: MouseEvent) => {
+  protected onOutsidePopoverClick = async (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
 
     const path = event.composedPath();
@@ -1049,9 +1050,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
   };
 
-  private hideAll = () => {
-    // eslint-disable-next-line
-    this.closeAllPopovers();
+  private hideAll = async () => {
+    await this.closeAllPopovers();
   };
 
   /**
@@ -1086,12 +1086,14 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Toggles the popover visibility.
    */
   public togglePopoverVisible = (event: Event) => {
-    if (!this.isEventFromTrigger(event)) return;
+    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
 
     if (this.visible) {
       this.hide();
     } else {
-      this.show();
+      // Use setTimeout to allow other event handlers to run first
+      // Other popovers must be cleaned before the next one can be added to the popover stack
+      setTimeout(() => this.show());
     }
   };
 

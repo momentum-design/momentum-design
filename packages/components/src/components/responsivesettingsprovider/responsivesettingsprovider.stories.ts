@@ -112,15 +112,6 @@ export const Example: StoryObj = {
             <mdc-button @click="${showDialog}">Dialog trigger</mdc-button>
             <mdc-button @click="${showAnnouncement}">Announcement trigger</mdc-button>
           </div>
-      >
-        <div
-          id="menupopover-test-wrapper"
-          style="display: flex; justify-content: space-around; align-items: flex-start;"
-        >
-          <mdc-button id="popover-trigger">Popover trigger</mdc-button>
-          <mdc-button id="menu-trigger">Menu trigger</mdc-button>
-          <mdc-button @click="${showDialog}">Dialog trigger</mdc-button>
-          <mdc-button @click="${showAnnouncement}">Announcement trigger</mdc-button>
         </div>
         <mdc-popover triggerID="popover-trigger" placement="bottom" show-arrow interactive>
           <div style="padding: 1rem; max-width: 200px;">

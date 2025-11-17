@@ -10,8 +10,9 @@ import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuit
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
-import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { popoverStack } from '../popover/popover.stack';
+import { PopoverEventManager } from '../popover/popover.events';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -242,31 +243,16 @@ class MenuPopover extends Popover {
    * It also checks if the click was on the backdrop element (if present) to close the popover.
    * @param event - The mouse event that triggered the outside click.
    */
-  override onOutsidePopoverClick = async (event: MouseEvent) => {
+  protected override onOutsidePopoverClick = async (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
+
     const path = event.composedPath();
-    const insidePopoverClick =
-      this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
+    const targetPopover = path.slice(path.indexOf(event.target as Node)).find(e => e instanceof Popover);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
-    if (!insidePopoverClick || clickedOnBackdrop) {
-      await this.closeAllPopovers();
-    }
-  };
-
-  /**
-   * Toggles the visibility of the popover.
-   * This method checks if the trigger element has the `soft-disabled` attribute.
-   * If it does, the popover will not be toggled.
-   * If the popover is currently visible, it hides the popover; otherwise, it shows the popover.
-   * @returns - This method does not return anything.
-   */
-  public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
-    if (this.visible) {
-      this.hide();
-    } else {
-      this.show();
+    if (!targetPopover || clickedOnBackdrop) {
+      await this.closeAllPopovers(targetPopover);
+      PopoverEventManager.onClickOutside(this);
     }
   };
 

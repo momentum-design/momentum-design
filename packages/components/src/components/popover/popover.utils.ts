@@ -142,7 +142,7 @@ export class PopoverUtils {
    * Sets up the aria labels
    */
   updateAriaLabels() {
-    if (this.popover.interactive && this.popover.role) {
+    if ((this.popover.interactive || this.popover.responsivePopoverPositioning === 'dialog') && this.popover.role) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel =
           this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
@@ -234,17 +234,13 @@ export class PopoverUtils {
   /**
    * Sets up the responsive popover positioning based on the previous and new positioning values.
    *
-   * @param prevPositioning - The previous popover positioning.
    * @param newPositioning - The new popover positioning.
    * @param responsiveSettings - The responsive settings context.
    */
   async setupResponsivePopoverPositioning(
-    prevPositioning: ResponsivePopoverPositions,
     newPositioning: ResponsivePopoverPositions,
     responsiveSettings: undefined | ResponsiveSettings,
   ) {
-    if (prevPositioning === newPositioning) return;
-
     // Close the popovers when changing positioning to avoid layout issues
     this.popover.hide();
 
