@@ -1,5 +1,5 @@
 #!/bin/bash
-# Compare dist/ with main branch (Option 2: checkout main, build, compare)
+# Compare dist/ with main branch (checkout main, build, compare)
 # Exit 0 = dist changed (publish), 1 = same (skip), 2 = error
 
 set -euo pipefail
