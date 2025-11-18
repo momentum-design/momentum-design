@@ -2,21 +2,21 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../divider';
-import { DEFAULTS as FORMFIELD_WRAPPER_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
 import '../selectlistbox';
 import '../tooltip';
-import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Select from './select.component';
 import * as CountriesList from './select.utils.json';
-import { DEFAULTS } from './select.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -34,25 +34,25 @@ const render = (args: Args) =>
       @input="${action('oninput')}"
       @keydown="${action('onkeydown')}"
       @focus="${action('onfocus')}"
-      label="${args.label}"
+      label="${ifDefined(args.label)}"
       ?required="${args.required}"
-      help-text-type="${args['help-text-type']}"
-      help-text="${args['help-text']}"
-      data-aria-label="${args['data-aria-label']}"
-      toggletip-text="${args['toggletip-text']}"
-      toggletip-placement="${args['toggletip-placement']}"
-      toggletip-strategy="${args['toggletip-strategy']}"
-      info-icon-aria-label="${args['info-icon-aria-label']}"
-      placement="${args.placement}"
-      name="${args.name}"
-      placeholder="${args.placeholder}"
+      help-text-type="${ifDefined(args['help-text-type'])}"
+      help-text="${ifDefined(args['help-text'])}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
+      toggletip-text="${ifDefined(args['toggletip-text'])}"
+      toggletip-placement="${ifDefined(args['toggletip-placement'])}"
+      toggletip-strategy="${ifDefined(args['toggletip-strategy'])}"
+      info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
+      placement="${ifDefined(args.placement)}"
+      name="${ifDefined(args.name)}"
+      placeholder="${ifDefined(args.placeholder)}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       ?readonly="${args.readonly}"
-      boundary="${args.boundary}"
-      strategy="${args.strategy}"
-      popover-z-index="${args['popover-z-index']}"
-      backdrop-append-to="${args['backdrop-append-to']}"
+      boundary="${ifDefined(args.boundary)}"
+      strategy="${ifDefined(args.strategy)}"
+      popover-z-index="${ifDefined(args['popover-z-index'])}"
+      backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
       ?disable-flip="${args['disable-flip']}"
     >
@@ -151,17 +151,7 @@ export const Example: StoryObj = {
     disabled: false,
     readonly: false,
     'help-text': 'Select Help Text',
-    'help-text-type': VALIDATION.DEFAULT,
     'data-aria-label': 'Select label',
-    placement: POPOVER_PLACEMENT.BOTTOM_START,
-    'popover-z-index': POPOVER_DEFAULTS.Z_INDEX,
-    'disable-flip': DEFAULTS.DISABLE_FLIP,
-    boundary: POPOVER_DEFAULTS.BOUNDARY,
-    strategy: POPOVER_DEFAULTS.STRATEGY,
-    'soft-disabled': false,
-    'auto-focus-on-mount': false,
-    'toggletip-placement': FORMFIELD_WRAPPER_DEFAULTS.TOGGLETIP_PLACEMENT,
-    'toggletip-strategy': FORMFIELD_WRAPPER_DEFAULTS.TOGGLETIP_STRATEGY,
     children: html`<mdc-selectlistbox>
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
@@ -174,7 +164,6 @@ export const Example: StoryObj = {
 
 export const SelectWithSecondaryLabel: StoryObj = {
   args: {
-    ...Example.args,
     label: 'Options with Secondary labels',
     placeholder: 'Select an option',
     children: html`<mdc-selectlistbox>
@@ -188,7 +177,6 @@ export const SelectWithSecondaryLabel: StoryObj = {
 
 export const SelectWithGroups: StoryObj = {
   args: {
-    ...Example.args,
     label: 'Options with groups',
     children: html`<mdc-selectlistbox>
       <mdc-optgroup label="Fruit">
@@ -214,7 +202,6 @@ export const SelectWithGroups: StoryObj = {
 
 export const SelectWithLongOptionText: StoryObj = {
   args: {
-    ...Example.args,
     label: 'Options with long text',
     placeholder: 'Select one color',
     children: html`<mdc-selectlistbox>
@@ -233,7 +220,6 @@ export const SelectWithLongOptionText: StoryObj = {
 
 export const SelectWithIconOptions: StoryObj = {
   args: {
-    ...Example.args,
     label: 'You are in a meeting',
     placeholder: 'Select an option',
     children: html`<mdc-selectlistbox>
