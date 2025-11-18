@@ -125,10 +125,21 @@ module.exports = {
         if (customElementsManifest?.modules) {
           customElementsManifest.modules.sort((a, b) => a.path.localeCompare(b.path));
 
-          // Also sort declarations and exports within each module
+          // Also sort declarations, exports, and members within each module
           customElementsManifest.modules.forEach(module => {
             if (module.declarations) {
               module.declarations.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+              
+              // Sort members within each declaration for deterministic output
+              module.declarations.forEach(declaration => {
+                if (declaration.members) {
+                  declaration.members.sort((a, b) => {
+                    const aName = a.name || '';
+                    const bName = b.name || '';
+                    return aName.localeCompare(bName);
+                  });
+                }
+              });
             }
             if (module.exports) {
               module.exports.sort((a, b) => {
