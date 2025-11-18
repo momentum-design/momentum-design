@@ -1,6 +1,5 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
-import { invert } from 'lodash';
 import { html } from 'lit';
 import animationManifest from '@momentum-design/animations/dist/manifest';
 import { action } from 'storybook/actions';
@@ -38,7 +37,7 @@ const meta: Meta = {
   argTypes: {
     name: {
       control: 'select',
-      options: Object.values(invert(animationManifest)),
+      options: Object.keys(animationManifest),
     },
     loop: {
       control: 'text',
