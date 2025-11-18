@@ -15,6 +15,7 @@ import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
+import { slotEnhancer } from './enhancers/slotEnhancer';
 
 const cssProperties = [];
 
@@ -174,6 +175,6 @@ const preview = {
   },
 };
 
-export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, eventsEnhancer];
+export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, slotEnhancer, eventsEnhancer];
 
 export default preview;
