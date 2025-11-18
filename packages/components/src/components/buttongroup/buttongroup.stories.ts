@@ -11,6 +11,7 @@ import '../button';
 import '../animation';
 import '../popover';
 import '../tooltip';
+import '../dialog';
 
 const render = (args: Args) =>
   html` <mdc-buttongroup
@@ -140,6 +141,11 @@ export const GroupWithPopover: StoryObj = {
       hide-on-outside-click
     >
       <mdc-text>Settings related to video options</mdc-text>
+      <mdc-buttongroup variant="secondary" size="32">
+        <mdc-button prefix-icon="zoom-in-bold"></mdc-button>
+        <mdc-button soft-disabled>100%</mdc-button>
+        <mdc-button prefix-icon="zoom-out-bold"></mdc-button>
+      </mdc-buttongroup>
     </mdc-popover>
   `,
   args: {
@@ -194,5 +200,19 @@ export const EmojiReactionsGroup: StoryObj = {
         `,
       )}
     </mdc-buttongroup>
+  `,
+};
+
+export const GroupInsideDialog: StoryObj = {
+  render: () => html`
+    <mdc-dialog visible>
+      <div slot="footer">
+        <mdc-buttongroup variant="secondary" size="32">
+          <mdc-button prefix-icon="zoom-out-bold"></mdc-button>
+          <mdc-button soft-disabled>100%</mdc-button>
+          <mdc-button prefix-icon="zoom-in-bold"></mdc-button>
+        </mdc-buttongroup>
+      </div>
+    </mdc-dialog>
   `,
 };
