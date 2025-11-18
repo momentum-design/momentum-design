@@ -26,7 +26,6 @@ const styles = css`
     width: inherit;
     border-radius: 0;
     border: none;
-    box-sizing: border-box;
     position: relative;
   }
 
