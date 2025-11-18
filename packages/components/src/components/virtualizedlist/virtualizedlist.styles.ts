@@ -24,6 +24,7 @@ const styles = [
       position: absolute !important;
       top: var(--mdc-virtualizedlist-hidden-top) !important;
       left: 0 !important;
+      opacity: 0 !important;
     }
 
     ::slotted(mdc-listitem) {

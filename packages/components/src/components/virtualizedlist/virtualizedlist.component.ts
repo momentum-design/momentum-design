@@ -539,7 +539,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         const current = measurementsCache[index];
 
         el.setAttribute('data-virtualized-hidden', 'true');
-        el.style.setProperty('--mdc-virtualizedlist-hidden-top', `${current.start - first.start}px`);
+        el.style.setProperty('--mdc-virtualizedlist-hidden-top', `${current.start - first.start - 100000}px`);
       }
     });
   }
