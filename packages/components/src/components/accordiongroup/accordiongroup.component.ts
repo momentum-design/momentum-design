@@ -41,19 +41,26 @@ import type { Size, Variant } from './accordiongroup.types';
  */
 class AccordionGroup extends Component {
   /**
-   * The size of the accordion item.
+   * Controls the spacing and padding for all accordion items in the group.
+   * This size is applied to all child accordions.
+   * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
    * @default 'small'
    */
   @property({ type: String, reflect: true }) size: Size = DEFAULTS.SIZE;
 
   /**
-   * The variant of the accordion item. Based on the variant, the styling of the accordion gets changed.
+   * Visual style variant applied to all accordions in the group.
+   * - Stacked: accordions have 1.5rem gap between them.
+   * - Borderless: removes all borders from accordions and group.
+   * - Contained: accordions have continuous borders with no gaps.
    * @default 'stacked'
    */
   @property({ type: String, reflect: true }) variant: Variant = DEFAULTS.VARIANT;
 
   /**
-   * If true, multiple accordion items can be visible at the same time.
+   * Controls whether multiple accordions can be expanded simultaneously.
+   * - When false, expanding one accordion automatically collapses others.
+   * - When true, multiple accordions can remain open at the same time.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'allow-multiple' }) allowMultiple = false;

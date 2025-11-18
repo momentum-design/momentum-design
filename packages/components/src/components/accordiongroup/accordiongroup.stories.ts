@@ -66,6 +66,7 @@ export const Example: StoryObj = {
 
 export const StackedVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.STACKED,
     size: SIZE.SMALL,
   },
@@ -73,6 +74,7 @@ export const StackedVariant: StoryObj = {
 
 export const ContainedVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.CONTAINED,
     size: SIZE.SMALL,
   },
@@ -80,6 +82,7 @@ export const ContainedVariant: StoryObj = {
 
 export const BorderlessVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.BORDERLESS,
     size: SIZE.SMALL,
   },
@@ -87,6 +90,7 @@ export const BorderlessVariant: StoryObj = {
 
 export const SmallSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.SMALL,
     variant: VARIANT.CONTAINED,
   },
@@ -94,6 +98,7 @@ export const SmallSize: StoryObj = {
 
 export const LargeSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.LARGE,
     variant: VARIANT.CONTAINED,
   },

@@ -48,9 +48,7 @@ import styles from './accordion.styles';
  * @event shown - (React: onShown) This event is triggered when the accordion is expanded.
  *
  * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion.
- * @cssproperty --mdc-accordionbutton-hover-color - The hover color of the accordion.
- * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion.
- * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion.
+ * @cssproperty --mdc-accordionbutton-disabled-color - The disabled text color of the accordion.
  *
  * @csspart body-section - The body section of the accordion.
  * @csspart header-section - The header section of the accordion.
@@ -68,13 +66,15 @@ class Accordion extends AccordionButton {
   trailingControlsSlot!: Array<HTMLElement>;
 
   /**
-   * Aria-label attribute for the trigger button when accordion is collapsed.
+   * Accessible label for the expand/collapse button when the accordion is in collapsed state.
+   * Provides context to screen readers about the button's action to open the accordion.
    */
   @property({ type: String, attribute: 'open-button-aria-label', reflect: true })
   openButtonAriaLabel?: string;
 
   /**
-   * Aria-label attribute for the trigger button when accordion is expanded.
+   * Accessible label for the expand/collapse button when the accordion is in expanded state.
+   * Provides context to screen readers about the button's action to close the accordion.
    */
   @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel?: string;

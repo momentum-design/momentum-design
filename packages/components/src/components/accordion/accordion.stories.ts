@@ -8,7 +8,7 @@ import '../chip';
 import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
@@ -35,8 +35,8 @@ const render = (args: Args) =>
     data-aria-level="${args['data-aria-level']}"
     header-text="${args['header-text']}"
     prefix-icon="${args['prefix-icon']}"
-    open-button-aria-label="${args.openButtonAriaLabel}"
-    close-button-aria-label="${args.closeButtonAriaLabel}"
+    open-button-aria-label="${args['open-button-aria-label']}"
+    close-button-aria-label="${args['close-button-aria-label']}"
     size="${args.size}"
     variant="${args.variant}"
   >
@@ -80,7 +80,8 @@ const meta: Meta = {
     'close-button-aria-label': {
       control: 'text',
     },
-    ...disableControls(['leading-controls', 'trailing-controls', 'default']),
+    ...hideControls(['--mdc-accordionbutton-hover-color', '--mdc-accordionbutton-active-color']),
+    ...disableControls(['default']),
   },
 };
 
@@ -100,25 +101,25 @@ export const Example: StoryObj = {
 
 export const BorderlessVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.BORDERLESS,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    expanded: false,
   },
 };
 
 export const LargeSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.LARGE,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    expanded: false,
   },
 };
 
 export const SmallSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.SMALL,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-regular',
+    expanded: false,
   },
 };
 

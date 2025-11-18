@@ -82,25 +82,25 @@ export const Example: StoryObj = {
 
 export const BorderlessVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.BORDERLESS,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-bold',
+    expanded: false,
   },
 };
 
 export const LargeSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.LARGE,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-bold',
+    expanded: false,
   },
 };
 
 export const SmallSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.SMALL,
-    'header-text': 'Heading',
-    'prefix-icon': 'placeholder-bold',
+    expanded: false,
   },
 };
 

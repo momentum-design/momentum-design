@@ -52,7 +52,7 @@ import styles from './accordionbutton.styles';
  * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion button.
  * @cssproperty --mdc-accordionbutton-hover-color - The hover color of the accordion button.
  * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion button.
- * @cssproperty --mdc-accordionbutton-disabled-color - The disabled color of the accordion button.
+ * @cssproperty --mdc-accordionbutton-disabled-color - The disabled text color of the accordion button.
  *
  * @csspart body-section - The body section of the accordion button.
  * @csspart header-button-section - The header button section of the accordion button.
@@ -63,37 +63,42 @@ import styles from './accordionbutton.styles';
  */
 class AccordionButton extends DisabledMixin(Component) {
   /**
-   * The size of the accordion item.
+   * Controls the spacing and padding of the accordion. 
+   * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
    * @default 'small'
    */
   @property({ type: String, reflect: true }) size: Size = DEFAULTS.SIZE;
 
   /**
-   * The variant of the accordion item. Based on the variant, the styling of the accordion gets changed.
+   * Visual style variant of the accordion. 
+   * - Default includes borders, borderless removes all border styling.
    * @default 'default'
    */
   @property({ type: String, reflect: true }) variant: Variant = DEFAULTS.VARIANT;
 
   /**
-   * The aria level of the accordion component.
+   * Specifies the heading level for accessibility purposes.
+   * Should match the heading hierarchy of the page (e.g., 2 for H2, 3 for H3).
    * @default 3
    */
   @property({ type: Number, reflect: true, attribute: 'data-aria-level' }) dataAriaLevel: number =
     DEFAULTS.DATA_ARIA_LEVEL;
 
   /**
-   * The visibility of the accordion button.
+   * Controls whether the accordion body content is visible.
+   * - When true, the body section is shown; when false, it is hidden.
    * @default false
    */
   @property({ type: Boolean, reflect: true }) expanded: boolean = DEFAULTS.EXPANDED;
 
   /**
-   * The header text of the accordion item.
+   * Text content displayed in the accordion header.
    */
   @property({ type: String, reflect: true, attribute: 'header-text' }) headerText?: string;
 
   /**
-   * The leading icon that is displayed before the header text.
+   * Icon displayed at the start of the accordion header, before the header text.
+   * Must be a valid icon name.
    */
   @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
 
