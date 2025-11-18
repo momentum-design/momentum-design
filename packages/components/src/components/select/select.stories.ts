@@ -5,16 +5,18 @@ import { html, nothing } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../divider';
-import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { DEFAULTS as FORMFIELD_WRAPPER_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import '../selectlistbox';
 import '../tooltip';
-import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Select from './select.component';
 import * as CountriesList from './select.utils.json';
+import { DEFAULTS } from './select.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -52,7 +54,7 @@ const render = (args: Args) =>
       popover-z-index="${args['popover-z-index']}"
       backdrop-append-to="${args['backdrop-append-to']}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-      ?disable-flipping="${args['disable-flipping']}"
+      ?disable-flip="${args['disable-flip']}"
     >
       ${args.children}
     </mdc-select>
@@ -113,15 +115,27 @@ const meta: Meta = {
     },
     placement: {
       control: 'select',
-      options: ['bottom-start', 'top-start'],
+      options: [POPOVER_PLACEMENT.BOTTOM_START, POPOVER_PLACEMENT.TOP_START],
     },
     'soft-disabled': {
       control: 'boolean',
     },
-    'disable-flipping': {
+    'disable-flip': {
       control: 'boolean',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'itemsStore']),
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    boundary: {
+      control: 'text',
+    },
+    strategy: {
+      control: 'text',
+    },
+    'popover-z-index': {
+      control: 'number',
+    },
+    ...hideControls(['children', 'value', 'validation-message', 'itemsStore', 'validity', 'willValidate']),
     ...classArgType,
     ...styleArgType,
   },
@@ -137,9 +151,17 @@ export const Example: StoryObj = {
     disabled: false,
     readonly: false,
     'help-text': 'Select Help Text',
-    'help-text-type': '',
+    'help-text-type': VALIDATION.DEFAULT,
     'data-aria-label': 'Select label',
-    placement: 'bottom-start',
+    placement: POPOVER_PLACEMENT.BOTTOM_START,
+    'popover-z-index': POPOVER_DEFAULTS.Z_INDEX,
+    'disable-flip': DEFAULTS.DISABLE_FLIP,
+    boundary: POPOVER_DEFAULTS.BOUNDARY,
+    strategy: POPOVER_DEFAULTS.STRATEGY,
+    'soft-disabled': false,
+    'auto-focus-on-mount': false,
+    'toggletip-placement': FORMFIELD_WRAPPER_DEFAULTS.TOGGLETIP_PLACEMENT,
+    'toggletip-strategy': FORMFIELD_WRAPPER_DEFAULTS.TOGGLETIP_STRATEGY,
     children: html`<mdc-selectlistbox>
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
@@ -152,7 +174,8 @@ export const Example: StoryObj = {
 
 export const SelectWithSecondaryLabel: StoryObj = {
   args: {
-    label: 'Options and secondary labels',
+    ...Example.args,
+    label: 'Options with Secondary labels',
     placeholder: 'Select an option',
     children: html`<mdc-selectlistbox>
       <mdc-option label="Option 1" secondary-label="Secondary Label 1"></mdc-option>
@@ -165,6 +188,7 @@ export const SelectWithSecondaryLabel: StoryObj = {
 
 export const SelectWithGroups: StoryObj = {
   args: {
+    ...Example.args,
     label: 'Options with groups',
     children: html`<mdc-selectlistbox>
       <mdc-optgroup label="Fruit">
@@ -186,11 +210,11 @@ export const SelectWithGroups: StoryObj = {
       </mdc-optgroup>
     </mdc-selectlistbox>`,
   },
-  render: (args: Args) => html` <div style="height: 35rem;">${render(args)}</div> `,
 };
 
 export const SelectWithLongOptionText: StoryObj = {
   args: {
+    ...Example.args,
     label: 'Options with long text',
     placeholder: 'Select one color',
     children: html`<mdc-selectlistbox>
@@ -204,10 +228,12 @@ export const SelectWithLongOptionText: StoryObj = {
     ${render(args)}
     <mdc-tooltip triggerid="option-1" show-arrow> White and Black are the biggest colors on the spectrum </mdc-tooltip>
   `,
+  ...describeStory('Hover on the long option text to see its full label.'),
 };
 
 export const SelectWithIconOptions: StoryObj = {
   args: {
+    ...Example.args,
     label: 'You are in a meeting',
     placeholder: 'Select an option',
     children: html`<mdc-selectlistbox>
@@ -442,10 +468,10 @@ export const SelectWithDynamicOptions: StoryObj = {
       </mdc-select>
     `);
   },
-  argTypes: {
-    ...disableControls(['readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text']),
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory('The last two options are added dynamically after 2000ms.', true),
   },
-  ...hideAllControls(),
 };
 
 export const SelectWithChangingSelectedOption: StoryObj = {
@@ -513,15 +539,17 @@ export const SelectWithChangingValueAttribute: StoryObj = {
         select.value = 'invalid-option';
       }
     };
-    return html` <mdc-button @click=${changeValidOption}>Set value to Option 3</mdc-button>
-      <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Set value to invalid value</mdc-button>
-      <mdc-select label="Select" value="option2" placeholder="Select an Option">
-        <mdc-selectlistbox>
-          <mdc-option label="Option 1" value="option1"></mdc-option>
-          <mdc-option label="Option 2" selected value="option2"></mdc-option>
-          <mdc-option label="Option 3" value="option3"></mdc-option>
-        </mdc-selectlistbox>
-      </mdc-select>`;
+    return wrapWithDiv(
+      html` <mdc-button @click=${changeValidOption}>Set value to Option 3</mdc-button>
+        <mdc-button @click=${changeInvalidOption} style="margin: 8px 0;">Set value to invalid value</mdc-button>
+        <mdc-select label="Select" value="option2" placeholder="Select an Option">
+          <mdc-selectlistbox>
+            <mdc-option label="Option 1" value="option1"></mdc-option>
+            <mdc-option label="Option 2" selected value="option2"></mdc-option>
+            <mdc-option label="Option 3" value="option3"></mdc-option>
+          </mdc-selectlistbox>
+        </mdc-select>`,
+    );
   },
   ...hideAllControls(),
 };
@@ -537,4 +565,15 @@ export const SelectCountriesList: StoryObj = {
         </mdc-selectlistbox>
       </mdc-select>
     `),
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`Character key based navigation lets users open the Select by typing any key. <br />
+        Focus on the Select and start typing. As characters are typed (with a 500 ms debounce), <br />
+        the component searches for the first matching label(country) and focuses it. <br />
+        If no match exists, the Select still opens and focuses the first option, ensuring smooth, predictable
+        navigation.`,
+      true,
+    ),
+  },
 };
