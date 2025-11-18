@@ -209,7 +209,7 @@ export const GroupInsideDialog: StoryObj = {
       <div slot="footer">
         <mdc-buttongroup variant="secondary" size="32">
           <mdc-button prefix-icon="zoom-out-bold"></mdc-button>
-          <mdc-button soft-disabled>100%</mdc-button>
+          <mdc-button>100%</mdc-button>
           <mdc-button prefix-icon="zoom-in-bold"></mdc-button>
         </mdc-buttongroup>
       </div>
