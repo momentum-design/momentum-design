@@ -29,7 +29,7 @@ import type { Size, Variant } from './accordiongroup.types';
  *
  * @slot default - The default slot can contain the `accordion` or `accordionbutton` components.
  *
- * @cssproperty --mdc-accordiongroup-border-color - The border color of the entire accordiongroup
+ * @cssproperty --mdc-accordiongroup-items-border-color - The border color applied to all child accordion items and their separators.
  */
 class AccordionGroup extends Component {
   /**

@@ -18,7 +18,7 @@ const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit
   laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const render = (args: Args) =>
-  html`<main>
+  html`<div role="main">
     <mdc-accordiongroup
       size="${ifDefined(args.size)}"
       variant="${ifDefined(args.variant)}"
@@ -32,7 +32,7 @@ const render = (args: Args) =>
       <mdc-accordionbutton header-text="How much does the Earth weigh?">${defaultChildren}</mdc-accordionbutton>
       <mdc-accordionbutton header-text="How do airplanes stay up?">${defaultChildren}</mdc-accordionbutton>
     </mdc-accordiongroup>
-  </main>`;
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/accordion/accordiongroup',
@@ -113,7 +113,7 @@ export const MultiInteractiveAccordion: StoryObj = {
     'allow-multiple': false,
   },
   render: (args: Args) => html`
-    <main>
+    <div role="main">
       <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
         <mdc-accordion
           header-text="Identify Your Goals"
@@ -156,6 +156,6 @@ export const MultiInteractiveAccordion: StoryObj = {
           ${defaultChildren}
         </mdc-accordion>
       </mdc-accordiongroup>
-    </main>
+    </div>
   `,
 };

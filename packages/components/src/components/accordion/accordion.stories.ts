@@ -9,7 +9,7 @@ import '../chip';
 import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 
@@ -29,7 +29,7 @@ const defaultChildren = html`
 `;
 
 const render = (args: Args) =>
-  html`<main>
+  html`<div role="main">
     <mdc-accordion
       @shown=${action('onshown')}
       ?disabled=${args.disabled}
@@ -44,7 +44,7 @@ const render = (args: Args) =>
     >
       ${defaultChildren}
     </mdc-accordion>
-  </main>`;
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/accordion/accordion',
@@ -84,7 +84,6 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['--mdc-accordionbutton-hover-color', '--mdc-accordionbutton-active-color']),
-    ...disableControls(['default']),
   },
 };
 
@@ -130,7 +129,7 @@ export const SmallSize: StoryObj = {
 
 export const AllVariants: StoryObj = {
   render: () => html`
-    <main style="display: flex; flex-direction: column;">
+    <div role="main" style="display: flex; flex-direction: column;">
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
         <h2>Visibility of Accordion</h2>
         <mdc-accordion
@@ -196,7 +195,7 @@ export const AllVariants: StoryObj = {
           >${defaultChildren}</mdc-accordion
         >
       </section>
-    </main>
+    </div>
   `,
   ...hideAllControls(),
 };
