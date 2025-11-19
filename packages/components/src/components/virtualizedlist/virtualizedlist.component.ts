@@ -517,7 +517,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         }
       }
     });
-    this.updateHiddenItemsPosition();
+    this.updateHiddenItemsPosition(range);
 
     defaultIndexes.sort((a, b) => a - b);
 
@@ -525,17 +525,19 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   /** @internal */
-  private updateHiddenItemsPosition() {
+  private updateHiddenItemsPosition(range: Range) {
     const { navItems, virtualizerProps, virtualizer } = this;
 
     if (!virtualizer || virtualizerProps.count === 0) return;
 
-    const { measurementsCache, range } = virtualizer;
+    const { measurementsCache } = virtualizer;
 
     this.hiddenIndexes.forEach(index => {
       const el = navItems.at(index);
       if (el) {
-        const first = measurementsCache[range?.startIndex ?? 0];
+        const startIndex = range.startIndex - range.overscan;
+
+        const first = measurementsCache[startIndex];
         const current = measurementsCache[index];
 
         el.setAttribute('data-virtualized-hidden', 'true');
