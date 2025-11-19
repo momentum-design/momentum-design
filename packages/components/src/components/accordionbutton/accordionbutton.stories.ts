@@ -18,18 +18,20 @@ const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit
   laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const render = (args: Args) =>
-  html` <mdc-accordionbutton
-    @shown=${action('onshown')}
-    ?disabled=${args.disabled}
-    ?expanded=${args.expanded}
-    data-aria-level="${ifDefined(args['data-aria-level'])}"
-    header-text="${ifDefined(args['header-text'])}"
-    prefix-icon="${ifDefined(args['prefix-icon'])}"
-    size="${ifDefined(args.size)}"
-    variant="${ifDefined(args.variant)}"
-  >
-    ${defaultChildren}
-  </mdc-accordionbutton>`;
+  html`<main>
+    <mdc-accordionbutton
+      @shown=${action('onshown')}
+      ?disabled=${args.disabled}
+      ?expanded=${args.expanded}
+      data-aria-level="${ifDefined(args['data-aria-level'])}"
+      header-text="${ifDefined(args['header-text'])}"
+      prefix-icon="${ifDefined(args['prefix-icon'])}"
+      size="${ifDefined(args.size)}"
+      variant="${ifDefined(args.variant)}"
+    >
+      ${defaultChildren}
+    </mdc-accordionbutton>
+  </main>`;
 
 const meta: Meta = {
   title: 'Components/accordion/accordionbutton',
@@ -106,9 +108,9 @@ export const SmallSize: StoryObj = {
 
 export const AllVariants: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: row;">
+    <main style="display: flex; flex-direction: row;">
       <section style="padding: 0.5rem; width: 25%; display: flex; flex-direction: column; gap: 1rem;">
-        <h5>Visibility of Accordion</h5>
+        <h2>Visibility of Accordion</h2>
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Expanded" expanded
           >${defaultChildren}</mdc-accordionbutton
         >
@@ -117,7 +119,7 @@ export const AllVariants: StoryObj = {
         >
       </section>
       <section style="padding: 0.5rem; width: 25%; display: flex; flex-direction: column; gap: 1rem">
-        <h5>Variant Types of Accordion</h5>
+        <h2>Variant Types of Accordion</h2>
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Default Variant"
           >${defaultChildren}</mdc-accordionbutton
         >
@@ -130,7 +132,7 @@ export const AllVariants: StoryObj = {
         >
       </section>
       <section style="padding: 0.5rem; width: 25%; display: flex; flex-direction: column; gap: 1rem;">
-        <h5>Sizes of Accordion</h5>
+        <h2>Sizes of Accordion</h2>
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Small Size"
           >${defaultChildren}</mdc-accordionbutton
         >
@@ -143,12 +145,12 @@ export const AllVariants: StoryObj = {
         >
       </section>
       <section style="padding: 0.5rem; width: 25%; display: flex; flex-direction: column; gap: 1rem;">
-        <h5>Disabled Accordion</h5>
+        <h2>Disabled Accordion</h2>
         <mdc-accordionbutton prefix-icon="placeholder-bold" header-text="Disabled Accordion" disabled
           >${defaultChildren}</mdc-accordionbutton
         >
       </section>
-    </div>
+    </main>
   `,
   ...hideAllControls(),
 };
