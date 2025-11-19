@@ -2,9 +2,10 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import { VARIANTS } from './alertchip.constants';
 
@@ -14,9 +15,9 @@ const render = (args: Args) =>
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
-    variant="${args.variant}"
-    label="${args.label}"
-    icon-name="${args['icon-name']}"
+    variant="${ifDefined(args.variant)}"
+    label="${ifDefined(args.label)}"
+    icon-name="${ifDefined(args['icon-name'])}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-alertchip>`;
 
@@ -41,7 +42,18 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active', 'disabled']),
+    ...hideControls([
+      'soft-disabled',
+      'size',
+      'role',
+      'type',
+      'active',
+      'disabled',
+      'name',
+      'value',
+      'tabIndex',
+      'ariaStateKey',
+    ]),
   },
 };
 
@@ -69,4 +81,5 @@ export const AllVariants: StoryObj = {
         variant => html` <mdc-alertchip variant="${variant}" label="${variant}"></mdc-alertchip> `,
       )}
     </div>`,
+  ...hideAllControls(),
 };

@@ -14,7 +14,7 @@ import type { VariantType } from './alertchip.types';
  * mdc-alertchip component is an interactive chip that consumers can use to represent an alert.
  *
  * - It supports a leading icon along with label.
- * - It supports 5 variants of alerts - neutral, warning, error, success, and informational
+ * - It supports 5 variants of alerts - error, informational, neutral, success and warning.
  *
  * This component is built by extending Buttonsimple.
  *
@@ -31,18 +31,18 @@ import type { VariantType } from './alertchip.types';
  * @csspart icon - The alert icon
  * @csspart label - The text label of the alertchip
  *
- * @event click - (React: onClick) This event is dispatched when the chip is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the chip.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the chip.
- * @event focus - (React: onFocus) This event is dispatched when the chip receives focus.
+ * @event click - (React: onClick) This event is dispatched when the alertchip is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the alertchip.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the alertchip.
+ * @event focus - (React: onFocus) This event is dispatched when the alertchip receives focus.
  */
 class AlertChip extends IconNameMixin(Buttonsimple) {
   /**
    * The variant of the alertchip. It supports 5 variants
    * - neutral
-   * - warning
    * - error
    * - success
+   * - warning
    * - informational
    *
    * @default neutral
@@ -54,8 +54,10 @@ class AlertChip extends IconNameMixin(Buttonsimple) {
    *
    * We recommend limiting the <b>maximum length of the label text to 20 characters</b>,
    * including empty spaces to split words.
+   *
+   * @default undefined
    */
-  @property({ type: String }) label = '';
+  @property({ type: String }) label?: string;
 
   override connectedCallback(): void {
     super.connectedCallback();
