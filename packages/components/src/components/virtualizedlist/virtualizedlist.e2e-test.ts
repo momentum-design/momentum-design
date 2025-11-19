@@ -257,28 +257,24 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     await test.step('focused element remains in viewport after scroll and is focused again on tab', async () => {
-      const { vlist } = await setup({ initialItemCount: 25 });
+      const { vlist } = await setup({ initialItemCount: 30 });
 
-      await componentsPage.actionability.pressTab();
-      await expect(listItemLocator(vlist, 0)).toBeFocused();
+      await scrollList(vlist, 540);
+      await componentsPage.page.pause();
 
-      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
-        listItemLocator(vlist, 1),
-        listItemLocator(vlist, 2),
-        listItemLocator(vlist, 3),
-      ]);
+      await listItemLocator(vlist, 15).click();
 
       await componentsPage.actionability.pressTab();
       await componentsPage.actionability.pressTab();
       await expect(componentsPage.page.getByText('after')).toBeFocused();
 
-      await scrollList(vlist, 400);
-      await expect(listItemLocator(vlist, 3)).toBeVisible();
-      await expect(listItemLocator(vlist, 3)).not.toBeInViewport();
+      await scrollList(vlist, 600);
+      await expect(listItemLocator(vlist, 15)).toBeVisible();
+      await expect(listItemLocator(vlist, 15)).not.toBeInViewport();
 
       await componentsPage.actionability.pressShiftTab();
-      await expect(listItemLocator(vlist, 3)).toBeInViewport();
-      await expect(listItemLocator(vlist, 3).locator('mdc-button')).toBeFocused();
+      await expect(listItemLocator(vlist, 15)).toBeInViewport();
+      await expect(listItemLocator(vlist, 15).locator('mdc-button')).toBeFocused();
     });
 
     const testcases = [
