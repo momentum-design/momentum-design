@@ -112,22 +112,42 @@ export const MultiInteractiveAccordion: StoryObj = {
   },
   render: (args: Args) => html`
     <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
-      <mdc-accordion header-text="Identify Your Goals" prefix-icon="add-option-bold">
+      <mdc-accordion
+        header-text="Identify Your Goals"
+        prefix-icon="add-option-bold"
+        open-button-aria-label="Open Identify Your Goals"
+        close-button-aria-label="Close Identify Your Goals"
+      >
         <mdc-chip slot="leading-controls" label="Step 1"></mdc-chip>
         <mdc-avatarbutton aria-label="avatar #1" slot="trailing-controls" initials="#1"></mdc-avatarbutton>
         ${defaultChildren}
       </mdc-accordion>
-      <mdc-accordion header-text="Write Your Goals" prefix-icon="add-option-bold">
+      <mdc-accordion
+        header-text="Write Your Goals"
+        prefix-icon="add-option-bold"
+        open-button-aria-label="Open Write Your Goals"
+        close-button-aria-label="Close Write Your Goals"
+      >
         <mdc-chip slot="leading-controls" label="Step 2"></mdc-chip>
         <mdc-avatarbutton aria-label="avatar #2" slot="trailing-controls" initials="#2"></mdc-avatarbutton>
         ${defaultChildren}
       </mdc-accordion>
-      <mdc-accordion header-text="Need Analysis" prefix-icon="add-option-bold">
+      <mdc-accordion
+        header-text="Need Analysis"
+        prefix-icon="add-option-bold"
+        open-button-aria-label="Open Need Analysis"
+        close-button-aria-label="Close Need Analysis"
+      >
         <mdc-chip slot="leading-controls" label="Step 3"></mdc-chip>
         <mdc-avatarbutton aria-label="avatar #3" slot="trailing-controls" initials="#3"></mdc-avatarbutton>
         ${defaultChildren}
       </mdc-accordion>
-      <mdc-accordion header-text="List Objectives" prefix-icon="add-option-bold">
+      <mdc-accordion
+        header-text="List Objectives"
+        prefix-icon="add-option-bold"
+        open-button-aria-label="Open List Objectives"
+        close-button-aria-label="Close List Objectives"
+      >
         <mdc-chip slot="leading-controls" label="Step 4"></mdc-chip>
         <mdc-avatarbutton aria-label="avatar #4" slot="trailing-controls" initials="#4"></mdc-avatarbutton>
         ${defaultChildren}

@@ -96,6 +96,8 @@ export const Example: StoryObj = {
     size: SIZE.SMALL,
     expanded: true,
     variant: VARIANT.DEFAULT,
+    'open-button-aria-label': 'Open accordion',
+    'close-button-aria-label': 'Close accordion',
   },
 };
 
@@ -125,33 +127,73 @@ export const SmallSize: StoryObj = {
 
 export const AllVariants: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <main style="display: flex; flex-direction: column;">
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
         <h5>Visibility of Accordion</h5>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Expanded" expanded>${defaultChildren}</mdc-accordion>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Not expanded">${defaultChildren}</mdc-accordion>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Expanded"
+          expanded
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Not expanded"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${defaultChildren}</mdc-accordion
+        >
       </section>
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem">
         <h5>Variant Types of Accordion</h5>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Default Variant">${defaultChildren}</mdc-accordion>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Borderless Variant" variant="${VARIANT.BORDERLESS}"
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Default Variant"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Borderless Variant"
+          variant="${VARIANT.BORDERLESS}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
           >${defaultChildren}</mdc-accordion
         >
       </section>
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
         <h5>Sizes of Accordion</h5>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Small Size">${defaultChildren}</mdc-accordion>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Large Size" size="${SIZE.LARGE}"
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Small Size"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Large Size"
+          size="${SIZE.LARGE}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
           >${defaultChildren}</mdc-accordion
         >
       </section>
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
         <h5>Disabled Accordion</h5>
-        <mdc-accordion prefix-icon="placeholder-bold" header-text="Disabled Accordion" disabled
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Disabled Accordion"
+          disabled
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
           >${defaultChildren}</mdc-accordion
         >
       </section>
-    </div>
+    </main>
   `,
   ...hideAllControls(),
 };
