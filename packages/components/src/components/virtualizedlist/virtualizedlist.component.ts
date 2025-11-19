@@ -535,7 +535,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.hiddenIndexes.forEach(index => {
       const el = navItems.at(index);
       if (el) {
-        const startIndex = range.startIndex - range.overscan;
+        const startIndex = Math.max(range.startIndex - range.overscan, 0);
 
         const first = measurementsCache[startIndex];
         const current = measurementsCache[index];
