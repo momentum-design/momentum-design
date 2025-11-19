@@ -16,28 +16,27 @@ import type { IconName, Variant } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
 /**
- * An accordion button contains a header and body section with optional slots inside the heading which are focusable.
+ * An accordion button is a vertically stacked component with a clickable header and expandable/collapsible body section.
+ * The entire header is clickable to toggle the visibility of the body content.
  *
- * The header section contains:
- * - Prefix Icon
- * - Header Text
+ * **Header contains:**
+ * - Optional prefix icon
+ * - Header text (default H3, customizable via `data-aria-level`)
+ * - Expand/collapse arrow icon (visual indicator)
  *
- * The body section contains:
- * - Default slot - User can place any content inside the body section.
+ * **Body contains:**
+ * - Default slot for any content
  *
- * The accordion button can be expanded or collapsed. The visibility of the body section can be controlled by `expanded` attribute. <br/>
- * There are two types of variants based on that the border styling of the accordion gets reflected. <br/>
- * There are two sizes of accordion, one is small and the other is large.
- * Small size has a padding of 1rem (16px) and large size has a padding of 1.5rem (24px) for the body section of accordion.
+ * The accordion button supports different border styles through the `variant` attribute and different spacing through the `size` attribute.
+ * An accordion button can be disabled, which prevents the header from being clickable.
  *
- * By default, the header text in the accordion heading is of H3 with an aria-level of '3'.
- * If this accordion is placed on any other level in the entire webpage, then do adjust the aria-level number based on that.
+ * **When to use:**
+ * - Use `mdc-accordionbutton` for simple clickable headers without additional controls.
+ * - Use `mdc-accordion` instead if you need extra controls (chips, badges, icons) in the header.
  *
- * An accordion can be disabled, and when it's disabled, the header section will not be clickable.
- *
- * If you do need any controls on your accordion heading, then it's advised to use `accordion` component.
- *
- * If an accordion button is expanded by default, then the screen reader might loose focus when toggling the visibilty of the accordion button.
+ * **Accessibility:**
+ * - Adjust `data-aria-level` based on heading hierarchy in your page.
+ * - Note: Screen readers may lose focus when toggling if accordion button is expanded by default.
  *
  * @tagname mdc-accordionbutton
  *
@@ -47,11 +46,11 @@ import styles from './accordionbutton.styles';
  *
  * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
  *
- * @event shown - (React: onShown) This event is triggered when the accordion button is expanded.
+ * @event shown - (React: onShown) This event is triggered when the accordion button is toggled (expanded or collapsed).
  *
  * @cssproperty --mdc-accordionbutton-border-color - The border color of the accordion button.
- * @cssproperty --mdc-accordionbutton-hover-color - The hover color of the accordion button.
- * @cssproperty --mdc-accordionbutton-active-color - The active color of the accordion button.
+ * @cssproperty --mdc-accordionbutton-hover-color - The hover background color of the accordion button header.
+ * @cssproperty --mdc-accordionbutton-active-color - The active background color of the accordion button header.
  * @cssproperty --mdc-accordionbutton-disabled-color - The disabled text color of the accordion button.
  *
  * @csspart body-section - The body section of the accordion button.

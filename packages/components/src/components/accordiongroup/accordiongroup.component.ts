@@ -11,27 +11,19 @@ import styles from './accordiongroup.styles';
 import type { Size, Variant } from './accordiongroup.types';
 
 /**
- * An accordion group is a vertically stacked set of interactive headings that each contain a header and body content.
- * Each heading of the accordion acts as a control that enable users to expand or hide their associated body sections of content.
- * Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
+ * An accordion group is a container that manages multiple accordion or accordionbutton components as a unified set.
+ * It controls the visual styling, spacing, and expansion behavior of all child accordions.
  *
- * - Default Slot: The accordion group component only accepts, `accordion` and `accordionbutton` components as the children, rest are ignored.
+ * The group applies consistent `variant` and `size` attributes to all children automatically.
+ * By default, expanding one accordion collapses others (`allow-multiple` is false). Set `allow-multiple` to true to allow multiple expanded items.
  *
- * There are three types of variants:
- * - Stacked - Each accordion will have a gap of 1.5rem (24px).
- * - Borderless - Each accordion will not have any border and the group will also not have any border.
- * - Contained - Each accordion will have no gap in between them and the border of the entire accordiongroup will be continuous.
+ * **Accepted children:**
+ * - Use `mdc-accordionbutton` children for simple clickable headers.
+ * - Use `mdc-accordion` children when you need additional controls (chips, badges, icons) in the headers.
+ * - Other elements in the slot are ignored.
  *
- * There are two types of sizes:
- * - Small: Small size has a padding of 1rem (16px) for both heading and body sections.
- * - Large: Large size has a padding of 1.5rem (24px) for both heading and body sections.
- *
- * The variant and size will be applied to all accordions inside this accordion group.
- * To show/expand more than one accordion at any given time, then set `allow-multiple` to `true`. By default, it's `false`.
- *
- * If you don't need any controls on your accordion heading, then it's advised to use `accordionbutton` component.
- *
- * If the first accordion of the accordion group is expanded by default, then the screen reader might loose focus when toggling the visibilty of the first accordion.
+ * **Accessibility:**
+ * - Note: Screen readers may lose focus when toggling if the first accordion is expanded by default.
  *
  * @tagname mdc-accordiongroup
  *
