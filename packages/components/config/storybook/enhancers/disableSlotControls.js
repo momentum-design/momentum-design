@@ -3,7 +3,7 @@
  * @param context - The story context
  * @returns The enhanced argTypes
  */
-export const slotEnhancer = context => {
+export const disableSlotControls = context => {
   const inferred = context?.argTypes || context?.parameters?.argTypes || {};
   Object.keys(inferred).forEach(key => {
     if (inferred[key].name === 'default' || inferred[key].name.startsWith('Slot Name: ')) {

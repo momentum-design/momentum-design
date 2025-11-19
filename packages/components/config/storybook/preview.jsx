@@ -15,7 +15,7 @@ import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
-import { slotEnhancer } from './enhancers/slotEnhancer';
+import { disableSlotControls } from './enhancers/disableSlotControls';
 
 const cssProperties = [];
 
@@ -175,6 +175,6 @@ const preview = {
   },
 };
 
-export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, slotEnhancer, eventsEnhancer];
+export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, disableSlotControls, eventsEnhancer];
 
 export default preview;
