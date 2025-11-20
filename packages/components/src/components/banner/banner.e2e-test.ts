@@ -6,7 +6,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { BANNER_VARIANT } from './banner.constants';
 import type { BannerVariant } from './banner.types';
 
-// comment
+// E2E tests for Banner component - testing deploy workflow
 type SetupOptions = {
   componentsPage: ComponentsPage;
   variant?: BannerVariant;
