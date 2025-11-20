@@ -13,24 +13,19 @@ import type { AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './avatar.utils';
 
 /**
- * The `mdc-avatar` component is used to represent a person or a space.
- * An avatar can be an icon, initials, counter and photo.
+ * The `mdc-avatar` component represents a person or a space. It displays as a photo, initials, icon, or counter.
  *
- * To set the photo of an avatar,
- * you need to set "src" attribute.
+ * **Display priority (when multiple attributes are set):**
+ * 1. Photo (`src`) - Shows image when loaded
+ * 2. Initials (`initials`) - Shows as placeholder while photo loads, or as standalone
+ * 3. Icon (`icon-name`) - Defaults to `user-regular` if no other content is provided
+ * 4. Counter (`counter`) - Displays a numeric value (max 99+)
  *
- * While the avatar image is loading, as a placeholder,
- * we will show the initials text.
- * If the initials are not specified then,
- * we will show `user-regular` icon as a placeholder.
- *
- * By default, if there are no attributes specified,
- * then the default avatar will be an icon with `user-regular` name.
- *
- * The avatar component is non clickable and non interactive/focusable component.
- * If the avatar is typing, then the loading indicator will be displayed.
- * If the counter type avatar is set to a negative number, then we will display 0.
- * The presence indicator will be hidden when the counter property is set.
+ * **Behavior:**
+ * - Non-interactive and non-focusable component (use `mdc-avatarbutton` for clickable avatars)
+ * - Shows loading indicator when `is-typing` is true
+ * - Presence indicator hidden when counter is set
+ * - Negative counter values display as 0
  *
  * @dependency mdc-icon
  * @dependency mdc-presence

@@ -5,23 +5,27 @@ import { Component } from '../../models';
 import styles from './appheader.styles';
 
 /**
- * The `mdc-appheader` component provides a structured and accessible app header layout.
- * It consists of three primary sections: leading, center, and trailing.
+ * The `mdc-appheader` component provides a structured and accessible app header layout with three sections: leading, center, and trailing.
  *
- * - The **leading section** typically holds a **brand logo**, **brand name** or **menu icon**.
- * - The **center section** can contain a **search bar**, **icons** or action controls.
- * - The **trailing section** generally includes a **profile avatar**, **additional icons** or **action controls**.
+ * **Layout sections:**
+ * - **Leading** - Typically holds brand logo, brand name, or menu icon
+ * - **Center** - Can contain search bar, icons, navigation links, or action controls
+ * - **Trailing** - Generally includes profile avatar, icons, settings, or additional action controls
+ *
+ * Each section automatically handles flex alignment: leading aligns left, center aligns center, trailing aligns right.
  *
  * @tagname mdc-appheader
  *
- * @slot leading - Slot for the leading section (e.g., brand logo, brand name).
- * @slot center - Slot for the center section (e.g., search bar, icons).
- * @slot trailing - Slot for the trailing section (e.g., profile avatar, icons).
+ * @slot leading - Content for the leading section (left-aligned).
+ * @slot center - Content for the center section (center-aligned).
+ * @slot trailing - Content for the trailing section (right-aligned).
  *
- * @csspart container - The main container for styling the header.
- * @csspart leading-section - The leading section of the header.
- * @csspart center-section - The center section of the header.
- * @csspart trailing-section - The trailing section of the header.
+ * @cssproperty --mdc-appheader-height - Height of the app header. Default is 4rem (64px).
+ *
+ * @csspart container - The main header container.
+ * @csspart leading-section - The leading section wrapper (left side).
+ * @csspart center-section - The center section wrapper (middle).
+ * @csspart trailing-section - The trailing section wrapper (right side).
  */
 class Appheader extends Component {
   /**
