@@ -54,8 +54,6 @@ class AlertChip extends IconNameMixin(Buttonsimple) {
    *
    * We recommend limiting the <b>maximum length of the label text to 20 characters</b>,
    * including empty spaces to split words.
-   *
-   * @default undefined
    */
   @property({ type: String }) label?: string;
 
