@@ -53,27 +53,11 @@ if [ ! -d "$CURRENT_DIST" ]; then
   exit 2
 fi
 
-# Build previous commit
+# Check previous commit dist (should be built by workflow)
 PREVIOUS_PKG_PATH="$PREVIOUS_WORKTREE/$PKG_REL_PATH"
 
 if [ ! -d "$PREVIOUS_PKG_PATH" ]; then
   echo "WARNING: Package doesn't exist in previous commit - will publish (new package)"
-  exit 0
-fi
-
-echo "Building previous commit..."
-cd "$PREVIOUS_WORKTREE"
-
-echo "Installing dependencies for previous commit..."
-if ! yarn install --frozen-lockfile > /dev/null 2>&1; then
-  echo "ERROR: Failed to install dependencies for previous commit - will publish (cannot verify changes)"
-  exit 0
-fi
-
-echo "Building all packages in previous commit..."
-if ! yarn build > /dev/null 2>&1; then
-  echo "ERROR: Failed to build previous commit - will publish (cannot verify changes)"
-  echo "Note: This is expected if the previous commit has incompatible dependencies or build errors"
   exit 0
 fi
 
