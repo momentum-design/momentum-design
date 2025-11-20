@@ -6,6 +6,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { BANNER_VARIANT } from './banner.constants';
 import type { BannerVariant } from './banner.types';
 
+// comment
 type SetupOptions = {
   componentsPage: ComponentsPage;
   variant?: BannerVariant;
@@ -23,7 +24,7 @@ const setup = async (args: SetupOptions) => {
       attrs += ` ${key.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`)}="${value}"`;
     }
   });
-  
+
   await componentsPage.mount({
     html: `
       ${addFocusContext ? '<div id="wrapper">' : ''}
@@ -34,7 +35,7 @@ const setup = async (args: SetupOptions) => {
     `,
     clearDocument: true,
   });
-  
+
   const banner = componentsPage.page.locator('mdc-banner');
   return banner;
 };
@@ -63,10 +64,10 @@ test('mdc-banner', async ({ componentsPage }) => {
     await bannerSheet.createMarkupWithCombination({}, options);
 
     // Banner with both label and secondary label
-    bannerSheet.setAttributes({ 
-      variant: BANNER_VARIANT.SUCCESS, 
-      label: 'Main Label', 
-      'secondary-label': 'Supporting secondary label' 
+    bannerSheet.setAttributes({
+      variant: BANNER_VARIANT.SUCCESS,
+      label: 'Main Label',
+      'secondary-label': 'Supporting secondary label',
     });
     await bannerSheet.createMarkupWithCombination({}, options);
 
@@ -76,66 +77,69 @@ test('mdc-banner', async ({ componentsPage }) => {
         variant: BANNER_VARIANT.CUSTOM,
         label: 'Custom Banner with Slot Icon',
         secondaryLabel: 'This banner uses a custom icon via slot instead of variant-based icon.',
-        extraChildren: '<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>'
+        extraChildren:
+          '<mdc-icon slot="leading-icon" name="placeholder-bold" size="1.5" style="padding: 0.25rem 0;"></mdc-icon>',
       },
       {
         variant: BANNER_VARIANT.INFORMATIONAL,
         label: 'System Update Available',
-        secondaryLabel: 'A new version is ready to install.'
+        secondaryLabel: 'A new version is ready to install.',
       },
       {
         variant: BANNER_VARIANT.WARNING,
         label: 'Storage Almost Full',
-        secondaryLabel: 'Your storage is 95% full. Consider removing some files.'
+        secondaryLabel: 'Your storage is 95% full. Consider removing some files.',
       },
       {
         variant: BANNER_VARIANT.ERROR,
         label: 'Connection Failed',
         secondaryLabel: 'Unable to connect to the server. Please try again.',
-        extraButtons: '<mdc-button variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection"></mdc-button>'
+        extraButtons:
+          '<mdc-button variant="tertiary" prefix-icon="reset-bold" size="20" aria-label="Retry connection"></mdc-button>',
       },
       {
         variant: BANNER_VARIANT.SUCCESS,
         label: 'Changes Saved',
-        secondaryLabel: 'Your changes have been successfully saved.'
-      }
+        secondaryLabel: 'Your changes have been successfully saved.',
+      },
     ];
 
-    const createVariantBanner = async (config: typeof variantConfigs[0]) => {
-      bannerSheet.setAttributes({ 
-        variant: config.variant, 
-        label: config.label, 
-        'secondary-label': config.secondaryLabel 
+    const createVariantBanner = async (config: (typeof variantConfigs)[0]) => {
+      bannerSheet.setAttributes({
+        variant: config.variant,
+        label: config.label,
+        'secondary-label': config.secondaryLabel,
       });
-      
-      const children = (config.extraChildren || '') + 
-        createDefaultActionButtons(config.extraButtons || '');
-      
+
+      const children = (config.extraChildren || '') + createDefaultActionButtons(config.extraButtons || '');
+
       bannerSheet.setChildren(children);
       await bannerSheet.createMarkupWithCombination({}, options);
     };
 
     // Create custom variant banner
     await createVariantBanner(variantConfigs[0]);
-    
+
     // Create informational variant banner
     await createVariantBanner(variantConfigs[1]);
-    
+
     // Create warning variant banner
     await createVariantBanner(variantConfigs[2]);
-    
+
     // Create error variant banner
     await createVariantBanner(variantConfigs[3]);
-    
+
     // Create success variant banner
     await createVariantBanner(variantConfigs[4]);
 
     // Banner with long text (wrapping) - constrain width to force text wrapping
-    bannerSheet.setAttributes({ 
-      variant: BANNER_VARIANT.INFORMATIONAL, 
-      label: 'This is an extremely long label that should wrap to multiple lines when the banner has a constrained width',
-      'secondary-label': 'This is also a very long secondary label with extensive descriptive text that should wrap appropriately',
-      style: 'max-width: 400px; margin: 1rem 0;'
+    bannerSheet.setAttributes({
+      variant: BANNER_VARIANT.INFORMATIONAL,
+      label:
+        'This is an extremely long label that should wrap to multiple lines when the banner has a constrained width',
+      'secondary-label':
+        'This is also a very long secondary label with extensive descriptive text that should wrap appropriately',
+      style: 'max-width: 400px; margin: 1rem 0;',
     });
     await bannerSheet.createMarkupWithCombination({}, options);
 
@@ -169,20 +173,24 @@ test('mdc-banner', async ({ componentsPage }) => {
         { variant: BANNER_VARIANT.INFORMATIONAL, expectIcon: true, name: 'informational variant has icon' },
         { variant: BANNER_VARIANT.WARNING, expectIcon: true, name: 'warning variant has icon' },
         { variant: BANNER_VARIANT.ERROR, expectIcon: true, name: 'error variant has icon' },
-        { variant: BANNER_VARIANT.SUCCESS, expectIcon: true, name: 'success variant has icon' }
+        { variant: BANNER_VARIANT.SUCCESS, expectIcon: true, name: 'success variant has icon' },
       ];
 
-      const testVariant = async (testCase: { variant: typeof BANNER_VARIANT[keyof typeof BANNER_VARIANT]; expectIcon: boolean; name: string }) => {
-        const banner = await setup({ 
-          componentsPage, 
-          variant: testCase.variant, 
-          label: `${testCase.variant.charAt(0).toUpperCase() + testCase.variant.slice(1)} Banner`, 
-          secondaryLabel: 'Test secondary label' 
+      const testVariant = async (testCase: {
+        variant: (typeof BANNER_VARIANT)[keyof typeof BANNER_VARIANT];
+        expectIcon: boolean;
+        name: string;
+      }) => {
+        const banner = await setup({
+          componentsPage,
+          variant: testCase.variant,
+          label: `${testCase.variant.charAt(0).toUpperCase() + testCase.variant.slice(1)} Banner`,
+          secondaryLabel: 'Test secondary label',
         });
-        
+
         await expect(banner).toHaveAttribute('variant', testCase.variant);
         const icon = banner.locator('mdc-icon');
-        
+
         if (testCase.expectIcon) {
           await expect(icon).toBeVisible();
         } else {
@@ -206,13 +214,13 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        label: 'System Update'
+        label: 'System Update',
       });
-      
+
       const labelText = banner.locator('mdc-text').first();
       await expect(labelText).toBeVisible();
       await expect(labelText).toHaveText('System Update');
-      
+
       // No secondary label should be visible
       const secondaryLabelText = banner.locator('mdc-text').nth(1);
       await expect(secondaryLabelText).toHaveCount(0);
@@ -222,14 +230,14 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.INFORMATIONAL,
-        secondaryLabel: 'Some secondary label text'
+        secondaryLabel: 'Some secondary label text',
         // No label provided
       });
-      
+
       // No label should be visible
       const labelText = banner.locator('mdc-text').first();
       await expect(labelText).toHaveCount(0);
-      
+
       // No secondary label should be visible either
       const secondaryLabelText = banner.locator('mdc-text').nth(1);
       await expect(secondaryLabelText).toHaveCount(0);
@@ -240,12 +248,12 @@ test('mdc-banner', async ({ componentsPage }) => {
         componentsPage,
         variant: BANNER_VARIANT.SUCCESS,
         label: 'Main Label',
-        secondaryLabel: 'Supporting secondary label'
+        secondaryLabel: 'Supporting secondary label',
       });
-      
+
       const labelText = banner.locator('mdc-text').first();
       const secondaryLabelText = banner.locator('mdc-text').nth(1);
-      
+
       await expect(labelText).toBeVisible();
       await expect(labelText).toHaveText('Main Label');
       await expect(secondaryLabelText).toBeVisible();
@@ -256,9 +264,9 @@ test('mdc-banner', async ({ componentsPage }) => {
       const banner = await setup({
         componentsPage,
         variant: BANNER_VARIANT.CUSTOM,
-        label: 'Custom Banner'
+        label: 'Custom Banner',
       });
-      
+
       // Custom variant should not have a default icon
       const defaultIcon = banner.locator('mdc-icon');
       await expect(defaultIcon).toHaveCount(0);
@@ -282,31 +290,31 @@ test('mdc-banner', async ({ componentsPage }) => {
             <mdc-button id="second-action" variant="secondary">Second</mdc-button>
             <mdc-button id="third-action" variant="tertiary" prefix-icon="cancel-bold" size="20"></mdc-button>
           </div>
-        `
+        `,
       });
-      
+
       const beforeButton = componentsPage.page.locator('#before-banner');
       const afterButton = componentsPage.page.locator('#after-banner');
       const firstButton = banner.locator('#first-action');
       const secondButton = banner.locator('#second-action');
       const thirdButton = banner.locator('#third-action');
-      
+
       // Start from before button
       await componentsPage.actionability.pressTab();
       await expect(beforeButton).toBeFocused();
-      
+
       // Tab to first action
       await componentsPage.actionability.pressTab();
       await expect(firstButton).toBeFocused();
-      
+
       // Tab to second action
       await componentsPage.actionability.pressTab();
       await expect(secondButton).toBeFocused();
-      
+
       // Tab to third action
       await componentsPage.actionability.pressTab();
       await expect(thirdButton).toBeFocused();
-      
+
       // Tab out of banner to after button
       await componentsPage.actionability.pressTab();
       await expect(afterButton).toBeFocused();
@@ -325,31 +333,31 @@ test('mdc-banner', async ({ componentsPage }) => {
             <mdc-button id="btn-2" variant="secondary">Button 2</mdc-button>
             <mdc-button id="btn-3" variant="tertiary">Button 3</mdc-button>
           </div>
-        `
+        `,
       });
-      
+
       const beforeButton = componentsPage.page.locator('#before-banner');
       const afterButton = componentsPage.page.locator('#after-banner');
       const button1 = banner.locator('#btn-1');
       const button2 = banner.locator('#btn-2');
       const button3 = banner.locator('#btn-3');
-      
+
       // Start from after button (outside the banner)
       await afterButton.focus();
       await expect(afterButton).toBeFocused();
-      
+
       // Shift+Tab should go to the last button in banner (btn-3)
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button3).toBeFocused();
-      
+
       // Shift+Tab to btn-2
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button2).toBeFocused();
-      
+
       // Shift+Tab to btn-1
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(button1).toBeFocused();
-      
+
       // Shift+Tab again should move to before button (outside banner)
       await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(beforeButton).toBeFocused();
@@ -361,20 +369,20 @@ test('mdc-banner', async ({ componentsPage }) => {
         variant: BANNER_VARIANT.INFORMATIONAL,
         label: 'Non-Interactive Banner',
         secondaryLabel: 'Only text content, no buttons',
-        addFocusContext: true
+        addFocusContext: true,
       });
-      
+
       const beforeButton = componentsPage.page.locator('#before-banner');
       const afterButton = componentsPage.page.locator('#after-banner');
-      
+
       // Start from before button
       await componentsPage.actionability.pressTab();
       await expect(beforeButton).toBeFocused();
-      
+
       // Tab should skip banner and go directly to after button
       await componentsPage.actionability.pressTab();
       await expect(afterButton).toBeFocused();
-      
+
       // Banner itself should not be focused
       await expect(banner).not.toBeFocused();
     });
@@ -395,20 +403,20 @@ test('mdc-banner', async ({ componentsPage }) => {
             <mdc-button id="primary-action" variant="primary">Primary</mdc-button>
             <mdc-button id="close-action" variant="tertiary" prefix-icon="cancel-bold" size="20">Close</mdc-button>
           </div>
-        `
+        `,
       });
-      
+
       const primaryButton = banner.locator('#primary-action');
       const closeButton = banner.locator('#close-action');
-      
+
       await expect(primaryButton).toBeVisible();
       await expect(closeButton).toBeVisible();
-      
+
       // Test that buttons are clickable and trigger click events
       const primaryClickPromise = componentsPage.waitForEvent(primaryButton, 'click');
       await primaryButton.click();
       await primaryClickPromise;
-      
+
       const closeClickPromise = componentsPage.waitForEvent(closeButton, 'click');
       await closeButton.click();
       await closeClickPromise;
@@ -429,20 +437,20 @@ test('mdc-banner', async ({ componentsPage }) => {
           <div slot="trailing-actions">
             <mdc-button id="action-btn" variant="primary">Action</mdc-button>
           </div>
-        `
+        `,
       });
-      
+
       const actionButton = banner.locator('#action-btn');
-      
+
       // Tab to button
       await componentsPage.actionability.pressTab();
       await expect(actionButton).toBeFocused();
-      
+
       // Test keyboard activation with Enter and Space - ensure click events are triggered
       const enterClickPromise = componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Enter');
       await enterClickPromise;
-      
+
       const spaceClickPromise = componentsPage.waitForEvent(actionButton, 'click');
       await actionButton.press('Space');
       await spaceClickPromise;
