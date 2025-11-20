@@ -95,5 +95,37 @@ if [ $DIFF_EXIT -eq 0 ]; then
   exit 1
 else
   echo "dist/ changed from previous commit - will publish"
+  echo ""
+  echo "Changed files in dist/:"
+  echo "$DIFF_OUTPUT" | while IFS= read -r line; do
+    # Extract just the filename relative to dist/
+    if [[ "$line" =~ "Only in" ]]; then
+      echo "  $line"
+    elif [[ "$line" =~ "differ" ]]; then
+      # Extract the file path and make it relative to dist/
+      file=$(echo "$line" | sed "s|Files .*/dist/||" | sed "s| and .*/dist/.*||" | sed "s| differ||")
+      echo "  Modified: $file"
+    fi
+  done
+  
+  echo ""
+  echo "=== Line-by-line changes (first 3 files) ==="
+  
+  # Show detailed diffs for first 3 changed files
+  COUNT=0
+  while IFS= read -r line; do
+    if [[ $line =~ ^Files\ (.+)\ and\ (.+)\ differ$ ]]; then
+      FILE1="${BASH_REMATCH[1]}"
+      FILE2="${BASH_REMATCH[2]}"
+      COUNT=$((COUNT + 1))
+      
+      if [ $COUNT -le 3 ]; then
+        echo ""
+        echo "--- File $COUNT: $(basename "$FILE2") ---"
+        diff -u "$FILE1" "$FILE2" 2>/dev/null | head -n 100 || echo "(binary file or diff failed)"
+      fi
+    fi
+  done <<< "$DIFF_OUTPUT"
+  
   exit 0
 fi
