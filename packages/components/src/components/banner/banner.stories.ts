@@ -13,7 +13,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 
 import { BANNER_VARIANT } from './banner.constants';
-// temp2
+// temp3
 const render = (args: Args) => html`
   <mdc-banner
     variant="${ifDefined(args.variant)}"
