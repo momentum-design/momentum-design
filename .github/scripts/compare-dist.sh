@@ -63,13 +63,17 @@ fi
 
 echo "Building previous commit..."
 cd "$PREVIOUS_WORKTREE"
+
+echo "Installing dependencies for previous commit..."
 if ! yarn install --frozen-lockfile > /dev/null 2>&1; then
-  echo "WARNING: Failed to install dependencies for previous commit - will publish"
+  echo "ERROR: Failed to install dependencies for previous commit - will publish (cannot verify changes)"
   exit 0
 fi
 
-if ! yarn workspaces foreach -R --topological-dev --from "$PKG" run build > /dev/null 2>&1; then
-  echo "WARNING: Failed to build previous commit - will publish"
+echo "Building all packages in previous commit..."
+if ! yarn build > /dev/null 2>&1; then
+  echo "ERROR: Failed to build previous commit - will publish (cannot verify changes)"
+  echo "Note: This is expected if the previous commit has incompatible dependencies or build errors"
   exit 0
 fi
 
@@ -91,7 +95,29 @@ if [ $DIFF_EXIT -eq 0 ]; then
   exit 1
 else
   echo "dist/ changed from previous commit - will publish"
-  echo "Changes detected:"
-  echo "$DIFF_OUTPUT" | head -n 10 || true
+  echo ""
+  echo "=== CHANGED FILES ==="
+  echo "$DIFF_OUTPUT" | head -n 20
+  echo ""
+  echo "=== DETAILED DIFFS (first 3 files) ==="
+  
+  # Show detailed diffs for first 3 changed files
+  COUNT=0
+  while IFS= read -r line; do
+    if [[ $line =~ ^Files\ (.+)\ and\ (.+)\ differ$ ]]; then
+      FILE1="${BASH_REMATCH[1]}"
+      FILE2="${BASH_REMATCH[2]}"
+      COUNT=$((COUNT + 1))
+      
+      if [ $COUNT -le 3 ]; then
+        echo ""
+        echo "--- File $COUNT: $(basename "$FILE2") ---"
+        # Show diff with context, limited output
+        diff -u "$FILE1" "$FILE2" 2>/dev/null | head -n 50 || echo "(binary file or diff failed)"
+      fi
+    fi
+  done <<< "$DIFF_OUTPUT"
+  
+  echo ""
   exit 0
 fi

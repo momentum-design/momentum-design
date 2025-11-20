@@ -76,9 +76,8 @@ module.exports = {
           for (const dec of mod.declarations ?? []) {
             if (dec.kind === 'class') {
               for (const member of dec.members ?? []) {
-                if (member.inheritedFrom) {
-                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
-                }
+                // Remove inheritedFrom metadata as it's non-deterministic (temporary fix)
+                delete member.inheritedFrom;
               }
               if (dec.superClass?.module) {
                 dec.superClass.module = replace(dec.superClass.module, terms);
@@ -129,7 +128,7 @@ module.exports = {
           customElementsManifest.modules.forEach(module => {
             if (module.declarations) {
               module.declarations.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-              
+
               // Sort members within each declaration for deterministic output
               module.declarations.forEach(declaration => {
                 if (declaration.members) {

@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import type { IconNames } from '../icon/icon.types';
 // Test comment - should not affect dist/
+// Testing compare-dist.sh script with small change
 
 import { TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
 import type { BadgeType, IconVariant } from './badge.types';
