@@ -95,29 +95,5 @@ if [ $DIFF_EXIT -eq 0 ]; then
   exit 1
 else
   echo "dist/ changed from previous commit - will publish"
-  echo ""
-  echo "=== CHANGED FILES ==="
-  echo "$DIFF_OUTPUT" | head -n 20
-  echo ""
-  echo "=== DETAILED DIFFS (first 3 files) ==="
-  
-  # Show detailed diffs for first 3 changed files
-  COUNT=0
-  while IFS= read -r line; do
-    if [[ $line =~ ^Files\ (.+)\ and\ (.+)\ differ$ ]]; then
-      FILE1="${BASH_REMATCH[1]}"
-      FILE2="${BASH_REMATCH[2]}"
-      COUNT=$((COUNT + 1))
-      
-      if [ $COUNT -le 3 ]; then
-        echo ""
-        echo "--- File $COUNT: $(basename "$FILE2") ---"
-        # Show diff with context, limited output
-        diff -u "$FILE1" "$FILE2" 2>/dev/null | head -n 50 || echo "(binary file or diff failed)"
-      fi
-    fi
-  done <<< "$DIFF_OUTPUT"
-  
-  echo ""
   exit 0
 fi
