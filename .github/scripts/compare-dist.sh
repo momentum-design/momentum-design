@@ -25,26 +25,19 @@ PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
 echo "Current commit: $CURRENT_COMMIT"
 echo "Previous commit: $PREVIOUS_COMMIT"
 
-# Create temporary directory and setup cleanup
-TMP=$(mktemp -d)
+# Use persistent worktree location (created by build-previous-commit.sh)
 REPO_ROOT=$(git rev-parse --show-toplevel)
-PREVIOUS_WORKTREE="$TMP/previous"
-
-# Cleanup function to remove worktree and temp directory
-cleanup() {
-  cd "$REPO_ROOT" 2>/dev/null || true
-  git worktree remove "$PREVIOUS_WORKTREE" --force 2>/dev/null || true
-  rm -rf "$TMP" 2>/dev/null || true
-}
-trap cleanup EXIT
+PREVIOUS_WORKTREE="$REPO_ROOT/.git-worktree-$PREVIOUS_COMMIT"
 
 # Get the package directory relative to repo root
 PKG_REL_PATH="${PKG_PATH#$REPO_ROOT/}"
 
-echo "Setting up worktree for previous commit..."
-
-# Create worktree for previous commit
-git worktree add --detach "$PREVIOUS_WORKTREE" "$PREVIOUS_COMMIT" > /dev/null 2>&1
+# Check if worktree exists
+if [ ! -d "$PREVIOUS_WORKTREE" ]; then
+  echo "ERROR: Previous commit worktree not found at $PREVIOUS_WORKTREE"
+  echo "Make sure build-previous-commit.sh was run first"
+  exit 2
+fi
 
 # Check current commit dist (already built by CI)
 CURRENT_DIST="$PKG_PATH/dist"
