@@ -7,6 +7,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (skip actual npm publish)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
@@ -236,7 +245,12 @@ jobs:
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
-        run: yarn workspace ${{ matrix.package }} publish:npmjs
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would publish ${{ matrix.package }}"
+          else
+            yarn workspace ${{ matrix.package }} publish:npmjs
+          fi
 
   dispatch-telemetry:
     name: ( ${{ matrix.package }} ) Dispatch Telemetry
@@ -275,8 +289,14 @@ jobs:
       - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
+      
       - name: Dispatch Telemetry ( ${{ matrix.package }} )
-        run: yarn md-automation -- --command dispatch-telemetry --packages ${{ matrix.package }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would dispatch telemetry for ${{ matrix.package }}"
+          else
+            yarn md-automation -- --command dispatch-telemetry --packages ${{ matrix.package }}
+          fi
         env:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
@@ -319,6 +339,11 @@ jobs:
          run: git fetch origin main --unshallow
 
        - name: Create Release ( ${{ matrix.package }} )
-         run: yarn md-automation -- --command create-release --packages ${{ matrix.package }} --since origin/main
+         run: |
+           if [ "${{ inputs.dry_run }}" = "true" ]; then
+             echo "DRY RUN: Would create release for ${{ matrix.package }}"
+           else
+             yarn md-automation -- --command create-release --packages ${{ matrix.package }} --since origin/main
+           fi
          env:
            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
