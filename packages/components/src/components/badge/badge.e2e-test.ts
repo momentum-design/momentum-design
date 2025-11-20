@@ -5,7 +5,7 @@ import type { IconNames } from '../icon/icon.types';
 
 import { TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
 import type { BadgeType, IconVariant } from './badge.types';
-
+// temp
 type SetupOptions = {
   componentsPage: ComponentsPage;
   type?: BadgeType;

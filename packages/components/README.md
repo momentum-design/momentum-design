@@ -1,4 +1,4 @@
-# @momentum-design/components
+# @momentum-design/components - readme
 
 [![license: mit](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/main/LICENSE)
 ![State](https://img.shields.io/badge/State-Alpha-blue?style=flat-square)
