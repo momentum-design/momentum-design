@@ -76,9 +76,8 @@ module.exports = {
           for (const dec of mod.declarations ?? []) {
             if (dec.kind === 'class') {
               for (const member of dec.members ?? []) {
-                if (member.inheritedFrom) {
-                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
-                }
+                // Remove inheritedFrom metadata as it's non-deterministic
+                delete member.inheritedFrom;
               }
               if (dec.superClass?.module) {
                 dec.superClass.module = replace(dec.superClass.module, terms);
