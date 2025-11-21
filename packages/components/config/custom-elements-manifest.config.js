@@ -1,5 +1,5 @@
 const { pascalCase } = require('pascal-case');
-
+/// temp
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 function replace(string, terms) {
