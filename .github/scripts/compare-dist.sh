@@ -25,26 +25,19 @@ PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
 echo "Current commit: $CURRENT_COMMIT"
 echo "Previous commit: $PREVIOUS_COMMIT"
 
-# Create temporary directory and setup cleanup
-TMP=$(mktemp -d)
+# Use persistent worktree location (created by build-previous-commit.sh)
 REPO_ROOT=$(git rev-parse --show-toplevel)
-PREVIOUS_WORKTREE="$TMP/previous"
-
-# Cleanup function to remove worktree and temp directory
-cleanup() {
-  cd "$REPO_ROOT" 2>/dev/null || true
-  git worktree remove "$PREVIOUS_WORKTREE" --force 2>/dev/null || true
-  rm -rf "$TMP" 2>/dev/null || true
-}
-trap cleanup EXIT
+PREVIOUS_WORKTREE="$REPO_ROOT/.git-worktree-$PREVIOUS_COMMIT"
 
 # Get the package directory relative to repo root
 PKG_REL_PATH="${PKG_PATH#$REPO_ROOT/}"
 
-echo "Setting up worktree for previous commit..."
-
-# Create worktree for previous commit
-git worktree add --detach "$PREVIOUS_WORKTREE" "$PREVIOUS_COMMIT" > /dev/null 2>&1
+# Check if worktree exists
+if [ ! -d "$PREVIOUS_WORKTREE" ]; then
+  echo "ERROR: Previous commit worktree not found at $PREVIOUS_WORKTREE"
+  echo "Make sure build-previous-commit.sh was run first"
+  exit 2
+fi
 
 # Check current commit dist (already built by CI)
 CURRENT_DIST="$PKG_PATH/dist"
@@ -53,27 +46,11 @@ if [ ! -d "$CURRENT_DIST" ]; then
   exit 2
 fi
 
-# Build previous commit
+# Check previous commit dist (should be built by workflow)
 PREVIOUS_PKG_PATH="$PREVIOUS_WORKTREE/$PKG_REL_PATH"
 
 if [ ! -d "$PREVIOUS_PKG_PATH" ]; then
   echo "WARNING: Package doesn't exist in previous commit - will publish (new package)"
-  exit 0
-fi
-
-echo "Building previous commit..."
-cd "$PREVIOUS_WORKTREE"
-
-echo "Installing dependencies for previous commit..."
-if ! yarn install --frozen-lockfile > /dev/null 2>&1; then
-  echo "ERROR: Failed to install dependencies for previous commit - will publish (cannot verify changes)"
-  exit 0
-fi
-
-echo "Building all packages in previous commit..."
-if ! yarn build > /dev/null 2>&1; then
-  echo "ERROR: Failed to build previous commit - will publish (cannot verify changes)"
-  echo "Note: This is expected if the previous commit has incompatible dependencies or build errors"
   exit 0
 fi
 
@@ -83,10 +60,26 @@ if [ ! -d "$PREVIOUS_DIST" ]; then
   exit 0
 fi
 
+# Check if custom-elements-manifest.config.js changed between commits
+CUSTOM_ELEMENTS_CONFIG="$PKG_REL_PATH/config/custom-elements-manifest.config.js"
+set +e
+git diff --quiet "$PREVIOUS_COMMIT" "$CURRENT_COMMIT" -- "$CUSTOM_ELEMENTS_CONFIG"
+CONFIG_CHANGED=$?
+set -e
+
+EXCLUDE_CUSTOM_ELEMENTS=""
+if [ $CONFIG_CHANGED -eq 0 ]; then
+  # Config hasn't changed, so exclude custom-elements.json (non-deterministic)
+  EXCLUDE_CUSTOM_ELEMENTS='--exclude=custom-elements.json'
+  echo "custom-elements-manifest.config.js unchanged - excluding custom-elements.json from comparison"
+else
+  echo "custom-elements-manifest.config.js changed - including custom-elements.json in comparison"
+fi
+
 # Compare the dist directories (exclude tsbuildinfo - build cache files)
 echo "Comparing current dist with previous commit dist..."
 set +e
-DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
+DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" $EXCLUDE_CUSTOM_ELEMENTS "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
 DIFF_EXIT=$?
 set -e
 
@@ -95,5 +88,18 @@ if [ $DIFF_EXIT -eq 0 ]; then
   exit 1
 else
   echo "dist/ changed from previous commit - will publish"
+  echo ""
+  echo "Changed files in dist/:"
+  echo "$DIFF_OUTPUT" | while IFS= read -r line; do
+    # Extract just the filename relative to dist/
+    if [[ "$line" =~ "Only in" ]]; then
+      echo "  $line"
+    elif [[ "$line" =~ "differ" ]]; then
+      # Extract the file path and make it relative to dist/
+      file=$(echo "$line" | sed "s|Files .*/dist/||" | sed "s| and .*/dist/.*||" | sed "s| differ||")
+      echo "  Modified: $file"
+    fi
+  done
+  
   exit 0
 fi

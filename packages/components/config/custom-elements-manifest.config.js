@@ -76,8 +76,9 @@ module.exports = {
           for (const dec of mod.declarations ?? []) {
             if (dec.kind === 'class') {
               for (const member of dec.members ?? []) {
-                // Remove inheritedFrom metadata as potential fix for inconsistent CEM output
-                delete member.inheritedFrom;
+                if (member.inheritedFrom) {
+                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
+                }
               }
               if (dec.superClass?.module) {
                 dec.superClass.module = replace(dec.superClass.module, terms);

@@ -127,6 +127,7 @@ jobs:
       - name: Filter Packages with Dist Changes
         id: filter-packages
         run: |
+          bash .github/scripts/build-previous-commit.sh
           CHANGED_PACKAGES='${{ steps.get-packages.outputs.packages }}'
           echo "Changed packages: $CHANGED_PACKAGES"
           
@@ -150,7 +151,16 @@ jobs:
               FILTERED=$(echo "$FILTERED" | jq --arg pkg "$PKG" '. + [$pkg]')
             fi
           done
+          PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
+          REPO_ROOT=$(git rev-parse --show-toplevel)
+          PREVIOUS_WORKTREE="$REPO_ROOT/.git-worktree-$PREVIOUS_COMMIT"
           
+          if [ -d "$PREVIOUS_WORKTREE" ]; then
+            echo "Cleaning up worktree: $PREVIOUS_WORKTREE"
+            git worktree remove "$PREVIOUS_WORKTREE" --force || rm -rf "$PREVIOUS_WORKTREE"
+          else
+            echo "No worktree to clean up"
+          fi
           echo "packages=$(echo $FILTERED | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Display Filtered Packages
