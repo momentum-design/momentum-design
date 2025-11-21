@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
@@ -15,22 +16,12 @@ const render = (args: Args) => html`
     counter="${args.counter}"
     max-counter="${args['max-counter']}"
     variant="${args.variant}"
-    ?overlay=${args.overlay}
+    ?overlay="${args.overlay}"
     aria-label="${args['aria-label']}"
   ></mdc-badge>
 `;
 const renderOverlay = (args: Args) => html`
-  <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">
-    <mdc-badge
-      type="${args.type}"
-      icon-name="${args['icon-name']}"
-      counter="${args.counter}"
-      max-counter="${args['max-counter']}"
-      variant="${args.variant}"
-      ?overlay=${args.overlay}
-      aria-label="${args['aria-label']}"
-    ></mdc-badge>
-  </div>
+  <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">${render(args)}</div>
 `;
 
 const meta: Meta = {
@@ -66,7 +57,8 @@ const meta: Meta = {
         arg: 'type',
         eq: TYPE.ICON,
       },
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     variant: {
       if: {
@@ -104,7 +96,6 @@ export const Dot: StoryObj = {
     variant: DEFAULTS.VARIANT,
     counter: 1,
     'max-counter': MAX_COUNTER_LIST[1],
-    overlay: false,
   },
 };
 
@@ -113,7 +104,6 @@ export const Icon: StoryObj = {
     type: TYPE.ICON,
     'icon-name': 'placeholder-bold',
     variant: ICON_VARIANT.PRIMARY,
-    overlay: false,
   },
 };
 
@@ -122,21 +112,18 @@ export const Counter: StoryObj = {
     type: TYPE.COUNTER,
     counter: 10,
     'max-counter': MAX_COUNTER_LIST[1],
-    overlay: false,
   },
 };
 
 export const Success: StoryObj = {
   args: {
     type: TYPE.SUCCESS,
-    overlay: false,
   },
 };
 
 export const Warning: StoryObj = {
   args: {
     type: TYPE.WARNING,
-    overlay: false,
   },
 };
 
@@ -155,4 +142,29 @@ export const Overlay: StoryObj = {
     'max-counter': MAX_COUNTER_LIST[2],
     overlay: true,
   },
+};
+
+export const AllVariants: StoryObj = {
+  render: () => html`
+    <h5>Without overlay</h5>
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 10rem;">
+      <mdc-badge type="${TYPE.DOT}"></mdc-badge>
+      <mdc-badge type="${TYPE.ICON}" icon-name="placeholder-bold"></mdc-badge>
+      <mdc-badge type="${TYPE.COUNTER}" counter="10"></mdc-badge>
+      <mdc-badge type="${TYPE.SUCCESS}"></mdc-badge>
+      <mdc-badge type="${TYPE.WARNING}"></mdc-badge>
+      <mdc-badge type="${TYPE.ERROR}"></mdc-badge>
+    </div>
+    <h5>With overlay</h5>
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; width: 10rem; background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;"
+    >
+      <mdc-badge type="${TYPE.DOT}" overlay></mdc-badge>
+      <mdc-badge type="${TYPE.ICON}" icon-name="placeholder-bold" overlay></mdc-badge>
+      <mdc-badge type="${TYPE.COUNTER}" counter="10" overlay></mdc-badge>
+      <mdc-badge type="${TYPE.SUCCESS}" overlay></mdc-badge>
+      <mdc-badge type="${TYPE.WARNING}" overlay></mdc-badge>
+      <mdc-badge type="${TYPE.ERROR}" overlay></mdc-badge>
+    </div>
+  `,
 };
