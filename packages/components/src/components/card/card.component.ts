@@ -33,6 +33,7 @@ import styles from './card.styles';
  *
  * Interactive card additionally supports 'promotional' variant that represents the border styling - 'promotional'.
  *
+ * @slot image - This slot is for overriding the image content of the card
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
