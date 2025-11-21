@@ -77,7 +77,7 @@ module.exports = {
             if (dec.kind === 'class') {
               for (const member of dec.members ?? []) {
                 if (member.inheritedFrom) {
-                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
+                  delete member.inheritedFrom;
                 }
               }
               if (dec.superClass?.module) {
