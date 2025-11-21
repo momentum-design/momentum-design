@@ -1,5 +1,5 @@
 const { pascalCase } = require('pascal-case');
-/// temp
+
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 function replace(string, terms) {
@@ -77,7 +77,7 @@ module.exports = {
             if (dec.kind === 'class') {
               for (const member of dec.members ?? []) {
                 if (member.inheritedFrom) {
-                  delete member.inheritedFrom;
+                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
                 }
               }
               if (dec.superClass?.module) {
