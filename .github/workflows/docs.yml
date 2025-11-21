@@ -71,7 +71,7 @@ jobs:
         run: PUBLIC_ALGOLIA_APP_ID=${{ env.PUBLIC_ALGOLIA_APP_ID }} PUBLIC_ALGOLIA_INDEX_NAME=${{ env.PUBLIC_ALGOLIA_INDEX_NAME }} PUBLIC_ALGOLIA_DOC_SEARCH=${{ env.PUBLIC_ALGOLIA_DOC_SEARCH }} yarn build
         working-directory: ${{ env.BUILD_PATH }}
         
-      - name: Cache Documentation
+      - name: Cache Distributions
         uses: actions/cache@v4
         with:
           path: '**/dist'
@@ -93,7 +93,7 @@ jobs:
       - name: Uncache Distributions
         uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
+          path: '**/dist'
           key: dist-${{ env.rid }}
       
       - name: Process Cached Docs
