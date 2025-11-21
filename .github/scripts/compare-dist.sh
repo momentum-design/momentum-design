@@ -60,10 +60,26 @@ if [ ! -d "$PREVIOUS_DIST" ]; then
   exit 0
 fi
 
-# Compare the dist directories (exclude tsbuildinfo - build cache files, custom-elements.json - non-deterministic)
+# Check if custom-elements-manifest.config.js changed between commits
+CUSTOM_ELEMENTS_CONFIG="$PKG_REL_PATH/config/custom-elements-manifest.config.js"
+set +e
+git diff --quiet "$PREVIOUS_COMMIT" "$CURRENT_COMMIT" -- "$CUSTOM_ELEMENTS_CONFIG"
+CONFIG_CHANGED=$?
+set -e
+
+EXCLUDE_CUSTOM_ELEMENTS=""
+if [ $CONFIG_CHANGED -eq 0 ]; then
+  # Config hasn't changed, so exclude custom-elements.json (non-deterministic)
+  EXCLUDE_CUSTOM_ELEMENTS='--exclude=custom-elements.json'
+  echo "custom-elements-manifest.config.js unchanged - excluding custom-elements.json from comparison"
+else
+  echo "custom-elements-manifest.config.js changed - including custom-elements.json in comparison"
+fi
+
+# Compare the dist directories (exclude tsbuildinfo - build cache files)
 echo "Comparing current dist with previous commit dist..."
 set +e
-DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" --exclude="custom-elements.json" "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
+DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" $EXCLUDE_CUSTOM_ELEMENTS "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
 DIFF_EXIT=$?
 set -e
 
