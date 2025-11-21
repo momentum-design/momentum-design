@@ -60,10 +60,10 @@ if [ ! -d "$PREVIOUS_DIST" ]; then
   exit 0
 fi
 
-# Compare the dist directories (exclude tsbuildinfo - build cache files)
+# Compare the dist directories (exclude tsbuildinfo - build cache files, custom-elements.json - non-deterministic)
 echo "Comparing current dist with previous commit dist..."
 set +e
-DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
+DIFF_OUTPUT=$(diff -qr --exclude="*.tsbuildinfo" --exclude="custom-elements.json" "$PREVIOUS_DIST" "$CURRENT_DIST" 2>&1)
 DIFF_EXIT=$?
 set -e
 
