@@ -74,8 +74,8 @@ jobs:
       - name: Cache Documentation
         uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
-          key: docs-${{ env.rid }}
+          path: '**/dist'
+          key: dist-${{ env.rid }}
 
   deploy:
     name: Deploy
@@ -90,14 +90,22 @@ jobs:
         run: |
           rm -rf ${{ env.BUILD_PATH }}/docs
 
-      - name: Uncache Documentation
+      - name: Uncache Distributions
         uses: actions/cache@v4
         with:
           path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
-          key: docs-${{ env.rid }}
+          key: dist-${{ env.rid }}
       
       - name: Process Cached Docs
         run: cp -avr ${{ env.BUILD_PATH }}/packages/documentation/dist docs/
+
+      - name: Process CDN Items
+        run: |
+          mkdir -p docs/cdn/
+          cp -avr ${{ env.BUILD_PATH }}/packages/components/dist docs/cdn/components/
+          mkdir -p docs/cdn/assets/
+          cp -avr ${{ env.BUILD_PATH }}/packages/assets/fonts/dist docs/cdn/assets/fonts/
+          cp -avr ${{ env.BUILD_PATH }}/packages/assets/tokens/dist docs/cdn/assets/tokens/
 
       - name: Generate GitHub Pages Config
         run: |
