@@ -33,9 +33,8 @@ import { DEFAULTS } from './announcementdialog.constants';
  *
  * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
  * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
- * - Reference docs for more info: https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions
+ * - Reference docs for more info: [boolean-attribute-expressions](https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions)
  *
- * @dependency mdc-button
  * @dependency mdc-illustration
  * @dependency mdc-text
  *
