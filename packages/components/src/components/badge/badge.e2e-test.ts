@@ -15,7 +15,7 @@ type SetupOptions = {
   maxCounter?: number;
   ariaLabel?: string;
 };
-// --- IGNORE ---
+// ---  ---
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 
+// test1
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
