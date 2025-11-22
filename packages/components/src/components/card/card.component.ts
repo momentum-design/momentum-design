@@ -109,7 +109,7 @@ class Card extends CardComponentMixin(FooterMixin(Component)) {
 
   public override render() {
     return html`
-      ${this.renderImage()}
+      <slot name="image"> ${this.renderImage()} </slot>
       <div part="body">
         ${this.renderHeader()}
         <div part="text-content">
