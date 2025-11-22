@@ -110,9 +110,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
         return nothing;
       }
       return html`<div part="image-wrapper">
-        <slot name="image">
-          <img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" />
-        </slot>
+        <img part="image" src="${this.imageSrc}" alt="${this.imageAlt}" />
       </div>`;
     }
 
