@@ -44,8 +44,8 @@ class Accessibility {
    * to the test report
    * @param accessibilityScanResults - scan results
    */
-  async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
-    const fileName = `accessibility-scan-results-${testResultsName}.html`;
+  async attachA11yResults(testResultsName: string, browserName: string, accessibilityScanResults: any) {
+    const fileName = `accessibility-scan-results-${testResultsName}-${browserName}.html`;
 
     // todo: add option to suppress the output of the report if
     // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
@@ -79,7 +79,9 @@ class Accessibility {
       inclusions?: string[];
     } = {},
   ) {
-    console.log('checking for ally violations on ', testResultsName);
+    const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
+    // eslint-disable-next-line no-console
+    console.log('checking for ally violations on: ', testResultsName, ' browser on: ', browserName);
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
@@ -93,7 +95,7 @@ class Accessibility {
 
     const accessibilityScanResults = await accessibilityScanner.analyze();
 
-    await this.attachA11yResults(testResultsName, accessibilityScanResults);
+    await this.attachA11yResults(testResultsName, browserName, accessibilityScanResults);
 
     if (shouldCheck) {
       expect(accessibilityScanResults.violations).toEqual([]);
