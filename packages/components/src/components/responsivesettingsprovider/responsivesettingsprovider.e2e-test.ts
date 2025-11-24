@@ -137,6 +137,7 @@ test.describe.parallel('mdc-responsivesettingsprovider', () => {
       type: 'standalone',
       responsiveSettings: {},
       expectedResponsiveSettings: {
+        id: 'local',
         media: 'unknown',
         forceFullscreenDialog: false,
         popoverPositioning: 'float',
@@ -148,11 +149,13 @@ test.describe.parallel('mdc-responsivesettingsprovider', () => {
       componentsPage,
       type: 'standalone',
       responsiveSettings: {
+        id: 'local',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
       },
       expectedResponsiveSettings: {
+        id: 'local',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
@@ -169,12 +172,14 @@ test.describe.parallel('mdc-responsivesettingsprovider', () => {
         popoverPositioning: 'dialog',
       },
       expectedResponsiveSettings: {
+        id: 'local',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
       },
       nestedResponsiveSettings: {},
       expectedNestedResponsiveSettings: {
+        id: 'nested',
         media: 'unknown',
         forceFullscreenDialog: false,
         popoverPositioning: 'float',
@@ -187,16 +192,19 @@ test.describe.parallel('mdc-responsivesettingsprovider', () => {
       type: 'nested',
       responsiveSettings: {},
       expectedResponsiveSettings: {
+        id: 'local',
         media: 'unknown',
         forceFullscreenDialog: false,
         popoverPositioning: 'float',
       },
       nestedResponsiveSettings: {
+        id: 'local',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
       },
       expectedNestedResponsiveSettings: {
+        id: 'nested',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
@@ -213,16 +221,19 @@ test.describe.parallel('mdc-responsivesettingsprovider', () => {
         popoverPositioning: 'dialog',
       },
       expectedResponsiveSettings: {
+        id: 'local',
         media: 'desktop',
         forceFullscreenDialog: false,
         popoverPositioning: 'dialog',
       },
       nestedResponsiveSettings: {
+        id: 'local',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',
       },
       expectedNestedResponsiveSettings: {
+        id: 'nested',
         media: 'mobile',
         forceFullscreenDialog: true,
         popoverPositioning: 'dialog',

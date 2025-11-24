@@ -1,4 +1,8 @@
 import { ROLE } from '../../utils/roles';
+import {
+  ResponsivePopoverPositions,
+  type ResponsiveSettings,
+} from '../responsivesettingsprovider/responsivesettingsprovider.types';
 
 import type Popover from './popover.component';
 import { PopoverPortal, TAG_NAME as POPOVER_PORTAL_TAG_NAME } from './popover.portal.component';
@@ -102,7 +106,11 @@ export class PopoverUtils {
    * If the `appendTo` property is set, finds the corresponding
    * DOM element by its ID, and appends this popover as a child of that element.
    */
-  setupAppendTo() {
+  setupAppendTo(responsiveSettings: ResponsiveSettings | undefined) {
+    if (!this.popover.appendTo && responsiveSettings?.popoverPositioning === 'dialog') {
+      this.popover.appendTo = responsiveSettings.id;
+    }
+
     if (this.popover.appendTo) {
       const appendToEl = document.getElementById(this.popover.appendTo);
       if (appendToEl && !Array.from(appendToEl.children).includes(this.popover)) {
@@ -134,7 +142,7 @@ export class PopoverUtils {
    * Sets up the aria labels
    */
   updateAriaLabels() {
-    if (this.popover.interactive && this.popover.role) {
+    if ((this.popover.interactive || this.popover.responsivePopoverPositioning === 'dialog') && this.popover.role) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel =
           this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
@@ -221,5 +229,32 @@ export class PopoverUtils {
       left: `${x}px`,
       top: `${y}px`,
     });
+  }
+
+  /**
+   * Sets up the responsive popover positioning based on the previous and new positioning values.
+   *
+   * @param newPositioning - The new popover positioning.
+   * @param responsiveSettings - The responsive settings context.
+   */
+  async setupResponsivePopoverPositioning(
+    newPositioning: ResponsivePopoverPositions,
+    responsiveSettings: undefined | ResponsiveSettings,
+  ) {
+    // Close the popovers when changing positioning to avoid layout issues
+    this.popover.hide();
+
+    await this.popover.updateComplete;
+
+    // Enable dialog behavior
+    // Flatten the popover structure via appendTo to make them hidden independently
+    if (newPositioning === 'dialog' && !this.popover.appendTo && this.popover) {
+      this.popover.appendTo = responsiveSettings?.id;
+    }
+
+    // Disable dialog behavior
+    if (newPositioning !== 'dialog' && this.popover.appendTo === responsiveSettings?.id) {
+      this.popover.appendTo = undefined;
+    }
   }
 }

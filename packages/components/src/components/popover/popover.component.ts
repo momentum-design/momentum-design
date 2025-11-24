@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -10,6 +10,12 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
+import ResponsiveSettingsProvider from '../responsivesettingsprovider';
+import providerUtils from '../../utils/provider';
+import ResponsiveSettingsContext from '../responsivesettingsprovider/responsiveSettingsContext';
+import { ResponsivePopoverPositions } from '../responsivesettingsprovider/responsivesettingsprovider.types';
+import { TYPE } from '../text/text.constants';
+import { getAriaLabel } from '../../utils/aria';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -65,7 +71,13 @@ import { PopoverUtils } from './popover.utils';
  * ```
  * Note the wrapper <div> around the Popover component (React.Fragment does not work).
  *
+ * ### Responsive popover positioning
+ *
+ * With <mdc-responsivesettingsprovider> context provider, popover can change its positioning and behavior.
+ * More details in the provider's documentation.
+ *
  * @dependency mdc-button
+ * @dependency mdc-text
  *
  * @tagname mdc-popover
  *
@@ -91,8 +103,17 @@ import { PopoverUtils } from './popover.utils';
  * @csspart popover-close - The close button of the popover.
  * @csspart popover-content - The content of the popover.
  * @csspart popover-hover-bridge - The hover bridge of the popover.
+ * @csspart popover-heading - Heading of the popover, available only when `responsive-popover-positioning` attribute is `"dialog"` .
+ * @csspart popover-title - Title of the popover in the popover's heading, available only when `responsive-popover-positioning` attribute is `"dialog"` .
+ * @csspart popover-back - Back button in the popover's heading, available only when `responsive-popover-positioning` attribute is `"dialog"` .
  */
 class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component))) {
+  protected readonly responsiveSettingsContext = providerUtils.consume<typeof ResponsiveSettingsContext.context>({
+    host: this,
+    context: ResponsiveSettingsProvider.Context,
+    syncProperties: ['responsivePopoverPositioning'],
+  });
+
   /**
    * The unique ID of the popover.
    */
@@ -371,6 +392,16 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   closeButtonAriaLabel: string | null = null;
 
   /**
+   * aria-label attribute to be set for back button accessibility.
+   *
+   * Back button only available in responsive popover positioning 'dialog' mode.
+   *
+   * @default null
+   */
+  @property({ type: String, attribute: 'back-button-aria-label', reflect: true })
+  backButtonAriaLabel: string | null = null;
+
+  /**
    * The strategy of the popover.
    * This determines how the popover is positioned in the DOM.
    * - **absolute**: The popover is positioned absolutely relative to the nearest positioned ancestor.
@@ -384,7 +415,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @see [Floating UI - strategy](https://floating-ui.com/docs/computePosition#strategy)
    */
   @property({ type: String, reflect: true })
-  strategy: PopoverStrategy = DEFAULTS.STRATEGY;
+  strategy: PopoverStrategy = 'fixed';
 
   /**
    * Role of the popover
@@ -437,6 +468,32 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    */
   @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
+
+  /**
+   * Getter/setter used to make it possible to overrider it later.
+   * @internal
+   */
+  private internalResponsivePopoverPositioning?: ResponsivePopoverPositions;
+
+  /**
+   * Responsive popover positioning.
+   * This is a read-only property which is synced with the
+   * nearest <mdc-responsivesettingsprovider> context provider.
+   *
+   * @default 'float'
+   */
+  @property({ type: String, attribute: 'responsive-popover-positioning', reflect: true })
+  public get responsivePopoverPositioning(): ResponsivePopoverPositions {
+    return (
+      this.internalResponsivePopoverPositioning ??
+      this.responsiveSettingsContext?.value?.popoverPositioning ??
+      DEFAULTS.POPOVER_POSITIONING
+    );
+  }
+
+  public set responsivePopoverPositioning(_value: ResponsivePopoverPositions) {
+    // Do nothing
+  }
 
   public arrowElement: HTMLElement | null = null;
 
@@ -535,7 +592,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   override connectedCallback(): void {
     super.connectedCallback();
 
-    this.utils.setupAppendTo();
+    this.utils.setupAppendTo(this.responsiveSettingsContext.value);
 
     this.setupTriggerListeners();
   }
@@ -663,7 +720,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
     if (changedProperties.has('appendTo')) {
       if (this.appendTo) {
-        this.utils.setupAppendTo();
+        this.utils.setupAppendTo(this.responsiveSettingsContext.value);
       } else {
         this.utils.cleanupAppendTo();
       }
@@ -705,6 +762,13 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
         this.activatePreventScroll();
       }
     }
+
+    if (changedProperties.has('responsivePopoverPositioning') && this.responsiveSettingsContext.value) {
+      await this.utils.setupResponsivePopoverPositioning(
+        this.responsivePopoverPositioning,
+        this.responsiveSettingsContext.value,
+      );
+    }
   }
 
   /**
@@ -712,7 +776,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *
    * @param event - The mouse event.
    */
-  protected onOutsidePopoverClick = (event: MouseEvent) => {
+  protected onOutsidePopoverClick = async (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
 
     const path = event.composedPath();
@@ -772,7 +836,12 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
 
     if (newValue && !this.shouldSuppressOpening) {
-      if (popoverStack.peek() !== this) {
+      // Opened
+      const current = popoverStack.peek();
+      if (current !== this) {
+        if (current && this.responsivePopoverPositioning === 'dialog') {
+          current.style.display = 'none';
+        }
         this.popoverDepth = popoverStack.push(this);
         // request update to trigger zIndex recalculation
         this.requestUpdate('zIndex');
@@ -788,7 +857,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       }
 
       // create backdrop if it doesn't exist
-      if (this.backdrop && !this.backdropElement) {
+      if ((this.backdrop || this.responsivePopoverPositioning === 'dialog') && !this.backdropElement) {
         this.createBackdrop('popover');
         this.keepElementAboveBackdrop(triggerElement);
       }
@@ -822,14 +891,22 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
       PopoverEventManager.onShowPopover(this);
     } else {
+      // Closed
+      this.style.display = '';
       if (popoverStack.peek() === this) {
         popoverStack.pop();
+        if (this.responsivePopoverPositioning === 'dialog') {
+          const currentMenu = popoverStack.peek();
+          if (currentMenu !== undefined) {
+            currentMenu.style.display = '';
+          }
+        }
       }
 
       // cleanup floating-ui on closing the popover
       this.floatingUICleanupFunction?.();
 
-      if (this.backdrop) {
+      if (this.backdrop || this.responsivePopoverPositioning === 'dialog') {
         this.moveElementBackAfterBackdropRemoval(triggerElement);
         this.removeBackdrop();
       }
@@ -973,16 +1050,50 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
   };
 
+  private hideAll = async () => {
+    await this.closeAllPopovers();
+  };
+
+  /**
+   * Closes all popover in the stack.
+   *
+   * It steps through the popover stack and hides each popover until
+   * - It reaches the specified popover (if provided).
+   * - The popover type is different from the current popover.
+   *   (ex: closes all menu popovers but keeps popover where the menu triggered from)
+   * - The stack is empty.
+   *
+   * @param until - The popover to close until.
+   */
+  protected async closeAllPopovers(until?: Element): Promise<void> {
+    while (
+      !popoverStack.peek() ||
+      (!until && popoverStack.peek()!.tagName === this.tagName) ||
+      until === popoverStack.peek()
+    ) {
+      const popover = popoverStack.peek();
+      if (popover) {
+        popover.visible = false;
+        // eslint-disable-next-line no-await-in-loop
+        await popover.updateComplete;
+      } else {
+        break;
+      }
+    }
+  }
+
   /**
    * Toggles the popover visibility.
    */
   public togglePopoverVisible = (event: Event) => {
-    if (!this.isEventFromTrigger(event)) return;
+    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
 
     if (this.visible) {
       this.hide();
     } else {
-      this.show();
+      // Use setTimeout to allow other event handlers to run first
+      // Other popovers must be cleaned before the next one can be added to the popover stack
+      setTimeout(() => this.show());
     }
   };
 
@@ -1130,21 +1241,47 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     }
   }
 
-  public override render() {
-    this.style.zIndex = `${this.zIndex}`;
-    return html`
-      <div part="popover-hover-bridge"></div>
-      ${this.closeButton
+  private renderCloseButton() {
+    const dialogPositioning = this.responsivePopoverPositioning === 'dialog';
+
+    return html` <mdc-button
+      part="popover-close"
+      prefix-icon="cancel-bold"
+      variant="tertiary"
+      size="20"
+      aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
+      @click="${dialogPositioning ? this.hideAll : this.hide}"
+    ></mdc-button>`;
+  }
+
+  private renderDialogPositioningHeader() {
+    return html` <div part="popover-heading">
+      ${this.popoverDepth > 1
         ? html` <mdc-button
-            part="popover-close"
-            prefix-icon="cancel-bold"
+            part="popover-back"
+            prefix-icon="arrow-left-bold"
             variant="tertiary"
             size="20"
-            aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
+            aria-label=${ifDefined(this.backButtonAriaLabel) || ''}
             @click="${this.hide}"
           ></mdc-button>`
         : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
+      <mdc-text type="${TYPE.BODY_MIDSIZE_BOLD}" tagname="span" aria-hidden="true" part="popover-title"
+        >${getAriaLabel(this)}
+      </mdc-text>
+      ${this.renderCloseButton()}
+    </div>`;
+  }
+
+  public override render() {
+    this.style.zIndex = `${this.zIndex}`;
+    const dialogPositioning = this.responsivePopoverPositioning === 'dialog';
+
+    return html`
+      <div part="popover-hover-bridge"></div>
+      ${dialogPositioning ? this.renderDialogPositioningHeader() : nothing}
+      ${!dialogPositioning && this.closeButton ? this.renderCloseButton() : nothing}
+      ${this.showArrow && !dialogPositioning ? html`<div class="popover-arrow" part="popover-arrow"></div>` : nothing}
       <div part="popover-content">
         <slot></slot>
       </div>

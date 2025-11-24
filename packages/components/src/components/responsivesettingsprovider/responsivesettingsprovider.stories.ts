@@ -8,6 +8,14 @@ import '../menuitemradio';
 import '../menuitemcheckbox';
 import '../dialog';
 import '../announcementdialog';
+import '../select';
+import '../selectlistbox';
+import '../option';
+import '../combobox';
+import '../button';
+import '../tooltip';
+import '../toggletip';
+import '../coachmark';
 
 import { hideControls } from '../../../config/storybook/utils';
 
@@ -49,25 +57,63 @@ export const Example: StoryObj = {
   render: args => {
     const hideDialog = () => document.getElementById('dialog-id')!.removeAttribute('visible');
     const showDialog = () => document.getElementById('dialog-id')!.toggleAttribute('visible');
+
+    const showCoachmark = () => document.getElementById('coachmark-trigger')?.setAttribute('visible', 'true');
+    const hideCoachmark = () => document.getElementById('coachmark-trigger')?.removeAttribute('visible');
+
     const hideAnnouncement = () => document.getElementById('announcement-id')!.removeAttribute('visible');
     const showAnnouncement = () => document.getElementById('announcement-id')!.toggleAttribute('visible');
 
     return html`
+      <style>
+        .group {
+          display: flex; 
+          margin-block-end: 2rem;
+          gap: 1rem;
+        }
+      </style>
       <mdc-responsivesettingsprovider
         ?force-fullscreen-dialog="${args['force-fullscreen-dialog']}"
         popover-positioning="${args['popover-positioning']}"
-        media="${args.media}"
-      >
-        <div
-          id="menupopover-test-wrapper"
-          style="display: flex; justify-content: space-around; align-items: flex-start;"
-        >
-          <mdc-button id="popover-trigger">Popover trigger</mdc-button>
-          <mdc-button id="menu-trigger">Menu trigger</mdc-button>
-          <mdc-button @click="${showDialog}">Dialog trigger</mdc-button>
-          <mdc-button @click="${showAnnouncement}">Announcement trigger</mdc-button>
+        media="${args.media}">
+        <div id="menupopover-test-wrapper">
+          <h1>Popovers</h1>
+          <div class="group">
+            <mdc-button id="popover-trigger">Popover trigger</mdc-button>
+            <mdc-button id="menu-trigger">Menu trigger</mdc-button>
+            <mdc-button id="tooltip-trigger">Tooltip trigger</mdc-button>
+            <mdc-button id="toggletip-trigger">Toggletip trigger</mdc-button>
+            <mdc-button id="coachmark-trigger" @click="${showCoachmark}">Coachmark trigger</mdc-button>
+          </div>
+          <h1>Components with popover</h1>
+          <div class="group">
+            <mdc-select label="Select">
+              <mdc-selectlistbox>
+                <mdc-option value="london" label="London, UK"></mdc-option>
+                <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
+                <mdc-option value="newyork" label="New York, NY"></mdc-option>
+                <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
+                <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+              </mdc-selectlistbox>
+            </mdc-select>
+            <mdc-combobox label="Combobox">
+              <mdc-selectlistbox>
+                <mdc-option selected value="456-198-0253" label="456-198-0253"></mdc-option>
+                <mdc-option value="123-456-7890" label="123-456-7890"></mdc-option>
+                <mdc-option value="987-654-3210" label="987-654-3210"></mdc-option>
+                <mdc-option value="555-555-5555" label="555-555-5555"></mdc-option>
+                <mdc-option value="111-222-3333" label="111-222-3333"></mdc-option>
+              </mdc-selectlistbox>
+            </mdc-combobox>
+          </div>
         </div>
-        <mdc-popover triggerID="popover-trigger" placement="bottom" show-arrow>
+          <h1>Dialogs</h1>
+          <div class="group">
+            <mdc-button @click="${showDialog}">Dialog trigger</mdc-button>
+            <mdc-button @click="${showAnnouncement}">Announcement trigger</mdc-button>
+          </div>
+        </div>
+        <mdc-popover triggerID="popover-trigger" placement="bottom" show-arrow interactive>
           <div style="padding: 1rem; max-width: 200px;">
             This is a popover content. It should adjust its behavior based on the ResponsiveSettingsProvider settings.
           </div>
@@ -103,13 +149,59 @@ export const Example: StoryObj = {
           </mdc-menupopover>
         </mdc-menupopover>
 
-        <mdc-dialog id="dialog-id" @close="${hideDialog}">
+        <mdc-tooltip triggerID="tooltip-trigger" placement="bottom" show-arrow>
+            <mdc-text>Tooltip</mdc-text>
+        </mdc-tooltip>
+        
+        <mdc-toggletip triggerID="toggletip-trigger" placement="bottom" show-arrow>
+            <mdc-text>Toggletip</mdc-text>
+        </mdc-toggletip>
+        
+        <mdc-coachmark triggerID="coachmark-trigger" placement="bottom" show-arrow @click="${hideCoachmark}">
+            <mdc-text>Coachmark</mdc-text>
+        </mdc-coachmark>
+        
+        <mdc-dialog
+          id="dialog-id"
+          triggerID="dialog-trigger"
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-desc"
+          @close="${hideDialog}"
+        >
           <h2 id="dialog-title" slot="dialog-header">Responsive Dialog</h2>
           <div id="dialog-desc" slot="dialog-body">
             This dialog should open in fullscreen mode on smaller screens if the ResponsiveSettingsProvider is
             configured to do so.
+            <mdc-button id="inner-popover-trigger">Popover trigger</mdc-button>
+
+            <mdc-popover triggerID="inner-popover-trigger" placement="bottom" show-arrow interactive>
+              <div style="padding: 1rem;">
+                <div class="group">
+                  <mdc-button id="menu-trigger">Menu trigger</mdc-button>
+                  <mdc-select label="Select">
+                    <mdc-selectlistbox>
+                      <mdc-option value="london" label="London, UK"></mdc-option>
+                      <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
+                      <mdc-option value="newyork" label="New York, NY"></mdc-option>
+                      <mdc-option value="phoenix" label="Phoenix, AZ"></mdc-option>
+                      <mdc-option value="seattle" label="Seattle, WA"></mdc-option>
+                    </mdc-selectlistbox>
+                  </mdc-select>
+                  <mdc-combobox label="Combobox">
+                    <mdc-selectlistbox>
+                      <mdc-option selected value="456-198-0253" label="456-198-0253"></mdc-option>
+                      <mdc-option value="123-456-7890" label="123-456-7890"></mdc-option>
+                      <mdc-option value="987-654-3210" label="987-654-3210"></mdc-option>
+                      <mdc-option value="555-555-5555" label="555-555-5555"></mdc-option>
+                      <mdc-option value="111-222-3333" label="111-222-3333"></mdc-option>
+                    </mdc-selectlistbox>
+                  </mdc-combobox>
+                </div>
+              </div>
+            </mdc-popover>
           </div>
         </mdc-dialog>
+        
         <mdc-announcementdialog id="announcement-id" @close="${hideAnnouncement}">
           <h2 id="dialog-title" slot="dialog-header">Responsive Announcement Dialog</h2>
           <mdc-text slot="description-container" type="body-large-regular">

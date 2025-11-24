@@ -33,8 +33,22 @@ import { DEFAULTS, VALID_MEDIA_VALUES, VALID_POPOVER_POSITIONING_VALUES } from '
  *
  * ### Popover Positioning
  *
- * By default, popovers are positioned close to the trigger element. But on small screens (e.g.: mobile devices),
- * it is often better to show popovers/menus at the center of the screen like dialogs.
+ * There are two options:
+ *
+ * #### 1. `float`
+ * Popovers are positioned next to the triggering element. It is the default behavior and most common use case.
+ *
+ * #### 2. `dialog`
+ * Popovers are positioned at the center of the screen like dialogs. This is an option for small screens where
+ * popover positioning might not work well.
+ *
+ * It changes few behaviors of popovers:
+ * - Popovers are centered on the screen.
+ * - Enforced backdrop to focus user attention and help touch interactions.
+ * - Generate title based on the popover's aria-label
+ * - Add close button which hides all popovers from the current group (eg.: all the nested menus, etc)
+ * - Add back button to close the most recent popover, if more then one stacked
+ *
  *
  * ### Force Fullscreen Dialog
  *
@@ -61,6 +75,12 @@ class ResponsiveSettingsProvider extends Provider<ResponsiveSettings> {
   public static get Context() {
     return ResponsiveSettingsContext.context;
   }
+
+  /**
+   * ID of the ResponsiveSettingsProvider element in the DOM.
+   */
+  @property({ type: String, attribute: 'id', reflect: true })
+  override id: string = this.context.value.id;
 
   /**
    * Determines whether dialogs should be forced to fullscreen mode.
@@ -106,10 +126,12 @@ class ResponsiveSettingsProvider extends Provider<ResponsiveSettings> {
 
   protected override updateContext(): void {
     if (
+      this.context.value?.id !== this.id ||
       this.context.value?.media !== this.privateMedia ||
       this.context.value?.popoverPositioning !== this.privatePopoverPositioning ||
       this.context.value?.forceFullscreenDialog !== this.forceFullscreenDialog
     ) {
+      this.context.value.id = this.id;
       this.context.value.media = this.media;
       this.context.value.popoverPositioning = this.popoverPositioning;
       this.context.value.forceFullscreenDialog = this.forceFullscreenDialog;

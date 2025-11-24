@@ -6,6 +6,7 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import type Dialog from '../dialog/dialog.component';
+import { ResponsivePopoverPositions } from '../responsivesettingsprovider/responsivesettingsprovider.types';
 
 import type Popover from './popover.component';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
@@ -1379,6 +1380,82 @@ test('mdc-popover', async ({ componentsPage }) => {
 
       await expect(popover).toHaveCount(0);
       await expect(container.locator('mdc-popoverportal')).toHaveCount(0);
+    });
+  });
+
+  /*
+   * RESPONSIVE SETTINGS
+   */
+  await test.step('responsive settings', async () => {
+    const setup = async ({ popoverPositioning }: { popoverPositioning?: ResponsivePopoverPositions }) => {
+      await componentsPage.mount({
+        html: `
+          <div id="wrapper">
+            <mdc-responsivesettingsprovider
+              id="responsive-settings-provider"
+              ${popoverPositioning ? `popover-positioning=${popoverPositioning}` : ''}
+            >
+              <mdc-button id="popover-trigger">Popover trigger</mdc-button>
+              <mdc-popover
+                close-button-aria-label="Close Popover"
+                back-button-aria-label="Back"
+                triggerID="popover-trigger"
+                id="dialog"
+              >
+                <mdc-button id="nested-popover-trigger">Nested popover trigger</mdc-button>
+                <mdc-popover
+                  triggerID="nested-popover-trigger"
+                  id="nested-popover"
+                  close-button-aria-label="Close Popover"
+                  back-button-aria-label="Back"
+                >
+                  Nested popover content
+                </mdc-popover>
+                Popover content
+              </mdc-popover>
+            </mdc-responsivesettingsprovider>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const wrapper = componentsPage.page.locator('div#wrapper');
+      await wrapper.waitFor();
+      const responsiveSettings = componentsPage.page.locator(`#responsive-settings-provider`);
+      const popoverTrigger = componentsPage.page.locator(`#popover-trigger`);
+      const popover = componentsPage.page.locator(`[triggerID="popover-trigger"]`);
+      const nestedPopoverTrigger = componentsPage.page.locator(`#nested-popover-trigger`);
+      const nestedPopover = componentsPage.page.locator(`[triggerID="nested-popover-trigger"]`);
+
+      return { popoverTrigger, popover, nestedPopoverTrigger, nestedPopover, responsiveSettings };
+    };
+
+    await test.step('popover-positioning responsive settings changes popover settings', async () => {
+      const { popover, nestedPopover } = await setup({ popoverPositioning: 'dialog' });
+
+      await expect(popover).toHaveAttribute('responsive-popover-positioning', 'dialog');
+      await expect(nestedPopover).toHaveAttribute('responsive-popover-positioning', 'dialog');
+    });
+
+    await test.step('dialog mode popover should have headings', async () => {
+      const { popover, popoverTrigger, nestedPopoverTrigger, nestedPopover } = await setup({
+        popoverPositioning: 'dialog',
+      });
+
+      await popoverTrigger.click();
+      await expect(popover).toBeVisible();
+      await expect(popover.locator('[aria-label="Close Popover"]')).toBeVisible();
+      await expect(popover.locator('[aria-label="Back"]')).not.toBeVisible();
+      await expect(popover.locator('mdc-text', { hasText: 'Popover trigger' })).toBeVisible();
+      await expect(nestedPopoverTrigger).toBeVisible();
+
+      await nestedPopoverTrigger.click();
+      await expect(popover).not.toBeVisible();
+      await expect(nestedPopover).toBeVisible();
+
+      await expect(nestedPopover.locator('[aria-label="Close Popover"]')).toBeVisible();
+      await expect(nestedPopover.locator('[aria-label="Back"]')).toBeVisible();
+      await expect(nestedPopover.locator('mdc-text', { hasText: 'Nested popover trigger' })).toBeVisible();
     });
   });
 });

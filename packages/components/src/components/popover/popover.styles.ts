@@ -122,6 +122,36 @@ const styles = css`
     border-top-right-radius: var(--mdc-popover-arrow-border-radius);
     border-bottom-left-radius: 100%;
   }
+
+  :host([responsive-popover-positioning='dialog']) {
+    --mdc-popover-width: max-content;
+    --mdc-popover-max-width: calc(100vw - 2rem);
+    --mdc-popover-max-height: calc(100vh - 2rem);
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  :host::part(popover-heading) {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0.75rem 0;
+    gap: 0.5rem;
+  }
+
+  :host::part(popover-title) {
+    flex: 1;
+  }
+
+  :host([responsive-popover-positioning='dialog'])::part(popover-close) {
+    position: static;
+  }
+
+  :host(:dir(rtl))::part(popover-back) {
+    transform: scaleX(-1);
+  }
 `;
 
 export default [styles];

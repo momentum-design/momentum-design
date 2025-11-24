@@ -18,6 +18,8 @@ export type ResponsivePopoverPositions = 'float' | 'dialog';
  * Context type for ResponsiveSettingsProvider, combining responsive settings options with the current media type.
  */
 export type ResponsiveSettings = {
+  /** Unique identifier of the responsive settings provider component. */
+  id: string;
   /** Enforced media device type. */
   media: ResponsiveMediaType;
   /** If true, dialogs will be forced to fullscreen mode on small screens. */
