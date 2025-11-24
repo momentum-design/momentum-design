@@ -44,31 +44,40 @@ export declare class ButtonComponentMixinInterface {
 export const ButtonComponentMixin = <T extends Constructor<Component>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
-     * The name of the icon to display as a prefix.
-     * The icon is displayed on the left side of the button.
+     * The name of the icon to display before the button text (left side in LTR layouts).
+     * When set without text content, creates an icon-only button.
+     * Icons automatically change to their filled variant when the button is in active state.
      */
     @property({ type: String, attribute: 'prefix-icon', reflect: true })
     prefixIcon?: IconNames;
 
     /**
-     * The name of the icon to display as a postfix.
-     * The icon is displayed on the right side of the button.
+     * The name of the icon to display after the button text (right side in LTR layouts).
+     * When set without text content, creates an icon-only button.
+     * Icons automatically change to their filled variant when the button is in active state.
      */
     @property({ type: String, attribute: 'postfix-icon', reflect: true })
     postfixIcon?: IconNames;
 
     /**
-     * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
-     * - **Primary**: Solid background color.
-     * - **Secondary**: Transparent background with a solid border.
-     * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+     * The visual style variant of the button.
+     * - `primary`: Solid background color
+     * - `secondary`: Transparent background with solid border
+     * - `tertiary`: No background or border, text-only appearance
      * @default primary
      */
     @property({ type: String })
     variant: ButtonVariant = DEFAULTS.VARIANT;
 
     /**
-     * There are 5 colors for button: positive, negative, accent, promotional, default.
+     * The semantic color of the button.
+     * - `positive`: For success or confirmation actions
+     * - `negative`: For destructive or error actions
+     * - `accent`: For informational actions
+     * - `promotional`: For promotional actions
+     * - `default`: For standard actions
+     *
+     * Note: Tertiary buttons always use default color.
      * @default default
      */
     @property({ type: String })
