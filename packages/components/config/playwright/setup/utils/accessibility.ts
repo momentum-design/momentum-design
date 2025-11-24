@@ -81,7 +81,7 @@ class Accessibility {
   ) {
     const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
     // eslint-disable-next-line no-console
-    console.log('checking for ally violations on: ', testResultsName, ' browser on: ', browserName);
+    console.log('checking for ally violations on: ', testResultsName, ' - ', browserName);
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
