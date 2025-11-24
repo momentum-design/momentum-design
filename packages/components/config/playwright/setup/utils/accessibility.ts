@@ -79,6 +79,7 @@ class Accessibility {
       inclusions?: string[];
     } = {},
   ) {
+    console.log('checking for ally violations on ', testResultsName);
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
