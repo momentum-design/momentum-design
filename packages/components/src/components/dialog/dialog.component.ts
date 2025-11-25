@@ -466,10 +466,9 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
       DialogEventManager.onShowDialog(this);
     } else if (!newValue && oldValue) {
-      // remove backdrop if it was enabled
-      if (!this.hideBackdrop) {
-        this.removeBackdrop();
-      }
+      // Always remove backdrop if it exists, regardless of current hideBackdrop value
+      // This handles the case where hideBackdrop was changed while dialog was open
+      this.removeBackdrop();
 
       // Set aria-expanded attribute on the trigger element to false if it exists
       this.triggerElement?.setAttribute('aria-expanded', 'false');
