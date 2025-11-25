@@ -553,7 +553,7 @@ test.describe.skip('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'aria-label': 'icon-button',
       });
-      buttonSheet.mark('creating markup for icon');
+
       await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
       // disabled
       buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
@@ -605,11 +605,10 @@ test.describe.skip('mdc-button', () => {
         'aria-label': 'icon-button',
       });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
-      buttonSheet.mark('mounting sticker sheet for icon');
+
       await buttonSheet.mountStickerSheet();
 
       await test.step('matches screenshot of icon-button element', async () => {
-        buttonSheet.mark('taking screenshot for icon');
         await componentsPage.visualRegression.takeScreenshot('mdc-button-icon', {
           element: buttonSheet.getWrapperContainer(),
         });
