@@ -245,10 +245,11 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
   /**
    * Determines whether a backdrop should be displayed behind the dialog.
-   * When enabled, a backdrop will cover the rest of the page and prevent interaction
+   * By default, a backdrop is present and it will cover the rest of the page and prevent interaction
    * with other elements while the dialog is open.
+   * When this attribute is set to true, no backdrop will be created.
    *
-   * @default true
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-backdrop' })
   hideBackdrop: boolean = DEFAULTS.HIDE_BACKDROP;
