@@ -1,5 +1,0 @@
-import{F as u}from"./iframe-C1Rm-ZyG.js";/**
- * @license
- * Copyright 2021 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */class n{constructor(c,i,h,t){if(this.subscribe=!1,this.provided=!1,this.value=void 0,this.t=(s,e)=>{this.unsubscribe&&(this.unsubscribe!==e&&(this.provided=!1,this.unsubscribe()),this.subscribe||this.unsubscribe()),this.value=s,this.host.requestUpdate(),this.provided&&!this.subscribe||(this.provided=!0,this.callback&&this.callback(s,e)),this.unsubscribe=e},this.host=c,i.context!==void 0){const s=i;this.context=s.context,this.callback=s.callback,this.subscribe=s.subscribe??!1}else this.context=i,this.callback=h,this.subscribe=t??!1;this.host.addController(this)}hostConnected(){this.dispatchRequest()}hostDisconnected(){this.unsubscribe&&(this.unsubscribe(),this.unsubscribe=void 0)}dispatchRequest(){this.host.dispatchEvent(new u(this.context,this.t,this.subscribe))}}const a=b=>{const{host:c,context:i,subscribe:h,callback:t,syncProperties:s}=b,e=(t||s)&&(o=>{s&&s.forEach(r=>{c.requestUpdate(r)}),t==null||t(o)});return new n(c,{context:i,callback:e,subscribe:h??!0})},l={consume:a};export{l as p};
