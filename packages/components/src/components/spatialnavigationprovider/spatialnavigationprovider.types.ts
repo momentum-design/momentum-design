@@ -3,7 +3,15 @@
  */
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
-export type SpatialNavigationFarEdge = 'none' | 'horizontal' | 'vertical' | 'both';
+export type SpatialNavigationFarEdge =
+  | 'none'
+  | 'horizontal'
+  | 'horizontal-left'
+  | 'horizontal-right'
+  | 'vertical'
+  | 'vertical-up'
+  | 'vertical-down'
+  | 'both';
 
 /**
  * All navigation actions
@@ -54,3 +62,7 @@ export type RelativeElementDistance = {
 };
 
 export type ExpandedBoundingRect = Record<Direction, Rect>;
+
+export interface SpatialNavigationProperties {
+  nestedFocusableDirection: SpatialNavigationFarEdge;
+}

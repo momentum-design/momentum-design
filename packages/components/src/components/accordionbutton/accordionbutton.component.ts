@@ -10,6 +10,10 @@ import { ROLE } from '../../utils/roles';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import type {
+  SpatialNavigationFarEdge,
+  SpatialNavigationProperties,
+} from '../spatialnavigationprovider/spatialnavigationprovider.types';
 
 import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
 import type { IconName, Variant } from './accordionbutton.types';
@@ -61,7 +65,7 @@ import styles from './accordionbutton.styles';
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
  */
-class AccordionButton extends DisabledMixin(Component) {
+class AccordionButton extends DisabledMixin(Component) implements SpatialNavigationProperties {
   /**
    * The size of the accordion item.
    * @default 'small'
@@ -102,6 +106,9 @@ class AccordionButton extends DisabledMixin(Component) {
 
   /** @internal */
   protected bodySectionId = `body-section-${uuidv4()}`;
+
+  /** @internal */
+  public nestedFocusableDirection: SpatialNavigationFarEdge = 'vertical-down' as const;
 
   /**
    * Handles the click event of the header section.
@@ -233,6 +240,8 @@ class AccordionButton extends DisabledMixin(Component) {
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  public static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default AccordionButton;

@@ -57,7 +57,7 @@ import { getKeyboardFocusableElements, orderElementsByDistance } from './spatial
  *
  * It is calculating 2 distances:
  * - "distance" - distance between the two elements' mid point
- * - "edgeDitance" - distance between the two element's closest (bounding box) edge in the specified direction (down in the below example)
+ * - "edgeDistance" - distance between the two element's closest (bounding box) edge in the specified direction (down in the below example)
  *
  * Edge distance calculation use the closest edges in the specified direction (left, up, right, down),
  * but focusable elements can overwrite this behavior with the `data-spatial-nested-focusable-direction` attribute.
@@ -66,6 +66,8 @@ import { getKeyboardFocusableElements, orderElementsByDistance } from './spatial
  * @event navigationback - (React: onNavigationBack) This event is dispatched a back navigation triggered by the user.
  *                         The event's detail contains the goBackElement if any. It is cancelable to prevent click
  *                         action on the goBackElement.
+ * @event focusnext - (React: onFocusNext) This event is dispatched before the focus is changing to the next element.
+ *                    It can be canceled to prevent the focus change.
  *
  * @tagname mdc-spatialnavigationprovider
  */
@@ -74,7 +76,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   navigationKeyMapping: SpatialNavigationKeyMapping = DEFAULTS.SPATIAL_NAVIGATION_KEY_MAPPING;
 
   /** Root element */
-  private root: HTMLElement = document.body;
+  private root: HTMLElement = this;
 
   /** Currently focused element
    * Use WeakRef to avoid memory leaks
@@ -91,14 +93,15 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     super({
       context: SpatialNavigationProviderContext,
     });
-
-    document.addEventListener('keydown', this.handleKeyDown);
-    document.addEventListener('focus', this.handleFocus);
+    this.activeElementObserver = new MutationObserver(this.activeElementObserverCallback);
   }
 
   override connectedCallback() {
     super.connectedCallback();
-    this.activeElementObserver = new MutationObserver(this.activeElementObserverCallback);
+
+    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('focus', this.handleFocus);
+
     this.initActiveElement();
   }
 
@@ -107,6 +110,9 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     this.activeElement = undefined;
     this.activeElementObserver.disconnect();
+
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('focus', this.handleFocus);
   }
 
   /**
@@ -169,7 +175,17 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @param direction User pressed arrow key. -
    */
   focusNext(direction: Direction): void {
-    const elements = getKeyboardFocusableElements(this.root);
+    const elements = getKeyboardFocusableElements(this.root).reduce((acc, el) => {
+      if (el.shadowRoot && el !== this.getActiveElement()) {
+        const shadowElements = getKeyboardFocusableElements(el.shadowRoot);
+        if (shadowElements.length > 0) {
+          acc.push(...shadowElements);
+        }
+      }
+      acc.push(el);
+      return acc;
+    }, [] as HTMLElement[]);
+
     this.findActiveElement(elements);
 
     const currentActiveElement = this.getActiveElement();
@@ -198,7 +214,19 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     const nextActiveElement = results[0]?.element ?? currentActiveElement;
 
     if (nextActiveElement) {
-      this.setActiveElementAndFocus(nextActiveElement);
+      const focusEvent = new CustomEvent('focusnext', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: {
+          direction,
+          nextActiveElement,
+        },
+      });
+      dispatchEvent(focusEvent);
+      if (focusEvent.defaultPrevented) {
+        this.setActiveElementAndFocus(nextActiveElement);
+      }
     }
   }
 

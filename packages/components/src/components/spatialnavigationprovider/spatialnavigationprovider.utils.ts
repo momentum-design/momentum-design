@@ -5,10 +5,20 @@ import {
   Rect,
   RectWithMidPoint,
   RelativeElementDistance,
+  SpatialNavigationProperties,
 } from './spatialnavigationprovider.types';
 
 const DIRECTIONS = ['left', 'right', 'up', 'down'] as const;
-const FAR_EDGE_VALUES: SpatialNavigationFarEdge[] = ['none', 'horizontal', 'vertical', 'both'] as const;
+const FAR_EDGE_VALUES: SpatialNavigationFarEdge[] = [
+  'none',
+  'horizontal',
+  'horizontal-left',
+  'horizontal-right',
+  'vertical',
+  'vertical-up',
+  'vertical-down',
+  'both',
+] as const;
 
 const NESTED_FOCUSABLE_DIRECTION_MAP: Record<string, SpatialNavigationFarEdge> = {
   'mdc-listitem': 'horizontal',
@@ -16,7 +26,41 @@ const NESTED_FOCUSABLE_DIRECTION_MAP: Record<string, SpatialNavigationFarEdge> =
   'md-meeting-list-item-wrapper': 'horizontal',
 };
 
-const FOCUSABLE_ELEMENT_SELECTORS = 'a[href], button, mdc-button, input, textarea, select, details, [tabindex]';
+const FOCUSABLE_ELEMENT_SELECTORS = [
+  'a[href]',
+  'button',
+  'input',
+  'textarea',
+  'select',
+  'details',
+  '[tabindex]',
+  'mdc-accordion',
+  'mdc-accordionbutton',
+  'mdc-alertchip',
+  'mdc-avatarbutton',
+  'mdc-button',
+  'mdc-buttonlink',
+  'mdc-cardbutton',
+  'mdc-cardcheckbox',
+  'mdc-cardradio',
+  'mdc-checkbox',
+  'mdc-chip',
+  'mdc-combobox',
+  'mdc-filterchip',
+  'mdc-input',
+  'mdc-inputchip',
+  'mdc-link',
+  'mdc-linksimple',
+  'mdc-password',
+  'mdc-radio',
+  'mdc-searchfield',
+  'mdc-select',
+  'mdc-slider',
+  'mdc-stepperitem',
+  'mdc-tab',
+  'mdc-textarea',
+  'mdc-toggle',
+].join(',');
 
 /**
  * Returns all focusable child elements as an Element Array
@@ -35,7 +79,7 @@ const FOCUSABLE_ELEMENT_SELECTORS = 'a[href], button, mdc-button, input, textare
  *
  * @param root - Element lookup starts from this element
  */
-export function getKeyboardFocusableElements<T extends HTMLElement>(root: T): Array<HTMLElement> {
+export function getKeyboardFocusableElements<T extends ParentNode>(root: T): Array<HTMLElement> {
   const preserveTabindexContainers = Array.from(root.querySelectorAll('[data-preserve-tabindex]'));
 
   // Exclude elements with `aris-hidden=true` attribute and all their children
@@ -77,7 +121,9 @@ export const getElementRectWithMidPoint = (element: HTMLElement): RectWithMidPoi
  * @param el - checked element
  */
 export const getNestedFocusableDirection = (el: HTMLElement): SpatialNavigationFarEdge => {
-  const farEdge = el.dataset.spatialNestedFocusableDirection as SpatialNavigationFarEdge;
+  const farEdge =
+    (el.dataset.spatialNestedFocusableDirection as SpatialNavigationFarEdge) ||
+    (el as unknown as SpatialNavigationProperties).nestedFocusableDirection;
 
   if (farEdge && FAR_EDGE_VALUES.includes(farEdge)) return farEdge;
 
@@ -104,25 +150,25 @@ export const getEdgeDistance = (
   farEdge: SpatialNavigationFarEdge = 'none',
 ): number => {
   if (dir === 'left') {
-    if (farEdge === 'horizontal' || farEdge === 'both') {
+    if (farEdge === 'horizontal-left' || farEdge === 'horizontal' || farEdge === 'both') {
       return a.right - b.right;
     }
     return a.left - b.right;
   }
   if (dir === 'right') {
-    if (farEdge === 'horizontal' || farEdge === 'both') {
+    if (farEdge === 'horizontal-right' || farEdge === 'horizontal' || farEdge === 'both') {
       return b.left - a.left;
     }
     return b.left - a.right;
   }
   if (dir === 'up') {
-    if (farEdge === 'vertical' || farEdge === 'both') {
+    if (farEdge === 'vertical-up' || farEdge === 'vertical' || farEdge === 'both') {
       return a.bottom - b.bottom;
     }
     return a.top - b.bottom;
   }
   if (dir === 'down') {
-    if (farEdge === 'vertical' || farEdge === 'both') {
+    if (farEdge === 'vertical-down' || farEdge === 'vertical' || farEdge === 'both') {
       return b.top - a.top;
     }
     return b.top - a.bottom;
@@ -161,7 +207,7 @@ export const getExpandedRect = (baseRect: Rect, size: number): ExpandedBoundingR
  *
  * @param a - first rectangle
  * @param b - second rectangle
- * @return `true` when the two rectangles overlap otherwise `false`
+ * @returns `true` when the two rectangles overlap otherwise `false`
  */
 export const isRectOverlap = (a: Rect, b: Rect): boolean => {
   const xOverlap = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
@@ -224,13 +270,33 @@ export const orderElementsByDistance = (
   focusableElements: HTMLElement[],
   direction: Direction,
 ): RelativeElementDistance[] => {
+  // No other focusable elements
+  if (!activeEl || focusableElements.length === 0) return [];
+
+  // Only one focusable element
+  if (focusableElements.length === 1) {
+    return focusableElements[0] === activeEl ? [] : [{ element: focusableElements[0], distance: 0, edgeDistance: 0 }];
+  }
+
   const active = getElementRectWithMidPoint(activeEl);
   const farEdge = getNestedFocusableDirection(activeEl);
-  const expandedBoundingRects = getExpandedRect(active, window.innerWidth / 2);
+  const expandedBoundingRects = getExpandedRect(active, Infinity);
 
-  return focusableElements
+  const measurements = focusableElements
     .map(el => getElementRelativeDistances(el, direction, active, expandedBoundingRects, farEdge))
-    .filter(({ element, edgeDistance }) => element !== activeEl && edgeDistance >= 0)
+    .filter(({ element, edgeDistance }) => element !== activeEl && edgeDistance >= 0);
+
+  // Normalize distances
+  const { maxDistance, maxEdgeDistance } = measurements.reduce(
+    ({ maxDistance, maxEdgeDistance }, { edgeDistance, distance }) => ({
+      maxDistance: Math.max(maxDistance, distance),
+      maxEdgeDistance: Number.isInteger(edgeDistance) ? Math.max(maxEdgeDistance, edgeDistance) : maxEdgeDistance,
+    }),
+    { maxDistance: 1, maxEdgeDistance: 1 },
+  );
+
+  return measurements
+    .map(d => ({ ...d, distance: d.distance / maxDistance, edgeDistance: d.edgeDistance / maxEdgeDistance }))
     .sort((a, b) => a.edgeDistance - b.edgeDistance || a.distance - b.distance);
 };
 
@@ -251,6 +317,30 @@ export const orderElementsByDistance = (
  */
 export const visualDebugger = (root = document.body): void => {
   if (document.getElementById('spatialNavigationVisualDebugger')) return;
+  let lastDirection: Direction | undefined;
+
+  const drawStar = (
+    ctx: CanvasRenderingContext2D,
+    cx: number,
+    cy: number,
+    outerRadius: number,
+    innerRadius: number = -1,
+    spikes = 5,
+  ) => {
+    const ir = innerRadius === -1 ? outerRadius / 2 : innerRadius;
+    ctx.beginPath();
+    for (let i = 0; i < spikes * 2; i += 1) {
+      const r = i % 2 === 0 ? outerRadius : ir;
+      const angle = (Math.PI / spikes) * i - Math.PI / 2;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'yellow';
+    ctx.fill();
+  };
 
   const canvas = document.createElement('canvas');
   canvas.width = window.innerWidth;
@@ -259,11 +349,15 @@ export const visualDebugger = (root = document.body): void => {
   canvas.style.top = '0';
   canvas.style.left = '0';
   canvas.style.pointerEvents = 'none';
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
   canvas.id = 'spatialNavigationVisualDebugger';
 
   root.appendChild(canvas);
 
   const draw = (direction?: Direction) => {
+    lastDirection = direction;
+
     if (!direction) {
       canvas.hidden = true;
       return;
@@ -272,7 +366,7 @@ export const visualDebugger = (root = document.body): void => {
 
     const currentActiveElement = document.activeElement as HTMLElement;
     const active = getElementRectWithMidPoint(currentActiveElement);
-    const expandedBoundingRects = getExpandedRect(active, window.innerWidth / 2);
+    const expandedBoundingRects = getExpandedRect(active, window.innerWidth);
     const elements = getKeyboardFocusableElements(root);
 
     const results = orderElementsByDistance(currentActiveElement, elements, direction);
@@ -280,36 +374,61 @@ export const visualDebugger = (root = document.body): void => {
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
+    ctx.imageSmoothingEnabled = false;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'rgba(8,99,134,0.75)';
-    ctx.font = '15px sans-serif';
-    results.forEach(({ element, edgeDistance, distance }, idx) => {
-      const rect = getElementRectWithMidPoint(element);
-      ctx.fillStyle = `rgba(255, 255, 255, ${1 - idx / elements.length})`;
-      ctx.fillText(
-        `#${idx + 1}, ed: ${Math.round(Math.sqrt(edgeDistance))} d: ${Math.round(Math.sqrt(distance))} `,
-        rect.x,
-        rect.y - 10,
-      );
-      ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-
-      ctx.beginPath();
-      ctx.arc(rect.xMid, rect.yMid, 10, 0, 2 * Math.PI);
-      ctx.fill();
-    });
-
-    const exRect = expandedBoundingRects[direction];
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'rgba(19,87,5,0.75)';
-    ctx.strokeRect(exRect.x, exRect.y, exRect.width, exRect.height);
 
     // active
     ctx.lineWidth = 10;
     ctx.strokeStyle = 'rgba(87,5,5,0.75)';
     ctx.strokeRect(active.x, active.y, active.width, active.height);
+
+    // Extension rect
+    const exRect = expandedBoundingRects[direction];
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'rgba(19,87,5,0.75)';
+    ctx.strokeRect(exRect.x, exRect.y, exRect.width, exRect.height);
+
+    ctx.font = 'bold 15px sans-serif';
+    results.forEach(({ element, edgeDistance, distance }, idx) => {
+      const fadeOut = 1 - idx / results.length;
+      const rect = getElementRectWithMidPoint(element);
+
+      // Focusable items highlight
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'rgba(8,99,134,0.75)';
+      ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+
+      // Mid-point
+      ctx.beginPath();
+      ctx.arc(rect.xMid, rect.yMid, 4, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 255, 255, ${fadeOut})`;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = `rgba(0,0,0, ${fadeOut})`;
+      ctx.stroke();
+
+      // Legend
+      const txt = `#${idx + 1}, ED: ${edgeDistance.toFixed(2)} D: ${distance.toFixed(2)} `;
+
+      const metrics = ctx.measureText(txt);
+      const textWidth = metrics.width;
+
+      // Draw semi-transparent rectangle
+      ctx.fillStyle = `rgba(0, 0, 0, ${0.8 * fadeOut})`;
+      ctx.fillRect(rect.x - 10, rect.y - 25, textWidth + 20, 18);
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'black';
+      ctx.strokeText(txt, rect.x, rect.y - 10);
+      ctx.fillStyle = `rgba(255, 255, 255, ${fadeOut})`;
+      ctx.fillText(txt, rect.x, rect.y - 10);
+
+      // highlight the closest element
+      if (idx === 0) {
+        drawStar(ctx, rect.x - 10, rect.y - 15, 7.5);
+      }
+    });
   };
 
   document.addEventListener('keydown', evt => {
@@ -329,5 +448,14 @@ export const visualDebugger = (root = document.body): void => {
       default:
         return undefined;
     }
+  });
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+
+    draw(lastDirection);
   });
 };

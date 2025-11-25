@@ -11,6 +11,7 @@ import '../link';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 import { BANNER_VARIANT } from './banner.constants';
 
@@ -232,3 +233,5 @@ export const PromotionalBanner: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper({ ...meta, ...Example });
