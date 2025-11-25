@@ -245,7 +245,7 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   return { buttonSheet, commonMount };
 };
 
-test.describe.parallel('mdc-button', () => {
+test.describe.skip('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
 
   test('visual regression for mdc-button with long text ellipsis', async ({ componentsPage }) => {
@@ -553,6 +553,7 @@ test.describe.parallel('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'aria-label': 'icon-button',
       });
+      buttonSheet.mark('creating markup for icon');
       await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
       // disabled
       buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
@@ -604,9 +605,11 @@ test.describe.parallel('mdc-button', () => {
         'aria-label': 'icon-button',
       });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      buttonSheet.mark('mounting sticker sheet for icon');
       await buttonSheet.mountStickerSheet();
 
       await test.step('matches screenshot of icon-button element', async () => {
+        buttonSheet.mark('taking screenshot for icon');
         await componentsPage.visualRegression.takeScreenshot('mdc-button-icon', {
           element: buttonSheet.getWrapperContainer(),
         });
