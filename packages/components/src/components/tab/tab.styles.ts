@@ -68,6 +68,7 @@ const styles = [
     :host::part(indicator) {
       width: var(--mdc-tab-line-active-indicator-width);
       height: var(--mdc-tab-line-active-indicator-height);
+      background-color: var(--mdc-tab-background-color);
       bottom: 0;
       position: absolute;
       visibility: hidden;
