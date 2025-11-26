@@ -7,6 +7,7 @@ import '../button';
 import '../brandvisual';
 import '../chip';
 import '../avatar';
+import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 const render = (args: Args) => html` <mdc-appheader args.property="${args.property}"></mdc-appheader>`;
 
@@ -54,3 +55,5 @@ export const Example: StoryObj = {
       </div>
     </mdc-appheader>`,
 };
+
+export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper(Example);

@@ -6,6 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ROLE } from '../../utils/roles';
 import AccordionButton from '../accordionbutton/accordionbutton.component';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
+import type { SpatialNavigationFarEdge } from '../spatialnavigationprovider/spatialnavigationprovider.types';
 
 import styles from './accordion.styles';
 
@@ -78,6 +79,8 @@ class Accordion extends AccordionButton {
    */
   @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel?: string;
+
+  public override nestedFocusableDirection: SpatialNavigationFarEdge = 'horizontal' as const;
 
   /**
    * Handles property changes for the accordion.
