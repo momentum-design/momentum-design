@@ -7,7 +7,7 @@ import styles from './appheader.styles';
 /**
  * The `mdc-appheader` component provides a structured and accessible app header layout with three sections: leading, center, and trailing.
  *
- * **Layout sections:**
+ * ## Layout sections
  * - **Leading** - Typically holds brand logo, brand name, or menu icon
  * - **Center** - Can contain search bar, icons, navigation links, or action controls
  * - **Trailing** - Generally includes profile avatar, icons, settings, or additional action controls

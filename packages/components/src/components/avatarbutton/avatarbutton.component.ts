@@ -20,7 +20,7 @@ import styles from './avatarbutton.styles';
  * This component extends `buttonsimple` and includes all avatar display features (photo, initials, icon, counter, presence).
  * Use CSS parts to customize the avatar's appearance inside the button.
  *
- * **Accessibility:**
+ * ## Accessibility
  * - Always provide an `aria-label` attribute to describe the button's purpose
  *
  * @dependency mdc-avatar
