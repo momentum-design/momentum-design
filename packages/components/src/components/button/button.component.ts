@@ -16,24 +16,24 @@ import { getIconNameWithoutStyle } from './button.utils';
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
  *
- * Button Variants:
+ * ## Button Variants
  * - **Primary**: Solid background color
  * - **Secondary**: Transparent background with solid border
  * - **Tertiary**: No background or border, text-only appearance
  *
- * Button Colors:
+ * ## Button Colors
  * - **Positive**: For success or confirmation actions
  * - **Negative**: For destructive or error actions
  * - **Accent**: For informational actions
  * - **Promotional**: For promotional actions
  * - **Default**: For standard actions
  *
- * Button Sizes:
+ * ## Button Sizes
  * - **Pill button**: 40, 32, 28, 24
  * - **Icon button**: 64, 52, 40, 32, 28, 24
  * - **Tertiary icon button**: 20
  *
- * Button Types:
+ * ## Button Types
  * - **Pill button**: Contains text value, commonly used for call to action, tags, or filters
  * - **Pill button with icons**: Contains an icon on the left or right side of the button
  * - **Icon button**: Represented by just an icon without any text
