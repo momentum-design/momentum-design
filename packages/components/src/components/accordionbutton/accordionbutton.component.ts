@@ -19,12 +19,12 @@ import styles from './accordionbutton.styles';
  * An accordion button is a vertically stacked component with a clickable header and expandable/collapsible body section.
  * The entire header is clickable to toggle the visibility of the body content.
  *
- * ### Header contains
+ * ## Header contains
  * - Optional prefix icon
  * - Header text (default H3, customizable via `data-aria-level`)
  * - Expand/collapse arrow icon (visual indicator)
  *
- * ### Body contains:
+ * ## Body contains
  * - Default slot for any content
  *
  * The accordion button supports different border styles through the `variant` attribute and different spacing through the `size` attribute.

@@ -14,14 +14,14 @@ import styles from './accordion.styles';
  * The header displays a prefix icon, header text, optional control slots (leading and trailing), and a dedicated expand/collapse button.
  * Unlike `accordionbutton`, only the expand/collapse button is clickable and not the entire header.
  *
- * ### Header contains
+ * ## Header contains
  * - Optional prefix icon
  * - Header text (default H3, customizable via `data-aria-level`)
  * - Leading slot for controls (placed after header text)
  * - Trailing slot for controls (placed before expand/collapse button)
  * - Expand/collapse button (automatically positioned at the end)
  *
- * ### Body contains
+ * ## Body contains
  * - Default slot for any content
  *
  * The accordion supports different border styles through the `variant` attribute and different spacing through the `size` attribute.
