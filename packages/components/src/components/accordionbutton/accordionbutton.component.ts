@@ -19,22 +19,22 @@ import styles from './accordionbutton.styles';
  * An accordion button is a vertically stacked component with a clickable header and expandable/collapsible body section.
  * The entire header is clickable to toggle the visibility of the body content.
  *
- * **Header contains:**
+ * ### Header contains
  * - Optional prefix icon
  * - Header text (default H3, customizable via `data-aria-level`)
  * - Expand/collapse arrow icon (visual indicator)
  *
- * **Body contains:**
+ * ### Body contains:
  * - Default slot for any content
  *
  * The accordion button supports different border styles through the `variant` attribute and different spacing through the `size` attribute.
  * An accordion button can be disabled, which prevents the header from being clickable.
  *
- * **When to use:**
+ * ## When to use
  * - Use `mdc-accordionbutton` for simple clickable headers without additional controls.
  * - Use `mdc-accordion` instead if you need extra controls (chips, badges, icons) in the header.
  *
- * **Accessibility:**
+ * ## Accessibility
  * - Adjust `data-aria-level` based on heading hierarchy in your page.
  * - Note: Screen readers may lose focus when toggling if accordion button is expanded by default.
  *

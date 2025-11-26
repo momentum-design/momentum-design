@@ -14,24 +14,24 @@ import styles from './accordion.styles';
  * The header displays a prefix icon, header text, optional control slots (leading and trailing), and a dedicated expand/collapse button.
  * Unlike `accordionbutton`, only the expand/collapse button is clickable and not the entire header.
  *
- * **Header contains:**
+ * ### Header contains
  * - Optional prefix icon
  * - Header text (default H3, customizable via `data-aria-level`)
  * - Leading slot for controls (placed after header text)
  * - Trailing slot for controls (placed before expand/collapse button)
  * - Expand/collapse button (automatically positioned at the end)
  *
- * **Body contains:**
+ * ### Body contains
  * - Default slot for any content
  *
  * The accordion supports different border styles through the `variant` attribute and different spacing through the `size` attribute.
  * An accordion can be disabled, which prevents all interactions including the expand/collapse button and any slotted controls.
  * 
- * **When to use:**
+ * ## When to use
  * - Use `mdc-accordion` when you need additional interactive controls (chips, badges, buttons, icons) in the header.
  * - Use `mdc-accordionbutton` if you only need a simple clickable header without extra controls.
  *
- * **Accessibility:**
+ * ## Accessibility
  * - Always provide `open-button-aria-label` and `close-button-aria-label` for screen reader support
  * - Adjust `data-aria-level` based on heading hierarchy in your page
  * - Note: Screen readers may lose focus when toggling if accordion is expanded by default

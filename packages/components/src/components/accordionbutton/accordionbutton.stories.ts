@@ -1,5 +1,6 @@
 import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
@@ -58,7 +59,8 @@ const meta: Meta = {
       control: 'text',
     },
     'prefix-icon': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     variant: {
       control: 'select',
