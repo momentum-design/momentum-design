@@ -12,15 +12,19 @@ import type { SelectionType } from './cardcheckbox.types';
 import styles from './cardcheckbox.styles';
 
 /**
- * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.
+ * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction.
+ * Multiple cards can be checked simultaneously.
  *
- * While using this component within a form or group of cards, make sure cards are in a role = "checkbox-group".
- * This card would have events for selected and unselected (similar to checkbox)
+ * ## Features
+ * - Supports two orientations (vertical and horizontal), three visual variants (border, ghost, and promotional), and two selection types (check icon or checkbox component).
+ * - Interacting anywhere on the card toggles the checked state and dispatches a `change` event.
+ * - Card has `role="checkbox"` and manages `aria-checked` and `aria-disabled` attributes automatically.
  *
- * **Note**: This is a single selection card i.e. interacting anywhere on the card would toggle the checked state.
- * Make sure to pass only non-interactable elements within the slots.
+ * ## Usage
+ * - The `card-title` attribute is required.
+ * - When using within a form or group, wrap cards in a container with `role="group"` and provide an `aria-label`.
  *
- * Make sure to pass the `card-title` mandatorily for this card.
+ * **Note**: Only pass non-interactable elements within the slots to avoid nested interactive elements.
  *
  * @tagname mdc-cardcheckbox
  *
@@ -33,6 +37,14 @@ import styles from './cardcheckbox.styles';
  * @slot after-body - This slot is for passing the content after the body
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
+ *
+ * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
+ * It toggles the checked state when enter key is used.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
+ * It toggles the checked state when space key is used.
+ * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
+ * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  *
  * @csspart header - The header part of the card
  * @csspart icon - The icon part of the card header
@@ -49,14 +61,6 @@ import styles from './cardcheckbox.styles';
  * @csspart check-icon-button - The check icon button part of the card
  *
  * @cssproperty --mdc-card-width - The width of the card
- *
- * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
- * It toggles the checked state when enter key is used.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
- * It toggles the checked state when space key is used.
- * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
- * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  */
 class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   /**
@@ -67,7 +71,9 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   checked: boolean = false;
 
   /**
-   * The selection type of the card. It can either be set to 'check' or 'checkbox'
+   * The selection type of the card that determines the visual indicator.
+   * - `check`: Shows a check icon when selected
+   * - `checkbox`: Shows a checkbox component when selected or unselected
    * @default 'check'
    */
   @property({ type: String, attribute: 'selection-type', reflect: true })

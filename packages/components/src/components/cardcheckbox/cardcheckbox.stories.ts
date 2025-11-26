@@ -1,8 +1,10 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { action } from 'storybook/actions';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -14,30 +16,32 @@ import { SELECTION_TYPE } from './cardcheckbox.constants';
 import '../formfieldgroup';
 
 const render = (args: Args) =>
-  html` <mdc-cardcheckbox
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    @change="${action('onchange')}"
-    variant="${args.variant}"
-    orientation="${args.orientation}"
-    card-title="${args['card-title']}"
-    subtitle="${args.subtitle}"
-    image-src="${args['image-src']}"
-    image-alt="${args['image-alt']}"
-    icon-name="${args['icon-name']}"
-    ?checked="${args.checked}"
-    ?disabled="${args.disabled}"
-    aria-label="${args['aria-label']}"
-    selection-type="${args['selection-type']}"
-    title-tag-name="${args['title-tag-name']}"
-    subtitle-tag-name="${args['subtitle-tag-name']}"
-    tabindex="${args.tabIndex}"
-    class="${args.class}"
-    style="${args.style}"
-    >${args.children}</mdc-cardcheckbox
-  >`;
+  html`<div role="main">
+    <mdc-cardcheckbox
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      @change="${action('onchange')}"
+      variant="${ifDefined(args.variant)}"
+      orientation="${ifDefined(args.orientation)}"
+      card-title="${ifDefined(args['card-title'])}"
+      subtitle="${ifDefined(args.subtitle)}"
+      image-src="${ifDefined(args['image-src'])}"
+      image-alt="${ifDefined(args['image-alt'])}"
+      icon-name="${ifDefined(args['icon-name'])}"
+      ?checked="${args.checked}"
+      ?disabled="${args.disabled}"
+      aria-label="${ifDefined(args['aria-label'])}"
+      selection-type="${ifDefined(args['selection-type'])}"
+      title-tag-name="${ifDefined(args['title-tag-name'])}"
+      subtitle-tag-name="${ifDefined(args['subtitle-tag-name'])}"
+      tabindex="${ifDefined(args.tabIndex)}"
+      class="${ifDefined(args.class)}"
+      style="${ifDefined(args.style)}"
+      >${args.children}</mdc-cardcheckbox
+    >
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/card/cardcheckbox',
@@ -67,7 +71,8 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     checked: {
       control: 'boolean',
