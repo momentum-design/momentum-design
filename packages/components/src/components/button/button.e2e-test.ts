@@ -245,7 +245,7 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   return { buttonSheet, commonMount };
 };
 
-test.describe.skip('mdc-button', () => {
+test.describe.parallel('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
 
   test('visual regression for mdc-button with long text ellipsis', async ({ componentsPage }) => {
@@ -553,7 +553,6 @@ test.describe.skip('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'aria-label': 'icon-button',
       });
-
       await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
       // disabled
       buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
@@ -605,7 +604,6 @@ test.describe.skip('mdc-button', () => {
         'aria-label': 'icon-button',
       });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
-
       await buttonSheet.mountStickerSheet();
 
       await test.step('matches screenshot of icon-button element', async () => {
