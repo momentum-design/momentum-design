@@ -1,0 +1,50 @@
+import"./index-DbwRZcF5.js";import"./index-CqRcPlHf.js";import{T as p}from"./toggle.constants-Dz2E_Puk.js";import{S as b,W as f,k as r,g as c,q as i,n as m}from"./iframe-DCsOt2ns.js";import"./index-DsVYJ4Rq.js";import{R as u}from"./class-map-CDEcAGyq.js";import{M as k}from"./menuitem.component-CAaAKOtq.js";import{a as E}from"./ControlTypeMixin-Dw8fg2hU.js";import{D as T,I as o,T as C}from"./menuitemcheckbox.constants-Cq_P5wtW.js";const x=b`
+  :host::part(checkmark-icon) {
+    --mdc-icon-fill-color: currentColor;
+  }
+  :host .hidden-checkmark {
+    visibility: hidden;
+  }
+`,L=[x];var $=Object.defineProperty,g=(d,e,n,v)=>{for(var t=void 0,a=d.length-1,h;a>=0;a--)(h=d[a])&&(t=h(e,n,t)||t);return t&&$(e,n,t),t};const l=class l extends E(k){constructor(){super(),this.checked=!1,this.indicator=T.INDICATOR,this.addEventListener("click",this.handleMouseClick.bind(this))}connectedCallback(){super.connectedCallback(),this.role=f.MENUITEMCHECKBOX}handleMouseClick(){this.disabled||this.softDisabled||(this.controlType!=="controlled"&&(this.checked=!this.checked),this.dispatchEvent(new Event("change",{bubbles:!0,composed:!0})))}update(e){super.update(e),e.has("checked")&&(this.ariaChecked=`${this.checked}`)}staticCheckbox(){return this.indicator===o.CHECKBOX?r`
+        <mdc-staticcheckbox
+          slot="leading-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
+        ></mdc-staticcheckbox>
+      `:c}staticToggle(){return this.indicator===o.TOGGLE?r`
+        <mdc-statictoggle
+          slot="trailing-controls"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?soft-disabled="${this.softDisabled}"
+          size="${p.COMPACT}"
+        ></mdc-statictoggle>
+      `:c}getCheckmarkIcon(){return this.indicator===o.CHECKMARK?r`
+        <mdc-icon
+          slot="trailing-controls"
+          name="check-bold"
+          part="checkmark-icon"
+          class=${u({"hidden-checkmark":!this.checked})}
+        ></mdc-icon>
+      `:c}render(){return r`
+      <slot name="content">
+        <div part="leading">
+          ${this.staticCheckbox()}
+          <slot name="leading-controls"></slot>
+          <div part="leading-text">
+            ${this.getText("leading-text-primary-label",i.BODY_MIDSIZE_REGULAR,this.label)}
+            ${this.getText("leading-text-secondary-label",i.BODY_SMALL_REGULAR,this.secondaryLabel)}
+            ${this.getText("leading-text-tertiary-label",i.BODY_SMALL_REGULAR,this.tertiaryLabel)}
+          </div>
+        </div>
+        <div part="trailing">
+          <div part="trailing-text">
+            ${this.getText("trailing-text-side-header",i.BODY_MIDSIZE_REGULAR,this.sideHeaderText)}
+            ${this.getText("trailing-text-subline",i.BODY_SMALL_REGULAR,this.sublineText)}
+          </div>
+          <slot name="trailing-controls"></slot>
+          ${this.staticToggle()} ${this.getCheckmarkIcon()}
+        </div>
+      </slot>
+    `}};l.styles=[...k.styles,...L];let s=l;g([m({type:Boolean,reflect:!0})],s.prototype,"checked");g([m({type:String,reflect:!0})],s.prototype,"indicator");s.register(C);
