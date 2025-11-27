@@ -61,6 +61,7 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+      description: 'Defines an accessible label for screen readers. Required when using icon-only buttons.',
       table: { category: 'attributes' },
     },
     disabled: {
