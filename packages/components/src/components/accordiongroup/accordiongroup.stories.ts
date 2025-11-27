@@ -18,19 +18,21 @@ const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit
   laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const render = (args: Args) =>
-  html` <mdc-accordiongroup
-    size="${ifDefined(args.size)}"
-    variant="${ifDefined(args.variant)}"
-    ?allow-multiple="${args['allow-multiple']}"
-  >
-    <mdc-accordionbutton header-text="Why is the moon sometimes out during the day?"
-      >${defaultChildren}</mdc-accordionbutton
+  html`<div role="main">
+    <mdc-accordiongroup
+      size="${ifDefined(args.size)}"
+      variant="${ifDefined(args.variant)}"
+      ?allow-multiple="${args['allow-multiple']}"
     >
-    <mdc-accordionbutton header-text="Why is the sky blue?">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordionbutton header-text="Will we ever discover aliens?">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordionbutton header-text="How much does the Earth weigh?">${defaultChildren}</mdc-accordionbutton>
-    <mdc-accordionbutton header-text="How do airplanes stay up?">${defaultChildren}</mdc-accordionbutton>
-  </mdc-accordiongroup>`;
+      <mdc-accordionbutton header-text="Why is the moon sometimes out during the day?"
+        >${defaultChildren}</mdc-accordionbutton
+      >
+      <mdc-accordionbutton header-text="Why is the sky blue?">${defaultChildren}</mdc-accordionbutton>
+      <mdc-accordionbutton header-text="Will we ever discover aliens?">${defaultChildren}</mdc-accordionbutton>
+      <mdc-accordionbutton header-text="How much does the Earth weigh?">${defaultChildren}</mdc-accordionbutton>
+      <mdc-accordionbutton header-text="How do airplanes stay up?">${defaultChildren}</mdc-accordionbutton>
+    </mdc-accordiongroup>
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/accordion/accordiongroup',
@@ -66,6 +68,7 @@ export const Example: StoryObj = {
 
 export const StackedVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.STACKED,
     size: SIZE.SMALL,
   },
@@ -73,6 +76,7 @@ export const StackedVariant: StoryObj = {
 
 export const ContainedVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.CONTAINED,
     size: SIZE.SMALL,
   },
@@ -80,6 +84,7 @@ export const ContainedVariant: StoryObj = {
 
 export const BorderlessVariant: StoryObj = {
   args: {
+    ...Example.args,
     variant: VARIANT.BORDERLESS,
     size: SIZE.SMALL,
   },
@@ -87,6 +92,7 @@ export const BorderlessVariant: StoryObj = {
 
 export const SmallSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.SMALL,
     variant: VARIANT.CONTAINED,
   },
@@ -94,6 +100,7 @@ export const SmallSize: StoryObj = {
 
 export const LargeSize: StoryObj = {
   args: {
+    ...Example.args,
     size: SIZE.LARGE,
     variant: VARIANT.CONTAINED,
   },
@@ -106,27 +113,49 @@ export const MultiInteractiveAccordion: StoryObj = {
     'allow-multiple': false,
   },
   render: (args: Args) => html`
-    <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
-      <mdc-accordion header-text="Identify Your Goals" prefix-icon="add-option-bold">
-        <mdc-chip slot="leading-controls" label="Step 1"></mdc-chip>
-        <mdc-avatarbutton aria-label="avatar #1" slot="trailing-controls" initials="#1"></mdc-avatarbutton>
-        ${defaultChildren}
-      </mdc-accordion>
-      <mdc-accordion header-text="Write Your Goals" prefix-icon="add-option-bold">
-        <mdc-chip slot="leading-controls" label="Step 2"></mdc-chip>
-        <mdc-avatarbutton aria-label="avatar #2" slot="trailing-controls" initials="#2"></mdc-avatarbutton>
-        ${defaultChildren}
-      </mdc-accordion>
-      <mdc-accordion header-text="Need Analysis" prefix-icon="add-option-bold">
-        <mdc-chip slot="leading-controls" label="Step 3"></mdc-chip>
-        <mdc-avatarbutton aria-label="avatar #3" slot="trailing-controls" initials="#3"></mdc-avatarbutton>
-        ${defaultChildren}
-      </mdc-accordion>
-      <mdc-accordion header-text="List Objectives" prefix-icon="add-option-bold">
-        <mdc-chip slot="leading-controls" label="Step 4"></mdc-chip>
-        <mdc-avatarbutton aria-label="avatar #4" slot="trailing-controls" initials="#4"></mdc-avatarbutton>
-        ${defaultChildren}
-      </mdc-accordion>
-    </mdc-accordiongroup>
+    <div role="main">
+      <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
+        <mdc-accordion
+          header-text="Identify Your Goals"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Identify Your Goals"
+          close-button-aria-label="Close Identify Your Goals"
+        >
+          <mdc-chip slot="leading-controls" label="Step 1"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #1" slot="trailing-controls" initials="#1"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="Write Your Goals"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Write Your Goals"
+          close-button-aria-label="Close Write Your Goals"
+        >
+          <mdc-chip slot="leading-controls" label="Step 2"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #2" slot="trailing-controls" initials="#2"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="Need Analysis"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Need Analysis"
+          close-button-aria-label="Close Need Analysis"
+        >
+          <mdc-chip slot="leading-controls" label="Step 3"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #3" slot="trailing-controls" initials="#3"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="List Objectives"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open List Objectives"
+          close-button-aria-label="Close List Objectives"
+        >
+          <mdc-chip slot="leading-controls" label="Step 4"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #4" slot="trailing-controls" initials="#4"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+      </mdc-accordiongroup>
+    </div>
   `,
 };
