@@ -97,6 +97,7 @@ const defaultArgs = {
   inverted: false,
   size: DEFAULTS.SIZE,
   tabIndex: 0,
+  'aria-label': 'Link Button',
 };
 
 export const Example: StoryObj = {
