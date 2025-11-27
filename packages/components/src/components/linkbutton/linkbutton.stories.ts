@@ -73,6 +73,7 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+      description: 'Defines an accessible label for the linkbutton for screen readers.',
       table: { category: 'attributes' }
     },
     name: {
