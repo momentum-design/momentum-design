@@ -86,6 +86,8 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+      description: 'Defines an accessible label for screen readers. Required when using icon-only cards.',
+      table: { category: 'attributes' }
     },
     'title-tag-name': {
       control: 'select',
