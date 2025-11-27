@@ -59,6 +59,10 @@ const meta: Meta = {
     active: {
       control: 'boolean',
     },
+    'aria-label': {
+      control: 'text',
+      table: { category: 'attributes' },
+    },
     disabled: {
       control: 'boolean',
     },
