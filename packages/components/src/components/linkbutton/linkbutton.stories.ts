@@ -73,6 +73,7 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+      table: { category: 'attributes' }
     },
     name: {
       control: 'text',
