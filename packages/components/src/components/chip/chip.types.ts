@@ -1,9 +1,6 @@
-import type { OverrideEventTarget, ValueOf } from '../../utils/types';
+import type { OverrideEventTarget } from '../../utils/types';
 
 import type Chip from './chip.component';
-import { COLOR } from './chip.constants';
-
-type ColorType = ValueOf<typeof COLOR>;
 
 interface Events {
   onClickEvent: OverrideEventTarget<MouseEvent, Chip>;
@@ -12,4 +9,4 @@ interface Events {
   onFocusEvent: OverrideEventTarget<FocusEvent, Chip>;
 }
 
-export type { ColorType, Events };
+export type { Events };
