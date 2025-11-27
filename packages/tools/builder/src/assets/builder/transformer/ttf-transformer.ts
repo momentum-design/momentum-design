@@ -22,7 +22,7 @@ class TTFTransformer extends Transformer {
   public generateTTFFont(SVGFontBuffer: Buffer): {data: Buffer, fileCreated: string } {
     const filename = `${this.format?.config?.fontName}.ttf`;
     const data = Buffer.from(
-      svg2ttf(SVGFontBuffer.toString(), this.format.config).buffer,
+      svg2ttf(SVGFontBuffer.toString(), { ...this.format.config, ts: 0 }).buffer,
     );
     return {
       data,

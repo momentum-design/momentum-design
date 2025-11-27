@@ -65,6 +65,7 @@ class File {
   }
 
   public get sdConfig(): SDFile {
+    // Use custom deterministic file header
     return {
       destination: this.file,
       format: this.format,
@@ -73,6 +74,7 @@ class File {
         outputReferences: this.references,
         selector: this.selector,
         showFileHeader: this.showFileHeader,
+        fileHeader: this.showFileHeader ? 'deterministic' : undefined,
         themeable: this.scssThemeable,
         accessControl: this.iosAccessControl,
         import: this.iosImport,

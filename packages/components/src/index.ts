@@ -90,6 +90,7 @@ import Banner from './components/banner';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
+import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
@@ -221,6 +222,7 @@ export {
 // Types Exports
 export type {
   BadgeType,
+  ChipColorType,
   ButtonColor,
   ButtonVariant,
   IconButtonSize,

@@ -35,7 +35,7 @@ fs.mkdirSync(reactDir, { recursive: true });
 
 // Fetch component metadata
 const metadata = JSON.parse(fs.readFileSync(path.posix.join(distFolder, 'custom-elements.json'), 'utf8'));
-const components = getAllComponents(metadata);
+const components = getAllComponents(metadata).sort((a, b) => a.name.localeCompare(b.name));
 const index = [];
 
 async function loop() {
