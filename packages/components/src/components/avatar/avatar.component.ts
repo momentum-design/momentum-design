@@ -15,10 +15,12 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
 /**
  * The `mdc-avatar` component represents a person or a space. It displays as a photo, initials, icon, or counter.
  *
- * ## Display priority (when multiple attributes are set)
+ * ## Display priority 
+ * 
+ * Priorities of rendered content when multiple attributes set:
  * 1. Photo (`src`) - Shows image when loaded
- * 2. Initials (`initials`) - Shows as placeholder while photo loads, or as standalone
- * 3. Icon (`icon-name`) - Defaults to `user-regular` if no other content is provided
+ * 2. Icon (`icon-name`) - Shows custom or default icon (`user-regular`)
+ * 3. Initials (`initials`) - Shows as placeholder while photo loads, or as standalone
  * 4. Counter (`counter`) - Displays a numeric value (max 99+)
  *
  * ## Behavior
