@@ -15,19 +15,29 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
 /**
  * The `mdc-avatar` component represents a person or a space. It displays as a photo, initials, icon, or counter.
  *
- * ## Display priority 
- * 
- * Priorities of rendered content when multiple attributes set:
- * 1. Photo (`src`) - Shows image when loaded
- * 2. Icon (`icon-name`) - Shows custom or default icon (`user-regular`)
- * 3. Initials (`initials`) - Shows as placeholder while photo loads, or as standalone
- * 4. Counter (`counter`) - Displays a numeric value (max 99+)
+ * ## Display Priority
+ *
+ * When multiple attributes are provided, the component determines what to display based on this priority:
+ * 1. **Photo** (`src`) - Takes highest priority
+ *    - While loading: Shows `initials` as placeholder if provided (instant), otherwise shows icon (requires loading)
+ *    - After loading: Shows the photo
+ *    - On error: Placeholder remains visible (initials or icon)
+ * 2. **Icon** (`icon-name`) - Takes priority if no `src` is provided
+ *    - Shows custom icon if `icon-name` is set (requires icon library to load)
+ *    - **Note:** If both `icon-name` and `initials` are provided (without `src`), icon takes precedence and initials are ignored.
+ *      This means users may see a delay while the icon loads, even though initials render instantly.
+ *    - Defaults to `user-regular` icon if no other content is available
+ * 3. **Initials** (`initials`) - Displayed only if no `src` or `icon-name` is provided
+ *    - Shows first two characters, converted to uppercase
+ *    - Renders instantly (no loading required)
+ * 4. **Counter** (`counter`) - Displayed only if none of the above are provided
+ *    - Shows numeric value (max 99+)
+ *    - Negative values display as 0
  *
  * ## Behavior
  * - Non-interactive and non-focusable component (use `mdc-avatarbutton` for clickable avatars)
- * - Shows loading indicator when `is-typing` is true
- * - Presence indicator hidden when counter is set
- * - Negative counter values display as 0
+ * - Shows loading indicator overlay when `is-typing` is true (displays on top of existing content)
+ * - Presence indicator hidden when counter is set or when typing
  *
  * @dependency mdc-icon
  * @dependency mdc-presence
