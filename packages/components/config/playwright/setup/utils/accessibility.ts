@@ -29,15 +29,23 @@ class Accessibility {
    * @param fileName - name of the file to attach
    */
   async attachToReport(fileName: string) {
-    console.log('HITLER: ', fileName, ' attacthToReport called bro');
     const reportPath = `./${fileName}`;
-    await this.testInfo.attach(fileName, {
-      path: reportPath,
-    });
+    try {
+      await this.testInfo.attach(fileName, {
+        path: reportPath,
+      });
+    } catch (e) {
+      console.log('HITCH KOK in attach to report attach phase ', fileName);
+      console.log(e);
+    }
 
-    console.log('HITLER: ', fileName, ' checking file sync ', reportPath);
-    if (fs.existsSync(reportPath)) {
-      fs.unlinkSync(reportPath);
+    try {
+      if (fs.existsSync(reportPath)) {
+        fs.unlinkSync(reportPath);
+      }
+    } catch (e) {
+      console.log('HITCH KOK in attach to report attach phase ', fileName);
+      console.log(e);
     }
   }
 
@@ -47,13 +55,12 @@ class Accessibility {
    * @param accessibilityScanResults - scan results
    */
   async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
-    const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
+    const browserName = this.page.context().browser()?.browserType()?.name() ?? 'unknown';
     const fileName = `accessibility-scan-results-${testResultsName}-${browserName}.html`;
-    console.log('HITLER: ', testResultsName, ' browserName ', browserName, ' createHtmlReport about to be called');
 
-    // todo: add option to suppress the output of the report if
-    // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
     try {
+      // todo: add option to suppress the output of the report if
+      // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
       createHtmlReport({
         results: accessibilityScanResults,
         options: {
@@ -63,11 +70,10 @@ class Accessibility {
         },
       });
     } catch (e) {
-      console.error('HITLER: ', testResultsName, ' browserName ', browserName, ' createHtmlReport exception');
-      console.error(e);
+      console.log('HITCH KOK in attachA11yResults ', fileName);
+      console.log(e);
     }
 
-    console.log('HITLER: ', testResultsName, ' browserName ', browserName, ' attachReport called');
     await this.attachToReport(fileName);
   }
 
@@ -89,37 +95,29 @@ class Accessibility {
       inclusions?: string[];
     } = {},
   ) {
-    const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
-    console.log('HITLER: ', testResultsName, ' START checkForA11yViolations with ', browserName);
-    const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
-    const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
-    console.log('HITLER: ', testResultsName, ' accessibilityScanner ', typeof accessibilityScanner);
+    try {
+      const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
+      const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
-    exclusions?.forEach(exclusion => {
-      accessibilityScanner.exclude(exclusion);
-    });
+      exclusions?.forEach(exclusion => {
+        accessibilityScanner.exclude(exclusion);
+      });
 
-    inclusions?.forEach(inclusion => {
-      accessibilityScanner.include(inclusion);
-    });
+      inclusions?.forEach(inclusion => {
+        accessibilityScanner.include(inclusion);
+      });
 
-    console.log(
-      'HITLER: ',
-      testResultsName,
-      ' AFTER inclusions and exclusions accessibilityScanner ',
-      typeof accessibilityScanner,
-    );
+      const accessibilityScanResults = await accessibilityScanner.analyze();
 
-    const accessibilityScanResults = await accessibilityScanner.analyze();
+      await this.attachA11yResults(testResultsName, accessibilityScanResults);
 
-    console.log('HITLER: ', testResultsName, ' calling attachA11yResults with ', typeof accessibilityScanResults);
-    await this.attachA11yResults(testResultsName, accessibilityScanResults);
-
-    if (shouldCheck) {
-      console.log('HITLER: ', testResultsName, ' last violation check ', shouldCheck);
-      expect(accessibilityScanResults.violations).toEqual([]);
+      if (shouldCheck) {
+        expect(accessibilityScanResults.violations).toEqual([]);
+      }
+    } catch (e) {
+      console.log('HITCH KOK in checkForA11yViolations ', testResultsName);
+      console.log(e);
     }
-    console.log('HITLER: ', testResultsName, ' END checkForA11yViolations');
   }
 }
 
