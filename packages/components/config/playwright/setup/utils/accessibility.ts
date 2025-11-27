@@ -93,7 +93,7 @@ class Accessibility {
     console.log('HITLER: ', testResultsName, ' START checkForA11yViolations with ', browserName);
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
-    console.log('HITLER: ', testResultsName, ' accessibilityScanner ', accessibilityScanner);
+    console.log('HITLER: ', testResultsName, ' accessibilityScanner ', typeof accessibilityScanner);
 
     exclusions?.forEach(exclusion => {
       accessibilityScanner.exclude(exclusion);
@@ -107,12 +107,12 @@ class Accessibility {
       'HITLER: ',
       testResultsName,
       ' AFTER inclusions and exclusions accessibilityScanner ',
-      accessibilityScanner,
+      typeof accessibilityScanner,
     );
 
     const accessibilityScanResults = await accessibilityScanner.analyze();
 
-    console.log('HITLER: ', testResultsName, ' calling attachA11yResults with ', accessibilityScanResults);
+    console.log('HITLER: ', testResultsName, ' calling attachA11yResults with ', typeof accessibilityScanResults);
     await this.attachA11yResults(testResultsName, accessibilityScanResults);
 
     if (shouldCheck) {
