@@ -45,71 +45,23 @@ import styles from './tab.styles';
  *
  * @tagname mdc-tab
  *
- * @cssproperty --mdc-button-height - Height for button size
- * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
- * @cssproperty --mdc-tab-height - Height of the tab.
- * @cssproperty --mdc-tab-glass-active-background-color-disabled - Background color for active glass tab
- *  in disabled state.
- * @cssproperty --mdc-tab-glass-active-background-color-hover - Background color for active glass tab in hover state.
- * @cssproperty --mdc-tab-glass-active-background-color-normal - Background color for active glass tab in rest state.
- * @cssproperty --mdc-tab-glass-active-background-color-pressed - Background color for active glass tab
- *  in pressed state.
- * @cssproperty --mdc-tab-glass-active-color - Text and icon color for active glass tab.
- * @cssproperty --mdc-tab-glass-active-color-disabled - Text and icon color for active glass tab in disabled state.
- * @cssproperty --mdc-tab-glass-border-radius - Border radius for glass tab.
- * @cssproperty --mdc-tab-glass-inactive-background-color-disabled - Background color for inactive glass tab
- *  in disabled state.
- * @cssproperty --mdc-tab-glass-inactive-background-color-hover - Background color for inactive glass tab
- *  in hover state.
- * @cssproperty --mdc-tab-glass-inactive-background-color-normal - Background color for inactive glass tab
- *  in rest state.
- * @cssproperty --mdc-tab-glass-inactive-background-color-pressed - Background color for inactive glass tab
- *  in pressed state.
- * @cssproperty --mdc-tab-glass-inactive-color - Text and icon color for inactive glass tab.
- * @cssproperty --mdc-tab-glass-inactive-color-disabled - Text and icon color for inactive glass tab in disabled state.
- * @cssproperty --mdc-tab-line-active-background-color-pressed - Background color for active line tab in pressed state.
- * @cssproperty --mdc-tab-line-active-background-color-disabled - Background color for active line tab
- *  in disabled state.
- * @cssproperty --mdc-tab-line-active-background-color-hover - Background color for active line tab in hover state.
- * @cssproperty --mdc-tab-line-active-background-color-normal - Background color for active line tab in rest state.
- * @cssproperty --mdc-tab-line-active-color - Text and icon color for active line tab.
- * @cssproperty --mdc-tab-line-active-color-disabled - Text and icon color for active line tab in disabled state.
- * @cssproperty --mdc-tab-line-active-indicator-color - color for indicator in active line tab.
- * @cssproperty --mdc-tab-line-active-indicator-color-disabled - Color for indicator in active line tab
- *  in disabled state.
- * @cssproperty --mdc-tab-line-active-indicator-height - Height for indicator in active line tab.
- * @cssproperty --mdc-tab-line-active-indicator-width - Width for indicator in active line tab.
- * @cssproperty --mdc-tab-line-border-bottom-left-radius - Bottom left border radius for line tab.
- * @cssproperty --mdc-tab-line-border-bottom-right-radius - Bottom right border radius for line tab.
- * @cssproperty --mdc-tab-line-border-top-left-radius - Top left border radius for line tab.
- * @cssproperty --mdc-tab-line-border-top-right-radius - Top right border radius for line tab.
- * @cssproperty --mdc-tab-line-inactive-background-color-pressed - Background color for inactive line tab
- *  in pressed state.
- * @cssproperty --mdc-tab-line-inactive-background-color-disabled - Background color for inactive line tab
- *  in disabled state
- * @cssproperty --mdc-tab-line-inactive-background-color-hover - Background color for inactive line tab in hover state.
- * @cssproperty --mdc-tab-line-inactive-background-color-normal - Background color for inactive line tab
- *  in rest state.
- * @cssproperty --mdc-tab-line-inactive-color - Text and icon color for inactive line tab.
- * @cssproperty --mdc-tab-line-inactive-color-disabled - Text and icon color for inactive line tab in disabled state.
- * @cssproperty --mdc-tab-padding-left - Padding left for the tab.
- * @cssproperty --mdc-tab-padding-right - Padding right for the tab.
- * @cssproperty --mdc-tab-pill-active-background-color-pressed - Background color for active pill tab in pressed state.
- * @cssproperty --mdc-tab-pill-active-background-color-disabled - Background color for active pill tab
- *  in disabled state.
- * @cssproperty --mdc-tab-pill-active-background-color-hover - Background color for active pill tab in hover state.
- * @cssproperty --mdc-tab-pill-active-background-color-normal - Background color for active pill tab in rest state.
- * @cssproperty --mdc-tab-pill-active-color - Text and icon color for active pill tab.
- * @cssproperty --mdc-tab-pill-active-color-disabled - Text and icon color for active pill tab in disabled state.
- * @cssproperty --mdc-tab-pill-border-radius - Border radius for pill tab.
- * @cssproperty --mdc-tab-pill-inactive-background-color-pressed - Background color for inactive pill tab
- *  in pressed state.
- * @cssproperty --mdc-tab-pill-inactive-background-color-disabled - Background color for inactive pill tab
- *  in disabled state.
- * @cssproperty --mdc-tab-pill-inactive-background-color-hover - Background color for inactive pill tab in hover state.
- * @cssproperty --mdc-tab-pill-inactive-background-color-normal - Background color for inactive pill tab in rest state.
- * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
- * @cssproperty --mdc-tab-pill-inactive-color-disabled - Text and icon color for inactive pill tab in disabled state.
+ * @cssproperty --mdc-tab-height - The height of the tab.
+ * @cssproperty --mdc-tab-padding-left - The left padding of the tab.
+ * @cssproperty --mdc-tab-padding-right - The right padding of the tab.
+ * @cssproperty --mdc-tab-content-gap - The gap between the icon and text in the tab.
+ * @cssproperty --mdc-tab-background-color - The background color of the tab.
+ * @cssproperty --mdc-tab-color - The text color of the tab.
+ * @cssproperty --mdc-tab-border-radius - The border radius of the tab.
+ *
+ * @cssproperty --mdc-tab-line-active-indicator-height - The height of the active indicator line.
+ * @cssproperty --mdc-tab-line-active-indicator-width - The width of the active indicator line.
+ *
+ * @cssproperty --mdc-tab-line-border-bottom-left-radius - The border bottom left radius of the active indicator line.
+ * @cssproperty --mdc-tab-line-border-bottom-right-radius - The border bottom right radius of the active indicator line.
+ * @cssproperty --mdc-tab-line-border-top-left-radius - The border top left radius of the active indicator line.
+ * @cssproperty --mdc-tab-line-border-top-right-radius - The border top right radius of the active indicator line.
+ *
+ *
  *
  * @csspart container - The container of the tab.
  * @csspart icon - The icon of the tab.
