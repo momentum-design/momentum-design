@@ -38,6 +38,7 @@ describe('Create Release', () => {
       {
         title: 'fake-pr-title',
         body: 'fake-pr-body',
+        issue_url: 'https://github.com/fake-pr-link',
       },
     ]));
   });
@@ -83,6 +84,8 @@ describe('Create Release', () => {
     const mockNotes = [
       '## fake-pr-title\r\n',
       'fake-pr-body\r\n',
+      ' ### PR Link:\n',
+      'https://github.com/fake-pr-link',
       ' ### Package:\n',
       'https://www.npmjs.com/package/package-name/v/0.0.2',
     ].join('');
