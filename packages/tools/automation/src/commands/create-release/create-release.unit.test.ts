@@ -124,6 +124,8 @@ describe('Create Release', () => {
     const mockNotes = [
       '## fake-pr-title\r\n',
       'fake-pr-body including <img alt=\\"test ...\\"/>\r\n',
+      ' ### PR Link:\n',
+      'https://github.com/fake-pr-link\n',
       ' ### Package:\n',
       'https://www.npmjs.com/package/package-name/v/0.0.2',
     ].join('');
