@@ -1,7 +1,9 @@
-import { BANNER_VARIANT, VARIANT_ICON_NAMES} from './banner.constants';
+import type { IconNames } from '../icon/icon.types';
+
+import { BANNER_VARIANT, VARIANT_ICON_NAMES } from './banner.constants';
 import type { BannerVariant } from './banner.types';
 
-const getIconNameForVariant = (variant: BannerVariant): string | null => {
+const getIconNameForVariant = (variant: BannerVariant): IconNames | null => {
   switch (variant) {
     case BANNER_VARIANT.INFORMATIONAL:
       return VARIANT_ICON_NAMES.INFORMATIONAL_ICON_NAME;
@@ -14,6 +16,6 @@ const getIconNameForVariant = (variant: BannerVariant): string | null => {
     default:
       return null;
   }
-}
+};
 
 export { getIconNameForVariant };
