@@ -28,6 +28,7 @@ import styles from './linkbutton.styles';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the linkbutton.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the linkbutton.
  * @event focus - (React: onFocus) This event is dispatched when the linkbutton receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the linkbutton loses focus.
  *
  * @cssproperty --mdc-link-border-radius - Border radius of the linkbutton.
  * @cssproperty --mdc-link-color-active - Color of the linkbutton’s child content in the active state.
@@ -42,25 +43,28 @@ import styles from './linkbutton.styles';
  */
 class LinkButton extends IconNameMixin(Buttonsimple) {
   /**
-   * Sets the size of the linkbutton.
-   * Acceptable values:
-   * - 12
-   * - 14
-   * - 16
+   * Size of the linkbutton text and icon.
+   * - **12**: 0.75rem font size
+   * - **14**: 0.875rem font size
+   * - **16**: 1rem font size (default)
    * @default 16
    */
   @property({ type: Number, reflect: true })
   override size: LinkButtonSize = DEFAULTS.SIZE;
 
   /**
-   * The linkbutton can be inline or standalone.
+   * Display mode of the linkbutton.
+   * - `false`: Standalone display (default)
+   * - `true`: Inline display within text flow
    * @default false
    */
   @property({ type: Boolean, reflect: true })
   inline: boolean = DEFAULTS.INLINE;
 
   /**
-   * The linkbutton color can be inverted by setting the inverted attribute to true.
+   * Color scheme of the linkbutton.
+   * - `false`: Normal color scheme for light backgrounds (default)
+   * - `true`: Inverted color scheme for dark backgrounds
    * @default false
    */
   @property({ type: Boolean, reflect: true })
@@ -84,6 +88,7 @@ class LinkButton extends IconNameMixin(Buttonsimple) {
    * Sets the `size` attribute for the linkbutton, falling back to the default if the value is invalid.
    *
    * @param size - The desired link size.
+   * @internal
    */
   private setSize(size: LinkButtonSize) {
     this.setAttribute('size', Object.values(LINKBUTTON_SIZES).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());

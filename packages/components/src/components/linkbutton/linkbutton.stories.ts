@@ -1,6 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -18,11 +20,13 @@ const render = (args: Args) =>
     ?soft-disabled="${args['soft-disabled']}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
-    icon-name="${args['icon-name']}"
-    size="${args.size}"
-    tabindex="${args.tabIndex}"
+    icon-name="${ifDefined(args['icon-name'])}"
+    size="${ifDefined(args.size)}"
+    tabindex="${ifDefined(args.tabIndex)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-    aria-label="${args['aria-label']}"
+    aria-label="${ifDefined(args['aria-label'])}"
+    name="${ifDefined(args.name)}"
+    value="${ifDefined(args.value)}"
     >${args.children}</mdc-linkbutton
   >`;
 
@@ -54,7 +58,8 @@ const meta: Meta = {
       control: 'boolean',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     size: {
       control: 'select',
@@ -65,6 +70,17 @@ const meta: Meta = {
     },
     'auto-focus-on-mount': {
       control: 'boolean',
+    },
+    'aria-label': {
+      control: 'text',
+      description: 'Defines an accessible label for the linkbutton for screen readers.',
+      table: { category: 'attributes' }
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
     },
     ...classArgType,
     ...styleArgType,
@@ -83,6 +99,7 @@ const defaultArgs = {
   inverted: false,
   size: DEFAULTS.SIZE,
   tabIndex: 0,
+  'aria-label': 'Link Button',
 };
 
 export const Example: StoryObj = {

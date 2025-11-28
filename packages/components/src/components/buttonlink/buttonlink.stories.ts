@@ -1,6 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
@@ -8,24 +10,31 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
-  html` <mdc-buttonlink
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @focus="${action('onfocus')}"
-    @blur="${action('onblur')}"
-    ?disabled="${args.disabled}"
-    ?soft-disabled="${args['soft-disabled']}"
-    prefix-icon="${args['prefix-icon']}"
-    postfix-icon="${args['postfix-icon']}"
-    size="${args.size}"
-    color="${args.color}"
-    variant="${args.variant}"
-    href="${args.href}"
-    target="${args.target}"
-    rel="${args.rel}"
-    data-aria-label="${args['data-aria-label']}"
-    >${args.children}</mdc-buttonlink
-  >`;
+  html`<div role="main">
+    <mdc-buttonlink
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @focus="${action('onfocus')}"
+      @blur="${action('onblur')}"
+      ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
+      prefix-icon="${ifDefined(args['prefix-icon'])}"
+      postfix-icon="${ifDefined(args['postfix-icon'])}"
+      size="${ifDefined(args.size)}"
+      color="${ifDefined(args.color)}"
+      variant="${ifDefined(args.variant)}"
+      href="${ifDefined(args.href)}"
+      target="${ifDefined(args.target)}"
+      rel="${ifDefined(args.rel)}"
+      download="${ifDefined(args.download)}"
+      ping="${ifDefined(args.ping)}"
+      hreflang="${ifDefined(args.hreflang)}"
+      type="${ifDefined(args.type)}"
+      referrerpolicy="${ifDefined(args.referrerpolicy)}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
+      >${args.children}</mdc-buttonlink
+    >
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/buttonlink',
@@ -44,10 +53,12 @@ const meta: Meta = {
       control: 'boolean',
     },
     'prefix-icon': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     'postfix-icon': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     size: {
       control: 'select',
@@ -68,6 +79,21 @@ const meta: Meta = {
       control: 'text',
     },
     rel: {
+      control: 'text',
+    },
+    download: {
+      control: 'text',
+    },
+    ping: {
+      control: 'text',
+    },
+    hreflang: {
+      control: 'text',
+    },
+    type: {
+      control: 'text',
+    },
+    referrerpolicy: {
       control: 'text',
     },
     'data-aria-label': {
@@ -120,16 +146,12 @@ export const IconButtonLink: StoryObj = {
     size: {
       options: Object.values(ICON_BUTTON_SIZES),
     },
-    'aria-label': {
-      description: 'Aria label for the icon buttonLink. Required for accessibility.',
-    },
   },
   args: {
     ...Example.args,
     children: '',
     'prefix-icon': 'placeholder-bold',
     size: ICON_BUTTON_SIZES[32],
-    'aria-label': 'icon buttonLink',
-    'data-aria-label': 'icon buttonLink for accessibility',
+    'data-aria-label': 'icon buttonLink',
   },
 };

@@ -13,17 +13,19 @@ import styles from './buttonlink.styles';
 /**
  * `mdc-buttonlink` combines the functional behavior of `mdc-linksimple` with the visual and structural
  * features of `mdc-button`. This includes support for variants, sizing, and optional
- * prefix and postfix icons via slots.
+ * prefix and postfix icons.
  *
  * ### Features:
- * - Behaves like an link while visually resembling a button.
- * - Supports slots for `prefix-icon` and `postfix-icon`.
+ * - Behaves like a link while visually resembling a button.
  * - Customizable size, color, and variant through attributes.
+ * - Supports prefix and postfix icons.
  * - Inherits accessibility and keyboard interaction support from `mdc-linksimple`.
  *
  * @dependency mdc-icon
  *
  * @tagname mdc-buttonlink
+ *
+ * @slot default - The default slot for buttonlink text content.
  *
  * @event click - (React: onClick) Fired when the user activates the buttonLink using a mouse or assistive technology.
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the buttonLink has focus.
@@ -35,20 +37,20 @@ import styles from './buttonlink.styles';
  * @csspart button-text - The slot containing the buttonlink text.
  * @csspart postfix-icon - The postfix icon element.
  *
- * @cssproperty --mdc-button-height - Height for button size
- * @cssproperty --mdc-button-background - Background color of the button
- * @cssproperty --mdc-button-border-color - Borer color of the button
- * @cssproperty --mdc-button-text-color - Text color of the button
- * @cssproperty --mdc-button-line-height - Line height of the button text
+ * @cssproperty --mdc-button-height - Height of the buttonlink
+ * @cssproperty --mdc-button-background - Background color of the buttonlink
+ * @cssproperty --mdc-button-border-color - Border color of the buttonlink
+ * @cssproperty --mdc-button-text-color - Text color of the buttonlink
+ * @cssproperty --mdc-button-line-height - Line height of the buttonlink text
  * @cssproperty --mdc-button-prefix-icon-size - Size of the prefix icon
  * @cssproperty --mdc-button-postfix-icon-size - Size of the postfix icon
  */
 class ButtonLink extends ButtonComponentMixin(Linksimple) {
   /**
-   * ButtonLink sizing is based on the buttonlink type.
-   * - **Pill buttonlink**: 40, 32, 28, 24.
-   * - **Icon buttonlink**: 64, 52, 40, 32, 28, 24.
-   * - Tertiary icon buttonlink can also be 20.
+   * Size of the buttonlink, determined by its type.
+   * - **Pill buttonlink**: 40 (2.5rem), 32 (2rem), 28 (1.75rem), 24 (1.5rem)
+   * - **Icon buttonlink**: 64 (4rem), 52 (3.25rem), 40 (2.5rem), 32 (2rem), 28 (1.75rem), 24 (1.5rem)
+   * - **Tertiary icon buttonlink** can also use: 20 (1.25rem)
    * @default 32
    */
   @property({ type: Number, reflect: true }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
