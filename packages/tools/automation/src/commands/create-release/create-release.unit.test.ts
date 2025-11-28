@@ -101,6 +101,7 @@ describe('Create Release', () => {
       {
         title: 'fake-pr-title',
         body: 'fake-pr-body including <img alt="test ..."/>',
+        html_url: 'https://github.com/fake-pr-link',
       },
     ]));
     compressSpy = jest.spyOn(Util, 'compress').mockImplementation(() => Promise.resolve('compress complete'));
