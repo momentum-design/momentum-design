@@ -1,8 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../text';
+import '../link';
 import '../button';
-import { invert } from 'lodash';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
@@ -108,6 +108,12 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
+    'aria-describedby': {
+      control: 'text',
+    },
+    'aria-description': {
+      control: 'text',
+    },
     'close-button-aria-label': {
       control: 'text',
     },
@@ -137,12 +143,9 @@ const meta: Meta = {
     },
     illustration: {
       control: 'select',
-      options: Object.values(invert(illustrationManifest)),
-      table: {
-        defaultValue: { summary: 'undefined' },
-      },
+      options: Object.keys(illustrationManifest),
     },
-    ...hideControls(['variant', 'description-text', 'description-tag-name']),
+    ...hideControls(['description-tag-name', 'description-text', 'disableAriaHasPopup', 'internalSize', 'variant']),
   },
 };
 
@@ -161,5 +164,8 @@ export const Example: StoryObj = {
     triggerId: 'dialog-trigger-btn',
     'z-index': DIALOG_DEFAULTS.Z_INDEX,
     '--mdc-dialog-height': '30rem',
+    'disable-aria-haspopup': DIALOG_DEFAULTS.DISABLE_ARIA_HAS_POPUP,
+    'focus-trap': DIALOG_DEFAULTS.FOCUS_TRAP,
+    'should-focus-trap-wrap': true,
   },
 };
