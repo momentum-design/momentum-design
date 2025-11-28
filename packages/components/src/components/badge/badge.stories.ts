@@ -4,6 +4,7 @@ import { html } from 'lit';
 import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideAllControls } from '../../../config/storybook/utils';
 
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
@@ -167,4 +168,5 @@ export const AllVariants: StoryObj = {
       <mdc-badge type="${TYPE.ERROR}" overlay></mdc-badge>
     </div>
   `,
+  ...hideAllControls(),
 };
