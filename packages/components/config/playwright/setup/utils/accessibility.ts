@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { Page, expect, TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHtmlReport } from 'axe-html-reporter';
@@ -21,58 +19,25 @@ class Accessibility {
   }
 
   /**
-   * Attaches the provided file to the test report
-   *
-   * File will be deleted after being attached, since after attaching to test report,
-   * the file is not needed anymore locally
-   *
-   * @param fileName - name of the file to attach
-   */
-  async attachToReport(fileName: string) {
-    const reportPath = `./${fileName}`;
-    await this.testInfo.attach(fileName, {
-      path: reportPath,
-    });
-
-    if (fs.existsSync(reportPath)) {
-      fs.unlinkSync(reportPath);
-    }
-  }
-
-  /**
    * Attaches the provided scan results as HTML
    * to the test report
    * @param accessibilityScanResults - scan results
    */
   async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
     const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
-    const fileName = `accessibility-scan-results-${testResultsName.split(' ').join('')}-${browserName}.html`;
+    const fileName = `accessibility-scan-results-${testResultsName.split(' ').join('-')}-${browserName}.html`;
 
-    // todo: add option to suppress the output of the report if
-    // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
-    // eslint-disable-next-line no-console
-    const originalInfo = console.info;
-    try {
-      // We will supress the info temporary and will revert it back after the createHtmlReport called in the finally phase.
-      // eslint-disable-next-line no-console
-      console.info = () => {};
-      createHtmlReport({
-        results: accessibilityScanResults,
-        options: {
-          projectKey: `"${this.testInfo.title}"`,
-          outputDir: './',
-          reportFileName: fileName,
-        },
-      });
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('CREATE HTML REPORT FAILED ', e);
-    } finally {
-      // eslint-disable-next-line no-console
-      console.info = originalInfo;
-    }
+    const htmlContent = createHtmlReport({
+      results: accessibilityScanResults,
+      options: {
+        projectKey: `"${this.testInfo.title}"`,
+        outputDir: './',
+        reportFileName: fileName,
+        doNotCreateReportFile: true,
+      },
+    });
 
-    await this.attachToReport(fileName);
+    await this.testInfo.attach(fileName, { body: htmlContent, contentType: 'text/html' });
   }
 
   /**
