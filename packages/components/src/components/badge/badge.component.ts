@@ -91,7 +91,7 @@ class Badge extends IconNameMixin(Component) {
    * @default false
    */
   @property({ type: Boolean })
-  overlay = false;
+  overlay: boolean = DEFAULTS.OVERLAY;
 
   /**
    * Aria-label attribute to be set for accessibility
@@ -175,14 +175,15 @@ class Badge extends IconNameMixin(Component) {
     }
   }
 
-  /**
-   * Generates the badge content based on the badge type.
-   * Utilizes various helper methods to create the appropriate badge template based on the
-   * current badge type. Supports 'dot', 'icon', 'counter', 'success', 'warning', and 'error'
-   * types, returning the corresponding template result for each type.
-   * @returns the TemplateResult for the current badge type.
-   */
-  private getBadgeContentBasedOnType(): TemplateResult {
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('ariaLabel')) {
+      this.setRoleByAriaLabel();
+    }
+  }
+
+  public override render() {
     if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
       this.variant = DEFAULTS.VARIANT;
     }
@@ -203,18 +204,6 @@ class Badge extends IconNameMixin(Component) {
         this.type = BADGE_TYPE.DOT;
         return this.getBadgeDot();
     }
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    if (changedProperties.has('ariaLabel')) {
-      this.setRoleByAriaLabel();
-    }
-  }
-
-  public override render() {
-    return this.getBadgeContentBasedOnType();
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
