@@ -45,23 +45,18 @@ class Accessibility {
    * @param accessibilityScanResults - scan results
    */
   async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
-    const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
-    const fileName = `accessibility-scan-results-${testResultsName}-${browserName}.html`;
+    const fileName = `accessibility-scan-results-${testResultsName}.html`;
 
-    const originalInfo = console.info;
-    try {
-      console.info = () => {};
-      createHtmlReport({
-        results: accessibilityScanResults,
-        options: {
-          projectKey: `"${this.testInfo.title}"`,
-          outputDir: './',
-          reportFileName: fileName,
-        },
-      });
-    } finally {
-      console.info = originalInfo;
-    }
+    // todo: add option to suppress the output of the report if
+    // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
+    createHtmlReport({
+      results: accessibilityScanResults,
+      options: {
+        projectKey: `"${this.testInfo.title}"`,
+        outputDir: './',
+        reportFileName: fileName,
+      },
+    });
 
     await this.attachToReport(fileName);
   }
