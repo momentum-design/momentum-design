@@ -30,22 +30,12 @@ class Accessibility {
    */
   async attachToReport(fileName: string) {
     const reportPath = `./${fileName}`;
-    try {
-      await this.testInfo.attach(fileName, {
-        path: reportPath,
-      });
-    } catch (e) {
-      console.log('HITCH KOK in attach to report attach phase ', fileName);
-      console.log(e);
-    }
+    await this.testInfo.attach(fileName, {
+      path: reportPath,
+    });
 
-    try {
-      if (fs.existsSync(reportPath)) {
-        fs.unlinkSync(reportPath);
-      }
-    } catch (e) {
-      console.log('HITCH KOK in attach to report attach phase ', fileName);
-      console.log(e);
+    if (fs.existsSync(reportPath)) {
+      fs.unlinkSync(reportPath);
     }
   }
 
