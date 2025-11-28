@@ -85,7 +85,7 @@ describe('Create Release', () => {
       '## fake-pr-title\r\n',
       'fake-pr-body\r\n',
       ' ### PR Link:\n',
-      'https://github.com/fake-pr-link',
+      'https://github.com/fake-pr-link\n',
       ' ### Package:\n',
       'https://www.npmjs.com/package/package-name/v/0.0.2',
     ].join('');
