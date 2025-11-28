@@ -50,6 +50,7 @@ class Accessibility {
 
     const originalInfo = console.info;
     try {
+      console.info = () => {};
       createHtmlReport({
         results: accessibilityScanResults,
         options: {
