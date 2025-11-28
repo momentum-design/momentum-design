@@ -14,25 +14,27 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import styles from './avatarbutton.styles';
 
 /**
- * The `mdc-avatarbutton` component is an interactable version of the `mdc-avatar` component.
+ * The `mdc-avatarbutton` component is an interactive, clickable version of `mdc-avatar`.
+ * It wraps the avatar component in a button, making it focusable and actionable.
  *
- * This component is made by extending `buttonsimple` class.
- * The button component acts as a wrapper for the avatar component.
+ * This component extends `buttonsimple` and includes all avatar display features (photo, initials, icon, counter, presence).
+ * Use CSS parts to customize the avatar's appearance inside the button.
  *
- * To override styles of the avatar inside, use the specified css parts.
+ * ## Accessibility
+ * - Always provide an `aria-label` attribute to describe the button's purpose
  *
  * @dependency mdc-avatar
  *
- * @event click - (React: onClick) This event is dispatched when the avatarbutton is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the avatarbutton.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the avatarbutton.
- * @event focus - (React: onFocus) This event is dispatched when the avatarbutton receives focus.
+ * @event click - (React: onClick) Dispatched when the avatar button is clicked.
+ * @event keydown - (React: onKeyDown) Dispatched when a key is pressed on the avatar button.
+ * @event keyup - (React: onKeyUp) Dispatched when a key is released on the avatar button.
+ * @event focus - (React: onFocus) Dispatched when the avatar button receives focus.
  *
  * @tagname mdc-avatarbutton
  *
- * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state
- * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state
- * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state.
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state.
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state.
  *
  * @csspart overlay - The overlay part of the avatar button.
  * @csspart content - The main content of the avatar.

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 
@@ -8,13 +8,10 @@ import '../brandvisual';
 import '../chip';
 import '../avatar';
 
-const render = (args: Args) => html` <mdc-appheader args.property="${args.property}"></mdc-appheader>`;
-
 const meta: Meta = {
   title: 'Components/appheader',
   tags: ['autodocs'],
   component: 'mdc-appheader',
-  render,
   argTypes: {
     ...classArgType,
     ...styleArgType,
