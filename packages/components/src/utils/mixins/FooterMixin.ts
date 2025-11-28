@@ -50,16 +50,18 @@ export const FooterMixin = <T extends Constructor<LitElement>>(superClass: T) =>
      *
      * @internal
      */
-    protected updateFooterButtonColors(variant: string) {
+  protected updateFooterButtonColors(variant: string) {
       const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
       footerButtons?.forEach(button => {
-        if (variant === VARIANTS.PROMOTIONAL) {
-          button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
-        } else {
-          button.setAttribute('color', BUTTON_COLORS.DEFAULT);
+        if (!button.hasAttribute('color')) {
+          if (variant === VARIANTS.PROMOTIONAL) {
+            button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
+          } else {
+            button.setAttribute('color', BUTTON_COLORS.DEFAULT);
+          }
         }
       });
-    }
+  }
 
     /**
      * Filters and renders only the following content into the footer section and removes anything other than it
