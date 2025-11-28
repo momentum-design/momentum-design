@@ -5,9 +5,9 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import type { IconNames } from '../icon/icon.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import StaticChip from '../staticchip/staticchip.component';
+import type { ColorType } from '../staticchip/staticchip.types';
 
 import { DEFAULTS } from './chip.constants';
-import type { ColorType } from './chip.types';
 import styles from './chip.styles';
 
 /**
