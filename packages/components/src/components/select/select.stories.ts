@@ -130,7 +130,8 @@ const meta: Meta = {
       control: 'text',
     },
     strategy: {
-      control: 'text',
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     'popover-z-index': {
       control: 'number',
