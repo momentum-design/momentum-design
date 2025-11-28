@@ -60,7 +60,7 @@ class CreateRelease extends Command {
       const notes = releaseNotes
         .replace('$title', pullRequestDescription[0].title)
         .replace('$body', escapedBody)
-        .concat(`\r\n ### PR Link:\n${pullRequestDescription[0].issue_url}`)
+        .concat(`\r\n ### PR Link:\n${pullRequestDescription[0].html_url}`)
         .concat(`\r\n ### Package:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
       return {

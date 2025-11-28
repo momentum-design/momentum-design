@@ -38,7 +38,7 @@ describe('Create Release', () => {
       {
         title: 'fake-pr-title',
         body: 'fake-pr-body',
-        issue_url: 'https://github.com/fake-pr-link',
+        html_url: 'https://github.com/fake-pr-link',
       },
     ]));
   });
