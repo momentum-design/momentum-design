@@ -66,14 +66,19 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
     imageAlt = '';
 
     /**
-     * The variant of the card. It can either be set to 'border' or 'ghost'
+     * The variant of the card that represents the border styling.
+     * - `border`: Card with border (default)
+     * - `ghost`: Card without border
+     * - `promotional`: Card with promotional styling
      * @default 'border'
      */
     @property({ type: String, reflect: true })
     variant: CardVariant = DEFAULTS.VARIANT;
 
     /**
-     * The orientation of the card. It can either be set to 'vertical' or 'horizontal'
+     * The orientation of the card.
+     * - `vertical`: Card in vertical layout with min-width of 20rem (default)
+     * - `horizontal`: Card in horizontal layout with min-width of 40rem
      * @default 'vertical'
      */
     @property({ type: String, reflect: true })

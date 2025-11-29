@@ -1,6 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -12,20 +14,22 @@ import '../link';
 import '../button';
 
 const render = (args: Args) =>
-  html` <mdc-card
-    variant="${args.variant}"
-    orientation="${args.orientation}"
-    card-title="${args['card-title']}"
-    subtitle="${args.subtitle}"
-    image-src="${args['image-src']}"
-    image-alt="${args['image-alt']}"
-    icon-name="${args['icon-name']}"
-    title-tag-name="${args['title-tag-name']}"
-    subtitle-tag-name="${args['subtitle-tag-name']}"
-    class="${args.class}"
-    style="${args.style}"
-    >${args.children}</mdc-card
-  >`;
+  html`<div role="main">
+    <mdc-card
+      variant="${ifDefined(args.variant)}"
+      orientation="${ifDefined(args.orientation)}"
+      card-title="${ifDefined(args['card-title'])}"
+      subtitle="${ifDefined(args.subtitle)}"
+      image-src="${ifDefined(args['image-src'])}"
+      image-alt="${ifDefined(args['image-alt'])}"
+      icon-name="${ifDefined(args['icon-name'])}"
+      title-tag-name="${ifDefined(args['title-tag-name'])}"
+      subtitle-tag-name="${ifDefined(args['subtitle-tag-name'])}"
+      class="${args.class}"
+      style="${args.style}"
+      >${args.children}</mdc-card
+    >
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/card/card',
@@ -54,7 +58,8 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     'title-tag-name': {
       control: 'select',

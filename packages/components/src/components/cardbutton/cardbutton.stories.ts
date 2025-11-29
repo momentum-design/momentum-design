@@ -1,6 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
@@ -8,7 +10,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
-import { BUTTON_VARIANTS } from '../button/button.constants';
+import { BUTTON_TYPE } from '../buttonsimple/buttonsimple.constants';
 
 const render = (args: Args) =>
   html` <mdc-cardbutton
@@ -16,20 +18,22 @@ const render = (args: Args) =>
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
-    variant="${args.variant}"
+    variant="${ifDefined(args.variant)}"
     ?disabled="${args.disabled}"
     ?soft-disabled="${args['soft-disabled']}"
-    orientation="${args.orientation}"
-    card-title="${args['card-title']}"
-    subtitle="${args.subtitle}"
-    image-src="${args['image-src']}"
-    image-alt="${args['image-alt']}"
-    icon-name="${args['icon-name']}"
-    title-tag-name="${args['title-tag-name']}"
-    subtitle-tag-name="${args['subtitle-tag-name']}"
-    type="${args.type}"
-    role="${args.role}"
-    tabIndex="${args.tabIndex}"
+    orientation="${ifDefined(args.orientation)}"
+    card-title="${ifDefined(args['card-title'])}"
+    subtitle="${ifDefined(args.subtitle)}"
+    image-src="${ifDefined(args['image-src'])}"
+    image-alt="${ifDefined(args['image-alt'])}"
+    icon-name="${ifDefined(args['icon-name'])}"
+    title-tag-name="${ifDefined(args['title-tag-name'])}"
+    subtitle-tag-name="${ifDefined(args['subtitle-tag-name'])}"
+    type="${ifDefined(args.type)}"
+    role="${ifDefined(args.role)}"
+    tabindex="${ifDefined(args.tabIndex)}"
+    name="${ifDefined(args.name)}"
+    value="${ifDefined(args.value)}"
     class="${args.class}"
     style="${args.style}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
@@ -64,7 +68,8 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     'title-tag-name': {
       control: 'select',
@@ -85,7 +90,13 @@ const meta: Meta = {
     },
     type: {
       control: 'select',
-      options: Object.values(BUTTON_VARIANTS),
+      options: Object.values(BUTTON_TYPE),
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
     },
     'auto-focus-on-mount': {
       control: 'boolean',
