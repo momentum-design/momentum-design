@@ -8,24 +8,22 @@ import styles from './buttongroup.styles';
 import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from './buttongroup.types';
 
 /**
- * buttongroup component, is a wrapper to group multiple buttons.
- * It can support icon buttons, combination of icon and pill buttons, and text buttons.
- * Button group can be positioned in horizontal orientation and vertical orientation.
+ * `mdc-buttongroup` is a wrapper component that groups multiple buttons together.
  *
- * The sizes of buttons within the button group can be set using the `size` attribute on the button group,
- * which will apply the size to all buttons within the group.
+ * ## Supported button types
+ * - Icon buttons
+ * - Pill buttons
+ * - Combination of icon and pill buttons
  *
- * Buttons of sizes 24, 28, 32, and 40 are only supported inside a button group. Default size is 28.
+ * ## Features
+ * - Horizontal or vertical orientation
+ * - Unified size and variant applied to all child buttons
+ * - Optional compact mode for reduced height
+ * - Supported sizes: 24, 28 (default), 32, 40
  *
- * The variant of buttons within the button group can be set using the `variant` attribute on the button group,
- * which will apply the variant to all buttons within the group. Default variant is `primary`.
- *
- * All buttons are placed horizontally by default. To change the orientation to vertical, set the `orientation` attribute to `vertical`.
- *
- * Things to note:
- * - Button group will allow only `mdc-button` components as its direct children.
- * - Button group will set the `size` and `variant` attributes on the buttons within it,
- *   so any `size` or `variant` set directly on any button will be overridden.
+ * ## Usage
+ * - Only `mdc-button` components are allowed as direct children
+ * - The `size` and `variant` set on buttongroup override individual button settings
  *
  * @tagname mdc-buttongroup
  *
@@ -39,29 +37,36 @@ import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from
  */
 class ButtonGroup extends Component {
   /**
-   * Orientation of the buttongroup.
+   * Layout direction of the buttons within the group.
+   * - `horizontal`: Buttons are arranged side by side (default)
+   * - `vertical`: Buttons are stacked vertically
    * @default 'horizontal'
    */
   @property({ type: String, reflect: true })
   orientation: ButtonGroupOrientation = DEFAULTS.ORIENTATION;
 
   /**
-   * Variant of the buttons within the buttongroup.
+   * Visual style variant applied to all buttons in the group.
+   * - `primary`: Solid background color
+   * - `secondary`: Transparent background with solid border
+   * - `tertiary`: No background or border, text-only appearance
    * @default 'primary'
    */
   @property({ type: String, reflect: true })
   variant: ButtonGroupVariant = DEFAULTS.VARIANT;
 
   /**
-   * Size of the buttons within the buttongroup.
-   * @default '28'
+   * Size applied to all buttons in the group.
+   * Available sizes: 24, 28, 32, 40
+   * @default 28
    */
   @property({ type: Number, reflect: true })
   size: ButtonGroupSize = DEFAULTS.SIZE;
 
   /**
-   * When this is true, the buttons within the buttongroup will be compact.
-   * i.e. Irrespective of the size of the buttons, they will have a height of 24px.
+   * Enables compact mode with reduced height.
+   * When true, all buttons have a fixed height of 24px regardless of their size setting.
+   * Useful for space-constrained layouts.
    * @default false
    */
   @property({ type: Boolean, reflect: true })

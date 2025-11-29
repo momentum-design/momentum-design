@@ -1,9 +1,10 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import type { AnimationNames } from '../animation/animation.types';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
@@ -14,10 +15,10 @@ import '../tooltip';
 import '../dialog';
 
 const render = (args: Args) =>
-  html` <mdc-buttongroup
-    variant="${args.variant}"
-    orientation="${args.orientation}"
-    size="${args.size}"
+  html`<mdc-buttongroup
+    variant="${ifDefined(args.variant)}"
+    orientation="${ifDefined(args.orientation)}"
+    size="${ifDefined(args.size)}"
     ?compact="${args.compact}"
   >
     ${args.children}
@@ -46,7 +47,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['children']),
+    ...hideControls(['children']),
   },
 };
 
@@ -68,10 +69,9 @@ export const Example: StoryObj = {
 
 export const VerticalGroup: StoryObj = {
   args: {
+    ...Example.args,
     variant: BUTTON_GROUP_VARIANT.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.VERTICAL,
-    size: BUTTON_GROUP_SIZE[28],
-    compact: false,
     children: html`
       <mdc-button prefix-icon="arrow-up-bold" aria-label="arrow up button"></mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label="arrow down button"></mdc-button>
@@ -81,8 +81,8 @@ export const VerticalGroup: StoryObj = {
 
 export const CompactGroup: StoryObj = {
   args: {
+    ...Example.args,
     variant: BUTTON_GROUP_VARIANT.SECONDARY,
-    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
     size: BUTTON_GROUP_SIZE[32],
     compact: true,
     children: html`
@@ -97,10 +97,8 @@ export const CompactGroup: StoryObj = {
 
 export const SpiltPillButton: StoryObj = {
   args: {
+    ...Example.args,
     variant: BUTTON_GROUP_VARIANT.SECONDARY,
-    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-    size: BUTTON_GROUP_SIZE[28],
-    compact: false,
     children: html`
       <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label="arrow down button"></mdc-button>
@@ -110,10 +108,8 @@ export const SpiltPillButton: StoryObj = {
 
 export const SpiltIconButton: StoryObj = {
   args: {
+    ...Example.args,
     variant: BUTTON_GROUP_VARIANT.SECONDARY,
-    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-    size: BUTTON_GROUP_SIZE[28],
-    compact: false,
     children: html`
       <mdc-button prefix-icon="raise-hand-bold" aria-label="raise hand button"></mdc-button>
       <mdc-button prefix-icon="reactions-bold" aria-label="reactions button"></mdc-button>
@@ -123,9 +119,14 @@ export const SpiltIconButton: StoryObj = {
 
 export const GroupWithPopover: StoryObj = {
   render: (args: Args) => html`
-    <mdc-buttongroup variant="${args.variant}" orientation="${args.orientation}" size="${args.size}">
+    <mdc-buttongroup
+      variant="${ifDefined(args.variant)}"
+      orientation="${ifDefined(args.orientation)}"
+      size="${ifDefined(args.size)}"
+      ?compact="${args.compact}"
+    >
       <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2" aria-label="More options"></mdc-button>
     </mdc-buttongroup>
 
     <mdc-tooltip id="tooltip1" triggerID="popover-trigger-1" placement="bottom" show-arrow tooltip-type="label">
@@ -149,9 +150,8 @@ export const GroupWithPopover: StoryObj = {
     </mdc-popover>
   `,
   args: {
+    ...Example.args,
     variant: BUTTON_GROUP_VARIANT.SECONDARY,
-    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-    size: BUTTON_GROUP_SIZE[28],
   },
 };
 
@@ -161,27 +161,28 @@ export const AllVariantsAndOrientations: StoryObj = {
       <mdc-buttongroup variant="primary" orientation="horizontal" size="40">
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
-        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2" aria-label="More options"></mdc-button>
       </mdc-buttongroup>
 
       <mdc-buttongroup variant="secondary" orientation="horizontal" size="40">
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
-        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2" aria-label="More options"></mdc-button>
       </mdc-buttongroup>
 
       <mdc-buttongroup variant="primary" orientation="vertical" size="40">
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
-        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2" aria-label="More options"></mdc-button>
       </mdc-buttongroup>
 
       <mdc-buttongroup variant="secondary" orientation="vertical" size="40">
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
         <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
-        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2" aria-label="More options"></mdc-button>
       </mdc-buttongroup>
     </div>`,
+  ...hideAllControls(),
 };
 
 export const EmojiReactionsGroup: StoryObj = {
@@ -189,7 +190,7 @@ export const EmojiReactionsGroup: StoryObj = {
     <mdc-buttongroup variant="secondary" size="40" orientation="horizontal">
       ${['thumb_up_yellow', 'smile', 'wow', 'sad', 'slow_down', 'speed_up', 'raise_hand_yellow'].map(
         animationName => html`
-          <mdc-button>
+          <mdc-button aria-label="${animationName} reaction">
             <mdc-animation
               name="${animationName as AnimationNames}"
               loop="true"
@@ -201,18 +202,20 @@ export const EmojiReactionsGroup: StoryObj = {
       )}
     </mdc-buttongroup>
   `,
+  ...hideAllControls(),
 };
 
 export const GroupInsideDialog: StoryObj = {
   render: () => html`
-    <mdc-dialog visible>
+    <mdc-dialog visible aria-label="Zoom settings dialog" close-button-aria-label="Close dialog">
       <div slot="footer">
         <mdc-buttongroup variant="secondary" size="32">
-          <mdc-button prefix-icon="zoom-out-bold"></mdc-button>
-          <mdc-button>100%</mdc-button>
-          <mdc-button prefix-icon="zoom-in-bold"></mdc-button>
+          <mdc-button prefix-icon="zoom-out-bold" aria-label="Zoom out"></mdc-button>
+          <mdc-button aria-label="Reset zoom to 100%">100%</mdc-button>
+          <mdc-button prefix-icon="zoom-in-bold" aria-label="Zoom in"></mdc-button>
         </mdc-buttongroup>
       </div>
     </mdc-dialog>
   `,
+  ...hideAllControls(),
 };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../spinner';
 import '../animation';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -11,7 +12,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 
 const render = (args: Args) =>
-  html` <mdc-button
+  html`<mdc-button
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
@@ -19,18 +20,20 @@ const render = (args: Args) =>
     ?active="${args.active}"
     ?disabled="${args.disabled}"
     ?soft-disabled="${args['soft-disabled']}"
-    variant="${args.variant}"
-    size="${args.size}"
-    color="${args.color}"
-    prefix-icon="${args['prefix-icon']}"
-    postfix-icon="${args['postfix-icon']}"
-    type="${args.type}"
-    role="${args.role}"
-    tabIndex="${args.tabIndex}"
-    aria-label="${args['aria-label']}"
+    variant="${ifDefined(args.variant)}"
+    size="${ifDefined(args.size)}"
+    color="${ifDefined(args.color)}"
+    prefix-icon="${ifDefined(args['prefix-icon'])}"
+    postfix-icon="${ifDefined(args['postfix-icon'])}"
+    type="${ifDefined(args.type)}"
+    name="${ifDefined(args.name)}"
+    value="${ifDefined(args.value)}"
+    role="${ifDefined(args.role)}"
+    tabIndex="${ifDefined(args.tabIndex)}"
+    aria-label="${ifDefined(args['aria-label'])}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
-    style="${args.style}"
+    style="${ifDefined(args.style)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-button
   >`;
@@ -46,13 +49,20 @@ const meta: Meta = {
       control: 'text',
     },
     'prefix-icon': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     'postfix-icon': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     active: {
       control: 'boolean',
+    },
+    'aria-label': {
+      control: 'text',
+      description: 'Defines an accessible label for screen readers. Required when using icon-only buttons.',
+      table: { category: 'attributes' },
     },
     disabled: {
       control: 'boolean',
@@ -75,6 +85,12 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BUTTON_TYPE),
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
     },
     ariaStateKey: {
       control: 'text',
@@ -110,68 +126,34 @@ export const Example: StoryObj = {
 
 export const PillButton: StoryObj = {
   args: {
-    children: 'Click Me',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
+    ...Example.args,
   },
 };
 
 export const PillButtonInverted: StoryObj = {
   render: args =>
-    html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
+    html`<div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
   args: {
-    children: 'Click Me',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
+    ...Example.args,
     inverted: true,
   },
 };
 
 export const PillWithPrefixIcon: StoryObj = {
   args: {
+    ...Example.args,
     children: 'Left Icon',
     'prefix-icon': 'placeholder-bold',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };
 
 export const PillWithPostfixIcon: StoryObj = {
   args: {
+    ...Example.args,
     children: 'Right Icon',
     'postfix-icon': 'placeholder-bold',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };
 
@@ -201,7 +183,7 @@ export const IconButton: StoryObj = {
 
 export const IconButtonInverted: StoryObj = {
   render: args =>
-    html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
+    html`<div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
   argTypes: {
@@ -213,17 +195,7 @@ export const IconButtonInverted: StoryObj = {
     },
   },
   args: {
-    'prefix-icon': 'placeholder-bold',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
-    'aria-label': 'icon button',
+    ...IconButton.args,
     inverted: true,
   },
 };
@@ -231,39 +203,23 @@ export const IconButtonInverted: StoryObj = {
 export const PillButtonEllipsis: StoryObj = {
   render: args => render({ ...args, style: 'width: 150px;' }),
   args: {
+    ...Example.args,
     children: 'Long text with icons',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };
 
 export const PillWithPrefixIconEllipsis: StoryObj = {
   render: args => render({ ...args, style: 'width: 150px;' }),
   args: {
+    ...Example.args,
     children: 'Long text with icons',
     'prefix-icon': 'placeholder-bold',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };
 
 export const PillWithPrefixSlot: StoryObj = {
   render: args =>
-    html` <mdc-button
+    html`<mdc-button
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
       @keyup="${action('onkeyup')}"
@@ -271,38 +227,30 @@ export const PillWithPrefixSlot: StoryObj = {
       ?active="${args.active}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
-      variant="${args.variant}"
-      size="${args.size}"
-      color="${args.color}"
-      type="${args.type}"
-      role="${args.role}"
-      tabIndex="${args.tabIndex}"
-      aria-label="${args['aria-label']}"
+      variant="${ifDefined(args.variant)}"
+      size="${ifDefined(args.size)}"
+      color="${ifDefined(args.color)}"
+      type="${ifDefined(args.type)}"
+      role="${ifDefined(args.role)}"
+      tabIndex="${ifDefined(args.tabIndex)}"
+      aria-label="${ifDefined(args['aria-label'])}"
       ariaStateKey="${ifDefined(args.ariaStateKey)}"
       ?inverted="${args.inverted}"
-      style="${args.style}"
+      style="${ifDefined(args.style)}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-spinner slot="prefix" variant="button" size="small"></mdc-spinner>
       ${args.children}
     </mdc-button>`,
   args: {
+    ...Example.args,
     children: 'Loading...',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };
 
 export const PillWithPostfixSlot: StoryObj = {
   render: args =>
-    html` <mdc-button
+    html`<mdc-button
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
       @keyup="${action('onkeyup')}"
@@ -310,16 +258,16 @@ export const PillWithPostfixSlot: StoryObj = {
       ?active="${args.active}"
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
-      variant="${args.variant}"
-      size="${args.size}"
-      color="${args.color}"
-      type="${args.type}"
-      role="${args.role}"
-      tabIndex="${args.tabIndex}"
-      aria-label="${args['aria-label']}"
+      variant="${ifDefined(args.variant)}"
+      size="${ifDefined(args.size)}"
+      color="${ifDefined(args.color)}"
+      type="${ifDefined(args.type)}"
+      role="${ifDefined(args.role)}"
+      tabIndex="${ifDefined(args.tabIndex)}"
+      aria-label="${ifDefined(args['aria-label'])}"
       ariaStateKey="${ifDefined(args.ariaStateKey)}"
       ?inverted="${args.inverted}"
-      style="${args.style}"
+      style="${ifDefined(args.style)}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >
       <mdc-animation
@@ -331,15 +279,7 @@ export const PillWithPostfixSlot: StoryObj = {
       ${args.children}
     </mdc-button>`,
   args: {
+    ...Example.args,
     children: 'Wow',
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
-    role: 'button',
-    tabIndex: 0,
   },
 };

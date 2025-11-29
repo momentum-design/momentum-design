@@ -16,28 +16,43 @@ import { getIconNameWithoutStyle } from './button.utils';
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
  *
- * Button Variants:
- * - **Primary**: Solid background color.
- * - **Secondary**: Transparent background with a solid border.
- * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ * ## Button configuration
  *
- * Button Colors:
- * - **Positive**: Green color.
- * - **Negative**: Red color.
- * - **Accent**: Blue color.
- * - **Promotional**: Purple color.
- * - **Default**: White color.
+ * The appearance of the button depends on combination of multiple attributes.
  *
- * Button Sizes (in REM units):
- * - **Pill button**: 40, 32, 28, 24.
- * - **Icon button**: 64, 52, 40, 32, 28, 24.
- * - **Tertiary icon button**: 20.
+ * ### Button Types
+ * 
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons/slots:
+ * 
+ * - **Pill button**: Contains text value, commonly used for call to action, tags, or filters
+ * - **Pill button with icons**: Contains an icon on the left or right side of the button
+ * - **Icon button**: Represented by just an icon without any text
+ * 
+ * ### Button Variants:
  *
- * Button Types:
- * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
- * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
- * - **Icon button**: A button represented by just an icon without any text.
- * The type of button is inferred based on the presence of slot and/or prefix and postfix icons/slots.
+ * Options for button backgrounds and borders:
+ * 
+ * - **Primary**: Solid background color
+ * - **Secondary**: Transparent background with solid border
+ * - **Tertiary**: No background or border, text-only appearance
+ *
+ * ### Button Colors
+ * 
+ * Color options for **Primary** and **Secondary** buttons:
+ *
+ * - **Default**: For standard actions
+ * - **Positive**: For success or confirmation actions
+ * - **Negative**: For destructive or error actions
+ * - **Accent**: For informational actions
+ * - **Promotional**: For promotional actions
+ *
+ * ### Button Sizes
+ * 
+ * Size options for different button configurations in REM:
+ * 
+ * - **Pill button**: 40, 32, 28, 24
+ * - **Icon button**: 64, 52, 40, 32, 28, 24
+ * - **Tertiary icon button**: 20
  *
  * @dependency mdc-icon
  *
@@ -50,6 +65,8 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @csspart button-text - Text label of the button, passed in default slot
  * @csspart prefix - Content before the text label, passed in `prefix` slot
  * @csspart postfix - Content after the text label, passed in `postfix` slot
+ * @csspart prefix-icon - Icon element displayed before the text label when `prefix-icon` attribute is set
+ * @csspart postfix-icon - Icon element displayed after the text label when `postfix-icon` attribute is set
  *
  * @cssproperty --mdc-button-height - Height for button size
  * @cssproperty --mdc-button-background - Background of the button
@@ -61,20 +78,39 @@ import { getIconNameWithoutStyle } from './button.utils';
  */
 class Button extends ButtonComponentMixin(Buttonsimple) {
   /**
-   * Button sizing is based on the button type.
-   * - **Pill button**: 40, 32, 28, 24.
-   * - **Icon button**: 64, 52, 40, 32, 28, 24.
-   * - Tertiary icon button can also be 20.
+   * Specifies the size of the button in pixels. Available sizes depend on the button type:
+   *
+   * **Pill button** (with text):
+   * - `40`: Large size (2.5rem)
+   * - `32`: Default size (2rem)
+   * - `28`: Medium size (1.75rem)
+   * - `24`: Small size (1.5rem)
+   *
+   * **Icon button** (icon only):
+   * - `64`: Extra large (4rem)
+   * - `52`: Large (3.25rem)
+   * - `40`: Medium-large (2.5rem)
+   * - `32`: Default (2rem)
+   * - `28`: Medium (1.75rem)
+   * - `24`: Small (1.5rem)
+   * - `20`: Extra small (1.25rem) - Only available for tertiary variant
+   *
    * @default 32
    */
   @property({ type: Number })
   override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
-   * The button color can be inverted by setting the inverted attribute to true.
+   * Inverts the button's color scheme for use on dark backgrounds.
+   * When enabled, the button adapts its colors to maintain proper contrast on inverted surfaces.
    *
-   * Only applies when variant is set to `primary`, color is set to `default`
-   * and button is not `active`.
+   * **Requirements:**
+   * - Only works with `variant="primary"`
+   * - Only works with `color="default"`
+   * - Button must not be in `active` state
+   *
+   * **Use case:** Place buttons on dark-colored backgrounds or inverted theme sections.
+   *
    * @default false
    */
   @property({ type: Boolean, reflect: true })
