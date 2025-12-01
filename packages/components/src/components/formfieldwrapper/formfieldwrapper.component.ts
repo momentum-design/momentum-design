@@ -92,6 +92,12 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
   toggletipPlacement: PopoverPlacement = DEFAULTS.TOGGLETIP_PLACEMENT;
 
+  /**
+   * The positioning strategy for the toggletip.
+   * - **absolute**: Positioned relative to the nearest positioned ancestor.
+   * - **fixed**: Positioned relative to the viewport.
+   * @default 'absolute'
+   */
   @property({ type: String, reflect: true, attribute: 'toggletip-strategy' })
   toggletipStrategy: PopoverStrategy = DEFAULTS.TOGGLETIP_STRATEGY;
 
