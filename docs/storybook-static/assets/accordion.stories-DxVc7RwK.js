@@ -1,0 +1,196 @@
+import{i as v}from"./manifest-BmzYojFK.js";import{k as d}from"./iframe-CEKo-JXY.js";import{t as a}from"./if-defined-D_LYpS0s.js";import"./index-BU6lrEnN.js";import"./index-CtphwW-2.js";import"./index-BDaZpXwS.js";import"./index-BzwzDJz2.js";import"./index-6vUjwAdH.js";import{c as L,s as z}from"./commonArgTypes-BluK8w5L.js";import{h as R,a as V}from"./utils-CO8B6ZcN.js";import{S as r,V as s}from"./accordionbutton.component-498EceW0.js";import"./preload-helper-C1FmrZbK.js";import"./query-assigned-elements-uEuc3rg8.js";import"./base-DIkkzJ-c.js";import"./IconNameMixin-D-f4BQyq.js";import"./badge.constants-DEEB-5l2.js";import"./button.component-B27S1t5Z.js";import"./buttonsimple.component-Cy86Wmzd.js";import"./TabIndexMixin-CdhXJLRg.js";import"./DisabledMixin-BaIDnvgN.js";import"./button.utils-rNW36Ji7.js";import"./chip.component-gxL7WzmP.js";import"./staticchip.component-BT2twM_x.js";import"./index-CFCvY7gN.js";import"./index-DTrDRi1E.js";import"./v4-CmTdKEVZ.js";const{action:D}=__STORYBOOK_MODULE_ACTIONS__,T=d`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
+  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+  laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`,o=d`
+  <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
+  <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+  <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+  <mdc-chip slot="trailing-controls" label="Label"></mdc-chip>
+  <mdc-badge slot="trailing-controls" type="counter" counter="911" max-counter="99"></mdc-badge>
+  ${T}
+`,w=e=>d`<div role="main">
+    <mdc-accordion
+      @shown=${D("onshown")}
+      ?disabled=${e.disabled}
+      ?expanded=${e.expanded}
+      data-aria-level="${a(e["data-aria-level"])}"
+      header-text="${a(e["header-text"])}"
+      prefix-icon="${a(e["prefix-icon"])}"
+      open-button-aria-label="${a(e["open-button-aria-label"])}"
+      close-button-aria-label="${a(e["close-button-aria-label"])}"
+      size="${a(e.size)}"
+      variant="${a(e.variant)}"
+    >
+      ${o}
+    </mdc-accordion>
+  </div>`,ce={title:"Components/accordion/accordion",tags:["autodocs"],component:"mdc-accordion",render:w,argTypes:{...L,...z,"data-aria-level":{control:"number"},size:{control:"select",options:Object.values(r)},disabled:{control:"boolean"},expanded:{control:"boolean"},"header-text":{control:"text"},"prefix-icon":{control:"select",options:Object.keys(v)},variant:{control:"select",options:Object.values(s)},"open-button-aria-label":{control:"text"},"close-button-aria-label":{control:"text"},...R(["--mdc-accordionbutton-hover-color","--mdc-accordionbutton-active-color"])}},n={args:{"data-aria-level":3,"header-text":"Heading","prefix-icon":"placeholder-regular",disabled:!1,size:r.SMALL,expanded:!0,variant:s.DEFAULT,"open-button-aria-label":"Open accordion","close-button-aria-label":"Close accordion"}},i={args:{...n.args,variant:s.BORDERLESS,expanded:!1}},c={args:{...n.args,size:r.LARGE,expanded:!1}},l={args:{...n.args,size:r.SMALL,expanded:!1}},t={render:()=>d`
+    <div role="main" style="display: flex; flex-direction: column;">
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Visibility of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Expanded"
+          expanded
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Not expanded"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem">
+        <h2>Variant Types of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Default Variant"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Borderless Variant"
+          variant="${s.BORDERLESS}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Sizes of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Small Size"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Large Size"
+          size="${r.LARGE}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Disabled Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Disabled Accordion"
+          disabled
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >${o}</mdc-accordion
+        >
+      </section>
+    </div>
+  `,...V()};var p,m,b;n.parameters={...n.parameters,docs:{...(p=n.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  args: {
+    'data-aria-level': 3,
+    'header-text': 'Heading',
+    'prefix-icon': 'placeholder-regular',
+    disabled: false,
+    size: SIZE.SMALL,
+    expanded: true,
+    variant: VARIANT.DEFAULT,
+    'open-button-aria-label': 'Open accordion',
+    'close-button-aria-label': 'Close accordion'
+  }
+}`,...(b=(m=n.parameters)==null?void 0:m.docs)==null?void 0:b.source}}};var u,x,h;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:`{
+  args: {
+    ...Example.args,
+    variant: VARIANT.BORDERLESS,
+    expanded: false
+  }
+}`,...(h=(x=i.parameters)==null?void 0:x.docs)==null?void 0:h.source}}};var f,g,S;c.parameters={...c.parameters,docs:{...(f=c.parameters)==null?void 0:f.docs,source:{originalSource:`{
+  args: {
+    ...Example.args,
+    size: SIZE.LARGE,
+    expanded: false
+  }
+}`,...(S=(g=c.parameters)==null?void 0:g.docs)==null?void 0:S.source}}};var A,y,C;l.parameters={...l.parameters,docs:{...(A=l.parameters)==null?void 0:A.docs,source:{originalSource:`{
+  args: {
+    ...Example.args,
+    size: SIZE.SMALL,
+    expanded: false
+  }
+}`,...(C=(y=l.parameters)==null?void 0:y.docs)==null?void 0:C.source}}};var $,E,O;t.parameters={...t.parameters,docs:{...($=t.parameters)==null?void 0:$.docs,source:{originalSource:`{
+  render: () => html\`
+    <div role="main" style="display: flex; flex-direction: column;">
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Visibility of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Expanded"
+          expanded
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Not expanded"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem">
+        <h2>Variant Types of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Default Variant"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Borderless Variant"
+          variant="\${VARIANT.BORDERLESS}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Sizes of Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Small Size"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Large Size"
+          size="\${SIZE.LARGE}"
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+      </section>
+      <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h2>Disabled Accordion</h2>
+        <mdc-accordion
+          prefix-icon="placeholder-bold"
+          header-text="Disabled Accordion"
+          disabled
+          open-button-aria-label="Open accordion"
+          close-button-aria-label="Close accordion"
+          >\${defaultChildren}</mdc-accordion
+        >
+      </section>
+    </div>
+  \`,
+  ...hideAllControls()
+}`,...(O=(E=t.parameters)==null?void 0:E.docs)==null?void 0:O.source}}};const le=["Example","BorderlessVariant","LargeSize","SmallSize","AllVariants"];export{t as AllVariants,i as BorderlessVariant,n as Example,c as LargeSize,l as SmallSize,le as __namedExportsOrder,ce as default};
