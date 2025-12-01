@@ -20,9 +20,12 @@ import type { Size } from './bullet.types';
  */
 class Bullet extends Component {
   /**
-   * Size of the bullet
+   * Specifies the size of the bullet visual indicator.
    *
-   * Possible values: 'small', 'medium', 'large'
+   * - `small` (default): 0.25rem (4px) - Compact bullet for dense layouts
+   * - `medium`: 0.5rem (8px) - Standard bullet for most use cases
+   * - `large`: 1rem (16px) - Prominent bullet for emphasis
+   *
    * @default small
    */
   @property({ type: String, reflect: true })
