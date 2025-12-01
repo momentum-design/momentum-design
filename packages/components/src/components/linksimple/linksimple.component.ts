@@ -72,6 +72,12 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   /**
    * Optional download attribute to instruct browsers to download the linked resource.
+   *
+   * Valid values:
+   * - empty string: browser suggests a name for the downloaded file
+   * - string: name of the downloaded file
+   *
+   * More details in the [Anchor element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download) docs.
    */
   @property({ type: String, reflect: true })
   download?: string;
