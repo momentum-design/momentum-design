@@ -45,14 +45,15 @@ export const Example: StoryObj = {
   args: {
     name: 'momentum-design-logo-dark-color-vertical',
     'alt-text': 'Momentum design vertical logo',
-    style: 'display: block; height: 100px; width: 100px;',
+    style: 'width: 6.25rem;',
   },
 };
 
 export const BrandVisualImage: StoryObj = {
   args: {
-    name: 'device-ip-phone-sixninezeroone',
-    'alt-text': 'Momentum design device ip phone',
+    name: 'device-deskphone-eighteightsevenfour',
+    'alt-text': 'Momentum design device desk phone',
+    style: 'width: 25rem;',
   },
 };
 
@@ -60,5 +61,6 @@ export const BrandVisualSvg: StoryObj = {
   args: {
     name: 'webex-app-icon-color-container',
     'alt-text': 'Webex app icon color logo',
+    style: 'width: 10rem;',
   },
 };
