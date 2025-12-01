@@ -1,9 +1,9 @@
 const commonArgs = {
   table: {
     category: 'Styling',
+    defaultValue: {},
     type: {},
   },
-  control: false,
 };
 
 const classArgType = {
