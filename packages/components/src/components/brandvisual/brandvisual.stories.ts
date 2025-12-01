@@ -4,11 +4,12 @@ import { html } from 'lit';
 import brandVisualsManifest from '@momentum-design/brand-visuals/dist/manifest.json';
 import { action } from 'storybook/actions';
 
+import { ROLE } from '../../utils/roles';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
-  html`<div role="main">
+  html`<div role="${ROLE.MAIN}">
     <mdc-brandvisual
       @load="${action('load')}"
       @error="${action('error')}"
