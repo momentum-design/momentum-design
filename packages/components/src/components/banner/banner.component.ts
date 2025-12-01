@@ -1,4 +1,4 @@
-import type { CSSResult } from 'lit';
+import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -64,7 +64,7 @@ class Banner extends Component {
    * Banner label text
    */
   @property({ type: String, reflect: true })
-  label: string = '';
+  label?: string;
 
   /**
    * Banner secondary label text
@@ -81,15 +81,10 @@ class Banner extends Component {
    * @param iconName - The name of the icon to render
    * @returns Template result containing the icon element, or nothing if no icon name provided
    */
-  private renderIcon(iconName: string) {
+  private renderIcon(iconName: IconNames | null): TemplateResult | typeof nothing {
     if (!iconName) return nothing;
     return html`
-      <mdc-icon
-        name="${iconName as IconNames}"
-        size="${DEFAULTS.PREFIX_ICON_SIZE}"
-        part="leading-icon"
-        length-unit="rem"
-      ></mdc-icon>
+      <mdc-icon name="${iconName}" size="${DEFAULTS.PREFIX_ICON_SIZE}" part="leading-icon" length-unit="rem"></mdc-icon>
     `;
   }
 
@@ -100,7 +95,7 @@ class Banner extends Component {
    *
    * @returns Template result containing label and optional secondary label elements
    */
-  private getTextLabel() {
+  private getTextLabel(): TemplateResult | typeof nothing {
     if (!this.label) return nothing;
     return html`
       <mdc-text
@@ -125,7 +120,7 @@ class Banner extends Component {
       <slot name="content">
         <div part="leading">
           <slot name="leading-icon">
-            ${this.variant !== DEFAULTS.VARIANT ? this.renderIcon(getIconNameForVariant(this.variant) ?? '') : nothing}
+            ${this.variant !== DEFAULTS.VARIANT ? this.renderIcon(getIconNameForVariant(this.variant)) : nothing}
           </slot>
           <slot name="leading-text">
             <div part="leading-text">${this.getTextLabel()}</div>
