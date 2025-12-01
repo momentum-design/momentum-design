@@ -6,11 +6,15 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import '../button';
 import '../icon';
+import '../text';
 import '../link';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls } from '../../../config/storybook/utils';
+import { hideControls, hideAllControls } from '../../../config/storybook/utils';
+import { BUTTON_VARIANTS } from '../button/button.constants';
+import { BUTTON_SIZES } from '../buttonsimple/buttonsimple.constants';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { BANNER_VARIANT } from './banner.constants';
 
@@ -47,26 +51,20 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls(['children', 'content', 'leading-icon', 'leading-text', 'trailing-actions']),
+    ...hideControls(['children']),
   },
 };
 
 export default meta;
 
-const DefaultArgs = {
-  variant: 'custom',
-  label: 'Banner Label',
-  'secondary-label': 'This is the secondary label of the banner.',
-};
-
 const DefaultButtons = html`
   <div slot="trailing-actions">
-    <mdc-button variant="tertiary" aria-label="Cancel action">Cancel</mdc-button>
-    <mdc-button variant="secondary" aria-label="Perform primary action">Action</mdc-button>
+    <mdc-button variant="${BUTTON_VARIANTS.TERTIARY}" aria-label="Cancel action">Cancel</mdc-button>
+    <mdc-button variant="${BUTTON_VARIANTS.SECONDARY}" aria-label="Perform primary action">Action</mdc-button>
     <mdc-button
-      variant="tertiary"
+      variant="${BUTTON_VARIANTS.TERTIARY}"
       prefix-icon="cancel-bold"
-      size="20"
+      size="${BUTTON_SIZES[20]}"
       aria-label="Dismiss banner"
       @click="${action('dismiss')}"
     ></mdc-button>
@@ -75,8 +73,7 @@ const DefaultButtons = html`
 
 export const Example: StoryObj = {
   args: {
-    ...DefaultArgs,
-    variant: 'informational',
+    variant: BANNER_VARIANT.INFORMATIONAL,
     label: 'System Update Available',
     'secondary-label': 'A new version is ready to install. Please save your work before proceeding.',
     children: DefaultButtons,
@@ -84,12 +81,11 @@ export const Example: StoryObj = {
 };
 
 export const AllVariants: StoryObj = {
-  name: 'All Variants',
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       ${[
         {
-          variant: 'custom',
+          variant: BANNER_VARIANT.CUSTOM,
           label: 'Custom Banner with Slot Icon',
           'secondary-label': 'This banner uses a custom icon via slot instead of variant-based icon.',
           children: html`
@@ -98,35 +94,35 @@ export const AllVariants: StoryObj = {
           `,
         },
         {
-          variant: 'informational',
+          variant: BANNER_VARIANT.INFORMATIONAL,
           label: 'System Update Available',
           'secondary-label': 'A new version is ready to install.',
           children: DefaultButtons,
         },
         {
-          variant: 'warning',
+          variant: BANNER_VARIANT.WARNING,
           label: 'Storage Almost Full',
           'secondary-label': 'Your storage is 95% full. Consider removing some files.',
           children: DefaultButtons,
         },
         {
-          variant: 'error',
+          variant: BANNER_VARIANT.ERROR,
           label: 'Connection Failed',
           'secondary-label': 'Unable to connect to the server. Please try again.',
           children: html`
             ${DefaultButtons}
             <mdc-button
               slot="trailing-actions"
-              variant="tertiary"
+              variant="${BUTTON_VARIANTS.TERTIARY}"
               prefix-icon="reset-bold"
-              size="20"
+              size="${BUTTON_SIZES[20]}"
               aria-label="Retry connection"
               @click="${action('retry')}"
             ></mdc-button>
           `,
         },
         {
-          variant: 'success',
+          variant: BANNER_VARIANT.SUCCESS,
           label: 'Changes Saved',
           'secondary-label': 'Your changes have been successfully saved.',
           children: DefaultButtons,
@@ -138,97 +134,88 @@ export const AllVariants: StoryObj = {
 };
 
 export const LabelOnly: StoryObj = {
-  name: 'Label Only',
   args: {
-    variant: 'informational',
+    variant: BANNER_VARIANT.INFORMATIONAL,
     label: 'System Update Available',
     children: DefaultButtons,
   },
 };
 
 export const WithoutActions: StoryObj = {
-  name: 'Without Actions',
   args: {
-    variant: 'informational',
+    variant: BANNER_VARIANT.INFORMATIONAL,
     label: 'Information Message',
     'secondary-label': 'This banner has no action buttons.',
   },
 };
 
 export const PromotionalBanner: StoryObj = {
-  name: 'Promotional Banner',
-  render: () => html`
-    <mdc-banner>
-      <!-- Using the content slot to completely override the default banner structure -->
-      <div
-        slot="content"
-        style="
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 1.5rem;
-        align-items: flex-start;
-        width: 100%;
-        padding: 0 2rem;
-      "
-      >
-        <!-- Close button positioned absolutely in top-right corner -->
-        <mdc-button
-          variant="tertiary"
-          prefix-icon="cancel-bold"
-          size="20"
-          aria-label="Close promotional banner"
-          @click="${action('close')}"
+  render: () => {
+    const image = html`<img
+      src=${imageFixtures.card}
+      alt="Promotional image"
+      style="width: 120px; height: 100%; object-fit: cover;"
+    />`;
+    return html`
+      <mdc-banner>
+        <!-- Using the content slot to completely override the default banner structure -->
+        <div
+          slot="content"
           style="
-          position: absolute;
-          right: 1rem;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 1.5rem;
+          align-items: flex-start;
+          width: 100%;
+          padding: 0 2rem;
         "
-        ></mdc-button>
+        >
+          <!-- Close button positioned absolutely in top-right corner -->
+          <mdc-button
+            variant="${BUTTON_VARIANTS.TERTIARY}"
+            prefix-icon="cancel-bold"
+            size="${BUTTON_SIZES[20]}"
+            aria-label="Close promotional banner"
+            @click="${action('close')}"
+            style="position: absolute; right: 1rem;"
+          ></mdc-button>
 
-        <!-- Left Image -->
-        <img
-          src=${imageFixtures.card}
-          alt="Promotional image"
-          style="
-          width: 120px;
-          height: 100%;
-          object-fit: cover;
-        "
-        />
+          <!-- Left Image -->
+          ${image}
 
-        <!-- Center Content Area -->
-        <div style="flex: 1; min-width: 0;">
-          <!-- Label -->
-          <mdc-text type="heading-large-bold" tagname="h3">Label text</mdc-text>
+          <!-- Center Content Area -->
+          <div style="flex: 1; min-width: 0;">
+            <!-- Label -->
+            <mdc-text type="${TYPE.HEADING_LARGE_BOLD}" tagname="${VALID_TEXT_TAGS.H3}">Label text</mdc-text>
 
-          <!-- Secondary label text -->
-          <mdc-text>
-            Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus.
-            <mdc-link>Learn more</mdc-link>
-          </mdc-text>
+            <!-- Secondary label text -->
+            <mdc-text>
+              Lorem ipsum dolor sit amet consectetur. Mattis augue imperdiet pretium dignissim purus.
+              <mdc-link>Learn more</mdc-link>
+            </mdc-text>
 
-          <!-- Action buttons -->
-          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-            <mdc-button variant="tertiary" aria-label="Tertiary action" @click="${action('tertiary-action')}"
-              >Label</mdc-button
-            >
-            <mdc-button variant="secondary" aria-label="Secondary action" @click="${action('secondary-action')}"
-              >Label</mdc-button
-            >
+            <!-- Action buttons -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+              <mdc-button
+                variant="${BUTTON_VARIANTS.TERTIARY}"
+                aria-label="Tertiary action"
+                @click="${action('tertiary-action')}"
+                >Label</mdc-button
+              >
+              <mdc-button
+                variant="${BUTTON_VARIANTS.SECONDARY}"
+                aria-label="Secondary action"
+                @click="${action('secondary-action')}"
+                >Label</mdc-button
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Right Image -->
-        <img
-          src=${imageFixtures.card}
-          alt="Promotional image"
-          style="
-          width: 120px;
-          height: 100%;
-          object-fit: cover;
-        "
-        />
-      </div>
-    </mdc-banner>
-  `,
+          <!-- Right Image -->
+          ${image}
+        </div>
+      </mdc-banner>
+    `;
+  },
   ...hideAllControls(),
 };

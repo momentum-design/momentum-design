@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import type { IconNames } from '../icon/icon.types';
 
 const TAG_NAME = utils.constructTagName('banner');
 
@@ -17,10 +18,10 @@ const BANNER_VARIANT = {
  * Icon names for variants
  */
 const VARIANT_ICON_NAMES = {
-  INFORMATIONAL_ICON_NAME: 'info-circle-bold',
-  SUCCESS_ICON_NAME: 'check-circle-bold',
-  WARNING_ICON_NAME: 'warning-bold',
-  ERROR_ICON_NAME: 'error-legacy-bold',
+  INFORMATIONAL_ICON_NAME: 'info-circle-bold' as Extract<IconNames, 'info-circle-bold'>,
+  SUCCESS_ICON_NAME: 'check-circle-bold' as Extract<IconNames, 'check-circle-bold'>,
+  WARNING_ICON_NAME: 'warning-bold' as Extract<IconNames, 'warning-bold'>,
+  ERROR_ICON_NAME: 'error-legacy-bold' as Extract<IconNames, 'error-legacy-bold'>,
 } as const;
 
 /**
@@ -31,4 +32,4 @@ const DEFAULTS = {
   PREFIX_ICON_SIZE: 1.25,
 } as const;
 
-export { TAG_NAME, BANNER_VARIANT, DEFAULTS, VARIANT_ICON_NAMES };
+export { BANNER_VARIANT, DEFAULTS, TAG_NAME, VARIANT_ICON_NAMES };
