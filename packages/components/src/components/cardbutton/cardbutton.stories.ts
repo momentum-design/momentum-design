@@ -98,6 +98,12 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
+    role: {
+      control: 'text',
+    },
+    ariaStateKey: {
+      control: 'text',
+    },
     'auto-focus-on-mount': {
       control: 'boolean',
     },

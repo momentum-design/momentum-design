@@ -8,7 +8,7 @@ import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, disableControls } from '../../../config/storybook/utils';
+import { hideControls, hideAllControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../radiogroup';
@@ -254,20 +254,5 @@ export const CardsInRadioGroup: StoryObj = {
       </div>
     </mdc-formfieldgroup>
   `,
-  argTypes: {
-    ...disableControls([
-      'aria-label',
-      'name',
-      'variant',
-      'orientation',
-      'card-title',
-      'subtitle',
-      'image-src',
-      'image-alt',
-      'icon-name',
-      'checked',
-      'disabled',
-      'tabIndex',
-    ]),
-  },
+  ...hideAllControls(),
 };
