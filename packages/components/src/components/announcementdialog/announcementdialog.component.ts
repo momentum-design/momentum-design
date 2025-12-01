@@ -26,14 +26,10 @@ import { DEFAULTS } from './announcementdialog.constants';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
- *
- * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
- * - Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
- *
- * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
- * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
- * - Reference docs for more info: [boolean-attribute-expressions](https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions)
+ * **Accessibility**
+ * - You have to be explicitly set the following attributes:
+ *  * The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
+ *  * Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
  *
  * @dependency mdc-illustration
  * @dependency mdc-text
