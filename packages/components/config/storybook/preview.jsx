@@ -16,6 +16,7 @@ import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
+import { sortArgTypes } from './enhancers/sortArgTypes';
 
 const cssProperties = [];
 
@@ -175,6 +176,12 @@ const preview = {
   },
 };
 
-export const argTypesEnhancers = [cssPartEnhancer, cssPropertyEnhancer, disableSlotControls, eventsEnhancer];
+export const argTypesEnhancers = [
+  cssPartEnhancer,
+  cssPropertyEnhancer,
+  disableSlotControls,
+  eventsEnhancer,
+  sortArgTypes,
+];
 
 export default preview;
