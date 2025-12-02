@@ -85,43 +85,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).not.toHaveAttribute('observe-size-changes');
   });
 
-  await test.step('renders correctly with list header', async () => {
-    const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
-      element: wrapper,
-    });
-
-    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-      for (let i = 0; i < 25; i += 1) {
-        wrapperEl.addItem(`Message ${i}`);
-      }
-    });
-
-    await scrollList(vlist, 180);
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
-      element: wrapper,
-    });
-  });
-
-  await test.step('popovers should render correctly when defined inside the listitems', async () => {
-    const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
-
-    await expect(listItemLocator(vlist, 24)).toBeVisible();
-    await expect(listItemLocator(vlist, 24)).toBeInViewport();
-
-    await componentsPage.actionability.pressTab();
-    await componentsPage.actionability.pressTab();
-
-    await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
-    await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
-      element: wrapper,
-    });
-  });
-
   await test.step('list populates correctly', async () => {
     const { wrapper, vlist } = await setup();
 
@@ -132,7 +95,7 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     // Flag test
-    // This is fails, the height of the listitems has been updated
+    // If is fails, the height of the listitems has been updated
     expect(await listItemLocator(vlist, 0).evaluate(el => getComputedStyle(el).height)).toBe('40px');
 
     // 300px / 40px = 7.5 -> 8 items + 1 overflow
@@ -150,6 +113,45 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
     await componentsPage.actionability.pressTab();
     await expect(firstItem).toBeFocused();
+  });
+
+  await test.step('visual regression', async () => {
+    await test.step('renders correctly with list header', async () => {
+      const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
+        element: wrapper,
+      });
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        for (let i = 0; i < 25; i += 1) {
+          wrapperEl.addItem(`Message ${i}`);
+        }
+      });
+
+      await scrollList(vlist, 180);
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
+        element: wrapper,
+      });
+    });
+
+    await test.step('popovers should render correctly when defined inside the listitems', async () => {
+      const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
+
+      await expect(listItemLocator(vlist, 24)).toBeVisible();
+      await expect(listItemLocator(vlist, 24)).toBeInViewport();
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+
+      await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
+      await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
+        element: wrapper,
+      });
+    });
   });
 
   await test.step('interaction', async () => {
@@ -260,7 +262,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       const { vlist } = await setup({ initialItemCount: 30 });
 
       await scrollList(vlist, 540);
-      await componentsPage.page.pause();
 
       await listItemLocator(vlist, 15).click();
 
