@@ -1,6 +1,6 @@
 import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
-import { ColorType } from '../chip/chip.types';
+import type { ColorType } from '../staticchip/staticchip.types';
 
 const TAG_NAME = utils.constructTagName('filterchip');
 
