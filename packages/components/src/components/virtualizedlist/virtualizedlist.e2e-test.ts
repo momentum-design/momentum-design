@@ -95,7 +95,8 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     // Flag test
-    // If is fails, the height of the listitems has been updated
+    // If this fails, the height of the listitems has been updated
+    // so all tests will need to be reviewed to update expected values (heights, counts, etc.)
     expect(await listItemLocator(vlist, 0).evaluate(el => getComputedStyle(el).height)).toBe('40px');
 
     // 300px / 40px = 7.5 -> 8 items + 1 overflow
