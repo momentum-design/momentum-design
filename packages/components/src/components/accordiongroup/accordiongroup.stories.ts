@@ -8,6 +8,7 @@ import '../avatarbutton';
 import '../chip';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { ROLE } from '../../utils/roles';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 
@@ -18,7 +19,7 @@ const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit
   laborum.<mdc-button style="margin-top:0.75rem">Continue</mdc-button>`;
 
 const render = (args: Args) =>
-  html`<div role="main">
+  html`<div role="${ROLE.MAIN}">
     <mdc-accordiongroup
       size="${ifDefined(args.size)}"
       variant="${ifDefined(args.variant)}"
@@ -113,7 +114,7 @@ export const MultiInteractiveAccordion: StoryObj = {
     'allow-multiple': false,
   },
   render: (args: Args) => html`
-    <div role="main">
+    <div role="${ROLE.MAIN}">
       <mdc-accordiongroup size="${args.size}" variant="${args.variant}" ?allow-multiple="${args['allow-multiple']}">
         <mdc-accordion
           header-text="Identify Your Goals"
