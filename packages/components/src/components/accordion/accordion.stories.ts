@@ -13,6 +13,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANT } from '../accordionbutton/accordionbutton.constants';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
+import { ROLE } from '../../utils/roles';
 
 const defaultBodyContent = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
   labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
@@ -30,7 +31,7 @@ const defaultChildren = html`
 `;
 
 const render = (args: Args) =>
-  html`<div role="main">
+  html`<div role="${ROLE.MAIN}">
     <mdc-accordion
       @shown=${action('onshown')}
       ?disabled=${args.disabled}
@@ -131,7 +132,7 @@ export const SmallSize: StoryObj = {
 
 export const AllVariants: StoryObj = {
   render: () => html`
-    <div role="main" style="display: flex; flex-direction: column;">
+    <div role="${ROLE.MAIN}" style="display: flex; flex-direction: column;">
       <section style="padding: 0.5rem; width: 45rem; display: flex; flex-direction: column; gap: 1rem;">
         <h2>Visibility of Accordion</h2>
         <mdc-accordion

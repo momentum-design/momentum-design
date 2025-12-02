@@ -13,6 +13,7 @@ const ROLE = {
   LIST: 'list',
   LISTBOX: 'listbox',
   LISTITEM: 'listitem',
+  MAIN: 'main',
   MENU: 'menu',
   MENUBAR: 'menubar',
   MENUITEM: 'menuitem',
