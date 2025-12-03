@@ -149,6 +149,9 @@ export const WithHelperText: StoryObj = {
 };
 
 export const Disabled: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+  },
   render: args =>
     html`
       <div role="main">
@@ -158,7 +161,6 @@ export const Disabled: StoryObj = {
         </div>
       </div>
     `,
- ...hideAllControls(),
 };
 
 export const WithoutLabel: StoryObj = {
@@ -170,6 +172,9 @@ export const WithoutLabel: StoryObj = {
 };
 
 export const ToggleInsideForm: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+  },
   render: args => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
@@ -199,6 +204,7 @@ export const ToggleInsideForm: StoryObj = {
       </div>
     `;
   },
+  ...hideAllControls(),
 };
 
 export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
@@ -261,4 +267,5 @@ export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
     'help-text': '',
     'help-text-type': 'default',
   },
+  ...hideAllControls(),
 };

@@ -71,6 +71,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
+   * @default 'default'
    */
   @property({ reflect: true, attribute: 'help-text-type' }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
