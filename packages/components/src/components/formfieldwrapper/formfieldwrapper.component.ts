@@ -71,6 +71,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
+   * @default 'default'
    */
   @property({ reflect: true, attribute: 'help-text-type' }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
@@ -92,6 +93,10 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
   toggletipPlacement: PopoverPlacement = DEFAULTS.TOGGLETIP_PLACEMENT;
 
+  /**
+   * The strategy of the toggletip that is displayed when the info icon is hovered.
+   * @default 'absolute'
+   */
   @property({ type: String, reflect: true, attribute: 'toggletip-strategy' })
   toggletipStrategy: PopoverStrategy = DEFAULTS.TOGGLETIP_STRATEGY;
 
