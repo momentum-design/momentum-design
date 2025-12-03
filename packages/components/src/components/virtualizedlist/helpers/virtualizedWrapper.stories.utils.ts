@@ -108,9 +108,13 @@ export class VirtualizedWrapperStoriesUtils extends Component {
     this.virtualData = event.detail;
   };
 
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
+    return this;
+  }
+
   override render() {
     return html`
-      <div part="wrapper">
+      <div id="VirtualizedWrapper--wrapper">
         <mdc-virtualizedlist
           @scroll=${this.onscroll}
           @virtualitemschange=${this.handleVirtualItemsChange}
@@ -126,17 +130,21 @@ export class VirtualizedWrapperStoriesUtils extends Component {
         </mdc-virtualizedlist>
       </div>
       <style>
-        :host([story='text'])::part(wrapper) {
-          width: 500px;
-          height: 500px;
-        }
-        :host([story='interactive'])::part(wrapper) {
-          width: 100%;
-          height: 500px;
-        }
-        :host([story='dynamic'])::part(wrapper) {
-          width: 100%;
-          height: 500px;
+        #VirtualizedWrapper--wrapper {
+          ${{
+          text: `
+              width: 500px;
+              height: 500px;
+            `,
+          interactive: `
+              width: 100%;
+              height: 500px;
+            `,
+          dynamic: `
+              width: 100%;
+              height: 500px;
+            `,
+        }[this.story]}
         }
       </style>
     `;
