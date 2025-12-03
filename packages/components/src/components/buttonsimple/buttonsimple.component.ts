@@ -84,7 +84,7 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * a comma separated string.
    * For example: `aria-pressed,aria-expanded`
    *
-   * @default 'aria-pressed' (when)
+   * @default 'aria-pressed'
    */
   @property({ type: String, reflect: true })
   ariaStateKey?: string;
