@@ -1,0 +1,1 @@
+const e={table:{category:"Styling",defaultValue:{},type:{}}},t={class:{description:"A space-separated list of the classes of the element. This is a string that can be used to add custom CSS classes to the element.",...e}},s={style:{description:"A string that can be used to add custom CSS styles to the element.",...e}};export{t as c,s};
