@@ -22,6 +22,8 @@ import type { BrandVisualNames, imageProps } from './brandvisual.types';
  * @event load - (React: onLoad) This event is dispatched when the brandvisual has been successfully loaded.
  * @event error - (React: onError) This event is dispatched when the brandvisual fetching has failed.
  *
+ * @csspart brandvisual - Set styles for the brandvisual svg container
+ * @csspart brandvisualImage - Set styles for the brandvisual image container
  */
 class Brandvisual extends Component {
   @state()
@@ -37,7 +39,7 @@ class Brandvisual extends Component {
    * Alt text for the brandvisual image for accessibility.
    * This will only be set if the brandvisual is an image (png).
    */
-  @property({ type: String, reflect: true })
+  @property({ type: String, reflect: true, attribute: 'alt-text' })
   altText?: string;
 
   private async getBrandVisualData() {
