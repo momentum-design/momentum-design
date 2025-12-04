@@ -26,7 +26,7 @@ import { DEFAULTS } from './announcementdialog.constants';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * **Accessibility**
+ * ## Accessibility
  * - You have to be explicitly set the following attributes:
  *  * The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
  *  * Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
