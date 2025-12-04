@@ -6,6 +6,8 @@ import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import { PopoverColor, PopoverPlacement, PopoverTrigger } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import type Dialog from '../dialog/dialog.component';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
@@ -272,6 +274,59 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         await componentsPage.page.mouse.move(40, 60);
         await expect(tooltip).toBeVisible();
         await componentsPage.page.mouse.move(40, 100);
+        await expect(tooltip).not.toBeVisible();
+      });
+    });
+    await test.step('keyboard', async () => {
+      await test.step('Hide on escape (keyboard) on a visible tooltip inside a dialog', async () => {
+        // if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes tooltip, not dialog'
+        await componentsPage.mount({
+          html: `
+            <mdc-dialog id="test-dialog" visible>
+              <div slot="dialog-body">
+                <mdc-button id="trigger-button-dialog">Open Tooltip</mdc-button>
+                <mdc-tooltip id="tooltip" triggerId="trigger-button-dialog">Tooltip Content</mdc-tooltip>
+              </div>
+            </mdc-dialog>
+          `,
+          clearDocument: true,
+        });
+
+        const dialog = componentsPage.page.locator('#test-dialog');
+        const tooltip = componentsPage.page.locator('#tooltip');
+        const tooltipTriggerButton = componentsPage.page.locator('#trigger-button-dialog');
+
+        // add event listener to dialog for close event
+        // this is to ensure that the dialog closes when the close button is clicked
+        // since the dialog is a controlled component, the consumer needs to handle the close event
+        // and set the visible attribute to false
+        await componentsPage.page.evaluate(dialogId => {
+          const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+          if (dialogElement) {
+            dialogElement.onclose = () => {
+              dialogElement.visible = false;
+            };
+          }
+        }, 'test-dialog');
+
+        await expect(dialog).toBeVisible();
+
+        await tooltipTriggerButton.focus();
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expect(tooltip).toBeVisible();
+
+        // Focus the tooltip and press Escape
+        await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+
+        // Tooltip should close, dialog should remain open and Tooltip Button Trigger should be focused
+        await expect(tooltip).not.toBeVisible();
+        await expect(dialog).toBeVisible();
+        await expect(tooltipTriggerButton).toBeFocused();
+
+        // Press Escape again to close the dialog
+        await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+        // Dialog should close
+        await expect(dialog).not.toBeVisible();
         await expect(tooltip).not.toBeVisible();
       });
     });
