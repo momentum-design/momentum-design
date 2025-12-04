@@ -6,13 +6,17 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
 
 const render = (args: Args) =>
-  html` <mdc-statictoggle
-    ?checked="${args.checked}"
-    ?disabled="${args.disabled}"
-    ?readonly="${args.readonly}"
-    ?soft-disabled="${args['soft-disabled']}"
-    size="${args.size}"
-  ></mdc-statictoggle>`;
+  html`
+    <div role="main">
+      <mdc-statictoggle
+        ?checked="${args.checked}"
+        ?disabled="${args.disabled}"
+        ?readonly="${args.readonly}"
+        ?soft-disabled="${args['soft-disabled']}"
+        size="${args.size}"
+      ></mdc-statictoggle>
+    </div>
+  `;
 
 const meta: Meta = {
   title: 'Components/decorator/statictoggle',
