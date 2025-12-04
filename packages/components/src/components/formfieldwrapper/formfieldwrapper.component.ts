@@ -81,13 +81,13 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
   /**
-   * The toggletip text that is displayed when the label is hovered.
+   * The toggletip text that is displayed when the info icon is clicked or pressed.
    * It is used to provide additional information about the label.
    */
   @property({ type: String, reflect: true, attribute: 'toggletip-text' }) toggletipText?: string;
 
   /**
-   * The placement of the toggletip that is displayed when the info icon is hovered.
+   * The placement of the toggletip that is displayed when the info icon is clicked or pressed.
    * @default 'top'
    */
   @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
