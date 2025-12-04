@@ -85,3 +85,44 @@ export const DynamicContent: StoryObj = {
   },
   render: () => html` <mdc-virtualizeddynamiclistcontent></mdc-virtualizeddynamiclistcontent>`,
 };
+
+export const WithPaddingAndGaps: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story: html`<p>
+            If padding is required at the top or bottom of the scrollable region (for example if the focus ring is being
+            cut off), use the <code>paddingStart</code> and <code>paddingEnd</code> attributes on the virtualizerProps
+            property to add the required padding in pixels. Do not set anything in CSS.
+          </p>
+          <p>
+            If a gap between listitems are required, define the gap using CSS (either with margins on the listitem or
+            set a gap on the container CSS part), and use the <code>gap</code> attribute on the virtualizerProps
+            property to tell the virtualizer to take the gap into account when calculating scroll height.
+          </p>`,
+      },
+    },
+  },
+  render: () =>
+    html`<mdc-virtualizedwrapper
+        .virtualizerProps=${{
+          count: 200,
+          estimateSize: () => 36,
+          paddingStart: 8,
+          paddingEnd: 8,
+          gap: 8,
+        }}
+        story="text"
+      ></mdc-virtualizedwrapper>
+      <style>
+        #VirtualizedWrapper--wrapper {
+          height: 300px;
+        }
+        mdc-listitem:not(:first-child) {
+          margin-top: 0.25rem;
+        }
+        mdc-listitem:not(:last-child) {
+          margin-bottom: 0.25rem;
+        }
+      </style> `,
+};

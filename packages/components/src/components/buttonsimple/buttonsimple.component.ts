@@ -18,16 +18,18 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * It is used as an internal component and is not intended to be used directly by consumers.
  * Consumers should use the `mdc-button` component instead.
  *
+ * @tagname mdc-buttonsimple
+ *
+ * @slot - Text label of the button.
+ *
  * @event click - (React: onClick) This event is dispatched when the button is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
  * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
- * @tagname mdc-buttonsimple
- *
  * @cssproperty --mdc-button-height - Height for button size
  * @cssproperty --mdc-button-background - Background color of the button
- * @cssproperty --mdc-button-border-color - Borer color of the button
+ * @cssproperty --mdc-button-border-color - Border color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  */
 class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component))) {
@@ -82,7 +84,7 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * a comma separated string.
    * For example: `aria-pressed,aria-expanded`
    *
-   * @default 'aria-pressed' (when)
+   * @default 'aria-pressed'
    */
   @property({ type: String, reflect: true })
   ariaStateKey?: string;

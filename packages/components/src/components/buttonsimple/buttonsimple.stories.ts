@@ -17,11 +17,13 @@ const render = (args: Args) =>
     ?active="${args.active}"
     ?disabled="${args.disabled}"
     ?soft-disabled="${args['soft-disabled']}"
-    size="${args.size}"
-    type="${args.type}"
-    role="${args.role}"
-    tabIndex="${args.tabIndex}"
+    size="${ifDefined(args.size)}"
+    type="${ifDefined(args.type)}"
+    role="${ifDefined(args.role)}"
+    tabindex="${ifDefined(args.tabIndex)}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
+    name="${ifDefined(args.name)}"
+    value="${ifDefined(args.value)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-buttonsimple
   >`;
@@ -55,6 +57,12 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BUTTON_TYPE),
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
     },
     'auto-focus-on-mount': {
       control: 'boolean',

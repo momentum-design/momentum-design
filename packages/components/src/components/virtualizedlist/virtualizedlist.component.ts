@@ -26,10 +26,10 @@ import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.
  *
  * ## Setup
  *
- * `virtualizerProps` is a required prop that requires at least two properties to be set: `count` and `estimateSize`.
- * `count` is the total number of items in the list, and `estimateSize` is a function that returns the estimated
- * size (in pixels) of each item in the list. `getItemKey` is also strongly recommended to be set to provide unique
- * keys for each item in the list.
+ * `virtualizerProps` is a required prop that requires at least three properties to be set:
+ * - `count` is the total number of items in the list
+ * - `estimateSize` is a function that returns the estimated size (in pixels) of each item in the list
+ * - `getItemKey` is a function that returns a unique key for each item in the list.
  *
  * ### Render list items
  *
@@ -57,6 +57,19 @@ import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.
  *
  * Unique keys for the list items are critical for dynamically changing list items or item's content.
  * If the key change with the content it will cause scrollbar and content shuttering.
+ *
+ * ### Top/Bottom Padding
+ *
+ * If padding is required at the top or the bottom of the list, do not apply padding/margin via CSS since this
+ * will break the virtualization calculations and can cause scrollbars when they are not necessary.
+ * Instead use the `paddingStart` and `paddingEnd` properties (in pixels) of the `virtualizerProps` prop.
+ *
+ * ### Gaps between items
+ *
+ * If you are adding gaps between items using CSS margin or gap properties, you must provide the same value in pixels
+ * to the `gap` property of the `virtualizerProps` prop. This ensures that the virtualization calculations are accurate.
+ * If you are using CSS margins, ensure that you are not applying the margin to the top of the first or the bottom of the last item.
+ * If you need spacing there, use the `paddingStart` and `paddingEnd` properties of the `virtualizerProps` prop.
  *
  * @tagname mdc-virtualizedlist
  *
