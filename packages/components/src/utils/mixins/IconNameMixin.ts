@@ -15,6 +15,8 @@ export const IconNameMixin = <T extends Constructor<LitElement>>(superClass: T) 
      * Name of the icon (= filename).
      *
      * If no `icon-name` is provided, no icon will be rendered.
+     *
+     * @default undefined
      */
     @property({ type: String, attribute: 'icon-name' })
     iconName?: IconNames;
