@@ -4,8 +4,8 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 const TAG_NAME = utils.constructTagName('staticchip');
 
 const COLOR = {
-  DEFAULT: 'default',
   COBALT: 'cobalt',
+  DEFAULT: 'default',
   GOLD: 'gold',
   LIME: 'lime',
   MINT: 'mint',
