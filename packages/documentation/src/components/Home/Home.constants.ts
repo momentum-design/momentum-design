@@ -1,10 +1,17 @@
 export const featureCards = [
   {
-    title: 'Components',
-    description: `Our ready-to-use component library helps product teams build with
-    consistency, accessibility, and scalability in mind.`,
+    title: 'UI Toolkit',
+    description: `Our ready-to-use component library helps product teams build with consistency, accessibility,
+    and scalability in mind.`,
     linkText: 'View storybook',
     linkUrl: '/en/components',
+  },
+  {
+    title: 'Guidelines',
+    description: `We show product teams practical examples and best practices,
+    making implementation clearer and faster.`,
+    linkText: 'View documentation',
+    linkUrl: 'webex.com',
   },
   {
     title: 'Momentum React starter kit',
@@ -15,16 +22,11 @@ export const featureCards = [
     newTab: true,
   },
   {
-    title: 'Color tokens',
-    description: 'The single source of truth for colors across the Momentum system.',
+    title: 'Design tokens',
+    description: `The single source of truth for colors, typography, spacing, and more across
+    the Momentum system.`,
     linkText: 'View colors',
     linkUrl: '/en/tokens/theme-stable/',
-  },
-  {
-    title: 'Typography',
-    description: 'Momentum\'s typography system provides a clear, flexible set of type styles for all products.',
-    linkText: 'View fonts',
-    linkUrl: '/en/tokens/font/',
   },
   {
     title: 'Icons',
@@ -39,9 +41,23 @@ export const featureCards = [
     linkUrl: '/en/tokens/illustrations/',
   },
   {
-    title: 'Brand Visuals',
-    description: 'We provide a consistent set of custom-designed icons tailored for our products.',
-    linkText: 'View brand visuals',
-    linkUrl: '/en/tokens/brand-visuals/',
+    title: 'Typography',
+    description: 'Momentum\'s typography system provides a clear, flexible set of type styles for all products.',
+    linkText: 'View fonts',
+    linkUrl: '/en/tokens/font/',
+  },
+  {
+    title: 'Glass',
+    description: `Add depth and vibrancy to interfaces using transparency and blur effects creating a modern,
+    dynamic look.`,
+    linkText: 'View glass styles',
+    linkUrl: 'webex.com',
+  },
+  {
+    title: 'And more!',
+    description: `We offer even more tools, features, and resources to help teams design, build, and scale products
+    efficiently.`,
+    linkText: 'View more',
+    linkUrl: 'webex.com',
   },
 ];

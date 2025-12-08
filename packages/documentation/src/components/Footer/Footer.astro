@@ -1,19 +1,58 @@
+---
+import MomentumLogo from '../Header/MomentumLogo.astro';
+---
 <script>
-  import '@momentum-design/components/dist/components/brandvisual/index.js';
+import '@momentum-design/components/dist/components/brandvisual/index.js';
+import '@momentum-design/components/dist/components/list/index.js';
+import '@momentum-design/components/dist/components/listheader/index.js';
+import '@momentum-design/components/dist/components/listitem/index.js';
 </script>
 
 <footer>
-  <mdc-brandvisual class="cisco-footer-logo" name="cisco-logo-dark-bw"></mdc-brandvisual> © {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
+  <div class="container">
+    <MomentumLogo height={48} />
+    <mdc-list>
+      <mdc-listheader header-text="Getting started"></mdc-listheader>
+      <mdc-listitem label="For designers"></mdc-listitem>
+      <mdc-listitem label="For developers"></mdc-listitem>
+    </mdc-list>
+    <mdc-list>
+      <mdc-listheader header-text="Tokens"></mdc-listheader>
+      <mdc-listitem label="Colors"></mdc-listitem>
+      <mdc-listitem label="Effects"></mdc-listitem>
+      <mdc-listitem label="Spacing"></mdc-listitem>
+      <mdc-listitem label="Icons"></mdc-listitem>
+    </mdc-list>
+    <mdc-list>
+      <mdc-listheader header-text="Assets"></mdc-listheader>
+      <mdc-listitem label="Typography"></mdc-listitem>
+      <mdc-listitem label="Illustrations"></mdc-listitem>
+      <mdc-listitem label="Brand visuals"></mdc-listitem>
+    </mdc-list>
+    <mdc-list>
+      <mdc-listheader header-text="Components"></mdc-listheader>
+      <mdc-listitem label="Consumption"></mdc-listitem>
+      <mdc-listitem label="Designs"></mdc-listitem>
+    </mdc-list>
+    <mdc-list>
+      <mdc-listheader header-text="Support"></mdc-listheader>
+      <mdc-listitem label="Github"></mdc-listitem>
+      <mdc-listitem label="NPM"></mdc-listitem>
+      <mdc-listitem label="Figma"></mdc-listitem>
+    </mdc-list>
+  </div>
+  <mdc-brandvisual class="cisco-footer-logo" name="cisco-logo-dark-bw"></mdc-brandvisual>
+  © {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
 </footer>
 
 <style>
-  footer {
-    margin-top: auto;
-    height: 5.5rem;
+  .container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  footer {
+    height: 5.5rem;
     padding: 20px;
   }
 

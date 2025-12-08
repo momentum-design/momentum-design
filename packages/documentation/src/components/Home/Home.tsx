@@ -35,14 +35,13 @@ export const Home = () => (
     <div className="firstPageContent">
       <div className="headerWrapper">
         <h1>
-          <span className="headerTextStroke">Build</span> faster.<br/>
-          Design <span className="headerTextStroke">better.</span>
+          <span className="headerTextStroke">ship</span>&nbsp;faster.<br/>
+          delight&nbsp;<span className="headerTextStroke">users.</span>
         </h1>
       </div>
       <div className="textWrapper">
-        <p>The Momentum Design System gives you the tools to build cohesive <br/>
-        products and experiences that connect people across today's evolving <br/>
-        digital and physical workplace.
+        <p>Momentum arms your team with ready-to-use components and guidance <br/>
+        to build consistent products that feel seamless, without slowing down.
         </p>
       </div>
       <div className="buttonWrapper">
@@ -94,6 +93,18 @@ export const Home = () => (
         to create consistent, polished experiences. See how Momentum helps teams build faster,
         maintain cohesion, and deliver better user experiences.
       </p>
+      <div style="padding-top: 1rem;">
+        <mdc-buttonlink
+          size="40"
+          variant="secondary"
+          href="webex.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-btn-type="pill"
+        >
+        Start designing today
+        </mdc-buttonlink>
+      </div>
       {/* TODO: get proper screenshots and in webp format for better performance */}
       <div className="screenshotGridFirstRow">
         <img src="/examples/screenshot1.png" />
@@ -111,6 +122,26 @@ export const Home = () => (
         Developers get scalable, production-ready code that plugs straight in.
         Together, teams move faster, reduce errors, and ship products users actually enjoy.
       </p>
+      <h1>55+</h1>
+      <h3>We have your back</h3>
+      <p>
+        Momentum supports teams by providing expert guidance, troubleshooting, and best practices to
+        ensure smooth implementation. Whether you’re a designer, developer, or product manager, our
+        support resources help you overcome challenges quickly. Access detailed documentation, FAQs,
+        and contact options to keep your projects on track.
+      </p>
+      <div style="padding-top: 1rem;">
+        <mdc-buttonlink
+          size="40"
+          variant="secondary"
+          href="webex.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-btn-type="pill"
+        >
+          Resources and suppport
+        </mdc-buttonlink>
+      </div>
     </div>
   </div>
 );
