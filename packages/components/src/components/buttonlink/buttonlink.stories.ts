@@ -8,9 +8,10 @@ import { action } from 'storybook/actions';
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
+import { ROLE } from '../../utils/roles';
 
 const render = (args: Args) =>
-  html`<div role="main">
+  html`<div role="${ROLE.MAIN}">
     <mdc-buttonlink
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
