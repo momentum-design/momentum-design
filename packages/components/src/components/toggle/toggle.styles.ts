@@ -19,7 +19,6 @@ const styles = [
       grid-template-columns: auto auto;
       column-gap: 0.75rem;
       row-gap: 0.25rem;
-      align-items: start;
     }
 
     :host([help-text='']) {
@@ -30,7 +29,6 @@ const styles = [
     :host::part(label-text),
     :host::part(help-text-container) {
       grid-column: 2;
-      align-self: center;
     }
 
     /* Component structure and layout */
