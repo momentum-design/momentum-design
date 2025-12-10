@@ -16,10 +16,9 @@ const styles = [
     :host([help-text]) {
       display: grid;
       grid-template-rows: auto auto;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto auto;
       column-gap: 0.75rem;
       row-gap: 0.25rem;
-      align-items: start;
     }
 
     :host([help-text='']) {
