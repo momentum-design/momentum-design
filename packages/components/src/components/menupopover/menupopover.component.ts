@@ -9,7 +9,6 @@ import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuit
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
-import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
@@ -239,21 +238,12 @@ class MenuPopover extends Popover {
    * Closes all menu popovers in the stack.
    * This method is used to ensure that when a menu item is clicked,
    * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the `popoverStack` and hides each popover until the stack is empty.
+   * It iterates through the overlay stack and hides each popover until the stack is empty.
    *
    * @param until - The popover to close until.
    */
   private closeAllMenuPopovers(until?: Element): void {
-    while (popoverStack.peek() !== until) {
-      if (!isValidMenuPopover(popoverStack.peek() as Element)) break;
-
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-      } else {
-        break;
-      }
-    }
+    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
   }
 
   /**
@@ -264,7 +254,8 @@ class MenuPopover extends Popover {
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (popoverStack.peek() !== this) return;
+    if (!this.depthManager.isHostOnTop()) return;
+
     const path = event.composedPath();
     const insidePopoverClick =
       this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);

@@ -170,6 +170,19 @@ class Tooltip extends Popover {
     }
   }
 
+  protected override async isOpenUpdated(oldValue: boolean, newValue: boolean) {
+    const { triggerElement } = this;
+    if (oldValue === newValue || !triggerElement) {
+      return;
+    }
+
+    if (!(newValue && !this.shouldSuppressOpening)) {
+      this.depthManager.remove(this);
+    }
+
+    await super.isOpenUpdated(oldValue, newValue);
+  }
+
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 

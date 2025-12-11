@@ -11,6 +11,8 @@ import '../link';
 import '../button';
 import '../buttongroup';
 import '../popover';
+import '../menupopover';
+import '../menuitem';
 import '../tooltip';
 import '../list';
 import '../listitem';
@@ -274,6 +276,87 @@ const renderDialogWithinDialog = (args: Args) => {
           >
             <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog
           >
+        </div>
+      `,
+      onClose,
+    )}
+  `;
+};
+
+const renderDialogWithOtherOverlays = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  const toggleVisibilityNested = () => {
+    const nestedDialog = document.getElementById('nested-dialog') as HTMLElement;
+    nestedDialog.toggleAttribute('visible');
+  };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+  const onCloseNested = () => {
+    const nestedDialog = document.getElementById('nested-dialog') as HTMLElement;
+    nestedDialog.removeAttribute('visible');
+  };
+  return html`
+    <style>
+      #dialog {
+        bottom: calc(100% - 100px) !important;
+      }
+      [triggerId='popup-lvl2'] {
+        top: 90px !important;
+        left: 100px !important;
+      }
+      #nested-dialog {
+        bottom: calc(100% - 150px) !important;
+        right: calc(100% - 150px);
+      }
+    </style>
+    ${createTrigger(args.triggerId, 'Open Dialog (lvl 1)', toggleVisibility)}
+    ${createDialog(
+      args,
+      html`
+        <div slot="dialog-body">
+          <p>Dialog lvl 1.</p>
+          <mdc-button id="popup-lvl2">Open Popover (lvl 2)</mdc-button>
+          <mdc-tooltip triggerId="popup-lvl2" placement="top">Open Popover (lvl 2)</mdc-tooltip>
+          <mdc-popover triggerId="popup-lvl2" hide-on-escape style="top: 30% !important;" focus-back-to-trigger>
+            <p>Popover lvl 2.</p>
+            <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Dialog (lvl 3)</mdc-button>
+            <mdc-tooltip triggerId="nested-dialog-trigger" placement="top">Open Dialog (lvl 3)</mdc-tooltip>
+            <mdc-dialog
+              id="nested-dialog"
+              triggerId="nested-dialog-trigger"
+              aria-label="nested-dialog"
+              size="small"
+              close-button-aria-label="Close nested dialog"
+              @close="${onCloseNested}"
+            >
+              <div slot="dialog-body">
+                <p>Dialog lvl 3.</p>
+                <mdc-button id="menu-lvl4">Open Menu (lvl 4)</mdc-button>
+                <mdc-tooltip triggerId="menu-lvl4" placement="top">Open Menu (lvl 4)</mdc-tooltip>
+                <mdc-menupopover triggerId="menu-lvl4">
+                  <mdc-menuitem label="Profile"></mdc-menuitem>
+                  <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+                  <mdc-menuitem label="Notifications"></mdc-menuitem>
+                  <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+                  <mdc-menupopover triggerID="submenu-trigger" placement="right">
+                    <mdc-menupopover triggerID="security-id" placement="right-start">
+                      <mdc-menuitem label="Change Password"></mdc-menuitem>
+                      <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+                      <mdc-menuitem label="Security Questions"></mdc-menuitem>
+                    </mdc-menupopover>
+                    <mdc-menuitem label="Account"></mdc-menuitem>
+                    <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+                    <mdc-menuitem label="Security" id="security-id" arrow-position="trailing"></mdc-menuitem>
+                    <mdc-menuitem label="Advanced"></mdc-menuitem>
+                  </mdc-menupopover>
+                </mdc-menupopover></div
+            ></mdc-dialog>
+          </mdc-popover>
         </div>
       `,
       onClose,
@@ -606,6 +689,14 @@ export const WithPopover: StoryObj = {
 
 export const DialogWithinDialog: StoryObj = {
   render: renderDialogWithinDialog,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[0],
+  },
+};
+
+export const DialogWithinOtherOverlays: StoryObj = {
+  render: renderDialogWithOtherOverlays,
   args: {
     ...commonProperties,
     size: DIALOG_SIZE[0],

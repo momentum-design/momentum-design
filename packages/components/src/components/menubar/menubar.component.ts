@@ -9,7 +9,7 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.cons
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
 import MenuPopover from '../menupopover';
-import { popoverStack } from '../popover/popover.stack';
+import { DepthManager } from '../../utils/controllers/DepthManager';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
@@ -39,6 +39,11 @@ import styles from './menubar.styles';
  * @slot default - Contains the menu items and their associated popovers
  */
 class MenuBar extends KeyToActionMixin(Component) {
+  /** track the depth of the popover for z-index calculation
+   * @internal
+   */
+  protected depthManager = new DepthManager(this);
+
   @queryAssignedElements({ selector: 'mdc-menusection', flatten: true })
   menusections!: Array<HTMLElement>;
 
@@ -248,15 +253,8 @@ class MenuBar extends KeyToActionMixin(Component) {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = [];
+    const popovers = this.depthManager.popUntil(item => item.contains(this));
 
-    while (popoverStack.peek()) {
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-        popovers.push(popover);
-      }
-    }
     await Promise.all(popovers.map(popover => popover.updateComplete));
   }
 

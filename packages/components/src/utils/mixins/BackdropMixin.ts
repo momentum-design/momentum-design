@@ -57,7 +57,24 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
     protected backdropElement: HTMLElement | null = null;
 
     /** @internal */
+    private triggerElementCache: WeakRef<HTMLElement> | null = null;
+
+    /** @internal */
     private elementOriginalStyle?: Pick<CSSStyleDeclaration, 'zIndex' | 'position'>;
+
+    override update(changedProperties: Map<string | number | symbol, unknown>): void {
+      super.update(changedProperties);
+
+      if (changedProperties.has('zIndex') && this.backdropElement) {
+        // Update the backdrop z-index if the zIndex property changes
+        this.backdropElement.style.zIndex = `${this.zIndex - 2}`;
+
+        const triggerEl = this.triggerElementCache?.deref();
+        if (triggerEl) {
+          triggerEl.style.zIndex = `${this.zIndex - 1}`;
+        }
+      }
+    }
 
     /**
      * Creates a backdrop element with the specified class name prefix.
@@ -116,6 +133,8 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
       if (!element) {
         return;
       }
+
+      this.triggerElementCache = new WeakRef(element);
       // Store the original z-index and position of the element
       this.elementOriginalStyle = {
         zIndex: element.style.zIndex,
@@ -149,6 +168,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
 
       // Clear the stored original style
       this.elementOriginalStyle = undefined;
+      this.triggerElementCache = null;
     }
   }
 
