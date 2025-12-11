@@ -1,8 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideAllControls } from '../../../config/storybook/utils';
+import { ROLE } from '../../utils/roles';
 
 import { COLOR } from './staticchip.constants';
 
@@ -24,7 +27,8 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     ...classArgType,
     ...styleArgType,
@@ -50,7 +54,8 @@ export const WithIcon: StoryObj = {
 
 export const AllColors: StoryObj = {
   render: () =>
-    html` <div style="display: flex; gap: 0.5rem;">
+    html` <div style="display: flex; gap: 0.5rem;" role="${ROLE.MAIN}">
       ${Object.values(COLOR).map(color => html` <mdc-staticchip color="${color}" label="${color}"></mdc-staticchip> `)}
     </div>`,
+  ...hideAllControls(),
 };
