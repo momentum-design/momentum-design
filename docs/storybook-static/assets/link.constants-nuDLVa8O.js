@@ -1,0 +1,1 @@
+import{u as s}from"./iframe-DqI8R0T6.js";const a=s.constructTagName("link"),L={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},E={LARGE:1,MIDSIZE:.875,SMALL:.75},S={LINK_SIZE:L.LARGE};export{S as D,L,a as T,E as a};

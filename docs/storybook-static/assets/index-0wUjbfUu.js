@@ -1,0 +1,1 @@
+import{u as e,F as t,R as s}from"./iframe-DqI8R0T6.js";const o=e.constructTagName("selectlistbox");class c extends t{connectedCallback(){super.connectedCallback(),this.role=s.LISTBOX}createRenderRoot(){return this}}c.register(o);export{o as T};

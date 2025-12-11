@@ -1,0 +1,1 @@
+import{u as c}from"./iframe-DqI8R0T6.js";const e=c.constructTagName("menuitemcheckbox"),o={NONE:"none",CHECKBOX:"checkbox",CHECKMARK:"checkmark",TOGGLE:"toggle"},s={INDICATOR:o.CHECKBOX};export{s as D,o as I,e as T};
