@@ -137,6 +137,7 @@ test('mdc-announcementdialog', async ({ componentsPage }) => {
       triggerId: 'trigger-btn',
       closeButtonAriaLabel: 'Close button label',
       ariaLabel: 'dialog-attribute',
+      zIndex: 1000,
     });
 
     await test.step('default attributes', async () => {
