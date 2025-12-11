@@ -25,7 +25,7 @@ const styles = [
       justify-content: flex-start;
       transition: background-color 0.3s ease;
       outline: none;
-      padding: 1px;
+      padding: 0.125rem;
     }
 
     :host::part(toggle-icon) {
