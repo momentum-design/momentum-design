@@ -1,41 +1,45 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { action } from 'storybook/actions';
+import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls, disableControls } from '../../../config/storybook/utils';
+import { hideControls, hideAllControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../radiogroup';
 
 const render = (args: Args) =>
-  html` <mdc-cardradio
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    @change="${action('onchange')}"
-    name="${args.name}"
-    variant="${args.variant}"
-    orientation="${args.orientation}"
-    card-title="${args['card-title']}"
-    subtitle="${args.subtitle}"
-    image-src="${args['image-src']}"
-    image-alt="${args['image-alt']}"
-    icon-name="${args['icon-name']}"
-    ?checked="${args.checked}"
-    ?disabled="${args.disabled}"
-    aria-label="${args['aria-label']}"
-    title-tag-name="${args['title-tag-name']}"
-    subtitle-tag-name="${args['subtitle-tag-name']}"
-    tabindex="${args.tabIndex}"
-    class="${args.class}"
-    style="${args.style}"
-    >${args.children}</mdc-cardradio
-  >`;
+  html`<div role="main">
+    <mdc-cardradio
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      @change="${action('onchange')}"
+      name="${ifDefined(args.name)}"
+      variant="${ifDefined(args.variant)}"
+      orientation="${ifDefined(args.orientation)}"
+      card-title="${ifDefined(args['card-title'])}"
+      subtitle="${ifDefined(args.subtitle)}"
+      image-src="${ifDefined(args['image-src'])}"
+      image-alt="${ifDefined(args['image-alt'])}"
+      icon-name="${ifDefined(args['icon-name'])}"
+      ?checked="${args.checked}"
+      ?disabled="${args.disabled}"
+      aria-label="${ifDefined(args['aria-label'])}"
+      title-tag-name="${ifDefined(args['title-tag-name'])}"
+      subtitle-tag-name="${ifDefined(args['subtitle-tag-name'])}"
+      tabindex="${ifDefined(args.tabIndex)}"
+      class="${ifDefined(args.class)}"
+      style="${ifDefined(args.style)}"
+      >${args.children}</mdc-cardradio
+    >
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/card/cardradio',
@@ -68,7 +72,8 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
+      control: 'select',
+      options: Object.keys(iconsManifest),
     },
     checked: {
       control: 'boolean',
@@ -81,6 +86,8 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
+      description: 'Defines an accessible label for screen readers. Required when using icon-only cards.',
+      table: { category: 'attributes' }
     },
     'title-tag-name': {
       control: 'select',
@@ -247,20 +254,5 @@ export const CardsInRadioGroup: StoryObj = {
       </div>
     </mdc-formfieldgroup>
   `,
-  argTypes: {
-    ...disableControls([
-      'aria-label',
-      'name',
-      'variant',
-      'orientation',
-      'card-title',
-      'subtitle',
-      'image-src',
-      'image-alt',
-      'icon-name',
-      'checked',
-      'disabled',
-      'tabIndex',
-    ]),
-  },
+  ...hideAllControls(),
 };

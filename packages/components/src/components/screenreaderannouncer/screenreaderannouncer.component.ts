@@ -49,7 +49,7 @@ class ScreenreaderAnnouncer extends Component {
    * @default ''
    */
   @property({ type: String, reflect: true })
-  announcement: string = '';
+  announcement?: string = '';
 
   /**
    * The id of the element in the light dom, to which announcement elements will be appended.
@@ -195,7 +195,7 @@ class ScreenreaderAnnouncer extends Component {
       `;
       liveRegionLightDom.appendChild(styleElement);
       liveRegionLightDom.classList.add('mdc-screenreaderannouncer__visually-hidden');
-      
+
       // If inside a modal dialog, append to its shadow root, otherwise to document.body
       const modalDialog = this.findModalAncestor();
       if (modalDialog?.shadowRoot) {
@@ -240,7 +240,7 @@ class ScreenreaderAnnouncer extends Component {
   private setupDebouncedAnnounce() {
     // create single debounced function that will read latest this.announcement when executed
     this.debouncedAnnounce = debounce(() => {
-      if (this.announcement.length > 0) {
+      if (this.announcement && this.announcement.length > 0) {
         this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
         this.announcement = '';
       }
@@ -272,7 +272,7 @@ class ScreenreaderAnnouncer extends Component {
       // Reinitiate debounced function if debounceTime changed
       this.setupDebouncedAnnounce();
     }
-    if (changedProperties.has('announcement') && this.announcement.length > 0) {
+    if (changedProperties.has('announcement') && this.announcement && this.announcement.length > 0) {
       this.debouncedAnnounce?.();
     }
   }
