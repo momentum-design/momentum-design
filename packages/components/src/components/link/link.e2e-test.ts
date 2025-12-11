@@ -195,5 +195,16 @@ test('mdc-link', async ({ componentsPage }) => {
       await link.click();
       await expect(componentsPage.page).toHaveURL('https://www.webex.com');
     });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      await componentsPage.page.goto(originalURL);
+      const focusableLink = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      // Use JavaScript to focus the element
+      await focusableLink.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the element is focused
+      await expect(focusableLink).toBeFocused();
+    });
   });
 });

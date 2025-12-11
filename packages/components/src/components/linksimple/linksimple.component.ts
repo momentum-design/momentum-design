@@ -155,7 +155,7 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
       <a
         class="mdc-focus-ring"
         part="anchor"
-        href="${this.href}"
+        href="${ifDefined(this.href)}"
         target="${this.target}"
         rel="${ifDefined(this.rel)}"
         download="${ifDefined(this.download)}"
@@ -172,6 +172,8 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Linksimple;

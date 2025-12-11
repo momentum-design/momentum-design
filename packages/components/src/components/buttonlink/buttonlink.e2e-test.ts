@@ -386,5 +386,16 @@ test.describe.parallel('mdc-buttonlink', () => {
       await buttonlink.click();
       await expect(componentsPage.page).toHaveURL('https://www.webex.com');
     });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      await componentsPage.page.goto(originalURL);
+      const focusableButtonLink = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      // Use JavaScript to focus the element
+      await focusableButtonLink.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the element is focused
+      await expect(focusableButtonLink).toBeFocused();
+    });
   });
 });
