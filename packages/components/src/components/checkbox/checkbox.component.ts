@@ -14,12 +14,25 @@ import type { CheckboxValidationType } from './checkbox.types';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 /**
- * Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
- * These are often used in forms, settings, and selections in lists.
+ * The Checkbox component allows users to select one or multiple options from a list, toggle features on/off,
+ * or indicate agreement in forms and settings. These are commonly used in forms, lists, and settings panels
+ * where users need to make selections or express preferences.
  *
- * A checkbox component contains an optional label and an optional helper text.
+ * To create a group of checkboxes, use the `mdc-formfieldgroup` component.
  *
- * To create a group of checkboxes, use the FormFieldGroup component.
+ * **Note:** This component internally renders a native checkbox input element with custom styling.
+ *
+ * ## When to use
+ * Use checkboxes when users can select multiple options from a list, or when a single checkbox represents a binary choice (e.g., agreeing to terms).
+ *
+ * ## Accessibility
+ * - Provide clear labels that describe what the checkbox controls
+ * - Use `data-aria-label` when a visual label is not present
+ * - Keyboard navigation: Space to toggle, Tab to navigate, Enter to submit form
+ *
+ * ## Styling
+ * Use the `static-checkbox` part to apply custom styles to the checkbox visual element.
+ * This part exposes the underlying [StaticCheckbox](?path=/docs/components-decorator-staticcheckbox--docs) component for advanced styling.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -32,26 +45,6 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
- * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
- * @cssproperty --mdc-checkbox-checked-background-color-hover - Background color for a selected checkbox when hovered.
- * @cssproperty --mdc-checkbox-checked-pressed-icon-color - Background color for a selected checkbox when pressed.
- * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
- * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a selected checkbox when disabled.
- * @cssproperty --mdc-label-font-size - Font size for the label text.
- * @cssproperty --mdc-label-font-weight - Font weight for the label text.
- * @cssproperty --mdc-label-line-height - Line height for the label text.
- * @cssproperty --mdc-label-color - Color for the label text.
- * @cssproperty --mdc-help-text-font-size - Font size for the help text.
- * @cssproperty --mdc-help-text-font-weight - Font weight for the help text.
- * @cssproperty --mdc-help-text-line-height - Line height for the help text.
- * @cssproperty --mdc-help-text-color - Color for the help text.
- * @cssproperty --mdc-required-indicator-color - Color for the required indicator text.
- *
- * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
- * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
- * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
- * @slot help-text - Slot for the helper/validation text. If not provided, the `helpText` property will be used to render the helper/validation text.
- *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
@@ -60,39 +53,40 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart checkbox-input - The native checkbox input element.
+ * @csspart checkbox-input - The native checkbox input element that provides the interactive functionality.
  * @csspart text-container - The container for the label and helper text elements.
- * @csspart static-checkbox - The static checkbox element.
+ * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
  */
 class Checkbox
   extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
   implements AssociatedFormControl
 {
   /**
-   * Determines whether the checkbox is selected or unselected.
-   *
+   * Determines whether the checkbox is checked (selected) or unchecked.
    * @default false
    */
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
-   * This property is used to determine the parent checkbox in a nested checkbox group.
-   * If any one of the children is unselected, then the parent checkbox will be indeterminate.
-   * If all children are either selected or unselected, then the parent checkbox will not be indeterminate.
-   *
+   * Determines whether the checkbox is in an indeterminate (mixed) state.
+   * Typically used in nested checkbox groups where the parent checkbox represents partial selection.
+   * - If any child is unchecked, the parent appears indeterminate.
+   * - If all children share the same state (all checked or all unchecked), the parent is not indeterminate.
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /**
-   * Automatically focus on the element when the page loads.
+   * Automatically focuses the checkbox when the page loads.
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
    * @default false
    */
   @property({ type: Boolean, reflect: true }) override autofocus = false;
 
   /**
-   * The type of help text/validation. It can be 'default' or 'error'.
+   * Determines the visual style of the helper text.
+   * - **default**: Standard helper text appearance
+   * - **error**: Error state with validation styling
    * @default 'default'
    */
   @property({ type: String, reflect: true, attribute: 'help-text-type' })
@@ -112,6 +106,7 @@ class Checkbox
    * Updates the form value to reflect the current state of the checkbox.
    * If checked, the value is set to either the user-provided value or 'on' if no value is provided.
    * If unchecked, the value is set to null.
+   * @internal
    */
   private setFormValue() {
     let actualValue: string | null = null;
@@ -129,6 +124,7 @@ class Checkbox
   /**
    * Manages the required state of the checkbox.
    * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
+   * @internal
    */
   private manageRequired() {
     if (!this.checked && this.required) {
@@ -143,9 +139,9 @@ class Checkbox
     }
   }
 
-  /** @internal
-   * Resets the checkbox to its initial state.
-   * The checked property is set to false.
+  /**
+   * Resets the checkbox to its initial unchecked state.
+   * @internal
    */
   formResetCallback(): void {
     this.checked = false;
@@ -163,6 +159,7 @@ class Checkbox
    * Toggles the state of the checkbox element.
    * If the element is not disabled, soft-disabled, or readonly, then
    * the checked property is toggled and the indeterminate property is set to false.
+   * @internal
    */
   private toggleState(): void {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
@@ -175,6 +172,7 @@ class Checkbox
    * Handles the keydown event on the checkbox.
    * When the user presses Enter, the form is submitted.
    * @param event - The keyboard event.
+   * @internal
    */
   private handleKeyDown(event: KeyboardEvent): void {
     if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
@@ -187,8 +185,9 @@ class Checkbox
   }
 
   /**
-   * Toggles the state of the checkbox element.
-   * and dispatch the new change event.
+   * Toggles the state of the checkbox element and dispatches the change event.
+   * @param event - The change event.
+   * @internal
    */
   public handleChange(event: Event): void {
     this.toggleState();
@@ -204,6 +203,7 @@ class Checkbox
     }
   }
 
+  /** @internal */
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
     return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
