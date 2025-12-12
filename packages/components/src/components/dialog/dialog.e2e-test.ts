@@ -958,7 +958,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(menuLvl6).toHaveAttribute('z-index', '1015');
       stack.push(menuLvl6);
 
-      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-size-small', { element: wrapper });
+      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays', { element: wrapper });
 
       // lvl 6 close
       await componentsPage.page.keyboard.press('Escape');
