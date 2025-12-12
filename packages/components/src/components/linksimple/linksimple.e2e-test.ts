@@ -157,5 +157,23 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       await linksimple.click();
       await expect(componentsPage.page).toHaveURL('https://www.webex.com');
     });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      await componentsPage.page.goto(originalURL);
+      const focusableLinksimple = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      // Use JavaScript to focus the element
+      await focusableLinksimple.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal anchor element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await focusableLinksimple.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('a');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
+    });
   });
 });
