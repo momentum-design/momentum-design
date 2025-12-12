@@ -91,6 +91,7 @@ test('mdc-linksimple', async ({ componentsPage }) => {
   await test.step('visual-regression and accessibility', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-linksimple');
     stickerSheet.setChildren('Label');
+    stickerSheet.setAttributes({ href: '#' });
 
     // without inverted background
     await stickerSheet.createMarkupWithCombination({});
