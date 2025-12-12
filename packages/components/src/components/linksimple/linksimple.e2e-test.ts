@@ -94,21 +94,21 @@ test('mdc-linksimple', async ({ componentsPage }) => {
 
     // without inverted background
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ disabled: '' });
+    stickerSheet.setAttributes({ href: '#', disabled: '' });
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ inline: '' });
+    stickerSheet.setAttributes({ href: '#', inline: '' });
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ disabled: '', inline: '' });
+    stickerSheet.setAttributes({ href: '#', disabled: '', inline: '' });
     await stickerSheet.createMarkupWithCombination({});
 
     // with inverted background
-    stickerSheet.setAttributes({ inverted: '', style: INVERTED_BG_STYLE });
+    stickerSheet.setAttributes({ href: '#', inverted: '', style: INVERTED_BG_STYLE });
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ disabled: '', inverted: '', style: INVERTED_BG_STYLE });
+    stickerSheet.setAttributes({ href: '#', disabled: '', inverted: '', style: INVERTED_BG_STYLE });
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ inline: '', inverted: '', style: INVERTED_BG_STYLE });
+    stickerSheet.setAttributes({ href: '#', inline: '', inverted: '', style: INVERTED_BG_STYLE });
     await stickerSheet.createMarkupWithCombination({});
-    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', style: INVERTED_BG_STYLE });
+    stickerSheet.setAttributes({ href: '#', disabled: '', inline: '', inverted: '', style: INVERTED_BG_STYLE });
     await stickerSheet.createMarkupWithCombination({});
 
     await stickerSheet.mountStickerSheet();

@@ -111,14 +111,14 @@ test('mdc-link', async ({ componentsPage }) => {
 
     const sizes = Object.values(LINK_SIZES);
     const baseCombos: Record<string, string | undefined>[] = [
-      {},
-      { 'icon-name': ICON_PLACEHOLDER },
-      { disabled: '' },
-      { disabled: '', 'icon-name': ICON_PLACEHOLDER },
-      { inline: '' },
-      { inline: '', 'icon-name': ICON_PLACEHOLDER },
-      { inline: '', disabled: '' },
-      { inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#' },
+      { href: '#', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', disabled: '' },
+      { href: '#', disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', inline: '' },
+      { href: '#', inline: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', inline: '', disabled: '' },
+      { href: '#', inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
     ];
 
     const createVariants = async (baseAttrs: Record<string, string | undefined>, inline = false, inverted = false) => {
