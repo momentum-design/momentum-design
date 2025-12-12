@@ -6,6 +6,9 @@ const styles = [
   hostFitContentStyles,
   css`
     :host {
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
       display: flex;
       flex-direction: row;
       align-items: start;
@@ -38,27 +41,24 @@ const styles = [
       cursor: pointer;
       word-break: break-word;
       white-space: normal;
-      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     :host(:hover)::part(static-radio) {
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-hover);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-hover);
     }
 
     :host(:active)::part(static-radio) {
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-pressed);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
     :host([checked]:hover)::part(static-radio) {
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-control-active-hover);
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-hover);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-control-active-hover);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-hover);
     }
 
     :host([checked]:active)::part(static-radio) {
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-control-active-pressed);
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-pressed);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-control-active-pressed);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
     :host([readonly]),
