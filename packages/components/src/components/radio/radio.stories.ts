@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import '../radiogroup';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
