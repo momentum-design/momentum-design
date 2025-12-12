@@ -7,6 +7,7 @@ const icon = () =>
 <rect width="1440" height="920" fill="url(#paint0_radial_30288_2556)" fill-opacity="0.6"/>
 <rect width="1440" height="920" fill="url(#paint1_radial_30288_2556)" fill-opacity="0.6"/>
 <rect width="1440" height="920" fill="url(#paint2_radial_30288_2556)" fill-opacity="0.2"/>
+<rect width="1440" height="920" fill="url(#paint3_linear_30288_2556)" fill-opacity="0.48"/>
 </g>
 <defs>
 <radialGradient id="paint0_radial_30288_2556" cx="0" cy="0" r="1" gradientTransform="matrix(-213.057 676.532 -1058.92 -265.059 773.755 -52.4715)" gradientUnits="userSpaceOnUse">
@@ -21,6 +22,10 @@ const icon = () =>
 <stop stop-color="#7C03F6"/>
 <stop offset="1" stop-color="#493260" stop-opacity="0"/>
 </radialGradient>
+<linearGradient id="paint3_linear_30288_2556" x1="720" y1="0" x2="720" y2="920" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.8"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
 </defs>
 </svg>
 `;
