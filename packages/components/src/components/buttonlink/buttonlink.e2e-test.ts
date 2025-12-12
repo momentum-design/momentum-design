@@ -218,12 +218,13 @@ test.describe.parallel('mdc-buttonlink', () => {
       const { buttonlinkSheet, commonMount } = await getStickerSheetDetails(componentsPage);
 
       buttonlinkSheet.setChildren('Pill Buttonlink');
+      buttonlinkSheet.setAttributes({ href: '#' });
       await commonMount();
 
-      buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
+      buttonlinkSheet.setAttributes({ href: '#', variant: BUTTON_VARIANTS.TERTIARY });
       await buttonlinkSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
 
-      buttonlinkSheet.setAttributes({ disabled: '' });
+      buttonlinkSheet.setAttributes({ href: '#', disabled: '' });
       await buttonlinkSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: BUTTON_VARIANTS,
@@ -252,13 +253,17 @@ test.describe.parallel('mdc-buttonlink', () => {
       const { buttonlinkSheet, commonMount } = await getStickerSheetDetails(componentsPage);
 
       buttonlinkSheet.setChildren('Pill buttonlink with prefix icon');
-      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({ href: '#', 'prefix-icon': 'placeholder-light' });
       await commonMount();
 
-      buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({
+        href: '#',
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'prefix-icon': 'placeholder-light',
+      });
       await buttonlinkSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
 
-      buttonlinkSheet.setAttributes({ disabled: '', 'prefix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({ href: '#', disabled: '', 'prefix-icon': 'placeholder-light' });
       await buttonlinkSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: BUTTON_VARIANTS,
@@ -287,14 +292,18 @@ test.describe.parallel('mdc-buttonlink', () => {
       const { buttonlinkSheet, commonMount } = await getStickerSheetDetails(componentsPage);
 
       buttonlinkSheet.setChildren('Pill buttonlink with postfix');
-      buttonlinkSheet.setAttributes({ 'postfix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({ href: '#', 'postfix-icon': 'placeholder-light' });
 
       await commonMount();
 
-      buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({
+        href: '#',
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'postfix-icon': 'placeholder-light',
+      });
       await buttonlinkSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
 
-      buttonlinkSheet.setAttributes({ disabled: '', 'postfix-icon': 'placeholder-light' });
+      buttonlinkSheet.setAttributes({ href: '#', disabled: '', 'postfix-icon': 'placeholder-light' });
       await buttonlinkSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: BUTTON_VARIANTS,
@@ -321,10 +330,15 @@ test.describe.parallel('mdc-buttonlink', () => {
       const { buttonlinkSheet, commonMount } = await getStickerSheetDetails(componentsPage);
       const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
 
-      buttonlinkSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'data-aria-label': 'icon-button' });
+      buttonlinkSheet.setAttributes({
+        href: '#',
+        'prefix-icon': 'placeholder-light',
+        'data-aria-label': 'icon-button',
+      });
       await commonMount(true);
 
       buttonlinkSheet.setAttributes({
+        href: '#',
         'prefix-icon': 'placeholder-light',
         variant: BUTTON_VARIANTS.TERTIARY,
         'data-aria-label': 'icon-button',
@@ -332,6 +346,7 @@ test.describe.parallel('mdc-buttonlink', () => {
       await buttonlinkSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
 
       buttonlinkSheet.setAttributes({
+        href: '#',
         'prefix-icon': 'placeholder-light',
         disabled: '',
         'data-aria-label': 'icon-button',
@@ -385,6 +400,24 @@ test.describe.parallel('mdc-buttonlink', () => {
 
       await buttonlink.click();
       await expect(componentsPage.page).toHaveURL('https://www.webex.com');
+    });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      await componentsPage.page.goto(originalURL);
+      const focusableButtonLink = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      // Use JavaScript to focus the element
+      await focusableButtonLink.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal anchor element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await focusableButtonLink.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('a');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
     });
   });
 });
