@@ -203,8 +203,15 @@ test('mdc-link', async ({ componentsPage }) => {
       // Use JavaScript to focus the element
       await focusableLink.evaluate((el: HTMLElement) => el.focus());
 
-      // Verify the element is focused
-      await expect(focusableLink).toBeFocused();
+      // Verify the internal anchor element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await focusableLink.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('a');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
     });
   });
 });
