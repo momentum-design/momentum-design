@@ -92,7 +92,7 @@ test.describe('Toast Feature Scenarios', () => {
         <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
         <mdc-text slot="toast-body-normal" tagname="span">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          <mdc-link>Link to page</mdc-link>
+          <mdc-link href="#">Link to page</mdc-link>
         </mdc-text>
         <mdc-text slot="toast-body-detailed" tagname="span">More detailed content goes here.</mdc-text>
         <mdc-button slot="footer-button-secondary">Cancel</mdc-button>

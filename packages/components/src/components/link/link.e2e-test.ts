@@ -111,14 +111,14 @@ test('mdc-link', async ({ componentsPage }) => {
 
     const sizes = Object.values(LINK_SIZES);
     const baseCombos: Record<string, string | undefined>[] = [
-      {},
-      { 'icon-name': ICON_PLACEHOLDER },
-      { disabled: '' },
-      { disabled: '', 'icon-name': ICON_PLACEHOLDER },
-      { inline: '' },
-      { inline: '', 'icon-name': ICON_PLACEHOLDER },
-      { inline: '', disabled: '' },
-      { inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#' },
+      { href: '#', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', disabled: '' },
+      { href: '#', disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', inline: '' },
+      { href: '#', inline: '', 'icon-name': ICON_PLACEHOLDER },
+      { href: '#', inline: '', disabled: '' },
+      { href: '#', inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
     ];
 
     const createVariants = async (baseAttrs: Record<string, string | undefined>, inline = false, inverted = false) => {
@@ -194,6 +194,24 @@ test('mdc-link', async ({ componentsPage }) => {
 
       await link.click();
       await expect(componentsPage.page).toHaveURL('https://www.webex.com');
+    });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      await componentsPage.page.goto(originalURL);
+      const focusableLink = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      // Use JavaScript to focus the element
+      await focusableLink.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal anchor element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await focusableLink.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('a');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
     });
   });
 });
