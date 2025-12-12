@@ -31,6 +31,7 @@ import type { Placement } from './select.types';
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
  * It is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
+ * Optional: Add `mdc-divider` after each option group (`mdc-optgroup`) to separate groups visually.
  *
  * Every mdc-option should have a `value` attribute set to ensure proper form submission.
  *
@@ -49,14 +50,13 @@ import type { Placement } from './select.types';
  *
  * @tagname mdc-select
  *
- * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
- *
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
  * @event change - (React: onChange) This event is dispatched when the select is changed.
  * @event input - (React: onInput) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  *
+ * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
  * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.

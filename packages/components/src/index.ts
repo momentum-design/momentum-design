@@ -90,6 +90,7 @@ import Banner from './components/banner';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
+import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
@@ -126,6 +127,7 @@ import {
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
+import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
 
 // Components Exports
 export {
@@ -221,6 +223,7 @@ export {
 // Types Exports
 export type {
   BadgeType,
+  ChipColorType,
   ButtonColor,
   ButtonVariant,
   IconButtonSize,
@@ -249,6 +252,7 @@ export type {
   TextareaFocusEvent,
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
+  ToggleOnChangeEvent,
 };
 
 // Constants / Utils Exports

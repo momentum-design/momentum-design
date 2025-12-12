@@ -11,15 +11,20 @@ import { KEYS } from '../../utils/keys';
 import styles from './cardradio.styles';
 
 /**
- * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.
+ * cardradio component extends `mdc-card` and supports radio selection interaction.
+ * Only one card can be selected at a time within the same group (defined by `name` attribute).
  *
- * While using this component within a form or group of cards, make sure cards are in a role = "radio-group".
- * This card would have events for selected and unselected (similar to radio)
+ * ## Features
+ * - Supports two orientations (vertical and horizontal) and three visual variants (border, ghost, and promotional).
+ * - Selecting a card automatically unselects other cards in the same group and dispatches a `change` event.
+ * - Supports keyboard navigation with arrow keys to move between cards in the same group.
+ * - Card has `role="radio"` and manages `aria-checked` and `aria-disabled` attributes automatically.
  *
- * **Note**: This is a single selection card i.e. interacting anywhere on the card would toggle the checked state.
- * Make sure to pass only non-interactable elements within the slots.
+ * ## Usage
+ * - Both `card-title` and `name` attributes are required.
+ * - When using within a form or group, wrap cards in a container with `role="radiogroup"` and provide an `aria-label`.
  *
- * Make sure to pass the `card-title` mandatorily for this card.
+ * **Note**: Only pass non-interactable elements within the slots to avoid nested interactive elements.
  *
  * @tagname mdc-cardradio
  *
@@ -32,6 +37,14 @@ import styles from './cardradio.styles';
  * @slot after-body - This slot is for passing the content after the body
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
+ *
+ * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It selects the card and unselects others in the same group.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
+ * It selects the card when enter key or arrow keys are used.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
+ * It selects the card when space key is used.
+ * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
+ * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  *
  * @csspart header - The header part of the card
  * @csspart icon - The icon part of the card header
@@ -48,14 +61,6 @@ import styles from './cardradio.styles';
  * @csspart check-icon-button - The check icon button part of the card
  *
  * @cssproperty --mdc-card-width - The width of the card
- *
- * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
- * It toggles the checked state when enter key is used.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
- * It toggles the checked state when space key is used.
- * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
- * @event change - (React: onChange) Event that gets dispatched when the card's checked state changes.
  */
 class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
   /**
@@ -66,7 +71,8 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
   checked = false;
 
   /**
-   * The name of the radio.
+   * The name of the radio group. Cards with the same name are grouped together,
+   * ensuring only one card in the group can be selected at a time.
    * @default ''
    */
   @property({ type: String })
