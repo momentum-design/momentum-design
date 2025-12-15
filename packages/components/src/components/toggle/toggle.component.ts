@@ -22,7 +22,7 @@ import type { ToggleSize } from './toggle.types';
  *
  * To create a group of toggles, use the `mdc-formfieldgroup` component.
  *
- * **Note:** This component internally renders a native checkbox input element with the switch role, styled as a toggle switch.
+ * **Note:** This component internally renders a native checkbox input element with the `switch` role, styled as a toggle switch.
  *
  * ## When to use
  * Use toggles for binary choices where the change takes effect immediately, such as enabling/disabling settings or features.
