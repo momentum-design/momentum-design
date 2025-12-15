@@ -21,11 +21,11 @@ const styles = [
     }
 
     :host([size='default'])::part(label-text) {
-      margin-top: 0.125rem;
+      margin: 0.125rem 0;
     }
 
     :host([size='compact'])::part(static-toggle) {
-      margin-top: 0.125rem;
+      margin: 0.125rem 0;
     }
 
     :host::part(text-container) {
@@ -46,6 +46,7 @@ const styles = [
       height: 100%;
       top: 0;
       left: 0;
+      cursor: pointer;
     }
 
     :host::part(label) {

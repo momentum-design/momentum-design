@@ -12,6 +12,7 @@ const styles = [
       --mdc-statictoggle-icon-background-color: var(--mds-color-theme-common-text-primary-normal);
 
       border-radius: var(--mdc-statictoggle-border-radius);
+      position: relative;
     }
 
     :host::part(slider) {
