@@ -11,24 +11,27 @@ const styles = [
       --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
-    /* Grid layout for labeled toggles */
+    /* Flexbox layout for labeled toggles */
     :host([label]),
     :host([help-text]) {
-      display: grid;
-      grid-template-rows: auto auto;
-      grid-template-columns: auto auto;
-      column-gap: 0.75rem;
-      row-gap: 0.25rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
 
-    :host([help-text='']) {
-      grid-template-rows: auto;
-      row-gap: 0rem;
+    :host([size='default'])::part(label-text) {
+      margin-top: 0.125rem;
     }
 
-    :host::part(label-text),
-    :host::part(help-text-container) {
-      grid-column: 2;
+    :host([size='compact'])::part(static-toggle) {
+      margin-top: 0.125rem;
+    }
+
+    :host::part(text-container) {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
 
     /* Component structure and layout */
@@ -39,8 +42,10 @@ const styles = [
       opacity: 0.1%;
       overflow: visible;
       z-index: 1;
-      width: var(--mdc-statictoggle-width);
-      height: var(--mdc-statictoggle-height);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
     }
 
     :host::part(label) {

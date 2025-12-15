@@ -25,7 +25,7 @@ const styles = [
       justify-content: flex-start;
       transition: background-color 0.3s ease;
       outline: none;
-      padding: 0.125rem;
+      padding: calc(0.125rem - 1px);
     }
 
     :host::part(toggle-icon) {
@@ -42,7 +42,7 @@ const styles = [
     }
 
     :host([size='compact'])::part(toggle-icon) {
-      padding: 0.125rem;
+      padding: calc(0.125rem - 1px);
     }
 
     :host([checked]) {
