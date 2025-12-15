@@ -134,7 +134,6 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
         hreflang="${ifDefined(this.hreflang)}"
         type="${ifDefined(this.type)}"
         referrerpolicy="${ifDefined(this.referrerpolicy)}"
-        role="button"
         aria-label="${this.dataAriaLabel ?? ''}"
         tabindex="${this.disabled ? -1 : 0}"
       >
