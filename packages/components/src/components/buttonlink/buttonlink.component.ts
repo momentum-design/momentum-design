@@ -1,6 +1,5 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import Button from '../button/button.component';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
@@ -118,27 +117,6 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
       ${this.postfixIcon
         ? html`<mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon" length-unit="rem"></mdc-icon>`
         : ''}
-    `;
-  }
-
-  public override render() {
-    return html`
-      <a
-        class="mdc-focus-ring"
-        part="anchor"
-        href="${ifDefined(this.href)}"
-        target="${this.target}"
-        rel="${ifDefined(this.rel)}"
-        download="${ifDefined(this.download)}"
-        ping="${ifDefined(this.ping)}"
-        hreflang="${ifDefined(this.hreflang)}"
-        type="${ifDefined(this.type)}"
-        referrerpolicy="${ifDefined(this.referrerpolicy)}"
-        aria-label="${this.dataAriaLabel ?? ''}"
-        tabindex="${this.disabled ? -1 : 0}"
-      >
-        ${this.renderAnchorContent()}
-      </a>
     `;
   }
 
