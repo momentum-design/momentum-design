@@ -42,7 +42,7 @@ const styles = [
     }
 
     :host([size='compact'])::part(toggle-icon) {
-      padding: calc(0.125rem - 1px);
+      padding: 0.125rem;
     }
 
     :host([checked]) {
