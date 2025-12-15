@@ -96,6 +96,7 @@ import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
+import type { LinkButtonSize } from './components/linkbutton/linkbutton.types';
 import type { TextType as TypewriterType } from './components/typewriter/typewriter.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
@@ -253,6 +254,7 @@ export type {
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
   ToggleOnChangeEvent,
+  LinkButtonSize,
 };
 
 // Constants / Utils Exports
