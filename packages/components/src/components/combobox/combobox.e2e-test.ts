@@ -5,8 +5,11 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 
+import Combobox from './combobox.component';
+
 type SetupOptions = {
   componentsPage: ComponentsPage;
+  id?: string;
   label?: string;
   placeholder?: string;
   options?: Array<{ value: string; label: string }>;
@@ -62,6 +65,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       <div>
         ${isForm ? '<form>' : ''}
         <mdc-combobox
+          ${restArgs.id ? `id="${restArgs.id}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
@@ -854,6 +858,42 @@ test.describe('Combobox Feature Scenarios', () => {
         });
 
         expect(validationMessage).toBe(customMessage);
+      });
+    });
+
+    await test.step('selected option should be updated when changing the value attribute programmatically', async () => {
+      const { input, combobox, options } = await setup({
+        componentsPage,
+        label: defaultLabel,
+        placeholder: defaultPlaceholder,
+        options: defaultOptions,
+        value: 'austria',
+        id: 'combobox-value-change',
+      });
+
+      await test.step('should update selected option when value attribute is changed from austria to australia', async () => {
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
+          if (combobox) {
+            combobox.value = 'australia';
+          }
+        });
+
+        await expect(combobox).toHaveAttribute('value', 'australia');
+        await expect(combobox.locator('mdc-option').nth(2)).toHaveAttribute('selected');
+      });
+
+      await test.step('should fallback to placeholder when an invalid value is passed', async () => {
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
+          if (combobox) {
+            combobox.value = 'invalid-option';
+          }
+        });
+
+        await expect(combobox).toHaveAttribute('value', '');
+        expect(await options.locator('[selected]').count()).toBe(0);
+        await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
       });
     });
 
