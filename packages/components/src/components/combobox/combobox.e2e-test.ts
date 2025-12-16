@@ -733,6 +733,7 @@ test.describe('Combobox Feature Scenarios', () => {
           'control-type': 'controlled',
           value: 'canada',
         });
+        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
         const changePromise = componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
@@ -784,6 +785,9 @@ test.describe('Combobox Feature Scenarios', () => {
 
         await expect(combobox).toHaveAttribute('value', 'brazil');
         await expect(input).toHaveValue('Brazil');
+      });
+        await inputPromise;
+        await changePromise;
       });
     });
 

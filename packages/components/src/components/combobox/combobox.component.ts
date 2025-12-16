@@ -525,7 +525,9 @@ class Combobox
     // Restore the selected option
     this.setSelectedValue(optionToResetTo);
     // Reset the filtered text (typed value shown in input)
-    this.filteredValue = optionToResetTo?.label ?? '';
+    if (this.controlType !== 'controlled') {
+      this.filteredValue = optionToResetTo?.label ?? '';
+    }
     // Force revalidation after reset
     this.setInputValidity();
   }
@@ -658,7 +660,9 @@ class Combobox
         } else {
           this.resetSelectedValue();
           // clear the visible value
-          this.filteredValue = '';
+          if (this.controlType !== 'controlled') {
+            this.filteredValue = '';
+          }
         }
         break;
       }
@@ -723,7 +727,9 @@ class Combobox
   }
 
   private handleInputChange(event: Event): void {
-    this.filteredValue = (event.target as HTMLInputElement).value;
+    if (this.controlType !== 'controlled') {
+      this.filteredValue = (event.target as HTMLInputElement).value;
+    }
     this.resetSelectedValue();
     this.resetFocusedOption();
     this.updateHiddenOptions();
