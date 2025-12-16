@@ -23,6 +23,7 @@ import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
 import { ComboboxEventManager } from './combobox.events';
@@ -105,7 +106,7 @@ import type { Placement } from './combobox.types';
  */
 class Combobox
   extends CaptureDestroyEventForChildElement(
-    AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+    AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
   )
   implements AssociatedFormControl
 {
@@ -291,9 +292,11 @@ class Combobox
 
   private setSelectedValue(option: Option | null): void {
     // this.value is the actual value of the component
-    this.value = option?.getAttribute('value') || '';
-    // this.filteredValue is the visible label of the component
-    this.filteredValue = option?.getAttribute('label') || '';
+    if (this.controlType !== 'controlled') {
+      this.value = option?.getAttribute('value') || '';
+      // this.filteredValue is the visible label of the component
+      this.filteredValue = option?.getAttribute('label') || '';
+    }
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
     this.updateSelectedOption(option!);
@@ -310,7 +313,9 @@ class Combobox
    * This method is called when there is a change on the input.
    */
   private resetSelectedValue(): void {
-    this.value = '';
+    if (this.controlType !== 'controlled') {
+      this.value = '';
+    }
     this.internals.setFormValue(this.value);
     this.resetHelpText();
   }
@@ -422,7 +427,9 @@ class Combobox
     // Restore the selected option
     this.setSelectedValue(optionToResetTo);
     // Reset the filtered text (typed value shown in input)
-    this.filteredValue = optionToResetTo?.label ?? '';
+    if (this.controlType !== 'controlled') {
+      this.filteredValue = optionToResetTo?.label ?? '';
+    }
     // Force revalidation after reset
     this.setInputValidity();
   }
@@ -555,7 +562,9 @@ class Combobox
         } else {
           this.resetSelectedValue();
           // clear the visible value
-          this.filteredValue = '';
+          if (this.controlType !== 'controlled') {
+            this.filteredValue = '';
+          }
         }
         break;
       }
@@ -620,7 +629,9 @@ class Combobox
   }
 
   private handleInputChange(event: Event): void {
-    this.filteredValue = (event.target as HTMLInputElement).value;
+    if (this.controlType !== 'controlled') {
+      this.filteredValue = (event.target as HTMLInputElement).value;
+    }
     this.resetSelectedValue();
     this.resetFocusedOption();
     this.updateHiddenOptions();

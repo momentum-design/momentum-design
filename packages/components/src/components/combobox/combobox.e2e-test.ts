@@ -13,6 +13,7 @@ type SetupOptions = {
   disabled?: boolean;
   required?: boolean;
   name?: string;
+  'control-type'?: string;
   'data-aria-label'?: string;
   'validation-message'?: string;
   'help-text'?: string;
@@ -65,6 +66,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
           ${restArgs.required ? 'required' : ''}
           ${restArgs.readonly ? 'readonly' : ''}
           ${restArgs.value ? `value="${restArgs.value}"` : ''}
+          ${restArgs['control-type'] ? `control-type="${restArgs['control-type']}"` : ''}
           ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : 'data-aria-label="Combobox label"'}
           ${restArgs['validation-message'] ? `validation-message="${restArgs['validation-message']}"` : ''}
           ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
@@ -574,7 +576,7 @@ test.describe('Combobox Feature Scenarios', () => {
         });
 
         // Initial setup - open dropdown and type 'b'
-        await input.click();
+        await input.focus();
         await input.press('b');
 
         // Verify dropdown shows 'Bangladesh' and 'Brazil'
@@ -630,6 +632,88 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(visibleOptions).toHaveCount(0);
         // Should show no-result-text
         await expect(combobox.locator('[part="no-result-text"]')).toContainText('No results found');
+      });
+
+      await test.step('should type and select an option using keyboard when uncontrolled', async () => {
+        const { combobox, input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'uncontrolled',
+        });
+        const inputPromise = componentsPage.waitForEvent(input, 'input');
+
+        await input.focus();
+        await input.fill('bangla');
+        await inputPromise;
+        await expect(dropdown).toBeVisible();
+        await expect(getOptionByText('Bangladesh')).toBeVisible();
+        await input.press(KEYS.ARROW_DOWN); // Focus the first option
+        await input.press(KEYS.ENTER); // Select option
+
+        await expect(combobox).toHaveAttribute('value', 'bangladesh');
+        await expect(input).toHaveValue('Bangladesh');
+        await expect(dropdown).not.toBeVisible();
+      });
+
+      await test.step('should type and not select an option using keyboard when controlled', async () => {
+        const { combobox, input } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+        });
+        const inputPromise = componentsPage.waitForEvent(input, 'input');
+        await input.focus();
+        await input.press('b');
+        await inputPromise;
+        await input.press('r');
+        await inputPromise;
+        await input.press('a');
+        await inputPromise;
+
+        await expect(input).not.toHaveValue('Bangladesh');
+        await expect(combobox).not.toHaveAttribute('value', 'bangladesh');
+      });
+
+      await test.step('should select an option when the control type is uncontrolled', async () => {
+        const { input, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'uncontrolled',
+        });
+        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
+        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
+        await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
+        await expect(combobox).toHaveAttribute('value', 'argentina');
+        await expect(input).toHaveValue('Argentina');
+        await inputPromise;
+        await changePromise;
+      });
+
+      await test.step('should not select an option when the control type is controlled', async () => {
+        const { input, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+        });
+        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
+        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
+        await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
+        await expect(combobox).not.toHaveAttribute('value', 'argentina');
+        await expect(input).not.toHaveValue('Argentina');
+        await inputPromise;
+        await changePromise;
       });
     });
 

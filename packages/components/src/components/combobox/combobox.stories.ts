@@ -8,11 +8,13 @@ import '../optgroup';
 import '../option';
 import '../selectlistbox';
 import '../tooltip';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+import { VALID_VALUES } from '../controltypeprovider/controltypeprovider.constants';
 
 import type Combobox from './combobox.component';
 
@@ -25,29 +27,30 @@ const render = (args: Args) =>
     @input="${action('oninput')}"
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
-    backdrop-append-to="${args['backdrop-append-to']}"
-    boundary="${args.boundary}"
-    data-aria-label="${args['data-aria-label']}"
+    backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
+    boundary="${ifDefined(args.boundary)}"
+    control-type="${ifDefined(args['control-type'])}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
     ?disabled="${args.disabled}"
-    help-text="${args['help-text']}"
-    help-text-type="${args['help-text-type']}"
-    info-icon-aria-label="${args['info-icon-aria-label']}"
-    label="${args.label}"
-    name="${args.name}"
-    no-result-text="${args['no-result-text']}"
-    placeholder="${args.placeholder}"
-    placement="${args.placement}"
-    popover-z-index="${args['popover-z-index']}"
+    help-text="${ifDefined(args['help-text'])}"
+    help-text-type="${ifDefined(args['help-text-type'])}"
+    info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
+    label="${ifDefined(args.label)}"
+    name="${ifDefined(args.name)}"
+    no-result-text="${ifDefined(args['no-result-text'])}"
+    placeholder="${ifDefined(args.placeholder)}"
+    placement="${ifDefined(args.placement)}"
+    popover-z-index="${ifDefined(args['popover-z-index'])}"
     ?required="${args.required}"
     ?readonly="${args.readonly}"
-    strategy="${args.strategy}"
-    value="${args.value}"
+    strategy="${ifDefined(args.strategy)}"
+    value="${ifDefined(args.value)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-    toggletip-text="${args['toggletip-text']}"
-    toggletip-placement="${args['toggletip-placement']}"
-    toggletip-strategy="${args['toggletip-strategy']}"
-    validation-message="${args['validation-message']}"
-    invalid-custom-value-text="${args['invalid-custom-value-text']}"
+    toggletip-text="${ifDefined(args['toggletip-text'])}"
+    toggletip-placement="${ifDefined(args['toggletip-placement'])}"
+    toggletip-strategy="${ifDefined(args['toggletip-strategy'])}"
+    validation-message="${ifDefined(args['validation-message'])}"
+    invalid-custom-value-text="${ifDefined(args['invalid-custom-value-text'])}"
   >
     ${args.children}
   </mdc-combobox>`;
@@ -69,6 +72,10 @@ const meta: Meta = {
     },
     boundary: {
       control: 'text',
+    },
+    'control-type': {
+      control: 'select',
+      options: [undefined, ...VALID_VALUES],
     },
     'data-aria-label': {
       control: 'text',
@@ -240,10 +247,11 @@ export const ComboboxWithOptionGroups: StoryObj = {
     'data-aria-label': 'Fruits and Vegetables',
     children: html` <mdc-selectlistbox>
       <mdc-optgroup label="Fruit">
-        <mdc-option value="apple" label="Apples"></mdc-option>
-        <mdc-option value="banana" label="Bananas"></mdc-option>
-        <mdc-option value="cherry" label="Cherries"></mdc-option>
-        <mdc-option value="tomato" label="Tomato"></mdc-option>
+        <mdc-option id="apple_apple" value="apple" label="Apples"></mdc-option>
+        <mdc-option id="banana_banana" value="banana" label="Bananas" disabled></mdc-option>
+        <mdc-tooltip triggerID="banana_banana" show-arrow strategy="fixed">This is a tooltip</mdc-tooltip>
+        <mdc-option id="cherry_cherry" value="cherry" label="Cherries"></mdc-option>
+        <mdc-option id="tomato_tomato" value="tomato" label="Tomato"></mdc-option>
       </mdc-optgroup>
       <mdc-divider></mdc-divider>
       <mdc-optgroup label="Vegetables">
