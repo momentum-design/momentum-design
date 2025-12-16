@@ -77,6 +77,9 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    required: {
+      control: 'boolean',
+    },
     name: {
       control: 'text',
     },
