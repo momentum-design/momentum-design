@@ -3,11 +3,11 @@ import { css } from 'lit';
 const styles = [
   css`
     :host {
-      --mdc-radio-inner-circle-size: 0.375rem;
-      --mdc-radio-outer-circle-size: 1rem;
-      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-normal);
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-normal);
+      --mdc-staticradio-inner-circle-size: 0.375rem;
+      --mdc-staticradio-outer-circle-size: 1rem;
+      --mdc-staticradio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-normal);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-normal);
 
       display: block;
       position: relative;
@@ -21,10 +21,10 @@ const styles = [
       position: absolute;
       top: 0;
       left: 0;
-      width: var(--mdc-radio-outer-circle-size);
-      height: var(--mdc-radio-outer-circle-size);
-      border: 0.0625rem solid var(--mdc-radio-outer-circle-border-color);
-      background-color: var(--mdc-radio-outer-circle-background-color);
+      width: var(--mdc-staticradio-outer-circle-size);
+      height: var(--mdc-staticradio-outer-circle-size);
+      border: 0.0625rem solid var(--mdc-staticradio-outer-circle-border-color);
+      background-color: var(--mdc-staticradio-outer-circle-background-color);
       border-radius: 50%;
     }
 
@@ -35,8 +35,8 @@ const styles = [
     }
 
     :host([checked]) {
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-control-active-normal);
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-normal);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-control-active-normal);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-normal);
     }
 
     :host([checked]) .radio-icon:after {
@@ -44,58 +44,58 @@ const styles = [
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: var(--mdc-radio-inner-circle-size);
-      height: var(--mdc-radio-inner-circle-size);
+      width: var(--mdc-staticradio-inner-circle-size);
+      height: var(--mdc-staticradio-inner-circle-size);
       border-radius: 50%;
-      background-color: var(--mdc-radio-inner-circle-background-color);
+      background-color: var(--mdc-staticradio-inner-circle-background-color);
     }
 
     :host([readonly]) {
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
-      --mdc-radio-outer-circle-background-color: transparent;
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-staticradio-outer-circle-background-color: transparent;
     }
 
     :host([readonly][checked]) {
-      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-text-primary-normal);
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
-      --mdc-radio-outer-circle-background-color: transparent;
+      --mdc-staticradio-inner-circle-background-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-outline-input-normal);
+      --mdc-staticradio-outer-circle-background-color: transparent;
     }
 
     :host([disabled]),
     :host([soft-disabled]) {
-      --mdc-radio-outer-circle-border-color: var(--mds-color-theme-outline-primary-disabled);
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-inactive-disabled);
+      --mdc-staticradio-outer-circle-border-color: var(--mds-color-theme-outline-primary-disabled);
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-inactive-disabled);
     }
 
     :host([disabled][checked]),
     :host([soft-disabled][checked]) {
-      --mdc-radio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-disabled);
-      --mdc-radio-outer-circle-border-color: transparent;
-      --mdc-radio-outer-circle-background-color: var(--mds-color-theme-control-active-disabled);
+      --mdc-staticradio-inner-circle-background-color: var(--mds-color-theme-inverted-text-primary-disabled);
+      --mdc-staticradio-outer-circle-border-color: transparent;
+      --mdc-staticradio-outer-circle-background-color: var(--mds-color-theme-control-active-disabled);
     }
 
     @media (forced-colors: active) {
       :host([checked]) {
-        --mdc-radio-outer-circle-border-color: SelectedItem;
-        --mdc-radio-outer-circle-background-color: SelectedItem;
+        --mdc-staticradio-outer-circle-border-color: SelectedItem;
+        --mdc-staticradio-outer-circle-background-color: SelectedItem;
       }
       :host([readonly]),
       :host([readonly][checked]) {
-        --mdc-radio-inner-circle-background-color: Highlight;
-        --mdc-radio-outer-circle-border-color: Highlight;
-        --mdc-radio-outer-circle-background-color: ButtonFace;
+        --mdc-staticradio-inner-circle-background-color: Highlight;
+        --mdc-staticradio-outer-circle-border-color: Highlight;
+        --mdc-staticradio-outer-circle-background-color: ButtonFace;
       }
       :host([disabled]),
       :host([soft-disabled]) {
-        --mdc-radio-outer-circle-border-color: GrayText;
-        --mdc-radio-outer-circle-background-color: GrayText;
-        --mdc-radio-inner-circle-background-color: GrayText;
+        --mdc-staticradio-outer-circle-border-color: GrayText;
+        --mdc-staticradio-outer-circle-background-color: GrayText;
+        --mdc-staticradio-inner-circle-background-color: GrayText;
       }
 
       :host([disabled][checked]),
       :host([soft-disabled][checked]) {
-        --mdc-radio-outer-circle-border-color: GrayText;
-        --mdc-radio-outer-circle-background-color: GrayText;
+        --mdc-staticradio-outer-circle-border-color: GrayText;
+        --mdc-staticradio-outer-circle-background-color: GrayText;
       }
     }
   `,
