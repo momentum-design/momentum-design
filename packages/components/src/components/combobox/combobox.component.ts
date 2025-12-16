@@ -328,14 +328,35 @@ class Combobox
 
   /**
    * This function is called when the attribute changes.
-   * It updates the validity of the input field based on the input field's validity.
+   * - value: It updates the selected option based on the value attribute.
+   * - validation-message: It updates the validity of the input field based on the input field's validity.
    *
    * @param name - attribute name
-   * @param old - old value
-   * @param value - new value
+   * @param oldValue - old value
+   * @param newValue - new value
    */
-  override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
-    super.attributeChangedCallback(name, old, value);
+  override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+    super.attributeChangedCallback(name, oldValue, newValue);
+
+    if (name === 'value' && newValue !== '' && newValue !== oldValue && this.navItems.length) {
+      const firstSelectedOption = this.getFirstSelectedOption();
+      const valueBasedOption = this.navItems.find(option => option.value === newValue);
+      let optionToSelect: Option | null = null;
+      if (valueBasedOption) {
+        optionToSelect = valueBasedOption;
+      } else if (this.placeholder) {
+        optionToSelect = null;
+      } else if (firstSelectedOption) {
+        optionToSelect = firstSelectedOption;
+      } else {
+        return;
+      }
+      this.updateComplete
+        .then(() => {
+          this.setSelectedValue(optionToSelect);
+        })
+        .catch(this.handleUpdateError);
+    }
 
     if (name === 'validation-message') {
       this.updateComplete

@@ -299,7 +299,6 @@ export const ComboboxWithDisabledOptions: StoryObj = {
     placeholder: 'Type a programming language',
     'no-result-text': 'No results found',
     'data-aria-label': 'Select a programming language',
-    disabled: true,
     children: html` <mdc-selectlistbox>
       <mdc-option value="javascript" label="JavaScript"></mdc-option>
       <mdc-option value="python" label="Python"></mdc-option>
