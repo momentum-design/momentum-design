@@ -33,10 +33,6 @@ const styles = [
       flex: 1;
     }
 
-    :host::part(required-indicator) {
-      display: none;
-    }
-
     :host::part(label) {
       cursor: pointer;
       word-break: break-word;

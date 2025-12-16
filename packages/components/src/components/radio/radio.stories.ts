@@ -17,8 +17,8 @@ const render = (args: Args) => html`
       @focus="${action('onfocus')}"
       @click="${action('onclick')}"
       label="${args.label}"
-      name="radio"
-      value="option1"
+      name="${args.name}"
+      value="${args.value}"
       help-text="${args['help-text']}"
       ?checked=${args.checked}
       ?disabled=${args.disabled}
@@ -43,48 +43,48 @@ const meta: Meta = {
 
   argTypes: {
     readonly: {
-      control: { type: 'boolean' },
+      control: 'boolean',
     },
     disabled: {
-      control: { type: 'boolean' },
+      control: 'boolean',
     },
     'soft-disabled': {
-      control: { type: 'boolean' },
+      control: 'boolean',
     },
     checked: {
-      control: { type: 'boolean' },
+      control: 'boolean',
     },
     label: {
-      control: { type: 'text' },
+      control: 'text',
     },
     name: {
-      control: { type: 'text' },
+      control: 'text',
     },
     value: {
-      control: { type: 'text' },
+      control: 'text',
     },
     'help-text': {
-      control: { type: 'text' },
+      control: 'text',
     },
     'data-aria-label': {
-      control: { type: 'text' },
+      control: 'text',
     },
     required: {
-      control: { type: 'boolean' },
+      control: 'boolean',
     },
     'toggletip-text': {
-      control: { type: 'text' },
+      control: 'text',
     },
     'toggletip-placement': {
-      control: { type: 'select' },
+      control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
     'toggletip-strategy': {
-      control: { type: 'select' },
+      control: 'select',
       options: Object.values(STRATEGY),
     },
     'info-icon-aria-label': {
-      control: { type: 'text' },
+      control: 'text',
     },
     'auto-focus-on-mount': {
       control: 'boolean',
@@ -100,6 +100,8 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Standard Plan',
+    name: 'radio',
+    value: 'option1',
     checked: false,
     readonly: false,
     disabled: false,
