@@ -26,6 +26,7 @@ const ROLE = {
   RADIO: 'radio',
   RADIOGROUP: 'radiogroup',
   REGION: 'region',
+  SWITCH: 'switch',
   TAB: 'tab',
   TABLIST: 'tablist',
   TOOLTIP: 'tooltip',
