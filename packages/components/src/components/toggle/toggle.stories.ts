@@ -195,7 +195,7 @@ export const ToggleInsideForm: StoryObj = {
               required
               validation-message="Toggle this switch to continue"
             ></mdc-toggle>
-            <div style="display: flex; gap: 0.25rem">
+            <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
               <mdc-button type="submit" size="24">Submit</mdc-button>
               <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
             </div>
@@ -252,7 +252,7 @@ export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
               size="${args.size}"
               required
             ></mdc-toggle>
-            <div style="display: flex; gap: 0.25rem">
+            <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
               <mdc-button type="submit" size="24">Submit</mdc-button>
               <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
             </div>
