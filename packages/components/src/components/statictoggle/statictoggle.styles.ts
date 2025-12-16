@@ -12,6 +12,7 @@ const styles = [
       --mdc-statictoggle-icon-background-color: var(--mds-color-theme-common-text-primary-normal);
 
       border-radius: var(--mdc-statictoggle-border-radius);
+      position: relative;
     }
 
     :host::part(slider) {
@@ -25,7 +26,7 @@ const styles = [
       justify-content: flex-start;
       transition: background-color 0.3s ease;
       outline: none;
-      padding: 0.125rem;
+      padding: calc(0.125rem - 1px);
     }
 
     :host::part(toggle-icon) {
