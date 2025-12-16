@@ -45,9 +45,12 @@ const defaultOptions = [
   { value: 'canada', label: 'Canada' },
 ];
 
-const createOptionsMarkup = (options: Array<{ value: string; label: string }>) => `
+const createOptionsMarkup = (options: Array<{ value: string; label: string; disabled?: boolean }>) => `
     <mdc-selectlistbox>${options
-      .map(option => `<mdc-option value="${option.value}" label="${option.label}"></mdc-option>`)
+      .map(
+        option =>
+          `<mdc-option value="${option.value}" label="${option.label}" ${option.disabled ? 'disabled' : ''}></mdc-option>`,
+      )
       .join('\n')}</mdc-selectlistbox>
   `;
 
@@ -357,6 +360,28 @@ test.describe('Combobox Feature Scenarios', () => {
 
         await expect(input).toHaveValue('Australia');
         await expect(dropdown).not.toBeVisible();
+      });
+
+      await test.step('should not show disabled options when an option is selected', async () => {
+        const disabledOptionsList = defaultOptions.map(option =>
+          option.value === 'austria' ? { ...option, disabled: true } : option,
+        );
+        const { input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: disabledOptionsList,
+        });
+        await input.click();
+        await expect(dropdown).toBeVisible();
+        const australiaOption = getOptionByText('Australia');
+        await australiaOption.click(); // select Australia
+        await expect(dropdown).not.toBeVisible();
+        await expect(input).toHaveValue('Australia');
+        await input.click();
+        await expect(dropdown).toBeVisible();
+        const austriaOption = getOptionByText('Austria');
+        await expect(austriaOption).not.toBeVisible();
       });
     });
 
@@ -720,114 +745,116 @@ test.describe('Combobox Feature Scenarios', () => {
     /**
      * FORM HANDLING
      */
-    await test.step('combobox in form should be validated when required and form is submitted', async () => {
-      const { form, combobox, dropdown } = await setup(
-        {
-          componentsPage,
-          label: defaultLabel,
-          placeholder: defaultPlaceholder,
-          options: defaultOptions,
-          required: true,
-        },
-        true,
-      );
+    await test.step('form handling', async () => {
+      await test.step('combobox in form should be validated when required and form is submitted', async () => {
+        const { form, combobox, dropdown } = await setup(
+          {
+            componentsPage,
+            label: defaultLabel,
+            placeholder: defaultPlaceholder,
+            options: defaultOptions,
+            required: true,
+          },
+          true,
+        );
 
-      await form.evaluate((formElement: HTMLFormElement) => {
-        formElement.addEventListener('submit', event => event.preventDefault());
+        await form.evaluate((formElement: HTMLFormElement) => {
+          formElement.addEventListener('submit', event => event.preventDefault());
+        });
+
+        const formSubmitButton = form.locator('mdc-button[type="submit"]');
+        // Try to submit the form without making any selection
+        await formSubmitButton.click();
+
+        // Check if validation message is shown
+        const validationMessage = await combobox.evaluate(element => {
+          const combobox = element as HTMLInputElement;
+          return combobox.validationMessage;
+        });
+
+        expect(validationMessage).not.toBe('');
+
+        // click outside to make sure the validation message is not shown anymore before proceeding
+        await componentsPage.page.mouse.click(0, 0);
+
+        // Now select an option and verify form can be submitted
+        await combobox.click();
+        await combobox.locator('mdc-option').nth(1).click();
+
+        // Verify the selected value and popover is closed
+        await expect(dropdown).not.toBeVisible();
+        await expect(combobox).toHaveAttribute('value', 'austria');
+
+        // Try to submit the form again
+        await formSubmitButton.click();
+
+        // Now form should be valid
+        const isFormValid = await form.evaluate((formEl: HTMLFormElement) => formEl.checkValidity());
+
+        expect(isFormValid).toBe(true);
       });
 
-      const formSubmitButton = form.locator('mdc-button[type="submit"]');
-      // Try to submit the form without making any selection
-      await formSubmitButton.click();
+      await test.step('should maintain validation state after form reset', async () => {
+        const customMessage = 'Please select your headquarters location';
 
-      // Check if validation message is shown
-      const validationMessage = await combobox.evaluate(element => {
-        const combobox = element as HTMLInputElement;
-        return combobox.validationMessage;
+        const { form, combobox, input, dropdown } = await setup(
+          {
+            componentsPage,
+            label: defaultLabel,
+            placeholder: defaultPlaceholder,
+            options: defaultOptions,
+            required: true,
+            name: 'headquarters',
+            'validation-message': customMessage,
+          },
+          true,
+        );
+
+        // Add reset button to the form
+        await componentsPage.page.evaluate(() => {
+          const resetButton = document.createElement('mdc-button');
+          resetButton.setAttribute('type', 'reset');
+          resetButton.setAttribute('size', '24');
+          resetButton.setAttribute('variant', 'secondary');
+          resetButton.textContent = 'Reset';
+          document.querySelector('form')?.appendChild(resetButton);
+        });
+
+        const submitButton = form.locator('mdc-button[type="submit"]');
+        const resetButton = form.locator('mdc-button[type="reset"]');
+
+        // First select an option
+        await input.click();
+        await input.fill('aus');
+        await expect(dropdown).toBeVisible();
+        await combobox.locator('mdc-option').nth(1).click();
+
+        // Verify the selected value
+        await expect(combobox).toHaveAttribute('value', 'austria');
+
+        // Reset the form
+        await resetButton.click();
+
+        // Verify the selection has been cleared
+        const comboboxTextContent = await input.getAttribute('placeholder');
+        expect(comboboxTextContent?.trim()).toBe(defaultPlaceholder);
+
+        // Try to submit the form and check that it requires a selection
+        await submitButton.click();
+
+        // Check that the form is still invalid
+        const isFormValid = await form.evaluate((formEl: HTMLFormElement) => formEl.checkValidity());
+        expect(isFormValid).toBe(false);
+
+        // Check if custom validation message is still displayed after reset
+        const inputEl = combobox.locator('input[part="internal-native-input"]');
+        const validationMessage = await inputEl.evaluate(element => {
+          const input = element as HTMLInputElement;
+          return input.validationMessage;
+        });
+
+        expect(validationMessage).toBe(customMessage);
       });
-
-      expect(validationMessage).not.toBe('');
-
-      // click outside to make sure the validation message is not shown anymore before proceeding
-      await componentsPage.page.mouse.click(0, 0);
-
-      // Now select an option and verify form can be submitted
-      await combobox.click();
-      await combobox.locator('mdc-option').nth(1).click();
-
-      // Verify the selected value and popover is closed
-      await expect(dropdown).not.toBeVisible();
-      await expect(combobox).toHaveAttribute('value', 'austria');
-
-      // Try to submit the form again
-      await formSubmitButton.click();
-
-      // Now form should be valid
-      const isFormValid = await form.evaluate((formEl: HTMLFormElement) => formEl.checkValidity());
-
-      expect(isFormValid).toBe(true);
-    });
-
-    await test.step('select should maintain validation state after form reset', async () => {
-      const customMessage = 'Please select your headquarters location';
-
-      const { form, combobox, input, dropdown } = await setup(
-        {
-          componentsPage,
-          label: defaultLabel,
-          placeholder: defaultPlaceholder,
-          options: defaultOptions,
-          required: true,
-          name: 'headquarters',
-          'validation-message': customMessage,
-        },
-        true,
-      );
-
-      // Add reset button to the form
-      await componentsPage.page.evaluate(() => {
-        const resetButton = document.createElement('mdc-button');
-        resetButton.setAttribute('type', 'reset');
-        resetButton.setAttribute('size', '24');
-        resetButton.setAttribute('variant', 'secondary');
-        resetButton.textContent = 'Reset';
-        document.querySelector('form')?.appendChild(resetButton);
-      });
-
-      const submitButton = form.locator('mdc-button[type="submit"]');
-      const resetButton = form.locator('mdc-button[type="reset"]');
-
-      // First select an option
-      await input.click();
-      await input.fill('aus');
-      await expect(dropdown).toBeVisible();
-      await combobox.locator('mdc-option').nth(1).click();
-
-      // Verify the selected value
-      await expect(combobox).toHaveAttribute('value', 'austria');
-
-      // Reset the form
-      await resetButton.click();
-
-      // Verify the selection has been cleared
-      const comboboxTextContent = await input.getAttribute('placeholder');
-      expect(comboboxTextContent?.trim()).toBe(defaultPlaceholder);
-
-      // Try to submit the form and check that it requires a selection
-      await submitButton.click();
-
-      // Check that the form is still invalid
-      const isFormValid = await form.evaluate((formEl: HTMLFormElement) => formEl.checkValidity());
-      expect(isFormValid).toBe(false);
-
-      // Check if custom validation message is still displayed after reset
-      const inputEl = combobox.locator('input[part="internal-native-input"]');
-      const validationMessage = await inputEl.evaluate(element => {
-        const input = element as HTMLInputElement;
-        return input.validationMessage;
-      });
-
-      expect(validationMessage).toBe(customMessage);
     });
 
     /**

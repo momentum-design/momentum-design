@@ -78,7 +78,6 @@ import type { Placement } from './combobox.types';
  * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
  * @cssproperty --mdc-combobox-width - The width of the combobox
  * @cssproperty --mdc-combobox-hover-background-color - The background color of the combobox when hovered
- * @cssproperty --mdc-combobox-text-color-disabled - The text color of the combobox when disabled
  * @cssproperty --mdc-label-font-size - Font size for the label text.
  * @cssproperty --mdc-label-font-weight - Font weight for the label text.
  * @cssproperty --mdc-label-line-height - Line height for the label text.
@@ -100,9 +99,9 @@ import type { Placement } from './combobox.types';
  * @csspart internal-native-input - The internal native input element of the combobox.
  * @csspart input-text - The input element of the combobox.
  * @csspart no-result-text - The no result text element of the combobox.
- * @csspart combobox__base - The base container element of the combobox.
- * @csspart combobox__button - The button element of the combobox.
- * @csspart combobox__button-icon - The icon element of the button of the combobox.
+ * @csspart combobox-base - The base container element of the combobox.
+ * @csspart combobox-button - The button element of the combobox.
+ * @csspart combobox-button-icon - The icon element of the button of the combobox.
  */
 class Combobox
   extends CaptureDestroyEventForChildElement(
@@ -190,7 +189,7 @@ class Combobox
   @query(`[role="${ROLE.COMBOBOX}"]`) private visualCombobox!: HTMLInputElement;
 
   /** @internal */
-  @query(`[part="combobox__button"]`) private dropDownButton!: HTMLElement;
+  @query(`[part="combobox-button"]`) private dropDownButton!: HTMLElement;
 
   /** @internal */
   @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
@@ -233,7 +232,7 @@ class Combobox
   }
 
   private isValidItem(item: Element): boolean {
-    return item.matches(`${OPTION_TAG_NAME}:not([disabled])`);
+    return item.matches(OPTION_TAG_NAME);
   }
 
   private openPopover(): void {
@@ -261,6 +260,7 @@ class Combobox
     return this.navItems.filter(option => this.compareOptionWithValue(option, internalValue));
   }
 
+  /** @internal */
   private handleUpdateError = (error: any): void => {
     if (this.onerror) {
       this.onerror(error);
@@ -291,18 +291,17 @@ class Combobox
   };
 
   private setSelectedValue(option: Option | null): void {
-    // this.value is the actual value of the component
     if (this.controlType !== 'controlled') {
+      // this.value is the actual value of the component
       this.value = option?.getAttribute('value') || '';
       // this.filteredValue is the visible label of the component
       this.filteredValue = option?.getAttribute('label') || '';
+      this.internals.setFormValue(this.value);
+      this.updateHiddenOptions();
+      this.updateSelectedOption(option!);
+      this.setInputValidity();
+      this.resetHelpText();
     }
-    this.internals.setFormValue(this.value);
-    this.updateHiddenOptions();
-    this.updateSelectedOption(option!);
-
-    this.setInputValidity();
-    this.resetHelpText();
 
     ComboboxEventManager.onInputCombobox(this, option!);
     ComboboxEventManager.onChangeCombobox(this, option!);
@@ -528,7 +527,7 @@ class Combobox
   }
 
   private handleInputKeydown(event: KeyboardEvent): void {
-    const options = this.getVisibleOptions(this.filteredValue);
+    const options = this.getVisibleOptions(this.filteredValue).filter(option => !option.hasAttribute('disabled'));
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
     switch (event.key) {
       case KEYS.ARROW_DOWN: {
@@ -738,7 +737,7 @@ class Combobox
     const options = this.getVisibleOptions(this.filteredValue);
     return html`
       ${this.renderLabel()}
-      <div part="combobox__base" id="${TRIGGER_ID}">
+      <div part="combobox-base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
         <mdc-input
           @click="${() => this.toggleDropdown()}"
@@ -750,14 +749,14 @@ class Combobox
         </mdc-input>
         <mdc-buttonsimple
           @click="${() => this.toggleDropdown()}"
-          part="combobox__button"
+          part="combobox-button"
           ?disabled="${this.disabled}"
           tabindex="-1"
           aria-expanded="${this.isOpen ? 'true' : 'false'}"
           aria-label="${this.dataAriaLabel ?? ''}"
         >
           <mdc-icon
-            part="combobox__button-icon"
+            part="combobox-button-icon"
             name="${this.shouldDisplayPopover(options.length) ? ICON_NAME.ARROW_UP : ICON_NAME.ARROW_DOWN}"
             size="1"
             length-unit="rem"
