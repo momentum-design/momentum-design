@@ -77,7 +77,7 @@ const meta: Meta = {
     },
     'control-type': {
       control: 'select',
-      options: [undefined, ...VALID_VALUES],
+      options: VALID_VALUES,
     },
     'data-aria-label': {
       control: 'text',
@@ -306,11 +306,10 @@ export const ComboboxWithOptionGroups: StoryObj = {
     'data-aria-label': 'Fruits and Vegetables',
     children: html` <mdc-selectlistbox>
       <mdc-optgroup label="Fruit">
-        <mdc-option id="apple_apple" value="apple" label="Apples"></mdc-option>
-        <mdc-option id="banana_banana" value="banana" label="Bananas" disabled></mdc-option>
-        <mdc-tooltip triggerID="banana_banana" show-arrow strategy="fixed">This is a tooltip</mdc-tooltip>
-        <mdc-option id="cherry_cherry" value="cherry" label="Cherries"></mdc-option>
-        <mdc-option id="tomato_tomato" value="tomato" label="Tomato"></mdc-option>
+        <mdc-option value="apple" label="Apples"></mdc-option>
+        <mdc-option value="banana" label="Bananas"></mdc-option>
+        <mdc-option value="cherry" label="Cherries"></mdc-option>
+        <mdc-option value="tomato" label="Tomato"></mdc-option>
       </mdc-optgroup>
       <mdc-divider></mdc-divider>
       <mdc-optgroup label="Vegetables">

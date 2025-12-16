@@ -669,11 +669,11 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
           'control-type': 'uncontrolled',
         });
-        const inputPromise = componentsPage.waitForEvent(input, 'input');
+        const waitForInput = await componentsPage.waitForEvent(input, 'input');
 
         await input.focus();
         await input.fill('bangla');
-        await inputPromise;
+        await expect(waitForInput).toEventEmitted();
         await expect(dropdown).toBeVisible();
         await expect(getOptionByText('Bangladesh')).toBeVisible();
         await input.press(KEYS.ARROW_DOWN); // Focus the first option
@@ -692,14 +692,14 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
           'control-type': 'controlled',
         });
-        const inputPromise = componentsPage.waitForEvent(input, 'input');
+        const waitForInput = await componentsPage.waitForEvent(input, 'input');
         await input.focus();
         await input.press('b');
-        await inputPromise;
+        await expect(waitForInput).toEventEmitted();
         await input.press('r');
-        await inputPromise;
+        await expect(waitForInput).toEventEmitted();
         await input.press('a');
-        await inputPromise;
+        await expect(waitForInput).toEventEmitted();
 
         await expect(input).not.toHaveValue('Bangladesh');
         await expect(combobox).not.toHaveAttribute('value', 'bangladesh');
@@ -713,15 +713,15 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
           'control-type': 'uncontrolled',
         });
-        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
-        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        const waitForInput = await componentsPage.waitForEvent(combobox, 'input');
+        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
         await expect(combobox).toHaveAttribute('value', 'argentina');
         await expect(input).toHaveValue('Argentina');
-        await inputPromise;
-        await changePromise;
+        await expect(waitForInput).toEventEmitted();
+        await expect(waitForChange).toEventEmitted();
       });
 
       await test.step('should not select an option when the control type is controlled', async () => {
@@ -733,8 +733,7 @@ test.describe('Combobox Feature Scenarios', () => {
           'control-type': 'controlled',
           value: 'canada',
         });
-        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
-        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
@@ -743,7 +742,7 @@ test.describe('Combobox Feature Scenarios', () => {
         // The previously set value should remain
         await expect(combobox).toHaveAttribute('value', 'canada');
         await expect(input).toHaveValue('Canada');
-        await changePromise;
+        await expect(waitForChange).toEventEmitted();
       });
 
       await test.step('should not select an option when the control type is controlled', async () => {
@@ -755,7 +754,7 @@ test.describe('Combobox Feature Scenarios', () => {
           'control-type': 'controlled',
           value: 'canada',
         });
-        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
@@ -764,7 +763,7 @@ test.describe('Combobox Feature Scenarios', () => {
         // The previously set value should remain
         await expect(combobox).toHaveAttribute('value', 'canada');
         await expect(input).toHaveValue('Canada');
-        await changePromise;
+        await expect(waitForChange).toEventEmitted();
       });
 
       await test.step('should reflect parent value changes in controlled mode', async () => {
@@ -785,9 +784,6 @@ test.describe('Combobox Feature Scenarios', () => {
 
         await expect(combobox).toHaveAttribute('value', 'brazil');
         await expect(input).toHaveValue('Brazil');
-      });
-        await inputPromise;
-        await changePromise;
       });
     });
 
