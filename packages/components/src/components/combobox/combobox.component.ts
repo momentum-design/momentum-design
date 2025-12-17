@@ -24,6 +24,7 @@ import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from '../pop
 import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
+import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
 import { ComboboxEventManager } from './combobox.events';
@@ -114,6 +115,7 @@ class Combobox
 
   /**
    * The placeholder text which will be shown on the text if provided.
+   * @default undefined
    */
   @property({ type: String }) placeholder?: string;
 
@@ -212,6 +214,7 @@ class Combobox
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
+    this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<Option>(this, {
@@ -264,6 +267,40 @@ class Combobox
   private handleUpdateError = (error: any): void => {
     if (this.onerror) {
       this.onerror(error);
+    }
+  };
+
+  /**
+   * Update the selected value when an option is modified.
+   *
+   * @internal
+   */
+  private handleModifiedEvent = (event: Event) => {
+    const firstSelectedOption = this.getFirstSelectedOption();
+    switch ((event as LifeCycleModifiedEvent).detail.change) {
+      case 'selected': {
+        // ignore if the modified option is disabled
+        if ((event.target as Option).hasAttribute('disabled')) {
+          return;
+        }
+        // first preference should always be given to the first `selected` attribute option.
+        if (firstSelectedOption && firstSelectedOption.value !== this.value) {
+          this.setSelectedValue(firstSelectedOption);
+        }
+        break;
+      }
+      case 'unselected': {
+        // when unselected, check if there is any other option is a selected option,
+        // if there is no selected option, then reset it to null (placeholder will be shown if present).
+        if (firstSelectedOption) {
+          this.setSelectedValue(firstSelectedOption);
+        } else {
+          this.setSelectedValue(null);
+        }
+        break;
+      }
+      default:
+        break;
     }
   };
 

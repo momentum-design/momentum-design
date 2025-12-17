@@ -5,7 +5,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 
-import Combobox from './combobox.component';
+import type Combobox from './combobox.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -861,39 +861,62 @@ test.describe('Combobox Feature Scenarios', () => {
       });
     });
 
-    await test.step('selected option should be updated when changing the value attribute programmatically', async () => {
-      const { input, combobox, options } = await setup({
-        componentsPage,
-        label: defaultLabel,
-        placeholder: defaultPlaceholder,
-        options: defaultOptions,
-        value: 'austria',
-        id: 'combobox-value-change',
-      });
-
-      await test.step('should update selected option when value attribute is changed from austria to australia', async () => {
-        await componentsPage.page.evaluate(() => {
-          const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
-          if (combobox) {
-            combobox.value = 'australia';
-          }
+    /**
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
+      await test.step('selected option should be updated when changing the value attribute programmatically', async () => {
+        const { input, combobox, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          value: 'austria',
+          id: 'combobox-value-change',
         });
 
-        await expect(combobox).toHaveAttribute('value', 'australia');
-        await expect(combobox.locator('mdc-option').nth(2)).toHaveAttribute('selected');
-      });
+        await test.step('should update selected option when value attribute is changed from austria to australia', async () => {
+          await componentsPage.page.evaluate(() => {
+            const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
+            if (combobox) {
+              combobox.value = 'australia';
+            }
+          });
 
-      await test.step('should fallback to placeholder when an invalid value is passed', async () => {
-        await componentsPage.page.evaluate(() => {
-          const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
-          if (combobox) {
-            combobox.value = 'invalid-option';
-          }
+          await expect(combobox).toHaveAttribute('value', 'australia');
+          await expect(combobox.locator('mdc-option').nth(2)).toHaveAttribute('selected');
         });
 
+        await test.step('should fallback to placeholder when an invalid value is passed', async () => {
+          await componentsPage.page.evaluate(() => {
+            const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
+            if (combobox) {
+              combobox.value = 'invalid-option';
+            }
+          });
+
+          await expect(combobox).toHaveAttribute('value', '');
+          expect(await options.locator('[selected]').count()).toBe(0);
+          await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
+        });
+      });
+
+      await test.step('should update the value attribute when an option is selected programattically', async () => {
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          id: 'combobox-value-select',
+        });
         await expect(combobox).toHaveAttribute('value', '');
-        expect(await options.locator('[selected]').count()).toBe(0);
-        await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
+        await componentsPage.page.evaluate(() => {
+          const option = document.querySelector('mdc-option[value="brazil"]');
+          if (option) {
+            option.setAttribute('selected', 'true');
+          }
+        });
+        await expect(combobox).toHaveAttribute('value', 'brazil');
       });
     });
 
