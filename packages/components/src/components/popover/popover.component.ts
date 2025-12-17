@@ -444,6 +444,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   private hoverTimer: number | null = null;
 
   /** @internal */
+  private openTimer: number | null = null;
+
+  /** @internal */
   private isHovered: boolean = false;
 
   /** @internal */
@@ -919,10 +922,22 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
+   * Cancels the open delay timer.
+   */
+  private cancelOpenDelay = () => {
+    if (this.openTimer) {
+      window.clearTimeout(this.openTimer);
+      this.openTimer = null;
+    }
+  };
+
+  /**
    * Starts the close delay timer.
    * If the popover is not interactive, it will close the popover after the delay.
    */
   private startCloseDelay = () => {
+    this.cancelOpenDelay();
+
     if (!this.interactive) {
       this.hide();
     } else {
@@ -952,7 +967,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.cancelCloseDelay();
 
     if (this.openDelay > 0) {
-      setTimeout(() => {
+      this.openTimer = window.setTimeout(() => {
         this.visible = true;
       }, this.openDelay);
     } else {
@@ -964,6 +979,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Hides the popover.
    */
   public hide = () => {
+    this.cancelOpenDelay();
+
     if (this.closeDelay) {
       setTimeout(() => {
         this.visible = false;

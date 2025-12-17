@@ -423,6 +423,39 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
     });
   });
+
+  await test.step('mouse', async () => {
+    await test.step('does not display popover when mouse hovers and leaves trigger within open delay', async () => {
+      // Start AI-Assisted
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover-hover',
+        triggerID: 'trigger-button-hover',
+        trigger: TRIGGER.MOUSEENTER,
+        delay: '500,0', // 500ms open delay, 0ms close delay
+        children: 'Hover popover content',
+      });
+
+      // Verify popover is initially hidden
+      await expect(popover).not.toBeVisible();
+
+      // Hover over the trigger
+      await triggerButton.hover();
+
+      // Wait for a short time (less than the open delay)
+      await componentsPage.page.waitForTimeout(200);
+
+      // Move mouse away from trigger
+      await componentsPage.page.mouse.move(0, 0);
+
+      // Wait past the original delay time to ensure popover doesn't appear
+      await componentsPage.page.waitForTimeout(400);
+
+      // Popover should still not be visible
+      await expect(popover).not.toBeVisible();
+      // End AI-Assisted
+    });
+  });
 };
 
 /**
