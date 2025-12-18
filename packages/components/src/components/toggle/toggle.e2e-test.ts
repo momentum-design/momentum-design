@@ -18,6 +18,7 @@ type SetupOptions = {
   'data-aria-label'?: string;
   size?: string;
   'soft-disabled'?: boolean;
+  'control-type'?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -30,6 +31,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
         ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
+        ${restArgs['control-type'] ? `control-type="${restArgs['control-type']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.readonly ? 'readonly' : ''}
@@ -268,6 +270,35 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       // 3. Reset form and check help-text resets
       await resetButton.click();
       await expectHelpText('Please accept the terms', 'default');
+    });
+
+    await test.step('controlled toggle should not change state when clicked', async () => {
+      const toggle = await setup({ componentsPage, 'control-type': 'controlled', label: 'Controlled Toggle' });
+
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      await toggle.click();
+      await expect(toggle).not.toHaveAttribute('checked');
+
+      // Manually set checked attribute (simulating parent component)
+      await toggle.evaluate(el => el.setAttribute('checked', ''));
+      await expect(toggle).toHaveAttribute('checked');
+
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('checked');
+
+      await toggle.evaluate(el => el.removeAttribute('checked'));
+      await expect(toggle).not.toHaveAttribute('checked');
+    });
+
+    await test.step('controlled toggle should not change state when space key is pressed', async () => {
+      const toggle = await setup({ componentsPage, 'control-type': 'controlled', label: 'Controlled Toggle' });
+
+      await componentsPage.actionability.pressTab();
+      await expect(toggle).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+      await expect(toggle).not.toHaveAttribute('checked');
     });
   });
 
