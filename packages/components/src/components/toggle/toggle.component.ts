@@ -11,6 +11,7 @@ import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { Component } from '../../models';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
@@ -258,6 +259,8 @@ class Toggle
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Toggle;
