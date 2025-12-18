@@ -80,7 +80,7 @@ const meta: Meta = {
     },
     'control-type': {
       control: 'select',
-      options: VALID_VALUES,
+      options: [undefined, ...VALID_VALUES],
     },
     'data-aria-label': {
       control: 'text',

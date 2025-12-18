@@ -285,7 +285,7 @@ class Combobox
         }
         // first preference should always be given to the first `selected` attribute option.
         if (firstSelectedOption && firstSelectedOption.value !== this.value) {
-          this.setSelectedValue(firstSelectedOption);
+          this.setSelectedValue(firstSelectedOption, false);
         }
         break;
       }
@@ -293,9 +293,7 @@ class Combobox
         // when unselected, check if there is any other option is a selected option,
         // if there is no selected option, then reset it to null (placeholder will be shown if present).
         if (firstSelectedOption) {
-          this.setSelectedValue(firstSelectedOption);
-        } else {
-          this.setSelectedValue(null);
+          this.setSelectedValue(firstSelectedOption, false);
         }
         break;
       }
@@ -327,7 +325,13 @@ class Combobox
     }
   };
 
-  private setSelectedValue(option: Option | null): void {
+  /**
+   * Sets the selected option of the combobox.
+   *
+   * @param option - the new option to be set
+   * @param emitEvents - if false, we don't emit events, default is true
+   */
+  private setSelectedValue(option: Option | null, emitEvents = true): void {
     if (this.controlType !== 'controlled') {
       // this.value is the actual value of the component
       this.value = option?.getAttribute('value') || '';
@@ -340,8 +344,10 @@ class Combobox
       this.resetHelpText();
     }
 
-    ComboboxEventManager.onInputCombobox(this, option!);
-    ComboboxEventManager.onChangeCombobox(this, option!);
+    if (emitEvents) {
+      ComboboxEventManager.onInputCombobox(this, option!);
+      ComboboxEventManager.onChangeCombobox(this, option!);
+    }
   }
 
   /**
@@ -390,7 +396,7 @@ class Combobox
       }
       this.updateComplete
         .then(() => {
-          this.setSelectedValue(optionToSelect);
+          this.setSelectedValue(optionToSelect, false);
         })
         .catch(this.handleUpdateError);
     }
@@ -686,9 +692,7 @@ class Combobox
   }
 
   private handleInputChange(event: Event): void {
-    if (this.controlType !== 'controlled') {
-      this.filteredValue = (event.target as HTMLInputElement).value;
-    }
+    this.filteredValue = (event.target as HTMLInputElement).value;
     this.resetSelectedValue();
     this.resetFocusedOption();
     this.updateHiddenOptions();
