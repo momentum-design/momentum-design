@@ -10,6 +10,7 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
+import { Timers } from '../../utils/controllers/Timers';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -499,6 +500,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     return (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`) as HTMLElement;
   }
 
+  private timers = new Timers(this);
+
   constructor() {
     super();
     this.utils = new PopoverUtils(this);
@@ -926,7 +929,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    */
   private cancelOpenDelay = () => {
     if (this.openTimer) {
-      window.clearTimeout(this.openTimer);
+      this.timers.clearTimeout(this.openTimer);
       this.openTimer = null;
     }
   };
@@ -941,7 +944,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     if (!this.interactive) {
       this.hide();
     } else {
-      this.hoverTimer = window.setTimeout(() => {
+      this.hoverTimer = this.timers.setTimeout(() => {
         this.visible = false;
       }, this.closeDelay);
     }
@@ -952,7 +955,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    */
   private cancelCloseDelay = () => {
     if (this.hoverTimer) {
-      window.clearTimeout(this.hoverTimer);
+      this.timers.clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
   };
@@ -967,7 +970,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.cancelCloseDelay();
 
     if (this.openDelay > 0) {
-      this.openTimer = window.setTimeout(() => {
+      this.openTimer = this.timers.setTimeout(() => {
         this.visible = true;
       }, this.openDelay);
     } else {
