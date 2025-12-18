@@ -448,6 +448,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   private openTimer: number | null = null;
 
   /** @internal */
+  private closeTimer: number | null = null;
+
+  /** @internal */
   private isHovered: boolean = false;
 
   /** @internal */
@@ -557,9 +560,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.removeBackdrop();
 
     this.floatingUICleanupFunction?.();
-
-    // clean timer if there is one set:
-    this.cancelCloseDelay();
 
     if (!this.keepConnectedTooltipOpen) {
       if (this.connectedTooltip) {
@@ -958,16 +958,26 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       this.timers.clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
+
+    if (this.closeTimer) {
+      this.timers.clearTimeout(this.closeTimer);
+      this.closeTimer = null;
+    }
   };
 
   /**
    * Shows the popover.
    */
   public show = () => {
-    if (this.visible || this.shouldSuppressOpening) {
+    if (this.shouldSuppressOpening) {
       return;
     }
+
     this.cancelCloseDelay();
+
+    if (this.visible) {
+      return;
+    }
 
     if (this.openDelay > 0) {
       this.openTimer = this.timers.setTimeout(() => {
@@ -985,7 +995,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.cancelOpenDelay();
 
     if (this.closeDelay) {
-      setTimeout(() => {
+      this.closeTimer = this.timers.setTimeout(() => {
         this.visible = false;
       }, this.closeDelay);
     } else {
