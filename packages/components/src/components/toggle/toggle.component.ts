@@ -1,4 +1,4 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -23,7 +23,7 @@ import type { ToggleSize } from './toggle.types';
  *
  * To create a group of toggles, use the `mdc-formfieldgroup` component.
  *
- * **Note:** This component internally renders a native checkbox input element styled as a toggle switch.
+ * **Note:** This component internally renders a native checkbox input element with the `switch` role, styled as a toggle switch.
  *
  * ## When to use
  * Use toggles for binary choices where the change takes effect immediately, such as enabling/disabling settings or features.
@@ -56,8 +56,9 @@ import type { ToggleSize } from './toggle.types';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
+ * @csspart text-container - The container for the label and helper text elements.
  * @csspart static-toggle - The statictoggle that provides the visual toggle switch appearance.
- * @csspart toggle-input - The native checkbox input element that provides the interactive functionality.
+ * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
   extends ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
@@ -98,7 +99,7 @@ class Toggle
   }
 
   /** @internal
-   * Resets the checkbox to its initial state.
+   * Resets the toggle switch to its initial state.
    * The checked property is set to false.
    */
   formResetCallback(): void {
@@ -113,8 +114,8 @@ class Toggle
   }
 
   /**
-   * Manages the required state of the checkbox.
-   * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
+   * Manages the required state of the toggle switch.
+   * If the toggle switch is not checked and the required property is set, then the toggle switch is invalid.
    * If the validationMessage is set, it will be used as the custom validity message.
    * If the validationMessage is not set, it will clear the custom validity message.
    * @internal
@@ -216,6 +217,12 @@ class Toggle
     }
   }
 
+  /** @internal */
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+  };
+
   public override render() {
     return html`
       <mdc-statictoggle
@@ -231,7 +238,7 @@ class Toggle
           id="${this.inputId}"
           type="checkbox"
           part="toggle-input"
-          role="${ROLE.CHECKBOX}"
+          role="${ROLE.SWITCH}"
           ?required="${this.required}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
@@ -246,7 +253,7 @@ class Toggle
           @keydown="${this.handleKeyDown}"
         />
       </mdc-statictoggle>
-      ${this.renderLabel()} ${this.renderHelperText()}
+      ${this.renderLabelAndHelperText()}
     `;
   }
 

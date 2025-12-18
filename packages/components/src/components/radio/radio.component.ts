@@ -15,10 +15,29 @@ import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin'
 import styles from './radio.styles';
 
 /**
- * Radio allow users to select single options from a list or turn an item/feature on or off.
- * These are often used in forms, settings, and selection in lists.
+ * The Radio component allows users to select a single option from a group of mutually exclusive choices.
+ * Unlike checkboxes which allow multiple selections, radio buttons ensure only one option can be selected
+ * at a time within the same group. These are commonly used in forms, surveys, and settings where users
+ * need to make a single selection from multiple options.
  *
- * A radio component contains an optional label, optional info icon and an optional helper text.
+ * To create a group of radio buttons, use the `mdc-radiogroup` component or ensure all radio buttons
+ * share the same `name` attribute.
+ *
+ * **Note:** This component internally renders a native radio input element with custom styling.
+ *
+ * ## When to use
+ * Use radio buttons when users must select exactly one option from a list of 2-5 choices. For longer lists,
+ * consider using a dropdown menu instead.
+ *
+ * ## Accessibility
+ * - Provide clear labels that describe each option
+ * - Use `data-aria-label` when a visual label is not present
+ * - Keyboard navigation: Arrow keys to move between options, Space to select, Tab to navigate groups, Enter to submit form
+ * - Group related radio buttons using the same `name` attribute or `mdc-radiogroup` component
+ *
+ * ## Styling
+ * Use the `static-radio` part to apply custom styles to the radio visual element.
+ * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -31,12 +50,6 @@ import styles from './radio.styles';
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
- * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
- * @cssproperty --mdc-radio-outer-circle-size - size of the outer circle
- * @cssproperty --mdc-radio-inner-circle-background-color - background color of the inner circle
- * @cssproperty --mdc-radio-outer-circle-border-color - border color of the outer circle
- * @cssproperty --mdc-radio-outer-circle-background-color - background color of the outer circle
- *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
@@ -45,8 +58,9 @@ import styles from './radio.styles';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart radio-input - The native radio input element.
+ * @csspart radio-input - The native radio input element that provides the interactive functionality.
  * @csspart text-container - The container for the label and helper text elements.
+ * @csspart static-radio - The staticradio that provides the visual radio appearance.
  */
 
 class Radio
@@ -54,8 +68,8 @@ class Radio
   implements AssociatedFormControl
 {
   /**
-   * Determines whether the radio is selected or unselected.
-   *
+   * Determines whether the radio is checked (selected) or unchecked.
+   * Within a radio group, only one radio can be checked at a time.
    * @default false
    */
   @property({ type: Boolean, reflect: true }) checked = false;
@@ -80,6 +94,7 @@ class Radio
 
   /**
    * Returns all radios within the same group (name).
+   * @internal
    */
   private getAllRadiosWithinSameGroup(): Radio[] {
     return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
@@ -112,6 +127,8 @@ class Radio
   }
 
   /**
+   * Sets the validity state of the radio component.
+   * @param isValid - Boolean value to set the validity
    * @internal
    */
   setComponentValidity(isValid: boolean) {
@@ -132,6 +149,7 @@ class Radio
    * Sets the validity of the group of radios.
    * @param radios - Array of radios of the same group
    * @param isValid - Boolean value to set the validity of the group
+   * @internal
    */
   private setGroupValidity(radios: Radio[], isValid: boolean) {
     this.updateComplete
@@ -149,8 +167,9 @@ class Radio
 
   /**
    * Updates the form value to reflect the current state of the radio.
-   * If checked, the value is set to the user-provided value.
+   * If checked, the value is set to the user-provided value or 'on' if no value is provided.
    * If unchecked, the value is set to null.
+   * @internal
    */
   private setActualFormValue() {
     let actualValue: string | null = '';
@@ -176,8 +195,9 @@ class Radio
 
   /**
    * Handles the change event on the radio element.
-   * This will toggle the state of the radio element.
+   * Unchecks all other radios in the same group and checks this radio.
    * Dispatches the change event.
+   * @internal
    */
   private handleChange(): void {
     if (this.disabled || this.readonly || this.softDisabled) return;
@@ -204,10 +224,10 @@ class Radio
 
   /**
    * Updates the state of the radio button at the specified index within the enabled radios.
-   * Focuses the radio button and triggers the change event if the radio button is not read-only.
-   *
+   * Focuses the radio button and triggers the change event.
    * @param enabledRadios - An array of enabled radio buttons within the same group.
    * @param index - The index of the radio button to be updated within the enabled radios array.
+   * @internal
    */
   private updateRadio(enabledRadios: Radio[], index: number) {
     enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
@@ -215,7 +235,10 @@ class Radio
   }
 
   /**
-   * Handles the keydown event (Arrow Up/Down/Left/Right) on the radio element.
+   * Handles the keydown event on the radio element.
+   * Supports Arrow keys for navigation between radios in the same group, Space for selection, and Enter for form submission.
+   * @param event - The keyboard event.
+   * @internal
    */
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.disabled) return;
@@ -247,9 +270,11 @@ class Radio
   }
 
   /**
-   * Update tab index for all radios in the same group (name)
-   * If any radio group is checked, it will have a tab index of 0
-   * If no radio group is checked, the first enabled radio will have a tab index of 0
+   * Updates tab index for all radios in the same group (name).
+   * If any radio in the group is checked, it will have a tab index of 0.
+   * If no radio is checked, the first enabled radio will have a tab index of 0.
+   * This ensures proper keyboard navigation within radio groups.
+   * @internal
    */
   private updateTabIndex(): void {
     const radios = this.getAllRadiosWithinSameGroup();
@@ -276,6 +301,7 @@ class Radio
     }
   }
 
+  /** @internal */
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
     return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
