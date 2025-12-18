@@ -7,6 +7,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import * as CONTROL_TYPE_CONSTANTS from '../controltypeprovider/controltypeprovider.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Toggle from './toggle.component';
@@ -22,6 +23,7 @@ const render = (args: Args) => html`
       @keydown="${action('onkeydown')}"
       @click="${action('onclick')}"
       size="${args.size}"
+      control-type="${ifDefined(args['control-type'])}"
       toggletip-text="${args['toggletip-text']}"
       toggletip-placement="${args['toggletip-placement']}"
       toggletip-strategy="${args['toggletip-strategy']}"
@@ -62,6 +64,10 @@ const meta: Meta = {
     },
     'soft-disabled': {
       control: 'boolean',
+    },
+    'control-type': {
+      control: 'select',
+      options: [undefined, ...CONTROL_TYPE_CONSTANTS.VALID_VALUES],
     },
     label: {
       control: 'text',
@@ -266,6 +272,51 @@ export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
     required: true,
     'help-text': '',
     'help-text-type': 'default',
+  },
+  ...hideAllControls(),
+};
+
+export const ControlledToggleWithConfirmation: StoryObj = {
+  render: () => {
+    const handleToggleChange = (event: Event) => {
+      const toggle = event.target as Toggle;
+      const newState = !toggle.checked;
+      const message = newState ? 'Enable this setting?' : 'Are you sure you want to disable this setting?';
+
+      action('Toggle Change Attempted')({ currentState: toggle.checked, attemptedState: newState });
+
+      // eslint-disable-next-line no-alert, no-restricted-globals
+      const confirmed = confirm(message);
+      if (confirmed) {
+        toggle.checked = newState;
+        action(newState ? 'Toggle Enabled' : 'Toggle Disabled')({ confirmed: true });
+      } else {
+        action('Toggle Change Cancelled')({ confirmed: false });
+      }
+    };
+
+    return html`
+      <div role="main" style="padding: 1rem;">
+        <h3>Controlled Toggle with Confirmation Dialog</h3>
+        <p>
+          This toggle uses <code>control-type="controlled"</code>. Try clicking it and you'll see a
+          confirmation dialog.
+        </p>
+        <mdc-toggle
+          control-type="controlled"
+          label="Controlled: Requires confirmation for any change"
+          help-text="Dispatches change event but doesn't update state. Parent handles confirmation."
+          @change="${handleToggleChange}"
+        ></mdc-toggle>
+
+        <h3 style="margin-top: 2rem;">Uncontrolled Toggle (Default)</h3>
+        <mdc-toggle
+          label="Uncontrolled: Changes state immediately"
+          help-text="Manages its own state and updates immediately when clicked"
+          @change="${action('Uncontrolled Toggle Changed')}"
+        ></mdc-toggle>
+      </div>
+    `;
   },
   ...hideAllControls(),
 };
