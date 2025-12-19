@@ -300,6 +300,23 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(toggle).not.toHaveAttribute('checked');
     });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      const toggle = await setup({ componentsPage, label: 'Toggle label' });
+
+      // Use JavaScript to focus the element
+      await toggle.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal checkbox input is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await toggle.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const input = shadowRoot.querySelector('input[type="checkbox"]');
+        return document.activeElement === el && input === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
+    });
   });
 
   /**
