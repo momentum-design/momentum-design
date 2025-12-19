@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const illustration = () =>
-  html`<svg aria-hidden="true" part="illustration" data-name="people-headshot-wavy-hair-m-onetwozero-default" xmlns="http://www.w3.org/2000/svg" width="121" height="120" fill="none" viewBox="0 0 121 120"><path fill="#fff" d="M67.349 58.2a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5" d="M79.75 53.25s2.75 8.5 3.75 11.25c1.25 3.75-1.25 5-3.75 5h-2.5M38.5 52c8.75 0 13.75-5 18.75-10s10-10 18.75-10c9 0 16.25 7.25 16.25 16.25v25c0 10.25-8.125 18.625-18.375 18.75-19.75.25-36-18-36.5-28.125-.125-2.625 1.875-5.25 4.5-5.5 3-.25 5.5 2 5.5 5v38.75M71 24.5c-8.75 0-13.75 5-18.75 10s-10 10-18.75 10M66 17c-8.75 0-13.75 5-18.75 10s-10 10-18.75 10"/></svg>`;
+  html`<svg aria-hidden="true" part="illustration" data-name="people-headshot-wavy-hair-m-onetwozero-default" xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="none" viewBox="0 0 120 120"><path fill="#fff" d="M66.849 58.2a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5" d="M79.25 53.25S82 61.75 83 64.5c1.25 3.75-1.25 5-3.75 5h-2.5M38 52c8.75 0 13.75-5 18.75-10s10-10 18.75-10c9 0 16.25 7.25 16.25 16.25v25c0 10.25-8.125 18.625-18.375 18.75-19.75.25-36-18-36.5-28.125-.125-2.625 1.875-5.25 4.5-5.5 3-.25 5.5 2 5.5 5v38.75M70.5 24.5c-8.75 0-13.75 5-18.75 10s-10 10-18.75 10M65.5 17c-8.75 0-13.75 5-18.75 10S36.75 37 28 37"/></svg>`;
 
 export default illustration;
