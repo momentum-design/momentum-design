@@ -9,6 +9,9 @@ import { DEFAULTS } from './coachmark.constants';
  * Coachmark component based on top of the popover component,
  * with the default value of certain properties changed.
  *
+ * Coachmark component will always have an arrow attached to it.
+ * The color of the coachmark is contrast.
+ *
  * @dependency mdc-popover
  *
  * @tagname mdc-coachmark
@@ -29,7 +32,6 @@ import { DEFAULTS } from './coachmark.constants';
  * @cssproperty --mdc-popover-elevation-3 - elevation of the popover
  *
  * @slot - Default slot for modal container
- *
  */
 class Coachmark extends Popover {
   /**
