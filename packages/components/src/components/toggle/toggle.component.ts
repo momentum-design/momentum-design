@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
@@ -60,7 +61,7 @@ import type { ToggleSize } from './toggle.types';
  * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
@@ -154,12 +155,14 @@ class Toggle
 
   /**
    * Toggles the state of the toggle element.
-   * If the element is not disabled, soft-disabled, or readonly, then the checked property is toggled.
+   * If the element is not disabled, soft-disabled, or readonly, then the checked property is toggled if uncontrolled.
    * @internal
    */
   private toggleState(): void {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
-      this.checked = !this.checked;
+      if (this.controlType !== 'controlled') {
+        this.checked = !this.checked;
+      }
     }
   }
 
@@ -255,6 +258,8 @@ class Toggle
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Toggle;
