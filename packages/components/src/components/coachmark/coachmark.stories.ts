@@ -325,12 +325,18 @@ export const TourGuide: StoryObj = {
       </div>
     `;
   },
-  ...describeStory(
-    html`<p>
-      Please click on "Get started" to begin the guided tour. <br />
-      Use the navigation buttons to move through the tour steps. The progress bar shows your current position in the
-      tour.
-    </p>`,
-  ),
-  ...hideAllControls(),
+  parameters: {
+    a11y: { disable: true },
+    actions: { disable: true },
+    ...hideAllControls(true),
+    ...describeStory(
+      html`<p>
+        Please click on "Get started" to begin the guided tour. <br />
+        Use the navigation buttons inside the Coachmark component to move through the guide steps. The progress bar
+        shows your current position in the guide. <br /><br />
+        <strong>Note: Except the "Get started" button, no other component works.</strong>
+      </p>`,
+      true,
+    ),
+  },
 };
