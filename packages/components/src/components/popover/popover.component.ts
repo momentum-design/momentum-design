@@ -16,7 +16,13 @@ import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
+import type {
+  PopooverBoundaryRoot,
+  PopoverColor,
+  PopoverPlacement,
+  PopoverStrategy,
+  PopoverTrigger,
+} from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -190,7 +196,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @see [Floating UI - rootBoundary](https://floating-ui.com/docs/detectOverflow#rootboundary)
    */
   @property({ type: String, reflect: true, attribute: 'boundary-root' })
-  boundaryRoot: 'viewport' | 'document' = DEFAULTS.BOUNDARY_ROOT;
+  boundaryRoot: PopooverBoundaryRoot = DEFAULTS.BOUNDARY_ROOT;
 
   /**
    * Virtual padding around the boundary to check for overflow.

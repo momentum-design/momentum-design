@@ -20,7 +20,7 @@ import '../divider';
 import type Popover from '.';
 import type Dialog from '../dialog';
 
-import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
+import { BOUNDARY_ROOT, COLOR, DEFAULTS, POPOVER_PLACEMENT, STRATEGY } from './popover.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -55,6 +55,12 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
     ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
+    backdrop-append-to="${args['backdrop-append-to']}"
+    ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
+    boundary="${args.boundary}"
+    boundary-padding="${args['boundary-padding']}"
+    boundary-root="${args['boundary-root']}"
+    strategy="${args.strategy}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -315,6 +321,26 @@ const meta: Meta = {
     },
     'disable-aria-expanded': {
       control: 'boolean',
+    },
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    'is-backdrop-invisible': {
+      control: 'boolean',
+    },
+    boundary: {
+      control: 'text',
+    },
+    'boundary-padding': {
+      control: 'number',
+    },
+    'boundary-root': {
+      control: 'select',
+      options: Object.values(BOUNDARY_ROOT),
+    },
+    strategy: {
+      control: 'select',
+      options: Object.values(STRATEGY),
     },
     ...hideControls([
       'arrowElement',
