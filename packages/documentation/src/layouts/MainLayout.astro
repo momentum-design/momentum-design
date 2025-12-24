@@ -40,7 +40,6 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
         overflow-y: scroll;
       }
       .background-wrapper {
-        background: url('/default-background.svg');
         background-attachment: scroll;
         background-position: top;
         background-repeat: no-repeat;
@@ -58,7 +57,10 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
         cache-strategy="web-cache-api"
       >
         <div class="scroll-wrapper">
-          <div class="background-wrapper">
+          <div
+            class="background-wrapper"
+            style={`background-image: url(${frontmatter.background || '/default-background.svg'});`}
+          >
             <Header />
             <main class="layout">
               <div id="grid-main">
