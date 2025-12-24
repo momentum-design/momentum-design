@@ -2,7 +2,6 @@
 import '@momentum-design/components/dist/components/buttonlink/index.js';
 import '@momentum-design/components/dist/components/card/index.js';
 import '@momentum-design/components/dist/components/text/index.js';
-import '@momentum-design/components/dist/components/bullet/index.js';
 import {
   coreLibraryCards,
   CXSolutionCards,
@@ -16,7 +15,7 @@ import {
 } from './GettingStarted.constants';
 import './GettingStarted.css';
 
-const GettingStartedCard = ({ title, style, description, link, linkTitle }: any) => (<mdc-card
+const Card = ({ title, style, description, link, linkTitle }: any) => (<mdc-card
   variant="border"
   orientation="vertical"
   card-title={title}
@@ -125,8 +124,10 @@ export const GettingStarted = () => (
           For general design guidelines, component usage, or resources we make available to the design organization,
           check out our{' '}
           <a
-            style="text-decoration: underline;"
             href="https://www.figma.com/files/787107147284489960/team/788811036705382453"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="text-decoration: underline;"
           >
             Momentum Figma Team
           </a>
@@ -134,7 +135,7 @@ export const GettingStarted = () => (
         </mdc-text>
       </div>
       <div className="cardGrid">
-        {designerCards.map(GettingStartedCard)}
+        {designerCards.map(Card)}
       </div>
     </div>
     <div className="section">
@@ -147,7 +148,7 @@ export const GettingStarted = () => (
         </mdc-text>
       </div>
       <div className="cardGrid">
-        {trainingCards.map(GettingStartedCard)}
+        {trainingCards.map(Card)}
       </div>
     </div>
     <div className="section">
@@ -161,19 +162,19 @@ export const GettingStarted = () => (
       </div>
       <mdc-text type="heading-midsize-bold">Core Library</mdc-text>
       <div className="cardGrid">
-        {coreLibraryCards.map(GettingStartedCard)}
+        {coreLibraryCards.map(Card)}
       </div>
       <mdc-text type="heading-midsize-bold">CX Solutions</mdc-text>
       <div className="cardGrid">
-        {CXSolutionCards.map(GettingStartedCard)}
+        {CXSolutionCards.map(Card)}
       </div>
       <mdc-text type="heading-midsize-bold">Platform UX</mdc-text>
       <div className="cardGrid">
-        {platformUXCards.map(GettingStartedCard)}
+        {platformUXCards.map(Card)}
       </div>
       <mdc-text type="heading-midsize-bold">Webex App</mdc-text>
       <div className="cardGrid">
-        {webexAppCards.map(GettingStartedCard)}
+        {webexAppCards.map(Card)}
       </div>
     </div>
     <div className="section">
@@ -185,7 +186,7 @@ export const GettingStarted = () => (
         </mdc-text>
       </div>
       <div className="cardGrid">
-        {webexSpacesCards.map(GettingStartedCard)}
+        {webexSpacesCards.map(Card)}
       </div>
     </div>
     <div className="section">
@@ -213,7 +214,7 @@ export const GettingStarted = () => (
         </mdc-text>
       </div>
       <div className="cardGrid">
-        {requestFormCards.map(GettingStartedCard)}
+        {requestFormCards.map(Card)}
       </div>
     </div>
   </div>
