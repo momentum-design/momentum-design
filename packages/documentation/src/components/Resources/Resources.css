@@ -1,0 +1,67 @@
+.wrapper {
+  height: 100%;
+  width: 1160px;
+  padding: 80px 0;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+@media (max-width: 1920px) {
+  .wrapper {
+    width: 1160px;
+    padding: 80px 0;
+  }
+}
+
+.firstPageContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.firstPageContent .headerWrapper {
+  max-width: 1240px;
+  gap: 2.5rem;
+}
+
+.firstPageContent h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-style: normal;
+	font-size: 165px;
+  font-weight: 400;
+  line-height: 150px;
+  color: var(--mds-color-theme-text-primary-normal);
+  letter-spacing: 6.6px;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    width: 100%;
+    padding: 80px 24px;
+  }
+
+  .firstPageContent h1 {
+		font-size: 160px;
+		line-height: 140px;
+	}
+}
+
+@media (max-width: 576px) {
+	.firstPageContent h1 {
+		font-size: 130px;
+		line-height: 100px;
+	}
+}
+
+.firstPageContent .textWrapper mdc-text {
+	line-height: 36px;
+}
