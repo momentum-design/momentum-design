@@ -197,7 +197,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('default attributes for popover', async () => {
     await expect(popover).toHaveAttribute('placement', DEFAULTS.PLACEMENT);
     await expect(popover).toHaveAttribute('delay', DEFAULTS.DELAY);
-    await expect(popover).toHaveAttribute('z-index', DEFAULTS.Z_INDEX.toString());
+    await expect(popover).toHaveAttribute('z-index', '-1');
     await expect(popover).not.toHaveAttribute('visible');
     await expect(popover).toHaveAttribute('offset', DEFAULTS.OFFSET.toString());
     await expect(popover).not.toHaveAttribute('interactive');

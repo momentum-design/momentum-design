@@ -293,7 +293,7 @@ class MenuPopover extends Popover {
     const otherOpenSubMenus = this.getOpenSubMenusOfItems(otherMenuItemsOnSameLevel);
 
     otherOpenSubMenus.forEach(subMenu => {
-      subMenu.hide();
+      this.depthManager.popItem(subMenu, 1);
     });
   }
 

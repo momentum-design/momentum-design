@@ -134,15 +134,23 @@ export class DepthManager implements ReactiveController {
   /**
    * Pops all the items above the specified item and then pops the item itself
    *
+   * It is possible the skip the top N elements from being evaluated by the predicate, to solve some edge cases.
+   * For example when opening a popover triggers close of others, the top popover should be kept.
+   * In menu popovers this can happen when a submenu is opened, which closes other sub-menus on the same level.
+   *
    * @param item - The item to pop
+   * @param skip - Number of elements to skip from the top of the stack
    * @returns The item if it was in the stack, undefined otherwise
    */
-  public popItem(item: StackedOverlayComponent): StackedOverlayComponent | undefined {
+  public popItem(item: StackedOverlayComponent, skip = 0): StackedOverlayComponent | undefined {
     if (this.has(item)) {
       if (item !== this.peek()) {
-        this.popUntil(i => i !== item);
+        this.popUntil(i => i !== item, skip);
       }
-      return this.pop();
+      if (skip === 0) {
+        return this.pop();
+      }
+      return this.remove(item) ? item : undefined;
     }
     return undefined;
   }
@@ -161,19 +169,24 @@ export class DepthManager implements ReactiveController {
   /**
    * Removes elements from the stack until the predicate function returns false
    *
+   * It is possible the skip the top N elements from being evaluated by the predicate, to solve some edge cases.
+   * For example when opening a popover triggers close of others, the top popover should be kept.
+   * In menu popovers this can happen when a submenu is opened, which closes other sub-menus on the same level.
+   *
    * @param predicateFn - The predicate function to test each element
+   * @param skip - Number of elements to skip from the top of the stack
    * @returns The removed elements
    */
-  public popUntil(predicateFn: (item: StackedOverlayComponent) => boolean): StackedOverlayComponent[] {
+  public popUntil(predicateFn: (item: StackedOverlayComponent) => boolean, skip = 0): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
-    for (let i = elementStack.length - 1; i >= 0; i -= 1) {
+    for (let i = elementStack.length - (1 + skip); i >= 0; i -= 1) {
       const item = elementStack[i];
 
       if (!predicateFn(item)) break;
 
       poppedElements.push(item);
-      this.pop();
     }
+    poppedElements.forEach(item => this.remove(item));
     return poppedElements;
   }
 
