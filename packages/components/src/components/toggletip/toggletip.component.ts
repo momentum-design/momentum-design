@@ -10,21 +10,28 @@ import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 
 /**
- * A toggletip is triggered by clicking a trigger element.
+ * A toggletip is triggered by clicking a trigger element and can contain interactive content.
+ * Unlike tooltips which disappear on blur, toggletips remain visible until explicitly dismissed
+ * by clicking outside, pressing escape, or clicking the optional close button.
  *
- * It can contain interactive content and can be closed by
- * clicking outside the toggletip or pressing the escape key.
+ * Toggletips are ideal for displaying contextual help text, additional information, or interactive
+ * elements like links and buttons that users need time to read and interact with.
  *
- * It can have optional close button to close the toggletip.
+ * The component uses [mdc-screenreaderannouncer](?path=/docs/components-screenreaderannouncer--docs) internally to announce the toggletip content
+ * to screen readers when shown, ensuring proper accessibility support.
  *
- * Toggletip component uses `mdc-screenreaderannouncer` internally to
- * announce the toggletip text content with screen readers when the toggletip is shown.
+ * **Note:** This component extends the Popover component with toggletip-specific defaults.
  *
- * `screenreader-announcer-identity` attribute can be used to provide ID of an element
- * in DOM to which announcement elements are added. If not set, a visually hidden
- * div element is created in DOM to which announcement elements are added.
+ * ## When to use
+ * Use toggletips when you need to display interactive content or detailed information that requires
+ * user interaction. For simple, non-interactive text hints, use tooltips instead.
  *
- * Please refer to the `mdc-screenreaderannouncer` component for more details.
+ * ## Accessibility
+ * - Toggletip content is announced to screen readers when shown
+ * - Use `screenreader-announcer-identity` attribute to control announcement placement in the DOM
+ * - Focus is trapped within the toggletip when open, allowing navigation of interactive elements
+ * - Keyboard shortcuts: Escape to close, Tab to move between elements
+ * - Focus returns to the trigger element when the toggletip is closed
  *
  * @dependency mdc-screenreaderannouncer
  * @dependency mdc-button
@@ -34,13 +41,11 @@ import styles from './toggletip.styles';
  * @event shown - (React: onShown) This event is dispatched when the toggletip is shown
  * @event hidden - (React: onHidden) This event is dispatched when the toggletip is hidden
  * @event created - (React: onCreated) This event is dispatched when the toggletip is created (added to the DOM)
- * @event destroyed - (React: onDestroyed) This event is dispatched when the toggletip
- * is destroyed (removed from the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the toggletip is destroyed (removed from the DOM)
  *
  * @cssproperty --mdc-toggletip-max-width - The maximum width of the toggletip.
  * @cssproperty --mdc-toggletip-text-color - The text color of the toggletip.
- * @cssproperty --mdc-toggletip-text-color-contrast - The text color of the toggletip
- *  when the color is contrast.
+ * @cssproperty --mdc-toggletip-text-color-contrast - The text color of the toggletip when the color is contrast.
  *
  * @slot - Default slot for the toggletip content
  */
@@ -52,12 +57,8 @@ class ToggleTip extends Popover {
   @state() currentAnnouncement = '';
 
   /**
-   * Set this attribute with the id of the element in the DOM, to which announcement
-   * elements will be appended.
-   * If an id is provided, the announcement elements will be appended to this element.
-   * If id is not provided, a visually hidden div element will be created in the DOM.
-   *
-   * Please refer to the `mdc-screenreaderannouncer` component for more details.
+   * The ID of an element in the DOM to which announcement elements will be appended.
+   * If not set, a visually hidden div element will be created in the DOM.
    */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
   screenreaderAnnouncerIdentity?: string;
