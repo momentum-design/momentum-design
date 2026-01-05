@@ -1,0 +1,98 @@
+# Overlays
+
+There are many components in Momentum Design that create overlays. An overlay is
+any element that appears on top of the main content, often blocking interaction
+with the underlying content until it is dismissed.
+
+- Dialog, and extends:
+  - Announcement dialog
+- Popover, and extends:
+  - Menu popover
+  - Tooltip
+  - Toggle
+  - Coachmark
+
+Also, there are other components that create uses overlays, such as:
+
+- Select
+- Combobox
+- Search popover
+
+## Stacking overlays
+
+Depth of the overlays is managed using a stack. When an overlay is opened, it is
+added to the top of the stack. When an overlay is closed, it is removed from the
+stack.
+
+### Opening overlays
+
+When an overlay is opened, it is added to the top of the stack and given focus.
+If there is another overlay already open, it remains in the stack but loses
+focus.
+
+An overlay can appear only once in the stack. If an attempt is made to open an
+overlay that is already in the stack, it will stay the same position in the
+stack.
+
+### Closing overlays
+
+When an overlay is closed, it is removed from the stack and focus is returned to
+the next overlay in the stack (if any).
+
+There are multiple ways to close an overlay:
+
+- press the Escape key
+- click outside the overlay, on the backdrop (if present)
+- click on a close button inside the overlay
+- programmatically via the `hide()` method
+
+#### Closing with Escape key
+
+When the Escape key is pressed, only the topmost overlay in the stack is closed.
+
+##### Open multiple overlays from a single element
+
+The order of the opened overlays in stack will depend on the order of elements
+in the DOM or call of the `show()` method. It is not always trivial and it might
+cause unexpected behaviors in layering and order of closing overlays.
+
+A common example is the button which opens a popover but it also have a tooltip.
+
+This case in handled internally by the tooltip component, which will remove
+itself from the stack without closing any other overlays. But in other cases,
+the developer must ensure the correct order of opening overlays.
+
+#### Closing multiple overlays
+
+When there are multiple overlays open and not the topmost overlay is closed
+(e.g., programmatically, or by clicking a close button inside a a dialog with
+open popover(s)), all overlays above it in the stack are also closed.
+
+## Layering components
+
+Overlays are layered using CSS `z-index` property which is calculated based on
+the position of the overlay in the stack.
+
+Z-index is incremented by 3 for each overlay in the stack, starting from a base
+value of 1000.
+
+This allows for proper layering of overlay, backdrops, and trigger elements, for
+example the first overlay in the stack will have the following z-index values:
+
+- 1000: z-index of the overlay element (e.g. popover, dialog, etc.)
+- 999: z-index of the trigger component (if any)
+- 998: z-index of the backdrop (if any)
+
+The next overlay will have z-index values of 1003, 1002, and 1001 respectively,
+and so on.
+
+### Overwriting z-index
+
+In some cases, it might be necessary to overwrite the calculated z-index of an
+overlay. It can be done by setting the `z-index` attribute on the overlay
+element.
+
+Backdrop and trigger elements will have their z-index adjusted accordingly.
+
+⚠️Setting a custom z-index might cause layering issues with other overlays in
+the stack. ⚠️

@@ -94,9 +94,9 @@ export class DepthManager implements ReactiveController {
     host.addController(this);
   }
 
-  hostConnected() {}
+  public hostConnected() {}
 
-  hostDisconnected() {
+  public hostDisconnected() {
     // Remove this instance from the global stack on disconnect
     this.remove(this.host);
   }
@@ -104,7 +104,7 @@ export class DepthManager implements ReactiveController {
   /**
    * Gets the total number of elements in the stack
    */
-  get length(): number {
+  public get length(): number {
     return elementStack.length;
   }
 
@@ -113,7 +113,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns push was successful (true) or not (false)
    */
-  pushHost(): boolean {
+  public pushHost(): boolean {
     if (!this.has(this.host)) {
       elementStack.push(this.host);
       this.host.onComponentStackChanged?.('added');
@@ -127,7 +127,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns The host if it was in the stack, undefined otherwise
    */
-  popHost(): StackedOverlayComponent | undefined {
+  public popHost(): StackedOverlayComponent | undefined {
     return this.popItem(this.host);
   }
 
@@ -137,7 +137,7 @@ export class DepthManager implements ReactiveController {
    * @param item - The item to pop
    * @returns The item if it was in the stack, undefined otherwise
    */
-  popItem(item: StackedOverlayComponent): StackedOverlayComponent | undefined {
+  public popItem(item: StackedOverlayComponent): StackedOverlayComponent | undefined {
     if (this.has(item)) {
       if (item !== this.peek()) {
         this.popUntil(i => i !== item);
@@ -152,7 +152,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns The last element in the stack
    */
-  pop(): StackedOverlayComponent | undefined {
+  public pop(): StackedOverlayComponent | undefined {
     const popped = elementStack.pop();
     popped?.onComponentStackChanged?.('removed');
     return popped;
@@ -164,7 +164,7 @@ export class DepthManager implements ReactiveController {
    * @param predicateFn - The predicate function to test each element
    * @returns The removed elements
    */
-  popUntil(predicateFn: (item: StackedOverlayComponent) => boolean): StackedOverlayComponent[] {
+  public popUntil(predicateFn: (item: StackedOverlayComponent) => boolean): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
     for (let i = elementStack.length - 1; i >= 0; i -= 1) {
       const item = elementStack[i];
@@ -183,7 +183,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns The last element in the stack
    */
-  peek(): StackedOverlayComponent | undefined {
+  public peek(): StackedOverlayComponent | undefined {
     return elementStack.at(-1);
   }
 
@@ -195,7 +195,7 @@ export class DepthManager implements ReactiveController {
    * @param element - Popover instance
    * @returns True if the element was removed, false otherwise
    */
-  remove(element: StackedOverlayComponent): boolean {
+  public remove(element: StackedOverlayComponent): boolean {
     const index = elementStack.indexOf(element);
     if (index !== -1) {
       const popped = elementStack[index];
@@ -217,14 +217,14 @@ export class DepthManager implements ReactiveController {
    * @param element - Popover instance
    * @returns True if the stack has the element, false otherwise
    */
-  has(element: StackedOverlayComponent): boolean {
+  public has(element: StackedOverlayComponent): boolean {
     return elementStack.includes(element);
   }
 
   /**
    * Gets the depth of the host element in the stack
    */
-  getHostDepth(): number {
+  public getHostDepth(): number {
     return this.getElementDepth(this.host);
   }
 
@@ -232,14 +232,14 @@ export class DepthManager implements ReactiveController {
    * Gets the depth of the element in the stack
    * @param element - The element to get the depth of
    */
-  getElementDepth(element: StackedOverlayComponent): number {
+  public getElementDepth(element: StackedOverlayComponent): number {
     return elementStack.indexOf(element);
   }
 
   /**
    * Gets the z-index of the host element in the stack
    */
-  getHostZIndex(): number {
+  public getHostZIndex(): number {
     return this.getItemZIndex(this.host);
   }
 
@@ -249,7 +249,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns The z-index of the element if found, otherwise returns -1
    */
-  getItemZIndex(element: StackedOverlayComponent): number {
+  public getItemZIndex(element: StackedOverlayComponent): number {
     const depth = this.getElementDepth(element);
     return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : -1;
   }
@@ -259,7 +259,7 @@ export class DepthManager implements ReactiveController {
    *
    * @returns True if host is on top, false otherwise
    */
-  isHostOnTop(): boolean {
+  public isHostOnTop(): boolean {
     return this.peek() === this.host;
   }
 
@@ -268,7 +268,7 @@ export class DepthManager implements ReactiveController {
    *
    * Pops all elements from the stack one-by-one.
    */
-  clear(): void {
+  public clear(): void {
     this.popUntil(() => true);
   }
 }

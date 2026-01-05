@@ -140,17 +140,8 @@ class Dialog
   /**
    * The effective z-index of the dialog.
    *
-   * If no explicit `z-index` value is provided, then we calculate
-   * z-index based on the dialog’s nesting depth
-   * to ensure proper stacking order among multiple popovers.
-   *
-   * The formula used is: `DEFAULTS.Z_INDEX + (depth * 3)`.
-   * This approach guarantees that each nested dialog appears above its parent.
-   * Ex: A root-level dialog has a z-index of 1000,
-   *    its first-level child dialog will have a z-index of 1003,
-   *    and a second-level child dialog will have a z-index of 1006, and so on.
-   *
-   * When a value is explicitly set, it overrides the internally computed value.
+   * If no explicit `z-index` value is provided, then it automatically calculated
+   * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
@@ -466,6 +457,7 @@ class Dialog
     this.closeDialog();
   };
 
+  /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
       this.visible = false;

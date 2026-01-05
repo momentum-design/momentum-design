@@ -5,6 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { describeStory, hideControls } from '../../../config/storybook/utils';
+import { STRATEGY } from '../popover/popover.constants';
 
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
@@ -17,6 +19,10 @@ import '../tooltip';
 import '../list';
 import '../listitem';
 import '../textarea';
+import '../select';
+import '../selectlistbox';
+import '../option';
+import '../combobox';
 
 const createDialog = (args: Args, content: TemplateResult, onClose: () => void) =>
   html`<mdc-dialog
@@ -285,7 +291,7 @@ const renderDialogWithinDialog = (args: Args) => {
 
 const renderDialogWithOtherOverlays = (args: Args) => {
   const toggleVisibility = () => {
-    const dialog = document.getElementById(args.id) as HTMLElement;
+    const dialog = document.getElementById('outer-dialog') as HTMLElement;
     dialog.toggleAttribute('visible');
   };
   const toggleVisibilityNested = () => {
@@ -293,7 +299,7 @@ const renderDialogWithOtherOverlays = (args: Args) => {
     nestedDialog.toggleAttribute('visible');
   };
   const onClose = () => {
-    const dialog = document.getElementById(args.id) as HTMLElement;
+    const dialog = document.getElementById('outer-dialog') as HTMLElement;
     dialog.removeAttribute('visible');
   };
   const onCloseNested = () => {
@@ -314,15 +320,22 @@ const renderDialogWithOtherOverlays = (args: Args) => {
         right: calc(100% - 150px);
       }
     </style>
-    ${createTrigger(args.triggerId, 'Open Dialog (lvl 1)', toggleVisibility)}
-    ${createDialog(
-      args,
-      html`
+    <div id="root">
+      ${createTrigger(args.triggerId, 'Open Dialog (lvl 1)', toggleVisibility)}
+      <mdc-dialog id="outer-dialog" .onClose="${onClose}">
         <div slot="dialog-body">
           <p>Dialog lvl 1.</p>
           <mdc-button id="popup-lvl2">Open Popover (lvl 2)</mdc-button>
           <mdc-tooltip triggerId="popup-lvl2" placement="top">Open Popover (lvl 2)</mdc-tooltip>
-          <mdc-popover triggerId="popup-lvl2" hide-on-escape style="top: 30% !important;" focus-back-to-trigger>
+          <mdc-popover
+            triggerId="popup-lvl2"
+            hide-on-escape
+            focus-back-to-trigger
+            interactive
+            focus-trap
+            strategy="${args.lvl2PopoverStrategy === 'append to root' ? STRATEGY.ABSOLUTE : args.lvl2PopoverStrategy}"
+            append-to="${ifDefined(args.lvl2PopoverStrategy === 'append to root' ? 'root' : undefined)}"
+          >
             <p>Popover lvl 2.</p>
             <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Dialog (lvl 3)</mdc-button>
             <mdc-tooltip triggerId="nested-dialog-trigger" placement="top">Open Dialog (lvl 3)</mdc-tooltip>
@@ -338,29 +351,62 @@ const renderDialogWithOtherOverlays = (args: Args) => {
                 <p>Dialog lvl 3.</p>
                 <mdc-button id="menu-lvl4">Open Menu (lvl 4)</mdc-button>
                 <mdc-tooltip triggerId="menu-lvl4" placement="top">Open Menu (lvl 4)</mdc-tooltip>
+
                 <mdc-menupopover triggerId="menu-lvl4">
-                  <mdc-menuitem label="Profile"></mdc-menuitem>
-                  <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
-                  <mdc-menuitem label="Notifications"></mdc-menuitem>
-                  <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+                  <mdc-menuitem id="submenu-trigger" label="Sub-menu (lvl 5)" arrow-position="trailing"></mdc-menuitem>
+                  <mdc-menuitem label="Menu with tooltip" id="menu-with-tooltip"></mdc-menuitem>
+                  <mdc-tooltip triggerId="menu-with-tooltip" placement="right">This is a tooltip</mdc-tooltip>
                   <mdc-menupopover triggerID="submenu-trigger" placement="right">
                     <mdc-menupopover triggerID="security-id" placement="right-start">
-                      <mdc-menuitem label="Change Password"></mdc-menuitem>
-                      <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
-                      <mdc-menuitem label="Security Questions"></mdc-menuitem>
+                      <mdc-menuitem label="Menu item 1"></mdc-menuitem>
+                      <mdc-menuitem label="Menu item 2"></mdc-menuitem>
+                      <mdc-menuitem label="Menu item 3"></mdc-menuitem>
                     </mdc-menupopover>
-                    <mdc-menuitem label="Account"></mdc-menuitem>
-                    <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
-                    <mdc-menuitem label="Security" id="security-id" arrow-position="trailing"></mdc-menuitem>
-                    <mdc-menuitem label="Advanced"></mdc-menuitem>
+                    <mdc-menuitem label="Sub-menu (lvl 6)" id="security-id" arrow-position="trailing"></mdc-menuitem>
                   </mdc-menupopover>
                 </mdc-menupopover></div
             ></mdc-dialog>
+            <mdc-select
+              label="Headquarters location"
+              required
+              help-text="Select Help Text"
+              data-aria-label="Select label"
+              placeholder="Select your headquarters location"
+            >
+              <mdc-selectlistbox>
+                <mdc-option id="select-tooltip-1" value="london" label="London, UK"></mdc-option>
+                <mdc-tooltip triggerid="select-tooltip-1" strategy="fixed">London, UK"</mdc-tooltip>
+                <mdc-option id="select-tooltip-2" selected value="losangeles" label="Los Angeles, CA"></mdc-option>
+                <mdc-tooltip triggerid="select-tooltip-2" strategy="fixed">Los Angeles, CA</mdc-tooltip>
+                <mdc-option id="select-tooltip-3" value="newyork" label="New York, NY"></mdc-option>
+                <mdc-tooltip triggerid="select-tooltip-3" strategy="fixed">New York, NY</mdc-tooltip>
+              </mdc-selectlistbox>
+            </mdc-select>
+
+            <mdc-combobox
+              data-aria-label="Select a country"
+              help-text="Select a country"
+              help-text-type="default"
+              info-icon-aria-label="Required icon label"
+              label="Top Countries"
+              name="country"
+              placeholder="Start typing"
+              placement="bottom-start"
+              invalid-custom-value-text="Custom values are not allowed"
+            >
+              <mdc-selectlistbox>
+                <mdc-option id="cmb-tooltip-1" value="arg" label="Argentina"></mdc-option>
+                <mdc-tooltip triggerid="cmb-tooltip-1" strategy="fixed">Argentina</mdc-tooltip>
+                <mdc-option id="cmb-tooltip-2" value="aus" label="Australia"></mdc-option>
+                <mdc-tooltip triggerid="cmb-tooltip-2" strategy="fixed">Australia</mdc-tooltip>
+                <mdc-option id="cmb-tooltip-3" value="au" label="Austria"></mdc-option>
+                <mdc-tooltip triggerid="cmb-tooltip-3" strategy="fixed">Austria</mdc-tooltip>
+              </mdc-selectlistbox>
+            </mdc-combobox>
           </mdc-popover>
         </div>
-      `,
-      onClose,
-    )}
+      </mdc-dialog>
+    </div>
   `;
 };
 
@@ -697,10 +743,19 @@ export const DialogWithinDialog: StoryObj = {
 
 export const DialogWithinOtherOverlays: StoryObj = {
   render: renderDialogWithOtherOverlays,
-  args: {
-    ...commonProperties,
-    size: DIALOG_SIZE[0],
+  argTypes: {
+    lvl2PopoverStrategy: {
+      control: 'select',
+      options: [...Object.values(STRATEGY), 'append to root'],
+    },
   },
+  args: {
+    lvl2PopoverStrategy: STRATEGY.ABSOLUTE,
+  },
+  ...describeStory(
+    'Demo multiple level overlays nested into each other. They should maintains consistent (monotonic) z-indexing and Esc key handling. Esc should close only the top-most overlay (even tooltips).',
+  ),
+  ...hideControls(Object.keys(commonProperties)),
 };
 
 export const DialogWithIframe: StoryObj = {

@@ -343,19 +343,16 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
   size: boolean = DEFAULTS.SIZE;
 
   /**
+   * The internal z-index of the popovere.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
    * The effective z-index of the popover.
    *
-   * If no explicit `z-index` value is provided, then we calculate
-   * z-index based on the popover’s nesting depth (`popoverDepth`)
-   * to ensure proper stacking order among multiple popovers.
-   *
-   * The formula used is: `DEFAULTS.Z_INDEX + (popoverDepth * 3)`.
-   * This approach guarantees that each nested popover appears above its parent.
-   * Ex: A root-level popover has a z-index of 1000,
-   *    its first-level child popover will have a z-index of 1003,
-   *    and a second-level child popover will have a z-index of 1006, and so on.
-   *
-   * When a value is explicitly set, it overrides the internally computed value.
+   * If no explicit `z-index` value is provided, then it automatically calculated
+   * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
@@ -470,12 +467,6 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
 
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
-
-  /**
-   * The internal z-index of the popover.
-   * @internal
-   */
-  private internalZIndex?: number;
 
   /** @internal */
   private get connectedTooltip() {
@@ -767,6 +758,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
     }
   };
 
+  /** @internal */
   onComponentStackChanged(changed: StackChange): void {
     if (changed === 'removed') {
       this.hide();
