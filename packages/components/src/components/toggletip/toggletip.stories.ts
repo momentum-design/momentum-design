@@ -4,6 +4,7 @@ import '../avatarbutton';
 import '../link';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { COLOR, POPOVER_PLACEMENT, STRATEGY, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
@@ -21,13 +22,13 @@ const render = (args: Args) =>
       offset="${args.offset}"
       placement="${args.placement}"
       ?show-arrow="${args['show-arrow']}"
-      screenreader-announcer-identity="${args['screenreader-announcer-identity']}"
-      boundary-root="${args['boundary-root']}"
-      boundary="${args.boundary}"
-      boundary-padding="${args['boundary-padding']}"
-      backdrop-append-to="${args['backdrop-append-to']}"
+      screenreader-announcer-identity="${ifDefined(args['screenreader-announcer-identity'])}"
+      boundary-root="${ifDefined(args['boundary-root'])}"
+      boundary="${ifDefined(args.boundary)}"
+      boundary-padding="${ifDefined(args['boundary-padding'])}"
+      backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
       ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
-      strategy="${args.strategy}"
+      strategy="${ifDefined(args.strategy)}"
       ?should-focus-trap-wrap="${args['should-focus-trap-wrap']}"
       ?propagate-event-on-escape="${args['propagate-event-on-escape']}"
       triggerid="${args.triggerID}"
@@ -128,6 +129,7 @@ const meta: Meta = {
       'focus-back-to-trigger',
       'backdrop',
       'keep-connected-tooltip-open',
+      'animation-frame',
       'size',
       'append-to',
       'aria-labelledby',
