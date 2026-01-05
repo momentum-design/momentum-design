@@ -37,11 +37,11 @@ export class Timers implements ReactiveController {
     ms?: number,
     ...args: TArgs
   ): number {
-    const id = window.setInterval(handler, ms, ...args);
-
     if (this.nameToIntervalId.has(name)) {
       clearInterval(this.nameToIntervalId.get(name)!);
     }
+
+    const id = window.setInterval(handler, ms, ...args);
     this.nameToIntervalId.set(name, id);
 
     return id;
@@ -80,6 +80,10 @@ export class Timers implements ReactiveController {
     ms?: number,
     ...args: TArgs
   ): number {
+    if (this.nameToTimeoutId.has(name)) {
+      clearTimeout(this.nameToTimeoutId.get(name)!);
+    }
+
     const id = window.setTimeout(
       (...args: TArgs) => {
         handler(...args);
@@ -88,10 +92,6 @@ export class Timers implements ReactiveController {
       ms,
       ...args,
     );
-
-    if (this.nameToTimeoutId.has(name)) {
-      clearTimeout(this.nameToTimeoutId.get(name)!);
-    }
     this.nameToTimeoutId.set(name, id);
 
     return id;
