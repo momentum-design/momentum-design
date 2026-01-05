@@ -12,7 +12,7 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 
-import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
@@ -440,15 +440,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
 
   public arrowElement: HTMLElement | null = null;
-
-  /** @internal */
-  private hoverTimer: number | null = null;
-
-  /** @internal */
-  private openTimer: number | null = null;
-
-  /** @internal */
-  private closeTimer: number | null = null;
 
   /** @internal */
   private isHovered: boolean = false;
@@ -928,10 +919,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Cancels the open delay timer.
    */
   private cancelOpenDelay = () => {
-    if (this.openTimer) {
-      this.timers.clearTimeout(this.openTimer);
-      this.openTimer = null;
-    }
+    this.timers.clearTimeout(TIMEOUTS.OPEN);
   };
 
   /**
@@ -944,9 +932,13 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     if (!this.interactive) {
       this.hide();
     } else {
-      this.hoverTimer = this.timers.setTimeout(() => {
-        this.visible = false;
-      }, this.closeDelay);
+      this.timers.setTimeout(
+        TIMEOUTS.HOVER,
+        () => {
+          this.visible = false;
+        },
+        this.closeDelay,
+      );
     }
   };
 
@@ -954,15 +946,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Cancels the close delay timer.
    */
   private cancelCloseDelay = () => {
-    if (this.hoverTimer) {
-      this.timers.clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
-
-    if (this.closeTimer) {
-      this.timers.clearTimeout(this.closeTimer);
-      this.closeTimer = null;
-    }
+    this.timers.clearTimeout(TIMEOUTS.HOVER);
+    this.timers.clearTimeout(TIMEOUTS.CLOSE);
   };
 
   /**
@@ -979,13 +964,13 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       return;
     }
 
-    if (this.openDelay > 0) {
-      this.openTimer = this.timers.setTimeout(() => {
+    this.timers.setTimeout(
+      TIMEOUTS.OPEN,
+      () => {
         this.visible = true;
-      }, this.openDelay);
-    } else {
-      this.visible = true;
-    }
+      },
+      this.openDelay,
+    );
   };
 
   /**
@@ -994,13 +979,13 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   public hide = () => {
     this.cancelOpenDelay();
 
-    if (this.closeDelay) {
-      this.closeTimer = this.timers.setTimeout(() => {
+    this.timers.setTimeout(
+      TIMEOUTS.CLOSE,
+      () => {
         this.visible = false;
-      }, this.closeDelay);
-    } else {
-      this.visible = false;
-    }
+      },
+      this.closeDelay,
+    );
   };
 
   /**
