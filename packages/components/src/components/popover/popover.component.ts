@@ -932,13 +932,15 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     if (!this.interactive) {
       this.hide();
     } else {
-      this.timers.setTimeout(
-        TIMEOUTS.HOVER,
-        () => {
-          this.visible = false;
-        },
-        this.closeDelay,
-      );
+      const callback = () => {
+        this.visible = false;
+      };
+      if (this.closeDelay > 0) {
+        this.timers.setTimeout(TIMEOUTS.HOVER, callback, this.closeDelay);
+      } else {
+        this.timers.clearTimeout(TIMEOUTS.HOVER);
+        callback();
+      }
     }
   };
 
@@ -964,13 +966,16 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       return;
     }
 
-    this.timers.setTimeout(
-      TIMEOUTS.OPEN,
-      () => {
-        this.visible = true;
-      },
-      this.openDelay,
-    );
+    const callback = () => {
+      this.visible = true;
+    };
+
+    if (this.openDelay > 0) {
+      this.timers.setTimeout(TIMEOUTS.OPEN, callback, this.openDelay);
+    } else {
+      this.timers.clearTimeout(TIMEOUTS.OPEN);
+      callback();
+    }
   };
 
   /**
@@ -979,13 +984,15 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   public hide = () => {
     this.cancelOpenDelay();
 
-    this.timers.setTimeout(
-      TIMEOUTS.CLOSE,
-      () => {
-        this.visible = false;
-      },
-      this.closeDelay,
-    );
+    const callback = () => {
+      this.visible = false;
+    };
+    if (this.closeDelay > 0) {
+      this.timers.setTimeout(TIMEOUTS.CLOSE, callback, this.closeDelay);
+    } else {
+      this.timers.clearTimeout(TIMEOUTS.CLOSE);
+      callback();
+    }
   };
 
   /**
