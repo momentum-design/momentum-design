@@ -20,7 +20,7 @@ const render = (args: Args) => {
   const content = contentMap(args)[args.typeOfChildren] || html``;
 
   return html`
-    <div style="height: 25rem; margin: 1rem">
+    <div role="main" style="height: 25rem; margin: 1rem">
       <mdc-divider
         orientation=${args.orientation}
         variant=${args.variant}
