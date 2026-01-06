@@ -8,25 +8,36 @@ import styles from './staticcheckbox.styles';
 import { ICON_NAME } from './staticcheckbox.constants';
 
 /**
- * StaticCheckbox is a decorative component styled as a checkbox for visual presentation.
- * Unlike the interactive `mdc-checkbox`, this component does not handle user interactions or form submissions.
- * It is used purely for displaying checkbox states in read-only scenarios.
+ * The StaticCheckbox component is a decorative, non-interactive checkbox used for visual
+ * presentation in read-only scenarios. Unlike the interactive `mdc-checkbox`, it does not
+ * handle user interactions or form submissions.
  *
- * This component supports five display states: checked, indeterminate, disabled, readonly, and soft-disabled.
+ * This component supports multiple visual states: checked, indeterminate, disabled, readonly,
+ * and soft-disabled.
+ *
+ * ## When to use
+ * Use StaticCheckbox to display checkbox states in read-only contexts such as summary views,
+ * confirmation screens, or when showing historical form data. For interactive checkboxes, use
+ * [mdc-checkbox](?path=/docs/components-checkbox--docs) instead.
+ *
+ * ## Accessibility
+ * - StaticCheckbox is decorative and non-interactive by design
+ * - Always pair with descriptive text labels in the default slot
+ * - Do not use as a replacement for interactive checkboxes in forms
  *
  * @tagname mdc-staticcheckbox
  *
  * @dependency mdc-icon
  *
- * @cssproperty --mdc-staticcheckbox-border-color - The border color of the checkbox.
- * @cssproperty --mdc-staticcheckbox-background-color - The background color of the checkbox.
- * @cssproperty --mdc-staticcheckbox-icon-color - The icon color of the checkbox.
- * @cssproperty --mdc-staticcheckbox-size - The size of the checkbox.
+ * @cssproperty --mdc-staticcheckbox-border-color - Border color of the checkbox.
+ * @cssproperty --mdc-staticcheckbox-background-color - Background color of the checkbox.
+ * @cssproperty --mdc-staticcheckbox-icon-color - Icon color of the checkbox.
+ * @cssproperty --mdc-staticcheckbox-size - Size of the checkbox.
  *
- * @csspart icon-container - The container for the checkbox icon
- * @csspart checkbox-icon - The checkbox icon element
+ * @csspart icon-container - The container for the checkbox icon.
+ * @csspart checkbox-icon - The checkbox icon element.
  *
- * @slot - Default slot for adding label text
+ * @slot - Default slot for label text.
  */
 class StaticCheckbox extends DisabledMixin(Component) {
   /**

@@ -10,26 +10,39 @@ import styles from './statictoggle.styles';
 import type { ToggleSize } from './statictoggle.types';
 
 /**
- * The StaticToggle is a decorative component that visually represents a toggle switch without interactive functionality.
- * It is primarily used for display purposes or as a building block within custom interactive components.
- * This component shares the same visual styling as the interactive `mdc-toggle` component.
+ * The StaticToggle component is a decorative, non-interactive toggle switch used for visual
+ * presentation. It shares the same styling as the interactive `mdc-toggle` component but does
+ * not provide user interaction functionality.
  *
- * @dependency mdc-icon
+ * This component supports multiple visual states: checked, disabled, readonly, soft-disabled,
+ * and size variations (default, compact).
+ *
+ * ## When to use
+ * Use StaticToggle to display toggle states in read-only contexts such as summary views,
+ * confirmation screens, or as a building block within custom interactive components. For
+ * interactive toggles, use [mdc-toggle](?path=/docs/components-toggle--docs) instead.
+ *
+ * ## Accessibility
+ * - StaticToggle is decorative and non-interactive by design
+ * - When used within parent components, ensure proper ARIA attributes are provided by the parent
+ * - Do not use as a replacement for interactive toggles in forms
  *
  * @tagname mdc-statictoggle
  *
- * @slot - Default slot for slotted content (typically used by parent `mdc-toggle` for the checkbox input).
+ * @dependency mdc-icon
  *
- * @cssproperty --mdc-statictoggle-width - The width of the static toggle.
- * @cssproperty --mdc-statictoggle-height - The height of the static toggle.
- * @cssproperty --mdc-statictoggle-border-radius - The border radius of the static toggle.
- * @cssproperty --mdc-statictoggle-border-color - The border color of the static toggle.
- * @cssproperty --mdc-statictoggle-background-color - The background color of the static toggle.
- * @cssproperty --mdc-statictoggle-icon-color - The icon color of the static toggle.
- * @cssproperty --mdc-statictoggle-icon-background-color - The icon background color of the static toggle.
+ * @cssproperty --mdc-statictoggle-width - Width of the static toggle.
+ * @cssproperty --mdc-statictoggle-height - Height of the static toggle.
+ * @cssproperty --mdc-statictoggle-border-radius - Border radius of the static toggle.
+ * @cssproperty --mdc-statictoggle-border-color - Border color of the static toggle.
+ * @cssproperty --mdc-statictoggle-background-color - Background color of the static toggle.
+ * @cssproperty --mdc-statictoggle-icon-color - Icon color of the static toggle.
+ * @cssproperty --mdc-statictoggle-icon-background-color - Icon background color of the static toggle.
  *
  * @csspart slider - The slider part of the toggle.
  * @csspart toggle-icon - The icon part of the toggle.
+ *
+ * @slot - Default slot for slotted content (typically used by parent `mdc-toggle` for the checkbox input).
  */
 class StaticToggle extends DisabledMixin(Component) {
   /**

@@ -7,23 +7,33 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import styles from './staticradio.styles';
 
 /**
- * StaticRadio is a decorative component styled as a radio button for visual presentation.
- * Unlike the interactive `mdc-radio`, this component does not handle user interactions or form submissions.
- * It is used purely for displaying radio button states in read-only scenarios.
+ * The StaticRadio component is a decorative, non-interactive radio button used for visual
+ * presentation in read-only scenarios. Unlike the interactive `mdc-radio`, it does not
+ * handle user interactions or form submissions.
  *
- * This component supports four display states: checked, disabled, readonly, and soft-disabled.
+ * This component supports multiple visual states: checked, disabled, readonly, and soft-disabled.
+ *
+ * ## When to use
+ * Use StaticRadio to display radio button states in read-only contexts such as summary views,
+ * confirmation screens, or when showing historical form data. For interactive radio buttons, use
+ * [mdc-radio](?path=/docs/components-radio--docs) instead.
+ *
+ * ## Accessibility
+ * - StaticRadio is decorative and non-interactive by design
+ * - Always pair with descriptive text labels in the default slot
+ * - Do not use as a replacement for interactive radio buttons in forms
  *
  * @tagname mdc-staticradio
  *
- * @cssproperty --mdc-staticradio-inner-circle-size - The size of the inner circle when checked.
- * @cssproperty --mdc-staticradio-outer-circle-size - The size of the outer circle border.
- * @cssproperty --mdc-staticradio-inner-circle-background-color - The background color of the inner circle when checked.
- * @cssproperty --mdc-staticradio-outer-circle-border-color - The border color of the outer circle.
- * @cssproperty --mdc-staticradio-outer-circle-background-color - The background color of the outer circle.
+ * @cssproperty --mdc-staticradio-inner-circle-size - Size of the inner circle when checked.
+ * @cssproperty --mdc-staticradio-outer-circle-size - Size of the outer circle border.
+ * @cssproperty --mdc-staticradio-inner-circle-background-color - Background color of the inner circle when checked.
+ * @cssproperty --mdc-staticradio-outer-circle-border-color - Border color of the outer circle.
+ * @cssproperty --mdc-staticradio-outer-circle-background-color - Background color of the outer circle.
  *
- * @csspart radio-icon - The radio icon element
+ * @csspart radio-icon - The radio icon element.
  *
- * @slot - Default slot for the label of the radio
+ * @slot - Default slot for the label of the radio.
  */
 class StaticRadio extends DisabledMixin(Component) {
   /**
