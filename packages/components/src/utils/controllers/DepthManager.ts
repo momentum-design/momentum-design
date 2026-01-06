@@ -24,7 +24,20 @@ export interface StackedOverlayComponent extends Component {
    * @param change - The type of change that occurred in the stack.
    */
   onComponentStackChanged?: (change: StackChange) => void;
+
+  /**
+   * ID of the trigger element associated with this overlay component
+   */
+  triggerID?: string;
 }
+
+/**
+ * Predicate function used to determine whether to pop an item from the stack.
+ * - Returns true to pop the item.
+ * - Returns false to stop popping items.
+ * - Returns 'skip' to skip the item without popping it.
+ */
+type PopPredicateFn = (item: StackedOverlayComponent, idx: number) => true | false | 'skip';
 
 /**
  * Global stack of elements managed by DepthManager
@@ -50,6 +63,30 @@ const NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT = 3;
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
  *
  * It uses a global stack to keep track of the order of elements, allowing for proper layering of overlays.
+ *
+ * ## Use Case
+ *
+ * ### Pop single overlay
+ *
+ * The easiest one, usually the host removes itself from the stack when it is closed, with the `popHost` method.
+ *
+ * ### Pop until specific overlay
+ *
+ * When the chain of nested popover (e.g.: submenus) opened and the user closes other than the last one,
+ * we have to close all overlays stacked above the specific one. In this case, the `popItem` or directly the `pupUntil` method is used.
+ *
+ * ### Closing "sibling" overlays
+ *
+ * In some cases, multiple overlays can be opened from the same trigger (e.g.: tooltip, context menu, etc.), we can not close
+ * all overlays above the specific one, because they independently opened.
+ *
+ * `popUntil` method can handle this case by skipping the overlays which share the same trigger ID as the specified one.
+ *
+ * ### Manually removing overlays
+ *
+ * When the user switch from one sub-menu to another, we need to close all sub-menus from common parent menu.
+ * DepthManager does not have built-in solution for this case. The host component need to make sure the submenu
+ * hide before the new one is shown.
  *
  * @example
  * ```ts
@@ -98,7 +135,7 @@ export class DepthManager implements ReactiveController {
 
   public hostDisconnected() {
     // Remove this instance from the global stack on disconnect
-    this.remove(this.host);
+    this.remove([this.host]);
   }
 
   /**
@@ -134,23 +171,17 @@ export class DepthManager implements ReactiveController {
   /**
    * Pops all the items above the specified item and then pops the item itself
    *
-   * It is possible the skip the top N elements from being evaluated by the predicate, to solve some edge cases.
-   * For example when opening a popover triggers close of others, the top popover should be kept.
-   * In menu popovers this can happen when a submenu is opened, which closes other sub-menus on the same level.
-   *
    * @param item - The item to pop
-   * @param skip - Number of elements to skip from the top of the stack
    * @returns The item if it was in the stack, undefined otherwise
    */
-  public popItem(item: StackedOverlayComponent, skip = 0): StackedOverlayComponent | undefined {
+  public popItem(item: StackedOverlayComponent): StackedOverlayComponent | undefined {
     if (this.has(item)) {
-      if (item !== this.peek()) {
-        this.popUntil(i => i !== item, skip);
-      }
-      if (skip === 0) {
-        return this.pop();
-      }
-      return this.remove(item) ? item : undefined;
+      const untilItemIdx = elementStack.indexOf(item) - 1;
+      this.popUntil((it, idx) => {
+        // This can handle the case when multiple overlays share the same trigger (id), e.g.: tooltip, etc.
+        if (it !== item && it.triggerID === item.triggerID) return 'skip';
+        return idx !== untilItemIdx;
+      });
     }
     return undefined;
   }
@@ -169,25 +200,21 @@ export class DepthManager implements ReactiveController {
   /**
    * Removes elements from the stack until the predicate function returns false
    *
-   * It is possible the skip the top N elements from being evaluated by the predicate, to solve some edge cases.
-   * For example when opening a popover triggers close of others, the top popover should be kept.
-   * In menu popovers this can happen when a submenu is opened, which closes other sub-menus on the same level.
+   * Note: it will remove the
    *
    * @param predicateFn - The predicate function to test each element
-   * @param skip - Number of elements to skip from the top of the stack
    * @returns The removed elements
    */
-  public popUntil(predicateFn: (item: StackedOverlayComponent) => boolean, skip = 0): StackedOverlayComponent[] {
+  public popUntil(predicateFn: PopPredicateFn): StackedOverlayComponent[] {
     const poppedElements: StackedOverlayComponent[] = [];
-    for (let i = elementStack.length - (1 + skip); i >= 0; i -= 1) {
+    for (let i = elementStack.length - 1; i >= 0; i -= 1) {
       const item = elementStack[i];
+      const result = predicateFn(item, i);
 
-      if (!predicateFn(item)) break;
-
-      poppedElements.push(item);
+      if (result === false) break;
+      if (result !== 'skip') poppedElements.push(item);
     }
-    poppedElements.forEach(item => this.remove(item));
-    return poppedElements;
+    return this.remove(poppedElements);
   }
 
   /**
@@ -201,27 +228,29 @@ export class DepthManager implements ReactiveController {
   }
 
   /**
-   * Removes an element from the stack without removing other elements
+   * Removes one or more elements from the stack without popping others.
    *
-   * Also, notifies other elements above the removed one about their new position.
+   * It notifies the elements on the stack which were removed and those which changed position.
+   * Items removed in bach, notify moved items only once.
    *
-   * @param element - Popover instance
-   * @returns True if the element was removed, false otherwise
+   * @param elements - Popover instance
+   * @returns undefined when the element was not found, the removed element otherwise
    */
-  public remove(element: StackedOverlayComponent): boolean {
-    const index = elementStack.indexOf(element);
-    if (index !== -1) {
-      const popped = elementStack[index];
-      elementStack.splice(index, 1);
-      popped?.onComponentStackChanged?.('removed');
+  public remove(elements: StackedOverlayComponent[]): StackedOverlayComponent[] {
+    const removedElements = elements.filter(el => elementStack.includes(el));
+    const updateStackFrom = removedElements.reduce((idx, el) => Math.min(idx, elementStack.indexOf(el)), Infinity);
 
-      // Notify elements about the move
-      for (let i = index; i < elementStack.length; i += 1) {
-        elementStack[i].onComponentStackChanged?.('moved');
-      }
-      return true;
+    // Remove elements from the stack
+    removedElements.forEach(el => {
+      elementStack.splice(elementStack.indexOf(el), 1);
+      el?.onComponentStackChanged?.('removed');
+    });
+
+    // Notify elements about the move
+    for (let i = updateStackFrom; i < elementStack.length; i += 1) {
+      elementStack[i].onComponentStackChanged?.('moved');
     }
-    return false;
+    return removedElements;
   }
 
   /**

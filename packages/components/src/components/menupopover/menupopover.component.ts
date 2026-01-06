@@ -92,7 +92,6 @@ class MenuPopover extends Popover {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
-    this.addEventListener('click', this.handleMouseClick);
     this.addEventListener('created', this.handleItemCreation);
   }
 
@@ -274,11 +273,20 @@ class MenuPopover extends Popover {
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
-    if (this.visible) {
-      this.hide();
-    } else {
-      this.show();
+    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+
+    // Handle mouse click in the parent menupopover to hide open sibling submenus
+    if (event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this) {
+      this.handleMouseClick(event);
+    }
+
+    // Toggle visibility of the current menupopover
+    if (this.isEventFromTrigger(event)) {
+      if (this.visible) {
+        this.hide();
+      } else {
+        this.show();
+      }
     }
   };
 
@@ -293,7 +301,7 @@ class MenuPopover extends Popover {
     const otherOpenSubMenus = this.getOpenSubMenusOfItems(otherMenuItemsOnSameLevel);
 
     otherOpenSubMenus.forEach(subMenu => {
-      this.depthManager.popItem(subMenu, 1);
+      subMenu.hide();
     });
   }
 
@@ -315,10 +323,8 @@ class MenuPopover extends Popover {
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
    * @param event - The mouse event that triggered the click.
    */
-  private handleMouseClick(event: MouseEvent): void {
+  private handleMouseClick(event: Event): void {
     const target = event.target as HTMLElement;
-    // stopPropagation to prevent the click from bubbling up to parent elements
-    event.stopPropagation();
 
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter

@@ -49,7 +49,6 @@ class MenuBar extends KeyToActionMixin(Component) {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
   }
 
@@ -58,12 +57,19 @@ class MenuBar extends KeyToActionMixin(Component) {
     this.role = ROLE.MENUBAR;
     this.ariaOrientation = DEFAULTS.ORIENTATION;
 
+    document.addEventListener('click', this.handleClick, { capture: true });
+
     await this.updateComplete;
 
     // to make sure menusection dividers have the correct divider variant
     this.menusections?.forEach(section => {
       section.setAttribute('divider-variant', 'gradient');
     });
+  }
+
+  override async disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this.handleClick, { capture: true });
   }
 
   /**
@@ -146,17 +152,20 @@ class MenuBar extends KeyToActionMixin(Component) {
    * It finds all other menu items with submenus and closes their submenus.
    * @param target - The target menu item that was clicked.
    */
-  private handleClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target || !this.isTopLevelMenuItem(target)) return;
+  private handleClick = (event: MouseEvent): void => {
+    // Event is triggered from within the menubar
+    if (event.composed && event.composedPath().find(el => el === this)) {
+      const target = event.target as HTMLElement;
+      if (!target || !this.isTopLevelMenuItem(target)) return;
 
-    const otherMenuItemsOnTop = this.menuItems.filter(item => item !== target);
-    const otherOpenSubMenus = this.getVisibleSubMenusOfItems(otherMenuItemsOnTop);
+      const otherMenuItemsOnTop = this.menuItems.filter(item => item !== target);
+      const otherOpenSubMenus = this.getVisibleSubMenusOfItems(otherMenuItemsOnTop);
 
-    otherOpenSubMenus.forEach(subMenu => {
-      subMenu.hide();
-    });
-  }
+      otherOpenSubMenus.forEach(subMenu => {
+        subMenu.hide();
+      });
+    }
+  };
 
   /**
    * Resets all list items tabindex to -1 and sets the tabindex of the
@@ -253,7 +262,7 @@ class MenuBar extends KeyToActionMixin(Component) {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = this.depthManager.popUntil(item => item.contains(this));
+    const popovers = this.depthManager.popUntil(item => this.contains(item));
 
     await Promise.all(popovers.map(popover => popover.updateComplete));
   }

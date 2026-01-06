@@ -516,7 +516,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await triggerElement.click();
         await expect(wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]')).toBeVisible();
         await wrapper.locator('#new-menu-trigger').click();
-        await componentsPage.page.pause();
         await expect(newMenuPopover).toBeVisible();
         await wrapper.locator('#save-as-menu-trigger').click();
         await expect(saveAsMenuPopover).toBeVisible();
