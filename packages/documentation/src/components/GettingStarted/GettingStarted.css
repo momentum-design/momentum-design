@@ -31,7 +31,7 @@
 
 .firstPageContent .headerWrapper {
   max-width: 1240px;
-  gap: 2.5rem;
+  gap: 40px;
 }
 
 .firstPageContent h1 {
@@ -61,6 +61,15 @@
     min-width: 309px;
   }
 
+  .section .cardGrid mdc-card mdc-text[slot="body"] {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    max-height: 72px;
+    margin-bottom: 24px;
+  }
+
   .timezoneInformation {
     width: 320px;
   }
@@ -69,7 +78,7 @@
 @media (max-width: 768px) {
   .firstPageContent h1 {
 		font-size: 120px;
-		line-height: 60px;
+		line-height: 70px;
 	}
 
   .section .cardGrid mdc-card {
@@ -86,8 +95,42 @@
 @media (max-width: 576px) {
 	.firstPageContent h1 {
 		font-size: 80px;
-		line-height: 10px;
+		line-height: 36px;
 	}
+}
+
+@media (max-width: 320px) {
+	.firstPageContent h1 {
+		font-size: 36px;
+		line-height: 24px;
+	}
+
+  .section .cardGrid mdc-card mdc-text[slot="body"] {
+    display: block;
+    overflow: inherit;
+    max-height: inherit;
+    margin-bottom: inherit;
+  }
+
+  .officeHoursCardsContainer mdc-card {
+    min-width: 160px;
+  }
+
+  .officeHoursCardsContainer mdc-card::part(body) {
+    padding: 24px !important;
+  }
+
+  .timezoneInformation , 
+  .timezoneInformation mdc-buttonlink {
+    width: 224px !important;
+  }
+
+  .timezoneRow {
+    display: flex;
+    flex-direction: column;
+    gap: unset !important;
+    width: 224px;
+  }
 }
 
 .firstPageContent h1 .headerTextStroke {
@@ -114,20 +157,21 @@
 }
 
 mdc-card {
+  --mdc-card-width: 370px;
   height: 100%;
   border: 1px solid var(--mds-color-theme-outline-glass-normal);
   background: var(--mds-color-theme-background-glass-normal);
   backdrop-filter: blur(60px);
-  border-radius: 1rem;
+  border-radius: 16px;
 }
 
 .cardBody {
-  padding-bottom: 2rem;
-  padding-right: 1rem;
+  padding-bottom: 24px;
+  padding-right: 16px;
 }
 
 mdc-card::part(body) {
-  padding: 1rem 1.5rem;
+  padding: 16px 24px;
 }
 
 .officeHoursCardsContainer {
