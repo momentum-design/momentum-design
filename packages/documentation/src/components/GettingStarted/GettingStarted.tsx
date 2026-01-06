@@ -179,7 +179,7 @@ export const GettingStarted = () => (
     </div>
     <div className="section">
       <div className="textWrapper">
-        <mdc-text type="heading-large-bold">Support</mdc-text>
+        <mdc-text type="heading-large-bold" id="support">Support</mdc-text>
         <mdc-text type="heading-midsize-bold" style="margin-bottom: -1rem;">Webex Spaces</mdc-text>
         <mdc-text type="heading-midsize-regular">
           We support both design and engineering teams. Check out our support spaces in Webex.

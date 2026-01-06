@@ -61,3 +61,8 @@ export const featureCards = [
     linkUrl: 'webex.com',
   },
 ];
+
+export const helpLinks = [
+  { label: 'Resources', href: '/en/resources' },
+  { label: 'Support', href: '/en/getting-started/#support' },
+];

@@ -3,7 +3,8 @@ import './Home.css';
 import '@momentum-design/components/dist/components/text/index.js';
 import '@momentum-design/components/dist/components/buttonlink/index.js';
 import '@momentum-design/components/dist/components/card/index.js';
-import { featureCards } from './Home.constants';
+import '@momentum-design/components/dist/components/illustration/index.js';
+import { featureCards, helpLinks } from './Home.constants';
 
 const Card = ({ title, description, linkTitle, linkUrl, newTab }: any) => (
   <mdc-card
@@ -40,9 +41,10 @@ export const Home = () => (
         </h1>
       </div>
       <div className="textWrapper">
-        <p>Momentum arms your team with ready-to-use components and guidance <br/>
-        to build consistent products that feel seamless, without slowing down.
-        </p>
+        <mdc-text type="heading-midsize-regular" tagname="span">
+          Momentum arms your team with ready-to-use components and guidance
+          to build consistent products that feel seamless, without slowing down.
+        </mdc-text>
       </div>
       <div className="buttonWrapper">
         <mdc-buttonlink
@@ -68,12 +70,13 @@ export const Home = () => (
       </div>
     </div>
     <div className="secondPageContent">
-      <h2>Your ultimate product ally.</h2>
-      <p>Momentum gives teams the tools to move faster, stay consistent, and work together without friction.
+      <mdc-text type="heading-xlarge-medium" tagname="span" className="heading">Your ultimate product ally.</mdc-text>
+      <mdc-text type="body-large-regular" tagname="span">
+        Momentum gives teams the tools to move faster, stay consistent, and work together without friction.
         Ready-to-use components, patterns, and tokens mean less time reinventing the wheel and more time creating
         experiences users love. Designers, developers, and product managers can finally focus on building,
         not guessing.
-      </p>
+      </mdc-text>
       <div className="cardGrid">
         {featureCards.map((card) => (
           <Card
@@ -87,13 +90,14 @@ export const Home = () => (
       </div>
     </div>
     <div className="thirdPageContent">
-      <h2>Design spotlight</h2>
-      <p>Check out these real-world examples of Momentum in action across Cisco.
+      <mdc-text type="heading-xlarge-medium" tagname="span" className="heading">Design spotlight</mdc-text>
+      <mdc-text type="body-large-regular" tagname="span">
+        Check out these real-world examples of Momentum in action across Cisco.
         These screenshots highlight how our components, patterns, and guidelines come together
         to create consistent, polished experiences. See how Momentum helps teams build faster,
         maintain cohesion, and deliver better user experiences.
-      </p>
-      <div style="padding-top: 1rem;">
+      </mdc-text>
+      <div className="callToAction">
         <mdc-buttonlink
           size="40"
           variant="secondary"
@@ -105,42 +109,48 @@ export const Home = () => (
         Start designing today
         </mdc-buttonlink>
       </div>
-      {/* TODO: get proper screenshots and in webp format for better performance */}
-      <div className="screenshotGridFirstRow">
-        <img src="/examples/screenshot1.png" />
-        <img src="/examples/screenshot2.png" />
-      </div>
-      <div className="screenshotGridSecondRow">
-        <img src="/examples/screenshot3.png" />
-        <img src="/examples/screenshot4.png" />
-        <img src="/examples/screenshot5.png" />
+      <div className="screenshotsGrid">
+        <img src="/examples/first-image.webp" />
+        <img src="/examples/second-image.webp" />
+        <img src="/examples/third-image.webp" />
+        <img src="/examples/fourth-image.webp" />
       </div>
     </div>
     <div className="fourthPageContent">
-      <h2>Loved by designers and developers</h2>
-      <p><b>Momentum just works.</b> Designers get ready-to-use components and crystal-clear guidelines.
-        Developers get scalable, production-ready code that plugs straight in.
-        Together, teams move faster, reduce errors, and ship products users actually enjoy.
-      </p>
+      <mdc-text type="heading-xlarge-medium" tagname="span" className="heading">Loved by designers and developers</mdc-text>
+      <div className="descriptionContainer">
+        <mdc-text type="body-large-regular" tagname="span">
+          <b>Momentum just works. </b>
+          Designers get ready-to-use components and crystal-clear guidelines.
+          Developers get scalable, production-ready code that plugs straight in.
+          Together, teams move faster, reduce errors, and ship products users actually enjoy.
+        </mdc-text>
+      </div>
       <h1>55+</h1>
-      <h3>We have your back</h3>
-      <p>
-        Momentum supports teams by providing expert guidance, troubleshooting, and best practices to
-        ensure smooth implementation. Whether you’re a designer, developer, or product manager, our
-        support resources help you overcome challenges quickly. Access detailed documentation, FAQs,
-        and contact options to keep your projects on track.
-      </p>
-      <div style="padding-top: 1rem;">
-        <mdc-buttonlink
+      <mdc-illustration name="classroom-threetwozero-onboarding-secondary"></mdc-illustration>
+      <mdc-text type="heading-xlarge-regular" tagname="span">Available components</mdc-text>
+      <mdc-text type="body-large-regular" tagname="span" className="small-text">(And more coming soon)</mdc-text>
+    </div>
+    <div className="fifthPageContent">
+      <mdc-text type="heading-xlarge-medium" tagname="span" className="heading">We have your back</mdc-text>
+      <mdc-text type="body-large-regular" tagname="span">
+        Momentum supports teams by providing expert guidance, troubleshooting, and best practices to ensure smooth
+        implementation. Whether you’re a designer, developer, or product manager, our support resources help you
+        overcome challenges quickly. Access detailed documentation, FAQs, and contact options to keep your
+        projects on track.
+      </mdc-text>
+      <div className="callToAction">
+        {helpLinks.map((button, index) => (<mdc-buttonlink
+          key={index}
           size="40"
           variant="secondary"
-          href="webex.com"
+          href={button.href}
           target="_blank"
           rel="noopener noreferrer"
           data-btn-type="pill"
         >
-          Resources and suppport
-        </mdc-buttonlink>
+          {button.label}
+        </mdc-buttonlink>))}
       </div>
     </div>
   </div>
