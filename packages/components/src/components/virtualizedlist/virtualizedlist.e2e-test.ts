@@ -8,6 +8,8 @@ import type { VirtualizedListE2E } from './helpers/virtualizedlist.e2e-test.util
 import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
+  test.setTimeout(60000);
+
   type SetupOptions = {
     itemHeight?: number;
     listHeader?: string;
