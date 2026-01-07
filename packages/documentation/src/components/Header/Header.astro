@@ -23,6 +23,10 @@ const menu = CONFIG.MAIN_MENU[langCode];
         <MomentumLogo height={48} />
       </a>
     </div>
+    <input type="checkbox" id="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle">
+      ☰
+    </label>
     <div class="main-menu" style={{ alignItems: 'center' }}>
       {
         Object.entries(menu).map(([name, item]) => {
@@ -37,8 +41,6 @@ const menu = CONFIG.MAIN_MENU[langCode];
         })
       }
       <GitHubTool client:load />
-    </div>
-    <div class="search-item">
       <Search client:idle />
     </div>
   </nav>
@@ -62,6 +64,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
   header {
     z-index: 11;
     height: var(--theme-navbar-height);
+    padding: 36px 60px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -73,6 +76,12 @@ const menu = CONFIG.MAIN_MENU[langCode];
     animation-timeline: scroll();
     animation-range: 0 25vh;
     border-bottom: 1px solid var(--mds-color-theme-outline-glass-normal);
+  }
+
+  @media (max-width: 1024px) {
+    header {
+      padding: 36px 24px;
+    }
   }
 
   .logo {
@@ -109,10 +118,20 @@ const menu = CONFIG.MAIN_MENU[langCode];
     margin: 0;
   }
 
+  #nav-toggle {
+    display: none;
+  }
+
+  /* Toggle icon hidden on desktop */
+  .nav-toggle {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
+  }
+
   .main-menu {
     display: flex;
-    gap: 1.25rem;
-    margin-right: 1rem;
+    gap: 8px;
   }
 
   .main-menu > li {
@@ -124,35 +143,44 @@ const menu = CONFIG.MAIN_MENU[langCode];
     align-items: center;
     justify-content: space-between;
     gap: 2.5rem;
-    width: 100%;
-    max-width: 60%;
+    width: 1160px;
+    position: relative;
   }
 
   @media (max-width: 1920px) {
-  .nav-wrapper {
-    max-width: 1160px;
+    .nav-wrapper {
+      max-width: 1160px;
+    }
   }
-}
 
   .nav-link {
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5;
+    padding: 0 12px;
     color: var(--mds-color-theme-text-primary-normal);
   }
 
-  @media (max-width: 580px) {
-    .search-item {
-      display: none !important;
+  @media (max-width: 576px) {
+    .nav-toggle {
+      display: block;
     }
-    .logo {
-      display: none;
-    }
-  }
 
-  @media (max-width: 850px) {
-    .logo {
-      display: none;
+    .main-menu {
+      position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #111;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    display: none;
+    }
+
+    #nav-toggle:checked ~ .main-menu {
+      display: flex;
     }
   }
 
@@ -162,13 +190,6 @@ const menu = CONFIG.MAIN_MENU[langCode];
     --docsearch-logo-color: var(--theme-text);
   }
 
-  .search-item {
-    position: relative;
-    z-index: 10;
-    flex-grow: 1;
-    display: flex;
-    max-width: 28%;
-  }
 </style>
 
 <style is:global>

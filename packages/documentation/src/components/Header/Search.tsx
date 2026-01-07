@@ -43,20 +43,11 @@ export default function Search() {
 
   return (
     <>
-      <button type="button" ref={searchButtonRef} onClick={onOpen} className="search-input">
-        <svg width="24" height="24" fill="none">
-          <path
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+      <button type="button" ref={searchButtonRef} onClick={onOpen}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M8.125 1.25C4.32804 1.25 1.25 4.32804 1.25 8.125C1.25 11.922 4.32804 15 8.125 15C9.79844 15 11.3322 14.4021 12.5244 13.4083L17.6831 18.5669C17.9272 18.811 18.3229 18.811 18.567 18.5669C18.811 18.3229 18.811 17.9271 18.567 17.6831L13.4083 12.5244C14.4021 11.3322 15 9.79843 15 8.125C15 4.32804 11.922 1.25 8.125 1.25ZM2.5 8.125C2.5 5.0184 5.0184 2.5 8.125 2.5C11.2316 2.5 13.75 5.0184 13.75 8.125C13.75 11.2316 11.2316 13.75 8.125 13.75C5.0184 13.75 2.5 11.2316 2.5 8.125Z" fill="white" fill-opacity="0.95"/>
         </svg>
-
-        <span>Search</span>
       </button>
-
       {isOpen
 				&& createPortal(
 				  <DocSearchModal
