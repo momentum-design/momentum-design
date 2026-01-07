@@ -29,7 +29,7 @@ import styles from './dialog.styles';
  * ## Visibility
  *
  * The dialog can be controlled solely through the `visible` property, no trigger element is required.
- * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
+ * If a `triggerID` is provided, the dialog will manage focus with that element, otherwise it will
  * remember the previously focused element before the dialog was opened.
  *
  * The dialog is a controlled component, meaning it does not have its own state management for visibility.
@@ -111,7 +111,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * @default undefined
    */
   @property({ type: String, reflect: true })
-  triggerId?: string;
+  triggerID?: string;
 
   /**
    * The visibility of the dialog
@@ -319,8 +319,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('triggerId')) {
-      this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerId}"]`);
+    if (changedProperties.has('triggerID')) {
+      this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
       this.setupAriaHasPopup();
     }
 
@@ -379,7 +379,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
   /**
    * Sets up the aria-labelledby and aria-describedby attributes for the dialog.
-   * If no header text or description text is provided, it will point to the the triggerId if available.
+   * If no header text or description text is provided, it will point to the the triggerID if available.
    * If neither is provided, it will not set the attributes.
    *
    * @internal
@@ -389,8 +389,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     if (!this.ariaLabelledby && !this.ariaLabel) {
       if (this.headerText) {
         this.setAttribute('aria-label', this.headerText);
-      } else if (this.triggerId) {
-        this.setAttribute('aria-labelledby', this.triggerId);
+      } else if (this.triggerID) {
+        this.setAttribute('aria-labelledby', this.triggerID);
       }
     }
 
@@ -398,8 +398,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     if (!this.ariaDescribedby && !this.ariaDescription) {
       if (this.descriptionText) {
         this.setAttribute('aria-description', this.descriptionText);
-      } else if (this.triggerId) {
-        this.setAttribute('aria-describedby', this.triggerId);
+      } else if (this.triggerID) {
+        this.setAttribute('aria-describedby', this.triggerID);
       }
     }
   }
