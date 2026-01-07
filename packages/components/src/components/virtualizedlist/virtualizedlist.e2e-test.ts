@@ -8,8 +8,6 @@ import type { VirtualizedListE2E } from './helpers/virtualizedlist.e2e-test.util
 import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
-  test.setTimeout(60000);
-
   type SetupOptions = {
     itemHeight?: number;
     listHeader?: string;
@@ -68,13 +66,16 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
   const listItemLocator = (vlist: Locator, index: number) => vlist.locator(`mdc-listitem[data-index="${index}"]`);
 
   const scrollList = async (vlist: Locator, distance: number) => {
-    await vlist.evaluate((vlistEl: VirtualizedList, scrollDistance: number) => {
-      const scrollEl = vlistEl.shadowRoot?.querySelector('[part="scroll"]');
-
+    await vlist.hover();
+    await vlist.evaluate((vlistEl: VirtualizedList, scrollAmount: number) => {
+      const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
       if (scrollEl) {
-        scrollEl.scrollTop += scrollDistance;
+        scrollEl.scrollBy(0, scrollAmount);
       }
     }, distance);
+
+    // wait for scroll to finish
+    await componentsPage.page.waitForTimeout(200);
   };
 
   await test.step('renders with default attributes', async () => {
