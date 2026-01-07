@@ -57,19 +57,20 @@ import styles from './accordionbutton.styles';
  * @csspart header-button-section - The header button section of the accordion button.
  * @csspart header-section - The header section of the accordion button.
  * @csspart leading-header - The leading header of the accordion button.
+ * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
  */
 class AccordionButton extends DisabledMixin(Component) {
   /**
-   * Controls the spacing and padding of the accordion. 
+   * Controls the spacing and padding of the accordion.
    * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
    * @default 'small'
    */
   @property({ type: String, reflect: true }) size: Size = DEFAULTS.SIZE;
 
   /**
-   * Visual style variant of the accordion. 
+   * Visual style variant of the accordion.
    * - Default includes borders, borderless removes all border styling.
    * @default 'default'
    */
@@ -152,7 +153,11 @@ class AccordionButton extends DisabledMixin(Component) {
 
   protected renderHeadingText(): TemplateResult | typeof nothing {
     return this.headerText
-      ? html`<mdc-text id="${this.headSectionId}" type="${TYPE.BODY_LARGE_REGULAR}" tagname=${VALID_TEXT_TAGS.SPAN}
+      ? html`<mdc-text
+          id="${this.headSectionId}"
+          type="${TYPE.BODY_LARGE_REGULAR}"
+          tagname=${VALID_TEXT_TAGS.SPAN}
+          part="leading-header-text"
           >${this.headerText}</mdc-text
         >`
       : nothing;
