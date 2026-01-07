@@ -1564,14 +1564,14 @@
       "sheets": {
         "parent": "core/value",
         "type": "color",
-        "value": "#f4b400",
-        "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+        "value": "#0f9d58",
+        "description": "HEX:#0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
       },
       "slides": {
         "parent": "core/value",
         "type": "color",
-        "value": "#0f9d58",
-        "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+        "value": "#F4B400",
+        "description": "HEX:#F4B400\nUsed for bacakground of attachment for content-list components."
       },
       "keynote": {
         "parent": "core/value",
