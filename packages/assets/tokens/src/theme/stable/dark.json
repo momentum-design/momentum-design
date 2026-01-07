@@ -2096,7 +2096,7 @@
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.partner.sheets}",
-            "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+            "description": "HEX: 00893e\nUsed for bacakground of attachment for content-list components."
           },
           "slides": {
             "parent": "theme/stable/dark",
