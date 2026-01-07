@@ -35,6 +35,7 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
       }
 			.layout {
 				width: 100%;
+        flex: 1;
 			}
       .scroll-wrapper {
         overflow-y: scroll;
@@ -45,7 +46,12 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
         background-repeat: no-repeat;
         background-size: cover;
       }
-
+      .container {
+        display: flex;
+        flex-direction: column;
+        /* To place the footer always at the bottom */
+        min-height: 100vh;
+      }
     </style>
   </head>
   <body class="mds-typography mds-effect">
@@ -58,7 +64,7 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
       >
         <div class="scroll-wrapper">
           <div
-            class="background-wrapper"
+            class="background-wrapper container"
             style={`background-image: url(${frontmatter.background || '/default-background.svg'});`}
           >
             <Header />

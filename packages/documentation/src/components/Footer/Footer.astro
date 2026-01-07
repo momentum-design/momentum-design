@@ -3,61 +3,118 @@ import MomentumLogo from '../Header/MomentumLogo.astro';
 ---
 <script>
 import '@momentum-design/components/dist/components/brandvisual/index.js';
-import '@momentum-design/components/dist/components/list/index.js';
-import '@momentum-design/components/dist/components/listheader/index.js';
-import '@momentum-design/components/dist/components/listitem/index.js';
+import '@momentum-design/components/dist/components/text/index.js';
 </script>
 
 <footer>
-  <div class="container">
-    <MomentumLogo height={48} />
-    <mdc-list>
-      <mdc-listheader header-text="Getting started"></mdc-listheader>
-      <mdc-listitem label="For designers"></mdc-listitem>
-      <mdc-listitem label="For developers"></mdc-listitem>
-    </mdc-list>
-    <mdc-list>
-      <mdc-listheader header-text="Tokens"></mdc-listheader>
-      <mdc-listitem label="Colors"></mdc-listitem>
-      <mdc-listitem label="Effects"></mdc-listitem>
-      <mdc-listitem label="Spacing"></mdc-listitem>
-      <mdc-listitem label="Icons"></mdc-listitem>
-    </mdc-list>
-    <mdc-list>
-      <mdc-listheader header-text="Assets"></mdc-listheader>
-      <mdc-listitem label="Typography"></mdc-listitem>
-      <mdc-listitem label="Illustrations"></mdc-listitem>
-      <mdc-listitem label="Brand visuals"></mdc-listitem>
-    </mdc-list>
-    <mdc-list>
-      <mdc-listheader header-text="Components"></mdc-listheader>
-      <mdc-listitem label="Consumption"></mdc-listitem>
-      <mdc-listitem label="Designs"></mdc-listitem>
-    </mdc-list>
-    <mdc-list>
-      <mdc-listheader header-text="Support"></mdc-listheader>
-      <mdc-listitem label="Github"></mdc-listitem>
-      <mdc-listitem label="NPM"></mdc-listitem>
-      <mdc-listitem label="Figma"></mdc-listitem>
-    </mdc-list>
+  <div class="footer-container">
+    <div class="links-container">
+      <div class="logo">
+        <MomentumLogo height={48} />
+      </div>
+      <div class="links-row">
+        <mdc-text tagname="span" type="body-large-bold"><a href="#">Tokens</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Colors</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Effects</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Spacing</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Typography</a></mdc-text>
+      </div>
+      <div class="links-row">
+        <mdc-text tagname="span" type="body-large-bold"><a href="#">Assets</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Iconography</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Illustrations</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Brand visuals</a></mdc-text>
+      </div>
+      <div class="links-row">
+        <mdc-text tagname="span" type="body-large-bold"><a href="#">Components</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Consumption</a></mdc-text>
+      </div>
+      <div class="links-row">
+        <mdc-text tagname="span" type="body-large-bold"><a href="#">Support</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Getting started</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Github</a></mdc-text>
+        <mdc-text tagname="span" type="body-midsize-regular"><a href="#">Figma</a></mdc-text>
+      </div>
+    </div>
+    <div class="bottom-footer">
+      <mdc-brandvisual class="cisco-footer-logo" name="cisco-logo-dark-bw"></mdc-brandvisual>
+    © {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
+    </div>
   </div>
-  <mdc-brandvisual class="cisco-footer-logo" name="cisco-logo-dark-bw"></mdc-brandvisual>
-  © {new Date().getFullYear()} Cisco and/or its affiliates. All Rights Reserved.
 </footer>
 
 <style>
-  .container {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-  }
+footer {
+  display: flex;
+  justify-content: center;
+  padding: 0 60px 80px 60px;
+}
+
+@media (max-width: 1024px) {
   footer {
-    height: 5.5rem;
-    padding: 20px;
+    padding: 0 48px 80px 48px;
   }
 
-  .cisco-footer-logo {
-    width: 35px;
-    margin-right: 10px;
+  .footer-container .links-container .links-row {
+    width: 140px;
   }
+}
+
+@media (min-width: 768px) {
+  .logo {
+    width: 275px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container .links-container .links-row {
+    width: 115px;
+  }
+}
+
+@media (max-width: 320px) {
+  .footer-container .links-container {
+    flex-direction: column;
+  }
+}
+
+.footer-container{
+  width: 100%;
+  max-width: 1160px;
+}
+
+.links-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1160px;
+  gap: 24px;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 80px;
+}
+
+.logo {
+  width: 100%;
+  padding-right: 80px;
+}
+
+.links-row {
+  width: 197.25px;
+}
+
+.links-row mdc-text:first-child {
+  margin-bottom: 11px;
+}
+
+.links-row mdc-text {
+  margin-bottom: 4px;
+}
+
+.bottom-footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 </style>
