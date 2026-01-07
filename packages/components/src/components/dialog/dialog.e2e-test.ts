@@ -21,6 +21,7 @@ type SetupOptions = {
   descriptionText?: string;
   headerTagName?: string;
   descriptionTagName?: string;
+  hideBackdrop?: boolean;
   children?: any;
 };
 
@@ -43,6 +44,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.zIndex ? `z-index="${restArgs.zIndex}"` : ''}
         ${restArgs.visible ? `visible="${restArgs.visible}"` : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
+        ${restArgs.hideBackdrop ? `hide-backdrop` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
         ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
@@ -293,6 +295,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(dialog).toHaveAttribute('header-tag-name', 'h2');
       await expect(dialog).toHaveAttribute('description-tag-name', 'p');
       await expect(dialog).toHaveAttribute('role', 'dialog');
+      await expect(dialog).not.toHaveAttribute('hide-backdrop');
     });
 
     await test.step('accessibility attributes', async () => {
@@ -310,6 +313,142 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
+    });
+  });
+
+  /**
+   * BACKDROP
+   */
+  await test.step('backdrop', async () => {
+    await test.step('backdrop should be present by default', async () => {
+      const { dialog } = await setup({
+        componentsPage,
+        id: 'dialog-with-backdrop',
+        triggerId: 'trigger-btn',
+        visible: true,
+        ariaLabel: 'dialog with backdrop',
+      });
+
+      await expect(dialog).toBeVisible();
+
+      // Check that backdrop element exists
+      const backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).toBeVisible();
+    });
+
+    await test.step('backdrop should not be present when hide-backdrop is set', async () => {
+      const { dialog } = await setup({
+        componentsPage,
+        id: 'dialog-without-backdrop',
+        triggerId: 'trigger-btn',
+        visible: true,
+        hideBackdrop: true,
+        ariaLabel: 'dialog without backdrop',
+      });
+
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toHaveAttribute('hide-backdrop');
+
+      // Check that backdrop element does not exist
+      const backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).not.toBeVisible();
+    });
+
+    await test.step('backdrop should be removed when dialog is hidden', async () => {
+      const { dialog } = await setup({
+        componentsPage,
+        id: 'dialog-backdrop-on-hide',
+        triggerId: 'trigger-btn',
+        visible: true,
+        ariaLabel: 'dialog backdrop on hide',
+      });
+
+      await expect(dialog).toBeVisible();
+
+      // Backdrop should be present
+      let backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).toBeVisible();
+
+      // Hide dialog
+      await dialog.evaluate(dialog => {
+        dialog.removeAttribute('visible');
+      });
+
+      await expect(dialog).not.toBeVisible();
+
+      // Backdrop should be removed
+      backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).not.toBeVisible();
+    });
+
+    await test.step('backdrop attribute can be toggled dynamically', async () => {
+      const { dialog } = await setup({
+        componentsPage,
+        id: 'dialog-backdrop-toggle',
+        triggerId: 'trigger-btn',
+        visible: true,
+        hideBackdrop: false,
+        ariaLabel: 'dialog backdrop toggle',
+      });
+
+      await expect(dialog).toBeVisible();
+
+      // Initially backdrop is present
+      let backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).toBeVisible();
+
+      // Hide the dialog and set hide-backdrop
+      await dialog.evaluate(dialog => {
+        dialog.removeAttribute('visible');
+      });
+      await expect(dialog).not.toBeVisible();
+
+      await componentsPage.setAttributes(dialog, { 'hide-backdrop': '' });
+      await expect(dialog).toHaveAttribute('hide-backdrop');
+
+      // Show dialog again
+      await dialog.evaluate(dialog => {
+        dialog.toggleAttribute('visible');
+      });
+      await expect(dialog).toBeVisible();
+
+      // Backdrop should not be present now
+      backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).not.toBeVisible();
+    });
+
+    await test.step('backdrop should be removed when hide-backdrop is changed while dialog is open', async () => {
+      const { dialog } = await setup({
+        componentsPage,
+        id: 'dialog-backdrop-dynamic-change',
+        triggerId: 'trigger-btn',
+        visible: true,
+        hideBackdrop: false,
+        ariaLabel: 'dialog backdrop dynamic change',
+      });
+
+      await expect(dialog).toBeVisible();
+
+      // Initially backdrop is present
+      let backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).toBeVisible();
+
+      // Change hide-backdrop to true while dialog is open
+      await componentsPage.setAttributes(dialog, { 'hide-backdrop': '' });
+      await expect(dialog).toHaveAttribute('hide-backdrop');
+
+      // Backdrop should still be visible while dialog is open
+      await expect(backdrop).toBeVisible();
+
+      // Close the dialog
+      await dialog.evaluate(dialog => {
+        dialog.removeAttribute('visible');
+      });
+      await expect(dialog).not.toBeVisible();
+
+      // Backdrop should now be removed (this is the bug fix being tested)
+      backdrop = componentsPage.page.locator('.dialog-backdrop');
+      await expect(backdrop).not.toBeVisible();
     });
   });
 
@@ -591,6 +730,54 @@ test('mdc-dialog', async ({ componentsPage }) => {
         /* eslint-enable no-await-in-loop */
       });
       // End AI-Assisted
+    });
+  });
+
+  /**
+   * RESPONSIVE SETTINGS
+   */
+  await test.step('responsive settings', async () => {
+    const setup = async ({ size, forceFullScreenDialog }: { size?: string; forceFullScreenDialog?: boolean }) => {
+      await componentsPage.mount({
+        html: `
+      <div id="wrapper">
+          <mdc-responsivesettingsprovider id="responsive-settings-provider" ${forceFullScreenDialog ? 'force-fullscreen-dialog' : ''}>
+              <mdc-dialog id="dialog" ${size ? `size="${size}"` : ''}>Hello dialog!</mdc-dialog>
+          </mdc-responsivesettingsprovider>
+      </div>
+      `,
+        clearDocument: true,
+      });
+
+      const dialog = componentsPage.page.locator(`#dialog`);
+      const responsiveSettings = componentsPage.page.locator(`#responsive-settings-provider`);
+      return { dialog, responsiveSettings };
+    };
+
+    await test.step('force-fullscreen-dialog responsive settings changes dialog size settings', async () => {
+      const { dialog } = await setup({ forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step("responsive settings takes priority over dialog's size attribute", async () => {
+      const { dialog } = await setup({ size: 'medium', forceFullScreenDialog: true });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+    });
+
+    await test.step('dialog size reacts on responsive settings changes', async () => {
+      const { dialog, responsiveSettings } = await setup({ size: 'medium', forceFullScreenDialog: false });
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
+
+      await componentsPage.setAttributes(responsiveSettings, { 'force-fullscreen-dialog': 'true' });
+
+      await expect(dialog).toHaveAttribute('size', 'fullscreen');
+
+      await componentsPage.removeAttribute(responsiveSettings, 'force-fullscreen-dialog');
+
+      await expect(dialog).toHaveAttribute('size', 'medium');
     });
   });
 });

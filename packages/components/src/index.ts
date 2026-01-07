@@ -56,6 +56,7 @@ import Progressbar from './components/progressbar';
 import Progressspinner from './components/progressspinner';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
+import ResponsiveSettingsProvider from './components/responsivesettingsprovider';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Searchpopover from './components/searchpopover';
@@ -89,11 +90,13 @@ import Banner from './components/banner';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
+import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
+import type { LinkButtonSize } from './components/linkbutton/linkbutton.types';
 import type { TextType as TypewriterType } from './components/typewriter/typewriter.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
@@ -125,6 +128,7 @@ import {
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
+import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
 
 // Components Exports
 export {
@@ -184,6 +188,7 @@ export {
   Progressspinner,
   Radio,
   RadioGroup,
+  ResponsiveSettingsProvider,
   ScreenreaderAnnouncer,
   Searchfield,
   Searchpopover,
@@ -219,6 +224,7 @@ export {
 // Types Exports
 export type {
   BadgeType,
+  ChipColorType,
   ButtonColor,
   ButtonVariant,
   IconButtonSize,
@@ -247,6 +253,8 @@ export type {
   TextareaFocusEvent,
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
+  ToggleOnChangeEvent,
+  LinkButtonSize,
 };
 
 // Constants / Utils Exports

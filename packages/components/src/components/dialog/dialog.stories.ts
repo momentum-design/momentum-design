@@ -35,6 +35,7 @@ const createDialog = (args: Args, content: TemplateResult, onClose: () => void) 
     ?visible="${args.visible}"
     variant="${args.variant}"
     ?focus-trap="${args['focus-trap']}"
+    ?hide-backdrop="${args['hide-backdrop']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @close="${onClose}"
@@ -116,7 +117,13 @@ const dialogWithIframeContent = () => html`
 const dialogWithTextarea = () => html`
   <div slot="dialog-body">
     <p>This is the body content of the dialog with a textarea. Try out pressing Tab to see the Focus Trap in action.</p>
-    <mdc-textarea label="Type something here..." rows="4" cols="50"></mdc-textarea>
+    <mdc-textarea
+      label="Type something here..."
+      rows="4"
+      cols="50"
+      max-character-limit="75"
+      character-limit-announcement="%{number-of-characters} out of %{max-character-limit} characters are typed."
+    ></mdc-textarea>
     <mdc-button>This is a mdc-button after the Textarea</mdc-button>
   </div>
 `;
@@ -392,6 +399,9 @@ const meta: Meta = {
     'focus-trap': {
       control: 'boolean',
     },
+    'hide-backdrop': {
+      control: 'boolean',
+    },
     role: {
       control: 'select',
       options: Object.values(DIALOG_ROLE),
@@ -430,6 +440,24 @@ export const Example: StoryObj = {
     size: DEFAULTS.SIZE,
     ...commonProperties,
     ...headerDescriptionProperties,
+  },
+};
+
+export const WithoutBackdrop: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+    ...commonProperties,
+    ...headerDescriptionProperties,
+    'hide-backdrop': true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example shows a dialog without a backdrop. The backdrop can be disabled by setting the `hide-backdrop` attribute to `true`. ' +
+          'When disabled, users can interact with elements behind the dialog.',
+      },
+    },
   },
 };
 

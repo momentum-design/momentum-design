@@ -72,6 +72,12 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   /**
    * Optional download attribute to instruct browsers to download the linked resource.
+   *
+   * Valid values:
+   * - empty string: browser suggests a name for the downloaded file
+   * - string: name of the downloaded file
+   *
+   * More details in the [Anchor element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download) docs.
    */
   @property({ type: String, reflect: true })
   download?: string;
@@ -155,7 +161,7 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
       <a
         class="mdc-focus-ring"
         part="anchor"
-        href="${this.href}"
+        href="${ifDefined(this.href)}"
         target="${this.target}"
         rel="${ifDefined(this.rel)}"
         download="${ifDefined(this.download)}"
@@ -172,6 +178,8 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Linksimple;

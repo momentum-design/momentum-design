@@ -5,37 +5,41 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import * as CONTROL_TYPE_CONSTANTS from '../controltypeprovider/controltypeprovider.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 import type Toggle from './toggle.component';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
-  <mdc-toggle
-    name="toggleName"
-    value="toggleValue"
-    @focus="${action('onfocus')}"
-    @change="${action('onchange')}"
-    @keydown="${action('onkeydown')}"
-    @click="${action('onclick')}"
-    size="${args.size}"
-    toggletip-text="${args['toggletip-text']}"
-    toggletip-placement="${args['toggletip-placement']}"
-    toggletip-strategy="${args['toggletip-strategy']}"
-    info-icon-aria-label="${args['info-icon-aria-label']}"
-    label="${ifDefined(args.label)}"
-    help-text="${ifDefined(args['help-text'])}"
-    data-aria-label="${ifDefined(args['data-aria-label'])}"
-    ?checked="${args.checked}"
-    ?required="${args.required}"
-    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-    ?disabled="${args.disabled}"
-    ?readonly="${args.readonly}"
-    ?soft-disabled="${args['soft-disabled']}"
-  >
-  </mdc-toggle>
+  <div role="main">
+    <mdc-toggle
+      name="${ifDefined(args.name)}"
+      value="${ifDefined(args.value)}"
+      @focus="${action('onfocus')}"
+      @change="${action('onchange')}"
+      @keydown="${action('onkeydown')}"
+      @click="${action('onclick')}"
+      size="${args.size}"
+      control-type="${ifDefined(args['control-type'])}"
+      toggletip-text="${args['toggletip-text']}"
+      toggletip-placement="${args['toggletip-placement']}"
+      toggletip-strategy="${args['toggletip-strategy']}"
+      info-icon-aria-label="${args['info-icon-aria-label']}"
+      label="${ifDefined(args.label)}"
+      help-text="${ifDefined(args['help-text'])}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
+      ?checked="${args.checked}"
+      ?required="${args.required}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+      ?disabled="${args.disabled}"
+      ?readonly="${args.readonly}"
+      ?soft-disabled="${args['soft-disabled']}"
+    >
+    </mdc-toggle>
+  </div>
 `;
 
 const meta: Meta = {
@@ -60,6 +64,10 @@ const meta: Meta = {
     },
     'soft-disabled': {
       control: 'boolean',
+    },
+    'control-type': {
+      control: 'select',
+      options: [undefined, ...CONTROL_TYPE_CONSTANTS.VALID_VALUES],
     },
     label: {
       control: 'text',
@@ -97,7 +105,13 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'id']),
+    ...hideControls([
+      'help-text-type', 
+      'id', 
+      'validation-message',
+      'validity',
+      'willValidate',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -107,6 +121,8 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    name: 'toggleName',
+    value: 'toggleValue',
     label: 'Toggle label',
     checked: false,
     size: DEFAULTS.SIZE,
@@ -139,20 +155,32 @@ export const WithHelperText: StoryObj = {
 };
 
 export const Disabled: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+  },
   render: args =>
-    html` <div style="display: flex; flex-direction: column; gap: 5px">
-      <mdc-toggle label="inactive toggle" disabled size="${args.size}"></mdc-toggle>
-      <mdc-toggle label="active toggle" disabled checked size="${args.size}"></mdc-toggle>
-    </div>`,
+    html`
+      <div role="main">
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <mdc-toggle label="inactive toggle" disabled size="${args.size}"></mdc-toggle>
+          <mdc-toggle label="active toggle" disabled checked size="${args.size}"></mdc-toggle>
+        </div>
+      </div>
+    `,
 };
 
 export const WithoutLabel: StoryObj = {
   args: {
+    ...Example.args,
+    label: undefined,
     'data-aria-label': 'This is a toggle with no label',
   },
 };
 
 export const ToggleInsideForm: StoryObj = {
+  args: {
+    size: DEFAULTS.SIZE,
+  },
   render: args => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
@@ -161,25 +189,28 @@ export const ToggleInsideForm: StoryObj = {
       action('Form Submitted')({ value: selectedValues });
     };
     return html`
-      <form @submit="${onSubmit}">
-        <fieldset>
-          <legend>Form Example</legend>
-          <mdc-toggle
-            name="toggleName"
-            value="toggleValue"
-            label="Agree to Terms"
-            size="${args.size}"
-            required
-            validation-message="Toggle this switch to continue"
-          ></mdc-toggle>
-          <div style="display: flex; gap: 0.25rem">
-            <mdc-button type="submit" size="24">Submit</mdc-button>
-            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
-          </div>
-        </fieldset>
-      </form>
+      <div role="main">
+        <form @submit="${onSubmit}">
+          <fieldset>
+            <legend>Form Example</legend>
+            <mdc-toggle
+              name="toggleName"
+              value="toggleValue"
+              label="Agree to Terms"
+              size="${args.size}"
+              required
+              validation-message="Toggle this switch to continue"
+            ></mdc-toggle>
+            <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     `;
   },
+  ...hideAllControls(),
 };
 
 export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
@@ -216,22 +247,24 @@ export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
     };
 
     return html`
-      <form @submit="${onSubmit}" @reset="${onReset}" novalidate>
-        <fieldset>
-          <legend>Form Example With Dynamic Help Text</legend>
-          <mdc-toggle
-            name="toggleName"
-            value="toggleValue"
-            label="Agree to Terms"
-            size="${args.size}"
-            required
-          ></mdc-toggle>
-          <div style="display: flex; gap: 0.25rem">
-            <mdc-button type="submit" size="24">Submit</mdc-button>
-            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
-          </div>
-        </fieldset>
-      </form>
+      <div role="main">
+        <form @submit="${onSubmit}" @reset="${onReset}" novalidate>
+          <fieldset>
+            <legend>Form Example With Dynamic Help Text</legend>
+            <mdc-toggle
+              name="toggleName"
+              value="toggleValue"
+              label="Agree to Terms"
+              size="${args.size}"
+              required
+            ></mdc-toggle>
+            <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     `;
   },
   args: {
@@ -240,4 +273,50 @@ export const ToggleInsideFormWithHelpTextValidation: StoryObj = {
     'help-text': '',
     'help-text-type': 'default',
   },
+  ...hideAllControls(),
+};
+
+export const ControlledToggleWithConfirmation: StoryObj = {
+  render: () => {
+    const handleToggleChange = (event: Event) => {
+      const toggle = event.target as Toggle;
+      const newState = !toggle.checked;
+      const message = newState ? 'Enable this setting?' : 'Are you sure you want to disable this setting?';
+
+      action('Toggle Change Attempted')({ currentState: toggle.checked, attemptedState: newState });
+
+      // eslint-disable-next-line no-alert, no-restricted-globals
+      const confirmed = confirm(message);
+      if (confirmed) {
+        toggle.checked = newState;
+        action(newState ? 'Toggle Enabled' : 'Toggle Disabled')({ confirmed: true });
+      } else {
+        action('Toggle Change Cancelled')({ confirmed: false });
+      }
+    };
+
+    return html`
+      <div role="main" style="padding: 1rem;">
+        <h3>Controlled Toggle with Confirmation Dialog</h3>
+        <p>
+          This toggle uses <code>control-type="controlled"</code>. Try clicking it and you'll see a
+          confirmation dialog.
+        </p>
+        <mdc-toggle
+          control-type="controlled"
+          label="Controlled: Requires confirmation for any change"
+          help-text="Dispatches change event but doesn't update state. Parent handles confirmation."
+          @change="${handleToggleChange}"
+        ></mdc-toggle>
+
+        <h3 style="margin-top: 2rem;">Uncontrolled Toggle (Default)</h3>
+        <mdc-toggle
+          label="Uncontrolled: Changes state immediately"
+          help-text="Manages its own state and updates immediately when clicked"
+          @change="${action('Uncontrolled Toggle Changed')}"
+        ></mdc-toggle>
+      </div>
+    `;
+  },
+  ...hideAllControls(),
 };

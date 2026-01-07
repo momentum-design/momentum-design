@@ -9,6 +9,7 @@ import type VirtualizedList from './virtualizedlist.component';
 
 test('mdc-virtualizedlist', async ({ componentsPage }) => {
   type SetupOptions = {
+    itemHeight?: number;
     listHeader?: string;
     loop?: true;
     revertList?: true;
@@ -17,9 +18,11 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges?: true;
     scrollAnchoring?: true;
     withTooltip?: true;
+    buttonLocation?: 'trailing' | 'content';
   };
 
   const setup = async ({
+    itemHeight = 40,
     listHeader,
     loop,
     revertList,
@@ -28,11 +31,14 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     observeSizeChanges,
     scrollAnchoring,
     withTooltip,
+    buttonLocation = 'trailing',
   }: SetupOptions = {}) => {
     await componentsPage.mount({
       html: `
         <div>
           <mdc-virtualizedlist-e2e
+            item-height="${itemHeight}"
+            button-location="${buttonLocation}"
             ${loop ? 'loop' : ''}
             ${revertList ? 'revert-list' : ''}
             ${initialItemCount !== undefined ? `initial-item-count="${initialItemCount}"` : ''}
@@ -79,43 +85,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await expect(vlist).not.toHaveAttribute('observe-size-changes');
   });
 
-  await test.step('renders correctly with list header', async () => {
-    const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
-      element: wrapper,
-    });
-
-    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
-      for (let i = 0; i < 25; i += 1) {
-        wrapperEl.addItem(`Message ${i}`);
-      }
-    });
-
-    await scrollList(vlist, 180);
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
-      element: wrapper,
-    });
-  });
-
-  await test.step('popovers should render correctly when defined inside the listitems', async () => {
-    const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
-
-    await expect(listItemLocator(vlist, 24)).toBeVisible();
-    await expect(listItemLocator(vlist, 24)).toBeInViewport();
-
-    await componentsPage.actionability.pressTab();
-    await componentsPage.actionability.pressTab();
-
-    await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
-    await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
-
-    await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
-      element: wrapper,
-    });
-  });
-
   await test.step('list populates correctly', async () => {
     const { wrapper, vlist } = await setup();
 
@@ -126,7 +95,8 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     // Flag test
-    // This is fails, the height of the listitems has been updated
+    // If this fails, the height of the listitems has been updated
+    // so all tests will need to be reviewed to update expected values (heights, counts, etc.)
     expect(await listItemLocator(vlist, 0).evaluate(el => getComputedStyle(el).height)).toBe('40px');
 
     // 300px / 40px = 7.5 -> 8 items + 1 overflow
@@ -144,6 +114,86 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
     await componentsPage.actionability.pressTab();
     await expect(firstItem).toBeFocused();
+  });
+
+  await test.step('visual regression', async () => {
+    await test.step('renders correctly with list header', async () => {
+      const { wrapper, vlist } = await setup({ listHeader: 'Header Text' });
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader`, {
+        element: wrapper,
+      });
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        for (let i = 0; i < 25; i += 1) {
+          wrapperEl.addItem(`Message ${i}`);
+        }
+      });
+
+      await scrollList(vlist, 180);
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-listheader-scrolled`, {
+        element: wrapper,
+      });
+    });
+
+    await test.step('popovers should render correctly when defined inside the listitems', async () => {
+      const { wrapper, vlist } = await setup({ initialItemCount: 25, initialFocus: 24, withTooltip: true });
+
+      await expect(listItemLocator(vlist, 24)).toBeVisible();
+      await expect(listItemLocator(vlist, 24)).toBeInViewport();
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+
+      await expect(listItemLocator(vlist, 24).locator('mdc-button')).toBeFocused();
+      await expect(listItemLocator(vlist, 24).locator('mdc-tooltip')).toBeVisible();
+
+      await componentsPage.visualRegression.takeScreenshot(`mdc-virtualizedlist-with-tooltip`, {
+        element: wrapper,
+      });
+    });
+  });
+
+  await test.step('interaction', async () => {
+    await test.step('clicking on item focuses it', async () => {
+      const { vlist } = await setup({ initialItemCount: 20 });
+
+      const itemToClick = listItemLocator(vlist, 5);
+      await itemToClick.click();
+
+      await expect(itemToClick).toBeFocused();
+      await expect(itemToClick).toHaveAttribute('tabindex', '0');
+      await expect(itemToClick).toBeInViewport();
+    });
+
+    await test.step('clicking on item which is half visible does not snap the scroll', async () => {
+      const { wrapper, vlist } = await setup({ itemHeight: 350 });
+
+      await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+        for (let i = 0; i < 10; i += 1) {
+          wrapperEl.addItem(`Message ${i}`, undefined, { size: 350 });
+        }
+      });
+
+      await scrollList(vlist, 4000);
+      await scrollList(vlist, -100);
+
+      const listScrollTop = await vlist.evaluate((vlistEl: VirtualizedList) => {
+        const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
+        return scrollEl?.scrollTop;
+      });
+
+      // Click the top left corner of the item to avoid playwright scrolling
+      await listItemLocator(vlist, 9).click({ position: { x: 0, y: 0 } });
+
+      const newListScrollTop = await vlist.evaluate((vlistEl: VirtualizedList) => {
+        const scrollEl = vlistEl.shadowRoot?.querySelector<HTMLElement>('[part="scroll"]');
+        return scrollEl?.scrollTop;
+      });
+
+      expect(newListScrollTop).toBe(listScrollTop);
+    });
   });
 
   await test.step('keyboard', async () => {
@@ -210,28 +260,23 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
 
     await test.step('focused element remains in viewport after scroll and is focused again on tab', async () => {
-      const { vlist } = await setup({ initialItemCount: 25 });
+      const { vlist } = await setup({ initialItemCount: 30 });
 
-      await componentsPage.actionability.pressTab();
-      await expect(listItemLocator(vlist, 0)).toBeFocused();
+      await scrollList(vlist, 540);
 
-      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
-        listItemLocator(vlist, 1),
-        listItemLocator(vlist, 2),
-        listItemLocator(vlist, 3),
-      ]);
+      await listItemLocator(vlist, 15).click();
 
       await componentsPage.actionability.pressTab();
       await componentsPage.actionability.pressTab();
       await expect(componentsPage.page.getByText('after')).toBeFocused();
 
-      await scrollList(vlist, 400);
-      await expect(listItemLocator(vlist, 3)).toBeVisible();
-      await expect(listItemLocator(vlist, 3)).not.toBeInViewport();
+      await scrollList(vlist, 600);
+      await expect(listItemLocator(vlist, 15)).toBeVisible();
+      await expect(listItemLocator(vlist, 15)).not.toBeInViewport();
 
       await componentsPage.actionability.pressShiftTab();
-      await expect(listItemLocator(vlist, 3)).toBeInViewport();
-      await expect(listItemLocator(vlist, 3).locator('mdc-button')).toBeFocused();
+      await expect(listItemLocator(vlist, 15)).toBeInViewport();
+      await expect(listItemLocator(vlist, 15).locator('mdc-button')).toBeFocused();
     });
 
     const testcases = [

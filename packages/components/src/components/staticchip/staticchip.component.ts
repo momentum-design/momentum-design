@@ -1,4 +1,5 @@
-import { CSSResult, html, nothing } from 'lit';
+import type { CSSResult } from 'lit';
+import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
@@ -12,9 +13,8 @@ import styles from './staticchip.styles';
 /**
  * mdc-staticchip is an static element that can be used to represent a chip. It supports a leading icon along with label.
  *
- * It is recommended to keep the label text for the chip component concise and compact.
+ * It is recommended to keep the label text for the chip component concise and compact.<br/>
  * For best results, we recommend limiting the <b>maximum length of the label text to 20 characters</b>, including empty spaces to split words.
- *
  *
  * @tagname mdc-staticchip
  *
@@ -26,6 +26,7 @@ import styles from './staticchip.styles';
  * @cssproperty --mdc-chip-background-color - The background color of the static chip.
  *
  * @csspart label - The label of the static chip.
+ * @csspart icon - The icon of the static chip.
  */
 class StaticChip extends IconNameMixin(Component) {
   /**
@@ -50,8 +51,10 @@ class StaticChip extends IconNameMixin(Component) {
    *
    * We recommend limiting the <b>maximum length of the label text to 20 characters</b>,
    * including empty spaces to split words.
+   *
+   * @default undefined
    */
-  @property({ type: String }) label = '';
+  @property({ type: String }) label?: string;
 
   /**
    * Renders the icon element if available.

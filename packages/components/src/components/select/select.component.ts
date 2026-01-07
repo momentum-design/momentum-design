@@ -31,6 +31,7 @@ import type { Placement } from './select.types';
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
  * It is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
+ * Optional: Add `mdc-divider` after each option group (`mdc-optgroup`) to separate groups visually.
  *
  * Every mdc-option should have a `value` attribute set to ensure proper form submission.
  *
@@ -49,14 +50,13 @@ import type { Placement } from './select.types';
  *
  * @tagname mdc-select
  *
- * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
- *
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
  * @event change - (React: onChange) This event is dispatched when the select is changed.
  * @event input - (React: onInput) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  *
+ * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
  * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
@@ -339,7 +339,7 @@ class Select
         // when selected, check if there is any other option is a selected option,
         // first preference should always be given to the `selected` attribute.
         // if there is no selected option, then reset it to placeholder or first option
-        if (firstSelectedOption) {
+        if (firstSelectedOption && firstSelectedOption !== this.selectedOption) {
           this.setSelectedOption(firstSelectedOption);
         } else {
           this.setSelectedOption(option);
@@ -752,13 +752,13 @@ class Select
           >
             ${this.selectedOption?.label ?? this.placeholder}
           </mdc-text>
-        </div>
-        <div part="icon-container">
-          <mdc-icon
-            size="1"
-            length-unit="rem"
-            name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
-          ></mdc-icon>
+          <div part="icon-container">
+            <mdc-icon
+              size="1"
+              length-unit="rem"
+              name="${this.displayPopover ? ARROW_ICON.ARROW_UP : ARROW_ICON.ARROW_DOWN}"
+            ></mdc-icon>
+          </div>
         </div>
         <input
           id="${this.inputId}"

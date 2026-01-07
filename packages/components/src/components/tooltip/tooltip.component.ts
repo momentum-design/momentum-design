@@ -5,17 +5,25 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
 import type { TooltipType } from './tooltip.types';
 
 /**
+ * A Tooltip is a special type of popovers that provide additional context to content on the screen. <br/>
+ * Tooltip is triggered by mouse hover or by keyboard focus and will disappear upon mouse exit or focus change.
+ *
+ * Because of this, tooltips cannot contain content that can be focused or interacted with.
+ * When a tooltip must contain a focusable element like a link or button, use a toggle tip instead.
+ *
  * A tooltip is triggered by mouse hover or by keyboard focus
  * and will disappear upon mouse exit or focus change.
  *
- * Note: Tooltips cannot contain content that can be focused or interacted with.
+ * Note:
+ *  - Tooltips cannot contain content that can be focused or interacted with.
+ *  - Tooltips will contain the default `aria-hidden="true"` so that VO will never focus the tooltip.
  *
  * @tagname mdc-tooltip
  *
@@ -43,25 +51,28 @@ class Tooltip extends Popover {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.backdrop = false;
+    this.role = ROLE.TOOLTIP;
+    // We don't want the tooltip to be visible for screen readers as they are not focusable
+    this.ariaHidden = DEFAULTS.ARIA_HIDDEN;
+    // Tooltip defaults
+    this.backdrop = DEFAULTS.BACKDROP;
     this.delay = this.delay || DEFAULTS.DELAY;
-    this.focusTrap = false;
-    this.hideOnBlur = true;
-    this.hideOnEscape = true;
-    this.interactive = false;
+    this.disableAriaExpanded = DEFAULTS.DISABLE_ARIA_EXPANDED;
+    this.hideOnBlur = DEFAULTS.HIDE_ON_BLUR;
+    this.hideOnEscape = DEFAULTS.HIDE_ON_ESCAPE;
     this.offset = this.offset || DEFAULTS.OFFSET;
     this.placement = this.placement || DEFAULTS.PLACEMENT;
-    this.role = ROLE.TOOLTIP;
-    this.trigger = 'mouseenter focusin';
+    this.trigger = DEFAULTS.TRIGGER;
 
-    this.preventScroll = false;
-    this.disableFlip = false;
-    this.preventScroll = false;
-    this.closeButton = false;
-    this.hideOnOutsideClick = false;
-    this.focusBackToTrigger = false;
-    this.size = false;
-    this.disableAriaExpanded = true;
+    // Popover defaults
+    this.closeButton = POPOVER_DEFAULTS.CLOSE_BUTTON;
+    this.disableFlip = POPOVER_DEFAULTS.DISABLE_FLIP;
+    this.focusBackToTrigger = POPOVER_DEFAULTS.FOCUS_BACK;
+    this.focusTrap = POPOVER_DEFAULTS.FOCUS_TRAP;
+    this.hideOnOutsideClick = POPOVER_DEFAULTS.HIDE_ON_CLICK_OUTSIDE;
+    this.interactive = POPOVER_DEFAULTS.INTERACTIVE;
+    this.preventScroll = POPOVER_DEFAULTS.PREVENT_SCROLL;
+    this.size = POPOVER_DEFAULTS.SIZE;
   }
 
   /**

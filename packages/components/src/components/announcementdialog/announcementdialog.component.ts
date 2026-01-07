@@ -26,16 +26,11 @@ import { DEFAULTS } from './announcementdialog.constants';
  * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
  * or Escape is pressed).
  *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
+ * ## Accessibility
+ * - You have to be explicitly set the following attributes:
+ *  * The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
+ *  * Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
  *
- * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
- * - Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
- *
- * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
- * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
- * - Reference docs for more info: https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions
- *
- * @dependency mdc-button
  * @dependency mdc-illustration
  * @dependency mdc-text
  *
@@ -90,7 +85,21 @@ class AnnouncementDialog extends Dialog {
    * @default medium
    */
   @property({ type: String, reflect: true })
-  override size: AnnouncementDialogSize = DEFAULTS.SIZE;
+  override get size(): AnnouncementDialogSize {
+    return this.responsiveSettingsContext?.value?.forceFullscreenDialog
+      ? 'fullscreen'
+      : (this.internalSize as AnnouncementDialogSize);
+  }
+
+  override set size(value: AnnouncementDialogSize) {
+    this.internalSize = value;
+  }
+
+  constructor() {
+    super();
+
+    this.internalSize = DEFAULTS.SIZE;
+  }
 
   override connectedCallback() {
     super.connectedCallback();

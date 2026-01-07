@@ -9,6 +9,9 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
+import providerUtils from '../../utils/provider';
+import ResponsiveSettingsContext from '../responsivesettingsprovider/responsiveSettingsContext';
+import ResponsiveSettingsProvider from '../responsivesettingsprovider';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -88,6 +91,14 @@ import styles from './dialog.styles';
  * using the footer-link and footer-button slots is preferred
  */
 class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component)))) {
+  /** @internal */
+  protected readonly responsiveSettingsContext = providerUtils.consume<typeof ResponsiveSettingsContext.context>({
+    host: this,
+    context: ResponsiveSettingsProvider.Context,
+    subscribe: true,
+    syncProperties: ['size'],
+  });
+
   /**
    * The unique ID of the dialog
    */
@@ -121,11 +132,24 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
+   * The internal value helps to restore original size when responsive settings disabled.
+   *
+   * @internal
+   */
+  protected internalSize: DialogSize = DEFAULTS.SIZE;
+
+  /**
    * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), 'large' (992px width), 'xlarge' (90% width) or 'fullscreen' (100% width).
    * @default small
    */
   @property({ type: String, reflect: true })
-  size: DialogSize = DEFAULTS.SIZE;
+  get size(): DialogSize {
+    return this.responsiveSettingsContext?.value?.forceFullscreenDialog ? 'fullscreen' : this.internalSize;
+  }
+
+  set size(value: DialogSize) {
+    this.internalSize = value;
+  }
 
   /**
    * The variant of the dialog, can be 'default' or 'promotional'
@@ -218,6 +242,17 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
   focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
+
+  /**
+   * Determines whether a backdrop should be displayed behind the dialog.
+   * By default, a backdrop is present and it will cover the rest of the page and prevent interaction
+   * with other elements while the dialog is open.
+   * When this attribute is set to true, no backdrop will be created.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-backdrop' })
+  hideBackdrop: boolean = DEFAULTS.HIDE_BACKDROP;
 
   /**
    * For now preventScroll is always true as the dialog is a modal component only.
@@ -412,9 +447,12 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
       // Store the currently focused element before opening the dialog
       this.lastActiveElement = document.activeElement as HTMLElement;
 
-      // remove any existing backdrop and create a new one
-      this.removeBackdrop();
-      this.createBackdrop('dialog');
+      // create backdrop if enabled
+      if (!this.hideBackdrop) {
+        // remove any existing backdrop and create a new one
+        this.removeBackdrop();
+        this.createBackdrop('dialog');
+      }
 
       this.activatePreventScroll();
 
@@ -429,6 +467,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
       DialogEventManager.onShowDialog(this);
     } else if (!newValue && oldValue) {
+      // Always remove backdrop if it exists, regardless of current hideBackdrop value
+      // This handles the case where hideBackdrop was changed while dialog was open
       this.removeBackdrop();
 
       // Set aria-expanded attribute on the trigger element to false if it exists

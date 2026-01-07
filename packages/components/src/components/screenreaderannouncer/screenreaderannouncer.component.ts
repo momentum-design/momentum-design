@@ -49,7 +49,7 @@ class ScreenreaderAnnouncer extends Component {
    * @default ''
    */
   @property({ type: String, reflect: true })
-  announcement: string = '';
+  announcement?: string = '';
 
   /**
    * The id of the element in the light dom, to which announcement elements will be appended.
@@ -128,7 +128,7 @@ class ScreenreaderAnnouncer extends Component {
       const announcementContainer = document.createElement('div');
       announcementContainer.setAttribute('id', announcementId);
       announcementContainer.setAttribute('aria-live', ariaLive);
-      document.getElementById(this.identity)?.appendChild(announcementContainer);
+      this.getElementByIdAcrossShadowRoot(this.identity)?.appendChild(announcementContainer);
       const timeOutId = window.setTimeout(() => {
         const announcementElement = document.createElement('p');
         announcementElement.textContent = announcement;
@@ -136,7 +136,7 @@ class ScreenreaderAnnouncer extends Component {
 
         this.ariaLiveAnnouncementIds.push(announcementId);
         const timeOutId = window.setTimeout(() => {
-          document.getElementById(announcementId)?.remove();
+          announcementContainer.remove();
         }, timeout);
         this.timeOutIds.push(timeOutId);
       }, delay);
@@ -152,8 +152,21 @@ class ScreenreaderAnnouncer extends Component {
       window.clearTimeout(timeOutId);
     });
     this.ariaLiveAnnouncementIds.forEach(announcementId => {
-      document.getElementById(announcementId)?.remove();
+      this.getElementByIdAcrossShadowRoot(announcementId)?.remove();
     });
+  }
+
+  /**
+   * Gets an element by ID, searching in both light DOM and modal dialog shadow root.
+   * @internal
+   */
+  private getElementByIdAcrossShadowRoot(id: string): HTMLElement | null {
+    const element = document.getElementById(id);
+    if (element) {
+      return element;
+    }
+    const modalDialog = this.findModalAncestor();
+    return modalDialog?.shadowRoot?.getElementById(id) || null;
   }
 
   /**
@@ -163,7 +176,7 @@ class ScreenreaderAnnouncer extends Component {
    * `mdc-screenreaderannouncer-identity`.
    */
   private createAnnouncementAriaLiveRegion() {
-    let liveRegionLightDom = document.getElementById(this.identity);
+    let liveRegionLightDom = this.getElementByIdAcrossShadowRoot(this.identity);
     if (!liveRegionLightDom) {
       liveRegionLightDom = document.createElement('div');
       liveRegionLightDom.id = this.identity;
@@ -182,8 +195,40 @@ class ScreenreaderAnnouncer extends Component {
       `;
       liveRegionLightDom.appendChild(styleElement);
       liveRegionLightDom.classList.add('mdc-screenreaderannouncer__visually-hidden');
-      document.body.appendChild(liveRegionLightDom);
+
+      // If inside a modal dialog, append to its shadow root, otherwise to document.body
+      const modalDialog = this.findModalAncestor();
+      if (modalDialog?.shadowRoot) {
+        modalDialog.shadowRoot.appendChild(liveRegionLightDom);
+      } else {
+        document.body.appendChild(liveRegionLightDom);
+      }
     }
+  }
+
+  /**
+   * Finds the closest modal dialog ancestor, traversing through shadow DOM boundaries.
+   * @internal
+   */
+  private findModalAncestor(): Element | null {
+    let element: Element | null = this;
+
+    while (element) {
+      const modal = element.closest('[aria-modal="true"]');
+      if (modal) {
+        return modal;
+      }
+
+      // Traverse up through shadow DOM boundary
+      const root = element.getRootNode() as ShadowRoot | Document;
+      if (root instanceof ShadowRoot && root.host) {
+        element = root.host;
+      } else {
+        break;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -195,7 +240,7 @@ class ScreenreaderAnnouncer extends Component {
   private setupDebouncedAnnounce() {
     // create single debounced function that will read latest this.announcement when executed
     this.debouncedAnnounce = debounce(() => {
-      if (this.announcement.length > 0) {
+      if (this.announcement && this.announcement.length > 0) {
         this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
         this.announcement = '';
       }
@@ -227,7 +272,7 @@ class ScreenreaderAnnouncer extends Component {
       // Reinitiate debounced function if debounceTime changed
       this.setupDebouncedAnnounce();
     }
-    if (changedProperties.has('announcement') && this.announcement.length > 0) {
+    if (changedProperties.has('announcement') && this.announcement && this.announcement.length > 0) {
       this.debouncedAnnounce?.();
     }
   }

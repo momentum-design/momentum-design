@@ -1,9 +1,10 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
@@ -16,14 +17,25 @@ import styles from './toggle.styles';
 import type { ToggleSize } from './toggle.types';
 
 /**
- * Toggle Component is an interactive control used to switch between two mutually exclusive options,
- * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
+ * The Toggle component is an interactive control used to switch between two mutually exclusive states,
+ * such as On/Off or Active/Inactive. It is commonly used in settings panels, forms, and preference selections
  * where users need to enable or disable a feature.
- * It contains an optional label and an optional helper text.
  *
- * To create a group of toggles, use the FormFieldGroup component.
+ * To create a group of toggles, use the `mdc-formfieldgroup` component.
  *
- * Note: It internally renders a checkbox styled as a toggle switch.
+ * **Note:** This component internally renders a native checkbox input element with the `switch` role, styled as a toggle switch.
+ *
+ * ## When to use
+ * Use toggles for binary choices where the change takes effect immediately, such as enabling/disabling settings or features.
+ *
+ * ## Accessibility
+ * - Provide clear labels that describe what the toggle controls
+ * - Use `data-aria-label` when a visual label is not present
+ * - Keyboard navigation: Space to toggle, Tab to navigate, Enter to submit form
+ *
+ * ## Styling
+ * Use the `static-toggle` part to apply custom styles to the toggle switch visual element.
+ * This part exposes the underlying [StaticToggle](?path=/docs/components-decorator-statictoggle--docs) component for advanced styling.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -36,14 +48,6 @@ import type { ToggleSize } from './toggle.types';
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
- * @cssproperty --mdc-toggle-width - The width of the toggle
- * @cssproperty --mdc-toggle-height - The height of the toggle
- * @cssproperty --mdc-toggle-border-radius - The border radius of the toggle
- * @cssproperty --mdc-toggle-border-color - The border color of the toggle
- * @cssproperty --mdc-toggle-background-color - The background color of the toggle
- * @cssproperty --mdc-toggle-icon-color - The icon color of the toggle
- * @cssproperty --mdc-toggle-icon-background-color - The icon background color of the toggle
- *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
@@ -52,24 +56,27 @@ import type { ToggleSize } from './toggle.types';
  * @csspart help-text - The helper/validation text element.
  * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
  * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart static-toggle - The static-toggle element that wraps the toggle input.
- * @csspart toggle-input - The native checkbox input element styled as a toggle switch.
+ * @csspart text-container - The container for the label and helper text elements.
+ * @csspart static-toggle - The statictoggle that provides the visual toggle switch appearance.
+ * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
-   * Determines whether the toggle is active or inactive.
+   * Controls the state of the toggle switch.
+   * When true, the toggle is in the "on" or "active" state.
+   * When false, the toggle is in the "off" or "inactive" state.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
   checked = false;
 
   /**
-   * Determines toggle size in rem (height is specified here).
-   * - **Default**: 1.5
-   * - **Compact**: 1
+   * Specifies the size of the toggle component.
+   * - **default**: Standard size with 1.5rem height - suitable for most use cases
+   * - **compact**: Smaller size with 1rem height - ideal for space-constrained layouts
    * @default default
    */
   @property({ type: String, reflect: true })
@@ -92,7 +99,7 @@ class Toggle
   }
 
   /** @internal
-   * Resets the checkbox to its initial state.
+   * Resets the toggle switch to its initial state.
    * The checked property is set to false.
    */
   formResetCallback(): void {
@@ -107,10 +114,11 @@ class Toggle
   }
 
   /**
-   * Manages the required state of the checkbox.
-   * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
+   * Manages the required state of the toggle switch.
+   * If the toggle switch is not checked and the required property is set, then the toggle switch is invalid.
    * If the validationMessage is set, it will be used as the custom validity message.
    * If the validationMessage is not set, it will clear the custom validity message.
+   * @internal
    */
   private manageRequired() {
     if (!this.checked && this.required) {
@@ -129,6 +137,7 @@ class Toggle
    * Updates the form value to reflect the current state of the toggle.
    * If toggle is switched on, the value is set to either the user-provided value or 'isActive' if no value is provided.
    * If toggle is switched off, the value is set to null.
+   * @internal
    */
   private setFormValue() {
     let actualValue: string | null = null;
@@ -146,11 +155,14 @@ class Toggle
 
   /**
    * Toggles the state of the toggle element.
-   * If the element is not disabled, soft-disabled, or readonly, then the checked property is toggled.
+   * If the element is not disabled, soft-disabled, or readonly, then the checked property is toggled if uncontrolled.
+   * @internal
    */
   private toggleState(): void {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
-      this.checked = !this.checked;
+      if (this.controlType !== 'controlled') {
+        this.checked = !this.checked;
+      }
     }
   }
 
@@ -158,6 +170,7 @@ class Toggle
    * Handles the keydown event on the toggle element.
    * When the user presses Enter, the form is submitted.
    * @param event - The keyboard event.
+   * @internal
    */
   private handleKeyDown(event: KeyboardEvent): void {
     if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
@@ -172,6 +185,7 @@ class Toggle
   /**
    * Toggles the state of the toggle element.
    * and dispatch the new change event.
+   * @internal
    */
   private handleChange(event: Event) {
     this.toggleState();
@@ -185,6 +199,7 @@ class Toggle
    * it defaults to the value specified in DEFAULTS.SIZE.
    *
    * @param size - The size to set.
+   * @internal
    */
   private setToggleSize(size: ToggleSize) {
     this.setAttribute('size', Object.values(TOGGLE_SIZE).includes(size) ? size : DEFAULTS.SIZE);
@@ -202,6 +217,12 @@ class Toggle
     }
   }
 
+  /** @internal */
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+  };
+
   public override render() {
     return html`
       <mdc-statictoggle
@@ -217,7 +238,7 @@ class Toggle
           id="${this.inputId}"
           type="checkbox"
           part="toggle-input"
-          role="${ROLE.CHECKBOX}"
+          role="${ROLE.SWITCH}"
           ?required="${this.required}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
@@ -232,11 +253,13 @@ class Toggle
           @keydown="${this.handleKeyDown}"
         />
       </mdc-statictoggle>
-      ${this.renderLabel()} ${this.renderHelperText()}
+      ${this.renderLabelAndHelperText()}
     `;
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Toggle;

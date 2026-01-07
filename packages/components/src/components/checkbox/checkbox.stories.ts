@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
@@ -12,32 +12,34 @@ import type Checkbox from './checkbox.component';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 const render = (args: Args) => html`
-  <mdc-checkbox
-    label="${args.label}"
-    help-text="${args['help-text']}"
-    help-text-type="${args['help-text-type']}"
-    ?checked="${args.checked}"
-    ?disabled="${args.disabled}"
-    ?readonly="${args.readonly}"
-    ?soft-disabled="${args['soft-disabled']}"
-    name="${args.name}"
-    value="${args.value}"
-    ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-    class="${args.class}"
-    style="${args.style}"
-    ?required="${args.required}"
-    id="${args.id}"
-    ?indeterminate="${args.indeterminate}"
-    data-aria-label="${args['data-aria-label']}"
-    info-icon-aria-label="${args['info-icon-aria-label']}"
-    toggletip-text="${args['toggletip-text']}"
-    toggletip-placement="${args['toggletip-placement']}"
-    toggletip-strategy="${args['toggletip-strategy']}"
-    @change="${action('onchange')}"
-    @keydown="${action('onkeydown')}"
-    @focus="${action('onfocus')}"
-    @click="${action('onclick')}"
-  ></mdc-checkbox>
+  <div role="main">
+    <mdc-checkbox
+      label="${args.label}"
+      help-text="${args['help-text']}"
+      help-text-type="${args['help-text-type']}"
+      ?checked="${args.checked}"
+      ?disabled="${args.disabled}"
+      ?readonly="${args.readonly}"
+      ?soft-disabled="${args['soft-disabled']}"
+      name="${args.name}"
+      value="${args.value}"
+      ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+      class="${args.class}"
+      style="${args.style}"
+      ?required="${args.required}"
+      id="${args.id}"
+      ?indeterminate="${args.indeterminate}"
+      data-aria-label="${args['data-aria-label']}"
+      info-icon-aria-label="${args['info-icon-aria-label']}"
+      toggletip-text="${args['toggletip-text']}"
+      toggletip-placement="${args['toggletip-placement']}"
+      toggletip-strategy="${args['toggletip-strategy']}"
+      @change="${action('onchange')}"
+      @keydown="${action('onkeydown')}"
+      @focus="${action('onfocus')}"
+      @click="${action('onclick')}"
+    ></mdc-checkbox>
+  </div>
 `;
 
 const meta: Meta = {
@@ -75,6 +77,9 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    required: {
+      control: 'boolean',
+    },
     name: {
       control: 'text',
     },
@@ -98,7 +103,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...hideControls(['id', 'internals']),
+    ...hideControls(['id', 'internals', 'validation-message', 'validity', 'willValidate']),
     ...classArgType,
     ...styleArgType,
   },
@@ -145,19 +150,16 @@ export const Indeterminate: StoryObj = {
 };
 
 export const DisabledVariants: StoryObj = {
-  parameters: {
-    a11y: {
-      element: 'mdc-checkbox',
-    },
-  },
   render: () =>
-    html` <div style="display: flex; flex-direction: column;">
-      <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
-      <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
-      <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
-      <mdc-checkbox label="Unselected" disabled help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox label="Selected" disabled help-text="This is a help text" checked></mdc-checkbox>
-      <mdc-checkbox label="Indeterminate" disabled help-text="This is a help text" indeterminate></mdc-checkbox>
+    html` <div role="main">
+      <div style="display: flex; flex-direction: column;">
+        <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
+        <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
+        <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
+        <mdc-checkbox label="Unselected" disabled help-text="This is a help text"></mdc-checkbox>
+        <mdc-checkbox label="Selected" disabled help-text="This is a help text" checked></mdc-checkbox>
+        <mdc-checkbox label="Indeterminate" disabled help-text="This is a help text" indeterminate></mdc-checkbox>
+      </div>
     </div>`,
 };
 
@@ -171,9 +173,10 @@ export const FormField: StoryObj = {
     };
 
     return html`
-      <form @submit=${handleSubmit}>
-        <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
-          <legend>Select your super hero power</legend>
+      <div role="main">
+        <form @submit=${handleSubmit}>
+          <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+            <legend>Select your super hero power</legend>
           <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
           <mdc-checkbox
             label="Mind Control"
@@ -190,8 +193,10 @@ export const FormField: StoryObj = {
           </div>
         </fieldset>
       </form>
+      </div>
     `;
   },
+  ...hideAllControls(),
 };
 
 export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
@@ -234,9 +239,10 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
     };
 
     return html`
-      <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
-        <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
-          <legend>Select your super hero power (with validation)</legend>
+      <div role="main">
+        <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
+          <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+            <legend>Select your super hero power (with validation)</legend>
           <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
           <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
@@ -247,10 +253,12 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
           </div>
         </fieldset>
       </form>
+      </div>
     `;
   },
   args: {
     'help-text': '',
     'help-text-type': CHECKBOX_VALIDATION.DEFAULT,
   },
+  ...hideAllControls(),
 };

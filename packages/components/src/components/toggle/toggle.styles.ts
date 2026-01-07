@@ -5,24 +5,33 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
-    /* Grid layout for labeled toggles */
+    :host {
+      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
+    }
+
+    /* Flexbox layout for labeled toggles */
     :host([label]),
     :host([help-text]) {
-      display: grid;
-      grid-template-rows: auto auto;
-      grid-template-columns: auto auto;
-      column-gap: 0.75rem;
-      row-gap: 0.25rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
 
-    :host([help-text='']) {
-      grid-template-rows: auto;
-      row-gap: 0rem;
+    :host([size='default'])::part(label-text) {
+      margin: 0.125rem 0;
     }
 
-    :host::part(label-text),
-    :host::part(help-text-container) {
-      grid-column: 2;
+    :host([size='compact'])::part(static-toggle) {
+      margin: 0.125rem 0;
+    }
+
+    :host::part(text-container) {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
 
     /* Component structure and layout */
@@ -33,16 +42,16 @@ const styles = [
       opacity: 0.1%;
       overflow: visible;
       z-index: 1;
-      width: var(--mdc-toggle-width);
-      height: var(--mdc-toggle-height);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
     }
 
     :host::part(label) {
       word-break: break-word;
       white-space: normal;
-      --mdc-label-font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-      --mdc-label-font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
-      --mdc-label-line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     /* Default interactive states */
@@ -52,19 +61,19 @@ const styles = [
     }
 
     :host(:hover)::part(static-toggle) {
-      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-hover);
+      --mdc-statictoggle-background-color: var(--mds-color-theme-control-inactive-hover);
     }
 
     :host(:active)::part(static-toggle) {
-      --mdc-toggle-background-color: var(--mds-color-theme-control-inactive-pressed);
+      --mdc-statictoggle-background-color: var(--mds-color-theme-control-inactive-pressed);
     }
 
     :host([checked]:hover)::part(static-toggle) {
-      --mdc-toggle-background-color: var(--mds-color-theme-control-active-hover);
+      --mdc-statictoggle-background-color: var(--mds-color-theme-control-active-hover);
     }
 
     :host([checked]:active)::part(static-toggle) {
-      --mdc-toggle-background-color: var(--mds-color-theme-control-active-pressed);
+      --mdc-statictoggle-background-color: var(--mds-color-theme-control-active-pressed);
     }
 
     /* Readonly state - disables pointer events */

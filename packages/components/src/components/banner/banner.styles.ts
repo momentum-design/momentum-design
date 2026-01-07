@@ -4,9 +4,10 @@ const styles = css`
   :host {
     --mdc-banner-background-color: var(--mds-color-theme-background-solid-primary-normal);
     --mdc-banner-border-color: var(--mds-color-theme-outline-secondary-normal);
+    --mdc-banner-border-width: 1px;
     --mdc-banner-icon-color: var(--mds-color-theme-text-primary-normal);
     --mdc-banner-elevation: var(--mds-elevation-3);
-    --mdc-banner-padding: 0.75rem;
+    --mdc-banner-padding: calc(0.75rem - var(--mdc-banner-border-width));
     --mdc-banner-gap: 0.5rem;
 
     display: flex;
@@ -16,7 +17,7 @@ const styles = css`
     align-self: stretch;
     width: 100%;
     background-color: var(--mdc-banner-background-color);
-    border: 1px solid var(--mdc-banner-border-color);
+    border: var(--mdc-banner-border-width) solid var(--mdc-banner-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-banner-elevation);
   }
@@ -57,7 +58,6 @@ const styles = css`
     flex: 1 0 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
   }
 
   :host(:not([secondary-label]))::part(leading) {
@@ -66,7 +66,7 @@ const styles = css`
 
   :host::part(leading-icon) {
     color: var(--mdc-banner-icon-color);
-    padding: 0.25rem 0;
+    flex-shrink: 0;
   }
 
   :host::part(trailing) {
