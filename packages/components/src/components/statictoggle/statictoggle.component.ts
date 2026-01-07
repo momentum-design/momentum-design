@@ -25,7 +25,7 @@ import type { ToggleSize } from './statictoggle.types';
  * ## Accessibility
  * - StaticToggle is decorative and non-interactive by design
  * - When used within parent components, ensure proper ARIA attributes are provided by the parent
- * - Do not use as a replacement for interactive toggles in forms
+ * - Do not use this as a replacement for interactive toggles in forms
  *
  * @tagname mdc-statictoggle
  *

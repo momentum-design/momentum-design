@@ -21,7 +21,7 @@ import styles from './staticradio.styles';
  * ## Accessibility
  * - StaticRadio is decorative and non-interactive by design
  * - Always pair with descriptive text labels in the default slot
- * - Do not use as a replacement for interactive radio buttons in forms
+ * - Do not use this as a replacement for interactive radio buttons in forms
  *
  * @tagname mdc-staticradio
  *

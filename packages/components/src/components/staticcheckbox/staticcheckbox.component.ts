@@ -23,7 +23,7 @@ import { ICON_NAME } from './staticcheckbox.constants';
  * ## Accessibility
  * - StaticCheckbox is decorative and non-interactive by design
  * - Always pair with descriptive text labels in the default slot
- * - Do not use as a replacement for interactive checkboxes in forms
+ * - Do not use this as a replacement for interactive checkboxes in forms
  *
  * @tagname mdc-staticcheckbox
  *
