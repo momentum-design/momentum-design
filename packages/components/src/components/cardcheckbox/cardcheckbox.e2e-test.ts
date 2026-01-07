@@ -199,6 +199,17 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           await expect(cardcheckbox).not.toBeFocused();
         });
 
+        await test.step('component should not dispatch change event when disabled and space/enter is pressed', async () => {
+          await setup({ ...setupArgs, disabled: true });
+          const waitForChange = await componentsPage.waitForEvent(cardcheckbox, 'change');
+          await cardcheckbox.dispatchEvent('focus');
+          await componentsPage.page.keyboard.press('Space');
+          await componentsPage.expectPromiseTimesOut(waitForChange(), true);
+          await componentsPage.page.keyboard.press('Enter');
+          await componentsPage.expectPromiseTimesOut(waitForChange(), true);
+          await expect(cardcheckbox).not.toBeChecked();
+        });
+
         await test.step('component should navigate between checkbox cards using tab key', async () => {
           await setup({ ...setupArgs, isGroup: true });
           const cards = componentsPage.page.locator('mdc-cardcheckbox');
