@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const {existsSync} = require(`fs`);
-const {createRequire} = require(`module`);
-const {resolve} = require(`path`);
+const { existsSync } = require(`fs`);
+const { createRequire } = require(`module`);
+const { resolve } = require(`path`);
 
 const relPnpApiPath = "../../../.pnp.cjs";
 
@@ -16,5 +16,5 @@ if (existsSync(absPnpApiPath)) {
   }
 }
 
-// Defer to the real prettier/index.js your application uses
-module.exports = absRequire(`prettier/index.js`);
+// Defer to the real prettier/index.cjs your application uses
+module.exports = absRequire(`prettier/index.cjs`);
