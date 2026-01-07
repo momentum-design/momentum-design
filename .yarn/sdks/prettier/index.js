@@ -11,7 +11,7 @@ const absRequire = createRequire(absPnpApiPath);
 
 if (existsSync(absPnpApiPath)) {
   if (!process.versions.pnp) {
-    // Setup the environment to be able to require prettier/index.js
+    // Setup the environment to be able to require prettier/index.cjs
     require(absPnpApiPath).setup();
   }
 }
