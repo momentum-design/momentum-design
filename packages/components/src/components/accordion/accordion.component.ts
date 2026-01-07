@@ -26,7 +26,7 @@ import styles from './accordion.styles';
  *
  * The accordion supports different border styles through the `variant` attribute and different spacing through the `size` attribute.
  * An accordion can be disabled, which prevents all interactions including the expand/collapse button and any slotted controls.
- * 
+ *
  * ## When to use
  * - Use `mdc-accordion` when you need additional interactive controls (chips, badges, buttons, icons) in the header.
  * - Use `mdc-accordionbutton` if you only need a simple clickable header without extra controls.
@@ -54,6 +54,7 @@ import styles from './accordion.styles';
  * @csspart body-section - The body section of the accordion.
  * @csspart header-section - The header section of the accordion.
  * @csspart leading-header - The leading header of the accordion.
+ * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion.
  * @csspart trailing-header__button - The trailing header button of the accordion.
  */
