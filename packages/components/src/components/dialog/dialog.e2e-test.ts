@@ -785,51 +785,63 @@ test('mdc-dialog', async ({ componentsPage }) => {
     const setup = async () => {
       await componentsPage.mount({
         html: `
-      <div id="wrapper">
-        <mdc-button id="dialogLvl1Trigger">Open Dialog (lvl 3)</mdc-button>
-        <mdc-dialog id="dialogLvl1">
-          <div slot="dialog-body">
-            <p>Dialog lvl 1.</p>
-            <mdc-button id="popupLvl2Trigger">Open Popover (lvl 2)</mdc-button>
-            <mdc-tooltip id="tooltipLvl1" triggerid="popupLvl2Trigger" placement="top">Open Popover (lvl 2)</mdc-tooltip>
-            <mdc-popover id="popupLvl2" triggerid="popupLvl2Trigger" hide-on-escape style="top: 30% !important;" focus-back-to-trigger>
-              <p>Popover lvl 2.</p>
-              <mdc-button id="dialogLvl3Trigger">Open Dialog (lvl 3)</mdc-button>
-              <mdc-tooltip id="tooltipLvl2" triggerid="dialogLvl3Trigger" placement="top">Open Dialog (lvl 3)</mdc-tooltip>
-              <mdc-dialog
-                id="dialogLvl3"
-                aria-label="dialog-lvl3"
-                size="small"
-                close-button-aria-label="Close nested dialog"
-              >
-                <div slot="dialog-body">
-                  <p>Dialog lvl 3.</p>
-                  <mdc-button id="menuLvl4Trigger">Open Menu (lvl 4)</mdc-button>
-                  <mdc-tooltip id="tooltipLvl3" triggerid="menuLvl4Trigger" placement="top">Open Menu (lvl 4)</mdc-tooltip>
-                  <mdc-menupopover id="menuLvl4" triggerid="menuLvl4Trigger">
-                    <mdc-menuitem label="Profile"></mdc-menuitem>
-                    <mdc-menuitem id="menuLvl5Trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
-                    <mdc-menuitem label="Notifications"></mdc-menuitem>
-                    <mdc-menuitem label="Logout" disabled></mdc-menuitem>
-                    <mdc-menupopover id="menuLvl5" triggerID="menuLvl5Trigger" placement="right">
-                      <mdc-menupopover id="menuLvl6" triggerID="menuLvl6Trigger" placement="right-start">
-                        <mdc-menuitem label="Change Password"></mdc-menuitem>
-                        <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
-                        <mdc-menuitem label="Security Questions"></mdc-menuitem>
-                      </mdc-menupopover>
-                      <mdc-menuitem label="Account"></mdc-menuitem>
-                      <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
-                      <mdc-menuitem label="Security" id="menuLvl6Trigger" arrow-position="trailing"></mdc-menuitem>
-                      <mdc-menuitem label="Advanced"></mdc-menuitem>
-                    </mdc-menupopover>
-                  </mdc-menupopover></div
-              ></mdc-dialog>
-            </mdc-popover>
+          <div id="wrapper">
+            <mdc-button id="dialogLvl1Trigger">Open Dialog (lvl 3)</mdc-button>
+            <mdc-dialog triggerid="dialogLvl1Trigger" id="dialogLvl1">
+              <div slot="dialog-body">
+                <p>Dialog lvl 1.</p>
+                <mdc-button id="popupLvl2Trigger">Open Popover (lvl 2)</mdc-button>
+                <mdc-tooltip id="tooltipLvl1" triggerid="popupLvl2Trigger" placement="top"
+                  >Open Popover (lvl 2)</mdc-tooltip
+                >
+                <mdc-popover
+                  id="popupLvl2"
+                  triggerid="popupLvl2Trigger"
+                  hide-on-escape
+                  style="top: 30% !important;"
+                  focus-back-to-trigger
+                >
+                  <p>Popover lvl 2.</p>
+                  <mdc-button id="dialogLvl3Trigger">Open Dialog (lvl 3)</mdc-button>
+                  <mdc-tooltip id="tooltipLvl2" triggerid="dialogLvl3Trigger" placement="top"
+                    >Open Dialog (lvl 3)</mdc-tooltip
+                  >
+                  <mdc-dialog
+                    id="dialogLvl3"
+                    triggerid="dialogLvl3Trigger"
+                    aria-label="dialog-lvl3"
+                    size="small"
+                    close-button-aria-label="Close nested dialog"
+                  >
+                    <div slot="dialog-body">
+                      <p>Dialog lvl 3.</p>
+                      <mdc-button id="menuLvl4Trigger">Open Menu (lvl 4)</mdc-button>
+                      <mdc-tooltip id="tooltipLvl3" triggerid="menuLvl4Trigger" placement="top"
+                        >Open Menu (lvl 4)</mdc-tooltip
+                      >
+                      <mdc-menupopover id="menuLvl4" triggerid="menuLvl4Trigger">
+                        <mdc-menuitem label="Profile"></mdc-menuitem>
+                        <mdc-menuitem id="menuLvl5Trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+                        <mdc-menuitem label="Notifications"></mdc-menuitem>
+                        <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+                        <mdc-menupopover id="menuLvl5" triggerID="menuLvl5Trigger" placement="right">
+                          <mdc-menupopover id="menuLvl6" triggerID="menuLvl6Trigger" placement="right-start">
+                            <mdc-menuitem label="Change Password"></mdc-menuitem>
+                            <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+                            <mdc-menuitem label="Security Questions"></mdc-menuitem>
+                          </mdc-menupopover>
+                          <mdc-menuitem label="Account"></mdc-menuitem>
+                          <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+                          <mdc-menuitem label="Security" id="menuLvl6Trigger" arrow-position="trailing"></mdc-menuitem>
+                          <mdc-menuitem label="Advanced"></mdc-menuitem>
+                        </mdc-menupopover>
+                      </mdc-menupopover></div
+                  ></mdc-dialog>
+                </mdc-popover>
+              </div>
+            </mdc-dialog>
           </div>
-        </mdc-dialog>
-      </div>
-
-      `,
+        `,
         clearDocument: true,
       });
 

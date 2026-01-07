@@ -52,21 +52,28 @@ When the Escape key is pressed, only the topmost overlay in the stack is closed.
 
 ##### Open multiple overlays from a single element
 
-The order of the opened overlays in stack will depend on the order of elements
-in the DOM or call of the `show()` method. It is not always trivial and it might
-cause unexpected behaviors in layering and order of closing overlays.
+When multiple overlays are opened from a single trigger element (e.g., a button
+which opens an popover, but it also has a tooltip) the opening and closing order
+matters.
 
-A common example is the button which opens a popover but it also have a tooltip.
+Depth manager can handle this scenario correctly but only if all "sibling"
+overlays have `triggerid` attribute with the same value.
 
-This case in handled internally by the tooltip component, which will remove
-itself from the stack without closing any other overlays. But in other cases,
-the developer must ensure the correct order of opening overlays.
+for example:
+
+```html
+<mdc-button id="opener">Open dialog</mdc-button>
+<mdc-dialog triggerid="opener">...</mdc-dialog>
+<mdc-tooltip triggerid="opener">...</mdc-tooltip>
+```
+
+> Note: `triggerid` attribute is needed even if the overlay manually opened.
 
 #### Closing multiple overlays
 
 When there are multiple overlays open and not the topmost overlay is closed
-(e.g., programmatically, or by clicking a close button inside a a dialog with
-open popover(s)), all overlays above it in the stack are also closed.
+(e.g., programmatically, or by clicking a close button inside a dialog with open
+popover(s)), all overlays above it in the stack also closed.
 
 ## Layering components
 
@@ -94,5 +101,5 @@ element.
 
 Backdrop and trigger elements will have their z-index adjusted accordingly.
 
-⚠️Setting a custom z-index might cause layering issues with other overlays in
-the stack. ⚠️
+> ⚠️Setting a custom z-index might cause layering issues with other overlays in
+> the stack. ⚠️

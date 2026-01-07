@@ -338,10 +338,10 @@ const renderDialogWithOtherOverlays = (args: Args) => {
           >
             <p>Popover lvl 2.</p>
             <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Dialog (lvl 3)</mdc-button>
-            <mdc-tooltip triggerId="nested-dialog-trigger" placement="top">Open Dialog (lvl 3)</mdc-tooltip>
+            <mdc-tooltip triggerid="nested-dialog-trigger" placement="top">Open Dialog (lvl 3)</mdc-tooltip>
             <mdc-dialog
               id="nested-dialog"
-              triggerId="nested-dialog-trigger"
+              triggerid="nested-dialog-trigger"
               aria-label="nested-dialog"
               size="small"
               close-button-aria-label="Close nested dialog"
@@ -350,14 +350,14 @@ const renderDialogWithOtherOverlays = (args: Args) => {
               <div slot="dialog-body">
                 <p>Dialog lvl 3.</p>
                 <mdc-button id="menu-lvl4">Open Menu (lvl 4)</mdc-button>
-                <mdc-tooltip triggerId="menu-lvl4" placement="top">Open Menu (lvl 4)</mdc-tooltip>
+                <mdc-tooltip triggerid="menu-lvl4" placement="top">Open Menu (lvl 4)</mdc-tooltip>
 
-                <mdc-menupopover triggerId="menu-lvl4">
+                <mdc-menupopover triggerid="menu-lvl4">
                   <mdc-menuitem id="submenu-trigger" label="Sub-menu (lvl 5)" arrow-position="trailing"></mdc-menuitem>
                   <mdc-menuitem label="Menu with tooltip" id="menu-with-tooltip"></mdc-menuitem>
-                  <mdc-tooltip triggerId="menu-with-tooltip" placement="right">This is a tooltip</mdc-tooltip>
-                  <mdc-menupopover triggerID="submenu-trigger" placement="right">
-                    <mdc-menupopover triggerID="security-id" placement="right-start">
+                  <mdc-tooltip triggerid="menu-with-tooltip" placement="right">This is a tooltip</mdc-tooltip>
+                  <mdc-menupopover triggerid="submenu-trigger" placement="right">
+                    <mdc-menupopover triggerid="security-id" placement="right-start">
                       <mdc-menuitem label="Menu item 1"></mdc-menuitem>
                       <mdc-menuitem label="Menu item 2"></mdc-menuitem>
                       <mdc-menuitem label="Menu item 3"></mdc-menuitem>
