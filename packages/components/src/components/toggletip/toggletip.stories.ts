@@ -4,9 +4,10 @@ import '../avatarbutton';
 import '../link';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
-import { hideControls } from '../../../config/storybook/utils';
+import { COLOR, POPOVER_PLACEMENT, STRATEGY, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import { DEFAULTS } from './toggletip.constants';
 
@@ -21,6 +22,15 @@ const render = (args: Args) =>
       offset="${args.offset}"
       placement="${args.placement}"
       ?show-arrow="${args['show-arrow']}"
+      screenreader-announcer-identity="${ifDefined(args['screenreader-announcer-identity'])}"
+      boundary-root="${ifDefined(args['boundary-root'])}"
+      boundary="${ifDefined(args.boundary)}"
+      boundary-padding="${ifDefined(args['boundary-padding'])}"
+      backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
+      ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
+      strategy="${ifDefined(args.strategy)}"
+      ?should-focus-trap-wrap="${args['should-focus-trap-wrap']}"
+      ?propagate-event-on-escape="${args['propagate-event-on-escape']}"
       triggerid="${args.triggerID}"
       @shown="${action('onshown')}"
       @hidden="${action('onhidden')}"
@@ -71,6 +81,35 @@ const meta: Meta = {
     triggerID: {
       control: 'text',
     },
+    'screenreader-announcer-identity': {
+      control: 'text',
+    },
+    'boundary-root': {
+      control: 'radio',
+      options: ['viewport', 'document'],
+    },
+    boundary: {
+      control: 'text',
+    },
+    'boundary-padding': {
+      control: 'number',
+    },
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    'is-backdrop-invisible': {
+      control: 'boolean',
+    },
+    strategy: {
+      control: 'select',
+      options: Object.values(STRATEGY),
+    },
+    'should-focus-trap-wrap': {
+      control: 'boolean',
+    },
+    'propagate-event-on-escape': {
+      control: 'boolean',
+    },
     ...hideControls([
       'id',
       'delay',
@@ -89,6 +128,8 @@ const meta: Meta = {
       'hide-on-outside-click',
       'focus-back-to-trigger',
       'backdrop',
+      'keep-connected-tooltip-open',
+      'animation-frame',
       'size',
       'append-to',
       'aria-labelledby',
@@ -100,6 +141,15 @@ const meta: Meta = {
       'onOutsidePopoverClick',
       'onEscapeKeydown',
       'onPopoverFocusOut',
+      'handleMouseEnter',
+      'handleMouseLeave',
+      'handleFocusOut',
+      'handleFocusIn',
+      'parseTrigger',
+      'positionPopover',
+      'removeAllListeners',
+      'removeTriggerListeners',
+      'setupTriggerListeners',
       'startCloseDelay',
       'cancelCloseDelay',
       'enabledPreventScroll',
@@ -122,6 +172,7 @@ export const Example: StoryObj = {
     offset: DEFAULTS.OFFSET,
     placement: DEFAULTS.PLACEMENT,
     'show-arrow': DEFAULTS.SHOW_ARROW,
+    'screenreader-announcer-identity': '',
     triggerID: 'toggletip-trigger',
   },
 };
@@ -150,4 +201,5 @@ export const MultipleToggletips: StoryObj = {
         <div>Second toggletip with close button</div>
       </mdc-toggletip>
     </div>`,
+  ...hideAllControls(),
 };
