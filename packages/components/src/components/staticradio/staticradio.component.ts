@@ -16,7 +16,7 @@ import styles from './staticradio.styles';
  * ## When to use
  * Use StaticRadio to display radio button states in read-only contexts such as summary views,
  * confirmation screens, or when showing historical form data. For interactive radio buttons, use
- * [mdc-radio](?path=/docs/components-radio--docs) instead.
+ * `mdc-radio` instead.
  *
  * ## Accessibility
  * - StaticRadio is decorative and non-interactive by design

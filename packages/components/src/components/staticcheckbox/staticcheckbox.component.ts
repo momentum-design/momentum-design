@@ -18,7 +18,7 @@ import { ICON_NAME } from './staticcheckbox.constants';
  * ## When to use
  * Use StaticCheckbox to display checkbox states in read-only contexts such as summary views,
  * confirmation screens, or when showing historical form data. For interactive checkboxes, use
- * [mdc-checkbox](?path=/docs/components-checkbox--docs) instead.
+ * `mdc-checkbox` instead.
  *
  * ## Accessibility
  * - StaticCheckbox is decorative and non-interactive by design

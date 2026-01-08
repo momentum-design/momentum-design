@@ -20,7 +20,7 @@ import type { ToggleSize } from './statictoggle.types';
  * ## When to use
  * Use StaticToggle to display toggle states in read-only contexts such as summary views,
  * confirmation screens, or as a building block within custom interactive components. For
- * interactive toggles, use [mdc-toggle](?path=/docs/components-toggle--docs) instead.
+ * interactive toggles, use `mdc-toggle` instead.
  *
  * ## Accessibility
  * - StaticToggle is decorative and non-interactive by design
