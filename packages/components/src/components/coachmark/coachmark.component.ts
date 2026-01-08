@@ -6,11 +6,22 @@ import type { PopoverTrigger } from '../popover/popover.types';
 import { DEFAULTS } from './coachmark.constants';
 
 /**
+ * A Coachmark is a contextual guidance component used to highlight a specific UI element and explain its purpose or functionality.
+ * It is typically shown as part of onboarding, feature discovery, or progressive education within the product.
+ *
  * Coachmark component based on top of the popover component,
  * with the default value of certain properties changed.
- *
  * Coachmark component will always have an arrow attached to it.
  * The color of the coachmark is contrast.
+ *
+ * ## When to use
+ * - Introducing a new or complex feature to users.
+ * - Drawing attention to a UI element that might otherwise be missed.
+ * - Providing step-by-step guidance in an onboarding or walkthrough flow.
+ *
+ * ## Accessibility
+ * - The default role of coachmark is `"dialog"`, which can be changed via the `role` attribute.
+ * - aria-label or aria-labelledby can be provided to give the coachmark an accessible name.
  *
  * @dependency mdc-popover
  *
