@@ -83,6 +83,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
     super();
     this.addEventListener('click', this.toggleChecked.bind(this));
     this.addEventListener('keydown', this.toggleOnEnter.bind(this));
+    this.addEventListener('keydown', this.preventSpaceScroll.bind(this));
     this.addEventListener('keyup', this.toggleOnSpace.bind(this));
   }
 
@@ -108,8 +109,8 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   private toggleChecked() {
     if (!this.disabled) {
       this.checked = !this.checked;
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     }
-    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
   /**
@@ -123,11 +124,22 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   }
 
   /**
+   * Prevents space key from scrolling the page
+   * @param event - The keyboard event
+   */
+  private preventSpaceScroll(event: KeyboardEvent) {
+    if (event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+  }
+
+  /**
    * Toggles the checked state when space key is used
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
     if (event.key === KEYS.SPACE) {
+      event.preventDefault();
       this.toggleChecked();
     }
   }
