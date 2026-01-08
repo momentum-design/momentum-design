@@ -264,7 +264,6 @@ test.describe('Menubar Feature Scenarios', () => {
 
     await test.step('Tab exits Menubar and returns focus on Shift+Tab', async () => {
       const { file, edit } = await setup({ componentsPage });
-      await componentsPage.page.pause();
       await componentsPage.actionability.pressTab();
       await expect(file).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
