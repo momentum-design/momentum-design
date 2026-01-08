@@ -10,8 +10,9 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
+import { Timers } from '../../utils/controllers/Timers';
 
-import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
@@ -441,9 +442,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   public arrowElement: HTMLElement | null = null;
 
   /** @internal */
-  private hoverTimer: number | null = null;
-
-  /** @internal */
   private isHovered: boolean = false;
 
   /** @internal */
@@ -495,6 +493,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   public get triggerElement(): HTMLElement | null {
     return (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`) as HTMLElement;
   }
+
+  private timers = new Timers(this);
 
   constructor() {
     super();
@@ -551,9 +551,6 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.removeBackdrop();
 
     this.floatingUICleanupFunction?.();
-
-    // clean timer if there is one set:
-    this.cancelCloseDelay();
 
     if (!this.keepConnectedTooltipOpen) {
       if (this.connectedTooltip) {
@@ -919,16 +916,31 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
+   * Cancels the open delay timer.
+   */
+  private cancelOpenDelay = () => {
+    this.timers.clearTimeout(TIMEOUTS.OPEN);
+  };
+
+  /**
    * Starts the close delay timer.
    * If the popover is not interactive, it will close the popover after the delay.
    */
   private startCloseDelay = () => {
+    this.cancelOpenDelay();
+
     if (!this.interactive) {
       this.hide();
     } else {
-      this.hoverTimer = window.setTimeout(() => {
+      const callback = () => {
         this.visible = false;
-      }, this.closeDelay);
+      };
+      if (this.closeDelay > 0) {
+        this.timers.setTimeout(TIMEOUTS.HOVER, callback, this.closeDelay);
+      } else {
+        this.timers.clearTimeout(TIMEOUTS.HOVER);
+        callback();
+      }
     }
   };
 
@@ -936,27 +948,33 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Cancels the close delay timer.
    */
   private cancelCloseDelay = () => {
-    if (this.hoverTimer) {
-      window.clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
+    this.timers.clearTimeout(TIMEOUTS.HOVER);
+    this.timers.clearTimeout(TIMEOUTS.CLOSE);
   };
 
   /**
    * Shows the popover.
    */
   public show = () => {
-    if (this.visible || this.shouldSuppressOpening) {
+    if (this.shouldSuppressOpening) {
       return;
     }
+
     this.cancelCloseDelay();
 
-    if (this.openDelay > 0) {
-      setTimeout(() => {
-        this.visible = true;
-      }, this.openDelay);
-    } else {
+    if (this.visible) {
+      return;
+    }
+
+    const callback = () => {
       this.visible = true;
+    };
+
+    if (this.openDelay > 0) {
+      this.timers.setTimeout(TIMEOUTS.OPEN, callback, this.openDelay);
+    } else {
+      this.timers.clearTimeout(TIMEOUTS.OPEN);
+      callback();
     }
   };
 
@@ -964,12 +982,16 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Hides the popover.
    */
   public hide = () => {
-    if (this.closeDelay) {
-      setTimeout(() => {
-        this.visible = false;
-      }, this.closeDelay);
-    } else {
+    this.cancelOpenDelay();
+
+    const callback = () => {
       this.visible = false;
+    };
+    if (this.closeDelay > 0) {
+      this.timers.setTimeout(TIMEOUTS.CLOSE, callback, this.closeDelay);
+    } else {
+      this.timers.clearTimeout(TIMEOUTS.CLOSE);
+      callback();
     }
   };
 
