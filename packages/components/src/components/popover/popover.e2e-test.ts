@@ -423,6 +423,77 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
     });
   });
+
+  await test.step('mouse', async () => {
+    await test.step('does not display popover when mouse hovers and leaves trigger within open delay', async () => {
+      // Start AI-Assisted
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover-hover',
+        triggerID: 'trigger-button-hover',
+        trigger: TRIGGER.MOUSEENTER,
+        delay: '500,0', // 500ms open delay, 0ms close delay
+        children: 'Hover popover content',
+      });
+
+      // Verify popover is initially hidden
+      await expect(popover).not.toBeVisible();
+
+      // Hover over the trigger
+      await triggerButton.hover();
+
+      // Wait for a short time (less than the open delay)
+      await componentsPage.page.waitForTimeout(200);
+
+      // Move mouse away from trigger
+      await componentsPage.page.mouse.move(0, 0);
+
+      // Wait past the original delay time to ensure popover doesn't appear
+      await componentsPage.page.waitForTimeout(400);
+
+      // Popover should still not be visible
+      await expect(popover).not.toBeVisible();
+      // End AI-Assisted
+    });
+
+    await test.step('does not hide popover when mouse leaves trigger and enters trigger within close delay', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover-hover',
+        triggerID: 'trigger-button-hover',
+        trigger: TRIGGER.MOUSEENTER,
+        delay: '0,1000', // 0ms open delay, 1000ms close delay
+        children: 'Hover popover content',
+      });
+
+      // Verify popover is initially hidden
+      await expect(popover).not.toBeVisible();
+
+      // Hover over the trigger
+      await triggerButton.hover();
+
+      // Popover should be visible
+      await expect(popover).toBeVisible();
+
+      // Move mouse away from trigger
+      await componentsPage.page.mouse.move(0, 0);
+
+      // Wait less than close delay
+      await componentsPage.page.waitForTimeout(500);
+
+      // Move mouse back to trigger
+      await triggerButton.hover();
+
+      // Popover should be visible
+      await expect(popover).toBeVisible();
+
+      // Wait the rest of the close delay time
+      await componentsPage.page.waitForTimeout(1000);
+
+      // Popover should be visible
+      await expect(popover).toBeVisible();
+    });
+  });
 };
 
 /**
