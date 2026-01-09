@@ -884,6 +884,22 @@ test('mdc-select', async ({ componentsPage }) => {
         ]);
       });
 
+      await test.step('component should not intercept keyboard shortcuts with modifier keys', async () => {
+        const select = await setup(setupArguments);
+        await componentsPage.actionability.pressTab();
+        await expect(select.locator(`div[id="${TRIGGER_ID}"]`)).toBeFocused();
+
+        // Pressing a letter with modifier keys should not open the popover or trigger type-ahead
+        await componentsPage.page.keyboard.press('Meta+Shift+c');
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
+
+        await componentsPage.page.keyboard.press('Control+c');
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
+
+        await componentsPage.page.keyboard.press('Alt+c');
+        await expect(select.locator('mdc-popover')).not.toBeVisible();
+      });
+
       await test.step('component should not change focus of already selected option if the letter doesn`t match any option', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
