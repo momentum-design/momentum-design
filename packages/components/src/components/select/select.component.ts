@@ -662,7 +662,7 @@ class Select
         break;
       }
       default: {
-        if (event.key.length === 1) {
+        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
           this.displayPopover = true;
           this.handleSelectedOptionByKeyInput(event.key);
           event.preventDefault();
