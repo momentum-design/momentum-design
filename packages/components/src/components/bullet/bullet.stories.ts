@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideAllControls } from '../../../config/storybook/utils';
 
 import '../list';
 import '../listitem';
@@ -25,6 +26,9 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
   },
+  parameters: {
+    actions: { disable: true },
+  },
 };
 
 export default meta;
@@ -37,7 +41,7 @@ export const Example: StoryObj = {
 
 export const UnorderedList: StoryObj = {
   render: () => html`
-   <main>
+    <main>
       <mdc-list aria-label="Fruit list">
         <mdc-listitem label="Apple">
           <mdc-bullet size="${SIZE.MEDIUM}" slot="leading-controls"></mdc-bullet>
@@ -51,4 +55,5 @@ export const UnorderedList: StoryObj = {
       </mdc-list>
     </main>
   `,
+  ...hideAllControls(),
 };

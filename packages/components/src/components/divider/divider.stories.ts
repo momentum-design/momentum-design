@@ -70,6 +70,9 @@ const meta: Meta = {
     ...styleArgType,
     ...hideControls(['observer']),
   },
+  parameters: {
+    actions: { disable: true },
+  },
 };
 
 export default meta;
