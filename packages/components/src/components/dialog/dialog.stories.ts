@@ -9,6 +9,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
 import '../button';
+import '../buttongroup';
 import '../popover';
 import '../tooltip';
 import '../list';
@@ -111,6 +112,11 @@ const dialogWithIframeContent = () => html`
     <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
     <iframe src="https://example.com" width="100%" height="300px"></iframe>
     <mdc-button>This is a mdc-button after the Iframe</mdc-button>
+    <mdc-buttongroup variant="secondary" style="margin-top: 1rem;">
+      <mdc-button prefix-icon="zoom-out-regular"></mdc-button>
+      <mdc-button>100%</mdc-button>
+      <mdc-button prefix-icon="zoom-in-regular"></mdc-button>
+    </mdc-buttongroup>
   </div>
 `;
 

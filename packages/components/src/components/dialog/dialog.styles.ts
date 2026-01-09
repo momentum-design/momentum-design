@@ -23,7 +23,13 @@ const styles = css`
     position: absolute;
     right: 50%;
     bottom: 50%;
-    transform: translateX(round(to-zero, 50%, 1px)) translateY(round(to-zero, 50%, 1px));
+    transform: translateX(50%) translateY(50%);
+  }
+
+  @supports (transform: translateX(round(to-zero, 1px, 1px))) {
+    :host {
+      transform: translateX(round(to-zero, 50%, 1px)) translateY(round(to-zero, 50%, 1px));
+    }
   }
 
   :host > [part='body']:first-of-type {
