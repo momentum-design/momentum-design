@@ -17,91 +17,86 @@ import styles from './divider.styles';
 import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
- * `mdc-divider` is a component that provides a line to separate and organize content.
- * It can also include a button or text positioned centrally, allowing users to interact with the layout.
+ * The Divider component provides a visual line to separate and organize content within layouts.
+ * It supports both horizontal and vertical orientations with solid or gradient styles, and can
+ * optionally include centered text labels or interactive grabber buttons.
  *
- * **Divider Orientation:**
- * - **Horizontal**: A thin, horizontal line.
- * - **Vertical**: A thin, vertical line.
+ * The divider automatically infers its type based on the content in its slot:
+ * - **Primary**: Simple line with no content
+ * - **Text**: Horizontal line with centered text label
+ * - **Grabber Button**: Line with centered interactive button
+ * 
+ * **Note:**
+ * - Vertical text dividers are not currently supported.
+ * - If the slot contains invalid tag names or multiple elements, the divider defaults to the Primary type
+ * - Use the provided CSS custom properties to customize divider styles
  *
- * **Divider Variants:**
- * - **solid**: Solid line.
- * - **gradient**: Gradient Line.
+ * ## When to use
+ * Use dividers to create visual separation between content sections, list items, or layout regions.
+ * Add text labels to provide context, or grabber buttons to create resizable panes.
  *
- * **Divider Types:**
- * - The type of divider is inferred based on the kind of slot present.
- *  - **Primary**: A simple horizontal or vertical divider.
- *  - **Text**: A horizontal divider with a text label in the center.
- *  - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
- *
- * **Accessibility:**
- * - When the slot is replaced by an `mdc-button`:
- *   - `aria-label` should be passed to the `mdc-button`.
- *   - `aria-expanded` should be passed to the `mdc-button`.
- *
- * **Notes:**
- * - If the slot is replaced by an invalid tag name or contains multiple elements,
- *   the divider defaults to the **Primary** type.
- * - To override the styles of the divider, use the provided CSS custom properties.
+ * ## Accessibility
+ * - When using a grabber button, provide `aria-label` to describe its purpose
+ * - Set `aria-expanded` on the button to indicate the current state of resizable sections
+ * - Ensure sufficient color contrast for the divider line
  *
  * @tagname mdc-divider
  *
- * @cssproperty --mdc-divider-background-color - background color of the divider
- * @cssproperty --mdc-divider-width - width of the divider
- * @cssproperty --mdc-divider-horizontal-gradient - gradient of the horizontal divider
- * @cssproperty --mdc-divider-vertical-gradient - gradient of the vertical divider
- * @cssproperty --mdc-divider-text-size - font size of label in the text divider
- * @cssproperty --mdc-divider-text-color - font color of label in the text divider
- * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
- * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
- * @cssproperty --mdc-divider-grabber-button-background-color-normal - background color of the grabber button
- *  in rest state
- * @cssproperty --mdc-divider-grabber-button-background-color-hover - background color of the grabber button
- *  in hover state
- * @cssproperty --mdc-divider-grabber-button-background-color-pressed - background color of the grabber button
- *  in pressed state
- * @cssproperty --mdc-divider-grabber-button-border-color - border color of the grabber button
- * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
+ * @cssproperty --mdc-divider-background-color - Background color of the divider line.
+ * @cssproperty --mdc-divider-width - Width (thickness) of the divider line.
+ * @cssproperty --mdc-divider-horizontal-gradient - Gradient for horizontal dividers.
+ * @cssproperty --mdc-divider-vertical-gradient - Gradient for vertical dividers.
+ * @cssproperty --mdc-divider-text-size - Font size of the text label in text dividers.
+ * @cssproperty --mdc-divider-text-color - Font color of the text label in text dividers.
+ * @cssproperty --mdc-divider-text-margin - Left and right margin of the text label.
+ * @cssproperty --mdc-divider-text-line-height - Line height of the text label.
+ * @cssproperty --mdc-divider-grabber-button-background-color-normal - Background color of the grabber button in rest state.
+ * @cssproperty --mdc-divider-grabber-button-background-color-hover - Background color of the grabber button in hover state.
+ * @cssproperty --mdc-divider-grabber-button-background-color-pressed - Background color of the grabber button in pressed state.
+ * @cssproperty --mdc-divider-grabber-button-border-color - Border color of the grabber button.
+ * @cssproperty --mdc-divider-grabber-button-border-radius - Border radius of the grabber button.
+ *
+ * @slot - Content for the divider. Use `mdc-text` for text labels or `mdc-button` for grabber buttons.
  */
 class Divider extends Component {
   /**
-   * Two orientations of divider
-   * - **horizontal**: A thin, horizontal line with 0.0625rem width.
-   * - **vertical**: A thin, vertical line with 0.0625rem width.
+   * Determines the orientation of the divider line.
+   * - **horizontal**: A thin horizontal line
+   * - **vertical**: A thin vertical line
    *
-   * Note: We do not support "Vertical Text Divider" as of now.
+   * Note: Vertical text dividers are not currently supported.
    * @default horizontal
    */
   @property({ type: String, reflect: true })
   orientation: DividerOrientation = DEFAULTS.ORIENTATION;
 
   /**
-   * Two variants of divider
-   * - **solid**: Solid line.
-   * - **gradient**: Gradient Line that fades on either sides of the divider.
+   * Visual style of the divider line.
+   * - **solid**: Solid line with uniform color
+   * - **gradient**: Gradient line that fades on both ends
    * @default solid
    */
   @property({ type: String, reflect: true })
   variant: DividerVariant = DEFAULTS.VARIANT;
 
   /**
-   * Direction of the arrow icon, if applicable.
-   * - **positive**
-   * - **negative**
+   * Direction of the arrow icon displayed on the grabber button.
+   * - **positive**: Up arrow (horizontal) or right arrow (vertical)
+   * - **negative**: Down arrow (horizontal) or left arrow (vertical)
    *
-   * Note: Positive and Negative directions are defined based on Cartesian plane.
-   * @default 'negative'
+   * Only applies when using a grabber button. Directions follow the Cartesian coordinate system.
+   * @default negative
    */
   @property({ type: String, attribute: 'arrow-direction', reflect: true })
   arrowDirection: Directions = DEFAULTS.ARROW_DIRECTION;
 
   /**
-   * Position of the button, if applicable.
-   * - **positive**
-   * - **negative**
+   * Position of the grabber button along the divider line.
+   * - **positive**: Right side (horizontal) or top side (vertical)
+   * - **negative**: Left side (horizontal) or bottom side (vertical)
    *
-   * Note: Positive and Negative directions are defined based on Cartesian plane.
-   * @default 'negative'
+   * Only applies when using a grabber button. Directions follow the Cartesian coordinate system.
+   * @default negative
    */
   @property({ type: String, attribute: 'button-position', reflect: true })
   buttonPosition: Directions = DEFAULTS.BUTTON_DIRECTION;

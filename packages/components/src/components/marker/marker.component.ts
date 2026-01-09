@@ -8,28 +8,33 @@ import type { MarkerVariants } from './marker.types';
 import { MARKER_VARIANTS } from './marker.constants';
 
 /**
- * `mdc-marker`, which is a vertical line and
- * used to draw attention to specific parts of
- * the content or to signify important information.
+ * The Marker component displays a vertical line (0.25rem wide) used to draw attention to specific content
+ * or signify important information. It provides visual emphasis through color and pattern variations.
  *
- * **Marker Variants**:
- * - **solid**: Solid marker.
- * - **striped**: Striped marker.
+ * Markers are commonly used alongside list items, cards, or content blocks to indicate status,
+ * priority, or categorization.
+ *
+ * ## When to use
+ * Use markers to highlight important content, indicate status or priority levels, or provide
+ * visual categorization in lists and layouts.
+ *
+ * ## Accessibility
+ * - Markers are purely decorative and should not convey information solely through color
+ * - Always pair markers with text labels or other indicators to convey meaning
+ * - Ensure sufficient color contrast for visibility
  *
  * @tagname mdc-marker
  *
- * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
- * in solid variant.
- * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
- * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
- * in striped variant.
- * @cssproperty --mdc-marker-width - Allows customization of the default width.
+ * @cssproperty --mdc-marker-solid-background-color - Background color for solid variant markers.
+ * @cssproperty --mdc-marker-striped-color - Stripe color for striped variant markers.
+ * @cssproperty --mdc-marker-striped-background-color - Background color for striped variant markers.
+ * @cssproperty --mdc-marker-width - Width (thickness) of the marker line.
  */
 class Marker extends Component {
   /**
-   * There are two variants of markers, each with a width of 0.25rem:
-   * - **solid**: Solid marker.
-   * - **striped**: Striped marker.
+   * Visual style of the marker.
+   * - **solid**: Solid colored vertical line
+   * - **striped**: Vertical line with diagonal stripes pattern
    * @default solid
    */
   @property({ type: String, reflect: true })
