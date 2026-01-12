@@ -733,16 +733,59 @@ test.describe('Combobox Feature Scenarios', () => {
           placeholder: defaultPlaceholder,
           options: defaultOptions,
           'control-type': 'controlled',
+          value: 'canada',
         });
-        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
         const changePromise = componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
         await expect(combobox).not.toHaveAttribute('value', 'argentina');
         await expect(input).not.toHaveValue('Argentina');
-        await inputPromise;
+        // The previously set value should remain
+        await expect(combobox).toHaveAttribute('value', 'canada');
+        await expect(input).toHaveValue('Canada');
         await changePromise;
+      });
+
+      await test.step('should not select an option when the control type is controlled', async () => {
+        const { input, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+          value: 'canada',
+        });
+        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
+        await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
+        await expect(combobox).not.toHaveAttribute('value', 'argentina');
+        await expect(input).not.toHaveValue('Argentina');
+        // The previously set value should remain
+        await expect(combobox).toHaveAttribute('value', 'canada');
+        await expect(input).toHaveValue('Canada');
+        await changePromise;
+      });
+
+      await test.step('should reflect parent value changes in controlled mode', async () => {
+        const { input, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+          value: 'canada',
+        });
+
+        // Change the value programmatically
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox') as Combobox;
+          combobox.value = 'brazil';
+        });
+
+        await expect(combobox).toHaveAttribute('value', 'brazil');
+        await expect(input).toHaveValue('Brazil');
       });
     });
 

@@ -27,10 +27,7 @@ const render = (args: Args) =>
   wrapper(
     html` <mdc-combobox
       @change="${action('onchange')}"
-      @click="${action('onclick')}"
       @input="${action('oninput')}"
-      @keydown="${action('onkeydown')}"
-      @focus="${action('onfocus')}"
       backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
       boundary="${ifDefined(args.boundary)}"
       control-type="${ifDefined(args['control-type'])}"
@@ -263,6 +260,42 @@ export const AllVariants: StoryObj = {
     </div>
   `,
   ...hideAllControls(),
+};
+
+export const ComboboxWithControlled: StoryObj = {
+  render: (args: Args) => {
+    const handleInput = (event: CustomEvent) => {
+      event.stopPropagation();
+      document.querySelector('mdc-combobox')!.value = event.detail.value;
+    };
+    return html`
+      <mdc-combobox
+        @change="${handleInput}"
+        placeholder="${args.placeholder}"
+        label="${args.label}"
+        value="${args.value}"
+        control-type="${args['control-type']}"
+      >
+        ${args.children}
+      </mdc-combobox>
+    `;
+  },
+  args: {
+    label: 'Top Countries',
+    'control-type': 'controlled',
+    value: 'den',
+    placeholder: 'Start typing',
+    children: html`
+      <mdc-selectlistbox>
+        <mdc-option value="arg" label="Argentina"></mdc-option>
+        <mdc-option value="bra" label="Brazil"></mdc-option>
+        <mdc-option value="can" label="Canada"></mdc-option>
+        <mdc-option value="chi" label="China"></mdc-option>
+        <mdc-option value="col" label="Colombia"></mdc-option>
+        <mdc-option value="den" label="Denmark"></mdc-option>
+      </mdc-selectlistbox>
+    `,
+  },
 };
 
 export const ComboboxWithOptionGroups: StoryObj = {

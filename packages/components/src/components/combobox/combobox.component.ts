@@ -203,6 +203,9 @@ class Combobox
   @state() private filteredValue = '';
 
   /** @internal */
+  @state() private forceValueUpdate = false;
+
+  /** @internal */
   private initialSelectedOption: Option | null = null;
 
   /** @internal */
@@ -276,6 +279,10 @@ class Combobox
    * @internal
    */
   private handleModifiedEvent = (event: Event) => {
+    // When the combobox is controlled, we don't update/modify the selected value internally.
+    if (this.controlType === 'controlled') {
+      return;
+    }
     const firstSelectedOption = this.getFirstSelectedOption();
     switch ((event as LifeCycleModifiedEvent).detail.change) {
       case 'selected': {
@@ -329,20 +336,24 @@ class Combobox
    * Sets the selected option of the combobox.
    *
    * @param option - the new option to be set
-   * @param emitEvents - if false, we don't emit events, default is true
+   * @param updateFromValue - indicates if the update is triggered from the value attribute change
+   * @param emitEvents - indicates if the change and input events should be emitted
    */
   private setSelectedValue(option: Option | null, emitEvents = true): void {
-    if (this.controlType !== 'controlled') {
-      // this.value is the actual value of the component
-      this.value = option?.getAttribute('value') || '';
-      // this.filteredValue is the visible label of the component
-      this.filteredValue = option?.getAttribute('label') || '';
-      this.internals.setFormValue(this.value);
-      this.updateHiddenOptions();
-      this.updateSelectedOption(option!);
-      this.setInputValidity();
-      this.resetHelpText();
+    if (this.controlType === 'controlled' && !this.forceValueUpdate) {
+      ComboboxEventManager.onChangeCombobox(this, option!);
+      return;
     }
+    this.forceValueUpdate = false;
+    // this.filteredValue is the visible label of the component
+    this.filteredValue = option?.getAttribute('label') || '';
+    // this.value is the actual value of the component
+    this.value = option?.getAttribute('value') || '';
+    this.internals.setFormValue(this.value);
+    this.updateHiddenOptions();
+    this.updateSelectedOption(option!);
+    this.setInputValidity();
+    this.resetHelpText();
 
     if (emitEvents) {
       ComboboxEventManager.onInputCombobox(this, option!);
@@ -355,6 +366,7 @@ class Combobox
    * This method is called when there is a change on the input.
    */
   private resetSelectedValue(): void {
+    // We don't reset the value when the combobox is controlled
     if (this.controlType !== 'controlled') {
       this.value = '';
     }
@@ -381,7 +393,13 @@ class Combobox
   override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
     super.attributeChangedCallback(name, oldValue, newValue);
 
-    if (name === 'value' && newValue !== '' && newValue !== oldValue && this.navItems.length) {
+    if (
+      name === 'value' &&
+      newValue !== '' &&
+      newValue !== oldValue &&
+      this.navItems.length &&
+      this.controlType !== 'controlled'
+    ) {
       const firstSelectedOption = this.getFirstSelectedOption();
       const valueBasedOption = this.navItems.find(option => option.value === newValue);
       let optionToSelect: Option | null = null;
@@ -396,7 +414,7 @@ class Combobox
       }
       this.updateComplete
         .then(() => {
-          this.setSelectedValue(optionToSelect, false);
+          this.setSelectedValue(optionToSelect);
         })
         .catch(this.handleUpdateError);
     }
@@ -422,18 +440,29 @@ class Combobox
     super.firstUpdated(_changedProperties);
 
     const firstSelectedOption = this.getFirstSelectedOption();
-    if (firstSelectedOption) {
+    // When the combobox is controlled, we don't update the selected value internally.
+    if (firstSelectedOption && this.controlType !== 'controlled') {
       this.initialSelectedOption = firstSelectedOption;
       this.setSelectedValue(firstSelectedOption);
     } else if (this.value) {
-      const validOption = this.navItems.find(option => option.value === this.value);
-      this.setSelectedValue(validOption!);
+      this.updateValueBasedSelection();
     } else if (this.placeholder) {
       this.setInputValidity();
     }
     this.navItems.forEach(option => {
       option.setAttribute('tabindex', '-1');
     });
+  }
+
+  /**
+   * Updates the selected value based on the current `value` property.
+   */
+  private updateValueBasedSelection(): void {
+    this.forceValueUpdate = true;
+    const validOption = this.navItems.find(option => option.value === this.value);
+    if (validOption) {
+      this.setSelectedValue(validOption);
+    }
   }
 
   public override updated(changedProperties: PropertyValues): void {
@@ -455,6 +484,10 @@ class Combobox
         // we close the popover if it is open.
         this.closePopover();
       }
+    }
+
+    if (changedProperties.has('value')) {
+      this.updateValueBasedSelection();
     }
   }
 
@@ -490,9 +523,7 @@ class Combobox
     // Restore the selected option
     this.setSelectedValue(optionToResetTo);
     // Reset the filtered text (typed value shown in input)
-    if (this.controlType !== 'controlled') {
-      this.filteredValue = optionToResetTo?.label ?? '';
-    }
+    this.filteredValue = optionToResetTo?.label ?? '';
     // Force revalidation after reset
     this.setInputValidity();
   }
@@ -522,7 +553,7 @@ class Combobox
    * ensuring that no option remains visually highlighted as focused.
    * @internal
    */
-  private resetFocusedOption() {
+  private resetFocusedOption(): void {
     this.navItems
       .filter(option => option.hasAttribute('data-focused'))
       .forEach(option => this.updateOptionAttributes(option, false));
@@ -625,9 +656,7 @@ class Combobox
         } else {
           this.resetSelectedValue();
           // clear the visible value
-          if (this.controlType !== 'controlled') {
-            this.filteredValue = '';
-          }
+          this.filteredValue = '';
         }
         break;
       }
