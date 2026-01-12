@@ -8,6 +8,8 @@ import '../button';
 import '../list';
 import '../listitem';
 import '../popover';
+import '../link';
+import '../buttonlink';
 import { COLOR, DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
@@ -154,5 +156,24 @@ export const TooltipInsidePopover: StoryObj = {
         </mdc-popover>
       </div>
     </mdc-popover>
+  `,
+};
+
+export const TooltipOnLink: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+      <mdc-button id="tooltip-link-trigger">Button</mdc-button>
+      <mdc-tooltip placement="right" triggerid="tooltip-link-trigger" show-arrow
+        >aria-describedby is set on mdc-button</mdc-tooltip
+      >
+      <mdc-link id="tooltip-link" href="#">Link</mdc-link>
+      <mdc-tooltip placement="right" triggerid="tooltip-link" show-arrow
+        >data-aria-describedby is set on mdc-link</mdc-tooltip
+      >
+      <mdc-buttonlink id="tooltip-btnlink" href="#">ButtonLink</mdc-buttonlink>
+      <mdc-tooltip placement="right" triggerid="tooltip-btnlink" show-arrow
+        >data-aria-describedby is set on mdc-buttonlink</mdc-tooltip
+      >
+    </div>
   `,
 };

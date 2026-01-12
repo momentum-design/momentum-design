@@ -13,6 +13,9 @@ type SetupOptions = {
   href?: string;
   target?: string;
   rel?: string;
+  dataAriaLabel?: string;
+  dataAriaDescribedby?: string;
+  dataAriaLabelledby?: string;
   addPageFooter?: boolean;
 };
 
@@ -30,6 +33,9 @@ const setup = async (args: SetupOptions) => {
       ${rest.href ? `href="${rest.href}"` : ''}
       ${rest.target ? `target="${rest.target}"` : ''}
       ${rest.rel ? `rel="${rest.rel}"` : ''}
+      ${rest.dataAriaLabel ? `data-aria-label="${rest.dataAriaLabel}"` : ''}
+      ${rest.dataAriaDescribedby ? `data-aria-describedby="${rest.dataAriaDescribedby}"` : ''}
+      ${rest.dataAriaLabelledby ? `data-aria-labelledby="${rest.dataAriaLabelledby}"` : ''}
     >Label</mdc-linksimple>
     ${rest.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
   `;
@@ -82,6 +88,36 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       await expect(newLink).toHaveAttribute('href', '#content');
       await expect(newLink).toHaveAttribute('target', '_self');
       await expect(newLink).toHaveAttribute('rel', 'noopener');
+    });
+
+    await test.step('supports data-aria-label attribute', async () => {
+      const ariaLabel = 'Custom Aria Label';
+      const newLink = await setup({
+        componentsPage,
+        dataAriaLabel: ariaLabel,
+      });
+
+      await expect(newLink).toHaveAttribute('data-aria-label', ariaLabel);
+    });
+
+    await test.step('supports data-aria-describedby attribute', async () => {
+      const ariaDescribedby = 'description-id';
+      const newLink = await setup({
+        componentsPage,
+        dataAriaDescribedby: ariaDescribedby,
+      });
+
+      await expect(newLink).toHaveAttribute('data-aria-describedby', ariaDescribedby);
+    });
+
+    await test.step('supports data-aria-labelledby attribute', async () => {
+      const ariaLabelledby = 'label-id';
+      const newLink = await setup({
+        componentsPage,
+        dataAriaLabelledby: ariaLabelledby,
+      });
+
+      await expect(newLink).toHaveAttribute('data-aria-labelledby', ariaLabelledby);
     });
   });
 

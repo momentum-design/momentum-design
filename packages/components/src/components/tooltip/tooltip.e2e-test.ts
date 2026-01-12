@@ -21,15 +21,17 @@ type SetupOptions = {
   tooltipType?: string;
   trigger?: PopoverTrigger;
   triggerID: string;
+  triggerType?: 'mdc-button' | 'mdc-link' | 'mdc-buttonlink';
 };
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
+  const triggerType = restArgs.triggerType || 'mdc-button';
   await componentsPage.mount({
     html: `
     <div id="wrapper" >
       <div style="height: 10vh">
-        <mdc-button id="${restArgs.triggerID}">Trigger</mdc-button>
+        <${triggerType} id="${restArgs.triggerID}">Trigger</${triggerType}>
         <mdc-button style="margin-top: 2px;">Other button</mdc-button>
       </div>
       <mdc-tooltip
@@ -50,7 +52,7 @@ const setup = async (args: SetupOptions) => {
   await wrapper.waitFor();
   const tooltip = componentsPage.page.locator(`#${restArgs.id}`).first();
   const triggerButton = componentsPage.page.locator(`#${restArgs.triggerID}`).first();
-  return { tooltip, triggerButton };
+  return { tooltip, triggerButton, triggerType };
 };
 
 /**
@@ -175,6 +177,113 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       await expect(tooltip).toHaveAttribute('delay', DEFAULTS.DELAY);
       await expect(tooltip).toHaveAttribute('placement', DEFAULTS.PLACEMENT);
       await expect(tooltip).toHaveAttribute('tooltip-type', DEFAULTS.TOOLTIP_TYPE);
+    });
+  });
+
+  /**
+   * DATA-ARIA ATTRIBUTES FOR LIT COMPONENTS (mdc-link, mdc-buttonlink)
+   */
+  await test.step('Tooltip with mdc-link trigger', async () => {
+    const { tooltip: linkTooltip, triggerButton: linkTrigger } = await setup({
+      componentsPage,
+      id: 'link-tooltip',
+      triggerID: 'link-trigger',
+      triggerType: 'mdc-link',
+      children: 'Link tooltip content',
+    });
+
+    await test.step('should set data-aria-describedby for description type', async () => {
+      await componentsPage.setAttributes(linkTooltip, { 'tooltip-type': 'description' });
+      await expect(linkTooltip).toHaveAttribute('tooltip-type', 'description');
+      const describedBy = await linkTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      expect(describedBy).toBe('link-tooltip');
+    });
+
+    await test.step('should set data-aria-labelledby for label type', async () => {
+      await componentsPage.setAttributes(linkTooltip, { 'tooltip-type': 'label' });
+      await expect(linkTooltip).toHaveAttribute('tooltip-type', 'label');
+      const labelledBy = await linkTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(labelledBy).toBe('link-tooltip');
+    });
+
+    await test.step('should remove data attributes for none type', async () => {
+      await componentsPage.setAttributes(linkTooltip, { 'tooltip-type': 'none' });
+      await expect(linkTooltip).toHaveAttribute('tooltip-type', 'none');
+      const describedBy = await linkTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      const labelledBy = await linkTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('');
+      expect(labelledBy).toBe('');
+    });
+  });
+
+  await test.step('Tooltip with mdc-buttonlink trigger', async () => {
+    const { tooltip: buttonLinkTooltip, triggerButton: buttonLinkTrigger } = await setup({
+      componentsPage,
+      id: 'buttonlink-tooltip',
+      triggerID: 'buttonlink-trigger',
+      triggerType: 'mdc-buttonlink',
+      children: 'Buttonlink tooltip content',
+    });
+
+    await test.step('should set data-aria-describedby for description type', async () => {
+      await componentsPage.setAttributes(buttonLinkTooltip, { 'tooltip-type': 'description' });
+      await expect(buttonLinkTooltip).toHaveAttribute('tooltip-type', 'description');
+      const describedBy = await buttonLinkTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      expect(describedBy).toBe('buttonlink-tooltip');
+    });
+
+    await test.step('should set data-aria-labelledby for label type', async () => {
+      await componentsPage.setAttributes(buttonLinkTooltip, { 'tooltip-type': 'label' });
+      await expect(buttonLinkTooltip).toHaveAttribute('tooltip-type', 'label');
+      const labelledBy = await buttonLinkTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(labelledBy).toBe('buttonlink-tooltip');
+    });
+
+    await test.step('should remove data attributes for none type', async () => {
+      await componentsPage.setAttributes(buttonLinkTooltip, { 'tooltip-type': 'none' });
+      await expect(buttonLinkTooltip).toHaveAttribute('tooltip-type', 'none');
+      const describedBy = await buttonLinkTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      const labelledBy = await buttonLinkTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('');
+      expect(labelledBy).toBe('');
+    });
+  });
+
+  await test.step('Tooltip type transitions with mdc-link', async () => {
+    const { tooltip: transitionTooltip, triggerButton: transitionTrigger } = await setup({
+      componentsPage,
+      id: 'transition-tooltip',
+      triggerID: 'transition-trigger',
+      triggerType: 'mdc-link',
+      children: 'Transition test',
+    });
+
+    await test.step('should transition from description to label', async () => {
+      await componentsPage.setAttributes(transitionTooltip, { 'tooltip-type': 'description' });
+      let describedBy = await transitionTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      let labelledBy = await transitionTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('transition-tooltip');
+      expect(labelledBy).toBe(null);
+
+      await componentsPage.setAttributes(transitionTooltip, { 'tooltip-type': 'label' });
+      describedBy = await transitionTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      labelledBy = await transitionTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('');
+      expect(labelledBy).toBe('transition-tooltip');
+    });
+
+    await test.step('should transition from label to none', async () => {
+      await componentsPage.setAttributes(transitionTooltip, { 'tooltip-type': 'label' });
+      let describedBy = await transitionTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      let labelledBy = await transitionTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('');
+      expect(labelledBy).toBe('transition-tooltip');
+
+      await componentsPage.setAttributes(transitionTooltip, { 'tooltip-type': 'none' });
+      describedBy = await transitionTrigger.evaluate((el: any) => el.dataAriaDescribedby);
+      labelledBy = await transitionTrigger.evaluate((el: any) => el.dataAriaLabelledby);
+      expect(describedBy).toBe('');
+      expect(labelledBy).toBe('');
     });
   });
 };

@@ -23,6 +23,8 @@ const render = (args: Args) =>
     type="${args.type}"
     referrerpolicy="${args.referrerpolicy}"
     data-aria-label="${args['data-aria-label']}"
+    data-aria-describedby="${args['data-aria-describedby']}"
+    data-aria-labelledby="${args['data-aria-labelledby']}"
     >${args.children}</mdc-linksimple
   >`;
 
@@ -76,6 +78,12 @@ const meta: Meta = {
       control: 'text',
     },
     'data-aria-label': {
+      control: 'text',
+    },
+    'data-aria-describedby': {
+      control: 'text',
+    },
+    'data-aria-labelledby': {
       control: 'text',
     },
     ...hideControls(['handleNavigation']),

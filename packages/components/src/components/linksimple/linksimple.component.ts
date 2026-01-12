@@ -106,6 +106,22 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   @property({ type: String, reflect: true })
   referrerpolicy?: string;
 
+  /**
+   * Defines a id pointing to the element which describes the input element.
+   * The AriaDescribedby attribute to be set for accessibility.
+   * @default null
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-describedby' })
+  dataAriaDescribedby: string | null = null;
+
+  /**
+   * Defines a id pointing to the element which labels the input element.
+   * The AriaLabelledby attribute to be set for accessibility.
+   * @default null
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-labelledby' })
+  dataAriaLabelledby: string | null = null;
+
   public override connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('click', this.handleNavigation.bind(this));
@@ -171,6 +187,8 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
         referrerpolicy="${ifDefined(this.referrerpolicy)}"
         aria-label="${this.dataAriaLabel ?? ''}"
         tabindex="${this.disabled ? -1 : 0}"
+        aria-describedby="${ifDefined(this.dataAriaDescribedby ?? undefined)}"
+        aria-labelledby="${ifDefined(this.dataAriaLabelledby ?? undefined)}"
       >
         ${this.renderAnchorContent()}
       </a>

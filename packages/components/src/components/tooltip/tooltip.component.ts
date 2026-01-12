@@ -21,6 +21,9 @@ import type { TooltipType } from './tooltip.types';
  * A tooltip is triggered by mouse hover or by keyboard focus
  * and will disappear upon mouse exit or focus change.
  *
+ * When the tooltip-type is set to "description", the tooltip sets `aria-describedby` on the trigger component which refers to the tooltip id. In case of "label", it sets `aria-labelledby` on the trigger component which refers to the tooltip id.
+ * For components that support `data-aria-describedby` or `data-aria-labelledby` properties, those properties are set accordingly.
+ *
  * Note:
  *  - Tooltips cannot contain content that can be focused or interacted with.
  *  - Tooltips will contain the default `aria-hidden="true"` so that VO will never focus the tooltip.
@@ -75,6 +78,23 @@ class Tooltip extends Popover {
     this.size = POPOVER_DEFAULTS.SIZE;
   }
 
+  private setAriaAttributeOnTrigger(attribute: 'aria-describedby' | 'aria-labelledby', value: string): void {
+    if (!this.triggerElement) return;
+
+    // Convert 'aria-describedby' to 'dataAriaDescribedby'
+    // Regex logic: Find a hyphen followed by a letter and replace it with the uppercase version of that letter.
+    const propertyName = `data-${attribute}`.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+    // Check if the property exists on the Lit element instance
+    if (propertyName in this.triggerElement) {
+      (this.triggerElement as any)[propertyName] = value;
+    }
+    // Check if the element has the property set (but not the attribute)
+    else {
+      this.triggerElement.setAttribute(attribute, value);
+    }
+  }
+
   /**
    * Sets the type attribute for the tooltip component.
    * If the provided type is not included in the TOOLTIP_TYPES,
@@ -100,10 +120,10 @@ class Tooltip extends Popover {
     if (this.triggerElement) {
       switch (this.tooltipType) {
         case TOOLTIP_TYPES.DESCRIPTION:
-          this.triggerElement.setAttribute('aria-describedby', this.id);
+          this.setAriaAttributeOnTrigger('aria-describedby', this.id);
           break;
         case TOOLTIP_TYPES.LABEL:
-          this.triggerElement.setAttribute('aria-labelledby', this.id);
+          this.setAriaAttributeOnTrigger('aria-labelledby', this.id);
           break;
         default:
           break;
@@ -121,6 +141,23 @@ class Tooltip extends Popover {
     }
   }
 
+  private removeAriaAttributeFromTrigger(attribute: 'aria-describedby' | 'aria-labelledby'): void {
+    if (!this.triggerElement) return;
+
+    // Convert 'aria-describedby' to 'dataAriaDescribedby'
+    // Regex logic: Find a hyphen followed by a letter and replace it with the uppercase version of that letter.
+    const propertyName = `data-${attribute}`.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+    // Check if the property exists on the Lit element instance
+    if (propertyName in this.triggerElement) {
+      (this.triggerElement as any)[propertyName] = '';
+    }
+    // Check if the element has the attribute
+    else if (this.triggerElement.hasAttribute(attribute)) {
+      this.triggerElement.removeAttribute(attribute);
+    }
+  }
+
   /**
    * Updates the tooltip type attribute and sets the appropriate aria props on the trigger component.
    * @param changedProperties - The changed properties.
@@ -133,27 +170,29 @@ class Tooltip extends Popover {
     }
 
     if (this.triggerElement) {
+      // AI-Assisted
       switch (this.tooltipType) {
         case TOOLTIP_TYPES.DESCRIPTION:
           if (previousTooltipType === TOOLTIP_TYPES.LABEL) {
-            this.triggerElement.removeAttribute('aria-labelledby');
+            this.removeAriaAttributeFromTrigger('aria-labelledby');
           }
-          this.triggerElement.setAttribute('aria-describedby', this.id);
+          this.setAriaAttributeOnTrigger('aria-describedby', this.id);
           break;
         case TOOLTIP_TYPES.LABEL:
           if (previousTooltipType === TOOLTIP_TYPES.DESCRIPTION) {
-            this.triggerElement.removeAttribute('aria-describedby');
+            this.removeAriaAttributeFromTrigger('aria-describedby');
           }
-          this.triggerElement.setAttribute('aria-labelledby', this.id);
+          this.setAriaAttributeOnTrigger('aria-labelledby', this.id);
           break;
         default:
           if (previousTooltipType === TOOLTIP_TYPES.DESCRIPTION) {
-            this.triggerElement.removeAttribute('aria-describedby');
+            this.removeAriaAttributeFromTrigger('aria-describedby');
           } else if (previousTooltipType === TOOLTIP_TYPES.LABEL) {
-            this.triggerElement.removeAttribute('aria-labelledby');
+            this.removeAriaAttributeFromTrigger('aria-labelledby');
           }
           break;
       }
+      // End AI-Assisted
     }
   }
 
