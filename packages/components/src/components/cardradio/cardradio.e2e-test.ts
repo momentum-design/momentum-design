@@ -199,6 +199,16 @@ test.describe.parallel('mdc-cardradio', () => {
           await expect(cardradio).toBeChecked();
         });
 
+        await test.step('component should prevent default scroll behavior on space keydown', async () => {
+          await setup(setupArgs);
+          await componentsPage.actionability.pressTab();
+          await expect(cardradio).toBeFocused();
+          const scrollBefore = await componentsPage.page.evaluate(() => window.scrollY);
+          await componentsPage.page.keyboard.press('Space');
+          const scrollAfter = await componentsPage.page.evaluate(() => window.scrollY);
+          expect(scrollAfter).toBe(scrollBefore);
+        });
+
         await test.step('component should not be focused in disabled state', async () => {
           await setup({ ...setupArgs, disabled: true });
           await componentsPage.actionability.pressTab();
