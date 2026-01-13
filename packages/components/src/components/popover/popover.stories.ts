@@ -22,6 +22,7 @@ import type Dialog from '../dialog';
 
 import { BOUNDARY_ROOT, COLOR, DEFAULTS, POPOVER_PLACEMENT, STRATEGY } from './popover.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
   <mdc-popover
@@ -55,12 +56,12 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
     ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
-    backdrop-append-to="${args['backdrop-append-to']}"
+    backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
     ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
-    boundary="${args.boundary}"
-    boundary-padding="${args['boundary-padding']}"
-    boundary-root="${args['boundary-root']}"
-    strategy="${args.strategy}"
+    boundary="${ifDefined(args.boundary)}"
+    boundary-padding="${ifDefined(args['boundary-padding'])}"
+    boundary-root="${ifDefined(args['boundary-root'])}"
+    strategy="${ifDefined(args.strategy)}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -342,18 +343,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(STRATEGY),
     },
-    ...hideControls([
-      'arrowElement',
-      'onOutsidePopoverClick',
-      'onEscapeKeydown',
-      'onPopoverFocusOut',
-      'startCloseDelay',
-      'cancelCloseDelay',
-      'enabledPreventScroll',
-      'enabledFocusTrap',
-      'shouldWrapFocus',
-      'utils',
-    ]),
+    ...hideControls(['aria-label', 'arrowElement', 'hide', 'show', 'togglePopoverVisible', 'triggerElement', 'utils']),
   },
 };
 
