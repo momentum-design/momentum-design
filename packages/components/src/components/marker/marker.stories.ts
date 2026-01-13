@@ -27,6 +27,9 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
   },
+  parameters: {
+    actions: { disable: true },
+  },
 };
 
 export default meta;

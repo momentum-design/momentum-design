@@ -67,4 +67,10 @@ const DEFAULTS = {
   ANIMATION_FRAME: false,
 } as const;
 
-export { TAG_NAME, POPOVER_PLACEMENT, COLOR, STRATEGY, TRIGGER, DEFAULTS };
+const TIMEOUTS = {
+  OPEN: 'open',
+  HOVER: 'hover',
+  CLOSE: 'close',
+} as const;
+
+export { TAG_NAME, POPOVER_PLACEMENT, COLOR, STRATEGY, TRIGGER, DEFAULTS, TIMEOUTS };
