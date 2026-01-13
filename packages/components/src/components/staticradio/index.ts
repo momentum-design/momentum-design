@@ -5,7 +5,7 @@ StaticRadio.register(TAG_NAME);
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-decorative-radio']: StaticRadio;
+    ['mdc-staticradio']: StaticRadio;
   }
 }
 
