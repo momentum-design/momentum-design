@@ -1,12 +1,12 @@
-import DecorativeRadio from './staticradio.component';
+import StaticRadio from './staticradio.component';
 import { TAG_NAME } from './staticradio.constants';
 
-DecorativeRadio.register(TAG_NAME);
+StaticRadio.register(TAG_NAME);
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-decorative-radio']: DecorativeRadio;
+    ['mdc-decorative-radio']: StaticRadio;
   }
 }
 
-export default DecorativeRadio;
+export default StaticRadio;
