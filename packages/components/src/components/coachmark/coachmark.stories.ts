@@ -1,8 +1,9 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import '.';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import popoverMeta from '../popover/popover.stories';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
@@ -68,6 +69,14 @@ const render = (args: Args) => html`
       aria-labelledby="${args['aria-labelledby']}"
       aria-describedby="${args['aria-describedby']}"
       role="${args.role}"
+      ?disable-aria-expanded="${args['disable-aria-expanded']}"
+      ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
+      backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
+      ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
+      boundary="${ifDefined(args.boundary)}"
+      boundary-padding="${ifDefined(args['boundary-padding'])}"
+      boundary-root="${ifDefined(args['boundary-root'])}"
+      strategy="${ifDefined(args.strategy)}"
       @shown="${action('onshown')}"
       @hidden="${action('onhidden')}"
       @created="${action('oncreated')}"
@@ -99,7 +108,7 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...popoverMeta.argTypes,
-    ...hideControls(['color', 'aria-label', 'show-arrow']),
+    ...hideControls(['color', 'show-arrow']),
   },
 };
 
