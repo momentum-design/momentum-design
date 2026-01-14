@@ -6,9 +6,10 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { PRESENCE_TYPE } from '../presence/presence.constants';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
+import { ROLE } from '../../utils/roles';
 
 import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 
@@ -75,6 +76,23 @@ export const Fallback: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
   },
+};
+
+export const AllPresenceTypes: StoryObj = {
+  render: () => html`
+    <div style="display: flex;  flex-wrap: wrap; justify-content: space-around;" role="${ROLE.MAIN}">
+      ${repeat(
+        Object.values(PRESENCE_TYPE),
+        presence => html`
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+            <mdc-avatar src="${imageFixtures.avatar}" presence="${presence}" size="64"></mdc-avatar>
+            <span>${presence}</span>
+          </div>
+        `,
+      )}
+    </div>
+  `,
+  ...hideAllControls(),
 };
 
 export const Size: StoryObj = {
