@@ -907,7 +907,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
         menuLvl5,
         menuLvl6Trigger,
         menuLvl6,
-        wrapper,
       } = await setup();
 
       const stack: Locator[] = [];
@@ -970,7 +969,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(menuLvl6).toHaveAttribute('z-index', '1015');
       stack.push(menuLvl6);
 
-      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays', { element: wrapper });
+      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays');
 
       // lvl 6 close
       await componentsPage.page.keyboard.press('Escape');
