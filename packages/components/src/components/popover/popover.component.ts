@@ -11,6 +11,7 @@ import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -99,7 +100,7 @@ import { PopoverUtils } from './popover.utils';
  * @csspart popover-content - The content of the popover.
  * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
-class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component))) {
+class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))) {
   /**
    * The unique ID of the popover.
    */
@@ -745,7 +746,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || event.code !== 'Escape') {
+    if (!this.visible || this.getActionForKeyEvent(event) === ACTIONS.ESCAPE) {
       return;
     }
 
