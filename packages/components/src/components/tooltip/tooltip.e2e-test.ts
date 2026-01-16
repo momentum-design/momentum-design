@@ -6,6 +6,7 @@ import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import { PopoverColor, PopoverPlacement, PopoverTrigger } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
@@ -285,14 +286,14 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         testHover: true,
         testFocus: true,
       },
-      {
-        desc: 'works with mdc-text',
-        content: `<mdc-text style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' id='element'>
+      ...Object.values(VALID_TEXT_TAGS).map(tag => ({
+        desc: `works with mdc-text[tagname=${tag}]`,
+        content: `<mdc-text style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' id='element' tagname='${tag}'>
           Lorem ipsum dolor sit amet
         </mdc-text>`,
         testHover: true,
         testFocus: false,
-      },
+      })),
     ];
 
     for (const testCase of testCases) {

@@ -82,7 +82,7 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    * @internal
    */
   @query('slot[part="button-text"]')
-  protected override overflowElement!: HTMLSlotElement;
+  protected buttonTextPart!: HTMLSlotElement;
 
   /**
    * Specifies the size of the button in pixels. Available sizes depend on the button type:
@@ -142,6 +142,10 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    * @internal
    */
   @state() private postfixFilledIconName?: IconNames;
+
+  protected override get overflowElement(): HTMLElement {
+    return this.buttonTextPart;
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
