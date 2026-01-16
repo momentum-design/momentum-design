@@ -899,8 +899,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     if (this.hideOnBlur) {
       const { relatedTarget } = event as FocusEvent;
       // Don't hide if focus moves within the component
-      if (relatedTarget && this.contains(relatedTarget as Node)) return;
-      this.hide();
+      if (!this.contains(relatedTarget as Node)) {
+        this.hide();
+      }
       return;
     }
 
