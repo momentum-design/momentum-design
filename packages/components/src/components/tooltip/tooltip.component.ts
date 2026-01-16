@@ -50,6 +50,15 @@ class Tooltip extends Popover {
   @property({ type: String, attribute: 'tooltip-type', reflect: true })
   tooltipType: TooltipType = DEFAULTS.TOOLTIP_TYPE;
 
+  /**
+   * If true, the tooltip will only be shown when the trigger element's content is overflowing on the x-axis.
+   *
+   * Supports the following components:
+   * - mdc-button
+   * - mdc-text
+   *
+   * @default false
+   */
   @property({ type: Boolean, attribute: 'only-show-when-trigger-overflows', reflect: true })
   onlyShowWhenTriggerOverflows: boolean = DEFAULTS.ONLY_SHOW_WHEN_TRIGGER_OVERFLOWS;
 
