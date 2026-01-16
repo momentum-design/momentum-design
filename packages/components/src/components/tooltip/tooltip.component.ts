@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { doesElementInheritOverflowMixin } from '../../utils/mixins/OverflowMixin';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -48,6 +49,9 @@ class Tooltip extends Popover {
    */
   @property({ type: String, attribute: 'tooltip-type', reflect: true })
   tooltipType: TooltipType = DEFAULTS.TOOLTIP_TYPE;
+
+  @property({ type: Boolean, attribute: 'only-show-when-trigger-overflows', reflect: true })
+  onlyShowWhenTriggerOverflows: boolean = DEFAULTS.ONLY_SHOW_WHEN_TRIGGER_OVERFLOWS;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -169,6 +173,20 @@ class Tooltip extends Popover {
     if (changedProperties.has('tooltipType')) {
       this.onTooltipTypeUpdated(changedProperties);
     }
+  }
+
+  public override show() {
+    if (
+      this.onlyShowWhenTriggerOverflows &&
+      this.triggerElement &&
+      doesElementInheritOverflowMixin(this.triggerElement)
+    ) {
+      if (!this.triggerElement.isWidthOverflowing()) {
+        return;
+      }
+    }
+
+    super.show();
   }
 
   public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];

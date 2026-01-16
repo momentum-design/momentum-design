@@ -127,6 +127,47 @@ export const Example: StoryObj = {
   },
 };
 
+export const TooltipOnTextOverflow: StoryObj = {
+  render: () => {
+    let toggle = false;
+    const smallWidth = 'width: 100px;';
+
+    const toggleWidth = () => {
+      toggle = !toggle;
+
+      const textElement = document.getElementById('text');
+      const buttonElement = document.getElementById('button');
+
+      const defaultStyles = 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;';
+
+      if (toggle) {
+        textElement!.setAttribute('style', defaultStyles);
+        buttonElement!.setAttribute('style', defaultStyles);
+      } else {
+        textElement!.setAttribute('style', smallWidth + defaultStyles);
+        buttonElement!.setAttribute('style', smallWidth + defaultStyles);
+      }
+    };
+
+    return html`
+      <mdc-text id="text" style="width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+        >This is really long text that will overflow</mdc-text
+      >
+      <mdc-tooltip triggerID="text" only-show-when-trigger-overflows tooltip-type="none" placement="right"
+        >This is really long text that will overflow</mdc-tooltip
+      >
+
+      <mdc-button id="button" style="width: 100px;"> This is really long text that will overflow </mdc-button>
+      <mdc-tooltip triggerID="button" only-show-when-trigger-overflows tooltip-type="none" placement="right"
+        >This is really long text that will overflow</mdc-tooltip
+      >
+
+      <hr />
+      <mdc-button @click=${toggleWidth}>Toggle Width</mdc-button>
+    `;
+  },
+};
+
 export const TooltipInsidePopover: StoryObj = {
   render: () => html`
     <mdc-popover visible hide-on-outside-click>

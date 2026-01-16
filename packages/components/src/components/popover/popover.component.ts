@@ -501,6 +501,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     this.utils = new PopoverUtils(this);
     this.parseTrigger();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
+
+    this.show = this.show.bind(this);
   }
 
   private parseTrigger = () => {
@@ -955,7 +957,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   /**
    * Shows the popover.
    */
-  public show = () => {
+  public show() {
     if (this.shouldSuppressOpening) {
       return;
     }
@@ -976,7 +978,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
       this.timers.clearTimeout(TIMEOUTS.OPEN);
       callback();
     }
-  };
+  }
 
   /**
    * Hides the popover.

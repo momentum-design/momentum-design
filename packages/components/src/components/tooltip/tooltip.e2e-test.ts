@@ -277,10 +277,100 @@ test('mdc-tooltip', async ({ componentsPage }) => {
     });
   });
 
+  await test.step('onlyShowWhenTriggerOverflows interaction', async () => {
+    const testCases: { desc: string; content: string; testHover: boolean; testFocus: boolean }[] = [
+      {
+        desc: 'works with mdc-button',
+        content: `<mdc-button style='width: 100px' id='element'>Lorem ipsum dolor sit amet</mdc-button>`,
+        testHover: true,
+        testFocus: true,
+      },
+      {
+        desc: 'works with mdc-text',
+        content: `<mdc-text style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' id='element'>
+          Lorem ipsum dolor sit amet
+        </mdc-text>`,
+        testHover: true,
+        testFocus: false,
+      },
+    ];
+
+    for (const testCase of testCases) {
+      const { desc, content, testHover, testFocus } = testCase;
+
+      await test.step(desc, async () => {
+        await componentsPage.mount({
+          html: `
+            <div id='wrapper'>
+              ${content}
+              <mdc-tooltip triggerID="element" only-show-when-trigger-overflows>
+                This is a tooltip
+              </mdc-tooltip>
+              <mdc-button id='after'>After</mdc-button>
+            </div>
+          `,
+          clearDocument: true,
+        });
+
+        const wrapper = componentsPage.page.locator('#wrapper');
+        await wrapper.waitFor();
+
+        const element = componentsPage.page.locator('#element').first();
+        const tooltip = componentsPage.page.locator('mdc-tooltip').first();
+
+        // Ensure tooltip is hidden initially
+        await expect(tooltip).not.toBeVisible();
+
+        if (testHover) {
+          await element.hover();
+          await expect(tooltip).toBeVisible();
+          await componentsPage.page.mouse.move(1000, 1000);
+          await expect(tooltip).not.toBeVisible();
+        }
+
+        if (testFocus) {
+          await componentsPage.actionability.pressTab();
+          await expect(tooltip).toBeVisible();
+          await componentsPage.actionability.pressTab();
+          await expect(tooltip).not.toBeVisible();
+        }
+
+        await element.evaluate(el => {
+          el.setAttribute('style', '');
+        });
+
+        // Ensure tooltip is hidden initially
+        await expect(tooltip).not.toBeVisible();
+
+        if (testHover) {
+          await element.hover();
+          await expect(tooltip).not.toBeVisible();
+          await componentsPage.page.mouse.move(1000, 1000);
+          await expect(tooltip).not.toBeVisible();
+        }
+
+        if (testFocus) {
+          await componentsPage.actionability.pressShiftTab();
+          await element.focus();
+          await expect(tooltip).not.toBeVisible();
+          await componentsPage.actionability.pressTab();
+          await expect(tooltip).not.toBeVisible();
+        }
+      });
+    }
+  });
+
   /**
    * ACCESSIBILITY
    */
   await test.step('accessibility for tooltip', async () => {
+    await setup({
+      componentsPage,
+      id: 'tooltip',
+      triggerID: 'trigger-button',
+      children: 'Lorem ipsum dolor sit amet.',
+    });
+
     await componentsPage.accessibility.checkForA11yViolations('tooltip');
   });
 });
