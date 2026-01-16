@@ -143,6 +143,9 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    */
   @state() private postfixFilledIconName?: IconNames;
 
+  /**
+   * @internal
+   */
   protected override get overflowElement(): HTMLElement {
     return this.buttonTextPart;
   }

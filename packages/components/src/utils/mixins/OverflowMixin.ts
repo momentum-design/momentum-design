@@ -10,6 +10,9 @@ export declare abstract class OverflowMixinInterface {
 
 export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   abstract class InnerMixinClass extends superClass {
+    /**
+     * @internal
+     */
     protected get overflowElement(): HTMLElement {
       return this;
     }
