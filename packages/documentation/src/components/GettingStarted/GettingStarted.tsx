@@ -124,7 +124,7 @@ export const GettingStarted = () => (
           For general design guidelines, component usage, or resources we make available to the design organization,
           check out our{' '}
           <a
-            href="https://www.figma.com/files/787107147284489960/team/788811036705382453"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             style="text-decoration: underline;"
