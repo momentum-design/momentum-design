@@ -16,7 +16,6 @@ export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) 
 
     public isWidthOverflowing(): boolean {
       const el = this.overflowElement;
-      console.log(el);
       return el.scrollWidth > el.clientWidth;
     }
   }
