@@ -746,7 +746,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) === ACTIONS.ESCAPE) {
+    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE) {
       return;
     }
 
