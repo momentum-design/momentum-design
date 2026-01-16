@@ -1,5 +1,5 @@
 import { CSSResult, html } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { OverflowMixin } from '../../utils/mixins/OverflowMixin';
@@ -30,8 +30,7 @@ class Text extends OverflowMixin(Component) {
   /**
    * @internal
    */
-  @query(`[part='${DEFAULTS.CSS_PART_TEXT}']`)
-  protected override overflowElement!: HTMLElement;
+  protected override overflowElement: HTMLElement = this;
 
   /**
    * Specifies the text style to be applied.
