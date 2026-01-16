@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { describeStory, hideControls } from '../../../config/storybook/utils';
+import { describeStory } from '../../../config/storybook/utils';
 import { STRATEGY } from '../popover/popover.constants';
 
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
@@ -741,21 +741,24 @@ export const DialogWithinDialog: StoryObj = {
   },
 };
 
+const lvl2PopoverStrategy = "Level 2 Popover's strategy";
 export const DialogWithinOtherOverlays: StoryObj = {
   render: renderDialogWithOtherOverlays,
   argTypes: {
-    lvl2PopoverStrategy: {
+    [lvl2PopoverStrategy]: {
       control: 'select',
       options: [...Object.values(STRATEGY), 'append to root'],
     },
   },
   args: {
-    lvl2PopoverStrategy: STRATEGY.ABSOLUTE,
+    [lvl2PopoverStrategy]: STRATEGY.ABSOLUTE,
   },
   ...describeStory(
     'Demo multiple level overlays nested into each other. They should maintains consistent (monotonic) z-indexing and Esc key handling. Esc should close only the top-most overlay (even tooltips).',
   ),
-  ...hideControls(Object.keys(commonProperties)),
+  parameters: {
+    controls: { include: [lvl2PopoverStrategy] },
+  },
 };
 
 export const DialogWithIframe: StoryObj = {
