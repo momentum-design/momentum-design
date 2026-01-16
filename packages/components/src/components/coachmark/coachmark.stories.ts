@@ -14,20 +14,9 @@ import { DEFAULTS } from './coachmark.constants';
 import type Coachmark from './coachmark.component';
 
 import '../button';
-import '../avatar';
-import '../appheader';
-import '../brandvisual';
-import '../searchfield';
-import '../divider';
-import '../tablist';
-import '../tab';
-import '../link';
-import '../badge';
-import '../card';
-import '../tooltip';
 import '../list';
 import '../listitem';
-import '../progressbar';
+import '../text';
 
 const render = (args: Args) => html`
   <div style="height: 50vh; display: inline-block" role="${ROLE.MAIN}">
