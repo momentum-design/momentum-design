@@ -11,12 +11,19 @@ export declare abstract class OverflowMixinInterface {
 export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   abstract class InnerMixinClass extends superClass {
     /**
+     * Gets the element whose overflow will be monitored.
+     *
      * @internal
      */
     protected get overflowElement(): HTMLElement {
       return this;
     }
 
+    /**
+     * Determines if the content of the overflow element is overflowing its width.
+     *
+     * @returns if the scroll width of the overflow element is greater than its client width.
+     */
     public isWidthOverflowing(): boolean {
       const el = this.overflowElement;
       return el.scrollWidth > el.clientWidth;
