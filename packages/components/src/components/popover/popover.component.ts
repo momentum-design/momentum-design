@@ -498,11 +498,11 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   constructor() {
     super();
+    this.show = this.show.bind(this);
+
     this.utils = new PopoverUtils(this);
     this.parseTrigger();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
-
-    this.show = this.show.bind(this);
   }
 
   private parseTrigger = () => {

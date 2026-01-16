@@ -99,6 +99,7 @@ class Text extends OverflowMixin(Component) {
    * @internal
    */
   protected override get overflowElement(): HTMLElement {
+    // span and small are inline elements therefore we need to return the host element itself
     if (([VALID_TEXT_TAGS.SPAN, VALID_TEXT_TAGS.SMALL] as TagName[]).includes(this.tagname)) {
       return this;
     }

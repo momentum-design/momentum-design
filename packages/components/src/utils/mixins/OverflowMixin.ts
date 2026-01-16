@@ -22,7 +22,7 @@ export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) 
     /**
      * Determines if the content of the overflow element is overflowing its width.
      *
-     * @returns if the scroll width of the overflow element is greater than its client width.
+     * @returns True if the scroll width of the overflow element is greater than its client width.
      */
     public isWidthOverflowing(): boolean {
       const el = this.overflowElement;
