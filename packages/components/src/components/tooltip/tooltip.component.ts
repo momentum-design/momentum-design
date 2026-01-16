@@ -129,7 +129,7 @@ class Tooltip extends Popover {
    * Updates the tooltip type attribute and sets the appropriate aria props on the trigger component.
    * @param changedProperties - The changed properties.
    */
-  private onTooltipTypeUpdated(changedProperties: PropertyValues): void {
+  private onTooltipTypeUpdated(changedProperties: PropertyValues<this>): void {
     const previousTooltipType = changedProperties.get('tooltipType');
 
     if (!Object.values(TOOLTIP_TYPES).includes(this.tooltipType)) {
@@ -161,7 +161,7 @@ class Tooltip extends Popover {
     }
   }
 
-  public override async update(changedProperties: PropertyValues): Promise<void> {
+  public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
     if (changedProperties.has('id')) {
