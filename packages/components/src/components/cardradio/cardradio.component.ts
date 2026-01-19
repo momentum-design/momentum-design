@@ -6,7 +6,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './cardradio.styles';
 
@@ -62,7 +62,7 @@ import styles from './cardradio.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
+class CardRadio extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
   /**
    * The checked state of the card
    * @default false
@@ -142,7 +142,8 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+    if (action === ACTIONS.SPACE) {
       event.preventDefault();
       return;
     }
@@ -153,16 +154,16 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
     const enabledCards = cards.filter(card => !card.disabled);
     const currentIndex = enabledCards.indexOf(this);
 
-    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+    if (action === ACTIONS.DOWN || ACTIONS.RIGHT === action) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledCards.length;
       this.updateCardRadio(enabledCards, nextIndex);
-    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+    } else if (action === ACTIONS.UP || ACTIONS.LEFT === action) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
       this.updateCardRadio(enabledCards, prevIndex);
     }
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.toggleChecked();
     }
   }
@@ -172,7 +173,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       this.toggleChecked();
     }
   }

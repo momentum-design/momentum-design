@@ -9,8 +9,8 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './radio.styles';
 
@@ -64,7 +64,7 @@ import styles from './radio.styles';
  */
 
 class Radio
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
@@ -243,7 +243,9 @@ class Radio
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.disabled) return;
 
-    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+
+    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
       event.preventDefault();
     }
 
@@ -251,20 +253,20 @@ class Radio
     const enabledRadios = radios.filter(radio => !radio.disabled);
     const currentIndex = enabledRadios.indexOf(this);
 
-    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+    if (action === ACTIONS.DOWN || action === ACTIONS.RIGHT) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledRadios.length;
       this.updateRadio(enabledRadios, nextIndex);
-    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+    } else if (action === ACTIONS.UP || action === ACTIONS.LEFT) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
       this.updateRadio(enabledRadios, prevIndex);
-    } else if (event.key === KEYS.SPACE) {
+    } else if (action === ACTIONS.SPACE) {
       this.updateRadio(enabledRadios, currentIndex);
     }
     this.updateTabIndex();
 
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.form?.requestSubmit();
     }
   }

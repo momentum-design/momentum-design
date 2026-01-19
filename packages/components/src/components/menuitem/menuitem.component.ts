@@ -5,7 +5,7 @@ import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
-import { KEYS } from '../../utils/keys';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICONS, ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 import type { ArrowPositions, ArrowDirections } from './menuitem.types';
@@ -103,7 +103,7 @@ class MenuItem extends ListItem {
    * @param event - The keyboard event that triggered the action.
    */
   override handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) {
       this.triggerClickEvent(event);
       event.preventDefault();
     }
@@ -122,7 +122,7 @@ class MenuItem extends ListItem {
    * @param event - The keyboard event that triggered the action.
    */
   private handleKeyUp(event: KeyboardEvent): void {
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       this.triggerClickEvent(event);
       event.preventDefault();
     }
