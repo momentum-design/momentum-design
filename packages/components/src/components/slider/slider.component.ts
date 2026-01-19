@@ -4,8 +4,8 @@ import { property, queryAll, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
@@ -44,7 +44,7 @@ import type { ThumbStateType } from './slider.types';
  * @cssproperty --mdc-slider-tooltip-left - The left position of the slider tooltip
  * @cssproperty --mdc-slider-tick-left - The left position of the slider tick marks
  */
-class Slider extends Component {
+class Slider extends KeyToActionMixin(Component) {
   /**
    * Internal state to track if the slider thumb is focused (single value)
    * @internal
@@ -240,7 +240,10 @@ class Slider extends Component {
    * @param e - The event to prevent.
    */
   private preventChange(e: Event) {
-    if (this.softDisabled && ((e instanceof KeyboardEvent && e.key !== KEYS.TAB) || !(e instanceof KeyboardEvent))) {
+    if (
+      this.softDisabled &&
+      ((e instanceof KeyboardEvent && this.getActionForKeyEvent(e) !== ACTIONS.TAB) || !(e instanceof KeyboardEvent))
+    ) {
       e.preventDefault();
       e.stopPropagation();
     }

@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { ElementStore } from '../../utils/controllers/ElementStore';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -23,6 +22,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -638,23 +638,25 @@ class Select
       return;
     }
 
-    switch (event.key) {
-      case KEYS.ARROW_DOWN:
-      case KEYS.ARROW_UP:
-      case KEYS.ENTER:
-      case KEYS.SPACE:
+    const action = this.getActionForKeyEvent(event);
+
+    switch (action) {
+      case ACTIONS.DOWN:
+      case ACTIONS.UP:
+      case ACTIONS.ENTER:
+      case ACTIONS.SPACE:
         this.displayPopover = true;
         event.preventDefault();
         event.stopPropagation();
         break;
-      case KEYS.HOME: {
+      case ACTIONS.HOME: {
         this.displayPopover = true;
         this.resetTabIndexAndSetFocusAfterUpdate(0);
         event.preventDefault();
         event.stopPropagation();
         break;
       }
-      case KEYS.END: {
+      case ACTIONS.END: {
         this.displayPopover = true;
         this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
         event.preventDefault();

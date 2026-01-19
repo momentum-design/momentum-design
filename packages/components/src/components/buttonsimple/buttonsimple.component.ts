@@ -3,11 +3,11 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import type { RoleType } from '../../utils/roles';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
@@ -32,7 +32,7 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * @cssproperty --mdc-button-border-color - Border color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  */
-class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component))) {
+class Buttonsimple extends KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component)))) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -259,9 +259,11 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.add('pressed');
-      if (event.key === KEYS.ENTER) {
+      if (action === ACTIONS.ENTER) {
         this.triggerClickEvent();
       }
 
@@ -281,9 +283,11 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.remove('pressed');
-      if (event.key === KEYS.SPACE) {
+      if (action === ACTIONS.SPACE) {
         this.triggerClickEvent();
       }
     }
