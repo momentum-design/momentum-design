@@ -16,7 +16,13 @@ import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
+import type {
+  PopoverBoundaryRoot,
+  PopoverColor,
+  PopoverPlacement,
+  PopoverStrategy,
+  PopoverTrigger,
+} from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -190,7 +196,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * @see [Floating UI - rootBoundary](https://floating-ui.com/docs/detectOverflow#rootboundary)
    */
   @property({ type: String, reflect: true, attribute: 'boundary-root' })
-  boundaryRoot: 'viewport' | 'document' = DEFAULTS.BOUNDARY_ROOT;
+  boundaryRoot: PopoverBoundaryRoot = DEFAULTS.BOUNDARY_ROOT;
 
   /**
    * Virtual padding around the boundary to check for overflow.
@@ -487,13 +493,12 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   /**
    * Get trigger element on-demand
    * It is necessary because trigger might appear later in the DOM, or it could be replaced completely.
-   *
-   * @internal
    */
   public get triggerElement(): HTMLElement | null {
     return (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`) as HTMLElement;
   }
 
+  /** @internal */
   private timers = new Timers(this);
 
   constructor() {
@@ -503,6 +508,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
   }
 
+  /** @internal */
   private parseTrigger = () => {
     const triggers = this.trigger?.split(' ') || [];
     const validTriggers = triggers.filter(trigger =>
@@ -568,6 +574,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    *
    * We are using capture phase for to make sure we capture trigger events even when they are not propagated during the
    * bubble phase (e.g.: buttons in list item)
+   * @internal
    */
   private setupTriggerListeners = () => {
     if (this.trigger.includes('click')) {
@@ -594,6 +601,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Removes the trigger related event listeners.
+   * @internal
    */
   private removeTriggerListeners = () => {
     // click trigger
@@ -613,6 +621,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Removes all event listeners related to the popover.
+   * @internal
    */
   private removeAllListeners = () => {
     this.removeTriggerListeners();
@@ -711,6 +720,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Handles the outside click event to close the popover.
    *
    * @param event - The mouse event.
+   * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
@@ -732,6 +742,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * This method is attached to the document.
    *
    * @param event - The keyboard event.
+   * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
     if (!this.visible || event.code !== 'Escape') {
@@ -751,6 +762,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Handles the popover focus out event.
    *
    * @param event - The focus event.
+   * @internal
    */
   private onPopoverFocusOut = (event: FocusEvent) => {
     if (!this.contains(event.relatedTarget as Node)) {
@@ -867,8 +879,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   }
 
   /**
-   *  Handles mouse enter event on the trigger element.
-   *  This method sets the `isHovered` flag to true and shows the popover
+   * Handles mouse enter event on the trigger element.
+   * This method sets the `isHovered` flag to true and shows the popover
+   * @internal
    */
   private handleMouseEnter = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
@@ -878,9 +891,10 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
-   *  Handles mouse leave event on the trigger element.
-   *  This method sets the `isHovered` flag to false and starts the close delay
-   *  timer to hide the popover.
+   * Handles mouse leave event on the trigger element.
+   * This method sets the `isHovered` flag to false and starts the close delay
+   * timer to hide the popover.
+   * @internal
    */
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
@@ -890,8 +904,8 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
-   * Handles focus out event on the trigger element.
    * Closes based on hideOnBlur property or hover state.
+   * @internal
    */
   private handleFocusOut = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
@@ -911,8 +925,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
-   *  Handles focus in event on the trigger element.
-   *  This method checks if the trigger element has visible focus or is being hovered.
+   * Handles focus in event on the trigger element.
+   * This method checks if the trigger element has visible focus or is being hovered.
+   * @internal
    */
   private handleFocusIn = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
@@ -928,6 +943,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Cancels the open delay timer.
+   * @internal
    */
   private cancelOpenDelay = () => {
     this.timers.clearTimeout(TIMEOUTS.OPEN);
@@ -936,6 +952,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   /**
    * Starts the close delay timer.
    * If the popover is not interactive, it will close the popover after the delay.
+   * @internal
    */
   private startCloseDelay = () => {
     this.cancelOpenDelay();
@@ -957,6 +974,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
 
   /**
    * Cancels the close delay timer.
+   * @internal
    */
   private cancelCloseDelay = () => {
     this.timers.clearTimeout(TIMEOUTS.HOVER);
@@ -1023,6 +1041,7 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
    * Positions the popover based on the trigger element.
    * It also handles the flip, size and arrow placement.
    * It uses the floating-ui/dom library to calculate the position.
+   * @internal
    */
   private positionPopover = () => {
     const { triggerElement } = this;
