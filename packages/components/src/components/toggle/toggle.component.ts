@@ -168,6 +168,10 @@ class Toggle
     }
   }
 
+  override click() {
+    this.toggleState();
+  }
+
   /**
    * Handles the keydown event on the toggle element.
    * When the user presses Enter, the form is submitted.

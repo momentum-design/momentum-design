@@ -119,6 +119,10 @@ class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
     this.dispatchHeaderClickEvent();
   }
 
+  override click() {
+    this.handleHeaderClick();
+  }
+
   /**
    * Dispatches the `shown` event with the current expanded state.
    * The event is cancelable and bubbles.

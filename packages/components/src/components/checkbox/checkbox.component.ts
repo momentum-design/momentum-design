@@ -171,6 +171,10 @@ class Checkbox
     }
   }
 
+  override click() {
+    this.toggleState();
+  }
+
   /**
    * Handles the keydown event on the checkbox.
    * When the user presses Enter, the form is submitted.
