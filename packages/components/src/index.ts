@@ -93,6 +93,7 @@ import type { BadgeType } from './components/badge/badge.types';
 import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
+import type { PresenceType } from './components/presence/presence.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -233,6 +234,7 @@ export type {
   MenuSectionChangeEvent,
   PillButtonSize,
   PopoverPlacement,
+  PresenceType,
   SkeletonVariant,
   SelectChangeEvent,
   SelectInputEvent,
