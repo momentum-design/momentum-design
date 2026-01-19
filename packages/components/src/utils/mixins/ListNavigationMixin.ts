@@ -2,10 +2,10 @@
 import { PropertyValues } from 'lit';
 
 import type { Component } from '../../models';
-import { KEYS } from '../keys';
 import type { BaseArray } from '../virtualIndexArray';
 
 import type { Constructor } from './index.types';
+import { Actions, ACTIONS, KeyToActionInterface, KeyToActionMixin } from './KeyToActionMixin';
 
 export declare abstract class ListNavigationMixinInterface {
   protected loop: 'true' | 'false';
@@ -49,7 +49,7 @@ export declare abstract class ListNavigationMixinInterface {
  * @param superClass - The class to extend with the mixin.
  */
 export const ListNavigationMixin = <T extends Constructor<Component>>(superClass: T) => {
-  abstract class InnerMixinClass extends superClass {
+  abstract class InnerMixinClass extends KeyToActionMixin(superClass) {
     /**
      * Whether to loop navigation when reaching the end of the list.
      * If 'true', pressing the down arrow on the last item will focus the first item,
@@ -120,11 +120,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected handleNavigationKeyDown(event: KeyboardEvent) {
-      const keysToHandle = new Set([KEYS.ARROW_DOWN, KEYS.ARROW_UP, KEYS.HOME, KEYS.END]);
-      const isRtl = window.getComputedStyle(this).direction === 'rtl';
-      const targetKey = this.resolveDirectionKey(event.key, isRtl);
+      const action = this.getActionForKeyEvent(event, true);
+      const actionsToHandle = new Set<Actions>([ACTIONS.DOWN, ACTIONS.UP, ACTIONS.HOME, ACTIONS.END]);
 
-      if (!keysToHandle.has(targetKey)) {
+      if (!action || !actionsToHandle.has(action)) {
         return;
       }
 
@@ -133,25 +132,25 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       if (currentIndex === -1) return;
       this.resetTabIndexes(currentIndex);
 
-      switch (targetKey) {
-        case KEYS.HOME: {
+      switch (action) {
+        case ACTIONS.HOME: {
           // Move focus to the first item
           this.resetTabIndexAndSetFocus(0, currentIndex);
           break;
         }
-        case KEYS.END: {
+        case ACTIONS.END: {
           // Move focus to the last item
           this.resetTabIndexAndSetFocus(this.navItems.length - 1, currentIndex);
           break;
         }
-        case KEYS.ARROW_DOWN: {
+        case ACTIONS.DOWN: {
           // Move focus to the next item
           const eolIndex = this.shouldLoop() ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
           this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
         }
-        case KEYS.ARROW_UP: {
+        case ACTIONS.UP: {
           // Move focus to the prev item
           const eolIndex = this.shouldLoop() ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;
@@ -270,34 +269,11 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       }
     }
 
-    /**
-     * Resolves the key pressed by the user based on the direction of the layout.
-     * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
-     * It checks if the layout is RTL and adjusts the arrow keys accordingly.
-     * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
-     *
-     * @param key - The key pressed by the user.
-     * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
-     * @returns - The resolved key based on the direction.
-     */
-    private resolveDirectionKey(key: string, isRtl: boolean) {
-      if (!isRtl) return key;
-
-      switch (key) {
-        case KEYS.ARROW_LEFT:
-          return KEYS.ARROW_RIGHT;
-        case KEYS.ARROW_RIGHT:
-          return KEYS.ARROW_LEFT;
-        default:
-          return key;
-      }
-    }
-
     private shouldLoop() {
       return this.loop !== 'false';
     }
   }
 
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<Component & ListNavigationMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<Component & ListNavigationMixinInterface & KeyToActionInterface> & T;
 };

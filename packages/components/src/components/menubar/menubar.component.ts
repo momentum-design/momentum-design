@@ -8,9 +8,9 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
-import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
 import { popoverStack } from '../popover/popover.stack';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import styles from './menubar.styles';
@@ -38,7 +38,7 @@ import styles from './menubar.styles';
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
  */
-class MenuBar extends Component {
+class MenuBar extends KeyToActionMixin(Component) {
   @queryAssignedElements({ selector: 'mdc-menusection', flatten: true })
   menusections!: Array<HTMLElement>;
 
@@ -222,14 +222,6 @@ class MenuBar extends Component {
     }
   }
 
-  private getKeyWithDirectionFix(originalKey: string): string {
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-    if (!isRtl) return originalKey;
-    if (originalKey === KEYS.ARROW_LEFT) return KEYS.ARROW_RIGHT;
-    if (originalKey === KEYS.ARROW_RIGHT) return KEYS.ARROW_LEFT;
-    return originalKey;
-  }
-
   /**
    * Determines if a menuitem is a top-level menuitem (direct child of menubar or child of menusection whose parent is menubar)
    */
@@ -317,36 +309,36 @@ class MenuBar extends Component {
 
   private async handleKeyDown(event: KeyboardEvent): Promise<void> {
     const currentIndex = this.getCurrentIndex(event.target);
-    const key = this.getKeyWithDirectionFix(event.key);
+    const action = this.getActionForKeyEvent(event, true);
 
-    switch (key) {
-      case KEYS.HOME:
+    switch (action) {
+      case ACTIONS.HOME:
         this.updateTabIndexAndFocus(this.menuItems, currentIndex, 0);
         break;
 
-      case KEYS.END:
+      case ACTIONS.END:
         this.updateTabIndexAndFocus(this.menuItems, currentIndex, this.menuItems.length - 1);
         break;
 
-      case KEYS.ARROW_LEFT: {
+      case ACTIONS.LEFT: {
         const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnLeft(element);
         break;
       }
 
-      case KEYS.ARROW_RIGHT: {
+      case ACTIONS.RIGHT: {
         const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnRight(element);
         break;
       }
 
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         this.navigateToMenuItem(currentIndex, 'prev');
         event.preventDefault();
         break;
       }
 
-      case KEYS.ARROW_DOWN: {
+      case ACTIONS.DOWN: {
         this.navigateToMenuItem(currentIndex, 'next');
         event.preventDefault();
         break;

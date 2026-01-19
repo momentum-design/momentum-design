@@ -2,7 +2,6 @@ import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -11,6 +10,7 @@ import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
@@ -61,7 +61,9 @@ import type { ToggleSize } from './toggle.types';
  * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
-  extends ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
+  extends KeyToActionMixin(
+    ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
   /**
@@ -173,11 +175,13 @@ class Toggle
    * @internal
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+
+    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
       event.preventDefault();
     }
 
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.form?.requestSubmit();
     }
   }

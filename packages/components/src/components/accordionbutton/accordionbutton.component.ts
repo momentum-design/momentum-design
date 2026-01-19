@@ -4,12 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
 import type { IconName, Variant } from './accordionbutton.types';
@@ -61,7 +61,7 @@ import styles from './accordionbutton.styles';
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
  */
-class AccordionButton extends DisabledMixin(Component) {
+class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
   /**
    * Controls the spacing and padding of the accordion.
    * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
@@ -142,7 +142,8 @@ class AccordionButton extends DisabledMixin(Component) {
    * @param event - The KeyboardEvent fired.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.handleHeaderClick();
     }
   }

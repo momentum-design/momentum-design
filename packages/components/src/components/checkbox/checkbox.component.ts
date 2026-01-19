@@ -2,12 +2,12 @@ import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit'
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -23,6 +23,7 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * **Note:** This component internally renders a native checkbox input element with custom styling.
  *
  * ## When to use
+ *
  * Use checkboxes when users can select multiple options from a list, or when a single checkbox represents a binary choice (e.g., agreeing to terms).
  *
  * ## Accessibility
@@ -58,7 +59,9 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
  */
 class Checkbox
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends KeyToActionMixin(
+    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
   /**
@@ -175,12 +178,14 @@ class Checkbox
    * @internal
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
       event.preventDefault();
     }
 
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.form?.requestSubmit();
+      event.preventDefault();
     }
   }
 

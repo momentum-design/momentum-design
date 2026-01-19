@@ -1,7 +1,6 @@
 import { CSSResult, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
@@ -12,6 +11,7 @@ import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -379,28 +379,6 @@ class MenuPopover extends Popover {
   };
 
   /**
-   * Resolves the key pressed by the user based on the direction of the layout.
-   * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
-   * It checks if the layout is RTL and adjusts the arrow keys accordingly.
-   * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
-   * @param key - The key pressed by the user.
-   * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
-   * @returns - The resolved key based on the direction.
-   */
-  private resolveDirectionKey(key: string, isRtl: boolean) {
-    if (!isRtl) return key;
-
-    switch (key) {
-      case KEYS.ARROW_LEFT:
-        return KEYS.ARROW_RIGHT;
-      case KEYS.ARROW_RIGHT:
-        return KEYS.ARROW_LEFT;
-      default:
-        return key;
-    }
-  }
-
-  /**
    * Handles keydown events for keyboard navigation within the menu popover.
    * This method allows users to navigate through the menu items using the keyboard.
    * It supports Home, End, Arrow Up, Arrow Down, Arrow Left, Arrow Right, and Escape keys.
@@ -419,38 +397,36 @@ class MenuPopover extends Popover {
     if (currentIndex === -1) return;
     this.resetTabIndexes(currentIndex);
 
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-    const targetKey = this.resolveDirectionKey(event.key, isRtl);
+    const targetKey = this.getActionForKeyEvent(event, true);
 
     switch (targetKey) {
-      case KEYS.HOME: {
+      case ACTIONS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.END: {
+      case ACTIONS.END: {
         // Move focus to the last menu item
         this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_DOWN: {
+      case ACTIONS.DOWN: {
         // Move focus to the next menu item
         const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         // Move focus to the prev menu item
         const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_RIGHT: {
+      case ACTIONS.RIGHT: {
         // If there is a submenu, open it.
         const subMenu = this.getSubMenuPopoverOfTarget(target);
         if (subMenu) {
@@ -459,7 +435,7 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.ARROW_LEFT: {
+      case ACTIONS.LEFT: {
         // If the current popover is a submenu then close this popover.
         if (isValidMenuPopover(this.parentElement)) {
           this.hide();
@@ -468,12 +444,12 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.ESCAPE: {
+      case ACTIONS.ESCAPE: {
         this.resetTabIndexAndSetFocus(0, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ENTER: {
+      case ACTIONS.ENTER: {
         if (!this.getSubMenuPopoverOfTarget(target) && !target.hasAttribute('soft-disabled')) {
           this.closeAllMenuPopovers();
           this.fireMenuItemAction(target);
@@ -481,7 +457,7 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.SPACE: {
+      case ACTIONS.SPACE: {
         // Prevent page scroll when space is pressed down
         isKeyHandled = true;
         break;
@@ -516,10 +492,13 @@ class MenuPopover extends Popover {
 
     const target = event.target as HTMLElement;
 
-    switch (event.key) {
-      case KEYS.SPACE: {
+    switch (this.getActionForKeyEvent(event)) {
+      case ACTIONS.SPACE: {
         // If the target is a menu item, trigger its click event
-        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) && !target.hasAttribute('soft-disabled')) {
+        if (
+          !target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) &&
+          !target.hasAttribute('soft-disabled')
+        ) {
           // only close all menu popovers if the target is not opening a menu popover
           if (!this.getSubMenuPopoverOfTarget(target)) {
             this.closeAllMenuPopovers();
