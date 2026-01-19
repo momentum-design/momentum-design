@@ -579,6 +579,9 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   private setupTriggerListeners = () => {
     if (this.trigger.includes('click')) {
       document.addEventListener('click', this.togglePopoverVisible, { capture: true });
+      if (this.hideOnBlur) {
+        document.addEventListener('focusout', this.handleFocusOut, { capture: true });
+      }
     }
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
@@ -901,13 +904,20 @@ class Popover extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)
   };
 
   /**
-   * Handles focus out event on the trigger element.
-   * This method checks if the popover is not hovered and hides the popover.
-   * If the popover is hovered, it will not hide the popover.
+   * Closes based on hideOnBlur property or hover state.
    * @internal
    */
   private handleFocusOut = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+
+    if (this.hideOnBlur) {
+      const { relatedTarget } = event as FocusEvent;
+      // Don't hide if focus moves within the component
+      if (!this.contains(relatedTarget as Node)) {
+        this.hide();
+      }
+      return;
+    }
 
     if (!this.isHovered) {
       this.hide();
