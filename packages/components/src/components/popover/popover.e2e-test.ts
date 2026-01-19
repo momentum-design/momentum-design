@@ -615,6 +615,74 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
     });
 
+    await test.step('Hide on blur with click trigger - tab away closes non-interactive popover', async () => {
+      await componentsPage.mount({
+        html: `
+          <div>
+            <mdc-button id="trigger-button">Trigger</mdc-button>
+            <mdc-popover id="popover" triggerID="trigger-button" trigger="click" hide-on-blur>
+              Text-only popover content
+            </mdc-popover>
+            <mdc-button id="outside-button">Outside</mdc-button>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const popover = componentsPage.page.locator('#popover');
+      const triggerButton = componentsPage.page.locator('#trigger-button');
+      const outsideButton = componentsPage.page.locator('#outside-button');
+
+      await expect(popover).not.toBeVisible();
+
+      // Tab to trigger and press Enter to open
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+
+      // Tab away should close the popover
+      await componentsPage.actionability.pressTab();
+      await expect(outsideButton).toBeFocused();
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('Hide on blur with click trigger - focus within component keeps popover open', async () => {
+      await componentsPage.mount({
+        html: `
+          <div>
+            <mdc-button id="trigger-button">Trigger</mdc-button>
+            <mdc-popover id="popover" triggerID="trigger-button" trigger="click" hide-on-blur interactive>
+              <mdc-button id="inside-button">Inside Button</mdc-button>
+            </mdc-popover>
+            <mdc-button id="outside-button">Outside</mdc-button>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const popover = componentsPage.page.locator('#popover');
+      const triggerButton = componentsPage.page.locator('#trigger-button');
+      const insideButton = popover.locator('#inside-button');
+      const outsideButton = componentsPage.page.locator('#outside-button');
+
+      await expect(popover).not.toBeVisible();
+
+      // Tab to trigger and press Enter to open
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+
+      // Tab to inside button - popover should stay open (focus within component)
+      await componentsPage.actionability.pressTab();
+      await expect(insideButton).toBeFocused();
+      await expect(popover).toBeVisible();
+
+      // Tab away from popover should close it
+      await componentsPage.actionability.pressTab();
+      await expect(outsideButton).toBeFocused();
+      await expect(popover).not.toBeVisible();
+    });
+
     await test.step('Hide on escape attribute', async () => {
       await componentsPage.setAttributes(popover, {
         'hide-on-escape': 'true',
