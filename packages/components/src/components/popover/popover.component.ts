@@ -12,7 +12,7 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
-import { DepthManager, StackChange, StackedOverlayComponent } from '../../utils/controllers/DepthManager';
+import { DepthManager, StackChange } from '../../utils/controllers/DepthManager';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
