@@ -1,5 +1,5 @@
-import type { PropertyValues } from 'lit';
-import { CSSResult, html } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -10,6 +10,7 @@ import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import type { IconNames } from '../icon/icon.types';
 
 import styles from './avatarbutton.styles';
 
@@ -50,6 +51,13 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
+  /**
+   * Icon name to display when hovering over the avatar button
+   * @default undefined
+   */
+  @property({ type: String, attribute: 'icon-on-hover', reflect: true })
+  iconOnHover?: IconNames;
+
   override connectedCallback(): void {
     super.connectedCallback();
 
@@ -71,8 +79,18 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
     this.setAttribute('size', Object.values(AVATAR_SIZE).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
   }
 
+  private renderIconOnHover(): TemplateResult | typeof nothing {
+    if (this.iconOnHover) {
+      return html`<div class="icon-hover__container">
+        <mdc-icon class="icon-hover" name="${this.iconOnHover}"></mdc-icon>
+      </div>`;
+    }
+    return nothing;
+  }
+
   public override render() {
     return html`
+      ${this.renderIconOnHover()}
       <div part="overlay" aria-hidden="true"></div>
       <mdc-avatar
         exportparts="content, photo, presence, loading-wrapper, loader"
