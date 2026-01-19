@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
 import { ElementStore } from '../../utils/controllers/ElementStore';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -25,6 +24,7 @@ import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
 import { ComboboxEventManager } from './combobox.events';
@@ -105,8 +105,10 @@ import type { Placement } from './combobox.types';
  * @csspart combobox-button-icon - The icon element of the button of the combobox.
  */
 class Combobox
-  extends CaptureDestroyEventForChildElement(
-    AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
+  extends KeyToActionMixin(
+    CaptureDestroyEventForChildElement(
+      AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -624,30 +626,30 @@ class Combobox
   private handleInputKeydown(event: KeyboardEvent): void {
     const options = this.getVisibleOptions(this.filteredValue).filter(option => !option.hasAttribute('disabled'));
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
-    switch (event.key) {
-      case KEYS.ARROW_DOWN: {
+    switch (this.getActionForKeyEvent(event)) {
+      case ACTIONS.DOWN: {
         this.openPopover();
         const newIndex = options.length - 1 === activeIndex ? 0 : activeIndex + 1;
         this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
         break;
       }
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         this.openPopover();
         const newIndex = activeIndex === -1 || activeIndex === 0 ? options.length - 1 : activeIndex - 1;
         this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
         break;
       }
-      case KEYS.ENTER: {
+      case ACTIONS.ENTER: {
         if (activeIndex === -1) return;
         this.setSelectedValue(options[activeIndex]);
-        if (this.isOpen === true) {
+        if (this.isOpen) {
           this.closePopover();
         }
         break;
       }
-      case KEYS.ESCAPE: {
+      case ACTIONS.ESCAPE: {
         if (activeIndex !== -1) {
           this.updateOptionAttributes(options[activeIndex], false);
         }
@@ -660,12 +662,12 @@ class Combobox
         }
         break;
       }
-      case KEYS.TAB: {
+      case ACTIONS.TAB: {
         this.closePopover();
         break;
       }
-      case KEYS.HOME:
-      case KEYS.END: {
+      case ACTIONS.HOME:
+      case ACTIONS.END: {
         this.resetFocusedOption();
         break;
       }
