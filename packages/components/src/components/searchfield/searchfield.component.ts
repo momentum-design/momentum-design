@@ -155,13 +155,13 @@ class Searchfield extends Input {
 
   protected handleFilterContainerKeyDown = (e: KeyboardEvent) => {
     if (this.getActionForKeyEvent(e) === ACTIONS.ENTER) {
-      this.inputElement.focus();
+      this.handleFilterContainerClick();
     }
   };
 
   protected handleFilterContainerKeyUp = (e: KeyboardEvent) => {
     if (this.getActionForKeyEvent(e) === ACTIONS.SPACE) {
-      this.inputElement.focus();
+      this.handleFilterContainerClick();
     }
   };
 
