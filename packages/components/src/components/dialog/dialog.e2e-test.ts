@@ -786,8 +786,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.mount({
         html: `
           <div id="wrapper">
-            <mdc-button id="dialogLvl1Trigger">Open Dialog (lvl 3)</mdc-button>
-            <mdc-dialog triggerid="dialogLvl1Trigger" id="dialogLvl1">
+            <mdc-button id="dialogLvl1Trigger">Open Dialog (lvl 1)</mdc-button>
+            <mdc-dialog triggerid="dialogLvl1Trigger" id="dialogLvl1" close-button-aria-label="Close lvl1 dialog">
               <div slot="dialog-body">
                 <p>Dialog lvl 1.</p>
                 <mdc-button id="popupLvl2Trigger">Open Popover (lvl 2)</mdc-button>
@@ -798,8 +798,10 @@ test('mdc-dialog', async ({ componentsPage }) => {
                   id="popupLvl2"
                   triggerid="popupLvl2Trigger"
                   hide-on-escape
-                  style="top: 30% !important;"
                   focus-back-to-trigger
+                  interactive
+                  focus-trap
+                  style="top: 30% !important;"
                 >
                   <p>Popover lvl 2.</p>
                   <mdc-button id="dialogLvl3Trigger">Open Dialog (lvl 3)</mdc-button>
@@ -852,7 +854,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
             const triggerId = (e.target as HTMLElement)?.getAttribute('id');
             if (triggerId && triggerId.endsWith('Trigger')) {
               const dialog = document.getElementById(triggerId.replace(/Trigger$/, ''));
-              dialog?.toggleAttribute('visible');
+              if (dialog && dialog.tagName === 'MDC-DIALOG') {
+                dialog?.toggleAttribute('visible');
+              }
             }
           },
           { capture: true },
@@ -860,7 +864,10 @@ test('mdc-dialog', async ({ componentsPage }) => {
         document.addEventListener(
           'close',
           e => {
-            (e.target as HTMLElement).toggleAttribute('visible');
+            const dialog = e.target as HTMLElement;
+            if (dialog && dialog.tagName === 'MDC-DIALOG') {
+              dialog?.toggleAttribute('visible');
+            }
           },
           { capture: true },
         );
@@ -890,7 +897,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
         Locator
       >;
     };
-    await test.step('Keyboard navigation work as expected', async () => {
+
+    await test.step('Setup overlay structure', async () => {
       const {
         dialogLvl1Trigger,
         dialogLvl1,
@@ -909,103 +917,134 @@ test('mdc-dialog', async ({ componentsPage }) => {
         menuLvl6,
       } = await setup();
 
-      const stack: Locator[] = [];
-      const stackItemsToBeVisible = () => Promise.all(stack.map(item => expect(item).toBeVisible()));
+      await test.step('Keyboard navigation work as expected', async () => {
+        const stack: Locator[] = [];
+        const stackItemsToBeVisible = () => Promise.all(stack.map(item => expect(item).toBeVisible()));
 
-      await componentsPage.actionability.pressTab();
-      await expect(dialogLvl1Trigger).toBeFocused();
-      await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.actionability.pressTab();
+        await expect(dialogLvl1Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
 
-      await expect(dialogLvl1).toBeVisible();
-      await expect(dialogLvl1).toHaveAttribute('z-index', '1000');
-      stack.push(dialogLvl1);
+        await expect(dialogLvl1).toBeVisible();
+        await expect(dialogLvl1).toHaveAttribute('z-index', '1000');
+        stack.push(dialogLvl1);
 
-      await componentsPage.actionability.pressTab();
-      await expect(popupLvl2Trigger).toBeFocused();
-      await expect(tooltipLvl1).toBeVisible();
-      await expect(tooltipLvl1).toHaveAttribute('z-index', '1003');
-      await componentsPage.page.keyboard.press('Enter');
-      await expect(tooltipLvl1).not.toBeVisible();
+        await componentsPage.actionability.pressTab();
+        await expect(popupLvl2Trigger).toBeFocused();
+        await expect(tooltipLvl1).toBeVisible();
+        await expect(tooltipLvl1).toHaveAttribute('z-index', '1003');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl1).not.toBeVisible();
 
-      await expect(popupLvl2).toBeVisible();
-      await expect(popupLvl2).toHaveAttribute('z-index', '1003');
-      stack.push(popupLvl2);
+        await expect(popupLvl2).toBeVisible();
+        await expect(popupLvl2).toHaveAttribute('z-index', '1003');
+        stack.push(popupLvl2);
 
-      await componentsPage.actionability.pressTab();
-      await expect(dialogLvl3Trigger).toBeFocused();
-      await expect(tooltipLvl2).toBeVisible();
-      await expect(tooltipLvl2).toHaveAttribute('z-index', '1006');
-      await componentsPage.page.keyboard.press('Enter');
-      await expect(tooltipLvl2).not.toBeVisible();
+        await componentsPage.actionability.pressTab();
+        await expect(dialogLvl3Trigger).toBeFocused();
+        await expect(tooltipLvl2).toBeVisible();
+        await expect(tooltipLvl2).toHaveAttribute('z-index', '1006');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl2).not.toBeVisible();
 
-      await expect(dialogLvl3).toBeVisible();
-      await expect(dialogLvl3).toHaveAttribute('z-index', '1006');
-      stack.push(dialogLvl3);
+        await expect(dialogLvl3).toBeVisible();
+        await expect(dialogLvl3).toHaveAttribute('z-index', '1006');
+        stack.push(dialogLvl3);
 
-      await componentsPage.actionability.pressTab();
-      await expect(menuLvl4Trigger).toBeFocused();
-      await expect(tooltipLvl3).toBeVisible();
-      await expect(tooltipLvl3).toHaveAttribute('z-index', '1009');
-      await componentsPage.page.keyboard.press('Enter');
-      await expect(tooltipLvl3).not.toBeVisible();
+        await componentsPage.actionability.pressTab();
+        await expect(menuLvl4Trigger).toBeFocused();
+        await expect(tooltipLvl3).toBeVisible();
+        await expect(tooltipLvl3).toHaveAttribute('z-index', '1009');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl3).not.toBeVisible();
 
-      await expect(menuLvl4).toBeVisible();
-      await expect(menuLvl4).toHaveAttribute('z-index', '1009');
-      stack.push(menuLvl4);
+        await expect(menuLvl4).toBeVisible();
+        await expect(menuLvl4).toHaveAttribute('z-index', '1009');
+        stack.push(menuLvl4);
 
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(menuLvl5Trigger).toBeFocused();
-      await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(menuLvl5Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
 
-      await expect(menuLvl5).toBeVisible();
-      await expect(menuLvl5).toHaveAttribute('z-index', '1012');
-      stack.push(menuLvl5);
+        await expect(menuLvl5).toBeVisible();
+        await expect(menuLvl5).toHaveAttribute('z-index', '1012');
+        stack.push(menuLvl5);
 
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(menuLvl6Trigger).toBeFocused();
-      await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(menuLvl6Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
 
-      await expect(menuLvl6).toBeVisible();
-      await expect(menuLvl6).toHaveAttribute('z-index', '1015');
-      stack.push(menuLvl6);
+        await expect(menuLvl6).toBeVisible();
+        await expect(menuLvl6).toHaveAttribute('z-index', '1015');
+        stack.push(menuLvl6);
 
-      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays');
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays');
 
-      // lvl 6 close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
-      await stackItemsToBeVisible();
+        // lvl 6 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
 
-      // lvl 5 close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
-      await stackItemsToBeVisible();
+        // lvl 5 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
 
-      // lvl 4 close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
+        // lvl 4 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
 
-      // lvl 3 close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
-      await stackItemsToBeVisible();
+        // lvl 3 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
 
-      // lvl 2 tooltip close
-      await expect(tooltipLvl2).toBeVisible();
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(tooltipLvl2).not.toBeVisible();
-      await stackItemsToBeVisible();
+        // lvl 2 tooltip close
+        await expect(tooltipLvl2).toBeVisible();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(tooltipLvl2).not.toBeVisible();
+        await stackItemsToBeVisible();
 
-      // lvl 2  close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
-      await stackItemsToBeVisible();
+        // lvl 2  close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
 
-      // lvl 1  close
-      await componentsPage.page.keyboard.press('Escape');
-      await expect(stack.pop()!).not.toBeVisible();
-      await stackItemsToBeVisible();
-      await expect(dialogLvl1Trigger).toBeFocused();
+        // lvl 1  close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+        await expect(dialogLvl1Trigger).toBeFocused();
+      });
+
+      await test.step('Closing intermediate overlay will close all child and grand-child overlays', async () => {
+        await componentsPage.page.pause();
+        await dialogLvl1Trigger.click();
+        await expect(dialogLvl1).toBeVisible();
+
+        await popupLvl2Trigger.click();
+        await expect(popupLvl2).toBeVisible();
+
+        const closeDialogLvl1Button = componentsPage.page.locator(
+          'mdc-button[part="dialog-close-btn"][aria-label="Close lvl1 dialog"]',
+        );
+
+        await expect(dialogLvl1).toBeVisible();
+        await expect(popupLvl2).toBeVisible();
+
+        // Closing the first level dialog closes all child overlays and focuses back to the trigger
+        await closeDialogLvl1Button.click();
+
+        await expect(dialogLvl1).not.toBeVisible();
+        await expect(popupLvl2).not.toBeVisible();
+
+        await expect(dialogLvl1Trigger).toBeFocused();
+
+        // Re-open dialog lvl 1 and confirm other overlays are closed
+        await dialogLvl1Trigger.click();
+        await expect(dialogLvl1).toBeVisible();
+        await expect(popupLvl2).not.toBeVisible();
+      });
     });
   });
 });

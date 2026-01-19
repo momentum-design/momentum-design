@@ -318,14 +318,12 @@ class Dialog
   }
 
   /**
-   * Applies the z-index to the dialog and backdrop elements.
-   * The dialog will have a z-index of `zIndex` and the backdrop will have a z-index of `zIndex - 1`.
+   * Applies the z-index to the dialog element.
    *
    * @internal
    */
   private applyZIndex() {
     this.style.setProperty('z-index', `${this.zIndex}`);
-    this.backdropElement?.style.setProperty('z-index', `${this.zIndex - 1}`);
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {

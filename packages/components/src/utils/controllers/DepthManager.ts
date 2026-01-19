@@ -59,6 +59,9 @@ const BASE_Z_INDEX = 1000;
  */
 const NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT = 3;
 
+export const OVERLAY_BACKDROP_Z_INDEX_OFFSET = -2;
+export const OVERLAY_TRIGGER_Z_INDEX_OFFSET = -1;
+
 /**
  * DepthManager is a controller that manages a stack of elements to control their depth (z-index).
  *

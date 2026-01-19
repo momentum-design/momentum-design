@@ -2,10 +2,9 @@
 import { LitElement } from 'lit';
 
 import type { Component } from '../../models';
+import { OVERLAY_BACKDROP_Z_INDEX_OFFSET, OVERLAY_TRIGGER_Z_INDEX_OFFSET } from '../controllers/DepthManager';
 
 import type { Constructor } from './index.types';
-
-// TODO: add a backdrop singleton / manager to avoid multiple backdrops in the DOM (similar to FocusTrap)
 
 export declare abstract class BackdropMixinInterface {
   abstract zIndex: number;
@@ -32,8 +31,8 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
      *
      * The z-index of the component where the backdrop will be attached to.
      *
-     * The backdrop itself will have a z-index of `zIndex - 2`.
-     * The trigger element of the backdrop will have a z-index of `zIndex - 1`,
+     * The backdrop itself will have a z-index of `zIndex - OVERLAY_BACKDROP_Z_INDEX_OFFSET`.
+     * The trigger element of the backdrop will have a z-index of `zIndex - OVERLAY_TRIGGER_Z_INDEX_OFFSET`,
      * to make sure that it is above the backdrop and clickable.
      */
     abstract zIndex: number;
@@ -67,11 +66,11 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
 
       if (changedProperties.has('zIndex') && this.backdropElement) {
         // Update the backdrop z-index if the zIndex property changes
-        this.backdropElement.style.zIndex = `${this.zIndex - 2}`;
+        this.backdropElement.style.zIndex = `${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET}`;
 
         const triggerEl = this.triggerElementCache?.deref();
         if (triggerEl) {
-          triggerEl.style.zIndex = `${this.zIndex - 1}`;
+          triggerEl.style.zIndex = `${this.zIndex + OVERLAY_TRIGGER_Z_INDEX_OFFSET}`;
         }
       }
     }
@@ -96,7 +95,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
           background: ${
             this.isBackdropInvisible ? `transparent` : `var(--mds-color-theme-common-overlays-secondary-normal)`
           };
-          z-index: ${this.zIndex - 2};
+          z-index: ${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET};
         }
       `;
       backdrop.appendChild(styleElement);
@@ -142,7 +141,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
       };
 
       // Set the z-index and position to ensure the element is above the backdrop
-      element.style.zIndex = `${this.zIndex - 1}`;
+      element.style.zIndex = `${this.zIndex + OVERLAY_TRIGGER_Z_INDEX_OFFSET}`;
       // Only set the position to relative if it is not already set to fixed or absolute
       if (!['fixed', 'absolute'].includes(window.getComputedStyle(element).position)) {
         element.style.position = 'relative';
