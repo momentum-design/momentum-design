@@ -1,5 +1,7 @@
 /* eslint-disable max-classes-per-file,no-bitwise */
 
+import type { OverflowMixinInterface } from './mixins/OverflowMixin';
+
 /**
  * nodeB precedes nodeA in either a pre-order depth-first traversal of a tree containing both
  * (e.g., as a descendant or preceding sibling or a descendant of a preceding sibling or
@@ -29,3 +31,14 @@ export const isAfter = (nodeA: Element, nodeB: Element): boolean =>
  */
 export const isBefore = (nodeA: Element, nodeB: Element): boolean =>
   !!(nodeA.compareDocumentPosition(nodeB) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+/**
+ * Type guard to check if an element inherits the OverflowMixin.
+ *
+ * @param element - The element to check
+ * @returns True if the element has the OverflowMixin methods
+ */
+export const doesElementInheritOverflowMixin = <T extends HTMLElement>(
+  element: T,
+): element is T & OverflowMixinInterface =>
+  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';

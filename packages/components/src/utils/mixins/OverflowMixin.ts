@@ -32,8 +32,3 @@ export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) 
   // Cast return type to your mixin's interface intersected with the superClass type
   return InnerMixinClass as unknown as Constructor<OverflowMixinInterface> & T;
 };
-
-export const doesElementInheritOverflowMixin = <T extends HTMLElement>(
-  element: T,
-): element is T & OverflowMixinInterface =>
-  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';

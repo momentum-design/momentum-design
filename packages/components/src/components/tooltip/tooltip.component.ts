@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { doesElementInheritOverflowMixin } from '../../utils/mixins/OverflowMixin';
+import { doesElementInheritOverflowMixin } from '../../utils/dom';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
