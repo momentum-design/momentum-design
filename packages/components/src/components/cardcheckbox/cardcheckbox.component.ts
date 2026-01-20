@@ -5,7 +5,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
@@ -62,7 +62,7 @@ import styles from './cardcheckbox.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
+class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
   /**
    * The checked state of the card
    * @default false
@@ -117,9 +117,13 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.ENTER) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER) {
       this.toggleChecked();
-    } else if (event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+    if (action === ACTIONS.SPACE) {
       event.preventDefault();
     }
   }
@@ -129,7 +133,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       event.preventDefault();
       this.toggleChecked();
     }
