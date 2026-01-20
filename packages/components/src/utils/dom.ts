@@ -33,17 +33,6 @@ export const isBefore = (nodeA: Element, nodeB: Element): boolean =>
   !!(nodeA.compareDocumentPosition(nodeB) & Node.DOCUMENT_POSITION_FOLLOWING);
 
 /**
- * Type guard to check if an element inherits the OverflowMixin.
- *
- * @param element - The element to check
- * @returns True if the element has the OverflowMixin methods
- */
-export const doesElementInheritOverflowMixin = <T extends HTMLElement>(
-  element: T,
-): element is T & OverflowMixinInterface =>
-  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';
-
-/**
  * Checks if the element has no client rectangles (not visible in the viewport).
  *
  * @param element - The element to check.
@@ -228,3 +217,12 @@ export const getDomActiveElement = (root: Document = document): Element | null =
 
   return activeElement;
 };
+
+/**
+ * Type guard to check if an element inherits the OverflowMixin.
+ *
+ * @param element - The element to check
+ * @returns True if the element has the OverflowMixin methods
+ */
+export const hasOverflowMixin = <T extends HTMLElement>(element: T): element is T & OverflowMixinInterface =>
+  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { doesElementInheritOverflowMixin } from '../../utils/dom';
+import { hasOverflowMixin } from '../../utils/dom';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -185,11 +185,7 @@ class Tooltip extends Popover {
   }
 
   public override show() {
-    if (
-      this.onlyShowWhenTriggerOverflows &&
-      this.triggerElement &&
-      doesElementInheritOverflowMixin(this.triggerElement)
-    ) {
+    if (this.onlyShowWhenTriggerOverflows && this.triggerElement && hasOverflowMixin(this.triggerElement)) {
       if (!this.triggerElement.isWidthOverflowing()) {
         return;
       }
