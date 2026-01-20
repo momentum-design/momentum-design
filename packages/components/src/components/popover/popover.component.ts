@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
-import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
+import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
