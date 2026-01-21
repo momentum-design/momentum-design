@@ -1,12 +1,13 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import { ROLE } from '../../utils/roles';
 import type { RoleType } from '../../utils/roles';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import type { IconNames } from '../icon/icon.types';
+import { OverflowMixin } from '../../utils/mixins/OverflowMixin';
 
 import { DEFAULTS } from './button.constants';
 import styles from './button.styles';
@@ -21,23 +22,23 @@ import { getIconNameWithoutStyle } from './button.utils';
  * The appearance of the button depends on combination of multiple attributes.
  *
  * ### Button Types
- * 
+ *
  * The type of button is inferred based on the presence of slot and/or prefix and postfix icons/slots:
- * 
+ *
  * - **Pill button**: Contains text value, commonly used for call to action, tags, or filters
  * - **Pill button with icons**: Contains an icon on the left or right side of the button
  * - **Icon button**: Represented by just an icon without any text
- * 
+ *
  * ### Button Variants:
  *
  * Options for button backgrounds and borders:
- * 
+ *
  * - **Primary**: Solid background color
  * - **Secondary**: Transparent background with solid border
  * - **Tertiary**: No background or border, text-only appearance
  *
  * ### Button Colors
- * 
+ *
  * Color options for **Primary** and **Secondary** buttons:
  *
  * - **Default**: For standard actions
@@ -47,9 +48,9 @@ import { getIconNameWithoutStyle } from './button.utils';
  * - **Promotional**: For promotional actions
  *
  * ### Button Sizes
- * 
+ *
  * Size options for different button configurations in REM:
- * 
+ *
  * - **Pill button**: 40, 32, 28, 24
  * - **Icon button**: 64, 52, 40, 32, 28, 24
  * - **Tertiary icon button**: 20
@@ -76,7 +77,13 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @cssproperty --mdc-button-postfix-icon-size - Size of the postfix icon
  * @cssproperty --mdc-button-line-height - Line height of the button text
  */
-class Button extends ButtonComponentMixin(Buttonsimple) {
+class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
+  /**
+   * @internal
+   */
+  @query('slot[part="button-text"]')
+  protected buttonTextPart!: HTMLSlotElement;
+
   /**
    * Specifies the size of the button in pixels. Available sizes depend on the button type:
    *
@@ -135,6 +142,13 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
    * @internal
    */
   @state() private postfixFilledIconName?: IconNames;
+
+  /**
+   * @internal
+   */
+  protected override get overflowElement(): HTMLElement {
+    return this.buttonTextPart;
+  }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
