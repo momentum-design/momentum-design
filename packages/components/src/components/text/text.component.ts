@@ -1,7 +1,8 @@
 import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 
 import { Component } from '../../models';
+import { OverflowMixin } from '../../utils/mixins/OverflowMixin';
 
 import styles from './text.styles';
 import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
@@ -25,7 +26,13 @@ import type { TextType, TagName } from './text.types';
  *
  * @csspart text - The text element
  */
-class Text extends Component {
+class Text extends OverflowMixin(Component) {
+  /**
+   * @internal
+   */
+  @query(`[part='${DEFAULTS.CSS_PART_TEXT}']`)
+  private textPartElement!: HTMLElement;
+
   /**
    * Specifies the text style to be applied.
    *
@@ -86,7 +93,19 @@ class Text extends Component {
    * Note that the styling is determined by the `type` attribute.
    */
   @property({ attribute: 'tagname', reflect: true, type: String })
-  public tagname?: TagName = DEFAULTS.TEXT_ELEMENT_TAGNAME;
+  public tagname: TagName = DEFAULTS.TEXT_ELEMENT_TAGNAME;
+
+  /**
+   * @internal
+   */
+  protected override get overflowElement(): HTMLElement {
+    // span and small are inline elements therefore we need to return the host element itself
+    if (([VALID_TEXT_TAGS.SPAN, VALID_TEXT_TAGS.SMALL] as TagName[]).includes(this.tagname)) {
+      return this;
+    }
+
+    return this.textPartElement;
+  }
 
   public override render() {
     // Lit does not support dynamically changing values for the tag name of a custom element.
