@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
@@ -374,10 +372,10 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           active: true,
         });
 
-        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
+        const waitForActiveChange = await componentsPage.waitForEvent(navmenuitem, 'activechange');
         await navmenuitem.click();
 
-        await eventPromise;
+        await expect(waitForActiveChange).toEventEmitted();
       });
 
       await test.step('click on cannot-activate navmenuitem should not fire activechange event', async () => {
@@ -390,10 +388,10 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           'cannot-activate': true,
         });
 
-        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
+        const waitForActiveChange = await componentsPage.waitForEvent(navmenuitem, 'activechange');
         await navmenuitem.click();
 
-        await componentsPage.expectPromiseTimesOut(eventPromise(), true);
+        await expect(waitForActiveChange).not.toEventEmitted();
       });
 
       await test.step('click on disabled navmenuitem', async () => {

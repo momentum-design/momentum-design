@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Page, expect, Locator, TestInfo, test, JSHandle } from '@playwright/test';
+import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
 
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
-import type { ThemeClass } from './types';
+import { ThemeClass, WaitForEventReturnType } from './types';
 import Actionability from './utils/actionability';
 import { DebugUtils } from './utils/debugUtils';
 
@@ -131,26 +131,36 @@ class ComponentsPage {
    *
    * @example
    * ```ts
+   *  import { ComponentsPage, expect } from '../../../config/playwright/setup';
+   *
    *  // Register event listener before user interaction
-   *  const waitForEventDispatch = await componentsPage.waitForEvent(someLocator, 'click');
+   *  const waitForEvent = await componentsPage.waitForEvent(someLocator, 'some-event');
    *
    *  // Do some user interaction that will trigger the event
    *
    *  // Wait for the event to be fired
-   *  await waitForEventDispatch();
+   *  await expect(waitForEvent).toEventEmitted();
+   *  // -- OR --
+   *  // wait for the event to NOT be fired
+   *  await expect(waitForEvent).not.toEventEmitted();
    * ```
+   *
+   * ⚠️Note: `expect` must be imported from playwright setup utils to have access to the custom assertion!
    *
    * @param locator - Playwright locator
    * @param eventName - eventName to wait for to be fired on queried HTMLElement
    * @param options - options to pass to the waitForEvent function, including a timeout
-   * @returns Promise, which resolves when event `eventName` listener registered and returns a function.
-   *          The function returns a Promise that resolves when event was fired.
+   * @returns Promise, which resolves when event `eventName` listener registered and returns event checked object.
+   *          The event checked object contains:
+   *          - locator: Playwright locator
+   *          - eventName: eventName to wait for to be fired on queried HTMLElement
+   *          - check: function that will wait for the event to be fired when called
    */
   async waitForEvent(
     locator: Locator,
     eventName: string,
     options?: { timeout?: number },
-  ): Promise<() => Promise<JSHandle<boolean>>> {
+  ): Promise<WaitForEventReturnType> {
     const id = uuidv4();
     // Step 1: Register the event listener on the element
     await locator.evaluate(
@@ -168,13 +178,19 @@ class ComponentsPage {
     );
 
     // Step 2: Wait for the event to be fired
-    return () =>
-      locator.page().waitForFunction<boolean, string>(
-        // @ts-ignore
-        id => (window.$$eventListeners$$?.[id] > 0) as any,
-        id,
-        { timeout: options?.timeout },
-      );
+    const check = () =>
+      locator
+        .page()
+        .waitForFunction<boolean, string>(
+          // @ts-ignore
+          id => (window.$$eventListeners$$?.[id] > 0) as any,
+          id,
+          { timeout: options?.timeout ?? 1_000 },
+        )
+        .then(value => value.jsonValue())
+        .catch(() => false);
+
+    return { locator, eventName, check };
   }
 
   /**

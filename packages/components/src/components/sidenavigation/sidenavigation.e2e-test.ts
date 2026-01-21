@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 
 // Setup function to mount sidenavigation and return locators
 const setup = async (componentsPage: ComponentsPage, variant: string) => {
@@ -169,35 +167,35 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
               firstNavMenuItemInFixedBar,
               toggleButton,
             ]);
-            const eventResolveAfterEnter = await componentsPage.waitForEvent(sidenav, 'toggle');
+            const waitForToggleAfterEnter = await componentsPage.waitForEvent(sidenav, 'toggle');
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
-            await eventResolveAfterEnter();
+            await expect(waitForToggleAfterEnter).toEventEmitted();
             await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
               source: 'userflow',
               fileNameSuffix: 'collapsed-view',
             });
             await componentsPage.accessibility.checkForA11yViolations(`sidenavigation-${variant}-collapsed`);
 
-            const eventResolveAfterSpace = await componentsPage.waitForEvent(sidenav, 'toggle');
+            const waitForToggleAfterSpace = await componentsPage.waitForEvent(sidenav, 'toggle');
             await componentsPage.page.keyboard.press('Space');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
             await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
-            await eventResolveAfterSpace();
+            await expect(waitForToggleAfterSpace).toEventEmitted();
           });
           await test.step('Collapse and expand sidenavigation using mouse', async () => {
-            const eventResolveAfterClickCollapse = await componentsPage.waitForEvent(sidenav, 'toggle');
+            const waitForToggleAfterClick = await componentsPage.waitForEvent(sidenav, 'toggle');
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
-            await eventResolveAfterClickCollapse();
+            await expect(waitForToggleAfterClick).toEventEmitted();
 
-            const eventResolveAfterClickExpand = await componentsPage.waitForEvent(sidenav, 'toggle');
+            const waitForToggleAfterExpanded = await componentsPage.waitForEvent(sidenav, 'toggle');
             await toggleButton.click();
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
             await expect(toggleButton.locator('mdc-icon[name="arrow-left-regular"]')).toBeVisible();
-            await eventResolveAfterClickExpand();
+            await expect(waitForToggleAfterExpanded).toEventEmitted();
           });
 
           // todo: webkit hover issue - investigate later (works locally in Safari, not in e2e test)
