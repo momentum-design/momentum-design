@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { hasOverflowMixin } from '../../utils/dom';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -48,6 +49,18 @@ class Tooltip extends Popover {
    */
   @property({ type: String, attribute: 'tooltip-type', reflect: true })
   tooltipType: TooltipType = DEFAULTS.TOOLTIP_TYPE;
+
+  /**
+   * If true, the tooltip will only be shown when the trigger element's content is overflowing on the x-axis.
+   *
+   * Supports the following components:
+   * - mdc-button
+   * - mdc-text
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'only-show-when-trigger-overflows', reflect: true })
+  onlyShowWhenTriggerOverflows: boolean = DEFAULTS.ONLY_SHOW_WHEN_TRIGGER_OVERFLOWS;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -125,7 +138,7 @@ class Tooltip extends Popover {
    * Updates the tooltip type attribute and sets the appropriate aria props on the trigger component.
    * @param changedProperties - The changed properties.
    */
-  private onTooltipTypeUpdated(changedProperties: PropertyValues): void {
+  private onTooltipTypeUpdated(changedProperties: PropertyValues<this>): void {
     const previousTooltipType = changedProperties.get('tooltipType');
 
     if (!Object.values(TOOLTIP_TYPES).includes(this.tooltipType)) {
@@ -157,7 +170,7 @@ class Tooltip extends Popover {
     }
   }
 
-  public override async update(changedProperties: PropertyValues): Promise<void> {
+  public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
     if (changedProperties.has('id')) {
@@ -169,6 +182,16 @@ class Tooltip extends Popover {
     if (changedProperties.has('tooltipType')) {
       this.onTooltipTypeUpdated(changedProperties);
     }
+  }
+
+  public override show() {
+    if (this.onlyShowWhenTriggerOverflows && this.triggerElement && hasOverflowMixin(this.triggerElement)) {
+      if (!this.triggerElement.isWidthOverflowing()) {
+        return;
+      }
+    }
+
+    super.show();
   }
 
   public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];
