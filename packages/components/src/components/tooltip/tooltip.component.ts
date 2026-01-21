@@ -184,7 +184,7 @@ class Tooltip extends Popover {
       //
       // It happens because by default the popped element automatically pop the element above it in the stack.
       // To avoid this, we explicitly remove the tooltip from the stack before it is popped.
-      this.depthManager.remove(this);
+      this.depthManager.remove([this]);
     }
 
     await super.isOpenUpdated(oldValue, newValue);
