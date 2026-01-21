@@ -169,6 +169,7 @@ class Toggle
   }
 
   override click() {
+    super.click();
     this.toggleState();
   }
 

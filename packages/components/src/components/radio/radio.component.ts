@@ -223,6 +223,7 @@ class Radio
   }
 
   override click() {
+    super.click();
     this.handleChange();
   }
 

@@ -172,6 +172,7 @@ class Checkbox
   }
 
   override click() {
+    super.click();
     this.toggleState();
   }
 

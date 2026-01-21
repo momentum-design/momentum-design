@@ -114,10 +114,6 @@ class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) 
     }
   }
 
-  override click() {
-    this.toggleChecked();
-  }
-
   /**
    * Handles keydown events - toggles checked on Enter and prevents space scroll
    * @param event - The keyboard event

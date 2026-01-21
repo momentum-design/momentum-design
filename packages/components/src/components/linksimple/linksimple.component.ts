@@ -119,8 +119,8 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
   }
 
   override click() {
-    if (this.disabled) {
-      this.querySelector('a')?.click();
+    if (!this.disabled) {
+      this.shadowRoot?.querySelector?.('a')?.click?.();
     }
   }
 
