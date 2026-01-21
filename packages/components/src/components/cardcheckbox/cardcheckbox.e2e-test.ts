@@ -1,10 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
 
@@ -204,9 +202,9 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           const waitForChange = await componentsPage.waitForEvent(cardcheckbox, 'change');
           await cardcheckbox.dispatchEvent('focus');
           await componentsPage.page.keyboard.press('Space');
-          await componentsPage.expectPromiseTimesOut(waitForChange(), true);
+          await expect(waitForChange).not.toEventEmitted();
           await componentsPage.page.keyboard.press('Enter');
-          await componentsPage.expectPromiseTimesOut(waitForChange(), true);
+          await expect(waitForChange).not.toEventEmitted();
           await expect(cardcheckbox).not.toBeChecked();
         });
 

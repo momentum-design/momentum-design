@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
@@ -257,9 +255,9 @@ test.describe('Menuitem Feature Scenarios', () => {
     await test.step('mouse interactions', async () => {
       await test.step('click on normal menuitem triggers action', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const clickPromise = componentsPage.waitForEvent(menuitem, 'click');
+        const waitForClick = await componentsPage.waitForEvent(menuitem, 'click');
         await menuitem.click();
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('click on disabled menuitem does nothing', async () => {
@@ -299,31 +297,31 @@ test.describe('Menuitem Feature Scenarios', () => {
     await test.step('keyboard interactions', async () => {
       await test.step('activate menuitem using Enter key', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const clickPromise = componentsPage.waitForEvent(menuitem, 'click');
+        const waitForClick = await componentsPage.waitForEvent(menuitem, 'click');
         await menuitem.focus();
         await menuitem.press('Enter');
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('activate menuitem using Space key', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const clickPromise = componentsPage.waitForEvent(menuitem, 'click');
+        const waitForClick = await componentsPage.waitForEvent(menuitem, 'click');
         await menuitem.focus();
         await menuitem.press('Space', { delay: 10 });
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('arrow key navigation triggers keydown events', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const keydownPromise = componentsPage.waitForEvent(menuitem, 'keydown');
-        const keyupPromise = componentsPage.waitForEvent(menuitem, 'keyup');
+        const waitForKeyDown = await componentsPage.waitForEvent(menuitem, 'keydown');
+        const waitForKeyUp = await componentsPage.waitForEvent(menuitem, 'keyup');
 
         await menuitem.focus();
         await menuitem.press('ArrowDown');
-        await keydownPromise;
+        await expect(waitForKeyDown).toEventEmitted();
 
         await menuitem.press('ArrowUp');
-        await keyupPromise;
+        await expect(waitForKeyUp).toEventEmitted();
       });
 
       await test.step('disabled menuitem keyboard behavior', async () => {
@@ -378,22 +376,22 @@ test.describe('Menuitem Feature Scenarios', () => {
     await test.step('event handling', async () => {
       await test.step('click event propagation works correctly', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const clickPromise = componentsPage.waitForEvent(menuitem, 'click');
+        const waitForClick = await componentsPage.waitForEvent(menuitem, 'click');
         await menuitem.click();
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('keyboard event propagation works correctly', async () => {
         const menuitem = await setup({ componentsPage, label: primaryLabel });
-        const keydownPromise = componentsPage.waitForEvent(menuitem, 'keydown');
-        const keyupPromise = componentsPage.waitForEvent(menuitem, 'keyup');
+        const waitForKeyDown = await componentsPage.waitForEvent(menuitem, 'keydown');
+        const waitForKeyUp = await componentsPage.waitForEvent(menuitem, 'keyup');
         await menuitem.focus();
 
         await menuitem.press('ArrowDown');
-        await keydownPromise;
+        await expect(waitForKeyDown).toEventEmitted();
 
         await menuitem.press('ArrowUp');
-        await keyupPromise;
+        await expect(waitForKeyUp).toEventEmitted();
       });
     });
   });

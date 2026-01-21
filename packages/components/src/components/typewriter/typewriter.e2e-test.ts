@@ -2,9 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 import type { TextType, TagName } from './typewriter.types';
@@ -182,14 +180,14 @@ test.describe('mdc-typewriter', () => {
     expect(await textElement.textContent()).toBe(fullText);
 
     // wait for typing-complete event
-    const eventResolve = await componentsPage.waitForEvent(typewriter, 'typing-complete');
+    const waitForTypingCompleteEvent = await componentsPage.waitForEvent(typewriter, 'typing-complete');
     await page.evaluate(() => {
       const element = document.querySelector('mdc-typewriter');
       if (element) {
         element.textContent += '.';
       }
     });
-    await eventResolve();
+    await expect(waitForTypingCompleteEvent).toEventEmitted();
   });
 
   test('accessibility features', async ({ componentsPage }) => {
@@ -348,7 +346,7 @@ test.describe('mdc-typewriter', () => {
 
     // Listen for typing-complete event
 
-    const eventResolve = await componentsPage.waitForEvent(typewriter, 'typing-complete');
+    const waitForTypingCompleteEvent = await componentsPage.waitForEvent(typewriter, 'typing-complete');
     await page.evaluate(() => {
       const element = document.querySelector('mdc-typewriter');
       if (element) {
@@ -356,7 +354,7 @@ test.describe('mdc-typewriter', () => {
         (element as any).addInstantTextChunk('INSTANT!');
       }
     });
-    await eventResolve();
+    await expect(waitForTypingCompleteEvent).toEventEmitted();
   });
 
   test('rapid instant updates performance', async ({ componentsPage, page }) => {
