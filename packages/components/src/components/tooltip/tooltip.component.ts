@@ -7,6 +7,9 @@ import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { hasOverflowMixin } from '../../utils/dom';
+import Text from '../text/text.component';
+import providerUtils from '../../utils/provider';
+import TextOverflowObserverProvider from '../textoverflowobserverprovider';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -61,6 +64,11 @@ class Tooltip extends Popover {
    */
   @property({ type: Boolean, attribute: 'only-show-when-trigger-overflows', reflect: true })
   onlyShowWhenTriggerOverflows: boolean = DEFAULTS.ONLY_SHOW_WHEN_TRIGGER_OVERFLOWS;
+
+  private readonly textoverflowobserverprovider = providerUtils.consume({
+    host: this,
+    context: TextOverflowObserverProvider.Context,
+  });
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -190,6 +198,18 @@ class Tooltip extends Popover {
     await super.isOpenUpdated(oldValue, newValue);
   }
 
+  private onOnlyShowWhenTriggerOverflowsUpdated(): void {
+    if (!(this.triggerElement instanceof Text)) {
+      return;
+    }
+
+    if (this.onlyShowWhenTriggerOverflows) {
+      this.textoverflowobserverprovider.value?.observeResizeForOverflow(this.triggerElement);
+    } else {
+      this.textoverflowobserverprovider.value?.unobserveResizeForOverflow(this.triggerElement);
+    }
+  }
+
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
@@ -201,6 +221,9 @@ class Tooltip extends Popover {
     }
     if (changedProperties.has('tooltipType')) {
       this.onTooltipTypeUpdated(changedProperties);
+    }
+    if (changedProperties.has('onlyShowWhenTriggerOverflows')) {
+      this.onOnlyShowWhenTriggerOverflowsUpdated();
     }
   }
 

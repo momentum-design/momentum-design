@@ -150,23 +150,25 @@ export const TooltipOnTextOverflow: StoryObj = {
     };
 
     return html`
-      <mdc-text
-        id="text"
-        style="width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-        tagname="h1"
-        >This is really long text that will overflow</mdc-text
-      >
-      <mdc-tooltip triggerID="text" only-show-when-trigger-overflows tooltip-type="none" placement="right"
-        >This is really long text that will overflow</mdc-tooltip
-      >
-      <br />
-      <mdc-button id="button" style="width: 100px;"> This is really long text that will overflow </mdc-button>
-      <mdc-tooltip triggerID="button" only-show-when-trigger-overflows tooltip-type="none" placement="right"
-        >This is really long text that will overflow</mdc-tooltip
-      >
+      <mdc-textoverflowobserverprovider>
+        <mdc-text
+          id="text"
+          style="width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+          tagname="h1"
+          >This is really long text that will overflow</mdc-text
+        >
+        <mdc-tooltip triggerID="text" only-show-when-trigger-overflows tooltip-type="none" placement="right"
+          >This is really long text that will overflow</mdc-tooltip
+        >
+        <br />
+        <mdc-button id="button" style="width: 100px;"> This is really long text that will overflow </mdc-button>
+        <mdc-tooltip triggerID="button" only-show-when-trigger-overflows tooltip-type="none" placement="right"
+          >This is really long text that will overflow</mdc-tooltip
+        >
 
-      <hr />
-      <mdc-button @click=${toggleWidth}>Toggle Width</mdc-button>
+        <hr />
+        <mdc-button @click=${toggleWidth}>Toggle Width</mdc-button>
+      </mdc-textoverflowobserverprovider>
     `;
   },
 };

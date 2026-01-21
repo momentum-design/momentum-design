@@ -292,7 +292,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
           Lorem ipsum dolor sit amet
         </mdc-text>`,
         testHover: true,
-        testFocus: false,
+        testFocus: true,
       })),
     ];
 
@@ -303,11 +303,13 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         await componentsPage.mount({
           html: `
             <div id='wrapper'>
-              ${content}
-              <mdc-tooltip triggerID="element" only-show-when-trigger-overflows>
-                This is a tooltip
-              </mdc-tooltip>
-              <mdc-button id='after'>After</mdc-button>
+              <mdc-textoverflowobserverprovider>
+                ${content}
+                <mdc-tooltip triggerID="element" only-show-when-trigger-overflows>
+                  This is a tooltip
+                </mdc-tooltip>
+                <mdc-button id='after'>After</mdc-button>
+              </mdc-textoverflowobserverprovider>
             </div>
           `,
           clearDocument: true,

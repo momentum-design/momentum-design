@@ -1,5 +1,7 @@
 import { css } from 'lit';
 
+import { hostFocusRingStyles } from '../../utils/styles';
+
 import { fontsStyles } from './fonts.styles';
 
 const styles = [
@@ -13,6 +15,7 @@ const styles = [
   `,
   // type specific font styles:
   fontsStyles,
+  ...hostFocusRingStyles(),
 ];
 
 export default styles;
