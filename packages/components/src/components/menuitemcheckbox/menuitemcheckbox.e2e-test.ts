@@ -1,9 +1,10 @@
-import { expect, JSHandle, Locator } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { ControlType } from '../controltypeprovider/controltypeprovider.types';
+import { WaitForEventReturnType } from '../../../config/playwright/setup/types';
 
 import { INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
@@ -97,13 +98,6 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
     const getChangeEventFiredPromiseFunction = async (componentsPage: ComponentsPage, checkbox: Locator) =>
       componentsPage.waitForEvent(checkbox, 'change', { timeout: 100 });
 
-    const expectChangeEventNotFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) => {
-      await expect(changeEventFiredPromiseFunction).rejects.toBeDefined();
-    };
-
-    const expectChangeEventFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) =>
-      changeEventFiredPromiseFunction();
-
     await test.step(`functionality, controlType=${controlType}${providedControlType ? ` providedControlType=${providedControlType}` : ''}`, async () => {
       // Default (unchecked) state
       await test.step('default state (unchecked) attributes and mouse nav', async () => {
@@ -112,9 +106,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
         await expect(checkbox).toHaveAttribute('control-type', expectedControlType);
         await expectUnchecked(checkbox);
 
-        const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+        const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
         await checkbox.click();
-        await expectChangeEventFired(changeEventFiredPromiseFunction);
+        await expect(waitForChange).toEventEmitted();
         if (expectedControlType === 'controlled') {
           await expectUnchecked(checkbox);
         } else {
@@ -126,23 +120,23 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
         await test.step('default state (unchecked) keyboard nav', async () => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType });
           await expectUnchecked(checkbox);
-          let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+          let waitForChange: WaitForEventReturnType;
 
           await componentsPage.actionability.pressTab();
           await expect(checkbox).toBeFocused();
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.SPACE);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).toEventEmitted();
           if (expectedControlType === 'controlled') {
             await expectUnchecked(checkbox);
           } else {
             await expectChecked(checkbox);
           }
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -150,9 +144,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType });
           await expectUnchecked(checkbox);
 
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.evaluate(element => element.setAttribute('checked', ''));
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectChecked(checkbox);
         });
 
@@ -161,9 +155,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType, checked: true });
           await expectChecked(checkbox);
 
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.click();
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).toEventEmitted();
           if (expectedControlType === 'controlled') {
             await expectChecked(checkbox);
           } else {
@@ -174,23 +168,23 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
         await test.step('checked state keyboard nav', async () => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType, checked: true });
           await expectChecked(checkbox);
-          let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+          let waitForChange: WaitForEventReturnType;
 
           await componentsPage.actionability.pressTab();
           await expect(checkbox).toBeFocused();
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.SPACE);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).toEventEmitted();
           if (expectedControlType === 'controlled') {
             await expectChecked(checkbox);
           } else {
             await expectUnchecked(checkbox);
           }
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expectChangeEventFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).toEventEmitted();
           await expectChecked(checkbox);
         });
 
@@ -198,9 +192,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType, checked: true });
           await expectChecked(checkbox);
 
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.evaluate(element => element.removeAttribute('checked'));
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -211,9 +205,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await expectUnchecked(checkbox);
 
           // Click should not emit change event when disabled
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.click({ force: true });
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -221,7 +215,7 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType, disabled: true });
           await expectDisabled(checkbox);
           await expectUnchecked(checkbox);
-          let changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>;
+          let waitForChange: WaitForEventReturnType;
 
           // Disabled checkbox cannot be focussed by keyboard, but can be focussed programatically
           await componentsPage.actionability.pressTab();
@@ -230,14 +224,14 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await checkbox.focus();
           await expect(checkbox).toBeFocused();
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.SPACE);
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -246,9 +240,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await expectDisabled(checkbox);
           await expectUnchecked(checkbox);
 
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.evaluate(element => element.setAttribute('checked', ''));
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectChecked(checkbox);
         });
 
@@ -259,9 +253,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await expectUnchecked(checkbox);
 
           // Click does not emit change event and visually toggles when soft disabled
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.click({ force: true });
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -269,20 +263,20 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           const checkbox = await setup({ componentsPage, controlType, providedControlType, softDisabled: true });
           await expectSoftDisabled(checkbox);
           await expectUnchecked(checkbox);
-          let changeEventFiredPromiseFunction;
+          let waitForChange;
 
           // Soft disabled checkbox can be focussed by keyboard
           await componentsPage.actionability.pressTab();
           await expect(checkbox).toBeFocused();
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.SPACE);
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
 
-          changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await componentsPage.page.keyboard.press(KEYS.ENTER);
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectUnchecked(checkbox);
         });
 
@@ -291,9 +285,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
           await expectSoftDisabled(checkbox);
           await expectUnchecked(checkbox);
 
-          const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
+          const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, checkbox);
           await checkbox.evaluate(element => element.setAttribute('checked', ''));
-          await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+          await expect(waitForChange).not.toEventEmitted();
           await expectChecked(checkbox);
         });
       }

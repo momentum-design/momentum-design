@@ -1,8 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { STATUS, VARIANT } from './stepperitem.constants';
@@ -131,27 +129,27 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
    */
   await test.step('should fire click event when clicked', async () => {
     const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '4' });
-    const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
+    const waitForClick = await componentsPage.waitForEvent(stepperitem, 'click');
     await stepperitem.click();
-    await waitForClick;
+    await expect(waitForClick).toEventEmitted();
   });
 
   await test.step('should fire click event on Enter', async () => {
     const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '5' });
-    const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
+    const waitForClick = await componentsPage.waitForEvent(stepperitem, 'click');
     await componentsPage.actionability.pressTab();
     await expect(stepperitem).toBeFocused();
     await componentsPage.page.keyboard.press('Enter');
-    await waitForClick;
+    await expect(waitForClick).toEventEmitted();
   });
 
   await test.step('should fire click event on Space', async () => {
     const { stepperitem } = await setup({ componentsPage, label: 'Step Label', 'step-number': '5' });
-    const waitForClick = componentsPage.waitForEvent(stepperitem, 'click');
+    const waitForClick = await componentsPage.waitForEvent(stepperitem, 'click');
     await componentsPage.actionability.pressTab();
     await expect(stepperitem).toBeFocused();
     await componentsPage.page.keyboard.press('Space');
-    await waitForClick;
+    await expect(waitForClick).toEventEmitted();
   });
 
   /**

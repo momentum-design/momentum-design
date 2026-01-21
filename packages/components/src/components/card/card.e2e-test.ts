@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect, Locator } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { VARIANTS } from './card.constants';
@@ -153,9 +153,9 @@ test.describe.parallel('mdc-card', () => {
       });
 
       const testClickEvent = async (button: Locator) => {
-        const eventResolve = await componentsPage.waitForEvent(button, 'click');
+        const waitForClick = await componentsPage.waitForEvent(button, 'click');
         await button.click();
-        await eventResolve();
+        await expect(waitForClick).toEventEmitted();
       };
 
       await test.step('mouse/pointer', async () => {
@@ -176,15 +176,15 @@ test.describe.parallel('mdc-card', () => {
       });
 
       const testOnEnterSpace = async (button: Locator) => {
-        const eventResolveAfterEnter = await componentsPage.waitForEvent(button, 'click');
+        const waitForClickAfterEnter = await componentsPage.waitForEvent(button, 'click');
         await button.focus();
         await expect(button).toBeFocused();
         await componentsPage.page.keyboard.press('Enter');
-        await eventResolveAfterEnter();
+        await expect(waitForClickAfterEnter).toEventEmitted();
 
-        const eventResolveAfterSpace = await componentsPage.waitForEvent(button, 'click');
+        const waitForClickAfterSpace = await componentsPage.waitForEvent(button, 'click');
         await componentsPage.page.keyboard.press('Space');
-        await eventResolveAfterSpace();
+        await expect(waitForClickAfterSpace).toEventEmitted();
       };
 
       await test.step('keyboard', async () => {
