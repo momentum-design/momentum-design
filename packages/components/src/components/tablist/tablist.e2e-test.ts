@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import type { Variant } from '../tab/tab.types';
@@ -195,11 +193,11 @@ test('mdc-tablist', async ({ componentsPage }) => {
 
     await test.step('component should fire change event when active tab changes', async () => {
       await setup({ componentsPage });
-      const waitForChange = componentsPage.waitForEvent(mdcTablist, 'change');
+      const waitForChange = await componentsPage.waitForEvent(mdcTablist, 'change');
       await componentsPage.actionability.pressTab();
       await componentsPage.page.keyboard.press('ArrowRight');
       await componentsPage.page.keyboard.press('Enter');
-      await waitForChange;
+      await expect(waitForChange).toEventEmitted();
     });
   });
 

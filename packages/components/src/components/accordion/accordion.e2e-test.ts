@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';
@@ -206,9 +204,9 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(content).not.toBeVisible();
 
         // Expand
-        let waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
+        let waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.click();
-        await waitForShownEvent();
+        await expect(waitForShown).toEventEmitted();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultCloseButtonAriaLabel);
         await expect(accordion).toHaveAttribute('expanded');
@@ -216,9 +214,9 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Collapse
-        waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
+        waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.click();
-        await waitForShownEvent();
+        await expect(waitForShown).toEventEmitted();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
@@ -233,9 +231,9 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toBeFocused();
 
         // Test Enter key
-        let waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
+        let waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.press(KEYS.ENTER);
-        await waitForShownEvent();
+        await expect(waitForShown).toEventEmitted();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultCloseButtonAriaLabel);
         await expect(accordion).toHaveAttribute('expanded');
@@ -243,9 +241,9 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(content).toHaveAttribute('role', ROLE.REGION);
 
         // Test Space key
-        waitForShownEvent = await componentsPage.waitForEvent(accordion, 'shown');
+        waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
         await headerButtonSection.press(KEYS.SPACE);
-        await waitForShownEvent();
+        await expect(waitForShown).toEventEmitted();
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(accordion).not.toHaveAttribute('expanded');
