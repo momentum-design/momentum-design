@@ -1,8 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
@@ -175,6 +173,25 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       });
 
       expect(isFocused).toBe(true);
+    });
+  });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const link = await setup({ componentsPage });
+
+      const waitForClickAfterChecked = await componentsPage.waitForEvent(link, 'click');
+      await link.evaluate((el: HTMLElement) => el.click());
+      await expect(waitForClickAfterChecked).toEventEmitted();
+
+      // Disabled
+      await link.evaluate((el: HTMLElement) => {
+        el.setAttribute('disabled', '');
+      });
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(link, 'click');
+      await link.evaluate((el: HTMLElement) => el.click());
+
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
     });
   });
 });

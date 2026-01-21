@@ -418,5 +418,24 @@ test.describe.parallel('mdc-listitem', () => {
         expect(text?.trim()).toBe('The long label associated with the listitem is displayed here');
       });
     });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const listItem = await setup({ componentsPage });
+
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(listItem, 'click');
+        await listItem.evaluate((el: HTMLElement) => el.click());
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Disabled
+        await listItem.evaluate((el: HTMLElement) => {
+          el.setAttribute('disabled', '');
+        });
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(listItem, 'click');
+        await listItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
   });
 });
