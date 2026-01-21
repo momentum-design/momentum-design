@@ -1,9 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { LINKBUTTON_SIZES } from './linkbutton.constants';
@@ -197,9 +195,9 @@ test.describe('LinkButton Feature Scenarios', () => {
     await test.step('mouse interactions', async () => {
       await test.step('click on normal linkbutton triggers event', async () => {
         const linkbutton = await setup({ componentsPage });
-        const clickPromise = componentsPage.waitForEvent(linkbutton, 'click');
+        const waitForClick = await componentsPage.waitForEvent(linkbutton, 'click');
         await linkbutton.click();
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('click on disabled linkbutton does nothing', async () => {
@@ -231,17 +229,17 @@ test.describe('LinkButton Feature Scenarios', () => {
       await test.step('activate linkbutton using Enter key', async () => {
         const linkbutton = await setup({ componentsPage });
         await componentsPage.actionability.pressTab();
-        const clickPromise = componentsPage.waitForEvent(linkbutton, 'click');
+        const waitForClick = await componentsPage.waitForEvent(linkbutton, 'click');
         await linkbutton.press('Enter');
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('activate linkbutton using Space key', async () => {
         const linkbutton = await setup({ componentsPage });
         await componentsPage.actionability.pressTab();
-        const clickPromise = componentsPage.waitForEvent(linkbutton, 'click');
+        const waitForClick = await componentsPage.waitForEvent(linkbutton, 'click');
         await linkbutton.press('Space');
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('disabled linkbutton keyboard behavior', async () => {

@@ -1,7 +1,10 @@
 import { test as base } from '@playwright/test';
+
 import ComponentsPage from './Components.page';
 import CONSTANTS from './constants';
 import type { ThemeClass } from './types';
+
+export { expect } from './utils/customAssertions';
 
 type Options = {
   /**

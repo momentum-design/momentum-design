@@ -1,8 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
@@ -286,9 +284,9 @@ test.describe('Toast Feature Scenarios', () => {
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
         await closeBtn.waitFor();
 
-        const closePromise = componentsPage.waitForEvent(toast, 'close');
+        const waitForCloseEvent = await componentsPage.waitForEvent(toast, 'close');
         await closeBtn.click();
-        await closePromise;
+        await expect(waitForCloseEvent).toEventEmitted();
       });
 
       await test.step('User expands/collapses toast body using mouse', async () => {
@@ -362,9 +360,9 @@ test.describe('Toast Feature Scenarios', () => {
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
         await expect(closeBtn).toBeFocused();
 
-        const closePromise = componentsPage.waitForEvent(toast, 'close');
+        const waitForCloseEvent = await componentsPage.waitForEvent(toast, 'close');
         await closeBtn.press('Enter');
-        await closePromise;
+        await expect(waitForCloseEvent).toEventEmitted();
       });
 
       await test.step('User expands/collapses toast body with keyboard', async () => {

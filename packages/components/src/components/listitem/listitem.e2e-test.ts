@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 import { LISTITEM_VARIANTS } from './listitem.constants';
@@ -294,14 +292,14 @@ test.describe.parallel('mdc-listitem', () => {
           const listitem = await setup({ componentsPage, label: primaryLabel });
           const waitForClick = await componentsPage.waitForEvent(listitem, 'click');
           await listitem.click();
-          await waitForClick();
+          await expect(waitForClick).toEventEmitted();
         });
 
         await test.step('should not trigger click when listitem is disabled', async () => {
           const listitem = await setup({ componentsPage, label: primaryLabel, disabled: true });
           const waitForClick = await componentsPage.waitForEvent(listitem, 'click');
           await listitem.click();
-          await componentsPage.expectPromiseTimesOut(waitForClick(), true);
+          await expect(waitForClick).not.toEventEmitted();
         });
 
         await test.step('should trigger click event on leading controls and not on listitem', async () => {
@@ -316,8 +314,8 @@ test.describe.parallel('mdc-listitem', () => {
           const waitForCheckboxClick = await componentsPage.waitForEvent(checkbox, 'click');
           const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
           await checkbox.click();
-          await waitForCheckboxClick();
-          await componentsPage.expectPromiseTimesOut(waitForListItemClick(), true);
+          await expect(waitForCheckboxClick).toEventEmitted();
+          await expect(waitForListItemClick).not.toEventEmitted();
         });
 
         await test.step('should trigger click event on trailing controls and not on listitem', async () => {
@@ -332,8 +330,8 @@ test.describe.parallel('mdc-listitem', () => {
           const waitForButtonClick = await componentsPage.waitForEvent(button, 'click');
           const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
           await button.click();
-          await waitForButtonClick();
-          await componentsPage.expectPromiseTimesOut(waitForListItemClick(), true);
+          await expect(waitForButtonClick).toEventEmitted();
+          await expect(waitForListItemClick).not.toEventEmitted();
         });
       });
 
@@ -345,8 +343,8 @@ test.describe.parallel('mdc-listitem', () => {
           await componentsPage.actionability.pressTab();
           await expect(listitem).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
-          await waitForKeyDown();
-          await waitForKeyUp();
+          await expect(waitForKeyDown).toEventEmitted();
+          await expect(waitForKeyUp).toEventEmitted();
         });
 
         await test.step('should trigger keyup and keydown events on leading controls and not on listitem', async () => {
@@ -367,10 +365,10 @@ test.describe.parallel('mdc-listitem', () => {
           const waitForListItemKeyUp = await componentsPage.waitForEvent(listitem, 'keyup');
           const waitForListItemKeyDown = await componentsPage.waitForEvent(listitem, 'keydown');
           await componentsPage.page.keyboard.press('Space');
-          await waitForCheckboxKeyDown();
-          await waitForCheckboxKeyUp();
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown(), true);
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp(), true);
+          await expect(waitForCheckboxKeyDown).toEventEmitted();
+          await expect(waitForCheckboxKeyUp).toEventEmitted();
+          await expect(waitForListItemKeyDown).not.toEventEmitted();
+          await expect(waitForListItemKeyUp).not.toEventEmitted();
         });
 
         await test.step('should trigger keyup & keydown events on trailing controls & not on listitem', async () => {
@@ -391,10 +389,10 @@ test.describe.parallel('mdc-listitem', () => {
           const waitForListItemKeyUp = await componentsPage.waitForEvent(listitem, 'keyup');
           const waitForListItemKeyDown = await componentsPage.waitForEvent(listitem, 'keydown');
           await componentsPage.page.keyboard.press('Enter');
-          await waitForButtonKeyDown();
-          await waitForButtonKeyUp();
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown(), true);
-          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp(), true);
+          await expect(waitForButtonKeyDown).toEventEmitted();
+          await expect(waitForButtonKeyUp).toEventEmitted();
+          await expect(waitForListItemKeyDown).not.toEventEmitted();
+          await expect(waitForListItemKeyUp).not.toEventEmitted();
         });
       });
 
