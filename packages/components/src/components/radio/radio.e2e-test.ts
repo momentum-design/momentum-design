@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 
@@ -245,8 +243,8 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           'soft-disabled': true,
         });
-       const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
-        
+        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+
         await componentsPage.actionability.pressTab();
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
@@ -384,6 +382,26 @@ test('mdc-radio', async ({ componentsPage }) => {
         await expect(radio).toHaveAttribute('soft-disabled');
         await componentsPage.removeAttribute(radio, 'soft-disabled');
       });
+    });
+  });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const radio = await setup({ componentsPage });
+
+      const waitForClickAfterChecked = await componentsPage.waitForEvent(radio, 'click');
+      await radio.evaluate((el: HTMLElement) => el.click());
+      await expect(radio).toBeChecked();
+      await expect(waitForClickAfterChecked).toEventEmitted();
+
+      // Disabled
+      await radio.evaluate((el: HTMLElement) => {
+        el.setAttribute('disabled', '');
+      });
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(radio, 'click');
+      await radio.evaluate((el: HTMLElement) => el.click());
+
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
     });
   });
 });

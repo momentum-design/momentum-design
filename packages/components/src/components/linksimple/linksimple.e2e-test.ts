@@ -180,9 +180,9 @@ test('mdc-linksimple', async ({ componentsPage }) => {
     await test.step('click method works as expected', async () => {
       const link = await setup({ componentsPage });
 
-      const waitForClickAfterChecked = await componentsPage.waitForEvent(link, 'click');
+      const waitForClick = await componentsPage.waitForEvent(link, 'click');
       await link.evaluate((el: HTMLElement) => el.click());
-      await expect(waitForClickAfterChecked).toEventEmitted();
+      await expect(waitForClick).toEventEmitted();
 
       // Disabled
       await link.evaluate((el: HTMLElement) => {
