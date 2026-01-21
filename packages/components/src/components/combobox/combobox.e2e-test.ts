@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
@@ -285,18 +283,18 @@ test.describe('Combobox Feature Scenarios', () => {
     await test.step('mouse interactions', async () => {
       await test.step('should dispatch click event when clicked on combobox', async () => {
         const { combobox } = await setup({ componentsPage });
-        const clickPromise = componentsPage.waitForEvent(combobox, 'click');
+        const waitForClick = await componentsPage.waitForEvent(combobox, 'click');
         await combobox.click();
-        await clickPromise;
+        await expect(waitForClick).toEventEmitted();
       });
 
       await test.step('should dispatch click and focus events when clicked on combobox input', async () => {
         const { input } = await setup({ componentsPage });
-        const clickPromise = componentsPage.waitForEvent(input, 'click');
-        const focusPromise = componentsPage.waitForEvent(input, 'focus');
+        const waitForClick = await componentsPage.waitForEvent(input, 'click');
+        const waitForFocus = await componentsPage.waitForEvent(input, 'focus');
         await input.click();
-        await clickPromise;
-        await focusPromise;
+        await expect(waitForClick).toEventEmitted();
+        await expect(waitForFocus).toEventEmitted();
       });
 
       await test.step('should dispatch input and change events when clicked on an combobox option', async () => {
@@ -305,11 +303,11 @@ test.describe('Combobox Feature Scenarios', () => {
           options: defaultOptions,
         });
         await combobox.click();
-        const inputPromise = componentsPage.waitForEvent(combobox, 'input');
-        const changePromise = componentsPage.waitForEvent(combobox, 'change');
+        const waitForInput = await componentsPage.waitForEvent(combobox, 'input');
+        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await options.first().click();
-        await inputPromise;
-        await changePromise;
+        await expect(waitForInput).toEventEmitted();
+        await expect(waitForChange).toEventEmitted();
       });
 
       await test.step('should open dropdown when input is clicked', async () => {
@@ -364,22 +362,22 @@ test.describe('Combobox Feature Scenarios', () => {
     await test.step('keyboard interactions', async () => {
       await test.step('should dispatch focus event when focus moves to combobox', async () => {
         const { input } = await setup({ componentsPage });
-        const focusPromise = componentsPage.waitForEvent(input, 'focus');
+        const waitForFocus = await componentsPage.waitForEvent(input, 'focus');
         await componentsPage.actionability.pressTab();
-        await focusPromise;
+        await expect(waitForFocus).toEventEmitted();
       });
 
       await test.step('should dispatch input and keydown events when characters are typed', async () => {
         const { input } = await setup({ componentsPage });
         await componentsPage.actionability.pressTab();
-        const inputPromise = componentsPage.waitForEvent(input, 'input');
-        const keydownPromise = componentsPage.waitForEvent(input, 'keydown');
+        const waitForInput = await componentsPage.waitForEvent(input, 'input');
+        const waitForKeyDown = await componentsPage.waitForEvent(input, 'keydown');
         await input.press('a');
-        await inputPromise;
-        await keydownPromise;
+        await expect(waitForInput).toEventEmitted();
+        await expect(waitForKeyDown).toEventEmitted();
         await input.press('b');
-        await inputPromise;
-        await keydownPromise;
+        await expect(waitForInput).toEventEmitted();
+        await expect(waitForKeyDown).toEventEmitted();
       });
 
       await test.step('should open dropdown with ArrowDown key', async () => {

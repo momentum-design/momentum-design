@@ -1,6 +1,6 @@
-import { expect, JSHandle, Locator } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
@@ -104,13 +104,6 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
   const getChangeEventFiredPromiseFunction = async (componentsPage: ComponentsPage, radio: Locator) =>
     componentsPage.waitForEvent(radio, 'change', { timeout: 100 });
 
-  const expectChangeEventNotFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) => {
-    await expect(changeEventFiredPromiseFunction).rejects.toBeDefined();
-  };
-
-  const expectChangeEventFired = async (changeEventFiredPromiseFunction: () => Promise<JSHandle<boolean>>) =>
-    changeEventFiredPromiseFunction();
-
   /**
    * BASIC FUNCTIONALITY
    */
@@ -123,9 +116,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expectUnchecked(radio);
 
       // Click should change state when unchecked
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, radio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, radio);
       await radio.click();
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectChecked(radio);
     });
 
@@ -135,9 +128,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expectChecked(radio);
 
       // Click should not change state when checked
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, radio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, radio);
       await radio.click();
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).not.toEventEmitted();
       await expectChecked(radio);
     });
 
@@ -148,9 +141,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expectUnchecked(radio);
 
       // Click should not change state when disabled
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, radio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, radio);
       await radio.click({ force: true });
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).not.toEventEmitted();
       await expectUnchecked(radio);
     });
 
@@ -161,9 +154,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expectUnchecked(radio);
 
       // Click should not change state when soft disabled
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, radio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, radio);
       await radio.click({ force: true });
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).not.toEventEmitted();
       await expectUnchecked(radio);
     });
   });
@@ -176,9 +169,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('mouse selection - uncontrolled', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage);
 
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await lightRadio.click();
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectChecked(lightRadio);
       await expectUnchecked(darkRadio);
     });
@@ -186,9 +179,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('mouse selection - controlled', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage, 'controlled');
 
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await lightRadio.click();
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectUnchecked(lightRadio);
       await expectChecked(darkRadio);
     });
@@ -199,9 +192,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
 
       await componentsPage.actionability.pressTab();
       await expect(lightRadio).toBeFocused();
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectChecked(lightRadio);
       await expectUnchecked(darkRadio);
     });
@@ -211,9 +204,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
 
       await componentsPage.actionability.pressTab();
       await expect(lightRadio).toBeFocused();
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectUnchecked(lightRadio);
       await expectChecked(darkRadio);
     });
@@ -224,9 +217,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
 
       await componentsPage.actionability.pressTab();
       await expect(lightRadio).toBeFocused();
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectChecked(lightRadio);
       await expectUnchecked(darkRadio);
     });
@@ -236,9 +229,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
 
       await componentsPage.actionability.pressTab();
       await expect(lightRadio).toBeFocused();
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expectChangeEventFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).toEventEmitted();
       await expectUnchecked(lightRadio);
       await expectChecked(darkRadio);
     });
@@ -247,9 +240,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('selection by external control - uncontrolled', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage);
 
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await lightRadio.evaluate(element => element.setAttribute('checked', ''));
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).not.toEventEmitted();
       await expectChecked(lightRadio);
       await expectUnchecked(darkRadio);
     });
@@ -257,9 +250,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await test.step('selection by external control - controlled', async () => {
       const { lightRadio, darkRadio } = await setupGroup(componentsPage, 'controlled');
 
-      const changeEventFiredPromiseFunction = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
+      const waitForChange = await getChangeEventFiredPromiseFunction(componentsPage, lightRadio);
       await lightRadio.evaluate(element => element.setAttribute('checked', ''));
-      await expectChangeEventNotFired(changeEventFiredPromiseFunction);
+      await expect(waitForChange).not.toEventEmitted();
       await expectChecked(lightRadio);
       await expectUnchecked(darkRadio);
     });
