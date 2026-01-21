@@ -504,6 +504,8 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
 
   constructor() {
     super();
+    this.show = this.show.bind(this);
+
     this.utils = new PopoverUtils(this);
     this.parseTrigger();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
@@ -985,7 +987,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
   /**
    * Shows the popover.
    */
-  public show = () => {
+  public show() {
     if (this.shouldSuppressOpening) {
       return;
     }
@@ -1006,7 +1008,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
       this.timers.clearTimeout(TIMEOUTS.OPEN);
       callback();
     }
-  };
+  }
 
   /**
    * Hides the popover.
