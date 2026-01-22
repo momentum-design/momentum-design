@@ -5,7 +5,7 @@ import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import Text from '../text';
 
-import TextOverflowObserverProvider from './textoverflowobserverprovider.component';
+import OverflowObserver from './overflowobserver.component';
 
 class TextOverflowObserverE2EUtil extends Component {
   @query('mdc-text')
@@ -16,7 +16,7 @@ class TextOverflowObserverE2EUtil extends Component {
 
   private readonly context = providerUtils.consume({
     host: this,
-    context: TextOverflowObserverProvider.Context,
+    context: OverflowObserver.Context,
   });
 
   public observeText() {

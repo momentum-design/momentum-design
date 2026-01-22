@@ -303,13 +303,13 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         await componentsPage.mount({
           html: `
             <div id='wrapper'>
-              <mdc-textoverflowobserverprovider>
+              <mdc-overflowobserver>
                 ${content}
                 <mdc-tooltip triggerID="element" only-show-when-trigger-overflows>
                   This is a tooltip
                 </mdc-tooltip>
                 <mdc-button id='after'>After</mdc-button>
-              </mdc-textoverflowobserverprovider>
+              </mdc-overflowobserver>
             </div>
           `,
           clearDocument: true,

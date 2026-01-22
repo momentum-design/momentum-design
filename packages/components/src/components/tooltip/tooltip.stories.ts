@@ -150,7 +150,7 @@ export const TooltipOnTextOverflow: StoryObj = {
     };
 
     return html`
-      <mdc-textoverflowobserverprovider>
+      <mdc-overflowobserver>
         <mdc-text
           id="text"
           style="width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
@@ -168,7 +168,7 @@ export const TooltipOnTextOverflow: StoryObj = {
 
         <hr />
         <mdc-button @click=${toggleWidth}>Toggle Width</mdc-button>
-      </mdc-textoverflowobserverprovider>
+      </mdc-overflowobserver>
     `;
   },
 };

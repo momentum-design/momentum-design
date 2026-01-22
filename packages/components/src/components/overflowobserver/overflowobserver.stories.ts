@@ -4,13 +4,12 @@ import { html } from 'lit';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const render = (args: Args) =>
-  html` <mdc-textoverflowobserverprovider args.property="${args.property}"></mdc-textoverflowobserverprovider>`;
+const render = (args: Args) => html` <mdc-overflowobserver args.property="${args.property}"></mdc-overflowobserver>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/textoverflowobserverprovider',
+  title: 'Work In Progress/overflowobserver',
   tags: ['autodocs'],
-  component: 'mdc-textoverflowobserverprovider',
+  component: 'mdc-overflowobserver',
   render,
   parameters: {
     badges: ['wip'],

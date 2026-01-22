@@ -1,22 +1,22 @@
 import { Provider } from '../../models';
 import type Text from '../text/text.component';
 
-import type { ContextType } from './textoverflowobserverprovider.types';
-import TextOverflowObserverProviderContext from './textoverflowobserverprovider.context';
+import type { ContextType } from './overflowobserver.types';
+import OverflowObserverContext from './overflowobserver.context';
 
 /**
- * textoverflowobserverprovider component, which ...
+ * overflowobserver component, which ...
  *
- * @tagname mdc-textoverflowobserverprovider
+ * @tagname mdc-overflowobserver
  *
  * @slot default - This is a default/unnamed slot
  */
-class TextOverflowObserverProvider extends Provider<ContextType> {
+class OverflowObserver extends Provider<ContextType> {
   private resizeObserver: ResizeObserver;
 
   constructor() {
     super({
-      context: TextOverflowObserverProvider.Context,
+      context: OverflowObserver.Context,
     });
 
     this.context.setValue({
@@ -28,7 +28,7 @@ class TextOverflowObserverProvider extends Provider<ContextType> {
   }
 
   public static get Context() {
-    return TextOverflowObserverProviderContext;
+    return OverflowObserverContext;
   }
 
   override disconnectedCallback(): void {
@@ -90,4 +90,4 @@ class TextOverflowObserverProvider extends Provider<ContextType> {
   }
 }
 
-export default TextOverflowObserverProvider;
+export default OverflowObserver;

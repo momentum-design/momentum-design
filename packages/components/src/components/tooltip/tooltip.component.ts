@@ -9,7 +9,7 @@ import { DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popo
 import { hasOverflowMixin } from '../../utils/dom';
 import Text from '../text/text.component';
 import providerUtils from '../../utils/provider';
-import TextOverflowObserverProvider from '../textoverflowobserverprovider';
+import OverflowObserver from '../overflowobserver';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
@@ -65,9 +65,9 @@ class Tooltip extends Popover {
   @property({ type: Boolean, attribute: 'only-show-when-trigger-overflows', reflect: true })
   onlyShowWhenTriggerOverflows: boolean = DEFAULTS.ONLY_SHOW_WHEN_TRIGGER_OVERFLOWS;
 
-  private readonly textoverflowobserverprovider = providerUtils.consume({
+  private readonly overflowobserver = providerUtils.consume({
     host: this,
-    context: TextOverflowObserverProvider.Context,
+    context: OverflowObserver.Context,
   });
 
   override connectedCallback(): void {
@@ -204,9 +204,9 @@ class Tooltip extends Popover {
     }
 
     if (this.onlyShowWhenTriggerOverflows) {
-      this.textoverflowobserverprovider.value?.observeResizeForOverflow(this.triggerElement);
+      this.overflowobserver.value?.observeResizeForOverflow(this.triggerElement);
     } else {
-      this.textoverflowobserverprovider.value?.unobserveResizeForOverflow(this.triggerElement);
+      this.overflowobserver.value?.unobserveResizeForOverflow(this.triggerElement);
     }
   }
 
