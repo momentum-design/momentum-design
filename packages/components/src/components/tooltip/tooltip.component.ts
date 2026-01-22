@@ -170,6 +170,26 @@ class Tooltip extends Popover {
     }
   }
 
+  protected override async isOpenUpdated(oldValue: boolean, newValue: boolean) {
+    const { triggerElement } = this;
+    if (oldValue === newValue || !triggerElement) {
+      return;
+    }
+
+    if (!newValue) {
+      // Timing is critical when the popover pushed/popped from the stack.
+      //
+      // Timing here:
+      // Tooltip closes -> New Popover opens -> Tooltip popped from the stack -> it popes out the new popover as well.
+      //
+      // It happens because by default the popped element automatically pop the element above it in the stack.
+      // To avoid this, we explicitly remove the tooltip from the stack before it is popped.
+      this.depthManager.remove([this]);
+    }
+
+    await super.isOpenUpdated(oldValue, newValue);
+  }
+
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 

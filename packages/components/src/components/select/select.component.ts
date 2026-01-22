@@ -149,7 +149,7 @@ class Select
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
-  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+  popoverZIndex?: number = undefined;
 
   /**
    * Determines whether the dropdown should flip its position when it hits the boundary.
@@ -794,8 +794,10 @@ class Select
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
-          @closebyescape="${() => {
-            this.displayPopover = false;
+          @closebyescape="${(event: Event) => {
+            if (event.target === event.currentTarget) {
+              this.displayPopover = false;
+            }
           }}"
           @closebyoutsideclick="${() => {
             this.displayPopover = false;

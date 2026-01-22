@@ -9,7 +9,6 @@ import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuit
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
-import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
@@ -93,7 +92,6 @@ class MenuPopover extends Popover {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
-    this.addEventListener('click', this.handleMouseClick);
     this.addEventListener('created', this.handleItemCreation);
   }
 
@@ -239,21 +237,12 @@ class MenuPopover extends Popover {
    * Closes all menu popovers in the stack.
    * This method is used to ensure that when a menu item is clicked,
    * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the `popoverStack` and hides each popover until the stack is empty.
+   * It iterates through the overlay stack and hides each popover until the stack is empty.
    *
    * @param until - The popover to close until.
    */
   private closeAllMenuPopovers(until?: Element): void {
-    while (popoverStack.peek() !== until) {
-      if (!isValidMenuPopover(popoverStack.peek() as Element)) break;
-
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-      } else {
-        break;
-      }
-    }
+    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
   }
 
   /**
@@ -264,7 +253,8 @@ class MenuPopover extends Popover {
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (popoverStack.peek() !== this) return;
+    if (!this.depthManager.isHostOnTop()) return;
+
     const path = event.composedPath();
     const insidePopoverClick =
       this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
@@ -283,11 +273,20 @@ class MenuPopover extends Popover {
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
-    if (this.visible) {
-      this.hide();
-    } else {
-      this.show();
+    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+
+    // Handle mouse click in the parent menupopover to hide open sibling submenus
+    if (event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this) {
+      this.handleMouseClick(event);
+    }
+
+    // Toggle visibility of the current menupopover
+    if (this.isEventFromTrigger(event)) {
+      if (this.visible) {
+        this.hide();
+      } else {
+        this.show();
+      }
     }
   };
 
@@ -324,10 +323,8 @@ class MenuPopover extends Popover {
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
    * @param event - The mouse event that triggered the click.
    */
-  private handleMouseClick(event: MouseEvent): void {
+  private handleMouseClick(event: Event): void {
     const target = event.target as HTMLElement;
-    // stopPropagation to prevent the click from bubbling up to parent elements
-    event.stopPropagation();
 
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
@@ -445,8 +442,10 @@ class MenuPopover extends Popover {
         break;
       }
       case ACTIONS.ESCAPE: {
-        this.resetTabIndexAndSetFocus(0, currentIndex);
-        isKeyHandled = true;
+        if (this.depthManager.isHostOnTop()) {
+          this.resetTabIndexAndSetFocus(0, currentIndex);
+          isKeyHandled = true;
+        }
         break;
       }
       case ACTIONS.ENTER: {
