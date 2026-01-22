@@ -231,6 +231,34 @@ test.describe.parallel('mdc-cardcheckbox', () => {
         });
       });
     });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const cardCheckbox = await setup({ componentsPage });
+
+        // Check programmatically
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(cardCheckbox.locator('input[type="checkbox"]')).toBeChecked();
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Uncheck programmatically
+        const waitForClickAfterUnchecked = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(cardCheckbox.locator('input[type="checkbox"]')).not.toBeChecked();
+        await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const cardCheckbox = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+
+        await expect(cardCheckbox.locator('input[type="checkbox"]')).not.toBeChecked();
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
   });
 
   // Ensure all images are visible before snapshot

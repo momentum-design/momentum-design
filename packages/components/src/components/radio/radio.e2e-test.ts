@@ -388,19 +388,19 @@ test('mdc-radio', async ({ componentsPage }) => {
   await test.step('programmatic control', async () => {
     await test.step('click method works as expected', async () => {
       const radio = await setup({ componentsPage });
-
       const waitForClickAfterChecked = await componentsPage.waitForEvent(radio, 'click');
       await radio.evaluate((el: HTMLElement) => el.click());
-      await expect(radio).toBeChecked();
-      await expect(waitForClickAfterChecked).toEventEmitted();
 
-      // Disabled
-      await radio.evaluate((el: HTMLElement) => {
-        el.setAttribute('disabled', '');
-      });
+      await expect(radio).toHaveAttribute('checked');
+      await expect(waitForClickAfterChecked).toEventEmitted();
+    });
+
+    await test.step('click method works as expected when component disabled', async () => {
+      const radio = await setup({ componentsPage });
       const waitForClickAfterDisabled = await componentsPage.waitForEvent(radio, 'click');
       await radio.evaluate((el: HTMLElement) => el.click());
 
+      await expect(radio).not.toHaveAttribute('checked');
       await expect(waitForClickAfterDisabled).not.toEventEmitted();
     });
   });

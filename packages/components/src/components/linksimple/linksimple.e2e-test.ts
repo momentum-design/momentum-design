@@ -183,11 +183,11 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       const waitForClick = await componentsPage.waitForEvent(link, 'click');
       await link.evaluate((el: HTMLElement) => el.click());
       await expect(waitForClick).toEventEmitted();
+    });
 
-      // Disabled
-      await link.evaluate((el: HTMLElement) => {
-        el.setAttribute('disabled', '');
-      });
+    await test.step('click method works as expected when component disabled', async () => {
+      const link = await setup({ componentsPage, disabled: true });
+
       const waitForClickAfterDisabled = await componentsPage.waitForEvent(link, 'click');
       await link.evaluate((el: HTMLElement) => el.click());
 

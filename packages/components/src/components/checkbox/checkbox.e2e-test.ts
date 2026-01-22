@@ -431,14 +431,15 @@ test('mdc-checkbox', async ({ componentsPage }) => {
         await checkbox.evaluate((el: HTMLElement) => el.click());
         await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
         await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
 
-        // Disabled
-        await checkbox.evaluate((el: HTMLElement) => {
-          el.setAttribute('disabled', '');
-        });
+      await test.step('click method works as expected when component disabled', async () => {
+        const checkbox = await setup({ componentsPage, disabled: true });
+
         const waitForClickAfterDisabled = await componentsPage.waitForEvent(checkbox, 'click');
         await checkbox.evaluate((el: HTMLElement) => el.click());
 
+        await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
         await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });

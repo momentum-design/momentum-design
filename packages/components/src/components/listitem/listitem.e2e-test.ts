@@ -426,11 +426,11 @@ test.describe.parallel('mdc-listitem', () => {
         const waitForClickAfterChecked = await componentsPage.waitForEvent(listItem, 'click');
         await listItem.evaluate((el: HTMLElement) => el.click());
         await expect(waitForClickAfterChecked).toEventEmitted();
+      });
 
-        // Disabled
-        await listItem.evaluate((el: HTMLElement) => {
-          el.setAttribute('disabled', '');
-        });
+      await test.step('click method works as expected when component disabled', async () => {
+        const listItem = await setup({ componentsPage, disabled: true });
+
         const waitForClickAfterDisabled = await componentsPage.waitForEvent(listItem, 'click');
         await listItem.evaluate((el: HTMLElement) => el.click());
 

@@ -394,5 +394,23 @@ test.describe('Menuitem Feature Scenarios', () => {
         await expect(waitForKeyUp).toEventEmitted();
       });
     });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const menuItem = await setup({ componentsPage });
+        const waitForClick = await componentsPage.waitForEvent(menuItem, 'click');
+        await menuItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClick).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const menuItem = await setup({ componentsPage, disabled: true });
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItem, 'click');
+        await menuItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
   });
 });

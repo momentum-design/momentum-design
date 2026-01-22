@@ -287,13 +287,19 @@ test.describe('AccordionButton Feature Scenarios', () => {
 
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).not.toBeVisible();
+      });
 
-        await accordionButton.evaluate((el: HTMLElement) => {
-          el.setAttribute('disabled', '');
+      await test.step('click method works as expected when component disabled', async () => {
+        const { accordionButton, headerButtonSection } = await setup({
+          componentsPage,
+          expanded: false,
+          disabled: true,
         });
+
         const disabledClickPromise = await componentsPage.waitForEvent(accordionButton, 'click');
         await accordionButton.evaluate((el: HTMLElement) => el.click());
 
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(disabledClickPromise).not.toEventEmitted();
       });
     });

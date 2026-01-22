@@ -120,6 +120,8 @@ class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
   }
 
   override click() {
+    if (this.disabled) return;
+    super.click();
     this.handleHeaderClick();
   }
 
