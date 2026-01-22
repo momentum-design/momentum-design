@@ -237,7 +237,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(popover).toHaveAttribute('size');
       await expect(popover).not.toHaveAttribute('disable-flip');
       await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
-      await expect(popover).toHaveAttribute('z-index', '1000');
+      await expect(popover).toHaveAttribute('z-index', '-1');
     });
 
     await test.step('should respect select width, listbox width and height overrides via CSS variables', async () => {
