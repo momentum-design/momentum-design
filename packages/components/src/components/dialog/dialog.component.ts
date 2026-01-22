@@ -12,6 +12,7 @@ import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import providerUtils from '../../utils/provider';
 import ResponsiveSettingsContext from '../responsivesettingsprovider/responsiveSettingsContext';
 import ResponsiveSettingsProvider from '../responsivesettingsprovider';
+import { DepthManager, StackChange, type StackedOverlayComponent } from '../../utils/controllers/DepthManager';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -90,7 +91,10 @@ import styles from './dialog.styles';
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component)))) {
+class Dialog
+  extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))))
+  implements StackedOverlayComponent
+{
   /** @internal */
   protected readonly responsiveSettingsContext = providerUtils.consume<typeof ResponsiveSettingsContext.context>({
     host: this,
@@ -98,6 +102,11 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     subscribe: true,
     syncProperties: ['size'],
   });
+
+  /** track the depth of the popover for z-index calculation
+   * @internal
+   */
+  private depthManager = new DepthManager(this);
 
   /**
    * The unique ID of the dialog
@@ -123,13 +132,28 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   visible: boolean = DEFAULTS.VISIBLE;
 
   /**
-   * The z-index of the dialog
+   * The internal z-index of the dialog.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
+   * The effective z-index of the dialog.
    *
-   * The backdrop will have z-index of `zIndex - 1`
-   * @default 1000
+   * If no explicit `z-index` value is provided, then it automatically calculated
+   * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
-  zIndex: number = DEFAULTS.Z_INDEX;
+  get zIndex() {
+    if (!Number.isInteger(this.internalZIndex)) {
+      return this.depthManager.getHostZIndex();
+    }
+    return this.internalZIndex!;
+  }
+
+  set zIndex(value: number) {
+    this.internalZIndex = value;
+  }
 
   /**
    * The internal value helps to restore original size when responsive settings disabled.
@@ -294,14 +318,12 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
   }
 
   /**
-   * Applies the z-index to the dialog and backdrop elements.
-   * The dialog will have a z-index of `zIndex` and the backdrop will have a z-index of `zIndex - 1`.
+   * Applies the z-index to the dialog element.
    *
    * @internal
    */
   private applyZIndex() {
     this.style.setProperty('z-index', `${this.zIndex}`);
-    this.backdropElement?.style.setProperty('z-index', `${this.zIndex - 1}`);
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
@@ -410,6 +432,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * has to be done by the consumer of the component.
    */
   private closeDialog() {
+    this.depthManager.popHost();
+
     DialogEventManager.onCloseDialog(this, false);
   }
 
@@ -419,7 +443,7 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || event.code !== 'Escape') {
+    if (!this.visible || event.code !== 'Escape' || !this.depthManager.isHostOnTop()) {
       return;
     }
 
@@ -430,6 +454,15 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
     this.closeDialog();
   };
+
+  /** @internal */
+  onComponentStackChanged(changed: StackChange): void {
+    if (changed === 'removed') {
+      this.visible = false;
+    } else if (changed === 'moved') {
+      this.requestUpdate('zIndex');
+    }
+  }
 
   /**
    * Handles the dialog visibility change.
@@ -444,6 +477,10 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
     }
 
     if (newValue && !oldValue) {
+      if (this.depthManager.pushHost()) {
+        // request update to trigger zIndex recalculation
+        this.requestUpdate('zIndex');
+      }
       // Store the currently focused element before opening the dialog
       this.lastActiveElement = document.activeElement as HTMLElement;
 
@@ -467,6 +504,8 @@ class Dialog extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin
 
       DialogEventManager.onShowDialog(this);
     } else if (!newValue && oldValue) {
+      this.depthManager.popHost();
+
       // Always remove backdrop if it exists, regardless of current hideBackdrop value
       // This handles the case where hideBackdrop was changed while dialog was open
       this.removeBackdrop();
