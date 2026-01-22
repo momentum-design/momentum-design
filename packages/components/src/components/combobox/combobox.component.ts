@@ -196,7 +196,7 @@ class Combobox
   @query(`[part="combobox-button"]`) private dropDownButton!: HTMLElement;
 
   /** @internal */
-  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) slottedListboxes!: Array<HTMLElement>;
+  @queryAssignedElements({ selector: SELECTLISTBOX_TAG_NAME }) private slottedListboxes!: Array<HTMLElement>;
 
   /** @internal */
   @state() private isOpen = false;
@@ -239,31 +239,38 @@ class Combobox
       .catch(this.handleUpdateError);
   }
 
+  /** @internal */
   private isValidItem(item: Element): boolean {
     return item.matches(OPTION_TAG_NAME);
   }
 
+  /** @internal */
   private openPopover(): void {
     this.isOpen = true;
   }
 
+  /** @internal */
   private closePopover(): void {
     this.isOpen = false;
   }
 
+  /** @internal */
   private toggleDropdown(): void {
     this.isOpen = !this.isOpen;
   }
 
+  /** @internal */
   private compareOptionWithValue(option: Option, value: string): boolean {
     const optionValue = option.getAttribute('label') || '';
     return optionValue.toLowerCase().startsWith(value?.toLowerCase());
   }
 
+  /** @internal */
   private getFirstSelectedOption(): Option | undefined {
     return this.navItems.find(el => el.hasAttribute('selected'));
   }
 
+  /** @internal */
   private getVisibleOptions(internalValue: string): Option[] {
     return this.navItems.filter(option => this.compareOptionWithValue(option, internalValue));
   }
@@ -366,6 +373,8 @@ class Combobox
   /**
    * Resets the selected value to an empty string and clears the form value.
    * This method is called when there is a change on the input.
+   *
+   * @internal
    */
   private resetSelectedValue(): void {
     // We don't reset the value when the combobox is controlled
@@ -376,6 +385,7 @@ class Combobox
     this.resetHelpText();
   }
 
+  /** @internal */
   private resetHelpText(): void {
     if (this.invalidCustomValueText && this.helpText === this.invalidCustomValueText) {
       this.helpText = '';
@@ -458,6 +468,8 @@ class Combobox
 
   /**
    * Updates the selected value based on the current `value` property.
+   *
+   * @internal
    */
   private updateValueBasedSelection(): void {
     this.forceValueUpdate = true;
@@ -501,6 +513,7 @@ class Combobox
    * it clears the custom validation message.
    * This method is called to ensure that the combobox component behaves correctly
    * in form validation scenarios, especially when the combobox is required.
+   *
    * @internal
    */
   private setInputValidity() {
@@ -518,6 +531,7 @@ class Combobox
 
   /**
    * Resets the combobox to its initially selected option.
+   *
    * @internal
    */
   formResetCallback(): void {
@@ -543,6 +557,7 @@ class Combobox
    * so users can see which option is active, even though the actual DOM focus remains on the input box.
    * This ensures that after actions like form submission, users can still interact with the dropdown options
    * through visual cues, while keyboard focus stays on the input field.
+   *
    * @internal
    */
   private handleNativeInputFocus(): void {
@@ -555,6 +570,7 @@ class Combobox
    * effectively clearing any visual indication of focus within the dropdown.
    * It is typically called when the user navigates away from the dropdown or when the dropdown is closed,
    * ensuring that no option remains visually highlighted as focused.
+   *
    * @internal
    */
   private resetFocusedOption(): void {
@@ -563,6 +579,7 @@ class Combobox
       .forEach(option => this.updateOptionAttributes(option, false));
   }
 
+  /** @internal */
   private updateSelectedOption(newOption: Option): void {
     this.navItems.forEach(option => {
       option.removeAttribute('selected');
@@ -576,6 +593,8 @@ class Combobox
    *
    * @param option - The option element to update focus state for.
    * @param value - The new focus state to set (true for focused, false for unfocused).
+   *
+   * @internal
    */
   private updateOptionAttributes(option: Option, value: boolean): void {
     if (option === undefined) return;
@@ -594,6 +613,8 @@ class Combobox
    * If the combobox does not have a focused option and the filtered value is not empty,
    * it sets the help text to the invalid custom value text and closes the popover.
    * It also updates the input validity.
+   *
+   * @internal
    */
   private handleBlurChange(): void {
     const options = this.getVisibleOptions(this.filteredValue);
@@ -619,12 +640,14 @@ class Combobox
     this.setInputValidity();
   }
 
+  /** @internal */
   private updateFocusAndScrollIntoView(options: Option[], oldIndex: number, newIndex: number): void {
     this.updateOptionAttributes(options[oldIndex], false);
     this.updateOptionAttributes(options[newIndex], true);
     options[newIndex]?.scrollIntoView({ block: 'nearest' });
   }
 
+  /** @internal */
   private handleInputKeydown(event: KeyboardEvent): void {
     const options = this.getVisibleOptions(this.filteredValue).filter(option => !option.hasAttribute('disabled'));
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
@@ -685,6 +708,8 @@ class Combobox
    * If an option does not match the current filtered value, it is hidden.
    * Otherwise, it is made visible.
    * Additionally, it updates the hidden state of option groups and dividers based on the current filtered value.
+   *
+   * @internal
    */
   private updateHiddenOptions(): void {
     this.navItems.forEach(option => {
@@ -698,6 +723,7 @@ class Combobox
     });
   }
 
+  /** @internal */
   private hideOptionGroupAndDivider(option: Option): void {
     if (option.parentElement?.matches(OPTIONGROUP_TAG_NAME)) {
       const optionGroupChildren = Array.from(option.parentElement.children)?.filter(
@@ -712,6 +738,7 @@ class Combobox
     }
   }
 
+  /** @internal */
   private showOptionGroupAndDivider(option: Option): void {
     if (option.parentElement?.matches(OPTIONGROUP_TAG_NAME)) {
       const optionGroupChildren = Array.from(option.parentElement.children)?.filter(
@@ -726,6 +753,7 @@ class Combobox
     }
   }
 
+  /** @internal */
   private handleInputChange(event: Event): void {
     if (this.controlType !== 'controlled') {
       this.filteredValue = (event.target as HTMLInputElement).value;
@@ -740,6 +768,7 @@ class Combobox
     }
   }
 
+  /** @internal */
   private handleOptionsClick(event: MouseEvent): void {
     // ensure we get the actual option element even if the click target is a child node
     const option = ((event.target as HTMLElement).closest(OPTION_TAG_NAME) as Option) ?? null;
@@ -751,6 +780,7 @@ class Combobox
     }
   }
 
+  /** @internal */
   private shouldDisplayPopover(optionsLength: number): boolean {
     if (this.disabled || this.readonly) {
       return false;
@@ -768,6 +798,7 @@ class Combobox
    * Renders the native input element.
    * This input is hidden and is used for internal purposes only.
    * The value of the selected option is set as the value of this input.
+   *
    * @internal
    */
   private renderNativeInput(): TemplateResult {
@@ -794,6 +825,7 @@ class Combobox
    * Renders the base input element with accessibility.
    * This input is displayed on the screen and is used for user interaction only.
    * The label of the selected option is set as the value of this input.
+   *
    * @internal
    */
   private renderBaseInput(): TemplateResult {
@@ -826,6 +858,7 @@ class Combobox
     `;
   }
 
+  /** @internal */
   private renderNoResultsText(optionsLength: number): TemplateResult | typeof nothing {
     return optionsLength === 0 && this.noResultText
       ? html`<mdc-listitem part="no-result-text" tabindex="-1" role="" label="${this.noResultText}"></mdc-listitem>`
