@@ -396,7 +396,7 @@ test('mdc-radio', async ({ componentsPage }) => {
     });
 
     await test.step('click method works as expected when component disabled', async () => {
-      const radio = await setup({ componentsPage });
+      const radio = await setup({ componentsPage, disabled: true });
       const waitForClickAfterDisabled = await componentsPage.waitForEvent(radio, 'click');
       await radio.evaluate((el: HTMLElement) => el.click());
 

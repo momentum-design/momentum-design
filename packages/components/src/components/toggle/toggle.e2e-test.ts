@@ -334,7 +334,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
 
       await test.step('click method works as expected when component disabled', async () => {
-        const checkbox = await setup({ componentsPage });
+        const checkbox = await setup({ componentsPage, disabled: true });
         const waitForClickAfterDisabled = await componentsPage.waitForEvent(checkbox, 'click');
         await checkbox.evaluate((el: HTMLElement) => el.click());
 
