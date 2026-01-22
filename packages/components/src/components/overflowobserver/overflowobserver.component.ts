@@ -50,17 +50,31 @@ class OverflowObserver extends Provider<ContextType> {
     for (const entry of entries) {
       const textElement = entry.target as Text;
 
-      if (
-        textElement.isWidthOverflowing() &&
-        !textElement.hasAttribute('tabindex') &&
-        !textElement.hasAttribute('data-overflowing')
-      ) {
-        textElement.setAttribute('tabindex', '0');
-        textElement.setAttribute('data-overflowing', 'true');
-      } else if (!textElement.isWidthOverflowing()) {
+      if (textElement.isWidthOverflowing()) {
+        this.addAttributesToElement(textElement);
+      } else {
         this.removeAttributesFromElement(textElement);
       }
     }
+  };
+
+  private handleBlur = (event: FocusEvent) => {
+    const target = event.target as Text;
+
+    this.removeAttributesFromElement(target);
+    target.removeEventListener('blur', this.handleBlur);
+  };
+
+  private addAttributesToElement = (element: Text) => {
+    element.removeEventListener('blur', this.handleBlur);
+
+    // Don't override an existing tabindex or if we have already marked it as overflowing
+    if (element.hasAttribute('tabindex') || element.hasAttribute('data-overflowing')) {
+      return;
+    }
+
+    element.setAttribute('tabindex', '0');
+    element.setAttribute('data-overflowing', 'true');
   };
 
   private removeAttributesFromElement = (element: Text) => {
@@ -71,14 +85,7 @@ class OverflowObserver extends Provider<ContextType> {
     const { activeElement } = document;
 
     if (activeElement === element) {
-      const handleBlur = () => {
-        element.removeAttribute('data-overflowing');
-        element.removeAttribute('tabindex');
-
-        element.removeEventListener('blur', handleBlur);
-      };
-
-      element.addEventListener('blur', handleBlur);
+      element.addEventListener('blur', this.handleBlur);
     } else {
       element.removeAttribute('data-overflowing');
       element.removeAttribute('tabindex');

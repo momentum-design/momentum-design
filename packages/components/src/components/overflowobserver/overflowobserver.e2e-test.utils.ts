@@ -7,7 +7,7 @@ import Text from '../text';
 
 import OverflowObserver from './overflowobserver.component';
 
-class TextOverflowObserverE2EUtil extends Component {
+class OverflowObserverE2EUtil extends Component {
   @query('mdc-text')
   private textElement!: HTMLElement;
 
@@ -39,12 +39,12 @@ class TextOverflowObserverE2EUtil extends Component {
   }
 }
 
-TextOverflowObserverE2EUtil.register('mdc-textoverflowobserver-provider-e2e');
+OverflowObserverE2EUtil.register('mdc-overflowobserver-e2e');
 
-export default TextOverflowObserverE2EUtil;
+export default OverflowObserverE2EUtil;
 
 declare global {
   interface HTMLElementTagNameMap {
-    ['mdc-textoverflowobserver-provider-e2e']: TextOverflowObserverE2EUtil;
+    ['mdc-overflowobserver-e2e']: OverflowObserverE2EUtil;
   }
 }

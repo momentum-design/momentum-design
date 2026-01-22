@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, type Locator } from '@playwright/test';
 
 import { test } from '../../../config/playwright/setup';
 
@@ -13,20 +13,31 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await componentsPage.mount({
       html: `
           <mdc-overflowobserver>
-            <mdc-textoverflowobserver-provider-e2e ${overflowing ? 'overflowing' : ''}></mdc-textoverflowobserver-provider-e2e>
+            <mdc-overflowobserver-e2e ${overflowing ? 'overflowing' : ''}></mdc-overflowobserver-e2e>
             <mdc-button>After</mdc-button>
           </mdc-overflowobserver>
         `,
       clearDocument: true,
     });
 
-    const e2eUtil = componentsPage.page.locator('mdc-textoverflowobserver-provider-e2e');
+    const e2eUtil = componentsPage.page.locator('mdc-overflowobserver-e2e');
     await e2eUtil.waitFor();
 
     const textElement = e2eUtil.locator('mdc-text');
     await textElement.waitFor();
 
     return { e2eUtil, textElement };
+  };
+
+  const setTextOverflowing = async (e2eUtil: Locator, overflowing: boolean) => {
+    if (overflowing) {
+      await componentsPage.setAttributes(e2eUtil, { overflowing: '' });
+    } else {
+      await componentsPage.removeAttribute(e2eUtil, 'overflowing');
+    }
+
+    // Give ResizeObserver time to trigger
+    await componentsPage.page.waitForTimeout(100);
   };
 
   /**
@@ -69,17 +80,16 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await expect(textElement).not.toHaveAttribute('tabindex');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
-    await componentsPage.setAttributes(e2eUtil, { overflowing: '' });
+    await setTextOverflowing(e2eUtil, true);
     await expect(textElement).toHaveAttribute('tabindex');
     await expect(textElement).toHaveAttribute('data-overflowing');
 
-    await componentsPage.removeAttribute(e2eUtil, 'overflowing');
+    await setTextOverflowing(e2eUtil, false);
     await expect(textElement).not.toHaveAttribute('tabindex');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
   });
 
   await test.step('should not change existing tabindex when observing', async () => {
-    await componentsPage.page.pause();
     const { e2eUtil, textElement } = await mountComponent({ overflowing: true });
 
     await componentsPage.setAttributes(textElement, { tabindex: '0' });
@@ -88,11 +98,11 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await expect(textElement).toHaveAttribute('tabindex', '0');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
-    await componentsPage.removeAttribute(e2eUtil, 'overflowing');
+    await setTextOverflowing(e2eUtil, false);
     await expect(textElement).toHaveAttribute('tabindex', '0');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
-    await componentsPage.setAttributes(e2eUtil, { overflowing: '' });
+    await setTextOverflowing(e2eUtil, true);
     await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.unobserveText());
     await expect(textElement).toHaveAttribute('tabindex', '0');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
@@ -107,9 +117,8 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
       await expect(textElement).toBeFocused();
     });
 
-    // This is to avoid the focus jumping away
     await test.step('keeps focus on text if it stops overflowing', async () => {
-      await componentsPage.removeAttribute(e2eUtil, 'overflowing');
+      await setTextOverflowing(e2eUtil, false);
       await expect(textElement).toBeFocused();
     });
 
@@ -119,5 +128,24 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
       await expect(textElement).not.toHaveAttribute('tabindex');
       await expect(textElement).not.toHaveAttribute('data-overflowing');
     });
+
+    await test.step('jumpy overflow', async () => {
+      await setTextOverflowing(e2eUtil, true);
+      await componentsPage.actionability.pressShiftTab();
+      await expect(textElement).toBeFocused();
+
+      await setTextOverflowing(e2eUtil, false);
+      await expect(textElement).toBeFocused();
+      await componentsPage.page.waitForTimeout(200);
+      await setTextOverflowing(e2eUtil, true);
+      await expect(textElement).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+      await expect(textElement).not.toBeFocused();
+      await expect(textElement).toHaveAttribute('tabindex');
+      await expect(textElement).toHaveAttribute('data-overflowing');
+    });
+
+    await componentsPage.page.pause();
   });
 });
