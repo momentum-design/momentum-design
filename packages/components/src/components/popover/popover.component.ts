@@ -12,10 +12,10 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { DepthManager, StackChange } from '../../utils/controllers/DepthManager';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
-import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
 import type {
   PopoverBoundaryRoot,
@@ -101,6 +101,11 @@ import { PopoverUtils } from './popover.utils';
  * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
 class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))) {
+  /** track the depth of the popover for z-index calculation
+   * @internal
+   */
+  protected depthManager = new DepthManager(this);
+
   /**
    * The unique ID of the popover.
    */
@@ -338,26 +343,23 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
   size: boolean = DEFAULTS.SIZE;
 
   /**
+   * The internal z-index of the popovere.
+   * @internal
+   */
+  private internalZIndex?: number;
+
+  /**
    * The effective z-index of the popover.
    *
-   * If no explicit `z-index` value is provided, then we calculate
-   * z-index based on the popover’s nesting depth (`popoverDepth`)
-   * to ensure proper stacking order among multiple popovers.
-   *
-   * The formula used is: `DEFAULTS.Z_INDEX + (popoverDepth * 3)`.
-   * This approach guarantees that each nested popover appears above its parent.
-   * Ex: A root-level popover has a z-index of 1000,
-   *    its first-level child popover will have a z-index of 1003,
-   *    and a second-level child popover will have a z-index of 1006, and so on.
-   *
-   * When a value is explicitly set, it overrides the internally computed value.
+   * If no explicit `z-index` value is provided, then it automatically calculated
+   * to ensure proper stacking order among multiple overlays.
    */
   @property({ type: Number, reflect: true, attribute: 'z-index' })
   get zIndex() {
-    if (this.internalZIndex === undefined || !Number.isInteger(this.internalZIndex)) {
-      return DEFAULTS.Z_INDEX + this.popoverDepth * 3;
+    if (!Number.isInteger(this.internalZIndex)) {
+      return this.depthManager.getHostZIndex();
     }
-    return this.internalZIndex;
+    return this.internalZIndex!;
   }
 
   set zIndex(value: number) {
@@ -466,22 +468,6 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
 
-  /**
-   * The internal z-index of the popover.
-   * @internal
-   */
-  private internalZIndex?: number;
-
-  /**
-   * At root-level popover starts with a depth of `0`. Each subsequent
-   * child popover increases the depth by one.
-   *
-   * This value is used to compute stacking order (z-index) dynamically,
-   * ensuring that nested popovers appear above their parent popovers.
-   * @internal
-   */
-  private popoverDepth: number = 0;
-
   /** @internal */
   private get connectedTooltip() {
     const connectedTooltips = (this.getRootNode() as Document | ShadowRoot).querySelectorAll(
@@ -568,7 +554,6 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
     }
     this.utils.cleanupAppendTo();
     PopoverEventManager.onDestroyedPopover(this);
-    popoverStack.remove(this);
   }
 
   /**
@@ -635,7 +620,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
 
     if (this.hideOnEscape) {
       this.removeEventListener('keydown', this.onEscapeKeydown);
-      document.removeEventListener('keydown', this.onEscapeKeydown, { capture: true });
+      document.removeEventListener('keydown', this.onEscapeKeydown);
     }
 
     if (this.hideOnBlur) {
@@ -726,7 +711,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
    * @internal
    */
   protected onOutsidePopoverClick = (event: MouseEvent) => {
-    if (popoverStack.peek() !== this) return;
+    if (!this.depthManager.isHostOnTop()) return;
 
     const path = event.composedPath();
     const insidePopoverClick =
@@ -748,7 +733,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
    * @internal
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE) {
+    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
       return;
     }
 
@@ -773,6 +758,15 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
     }
   };
 
+  /** @internal */
+  onComponentStackChanged(changed: StackChange): void {
+    if (changed === 'removed') {
+      this.hide();
+    } else if (changed === 'moved') {
+      this.requestUpdate('zIndex');
+    }
+  }
+
   /**
    * Handles the popover visibility change and position the popover.
    * Handles the exit event to close the popover.
@@ -787,8 +781,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
     }
 
     if (newValue && !this.shouldSuppressOpening) {
-      if (popoverStack.peek() !== this) {
-        this.popoverDepth = popoverStack.push(this);
+      if (this.depthManager.pushHost()) {
         // request update to trigger zIndex recalculation
         this.requestUpdate('zIndex');
       }
@@ -837,9 +830,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
 
       PopoverEventManager.onShowPopover(this);
     } else {
-      if (popoverStack.peek() === this) {
-        popoverStack.pop();
-      }
+      this.depthManager.popHost();
 
       // cleanup floating-ui on closing the popover
       this.floatingUICleanupFunction?.();
