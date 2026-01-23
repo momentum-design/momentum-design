@@ -1,9 +1,21 @@
 {
   "effect": {
     "backdrop-filter": {
-      "value": "blur(10px)",
-      "type": "other",
-      "description": "Used for background blur effect glass effect"
+      "blur20": {
+        "value": "blur(10px)",
+        "type": "other",
+        "description": "Used for background blur effect glass effect"
+      },
+      "blur200": {
+        "value": "blur(100px)",
+        "type": "other",
+        "description": "Used for background blur effect glass effect"
+      },
+      "blur800": {
+        "value": "blur(400px)",
+        "type": "other",
+        "description": "Used for background blur effect glass effect"
+      }
     }
   }
 }
