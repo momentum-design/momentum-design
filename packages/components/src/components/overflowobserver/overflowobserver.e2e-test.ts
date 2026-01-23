@@ -129,14 +129,13 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
       await expect(textElement).not.toHaveAttribute('data-overflowing');
     });
 
-    await test.step('jumpy overflow', async () => {
+    await test.step('keeping focus on overflowing item when it stops overflowing and goes back to overflowing does not break', async () => {
       await setTextOverflowing(e2eUtil, true);
       await componentsPage.actionability.pressShiftTab();
       await expect(textElement).toBeFocused();
 
       await setTextOverflowing(e2eUtil, false);
       await expect(textElement).toBeFocused();
-      await componentsPage.page.waitForTimeout(200);
       await setTextOverflowing(e2eUtil, true);
       await expect(textElement).toBeFocused();
 
@@ -145,7 +144,5 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
       await expect(textElement).toHaveAttribute('tabindex');
       await expect(textElement).toHaveAttribute('data-overflowing');
     });
-
-    await componentsPage.page.pause();
   });
 });
