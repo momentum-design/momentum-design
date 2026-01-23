@@ -5,13 +5,18 @@ import type { ContextType } from './overflowobserver.types';
 import OverflowObserverContext from './overflowobserver.context';
 
 /**
- * overflowobserver component, which ...
+ * overflowobserver component provides a context for observing text elements for overflow using ResizeObserver.
  *
  * @tagname mdc-overflowobserver
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default/unnamed slot.
  */
 class OverflowObserver extends Provider<ContextType> {
+  /**
+   * The ResizeObserver instance used to monitor text elements for overflow.
+   *
+   * @internal
+   */
   private resizeObserver: ResizeObserver;
 
   constructor() {
@@ -37,15 +42,32 @@ class OverflowObserver extends Provider<ContextType> {
     this.resizeObserver.disconnect();
   }
 
+  /**
+   * Observes a text element for overflow changes.
+   * This method is provided to the context for use by child components.
+   * @param element - The text element to stop observing.
+   * @internal
+   */
   private observeResizeForOverflow(element: Text) {
     this.resizeObserver.observe(element);
   }
 
+  /**
+   * Unobserves a text element for overflow changes.
+   * This method is provided to the context for use by child components.
+   * @param element - The text element to stop observing.
+   * @internal
+   */
   private unobserveResizeForOverflow(element: Text) {
     this.resizeObserver.unobserve(element);
     this.removeAttributesFromElement(element);
   }
 
+  /**
+   * Callback invoked by the ResizeObserver when observed elements are resized.
+   * @param entries - The array of ResizeObserverEntry objects representing the resized elements.
+   * @internal
+   */
   private observerCallback = (entries: ResizeObserverEntry[]) => {
     for (const entry of entries) {
       const textElement = entry.target as Text;
@@ -58,6 +80,11 @@ class OverflowObserver extends Provider<ContextType> {
     }
   };
 
+  /**
+   * Removes the attributes added to an element when it loses focus.
+   * @param event - The blur event.
+   * @internal
+   */
   private handleBlur = (event: FocusEvent) => {
     const target = event.target as Text;
 
@@ -65,6 +92,11 @@ class OverflowObserver extends Provider<ContextType> {
     target.removeEventListener('blur', this.handleBlur);
   };
 
+  /**
+   * Adds attributes to an element to make it focusable when it is overflowing.
+   * @param element - The text element that is overflowing.
+   * @internal
+   */
   private addAttributesToElement = (element: Text) => {
     element.removeEventListener('blur', this.handleBlur);
 
@@ -77,6 +109,12 @@ class OverflowObserver extends Provider<ContextType> {
     element.setAttribute('data-overflowing', 'true');
   };
 
+  /**
+   * Removes attributes from an element when it is no longer overflowing.
+   * If the element is focused, it defers removal until blur to avoid losing focus unexpectedly.
+   * @param element - The text element that is no longer overflowing.
+   * @internal
+   */
   private removeAttributesFromElement = (element: Text) => {
     if (!element.hasAttribute('data-overflowing')) {
       return;
@@ -92,6 +130,10 @@ class OverflowObserver extends Provider<ContextType> {
     }
   };
 
+  /**
+   * We have no updates to do on every render, therefore this is a NO-OP.
+   * @internal
+   */
   protected override updateContext(): void {
     // NO-OP
   }

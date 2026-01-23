@@ -1,4 +1,4 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -31,9 +31,12 @@ class OverflowObserverE2EUtil extends Component {
     return this;
   }
 
+  private getStyles() {
+    return `${this.overflowing ? `width: 50px;` : ''}white-space: nowrap;overflow: hidden;text-overflow: ellipsis;`;
+  }
+
   protected override render(): TemplateResult {
-    return html`<mdc-text
-      style=${this.overflowing ? `width: 50px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;` : nothing}
+    return html`<mdc-text style=${this.getStyles()}
       >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text
     >`;
   }
