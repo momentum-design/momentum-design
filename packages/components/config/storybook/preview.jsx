@@ -180,7 +180,7 @@ const preview = {
       defaultValue: 'disabled',
       toolbar: {
         title: 'Spatial Navigation',
-        icon: 'diamond',
+        icon: 'compass',
         items: [
           { value: 'arrows', title: 'Spatial Nav On - Arrow keys + Enter + Esc' },
           { value: 'awsd', title: 'Spatial Nav On - AWSD + E + Q' },

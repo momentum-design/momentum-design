@@ -645,6 +645,9 @@ class Select
       case ACTIONS.UP:
       case ACTIONS.ENTER:
       case ACTIONS.SPACE:
+        if (!this.displayPopover) {
+          this.keyDownEventHandled();
+        }
         this.displayPopover = true;
         event.preventDefault();
         event.stopPropagation();

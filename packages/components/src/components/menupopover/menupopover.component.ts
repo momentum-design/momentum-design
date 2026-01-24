@@ -470,6 +470,7 @@ class MenuPopover extends Popover {
     if (isKeyHandled) {
       event.stopPropagation();
       event.preventDefault();
+      this.keyDownEventHandled();
     }
   };
 

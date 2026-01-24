@@ -10,6 +10,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
@@ -101,8 +102,8 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
-class Textarea extends KeyToActionMixin(
-  AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+class Textarea extends KeyDownHandledMixin(
+  KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
 ) {
   /**
    * The placeholder text that is displayed when the textarea field is empty.
@@ -414,8 +415,12 @@ class Textarea extends KeyToActionMixin(
 
     if (action === ACTIONS.UP) {
       newRows = Math.max(1, currentRows - 1);
+      if (newRows !== currentRows) {
+        this.keyDownEventHandled();
+      }
     } else if (action === ACTIONS.DOWN) {
       newRows = currentRows + 1;
+      this.keyDownEventHandled();
     }
 
     if (newRows !== undefined) {

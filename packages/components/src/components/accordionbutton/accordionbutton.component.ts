@@ -10,6 +10,7 @@ import type { Size } from '../accordiongroup/accordiongroup.types';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
 import type { IconName, Variant } from './accordionbutton.types';
@@ -61,7 +62,7 @@ import styles from './accordionbutton.styles';
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
  */
-class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
+class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Component))) {
   /**
    * Controls the spacing and padding of the accordion.
    * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
@@ -151,6 +152,7 @@ class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
     const action = this.getActionForKeyEvent(event);
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.handleHeaderClick();
+      this.keyDownEventHandled();
     }
   }
 
@@ -249,8 +251,6 @@ class AccordionButton extends KeyToActionMixin(DisabledMixin(Component)) {
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
-
-  public static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default AccordionButton;

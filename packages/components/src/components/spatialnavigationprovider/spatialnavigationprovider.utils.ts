@@ -117,10 +117,10 @@ export const orderElementsByDistance = (
 
       const cr = getElementRectWithMidPoint(candidate);
       // Filter out elements that are not in the navigation direction
-      if (direction === 'left' && cr.right > reference.left) return acc;
-      if (direction === 'right' && cr.left < reference.right) return acc;
-      if (direction === 'up' && cr.bottom > reference.top) return acc;
-      if (direction === 'down' && cr.top < reference.bottom) return acc;
+      if (direction === 'left' && cr.right > reference.xMid) return acc;
+      if (direction === 'right' && cr.left < reference.xMid) return acc;
+      if (direction === 'up' && cr.bottom > reference.yMid) return acc;
+      if (direction === 'down' && cr.top < reference.yMid) return acc;
 
       // Calculate distance
       const distance = findTheShortestDistance(reference, cr, dirAxis, weights);
@@ -138,11 +138,9 @@ export const orderElementsByDistance = (
  *
  * Legends:
  * - red rectangle - focused element
- * - green rectangle - expanded bounding box of the focused element for edge distance calculation
  * - blue rectangle - considered as next focusable elements
  * - white/gray dot - mid-point of the element for distance calculation, it fades based on the distance
  * - # - order number #1 will be the next focused element
- * - ed - edge distance
  * - d - distance
  */
 export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeights): void => {

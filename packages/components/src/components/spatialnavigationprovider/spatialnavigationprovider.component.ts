@@ -8,11 +8,14 @@ import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
 import {
   Direction,
+  ShortestDistanceWeights,
   SpatialNavigationContextValue,
-  SpatialNavigationKeyMapping,
+  SpatialNavigationActionToKeyMap,
+  SpatialNavigationKeyToActionMap,
 } from './spatialnavigationprovider.types';
 import { DEFAULTS } from './spatialnavigationprovider.constants';
 import { orderElementsByDistance } from './spatialnavigationprovider.utils';
+import { NavBackEvent, NavBeforeFocusEvent, NavBeforeProcessEvent } from './spatialnavigationprovider.events';
 
 /**
  * This component manages the spatial navigation state and
@@ -20,8 +23,8 @@ import { orderElementsByDistance } from './spatialnavigationprovider.utils';
  * It should be placed at the root of the application.
  *
  * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) is a way to navigate through focusable
- * elements, but instead of using the tab key to move forward and shift + tab to move backward,
- * it uses the arrow keys (up, down, left, right) to move in the respective direction.
+ * elements on a 2 dimensional plane. It is commonly used in TV and game console applications where
+ * a remote control or a gamepad is used to navigate through the UI.
  *
  * ## Calculate next element to focus
  *
@@ -64,43 +67,95 @@ import { orderElementsByDistance } from './spatialnavigationprovider.utils';
  *
  * ## Limitations
  *
- * - Content scrolling is not supported at the moment, for example:
- *    - When the focused element (eg.: list item) is bigger then the viewport
- *    - the element is a scrollable content without interactive items
+ * ### Completeness
  *
- * @event navback - (React: onNavigationBack) This event is dispatched a back navigation triggered by the user.
- *                         The event's detail contains the goBackElement if any. It is cancelable to prevent click
- *                         action on the goBackElement.
- * @event navfocusnext - (React: onNavFocusNext) This event is dispatched before the focus is changing to the next element.
- *                    It can be canceled to prevent the focus change.
+ * The current algorithm can not guaranty to all focusable element will be reachable via the for direction keys.
+ * In some case component(s) can be isolated in a way that it is not reachable from other components.
+ *
+ * Workarounds:
+ *  - Manually specify the next element to focus with the data attributes. This can guaranty the isolated element prioritized
+ *     over the automatic calculation.
+ *  - Rearrange the focusable elements in the DOM to be more aligned:
+ *    - Use dedicated components (lists, menus, etc.) as much as possible to group focusable elements.
+ *    - Avoid complex layouts where focusable elements are fit into a grid like structure with different sizes.
+ *    - Avoid overlap between focusable elements on the vertical or the horizontal axis.
+ *    - Avoid nested focusable elements when possible.
+ *  - Adjust weights of the algorithm to work better with your UI layout.
+ *
+ * ### Scrollable containers
+ *
+ * Content scrolling is not supported at the moment, for example:
+ * - When the focused element (eg.: list item) is bigger then the viewport
+ * - the element is a scrollable content without interactive items
+ *
+ * ## Contribution
+ *
+ *
+ *
+ * @event navback - (React: onNavBack) This event dispatched a back navigation triggered by the user.
+ *                  The event's detail contains the goBackElement if any. It is cancelable to prevent click
+ *                  action on the goBackElement.
+ * @event navbeforeprocess - (React: onNavBeforeProcess) This event dispatched before spatial navigation process any key event.
+ *                           It can be canceled to prevent any action from spatial navigation, e.g.: back, click or calculating the next candidate.
+ * @event navbeforefocus - (React: onNavBeforeFocus) This event is dispatched before the focus is changing to the next element.
+ *                         It can be canceled to prevent the focus change. @see https://www.w3.org/TR/css-nav-1/#event-type-navbeforefocus
  *
  * @tagname mdc-spatialnavigationprovider
  */
 class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> {
+  /**
+   * Key mapping for spatial navigation actions
+   * It is possible to map left/right/up/down/enter/back actions to any valid key
+   * @see [KeyboardEvent: key property](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
+   *
+   * Note: some devices might have different key names for the same physical key, for example "GoBack" key on some remotes.
+   */
   @property({ attribute: false })
-  navigationKeyMapping: SpatialNavigationKeyMapping = DEFAULTS.SPATIAL_NAVIGATION_KEY_MAPPING;
+  public navigationKeyMapping: SpatialNavigationActionToKeyMap = DEFAULTS.SPATIAL_NAVIGATION_KEY_MAPPING;
 
-  /** Root element */
+  /**
+   * Weights used in the distance calculation algorithm
+   * @see https://www.w3.org/TR/css-nav-1/#find-the-shortest-distance
+   */
+  @property({ attribute: false })
+  public distanceCalculationWeights: ShortestDistanceWeights = DEFAULTS.WEIGHTS;
+
+  /**
+   * Root element
+   * @internal
+   */
   private root: HTMLElement = this;
 
-  /** Currently focused element
+  /**
+   * Currently focused element
    * Use WeakRef to avoid memory leaks
-   * */
+   * @internal
+   */
   private activeElement: undefined | WeakRef<HTMLElement>;
 
   /**
    * Observer to track the active element changes.
+   * @internal
    */
   private activeElementObserver!: MutationObserver;
 
-  get validKeys() {
+  /**
+   * Storey the initial history length to avoid going back beyond the provider initialization point
+   * @internal
+   */
+  private readonly initialHistoryLength = window.history.length;
+
+  /**
+   * List of navigation keys
+   */
+  get navigationKeys() {
     return [
       this.navigationKeyMapping.up,
       this.navigationKeyMapping.down,
       this.navigationKeyMapping.left,
       this.navigationKeyMapping.right,
       this.navigationKeyMapping.enter,
-      this.navigationKeyMapping.back,
+      this.navigationKeyMapping.escape,
     ];
   }
 
@@ -110,13 +165,13 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       context: SpatialNavigationProviderContext,
     });
     this.activeElementObserver = new MutationObserver(this.activeElementObserverCallback);
+
+    this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('focus', this.handleFocus);
   }
 
   override connectedCallback() {
     super.connectedCallback();
-
-    document.addEventListener('keydown', this.handleKeyDown);
-    document.addEventListener('focus', this.handleFocus);
 
     this.initActiveElement();
   }
@@ -126,9 +181,6 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     this.activeElement = undefined;
     this.activeElementObserver.disconnect();
-
-    document.removeEventListener('keydown', this.handleKeyDown);
-    document.removeEventListener('focus', this.handleFocus);
   }
 
   /**
@@ -139,15 +191,21 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   }
 
   protected override updateContext(): void {
-    if (this.context.value !== this.navigationKeyMapping) {
+    const { actionToKeyMap } = this.context.value || {};
+    if (
+      !actionToKeyMap ||
+      actionToKeyMap.left !== this.navigationKeyMapping.left ||
+      actionToKeyMap.right !== this.navigationKeyMapping.right ||
+      actionToKeyMap.up !== this.navigationKeyMapping.up ||
+      actionToKeyMap.down !== this.navigationKeyMapping.down ||
+      actionToKeyMap.enter !== this.navigationKeyMapping.enter ||
+      actionToKeyMap.escape !== this.navigationKeyMapping.escape
+    ) {
       this.context.value = {
-        ...this.navigationKeyMapping,
-        directionKeys: [
-          this.navigationKeyMapping.up,
-          this.navigationKeyMapping.down,
-          this.navigationKeyMapping.left,
-          this.navigationKeyMapping.right,
-        ],
+        actionToKeyMap: { ...this.navigationKeyMapping },
+        keyToActionMap: Object.fromEntries(
+          Object.entries(this.navigationKeyMapping).map(([action, key]) => [key, action]),
+        ) as SpatialNavigationKeyToActionMap,
       };
 
       this.context.updateObservers();
@@ -155,28 +213,19 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   }
 
   /**
-   * Mutation Observer callback
-   */
-  private activeElementObserverCallback: MutationCallback = (): void => {
-    const currentActiveElement = this.getActiveElement();
-    if (!currentActiveElement || !currentActiveElement.isConnected) {
-      this.initActiveElement();
-    }
-  };
-
-  /**
    * Initialize the spatial navigation.
+   * @internal
    */
-  initActiveElement(): void {
+  private initActiveElement(nextActiveElement?: HTMLElement): void {
     const elements = findFocusable(this.root);
-    this.findActiveElement(elements);
+    this.findActiveElement(elements, nextActiveElement);
   }
 
   /**
    * Update the list of the focusable elements in the app.
+   * @internal
    */
-  private findActiveElement(elements: HTMLElement[]): void {
-    const currentActiveElement = this.getActiveElement();
+  private findActiveElement(elements: HTMLElement[], currentActiveElement?: HTMLElement): void {
     if (!currentActiveElement || !elements.includes(currentActiveElement)) {
       const nextActiveElement = elements[0];
       if (nextActiveElement) {
@@ -185,6 +234,11 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
   }
 
+  /**
+   * Get all focusable elements within the spatial navigation scope
+   * It limits the search to the active focus trap when there is any
+   * @internal
+   */
   private focusableElements(): HTMLElement[] {
     if (FocusTrapStack.getActiveTrap()) {
       return findFocusable(FocusTrapStack.getActiveTrap());
@@ -198,9 +252,9 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    *
    * @param direction - User pressed arrow key.
    * @returns true when focus handled by the provider, false otherwise
-   *
+   * @internal
    */
-  focusNext(direction: Direction): boolean {
+  private focusNext(direction: Direction): boolean {
     const elements = this.focusableElements();
 
     // Do nothing when there is no focusable element
@@ -234,19 +288,11 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
 
     // Find the closest element in the given direction
-    const results = orderElementsByDistance(currentActiveElement, elements, direction, DEFAULTS.WEIGHTS);
+    const results = orderElementsByDistance(currentActiveElement, elements, direction, this.distanceCalculationWeights);
     const nextActiveElement = results[0]?.candidate;
 
     if (nextActiveElement) {
-      const focusEvent = new CustomEvent('navfocusnext', {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: {
-          direction,
-          nextActiveElement,
-        },
-      });
+      const focusEvent = new NavBeforeFocusEvent(direction, nextActiveElement);
       dispatchEvent(focusEvent);
       if (!focusEvent.defaultPrevented) {
         this.setActiveElementAndFocus(nextActiveElement);
@@ -256,15 +302,14 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     return false;
   }
 
-  emitGoBackEvent(goBackElement: undefined | HTMLElement): boolean {
-    const goBackEvent = new CustomEvent('navback', {
-      detail: {
-        goBackElement,
-      },
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-    });
+  /**
+   * Emit navigation back event
+   *
+   * @param goBackElement - The element that will be clicked on go back action
+   * @internal
+   */
+  private emitGoBackEvent(goBackElement: undefined | HTMLElement): boolean {
+    const goBackEvent = new NavBackEvent(goBackElement);
     this.dispatchEvent(goBackEvent);
 
     return goBackEvent.defaultPrevented;
@@ -273,10 +318,12 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   /**
    * Set the active element.
    *
-   * Also connect star tracking the active element.
-   * @param element -
+   * Also, setup MutationObserver to track the element removal from the DOM.
+   *
+   * @param element - New active element
+   * @internal
    */
-  setActiveElement(element: HTMLElement): void {
+  private setActiveElement(element: HTMLElement): void {
     if (element === this.activeElement?.deref()) return;
 
     this.activeElementObserver.disconnect();
@@ -292,9 +339,11 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   /**
    * Set the active element and call .focus() on it
-   * @param element -
+   *
+   * @param element - New active element
+   * @internal
    */
-  setActiveElementAndFocus(element: HTMLElement): void {
+  private setActiveElementAndFocus(element: HTMLElement): void {
     this.setActiveElement(element);
     // Focus the element asynchronously to make sure all calculations are done before focusing
     queueMicrotask(() => element.focus());
@@ -302,20 +351,27 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   /**
    * Get active (focused) element
+   * @internal
    */
-  getActiveElement(): HTMLElement | undefined {
+  private getActiveElement(): HTMLElement | undefined {
     return this.activeElement?.deref();
   }
 
-  handleKeyDown = (evt: KeyboardEvent) => {
-    if (
-      evt.defaultPrevented ||
-      evt.shiftKey ||
-      evt.ctrlKey ||
-      evt.altKey ||
-      evt.metaKey ||
-      !this.validKeys.includes(evt.key)
-    ) {
+  /**
+   * Handle keydown event
+   *
+   * @param evt - Keyboard event
+   * @internal
+   */
+  private handleKeyDown = (evt: KeyboardEvent) => {
+    if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.navigationKeys.includes(evt.key)) {
+      return;
+    }
+
+    const event = new NavBeforeProcessEvent();
+    getDomActiveElement()?.dispatchEvent(event);
+
+    if (event.defaultPrevented) {
       return;
     }
 
@@ -337,7 +393,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       case this.navigationKeyMapping.enter:
         keyEventHandled = this.pressEnter();
         break;
-      case this.navigationKeyMapping.back:
+      case this.navigationKeyMapping.escape:
         keyEventHandled = this.goBack();
         break;
       default:
@@ -349,10 +405,24 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
   };
 
-  handleFocus = (evt: FocusEvent) => {
-    if (evt.target instanceof HTMLElement) {
-      this.setActiveElement(evt.target);
+  /**
+   * Mutation Observer callback
+   * @internal
+   */
+  private activeElementObserverCallback: MutationCallback = (): void => {
+    const currentActiveElement = this.getActiveElement();
+    if (!currentActiveElement || !currentActiveElement.isConnected) {
+      this.initActiveElement(currentActiveElement);
     }
+  };
+
+  /**
+   * Handle focus event
+   * @param evt - Focus event
+   * @internal
+   */
+  private handleFocus = (evt: FocusEvent) => {
+    this.initActiveElement(evt.target as HTMLElement);
   };
 
   /**
@@ -360,7 +430,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    *
    * @returns true when click triggered, false otherwise
    */
-  private pressEnter() {
+  public pressEnter() {
     const activeElement = this.getActiveElement();
     if (activeElement?.click) {
       activeElement.click();
@@ -377,12 +447,17 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    *
    * @returns true when go back handled, false otherwise
    */
-  goBack(): boolean {
+  public goBack(): boolean {
     const goBackElement = findFocusable(this.root).find(el => el.dataset.spatialGoBack);
     const isDefaultPrevented = this.emitGoBackEvent(goBackElement);
 
     if (goBackElement && !isDefaultPrevented) {
       goBackElement.click();
+      return true;
+    }
+
+    if (window.history.length > this.initialHistoryLength) {
+      window.history.back();
       return true;
     }
     return false;

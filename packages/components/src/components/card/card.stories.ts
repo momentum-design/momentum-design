@@ -8,7 +8,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
 import '../link';
@@ -320,8 +319,3 @@ export const InteractiveContentAfterBody: StoryObj = {
       ${interactiveChildren}`,
   },
 };
-
-export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper({
-  ...meta,
-  ...InteractiveContentAfterBody,
-});

@@ -6,7 +6,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import type { AnimationNames } from '../animation/animation.types';
-import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import '../button';
@@ -220,8 +219,3 @@ export const GroupInsideDialog: StoryObj = {
   `,
   ...hideAllControls(),
 };
-
-export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper({
-  ...meta,
-  ...AllVariantsAndOrientations,
-});

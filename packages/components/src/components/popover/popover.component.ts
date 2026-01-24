@@ -13,6 +13,7 @@ import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import { DepthManager, StackChange } from '../../utils/controllers/DepthManager';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -100,12 +101,13 @@ import { PopoverUtils } from './popover.utils';
  * @csspart popover-content - The content of the popover.
  * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
-class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))) {
+class Popover extends KeyDownHandledMixin(
+  KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))),
+) {
   /** track the depth of the popover for z-index calculation
    * @internal
    */
   protected depthManager = new DepthManager(this);
-
   /**
    * The unique ID of the popover.
    */
@@ -744,6 +746,7 @@ class Popover extends KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTra
     event.preventDefault();
     this.hide();
     PopoverEventManager.onEscapeKeyPressed(this);
+    this.keyDownEventHandled();
   };
 
   /**

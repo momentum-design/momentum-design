@@ -1,6 +1,6 @@
 import utils from '../../utils/tag-name';
 
-import { ShortestDistanceWeights, SpatialNavigationKeyMapping } from './spatialnavigationprovider.types';
+import { ShortestDistanceWeights, SpatialNavigationActionToKeyMap } from './spatialnavigationprovider.types';
 
 export const TAG_NAME = utils.constructTagName('spatialnavigationprovider');
 
@@ -12,9 +12,9 @@ export const DEFAULTS = {
     right: 'ArrowRight',
     up: 'ArrowUp',
     down: 'ArrowDown',
-    back: 'Escape',
+    escape: 'Escape',
     enter: 'Enter',
-  } as SpatialNavigationKeyMapping,
+  } as SpatialNavigationActionToKeyMap,
   WEIGHTS: {
     alignWeight: 5,
     orthogonalWeight: {

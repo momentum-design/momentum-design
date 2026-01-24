@@ -6,6 +6,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
@@ -64,7 +65,7 @@ import styles from './cardcheckbox.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
+class CardCheckbox extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIndexMixin(Card)))) {
   /**
    * The checked state of the card
    * @default false
@@ -114,10 +115,6 @@ class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) 
     }
   }
 
-  override click() {
-    this.toggleChecked();
-  }
-
   /**
    * Handles keydown events - toggles checked on Enter and prevents space scroll
    * @param event - The keyboard event
@@ -127,6 +124,7 @@ class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) 
 
     if (action === ACTIONS.ENTER) {
       this.toggleChecked();
+      this.keyDownEventHandled();
       event.preventDefault();
     }
     if (action === ACTIONS.SPACE) {

@@ -10,7 +10,8 @@ import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './radio.styles';
 
@@ -64,7 +65,9 @@ import styles from './radio.styles';
  */
 
 class Radio
-  extends KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
+  extends KeyDownHandledMixin(
+    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
   /**
@@ -257,6 +260,15 @@ class Radio
     const radios = this.getAllRadiosWithinSameGroup();
     const enabledRadios = radios.filter(radio => !radio.disabled);
     const currentIndex = enabledRadios.indexOf(this);
+
+    // Leave navigation between radios to the spatial navigation context if it exists
+    if (this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
+      if (action === ACTIONS.ENTER) {
+        this.updateRadio(enabledRadios, currentIndex);
+        this.keyDownEventHandled();
+      }
+      return;
+    }
 
     if (action === ACTIONS.DOWN || action === ACTIONS.RIGHT) {
       // Move focus to the next radio

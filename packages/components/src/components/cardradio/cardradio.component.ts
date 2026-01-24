@@ -7,6 +7,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './cardradio.styles';
 
@@ -64,7 +65,7 @@ import styles from './cardradio.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardRadio extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
+class CardRadio extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIndexMixin(Card)))) {
   /**
    * The checked state of the card
    * @default false
@@ -167,13 +168,16 @@ class CardRadio extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledCards.length;
       this.updateCardRadio(enabledCards, nextIndex);
+      this.keyDownEventHandled();
     } else if (action === ACTIONS.UP || ACTIONS.LEFT === action) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
       this.updateCardRadio(enabledCards, prevIndex);
+      this.keyDownEventHandled();
     }
     if (action === ACTIONS.ENTER) {
       this.toggleChecked();
+      this.keyDownEventHandled();
     }
   }
 

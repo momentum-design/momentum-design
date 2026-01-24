@@ -8,6 +8,7 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -59,7 +60,7 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
  */
 class Checkbox
-  extends KeyToActionMixin(
+  extends KeyDownHandledMixin(
     KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
   )
   implements AssociatedFormControl
@@ -184,6 +185,7 @@ class Checkbox
     if (action === ACTIONS.ENTER) {
       this.form?.requestSubmit();
       event.preventDefault();
+      this.keyDownEventHandled();
     }
   }
 

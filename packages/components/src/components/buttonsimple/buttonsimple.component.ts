@@ -8,6 +8,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import type { RoleType } from '../../utils/roles';
 import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
@@ -32,7 +33,9 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * @cssproperty --mdc-button-border-color - Border color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  */
-class Buttonsimple extends KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component)))) {
+class Buttonsimple extends KeyDownHandledMixin(
+  KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component)))),
+) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -231,7 +234,13 @@ class Buttonsimple extends KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(
   }
 
   private triggerClickEvent() {
-    this.click();
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
   }
 
   /**
@@ -259,6 +268,7 @@ class Buttonsimple extends KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(
       this.classList.add('pressed');
       if (action === ACTIONS.ENTER) {
         this.triggerClickEvent();
+        this.keyDownEventHandled();
       }
 
       // preventing the default event behavior for space key

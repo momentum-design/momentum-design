@@ -9,7 +9,7 @@ import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementSto
 import { Interval } from '../../utils/range';
 import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -82,7 +82,7 @@ import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.
  * @csspart container - The container of the virtualized list.
  * @csspart scroll - The scrollable area of the virtualized list.
  */
-class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
+class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are three required object props in order to get virtualization to work properly.

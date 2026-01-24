@@ -1,6 +1,4 @@
-import type { TypedCustomEvent } from '../../utils/types';
-
-import type SpatialNavigationProvider from './spatialnavigationprovider.component';
+import type { NavBackEvent, NavBeforeFocusEvent, NavBeforeProcessEvent } from './spatialnavigationprovider.events';
 
 /**
  * Navigation direction actions
@@ -12,7 +10,7 @@ export type DirectionAxis = 'horizontal' | 'vertical';
 /**
  * All navigation actions
  */
-export type SpatialNavigationActions = 'enter' | 'back' | Direction;
+export type SpatialNavigationActions = 'enter' | 'escape' | Direction;
 
 /**
  * Printable representation of the key
@@ -24,16 +22,29 @@ type KeyName = string;
  * Map spatial navigation to printable representation of the key
  * @see [KeyboardEvent: key property](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
  */
-export type SpatialNavigationKeyMapping = { [T in SpatialNavigationActions]: KeyName };
+export type SpatialNavigationActionToKeyMap = { [T in SpatialNavigationActions]: KeyName };
 
+/**
+ * Map key name to navigation action
+ */
+export type SpatialNavigationKeyToActionMap = Record<KeyName, SpatialNavigationActions>;
+
+/** Spatial navigation values sheared via context */
 export type SpatialNavigationContextValue =
-  | (SpatialNavigationKeyMapping & {
-      directionKeys: KeyName[];
-    })
+  | {
+      /** Map navigation actions to keys */
+      actionToKeyMap: SpatialNavigationActionToKeyMap;
+      /** Map keys to navigation actions */
+      keyToActionMap: SpatialNavigationKeyToActionMap;
+    }
   | undefined;
 
+/** Simplified DOMRect without toJSON method */
 export type Rect = Omit<DOMRect, 'toJSON'>;
 
+/**
+ * Element rectangle with center point coordinates
+ */
 export type RectWithMidPoint = Rect & {
   xMid: number;
   yMid: number;
@@ -53,18 +64,25 @@ export type ElementDistance = {
   distance: number;
 };
 
-export interface Events {
-  onNavBackEvent: TypedCustomEvent<SpatialNavigationProvider, { goBackElement: HTMLElement | undefined }>;
-  onNavFocusNextEvent: TypedCustomEvent<
-    SpatialNavigationProvider,
-    {
-      direction: Direction;
-      nextActiveElement: HTMLElement;
-    }
-  >;
-}
-
+/**
+ * Weights used in the distance calculation algorithm
+ * @see https://www.w3.org/TR/css-nav-1/#find-the-shortest-distance
+ */
 export type ShortestDistanceWeights = {
   orthogonalWeight: Record<DirectionAxis, number>;
   alignWeight: number;
 };
+
+export interface Events {
+  onNavBackEvent: NavBackEvent;
+  onNavBeforeProcessEvent: NavBeforeProcessEvent;
+  onNavBeforeFocusEvent: NavBeforeFocusEvent;
+}
+
+declare global {
+  interface GlobalEventHandlersEventMap {
+    navback: NavBackEvent;
+    navbeforeprocess: NavBeforeProcessEvent;
+    navbeforefocus: NavBeforeFocusEvent;
+  }
+}
