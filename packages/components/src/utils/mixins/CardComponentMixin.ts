@@ -140,12 +140,20 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
      */
     protected renderTitle() {
       return html`<div part="title-container">
-        <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}">${this.cardTitle}</mdc-text>
-        ${this.subtitle
-          ? html`<mdc-text part="subtitle" type="${DEFAULTS.SUBTITLE_TYPE}" tagname="${this.subtitleTagName}"
-              >${this.subtitle}</mdc-text
-            >`
-          : nothing}
+        <slot name="title">
+          ${this.cardTitle
+            ? html`<mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}"
+                >${this.cardTitle}</mdc-text
+              >`
+            : nothing}
+        </slot>
+        <slot name="subtitle">
+          ${this.subtitle
+            ? html`<mdc-text part="subtitle" type="${DEFAULTS.SUBTITLE_TYPE}" tagname="${this.subtitleTagName}"
+                >${this.subtitle}</mdc-text
+              >`
+            : nothing}
+        </slot>
       </div>`;
     }
   }
