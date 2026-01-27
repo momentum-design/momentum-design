@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html } from 'lit';
 
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Card from '../card/card.component';
@@ -26,6 +26,8 @@ import styles from './cardbutton.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot title - This slot is for passing the title of the card in the header section
+ * @slot subtitle - This slot is for passing the subtitle of the card in the header section
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
  *
@@ -56,22 +58,11 @@ class CardButton extends CardComponentMixin(Buttonsimple) {
     this.size = undefined as unknown as ButtonSize;
   }
 
-  /**
-   * Renders the header of the card if title is provided
-   * @returns The header element
-   */
-  protected renderHeader() {
-    if (!this.cardTitle) {
-      return nothing;
-    }
-    return html`<div part="header">${this.renderIcon()} ${this.renderTitle()}</div>`;
-  }
-
   public override render() {
     return html`
       <slot name="image"> ${this.renderImage()} </slot>
       <div part="body">
-        ${this.renderHeader()}
+        <div part="header">${this.renderIcon()} ${this.renderTitle()}</div>
         <slot name="before-body"></slot>
         <slot name="body"></slot>
         <slot name="after-body"></slot>
