@@ -35,6 +35,8 @@ import styles from './cardcheckbox.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot title - This slot is for passing the title of the card in the header section
+ * @slot subtitle - This slot is for passing the subtitle of the card in the header section
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
  *
@@ -172,9 +174,6 @@ class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) 
    * @returns The header of the card
    */
   override renderHeader() {
-    if (!this.cardTitle) {
-      return nothing;
-    }
     return html`<div part="header">${this.renderIcon()} ${this.renderTitle()} ${this.renderSelection()}</div>`;
   }
 
