@@ -59,8 +59,7 @@ class Link extends IconNameMixin(Linksimple) {
   }
 
   protected override renderAnchorContent() {
-    return html` <slot></slot>
-      ${this.iconName
+    return html`<span part="text"><slot></slot></span>${this.iconName
         ? html`<mdc-icon part="icon" name="${this.iconName}" size="${this.getIconSize()}" length-unit="rem"></mdc-icon>`
         : nothing}`;
   }
