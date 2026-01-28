@@ -82,6 +82,14 @@ class Accordion extends AccordionButton {
   closeButtonAriaLabel?: string;
 
   /**
+   * Prevents "shown" events from child elements in the header section from bubbling up.
+   * @param event - The shown event to stop.
+   */
+  private handleHeaderShownEvent(event: Event): void {
+    event.stopPropagation();
+  }
+
+  /**
    * Handles property changes for the accordion.
    * If the disabled property is updated, applies the same disabled state to all elements in the leading and trailing controls slots.
    * @param changedProperties - The changed properties of the accordion.
@@ -112,7 +120,7 @@ class Accordion extends AccordionButton {
    */
   public override renderHeader() {
     return html`
-      <div part="header-section">
+      <div part="header-section" @shown="${this.handleHeaderShownEvent}">
         <div part="leading-header">
           ${this.renderIcon(this.prefixIcon)}
           <div role="${ROLE.HEADING}" aria-level="${this.dataAriaLevel}">${this.renderHeadingText()}</div>
