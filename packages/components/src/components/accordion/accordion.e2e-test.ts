@@ -268,6 +268,33 @@ test.describe('Accordion Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-label', defaultOpenButtonAriaLabel);
         await expect(content).not.toBeVisible();
       });
+
+      await test.step('stop propagation of child shown events from header controls', async () => {
+        const { accordion } = await setup({
+          componentsPage,
+          children: `
+          <mdc-button slot="leading-controls" variant="tertiary" size="20" prefix-icon="info-circle-regular" id="tooltip-trigger-id"></mdc-button>
+          <mdc-tooltip slot="leading-controls" triggerID="tooltip-trigger-id">
+            Tooltip message
+          </mdc-tooltip>
+        `,
+        });
+
+        const tooltipButton = accordion.locator('mdc-button[id="tooltip-trigger-id"]');
+        const tooltip = accordion.locator('mdc-tooltip[slot="leading-controls"]');
+
+        await accordion.waitFor();
+
+        const waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
+
+        // Trigger tooltip to show (which may fire a 'shown' event internally)
+        await tooltipButton.hover();
+        await tooltip.waitFor({ state: 'visible' });
+        await componentsPage.page.waitForTimeout(100);
+
+        // Check that the 'shown' event was NOT propagated to the accordion
+        await expect(waitForShown).not.toEventEmitted();
+      });
     });
   });
 });
