@@ -89,7 +89,6 @@ class OverflowObserver extends Provider<ContextType> {
     const target = event.target as Text;
 
     this.removeAttributesFromElement(target);
-    target.removeEventListener('blur', this.handleBlur);
   };
 
   /**
@@ -123,7 +122,7 @@ class OverflowObserver extends Provider<ContextType> {
     const { activeElement } = document;
 
     if (activeElement === element) {
-      element.addEventListener('blur', this.handleBlur);
+      element.addEventListener('blur', this.handleBlur, { once: true });
     } else {
       element.removeAttribute('data-overflowing');
       element.removeAttribute('tabindex');
