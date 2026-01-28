@@ -265,6 +265,43 @@ test.describe('AccordionButton Feature Scenarios', () => {
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
         await expect(content).not.toBeVisible();
       });
+
+      await test.step('click method works as expected', async () => {
+        const { accordionButton, headerButtonSection, content } = await setup({
+          componentsPage,
+          expanded: false,
+        });
+
+        // Expand programmatically
+        const expandClickPromise = await componentsPage.waitForEvent(accordionButton, 'click');
+        await accordionButton.evaluate((el: HTMLElement) => el.click());
+        await expect(expandClickPromise).toEventEmitted();
+
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'true');
+        await expect(content).toBeVisible();
+
+        // Collapse programmatically
+        const collapseClickPromise = await componentsPage.waitForEvent(accordionButton, 'click');
+        await accordionButton.evaluate((el: HTMLElement) => el.click());
+        await expect(collapseClickPromise).toEventEmitted();
+
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(content).not.toBeVisible();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const { accordionButton, headerButtonSection } = await setup({
+          componentsPage,
+          expanded: false,
+          disabled: true,
+        });
+
+        const disabledClickPromise = await componentsPage.waitForEvent(accordionButton, 'click');
+        await accordionButton.evaluate((el: HTMLElement) => el.click());
+
+        await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
+        await expect(disabledClickPromise).not.toEventEmitted();
+      });
     });
   });
 });

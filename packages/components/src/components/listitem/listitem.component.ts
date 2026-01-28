@@ -203,7 +203,7 @@ class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMix
   protected triggerClickEvent(event: Event): boolean {
     const target = event.target as HTMLElement;
     // Do not emit click event when the target is a focusable element inside the list item.
-    if (target !== this && document.activeElement === event.target) {
+    if (target !== this && document.activeElement === target) {
       return false;
     }
     const clickEvent = new MouseEvent('click', {
@@ -312,6 +312,10 @@ class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMix
     } else if (event instanceof MouseEvent) {
       event.stopPropagation();
     }
+  }
+
+  override click() {
+    this.triggerClickEvent(new Event('click'));
   }
 
   public override render() {

@@ -329,7 +329,7 @@ class MenuPopover extends Popover {
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
     // is handled separately in the respective handler.
-    if (!isValidMenuItem(target) || !event.isTrusted || target.hasAttribute('soft-disabled')) return;
+    if (!isValidMenuItem(target) || target.hasAttribute('soft-disabled')) return;
 
     // If the target has a submenu, show it and close other submenus on the same level
     if (this.getSubMenuPopoverOfTarget(target)) {

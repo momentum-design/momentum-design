@@ -231,13 +231,7 @@ class Buttonsimple extends KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(
   }
 
   private triggerClickEvent() {
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      view: window,
-    });
-    this.dispatchEvent(clickEvent);
+    this.click();
   }
 
   /**
