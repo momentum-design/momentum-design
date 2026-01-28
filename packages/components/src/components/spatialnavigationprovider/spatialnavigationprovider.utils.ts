@@ -194,7 +194,15 @@ export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeigh
 
     const currentActiveElement = document.activeElement as HTMLElement;
     const active = getElementRectWithMidPoint(currentActiveElement);
-    const elements = findFocusable(root);
+    const elements = findFocusable(root, {
+      includeSelectors: [
+        '[data-spatial-focusable]',
+        'mdc-menuitem',
+        'mdc-menuitemcheckbox',
+        'mdc-menuitemradio',
+        'mdc-listitem',
+      ],
+    });
 
     const results = orderElementsByDistance(currentActiveElement, elements, direction, weights);
 
@@ -216,8 +224,8 @@ export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeigh
       const rect = getElementRectWithMidPoint(candidate);
 
       // Focusable items highlight
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = 'rgba(8,99,134,0.75)';
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = idx === 0 ? 'rgba(189,151,9,0.75)' : 'rgba(8,99,134,0.75)';
       ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
 
       // Mid-point

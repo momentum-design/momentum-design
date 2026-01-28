@@ -30,5 +30,5 @@ export const withCssPropertyProvider = cssProperties => (story, context) => {
     style.textContent = styleContent;
   }
 
-  return html`<div class=${className} style="display: contents;">${story()}</div>`;
+  return html`<div class=${className}>${story()}</div>`;
 };

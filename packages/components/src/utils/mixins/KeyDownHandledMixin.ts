@@ -17,7 +17,7 @@ export const KeyDownHandledMixin = <T extends Constructor<LitElement>>(superClas
     constructor(...rest: any[]) {
       super(...rest);
 
-      this.addEventListener('keyup', this.keyDownEventHandledHandler);
+      this.addEventListener('keydown', this.keyDownEventHandledHandler);
       this.addEventListener('navbeforeprocess', this.handleNavBeforeProcessEvent);
     }
 
@@ -27,8 +27,8 @@ export const KeyDownHandledMixin = <T extends Constructor<LitElement>>(superClas
      */
     private keyDownEventHandledFlag: boolean = false;
 
-    /** @see KeyToActionInterface.keyDownHandled */
-    protected keyDownHandled(): void {
+    /** @see KeyToActionInterface.keyDownEventHandled */
+    protected keyDownEventHandled(): void {
       this.keyDownEventHandledFlag = true;
     }
 
@@ -37,7 +37,9 @@ export const KeyDownHandledMixin = <T extends Constructor<LitElement>>(superClas
      * @internal
      */
     private keyDownEventHandledHandler = (): void => {
-      this.keyDownEventHandledFlag = false;
+      setTimeout(() => {
+        this.keyDownEventHandledFlag = false;
+      });
     };
 
     /**

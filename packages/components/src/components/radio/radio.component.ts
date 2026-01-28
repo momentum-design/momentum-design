@@ -262,7 +262,7 @@ class Radio
     const currentIndex = enabledRadios.indexOf(this);
 
     // Leave navigation between radios to the spatial navigation context if it exists
-    if (this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
+    if (this.getKeyboardNavMode() !== NAV_MODES.DEFAULT) {
       if (action === ACTIONS.ENTER) {
         this.updateRadio(enabledRadios, currentIndex);
         this.keyDownEventHandled();

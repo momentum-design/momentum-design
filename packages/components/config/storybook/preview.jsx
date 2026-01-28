@@ -156,8 +156,8 @@ const preview = {
   decorators: [
     storyDescription,
     withCssPropertyProvider(cssProperties),
-    withThemeProvider,
     withSpatialNavigationProvider,
+    withThemeProvider,
     withIconProvider,
     withIllustrationProvider,
   ],
@@ -184,6 +184,8 @@ const preview = {
         items: [
           { value: 'arrows', title: 'Spatial Nav On - Arrow keys + Enter + Esc' },
           { value: 'awsd', title: 'Spatial Nav On - AWSD + E + Q' },
+          { value: 'arrowsWithWrapper', title: 'Spatial Nav On with Wrapper - Arrow keys + Enter + Esc' },
+          { value: 'awsdWithWrapper', title: 'Spatial Nav On with Wrapper - AWSD + E + Q' },
           { value: 'disabled', title: 'Spatial Nav Off' },
         ],
         dynamicTitle: true,

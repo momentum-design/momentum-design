@@ -7,7 +7,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './checkbox.styles';
@@ -178,14 +178,22 @@ class Checkbox
    */
   private handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
-      event.preventDefault();
-    }
+    if (this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
+      if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
+        event.preventDefault();
+      }
 
-    if (action === ACTIONS.ENTER) {
-      this.form?.requestSubmit();
-      event.preventDefault();
-      this.keyDownEventHandled();
+      if (action === ACTIONS.ENTER) {
+        this.form?.requestSubmit();
+        event.preventDefault();
+        this.keyDownEventHandled();
+      }
+    }
+    if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
+      if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
+        this.toggleState();
+        this.keyDownEventHandled();
+      }
     }
   }
 

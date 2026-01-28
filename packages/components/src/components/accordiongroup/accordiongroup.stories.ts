@@ -10,7 +10,6 @@ import '../divider';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { ROLE } from '../../utils/roles';
-import { spatialNavigationStoryWrapper } from '../spatialnavigationprovider/spatialnavigationprovider.stories.utils';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
 
@@ -164,13 +163,3 @@ export const MultiInteractiveAccordion: StoryObj = {
   },
   render: renderMultiInteractive,
 };
-
-export const WithSpatialNavigation: StoryObj = spatialNavigationStoryWrapper({
-  ...Example,
-  render: (args: Args) =>
-    html`<div style="display: flex; flex-direction: column">
-      ${render(args)}
-      <mdc-divider style="margin-block: 1rem"></mdc-divider>
-      ${renderMultiInteractive(args)}
-    </div>`,
-});

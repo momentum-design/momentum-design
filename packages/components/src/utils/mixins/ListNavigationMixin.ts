@@ -11,8 +11,6 @@ import { KeyDownHandledMixin, KeyDownHandledMixinInterface } from './KeyDownHand
 export declare abstract class ListNavigationMixinInterface {
   protected loop: 'true' | 'false';
 
-  protected propagateAllKeyEvents: boolean;
-
   protected initialFocus: number;
 
   protected abstract get navItems(): BaseArray<HTMLElement>;
@@ -61,16 +59,6 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected loop: 'true' | 'false' = 'true';
-
-    /**
-     * Whether to propagate all key events to parent components.
-     * If true, all key events will bubble up and can be handled by parent components.
-     * If false, navigation key events handled by this mixin will not propagate further.
-     *
-     * @default false
-     * @internal
-     */
-    protected propagateAllKeyEvents = false;
 
     /**
      * The index of the item to focus initially when the component is first updated.
@@ -123,6 +111,10 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected handleNavigationKeyDown(event: KeyboardEvent) {
       const action = this.getActionForKeyEvent(event, true);
       const actionsToHandle = new Set<Actions>([ACTIONS.DOWN, ACTIONS.UP, ACTIONS.HOME, ACTIONS.END]);
+      //
+      // if (this.isDirectionAction(action) && this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
+      //   return;
+      // }
 
       if (!action || !actionsToHandle.has(action)) {
         return;
@@ -163,14 +155,8 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           break;
       }
 
-      if (!navigationHandled) {
+      if (navigationHandled) {
         this.keyDownEventHandled();
-      }
-      // When the component consume any of the pressed key, we need to stop propagation
-      // to prevent the event from bubbling up and being handled by parent components which might use the same key.
-      if (!this.propagateAllKeyEvents) {
-        event.stopPropagation();
-        event.preventDefault();
       }
     }
 
@@ -276,7 +262,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     }
 
     private shouldLoop() {
-      return this.getKeyboardNavMode() === NAV_MODES.SPATIAL && this.loop !== 'false';
+      return this.getKeyboardNavMode() === NAV_MODES.SPATIAL ? false : this.loop !== 'false';
     }
   }
 

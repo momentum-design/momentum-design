@@ -1,33 +1,19 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import '../menuitem';
-import '../menuitemcheckbox';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import '.';
+import '../avatarbutton';
 
-const render = (args: Args) => html`
-  <mdc-controltypeprovider control-type="${args['control-type']}">
-    <mdc-subcomponent-control-type></mdc-subcomponent-control-type>
-    <div role="menu">
-      <mdc-menuitemcheckbox label="example" indicator="checkbox"> </mdc-menuitemcheckbox>
-    </div>
-  </mdc-controltypeprovider>
-`;
+import { spatialNavigationStoryWrapper } from './spatialnavigationprovider.stories.utils';
 
 const meta: Meta = {
   title: 'Components/spatialnavigationprovider',
   tags: ['autodocs'],
   component: 'mdc-spatialnavigationprovider',
-  render,
-  argTypes: {
-    navigationKeyMapping: {
-      control: 'select',
-      options: ['controlled', 'uncontrolled'],
-    },
-  },
+  argTypes: {},
 };
 
 export default meta;
 
-export const Uncontrolled: StoryObj = {};
-
-export const Controlled: StoryObj = {};
+export const Example: StoryObj = spatialNavigationStoryWrapper({
+  render: () => html` <mdc-avatarbutton initials="MD"></mdc-avatarbutton> `,
+});

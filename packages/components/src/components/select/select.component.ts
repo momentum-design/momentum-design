@@ -22,7 +22,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
-import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -89,7 +89,11 @@ import type { Placement } from './select.types';
  */
 class Select
   extends ListNavigationMixin(
-    CaptureDestroyEventForChildElement(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      CaptureDestroyEventForChildElement(
+        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+      ),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -639,6 +643,7 @@ class Select
     }
 
     const action = this.getActionForKeyEvent(event);
+    const isSpatialNavigation = this.getKeyboardNavMode() === NAV_MODES.SPATIAL;
 
     switch (action) {
       case ACTIONS.DOWN:
@@ -648,7 +653,9 @@ class Select
         if (!this.displayPopover) {
           this.keyDownEventHandled();
         }
-        this.displayPopover = true;
+        if (!isSpatialNavigation || action === ACTIONS.ENTER) {
+          this.displayPopover = true;
+        }
         event.preventDefault();
         event.stopPropagation();
         break;

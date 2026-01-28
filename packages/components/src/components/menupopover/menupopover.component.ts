@@ -10,7 +10,7 @@ import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradi
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
-import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -329,7 +329,7 @@ class MenuPopover extends Popover {
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
     // is handled separately in the respective handler.
-    if (!isValidMenuItem(target) || !event.isTrusted || target.hasAttribute('soft-disabled')) return;
+    if (!isValidMenuItem(target) || target.hasAttribute('soft-disabled')) return;
 
     // If the target has a submenu, show it and close other submenus on the same level
     if (this.getSubMenuPopoverOfTarget(target)) {
@@ -394,9 +394,13 @@ class MenuPopover extends Popover {
     if (currentIndex === -1) return;
     this.resetTabIndexes(currentIndex);
 
-    const targetKey = this.getActionForKeyEvent(event, true);
+    const action = this.getActionForKeyEvent(event, true);
 
-    switch (targetKey) {
+    if (this.isDirectionAction(action) && this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
+      return;
+    }
+
+    switch (action) {
       case ACTIONS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
@@ -468,8 +472,6 @@ class MenuPopover extends Popover {
     // When menu consume any of the pressed key, we need to stop propagation
     // to prevent the event from bubbling up and being handled by parent components which might use the same key.
     if (isKeyHandled) {
-      event.stopPropagation();
-      event.preventDefault();
       this.keyDownEventHandled();
     }
   };

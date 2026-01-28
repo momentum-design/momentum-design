@@ -2,7 +2,7 @@ import { property } from 'lit/decorators.js';
 
 import { Provider } from '../../models';
 import { capitalize } from '../../utils/string';
-import { findFocusable, getDomActiveElement } from '../../utils/dom';
+import { findFocusable, getDomActiveElement, isScrollable } from '../../utils/dom';
 import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
@@ -32,14 +32,14 @@ import { NavBackEvent, NavBeforeFocusEvent, NavBeforeProcessEvent } from './spat
  *
  * Spatial navigation automatic behavior can be overwritten with the following data attributes on the focusable element.
  *
- * | Attribute                                 | Value                                    | Default | Description                                                                         |
- * |-------------------------------------------|------------------------------------------|---------|-------------------------------------------------------------------------------------|
- * | data-spatial-left                         | selector string                          | N/A     | Next focused item when user presses left                                            |
- * | data-spatial-up                           | selector string                          | N/A     | Next focused item when user presses up                                              |
- * | data-spatial-right                        | selector string                          | N/A     | Next focused item when user presses right                                           |
- * | data-spatial-down                         | selector string                          | N/A     | Next focused item when user presses down                                            |
- * | data-spatial-nested-focusable-direction 	 | 'none', 'horizontal', 'vertical', 'both' | 'none'  | Overwrite the edge distance calculation on the specified direction                  |
- * | data-spatial-go-back                      | N/A	                                    | N/A     | Spatial navigation trigger click on the first focusable element with this attribute |
+ * | Attribute              | Value       | Default | Description                                                                         |
+ * |------------------------|-------------|---------|-------------------------------------------------------------------------------------|
+ * | data-spatial-left      | element id  | N/A     | Next focused item when user presses left                                            |
+ * | data-spatial-up        | element id  | N/A     | Next focused item when user presses up                                              |
+ * | data-spatial-right     | element id  | N/A     | Next focused item when user presses right                                           |
+ * | data-spatial-down      | element id  | N/A     | Next focused item when user presses down                                            |
+ * | data-spatial-go-back   | N/A	        | N/A     | Spatial navigation trigger click on the first focusable element with this attribute |
+ * | data-spatial-focusable | N/A	        | N/A     | Spatial navigation consider the element focusable even if it not (e.g.: tabindex=-1 |
  *
  * ### Element internal navigation
  *
@@ -88,7 +88,9 @@ import { NavBackEvent, NavBeforeFocusEvent, NavBeforeProcessEvent } from './spat
  * - When the focused element (eg.: list item) is bigger then the viewport
  * - the element is a scrollable content without interactive items
  *
- * ## Contribution
+ * ### Only one spatial navigation provider is supported
+ *
+ * At the moment only one spatial navigation provider is supported in the application.
  *
  *
  *
@@ -165,19 +167,20 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       context: SpatialNavigationProviderContext,
     });
     this.activeElementObserver = new MutationObserver(this.activeElementObserverCallback);
-
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('focus', this.handleFocus);
   }
 
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('focus', this.handleFocus);
     this.initActiveElement();
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('focus', this.handleFocus);
 
     this.activeElement = undefined;
     this.activeElementObserver.disconnect();
@@ -235,16 +238,37 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   }
 
   /**
-   * Get all focusable elements within the spatial navigation scope
-   * It limits the search to the active focus trap when there is any
+   * Focus the next element in the given direction.
+   *
+   * @param event - Keyboard event
+   * @param direction - User pressed arrow key.
+   * @returns true when focus handled by the provider, false otherwise
    * @internal
    */
-  private focusableElements(): HTMLElement[] {
-    if (FocusTrapStack.getActiveTrap()) {
-      return findFocusable(FocusTrapStack.getActiveTrap());
-    }
+  private focusNext(event: Event, direction: Direction): boolean {
+    const activeTrap = FocusTrapStack.getActiveTrap();
+    let checkedFocusArea: HTMLElement | null = null;
 
-    return findFocusable(this.root);
+    let path = event.composedPath() as HTMLElement[];
+    // In case the event triggered outside this provider (e.g.: body, etc.)
+    path = path.includes(this.root) ? path : [this.root];
+    // Walk through the composed path to find the focus areas (scrollable or focus trap)
+    for (const el of path) {
+      if (el === activeTrap || el === this.root || isScrollable(el)) {
+        // Find focusable elements within the current focus area (excluding the already checked focus areas)
+        const focusables = findFocusable(el, {
+          excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
+          includeSelectors: ['[data-spatial-focusable]'],
+        });
+        const result = this.focusNextInFocusableAria(focusables, direction);
+        // If there is a focusable element found, or reached the active trap or the root, stop searching
+        if (result || el === activeTrap || el === this.root) {
+          return result;
+        }
+        checkedFocusArea = el;
+      }
+    }
+    return false;
   }
 
   /**
@@ -254,33 +278,45 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when focus handled by the provider, false otherwise
    * @internal
    */
-  private focusNext(direction: Direction): boolean {
-    const elements = this.focusableElements();
-
+  private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): boolean {
     // Do nothing when there is no focusable element
     if (elements.length === 0) {
       return false;
     }
 
     let currentActiveElement = this.getActiveElement();
+    const currentDomActiveElement = getDomActiveElement() as HTMLElement | null;
 
-    // When the active element in the DOM is not in our focusable elements list,
-    // reset it to the first focusable element
-    if (!currentActiveElement || !elements.includes(currentActiveElement)) {
-      [currentActiveElement] = elements;
+    // Sync current active element if necessary
+    // It can be out of sync when:
+    // - the component handled the navigation (programmatically focused another element) so DOM active element is different
+    // - focus fallback to body or other non-focusable element
+    if (
+      !currentActiveElement ||
+      !elements.includes(currentActiveElement) ||
+      currentActiveElement !== currentDomActiveElement
+    ) {
+      if (currentDomActiveElement && elements.includes(currentDomActiveElement)) {
+        currentActiveElement = currentDomActiveElement;
+      } else {
+        [currentActiveElement] = elements;
+      }
       this.setActiveElement(currentActiveElement);
     }
 
-    // If the current active element is not focused in the DOM, focus it
+    // If DOM active element is not in the ficus area then move focus back to the current active element
     if (currentActiveElement !== getDomActiveElement()) {
       currentActiveElement.focus();
       return true;
     }
 
+    // In some case the active element can be inside a shadow DOM
+    // but the data attributes are on the light DOM host element
+    const lightDomElement = (currentActiveElement.getRootNode() as ShadowRoot)?.host as HTMLElement;
     // Check if the current active element has instruction to find the next focusable
-    const nextElementSelector = currentActiveElement.dataset[`spatial${capitalize(direction)}`];
-    if (nextElementSelector) {
-      const nextElement = this.root.querySelector<HTMLElement>(nextElementSelector);
+    const nextElementId = (lightDomElement || currentActiveElement).dataset[`spatial${capitalize(direction)}`];
+    if (nextElementId) {
+      const nextElement = document.getElementById(nextElementId);
       if (nextElement) {
         this.setActiveElementAndFocus(nextElement);
         return true;
@@ -293,7 +329,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     if (nextActiveElement) {
       const focusEvent = new NavBeforeFocusEvent(direction, nextActiveElement);
-      dispatchEvent(focusEvent);
+      currentActiveElement.dispatchEvent(focusEvent);
       if (!focusEvent.defaultPrevented) {
         this.setActiveElementAndFocus(nextActiveElement);
         return true;
@@ -379,16 +415,16 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     switch (evt.key) {
       case this.navigationKeyMapping.up:
-        keyEventHandled = this.focusNext('up');
+        keyEventHandled = this.focusNext(evt, 'up');
         break;
       case this.navigationKeyMapping.down:
-        keyEventHandled = this.focusNext('down');
+        keyEventHandled = this.focusNext(evt, 'down');
         break;
       case this.navigationKeyMapping.left:
-        keyEventHandled = this.focusNext('left');
+        keyEventHandled = this.focusNext(evt, 'left');
         break;
       case this.navigationKeyMapping.right:
-        keyEventHandled = this.focusNext('right');
+        keyEventHandled = this.focusNext(evt, 'right');
         break;
       case this.navigationKeyMapping.enter:
         keyEventHandled = this.pressEnter();
@@ -448,7 +484,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when go back handled, false otherwise
    */
   public goBack(): boolean {
-    const goBackElement = findFocusable(this.root).find(el => el.dataset.spatialGoBack);
+    const goBackElement = findFocusable(this.root).find(el => el.hasAttribute('data-spatial-go-back'));
     const isDefaultPrevented = this.emitGoBackEvent(goBackElement);
 
     if (goBackElement && !isDefaultPrevented) {

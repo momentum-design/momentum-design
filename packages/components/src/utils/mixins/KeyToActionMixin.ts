@@ -74,6 +74,13 @@ export interface KeyToActionInterface {
    * Returns the current keyboard navigation mode
    */
   getKeyboardNavMode(): KeyboardNavModes;
+
+  /**
+   * Returns `true` if the given action is a direction action (up, down, left, right)
+   * @param action - The action to check
+   * @returns `true` if the action is a direction action, otherwise `false`
+   */
+  isDirectionAction(action: Actions | undefined): boolean;
 }
 
 /**
@@ -96,7 +103,6 @@ export interface KeyToActionInterface {
  *
  * Action keys:
  * - 'action' (Enter key)
- * - 'abort' (Escape/Back key)
  *
  * Special keys:
  * - 'space' (Space key)
@@ -134,6 +140,11 @@ export const KeyToActionMixin = <T extends Constructor<LitElement>>(superClass: 
         if (key === ACTIONS.RIGHT) return ACTIONS.LEFT;
       }
       return key;
+    }
+
+    /** @see KeyToActionInterface.isDirectionAction */
+    isDirectionAction(action: Actions): boolean {
+      return action === ACTIONS.UP || action === ACTIONS.DOWN || action === ACTIONS.LEFT || action === ACTIONS.RIGHT;
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
