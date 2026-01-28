@@ -1,10 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
 
@@ -235,6 +233,27 @@ test.describe.parallel('mdc-cardradio', () => {
           await expect(cards.nth(0)).toBeFocused();
           await expect(cards.nth(0)).toBeChecked();
         });
+      });
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const cardRadio = await setup({ componentsPage });
+
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(cardRadio, 'click');
+        await cardRadio.evaluate((el: HTMLElement) => el.click());
+        await expect(cardRadio).toHaveAttribute('checked');
+        await expect(waitForClickAfterChecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const cardRadio = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(cardRadio, 'click');
+        await cardRadio.evaluate((el: HTMLElement) => el.click());
+
+        await expect(cardRadio).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
   });

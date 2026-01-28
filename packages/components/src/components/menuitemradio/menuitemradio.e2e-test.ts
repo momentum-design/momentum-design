@@ -419,4 +419,25 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemradio-default');
   });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const menuItemRadio = await setup({ componentsPage });
+
+      const waitForClickAfterChecked = await componentsPage.waitForEvent(menuItemRadio, 'click');
+      await menuItemRadio.evaluate((el: HTMLElement) => el.click());
+      await expect(menuItemRadio).toHaveAttribute('checked');
+      await expect(waitForClickAfterChecked).toEventEmitted();
+    });
+
+    await test.step('click method works as expected when the component disabled', async () => {
+      const menuItemRadio = await setup({ componentsPage, disabled: true });
+
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItemRadio, 'click');
+      await menuItemRadio.evaluate((el: HTMLElement) => el.click());
+
+      await expect(menuItemRadio).not.toHaveAttribute('checked');
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
+    });
+  });
 });

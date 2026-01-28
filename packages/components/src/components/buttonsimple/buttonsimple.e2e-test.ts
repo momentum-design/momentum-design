@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 
 import { BUTTON_SIZES, DEFAULTS } from './buttonsimple.constants';
 
@@ -252,6 +250,25 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
         autofocus: true,
       });
       await expect(buttonAutoFocus).toBeFocused();
+    });
+  });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const button = await setup({ componentsPage });
+
+      const waitForClick = await componentsPage.waitForEvent(button, 'click');
+      await button.evaluate((el: HTMLElement) => el.click());
+      await expect(waitForClick).toEventEmitted();
+    });
+
+    await test.step('click method works as expected when component disabled', async () => {
+      const button = await setup({ componentsPage, disabled: true });
+
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(button, 'click');
+      await button.evaluate((el: HTMLElement) => el.click());
+
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
     });
   });
 });

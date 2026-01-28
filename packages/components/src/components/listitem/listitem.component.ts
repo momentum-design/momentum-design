@@ -9,6 +9,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS } from './listitem.constants';
 import { ListItemEventManager } from './listitem.events';
@@ -72,7 +73,7 @@ import { ListItemVariants } from './listitem.types';
  * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
-class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMixin(Component)))) {
+class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))))) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -189,6 +190,7 @@ class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMix
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       const eventDispatched = this.triggerClickEvent(event);
       if (eventDispatched) {
+        this.keyDownEventHandled();
         event.preventDefault();
       }
     }
@@ -203,7 +205,7 @@ class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMix
   protected triggerClickEvent(event: Event): boolean {
     const target = event.target as HTMLElement;
     // Do not emit click event when the target is a focusable element inside the list item.
-    if (target !== this && document.activeElement === event.target) {
+    if (target !== this && document.activeElement === target) {
       return false;
     }
     const clickEvent = new MouseEvent('click', {
@@ -312,6 +314,10 @@ class ListItem extends KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMix
     } else if (event instanceof MouseEvent) {
       event.stopPropagation();
     }
+  }
+
+  override click() {
+    this.triggerClickEvent(new Event('click'));
   }
 
   public override render() {

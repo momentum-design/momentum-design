@@ -3,6 +3,16 @@
 import type { OverflowMixinInterface } from './mixins/OverflowMixin';
 
 /**
+ * Options for finding focusable elements.
+ */
+type FindFocusableOptions = {
+  /** Elements to exclude from the search. */
+  excludedElements?: HTMLElement[];
+  /** Selectors to include in the search. */
+  includeSelectors?: string[];
+};
+
+/**
  * nodeB precedes nodeA in either a pre-order depth-first traversal of a tree containing both
  * (e.g., as a descendant or preceding sibling or a descendant of a preceding sibling or
  * preceding sibling of an ancestor) or (if they are disconnected) in an arbitrary but
@@ -54,6 +64,21 @@ export const hasZeroDimensions = (element: HTMLElement) => {
 };
 
 /**
+ * Checks if the element is scrollable (has overflow content).
+ *
+ * @param element - The element to check.
+ * @returns True if the element is scrollable.
+ */
+export const isScrollable = (element: HTMLElement): boolean => {
+  if (!(element instanceof Element)) return false;
+  const computedStyle = getComputedStyle(element);
+  const { overflowX, overflowY } = computedStyle;
+
+  // Check if overflow is set to scrollable values
+  return overflowX === 'auto' || overflowX === 'scroll' || overflowY === 'auto' || overflowY === 'scroll';
+};
+
+/**
  * Determines if the element is not visible in the DOM.
  *
  * @param element - The element to check.
@@ -83,6 +108,11 @@ export const hasComputedHidden = (element: HTMLElement) => {
   return computedStyle.visibility === 'hidden' || computedStyle.height === '0' || computedStyle.display === 'none';
 };
 
+const isDisplayContents = (element: HTMLElement) => {
+  const computedStyle = getComputedStyle(element);
+  return computedStyle.display === 'contents';
+};
+
 /**
  * Checks if the element is hidden from the user.
  *
@@ -93,8 +123,7 @@ export const isHidden = (element: HTMLElement) =>
   element.hasAttribute('hidden') ||
   element.getAttribute('aria-hidden') === 'true' ||
   hasHiddenStyle(element) ||
-  isNotVisible(element) ||
-  hasComputedHidden(element);
+  (!isDisplayContents(element) && (hasComputedHidden(element) || isNotVisible(element)));
 
 /**
  * Checks if the element is disabled.
@@ -147,6 +176,16 @@ export const isInteractiveElement = (element: HTMLElement): boolean => {
 };
 
 /**
+ * Checks if the element matches any of the given selectors.
+ *
+ * @param element - The element to check.
+ * @param selectors - The list of selectors to match against.
+ * @returns True if the element matches any of the selectors.
+ */
+export const isMatchAny = (element: HTMLElement, selectors: string[]): boolean =>
+  selectors.some(selector => element.matches(selector));
+
+/**
  * Checks if the element is focusable.
  *
  * @param element - The element to check.
@@ -161,16 +200,33 @@ export const isFocusable = (element: HTMLElement) =>
  * Make sure this is performant, as it will be called multiple times.
  *
  * @param root - The root element to search for focusable elements.
+ * @param options - Options to customize the search.
  * @returns The list of focusable elements.
  */
-export const findFocusable = (root: ShadowRoot | HTMLElement | null): HTMLElement[] => {
+export const findFocusable = (
+  root: ShadowRoot | HTMLElement | null,
+  options: FindFocusableOptions = {},
+): HTMLElement[] => {
   if (!root) {
     return [];
   }
 
+  const excludesSet = new Set(options?.excludedElements ?? []);
+  const includeSelectors = options?.includeSelectors ?? [];
   const matches = new Set<HTMLElement>();
+
+  const focusableCheck = (element: HTMLElement) => {
+    if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
+      return 'stop';
+    }
+    return isMatchAny(element, includeSelectors) || isInteractiveElement(element) ? 'focusable' : 'continue';
+  };
+
   const finder = (root: ShadowRoot | HTMLElement) => {
-    if (root instanceof HTMLElement && isFocusable(root)) {
+    if (excludesSet.has(root as HTMLElement)) {
+      return;
+    }
+    if (root instanceof HTMLElement && !matches.has(root) && focusableCheck(root) === 'focusable') {
       matches.add(root);
     }
 
@@ -183,9 +239,14 @@ export const findFocusable = (root: ShadowRoot | HTMLElement | null): HTMLElemen
 
     children.forEach((child: Node) => {
       const element = child as HTMLElement;
+      const isFocusableResult = focusableCheck(element);
 
-      if (isFocusable(element)) {
+      if (isFocusableResult === 'focusable') {
         matches.add(element);
+      }
+
+      if (isFocusableResult === 'stop') {
+        return;
       }
 
       if (element.shadowRoot) {

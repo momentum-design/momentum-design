@@ -10,7 +10,8 @@ import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
@@ -61,8 +62,8 @@ import type { ToggleSize } from './toggle.types';
  * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
-  extends KeyToActionMixin(
-    ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  extends KeyDownHandledMixin(
+    KeyToActionMixin(ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))),
   )
   implements AssociatedFormControl
 {
@@ -168,6 +169,11 @@ class Toggle
     }
   }
 
+  override click() {
+    super.click();
+    this.toggleState();
+  }
+
   /**
    * Handles the keydown event on the toggle element.
    * When the user presses Enter, the form is submitted.
@@ -181,7 +187,7 @@ class Toggle
       event.preventDefault();
     }
 
-    if (action === ACTIONS.ENTER) {
+    if (action === ACTIONS.ENTER && this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       this.form?.requestSubmit();
     }
   }

@@ -106,6 +106,7 @@ class MenuItem extends ListItem {
     if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) {
       this.triggerClickEvent(event);
       event.preventDefault();
+      this.keyDownEventHandled();
     }
   }
 
