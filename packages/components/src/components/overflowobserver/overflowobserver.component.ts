@@ -9,7 +9,7 @@ import OverflowObserverContext from './overflowobserver.context';
  *
  * @tagname mdc-overflowobserver
  *
- * @slot default - This is a default/unnamed slot.
+ * @slot default
  */
 class OverflowObserver extends Provider<ContextType> {
   /**
@@ -29,9 +29,15 @@ class OverflowObserver extends Provider<ContextType> {
       unobserveResizeForOverflow: this.unobserveResizeForOverflow.bind(this),
     });
 
+    /**
+     * @internal
+     */
     this.resizeObserver = new ResizeObserver(this.observerCallback);
   }
 
+  /**
+   * Context object of the OverflowObserver, to be consumed by child components
+   */
   public static get Context() {
     return OverflowObserverContext;
   }
@@ -130,11 +136,10 @@ class OverflowObserver extends Provider<ContextType> {
   };
 
   /**
-   * We have no updates to do on every render, therefore this is a NO-OP.
    * @internal
    */
   protected override updateContext(): void {
-    // NO-OP
+    // We have no updates to do on every render, therefore this is a NO-OP.
   }
 }
 
