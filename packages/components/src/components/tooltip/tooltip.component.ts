@@ -96,6 +96,14 @@ class Tooltip extends Popover {
     this.size = POPOVER_DEFAULTS.SIZE;
   }
 
+  override async disconnectedCallback(): Promise<void> {
+    if (this.onlyShowWhenTriggerOverflows && this.triggerElement instanceof Text) {
+      this.overflowobserver.value?.observeResizeForOverflow(this.triggerElement);
+    }
+
+    await super.disconnectedCallback();
+  }
+
   /**
    * Sets the type attribute for the tooltip component.
    * If the provided type is not included in the TOOLTIP_TYPES,
@@ -129,6 +137,29 @@ class Tooltip extends Popover {
         default:
           break;
       }
+    }
+  }
+
+  /**
+   * Updates the overflow observer when the triggerID changes.
+   */
+  private onTriggerIDUpdated(changedProperties: PropertyValues<this>): void {
+    if (!this.onlyShowWhenTriggerOverflows) {
+      return;
+    }
+
+    const oldTriggerID = changedProperties.get('triggerID');
+    // Stop observing the old trigger element
+    if (oldTriggerID) {
+      const oldTriggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${oldTriggerID}"]`);
+      if (oldTriggerElement instanceof Text) {
+        this.overflowobserver.value?.unobserveResizeForOverflow(oldTriggerElement);
+      }
+    }
+
+    // Start observing the new trigger element
+    if (this.triggerElement instanceof Text) {
+      this.overflowobserver.value?.observeResizeForOverflow(this.triggerElement);
     }
   }
 
@@ -215,6 +246,9 @@ class Tooltip extends Popover {
 
     if (changedProperties.has('id')) {
       await this.onIdUpdated();
+    }
+    if (changedProperties.has('triggerID')) {
+      this.onTriggerIDUpdated(changedProperties);
     }
     if (changedProperties.has('placement')) {
       this.onPlacementUpdated();

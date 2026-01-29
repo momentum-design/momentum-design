@@ -361,6 +361,57 @@ test('mdc-tooltip', async ({ componentsPage }) => {
         }
       });
     }
+
+    await test.step('moving the triggerID should update which element is being observed', async () => {
+      await componentsPage.mount({
+        html: `
+          <div id='wrapper'>
+            <mdc-overflowobserver>
+              <mdc-text
+                style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+                id='text1'
+                tagname='p'
+              >
+                Lorem ipsum dolor sit amet
+              </mdc-text>
+              <mdc-text
+                style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+                id='text2'
+                tagname='p'
+              >
+                Lorem ipsum dolor sit amet
+              </mdc-text>
+              <mdc-tooltip triggerID="text1" only-show-when-trigger-overflows>
+                This is a tooltip
+              </mdc-tooltip>
+            </mdc-overflowobserver>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const wrapper = componentsPage.page.locator('#wrapper');
+      await wrapper.waitFor();
+
+      const text1 = componentsPage.page.locator('#text1');
+      const text2 = componentsPage.page.locator('#text2');
+      const tooltip = componentsPage.page.locator('mdc-tooltip');
+
+      await expect(text1).toHaveAttribute('tabindex', '0');
+      await expect(text1).toHaveAttribute('data-overflowing', 'true');
+
+      await expect(text2).not.toHaveAttribute('tabindex');
+      await expect(text2).not.toHaveAttribute('data-overflowing', 'true');
+
+      await componentsPage.setAttributes(tooltip, { triggerID: 'text2' });
+      await componentsPage.page.waitForTimeout(100);
+
+      await expect(text1).not.toHaveAttribute('tabindex', '0');
+      await expect(text1).not.toHaveAttribute('data-overflowing', 'true');
+
+      await expect(text2).toHaveAttribute('tabindex');
+      await expect(text2).toHaveAttribute('data-overflowing', 'true');
+    });
   });
 
   /**
