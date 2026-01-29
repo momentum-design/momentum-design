@@ -29,6 +29,16 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     return { e2eUtil, textElement };
   };
 
+  const startObserving = async (e2eUtil: Locator) => {
+    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await componentsPage.page.waitForTimeout(100);
+  };
+
+  const stopObserving = async (e2eUtil: Locator) => {
+    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.unobserveText());
+    await componentsPage.page.waitForTimeout(100);
+  };
+
   const setTextOverflowing = async (e2eUtil: Locator, overflowing: boolean) => {
     if (overflowing) {
       await componentsPage.setAttributes(e2eUtil, { overflowing: '' });
@@ -55,7 +65,7 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await expect(textElement).not.toHaveAttribute('tabindex');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await startObserving(e2eUtil);
     await expect(textElement).toHaveAttribute('tabindex');
     await expect(textElement).toHaveAttribute('data-overflowing');
   });
@@ -63,11 +73,11 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
   await test.step('remove tabindex and data attribute when not overflowing and observing stops', async () => {
     const { e2eUtil, textElement } = await mountComponent({ overflowing: true });
 
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await startObserving(e2eUtil);
     await expect(textElement).toHaveAttribute('tabindex');
     await expect(textElement).toHaveAttribute('data-overflowing');
 
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.unobserveText());
+    await stopObserving(e2eUtil);
     await expect(textElement).not.toHaveAttribute('tabindex');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
   });
@@ -75,7 +85,7 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
   await test.step('only adds the tabindex and data attribute when overflowing', async () => {
     const { e2eUtil, textElement } = await mountComponent({ overflowing: false });
 
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await startObserving(e2eUtil);
 
     await expect(textElement).not.toHaveAttribute('tabindex');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
@@ -94,7 +104,7 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
 
     await componentsPage.setAttributes(textElement, { tabindex: '0' });
 
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await startObserving(e2eUtil);
     await expect(textElement).toHaveAttribute('tabindex', '0');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
@@ -103,14 +113,14 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await expect(textElement).not.toHaveAttribute('data-overflowing');
 
     await setTextOverflowing(e2eUtil, true);
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.unobserveText());
+    await stopObserving(e2eUtil);
     await expect(textElement).toHaveAttribute('tabindex', '0');
     await expect(textElement).not.toHaveAttribute('data-overflowing');
   });
 
   await test.step('focus', async () => {
     const { e2eUtil, textElement } = await mountComponent({ overflowing: true });
-    await e2eUtil.evaluate((node: OverflowObserverE2EUtil) => node.observeText());
+    await startObserving(e2eUtil);
 
     await test.step('can focus when overflowing', async () => {
       await componentsPage.actionability.pressTab();
