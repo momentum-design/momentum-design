@@ -427,4 +427,26 @@ test('mdc-tooltip', async ({ componentsPage }) => {
 
     await componentsPage.accessibility.checkForA11yViolations('tooltip');
   });
+
+  await test.step('accessibility for tooltip on text', async () => {
+    await componentsPage.mount({
+      html: `
+          <mdc-overflowobserver>
+            <mdc-text
+              style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+              id='text1'
+              tagname='p'
+            >
+              Lorem ipsum dolor sit amet
+            </mdc-text>
+            <mdc-tooltip triggerID="text1" only-show-when-trigger-overflows>
+              This is a tooltip
+            </mdc-tooltip>
+          </mdc-overflowobserver>
+        `,
+      clearDocument: true,
+    });
+
+    await componentsPage.accessibility.checkForA11yViolations('tooltip-on-text');
+  });
 });
