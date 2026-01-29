@@ -1,45 +1,28 @@
 /* eslint-disable max-classes-per-file */
 
-import { Direction } from './spatialnavigationprovider.types';
+import type { Actions } from '../../utils/mixins/KeyToActionMixin';
+
+import type { SpatialNavigationNavigationEvents } from './spatialnavigationprovider.types';
 
 /**
- * This event dispatched a back navigation triggered by the user.
- * The event's detail contains the goBackElement if any. It is cancelable to prevent click
- * action on the goBackElement
+ * Generic spatial navigation event.
+ * It can be canceled to prevent the focus change.
+ *
+ * It is very similar to NavigationEvent defined in css-nav-1 spec,
+ * but the `dir` property is replaced with `action` to support "enter" and "escape" over the direction actions.
+ *
+ * @see https://www.w3.org/TR/css-nav-1/#event-type-navbeforefocus
  */
-export class NavBackEvent extends UIEvent {
-  public readonly relevantTarget: EventTarget | null;
+export class SpatialNavigationEvent extends UIEvent {
+  /** The navigation action requested by the user */
+  public readonly action?: Actions;
 
-  constructor(relevantTarget: EventTarget | null = null) {
-    super('navback', { bubbles: true, cancelable: true, composed: true, view: window });
-    this.relevantTarget = relevantTarget;
-  }
-}
-
-/**
- * This event dispatched before spatial navigation process any key event.
- * It can be canceled to prevent any action from spatial navigation, e.g.: back, click or calculating the next candidate.
- */
-export class NavBeforeProcessEvent extends UIEvent {
-  constructor() {
-    super('navbeforeprocess', { bubbles: true, cancelable: true, composed: true, view: window });
-  }
-}
-
-/**
- * This event is dispatched before the focus is changing to the next element.
- * It can be canceled to prevent the focus change. @see https://www.w3.org/TR/css-nav-1/#event-type-navbeforefocus
- */
-export class NavBeforeFocusEvent extends UIEvent {
-  /** The direction of the navigation as requested by the user */
-  public readonly dir: Direction;
-
-  /** The element that is going to be focused */
+  /** The element that is going to be focused or the last searched focus area */
   public readonly relatedTarget: EventTarget | null;
 
-  constructor(dir: Direction, relatedTarget: EventTarget | null) {
-    super('navbeforefocus', { bubbles: true, cancelable: true, composed: true, view: window });
-    this.dir = dir;
+  constructor(type: SpatialNavigationNavigationEvents, relatedTarget: EventTarget | null, action?: Actions) {
+    super(type, { bubbles: true, cancelable: true, composed: true, view: window });
+    this.action = action;
     this.relatedTarget = relatedTarget;
   }
 }

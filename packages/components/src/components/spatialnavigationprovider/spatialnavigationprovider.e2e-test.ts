@@ -81,72 +81,140 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
-  await test.step(`Press any direction key moves the focus to the first button in the grid`, async () => {
-    for (const key of ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']) {
+  await test.step('Basic navigation', async () => {
+    await test.step(`Press any direction key moves the focus to the first button in the grid`, async () => {
+      for (const key of ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']) {
+        const locators = await setup({ componentsPage });
+
+        await componentsPage.page.keyboard.press(key);
+        await expect(locators.btn1).toBeFocused();
+      }
+    });
+
+    await test.step('2D navigation works correctly', async () => {
       const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
 
-      await componentsPage.page.keyboard.press(key);
+      await keyboard.press('ArrowDown');
       await expect(locators.btn1).toBeFocused();
-    }
-  });
 
-  await test.step('2D navigation works correctly', async () => {
-    const locators = await setup({ componentsPage });
-    const { keyboard } = componentsPage.page;
+      await keyboard.press('ArrowRight');
+      await expect(locators.btn2).toBeFocused();
 
-    await keyboard.press('ArrowDown');
-    await expect(locators.btn1).toBeFocused();
+      await keyboard.press('ArrowRight');
+      await expect(locators.btn3).toBeFocused();
 
-    await keyboard.press('ArrowRight');
-    await expect(locators.btn2).toBeFocused();
+      // Focus does not change
+      await keyboard.press('ArrowRight');
+      await expect(locators.btn3).toBeFocused();
 
-    await keyboard.press('ArrowRight');
-    await expect(locators.btn3).toBeFocused();
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn6).toBeFocused();
 
-    // Focus does not change
-    await keyboard.press('ArrowRight');
-    await expect(locators.btn3).toBeFocused();
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn9).toBeFocused();
 
-    await keyboard.press('ArrowDown');
-    await expect(locators.btn6).toBeFocused();
+      // Focus does not change
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn9).toBeFocused();
 
-    await keyboard.press('ArrowDown');
-    await expect(locators.btn9).toBeFocused();
+      await keyboard.press('ArrowUp');
+      await expect(locators.btn6).toBeFocused();
 
-    // Focus does not change
-    await keyboard.press('ArrowDown');
-    await expect(locators.btn9).toBeFocused();
+      await keyboard.press('ArrowLeft');
+      await expect(locators.btn5).toBeFocused();
 
-    await keyboard.press('ArrowUp');
-    await expect(locators.btn6).toBeFocused();
+      await keyboard.press('ArrowLeft');
+      await expect(locators.btn4).toBeFocused();
 
-    await keyboard.press('ArrowLeft');
-    await expect(locators.btn5).toBeFocused();
+      // Focus does not change
+      await keyboard.press('ArrowLeft');
+      await expect(locators.btn4).toBeFocused();
 
-    await keyboard.press('ArrowLeft');
-    await expect(locators.btn4).toBeFocused();
+      await keyboard.press('ArrowUp');
+      await expect(locators.btn1).toBeFocused();
 
-    // Focus does not change
-    await keyboard.press('ArrowLeft');
-    await expect(locators.btn4).toBeFocused();
+      // Focus does not change
+      await keyboard.press('ArrowUp');
+      await expect(locators.btn1).toBeFocused();
+    });
 
-    await keyboard.press('ArrowUp');
-    await expect(locators.btn1).toBeFocused();
+    await test.step('pressing Enter triggers button click', async () => {
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
 
-    // Focus does not change
-    await keyboard.press('ArrowUp');
-    await expect(locators.btn1).toBeFocused();
-  });
+      const waitForClick = await componentsPage.waitForEvent(locators.btn1, 'click');
+      await keyboard.press('ArrowDown');
+      await keyboard.press('Enter');
 
-  await test.step('pressing Enter triggers button click', async () => {
-    const locators = await setup({ componentsPage });
-    const { keyboard } = componentsPage.page;
+      await expect(waitForClick).toEventEmitted();
+    });
 
-    const waitForClick = await componentsPage.waitForEvent(locators.btn1, 'click');
-    await keyboard.press('ArrowDown');
-    await keyboard.press('Enter');
+    await test.step('alternative (WASD + E + Q) key mapping works correctly', async () => {
+      const locators = await setup({ componentsPage, keyMapping: 'wasd' });
+      const { keyboard } = componentsPage.page;
 
-    await expect(waitForClick).toEventEmitted();
+      await keyboard.press('s');
+      await expect(locators.btn1).toBeFocused();
+
+      await keyboard.press('d');
+      await expect(locators.btn2).toBeFocused();
+
+      await keyboard.press('d');
+      await expect(locators.btn3).toBeFocused();
+
+      // Focus does not change
+      await keyboard.press('d');
+      await expect(locators.btn3).toBeFocused();
+
+      await keyboard.press('s');
+      await expect(locators.btn6).toBeFocused();
+
+      await keyboard.press('s');
+      await expect(locators.btn9).toBeFocused();
+
+      // Focus does not change
+      await keyboard.press('s');
+      await expect(locators.btn9).toBeFocused();
+
+      await keyboard.press('w');
+      await expect(locators.btn6).toBeFocused();
+
+      await keyboard.press('a');
+      await expect(locators.btn5).toBeFocused();
+
+      await keyboard.press('a');
+      await expect(locators.btn4).toBeFocused();
+
+      // Focus does not change
+      await keyboard.press('a');
+      await expect(locators.btn4).toBeFocused();
+
+      await keyboard.press('w');
+      await expect(locators.btn1).toBeFocused();
+
+      // Focus does not change
+      await keyboard.press('w');
+      await expect(locators.btn1).toBeFocused();
+
+      // test enter key
+
+      const waitForClick = await componentsPage.waitForEvent(locators.btn1, 'click');
+      await keyboard.press('e');
+
+      await expect(waitForClick).toEventEmitted();
+
+      // test escape key
+
+      await componentsPage.setAttributes(locators.btn2, {
+        [`data-spatial-go-back`]: '',
+      });
+      await keyboard.press('d');
+      const waitForBtn2Click = await componentsPage.waitForEvent(locators.btn2, 'click');
+      await keyboard.press('q');
+
+      await expect(waitForBtn2Click).toEventEmitted();
+    });
   });
 
   await test.step('provider events', async () => {
@@ -242,6 +310,31 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
       await keyboard.press('Escape');
 
       await expect(waitForBtn5Click).not.toEventEmitted();
+    });
+
+    await test.step('"navnotarget" event emitted when no focusable element found in the given direction', async () => {
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press('ArrowLeft');
+      await expect(locators.btn1).toBeFocused();
+
+      const waitForNavNoTargetEvent = await componentsPage.waitForEvent(locators.snpProvider, 'navnotarget');
+
+      await keyboard.press('ArrowLeft');
+
+      await expect(waitForNavNoTargetEvent).toEventEmitted();
+    });
+
+    await test.step('"navnotarget" event emitted when no go-back element available and no more history back', async () => {
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
+
+      const waitForNavNotTargetEvent = await componentsPage.waitForEvent(locators.snpProvider, 'navnotarget');
+
+      await keyboard.press('Escape');
+
+      await expect(waitForNavNotTargetEvent).toEventEmitted();
     });
   });
 

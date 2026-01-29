@@ -71,7 +71,7 @@ export const spatialNavigationStoryWrapper = (storyObj: StoryObj): StoryObj => {
       if (context.globals.spatialNavigation === 'disabled') {
         return spatialNavigationWrapperRenderFn(mapping, storyObj?.render?.(args, context));
       }
-      return storyObj?.render?.(args, context);
+      return storyObj?.render?.(args, context) ?? '';
     },
   };
 };

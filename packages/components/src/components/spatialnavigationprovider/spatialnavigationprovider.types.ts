@@ -1,4 +1,6 @@
-import type { NavBackEvent, NavBeforeFocusEvent, NavBeforeProcessEvent } from './spatialnavigationprovider.events';
+import type { SpatialNavigationEvent } from './spatialnavigationprovider.events';
+
+export type SpatialNavigationNavigationEvents = 'navbeforeprocess' | 'navback' | 'navbeforefocus' | 'navnotarget';
 
 /**
  * Navigation direction actions
@@ -74,15 +76,17 @@ export type ShortestDistanceWeights = {
 };
 
 export interface Events {
-  onNavBackEvent: NavBackEvent;
-  onNavBeforeProcessEvent: NavBeforeProcessEvent;
-  onNavBeforeFocusEvent: NavBeforeFocusEvent;
+  onNavBeforeProcessEvent: SpatialNavigationEvent;
+  onNavBeforeFocusEvent: SpatialNavigationEvent;
+  onNavBackEvent: SpatialNavigationEvent;
+  onNavNoTarget: SpatialNavigationEvent;
 }
 
 declare global {
   interface GlobalEventHandlersEventMap {
-    navback: NavBackEvent;
-    navbeforeprocess: NavBeforeProcessEvent;
-    navbeforefocus: NavBeforeFocusEvent;
+    navbeforeprocess: SpatialNavigationEvent;
+    navbeforefocus: SpatialNavigationEvent;
+    navback: SpatialNavigationEvent;
+    navnotarget: SpatialNavigationEvent;
   }
 }
