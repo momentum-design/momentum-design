@@ -222,6 +222,11 @@ class Radio
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
+  override click() {
+    super.click();
+    this.handleChange();
+  }
+
   /**
    * Updates the state of the radio button at the specified index within the enabled radios.
    * Focuses the radio button and triggers the change event.
