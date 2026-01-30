@@ -27,6 +27,7 @@ import type { LinkSize } from './link.types';
  * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
  *
  * @csspart anchor - The anchor element that wraps the link content.
+ * @csspart text - The element that wraps the link text.
  * @csspart icon - The icon element.
  */
 class Link extends IconNameMixin(Linksimple) {

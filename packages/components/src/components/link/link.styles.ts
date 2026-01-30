@@ -35,26 +35,14 @@ const styles = css`
     text-transform: var(--mds-font-apps-body-small-regular-text-case);
   }
 
-  :host([size='large']:hover)::part(text),
-  :host([size='large']:active)::part(text),
-  :host([size='large'][inline])::part(text) {
-    text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
-  }
-
   :host([size='large']:hover)::part(anchor),
   :host([size='large']:active)::part(anchor),
   :host([size='large'][inline])::part(anchor) {
     font-size: var(--mds-font-apps-body-large-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-large-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-large-regular-underline-line-height);
-    text-decoration: none;
+    text-decoration: var(--mds-font-apps-body-large-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-large-regular-underline-text-case);
-  }
-
-  :host([size='midsize']:hover)::part(text),
-  :host([size='midsize']:active)::part(text),
-  :host([size='midsize'][inline])::part(text) {
-    text-decoration: var(--mds-font-apps-body-midsize-regular-underline-text-decoration);
   }
 
   :host([size='midsize']:hover)::part(anchor),
@@ -63,14 +51,8 @@ const styles = css`
     font-size: var(--mds-font-apps-body-midsize-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-midsize-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-midsize-regular-underline-line-height);
-    text-decoration: none;
+    text-decoration: var(--mds-font-apps-body-midsize-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-midsize-regular-underline-text-case);
-  }
-
-  :host([size='small']:hover)::part(text),
-  :host([size='small']:active)::part(text),
-  :host([size='small'][inline])::part(text) {
-    text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
   }
 
   :host([size='small']:hover)::part(anchor),
@@ -79,7 +61,7 @@ const styles = css`
     font-size: var(--mds-font-apps-body-small-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-small-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-small-regular-underline-line-height);
-    text-decoration: none;
+    text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
 `;
