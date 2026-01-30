@@ -292,6 +292,34 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
         });
       }
     });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const menuItemCheckbox = await setup({ componentsPage });
+
+        // Check programmatically
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(menuItemCheckbox).toHaveAttribute('checked');
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Uncheck programmatically
+        const waitForClickAfterUnchecked = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(menuItemCheckbox).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected', async () => {
+        const menuItemCheckbox = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+
+        await expect(menuItemCheckbox).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
   };
   await testFunctionality({ controlType: 'controlled', expectedControlType: 'controlled', testAllFunctionality: true });
   await testFunctionality({

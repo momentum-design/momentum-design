@@ -177,6 +177,12 @@ class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) 
     return html`<div part="header">${this.renderIcon()} ${this.renderTitle()} ${this.renderSelection()}</div>`;
   }
 
+  override click(): void {
+    if (this.disabled) return;
+
+    super.click();
+  }
+
   public override render() {
     return html`
       ${this.renderImage()}
