@@ -3,12 +3,26 @@ import { css } from 'lit';
 const styles = css`
   :host::part(text) {
     text-decoration: inherit;
+  }
+
+  :host([icon-name])::part(text) {
     margin-inline-end: 0.25rem;
   }
 
   :host::part(icon) {
     display: inline-flex;
+  }
+
+  :host([size='large'])::part(icon) {
     vertical-align: -0.125rem;
+  }
+
+  :host([size='midsize'])::part(icon) {
+    vertical-align: -0.1rem;
+  }
+
+  :host([size='small'])::part(icon) {
+    vertical-align: -0.1rem;
   }
 
   :host([size='large'])::part(anchor) {
