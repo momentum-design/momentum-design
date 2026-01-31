@@ -1,14 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { PRESENCE_TYPE } from '../presence/presence.constants';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import type { IconNames } from '../icon/icon.types';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -159,6 +158,19 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
       await expect(avatarbutton).not.toHaveClass('btn-listener btn-onclick');
       await componentsPage.page.keyboard.up('Enter');
     });
+  });
+
+  await test.step('spatial navigation', async () => {
+    const button = await setup({ componentsPage, secondButtonForFocus: true });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(button).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(button, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(waitForClick).toEventEmitted();
   });
 
   await test.step('visual-regression', async () => {

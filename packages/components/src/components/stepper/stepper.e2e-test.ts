@@ -4,6 +4,7 @@ import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
 import { VARIANT } from '../stepperitem/stepperitem.constants';
 import type { OrientationType } from '../stepperconnector/stepperconnector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
+import { KEYS } from '../../utils/keys';
 
 type Args = {
   orientation?: OrientationType;
@@ -158,5 +159,23 @@ test('mdc-stepper', async ({ componentsPage }) => {
       await takeScreenshot(componentsPage, ORIENTATION.VERTICAL);
       await componentsPage.accessibility.checkForA11yViolations('stepper-vertical');
     }
+  });
+
+  await test.step('spatial navigation', async () => {
+    await setup(componentsPage, { children });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const items = componentsPage.page.locator('mdc-stepperitem');
+
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(items.nth(0)).toBeFocused();
+
+    await keyboard.press(KEYS.ARROW_RIGHT);
+    await expect(items.nth(1)).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(items.nth(1), 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(waitForClick).toEventEmitted();
   });
 });

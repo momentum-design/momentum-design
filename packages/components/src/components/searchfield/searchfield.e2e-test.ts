@@ -1,9 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -288,6 +287,26 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(inputChipBtn).toBeFocused();
       await inputChipBtn.click();
       await expect(inputChipBtn).toHaveClass('remove-filter');
+    });
+
+    await test.step('spatial navigation', async () => {
+      const input = await setup({
+        componentsPage,
+        id: 'test-mdc-input',
+        placeholder: 'Placeholder',
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'form' });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+      const form = componentsPage.page.locator('form');
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(input).toBeFocused();
+
+      // Enter does not trigger submit in spatial navigation mode
+      const waitForInput = await componentsPage.waitForEvent(form, 'submit');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForInput).not.toEventEmitted();
     });
   });
 });

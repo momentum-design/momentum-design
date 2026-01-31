@@ -2,7 +2,7 @@ import { property } from 'lit/decorators.js';
 
 import { Provider } from '../../models';
 import { capitalize } from '../../utils/string';
-import { findFocusable, getDomActiveElement, isScrollable } from '../../utils/dom';
+import { findFocusable, getDomActiveElement, getElementOrHost, isScrollable } from '../../utils/dom';
 import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
@@ -301,9 +301,29 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const result = this.focusNextInFocusableAria(focusables, direction);
         // If there is a focusable element found, or reached the active trap or the root, stop searching
         if (result || el === activeTrap || el === this.root) {
-          return result;
+          return this.emitNavBeforeFocusEvent(result, direction);
         }
         checkedFocusArea = el;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Emit navbeforefocus event
+   *
+   * @param focusCandidate - The element that will be focused
+   * @param direction - navigation direction
+   * @returns true when focus changed, false otherwise
+   * @internal
+   */
+  private emitNavBeforeFocusEvent(focusCandidate: HTMLElement | undefined, direction: Direction): boolean {
+    if (focusCandidate) {
+      const focusEvent = new SpatialNavigationEvent('navbeforefocus', focusCandidate, direction);
+      this.getActiveElement()?.dispatchEvent(focusEvent);
+      if (!focusEvent.defaultPrevented) {
+        this.setActiveElementAndFocus(focusCandidate);
+        return true;
       }
     }
     return false;
@@ -317,10 +337,10 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when focus handled by the provider, false otherwise
    * @internal
    */
-  private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): boolean {
+  private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): HTMLElement | undefined {
     // Do nothing when there is no focusable element
     if (elements.length === 0) {
-      return false;
+      return undefined;
     }
 
     let currentActiveElement = this.getActiveElement();
@@ -345,36 +365,23 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     // If DOM active element is not in the ficus area then move focus back to the current active element
     if (currentActiveElement !== getDomActiveElement()) {
-      currentActiveElement.focus();
-      return true;
+      return currentActiveElement;
     }
 
-    // In some case the active element can be inside a shadow DOM
-    // but the data attributes are on the light DOM host element
-    const lightDomElement = (currentActiveElement.getRootNode() as ShadowRoot)?.host as HTMLElement;
     // Check if the current active element has instruction to find the next focusable
-    const nextElementId = (lightDomElement || currentActiveElement).dataset[`spatial${capitalize(direction)}`];
+    const nextElementId = (getElementOrHost(currentActiveElement) as HTMLElement).dataset[
+      `spatial${capitalize(direction)}`
+    ];
     if (nextElementId) {
       const nextElement = document.getElementById(nextElementId);
       if (nextElement) {
-        this.setActiveElementAndFocus(nextElement);
-        return true;
+        return nextElement;
       }
     }
 
     // Find the closest element in the given direction
     const results = orderElementsByDistance(currentActiveElement, elements, direction, this.distanceCalculationWeights);
-    const nextActiveElement = results[0]?.candidate;
-
-    if (nextActiveElement) {
-      const focusEvent = new SpatialNavigationEvent('navbeforefocus', nextActiveElement, direction);
-      currentActiveElement.dispatchEvent(focusEvent);
-      if (!focusEvent.defaultPrevented) {
-        this.setActiveElementAndFocus(nextActiveElement);
-        return true;
-      }
-    }
-    return false;
+    return results[0]?.candidate;
   }
 
   /**

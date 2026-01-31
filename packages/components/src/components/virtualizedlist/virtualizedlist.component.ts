@@ -688,7 +688,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     oldIndex?: number,
     focusNewItem = true,
     scrollToNewItem = focusNewItem,
-  ): void {
+  ): boolean {
     const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
 
     if (elementToFocus === undefined) {
@@ -698,11 +698,13 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
         this.setSelectedIndex(newIndex);
       });
 
-      return;
+      return true;
     }
 
-    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
+    const result = super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
     this.setSelectedIndex(newIndex);
+
+    return result;
   }
 
   /** @internal */

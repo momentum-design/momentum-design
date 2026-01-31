@@ -79,7 +79,7 @@ export interface Events {
   onNavBeforeProcessEvent: SpatialNavigationEvent;
   onNavBeforeFocusEvent: SpatialNavigationEvent;
   onNavBackEvent: SpatialNavigationEvent;
-  onNavNoTarget: SpatialNavigationEvent;
+  onNavNoTargetEvent: SpatialNavigationEvent;
 }
 
 declare global {

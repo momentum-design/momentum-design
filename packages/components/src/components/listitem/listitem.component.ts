@@ -187,7 +187,7 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
    */
   protected handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
+    if (!event.defaultPrevented && (action === ACTIONS.ENTER || action === ACTIONS.SPACE)) {
       const eventDispatched = this.triggerClickEvent(event);
       if (eventDispatched) {
         this.keyDownEventHandled();
