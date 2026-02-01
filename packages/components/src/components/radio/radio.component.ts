@@ -267,6 +267,13 @@ class Radio
         this.updateRadio(enabledRadios, currentIndex);
         this.keyDownEventHandled();
       }
+      const radios = this.getAllRadiosWithinSameGroup();
+      radios.forEach(radio => {
+        const input = radio.shadowRoot?.querySelector('input');
+        if (input) {
+          input.tabIndex = 0;
+        }
+      });
       return;
     }
 
