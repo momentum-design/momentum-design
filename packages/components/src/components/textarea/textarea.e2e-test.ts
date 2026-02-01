@@ -384,7 +384,7 @@ test('mdc-textarea', async ({ componentsPage }) => {
       await expect(resizeButton).not.toBeFocused();
       await expect(resizeButton).toBeDisabled();
       await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).toBeFocused();
+      await expect(mdcTextarea).not.toBeFocused();
       await componentsPage.removeAttribute(mdcTextarea, 'readonly');
     });
 

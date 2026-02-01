@@ -108,6 +108,7 @@ class Popover extends KeyDownHandledMixin(
    * @internal
    */
   protected depthManager = new DepthManager(this);
+
   /**
    * The unique ID of the popover.
    */

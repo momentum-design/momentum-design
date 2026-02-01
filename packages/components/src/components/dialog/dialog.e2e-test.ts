@@ -79,6 +79,15 @@ const setup = async (args: SetupOptions) => {
     }
   }, restArgs.id);
 
+  await triggerButton.evaluate((el, id) => {
+    el.addEventListener('click', () => {
+      const dialogElement = document.querySelector(`#${id}`) as Dialog;
+      if (dialogElement) {
+        dialogElement.visible = true;
+      }
+    });
+  }, restArgs.id);
+
   return { dialog, triggerButton };
 };
 
@@ -738,6 +747,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
       const { keyboard } = componentsPage.page;
+
+      await componentsPage.page.pause();
+
       await keyboard.press(KEYS.ARROW_DOWN);
       const opener = componentsPage.page.getByText('Click Me!');
       await expect(opener).toBeFocused();
@@ -748,14 +760,14 @@ test('mdc-dialog', async ({ componentsPage }) => {
       const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeButton).toBeFocused();
       await keyboard.press(KEYS.ARROW_DOWN);
-      const link = componentsPage.page.locator('[slot="footer-link"]');
-      await expect(link).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
-      await expect(secondaryButton).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
       const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
       await expect(primaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+      await expect(secondaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const link = componentsPage.page.locator('[slot="footer-link"]');
+      await expect(link).toBeFocused();
       await keyboard.press(KEYS.ARROW_UP);
       await expect(closeButton).toBeFocused();
     });

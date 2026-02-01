@@ -219,14 +219,16 @@ export const findFocusable = (
     if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
       return 'stop';
     }
-    return isMatchAny(element, includeSelectors) || isInteractiveElement(element) ? 'focusable' : 'continue';
+    return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))
+      ? 'focusable'
+      : 'continue';
   };
 
   const finder = (root: ShadowRoot | HTMLElement) => {
     if (excludesSet.has(root as HTMLElement)) {
       return;
     }
-    if (root instanceof HTMLElement && !matches.has(root) && focusableCheck(root) === 'focusable') {
+    if (root instanceof HTMLElement && focusableCheck(root) === 'focusable') {
       matches.add(root);
     }
 
