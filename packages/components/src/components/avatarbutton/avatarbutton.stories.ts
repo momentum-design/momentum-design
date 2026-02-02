@@ -11,6 +11,9 @@ import { hideControls } from '../../../config/storybook/utils';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
+import '../avatar';
+import '../icon';
+
 const render = (args: Args) => html`
   <mdc-avatarbutton
     @click="${action('onclick')}"
@@ -25,13 +28,12 @@ const render = (args: Args) => html`
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
     aria-label=${args['aria-label']}
-    icon-on-hover="${ifDefined(args['icon-on-hover'])}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
   ></mdc-avatarbutton>
 `;
 
 const meta: Meta = {
-  title: 'Components/avatarbutton',
+  title: 'Components/avatar/avatarbutton',
   tags: ['autodocs'],
   component: 'mdc-avatarbutton',
   render,
@@ -62,10 +64,6 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
-    },
-    'icon-on-hover': {
-      control: 'select',
-      options: [undefined, ...Object.keys(iconsManifest)],
     },
     'auto-focus-on-mount': {
       control: 'boolean',
@@ -98,19 +96,7 @@ export const Example: StoryObj = {
     initials: 'MD',
     size: 88,
     'icon-name': '',
-    'icon-on-hover': '',
     'is-typing': '',
-    'aria-label': 'Avatar Button',
-  },
-};
-
-export const IconOnHover: StoryObj = {
-  args: {
-    initials: 'MD',
-    size: 124,
-    'icon-name': '',
-    'icon-on-hover': 'placeholder-bold',
-    'is-typing': false,
     'aria-label': 'Avatar Button',
   },
 };

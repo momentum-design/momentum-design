@@ -67,7 +67,11 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('aria-hidden', 'true');
+
+    // If consumer did NOT specify aria-hidden, set default to true.
+    if (!this.hasAttribute('aria-hidden')) {
+      this.setAttribute('aria-hidden', 'true');
+    }
   }
 
   /**
