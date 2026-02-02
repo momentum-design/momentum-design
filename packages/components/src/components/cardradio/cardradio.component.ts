@@ -119,6 +119,13 @@ class CardRadio extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
+  override click(): void {
+    if (this.disabled) return;
+
+    super.click();
+    this.toggleChecked();
+  }
+
   setDisabled(disabled: boolean): void {
     this.setAttribute('aria-disabled', `${disabled}`);
     this.tabIndex = disabled ? -1 : 0;
