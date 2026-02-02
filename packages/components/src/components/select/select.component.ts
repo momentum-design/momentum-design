@@ -278,7 +278,10 @@ class Select
   ): void => {
     switch (changeType) {
       case 'added':
-        option.setAttribute('tabindex', '-1');
+        option.setAttribute('tabindex', index === 0 && options.length === 0 ? '0' : '-1');
+        if (option.hasAttribute('selected')) {
+          this.resetTabIndexes(index);
+        }
         break;
       case 'removed': {
         if (index === -1 || options.length === 0) {
@@ -440,6 +443,9 @@ class Select
       !option.hasAttribute('soft-disabled')
     ) {
       this.setSelectedOption(option);
+      if (option.isKeyDownEventHandled) {
+        this.keyDownEventHandled();
+      }
       this.displayPopover = false;
       this.fireEvents();
     }
@@ -643,45 +649,49 @@ class Select
     }
 
     const action = this.getActionForKeyEvent(event);
-    const isSpatialNavigation = this.getKeyboardNavMode() === NAV_MODES.SPATIAL;
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
 
-    switch (action) {
-      case ACTIONS.DOWN:
-      case ACTIONS.UP:
-      case ACTIONS.ENTER:
-      case ACTIONS.SPACE:
-        if (!this.displayPopover) {
-          this.keyDownEventHandled();
-        }
-        if (!isSpatialNavigation || action === ACTIONS.ENTER) {
+    if (isDefaultNavigation) {
+      switch (action) {
+        case ACTIONS.DOWN:
+        case ACTIONS.UP:
+        case ACTIONS.ENTER:
+        case ACTIONS.SPACE:
+          if (!this.displayPopover) {
+            this.keyDownEventHandled();
+          }
           this.displayPopover = true;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      case ACTIONS.HOME: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(0);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      case ACTIONS.END: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      default: {
-        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
-          this.displayPopover = true;
-          this.handleSelectedOptionByKeyInput(event.key);
           event.preventDefault();
           event.stopPropagation();
+          break;
+        case ACTIONS.HOME: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(0);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
         }
-        break;
+        case ACTIONS.END: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
+        }
+        default: {
+          if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+            this.displayPopover = true;
+            this.handleSelectedOptionByKeyInput(event.key);
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          break;
+        }
       }
+    } else if (action === ACTIONS.ENTER) {
+      this.displayPopover = true;
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 

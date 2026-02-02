@@ -233,7 +233,6 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
 
     await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
     const { keyboard } = componentsPage.page;
-    await componentsPage.page.pause();
 
     // Navigate far enough down the list to check scrolling
     for (let i = 0; i <= 15; i += 1) {

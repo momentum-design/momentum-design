@@ -188,12 +188,22 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
   protected handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
     if (!event.defaultPrevented && (action === ACTIONS.ENTER || action === ACTIONS.SPACE)) {
-      const eventDispatched = this.triggerClickEvent(event);
-      if (eventDispatched) {
+      if (!this.isEventFromInsideListItem(event)) {
         this.keyDownEventHandled();
         event.preventDefault();
+        this.triggerClickEvent(event);
       }
     }
+  }
+
+  /**
+   * Checks if the event originated from within the list item.
+   * @param event - The event to check.
+   * @internal
+   */
+  private isEventFromInsideListItem(event: Event): boolean {
+    const target = event.target as HTMLElement;
+    return target !== this && document.activeElement === target && this.contains(target);
   }
 
   /**
@@ -202,19 +212,14 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
    * @param event - The event that triggered the click.
    * @returns - Returns true if the click event was dispatched, false otherwise.
    */
-  protected triggerClickEvent(event: Event): boolean {
-    const target = event.target as HTMLElement;
-    // Do not emit click event when the target is a focusable element inside the list item.
-    if (target !== this && document.activeElement === target) {
-      return false;
-    }
+  protected triggerClickEvent(event: Event): void {
+    if (this.isEventFromInsideListItem(event)) return;
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
       view: window,
     });
     this.dispatchEvent(clickEvent);
-    return true;
   }
 
   /**

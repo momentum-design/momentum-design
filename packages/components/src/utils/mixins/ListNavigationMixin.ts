@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { PropertyValues } from 'lit';
 
-import type { Component } from '../../models';
+import { Component } from '../../models';
 import type { BaseArray } from '../virtualIndexArray';
 import type { SpatialNavigationEvent } from '../../components/spatialnavigationprovider/spatialnavigationprovider.events';
 import { getElementOrHost } from '../dom';
@@ -9,6 +9,7 @@ import { getElementOrHost } from '../dom';
 import type { Constructor } from './index.types';
 import { Actions, ACTIONS, KeyToActionInterface, KeyToActionMixin, NAV_MODES } from './KeyToActionMixin';
 import { KeyDownHandledMixin, KeyDownHandledMixinInterface } from './KeyDownHandledMixin';
+import { LIFE_CYCLE_EVENTS } from './lifecycle/lifecycle.contants';
 
 export declare abstract class ListNavigationMixinInterface {
   protected loop: 'true' | 'false';
@@ -89,12 +90,14 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     constructor(...rest: any[]) {
       super(...rest);
 
+      this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleItemCreation);
       this.addEventListener('keydown', this.handleNavigationKeyDown.bind(this));
       this.addEventListener('click', this.handleNavigationClick);
     }
 
     override connectedCallback() {
       super.connectedCallback();
+      // Most probably triggered outside this component, so we need to listen on document
       document.addEventListener('navbeforefocus', this.handleNavBeforeFocus);
     }
 
@@ -102,6 +105,20 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       super.disconnectedCallback();
       document.removeEventListener('navbeforefocus', this.handleNavBeforeFocus);
     }
+
+    /**
+     * Register created event listener on the item when it is created.
+     *
+     * Make sure the first created item is focusable. It is useful when the parent element moved.
+     *
+     * @param event - The event triggered when an item is created.
+     */
+    protected handleItemCreation = (event: Event) => {
+      const { target } = event;
+      if (this.navItems.length === 0 && target instanceof Component) {
+        target.setAttribute('tabindex', '0');
+      }
+    };
 
     /**
      * Reset tabindex and set focus to the first item in the list after the component is first updated.
@@ -298,7 +315,11 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      */
     private handleNavBeforeFocus = (event: SpatialNavigationEvent) => {
       const focusCandidate = getElementOrHost(event.relatedTarget as Element);
-      if (!this.contains(document.activeElement as HTMLElement) && this.contains(focusCandidate)) {
+      if (
+        this !== focusCandidate &&
+        !this.contains(document.activeElement as HTMLElement) &&
+        this.contains(focusCandidate)
+      ) {
         event.preventDefault();
 
         const targetListItem = this.navItems.find(item => item.contains(focusCandidate));

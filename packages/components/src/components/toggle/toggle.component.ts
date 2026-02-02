@@ -11,7 +11,6 @@ import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
-import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
@@ -62,8 +61,8 @@ import type { ToggleSize } from './toggle.types';
  * @csspart toggle-input - The native input element with switch role that provides the interactive functionality.
  */
 class Toggle
-  extends KeyDownHandledMixin(
-    KeyToActionMixin(ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))),
+  extends KeyToActionMixin(
+    ControlTypeMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
   )
   implements AssociatedFormControl
 {

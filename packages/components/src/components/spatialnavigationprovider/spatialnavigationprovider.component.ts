@@ -100,8 +100,80 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * | data-spatial-up        | element id  | N/A     | Next focused item when user presses up                                              |
  * | data-spatial-right     | element id  | N/A     | Next focused item when user presses right                                           |
  * | data-spatial-down      | element id  | N/A     | Next focused item when user presses down                                            |
- * | data-spatial-go-back   | N/A	      | N/A     | Spatial navigation trigger click on the first focusable element with this attribute |
- * | data-spatial-focusable | N/A	      | N/A     | Spatial navigation consider the element focusable even if it not (e.g.: tabindex=-1 |
+ * | data-spatial-go-back   | N/A	        | N/A     | Spatial navigation trigger click on the first focusable element with this attribute |
+ * | data-spatial-focusable | N/A	        | N/A     | Spatial navigation consider the element focusable even if it not (e.g.: tabindex=-1 |
+ *
+ * ## Event emitting order
+ *
+ * When the user presses a navigation key, the events are emitted in the following order:
+ *
+ * 1. `navbeforeprocess` on the currently focused element
+ * 2. When the event not prevented
+ *    a. For navigation (arrow) keys: `navbeforefocus` on the currently focused element
+ *    b. For enter key: click() on the currently focused element
+ *    c. For back/escape key: `navback` on the provider, then click() on the goBack element or history.back()
+ * 3. When no focusable element found in the given direction: `navnotarget` on the provider
+ *
+ *
+ * ## Handle complex components
+ *
+ * ### Generic components
+ *
+ * Components should notify the spatial navigation provider when they handle navigation internally.
+ * For example a list component when the user presses down arrow key and the component moves focus to the next item internally,
+ *
+ * Component should handle the `navbeforeprocess` event and call `event.preventDefault()` to stop spatial navigation provider.
+ *
+ * ### Form inputs
+ *
+ * Inline form inputs (text input, checkbox, radio button, etc.) submit the form on Enter key by default.
+ * This is not the expected behavior in spatial navigation context. User can change change the state of the input with enter
+ * (check/uncheck, etc.). For form submission it is better to have a dedicated submit button that user can navigate to and press enter on it.
+ *
+ * ### Utilities for complex components
+ *
+ * #### KeyToActionMixin
+ *
+ * It abstracts away key codes and provide action names instead. Call `getActionForKeyEvent` to get the action for a given keyboard event.
+ *
+ * It also provides `getKeyboardNavMode` method to get the current keyboard navigation mode (spatial or default).
+ *
+ * #### KeyDownHandledMixin
+ *
+ * It provides a way to notify the spatial navigation provider when the component handled the keydown event internally.
+ *
+ * Components should call `keyDownEventHandled` whenwever they handle keydown event internally.
+ *
+ * ## Debugging
+ *
+ * ### Storybook toolbar
+ *
+ * Use the "Spatial navigation" option in the Storybook toolbar to enable/disable spatial navigation.
+ * It has 2x2 mods:
+ * - With 2 key mappings:
+ *   1. Arrow keys + Enter + Escape
+ *      - Up - Up arrow key
+ *      - Left - Left arrow key
+ *      - Down - Down arrow key
+ *      - Right - Right arrow key
+ *      - Enter - Enter key
+ *      - Escape - Escape key
+ *   2. Navigation keys: WASD
+ *      - Up - W key
+ *      - Left - A key
+ *      - Down - S key
+ *      - Right - D key
+ *      - Enter - E key
+ *      - Escape - Q key
+ * - With OR without additional buttons around the component
+ *
+ * ### Visual debugger
+ *
+ * When "spatial navigation" is enabled in Storybook toolbar, press "Shift + Arrow key" to visualize the spatial navigation calculations.
+ *
+ * - Star: next active element
+ * - #{number}: candidate elements ordered by distance
+ * - D: {distance}: distance value used in the calculation
  *
  * ## Limitations
  *

@@ -4,7 +4,7 @@ import { property, query, queryAssignedElements, state } from 'lit/decorators.js
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
-import { ElementStore } from '../../utils/controllers/ElementStore';
+import { ElementStore, type ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -109,9 +109,9 @@ class Combobox
   extends KeyDownHandledMixin(
     KeyToActionMixin(
       CaptureDestroyEventForChildElement(
-        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper))),
+        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
       ),
-    ),),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -221,12 +221,12 @@ class Combobox
   constructor() {
     super();
 
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<Option>(this, {
       isValidItem: this.isValidItem,
+      onStoreUpdate: this.onStoreUpdate,
     });
   }
 
@@ -285,6 +285,44 @@ class Combobox
     }
   };
 
+  /** @internal */
+  private onStoreUpdate = (
+    option: Option,
+    changeType: ElementStoreChangeTypes,
+    index: number,
+    options: Option[],
+  ): void => {
+    switch (changeType) {
+      case 'added':
+        option.setAttribute('tabindex', index === 0 && options.length === 0 ? '0' : '-1');
+        if (option.hasAttribute('selected')) {
+          this.navItems.forEach(option => option.setAttribute('tabindex', '-1'));
+          option.setAttribute('tabindex', '0');
+        }
+        break;
+      case 'removed':
+        {
+          const destroyedElement = option;
+          if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
+            return;
+          }
+
+          const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
+          if (destroyedItemIndex === -1) {
+            return;
+          }
+
+          let newIndex = destroyedItemIndex + 1;
+          if (newIndex >= this.navItems.length) {
+            newIndex = destroyedItemIndex - 1;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   /**
    * Update the selected value when an option is modified.
    *
@@ -318,29 +356,6 @@ class Combobox
       }
       default:
         break;
-    }
-  };
-
-  /**
-   * Update the focus when an item is removed.
-   * If there is a next item, focus it. If not, focus the previous item.
-   *
-   * @internal
-   */
-  private handleDestroyEvent = (event: CustomEvent) => {
-    const destroyedElement = event.detail.originalTarget as HTMLElement;
-    if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
-      return;
-    }
-
-    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
-    if (destroyedItemIndex === -1) {
-      return;
-    }
-
-    let newIndex = destroyedItemIndex + 1;
-    if (newIndex >= this.navItems.length) {
-      newIndex = destroyedItemIndex - 1;
     }
   };
 

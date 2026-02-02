@@ -748,8 +748,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
       const { keyboard } = componentsPage.page;
 
-      await componentsPage.page.pause();
-
       await keyboard.press(KEYS.ARROW_DOWN);
       const opener = componentsPage.page.getByText('Click Me!');
       await expect(opener).toBeFocused();

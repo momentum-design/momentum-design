@@ -10,7 +10,7 @@ import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradi
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
-import { ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -329,7 +329,7 @@ class MenuPopover extends Popover {
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
     // is handled separately in the respective handler.
-    if (!isValidMenuItem(target) || target.hasAttribute('soft-disabled')) return;
+    if (!isValidMenuItem(target) || !event.isTrusted || target.hasAttribute('soft-disabled')) return;
 
     // If the target has a submenu, show it and close other submenus on the same level
     if (this.getSubMenuPopoverOfTarget(target)) {
@@ -395,10 +395,6 @@ class MenuPopover extends Popover {
     this.resetTabIndexes(currentIndex);
 
     const action = this.getActionForKeyEvent(event, true);
-
-    if (this.isDirectionAction(action) && this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
-      return;
-    }
 
     switch (action) {
       case ACTIONS.HOME: {
@@ -473,6 +469,8 @@ class MenuPopover extends Popover {
     // to prevent the event from bubbling up and being handled by parent components which might use the same key.
     if (isKeyHandled) {
       this.keyDownEventHandled();
+      event.stopPropagation();
+      event.preventDefault();
     }
   };
 
@@ -484,7 +482,7 @@ class MenuPopover extends Popover {
    * Space key closes the menu when the user presses it on a menu item,
    * but the same key will trigger a click on the menu opener button.
    * The button uses the keyup event so we have to handle it here as well
-   * to prevent the meu opener action which would re-open the menu.
+   * to prevent the menu opener action which would re-open the menu.
    *
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.
