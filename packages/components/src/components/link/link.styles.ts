@@ -1,10 +1,6 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host::part(text) {
-    text-decoration: inherit;
-  }
-
   :host([icon-name])::part(text) {
     margin-inline-end: 0.25rem;
   }
