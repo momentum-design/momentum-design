@@ -1,7 +1,6 @@
 import { CSSResult, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
@@ -10,8 +9,8 @@ import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuit
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
-import { popoverStack } from '../popover/popover.stack';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
@@ -93,7 +92,6 @@ class MenuPopover extends Popover {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
-    this.addEventListener('click', this.handleMouseClick);
     this.addEventListener('created', this.handleItemCreation);
   }
 
@@ -239,21 +237,12 @@ class MenuPopover extends Popover {
    * Closes all menu popovers in the stack.
    * This method is used to ensure that when a menu item is clicked,
    * all other open popovers are closed, maintaining a clean user interface.
-   * It iterates through the `popoverStack` and hides each popover until the stack is empty.
+   * It iterates through the overlay stack and hides each popover until the stack is empty.
    *
    * @param until - The popover to close until.
    */
   private closeAllMenuPopovers(until?: Element): void {
-    while (popoverStack.peek() !== until) {
-      if (!isValidMenuPopover(popoverStack.peek() as Element)) break;
-
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-      } else {
-        break;
-      }
-    }
+    this.depthManager.popUntil(item => item !== until && isValidMenuPopover(item));
   }
 
   /**
@@ -264,7 +253,8 @@ class MenuPopover extends Popover {
    * @param event - The mouse event that triggered the outside click.
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
-    if (popoverStack.peek() !== this) return;
+    if (!this.depthManager.isHostOnTop()) return;
+
     const path = event.composedPath();
     const insidePopoverClick =
       this.contains(event.target as Node) || path.includes(this.triggerElement!) || path.includes(this);
@@ -283,11 +273,20 @@ class MenuPopover extends Popover {
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled') || !this.isEventFromTrigger(event)) return;
-    if (this.visible) {
-      this.hide();
-    } else {
-      this.show();
+    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+
+    // Handle mouse click in the parent menupopover to hide open sibling submenus
+    if (event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this) {
+      this.handleMouseClick(event);
+    }
+
+    // Toggle visibility of the current menupopover
+    if (this.isEventFromTrigger(event)) {
+      if (this.visible) {
+        this.hide();
+      } else {
+        this.show();
+      }
     }
   };
 
@@ -324,10 +323,8 @@ class MenuPopover extends Popover {
    * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
    * @param event - The mouse event that triggered the click.
    */
-  private handleMouseClick(event: MouseEvent): void {
+  private handleMouseClick(event: Event): void {
     const target = event.target as HTMLElement;
-    // stopPropagation to prevent the click from bubbling up to parent elements
-    event.stopPropagation();
 
     // if the target is not a valid menu item or if the event is not trusted (
     // e.g., triggered by keydown originally), do nothing. Pressing space and enter
@@ -379,28 +376,6 @@ class MenuPopover extends Popover {
   };
 
   /**
-   * Resolves the key pressed by the user based on the direction of the layout.
-   * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
-   * It checks if the layout is RTL and adjusts the arrow keys accordingly.
-   * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
-   * @param key - The key pressed by the user.
-   * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
-   * @returns - The resolved key based on the direction.
-   */
-  private resolveDirectionKey(key: string, isRtl: boolean) {
-    if (!isRtl) return key;
-
-    switch (key) {
-      case KEYS.ARROW_LEFT:
-        return KEYS.ARROW_RIGHT;
-      case KEYS.ARROW_RIGHT:
-        return KEYS.ARROW_LEFT;
-      default:
-        return key;
-    }
-  }
-
-  /**
    * Handles keydown events for keyboard navigation within the menu popover.
    * This method allows users to navigate through the menu items using the keyboard.
    * It supports Home, End, Arrow Up, Arrow Down, Arrow Left, Arrow Right, and Escape keys.
@@ -419,38 +394,36 @@ class MenuPopover extends Popover {
     if (currentIndex === -1) return;
     this.resetTabIndexes(currentIndex);
 
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-    const targetKey = this.resolveDirectionKey(event.key, isRtl);
+    const targetKey = this.getActionForKeyEvent(event, true);
 
     switch (targetKey) {
-      case KEYS.HOME: {
+      case ACTIONS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.END: {
+      case ACTIONS.END: {
         // Move focus to the last menu item
         this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_DOWN: {
+      case ACTIONS.DOWN: {
         // Move focus to the next menu item
         const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         // Move focus to the prev menu item
         const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         isKeyHandled = true;
         break;
       }
-      case KEYS.ARROW_RIGHT: {
+      case ACTIONS.RIGHT: {
         // If there is a submenu, open it.
         const subMenu = this.getSubMenuPopoverOfTarget(target);
         if (subMenu) {
@@ -459,7 +432,7 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.ARROW_LEFT: {
+      case ACTIONS.LEFT: {
         // If the current popover is a submenu then close this popover.
         if (isValidMenuPopover(this.parentElement)) {
           this.hide();
@@ -468,12 +441,14 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.ESCAPE: {
-        this.resetTabIndexAndSetFocus(0, currentIndex);
-        isKeyHandled = true;
+      case ACTIONS.ESCAPE: {
+        if (this.depthManager.isHostOnTop()) {
+          this.resetTabIndexAndSetFocus(0, currentIndex);
+          isKeyHandled = true;
+        }
         break;
       }
-      case KEYS.ENTER: {
+      case ACTIONS.ENTER: {
         if (!this.getSubMenuPopoverOfTarget(target) && !target.hasAttribute('soft-disabled')) {
           this.closeAllMenuPopovers();
           this.fireMenuItemAction(target);
@@ -481,7 +456,7 @@ class MenuPopover extends Popover {
         }
         break;
       }
-      case KEYS.SPACE: {
+      case ACTIONS.SPACE: {
         // Prevent page scroll when space is pressed down
         isKeyHandled = true;
         break;
@@ -516,10 +491,13 @@ class MenuPopover extends Popover {
 
     const target = event.target as HTMLElement;
 
-    switch (event.key) {
-      case KEYS.SPACE: {
+    switch (this.getActionForKeyEvent(event)) {
+      case ACTIONS.SPACE: {
         // If the target is a menu item, trigger its click event
-        if (!target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) && !target.hasAttribute('soft-disabled')) {
+        if (
+          !target.matches(`${MENUITEMRADIO_TAGNAME}, ${MENUITEMCHECKBOX_TAGNAME}`) &&
+          !target.hasAttribute('soft-disabled')
+        ) {
           // only close all menu popovers if the target is not opening a menu popover
           if (!this.getSubMenuPopoverOfTarget(target)) {
             this.closeAllMenuPopovers();

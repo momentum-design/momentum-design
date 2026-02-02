@@ -5,7 +5,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
@@ -35,6 +35,8 @@ import styles from './cardcheckbox.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot title - This slot is for passing the title of the card in the header section
+ * @slot subtitle - This slot is for passing the subtitle of the card in the header section
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
  *
@@ -62,7 +64,7 @@ import styles from './cardcheckbox.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
+class CardCheckbox extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
   /**
    * The checked state of the card
    * @default false
@@ -117,9 +119,13 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.ENTER) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER) {
       this.toggleChecked();
-    } else if (event.key === KEYS.SPACE) {
+      event.preventDefault();
+    }
+    if (action === ACTIONS.SPACE) {
       event.preventDefault();
     }
   }
@@ -129,7 +135,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       event.preventDefault();
       this.toggleChecked();
     }
@@ -168,10 +174,13 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * @returns The header of the card
    */
   override renderHeader() {
-    if (!this.cardTitle) {
-      return nothing;
-    }
     return html`<div part="header">${this.renderIcon()} ${this.renderTitle()} ${this.renderSelection()}</div>`;
+  }
+
+  override click(): void {
+    if (this.disabled) return;
+
+    super.click();
   }
 
   public override render() {

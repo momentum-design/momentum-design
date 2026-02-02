@@ -8,8 +8,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { Interval } from '../../utils/range';
 import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray';
-import { KEYS } from '../../utils/keys';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -82,7 +82,7 @@ import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.
  * @csspart container - The container of the virtualized list.
  * @csspart scroll - The scrollable area of the virtualized list.
  */
-class VirtualizedList extends DataAriaLabelMixin(List) {
+class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
   /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are three required object props in order to get virtualization to work properly.
@@ -654,21 +654,22 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   }
 
   protected override handleNavigationKeyDown(event: KeyboardEvent): void {
-    switch (event.key) {
-      case KEYS.HOME: {
+    const action = this.getActionForKeyEvent(event);
+    switch (action) {
+      case ACTIONS.HOME: {
         // Move focus to the first item
         this.virtualizer?.scrollToIndex?.(0, { align: 'start' });
         this.endOfScrollQueue.push(() => this.resetTabIndexes(0));
         break;
       }
-      case KEYS.END: {
+      case ACTIONS.END: {
         // Move focus to the last item
         const selectedItem = this.virtualizerProps.count - 1;
         this.virtualizer?.scrollToIndex?.(selectedItem, { align: 'end' });
         this.endOfScrollQueue.push(() => this.resetTabIndexes(selectedItem));
         break;
       }
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         this.atBottom = 're-evaluate';
         break;
       }

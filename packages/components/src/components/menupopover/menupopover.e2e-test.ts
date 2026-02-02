@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -286,7 +284,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         const waitForClick = await componentsPage.waitForEvent(submenuItem, 'click');
         const waitForAction = await componentsPage.waitForEvent(menupopover, 'action');
         await submenuItem.click();
-        await Promise.all([waitForClick(), waitForAction()]);
+        await expect(waitForClick).toEventEmitted();
+        await expect(waitForAction).toEventEmitted();
         await expect(menupopover).not.toBeVisible();
       });
 
@@ -299,7 +298,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Enter');
-        await Promise.all([waitForClick(), waitForAction()]);
+        await expect(waitForClick).toEventEmitted();
+        await expect(waitForAction).toEventEmitted();
         await expect(menupopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
       });
@@ -313,7 +313,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Space');
-        await Promise.all([waitForClick(), waitForAction()]);
+        await expect(waitForClick).toEventEmitted();
+        await expect(waitForAction).toEventEmitted();
         await expect(menupopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
       });
@@ -605,13 +606,13 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Space');
 
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'true');
-        await waitForChangeAfterSpace();
+        await expect(waitForChangeAfterSpace).toEventEmitted();
         // menu remain visible after checkbox toggle with space
         await expect(menupopover).toBeVisible();
         const waitForChangeAfterEnter = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Enter');
         await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'false');
-        await waitForChangeAfterEnter();
+        await expect(waitForChangeAfterEnter).toEventEmitted();
         // menu closes after checkbox toggle with Enter
         await expect(menupopover).not.toBeVisible();
       });
@@ -633,7 +634,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(radios.nth(1)).toBeFocused();
         const waitForChangeAfterSpace = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Space');
-        await waitForChangeAfterSpace();
+        await expect(waitForChangeAfterSpace).toEventEmitted();
         // menu remain visible after checkbox toggle with space
         await expect(menupopover).toBeVisible();
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
@@ -643,7 +644,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(radios.nth(2)).toBeFocused();
         const waitForChangeAfterEnter = await componentsPage.waitForEvent(menupopover, 'change');
         await componentsPage.page.keyboard.press('Enter');
-        await waitForChangeAfterEnter();
+        await expect(waitForChangeAfterEnter).toEventEmitted();
         await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'true');

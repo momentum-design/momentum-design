@@ -9,7 +9,7 @@ import type { AutoCapitalizeType } from '../input/input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
-import { KEYS } from '../../utils/keys';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
@@ -101,7 +101,9 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
-class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))) {
+class Textarea extends KeyToActionMixin(
+  AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+) {
   /**
    * The placeholder text that is displayed when the textarea field is empty.
    */
@@ -408,9 +410,11 @@ class Textarea extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMix
     const currentRows = this.rows || DEFAULTS.ROWS;
     let newRows: number | undefined;
 
-    if (event.key === KEYS.ARROW_UP) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.UP) {
       newRows = Math.max(1, currentRows - 1);
-    } else if (event.key === KEYS.ARROW_DOWN) {
+    } else if (action === ACTIONS.DOWN) {
       newRows = currentRows + 1;
     }
 

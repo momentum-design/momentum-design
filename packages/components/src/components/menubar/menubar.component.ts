@@ -8,9 +8,9 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
-import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
-import { popoverStack } from '../popover/popover.stack';
+import { DepthManager } from '../../utils/controllers/DepthManager';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import styles from './menubar.styles';
@@ -38,13 +38,17 @@ import styles from './menubar.styles';
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
  */
-class MenuBar extends Component {
+class MenuBar extends KeyToActionMixin(Component) {
+  /** track the depth of the popover for z-index calculation
+   * @internal
+   */
+  protected depthManager = new DepthManager(this);
+
   @queryAssignedElements({ selector: 'mdc-menusection', flatten: true })
   menusections!: Array<HTMLElement>;
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
   }
 
@@ -53,12 +57,19 @@ class MenuBar extends Component {
     this.role = ROLE.MENUBAR;
     this.ariaOrientation = DEFAULTS.ORIENTATION;
 
+    document.addEventListener('click', this.handleClick, { capture: true });
+
     await this.updateComplete;
 
     // to make sure menusection dividers have the correct divider variant
     this.menusections?.forEach(section => {
       section.setAttribute('divider-variant', 'gradient');
     });
+  }
+
+  override async disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this.handleClick, { capture: true });
   }
 
   /**
@@ -141,17 +152,20 @@ class MenuBar extends Component {
    * It finds all other menu items with submenus and closes their submenus.
    * @param target - The target menu item that was clicked.
    */
-  private handleClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target || !this.isTopLevelMenuItem(target)) return;
+  private handleClick = (event: MouseEvent): void => {
+    // Event is triggered from within the menubar
+    if (event.composed && event.composedPath().find(el => el === this)) {
+      const target = event.target as HTMLElement;
+      if (!target || !this.isTopLevelMenuItem(target)) return;
 
-    const otherMenuItemsOnTop = this.menuItems.filter(item => item !== target);
-    const otherOpenSubMenus = this.getVisibleSubMenusOfItems(otherMenuItemsOnTop);
+      const otherMenuItemsOnTop = this.menuItems.filter(item => item !== target);
+      const otherOpenSubMenus = this.getVisibleSubMenusOfItems(otherMenuItemsOnTop);
 
-    otherOpenSubMenus.forEach(subMenu => {
-      subMenu.hide();
-    });
-  }
+      otherOpenSubMenus.forEach(subMenu => {
+        subMenu.hide();
+      });
+    }
+  };
 
   /**
    * Resets all list items tabindex to -1 and sets the tabindex of the
@@ -222,14 +236,6 @@ class MenuBar extends Component {
     }
   }
 
-  private getKeyWithDirectionFix(originalKey: string): string {
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-    if (!isRtl) return originalKey;
-    if (originalKey === KEYS.ARROW_LEFT) return KEYS.ARROW_RIGHT;
-    if (originalKey === KEYS.ARROW_RIGHT) return KEYS.ARROW_LEFT;
-    return originalKey;
-  }
-
   /**
    * Determines if a menuitem is a top-level menuitem (direct child of menubar or child of menusection whose parent is menubar)
    */
@@ -256,15 +262,8 @@ class MenuBar extends Component {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = [];
+    const popovers = this.depthManager.popUntil(item => this.contains(item));
 
-    while (popoverStack.peek()) {
-      const popover = popoverStack.pop();
-      if (popover) {
-        popover.hide();
-        popovers.push(popover);
-      }
-    }
     await Promise.all(popovers.map(popover => popover.updateComplete));
   }
 
@@ -317,36 +316,36 @@ class MenuBar extends Component {
 
   private async handleKeyDown(event: KeyboardEvent): Promise<void> {
     const currentIndex = this.getCurrentIndex(event.target);
-    const key = this.getKeyWithDirectionFix(event.key);
+    const action = this.getActionForKeyEvent(event, true);
 
-    switch (key) {
-      case KEYS.HOME:
+    switch (action) {
+      case ACTIONS.HOME:
         this.updateTabIndexAndFocus(this.menuItems, currentIndex, 0);
         break;
 
-      case KEYS.END:
+      case ACTIONS.END:
         this.updateTabIndexAndFocus(this.menuItems, currentIndex, this.menuItems.length - 1);
         break;
 
-      case KEYS.ARROW_LEFT: {
+      case ACTIONS.LEFT: {
         const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnLeft(element);
         break;
       }
 
-      case KEYS.ARROW_RIGHT: {
+      case ACTIONS.RIGHT: {
         const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnRight(element);
         break;
       }
 
-      case KEYS.ARROW_UP: {
+      case ACTIONS.UP: {
         this.navigateToMenuItem(currentIndex, 'prev');
         event.preventDefault();
         break;
       }
 
-      case KEYS.ARROW_DOWN: {
+      case ACTIONS.DOWN: {
         this.navigateToMenuItem(currentIndex, 'next');
         event.preventDefault();
         break;

@@ -5,9 +5,9 @@ import { Component } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
 import providerUtils from '../../utils/provider';
 import Stepper from '../stepper/stepper.component';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -47,7 +47,7 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @cssproperty --mdc-stepperitem-help-text-color - The color of the optional label text.
  * @cssproperty --mdc-stepperitem-label-container-background - The background color of the label container.
  */
-class StepperItem extends TabIndexMixin(Component) {
+class StepperItem extends KeyToActionMixin(TabIndexMixin(Component)) {
   /**
    * The variant of the stepper item, which can be `inline` or `stacked`.
    * @default 'inline'
@@ -119,9 +119,10 @@ class StepperItem extends TabIndexMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.add('pressed');
-      if (event.key === KEYS.ENTER) {
+      if (action === ACTIONS.ENTER) {
         this.triggerClickEvent();
       }
       // Prevent default event behavior to avoid scrolling or double-triggering
@@ -149,9 +150,11 @@ class StepperItem extends TabIndexMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.remove('pressed');
-      if (event.key === KEYS.SPACE) {
+      if (action === ACTIONS.SPACE) {
         this.triggerClickEvent();
       }
     }

@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { test } from '../../../config/playwright/setup';
+import { test, expect } from '../../../config/playwright/setup';
 
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
@@ -23,8 +21,8 @@ test('mdc-animation', async ({ componentsPage }) => {
     await test.step('matches screenshot of element', async () => {
       const animation = componentsPage.page.locator('mdc-animation');
 
-      const animationComplete = await componentsPage.waitForEvent(animation, 'complete');
-      await animationComplete();
+      const waitForAnimationComplete = await componentsPage.waitForEvent(animation, 'complete', { timeout: 5000 });
+      await expect(waitForAnimationComplete).toEventEmitted();
 
       await componentsPage.visualRegression.takeScreenshot('mdc-animation', { element: animation });
     });

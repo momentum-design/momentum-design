@@ -8,8 +8,8 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
 import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -81,7 +81,7 @@ import styles from './input.styles';
  */
 
 class Input
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
@@ -283,7 +283,7 @@ class Input
    * @param event - Keyboard event
    */
   protected handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.ENTER) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) {
       this.form?.requestSubmit();
     }
   }

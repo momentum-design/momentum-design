@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './cardradio.styles';
 
@@ -35,6 +35,8 @@ import styles from './cardradio.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot title - This slot is for passing the title of the card in the header section
+ * @slot subtitle - This slot is for passing the subtitle of the card in the header section
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of `mdc-button` component within the footer section.
  *
@@ -62,7 +64,7 @@ import styles from './cardradio.styles';
  *
  * @cssproperty --mdc-card-width - The width of the card
  */
-class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
+class CardRadio extends KeyToActionMixin(DisabledMixin(TabIndexMixin(Card))) {
   /**
    * The checked state of the card
    * @default false
@@ -117,6 +119,13 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
+  override click(): void {
+    if (this.disabled) return;
+
+    super.click();
+    this.toggleChecked();
+  }
+
   setDisabled(disabled: boolean): void {
     this.setAttribute('aria-disabled', `${disabled}`);
     this.tabIndex = disabled ? -1 : 0;
@@ -142,7 +151,8 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+    if (action === ACTIONS.SPACE) {
       event.preventDefault();
       return;
     }
@@ -153,16 +163,16 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
     const enabledCards = cards.filter(card => !card.disabled);
     const currentIndex = enabledCards.indexOf(this);
 
-    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+    if (action === ACTIONS.DOWN || ACTIONS.RIGHT === action) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledCards.length;
       this.updateCardRadio(enabledCards, nextIndex);
-    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+    } else if (action === ACTIONS.UP || ACTIONS.LEFT === action) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
       this.updateCardRadio(enabledCards, prevIndex);
     }
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.toggleChecked();
     }
   }
@@ -172,7 +182,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @param event - The keyboard event
    */
   private toggleOnSpace(event: KeyboardEvent) {
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       this.toggleChecked();
     }
   }
@@ -182,9 +192,6 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @returns The header of the card
    */
   override renderHeader() {
-    if (!this.cardTitle) {
-      return nothing;
-    }
     return html`<div part="header">
       ${this.renderIcon()} ${this.renderTitle()}
       <mdc-staticradio part="check" ?checked="${this.checked}" ?disabled="${this.disabled}"></mdc-staticradio>
