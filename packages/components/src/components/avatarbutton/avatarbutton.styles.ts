@@ -10,11 +10,11 @@ const styles = [
       --mdc-avatarbutton-overlay-background-color-hover: var(--mds-color-theme-avatar-hover);
       --mdc-avatarbutton-overlay-background-color-active: var(--mds-color-theme-avatar-pressed);
 
-      --mdc-avatarbutton-default-background-color: var(--mdc-avatar-default-background-color);
-      --mdc-avatarbutton-default-foreground-color: var(--mdc-avatar-default-foreground-color);
-      --mdc-avatarbutton-loading-indicator-background-color: var(--mdc-avatar-loading-indicator-background-color);
-      --mdc-avatarbutton-loading-indicator-foreground-color: var(--mdc-avatar-loading-indicator-foreground-color);
-      --mdc-avatarbutton-loading-overlay-background-color: var(--mdc-avatar-loading-overlay-background-color);
+      --mdc-avatarbutton-default-background-color: var(--mds-color-theme-avatar-default);
+      --mdc-avatarbutton-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
+      --mdc-avatarbutton-loading-indicator-background-color: var(--mds-color-theme-common-text-primary-disabled);
+      --mdc-avatarbutton-loading-indicator-foreground-color: var(--mdc-avatar-default-foreground-color);
+      --mdc-avatarbutton-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
       padding: unset;
       margin: unset;
       outline: none;
