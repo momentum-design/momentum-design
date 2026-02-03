@@ -1,5 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
@@ -32,7 +33,12 @@ class OverflowObserverE2EUtil extends Component {
   }
 
   private getStyles() {
-    return `${this.overflowing ? `width: 50px;` : ''}white-space: nowrap;overflow: hidden;text-overflow: ellipsis;`;
+    return styleMap({
+      width: this.overflowing ? '50px' : 'auto',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    });
   }
 
   protected override render(): TemplateResult {

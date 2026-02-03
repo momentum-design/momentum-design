@@ -146,6 +146,9 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
 
       await setTextOverflowing(e2eUtil, false);
       await expect(textElement).toBeFocused();
+      await expect(textElement).toHaveAttribute('tabindex');
+      await expect(textElement).toHaveAttribute('data-overflowing');
+
       await setTextOverflowing(e2eUtil, true);
       await expect(textElement).toBeFocused();
 
