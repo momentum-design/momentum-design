@@ -372,9 +372,9 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         });
         const result = this.focusNextInFocusableAria(focusables, direction);
         // If there is a focusable element found, or reached the active trap or the root, stop searching
-        if (result || el === activeTrap || el === this.root) {
-          this.emitNavBeforeFocusEvent(result, direction);
-          return true;
+        if (el === activeTrap || el === this.root) {
+          if (result) this.emitNavBeforeFocusEvent(result, direction);
+          return !!result;
         }
         checkedFocusArea = el;
       }
@@ -390,7 +390,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when focus changed, false otherwise
    * @internal
    */
-  private emitNavBeforeFocusEvent(focusCandidate: HTMLElement | undefined, direction: Direction): boolean {
+  private emitNavBeforeFocusEvent(focusCandidate: HTMLElement, direction: Direction): boolean {
     if (focusCandidate) {
       const focusEvent = new SpatialNavigationEvent('navbeforefocus', focusCandidate, direction);
       this.getActiveElement()?.dispatchEvent(focusEvent);
