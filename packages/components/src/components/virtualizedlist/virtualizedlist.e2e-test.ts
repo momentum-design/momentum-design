@@ -246,6 +246,10 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
       await expect(listItemLocator(vlist, i)).toBeFocused();
       await expect(listItemLocator(vlist, i)).toBeInViewport();
     }
+
+    await expect(listItemLocator(vlist, 5)).toBeFocused();
+    await keyboard.press(KEYS.ARROW_RIGHT);
+    await expect(listItemLocator(vlist, 5).locator('mdc-button')).toBeFocused();
   });
 
   await test.step('focus', async () => {

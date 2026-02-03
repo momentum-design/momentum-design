@@ -710,8 +710,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         const menuItemCheckbox = menuPopover.locator('mdc-menuitemcheckbox[label="Enable feature"]');
         const menuItemRadio = menuPopover.locator('mdc-menuitemradio[label="Light"]');
 
-        await componentsPage.page.pause();
-
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(triggerElement).toBeFocused();
 

@@ -373,7 +373,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const result = this.focusNextInFocusableAria(focusables, direction);
         // If there is a focusable element found, or reached the active trap or the root, stop searching
         if (result || el === activeTrap || el === this.root) {
-          return this.emitNavBeforeFocusEvent(result, direction);
+          this.emitNavBeforeFocusEvent(result, direction);
+          return true;
         }
         checkedFocusArea = el;
       }
@@ -563,12 +564,27 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   /**
    * Mutation Observer callback
+   *
+   * When the active element is removed from the DOM, try to find a new active element.
+   *
    * @internal
    */
   private activeElementObserverCallback: MutationCallback = (): void => {
     const currentActiveElement = this.getActiveElement();
+
     if (!currentActiveElement || !currentActiveElement.isConnected) {
-      this.initActiveElement(currentActiveElement);
+      // Do a soft check if the active element is inside the spatial navigation root
+      // We want to track active element even when navigation (and dom) is managed by other components
+      // e.g.: list, virtualized list, etc.
+      if (this.root.contains(document.activeElement)) {
+        const activeDomElement = getDomActiveElement() as HTMLElement | null;
+        if (activeDomElement) {
+          this.setActiveElement(activeDomElement);
+        }
+      } else {
+        // Fallback, try to find a new active element
+        this.initActiveElement(currentActiveElement);
+      }
     }
   };
 
