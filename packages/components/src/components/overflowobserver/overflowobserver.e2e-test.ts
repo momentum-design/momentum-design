@@ -118,7 +118,9 @@ test('mdc-overflowobserver', async ({ componentsPage }) => {
     await expect(textElement).not.toHaveAttribute('data-overflowing');
   });
 
-  await test.step('focus', async () => {
+  await test.step('focus', async step => {
+    step.skip(componentsPage.page.context().browser()?.browserType().name() === 'webkit', 'Flaky on WebKit');
+
     const { e2eUtil, textElement } = await mountComponent({ overflowing: true });
     await startObserving(e2eUtil);
 
