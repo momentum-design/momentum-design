@@ -17,7 +17,7 @@ import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
-import { withSpatialNavigationProvider } from './provider/spatialNavigationProvider';
+import { withSpatialNavigationProviderDecorator } from './provider/spatialNavigationProviderDecorator';
 
 const cssProperties = [];
 
@@ -154,9 +154,9 @@ const preview = {
     direction: 'ltr',
   },
   decorators: [
+    withSpatialNavigationProviderDecorator,
     storyDescription,
     withCssPropertyProvider(cssProperties),
-    withSpatialNavigationProvider,
     withThemeProvider,
     withIconProvider,
     withIllustrationProvider,
@@ -176,7 +176,7 @@ const preview = {
       },
     },
     spatialNavigation: {
-      description: 'Enable or disable spatial navigation',
+      description: 'Enable or disable spatial navigation. More details in the "Spatial Navigation Provider" docs',
       defaultValue: 'disabled',
       toolbar: {
         title: 'Spatial Navigation',

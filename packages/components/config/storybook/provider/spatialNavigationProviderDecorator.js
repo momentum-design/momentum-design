@@ -21,7 +21,11 @@ const MAPPING_AWSD = {
   escape: 'q',
 };
 
-export const withSpatialNavigationProvider = (story, context) => {
+export const withSpatialNavigationProviderDecorator = (story, context) => {
+  if (context.viewMode === 'docs') {
+    return undefined;
+  }
+
   /** @type string */
   const state = context.globals.spatialNavigation;
   const spatialNavEnabled = state !== 'disabled';
