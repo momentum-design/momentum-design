@@ -768,6 +768,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(link).toBeFocused();
       await keyboard.press(KEYS.ARROW_UP);
       await expect(closeButton).toBeFocused();
+
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(dialog).not.toBeVisible();
     });
   });
 

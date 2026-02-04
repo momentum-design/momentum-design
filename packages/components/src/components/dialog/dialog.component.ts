@@ -13,6 +13,8 @@ import providerUtils from '../../utils/provider';
 import ResponsiveSettingsContext from '../responsivesettingsprovider/responsiveSettingsContext';
 import ResponsiveSettingsProvider from '../responsivesettingsprovider';
 import { DepthManager, StackChange, type StackedOverlayComponent } from '../../utils/controllers/DepthManager';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
@@ -92,7 +94,9 @@ import styles from './dialog.styles';
  * using the footer-link and footer-button slots is preferred
  */
 class Dialog
-  extends BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))))
+  extends KeyDownHandledMixin(
+    KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(FooterMixin(Component))))),
+  )
   implements StackedOverlayComponent
 {
   /** @internal */
@@ -443,7 +447,7 @@ class Dialog
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
-    if (!this.visible || event.code !== 'Escape' || !this.depthManager.isHostOnTop()) {
+    if (!this.visible || this.getActionForKeyEvent(event) !== ACTIONS.ESCAPE || !this.depthManager.isHostOnTop()) {
       return;
     }
 
@@ -451,7 +455,7 @@ class Dialog
     // Prevent the event from propagating to the document level
     // pressing escape on a dialog should only close the dialog, nothing else
     event.stopPropagation();
-
+    this.keyDownEventHandled();
     this.closeDialog();
   };
 

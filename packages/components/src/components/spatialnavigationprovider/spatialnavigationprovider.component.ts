@@ -523,10 +523,10 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       return;
     }
     const action = this.context.value!.keyToActionMap[evt.key];
-    const event = new SpatialNavigationEvent('navbeforeprocess', this, action);
-    getDomActiveElement()?.dispatchEvent(event);
+    const navBeforeProcessEvent = new SpatialNavigationEvent('navbeforeprocess', this, action);
+    evt.target?.dispatchEvent(navBeforeProcessEvent);
 
-    if (event.defaultPrevented) {
+    if (navBeforeProcessEvent.defaultPrevented) {
       return;
     }
 
