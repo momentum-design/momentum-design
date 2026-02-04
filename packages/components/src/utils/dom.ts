@@ -272,9 +272,12 @@ export const findFocusable = (
 
 /**
  * Get the active element from the DOM, including shadow DOMs
+ *
+ * @param root - The root document or element to start the search from. Defaults to the global document.
+ * @returns The active element, or null if there is none.
  */
-export const getDomActiveElement = (root: Document = document): Element | null => {
-  let { activeElement } = root;
+export const getDomActiveElement = (root: Document | Element = document): Element | null => {
+  let activeElement: Element | null = root instanceof Document ? root.activeElement : root;
 
   while (activeElement?.shadowRoot?.activeElement) activeElement = activeElement.shadowRoot.activeElement;
 
@@ -294,6 +297,7 @@ export const hasOverflowMixin = <T extends HTMLElement>(element: T): element is 
  * Recursively gets the host element if the provided element is inside a shadow DOM.
  *
  * @param element - The element to check
+ * @returns The host element if inside shadow DOM, otherwise the original element
  */
 export const getElementOrHost = (element: Element): Element => {
   const rootNode = element.getRootNode();
