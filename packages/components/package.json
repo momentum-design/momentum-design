@@ -156,5 +156,8 @@
     "stylelint": "^16.23.0",
     "typescript": "^5.9.2",
     "vite-plugin-dynamic-import": "^1.6.0"
-  }
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }
