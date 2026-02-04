@@ -372,7 +372,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         });
         const result = this.focusNextInFocusableAria(focusables, direction);
         // If there is a focusable element found, or reached the active trap or the root, stop searching
-        if (el === activeTrap || el === this.root) {
+        if (result || el === activeTrap || el === this.root) {
           if (result) this.emitNavBeforeFocusEvent(result, direction);
           return !!result;
         }
