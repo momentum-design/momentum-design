@@ -80,13 +80,6 @@ class Checkbox
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /**
-   * Automatically focuses the checkbox when the page loads.
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) override autofocus = false;
-
-  /**
    * Determines the visual style of the helper text.
    * - **default**: Standard helper text appearance
    * - **error**: Error state with validation styling
@@ -254,6 +247,8 @@ class Checkbox
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Checkbox;

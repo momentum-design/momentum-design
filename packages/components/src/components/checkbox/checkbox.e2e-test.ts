@@ -272,6 +272,23 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(checkbox).toBeFocused();
     });
 
+    await test.step('focus using JavaScript focus() method', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
+
+      // Use JavaScript to focus the element
+      await checkbox.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal checkbox input is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await checkbox.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const input = shadowRoot.querySelector('input[type="checkbox"]');
+        return document.activeElement === el && input === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
+    });
+
     await test.step('checkbox should be checked when space key is pressed with keyboard', async () => {
       const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
 

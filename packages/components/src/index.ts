@@ -130,6 +130,7 @@ import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
 import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
+import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
 
 // Components Exports
 export {
@@ -256,6 +257,7 @@ export type {
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
   ToggleOnChangeEvent,
+  CheckboxOnChangeEvent,
   LinkButtonSize,
 };
 
