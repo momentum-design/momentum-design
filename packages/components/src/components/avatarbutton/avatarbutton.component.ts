@@ -35,6 +35,11 @@ import styles from './avatarbutton.styles';
  * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state.
  * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state.
  * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state.
+ * @cssproperty --mdc-avatarbutton-default-background-color - Default background color of the avatar.
+ * @cssproperty --mdc-avatarbutton-default-foreground-color - Default foreground color of the avatar.
+ * @cssproperty --mdc-avatarbutton-loading-indicator-background-color - Background color of the loading indicator.
+ * @cssproperty --mdc-avatarbutton-loading-indicator-foreground-color - Foreground color of the loading indicator.
+ * @cssproperty --mdc-avatarbutton-loading-overlay-background-color - Background color of the loading overlay.
  *
  * @csspart overlay - The overlay part of the avatar button.
  * @csspart content - The main content of the avatar.

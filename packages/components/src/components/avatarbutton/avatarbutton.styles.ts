@@ -9,6 +9,12 @@ const styles = [
       --mdc-avatarbutton-overlay-background-color-rest: var(--mds-color-theme-avatar-ghost);
       --mdc-avatarbutton-overlay-background-color-hover: var(--mds-color-theme-avatar-hover);
       --mdc-avatarbutton-overlay-background-color-active: var(--mds-color-theme-avatar-pressed);
+
+      --mdc-avatarbutton-default-background-color: var(--mds-color-theme-avatar-default);
+      --mdc-avatarbutton-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
+      --mdc-avatarbutton-loading-indicator-background-color: var(--mds-color-theme-common-text-primary-disabled);
+      --mdc-avatarbutton-loading-indicator-foreground-color: var(--mds-color-theme-common-text-primary-normal);
+      --mdc-avatarbutton-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
       padding: unset;
       margin: unset;
       outline: none;
@@ -30,8 +36,12 @@ const styles = [
     :host(:not([is-typing]):active)::part(overlay) {
       background-color: var(--mdc-avatarbutton-overlay-background-color-active);
     }
-    :host::part(presence) {
-      z-index: 2;
+    mdc-avatar {
+      --mdc-avatar-default-background-color: var(--mdc-avatarbutton-default-background-color);
+      --mdc-avatar-default-foreground-color: var(--mdc-avatarbutton-default-foreground-color);
+      --mdc-avatar-loading-indicator-background-color: var(--mdc-avatarbutton-loading-indicator-background-color);
+      --mdc-avatar-loading-indicator-foreground-color: var(--mdc-avatarbutton-loading-indicator-foreground-color);
+      --mdc-avatar-loading-overlay-background-color: var(--mdc-avatarbutton-loading-overlay-background-color);
     }
   `,
   ...hostFocusRingStyles(),
