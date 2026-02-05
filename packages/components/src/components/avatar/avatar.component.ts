@@ -39,6 +39,10 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
  * - Shows loading indicator overlay when `is-typing` is true (displays on top of existing content)
  * - Presence indicator hidden when counter is set or when typing
  *
+ * ## Accessibility
+ * - By default, the component is hidden from assistive technologies (`aria-hidden="true"`).
+ * - Consumers can override this attribute `aria-hidden="false"` if needed.
+ *
  * @dependency mdc-icon
  * @dependency mdc-presence
  * @dependency mdc-text
@@ -67,7 +71,11 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('aria-hidden', 'true');
+
+    // If consumer did NOT specify aria-hidden, set default to true.
+    if (!this.hasAttribute('aria-hidden')) {
+      this.setAttribute('aria-hidden', 'true');
+    }
   }
 
   /**
