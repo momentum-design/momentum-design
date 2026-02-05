@@ -732,7 +732,8 @@ class Select
   }
 
   private handleKeydownPopover(event: KeyboardEvent): void {
-    if (event.key.length === 1) {
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+    if (isDefaultNavigation && event.key.length === 1) {
       this.handleSelectedOptionByKeyInput(event.key);
     }
   }
