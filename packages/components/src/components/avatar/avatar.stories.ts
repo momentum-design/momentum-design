@@ -125,6 +125,12 @@ export const AllPresenceTypes: StoryObj = {
     </div>
   `,
   ...hideAllControls(),
+  ...describeStory(
+    html`<p>
+      This story demonstrates how presence statuses are displayed when integrated into the avatar component, as opposed
+      to the standalone presence component story.
+    </p>`,
+  ),
 };
 
 export const AllSizes: StoryObj = {

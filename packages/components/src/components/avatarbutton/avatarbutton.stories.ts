@@ -11,9 +11,6 @@ import { hideControls } from '../../../config/storybook/utils';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
-import '../avatar';
-import '../icon';
-
 const render = (args: Args) => html`
   <mdc-avatarbutton
     @click="${action('onclick')}"

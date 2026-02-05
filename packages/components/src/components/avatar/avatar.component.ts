@@ -39,6 +39,9 @@ import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './ava
  * - Shows loading indicator overlay when `is-typing` is true (displays on top of existing content)
  * - Presence indicator hidden when counter is set or when typing
  *
+ * ## Accessibility
+ * - Default `aria-hidden` to `true` unless explicitly set by consumer
+ *
  * @dependency mdc-icon
  * @dependency mdc-presence
  * @dependency mdc-text
