@@ -639,7 +639,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when click triggered, false otherwise
    */
   public pressEnter() {
-    const activeElement = getDomActiveElement(this.root);
+    const activeElement = getDomActiveElement();
     if (activeElement instanceof HTMLElement) {
       activeElement.click();
       return true;
