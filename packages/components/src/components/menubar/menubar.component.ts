@@ -10,7 +10,7 @@ import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.cons
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
 import MenuPopover from '../menupopover';
 import { DepthManager } from '../../utils/controllers/DepthManager';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
@@ -229,8 +229,19 @@ class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     if (length === 0) return;
 
     let newIndex = currentIndex;
+    const loopBack = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
 
-    newIndex = direction === 'prev' ? (currentIndex - 1 + length) % length : (currentIndex + 1) % length;
+    if (loopBack) {
+      newIndex = direction === 'prev' ? (currentIndex - 1 + length) % length : (currentIndex + 1) % length;
+    } else {
+      newIndex = direction === 'prev' ? Math.max(0, currentIndex - 1) : Math.min(currentIndex + 1, length - 1);
+    }
+
+    if (newIndex === currentIndex) {
+      return;
+    }
+    this.keyDownEventHandled();
+
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');

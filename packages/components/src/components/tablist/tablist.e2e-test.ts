@@ -209,6 +209,10 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await keyboard.press(KEYS.ARROW_DOWN);
       await expect(tabs.nth(0)).toBeFocused();
 
+      // No loop back at the beginning of the list
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(tabs.nth(0)).toBeFocused();
+
       await keyboard.press(KEYS.ARROW_RIGHT);
       await expect(tabs.nth(1)).toBeFocused();
 
@@ -225,6 +229,15 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await keyboard.press(KEYS.ENTER);
       await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
       await expect(tabs.nth(2)).toHaveAttribute('active');
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(3)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(4)).toBeFocused();
+
+      // No loop back at the end of the list
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(4)).toBeFocused();
     });
   });
 

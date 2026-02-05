@@ -294,6 +294,8 @@ test('mdc-searchfield', async ({ componentsPage }) => {
         componentsPage,
         id: 'test-mdc-input',
         placeholder: 'Placeholder',
+        clearAriaLabel: 'clear',
+        value: 'Hello',
       });
       await componentsPage.wrapElement({ wrapperTagName: 'form' });
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
@@ -307,6 +309,10 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       const waitForInput = await componentsPage.waitForEvent(form, 'submit');
       await keyboard.press(KEYS.ENTER);
       await expect(waitForInput).not.toEventEmitted();
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await expect(clearBtn).toBeFocused();
     });
   });
 });

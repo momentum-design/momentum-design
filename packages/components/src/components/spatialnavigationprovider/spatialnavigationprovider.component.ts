@@ -1,8 +1,7 @@
 import { property } from 'lit/decorators.js';
 
 import { Provider } from '../../models';
-import { capitalize } from '../../utils/string';
-import { findFocusable, getDomActiveElement, getElementOrHost, isScrollable } from '../../utils/dom';
+import { findFocusable, getDomActiveElement, getHostComposePath, isScrollable } from '../../utils/dom';
 import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
@@ -114,7 +113,6 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *    c. For back/escape key: `navback` on the provider, then click() on the goBack element or history.back()
  * 3. When no focusable element found in the given direction: `navnotarget` on the provider
  *
- *
  * ## Handle complex components
  *
  * ### Generic components
@@ -144,32 +142,50 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Components should call `keyDownEventHandled` whenwever they handle keydown event internally.
  *
+ * ## Platform specific behaviors
+ *
+ * In general UX should consider how user interact with UI with spatial navigation.
+ * Because the limited amount of buttons in the remote control or gamepad, there are many case when the focusing is not enough
+ * and the user has to press enter to edit the value of the component:
+ * - select where the user press enter to access to select options instead of using arrow keys to open the select's popover
+ * - text inputs, see the next section for more details.
+ * - slider, user has to press enter to start interacting with the slider and then use arrow keys to change the value,
+ *   and press enter/escape again to stop interacting with the slider.
+ *
+ * ### Text inputs
+ *
+ * Usually TV and similar platforms, does not have a physical keyboard, so when user focus on a text input and press enter,
+ * it should open a virtual keyboard to let user input the text instead of submitting the form.
+ *
+ * The User has to close (escape action) the virtual keyboard to continue navigating through the UI.
+ *
+ * This also mean the if the navigation keys mapped to letters (e.g.: w/a/s/d) instead of arrows, it should work as expected and
+ * it should not change the input value. The user can modify the input value only from the virtual keyboard.
+ *
+ * Note: Our stories does not emulate the above behavior, so using letter keys for navigation can lead to unexpected behavior
+ *  in the stories when focusing on text inputs.
+ *
  * ## Debugging
  *
  * ### Storybook toolbar
  *
  * Use the "Spatial navigation" option in the Storybook toolbar to enable/disable spatial navigation.
- * It has 2x2 mods:
- * - With 2 key mappings:
- *   1. Arrow keys + Enter + Escape
- *      - Up - Up arrow key
- *      - Left - Left arrow key
- *      - Down - Down arrow key
- *      - Right - Right arrow key
- *      - Enter - Enter key
- *      - Escape - Escape key
- *   2. Navigation keys: WASD
- *      - Up - W key
- *      - Left - A key
- *      - Down - S key
- *      - Right - D key
- *      - Enter - E key
- *      - Escape - Q key
- * - With OR without additional buttons around the component
+ * Key mapping:
+ * - Up - Up arrow key
+ * - Left - Left arrow key
+ * - Down - Down arrow key
+ * - Right - Right arrow key
+ * - Enter - Enter key
+ * - Escape - Escape key
+ *
+ * You can choose between with wrapper and without wrapper options.
+ * - With wrapper will put the selected component in a middle of 3x3 grid and add buttons around it to test the navigation.
+ * - Without wrapper will not add any extra elements around the component and let you test the component standalone.
  *
  * ### Visual debugger
  *
- * When "spatial navigation" is enabled in Storybook toolbar, press "Shift + Arrow key" to visualize the spatial navigation calculations.
+ * When "spatial navigation" is enabled in Storybook toolbar, press "Shift + left/right/up/down Nav key" to visualize
+ * the spatial navigation calculations.
  *
  * - Star: next active element
  * - #{number}: candidate elements ordered by distance
@@ -217,10 +233,18 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
 class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> {
   /**
    * Key mapping for spatial navigation actions
-   * It is possible to map left/right/up/down/enter/back actions to any valid key
+   * It is possible to map left/right/up/down/enter/escape actions to any valid key
    * @see [KeyboardEvent: key property](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
    *
-   * Note: some devices might have different key names for the same physical key, for example "GoBack" key on some remotes.
+   * Some devices might have different key names for the same physical key, for example "GoBack" key on some remotes.
+   *
+   * By default, the following key mapping is used:
+   * - up: "ArrowUp"
+   * - down: "ArrowDown"
+   * - left: "ArrowLeft"
+   * - right: "ArrowRight"
+   * - enter: "Enter"
+   * - escape: "Escape"
    */
   @property({ attribute: false })
   public navigationKeyMapping: SpatialNavigationActionToKeyMap = DEFAULTS.SPATIAL_NAVIGATION_KEY_MAPPING;
@@ -358,6 +382,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   private focusNext(event: Event, direction: Direction): boolean {
     const activeTrap = FocusTrapStack.getActiveTrap();
     let checkedFocusArea: HTMLElement | null = null;
+    const focusableElements = [];
 
     let path = event.composedPath() as HTMLElement[];
     // In case the event triggered outside this provider (e.g.: body, etc.)
@@ -366,11 +391,13 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     for (const el of path) {
       if (el === activeTrap || el === this.root || isScrollable(el)) {
         // Find focusable elements within the current focus area (excluding the already checked focus areas)
-        const focusables = findFocusable(el, {
-          excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
-          includeSelectors: ['[data-spatial-focusable]'],
-        });
-        const result = this.focusNextInFocusableAria(focusables, direction);
+        focusableElements.push(
+          ...findFocusable(el, {
+            excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
+            includeSelectors: ['[data-spatial-focusable]'],
+          }),
+        );
+        const result = this.focusNextInFocusableAria(focusableElements, direction);
         // If there is a focusable element found, or reached the active trap or the root, stop searching
         if (result || el === activeTrap || el === this.root) {
           if (result) this.emitNavBeforeFocusEvent(result, direction);
@@ -442,13 +469,20 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
 
     // Check if the current active element has instruction to find the next focusable
-    const nextElementId = (getElementOrHost(currentActiveElement) as HTMLElement).dataset[
-      `spatial${capitalize(direction)}`
-    ];
-    if (nextElementId) {
-      const nextElement = document.getElementById(nextElementId);
-      if (nextElement) {
-        return nextElement;
+    // We look for the element in all the shadow DOMs in the composed path of the active element,
+    // so mdc component can use this feature as well.
+    const dataAttrName = `data-spatial-${direction}`;
+    if (currentDomActiveElement) {
+      const elementWithDataset = getHostComposePath(currentDomActiveElement).find(node =>
+        node.hasAttribute(dataAttrName),
+      );
+      const nextElementId = elementWithDataset?.getAttribute(dataAttrName);
+
+      if (elementWithDataset && nextElementId) {
+        const nextElement = (elementWithDataset.getRootNode() as Document | ShadowRoot)?.getElementById(nextElementId);
+        if (nextElement) {
+          return nextElement;
+        }
       }
     }
 
@@ -605,8 +639,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @returns true when click triggered, false otherwise
    */
   public pressEnter() {
-    const activeElement = this.getActiveElement();
-    if (activeElement?.click) {
+    const activeElement = getDomActiveElement(this.root);
+    if (activeElement instanceof HTMLElement) {
       activeElement.click();
       return true;
     }

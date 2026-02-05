@@ -8,7 +8,7 @@ import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import { ROLE } from '../../utils/roles';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './tablist.styles';
 import { ARROW_BUTTON_DIRECTION } from './tablist.constants';
@@ -373,9 +373,10 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     }
 
     const action = this.getActionForKeyEvent(event, true);
+    const loopBack = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
 
-    const previousTab = getPreviousTab(this.tabs, tab);
-    const nextTab = getNextTab(this.tabs, tab);
+    const previousTab = getPreviousTab(this.tabs, tab, loopBack);
+    const nextTab = getNextTab(this.tabs, tab, loopBack);
     const firstTab = getFirstTab(this.tabs);
     const lastTab = getLastTab(this.tabs);
 
@@ -384,12 +385,12 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     switch (action) {
       case ACTIONS.LEFT:
         event.preventDefault();
-        isKeyHandled = await this.focusTab(previousTab);
+        isKeyHandled = previousTab !== tab && (await this.focusTab(previousTab));
         break;
 
       case ACTIONS.RIGHT:
         event.preventDefault();
-        isKeyHandled = await this.focusTab(nextTab);
+        isKeyHandled = nextTab !== tab && (await this.focusTab(nextTab));
         break;
 
       case ACTIONS.HOME:

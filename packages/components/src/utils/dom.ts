@@ -306,3 +306,28 @@ export const getElementOrHost = (element: Element): Element => {
   }
   return element;
 };
+
+/**
+ * Recursively gets all root elements for the provided element, including shadow DOM hosts.
+ * First item is the element itself, followed by its shadow host, then the host's shadow host, and so on.
+ * The last item is the top-level document.
+ *
+ * @param element - The element to check
+ * @returns An array of elements starting with the original element and followed by its shadow hosts up the tree
+ */
+export const getHostComposePath = (element: Element): Array<Element> => {
+  const roots: Array<Element> = [element];
+  let currentElement: Element | null = element;
+
+  while (currentElement) {
+    const rootNode: Node = currentElement.getRootNode();
+    if (rootNode instanceof ShadowRoot) {
+      currentElement = rootNode.host;
+      roots.push(currentElement);
+    } else {
+      break;
+    }
+  }
+
+  return roots;
+};

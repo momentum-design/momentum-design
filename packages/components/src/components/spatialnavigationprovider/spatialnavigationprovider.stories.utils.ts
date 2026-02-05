@@ -25,8 +25,14 @@ import { getElementRectWithMidPoint, orderElementsByDistance } from './spatialna
  * - # - order number #1 will be the next focused element
  * - d - distance
  */
-export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeights): void => {
+export const visualDebugger = (
+  root: HTMLElement,
+  keyMapping: SpatialNavigationActionToKeyMap,
+  weights: ShortestDistanceWeights,
+): void => {
   if (document.getElementById('spatialNavigationVisualDebugger')) return;
+
+  const directions = [keyMapping.left, keyMapping.right, keyMapping.up, keyMapping.down];
   let lastDirection: Direction | undefined;
 
   const canvas = document.createElement('canvas');
@@ -125,20 +131,21 @@ export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeigh
   document.addEventListener(
     'keydown',
     evt => {
-      if (!evt.shiftKey || !evt.key.startsWith('Arrow')) {
+      const key = evt.key.length === 1 ? evt.key.toLowerCase() : evt.key;
+      if (!evt.shiftKey || !directions.includes(key)) {
         return draw();
       }
       evt.stopImmediatePropagation();
       evt.preventDefault();
 
-      switch (evt.key) {
-        case 'ArrowLeft':
+      switch (key) {
+        case keyMapping.left:
           return draw('left');
-        case 'ArrowUp':
+        case keyMapping.up:
           return draw('up');
-        case 'ArrowDown':
+        case keyMapping.down:
           return draw('down');
-        case 'ArrowRight':
+        case keyMapping.right:
           return draw('right');
         default:
           return undefined;
@@ -158,7 +165,7 @@ export const visualDebugger = (root: HTMLElement, weights: ShortestDistanceWeigh
 };
 
 export const spatialNavigationWrapperRenderFn = (mapping: SpatialNavigationActionToKeyMap, content: any) => {
-  visualDebugger(document.body, DEFAULTS.WEIGHTS);
+  visualDebugger(document.body, mapping, DEFAULTS.WEIGHTS);
 
   return html`<style>
       mdc-spatialnavigationprovider {
