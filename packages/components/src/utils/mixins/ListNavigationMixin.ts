@@ -16,6 +16,8 @@ export declare abstract class ListNavigationMixinInterface {
 
   protected initialFocus: number;
 
+  protected orientation: 'vertical' | 'horizontal';
+
   protected abstract get navItems(): BaseArray<HTMLElement>;
 
   protected resetTabIndexes(index: number, focusElement?: boolean): void;
@@ -35,13 +37,14 @@ export declare abstract class ListNavigationMixinInterface {
 /**
  * This mixin extends the passed class with list like navigation capabilities.
  *
- * It handles up and down arrow keys, home and end keys to navigate through a list of items.
+ * It handles up & down (or left & right for horizontal orientation) arrow keys, home and end keys to navigate through a list of items.
  * Key mapping aligned to reading direction (RTL or LTR).
  *
  * @example
  * ```ts
  * class MyComponent extends ListNavigationMixin(Component) {
  *   protected override loop = false; // Enable looping navigation
+ *   protected override orientation = 'horizontal'; // Set horizontal navigation
  *
  *   protected get navItems() {
  *      return this.shadowRoot?.querySelectorAll('.mdc-listitem') || [];
@@ -80,6 +83,17 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected initialFocus: number = 0;
+
+    /**
+     * The orientation of the list.
+     * Controls the direction of keyboard navigation:
+     * - 'vertical': Up/Down arrow keys navigate between items
+     * - 'horizontal': Left/Right arrow keys navigate between items
+     *
+     * @default 'vertical'
+     * @internal
+     */
+    protected orientation: 'vertical' | 'horizontal' = 'vertical';
 
     /**
      * Get list items from the passed property
@@ -149,7 +163,12 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      */
     protected handleNavigationKeyDown(event: KeyboardEvent) {
       const action = this.getActionForKeyEvent(event, true);
-      const actionsToHandle = new Set<Actions>([ACTIONS.DOWN, ACTIONS.UP, ACTIONS.HOME, ACTIONS.END]);
+      const isVertical = this.orientation === 'vertical';
+      const actionsToHandle = new Set<Actions>(
+        isVertical
+          ? [ACTIONS.DOWN, ACTIONS.UP, ACTIONS.HOME, ACTIONS.END]
+          : [ACTIONS.LEFT, ACTIONS.RIGHT, ACTIONS.HOME, ACTIONS.END],
+      );
 
       if (!action || !actionsToHandle.has(action)) {
         return;
@@ -172,14 +191,16 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           navigationHandled = this.resetTabIndexAndSetFocus(this.navItems.length - 1, currentIndex);
           break;
         }
-        case ACTIONS.DOWN: {
+        case ACTIONS.DOWN:
+        case ACTIONS.RIGHT: {
           // Move focus to the next item
           const eolIndex = this.shouldLoop() ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
           navigationHandled = this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
         }
-        case ACTIONS.UP: {
+        case ACTIONS.UP:
+        case ACTIONS.LEFT: {
           // Move focus to the prev item
           const eolIndex = this.shouldLoop() ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;

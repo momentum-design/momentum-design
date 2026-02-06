@@ -11,6 +11,7 @@ type SetUpOptions = {
   'header-text'?: string;
   loop?: string;
   'initial-focus'?: number;
+  orientation?: 'vertical' | 'horizontal';
 };
 
 const generateBasicChildren = (count: number) =>
@@ -52,7 +53,7 @@ const setup = async (args: SetUpOptions) => {
   await componentsPage.mount({
     html: `
       <div>
-        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}">
+        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}" orientation="${restArgs.orientation ?? ''}">
           ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
           ${restArgs.children ? restArgs.children : ''}
         </mdc-list>
@@ -524,6 +525,122 @@ test('mdc-list', async ({ componentsPage }) => {
           </mdc-listitem>
         </mdc-list>
        `);
+    });
+
+    await test.step('horizontal orientation', async () => {
+      await test.step('should navigate with left/right arrow keys in horizontal orientation', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-list orientation="horizontal">
+              ${generateChildren(4)}
+            </mdc-list>
+          `,
+          clearDocument: true,
+        });
+
+        const list = componentsPage.page.locator('mdc-list');
+        await list.waitFor();
+        const listItems = list.locator('mdc-listitem');
+
+        // Verify aria-orientation attribute
+        await expect(list).toHaveAttribute('aria-orientation', 'horizontal');
+
+        // Focus first item
+        await componentsPage.actionability.pressTab();
+        await expect(listItems.nth(0)).toBeFocused();
+
+        // Navigate right to next item
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(1)).toBeFocused();
+
+        // Navigate right again
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(2)).toBeFocused();
+
+        // Navigate left to previous item
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(1)).toBeFocused();
+
+        // Home key should move to first item
+        await componentsPage.page.keyboard.press(KEYS.HOME);
+        await expect(listItems.nth(0)).toBeFocused();
+
+        // End key should move to last item
+        await componentsPage.page.keyboard.press(KEYS.END);
+        await expect(listItems.nth(3)).toBeFocused();
+      });
+
+      await test.step('should not navigate with up/down arrow keys in horizontal orientation', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-list orientation="horizontal">
+              ${generateChildren(3)}
+            </mdc-list>
+          `,
+          clearDocument: true,
+        });
+
+        const list = componentsPage.page.locator('mdc-list');
+        await list.waitFor();
+        const listItems = list.locator('mdc-listitem');
+
+        // Focus first item
+        await componentsPage.actionability.pressTab();
+        await expect(listItems.nth(0)).toBeFocused();
+
+        // Up/Down arrows should not navigate (focus should remain on first item)
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(0)).toBeFocused();
+      });
+
+      await test.step('should have correct aria-orientation attribute for vertical list', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-list>
+              ${generateChildren(3)}
+            </mdc-list>
+          `,
+          clearDocument: true,
+        });
+
+        const list = componentsPage.page.locator('mdc-list');
+        await list.waitFor();
+
+        // Verify aria-orientation attribute defaults to vertical
+        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
+      });
+
+      await test.step('should update aria-orientation when orientation attribute changes', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-list orientation="vertical">
+              ${generateChildren(3)}
+            </mdc-list>
+          `,
+          clearDocument: true,
+        });
+
+        const list = componentsPage.page.locator('mdc-list');
+        await list.waitFor();
+
+        // Verify initial aria-orientation
+        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
+
+        // Change orientation to horizontal
+        await list.evaluate(node => node.setAttribute('orientation', 'horizontal'));
+
+        // Verify aria-orientation updated
+        await expect(list).toHaveAttribute('aria-orientation', 'horizontal');
+
+        // Change back to vertical
+        await list.evaluate(node => node.setAttribute('orientation', 'vertical'));
+
+        // Verify aria-orientation updated again
+        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
+      });
     });
   });
 });
