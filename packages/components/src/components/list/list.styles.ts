@@ -15,6 +15,12 @@ const styles = css`
     scroll-padding-top: 0.25rem;
     scroll-padding-bottom: 0.25rem;
   }
+
+  :host([orientation='horizontal'])::part(container) {
+    flex-direction: row;
+    scroll-padding-left: 0.25rem;
+    scroll-padding-right: 0.25rem;
+  }
 `;
 
 export default [styles];
