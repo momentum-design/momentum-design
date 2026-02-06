@@ -64,7 +64,7 @@ export class PopoverUtils {
       right: '',
       bottom: '',
     });
-    const bridgeSize = `calc(${this.popover.showArrow ? '0.75rem + ' : ''}${this.popover.offset}px)`;
+    const bridgeSize = `calc(${this.popover.showArrow ? '0.75rem + ' : ''}${this.popover.offset + 1}px)`;
     const popoverHeight = this.popover.offsetHeight || 0;
     const popoverWidth = this.popover.offsetWidth || 0;
 

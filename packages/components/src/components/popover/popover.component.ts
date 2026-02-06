@@ -958,15 +958,13 @@ class Popover extends KeyDownHandledMixin(
     if (!this.interactive) {
       this.hide();
     } else {
-      const callback = () => {
-        this.visible = false;
-      };
-      if (this.closeDelay > 0) {
-        this.timers.setTimeout(TIMEOUTS.HOVER, callback, this.closeDelay);
-      } else {
-        this.timers.clearTimeout(TIMEOUTS.HOVER);
-        callback();
-      }
+      this.timers.setTimeout(
+        TIMEOUTS.HOVER,
+        () => {
+          this.visible = false;
+        },
+        this.closeDelay,
+      );
     }
   };
 
