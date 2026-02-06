@@ -492,6 +492,95 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
       // Popover should be visible
       await expect(popover).toBeVisible();
+
+      await componentsPage.page.mouse.move(0, 0);
+      await componentsPage.page.waitForTimeout(1000);
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('should keep popover open when mouse moves between trigger and popover', async () => {
+      const ADJUSTMENT = 15;
+      const placementsToTest = [
+        { placement: POPOVER_PLACEMENT.TOP, adjustment: { x: 0, y: -ADJUSTMENT } },
+        { placement: POPOVER_PLACEMENT.BOTTOM, adjustment: { x: 0, y: ADJUSTMENT } },
+        { placement: POPOVER_PLACEMENT.LEFT, adjustment: { x: -ADJUSTMENT, y: 0 } },
+        { placement: POPOVER_PLACEMENT.RIGHT, adjustment: { x: ADJUSTMENT, y: 0 } },
+      ] as const;
+
+      const getStartingMousePosition = (
+        placement: PopoverPlacement,
+        triggerBox: { x: number; y: number; width: number; height: number },
+      ) => {
+        if (placement === 'bottom') {
+          return {
+            x: triggerBox.x + triggerBox.width / 2,
+            y: triggerBox.y + triggerBox.height - 1,
+          };
+        }
+        if (placement === 'top') {
+          return {
+            x: triggerBox.x + triggerBox.width / 2,
+            y: triggerBox.y + 1,
+          };
+        }
+        if (placement === 'right') {
+          return {
+            x: triggerBox.x + triggerBox.width - 1,
+            y: triggerBox.y + triggerBox.height / 2,
+          };
+        }
+        if (placement === 'left') {
+          return {
+            x: triggerBox.x + 1,
+            y: triggerBox.y + triggerBox.height / 2,
+          };
+        }
+
+        return undefined;
+      };
+
+      await componentsPage.page.locator('#root').evaluate(node => {
+        /* eslint-disable no-param-reassign */
+        node.style.display = 'flex';
+        node.style.justifyContent = 'center';
+        node.style.alignItems = 'center';
+        /* eslint-enable no-param-reassign */
+      });
+
+      for (const { placement, adjustment } of placementsToTest) {
+        await test.step(`placement = ${placement}`, async () => {
+          const { popover, triggerButton } = await setup({
+            componentsPage,
+            id: 'popover-hover',
+            triggerID: 'trigger-button-hover',
+            trigger: TRIGGER.MOUSEENTER,
+            children: '<mdc-button>Test Button</mdc-button>',
+            interactive: true,
+            placement,
+          });
+
+          await expect(triggerButton).toBeVisible();
+
+          const triggerBox = (await triggerButton.boundingBox())!;
+          const mousePosition: { x: number; y: number } = getStartingMousePosition(placement, triggerBox)!;
+          await componentsPage.page.mouse.move(mousePosition.x, mousePosition.y);
+          await expect(popover).toBeVisible();
+
+          await componentsPage.page.mouse.move(mousePosition.x + adjustment.x, mousePosition.y + adjustment.y, {
+            steps: ADJUSTMENT,
+          });
+
+          await expect(popover).toBeVisible();
+        });
+      }
+
+      await componentsPage.page.locator('#root').evaluate(node => {
+        /* eslint-disable no-param-reassign */
+        node.style.display = '';
+        node.style.justifyContent = '';
+        node.style.alignItems = '';
+        /* eslint-enable no-param-reassign */
+      });
     });
   });
 };
