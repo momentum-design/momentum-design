@@ -771,6 +771,16 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       await keyboard.press(KEYS.ESCAPE);
       await expect(dialog).not.toBeVisible();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).toBeVisible();
+
+      // focus should be on close button after reopening the dialog
+      await expect(closeButton).toBeFocused();
+
+      // close the dialog with the close button
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).not.toBeVisible();
     });
   });
 

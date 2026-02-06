@@ -546,6 +546,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
     await keyboard.press(KEYS.ENTER);
     await expect(popover).toBeVisible();
 
+    await componentsPage.page.pause();
     // Focus the popover and press Escape
     await expect(
       componentsPage.page.getByRole('button', { name: 'Button inside Popover inside dialog' }),

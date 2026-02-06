@@ -210,6 +210,10 @@ class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
 
+  /**
+   * Flag to track if the slider is in spatial navigation edit mode, which allows adjusting the slider value with arrow keys.
+   * @internal
+   */
   private spatialNavEditMode = false;
 
   constructor() {

@@ -168,43 +168,57 @@ export const spatialNavigationWrapperRenderFn = (mapping: SpatialNavigationActio
   visualDebugger(document.body, mapping, DEFAULTS.WEIGHTS);
 
   return html`<style>
-      mdc-spatialnavigationprovider {
-        width: 100%;
+      .mdc-snp-wrapper {
+        display: flex;
         height: 100%;
+      }
+      mdc-spatialnavigationprovider {
+        width: 100vmin;
+        aspect-ratio: 16/9;
+        margin: auto;
         display: grid;
-        grid-template-columns: 1fr 3fr 1fr;
-        grid-template-rows: 1fr 8fr 1fr;
+        grid-template-columns: 150px 1fr 150px;
+        grid-template-rows: 54px 1fr 54px;
         gap: 0.5rem;
+        box-shadow:
+          0 2px 10px rgba(0, 0, 0, 0.5),
+          0 2px 3px rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--mds-color-theme-background-solid-quaternary-normal);
+        border-radius: 3px;
       }
       mdc-spatialnavigationprovider > div {
         display: flex;
       }
       .snp-btn {
-        width: 8rem;
         margin: auto;
+        width: 130px;
       }
       .snp-component-container {
-        width: 100%;
+        width: calc(100% - 0.5rem);
+        overflow: auto;
+        padding: 0.25rem;
       }
-      .snp-component-container > * {
-        max-height: 500rem;
-        margin: auto;
+      .snp-component-container > :not(.dialog-backdrop) {
+        max-height: 40vmin;
+        margin: auto !important;
       }
     </style>
 
-    <mdc-spatialnavigationprovider .navigationKeyMapping=${mapping}>
-      <div><mdc-button class="snp-btn" variant="secondary">Top Left</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Top</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Top Right</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Left</mdc-button></div>
+    <div class="mdc-snp-wrapper">
+      <mdc-spatialnavigationprovider .navigationKeyMapping=${mapping}>
+        <div><mdc-button class="snp-btn" variant="secondary">Top Left</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Top</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Top Right</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Left</mdc-button></div>
 
-      <div class="snp-component-container">${content}</div>
+        <div class="snp-component-container">${content}</div>
 
-      <div><mdc-button class="snp-btn" variant="secondary">Right</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Bottom Left</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Bottom</mdc-button></div>
-      <div><mdc-button class="snp-btn" variant="secondary">Bottom Right</mdc-button></div>
-    </mdc-spatialnavigationprovider>`;
+        <div><mdc-button class="snp-btn" variant="secondary">Right</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Bottom Left</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Bottom</mdc-button></div>
+        <div><mdc-button class="snp-btn" variant="secondary">Bottom Right</mdc-button></div>
+      </mdc-spatialnavigationprovider>
+    </div>`;
 };
 
 /**

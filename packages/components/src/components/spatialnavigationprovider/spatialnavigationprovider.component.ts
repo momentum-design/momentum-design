@@ -16,207 +16,190 @@ import { DEFAULTS } from './spatialnavigationprovider.constants';
 import { orderElementsByDistance } from './spatialnavigationprovider.utils';
 import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
 
+// AI-Assisted
 /**
- * This component manage focus navigation in a spatial navigation fashion, and
- * provides the necessary context for other components.
+ * This component manages focus using spatial navigation and provides context for child components.
  *
- * It should be placed at the root of the application.
+ * Place it at the root of the application.
  *
- * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) is a way to navigate through focusable
- * elements on a 2 dimensional plane. It is commonly used in TV and game console applications where
- * a remote control or a gamepad is used to navigate through the UI.
+ * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) lets users move focus among
+ * elements on a 2D plane, common on TVs and game consoles with remotes or gamepads.
  *
  * ## Focus management
  *
- * Spatial navigation provider manage the focus on the page by listening to the keyboard events. It search for focusable elements
- * on the page and calculate the next element to focus based on the user input (arrow keys). But there are few ways to interact
- * with the navigation process.
+ * The provider listens to keyboard events and moves focus among elements based on arrow key input.
+ * You can influence or override this behavior.
+ *
+ * Note: The algorithm is distance-based, so the UI should be designed so focusable elements are
+ * predictably reachable. Relative element positions should remain stable; responsive layouts can
+ * make navigation unpredictable. This is less of an issue on fixed-size TV UIs but can show unexpected
+ * behavior in Storybook when resizing. See the "Limitations" section.
  *
  * ### Automatic
  *
- * By default the next focusable element is calculated automatically based on the position of the elements on the page.
+ * By default, the next focus target is computed from element positions:
  *
- * The algorithm do the following steps:
+ * 1. Find the nearest focus area (scrollable container or active focus trap) relative to the current element.
+ * 2. Collect focusable elements in that area.
+ * 3. Compute distances from the current element to candidates using the W3C "find the shortest
+ *    distance" algorithm: https://www.w3.org/TR/css-nav-1/#find-the-shortest-distance
+ * 4. If no candidates are found, repeat from step 1, skipping areas already checked.
+ * 5. Focus the closest candidate.
  *
- * 1. Find the closest Focusable area (scrollable or focus trap) from the currently focused element.
- * 2. Collect all focusable elements in the focusable area.
- * 3. Calculate distance between the candidate elements and the currently focused element
- *    it uses [W3 find the shortest distance](https://www.w3.org/TR/css-nav-1/#find-the-shortest-distance) algorithm.
- * 4. If there are no candidates in the focusable area, repeat from step 1 excluding the already checked focusable areas.
- * 5. Pick the closest candidate and call focus() on it.
- *
- * If an element has `data-spatial-focusable` attribute, it is considered focusable even if it has tabindex=-1.
+ * Elements with `data-spatial-focusable` are treated as focusable even if they would otherwise not be
+ * (e.g., `tabindex="-1"`).
  *
  * ### Overwrite next element
  *
- * Spatial navigation automatic behavior can be overwritten by adding special data attributes to the focusable element(s):
+ * Override automatic navigation by adding one of these attributes to a focusable element:
  *
  * - `data-spatial-up`
  * - `data-spatial-down`
  * - `data-spatial-left`
  * - `data-spatial-right`
  *
- * The value of these attributes should be the id of the element to focus when the user presses the corresponding arrow key.
+ * Each attribute value must be the id of the element to focus when the corresponding key is pressed.
  *
  * ### Element internal navigation
  *
- * Complex component such as List, Combobox, Tree, etc. has its own keyboard based navigation.
+ * Complex components (List, Combobox, Tree, etc.) may handle their own navigation. For example, a List moves
+ * focus internally on Down until the last item, after which Down should fall back to provider navigation.
  *
- * For example List component when the user presses down and not the last row focused, this list should handle the navigation and
- * cancel spatial navigation automatic behavior. But when the last row is focused and the user presses down again, it should not
- * cancel the event and let the provider handle it.
- *
- * Consumers can cancel the navigation process by listening to the `navbeforeprocess` event and calling `event.preventDefault()`.
- * This event emitted after keydown handled by the components.
+ * To prevent the provider from handling a key, listen to `navbeforeprocess` and call `event.preventDefault()`.
+ * This event fires after the component handles `keydown`.
  *
  * ### Cancel focus change
  *
- * When the next focusable element is determined but before calling focus() on it, the `navbeforefocus` event is dispatched on
- * the currently focused element. Consumer can cancel the focus change by calling `event.preventDefault()` on this event.
+ * Before focusing a computed target, the provider dispatches `navbeforefocus` on the current element. Call
+ * `event.preventDefault()` on this event to cancel the focus change.
  *
  * ## Enter action
  *
- * When the user presses the Enter key, the provider trigger click() on the currently focused element.
+ * Pressing Enter triggers `.click()` on the currently focused element.
  *
- * This behavior can be prevented by listening to the `navbeforeprocess` event and calling `event.preventDefault()`.
+ * You can prevent this by listening to `navbeforeprocess` and calling `event.preventDefault()`.
  *
  * ## Escape/Back action
  *
- * When the user presses the Escape key, the provider first search for a focusable element with `data-spatial-go-back` attribute and
- * execute click() on it. If there is no such element, it calls the default browser history back action.
+ * Pressing Escape tries to find a focusable element with `data-spatial-go-back` and clicks it. If none exists,
+ * the provider calls `history.back()`.
  *
- * This behavior can be prevented by listening to the `navbeforeprocess` event and calling `event.preventDefault()`.
+ * You can prevent this by listening to `navbeforeprocess` and calling `event.preventDefault()`.
  *
- * Also, the click action can be intercepted by listening to the `navback` event and cancel it by calling `event.preventDefault()` .
+ * You can also intercept the back click by listening to `navback` and calling `event.preventDefault()`.
  *
  * ## Control data attributes
  *
- * List of all control data attributes:
+ * Supported data attributes:
  *
  * | Attribute              | Value       | Default | Description                                                                         |
  * |------------------------|-------------|---------|-------------------------------------------------------------------------------------|
- * | data-spatial-left      | element id  | N/A     | Next focused item when user presses left                                            |
- * | data-spatial-up        | element id  | N/A     | Next focused item when user presses up                                              |
- * | data-spatial-right     | element id  | N/A     | Next focused item when user presses right                                           |
- * | data-spatial-down      | element id  | N/A     | Next focused item when user presses down                                            |
- * | data-spatial-go-back   | N/A	        | N/A     | Spatial navigation trigger click on the first focusable element with this attribute |
- * | data-spatial-focusable | N/A	        | N/A     | Spatial navigation consider the element focusable even if it not (e.g.: tabindex=-1 |
+ * | `data-spatial-left`    | element id  | N/A     | Focus this element when Left is pressed                                             |
+ * | `data-spatial-up`      | element id  | N/A     | Focus this element when Up is pressed                                               |
+ * | `data-spatial-right`   | element id  | N/A     | Focus this element when Right is pressed                                            |
+ * | `data-spatial-down`    | element id  | N/A     | Focus this element when Down is pressed                                             |
+ * | `data-spatial-go-back` | N/A         | N/A     | First focusable element with this attribute is clicked on Back/Escape               |
+ * | `data-spatial-focusable` | N/A       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
  *
  * ## Event emitting order
  *
- * When the user presses a navigation key, the events are emitted in the following order:
+ * On a navigation key press, events fire in this order:
  *
- * 1. `navbeforeprocess` on the currently focused element
- * 2. When the event not prevented
- *    a. For navigation (arrow) keys: `navbeforefocus` on the currently focused element
- *    b. For enter key: click() on the currently focused element
- *    c. For back/escape key: `navback` on the provider, then click() on the goBack element or history.back()
- * 3. When no focusable element found in the given direction: `navnotarget` on the provider
+ * 1. `navbeforeprocess` on the currently focused element.
+ * 2. If not prevented:
+ * a. Arrow keys: `navbeforefocus` on the currently focused element.
+ * b. Enter: `.click()` on the currently focused element.
+ * c. Escape/Back: `navback` on the provider, then `.click()` on the go-back element or `history.back()`.
+ * 3. If no target is found in the requested direction: `navnotarget` on the provider.
  *
  * ## Handle complex components
  *
  * ### Generic components
  *
- * Components should notify the spatial navigation provider when they handle navigation internally.
- * For example a list component when the user presses down arrow key and the component moves focus to the next item internally,
- *
- * Component should handle the `navbeforeprocess` event and call `event.preventDefault()` to stop spatial navigation provider.
+ * Components that handle navigation internally should prevent the provider from acting. Handle `navbeforeprocess`
+ * and call `event.preventDefault()` for keys you process yourself.
  *
  * ### Form inputs
  *
- * Inline form inputs (text input, checkbox, radio button, etc.) submit the form on Enter key by default.
- * This is not the expected behavior in spatial navigation context. User can change change the state of the input with enter
- * (check/uncheck, etc.). For form submission it is better to have a dedicated submit button that user can navigate to and press enter on it.
+ * Native inputs often submit on Enter, which is not desirable here. Enter should toggle or activate the control
+ * (e.g., check/uncheck). Provide a dedicated submit button users can navigate to and press Enter on.
  *
  * ### Utilities for complex components
  *
  * #### KeyToActionMixin
  *
- * It abstracts away key codes and provide action names instead. Call `getActionForKeyEvent` to get the action for a given keyboard event.
- *
- * It also provides `getKeyboardNavMode` method to get the current keyboard navigation mode (spatial or default).
+ * Maps key events to action names. Call `getActionForKeyEvent` to get the action for a keyboard event. Also provides
+ * `getKeyboardNavMode` to check whether navigation is spatial or default.
  *
  * #### KeyDownHandledMixin
  *
- * It provides a way to notify the spatial navigation provider when the component handled the keydown event internally.
- *
- * Components should call `keyDownEventHandled` whenwever they handle keydown event internally.
+ * Notify the provider when a component handled `keydown` internally. Call `keyDownEventHandled` whenever you process
+ * keydown yourself.
  *
  * ## Platform specific behaviors
  *
- * In general UX should consider how user interact with UI with spatial navigation.
- * Because the limited amount of buttons in the remote control or gamepad, there are many case when the focusing is not enough
- * and the user has to press enter to edit the value of the component:
- * - select where the user press enter to access to select options instead of using arrow keys to open the select's popover
- * - text inputs, see the next section for more details.
- * - slider, user has to press enter to start interacting with the slider and then use arrow keys to change the value,
- *   and press enter/escape again to stop interacting with the slider.
+ * Consider remote/gamepad constraints. Often focus alone is not enough and users press Enter to "enter" an interactive mode:
+ * - Select: Enter opens options rather than arrow keys opening a popover.
+ * - Text inputs: see the next section.
+ * - Slider: Enter to start adjusting, arrow keys to change value, Enter/Escape to stop.
  *
  * ### Text inputs
  *
- * Usually TV and similar platforms, does not have a physical keyboard, so when user focus on a text input and press enter,
- * it should open a virtual keyboard to let user input the text instead of submitting the form.
+ * On TV-like platforms without physical keyboards, Enter/focus on an input should open a virtual keyboard instead of submitting
+ * the form. Users must close the keyboard (Escape) to continue spatial navigation.
  *
- * The User has to close (escape action) the virtual keyboard to continue navigating through the UI.
+ * If navigation keys are mapped to letters (e.g., `w/a/s/d`), they should navigate, not change input values. Inputs should
+ * be edited via the virtual keyboard.
  *
- * This also mean the if the navigation keys mapped to letters (e.g.: w/a/s/d) instead of arrows, it should work as expected and
- * it should not change the input value. The user can modify the input value only from the virtual keyboard.
- *
- * Note: Our stories does not emulate the above behavior, so using letter keys for navigation can lead to unexpected behavior
- *  in the stories when focusing on text inputs.
+ * Note: Stories do not emulate virtual keyboards, so letter-based navigation may change input values in Storybook.
  *
  * ## Debugging
  *
  * ### Storybook toolbar
  *
- * Use the "Spatial navigation" option in the Storybook toolbar to enable/disable spatial navigation.
- * Key mapping:
- * - Up - Up arrow key
- * - Left - Left arrow key
- * - Down - Down arrow key
- * - Right - Right arrow key
- * - Enter - Enter key
- * - Escape - Escape key
+ * Enable "Spatial navigation" in the toolbar. Key mapping:
+ * - Up - ArrowUp
+ * - Left - ArrowLeft
+ * - Down - ArrowDown
+ * - Right - ArrowRight
+ * - Enter - Enter
+ * - Escape - Escape
  *
- * You can choose between with wrapper and without wrapper options.
- * - With wrapper will put the selected component in a middle of 3x3 grid and add buttons around it to test the navigation.
- * - Without wrapper will not add any extra elements around the component and let you test the component standalone.
+ * With wrapper: wraps the component in a 3x3 grid with surrounding buttons for testing.
+ * Without wrapper: renders the component alone.
  *
  * ### Visual debugger
  *
- * When "spatial navigation" is enabled in Storybook toolbar, press "Shift + left/right/up/down Nav key" to visualize
- * the spatial navigation calculations.
+ * With spatial navigation enabled, press Shift + navigation key to visualize calculations:
  *
  * - Star: next active element
- * - #{number}: candidate elements ordered by distance
- * - D: {distance}: distance value used in the calculation
+ * - `#{number}`: candidate order by distance
+ * - `D: {distance}`: computed distance
  *
  * ## Limitations
  *
  * ### Completeness
  *
- * The current algorithm can not guaranty to all focusable element will be reachable via the for direction keys.
- * In some case component(s) can be isolated in a way that it is not reachable from other components.
+ * The algorithm cannot guarantee reachability to all elements using the four directions. Some components can be isolated.
  *
  * Workarounds:
- *  - Manually specify the next element to focus with the data attributes. This can guaranty the isolated element prioritized
- *    over the automatic calculation.
- *  - Rearrange the focusable elements in the DOM to be more aligned:
- *    - Use dedicated components (lists, menus, etc.) as much as possible to group focusable elements.
- *    - Avoid complex layouts where focusable elements are fit into a grid like structure with different sizes.
- *    - Avoid overlap between focusable elements on the vertical or the horizontal axis.
- *    - Avoid nested focusable elements when possible.
- *  - Adjust weights of the algorithm to work better with your UI layout.
+ * - Use data attributes to explicitly link navigation targets.
+ * - Arrange DOM to improve spatial consistency:
+ * - Group focusable elements using dedicated components (lists, menus, etc.).
+ * - Avoid complex grid-like layouts with variable-sized items.
+ * - Avoid overlap along horizontal or vertical axes.
+ * - Avoid nested focusable elements where possible.
+ * - Tune algorithm weights to match your UI layout.
  *
  * ### Scrollable containers
  *
- * Content scrolling is not supported at the moment, for example:
- * - When the focused element (eg.: list item) is bigger then the viewport
- * - the element is a scrollable content without interactive items
+ * Content scrolling is not supported yet, e.g.:
+ * - Focused element larger than the viewport.
+ * - Scrollable content without interactive children.
  *
- * ### Only one spatial navigation provider is supported
+ * ### Nested providers
  *
- * At the moment only one spatial navigation provider is supported in the application.
+ * Only one provider instance is supported in the application at a time.
  *
  * @event navbeforeprocess - (React: onNavBeforeProcess) This event dispatched before spatial navigation process any key event.
  *                           It can be canceled to prevent any action from spatial navigation, e.g.: back, click or calculating the next candidate.
@@ -559,7 +542,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     const action = this.context.value!.keyToActionMap[evt.key];
     const navBeforeProcessEvent = new SpatialNavigationEvent('navbeforeprocess', this, action);
     if (evt.target) {
-      getDomActiveElement(evt.target as Element)?.dispatchEvent(navBeforeProcessEvent);
+      (evt.composedPath()[0] || evt.target)?.dispatchEvent(navBeforeProcessEvent);
     }
 
     if (navBeforeProcessEvent.defaultPrevented) {

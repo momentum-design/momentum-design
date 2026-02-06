@@ -5,11 +5,13 @@ import type { Constructor } from './index.types';
 export declare abstract class KeyDownHandledMixinInterface {
   /**
    * Register key down event as handled to prevent further processing by other components
+   * @internal
    */
   protected keyDownEventHandled(): void;
 
   /**
    * Check if the key down event has been handled
+   * @internal
    */
   get isKeyDownEventHandled(): boolean;
 }
@@ -32,12 +34,18 @@ export const KeyDownHandledMixin = <T extends Constructor<LitElement>>(superClas
      */
     private keyDownEventHandledFlag: boolean = false;
 
-    /** @see KeyToActionInterface.keyDownEventHandled */
+    /**
+     * @see KeyToActionInterface.keyDownEventHandled
+     * @internal
+     */
     protected keyDownEventHandled(): void {
       this.keyDownEventHandledFlag = true;
     }
 
-    /** @see KeyToActionInterface.isKeyDownEventHandled */
+    /**
+     * @see KeyToActionInterface.isKeyDownEventHandled
+     * @internal
+     */
     protected get isKeyDownEventHandled(): boolean {
       return this.keyDownEventHandledFlag;
     }

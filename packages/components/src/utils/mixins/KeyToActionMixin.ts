@@ -72,6 +72,7 @@ export interface KeyToActionInterface {
 
   /**
    * Returns the current keyboard navigation mode
+   * @internal
    */
   getKeyboardNavMode(): KeyboardNavModes;
 
@@ -79,6 +80,7 @@ export interface KeyToActionInterface {
    * Returns `true` if the given action is a direction action (up, down, left, right)
    * @param action - The action to check
    * @returns `true` if the action is a direction action, otherwise `false`
+   * @internal
    */
   isDirectionAction(action: Actions | undefined): boolean;
 }
@@ -117,18 +119,25 @@ export interface KeyToActionInterface {
  */
 export const KeyToActionMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
+    /** @internal */
     readonly spatialNavigationContext = providerUtils.consume({
       host: this,
       context: SpatialNavigationProvider.Context,
     });
 
-    /** @see KeyToActionInterface.getKeyboardNavMode */
+    /**
+     * @see KeyToActionInterface.getKeyboardNavMode
+     * @internal
+     */
     getKeyboardNavMode() {
       const provider = this.spatialNavigationContext?.value as SpatialNavigationProvider | undefined;
       return provider ? NAV_MODES.SPATIAL : NAV_MODES.DEFAULT;
     }
 
-    /** @see KeyToActionInterface.getMappedKeyFromEvent */
+    /**
+     * @see KeyToActionInterface.getMappedKeyFromEvent
+     * @internal
+     */
     getActionForKeyEvent(evt: KeyboardEvent, applyWritingDirection: boolean = false): Actions | undefined {
       const mapping = this.spatialNavigationContext?.value?.keyToActionMap ?? DEFAULT_KEY_TO_ACTION;
       const key = mapping[evt.key];
@@ -142,7 +151,10 @@ export const KeyToActionMixin = <T extends Constructor<LitElement>>(superClass: 
       return key;
     }
 
-    /** @see KeyToActionInterface.isDirectionAction */
+    /**
+     * @see KeyToActionInterface.isDirectionAction
+     * @internal
+     */
     isDirectionAction(action: Actions): boolean {
       return action === ACTIONS.UP || action === ACTIONS.DOWN || action === ACTIONS.LEFT || action === ACTIONS.RIGHT;
     }
