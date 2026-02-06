@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
 import '../buttongroup';
@@ -586,6 +586,15 @@ export const MultipleSingleLevelPopovers: StoryObj = {
   `,
 };
 export const AppendTo: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html`
+        <mdc-text> To breakout stacking context is necessary to use append to. </mdc-text>
+        <mdc-text> Trigger and popover dynamically added to the DOM </mdc-text>
+      `,
+      true,
+    ),
+  },
   render: () => {
     const hover = (event: Event) => {
       const target = event.target as HTMLElement;
@@ -635,9 +644,6 @@ export const AppendTo: StoryObj = {
       </template>
 
       <div class="root" id="root">
-        <mdc-text> To breakout stacking context is necessary to use append to. </mdc-text>
-        <mdc-text> Trigger and popover dynamically added to the DOM </mdc-text>
-
         <mdc-divider style="margin-block: 1rem"></mdc-divider>
 
         <div class="container" @mouseenter=${hover} @mouseleave=${leave} data-tpl="menu-without-append-to-tpl">
@@ -816,6 +822,17 @@ export const PopoverInChangingList: StoryObj = {
     'hide-on-outside-click': true,
     size: true,
   },
+  parameters: {
+    ...describeStory(
+      html` <mdc-text>
+          Frameworks might detach and re-attach elements when list content change. <br />
+          If it happens with the trigger but not the popover then it breaks the connection.
+        </mdc-text>
+
+        <mdc-text> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>`,
+      true,
+    ),
+  },
   render: () => {
     let btnVersion = 1;
     const updateButton = () => {
@@ -861,12 +878,6 @@ export const PopoverInChangingList: StoryObj = {
             ><div></div
           ></mdc-popover>
         </template>
-        <mdc-text>
-          Frameworks might detach and re-attach elements when list content change. <br />
-          If it happens with the trigger but not the popover then it breaks the connection.
-        </mdc-text>
-
-        <mdc-text> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>
 
         <mdc-buttongroup>
           <mdc-button @click="${updateButton}">Update Open buttons</mdc-button>

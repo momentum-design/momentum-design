@@ -1,7 +1,6 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -217,6 +216,37 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       // 4. Reset → back to default help-text
       await resetButton.click();
       await expectHelpText('Choose a plan that best suits your needs', 'default');
+    });
+
+    await test.step('spatial navigation', async () => {
+      await setup({
+        componentsPage,
+        label: 'Select your plan',
+        name: 'student-plan',
+      });
+      const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+
+      const { keyboard } = componentsPage.page;
+      const form = componentsPage.page.locator('form');
+      const waitForSubmit = await componentsPage.waitForEvent(form, 'submit');
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(radios.nth(0)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      // As the second radio is disabled, it should skip to the third radio directly
+      await expect(radios.nth(2)).toBeFocused();
+      await expect(radios.nth(2)).not.toBeChecked();
+      await keyboard.press(KEYS.ENTER);
+      await expect(radios.nth(2)).toBeChecked();
+
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(radios.nth(0)).toBeFocused();
+      await expect(radios.nth(0)).not.toBeChecked();
+      await keyboard.press(KEYS.ENTER);
+      await expect(radios.nth(0)).toBeChecked();
+
+      await expect(waitForSubmit).not.toEventEmitted();
     });
   });
 });

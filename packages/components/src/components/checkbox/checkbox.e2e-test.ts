@@ -460,5 +460,26 @@ test('mdc-checkbox', async ({ componentsPage }) => {
         await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
+
+    await test.step('spatial navigation', async () => {
+      const checkbox = await setup({ componentsPage });
+      await componentsPage.wrapElement({ wrapperTagName: 'form' });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      const form = componentsPage.page.locator('form');
+      const waitForSubmit = await componentsPage.waitForEvent(form, 'submit');
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(checkbox).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await expect(waitForSubmit).not.toEventEmitted();
+    });
   });
 });

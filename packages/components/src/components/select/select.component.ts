@@ -22,7 +22,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
-import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -89,7 +89,11 @@ import type { Placement } from './select.types';
  */
 class Select
   extends ListNavigationMixin(
-    CaptureDestroyEventForChildElement(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      CaptureDestroyEventForChildElement(
+        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+      ),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -274,7 +278,10 @@ class Select
   ): void => {
     switch (changeType) {
       case 'added':
-        option.setAttribute('tabindex', '-1');
+        option.setAttribute('tabindex', index === 0 && options.length === 0 ? '0' : '-1');
+        if (option.hasAttribute('selected')) {
+          this.resetTabIndexes(index);
+        }
         break;
       case 'removed': {
         if (index === -1 || options.length === 0) {
@@ -436,6 +443,9 @@ class Select
       !option.hasAttribute('soft-disabled')
     ) {
       this.setSelectedOption(option);
+      if (option.isKeyDownEventHandled) {
+        this.keyDownEventHandled();
+      }
       this.displayPopover = false;
       this.fireEvents();
     }
@@ -639,39 +649,49 @@ class Select
     }
 
     const action = this.getActionForKeyEvent(event);
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
 
-    switch (action) {
-      case ACTIONS.DOWN:
-      case ACTIONS.UP:
-      case ACTIONS.ENTER:
-      case ACTIONS.SPACE:
-        this.displayPopover = true;
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      case ACTIONS.HOME: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(0);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      case ACTIONS.END: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      default: {
-        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+    if (isDefaultNavigation) {
+      switch (action) {
+        case ACTIONS.DOWN:
+        case ACTIONS.UP:
+        case ACTIONS.ENTER:
+        case ACTIONS.SPACE:
+          if (!this.displayPopover) {
+            this.keyDownEventHandled();
+          }
           this.displayPopover = true;
-          this.handleSelectedOptionByKeyInput(event.key);
           event.preventDefault();
           event.stopPropagation();
+          break;
+        case ACTIONS.HOME: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(0);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
         }
-        break;
+        case ACTIONS.END: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
+        }
+        default: {
+          if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+            this.displayPopover = true;
+            this.handleSelectedOptionByKeyInput(event.key);
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          break;
+        }
       }
+    } else if (action === ACTIONS.ENTER) {
+      this.displayPopover = true;
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -712,7 +732,8 @@ class Select
   }
 
   private handleKeydownPopover(event: KeyboardEvent): void {
-    if (event.key.length === 1) {
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+    if (isDefaultNavigation && event.key.length === 1) {
       this.handleSelectedOptionByKeyInput(event.key);
     }
   }

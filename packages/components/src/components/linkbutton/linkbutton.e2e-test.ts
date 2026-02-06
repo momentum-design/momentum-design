@@ -3,6 +3,7 @@
 /* eslint-disable no-await-in-loop */
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { LINKBUTTON_SIZES } from './linkbutton.constants';
 import { getIconSize } from './linkbutton.utils';
@@ -255,6 +256,20 @@ test.describe('LinkButton Feature Scenarios', () => {
         await componentsPage.actionability.pressTab();
         await expect(linkbutton).toBeFocused();
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const link = await setup({ componentsPage, addPageFooter: true });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(link).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(link, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
 
     /**

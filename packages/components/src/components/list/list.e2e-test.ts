@@ -277,6 +277,38 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });
     });
+
+    await test.step('spatial navigation', async () => {
+      const list = await setup({ componentsPage, children: generateChildren(6), 'header-text': 'List header' });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      const listItems = list.locator('mdc-listitem');
+
+      await componentsPage.setAttributes(listItems.nth(1), { disabled: '' });
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItems.nth(0)).toBeFocused();
+
+      // Skip disabled list item
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItems.nth(2)).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(listItems.nth(2).locator('mdc-checkbox')).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(2).locator('mdc-button').nth(1)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItems.nth(3)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(3).locator('mdc-button').nth(0)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(listItems.nth(2)).toBeFocused();
+    });
   });
 
   /**

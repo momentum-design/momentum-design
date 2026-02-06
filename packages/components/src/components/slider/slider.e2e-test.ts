@@ -288,7 +288,7 @@ test('mdc-slider', async ({ componentsPage }) => {
 
     await test.step('step value is 5, user sets an even number', async () => {
       const slider = await setup({ componentsPage, min: 0, max: 100, step: 5, value: 42 });
-      await expect(slider).toHaveAttribute('value', '42');
+      await expect(slider).toHaveAttribute('value', '40');
       // Native input[type=range] snaps to nearest valid step (i.e. 40)
       const sliderInput = slider.locator('input[type="range"]');
       const inputValue = await sliderInput.inputValue();
@@ -298,14 +298,14 @@ test('mdc-slider', async ({ componentsPage }) => {
     await test.step('user provides a value out of range', async () => {
       // Value above max
       let slider = await setup({ componentsPage, min: 0, max: 100, value: 120 });
-      await expect(slider).toHaveAttribute('value', '120');
+      await expect(slider).toHaveAttribute('value', '100');
       const sliderInput = slider.locator('input[type="range"]');
       const valueMax = await sliderInput.inputValue();
       expect(valueMax).toBe('100');
       // Value below min
       slider = await setup({ componentsPage, min: 0, max: 100, value: -10 });
       const input = slider.locator('input[type="range"]');
-      await expect(slider).toHaveAttribute('value', '-10');
+      await expect(slider).toHaveAttribute('value', '0');
       const valueMin = await input.inputValue();
       expect(valueMin).toBe('0');
     });
@@ -504,6 +504,48 @@ test('mdc-slider', async ({ componentsPage }) => {
       await componentsPage.page.mouse.move(250, 15);
       await componentsPage.page.mouse.up();
       await expect(slider).toHaveAttribute('value', '31');
+    });
+
+    await test.step('spatial navigation', async () => {
+      const slider = await setup({
+        componentsPage,
+        range: true,
+        min: 0,
+        max: 100,
+        'value-start': 20,
+        'value-end': 80,
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(slider).toBeFocused();
+
+      // Move start thumb right
+      await keyboard.press(KEYS.ENTER);
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(slider).toHaveAttribute('value-start', '21');
+      // Move start thumb left
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(slider).toHaveAttribute('value-start', '20');
+
+      // Move end thumb left
+      await keyboard.press(KEYS.ESCAPE);
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await keyboard.press(KEYS.ENTER);
+      await expect(slider).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(slider).toHaveAttribute('value-end', '79');
+      // Move end thumb right
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(slider).toHaveAttribute('value-end', '80');
+
+      // Set step and test increment
+      await componentsPage.setAttributes(slider, { step: '5' });
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(slider).toHaveAttribute('value-end', '85');
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(slider).toHaveAttribute('value-end', '80');
     });
   });
 });

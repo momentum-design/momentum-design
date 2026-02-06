@@ -1,6 +1,7 @@
 import { expect, Locator } from '@playwright/test';
 
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './dialog.constants';
 import type Dialog from './dialog.component';
@@ -76,6 +77,15 @@ const setup = async (args: SetupOptions) => {
         dialogElement.visible = false;
       };
     }
+  }, restArgs.id);
+
+  await triggerButton.evaluate((el, id) => {
+    el.addEventListener('click', () => {
+      const dialogElement = document.querySelector(`#${id}`) as Dialog;
+      if (dialogElement) {
+        dialogElement.visible = true;
+      }
+    });
   }, restArgs.id);
 
   return { dialog, triggerButton };
@@ -731,6 +741,47 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
       // End AI-Assisted
     });
+
+    await test.step('spatial navigation', async () => {
+      const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const opener = componentsPage.page.getByText('Click Me!');
+      await expect(opener).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+
+      await expect(dialog).toBeVisible();
+      const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+      await expect(closeButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+      await expect(primaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+      await expect(secondaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const link = componentsPage.page.locator('[slot="footer-link"]');
+      await expect(link).toBeFocused();
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(closeButton).toBeFocused();
+
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(dialog).not.toBeVisible();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).toBeVisible();
+
+      // focus should be on close button after reopening the dialog
+      await expect(closeButton).toBeFocused();
+
+      // close the dialog with the close button
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).not.toBeVisible();
+    });
   });
 
   /**
@@ -1018,7 +1069,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
 
       await test.step('Closing intermediate overlay will close all child and grand-child overlays', async () => {
-        await componentsPage.page.pause();
         await dialogLvl1Trigger.click();
         await expect(dialogLvl1).toBeVisible();
 

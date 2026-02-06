@@ -977,5 +977,49 @@ test('mdc-select', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(form.locator('mdc-button')).toBeFocused();
     });
+
+    await test.step('spatial navigation', async () => {
+      const select = await setup({ componentsPage, children: defaultChildren(true) });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      const popover = select.locator('mdc-popover');
+
+      // Move focus to select
+      await keyboard.press(KEYS.ARROW_DOWN);
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(popover).not.toBeVisible();
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(popover).not.toBeVisible();
+
+      // Open Select oly via ENTER key
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+
+      // Escape closes the popover
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(popover).not.toBeVisible();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 2' })).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 3' })).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 2' })).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toBeFocused();
+
+      // Select option via ENTER key
+      await keyboard.press(KEYS.ENTER);
+      await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toHaveAttribute('selected');
+      await expect(popover).not.toBeVisible();
+    });
   });
 });

@@ -5,7 +5,8 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import { Component } from '../../models';
 import type { IconName } from '../accordionbutton/accordionbutton.types';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS } from './slider.constants';
 import styles from './slider.styles';
@@ -16,6 +17,12 @@ import type { ThumbStateType } from './slider.types';
  * It provides a visual representation of the current value(s) and allows users to adjust the value(s) by dragging the thumb(s) along the track.
  * It can be used as a single slider or a range slider. This is set by the boolean attribute `range`
  * If the step value is more than 1, tick marks are shown to represent the steps between the min and max values. The slider thumb will snap to the nearest tick mark.
+ *
+ * ## Spatial navigation
+ *
+ * In spatial navigation mode, the user has to step into edit mode to adjust the slider value using left and right navigation keys.
+ * To enter edit mode, the user can press the Enter when one of the slider's handler is focused. User can leave edit mode by press
+ * Enter or Escape.
  *
  * @tagname mdc-slider
  *
@@ -44,7 +51,7 @@ import type { ThumbStateType } from './slider.types';
  * @cssproperty --mdc-slider-tooltip-left - The left position of the slider tooltip
  * @cssproperty --mdc-slider-tick-left - The left position of the slider tick marks
  */
-class Slider extends KeyToActionMixin(Component) {
+class Slider extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   /**
    * Internal state to track if the slider thumb is focused (single value)
    * @internal
@@ -203,9 +210,15 @@ class Slider extends KeyToActionMixin(Component) {
   @queryAll('input[type="range"]')
   protected inputElements!: HTMLInputElement[];
 
+  /**
+   * Flag to track if the slider is in spatial navigation edit mode, which allows adjusting the slider value with arrow keys.
+   * @internal
+   */
+  private spatialNavEditMode = false;
+
   constructor() {
     super();
-    this.addEventListener('keydown', this.preventChange.bind(this));
+    this.addEventListener('keydown', this.handleKeyEvent.bind(this));
     this.addEventListener('mousedown', this.preventChange.bind(this));
   }
 
@@ -240,12 +253,59 @@ class Slider extends KeyToActionMixin(Component) {
    * @param e - The event to prevent.
    */
   private preventChange(e: Event) {
-    if (
-      this.softDisabled &&
-      ((e instanceof KeyboardEvent && this.getActionForKeyEvent(e) !== ACTIONS.TAB) || !(e instanceof KeyboardEvent))
-    ) {
+    if (this.softDisabled) {
       e.preventDefault();
       e.stopPropagation();
+    }
+  }
+
+  /**
+   * Prevents default behavior for mouse and keyboard events.
+   * This prevents user interaction with the slider when it is soft-disabled.
+   * @param evt - The event to prevent.
+   */
+  private handleKeyEvent(evt: KeyboardEvent) {
+    const action = this.getActionForKeyEvent(evt);
+
+    if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
+      if (this.softDisabled) return;
+      const activeElement = this.shadowRoot?.activeElement as HTMLInputElement | null;
+      const isInputFocused = activeElement?.tagName === 'INPUT';
+
+      evt.preventDefault();
+      if (!isInputFocused) {
+        this.spatialNavEditMode = false;
+        return;
+      }
+
+      if (!this.spatialNavEditMode && action === ACTIONS.ENTER) {
+        this.spatialNavEditMode = true;
+        this.keyDownEventHandled();
+        return;
+      }
+
+      if (this.spatialNavEditMode) {
+        if (action === ACTIONS.ENTER || action === ACTIONS.ESCAPE || action === ACTIONS.UP || action === ACTIONS.DOWN) {
+          this.spatialNavEditMode = false;
+          if (action === ACTIONS.ENTER || action === ACTIONS.ESCAPE) {
+            this.keyDownEventHandled();
+          }
+        }
+
+        if (action === ACTIONS.LEFT) {
+          activeElement?.stepDown();
+          this.keyDownEventHandled();
+          this.handleInput(activeElement);
+        }
+        if (action === ACTIONS.RIGHT) {
+          activeElement?.stepUp();
+          this.keyDownEventHandled();
+          this.handleInput(activeElement);
+        }
+      }
+    } else if (this.softDisabled && action !== ACTIONS.TAB) {
+      evt.preventDefault();
+      evt.stopPropagation();
     }
   }
 
@@ -275,49 +335,58 @@ class Slider extends KeyToActionMixin(Component) {
     if (this.valueEnd === undefined) {
       this.valueEnd = this.max;
     }
-    this.handleInput(0);
-    this.handleInput(1);
+    this.inputElements.forEach(this.handleInput, this);
   }
 
   /**
-   * Handles input changes for either the start or end thumb of the range slider.
+   * Handles input changes for single slider or either the start or end thumb of the range slider.
    * Ensures thumbs do not cross over each other.
-   * @param thumbIndex - 0 for start thumb, 1 for end thumb.
+   *
+   * @param input - The input element that triggered the event, used to determine which thumb is being adjusted in a range slider scenario.
    */
-  private handleInput(thumbIndex: 0 | 1) {
-    const input = this.inputElements[thumbIndex];
+  private handleInput(input: HTMLInputElement) {
+    const inputs = Array.from(this.inputElements);
+    if (!inputs.includes(input)) return;
 
-    if (!input) return;
+    // Single slider
+    if (inputs.length === 1) {
+      this.value = Number(input.value);
+      return;
+    }
+
+    // Range slider
+    const thumbIndex = inputs.indexOf(input) as 0 | 1;
+    const rangeInput = inputs[thumbIndex];
 
     if (thumbIndex === 0) {
       if (!this.valueEnd) return; // Ensure valueEnd is available
 
-      const inputValue = Number(input.value);
+      const inputValue = Number(rangeInput.value);
 
       if (inputValue > this.valueEnd) {
-        input.value = String(this.valueEnd);
+        rangeInput.value = String(this.valueEnd);
         this.valueStart = this.valueEnd;
       } else if (inputValue >= this.min && inputValue < this.valueEnd) {
         this.valueStart = inputValue;
       } else if (inputValue < this.min) {
         // Handle case where input goes below min
-        input.value = String(this.min);
+        rangeInput.value = String(this.min);
         this.valueStart = this.min;
       }
     } else {
       // Handling the end thumb
       if (!this.valueStart) return; // Ensure valueStart is available
 
-      const inputValue = Number(input.value);
+      const inputValue = Number(rangeInput.value);
 
       if (inputValue < this.valueStart) {
-        input.value = String(this.valueStart);
+        rangeInput.value = String(this.valueStart);
         this.valueEnd = this.valueStart;
       } else if (inputValue <= this.max && inputValue > this.valueStart) {
         this.valueEnd = inputValue;
       } else if (inputValue > this.max) {
         // Handle case where input goes above max
-        input.value = String(this.max);
+        rangeInput.value = String(this.max);
         this.valueEnd = this.max;
       }
     }
@@ -411,7 +480,7 @@ class Slider extends KeyToActionMixin(Component) {
    */
   onInput(e: Event) {
     const input = e.target as HTMLInputElement;
-    this.value = Number(input.value);
+    this.handleInput(input);
   }
 
   /**
@@ -518,13 +587,14 @@ class Slider extends KeyToActionMixin(Component) {
                   aria-label="${this.startAriaLabel || this.label || ''}"
                   aria-valuetext="${this.startAriaValuetext || this.valueLabelStart || this.valueStart || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${() => this.handleInput(0)}
+                  @input=${this.onInput}
                   @change=${this.onChangeStart}
                   @focus=${() => {
                     this.thumbFocused = 'start';
                   }}
                   @blur=${() => {
                     this.thumbFocused = undefined;
+                    this.spatialNavEditMode = false;
                   }}
                   @mouseenter=${() => {
                     if (!this.disabled) this.thumbHovered = 'start';
@@ -532,6 +602,7 @@ class Slider extends KeyToActionMixin(Component) {
                   @mouseleave=${() => {
                     this.thumbHovered = undefined;
                   }}
+                  data-spatial-right="end-slider"
                 />
                 ${this.thumbFocused === 'start' || this.thumbHovered === 'start'
                   ? this.tooltipTemplate(this.valueLabelStart)
@@ -552,13 +623,14 @@ class Slider extends KeyToActionMixin(Component) {
                   aria-label="${this.endAriaLabel || this.label || ''}"
                   aria-valuetext="${this.endAriaValueText || this.valueLabelEnd || this.valueEnd || ''}"
                   tabindex="${this.disabled ? -1 : 0}"
-                  @input=${() => this.handleInput(1)}
+                  @input=${this.onInput}
                   @change=${this.onChangeEnd}
                   @focus=${() => {
                     this.thumbFocused = 'end';
                   }}
                   @blur=${() => {
                     this.thumbFocused = undefined;
+                    this.spatialNavEditMode = false;
                   }}
                   @mouseenter=${() => {
                     if (!this.disabled) this.thumbHovered = 'end';
@@ -566,6 +638,7 @@ class Slider extends KeyToActionMixin(Component) {
                   @mouseleave=${() => {
                     this.thumbHovered = undefined;
                   }}
+                  data-spatial-left="start-slider"
                 />
                 ${this.thumbFocused === 'end' || this.thumbHovered === 'end'
                   ? this.tooltipTemplate(this.valueLabelEnd, this.thumbFocused || this.thumbHovered)
@@ -595,6 +668,7 @@ class Slider extends KeyToActionMixin(Component) {
                   }}
                   @blur=${() => {
                     this.thumbFocused = undefined;
+                    this.spatialNavEditMode = false;
                   }}
                   @mouseenter=${() => {
                     if (!this.disabled) this.thumbHovered = 'start';

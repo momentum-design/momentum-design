@@ -295,6 +295,21 @@ test.describe('Accordion Feature Scenarios', () => {
         // Check that the 'shown' event was NOT propagated to the accordion
         await expect(waitForShown).not.toEventEmitted();
       });
+
+      await test.step('spatial navigation', async () => {
+        const { accordion, headerButtonSection, content } = await setup({ componentsPage, children: 'Content' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(headerButtonSection).toBeFocused();
+
+        const waitForShown = await componentsPage.waitForEvent(accordion, 'shown');
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForShown).toEventEmitted();
+        await expect(accordion).toHaveAttribute('expanded');
+        await expect(content).toBeVisible();
+      });
     });
   });
 });

@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -173,6 +174,19 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       });
 
       expect(isFocused).toBe(true);
+    });
+
+    await test.step('spatial navigation', async () => {
+      const link = await setup({ componentsPage });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(link).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(link, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
   });
 

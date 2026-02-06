@@ -420,6 +420,23 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemradio-default');
   });
 
+  await test.step('spatial navigation', async () => {
+    const radio = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(radio).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(radio, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(radio).toBeChecked();
+    await expect(waitForClick).toEventEmitted();
+
+    await keyboard.press(KEYS.ENTER);
+    await expect(radio).toBeChecked();
+  });
+
   await test.step('programmatic control', async () => {
     await test.step('click method works as expected', async () => {
       const menuItemRadio = await setup({ componentsPage });
