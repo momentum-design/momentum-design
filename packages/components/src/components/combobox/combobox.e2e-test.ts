@@ -959,6 +959,56 @@ test.describe('Combobox Feature Scenarios', () => {
         });
         await expect(combobox).toHaveAttribute('value', 'brazil');
       });
+
+      await test.step('spatial navigation', async () => {
+        const { input, options, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          id: 'combobox-value-change',
+        });
+
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        // Move focus to select
+        await keyboard.press(KEYS.ARROW_DOWN);
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(dropdown).not.toBeVisible();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(dropdown).not.toBeVisible();
+
+        // Open Select oly via ENTER key
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expect(dropdown).toBeVisible();
+
+        // Escape closes the dropdown
+        await keyboard.press(KEYS.ESCAPE);
+        await expect(dropdown).not.toBeVisible();
+
+        await keyboard.press(KEYS.ENTER);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(2)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(options.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(options.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+        // Select option via ENTER key
+        await keyboard.press(KEYS.ENTER);
+        await expect(input).toHaveValue('Argentina');
+        await expect(dropdown).not.toBeVisible();
+      });
     });
 
     /**

@@ -1,11 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { getHelperIcon } from '../formfieldwrapper/formfieldwrapper.utils';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -591,6 +590,30 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         'Please use at least 5 characters (you are currently using 4 characters).',
         'Use at least 5 characters',
       ]).toContain(validationMessage);
+    });
+
+    await test.step('spatial navigation', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Placeholder',
+          required: true,
+          maxlength: 10,
+        },
+        true,
+      );
+      const input = form.locator('mdc-input');
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(input).toBeFocused();
+
+      // Enter does not trigger submit in spatial navigation mode
+      const waitForInput = await componentsPage.waitForEvent(form, 'submit');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForInput).not.toEventEmitted();
     });
   });
 

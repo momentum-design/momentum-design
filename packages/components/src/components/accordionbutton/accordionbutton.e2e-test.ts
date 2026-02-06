@@ -237,6 +237,21 @@ test.describe('AccordionButton Feature Scenarios', () => {
         await headerButton.press(KEYS.ENTER);
         await expect(headerButtonSection).toHaveAttribute('aria-expanded', 'false');
       });
+
+      await test.step('spatial navigation', async () => {
+        const { content, accordionButton } = await setup({ componentsPage });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(accordionButton).toBeFocused();
+
+        const waitForShown = await componentsPage.waitForEvent(accordionButton, 'shown');
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForShown).toEventEmitted();
+        await expect(accordionButton).toHaveAttribute('expanded');
+        await expect(content).toBeVisible();
+      });
     });
 
     /**

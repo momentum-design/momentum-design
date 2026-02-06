@@ -1,9 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS, LINK_SIZES } from './link.constants';
 
@@ -212,6 +211,21 @@ test('mdc-link', async ({ componentsPage }) => {
       });
 
       expect(isFocused).toBe(true);
+    });
+
+    await test.step('spatial navigation', async () => {
+      await componentsPage.page.goto(originalURL);
+      const link = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(link).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(link, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
   });
 });

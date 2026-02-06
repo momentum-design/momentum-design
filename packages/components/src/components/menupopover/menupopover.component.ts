@@ -394,9 +394,9 @@ class MenuPopover extends Popover {
     if (currentIndex === -1) return;
     this.resetTabIndexes(currentIndex);
 
-    const targetKey = this.getActionForKeyEvent(event, true);
+    const action = this.getActionForKeyEvent(event, true);
 
-    switch (targetKey) {
+    switch (action) {
       case ACTIONS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
@@ -468,6 +468,7 @@ class MenuPopover extends Popover {
     // When menu consume any of the pressed key, we need to stop propagation
     // to prevent the event from bubbling up and being handled by parent components which might use the same key.
     if (isKeyHandled) {
+      this.keyDownEventHandled();
       event.stopPropagation();
       event.preventDefault();
     }
@@ -481,7 +482,7 @@ class MenuPopover extends Popover {
    * Space key closes the menu when the user presses it on a menu item,
    * but the same key will trigger a click on the menu opener button.
    * The button uses the keyup event so we have to handle it here as well
-   * to prevent the meu opener action which would re-open the menu.
+   * to prevent the menu opener action which would re-open the menu.
    *
    * @param event - The keyboard event that triggered the keydown action.
    * @returns - This method does not return anything.

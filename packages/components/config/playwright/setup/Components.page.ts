@@ -16,6 +16,12 @@ interface MountOptions {
   elementSelector?: string;
 }
 
+interface WrapOptions {
+  targetSelector?: string;
+  wrapperTagName: string;
+  wrapperProps?: Record<string, string>;
+}
+
 interface ComponentsPage {
   accessibility: Accessibility;
   actionability: Actionability;
@@ -118,6 +124,44 @@ class ComponentsPage {
           }
         },
         { html, htmlRootElementSelector: elementSelector || htmlRootElementSelector, clearDocument },
+      );
+    });
+  }
+
+  /**
+   * Wrap a target element with a wrapper element and optional props
+   * When `targetSelector` not set, it wraps everything inside the #root element
+   *
+   * @param options - a object with options, including the `targetSelector`, `wrapperTagName` and optional `wrapperProps`
+   */
+  async wrapElement({ wrapperTagName, wrapperProps, targetSelector }: WrapOptions) {
+    await test.step(`Wrap element with ${wrapperTagName}`, async () => {
+      await this.page.evaluate(
+        ({ wrapperTagName, wrapperProps, targetSelector, htmlRootElementSelector }) => {
+          let parent = document.querySelector(htmlRootElementSelector);
+
+          if (targetSelector) {
+            parent = document.querySelector(targetSelector);
+          }
+
+          if (!parent) {
+            throw new Error(
+              `Parent element not found. Make sure the "${targetSelector}" or "${htmlRootElementSelector}" exists.`,
+            );
+          }
+
+          const wrapper = document.createElement(wrapperTagName);
+
+          if (wrapperProps) {
+            Object.keys(wrapperProps).forEach(key => {
+              wrapper.setAttribute(key, wrapperProps[key]);
+            });
+          }
+
+          Array.from(parent.childNodes).forEach(child => wrapper.appendChild(child));
+          parent.appendChild(wrapper);
+        },
+        { wrapperTagName, wrapperProps, targetSelector, htmlRootElementSelector },
       );
     });
   }
