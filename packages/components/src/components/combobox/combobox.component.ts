@@ -4,7 +4,7 @@ import { property, query, queryAssignedElements, state } from 'lit/decorators.js
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
-import { ElementStore } from '../../utils/controllers/ElementStore';
+import { ElementStore, type ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -24,7 +24,8 @@ import type { PopoverStrategy } from '../popover/popover.types';
 import { TAG_NAME as SELECTLISTBOX_TAG_NAME } from '../selectlistbox/selectlistbox.constants';
 import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
 import { ComboboxEventManager } from './combobox.events';
@@ -105,9 +106,11 @@ import type { Placement } from './combobox.types';
  * @csspart combobox-button-icon - The icon element of the button of the combobox.
  */
 class Combobox
-  extends KeyToActionMixin(
-    CaptureDestroyEventForChildElement(
-      AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
+  extends KeyDownHandledMixin(
+    KeyToActionMixin(
+      CaptureDestroyEventForChildElement(
+        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ControlTypeMixin(FormfieldWrapper)))),
+      ),
     ),
   )
   implements AssociatedFormControl
@@ -218,12 +221,12 @@ class Combobox
   constructor() {
     super();
 
-    this.addEventListener(LIFE_CYCLE_EVENTS.DESTROYED, this.handleDestroyEvent);
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
     // This must be initialized after the destroyed event listener
     // to keep the element in the itemStore in order to move the focus correctly
     this.itemsStore = new ElementStore<Option>(this, {
       isValidItem: this.isValidItem,
+      onStoreUpdate: this.onStoreUpdate,
     });
   }
 
@@ -282,6 +285,44 @@ class Combobox
     }
   };
 
+  /** @internal */
+  private onStoreUpdate = (
+    option: Option,
+    changeType: ElementStoreChangeTypes,
+    index: number,
+    options: Option[],
+  ): void => {
+    switch (changeType) {
+      case 'added':
+        option.setAttribute('tabindex', index === 0 && options.length === 0 ? '0' : '-1');
+        if (option.hasAttribute('selected')) {
+          this.navItems.forEach(option => option.setAttribute('tabindex', '-1'));
+          option.setAttribute('tabindex', '0');
+        }
+        break;
+      case 'removed':
+        {
+          const destroyedElement = option;
+          if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
+            return;
+          }
+
+          const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
+          if (destroyedItemIndex === -1) {
+            return;
+          }
+
+          let newIndex = destroyedItemIndex + 1;
+          if (newIndex >= this.navItems.length) {
+            newIndex = destroyedItemIndex - 1;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   /**
    * Update the selected value when an option is modified.
    *
@@ -315,29 +356,6 @@ class Combobox
       }
       default:
         break;
-    }
-  };
-
-  /**
-   * Update the focus when an item is removed.
-   * If there is a next item, focus it. If not, focus the previous item.
-   *
-   * @internal
-   */
-  private handleDestroyEvent = (event: CustomEvent) => {
-    const destroyedElement = event.detail.originalTarget as HTMLElement;
-    if (destroyedElement && (!this.isValidItem(destroyedElement) || destroyedElement.tabIndex !== 0)) {
-      return;
-    }
-
-    const destroyedItemIndex = this.navItems.findIndex(node => node === destroyedElement);
-    if (destroyedItemIndex === -1) {
-      return;
-    }
-
-    let newIndex = destroyedItemIndex + 1;
-    if (newIndex >= this.navItems.length) {
-      newIndex = destroyedItemIndex - 1;
     }
   };
 
@@ -653,27 +671,43 @@ class Combobox
   private handleInputKeydown(event: KeyboardEvent): void {
     const options = this.getVisibleOptions(this.filteredValue).filter(option => !option.hasAttribute('disabled'));
     const activeIndex = options.findIndex(option => option.hasAttribute('data-focused'));
+    const isSpatialNavigation = this.getKeyboardNavMode() === NAV_MODES.SPATIAL;
     switch (this.getActionForKeyEvent(event)) {
       case ACTIONS.DOWN: {
-        this.openPopover();
+        if (!isSpatialNavigation) {
+          this.openPopover();
+        } else if (!this.isOpen) {
+          break;
+        }
         const newIndex = options.length - 1 === activeIndex ? 0 : activeIndex + 1;
         this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
+        this.keyDownEventHandled();
         break;
       }
       case ACTIONS.UP: {
-        this.openPopover();
+        if (!isSpatialNavigation) {
+          this.openPopover();
+        } else if (!this.isOpen) {
+          break;
+        }
         const newIndex = activeIndex === -1 || activeIndex === 0 ? options.length - 1 : activeIndex - 1;
         this.updateFocusAndScrollIntoView(options, activeIndex, newIndex);
         event.preventDefault();
+        this.keyDownEventHandled();
         break;
       }
       case ACTIONS.ENTER: {
-        if (activeIndex === -1) return;
-        this.setSelectedValue(options[activeIndex]);
-        if (this.isOpen) {
-          this.closePopover();
+        if (isSpatialNavigation && !this.isOpen) {
+          this.openPopover();
+        } else {
+          if (activeIndex === -1) return;
+          this.setSelectedValue(options[activeIndex]);
+          if (this.isOpen) {
+            this.closePopover();
+          }
         }
+        this.keyDownEventHandled();
         break;
       }
       case ACTIONS.ESCAPE: {
@@ -689,15 +723,18 @@ class Combobox
             this.filteredValue = '';
           }
         }
+        this.keyDownEventHandled();
         break;
       }
       case ACTIONS.TAB: {
         this.closePopover();
+        this.keyDownEventHandled();
         break;
       }
       case ACTIONS.HOME:
       case ACTIONS.END: {
         this.resetFocusedOption();
+        this.keyDownEventHandled();
         break;
       }
       default:

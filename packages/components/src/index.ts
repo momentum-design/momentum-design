@@ -89,10 +89,12 @@ import ListBox from './components/listbox';
 import Banner from './components/banner';
 
 // Types Imports
+import type { AvatarSize } from './components/avatar/avatar.types';
 import type { BadgeType } from './components/badge/badge.types';
 import type { ColorType as ChipColorType } from './components/staticchip/staticchip.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
+import type { PresenceType } from './components/presence/presence.types';
 import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -129,6 +131,7 @@ import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
 import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
+import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
 
 // Components Exports
 export {
@@ -223,6 +226,7 @@ export {
 
 // Types Exports
 export type {
+  AvatarSize,
   BadgeType,
   ChipColorType,
   ButtonColor,
@@ -233,6 +237,7 @@ export type {
   MenuSectionChangeEvent,
   PillButtonSize,
   PopoverPlacement,
+  PresenceType,
   SkeletonVariant,
   SelectChangeEvent,
   SelectInputEvent,
@@ -254,6 +259,7 @@ export type {
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
   ToggleOnChangeEvent,
+  CheckboxOnChangeEvent,
   LinkButtonSize,
 };
 

@@ -7,7 +7,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -59,7 +60,7 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
  */
 class Checkbox
-  extends KeyToActionMixin(
+  extends KeyDownHandledMixin(
     KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
   )
   implements AssociatedFormControl
@@ -78,13 +79,6 @@ class Checkbox
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
-
-  /**
-   * Automatically focuses the checkbox when the page loads.
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) override autofocus = false;
 
   /**
    * Determines the visual style of the helper text.
@@ -184,13 +178,22 @@ class Checkbox
    */
   private handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
-      event.preventDefault();
-    }
+    if (this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
+      if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
+        event.preventDefault();
+      }
 
-    if (action === ACTIONS.ENTER) {
-      this.form?.requestSubmit();
-      event.preventDefault();
+      if (action === ACTIONS.ENTER) {
+        this.form?.requestSubmit();
+        event.preventDefault();
+        this.keyDownEventHandled();
+      }
+    }
+    if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
+      if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
+        this.toggleState();
+        this.keyDownEventHandled();
+      }
     }
   }
 
@@ -254,6 +257,8 @@ class Checkbox
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Checkbox;

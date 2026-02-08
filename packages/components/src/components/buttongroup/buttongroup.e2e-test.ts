@@ -1,7 +1,6 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 
@@ -118,7 +117,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[28],
     });
-    await buttonGroupStickerSheet.createMarkupWithCombination({orientation: BUTTON_GROUP_ORIENTATION});
+    await buttonGroupStickerSheet.createMarkupWithCombination({ orientation: BUTTON_GROUP_ORIENTATION });
 
     // split icon button
     buttonGroupStickerSheet.setChildren(`
@@ -224,6 +223,38 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press('Escape');
       await expect(popover).toBeHidden();
+    });
+
+    await test.step('spatial navigation', async () => {
+      const buttongroup = await setup({
+        componentsPage,
+        children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
+      <mdc-button prefix-icon="reactions-bold"></mdc-button>
+      <mdc-button prefix-icon="alert-active-bold"></mdc-button>
+      <mdc-button prefix-icon="forward-message-bold"></mdc-button>
+      <mdc-button prefix-icon="more-bold"></mdc-button>`,
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      const buttons = buttongroup.locator('mdc-button');
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_RIGHT, [
+        buttons.first(),
+        buttons.nth(1),
+        buttons.nth(2),
+        buttons.nth(3),
+        buttons.last(),
+      ]);
+      await componentsPage.actionability.pressAndCheckFocus(KEYS.ARROW_LEFT, [
+        buttons.nth(3),
+        buttons.nth(2),
+        buttons.nth(1),
+        buttons.first(),
+      ]);
+
+      const waitForClick = await componentsPage.waitForEvent(buttons.first(), 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
   });
 });

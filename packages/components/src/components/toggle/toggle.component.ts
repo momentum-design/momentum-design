@@ -10,7 +10,7 @@ import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
@@ -186,7 +186,7 @@ class Toggle
       event.preventDefault();
     }
 
-    if (action === ACTIONS.ENTER) {
+    if (action === ACTIONS.ENTER && this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       this.form?.requestSubmit();
     }
   }

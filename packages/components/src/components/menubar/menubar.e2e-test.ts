@@ -1,6 +1,7 @@
 import type { Locator } from '@playwright/test';
 
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 type MenuItemConfig = {
   id: string;
@@ -447,6 +448,52 @@ test.describe('Menubar Feature Scenarios', () => {
         await expect(styleSubmenu).toBeVisible();
         await expect(submenuSmall).toBeFocused();
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const locators = await setup({ componentsPage });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.file).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.edit).toBeFocused();
+
+      // open submenu
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      const submenu = componentsPage.page.locator('#edit-popover');
+      await expect(submenu).toBeVisible();
+      await expect(submenu.locator('#edit-undo')).toBeFocused();
+
+      // close submenu
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(locators.file).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.edit).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.view).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.window).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.preferences).toBeFocused();
+
+      // Soft disabled focus remains on the item and submenu does not open
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(locators.preferences).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.help).toBeFocused();
+
+      // No loop back
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(componentsPage.page.locator('#outside')).toBeFocused();
     });
   });
 });

@@ -5,6 +5,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './searchfield.styles';
 import { DEFAULTS } from './searchfield.constants';
@@ -72,7 +73,7 @@ import { DEFAULTS } from './searchfield.constants';
  * @csspart input-text - The input field element.
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  */
-class Searchfield extends Input {
+class Searchfield extends KeyDownHandledMixin(Input) {
   @queryAssignedElements({ slot: 'filters' })
   inputChips?: Array<HTMLElement>;
 
@@ -96,6 +97,7 @@ class Searchfield extends Input {
     super.handleKeyDown(event);
     if (this.getActionForKeyEvent(event) === ACTIONS.ESCAPE) {
       this.clearInputText();
+      this.keyDownEventHandled();
     }
   }
 
@@ -156,6 +158,7 @@ class Searchfield extends Input {
   protected handleFilterContainerKeyDown = (e: KeyboardEvent) => {
     if (this.getActionForKeyEvent(e) === ACTIONS.ENTER) {
       this.handleFilterContainerClick();
+      this.keyDownEventHandled();
     }
   };
 

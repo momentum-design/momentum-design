@@ -494,6 +494,76 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).toBeVisible();
     });
   });
+
+  await test.step('spatial navigation', async () => {
+    await componentsPage.mount({
+      html: `
+          <mdc-dialog id="test-dialog" visible>
+            <div slot="dialog-body">
+              <mdc-button id="trigger-button-dialog">Open Popover</mdc-button>
+              <mdc-popover
+                id="popover"
+                triggerId="trigger-button-dialog"
+                interactive
+                hide-on-escape
+                focus-trap
+                focus-back-to-trigger
+                hide-on-outside-click
+              >
+                <mdc-button>Button inside Popover inside dialog</mdc-button>
+              </mdc-popover>
+            </div>
+          </mdc-dialog>
+        `,
+      clearDocument: true,
+    });
+
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    const dialog = componentsPage.page.locator('#test-dialog');
+    const popover = componentsPage.page.locator('#popover');
+
+    await componentsPage.setAttributes(dialog, { visible: '' });
+
+    // add event listener to dialog for close event
+    // this is to ensure that the dialog closes when the close button is clicked
+    // since the dialog is a controlled component, the consumer needs to handle the close event
+    // and set the visible attribute to false
+    await componentsPage.page.evaluate(dialogId => {
+      const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+      if (dialogElement) {
+        dialogElement.onclose = () => {
+          dialogElement.visible = false;
+        };
+      }
+    }, 'test-dialog');
+
+    // Ensure dialog and popover are visible
+    await expect(dialog).toBeVisible();
+
+    await componentsPage.page.locator('#trigger-button-dialog').focus();
+    await keyboard.press(KEYS.ENTER);
+    await expect(popover).toBeVisible();
+
+    await componentsPage.page.pause();
+    // Focus the popover and press Escape
+    await expect(
+      componentsPage.page.getByRole('button', { name: 'Button inside Popover inside dialog' }),
+    ).toBeFocused();
+    await keyboard.press(KEYS.ESCAPE);
+
+    // Popover should close, dialog should remain open and Popover Button Trigger should be focused
+    await expect(popover).not.toBeVisible();
+    await expect(dialog).toBeVisible();
+    await expect(componentsPage.page.locator('#trigger-button-dialog')).toBeFocused();
+
+    // Press Escape again to close the dialog
+    await keyboard.press(KEYS.ESCAPE);
+    // Dialog should close
+    await expect(dialog).not.toBeVisible();
+    await expect(popover).not.toBeVisible();
+  });
 };
 
 /**

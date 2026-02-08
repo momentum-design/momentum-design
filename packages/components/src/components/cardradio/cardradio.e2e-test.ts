@@ -5,6 +5,7 @@ import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtu
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
+import { KEYS } from '../../utils/keys';
 
 interface CardRadioArgs {
   name?: string;
@@ -233,6 +234,21 @@ test.describe.parallel('mdc-cardradio', () => {
           await expect(cards.nth(0)).toBeFocused();
           await expect(cards.nth(0)).toBeChecked();
         });
+      });
+
+      await test.step('spatial navigation', async () => {
+        const radio = await setup({ componentsPage });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(radio).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio).toBeChecked();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio).toBeChecked();
       });
     });
 

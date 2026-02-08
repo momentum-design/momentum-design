@@ -1,11 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { IconNames } from '../icon/icon.types';
 import type { ColorType } from '../staticchip/staticchip.types';
+import { KEYS } from '../../utils/keys';
 
 import { COLOR } from './chip.constants';
 
@@ -155,6 +154,18 @@ test('mdc-chip', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(chip).toHaveClass('chip-listener chip-onclick');
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(chip).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(chip, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
   });
 });

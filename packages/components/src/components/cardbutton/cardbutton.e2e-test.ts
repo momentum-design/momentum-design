@@ -5,6 +5,7 @@ import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtu
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
+import { KEYS } from '../../utils/keys';
 
 interface SetupOptions {
   componentsPage: ComponentsPage;
@@ -170,6 +171,21 @@ test.describe.parallel('mdc-cardbutton', () => {
           await componentsPage.actionability.pressTab();
           await expect(cardbutton).not.toBeFocused();
         });
+      });
+
+      await test.step('spatial navigation', async () => {
+        const cardbutton = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await componentsPage.page.evaluate(() => (document.activeElement as HTMLElement)?.blur());
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(cardbutton).toBeFocused();
+
+        const waitForClick = await componentsPage.waitForEvent(cardbutton, 'click');
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForClick).toEventEmitted();
       });
     });
   });

@@ -1,4 +1,5 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { BUTTON_SIZES, DEFAULTS } from './buttonsimple.constants';
 
@@ -270,5 +271,18 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
 
       await expect(waitForClickAfterDisabled).not.toEventEmitted();
     });
+  });
+
+  await test.step('spatial navigation', async () => {
+    const button = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(button).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(button, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(waitForClick).toEventEmitted();
   });
 });
