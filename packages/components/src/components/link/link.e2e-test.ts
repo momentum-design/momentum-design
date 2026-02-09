@@ -161,6 +161,19 @@ test('mdc-link', async ({ componentsPage }) => {
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('link-default');
     });
+
+    await test.step('matches screenshot of multi-line link', async () => {
+      const multiLineHtml = `
+        <div style="width: 200px;">
+          <mdc-link href="#" icon-name="placeholder-bold">This is a link that will wrap onto multiple lines</mdc-link>
+        </div>
+      `;
+      await componentsPage.mount({ html: multiLineHtml, clearDocument: true });
+      const multiLineContainer = componentsPage.page.locator('div').first();
+      await multiLineContainer.waitFor();
+      await componentsPage.page.mouse.move(0, 0);
+      await componentsPage.visualRegression.takeScreenshot('mdc-link-multi-line', { element: multiLineContainer });
+    });
   });
 
   /**
