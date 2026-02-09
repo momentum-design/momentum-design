@@ -165,7 +165,7 @@ test('mdc-link', async ({ componentsPage }) => {
     await test.step('matches screenshot of multi-line link', async () => {
       const multiLineHtml = `
         <div style="width: 200px;">
-          <mdc-link href="#">This is a link that will wrap onto multiple lines</mdc-link>
+          <mdc-link href="#" icon-name="placeholder-bold">This is a link that will wrap onto multiple lines</mdc-link>
         </div>
       `;
       await componentsPage.mount({ html: multiLineHtml, clearDocument: true });
