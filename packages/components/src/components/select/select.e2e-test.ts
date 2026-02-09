@@ -835,6 +835,27 @@ test('mdc-select', async ({ componentsPage }) => {
         `,
       };
 
+      await test.step('component should focus on the base-container and not the select element with no options', async () => {
+        const select = await setup({
+          componentsPage,
+          children: `
+            <mdc-selectlistbox></mdc-selectlistbox>
+          `,
+        });
+
+        await componentsPage.actionability.pressTab();
+
+        await expect(select.locator(`div[id="${TRIGGER_ID}"]`)).toBeFocused();
+      });
+
+      await test.step('component should focus on the base-container and not the select element with options', async () => {
+        const select = await setup(setupArguments);
+
+        await componentsPage.actionability.pressTab();
+
+        await expect(select.locator(`div[id="${TRIGGER_ID}"]`)).toBeFocused();
+      });
+
       await test.step('component should focus an option by typing a letter', async () => {
         const select = await setup(setupArguments);
         await componentsPage.actionability.pressTab();
