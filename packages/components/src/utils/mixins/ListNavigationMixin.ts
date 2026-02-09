@@ -5,7 +5,6 @@ import { Component } from '../../models';
 import type { BaseArray } from '../virtualIndexArray';
 import type { SpatialNavigationEvent } from '../../components/spatialnavigationprovider/spatialnavigationprovider.events';
 import { getElementOrHost } from '../dom';
-import ListItem from '../../components/listitem/listitem.component';
 
 import type { Constructor } from './index.types';
 import { Actions, ACTIONS, KeyToActionInterface, KeyToActionMixin, NAV_MODES } from './KeyToActionMixin';
@@ -114,9 +113,12 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      *
      * @param event - The event triggered when an item is created.
      */
-    protected handleItemCreation = (event: Event) => {
+    protected handleItemCreation = (event: CustomEvent | Event) => {
       const { target } = event;
-      if (this.navItems.length === 0 && target instanceof ListItem) {
+
+      const isLifecycleEvent = event instanceof CustomEvent && event.detail?.lifecycle;
+
+      if (this.navItems.length === 0 && target instanceof Component && isLifecycleEvent) {
         target.setAttribute('tabindex', '0');
       }
     };
