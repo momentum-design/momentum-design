@@ -542,9 +542,6 @@ test('mdc-list', async ({ componentsPage }) => {
         await list.waitFor();
         const listItems = list.locator('mdc-listitem');
 
-        // Verify aria-orientation attribute
-        await expect(list).toHaveAttribute('aria-orientation', 'horizontal');
-
         // Focus first item
         await componentsPage.actionability.pressTab();
         await expect(listItems.nth(0)).toBeFocused();
@@ -594,52 +591,6 @@ test('mdc-list', async ({ componentsPage }) => {
 
         await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
         await expect(listItems.nth(0)).toBeFocused();
-      });
-
-      await test.step('should have correct aria-orientation attribute for vertical list', async () => {
-        await componentsPage.mount({
-          html: `
-            <mdc-list>
-              ${generateChildren(3)}
-            </mdc-list>
-          `,
-          clearDocument: true,
-        });
-
-        const list = componentsPage.page.locator('mdc-list');
-        await list.waitFor();
-
-        // Verify aria-orientation attribute defaults to vertical
-        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
-      });
-
-      await test.step('should update aria-orientation when orientation attribute changes', async () => {
-        await componentsPage.mount({
-          html: `
-            <mdc-list orientation="vertical">
-              ${generateChildren(3)}
-            </mdc-list>
-          `,
-          clearDocument: true,
-        });
-
-        const list = componentsPage.page.locator('mdc-list');
-        await list.waitFor();
-
-        // Verify initial aria-orientation
-        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
-
-        // Change orientation to horizontal
-        await list.evaluate(node => node.setAttribute('orientation', 'horizontal'));
-
-        // Verify aria-orientation updated
-        await expect(list).toHaveAttribute('aria-orientation', 'horizontal');
-
-        // Change back to vertical
-        await list.evaluate(node => node.setAttribute('orientation', 'vertical'));
-
-        // Verify aria-orientation updated again
-        await expect(list).toHaveAttribute('aria-orientation', 'vertical');
       });
     });
   });

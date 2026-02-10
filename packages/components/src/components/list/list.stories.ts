@@ -378,7 +378,6 @@ export const HorizontalOrientation: StoryObj = {
           <ul>
             <li>List items are arranged horizontally, by setting orientation="horizontal"</li>
             <li>Use Left/Right arrow keys to navigate instead of Up/Down</li>
-            <li>aria-orientation is set to horizontal, to inform Screen Reader about the direction.</li>
             <li>Home/End keys still move to first/last items</li>
           </ul>`,
       },

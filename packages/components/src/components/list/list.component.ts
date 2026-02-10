@@ -58,7 +58,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
 
   /**
    * The orientation of the list.
-   * Controls the Flexbox direction, aria-orientation and the direction of keyboard navigation:
+   * Controls the Flexbox direction and the direction of keyboard navigation:
    * - 'vertical': Up/Down arrow keys navigate between items
    * - 'horizontal': Left/Right arrow keys navigate between items
    *
@@ -88,15 +88,6 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.LIST;
-    this.setAttribute('aria-orientation', this.orientation);
-  }
-
-  override updated(changedProperties: Map<string, unknown>): void {
-    super.updated(changedProperties);
-
-    if (changedProperties.has('orientation')) {
-      this.setAttribute('aria-orientation', this.orientation);
-    }
   }
 
   /**
