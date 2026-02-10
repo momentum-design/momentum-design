@@ -18,7 +18,7 @@ export const IconNameMixin = <T extends Constructor<LitElement>>(superClass: T) 
      *
      * @default undefined
      */
-    @property({ type: String, attribute: 'icon-name' })
+    @property({ type: String, attribute: 'icon-name', reflect: true })
     iconName?: IconNames;
   }
   // Cast return type to your mixin's interface intersected with the superClass type
