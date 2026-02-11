@@ -593,5 +593,33 @@ test('mdc-list', async ({ componentsPage }) => {
         await expect(listItems.nth(0)).toBeFocused();
       });
     });
+
+    await test.step('vertical orientation', async () => {
+      await test.step('should not navigate with left/right arrow keys in vertical orientation', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-list orientation="vertical">
+              ${generateChildren(3)}
+            </mdc-list>
+          `,
+          clearDocument: true,
+        });
+
+        const list = componentsPage.page.locator('mdc-list');
+        await list.waitFor();
+        const listItems = list.locator('mdc-listitem');
+
+        // Focus first item
+        await componentsPage.actionability.pressTab();
+        await expect(listItems.nth(0)).toBeFocused();
+
+        // Left/Right arrows should not navigate (focus should remain on first item)
+        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(0)).toBeFocused();
+
+        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(0)).toBeFocused();
+      });
+    });
   });
 });

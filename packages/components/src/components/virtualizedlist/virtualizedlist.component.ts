@@ -4,6 +4,7 @@ import { property, eventOptions, query } from 'lit/decorators.js';
 import { defaultRangeExtractor, type Range, ScrollToOptions, type VirtualItem } from '@tanstack/virtual-core';
 
 import List from '../list/list.component';
+import { ORIENTATION } from '../list/list.constants';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { Interval } from '../../utils/range';
@@ -310,6 +311,7 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
 
   constructor() {
     super();
+    this.orientation = ORIENTATION.VERTICAL;
     this.addEventListener('wheel', this.handleWheelEvent.bind(this));
     this.addEventListener(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, this.handleElementFirstUpdateCompleted.bind(this));
   }
@@ -359,6 +361,12 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
+
+    // Orientation is always 'vertical' for virtualized lists.
+    // Horizontal orientation is not supported.
+    if (changedProperties.has('orientation') && this.orientation !== ORIENTATION.VERTICAL) {
+      this.orientation = ORIENTATION.VERTICAL;
+    }
 
     if (changedProperties.has('virtualizerProps')) {
       await this.handleVirtualizerPropsUpdate(changedProperties.get('virtualizerProps') as VirtualizerProps);

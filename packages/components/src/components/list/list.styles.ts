@@ -8,6 +8,11 @@ const styles = css`
     scroll-padding-bottom: 0.25rem;
   }
 
+  :host([orientation='horizontal']) {
+    scroll-padding-left: 0.25rem;
+    scroll-padding-right: 0.25rem;
+  }
+
   :host::part(container) {
     display: flex;
     flex-direction: column;
