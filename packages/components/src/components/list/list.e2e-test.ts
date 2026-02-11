@@ -53,7 +53,7 @@ const setup = async (args: SetUpOptions) => {
   await componentsPage.mount({
     html: `
       <div>
-        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}" orientation="${restArgs.orientation ?? ''}">
+        <mdc-list loop='${restArgs.loop ?? ''}' initial-focus="${restArgs['initial-focus'] ?? ''}" orientation="${restArgs.orientation ?? 'vertical'}">
           ${restArgs['header-text'] ? `<mdc-listheader header-text="${restArgs['header-text']}"></mdc-listheader>` : ''}
           ${restArgs.children ? restArgs.children : ''}
         </mdc-list>
