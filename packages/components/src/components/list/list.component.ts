@@ -13,6 +13,7 @@ import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contan
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 import type { BaseArray } from '../../utils/virtualIndexArray';
 
+import type { OrientationType } from './list.types';
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
 
@@ -54,6 +55,17 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
    */
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
+
+  /**
+   * The orientation of the list.
+   * Controls the Flexbox direction and the direction of keyboard navigation:
+   * - 'vertical': Up/Down arrow keys navigate between items
+   * - 'horizontal': Left/Right arrow keys navigate between items
+   *
+   * @default 'vertical'
+   */
+  @property({ type: String, reflect: true })
+  public override orientation: OrientationType = DEFAULTS.ORIENTATION;
 
   /** @internal */
   protected focusWithin = false;
