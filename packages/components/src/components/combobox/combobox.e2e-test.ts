@@ -297,6 +297,37 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(waitForClick).toEventEmitted();
       });
 
+      await test.step('should focus base input when opened via mouse click', async () => {
+        const { combobox, input, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        // Click the field container (mdc-input wrapper) to open.
+        await combobox.locator('mdc-input').click();
+        await expect(dropdown).toBeVisible();
+        await expect(input).toBeFocused();
+      });
+
+      await test.step('should keep focus on base input after mouse selection', async () => {
+        const { combobox, input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await combobox.locator('mdc-input').click();
+        await expect(dropdown).toBeVisible();
+
+        await getOptionByText('Australia').click();
+        await expect(dropdown).not.toBeVisible();
+        await expect(input).toHaveValue('Australia');
+        await expect(input).toBeFocused();
+      });
+
       await test.step('should dispatch click and focus events when clicked on combobox input', async () => {
         const { input } = await setup({ componentsPage });
         const waitForClick = await componentsPage.waitForEvent(input, 'click');

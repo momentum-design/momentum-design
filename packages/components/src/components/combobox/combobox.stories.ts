@@ -11,7 +11,7 @@ import '../tooltip';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { VALID_VALUES } from '../controltypeprovider/controltypeprovider.constants';
@@ -522,5 +522,39 @@ export const ComboboxWithHelpTextValidation: StoryObj = {
         <mdc-option value="tactics" label="Tactics"></mdc-option>
       </mdc-selectlistbox>
     `,
+  },
+};
+
+export const ControlledComboboxWithDynamicOptions: StoryObj = {
+  render: () => {
+    const options = Array.from(
+      { length: 10 },
+      (_, i) => html`<mdc-option label="Option ${i + 1}" value="${i + 1}"></mdc-option>`,
+    );
+    let extraOption: TemplateResult | null = null;
+
+    setTimeout(() => {
+      extraOption = html`<mdc-option label="Delayed Option" value="69"></mdc-option>`;
+      const select = document.querySelector('mdc-combobox[label="Select option"] mdc-selectlistbox');
+      if (select) {
+        const option = document.createElement('mdc-option');
+        option.setAttribute('label', 'Delayed Option');
+        option.setAttribute('value', '70');
+        select.appendChild(option);
+      }
+    }, 2000);
+
+    return html`
+      <mdc-combobox placeholder="Select an option" label="Select option" control-type="controlled" value="2">
+        <mdc-selectlistbox> ${options} ${extraOption} </mdc-selectlistbox>
+      </mdc-combobox>
+    `;
+  },
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      'When a combobox is controlled and it has a default value then adding options dynamically should not cause any issues. In this example, an extra option is added after 2 seconds.',
+      true,
+    ),
   },
 };
