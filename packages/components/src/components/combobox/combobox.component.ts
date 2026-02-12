@@ -714,9 +714,7 @@ class Combobox
         if (activeIndex !== -1) {
           this.updateOptionAttributes(options[activeIndex], false);
         }
-        if (options.length && this.shouldDisplayPopover(options.length)) {
-          this.closePopover();
-        } else {
+        if (!(options.length && this.shouldDisplayPopover(options.length))) {
           this.resetSelectedValue();
           // clear the visible value
           if (this.controlType !== 'controlled') {
