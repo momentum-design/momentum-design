@@ -33,6 +33,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { CUSTOM_ELEMENTS_MANIFEST, DIST_DIR, NODE_MODULES_DIR } from '../../core/constants';
+
 import type {
   CustomElementsManifest,
   ManifestAttribute,
@@ -46,7 +48,7 @@ import type {
   ParsedSlot,
 } from './types';
 
-const CUSTOM_ELEMENTS_MANIFEST_FILE_NAME = 'custom-elements.json';
+const CUSTOM_ELEMENTS_MANIFEST_FILE_NAME = CUSTOM_ELEMENTS_MANIFEST;
 
 // ============================================================================
 // Type Normalization
@@ -223,14 +225,14 @@ export const findManifest = (baseOrFile: string): string | null => {
       return localManifest;
     }
 
-    const distManifest = path.join(searchDir, 'dist', CUSTOM_ELEMENTS_MANIFEST_FILE_NAME);
+    const distManifest = path.join(searchDir, DIST_DIR, CUSTOM_ELEMENTS_MANIFEST_FILE_NAME);
     if (fs.existsSync(distManifest)) {
       return distManifest;
     }
 
     const dependencyManifest = path.join(
       searchDir,
-      'node_modules',
+      NODE_MODULES_DIR,
       '@momentum-design',
       'components',
       CUSTOM_ELEMENTS_MANIFEST_FILE_NAME,

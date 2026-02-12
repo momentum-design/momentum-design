@@ -30,9 +30,16 @@
 // End AI-Assisted
 export {
   buildGeneratedSectionMarkers,
+  CODE_CONNECT_DIR,
+  COMPONENTS_SRC_PATH_SEGMENT,
+  CUSTOM_ELEMENTS_MANIFEST,
   DEFAULT_CONNECT_OPTIONS,
   DEFAULT_IMPORT_BASE,
+  DIST_DIR,
   GENERATED_SECTION_MARKERS,
+  NODE_MODULES_DIR,
+  PACKAGE_JSON,
+  SRC_PATH_SEGMENT,
 } from './constants';
 export { formatEmitTargetOptions, listEmitTargets, parseEmitTargets } from './emit-targets';
 export type { LogContext, LoggerOptions } from './logger';

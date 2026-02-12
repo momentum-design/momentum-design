@@ -9,6 +9,35 @@
 
 import type { GeneratedSectionMarkers, GeneratedSectionName } from './types';
 
+// ============================================================================
+// Well-Known File & Directory Names
+// ============================================================================
+
+/** Standard npm package manifest file name. */
+export const PACKAGE_JSON = 'package.json';
+
+/** Custom elements manifest file name produced by the CEM analyzer. */
+export const CUSTOM_ELEMENTS_MANIFEST = 'custom-elements.json';
+
+/** Standard npm dependency directory name. */
+export const NODE_MODULES_DIR = 'node_modules';
+
+/** Standard distribution output directory name. */
+export const DIST_DIR = 'dist';
+
+/** Source root directory marker (with path separators). */
+export const SRC_PATH_SEGMENT = '/src/';
+
+/** Output sub-directory for generated Code Connect files. */
+export const CODE_CONNECT_DIR = 'code-connect';
+
+/** Package-relative import path marker for component source resolution. */
+export const COMPONENTS_SRC_PATH_SEGMENT = '/packages/components/src/';
+
+// ============================================================================
+// Generated Section Markers
+// ============================================================================
+
 /**
  * Canonical marker pair for generated sections.
  */
@@ -16,6 +45,10 @@ export const GENERATED_SECTION_MARKERS: GeneratedSectionMarkers = {
   start: '// BEGIN GENERATED',
   end: '// END GENERATED',
 };
+
+// ============================================================================
+// Default Configuration
+// ============================================================================
 
 /**
  * Default configuration values for the connect command.

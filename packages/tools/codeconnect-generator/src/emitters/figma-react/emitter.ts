@@ -22,6 +22,7 @@
  */
 import path from 'node:path';
 
+import { CODE_CONNECT_DIR, DIST_DIR, SRC_PATH_SEGMENT } from '../../core/constants';
 import { EmitterTarget } from '../../core/types';
 import { normalizePath } from '../../utils/paths';
 import { BaseEmitter } from '../base-emitter';
@@ -49,19 +50,18 @@ export class FigmaReactEmitter extends BaseEmitter {
    */
   private resolveReactImportPath(componentDir: string, baseImportPath?: string): string {
     if (baseImportPath) {
-      return `${baseImportPath}/dist/react`;
+      return `${baseImportPath}/${DIST_DIR}/react`;
     }
 
     const normalizedComponentDir = normalizePath(componentDir);
-    const srcMarker = '/src/';
-    const markerIndex = normalizedComponentDir.lastIndexOf(srcMarker);
+    const markerIndex = normalizedComponentDir.lastIndexOf(SRC_PATH_SEGMENT);
     let rootCandidate = path.posix.dirname(normalizedComponentDir);
     if (markerIndex >= 0) {
       rootCandidate = normalizedComponentDir.slice(0, markerIndex);
     }
     const packageRoot = rootCandidate || path.posix.parse(normalizedComponentDir).root;
-    const distReactPath = path.posix.join(packageRoot, 'dist', 'react');
-    const codeConnectDir = path.posix.join(normalizedComponentDir, 'code-connect');
+    const distReactPath = path.posix.join(packageRoot, DIST_DIR, 'react');
+    const codeConnectDir = path.posix.join(normalizedComponentDir, CODE_CONNECT_DIR);
     let relativePath = path.posix.relative(codeConnectDir, distReactPath);
     if (!relativePath.startsWith('.')) {
       relativePath = `./${relativePath}`;
@@ -79,7 +79,8 @@ export class FigmaReactEmitter extends BaseEmitter {
     const importPath = this.resolveReactImportPath(context.model.componentDir, context.options.baseImportPath);
     return [
       `import { ${context.model.className} } from '${importPath}';`,
-      'import figma from \'@figma/code-connect\';',
+      // eslint-disable-next-line @typescript-eslint/quotes
+      "import figma from '@figma/code-connect';",
       '',
     ];
   }

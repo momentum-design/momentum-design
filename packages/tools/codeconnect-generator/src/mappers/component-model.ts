@@ -9,6 +9,7 @@
 
 import path from 'node:path';
 
+import { COMPONENTS_SRC_PATH_SEGMENT } from '../core/constants';
 import type { ComponentModel, EventDescriptor, PropertyDescriptor } from '../core/types';
 import { normalizePath } from '../utils/paths';
 
@@ -33,11 +34,10 @@ export interface ComponentModelInput {
  * @returns Normalized import path fragment.
  */
 export const deriveImportPath = (componentDir: string): string => {
-  const marker = '/packages/components/src/';
   const normalized = normalizePath(componentDir);
-  const index = normalized.lastIndexOf(marker);
+  const index = normalized.lastIndexOf(COMPONENTS_SRC_PATH_SEGMENT);
   if (index >= 0) {
-    return normalized.slice(index + marker.length);
+    return normalized.slice(index + COMPONENTS_SRC_PATH_SEGMENT.length);
   }
   return path.posix.basename(normalized);
 };

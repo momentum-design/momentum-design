@@ -30,6 +30,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { PACKAGE_JSON } from '../core/constants';
 import type { Logger } from '../core/logger';
 import {
   createEmptyComponentResult,
@@ -63,17 +64,17 @@ import { processManifestBatch } from './manifest-batch';
  */
 function findPackageRoot(startDir: string): string | null {
   let dir = path.resolve(startDir);
+  let parent = path.dirname(dir);
 
-  while (true) {
-    if (fs.existsSync(path.join(dir, 'package.json'))) {
+  while (dir !== parent) {
+    if (fs.existsSync(path.join(dir, PACKAGE_JSON))) {
       return dir;
     }
-    const parent = path.dirname(dir);
-    if (parent === dir) {
-      return null;
-    }
     dir = parent;
+    parent = path.dirname(dir);
   }
+
+  return fs.existsSync(path.join(dir, PACKAGE_JSON)) ? dir : null;
 }
 
 /**

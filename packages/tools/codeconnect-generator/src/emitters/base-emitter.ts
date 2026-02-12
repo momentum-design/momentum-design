@@ -32,6 +32,7 @@
 
 import path from 'node:path';
 
+import { CODE_CONNECT_DIR } from '../core/constants';
 import { type EmitResult, type EmitterTarget, GeneratedSectionName } from '../core/types';
 
 import type { Emitter, EmitterContext } from './types';
@@ -109,7 +110,7 @@ export abstract class BaseEmitter implements Emitter {
     const { model } = emitterContext;
     const componentName = getComponentBaseName(model);
     const fileName = `${componentName}${this.fileSuffix}`;
-    const filePath = path.join(model.componentDir, 'code-connect', fileName);
+    const filePath = path.join(model.componentDir, CODE_CONNECT_DIR, fileName);
     const figmaUrl = `<FIGMA_${componentName.toUpperCase()}_URL>`;
 
     const { lines: propsLines, warnings } = buildPropsSection(model.props, 0);
