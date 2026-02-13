@@ -393,6 +393,15 @@ class Combobox
    * @internal
    */
   private setSelectedValue(option: Option | null, emitEvents = true, updateFromValue = false): void {
+    const label = option?.getAttribute('label') || '';
+    const value = option?.getAttribute('value') || '';
+
+    // If the value and the label are the same as the current selected option,
+    // then do nothing to prevent unnecessary updates and event emissions.
+    if (this.value === value && this.filteredValue === label) {
+      return;
+    }
+
     // For controlled components, user interactions (not coming from a value prop change)
     // should only emit events and let the parent drive the value.
     if (this.controlType === 'controlled' && !updateFromValue) {
@@ -402,9 +411,6 @@ class Combobox
       }
       return;
     }
-
-    const label = option?.getAttribute('label') || '';
-    const value = option?.getAttribute('value') || '';
 
     this.filteredValue = label;
     this.value = value;
