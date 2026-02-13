@@ -201,9 +201,6 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   localeSpinbuttonDescription: string = DEFAULTS.LOCALE_SPINBUTTON_DESCRIPTION;
 
   /** @internal */
-  @query(`[id="${TRIGGER_ID}"]`) private baseContainer!: HTMLDivElement;
-
-  /** @internal */
   @query('mdc-button[part="icon-container"]') private dropdownButton!: HTMLElement;
 
   /** @internal */
