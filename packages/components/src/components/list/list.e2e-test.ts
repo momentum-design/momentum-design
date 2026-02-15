@@ -277,6 +277,35 @@ test('mdc-list', async ({ componentsPage }) => {
         await componentsPage.actionability.pressShiftTab();
         await expect(list.locator('mdc-listitem[label="List Item 2"] mdc-button[variant="tertiary"]')).toBeFocused();
       });
+
+      // AI-Assisted
+      await test.step('should be able to focus a dynamically added item in an initially empty list', async () => {
+        const list = await setup({
+          componentsPage,
+          children: '<mdc-listheader header-text="List Header"></mdc-listheader>',
+        });
+
+        // Verify the list starts with no list items
+        await expect(list.locator('mdc-listitem')).toHaveCount(0);
+
+        // Dynamically add a list item after a delay (mirroring the DelayedChildInsertion story)
+        await list.evaluate(node => {
+          setTimeout(() => {
+            const newItem = document.createElement('mdc-listitem');
+            newItem.setAttribute('label', 'Dynamically Added Item');
+            node.appendChild(newItem);
+          }, 1000);
+        });
+
+        // Wait for the item to appear
+        await list.locator('mdc-listitem[label="Dynamically Added Item"]').waitFor();
+        await expect(list.locator('mdc-listitem')).toHaveCount(1);
+
+        // Tab into the list and verify the dynamically added item is focusable
+        await componentsPage.actionability.pressTab();
+        await expect(list.locator('mdc-listitem[label="Dynamically Added Item"]')).toBeFocused();
+      });
+      // End AI-Assisted
     });
 
     await test.step('spatial navigation', async () => {
