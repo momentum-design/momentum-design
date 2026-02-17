@@ -451,6 +451,16 @@ class Popover extends KeyDownHandledMixin(
   @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
 
+  /**
+   * The index of the interactive element to receive focus when the popover opens with focus trap enabled.
+   * The index is based on the order of interactive elements in the popover, starting from 0.
+   * If not set, the first interactive element (index 0) will receive focus by default.
+   * This is useful for cases where you want a specific element to receive focus when the popover opens, instead of the default first element.
+   * @default null
+   */
+  @property({ type: Number, attribute: 'element-index-to-receive-focus', reflect: true })
+  elementIndexToReceiveFocus: number | null = null;
+
   public arrowElement: HTMLElement | null = null;
 
   /** @internal */
@@ -828,7 +838,7 @@ class Popover extends KeyDownHandledMixin(
       setTimeout(() => {
         if (this.interactive && this.focusTrap) {
           this.activateFocusTrap?.();
-          this.setInitialFocus?.();
+          this.setInitialFocus?.(this.elementIndexToReceiveFocus ?? 0);
         }
       }, 0);
 
