@@ -458,7 +458,7 @@ class Popover extends KeyDownHandledMixin(
    * This is useful for cases where you want a specific element to receive focus when the popover opens, instead of the default first element.
    * @default null
    */
-  @property({ type: Number, attribute: 'element-index-to-receive-focus' })
+  @property({ type: Number, attribute: 'element-index-to-receive-focus', reflect: true })
   elementIndexToReceiveFocus: number | null = null;
 
   public arrowElement: HTMLElement | null = null;
