@@ -499,6 +499,52 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(dropdown).not.toBeVisible();
       });
 
+      await test.step('should close dropdown only when the combobox is inside a popover and Escape key is pressed', async () => {
+        const popoverId = 'test-popover';
+        const triggerId = 'popover-trigger';
+
+        await componentsPage.mount({
+          html: `
+            <div>
+              <mdc-button id="${triggerId}" aria-label="Open Popover">Open Popover</mdc-button>
+              <mdc-popover
+                id="${popoverId}"
+                triggerID="${triggerId}"
+                trigger="click"
+                visible="true"
+                hide-on-escape="false"
+                interactive="true"
+                aria-label="Popover containing combobox"
+              >
+                <mdc-combobox
+                  label="${defaultLabel}"
+                  placeholder="${defaultPlaceholder}"
+                >
+                  ${createOptionsMarkup(defaultOptions)}
+                </mdc-combobox>
+              </mdc-popover>
+            </div>
+          `,
+          clearDocument: true,
+        });
+
+        const popover = componentsPage.page.locator(`#${popoverId}`);
+        const combobox = popover.locator('mdc-combobox');
+        const input = combobox.locator(`[role="${ROLE.COMBOBOX}"]`);
+        const comboboxDropdown = combobox.locator('mdc-popover');
+
+        await popover.waitFor();
+        await combobox.waitFor();
+        await expect(popover).toBeVisible();
+        await input.click();
+        await expect(comboboxDropdown).toBeVisible();
+        await input.press(KEYS.ESCAPE);
+
+        // Verify that combobox dropdown is closed but popover remains open
+        await expect(comboboxDropdown).not.toBeVisible();
+        await expect(popover).toBeVisible();
+      });
+
       await test.step('should clear input text with Escape key', async () => {
         const { input, dropdown } = await setup({
           componentsPage,
@@ -958,6 +1004,56 @@ test.describe('Combobox Feature Scenarios', () => {
           }
         });
         await expect(combobox).toHaveAttribute('value', 'brazil');
+      });
+
+      await test.step('spatial navigation', async () => {
+        const { input, options, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          id: 'combobox-value-change',
+        });
+
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        // Move focus to select
+        await keyboard.press(KEYS.ARROW_DOWN);
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(dropdown).not.toBeVisible();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(dropdown).not.toBeVisible();
+
+        // Open Select oly via ENTER key
+        await componentsPage.page.keyboard.press(KEYS.ENTER);
+        await expect(dropdown).toBeVisible();
+
+        // Escape closes the dropdown
+        await keyboard.press(KEYS.ESCAPE);
+        await expect(dropdown).not.toBeVisible();
+
+        await keyboard.press(KEYS.ENTER);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(options.nth(2)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(options.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(options.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+        // Select option via ENTER key
+        await keyboard.press(KEYS.ENTER);
+        await expect(input).toHaveValue('Argentina');
+        await expect(dropdown).not.toBeVisible();
       });
     });
 

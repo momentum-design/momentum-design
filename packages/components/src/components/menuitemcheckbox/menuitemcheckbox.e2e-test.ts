@@ -53,6 +53,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
+  test.setTimeout(40000);
+
   /**
    * FUNCTIONALITY
    */
@@ -477,5 +479,22 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemcheckbox-default');
+  });
+
+  await test.step('spatial navigation', async () => {
+    const checkbox = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(checkbox).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(checkbox, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(checkbox).toBeChecked();
+    await expect(waitForClick).toEventEmitted();
+
+    await keyboard.press(KEYS.ENTER);
+    await expect(checkbox).not.toBeChecked();
   });
 });

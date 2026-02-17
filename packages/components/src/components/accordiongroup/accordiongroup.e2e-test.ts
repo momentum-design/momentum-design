@@ -265,6 +265,21 @@ test.describe('AccordionGroup Feature Scenarios', () => {
           await expect(accordionGroup.locator('mdc-accordionbutton').nth(2)).not.toHaveAttribute('expanded');
         });
       });
+
+      await test.step('spatial navigation', async () => {
+        const { accordionGroup } = await setup({ componentsPage, items: accordionItems });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(accordionGroup.locator('mdc-accordionbutton').nth(0)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(accordionGroup.locator('mdc-accordionbutton').nth(1)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(accordionGroup.locator('mdc-accordionbutton').nth(2)).not.toBeFocused();
+      });
     });
   });
 });

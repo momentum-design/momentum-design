@@ -325,6 +325,25 @@ test('mdc-radio', async ({ componentsPage }) => {
         });
         expect(submittedValue).toBe('Default plan');
       });
+
+      await test.step('spatial navigation', async () => {
+        const radio = await setup({ componentsPage });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+        const form = componentsPage.page.locator('form');
+        const waitForSubmit = await componentsPage.waitForEvent(form, 'submit');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(radio).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio.locator('input[type="radio"]')).toBeChecked();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio.locator('input[type="radio"]')).toBeChecked();
+
+        await expect(waitForSubmit).not.toEventEmitted();
+      });
     });
 
     /**

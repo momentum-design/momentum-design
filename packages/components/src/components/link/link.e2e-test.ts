@@ -1,9 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS, LINK_SIZES } from './link.constants';
 
@@ -162,6 +161,19 @@ test('mdc-link', async ({ componentsPage }) => {
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('link-default');
     });
+
+    await test.step('matches screenshot of multi-line link', async () => {
+      const multiLineHtml = `
+        <div style="width: 200px;">
+          <mdc-link href="#" icon-name="placeholder-bold">This is a link that will wrap onto multiple lines</mdc-link>
+        </div>
+      `;
+      await componentsPage.mount({ html: multiLineHtml, clearDocument: true });
+      const multiLineContainer = componentsPage.page.locator('div').first();
+      await multiLineContainer.waitFor();
+      await componentsPage.page.mouse.move(0, 0);
+      await componentsPage.visualRegression.takeScreenshot('mdc-link-multi-line', { element: multiLineContainer });
+    });
   });
 
   /**
@@ -212,6 +224,21 @@ test('mdc-link', async ({ componentsPage }) => {
       });
 
       expect(isFocused).toBe(true);
+    });
+
+    await test.step('spatial navigation', async () => {
+      await componentsPage.page.goto(originalURL);
+      const link = await setup({ componentsPage, addPageFooter: true, href: '#content' });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(link).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(link, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
   });
 });

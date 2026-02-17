@@ -8,6 +8,11 @@
   height: 100%;
 }
 
+#storybook-root[hidden],
+#storybook-docs[hidden] {
+  display: none !important;
+}
+
 #root-inner {
   height: 100%;
 }

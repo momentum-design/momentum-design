@@ -6,6 +6,7 @@ import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverColor, PopoverPlacement } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './toggletip.constants';
 
@@ -285,6 +286,43 @@ test('mdc-toggletip', async ({ componentsPage }) => {
    */
   await test.step('interactions for toggletip', async () => {
     await interactionsTestCases(componentsPage);
+
+    await test.step('spatial navigation', async () => {
+      const { toggletip, triggerButton } = await setup({
+        componentsPage,
+        closeButton: true,
+        closeButtonAriaLabel: 'Close',
+        id: 'toggletip',
+        triggerID: 'trigger-button',
+        showTestButton: true,
+      });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+      const closeBtn = toggletip.locator('[part="popover-close"]');
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(triggerButton).toBeFocused();
+      await keyboard.press(KEYS.ENTER);
+      await expect(toggletip).toBeVisible();
+      await expect(closeBtn).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(toggletip.locator('mdc-link')).toBeFocused();
+
+      // Close with Escape key
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(toggletip).not.toBeVisible();
+      await expect(triggerButton).toBeFocused();
+
+      // Open again
+      await keyboard.press(KEYS.ENTER);
+      await expect(closeBtn).toBeFocused();
+
+      // Close with close button
+      await keyboard.press(KEYS.ENTER);
+      await expect(toggletip).not.toBeVisible();
+    });
   });
 
   /**
