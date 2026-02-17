@@ -179,10 +179,10 @@ class Combobox
    * The z-index of the popover within Combobox.
    *
    * Override this to make sure this stays on top of other components.
-   * @default 1000
+   * @default undefined
    */
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
-  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+  popoverZIndex?: number = undefined;
 
   /**
    * ID of the element where the backdrop will be appended to.
@@ -714,9 +714,7 @@ class Combobox
         if (activeIndex !== -1) {
           this.updateOptionAttributes(options[activeIndex], false);
         }
-        if (options.length && this.shouldDisplayPopover(options.length)) {
-          this.closePopover();
-        } else {
+        if (!(options.length && this.shouldDisplayPopover(options.length))) {
           this.resetSelectedValue();
           // clear the visible value
           if (this.controlType !== 'controlled') {

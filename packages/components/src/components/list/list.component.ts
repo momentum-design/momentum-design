@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -100,8 +101,11 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   protected onElementStoreUpdate(item: ListItem, changeType: ElementStoreChangeTypes, index: number) {
     if (changeType === 'added') {
       // Update the tabIndex of the list items when a new item is added.
-      // eslint-disable-next-line no-param-reassign
       item.tabIndex = -1;
+      if (this.navItems.length === 0) {
+        // If this is the first item added, set its tabIndex to 0 to make it focusable
+        item.tabIndex = 0;
+      }
     } else if (changeType === 'removed' && item.tabIndex === 0) {
       let newIndex = index + 1;
       if (newIndex >= this.navItems.length) {

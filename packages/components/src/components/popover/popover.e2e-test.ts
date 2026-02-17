@@ -40,6 +40,7 @@ type SetupOptions = {
   ariaDescribedby?: string;
   disableAriaExpanded?: boolean;
   role?: HTMLElement['role'];
+  elementIndexToReceiveFocus?: number;
   children?: any;
 };
 
@@ -79,6 +80,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
         ${restArgs.ariaDescribedby ? `aria-describedby="${restArgs.ariaDescribedby}"` : ''}
         ${restArgs.role ? `role="${restArgs.role}"` : ''}
+        ${restArgs.elementIndexToReceiveFocus !== undefined ? `element-index-to-receive-focus="${restArgs.elementIndexToReceiveFocus}"` : ''}
       >
         ${restArgs.children}
       </mdc-popover>
@@ -944,6 +946,50 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover1).not.toBeVisible();
       await trigger2.click();
       await expect(popover2).toBeVisible();
+    });
+
+    await test.step('Element index to receive focus', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        focusTrap: true,
+        interactive: true,
+        elementIndexToReceiveFocus: 1,
+        children:
+          '<mdc-button id="first">First</mdc-button><mdc-button id="second">Second</mdc-button><mdc-button id="last">Last</mdc-button>',
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+      // AI-Assisted
+      // With elementIndexToReceiveFocus set to 1, the second element should receive focus
+      await expect(popover.locator('#second')).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(popover.locator('#last')).toBeFocused();
+      // End AI-Assisted
+    });
+
+    await test.step('Element index to receive focus defaults to 0', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover-default',
+        triggerID: 'trigger-button-default',
+        focusTrap: true,
+        interactive: true,
+        children: '<mdc-button id="first-default">First</mdc-button><mdc-button id="last-default">Last</mdc-button>',
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+      // AI-Assisted
+      // Without elementIndexToReceiveFocus, the first element (index 0) should receive focus
+      await expect(popover.locator('#first-default')).toBeFocused();
+      // End AI-Assisted
     });
   });
 
