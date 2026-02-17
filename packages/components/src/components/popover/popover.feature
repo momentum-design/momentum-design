@@ -89,6 +89,12 @@ Feature: Popover Component
       When the `focus-trap` attribute is set to `true`,
       Then the user should not be able to move focus outside of the popover until it is closed.
 
+    Scenario: Element index to receive focus
+      Given the popover contains multiple interactive elements,
+      When the `element-index-to-receive-focus` attribute is set to a specific index,
+      Then that element (by index order) should receive focus when the popover opens with focus trap enabled,
+      And if the attribute is not set, the first element (index 0) should receive focus by default.
+
     Scenario: Prevent outside scroll
       Given the `prevent-scroll` attribute is set,
       When the popover is open,
