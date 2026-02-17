@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-import { hostFocusRingStyles, focusRingBoxShadow } from '../../utils/styles';
+import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
@@ -131,85 +131,18 @@ const styles = css`
     border-radius: 100px;
   }
 
-  /* Popover overrides */
-  :host mdc-popover {
-    --mdc-popover-max-width: var(--mdc-timepicker-listbox-width);
-  }
+  /* Popover height, width & padding overrides */
   :host mdc-popover::part(popover-content) {
     max-height: var(--mdc-popover-max-height);
-    min-width: auto;
+    min-width: var(--mdc-timepicker-listbox-width);
     padding: 0.75rem 0.5rem;
   }
 
-  /* List item styles */
+  /* Listbox container */
   :host::part(listbox) {
     display: flex;
     flex-direction: column;
-    list-style: none;
-    margin: 0;
-    padding: 0.25rem;
-    max-height: 14rem;
-    overflow-y: auto;
-  }
-
-  :host::part(time-option) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--mds-color-theme-text-primary-normal);
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-
-  :host::part(time-option):hover {
-    background: var(--mds-color-theme-background-primary-hover);
-  }
-
-  :host::part(time-option):focus {
-    outline: none;
-    position: relative;
-    box-shadow: ${focusRingBoxShadow};
-  }
-
-  :host::part(time-option):focus-visible {
-    outline: none;
-    position: relative;
-    box-shadow: ${focusRingBoxShadow};
-  }
-
-  :host::part(time-option-selected) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--mds-color-theme-text-primary-normal);
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-
-  :host::part(time-option-selected):hover {
-    background: var(--mds-color-theme-background-primary-hover);
-  }
-
-  :host::part(time-option-selected):focus {
-    outline: none;
-    position: relative;
-    box-shadow: ${focusRingBoxShadow};
-  }
-
-  :host::part(time-option-selected):focus-visible {
-    outline: none;
-    position: relative;
-    box-shadow: ${focusRingBoxShadow};
+    max-height: var(--mdc-popover-internal-available-height);
   }
 
   /* Help text border colors */

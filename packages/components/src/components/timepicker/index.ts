@@ -1,5 +1,6 @@
 import '../button';
 import '../icon';
+import '../option';
 import '../popover';
 import '../text';
 import '../toggletip';

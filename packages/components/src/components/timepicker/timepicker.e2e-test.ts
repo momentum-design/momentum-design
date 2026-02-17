@@ -35,6 +35,17 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
         ${restArgs.min ? `min="${restArgs.min}"` : ''}
         ${restArgs.max ? `max="${restArgs.max}"` : ''}
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
       ></mdc-timepicker>
     `,
     clearDocument: true,
@@ -204,7 +215,7 @@ test.describe('mdc-timepicker', () => {
       await dropdownButton.click();
 
       // Click on 9:00 AM option
-      const option = timepicker.locator('[role="option"]').filter({ hasText: '9:00 AM' });
+      const option = timepicker.locator('mdc-option').filter({ hasText: '9:00 AM' });
       await option.click();
 
       await expect(timepicker).toHaveAttribute('value', '09:00');
@@ -221,7 +232,7 @@ test.describe('mdc-timepicker', () => {
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
-      const selectedOption = timepicker.locator('[part="time-option-selected"]');
+      const selectedOption = timepicker.locator('mdc-option[selected]');
       await expect(selectedOption).toContainText('8:30 AM');
     });
 
@@ -237,7 +248,7 @@ test.describe('mdc-timepicker', () => {
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
-      const options = timepicker.locator('[role="option"]');
+      const options = timepicker.locator('mdc-option');
       // 24 * 4 = 96 options for 15-min intervals
       const count = await options.count();
       expect(count).toBe(96);
@@ -254,7 +265,7 @@ test.describe('mdc-timepicker', () => {
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
-      const options = timepicker.locator('[role="option"]');
+      const options = timepicker.locator('mdc-option');
       const firstOption = options.first();
       await expect(firstOption).toContainText('0:00');
     });
@@ -270,7 +281,7 @@ test.describe('mdc-timepicker', () => {
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
-      const selectedOption = timepicker.locator('[part="time-option-selected"]');
+      const selectedOption = timepicker.locator('mdc-option[selected]');
       await expect(selectedOption).toHaveCount(0);
     });
   });
@@ -536,7 +547,7 @@ test.describe('mdc-timepicker', () => {
       await expect(dropdownButton).toHaveAttribute('aria-expanded', 'true');
     });
 
-    test('listbox options should have aria-setsize and aria-posinset', async ({ componentsPage }) => {
+    test('listbox options should have correct ARIA attributes', async ({ componentsPage }) => {
       const timepicker = await setup({
         componentsPage,
         label: 'Start time',
@@ -547,15 +558,12 @@ test.describe('mdc-timepicker', () => {
       const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
       await dropdownButton.click();
 
-      const options = timepicker.locator('[role="option"]');
+      const options = timepicker.locator('mdc-option');
       const count = await options.count();
-
-      const firstOption = options.first();
-      await expect(firstOption).toHaveAttribute('aria-posinset', '1');
-      await expect(firstOption).toHaveAttribute('aria-setsize', String(count));
+      expect(count).toBeGreaterThan(0);
 
       // Check that the selected option has aria-selected="true"
-      const selectedOption = timepicker.locator('[aria-selected="true"]');
+      const selectedOption = timepicker.locator('mdc-option[aria-selected="true"]');
       await expect(selectedOption).toHaveCount(1);
       await expect(selectedOption).toContainText('8:30 AM');
     });

@@ -4,34 +4,39 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
-import { TIME_FORMAT, DEFAULTS } from './timepicker.constants';
+import { TIME_FORMAT } from './timepicker.constants';
+
+const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const render = (args: Args) => html`
   <mdc-timepicker
     label="${ifDefined(args.label)}"
     value="${ifDefined(args.value)}"
-    time-format="${ifDefined(args.timeFormat)}"
+    time-format="${ifDefined(args['time-format'])}"
     interval="${ifDefined(args.interval)}"
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    help-text="${ifDefined(args.helpText)}"
-    help-text-type="${ifDefined(args.helpTextType)}"
+    help-text="${ifDefined(args['help-text'])}"
+    help-text-type="${ifDefined(args['help-text-type'])}"
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
-    locale-hours-label="${ifDefined(args.localeHoursLabel)}"
-    locale-minutes-label="${ifDefined(args.localeMinutesLabel)}"
-    locale-period-label="${ifDefined(args.localePeriodLabel)}"
-    locale-hours-placeholder="${ifDefined(args.localeHoursPlaceholder)}"
-    locale-minutes-placeholder="${ifDefined(args.localeMinutesPlaceholder)}"
-    locale-period-placeholder="${ifDefined(args.localePeriodPlaceholder)}"
-    locale-am-label="${ifDefined(args.localeAmLabel)}"
-    locale-pm-label="${ifDefined(args.localePmLabel)}"
-    locale-show-time-picker-label="${ifDefined(args.localeShowTimePickerLabel)}"
-    locale-time-options-label="${ifDefined(args.localeTimeOptionsLabel)}"
-    locale-spinbutton-description="${ifDefined(args.localeSpinbuttonDescription)}"
+    append-to="${ifDefined(args['append-to'])}"
+    backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
+    locale-hours-label="${ifDefined(args['locale-hours-label'])}"
+    locale-minutes-label="${ifDefined(args['locale-minutes-label'])}"
+    locale-period-label="${ifDefined(args['locale-period-label'])}"
+    locale-hours-placeholder="${ifDefined(args['locale-hours-placeholder'])}"
+    locale-minutes-placeholder="${ifDefined(args['locale-minutes-placeholder'])}"
+    locale-period-placeholder="${ifDefined(args['locale-period-placeholder'])}"
+    locale-am-label="${ifDefined(args['locale-am-label'])}"
+    locale-pm-label="${ifDefined(args['locale-pm-label'])}"
+    locale-show-time-picker-label="${ifDefined(args['locale-show-time-picker-label'])}"
+    locale-time-options-label="${ifDefined(args['locale-time-options-label'])}"
+    locale-spinbutton-description="${ifDefined(args['locale-spinbutton-description'])}"
   ></mdc-timepicker>
 `;
 
@@ -44,10 +49,7 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    value: {
-      control: 'text',
-    },
-    timeFormat: {
+    'time-format': {
       control: 'select',
       options: Object.values(TIME_FORMAT),
     },
@@ -63,12 +65,13 @@ const meta: Meta = {
     readonly: {
       control: 'boolean',
     },
-    helpText: {
+    'help-text': {
       control: 'text',
     },
-    helpTextType: {
+    'help-text-type': {
       control: 'select',
-      options: ['default', 'error', 'warning', 'success', 'priority'],
+      description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
+      options: helpTextTypes,
     },
     min: {
       control: 'text',
@@ -76,17 +79,24 @@ const meta: Meta = {
     max: {
       control: 'text',
     },
-    localeHoursLabel: { control: 'text' },
-    localeMinutesLabel: { control: 'text' },
-    localePeriodLabel: { control: 'text' },
-    localeHoursPlaceholder: { control: 'text' },
-    localeMinutesPlaceholder: { control: 'text' },
-    localePeriodPlaceholder: { control: 'text' },
-    localeAmLabel: { control: 'text' },
-    localePmLabel: { control: 'text' },
-    localeShowTimePickerLabel: { control: 'text' },
-    localeTimeOptionsLabel: { control: 'text' },
-    localeSpinbuttonDescription: { control: 'text' },
+    'append-to': {
+      control: 'text',
+    },
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    'locale-hours-label': { control: 'text' },
+    'locale-minutes-label': { control: 'text' },
+    'locale-period-label': { control: 'text' },
+    'locale-hours-placeholder': { control: 'text' },
+    'locale-minutes-placeholder': { control: 'text' },
+    'locale-period-placeholder': { control: 'text' },
+    'locale-am-label': { control: 'text' },
+    'locale-pm-label': { control: 'text' },
+    'locale-show-time-picker-label': { control: 'text' },
+    'locale-time-options-label': { control: 'text' },
+    'locale-spinbutton-description': { control: 'text' },
+    ...hideControls(['value', 'validation-message', 'validity', 'willValidate']),
     ...classArgType,
     ...styleArgType,
   },
@@ -94,13 +104,28 @@ const meta: Meta = {
 
 export default meta;
 
+const defaultLocaleArgs = {
+  'locale-hours-label': 'hours',
+  'locale-minutes-label': 'minutes',
+  'locale-period-label': 'period',
+  'locale-hours-placeholder': 'hh',
+  'locale-minutes-placeholder': 'mm',
+  'locale-period-placeholder': '--',
+  'locale-am-label': 'AM',
+  'locale-pm-label': 'PM',
+  'locale-show-time-picker-label': 'Show time picker',
+  'locale-time-options-label': 'Time options',
+  'locale-spinbutton-description': 'To set value, use the up/down arrow keys or type a value',
+};
+
 export const Example: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
-    interval: DEFAULTS.INTERVAL,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
+    interval: 30,
     required: true,
+    ...defaultLocaleArgs,
   },
 };
 
@@ -108,9 +133,10 @@ export const TwentyFourHourFormat: StoryObj = {
   args: {
     label: 'Start time',
     value: '20:30',
-    timeFormat: TIME_FORMAT.TWENTY_FOUR_HOUR,
-    interval: DEFAULTS.INTERVAL,
+    'time-format': TIME_FORMAT.TWENTY_FOUR_HOUR,
+    interval: 30,
     required: true,
+    ...defaultLocaleArgs,
   },
 };
 
@@ -118,9 +144,10 @@ export const FifteenMinuteInterval: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     interval: 15,
     required: true,
+    ...defaultLocaleArgs,
   },
 };
 
@@ -128,9 +155,10 @@ export const WithHelpText: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     required: true,
-    helpText: "Time will be adjusted to attendee's timezone",
+    'help-text': "Time will be adjusted to attendee's timezone",
+    ...defaultLocaleArgs,
   },
 };
 
@@ -138,10 +166,11 @@ export const ErrorState: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     required: true,
-    helpText: 'Please select a valid time',
-    helpTextType: 'error',
+    'help-text': 'Please select a valid time',
+    'help-text-type': 'error',
+    ...defaultLocaleArgs,
   },
 };
 
@@ -149,10 +178,11 @@ export const WarningState: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     required: true,
-    helpText: 'This time may conflict with another event',
-    helpTextType: 'warning',
+    'help-text': 'This time may conflict with another event',
+    'help-text-type': 'warning',
+    ...defaultLocaleArgs,
   },
 };
 
@@ -160,10 +190,11 @@ export const SuccessState: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     required: true,
-    helpText: 'Time confirmed',
-    helpTextType: 'success',
+    'help-text': 'Time confirmed',
+    'help-text-type': 'success',
+    ...defaultLocaleArgs,
   },
 };
 
@@ -171,8 +202,9 @@ export const Disabled: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     disabled: true,
+    ...defaultLocaleArgs,
   },
 };
 
@@ -180,8 +212,9 @@ export const Readonly: StoryObj = {
   args: {
     label: 'Start time',
     value: '08:30',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     readonly: true,
+    ...defaultLocaleArgs,
   },
 };
 
@@ -189,11 +222,12 @@ export const WithMinMax: StoryObj = {
   args: {
     label: 'Meeting time',
     value: '09:00',
-    timeFormat: TIME_FORMAT.TWELVE_HOUR,
+    'time-format': TIME_FORMAT.TWELVE_HOUR,
     required: true,
     min: '08:00',
     max: '17:00',
-    helpText: 'Select a time between 8:00 AM and 5:00 PM',
+    'help-text': 'Select a time between 8:00 AM and 5:00 PM',
+    ...defaultLocaleArgs,
   },
 };
 
@@ -205,6 +239,17 @@ export const StretchedWidth: StoryObj = {
         value="08:30"
         time-format="12h"
         required
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
         style="--mdc-timepicker-width: 100%;"
       ></mdc-timepicker>
     </div>
@@ -215,8 +260,40 @@ export const StretchedWidth: StoryObj = {
 export const StartAndEndTime: StoryObj = {
   render: () => html`
     <div style="display: flex; gap: 1rem;">
-      <mdc-timepicker label="Start time" value="08:30" time-format="12h" required></mdc-timepicker>
-      <mdc-timepicker label="End time" value="09:30" time-format="12h" required></mdc-timepicker>
+      <mdc-timepicker
+        label="Start time"
+        value="08:30"
+        time-format="12h"
+        required
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
+      ></mdc-timepicker>
+      <mdc-timepicker
+        label="End time"
+        value="09:30"
+        time-format="12h"
+        required
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
+      ></mdc-timepicker>
     </div>
   `,
   ...hideAllControls(),
@@ -254,6 +331,17 @@ export const VerticalLayout: StoryObj = {
         value="08:30"
         time-format="12h"
         required
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
         style="--mdc-timepicker-width: 100%;"
       ></mdc-timepicker>
       <mdc-timepicker
@@ -261,6 +349,17 @@ export const VerticalLayout: StoryObj = {
         value="09:30"
         time-format="12h"
         required
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
         style="--mdc-timepicker-width: 100%;"
       ></mdc-timepicker>
     </div>

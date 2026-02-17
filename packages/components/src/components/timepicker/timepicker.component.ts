@@ -7,7 +7,6 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
 import { KEYS } from '../../utils/keys';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
-import '../button';
 import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 
@@ -34,6 +33,7 @@ import type { Placement, TimeFormat } from './timepicker.types';
  *
  * @dependency mdc-button
  * @dependency mdc-icon
+ * @dependency mdc-option
  * @dependency mdc-popover
  * @dependency mdc-text
  * @dependency mdc-toggletip
@@ -70,8 +70,6 @@ import type { Placement, TimeFormat } from './timepicker.types';
  * @csspart icon-container - The dropdown arrow button container.
  * @csspart native-input - The hidden native input for form participation.
  * @csspart listbox - The dropdown list container.
- * @csspart time-option - A time option in the dropdown.
- * @csspart time-option-selected - The selected time option in the dropdown.
  */
 class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -112,6 +110,22 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   disableFlip: boolean = DEFAULTS.DISABLE_FLIP;
 
   /**
+   * Element ID that the popover will be appended to.
+   * This is useful when the timepicker is inside a scrollable container
+   * and the popover needs to be portalled to avoid clipping.
+   */
+  @property({ type: String, reflect: true, attribute: 'append-to' })
+  appendTo?: string;
+
+  /**
+   * Element ID the backdrop will be appended to (if backdrop is enabled).
+   * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
+   * If not set, the backdrop will be appended to the parent element of the timepicker.
+   */
+  @property({ type: String, reflect: true, attribute: 'backdrop-append-to' })
+  backdropAppendTo?: string;
+
+  /**
    * The minimum allowed time value in 24-hour format (HH:MM).
    */
   @property({ type: String, reflect: true })
@@ -125,80 +139,80 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /**
    * Accessible label for the hours spinbutton.
-   * @default 'hours'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-hours-label' })
-  localeHoursLabel: string = DEFAULTS.LOCALE_HOURS_LABEL;
+  localeHoursLabel = '';
 
   /**
    * Accessible label for the minutes spinbutton.
-   * @default 'minutes'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-minutes-label' })
-  localeMinutesLabel: string = DEFAULTS.LOCALE_MINUTES_LABEL;
+  localeMinutesLabel = '';
 
   /**
    * Accessible label for the period (AM/PM) spinbutton.
-   * @default 'period'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-period-label' })
-  localePeriodLabel: string = DEFAULTS.LOCALE_PERIOD_LABEL;
+  localePeriodLabel = '';
 
   /**
    * Placeholder text for the hours spinbutton.
-   * @default 'hh'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-hours-placeholder' })
-  localeHoursPlaceholder: string = DEFAULTS.LOCALE_HOURS_PLACEHOLDER;
+  localeHoursPlaceholder = '';
 
   /**
    * Placeholder text for the minutes spinbutton.
-   * @default 'mm'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-minutes-placeholder' })
-  localeMinutesPlaceholder: string = DEFAULTS.LOCALE_MINUTES_PLACEHOLDER;
+  localeMinutesPlaceholder = '';
 
   /**
    * Placeholder text for the period spinbutton.
-   * @default '--'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-period-placeholder' })
-  localePeriodPlaceholder: string = DEFAULTS.LOCALE_PERIOD_PLACEHOLDER;
+  localePeriodPlaceholder = '';
 
   /**
    * Label for the AM period.
-   * @default 'AM'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-am-label' })
-  localeAmLabel: string = DEFAULTS.LOCALE_AM_LABEL;
+  localeAmLabel = '';
 
   /**
    * Label for the PM period.
-   * @default 'PM'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-pm-label' })
-  localePmLabel: string = DEFAULTS.LOCALE_PM_LABEL;
+  localePmLabel = '';
 
   /**
    * Accessible label for the dropdown toggle button.
-   * @default 'Show time picker'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-show-time-picker-label' })
-  localeShowTimePickerLabel: string = DEFAULTS.LOCALE_SHOW_TIME_PICKER_LABEL;
+  localeShowTimePickerLabel = '';
 
   /**
    * Accessible label for the time options listbox.
-   * @default 'Time options'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-time-options-label' })
-  localeTimeOptionsLabel: string = DEFAULTS.LOCALE_TIME_OPTIONS_LABEL;
+  localeTimeOptionsLabel = '';
 
   /**
    * Accessible description for spinbutton inputs (instruction text).
-   * @default 'To set value, use the up/down arrow keys or type a value'
+   * Consumers must provide a translated string.
    */
   @property({ type: String, attribute: 'locale-spinbutton-description' })
-  localeSpinbuttonDescription: string = DEFAULTS.LOCALE_SPINBUTTON_DESCRIPTION;
+  localeSpinbuttonDescription = '';
 
   /** @internal */
   @query('mdc-button[part="icon-container"]') private dropdownButton!: HTMLElement;
@@ -305,7 +319,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   private focusCurrentMenuItem(): void {
     const listbox = this.shadowRoot?.querySelector(`#${LISTBOX_ID}`);
     if (!listbox) return;
-    const items = listbox.querySelectorAll('[role="option"]');
+    const items = listbox.querySelectorAll('mdc-option');
     if (items[this.focusedOptionIndex]) {
       (items[this.focusedOptionIndex] as HTMLElement).focus();
     }
@@ -563,11 +577,6 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         event.stopPropagation();
         this.displayPopover = false;
         this.dropdownButton?.focus();
-        break;
-      }
-      case KEYS.TAB: {
-        // Close menu on tab and let focus move naturally
-        this.displayPopover = false;
         break;
       }
       default:
@@ -835,30 +844,21 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   /**
-   * Renders the dropdown time options list.
+   * Renders the dropdown time options list using mdc-option components.
    * @internal
    */
   private renderTimeOptions() {
     const options = this.getTimeOptions();
     const currentValue = this.internalToValue();
-    const totalOptions = options.length;
 
     return options.map(
-      (option, index) => html`
-        <div
-          part="${option.value === currentValue ? 'time-option-selected' : 'time-option'}"
-          role="option"
+      option => html`
+        <mdc-option
+          label="${option.label}"
+          ?selected="${option.value === currentValue}"
           aria-selected="${option.value === currentValue ? 'true' : 'false'}"
-          aria-posinset="${index + 1}"
-          aria-setsize="${totalOptions}"
-          tabindex="0"
           @click="${() => this.handleOptionClick(option.value)}"
-        >
-          <span>${option.label}</span>
-          ${option.value === currentValue
-            ? html`<mdc-icon name="check-bold" size="1" length-unit="rem" style="flex-shrink: 0"></mdc-icon>`
-            : nothing}
-        </div>
+        ></mdc-option>
       `,
     );
   }
@@ -966,6 +966,8 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           ?visible="${this.displayPopover}"
           role=""
           backdrop
+          backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
+          append-to="${ifDefined(this.appendTo)}"
           hide-on-outside-click
           hide-on-escape
           focus-back-to-trigger
