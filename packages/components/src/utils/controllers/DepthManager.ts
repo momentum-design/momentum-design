@@ -178,15 +178,20 @@ export class DepthManager implements ReactiveController {
    * @returns The item if it was in the stack, undefined otherwise
    */
   public popItem(item: StackedOverlayComponent): StackedOverlayComponent | undefined {
-    if (this.has(item)) {
-      const untilItemIdx = elementStack.indexOf(item) - 1;
-      this.popUntil((it, idx) => {
-        // This can handle the case when multiple overlays share the same trigger (id), e.g.: tooltip, etc.
-        if (it !== item && it.triggerID === item.triggerID) return 'skip';
-        return idx !== untilItemIdx;
-      });
+    if (!this.has(item)) {
+      return undefined;
     }
-    return undefined;
+    const itemIdx = elementStack.indexOf(item);
+    const toRemove: StackedOverlayComponent[] = [];
+    for (let i = elementStack.length - 1; i >= itemIdx; i -= 1) {
+      const it = elementStack[i];
+      // Skip siblings that share the same trigger (e.g.: tooltip + popover on same trigger)
+      if (it === item || it.triggerID !== item.triggerID) {
+        toRemove.push(it);
+      }
+    }
+    this.remove(toRemove);
+    return item;
   }
 
   /**
@@ -243,9 +248,13 @@ export class DepthManager implements ReactiveController {
     const removedElements = elements.filter(el => elementStack.includes(el));
     const updateStackFrom = removedElements.reduce((idx, el) => Math.min(idx, elementStack.indexOf(el)), Infinity);
 
-    // Remove elements from the stack
+    // Remove all elements from the stack first, before any notifications,
+    // to prevent re-entrant mutations from corrupting indices.
     removedElements.forEach(el => {
       elementStack.splice(elementStack.indexOf(el), 1);
+    });
+
+    removedElements.forEach(el => {
       el?.onComponentStackChanged?.('removed');
     });
 
@@ -292,11 +301,11 @@ export class DepthManager implements ReactiveController {
    * Gets the z-index of the element in the stack
    * @param element - The element to get the z-index of
    *
-   * @returns The z-index of the element if found, otherwise returns -1
+   * @returns The z-index of the element if found, otherwise returns BASE_Z_INDEX as a safe fallback
    */
   public getItemZIndex(element: StackedOverlayComponent): number {
     const depth = this.getElementDepth(element);
-    return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : -1;
+    return depth >= 0 ? BASE_Z_INDEX + depth * NUMBER_OF_Z_INDEX_LEVELS_PER_ELEMENT : BASE_Z_INDEX;
   }
 
   /**
