@@ -301,7 +301,9 @@ export class DepthManager implements ReactiveController {
    * Gets the z-index of the element in the stack
    * @param element - The element to get the z-index of
    *
-   * @returns The z-index of the element if found, otherwise returns BASE_Z_INDEX as a safe fallback
+   * @returns The z-index of the element if found, otherwise returns BASE_Z_INDEX as a safe fallback.
+   * This prevents a visual flash where the overlay renders behind the page content
+   * on the first render cycle, before `pushHost()` runs in `updated()`.
    */
   public getItemZIndex(element: StackedOverlayComponent): number {
     const depth = this.getElementDepth(element);
