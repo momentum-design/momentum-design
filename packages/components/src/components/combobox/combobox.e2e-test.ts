@@ -530,6 +530,52 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(dropdown).not.toBeVisible();
       });
 
+      await test.step('should close dropdown only when the combobox is inside a popover and Escape key is pressed', async () => {
+        const popoverId = 'test-popover';
+        const triggerId = 'popover-trigger';
+
+        await componentsPage.mount({
+          html: `
+            <div>
+              <mdc-button id="${triggerId}" aria-label="Open Popover">Open Popover</mdc-button>
+              <mdc-popover
+                id="${popoverId}"
+                triggerID="${triggerId}"
+                trigger="click"
+                visible="true"
+                hide-on-escape="false"
+                interactive="true"
+                aria-label="Popover containing combobox"
+              >
+                <mdc-combobox
+                  label="${defaultLabel}"
+                  placeholder="${defaultPlaceholder}"
+                >
+                  ${createOptionsMarkup(defaultOptions)}
+                </mdc-combobox>
+              </mdc-popover>
+            </div>
+          `,
+          clearDocument: true,
+        });
+
+        const popover = componentsPage.page.locator(`#${popoverId}`);
+        const combobox = popover.locator('mdc-combobox');
+        const input = combobox.locator(`[role="${ROLE.COMBOBOX}"]`);
+        const comboboxDropdown = combobox.locator('mdc-popover');
+
+        await popover.waitFor();
+        await combobox.waitFor();
+        await expect(popover).toBeVisible();
+        await input.click();
+        await expect(comboboxDropdown).toBeVisible();
+        await input.press(KEYS.ESCAPE);
+
+        // Verify that combobox dropdown is closed but popover remains open
+        await expect(comboboxDropdown).not.toBeVisible();
+        await expect(popover).toBeVisible();
+      });
+
       await test.step('should clear input text with Escape key', async () => {
         const { input, dropdown } = await setup({
           componentsPage,

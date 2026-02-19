@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
+import { arrow, autoUpdate, computePosition, flip, offset, OffsetOptions, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -18,13 +18,7 @@ import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
 import styles from './popover.styles';
-import type {
-  PopoverBoundaryRoot,
-  PopoverColor,
-  PopoverPlacement,
-  PopoverStrategy,
-  PopoverTrigger,
-} from './popover.types';
+import { PopoverBoundaryRoot, PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -173,10 +167,31 @@ class Popover extends KeyDownHandledMixin(
 
   /**
    * The offset of the popover.
+   *
+   * By default, offset is just a number which represents the distance on the main axis in pixels
+   * between the reference element and the popover. Main axis is determined by the placement of the popover.
+   * For example, if the placement is top or bottom, the main axis is vertical, and
+   * if the placement is left or right, the main axis is horizontal.
+   *
+   * Alternatively the offset property accepts other values as well:
+   * - with an object value, `crossAxis` and `alignmentAxis` can be changed as well
+   * - with a function value, it provides the opportunity to fully control the offset logic
+   *
+   * Note: only the number value reflected in the `offset` attribute
+   *
    * @default 4
+   * @see [Floating UI - offset](https://floating-ui.com/docs/offset)
    */
-  @property({ type: Number, reflect: true })
-  offset: number = DEFAULTS.OFFSET;
+  @property({
+    type: Number,
+    reflect: true,
+    converter: {
+      toAttribute(value: OffsetOptions): string {
+        return typeof value === 'number' ? value.toString() : '';
+      },
+    },
+  })
+  offset: OffsetOptions = DEFAULTS.OFFSET;
 
   /**
    * This describes the clipping element(s) or area that overflow will be checked relative to.
@@ -451,6 +466,17 @@ class Popover extends KeyDownHandledMixin(
   @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
 
+  /**
+   * The index of the interactive element to receive focus when the popover opens with focus trap enabled.
+   * The index is based on the order of interactive elements in the popover, starting from 0.
+   * If not set, the first interactive element (index 0) will receive focus by default.
+   * This is useful for cases where you want a specific element to receive focus when the popover opens, instead of the default first element.
+   * @default null
+   */
+  @property({ type: Number, attribute: 'element-index-to-receive-focus', reflect: true })
+  elementIndexToReceiveFocus: number | null = null;
+
+  /** @internal */
   public arrowElement: HTMLElement | null = null;
 
   /** @internal */
@@ -828,7 +854,7 @@ class Popover extends KeyDownHandledMixin(
       setTimeout(() => {
         if (this.interactive && this.focusTrap) {
           this.activateFocusTrap?.();
-          this.setInitialFocus?.();
+          this.setInitialFocus?.(this.elementIndexToReceiveFocus ?? 0);
         }
       }, 0);
 
@@ -1056,7 +1082,6 @@ class Popover extends KeyDownHandledMixin(
         padding: this.boundaryPadding,
       }),
     ];
-    let popoverOffset = this.offset;
 
     if (!this.disableFlip) {
       middleware.push(
@@ -1091,17 +1116,17 @@ class Popover extends KeyDownHandledMixin(
       );
     }
 
+    let arrowOffset = 0;
     if (this.showArrow) {
       this.arrowElement = this.renderRoot.querySelector('div[part="popover-arrow"]');
       if (this.arrowElement) {
         const arrowLen = this.arrowElement.offsetHeight;
-        const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        popoverOffset += arrowOffset;
+        arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
         middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
       }
     }
 
-    middleware.push(offset(popoverOffset));
+    middleware.push(offset(typeof this.offset === 'number' ? this.offset + arrowOffset : this.offset));
 
     this.floatingUICleanupFunction = autoUpdate(
       triggerElement,

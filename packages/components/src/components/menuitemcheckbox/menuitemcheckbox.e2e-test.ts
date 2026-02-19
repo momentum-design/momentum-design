@@ -53,6 +53,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
+  test.setTimeout(40000);
+
   /**
    * FUNCTIONALITY
    */

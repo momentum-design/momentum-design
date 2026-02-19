@@ -76,6 +76,7 @@ import Tab from './components/tab';
 import TabList from './components/tablist';
 import Text from './components/text';
 import Textarea from './components/textarea';
+import TimePicker from './components/timepicker';
 import Typewriter from './components/typewriter';
 import ThemeProvider from './components/themeprovider';
 import Toast from './components/toast';
@@ -119,6 +120,9 @@ import type {
   TextareaBlurEvent,
   TextareaLimitExceededEvent,
 } from './components/textarea/textarea.types';
+import type { TablistChangeEvent } from './components/tablist/tablist.types';
+import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
+import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
 
 // Constants / Utils Imports
 import {
@@ -129,9 +133,7 @@ import {
 } from './components/button/button.constants';
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
-import type { TablistChangeEvent } from './components/tablist/tablist.types';
-import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
-import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
+import type { TimePickerChangeEvent, TimePickerInputEvent } from './components/timepicker/timepicker.types';
 
 // Components Exports
 export {
@@ -211,6 +213,7 @@ export {
   TabList,
   Text,
   Textarea,
+  TimePicker,
   ThemeProvider,
   Toast,
   Toggle,
@@ -261,6 +264,8 @@ export type {
   ToggleOnChangeEvent,
   CheckboxOnChangeEvent,
   LinkButtonSize,
+  TimePickerChangeEvent,
+  TimePickerInputEvent,
 };
 
 // Constants / Utils Exports

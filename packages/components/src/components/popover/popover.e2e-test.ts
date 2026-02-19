@@ -40,6 +40,7 @@ type SetupOptions = {
   ariaDescribedby?: string;
   disableAriaExpanded?: boolean;
   role?: HTMLElement['role'];
+  elementIndexToReceiveFocus?: number;
   children?: any;
 };
 
@@ -79,6 +80,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
         ${restArgs.ariaDescribedby ? `aria-describedby="${restArgs.ariaDescribedby}"` : ''}
         ${restArgs.role ? `role="${restArgs.role}"` : ''}
+        ${restArgs.elementIndexToReceiveFocus !== undefined ? `element-index-to-receive-focus="${restArgs.elementIndexToReceiveFocus}"` : ''}
       >
         ${restArgs.children}
       </mdc-popover>
@@ -945,6 +947,50 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await trigger2.click();
       await expect(popover2).toBeVisible();
     });
+
+    await test.step('Element index to receive focus', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        focusTrap: true,
+        interactive: true,
+        elementIndexToReceiveFocus: 1,
+        children:
+          '<mdc-button id="first">First</mdc-button><mdc-button id="second">Second</mdc-button><mdc-button id="last">Last</mdc-button>',
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+      // AI-Assisted
+      // With elementIndexToReceiveFocus set to 1, the second element should receive focus
+      await expect(popover.locator('#second')).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(popover.locator('#last')).toBeFocused();
+      // End AI-Assisted
+    });
+
+    await test.step('Element index to receive focus defaults to 0', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover-default',
+        triggerID: 'trigger-button-default',
+        focusTrap: true,
+        interactive: true,
+        children: '<mdc-button id="first-default">First</mdc-button><mdc-button id="last-default">Last</mdc-button>',
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+      // AI-Assisted
+      // Without elementIndexToReceiveFocus, the first element (index 0) should receive focus
+      await expect(popover.locator('#first-default')).toBeFocused();
+      // End AI-Assisted
+    });
   });
 
   await test.step('Accessibility', async () => {
@@ -1442,6 +1488,55 @@ test('mdc-popover', async ({ componentsPage }) => {
    */
   await test.step('attributes for popover component', async () => {
     await attributeTestCases(componentsPage);
+  });
+
+  /**
+   * PROPERTIES
+   */
+  await test.step('properties for popover component', async () => {
+    await test.step('default attributes for popover', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        children: 'Lorem ipsum dolor sit amet.',
+      });
+
+      await triggerButton.evaluate((el: HTMLElement) => {
+        const { style } = el;
+        style.width = '500px';
+        style.height = '500px';
+      });
+
+      await expect(popover).toHaveAttribute('offset', '4');
+      // open the popover
+      await triggerButton.click();
+      await expect(popover).toBeVisible();
+      // With the default offset, the popover should be positioned at the bottom of the trigger with a 4px gap
+      const defaultOffsetBBox = (await popover.boundingBox())!;
+      // Firefox round values differently than other browsers, so we need to use Math.floor to compare the values
+      await expect(Math.floor(defaultOffsetBBox.x)).toEqual(135);
+      await expect(Math.floor(defaultOffsetBBox.y)).toEqual(504);
+      // close the popover
+      await triggerButton.click();
+
+      // Align the popover to the center of the trigger using offset property
+      await popover.evaluate((popoverEl: Popover) => {
+        // eslint-disable-next-line no-param-reassign
+        popoverEl.offset = ({ rects }) => ({
+          mainAxis: -rects.reference.height / 2 - rects.floating.height / 2,
+        });
+      });
+
+      await expect(popover).toHaveAttribute('offset', '');
+      // open the popover
+      await triggerButton.click();
+      await expect(popover).toBeVisible();
+      // With the custom offset, the popover should be centered to the trigger
+      const centeredOffsetBBox = (await popover.boundingBox())!;
+      await expect(Math.floor(centeredOffsetBBox.x)).toEqual(135);
+      await expect(Math.floor(centeredOffsetBBox.y)).toEqual(227);
+    });
   });
 
   /**

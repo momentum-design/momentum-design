@@ -6,6 +6,7 @@ import '../button';
 import '../divider';
 import '../optgroup';
 import '../option';
+import '../popover';
 import '../selectlistbox';
 import '../tooltip';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -568,4 +569,45 @@ export const ControlledComboboxWithDynamicOptions: StoryObj = {
       true,
     ),
   },
+};
+
+export const ComboboxInsidePopover: StoryObj = {
+  render: () => html`
+    <div style="width: 10rem; height: 8rem; margin: 5rem;">
+      <mdc-button id="combobox-trigger-button">Click me!</mdc-button>
+      <mdc-popover
+        triggerID="combobox-trigger-button"
+        interactive
+        hide-on-escape
+        hide-on-outside-click
+        focus-trap
+        focus-back-to-trigger
+      >
+        <div style="width: 15rem;">
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 1" value="option-1"></mdc-option>
+              <mdc-option label="Option 2" value="option-2"></mdc-option>
+              <mdc-option label="Option 3" value="option-3"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 4" value="option-4"></mdc-option>
+              <mdc-option label="Option 5" value="option-5"></mdc-option>
+              <mdc-option label="Option 6" value="option-6"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 7" value="option-7"></mdc-option>
+              <mdc-option label="Option 8" value="option-8"></mdc-option>
+              <mdc-option label="Option 9" value="option-9"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+        </div>
+      </mdc-popover>
+    </div>
+  `,
+  ...hideAllControls(),
 };

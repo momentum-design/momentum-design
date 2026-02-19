@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -13,6 +14,7 @@ import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contan
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 import type { BaseArray } from '../../utils/virtualIndexArray';
 
+import type { OrientationType } from './list.types';
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
 
@@ -55,6 +57,17 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   @property({ type: Number, reflect: true, attribute: 'initial-focus' })
   public override initialFocus: number = DEFAULTS.INITIAL_FOCUS;
 
+  /**
+   * The orientation of the list.
+   * Controls the Flexbox direction and the direction of keyboard navigation:
+   * - 'vertical': Up/Down arrow keys navigate between items
+   * - 'horizontal': Left/Right arrow keys navigate between items
+   *
+   * @default 'vertical'
+   */
+  @property({ type: String, reflect: true })
+  public override orientation: OrientationType = DEFAULTS.ORIENTATION;
+
   /** @internal */
   protected focusWithin = false;
 
@@ -88,8 +101,11 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
   protected onElementStoreUpdate(item: ListItem, changeType: ElementStoreChangeTypes, index: number) {
     if (changeType === 'added') {
       // Update the tabIndex of the list items when a new item is added.
-      // eslint-disable-next-line no-param-reassign
       item.tabIndex = -1;
+      if (this.navItems.length === 0) {
+        // If this is the first item added, set its tabIndex to 0 to make it focusable
+        item.tabIndex = 0;
+      }
     } else if (changeType === 'removed' && item.tabIndex === 0) {
       let newIndex = index + 1;
       if (newIndex >= this.navItems.length) {

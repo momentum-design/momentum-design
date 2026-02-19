@@ -15,7 +15,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/controltypeprovider',
+  title: 'Providers/Control Type Provider',
   tags: ['autodocs'],
   component: 'mdc-controltypeprovider',
   render,
