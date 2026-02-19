@@ -1508,7 +1508,6 @@ test('mdc-popover', async ({ componentsPage }) => {
         style.height = '500px';
       });
 
-      await componentsPage.page.pause();
       await expect(popover).toHaveAttribute('offset', '4');
       // open the popover
       await triggerButton.click();
@@ -1536,8 +1535,6 @@ test('mdc-popover', async ({ componentsPage }) => {
       const centeredOffsetBBox = (await popover.boundingBox())!;
       await expect(centeredOffsetBBox.x).toEqual(135.5);
       await expect(centeredOffsetBBox.y).toEqual(227);
-      // close the popover
-      await triggerButton.click();
     });
   });
 

@@ -64,33 +64,47 @@ export class PopoverUtils {
       right: '',
       bottom: '',
     });
-    const bridgeSize = `calc(${this.popover.showArrow ? '0.75rem + ' : ''}${this.popover.offset + 1}px)`;
-    const popoverHeight = this.popover.offsetHeight || 0;
-    const popoverWidth = this.popover.offsetWidth || 0;
+    const triggerEl = this.popover.triggerElement;
 
-    if (hoverBridge) {
+    if (hoverBridge && triggerEl) {
+      const popoverBBox = this.popover.getBoundingClientRect();
+      const triggerBBox = triggerEl.getBoundingClientRect();
+      let bridgeSize = 0;
+
+      if (!triggerBBox) return;
+
+      const popoverHeight = this.popover.offsetHeight || 0;
+      const popoverWidth = this.popover.offsetWidth || 0;
       const side = placement.split('-')[0];
+
+      // bridgeSize calculated here because, floating UI might flip side on the main axis, also it can be negative if the trigger and popover are overlapping
+      if (side === 'top' || side === 'bottom') {
+        bridgeSize = Math.max(0, Math.max(popoverBBox.top - triggerBBox.bottom, triggerBBox.top - popoverBBox.bottom));
+      } else if (side === 'left' || side === 'right') {
+        bridgeSize = Math.max(0, Math.max(triggerBBox.left - popoverBBox.right, popoverBBox.left - triggerBBox.right));
+      }
+
       switch (side) {
         case 'top':
-          hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.height = `${bridgeSize}px`;
+          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}px))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
         case 'left':
           hoverBridge.style.height = `${popoverHeight}px`;
-          hoverBridge.style.width = bridgeSize;
-          hoverBridge.style.right = `calc(-1.5 * (${bridgeSize}))`;
+          hoverBridge.style.width = `${bridgeSize}px`;
+          hoverBridge.style.right = `calc(-1.5 * (${bridgeSize}px))`;
           break;
         case 'right':
           hoverBridge.style.height = `${popoverHeight}px`;
-          hoverBridge.style.width = bridgeSize;
-          hoverBridge.style.left = `calc(-0.5 * (${bridgeSize}))`;
+          hoverBridge.style.width = `${bridgeSize}px`;
+          hoverBridge.style.left = `calc(-0.5 * (${bridgeSize}px))`;
           break;
         case 'bottom':
         default:
-          hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.top = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.height = `${bridgeSize}px`;
+          hoverBridge.style.top = `calc(-1 * (${bridgeSize}px))`;
           hoverBridge.style.left = '50%';
           hoverBridge.style.width = `${popoverWidth}px`;
           break;
