@@ -1,0 +1,6 @@
+# Build artifacts - should be output to dist/, not src/
+*.js
+*.js.map
+*.d.ts
+*.d.ts.map
+*.tsbuildinfo
