@@ -84,6 +84,9 @@ export class PopoverUtils {
         bridgeSize = Math.max(0, Math.max(triggerBBox.left - popoverBBox.right, popoverBBox.left - triggerBBox.right));
       }
 
+      // ensure bridge overlap
+      bridgeSize += 1;
+
       switch (side) {
         case 'top':
           hoverBridge.style.height = `${bridgeSize}px`;
