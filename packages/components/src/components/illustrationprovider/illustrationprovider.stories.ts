@@ -20,7 +20,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/illustrationprovider',
+  title: 'Providers/Illustration Provider',
   tags: ['autodocs'],
   component: 'mdc-illustrationprovider',
   render,

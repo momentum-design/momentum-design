@@ -23,7 +23,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'WIP/responsivesettingsprovider',
+  title: 'Providers/Responsive Settings Provider',
   tags: ['autodocs'],
   component: 'mdc-responsivesettingsprovider',
   render,
