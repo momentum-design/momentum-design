@@ -843,6 +843,7 @@
   "diagnostics-light": "./svg/diagnostics-light.svg",
   "diagnostics-regular": "./svg/diagnostics-regular.svg",
   "dialpad-bold": "./svg/dialpad-bold.svg",
+  "dialpad-filled": "./svg/dialpad-filled.svg",
   "dialpad-light": "./svg/dialpad-light.svg",
   "dialpad-regular": "./svg/dialpad-regular.svg",
   "diamond-bold": "./svg/diamond-bold.svg",
