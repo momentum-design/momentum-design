@@ -268,23 +268,25 @@ export const ComboboxWithControlled: StoryObj = {
       event.stopPropagation();
       document.querySelector('mdc-combobox')!.value = event.detail.value;
     };
-    return html`
+    return wrapper(html`
       <mdc-combobox
         @change="${handleInput}"
         placeholder="${args.placeholder}"
         label="${args.label}"
         value="${args.value}"
         control-type="${args['control-type']}"
+        data-aria-label="${args['data-aria-label']}"
       >
         ${args.children}
       </mdc-combobox>
-    `;
+    `);
   },
   args: {
     label: 'Top Countries',
     'control-type': 'controlled',
     value: 'den',
     placeholder: 'Start typing',
+    'data-aria-label': 'Select a country',
     children: html`
       <mdc-selectlistbox>
         <mdc-option value="arg" label="Argentina"></mdc-option>
@@ -544,16 +546,25 @@ export const ControlledComboboxWithDynamicOptions: StoryObj = {
       }
     }, 2000);
 
-    return html`
-      <mdc-combobox placeholder="Select an option" label="Select option" control-type="controlled" value="2">
+    return wrapper(html`
+      <mdc-combobox
+        placeholder="Select an option"
+        label="Select option"
+        control-type="controlled"
+        value="2"
+        data-aria-label="Select an option"
+      >
         <mdc-selectlistbox> ${options} ${extraOption} </mdc-selectlistbox>
       </mdc-combobox>
-    `;
+    `);
   },
   parameters: {
     ...hideAllControls(true),
     ...describeStory(
-      'When a combobox is controlled and it has a default value then adding options dynamically should not cause any issues. In this example, an extra option is added after 2 seconds.',
+      html`<p role="${ROLE.REGION}">
+        When a combobox is controlled and it has a default value then adding options dynamically should not cause any
+        issues. In this example, an extra option is added after 2 seconds.
+      </p>`,
       true,
     ),
   },
