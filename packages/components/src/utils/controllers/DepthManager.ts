@@ -239,7 +239,7 @@ export class DepthManager implements ReactiveController {
    * Removes one or more elements from the stack without popping others.
    *
    * It notifies the elements on the stack which were removed and those which changed position.
-   * Items removed in bach, notify moved items only once.
+   * Items removed in batch, notify moved items only once.
    *
    * @param elements - Popover instance
    * @returns undefined when the element was not found, the removed element otherwise
