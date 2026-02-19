@@ -1514,8 +1514,9 @@ test('mdc-popover', async ({ componentsPage }) => {
       await expect(popover).toBeVisible();
       // With the default offset, the popover should be positioned at the bottom of the trigger with a 4px gap
       const defaultOffsetBBox = (await popover.boundingBox())!;
-      await expect(defaultOffsetBBox.x).toEqual(135.5);
-      await expect(defaultOffsetBBox.y).toEqual(504);
+      // Firefox round values differently than other browsers, so we need to use Math.floor to compare the values
+      await expect(Math.floor(defaultOffsetBBox.x)).toEqual(135);
+      await expect(Math.floor(defaultOffsetBBox.y)).toEqual(504);
       // close the popover
       await triggerButton.click();
 
@@ -1533,8 +1534,8 @@ test('mdc-popover', async ({ componentsPage }) => {
       await expect(popover).toBeVisible();
       // With the custom offset, the popover should be centered to the trigger
       const centeredOffsetBBox = (await popover.boundingBox())!;
-      await expect(centeredOffsetBBox.x).toEqual(135.5);
-      await expect(centeredOffsetBBox.y).toEqual(227);
+      await expect(Math.floor(centeredOffsetBBox.x)).toEqual(135);
+      await expect(Math.floor(centeredOffsetBBox.y)).toEqual(227);
     });
   });
 
