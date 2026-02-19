@@ -1491,6 +1491,57 @@ test('mdc-popover', async ({ componentsPage }) => {
   });
 
   /**
+   * PROPERTIES
+   */
+  await test.step('properties for popover component', async () => {
+    await test.step('default attributes for popover', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        children: 'Lorem ipsum dolor sit amet.',
+      });
+
+      await triggerButton.evaluate((el: HTMLElement) => {
+        const { style } = el;
+        style.width = '500px';
+        style.height = '500px';
+      });
+
+      await componentsPage.page.pause();
+      await expect(popover).toHaveAttribute('offset', '4');
+      // open the popover
+      await triggerButton.click();
+      await expect(popover).toBeVisible();
+      // With the default offset, the popover should be positioned at the bottom of the trigger with a 4px gap
+      const defaultOffsetBBox = (await popover.boundingBox())!;
+      await expect(defaultOffsetBBox.x).toEqual(135.5);
+      await expect(defaultOffsetBBox.y).toEqual(504);
+      // close the popover
+      await triggerButton.click();
+
+      // Align the popover to the center of the trigger using offset property
+      await popover.evaluate((popoverEl: Popover) => {
+        // eslint-disable-next-line no-param-reassign
+        popoverEl.offset = ({ rects }) => ({
+          mainAxis: -rects.reference.height / 2 - rects.floating.height / 2,
+        });
+      });
+
+      await expect(popover).toHaveAttribute('offset', '');
+      // open the popover
+      await triggerButton.click();
+      await expect(popover).toBeVisible();
+      // With the custom offset, the popover should be centered to the trigger
+      const centeredOffsetBBox = (await popover.boundingBox())!;
+      await expect(centeredOffsetBBox.x).toEqual(135.5);
+      await expect(centeredOffsetBBox.y).toEqual(227);
+      // close the popover
+      await triggerButton.click();
+    });
+  });
+
+  /**
    * disabled-aria-expanded ATTRIBUTE
    */
   await test.step('disabled-aria-expanded attribute for popover component', async () => {
