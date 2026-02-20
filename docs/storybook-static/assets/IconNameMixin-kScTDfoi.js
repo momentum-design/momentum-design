@@ -1,0 +1,1 @@
+import{n as o}from"./iframe-Dz4a6dNK.js";var s=Object.defineProperty,f=(n,r,t,p)=>{for(var e=void 0,i=n.length-1,a;i>=0;i--)(a=n[i])&&(e=a(r,t,e)||e);return e&&s(r,t,e),e};const l=n=>{class r extends n{}return f([o({type:String,attribute:"icon-name",reflect:!0})],r.prototype,"iconName"),r};export{l as I};
