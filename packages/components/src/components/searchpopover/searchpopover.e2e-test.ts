@@ -232,5 +232,12 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(clearBtn).not.toBeFocused();
       await expect(firstListItemInPopover).toBeFocused();
     });
+
+    await test.step('popover should show again when the input is focused and display-popover is true', async () => {
+      await componentsPage.page.keyboard.press('Escape');
+      await firstListItemInPopover.waitFor({ state: 'hidden' });
+      await inputEl.focus();
+      await expect(firstListItemInPopover).toBeVisible();
+    });
   });
 });
