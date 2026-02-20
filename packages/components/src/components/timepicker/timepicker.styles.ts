@@ -9,6 +9,7 @@ const styles = css`
     --mdc-timepicker-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-timepicker-width: fit-content;
     --mdc-timepicker-listbox-width: 100%;
+    --mdc-timepicker-listbox-height: 15rem;
 
     display: flex;
     flex-direction: column;
@@ -132,10 +133,18 @@ const styles = css`
   }
 
   /* Popover height, width & padding overrides */
+  :host mdc-popover {
+    --mdc-popover-max-width: var(--mdc-timepicker-listbox-width);
+    --mdc-popover-max-height: var(--mdc-timepicker-listbox-height);
+    min-width: max-content;
+  }
   :host mdc-popover::part(popover-content) {
     max-height: var(--mdc-popover-max-height);
-    min-width: var(--mdc-timepicker-listbox-width);
+    min-width: auto;
     padding: 0.75rem 0.5rem;
+  }
+  :host mdc-option::part(trailing) {
+    min-width: var(--mdc-option-icon-width, 1rem);
   }
 
   /* Listbox container */
