@@ -52,6 +52,7 @@ import type { Placement, TimeFormat } from './timepicker.types';
  * @cssproperty --mdc-timepicker-border-color - Border color of the timepicker input.
  * @cssproperty --mdc-timepicker-text-color - Text color of the timepicker input.
  * @cssproperty --mdc-timepicker-width - Width of the timepicker component.
+ * @cssproperty --mdc-timepicker-listbox-height - The max-height of the dropdown listbox. Default shows ~6 items.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -987,15 +988,14 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           }}"
           exportparts="popover-content"
         >
-          <div
+          <mdc-selectlistbox
             id="${LISTBOX_ID}"
             part="listbox"
-            role="listbox"
             aria-label="${this.localeTimeOptionsLabel}"
             @keydown="${this.handleListboxKeydown}"
           >
             ${this.renderTimeOptions()}
-          </div>
+          </mdc-selectlistbox>
         </mdc-popover>
       </div>
       ${this.helpText ? this.renderHelperText() : nothing}
