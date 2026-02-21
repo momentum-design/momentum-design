@@ -143,9 +143,6 @@ const styles = css`
     min-width: auto;
     padding: 0.75rem 0.5rem;
   }
-  :host mdc-option::part(trailing) {
-    min-width: var(--mdc-option-icon-width, 1rem);
-  }
 
   /* Listbox container */
   :host::part(listbox) {
