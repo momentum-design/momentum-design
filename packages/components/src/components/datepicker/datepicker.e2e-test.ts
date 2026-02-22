@@ -318,4 +318,107 @@ test.describe('mdc-datepicker', () => {
       await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
     });
   });
+
+  test.describe('visual regression', () => {
+    test('should match screenshot in default state', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Start date',
+        variant: 'input',
+        locale: 'en-US',
+        required: true,
+      });
+
+      await test.step('default state', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default');
+      });
+    });
+
+    test('should match screenshot with value', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Start date',
+        value: '2025-07-15',
+        variant: 'input',
+        locale: 'en-US',
+        required: true,
+      });
+
+      await test.step('with value', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-with-value');
+      });
+    });
+
+    test('should match screenshot in disabled state', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Start date',
+        value: '2025-07-15',
+        variant: 'input',
+        disabled: true,
+      });
+
+      await test.step('disabled state', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-disabled');
+      });
+    });
+
+    test('should match screenshot in readonly state', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Start date',
+        value: '2025-07-15',
+        variant: 'input',
+        readonly: true,
+      });
+
+      await test.step('readonly state', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-readonly');
+      });
+    });
+
+    test('should match screenshot with error help text', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'End date',
+        value: '2025-07-14',
+        variant: 'input',
+        helpText: 'End date must occur after start date',
+        helpTextType: 'error',
+      });
+
+      await test.step('error state', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-error');
+      });
+    });
+
+    test('should match screenshot of default variant', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Date range',
+        variant: 'default',
+        locale: 'en-US',
+        required: true,
+      });
+
+      await test.step('default variant', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-variant');
+      });
+    });
+
+    test('should match screenshot of default variant with value', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        label: 'Date range',
+        value: '2025-07-15',
+        variant: 'default',
+        locale: 'en-US',
+        required: true,
+      });
+
+      await test.step('default variant with value', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-variant-value');
+      });
+    });
+  });
 });

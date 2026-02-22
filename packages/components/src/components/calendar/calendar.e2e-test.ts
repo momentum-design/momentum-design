@@ -191,4 +191,74 @@ test.describe('mdc-calendar', () => {
       expect(count).toBeLessThanOrEqual(1);
     });
   });
+
+  test.describe('visual regression', () => {
+    test('should match screenshot with selected date', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'single',
+        locale: 'en-US',
+      });
+
+      await test.step('single selection', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-single', { element: calendar });
+      });
+    });
+
+    test('should match screenshot with week selection', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        selectionMode: 'week',
+        locale: 'en-US',
+      });
+
+      await test.step('week selection', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-week', { element: calendar });
+      });
+    });
+
+    test('should match screenshot with range selection', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-10',
+        endValue: '2025-07-20',
+        selectionMode: 'range',
+        locale: 'en-US',
+      });
+
+      await test.step('range selection', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-range', { element: calendar });
+      });
+    });
+
+    test('should match screenshot with range spanning multiple rows', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-08',
+        endValue: '2025-07-25',
+        selectionMode: 'range',
+        locale: 'en-US',
+      });
+
+      await test.step('range spanning rows', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-range-multirow', { element: calendar });
+      });
+    });
+
+    test('should match screenshot with min/max constraints', async ({ componentsPage }) => {
+      const calendar = await setup({
+        componentsPage,
+        value: '2025-07-15',
+        min: '2025-07-10',
+        max: '2025-07-20',
+        locale: 'en-US',
+      });
+
+      await test.step('min/max constraints', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-calendar-minmax', { element: calendar });
+      });
+    });
+  });
 });
