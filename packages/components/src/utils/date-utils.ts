@@ -6,6 +6,15 @@
  * ISO strings are in yyyy-mm-dd format.
  */
 
+interface DateTimeFormatWithRange extends Intl.DateTimeFormat {
+  formatRange(startDate: Date, endDate: Date): string;
+}
+
+interface LocaleWithWeekInfo extends Intl.Locale {
+  weekInfo?: { firstDay: number };
+  getWeekInfo?: () => { firstDay: number };
+}
+
 function toISODate(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -131,8 +140,8 @@ function getWeekdayNames(locale: string, style: 'narrow' | 'short' | 'long' = 'n
  */
 function getWeekStartDay(locale: string): number {
   try {
-    const loc = new Intl.Locale(locale);
-    const weekInfo = (loc as any).weekInfo ?? (loc as any).getWeekInfo?.();
+    const loc = new Intl.Locale(locale) as LocaleWithWeekInfo;
+    const weekInfo = loc.weekInfo ?? loc.getWeekInfo?.();
     if (weekInfo?.firstDay) {
       return weekInfo.firstDay;
     }
@@ -176,25 +185,25 @@ function formatDateMed(iso: string, locale: string): string {
 }
 
 /**
- * Format a date range for display (e.g. "July 13 – July 19, 2025").
+ * Format a date range for display using the native Intl.DateTimeFormat.formatRange API.
+ * Produces locale-correct output for all cases: same month, cross-month, and cross-year ranges.
+ * e.g. en-US: "July 13 – 19, 2025", de-DE: "13.–19. Juli 2025", ja-JP: "2025年7月13日～19日"
  */
 function formatDateRange(startIso: string, endIso: string, locale: string): string {
   const start = parseISO(startIso);
   const end = parseISO(endIso);
   if (!start || !end) return '';
 
-  const monthLong = new Intl.DateTimeFormat(locale, { month: 'long' });
-
-  if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth()) {
-    const monthName = monthLong.format(start);
-    return `${monthName} ${start.getDate()} \u2013 ${end.getDate()}, ${end.getFullYear()}`;
+  try {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    return (formatter as DateTimeFormatWithRange).formatRange(start, end);
+  } catch {
+    return `${formatDateMed(startIso, locale)} \u2013 ${formatDateMed(endIso, locale)}`;
   }
-  if (start.getFullYear() === end.getFullYear()) {
-    const startMonth = monthLong.format(start);
-    const endMonth = monthLong.format(end);
-    return `${startMonth} ${start.getDate()} \u2013 ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
-  }
-  return `${formatDateMed(startIso, locale)} \u2013 ${formatDateMed(endIso, locale)}`;
 }
 
 /**
