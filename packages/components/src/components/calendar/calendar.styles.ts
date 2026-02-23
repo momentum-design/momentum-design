@@ -33,7 +33,7 @@ const styles = css`
   }
 
   .calendar-header-title {
-    font-weight: 700;
+    font-weight: var(--mds-font-apps-body-small-bold-font-weight);
     font-size: 0.875rem;
     line-height: 1.25rem;
     color: var(--mdc-calendar-header-text-color);
@@ -48,7 +48,7 @@ const styles = css`
   .calendar-weekday {
     font-size: 0.75rem;
     line-height: 1rem;
-    font-weight: 400;
+    font-weight: var(--mds-font-apps-body-small-regular-font-weight);
     color: var(--mdc-calendar-day-outside-month-text-color);
     padding: 0.25rem 0;
     text-align: center;
@@ -143,7 +143,7 @@ const styles = css`
   .calendar-day.selected {
     background: var(--mdc-calendar-day-selected-bg);
     color: var(--mdc-calendar-day-selected-text-color);
-    font-weight: 700;
+    font-weight: var(--mds-font-apps-body-small-bold-font-weight);
   }
 
   .calendar-day.selected.today {
@@ -156,7 +156,7 @@ const styles = css`
 
   .calendar-day-wrapper.in-range .calendar-day {
     color: var(--mdc-calendar-day-selected-text-color);
-    font-weight: 700;
+    font-weight: var(--mds-font-apps-body-small-bold-font-weight);
   }
 
   .calendar-day.disabled {

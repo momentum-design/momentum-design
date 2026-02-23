@@ -70,8 +70,8 @@ const styles = css`
     border: none;
     color: var(--mdc-datepicker-text-color);
     font-family: inherit;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: var(--mds-font-apps-body-small-regular-font-size);
+    line-height: var(--mds-font-apps-body-small-regular-line-height);
     text-align: center;
     outline: none;
     padding: 0;
@@ -105,8 +105,8 @@ const styles = css`
 
   :host::part(separator) {
     color: var(--mdc-datepicker-text-color);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: var(--mds-font-apps-body-small-regular-font-size);
+    line-height: var(--mds-font-apps-body-small-regular-line-height);
     user-select: none;
     pointer-events: none;
     padding: 0 0.0625rem;
@@ -121,8 +121,8 @@ const styles = css`
   :host::part(select-text) {
     flex: 1;
     color: var(--mdc-datepicker-text-color);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: var(--mds-font-apps-body-small-regular-font-size);
+    line-height: var(--mds-font-apps-body-small-regular-line-height);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
