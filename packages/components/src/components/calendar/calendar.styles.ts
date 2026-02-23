@@ -45,8 +45,8 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host(:dir(rtl)) .calendar-header-nav {
-    transform: scaleX(-1);
+  :host(:dir(rtl)) .calendar-header-nav mdc-button {
+    transform: rotate(180deg);
   }
 
   .calendar-weekday {
