@@ -8,7 +8,7 @@ const VARIANT = {
   INPUT: 'input',
 } as const;
 
-const CALENDAR_ICON = 'calendar-month-bold' as Extract<IconNames, 'calendar-month-bold'>;
+const CALENDAR_ICON = 'calendar-empty-bold' as Extract<IconNames, 'calendar-empty-bold'>;
 
 const TRIGGER_ID = 'datepicker-triggerid';
 

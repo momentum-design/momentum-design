@@ -12,6 +12,7 @@ import {
   isSameDay,
   isoWeekday,
   parseISO,
+  startOfWeek,
   today,
   toISODate,
 } from '../../utils/date-utils';
@@ -116,24 +117,12 @@ function getWeekRange(dateIso: string, locale: string): { start: string; end: st
   const dt = parseISO(dateIso);
   if (!dt) return { start: '', end: '' };
 
-  const weekStartDay = getWeekStartDay(locale);
-
-  let startOfWeek: Date;
-  if (weekStartDay === 7) {
-    const dayOfWeek = isoWeekday(dt);
-    const daysBack = dayOfWeek === 7 ? 0 : dayOfWeek;
-    startOfWeek = addDays(dt, -daysBack);
-  } else {
-    const dayOfWeek = isoWeekday(dt);
-    const daysBack = (dayOfWeek - weekStartDay + 7) % 7;
-    startOfWeek = addDays(dt, -daysBack);
-  }
-
-  const endOfWeek = addDays(startOfWeek, 6);
+  const weekStart = startOfWeek(dt, getWeekStartDay(locale));
+  const weekEnd = addDays(weekStart, 6);
 
   return {
-    start: toISODate(startOfWeek),
-    end: toISODate(endOfWeek),
+    start: toISODate(weekStart),
+    end: toISODate(weekEnd),
   };
 }
 

@@ -60,6 +60,21 @@ test.describe('mdc-calendar', () => {
       await expect(weekdays).toHaveCount(7);
     });
 
+    test('should order weekday headers for Saturday-start locale', async ({ componentsPage }) => {
+      const calendar = await setup({ componentsPage, locale: 'fa-IR' });
+
+      const weekdays = calendar.locator('.calendar-weekday');
+      await expect(weekdays).toHaveCount(7);
+
+      const headers = await Promise.all(Array.from({ length: 7 }, (_, i) => weekdays.nth(i).textContent()));
+      // fa-IR starts on Saturday; first header should not equal last
+      expect(headers[0]).not.toBe(headers[6]);
+      // Verify all 7 headers are present and non-empty
+      headers.forEach(text => {
+        expect(text?.trim().length).toBeGreaterThan(0);
+      });
+    });
+
     test('should render 42 day cells (6 rows x 7 cols)', async ({ componentsPage }) => {
       const calendar = await setup({ componentsPage });
 

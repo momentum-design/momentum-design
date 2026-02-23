@@ -267,6 +267,70 @@ test.describe('mdc-datepicker', () => {
     });
   });
 
+  test.describe('end-value behavior', () => {
+    test('should reflect end-value attribute on the element', async ({ componentsPage }) => {
+      const datepicker = await setup({
+        componentsPage,
+        label: 'Range',
+        variant: 'default',
+        value: '2025-07-14',
+        endValue: '2025-07-20',
+      });
+
+      await expect(datepicker).toHaveAttribute('end-value', '2025-07-20');
+    });
+
+    test('should clear end-value when single date is selected', async ({ componentsPage }) => {
+      const datepicker = await setup({
+        componentsPage,
+        label: 'Date',
+        value: '2025-07-15',
+        endValue: '2025-07-20',
+        selectionMode: 'single',
+      });
+
+      const calendarButton = datepicker.locator('mdc-button[part="icon-container"]');
+      await calendarButton.click();
+
+      const calendar = datepicker.locator('mdc-calendar');
+      await expect(calendar).toBeVisible();
+
+      const day18 = calendar.locator('[data-date="2025-07-18"]');
+      await day18.click();
+
+      await expect(datepicker).toHaveAttribute('end-value', '');
+    });
+
+    test('should include endValue in change event detail', async ({ componentsPage }) => {
+      const datepicker = await setup({
+        componentsPage,
+        label: 'Range',
+        variant: 'default',
+        value: '2025-07-14',
+        endValue: '2025-07-20',
+      });
+
+      const endValue = await datepicker.evaluate(
+        (el: any) =>
+          new Promise<string>(resolve => {
+            el.addEventListener('change', (e: CustomEvent) => resolve(e.detail.endValue), { once: true });
+            const calendar = el.shadowRoot?.querySelector('mdc-calendar');
+            if (calendar) {
+              calendar.dispatchEvent(
+                new CustomEvent('date-selected', {
+                  detail: { startDate: '2025-07-14', endDate: '2025-07-18' },
+                  bubbles: true,
+                  composed: true,
+                }),
+              );
+            }
+          }),
+      );
+
+      expect(endValue).toBe('2025-07-18');
+    });
+  });
+
   test.describe('error state', () => {
     test('should show error styling', async ({ componentsPage }) => {
       const datepicker = await setup({
