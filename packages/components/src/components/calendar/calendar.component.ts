@@ -4,6 +4,8 @@ import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { Component } from '../../models';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import {
   addDays,
   addMonths,
@@ -61,7 +63,7 @@ import {
  * @cssproperty --mdc-calendar-day-outside-month-text-color - Text color for days outside the current month.
  * @cssproperty --mdc-calendar-day-disabled-text-color - Text color for disabled days.
  */
-class Calendar extends Component {
+class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   /**
    * The selected date as an ISO string (yyyy-mm-dd).
    * For range mode, this represents the start date.
@@ -337,55 +339,62 @@ class Calendar extends Component {
     const focusDt = this.focusedDate ? parseISO(this.focusedDate) : today();
     if (!focusDt) return;
 
+    const action = this.getActionForKeyEvent(event);
     let newDt: Date | undefined;
 
-    switch (event.key) {
-      case KEYS.ARROW_LEFT:
+    switch (action) {
+      case ACTIONS.LEFT:
         event.preventDefault();
         newDt = addDays(focusDt, -1);
         break;
-      case KEYS.ARROW_RIGHT:
+      case ACTIONS.RIGHT:
         event.preventDefault();
         newDt = addDays(focusDt, 1);
         break;
-      case KEYS.ARROW_UP:
+      case ACTIONS.UP:
         event.preventDefault();
         newDt = addDays(focusDt, -7);
         break;
-      case KEYS.ARROW_DOWN:
+      case ACTIONS.DOWN:
         event.preventDefault();
         newDt = addDays(focusDt, 7);
         break;
-      case KEYS.HOME: {
+      case ACTIONS.HOME: {
         event.preventDefault();
         const weekStart = getWeekStartDay(this.locale);
         newDt = startOfWeek(focusDt, weekStart);
         break;
       }
-      case KEYS.END: {
+      case ACTIONS.END: {
         event.preventDefault();
         const weekStartEnd = getWeekStartDay(this.locale);
         newDt = addDays(startOfWeek(focusDt, weekStartEnd), 6);
         break;
       }
-      case KEYS.PAGE_UP:
+      case ACTIONS.ENTER:
+      case ACTIONS.SPACE:
         event.preventDefault();
-        newDt = event.shiftKey ? addYears(focusDt, -1) : addMonths(focusDt, -1);
-        break;
-      case KEYS.PAGE_DOWN:
-        event.preventDefault();
-        newDt = event.shiftKey ? addYears(focusDt, 1) : addMonths(focusDt, 1);
-        break;
-      case KEYS.ENTER:
-      case KEYS.SPACE:
-        event.preventDefault();
+        this.keyDownEventHandled();
         if (this.focusedDate && !this.isDateDisabled(this.focusedDate)) {
           this.selectDate(this.focusedDate);
         }
         return;
       default:
+        // Handle PageUp/PageDown which aren't in ACTIONS
+        if (event.key === KEYS.PAGE_UP) {
+          event.preventDefault();
+          newDt = event.shiftKey ? addYears(focusDt, -1) : addMonths(focusDt, -1);
+          break;
+        }
+        if (event.key === KEYS.PAGE_DOWN) {
+          event.preventDefault();
+          newDt = event.shiftKey ? addYears(focusDt, 1) : addMonths(focusDt, 1);
+          break;
+        }
         return;
     }
+
+    this.keyDownEventHandled();
 
     if (newDt) {
       const newIso = toISODate(newDt);
