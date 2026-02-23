@@ -101,7 +101,7 @@ test.describe('mdc-calendar', () => {
     });
 
     test('should select a week on click in week mode', async ({ componentsPage }) => {
-      const calendar = await setup({ componentsPage, selectionMode: 'week', locale: 'en-US' });
+      const calendar = await setup({ componentsPage, value: '2025-07-15', selectionMode: 'week', locale: 'en-US' });
 
       const day = calendar.locator('[data-date="2025-07-16"]');
       await day.click();

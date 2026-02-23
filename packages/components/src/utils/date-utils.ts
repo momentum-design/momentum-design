@@ -24,12 +24,11 @@ function toISODate(d: Date): string {
 
 function parseISO(iso: string): Date | null {
   if (!iso) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
   const parts = iso.split('-');
-  if (parts.length !== 3) return null;
   const y = parseInt(parts[0], 10);
   const m = parseInt(parts[1], 10);
   const d = parseInt(parts[2], 10);
-  if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return null;
   const date = new Date(y, m - 1, d);
   if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null;
   return date;
@@ -110,14 +109,16 @@ function isoWeekday(d: Date): number {
   return day === 0 ? 7 : day;
 }
 
-function startOfWeek(d: Date): Date {
-  const day = d.getDay();
-  const diff = (day + 6) % 7;
+function startOfWeek(d: Date, weekStartDay: number = 1): Date {
+  const jsDay = d.getDay();
+  const isoDay = jsDay === 0 ? 7 : jsDay;
+  const startIso = weekStartDay === 7 ? 7 : weekStartDay;
+  const diff = (isoDay - startIso + 7) % 7;
   return addDays(d, -diff);
 }
 
-function endOfWeek(d: Date): Date {
-  return addDays(startOfWeek(d), 6);
+function endOfWeek(d: Date, weekStartDay: number = 1): Date {
+  return addDays(startOfWeek(d, weekStartDay), 6);
 }
 
 /**

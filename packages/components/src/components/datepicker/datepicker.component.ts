@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
+import { parseISO, isBefore, isAfter } from '../../utils/date-utils';
 import { KEYS } from '../../utils/keys';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
@@ -220,7 +221,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   @state() private internalYear = '';
 
-  @state() private internalEndValue = '';
+  /**
+   * The end date value for range/week selection (ISO string).
+   */
+  @property({ type: String, reflect: true, attribute: 'end-value' })
+  endValue = '';
 
   private pendingDigits = '';
 
@@ -276,17 +281,43 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   private syncFormValue(): void {
     const val = this.value || this.internalToValue();
     if (this.internals) {
-      this.internals.setFormValue(val || null);
+      if (this.name && this.endValue) {
+        const formData = new FormData();
+        formData.append(this.name, val || '');
+        formData.append(`${this.name}-end`, this.endValue);
+        this.internals.setFormValue(formData);
+      } else {
+        this.internals.setFormValue(val || null);
+      }
     }
   }
 
   private commitValue(): void {
     const newVal = this.internalToValue();
     if (newVal && newVal !== this.value) {
+      const dt = parseISO(newVal);
+      if (dt) {
+        const minDt = this.min ? parseISO(this.min) : undefined;
+        const maxDt = this.max ? parseISO(this.max) : undefined;
+        if (minDt && isBefore(dt, minDt)) return;
+        if (maxDt && isAfter(dt, maxDt)) return;
+      }
       this.value = newVal;
       this.syncFormValue();
-      this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent('input', {
+          detail: { value: this.value, endValue: this.endValue },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+      this.dispatchEvent(
+        new CustomEvent('change', {
+          detail: { value: this.value, endValue: this.endValue },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
   }
 
@@ -301,13 +332,20 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   formResetCallback(): void {
     this.value = '';
-    this.internalEndValue = '';
+    this.endValue = '';
     this.parseValueToInternal();
     this.syncFormValue();
   }
 
-  formStateRestoreCallback(state: string): void {
-    this.value = state;
+  formStateRestoreCallback(state: string | FormData | File): void {
+    if (state instanceof FormData) {
+      const name = this.name || '';
+      this.value = (state.get(name) as string) || '';
+      this.endValue = (state.get(`${name}-end`) as string) || '';
+    } else if (typeof state === 'string') {
+      this.value = state;
+      this.endValue = '';
+    }
     this.parseValueToInternal();
     this.syncFormValue();
   }
@@ -342,21 +380,34 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (mode === SELECTION_MODE.WEEK || mode === SELECTION_MODE.RANGE) {
       if (detail.startDate && detail.endDate) {
         this.value = detail.startDate;
-        this.internalEndValue = detail.endDate;
+        this.endValue = detail.endDate;
       } else {
         this.value = detail.date;
-        this.internalEndValue = '';
+        this.endValue = '';
       }
     } else {
       this.value = detail.date;
+      this.endValue = '';
     }
 
     this.parseValueToInternal();
     this.syncFormValue();
-    this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new CustomEvent('input', {
+        detail: { value: this.value, endValue: this.endValue },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: { value: this.value, endValue: this.endValue },
+        bubbles: true,
+        composed: true,
+      }),
+    );
 
-    const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.internalEndValue;
+    const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.endValue;
     if (mode !== SELECTION_MODE.RANGE || rangeComplete) {
       this.displayPopover = false;
     }
@@ -573,8 +624,8 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       return formatDateRangeForDisplay(start, end, this.locale);
     }
 
-    if (this.effectiveSelectionMode === SELECTION_MODE.RANGE && this.internalEndValue) {
-      return formatDateRangeForDisplay(this.value, this.internalEndValue, this.locale);
+    if (this.effectiveSelectionMode === SELECTION_MODE.RANGE && this.endValue) {
+      return formatDateRangeForDisplay(this.value, this.endValue, this.locale);
     }
 
     return formatDateForDisplay(this.value, this.locale);
@@ -717,7 +768,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       >
         <mdc-calendar
           value="${ifDefined(this.value || undefined)}"
-          end-value="${ifDefined(this.internalEndValue || undefined)}"
+          end-value="${ifDefined(this.endValue || undefined)}"
           selection-mode="${calendarSelectionMode}"
           locale="${this.locale}"
           min="${ifDefined(this.min)}"

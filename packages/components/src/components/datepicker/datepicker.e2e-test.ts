@@ -6,6 +6,7 @@ interface SetupOptions {
   componentsPage: ComponentsPage;
   label?: string;
   value?: string;
+  endValue?: string;
   variant?: string;
   selectionMode?: string;
   locale?: string;
@@ -25,6 +26,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-datepicker
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
+        ${restArgs.endValue ? `end-value="${restArgs.endValue}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.selectionMode ? `selection-mode="${restArgs.selectionMode}"` : ''}
         ${restArgs.locale ? `locale="${restArgs.locale}"` : 'locale="en-US"'}
@@ -218,17 +220,18 @@ test.describe('mdc-datepicker', () => {
         await expect(trigger).toBeVisible();
       });
 
-      test('should display selected week range', async ({ componentsPage }) => {
+      test('should display selected date range', async ({ componentsPage }) => {
         const datepicker = await setup({
           componentsPage,
           label: 'Week',
           variant: 'default',
-          value: '2025-07-15',
+          value: '2025-07-14',
+          endValue: '2025-07-20',
         });
 
         const selectText = datepicker.locator('[part~="select-text"]');
         const text = await selectText.textContent();
-        expect(text).toContain('July');
+        expect(text).toContain('Jul');
       });
     });
 

@@ -16,6 +16,7 @@ import {
   parseISO,
   startOfMonth,
   startOfWeek,
+  getWeekStartDay,
   today,
   toISODate,
 } from '../../utils/date-utils';
@@ -164,9 +165,17 @@ class Calendar extends Component {
       }
     }
     const t = today();
-    this.displayMonth = t.getMonth() + 1;
-    this.displayYear = t.getFullYear();
-    this.focusedDate = toISODate(t);
+    const minDt = this.min ? parseISO(this.min) : undefined;
+    const maxDt = this.max ? parseISO(this.max) : undefined;
+    let focusDt = t;
+    if (minDt && isBefore(t, minDt)) {
+      focusDt = minDt;
+    } else if (maxDt && isAfter(t, maxDt)) {
+      focusDt = maxDt;
+    }
+    this.displayMonth = focusDt.getMonth() + 1;
+    this.displayYear = focusDt.getFullYear();
+    this.focusedDate = toISODate(focusDt);
   }
 
   private get calendarGrid(): CalendarGridWeek[] {
@@ -348,14 +357,18 @@ class Calendar extends Component {
         event.preventDefault();
         newDt = addDays(focusDt, 7);
         break;
-      case KEYS.HOME:
+      case KEYS.HOME: {
         event.preventDefault();
-        newDt = startOfWeek(focusDt);
+        const weekStart = getWeekStartDay(this.locale);
+        newDt = startOfWeek(focusDt, weekStart);
         break;
-      case KEYS.END:
+      }
+      case KEYS.END: {
         event.preventDefault();
-        newDt = addDays(startOfWeek(focusDt), 6);
+        const weekStartEnd = getWeekStartDay(this.locale);
+        newDt = addDays(startOfWeek(focusDt, weekStartEnd), 6);
         break;
+      }
       case KEYS.PAGE_UP:
         event.preventDefault();
         newDt = event.shiftKey ? addYears(focusDt, -1) : addMonths(focusDt, -1);
@@ -367,7 +380,7 @@ class Calendar extends Component {
       case KEYS.ENTER:
       case KEYS.SPACE:
         event.preventDefault();
-        if (this.focusedDate) {
+        if (this.focusedDate && !this.isDateDisabled(this.focusedDate)) {
           this.selectDate(this.focusedDate);
         }
         return;
@@ -510,13 +523,18 @@ class Calendar extends Component {
     `;
   }
 
-  private isTodayDisabled(): boolean {
-    const t = today();
+  private isDateDisabled(dateIso: string): boolean {
+    const dt = parseISO(dateIso);
+    if (!dt) return true;
     const minDt = this.min ? parseISO(this.min) : undefined;
     const maxDt = this.max ? parseISO(this.max) : undefined;
-    if (minDt && isBefore(t, minDt)) return true;
-    if (maxDt && isAfter(t, maxDt)) return true;
+    if (minDt && isBefore(dt, minDt)) return true;
+    if (maxDt && isAfter(dt, maxDt)) return true;
     return false;
+  }
+
+  private isTodayDisabled(): boolean {
+    return this.isDateDisabled(toISODate(today()));
   }
 
   private handleTodayClick(): void {

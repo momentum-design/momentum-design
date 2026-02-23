@@ -26,10 +26,9 @@ import type { CalendarDayInfo, CalendarGridWeek } from './calendar.types';
 function getWeekdayNames(locale: string): string[] {
   const names = getWeekdayNamesUtil(locale, 'narrow');
   const startDay = getWeekStartDay(locale);
-  if (startDay === 7) {
-    return [names[6], ...names.slice(0, 6)];
-  }
-  return names;
+  const offset = startDay === 7 ? 6 : startDay - 1;
+  if (offset === 0) return names;
+  return [...names.slice(offset), ...names.slice(0, offset)];
 }
 
 /**

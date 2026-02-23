@@ -6,8 +6,8 @@ import { VARIANT } from './datepicker.constants';
 
 type DatePickerVariant = ValueOf<typeof VARIANT>;
 
-type DatePickerChangeEvent = TypedCustomEvent<DatePicker, { value: string }>;
-type DatePickerInputEvent = TypedCustomEvent<DatePicker, { value: string }>;
+type DatePickerChangeEvent = TypedCustomEvent<DatePicker, { value: string; endValue: string }>;
+type DatePickerInputEvent = TypedCustomEvent<DatePicker, { value: string; endValue: string }>;
 
 interface Events {
   onChangeEvent: DatePickerChangeEvent;
