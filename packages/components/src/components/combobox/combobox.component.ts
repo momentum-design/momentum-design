@@ -645,6 +645,7 @@ class Combobox
   /**
    * Updates the visual focus state of a specific option in the dropdown list based on 'data-focused' attribute.
    * It also updates the 'aria-selected' attribute for a11y purposes.
+   * If an option has a tooltip attached to it, this will open the tooltip when the option is focused and close it when the option is unfocused.
    *
    * @param option - The option element to update focus state for.
    * @param value - The new focus state to set (true for focused, false for unfocused).
@@ -655,10 +656,40 @@ class Combobox
     if (option === undefined) return;
     if (value) {
       option.setAttribute('data-focused', '');
+      this.openTooltipIfExists(option);
     } else {
       option.removeAttribute('data-focused');
+      this.closeTooltipIfExists(option);
     }
     option.setAttribute('aria-selected', value.toString());
+  }
+
+  /**
+   * Opens the tooltip associated with the given option, if it exists.
+   * @param option - option
+   *
+   * @internal
+   */
+  private openTooltipIfExists(option: Option): void {
+    const id = option.getAttribute('id');
+    if (!id) return;
+    const tooltip = this.querySelector(`mdc-tooltip[triggerid="${id}"]`);
+    tooltip?.setAttribute('visible', '');
+  }
+
+  /**
+   * Closes the tooltip associated with the given option, if it exists.
+   * @param option - option
+   *
+   * @internal
+   */
+  private closeTooltipIfExists(option: Option): void {
+    const id = option.getAttribute('id');
+    if (!id) return;
+    const tooltip = this.querySelector(`mdc-tooltip[triggerid="${id}"][visible]`);
+    if (tooltip) {
+      tooltip.removeAttribute('visible');
+    }
   }
 
   /**
