@@ -306,21 +306,14 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       }
       this.value = newVal;
       this.syncFormValue();
-      this.dispatchEvent(
-        new CustomEvent('input', {
-          detail: { value: this.value, endValue: this.endValue },
-          bubbles: true,
-          composed: true,
-        }),
-      );
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          detail: { value: this.value, endValue: this.endValue },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      this.notifyValueChange();
     }
+  }
+
+  private notifyValueChange(): void {
+    const detail = { value: this.value, endValue: this.endValue };
+    this.dispatchEvent(new CustomEvent('input', { detail, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('change', { detail, bubbles: true, composed: true }));
   }
 
   private flushPendingInput(): void {
@@ -394,20 +387,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
     this.parseValueToInternal();
     this.syncFormValue();
-    this.dispatchEvent(
-      new CustomEvent('input', {
-        detail: { value: this.value, endValue: this.endValue },
-        bubbles: true,
-        composed: true,
-      }),
-    );
-    this.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { value: this.value, endValue: this.endValue },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this.notifyValueChange();
 
     const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.endValue;
     if (mode !== SELECTION_MODE.RANGE || rangeComplete) {

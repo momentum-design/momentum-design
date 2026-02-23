@@ -390,11 +390,7 @@ class Calendar extends Component {
 
     if (newDt) {
       const newIso = toISODate(newDt);
-
-      const minDt = this.min ? parseISO(this.min) : undefined;
-      const maxDt = this.max ? parseISO(this.max) : undefined;
-      if (minDt && isBefore(newDt, minDt)) return;
-      if (maxDt && isAfter(newDt, maxDt)) return;
+      if (this.isDateDisabled(newIso)) return;
 
       this.focusedDate = newIso;
 

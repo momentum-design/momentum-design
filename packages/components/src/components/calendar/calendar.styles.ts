@@ -1,5 +1,7 @@
 import { css } from 'lit';
 
+import { baseHostStyleVariables, focusRingBoxShadow } from '../../utils/styles';
+
 const styles = css`
   :host {
     --mdc-calendar-background-color: var(--mds-color-theme-background-solid-primary-normal);
@@ -13,13 +15,6 @@ const styles = css`
     --mdc-calendar-day-outside-month-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-calendar-day-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-calendar-range-bg: var(--mds-color-theme-background-accent-active);
-
-    --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-default-0);
-    --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-default-1);
-    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-default-2);
-    --mdc-focus-ring-inner-width: 0.125rem;
-    --mdc-focus-ring-middle-width: calc(2 * var(--mdc-focus-ring-inner-width));
-    --mdc-focus-ring-outer-width: calc(0.0625rem + var(--mdc-focus-ring-middle-width));
 
     display: flex;
     flex-direction: column;
@@ -127,10 +122,7 @@ const styles = css`
   .calendar-day.focused {
     outline: none;
     z-index: 1;
-    box-shadow:
-      0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
-      0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
-      0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color);
+    box-shadow: ${focusRingBoxShadow};
   }
 
   @media (forced-colors: active) {
@@ -184,4 +176,4 @@ const styles = css`
   }
 `;
 
-export default [styles];
+export default [baseHostStyleVariables, styles];
