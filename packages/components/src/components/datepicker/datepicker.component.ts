@@ -258,6 +258,8 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (changedProperties.has('value') && !this.displayPopover) {
       this.parseValueToInternal();
       this.syncFormValue();
+    } else if (changedProperties.has('endValue') && !this.displayPopover) {
+      this.syncFormValue();
     }
   }
 
