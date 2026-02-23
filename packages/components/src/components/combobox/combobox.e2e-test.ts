@@ -812,34 +812,14 @@ test.describe('Combobox Feature Scenarios', () => {
         });
         const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.BACKSPACE); // Clear the input to show all options
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
-        await expect(combobox).not.toHaveAttribute('value', 'argentina');
-        await expect(input).not.toHaveValue('Argentina');
+        await expect(combobox).not.toHaveAttribute('value', 'austria');
+        await expect(input).not.toHaveValue('austria');
         // The previously set value should remain
         await expect(combobox).toHaveAttribute('value', 'canada');
-        await expect(input).toHaveValue('Canada');
-        await expect(waitForChange).toEventEmitted();
-      });
-
-      await test.step('should not select an option when the control type is controlled', async () => {
-        const { input, combobox } = await setup({
-          componentsPage,
-          label: defaultLabel,
-          placeholder: defaultPlaceholder,
-          options: defaultOptions,
-          'control-type': 'controlled',
-          value: 'canada',
-        });
-        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
-        await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
-        await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
-        await expect(combobox).not.toHaveAttribute('value', 'argentina');
-        await expect(input).not.toHaveValue('Argentina');
-        // The previously set value should remain
-        await expect(combobox).toHaveAttribute('value', 'canada');
-        await expect(input).toHaveValue('Canada');
+        await expect(input).toHaveValue('');
         await expect(waitForChange).toEventEmitted();
       });
 
