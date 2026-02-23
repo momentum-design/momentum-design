@@ -82,16 +82,16 @@ const styles = css`
 
   .calendar-day-wrapper.range-start,
   .calendar-day-wrapper.in-range:first-child {
-    border-top-left-radius: 1.125rem;
-    border-bottom-left-radius: 1.125rem;
-    border-left: 1px solid var(--mdc-calendar-day-selected-bg);
+    border-start-start-radius: 1.125rem;
+    border-end-start-radius: 1.125rem;
+    border-inline-start: 1px solid var(--mdc-calendar-day-selected-bg);
   }
 
   .calendar-day-wrapper.range-end,
   .calendar-day-wrapper.in-range:last-child {
-    border-top-right-radius: 1.125rem;
-    border-bottom-right-radius: 1.125rem;
-    border-right: 1px solid var(--mdc-calendar-day-selected-bg);
+    border-start-end-radius: 1.125rem;
+    border-end-end-radius: 1.125rem;
+    border-inline-end: 1px solid var(--mdc-calendar-day-selected-bg);
   }
 
   .calendar-day {
