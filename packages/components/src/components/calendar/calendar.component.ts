@@ -110,22 +110,21 @@ class Calendar extends Component {
 
   /**
    * Localized label for the "Today" button.
-   * @default 'Today'
    */
   @property({ type: String, attribute: 'locale-today-label' })
-  localeTodayLabel = 'Today';
+  localeTodayLabel = '';
 
   /**
    * Localized aria-label for the previous month navigation button.
    */
   @property({ type: String, attribute: 'locale-prev-month-label' })
-  localePrevMonthLabel = 'Go to previous month';
+  localePrevMonthLabel = '';
 
   /**
    * Localized aria-label for the next month navigation button.
    */
   @property({ type: String, attribute: 'locale-next-month-label' })
-  localeNextMonthLabel = 'Go to next month';
+  localeNextMonthLabel = '';
 
   @state() private displayMonth: number = new Date().getMonth() + 1;
 

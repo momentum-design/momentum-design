@@ -23,6 +23,9 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.locale ? `locale="${restArgs.locale}"` : ''}
         ${restArgs.min ? `min="${restArgs.min}"` : ''}
         ${restArgs.max ? `max="${restArgs.max}"` : ''}
+        locale-today-label="Today"
+        locale-prev-month-label="Go to previous month"
+        locale-next-month-label="Go to next month"
       ></mdc-calendar>
     `,
     clearDocument: true,

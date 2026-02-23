@@ -45,6 +45,10 @@ const styles = css`
     gap: 0.25rem;
   }
 
+  :host(:dir(rtl)) .calendar-header-nav {
+    transform: scaleX(-1);
+  }
+
   .calendar-weekday {
     font-size: 0.75rem;
     line-height: 1rem;

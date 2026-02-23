@@ -163,25 +163,25 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * Accessible label for the month spinbutton.
    */
   @property({ type: String, attribute: 'locale-month-label' })
-  localeMonthLabel = 'Month';
+  localeMonthLabel = '';
 
   /**
    * Accessible label for the day spinbutton.
    */
   @property({ type: String, attribute: 'locale-day-label' })
-  localeDayLabel = 'Day';
+  localeDayLabel = '';
 
   /**
    * Accessible label for the year spinbutton.
    */
   @property({ type: String, attribute: 'locale-year-label' })
-  localeYearLabel = 'Year';
+  localeYearLabel = '';
 
   /**
    * Accessible label for the calendar toggle button.
    */
   @property({ type: String, attribute: 'locale-calendar-label' })
-  localeCalendarLabel = 'Open calendar';
+  localeCalendarLabel = '';
 
   /**
    * Accessible description for spinbutton inputs.
@@ -193,19 +193,19 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * Localized label for the today button on the calendar.
    */
   @property({ type: String, attribute: 'locale-today-label' })
-  localeTodayLabel = 'Today';
+  localeTodayLabel = '';
 
   /**
    * Localized aria-label for the previous month button.
    */
   @property({ type: String, attribute: 'locale-prev-month-label' })
-  localePrevMonthLabel = 'Go to previous month';
+  localePrevMonthLabel = '';
 
   /**
    * Localized aria-label for the next month button.
    */
   @property({ type: String, attribute: 'locale-next-month-label' })
-  localeNextMonthLabel = 'Go to next month';
+  localeNextMonthLabel = '';
 
   @query('#month-spinbutton') private monthInput!: HTMLInputElement;
 
