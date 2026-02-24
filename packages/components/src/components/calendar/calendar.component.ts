@@ -199,36 +199,26 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   private getSelectedDates(): string[] {
     if (!this.value) return [];
 
-    if (this.selectionMode === SELECTION_MODE.WEEK) {
-      const { start, end } = getWeekRange(this.value, this.locale);
-      return getDatesInRange(start, end);
-    }
-
-    if (this.selectionMode === SELECTION_MODE.RANGE) {
-      if (this.value && this.endValue) {
-        return [this.value, this.endValue];
-      }
-      return [this.value];
+    if (
+      (this.selectionMode === SELECTION_MODE.WEEK || this.selectionMode === SELECTION_MODE.RANGE) &&
+      this.value &&
+      this.endValue
+    ) {
+      return getDatesInRange(this.value, this.endValue);
     }
 
     return [this.value];
   }
 
   private getRangeStart(): string | undefined {
-    if (this.selectionMode === SELECTION_MODE.WEEK && this.value) {
-      return getWeekRange(this.value, this.locale).start;
-    }
-    if (this.selectionMode === SELECTION_MODE.RANGE && this.value) {
+    if ((this.selectionMode === SELECTION_MODE.WEEK || this.selectionMode === SELECTION_MODE.RANGE) && this.value) {
       return this.value;
     }
     return undefined;
   }
 
   private getRangeEnd(): string | undefined {
-    if (this.selectionMode === SELECTION_MODE.WEEK && this.value) {
-      return getWeekRange(this.value, this.locale).end;
-    }
-    if (this.selectionMode === SELECTION_MODE.RANGE && this.endValue) {
+    if ((this.selectionMode === SELECTION_MODE.WEEK || this.selectionMode === SELECTION_MODE.RANGE) && this.endValue) {
       return this.endValue;
     }
     return undefined;
@@ -282,7 +272,8 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       }
       case SELECTION_MODE.WEEK: {
         const { start, end } = getWeekRange(dateIso, this.locale);
-        this.value = dateIso;
+        this.value = start;
+        this.endValue = end;
         this.focusedDate = dateIso;
         this.dispatchEvent(
           new CustomEvent('date-selected', {
@@ -417,9 +408,8 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   private getGridAriaLabel(): string {
-    if (this.selectionMode === SELECTION_MODE.WEEK && this.value) {
-      const { start, end } = getWeekRange(this.value, this.locale);
-      return `Calendar, ${formatDateRangeForDisplay(start, end, this.locale)}`;
+    if (this.selectionMode === SELECTION_MODE.WEEK && this.value && this.endValue) {
+      return `Calendar, ${formatDateRangeForDisplay(this.value, this.endValue, this.locale)}`;
     }
     const monthYear = getMonthYearLabel(this.displayYear, this.displayMonth, this.locale);
     return `Calendar, ${monthYear}`;

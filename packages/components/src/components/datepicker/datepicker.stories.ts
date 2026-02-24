@@ -169,6 +169,19 @@ export const DefaultWithValue: StoryObj = {
   },
 };
 
+export const WeekSelection: StoryObj = {
+  args: {
+    label: 'Select week',
+    variant: VARIANT.DEFAULT,
+    'selection-mode': SELECTION_MODE.WEEK,
+    locale: 'en-US',
+    'help-text': 'Click a date to select its week',
+    'locale-today-label': 'Today',
+    'locale-prev-month-label': 'Go to previous month',
+    'locale-next-month-label': 'Go to next month',
+  },
+};
+
 export const Disabled: StoryObj = {
   args: {
     label: 'Start date',

@@ -595,6 +595,9 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   // -- Display text --
 
   private get effectiveSelectionMode(): SelectionMode {
+    if (this.selectionMode === SELECTION_MODE.WEEK) {
+      return SELECTION_MODE.WEEK;
+    }
     return this.variant === VARIANT.DEFAULT ? SELECTION_MODE.RANGE : this.selectionMode;
   }
 

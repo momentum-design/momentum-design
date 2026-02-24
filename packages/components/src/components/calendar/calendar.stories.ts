@@ -94,9 +94,12 @@ export const WithSelectedDate: StoryObj = {
 
 export const WeekSelection: StoryObj = {
   args: {
-    value: '2025-07-15',
+    value: '2025-07-13',
+    'end-value': '2025-07-19',
     'selection-mode': SELECTION_MODE.WEEK,
     locale: 'en-US',
+    'locale-prev-month-label': 'Go to previous month',
+    'locale-next-month-label': 'Go to next month',
   },
 };
 
