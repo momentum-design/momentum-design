@@ -2,6 +2,7 @@ import '../button';
 import '../icon';
 import '../option';
 import '../popover';
+import '../selectlistbox';
 import '../text';
 import '../toggletip';
 import TimePicker from './timepicker.component';
