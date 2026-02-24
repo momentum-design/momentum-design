@@ -227,7 +227,8 @@ test.describe('mdc-calendar', () => {
     test('should match screenshot with week selection', async ({ componentsPage }) => {
       const calendar = await setup({
         componentsPage,
-        value: '2025-07-15',
+        value: '2025-07-13',
+        endValue: '2025-07-19',
         selectionMode: 'week',
         locale: 'en-US',
       });
