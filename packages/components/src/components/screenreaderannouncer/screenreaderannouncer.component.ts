@@ -22,9 +22,25 @@ import { AriaLive } from './screenreaderannouncer.types';
  * in the DOM. If the `identity` attribute is provided, the identity element is used and no new element
  * is created in the DOM.
  *
+ * If you provide a custom `identity`, you must ensure that the element exists and is visually hidden.
+ *
+ * Example CSS:
+ *
+ * ```css
+ * #your-custom-announcer-id {
+ *   clip: rect(0 0 0 0);
+ *   clip-path: inset(50%);
+ *   height: 1px;
+ *   overflow: hidden;
+ *   position: absolute;
+ *   white-space: nowrap;
+ *   width: 1px;
+ * }
+ * ```
+ *
  * When the `announcement` attribute is set, the screenreader announcer will create a `<div>` element with
  * `aria-live` attribute set to the value of `data-aria-live` attribute and append it to the `identity` element.
- * After delay of `delay` milliseconds, a <p> element with the announcement text is appended to the `<div>` element.
+ * After delay of `delay` milliseconds, a `<p>` element with the announcement text is appended to the `<div>` element.
  *
  * The announcement `<div>` element is removed from the DOM after `timeout` milliseconds.
  *
@@ -34,6 +50,10 @@ import { AriaLive } from './screenreaderannouncer.types';
  * **Note**
  * 1. The default delay of 150 miliseconds is used as we dynamically generate the
  * aria-live region in the DOM and add the announcement text to it.
+ * 2. If multiple `mdc-screenreaderannouncer` instances use the same `identity`, `data-aria-live`
+ * for that identity is effectively determined by the first instance that creates announcements for it.
+ * Changing `data-aria-live` in later instances for the same identity will not update already-created
+ * live-region containers.
  * 3. If no `identity` is provided, all the screen reader components will create and use only one
  * `<div>` element with id `mdc-screenreaderannouncer-identity` in the DOM.
  *
@@ -62,6 +82,10 @@ class ScreenreaderAnnouncer extends Component {
 
   /**
    * Aria live value for announcement.
+   *
+   * For a shared `identity`, this value should be treated as immutable after initial usage.
+   * The first `mdc-screenreaderannouncer` instance that creates announcements for that
+   * identity determines the `aria-live` value for the created live-region containers.
    *
    * @default 'polite'
    */
