@@ -118,6 +118,9 @@ class Combobox
   /** @internal */
   private itemsStore: ElementStore<Option>;
 
+  /** @internal */
+  private lastCommittedValue: string = '';
+
   /**
    * The placeholder text which will be shown on the text if provided.
    * @default undefined
@@ -405,7 +408,7 @@ class Combobox
     // For controlled components, user interactions (not coming from a value prop change)
     // should only emit events and let the parent drive the value.
     if (this.controlType === 'controlled' && !updateFromValue) {
-      if (emitEvents && option) {
+      if (emitEvents) {
         ComboboxEventManager.onInputCombobox(this, option);
         ComboboxEventManager.onChangeCombobox(this, option);
       }
@@ -414,6 +417,8 @@ class Combobox
 
     this.filteredValue = label;
     this.value = value;
+    // Update last committed values when a real selection is made
+    this.lastCommittedValue = value;
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
     if (option) {
@@ -516,6 +521,8 @@ class Combobox
     } else if (this.placeholder) {
       this.setInputValidity();
     }
+    // Initialize last committed values
+    this.lastCommittedValue = this.value;
     this.navItems.forEach(option => {
       option.setAttribute('tabindex', '-1');
     });
@@ -712,17 +719,35 @@ class Combobox
       return;
     }
 
-    if (
-      activeIndex === -1 &&
-      this.filteredValue !== '' &&
-      this.invalidCustomValueText &&
-      !this.getFirstSelectedOption()
-    ) {
-      this.helpText = this.invalidCustomValueText;
-      this.helpTextType = VALIDATION.ERROR;
+    // Check if the typed text exactly matches an option
+    const exactMatch = this.navItems.find(option => {
+      const optionLabel = option.getAttribute('label') || '';
+      return optionLabel.toLowerCase() === this.filteredValue.toLowerCase();
+    });
+
+    if (exactMatch) {
+      this.setSelectedValue(exactMatch);
+      this.closePopover();
+      return;
     }
 
-    // In common cases (when no selection made and focus moved away), close the popover.
+    // If user typed something but didn't select anything, check what to do
+    if (this.filteredValue !== '') {
+      // If the input doesn't match any option and we have a previously committed value, revert to it
+      if (this.lastCommittedValue) {
+        const newOption = this.navItems.find(option => option.value === this.lastCommittedValue);
+        this.setSelectedValue(newOption!);
+      } else if (this.invalidCustomValueText && !this.getFirstSelectedOption()) {
+        // Show invalid custom value message if configured
+        this.helpText = this.invalidCustomValueText;
+        this.helpTextType = VALIDATION.ERROR;
+      }
+    } else {
+      // When the input is cleared, reset the selected value to null (placeholder will be shown if present)
+      this.setSelectedValue(null);
+    }
+
+    this.closePopover();
     this.setInputValidity();
   }
 
@@ -861,7 +886,8 @@ class Combobox
   /** @internal */
   private handleInputChange(event: Event): void {
     this.filteredValue = (event.target as HTMLInputElement).value;
-    this.resetSelectedValue();
+    // Don't reset the selected value immediately - preserve it until user makes a selection
+    // or loses focus and we determine what to do
     this.resetFocusedOption();
     this.updateHiddenOptions();
     // remove the selected attribute on input change
@@ -869,6 +895,10 @@ class Combobox
     if (this.isOpen === false) {
       this.openPopover();
     }
+    // Stop event propagation to prevent unintended side effects.
+    event.stopPropagation();
+    // Dispatch custom event to notify about the input change with the current filtered value.
+    ComboboxEventManager.onInputCombobox(this, { value: this.filteredValue } as Option);
   }
 
   /** @internal */
