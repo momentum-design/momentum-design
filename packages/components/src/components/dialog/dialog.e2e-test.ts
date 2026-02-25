@@ -968,6 +968,37 @@ test('mdc-dialog', async ({ componentsPage }) => {
         menuLvl6,
       } = await setup();
 
+      // Intercept onComponentStackChanged on all stacked overlay components to detect
+      // corrupted indices or re-entrancy (e.g. from popItem/popUntil/remove).
+      // Use exposeFunction to capture calls into a Node array.
+      const onComponentStackChangedCalls: { id: string; changed: string; zIndex: number }[] = [];
+      await componentsPage.page.exposeFunction(
+        'recordOnComponentStackChanged',
+        (id: string, changed: string, zIndex: number) => {
+          onComponentStackChangedCalls.push({ id, changed, zIndex });
+        },
+      );
+      await componentsPage.page.evaluate(() => {
+        const record = (window as any).recordOnComponentStackChanged as (
+          id: string,
+          changed: string,
+          zIndex: number,
+        ) => void;
+
+        const overlaySelectors = ['mdc-dialog', 'mdc-popover', 'mdc-menupopover'];
+        overlaySelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach((el: Element) => {
+            const overlay = el as { id?: string; zIndex?: number; onComponentStackChanged?: (change: string) => void };
+            const original = overlay.onComponentStackChanged;
+            if (typeof original !== 'function') return;
+            overlay.onComponentStackChanged = function interceptOnComponentStackChanged(changed: string) {
+              record(this.id ?? '', changed, typeof this.zIndex === 'number' ? this.zIndex : 0);
+              return original?.apply(this, [changed]);
+            };
+          });
+        });
+      });
+
       await test.step('Keyboard navigation work as expected', async () => {
         const stack: Locator[] = [];
         const stackItemsToBeVisible = () => Promise.all(stack.map(item => expect(item).toBeVisible()));
@@ -1066,6 +1097,39 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(stack.pop()!).not.toBeVisible();
         await stackItemsToBeVisible();
         await expect(dialogLvl1Trigger).toBeFocused();
+      });
+
+      await test.step('onComponentStackChanged calls are consistent (no corrupted indices)', async () => {
+        const data = onComponentStackChangedCalls;
+
+        const overlayIds = ['dialogLvl1', 'popupLvl2', 'dialogLvl3', 'menuLvl4', 'menuLvl5', 'menuLvl6'];
+
+        // Each overlay must receive exactly one 'added' and exactly one 'removed'
+        for (const id of overlayIds) {
+          const added = data.filter(c => c.id === id && c.changed === 'added');
+          const removed = data.filter(c => c.id === id && c.changed === 'removed');
+          expect(added, `${id} should receive exactly one 'added'`).toHaveLength(1);
+          expect(removed, `${id} should receive exactly one 'removed'`).toHaveLength(1);
+        }
+
+        // 'added' calls for the six overlays must appear in open order
+        const addCallsInOrder = data.filter(c => c.changed === 'added' && overlayIds.includes(c.id));
+        expect(addCallsInOrder.map(c => c.id)).toEqual(overlayIds);
+
+        // 'removed' must come after 'added' for each overlay (no remove-before-add)
+        for (const id of overlayIds) {
+          const addIdx = data.findIndex(c => c.id === id && c.changed === 'added');
+          const removeIdx = data.findIndex(c => c.id === id && c.changed === 'removed');
+          expect(removeIdx, `${id} 'removed' must come after 'added'`).toBeGreaterThan(addIdx);
+        }
+
+        // No re-entrancy: no component must receive 'removed' twice in a row (corrupted stack)
+        for (let i = 1; i < data.length; i += 1) {
+          const prev = data[i - 1];
+          const curr = data[i];
+          const duplicateRemoved = prev.changed === 'removed' && curr.changed === 'removed' && prev.id === curr.id;
+          expect(duplicateRemoved, `re-entrancy: ${curr.id} should not receive 'removed' twice in a row`).toBe(false);
+        }
       });
 
       await test.step('Closing intermediate overlay will close all child and grand-child overlays', async () => {

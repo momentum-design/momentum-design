@@ -199,7 +199,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('default attributes for popover', async () => {
     await expect(popover).toHaveAttribute('placement', DEFAULTS.PLACEMENT);
     await expect(popover).toHaveAttribute('delay', DEFAULTS.DELAY);
-    await expect(popover).toHaveAttribute('z-index', '-1');
+    await expect(popover).toHaveAttribute('z-index', '1000');
     await expect(popover).not.toHaveAttribute('visible');
     await expect(popover).toHaveAttribute('offset', DEFAULTS.OFFSET.toString());
     await expect(popover).not.toHaveAttribute('interactive');
@@ -1051,6 +1051,51 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(childPopover).not.toBeVisible();
       await expect(parentPopover).toBeVisible();
       await componentsPage.page.mouse.click(200, 100);
+      await expect(parentPopover).not.toBeVisible();
+    });
+
+    await test.step('Closing parent popover should also close nested child popovers', async () => {
+      await componentsPage.mount({
+        html: `
+        <div id="wrapper">
+          <mdc-button id="trigger-button">Open Parent</mdc-button>
+          <mdc-popover id="parent-popover" triggerID="trigger-button" interactive backdrop hide-on-escape>
+            <p>Parent content</p>
+            <mdc-button id="child-trigger">Open Child</mdc-button>
+            <mdc-popover id="child-popover" triggerID="child-trigger" interactive backdrop hide-on-escape>
+              <p>Child content</p>
+              <mdc-button id="grandchild-trigger">Open Grandchild</mdc-button>
+              <mdc-popover id="grandchild-popover" triggerID="grandchild-trigger" interactive backdrop hide-on-escape>
+                <p>Grandchild content</p>
+              </mdc-popover>
+            </mdc-popover>
+          </mdc-popover>
+        </div>
+        `,
+        clearDocument: true,
+      });
+
+      const parentPopover = componentsPage.page.locator('#parent-popover');
+      const childPopover = componentsPage.page.locator('#child-popover');
+      const grandchildPopover = componentsPage.page.locator('#grandchild-popover');
+
+      // Open all three levels
+      await componentsPage.page.locator('#trigger-button').click();
+      await expect(parentPopover).toBeVisible();
+
+      await componentsPage.page.locator('#child-trigger').click();
+      await expect(childPopover).toBeVisible();
+
+      await componentsPage.page.locator('#grandchild-trigger').click();
+      await expect(grandchildPopover).toBeVisible();
+
+      // Close the parent — child and grandchild should also close
+      await componentsPage.page.evaluate(() => {
+        document.querySelector('#parent-popover')?.removeAttribute('visible');
+      });
+
+      await expect(grandchildPopover).not.toBeVisible();
+      await expect(childPopover).not.toBeVisible();
       await expect(parentPopover).not.toBeVisible();
     });
   });
