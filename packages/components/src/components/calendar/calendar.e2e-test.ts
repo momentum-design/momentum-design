@@ -45,7 +45,7 @@ test.describe('mdc-calendar', () => {
       const grid = calendar.locator('[role="grid"]');
       await expect(grid).toBeVisible();
 
-      const header = calendar.locator('.calendar-header-title');
+      const header = calendar.locator('.calendar-header mdc-text');
       await expect(header).toBeVisible();
     });
 
@@ -93,7 +93,7 @@ test.describe('mdc-calendar', () => {
       const nextButton = calendar.locator('mdc-button[aria-label="Go to next month"]');
       await nextButton.click();
 
-      const header = calendar.locator('.calendar-header-title');
+      const header = calendar.locator('.calendar-header mdc-text');
       await expect(header).toContainText('August');
     });
 
@@ -103,7 +103,7 @@ test.describe('mdc-calendar', () => {
       const prevButton = calendar.locator('mdc-button[aria-label="Go to previous month"]');
       await prevButton.click();
 
-      const header = calendar.locator('.calendar-header-title');
+      const header = calendar.locator('.calendar-header mdc-text');
       await expect(header).toContainText('June');
     });
   });

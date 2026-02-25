@@ -29,13 +29,11 @@ const styles = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
   }
 
-  .calendar-header-title {
-    font-weight: var(--mds-font-apps-body-small-bold-font-weight);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+  .calendar-header mdc-text {
     color: var(--mdc-calendar-header-text-color);
   }
 

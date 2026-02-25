@@ -146,6 +146,10 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   protected override willUpdate(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(changedProperties);
 
+    if (changedProperties.has('selectionMode')) {
+      this.rangeSelectionPhase = 'start';
+    }
+
     if (changedProperties.has('value') && this.value) {
       const dt = parseISO(this.value);
       if (dt) {
@@ -422,7 +426,7 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
 
     return html`
       <div class="calendar-header">
-        <span class="calendar-header-title">${title}</span>
+        <mdc-text type="body-midsize-bold" tagname="span">${title}</mdc-text>
         <div class="calendar-header-nav">
           <mdc-button
             variant="${BUTTON_VARIANTS.TERTIARY}"

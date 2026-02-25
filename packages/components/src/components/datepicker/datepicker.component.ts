@@ -121,12 +121,6 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   max?: string;
 
   /**
-   * Placeholder text for the default (select) variant.
-   */
-  @property({ type: String, reflect: true })
-  placeholder?: string;
-
-  /**
    * The placement of the popover dropdown.
    * @default 'bottom-start'
    */
@@ -207,10 +201,13 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   @property({ type: String, attribute: 'locale-next-month-label' })
   localeNextMonthLabel = '';
 
+  /** @internal */
   @query('#month-spinbutton') private monthInput!: HTMLInputElement;
 
+  /** @internal */
   @query('#day-spinbutton') private dayInput!: HTMLInputElement;
 
+  /** @internal */
   @query('#year-spinbutton') private yearInput!: HTMLInputElement;
 
   @state() private displayPopover = false;
@@ -443,6 +440,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   private handleSpinbuttonKeydown(event: KeyboardEvent, field: 'month' | 'day' | 'year'): void {
+    if (this.readonly) return;
     const currentMonth = parseInt(this.internalMonth, 10) || undefined;
     const currentYear = parseInt(this.internalYear, 10) || undefined;
     const minVal = getFieldMin(field);
@@ -645,7 +643,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         aria-label="${labelMap[field]}"
         aria-valuemin="${minVal}"
         aria-valuemax="${maxVal}"
-        aria-valuenow="${value ? parseInt(value, 10) : ''}"
+        aria-valuenow="${ifDefined(value ? parseInt(value, 10) : undefined)}"
         aria-description="${this.localeSpinbuttonDescription}"
         .value="${value}"
         placeholder="${placeholderMap[field]}"
@@ -697,7 +695,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private renderDefaultVariant() {
     const displayText = this.getDisplayText();
-    const placeholderText = this.placeholder || getPlaceholder(this.locale);
+    const placeholderText = getPlaceholder(this.locale);
 
     return html`
       <div

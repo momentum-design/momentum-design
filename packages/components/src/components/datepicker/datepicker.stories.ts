@@ -1,3 +1,4 @@
+import { action } from 'storybook/actions';
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
@@ -14,6 +15,10 @@ const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !=
 
 const render = (args: Args) => html`
   <mdc-datepicker
+    @change="${action('onchange')}"
+    @input="${action('oninput')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
     label="${ifDefined(args.label)}"
     value="${ifDefined(args.value)}"
     variant="${ifDefined(args.variant)}"
@@ -26,7 +31,6 @@ const render = (args: Args) => html`
     help-text-type="${ifDefined(args['help-text-type'])}"
     min="${ifDefined(args.min)}"
     max="${ifDefined(args.max)}"
-    placeholder="${ifDefined(args.placeholder)}"
     locale-month-label="${ifDefined(args['locale-month-label'])}"
     locale-day-label="${ifDefined(args['locale-day-label'])}"
     locale-year-label="${ifDefined(args['locale-year-label'])}"
@@ -89,9 +93,6 @@ const meta: Meta = {
     max: {
       control: 'text',
     },
-    placeholder: {
-      control: 'text',
-    },
     'locale-month-label': { control: 'text' },
     'locale-day-label': { control: 'text' },
     'locale-year-label': { control: 'text' },
@@ -114,7 +115,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const InputVariant: StoryObj = {
+export const Example: StoryObj = {
   args: {
     label: 'Start date',
     variant: VARIANT.INPUT,
