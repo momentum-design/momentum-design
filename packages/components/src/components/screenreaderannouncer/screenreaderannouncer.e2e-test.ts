@@ -166,14 +166,14 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         const { regionInShadowRoot, regionInBody } = await componentsPage.page.evaluate(() => {
           const dialog = document.querySelector('mdc-dialog');
           const textarea = document.querySelector('mdc-textarea');
-          
+
           // Get textarea's inputId to find the correct region
           const textareaEl = textarea?.shadowRoot?.querySelector('textarea');
           const inputId = textareaEl?.id;
-          
+
           const inShadow = dialog?.shadowRoot?.getElementById(inputId || '') !== null;
           const inBody = document.getElementById(inputId || '') !== null;
-          
+
           return { regionInShadowRoot: inShadow, regionInBody: inBody };
         });
 
@@ -199,6 +199,36 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(announcement).toHaveText('Test Announcement 4');
         await expect(componentsPage.page.getByText('Test Announcement 4')).not.toBeVisible();
       });
+
+      // AI-Assisted: add direct coverage for public announce(options) API
+      await test.step('make an announcement using public announce function', async () => {
+        const { screenReaderAnnouncer } = await setup({ componentsPage });
+
+        await componentsPage.page.evaluate(() => {
+          const announcer = document.querySelector('mdc-screenreaderannouncer') as {
+            announce: (options: {
+              announcement: string;
+              delay?: number;
+              timeout?: number;
+              ariaLive?: 'polite' | 'assertive';
+              identity?: string;
+            }) => void;
+          } | null;
+
+          announcer?.announce({
+            announcement: 'Test Announcement via public announce',
+            ariaLive: 'assertive',
+          });
+        });
+
+        const ariaLiveRegion = componentsPage.page.locator('[id="mdc-screenreaderannouncer-identity"]').first();
+        const announcement = ariaLiveRegion.locator('div').first().locator('p').first();
+
+        await expect(announcement).toHaveText('Test Announcement via public announce');
+        await expect(ariaLiveRegion.locator('div').first()).toHaveAttribute('aria-live', 'assertive');
+        await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
+      });
+      // End AI-Assisted
 
       await test.step('make multiple announcements', async () => {
         const { screenReaderAnnouncer } = await setup({ componentsPage });
@@ -270,9 +300,9 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         });
 
         // Should contain character count information (10 characters of 50 max)
-        await expect(announcementContent).toBeTruthy();
-        await expect(announcementContent).toContain('10');
-        await expect(announcementContent).toContain('50');
+        expect(announcementContent).toBeTruthy();
+        expect(announcementContent).toContain('10');
+        expect(announcementContent).toContain('50');
       });
     });
   });
