@@ -356,17 +356,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       this.flushPendingInput();
     }
     this.displayPopover = !this.displayPopover;
-    if (this.displayPopover) {
-      this.focusCalendarGrid();
-    }
   }
 
   private handleSelectTriggerClick(): void {
     if (this.disabled || this.readonly) return;
     this.displayPopover = !this.displayPopover;
-    if (this.displayPopover) {
-      this.focusCalendarGrid();
-    }
   }
 
   private handleSelectKeydown(event: KeyboardEvent): void {
@@ -374,23 +368,19 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE || event.key === KEYS.ARROW_DOWN) {
       event.preventDefault();
       this.displayPopover = true;
-      this.focusCalendarGrid();
     }
   }
 
   private focusCalendarGrid(): void {
-    this.updateComplete
-      .then(() => {
-        // Delay to run after the popover's focus trap initialization (setTimeout 0)
-        setTimeout(() => {
-          const calendar = this.shadowRoot?.querySelector('mdc-calendar');
-          if (calendar?.shadowRoot) {
-            const focusedCell = calendar.shadowRoot.querySelector<HTMLElement>('.calendar-day[tabindex="0"]');
-            focusedCell?.focus();
-          }
-        }, 50);
-      })
-      .catch(() => {});
+    // The popover's focus trap uses setTimeout(0) to call setInitialFocus after the 'shown' event.
+    // We use setTimeout to run after that, so our focus override takes effect.
+    setTimeout(() => {
+      const calendar = this.shadowRoot?.querySelector('mdc-calendar');
+      if (calendar?.shadowRoot) {
+        const focusedCell = calendar.shadowRoot.querySelector<HTMLElement>('.calendar-day[tabindex="0"]');
+        focusedCell?.focus();
+      }
+    }, 0);
   }
 
   private handleDateSelected(event: CustomEvent): void {
@@ -781,6 +771,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         ?disable-flip="${this.disableFlip}"
         placement="${this.placement}"
         strategy="${ifDefined(this.strategy)}"
+        @shown="${() => this.focusCalendarGrid()}"
         @closebyescape="${(event: Event) => {
           if (event.target === event.currentTarget) {
             this.displayPopover = false;
