@@ -30,7 +30,9 @@ const styles = css`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 0.5rem;
-    padding: 0.25rem 0;
+    padding-block: 0.5rem;
+    padding-inline-start: 0.75rem;
+    padding-inline-end: 0;
   }
 
   .calendar-header mdc-text {
