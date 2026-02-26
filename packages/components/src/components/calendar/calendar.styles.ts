@@ -108,8 +108,8 @@ const styles = css`
     border: none;
     background: transparent;
     cursor: pointer;
-    border-radius: 1.125rem;
-    padding: 0.5rem 0.125rem;
+    border-radius: 50%;
+    padding: 0;
     position: relative;
     outline: none;
     font-family: inherit;

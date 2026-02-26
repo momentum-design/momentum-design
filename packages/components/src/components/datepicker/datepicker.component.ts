@@ -356,11 +356,17 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       this.flushPendingInput();
     }
     this.displayPopover = !this.displayPopover;
+    if (this.displayPopover) {
+      this.focusCalendarGrid();
+    }
   }
 
   private handleSelectTriggerClick(): void {
     if (this.disabled || this.readonly) return;
     this.displayPopover = !this.displayPopover;
+    if (this.displayPopover) {
+      this.focusCalendarGrid();
+    }
   }
 
   private handleSelectKeydown(event: KeyboardEvent): void {
@@ -368,7 +374,23 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE || event.key === KEYS.ARROW_DOWN) {
       event.preventDefault();
       this.displayPopover = true;
+      this.focusCalendarGrid();
     }
+  }
+
+  private focusCalendarGrid(): void {
+    this.updateComplete
+      .then(() => {
+        // Delay to run after the popover's focus trap initialization (setTimeout 0)
+        setTimeout(() => {
+          const calendar = this.shadowRoot?.querySelector('mdc-calendar');
+          if (calendar?.shadowRoot) {
+            const focusedCell = calendar.shadowRoot.querySelector<HTMLElement>('.calendar-day[tabindex="0"]');
+            focusedCell?.focus();
+          }
+        }, 50);
+      })
+      .catch(() => {});
   }
 
   private handleDateSelected(event: CustomEvent): void {
@@ -395,6 +417,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     const rangeComplete = mode === SELECTION_MODE.RANGE && this.value && this.endValue;
     if (mode !== SELECTION_MODE.RANGE || rangeComplete) {
       this.displayPopover = false;
+      this.focusBackToTrigger();
     }
   }
 
@@ -596,6 +619,20 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     }
   }
 
+  private focusBackToTrigger(): void {
+    this.updateComplete
+      .then(() => {
+        if (this.variant === VARIANT.INPUT) {
+          const calendarBtn = this.shadowRoot?.querySelector<HTMLElement>('[part~="icon-container"]');
+          calendarBtn?.focus();
+        } else {
+          const trigger = this.shadowRoot?.getElementById(TRIGGER_ID);
+          trigger?.focus();
+        }
+      })
+      .catch(() => {});
+  }
+
   // -- Display text --
 
   /** @internal */
@@ -734,13 +771,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         triggerid="${TRIGGER_ID}"
         interactive
         ?visible="${this.displayPopover}"
-        role=""
         backdrop
         backdrop-append-to="${ifDefined(this.backdropAppendTo)}"
         append-to="${ifDefined(this.appendTo)}"
         hide-on-outside-click
         hide-on-escape
-        focus-back-to-trigger
         focus-trap
         disable-aria-expanded
         ?disable-flip="${this.disableFlip}"
@@ -749,10 +784,12 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         @closebyescape="${(event: Event) => {
           if (event.target === event.currentTarget) {
             this.displayPopover = false;
+            this.focusBackToTrigger();
           }
         }}"
         @closebyoutsideclick="${() => {
           this.displayPopover = false;
+          this.focusBackToTrigger();
         }}"
         exportparts="popover-content"
       >
