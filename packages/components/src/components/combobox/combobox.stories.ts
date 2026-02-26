@@ -265,27 +265,30 @@ export const AllVariants: StoryObj = {
 
 export const ComboboxWithControlled: StoryObj = {
   render: (args: Args) => {
-    const handleInput = (event: CustomEvent) => {
+    const handleChange = (event: CustomEvent) => {
       event.stopPropagation();
-      document.querySelector('mdc-combobox')!.value = event.detail.value;
+      document.querySelector('mdc-combobox')?.setAttribute('value', event.detail.value);
     };
-    return html`
+    return wrapper(html`
       <mdc-combobox
-        @change="${handleInput}"
+        @change="${handleChange}"
         placeholder="${args.placeholder}"
         label="${args.label}"
         value="${args.value}"
         control-type="${args['control-type']}"
+        data-aria-label="${args['data-aria-label']}"
+        required="${args.required}"
       >
         ${args.children}
       </mdc-combobox>
-    `;
+    `);
   },
   args: {
     label: 'Top Countries',
     'control-type': 'controlled',
     value: 'den',
     placeholder: 'Start typing',
+    'data-aria-label': 'Select a country',
     children: html`
       <mdc-selectlistbox>
         <mdc-option value="arg" label="Argentina"></mdc-option>

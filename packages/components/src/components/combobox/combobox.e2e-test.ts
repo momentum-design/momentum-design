@@ -297,6 +297,37 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(waitForClick).toEventEmitted();
       });
 
+      await test.step('should focus base input when opened via mouse click', async () => {
+        const { combobox, input, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        // Click the field container (mdc-input wrapper) to open.
+        await combobox.locator('mdc-input').click();
+        await expect(dropdown).toBeVisible();
+        await expect(input).toBeFocused();
+      });
+
+      await test.step('should keep focus on base input after mouse selection', async () => {
+        const { combobox, input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await combobox.locator('mdc-input').click();
+        await expect(dropdown).toBeVisible();
+
+        await getOptionByText('Australia').click();
+        await expect(dropdown).not.toBeVisible();
+        await expect(input).toHaveValue('Australia');
+        await expect(input).toBeFocused();
+      });
+
       await test.step('should dispatch click and focus events when clicked on combobox input', async () => {
         const { input } = await setup({ componentsPage });
         const waitForClick = await componentsPage.waitForEvent(input, 'click');
@@ -781,34 +812,14 @@ test.describe('Combobox Feature Scenarios', () => {
         });
         const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
         await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press(KEYS.BACKSPACE); // Clear the input to show all options
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
         await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
-        await expect(combobox).not.toHaveAttribute('value', 'argentina');
-        await expect(input).not.toHaveValue('Argentina');
-        // The previously set value should remain
+        await expect(combobox).not.toHaveAttribute('value', 'austria');
+        await expect(input).not.toHaveValue('austria');
+        // The previously set value should remain unless it is updated programmatically (or via parent)
         await expect(combobox).toHaveAttribute('value', 'canada');
-        await expect(input).toHaveValue('Canada');
-        await expect(waitForChange).toEventEmitted();
-      });
-
-      await test.step('should not select an option when the control type is controlled', async () => {
-        const { input, combobox } = await setup({
-          componentsPage,
-          label: defaultLabel,
-          placeholder: defaultPlaceholder,
-          options: defaultOptions,
-          'control-type': 'controlled',
-          value: 'canada',
-        });
-        const waitForChange = await componentsPage.waitForEvent(combobox, 'change');
-        await componentsPage.actionability.pressTab();
-        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN); // Open dropdown
-        await componentsPage.page.keyboard.press(KEYS.ENTER); // Select first option
-        await expect(combobox).not.toHaveAttribute('value', 'argentina');
-        await expect(input).not.toHaveValue('Argentina');
-        // The previously set value should remain
-        await expect(combobox).toHaveAttribute('value', 'canada');
-        await expect(input).toHaveValue('Canada');
+        await expect(input).toHaveValue('');
         await expect(waitForChange).toEventEmitted();
       });
 
@@ -831,6 +842,58 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(combobox).toHaveAttribute('value', 'brazil');
         await expect(input).toHaveValue('Brazil');
       });
+
+      // AI-Assisted
+      await test.step('should allow selecting the same option again after editing input in controlled mode (parent-controlled value)', async () => {
+        const { input, dropdown, combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+          value: 'canada',
+          id: 'combobox-controlled-reselect',
+        });
+
+        await componentsPage.page.evaluate(() => {
+          const cb = document.querySelector('mdc-combobox[id="combobox-controlled-reselect"]') as Combobox;
+          if (!cb) return;
+
+          cb.addEventListener('change', (event: any) => {
+            // Simulate a controlled parent: on change, set value from emitted detail.
+            cb.setAttribute('value', event.detail.value);
+          });
+        });
+
+        // Clear the default value shown in the input (Canada)
+        await input.click();
+        await input.fill('');
+        await expect(input).toHaveValue('');
+
+        // Type "Aust" and select Austria via ArrowDown + Enter
+        await input.fill('Aust');
+        await input.press(KEYS.ARROW_DOWN);
+        await input.press(KEYS.ENTER);
+
+        await expect(combobox).toHaveAttribute('value', 'austria');
+        await expect(input).toHaveValue('Austria');
+        await expect(dropdown).not.toBeVisible();
+
+        // Remove 2 characters: "Austria" -> "Austr"
+        await input.press(KEYS.BACKSPACE);
+        await input.press(KEYS.BACKSPACE);
+        await expect(input).toHaveValue('Austr');
+
+        // Select Austria again via ArrowDown + Enter
+        await input.press(KEYS.ARROW_DOWN);
+        await input.press(KEYS.ENTER);
+
+        // Value should remain Austria (parent-controlled), and input should re-commit the full label.
+        await expect(combobox).toHaveAttribute('value', 'austria');
+        await expect(input).toHaveValue('Austria');
+        await expect(dropdown).not.toBeVisible();
+      });
+      // End AI-Assisted
     });
 
     /**
@@ -986,6 +1049,51 @@ test.describe('Combobox Feature Scenarios', () => {
           expect(await options.locator('[selected]').count()).toBe(0);
           await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
         });
+      });
+
+      await test.step('should hide all non-selected options (including dynamically added) when controlled and dropdown opens', async () => {
+        const { input, dropdown, options, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'control-type': 'controlled',
+          value: 'canada',
+          id: 'combobox-controlled-dynamic-options',
+        });
+
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector(
+            'mdc-combobox[id="combobox-controlled-dynamic-options"]',
+          ) as HTMLElement | null;
+          const selectListBox = combobox?.querySelector('mdc-selectlistbox');
+          if (!selectListBox) return;
+
+          const option1 = document.createElement('mdc-option');
+          option1.setAttribute('value', 'china');
+          option1.setAttribute('label', 'China');
+
+          const option2 = document.createElement('mdc-option');
+          option2.setAttribute('value', 'chile');
+          option2.setAttribute('label', 'Chile');
+
+          selectListBox.append(option1, option2);
+        });
+
+        await input.click();
+        await expect(dropdown).toBeVisible();
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(1);
+        await expect(getOptionByText('Canada')).toBeVisible();
+
+        await expect(getOptionByText('Argentina')).toBeHidden();
+        await expect(getOptionByText('Austria')).toBeHidden();
+        await expect(getOptionByText('Australia')).toBeHidden();
+        await expect(getOptionByText('Bangladesh')).toBeHidden();
+        await expect(getOptionByText('Brazil')).toBeHidden();
+        await expect(getOptionByText('China')).toBeHidden();
+        await expect(getOptionByText('Chile')).toBeHidden();
       });
 
       await test.step('should update the value attribute when an option is selected programattically', async () => {
