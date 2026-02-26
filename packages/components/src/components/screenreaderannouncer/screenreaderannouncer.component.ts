@@ -149,27 +149,24 @@ class ScreenreaderAnnouncer extends Component {
    *   - `delay` (optional): The delay in milliseconds before announcing the message.
    *   - `timeout` (optional): The timeout in milliseconds before removing the announcement.
    *   - `ariaLive` (optional): The aria live value for the announcement.
-   *   - `identity` (optional): The id of the element in the light dom, to which announcement elements will be appended.
    */
   public announce({
     announcement,
     delay,
     timeout,
     ariaLive,
-    identity,
   }: {
     announcement: string;
     delay?: number;
     timeout?: number;
     ariaLive?: AriaLive;
-    identity?: string;
   }) {
     if (announcement.length > 0) {
       const announcementId = `mdc-screenreaderannouncer-announcement-${uuidv4()}`;
       const announcementContainer = document.createElement('div');
       announcementContainer.setAttribute('id', announcementId);
       announcementContainer.setAttribute('aria-live', ariaLive ?? this.dataAriaLive);
-      this.getElementByIdAcrossShadowRoot(identity ?? this.identity)?.appendChild(announcementContainer);
+      this.getElementByIdAcrossShadowRoot(this.identity)?.appendChild(announcementContainer);
       const timeOutId = window.setTimeout(() => {
         const announcementElement = document.createElement('p');
         announcementElement.textContent = announcement;
@@ -287,7 +284,6 @@ class ScreenreaderAnnouncer extends Component {
           delay: this.delay,
           timeout: this.timeout,
           ariaLive: this.dataAriaLive,
-          identity: this.identity,
         });
         this.announcement = '';
       }

@@ -17,7 +17,6 @@ const render = (args: Args) => html`
         if (screenreaderannouncer) {
           screenreaderannouncer.announce({
             announcement: args.announcement,
-            identity: args.identity,
             ariaLive: args['data-aria-live'],
             delay: args.delay,
             timeout: args.timeout,

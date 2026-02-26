@@ -211,7 +211,6 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
               delay?: number;
               timeout?: number;
               ariaLive?: 'polite' | 'assertive';
-              identity?: string;
             }) => void;
           } | null;
 
