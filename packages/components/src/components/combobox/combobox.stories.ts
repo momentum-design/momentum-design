@@ -12,7 +12,7 @@ import '../tooltip';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { VALID_VALUES } from '../controltypeprovider/controltypeprovider.constants';
@@ -265,18 +265,19 @@ export const AllVariants: StoryObj = {
 
 export const ComboboxWithControlled: StoryObj = {
   render: (args: Args) => {
-    const handleInput = (event: CustomEvent) => {
+    const handleChange = (event: CustomEvent) => {
       event.stopPropagation();
-      document.querySelector('mdc-combobox')!.value = event.detail.value;
+      document.querySelector('mdc-combobox')?.setAttribute('value', event.detail.value);
     };
     return wrapper(html`
       <mdc-combobox
-        @change="${handleInput}"
+        @change="${handleChange}"
         placeholder="${args.placeholder}"
         label="${args.label}"
         value="${args.value}"
         control-type="${args['control-type']}"
         data-aria-label="${args['data-aria-label']}"
+        required="${args.required}"
       >
         ${args.children}
       </mdc-combobox>
@@ -525,49 +526,6 @@ export const ComboboxWithHelpTextValidation: StoryObj = {
         <mdc-option value="tactics" label="Tactics"></mdc-option>
       </mdc-selectlistbox>
     `,
-  },
-};
-
-export const ControlledComboboxWithDynamicOptions: StoryObj = {
-  render: () => {
-    const options = Array.from(
-      { length: 10 },
-      (_, i) => html`<mdc-option label="Option ${i + 1}" value="${i + 1}"></mdc-option>`,
-    );
-    let extraOption: TemplateResult | null = null;
-
-    setTimeout(() => {
-      extraOption = html`<mdc-option label="Delayed Option" value="69"></mdc-option>`;
-      const select = document.querySelector('mdc-combobox[label="Select option"] mdc-selectlistbox');
-      if (select) {
-        const option = document.createElement('mdc-option');
-        option.setAttribute('label', 'Delayed Option');
-        option.setAttribute('value', '70');
-        select.appendChild(option);
-      }
-    }, 2000);
-
-    return wrapper(html`
-      <mdc-combobox
-        placeholder="Select an option"
-        label="Select option"
-        control-type="controlled"
-        value="2"
-        data-aria-label="Select an option"
-      >
-        <mdc-selectlistbox> ${options} ${extraOption} </mdc-selectlistbox>
-      </mdc-combobox>
-    `);
-  },
-  parameters: {
-    ...hideAllControls(true),
-    ...describeStory(
-      html`<p role="${ROLE.REGION}">
-        When a combobox is controlled and it has a default value then adding options dynamically should not cause any
-        issues. In this example, an extra option is added after 2 seconds.
-      </p>`,
-      true,
-    ),
   },
 };
 

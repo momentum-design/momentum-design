@@ -48,6 +48,10 @@ import type { Placement } from './combobox.types';
  *
  * To set a default option, use the `selected` attribute on the `mdc-option` element.
  *
+ * When the combobox `control-type` attribute is "controlled", then the value should be set by the parent only, and the combobox will emit `change` and `input` events
+ * with the selected option details when the user makes a selection or types in the input, but it won't update the selected value internally.
+ * The parent component is expected to listen to these events and update the `value` property of the combobox accordingly to reflect the changes in the UI.
+ *
  * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-combobox` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
  *
  * If you need to use `mdc-tooltip` with any options, make sure to place the tooltip component outside the `mdc-selectlistbox` element. Read more about it in Options documentation.
@@ -390,8 +394,8 @@ class Combobox
    * Sets the selected option of the combobox.
    *
    * @param option - the new option to be set
-   * @param updateFromValue - indicates if the update is triggered from the value attribute change
    * @param emitEvents - indicates if the change and input events should be emitted
+   * @param updateFromValue - indicates if the update is triggered from the value attribute change
    *
    * @internal
    */
@@ -471,7 +475,7 @@ class Combobox
     // keep value-attribute based default selection working for both
     // controlled and uncontrolled modes, while avoiding change/input events
     // by delegating to setSelectedValue with updateFromValue=true.
-    if (name === 'value' && newValue !== '' && newValue !== oldValue && this.navItems.length) {
+    if (name === 'value' && newValue !== '' && this.navItems.length) {
       const firstSelectedOption = this.getFirstSelectedOption();
       const valueBasedOption = this.navItems.find(option => option.value === newValue);
       let optionToSelect: Option | null = null;
@@ -741,6 +745,7 @@ class Combobox
         // Show invalid custom value message if configured
         this.helpText = this.invalidCustomValueText;
         this.helpTextType = VALIDATION.ERROR;
+        this.setInputValidity();
       }
     } else {
       // When the input is cleared, reset the selected value to null (placeholder will be shown if present)
@@ -748,7 +753,6 @@ class Combobox
     }
 
     this.closePopover();
-    this.setInputValidity();
   }
 
   /** @internal */
@@ -884,7 +888,10 @@ class Combobox
   }
 
   /** @internal */
-  private handleInputChange(event: Event): void {
+  private handleInputChange(event: InputEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.filteredValue = (event.target as HTMLInputElement).value;
     // Don't reset the selected value immediately - preserve it until user makes a selection
     // or loses focus and we determine what to do
@@ -895,14 +902,15 @@ class Combobox
     if (this.isOpen === false) {
       this.openPopover();
     }
-    // Stop event propagation to prevent unintended side effects.
-    event.stopPropagation();
     // Dispatch custom event to notify about the input change with the current filtered value.
     ComboboxEventManager.onInputCombobox(this, { value: this.filteredValue } as Option);
   }
 
   /** @internal */
   private handleOptionsClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     // ensure we get the actual option element even if the click target is a child node
     const option = ((event.target as HTMLElement).closest(OPTION_TAG_NAME) as Option) ?? null;
     if (option && !option.hasAttribute('disabled')) {
@@ -1054,7 +1062,7 @@ class Combobox
           z-index="${ifDefined(this.popoverZIndex)}"
         >
           ${this.renderNoResultsText(options.length)}
-          <slot @click="${this.handleOptionsClick}"></slot>
+          <slot @mousedown="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
       ${this.renderHelperText()}
