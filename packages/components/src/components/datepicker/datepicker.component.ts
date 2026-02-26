@@ -210,12 +210,16 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   /** @internal */
   @query('#year-spinbutton') private yearInput!: HTMLInputElement;
 
+  /** @internal */
   @state() private displayPopover = false;
 
+  /** @internal */
   @state() private internalMonth = '';
 
+  /** @internal */
   @state() private internalDay = '';
 
+  /** @internal */
   @state() private internalYear = '';
 
   /**
@@ -224,8 +228,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   @property({ type: String, reflect: true, attribute: 'end-value' })
   endValue = '';
 
+  /** @internal */
   private pendingDigits = '';
 
+  /** @internal */
   private pendingDigitTimeout?: ReturnType<typeof setTimeout>;
 
   override connectedCallback(): void {
@@ -592,6 +598,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   // -- Display text --
 
+  /** @internal */
   private get effectiveSelectionMode(): SelectionMode {
     if (this.selectionMode === SELECTION_MODE.WEEK) {
       return SELECTION_MODE.WEEK;
