@@ -51,6 +51,7 @@ import type { Placement, TimeFormat } from './timepicker.types';
  * @cssproperty --mdc-timepicker-background-color - Background color of the timepicker input.
  * @cssproperty --mdc-timepicker-border-color - Border color of the timepicker input.
  * @cssproperty --mdc-timepicker-text-color - Text color of the timepicker input.
+ * @cssproperty --mdc-timepicker-height - The height of the timepicker trigger control.
  * @cssproperty --mdc-timepicker-width - Width of the timepicker component.
  * @cssproperty --mdc-timepicker-listbox-height - The max-height of the dropdown listbox. Default shows ~6 items.
  *

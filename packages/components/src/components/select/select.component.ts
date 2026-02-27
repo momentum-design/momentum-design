@@ -83,6 +83,7 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
  * @cssproperty --mdc-select-text-color - The text color of the select.
  * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-height - The height of the select trigger control.
  * @cssproperty --mdc-select-width - The width of the select.
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).

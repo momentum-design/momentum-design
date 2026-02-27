@@ -4,6 +4,7 @@ const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-combobox-icon-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-combobox-height: 2rem;
     --mdc-combobox-width: 100%;
     --mdc-combobox-listbox-width: var(--mdc-combobox-width);
     --mdc-combobox-listbox-height: auto;
@@ -20,20 +21,27 @@ const styles = css`
     position: relative;
     border-radius: 0.5rem;
   }
-  :host(:dir(ltr))::part(combobox-button) {
+  :host::part(combobox-button) {
     background-color: unset;
+    --mdc-button-height: var(--mdc-combobox-height);
+    position: absolute;
+    top: 0;
+    height: var(--mdc-combobox-height);
+    width: 2rem;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  :host(:dir(ltr))::part(combobox-button) {
     border-radius: 0 0.5rem 0.5rem 0;
     border-left: 1px solid var(--mdc-combobox-border-color);
-    position: absolute;
-    padding: 0.5rem;
     right: 0;
   }
   :host(:dir(rtl))::part(combobox-button) {
-    background-color: unset;
     border-radius: 0.5rem 0 0 0.5rem;
     border-right: 1px solid var(--mdc-combobox-border-color);
-    position: absolute;
-    padding: 0.5rem;
     left: 0;
   }
   :host([disabled])::part(combobox-button) {
@@ -61,11 +69,11 @@ const styles = css`
     pointer-events: none;
   }
   :host::part(input-text) {
-    /* 2rem is the complete width of dropdown button */
     width: calc(100% - 2rem);
   }
   mdc-input {
     --mdc-input-border-color: var(--mdc-combobox-border-color);
+    --mdc-input-height: var(--mdc-combobox-height);
   }
   :host([disabled]) input,
   :host([disabled]) mdc-input {
