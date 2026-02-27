@@ -416,6 +416,8 @@ class Input
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Input;
