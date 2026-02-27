@@ -252,6 +252,9 @@ class Calendar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     this.displayMonth = dt.getMonth() + 1;
     this.displayYear = dt.getFullYear();
 
+    // Update focusedDate to the 1st of the new month so the grid always has a tabindex="0" cell
+    this.focusedDate = toISODate(createDate(this.displayYear, this.displayMonth, 1));
+
     this.dispatchEvent(
       new CustomEvent('month-changed', {
         detail: { month: this.displayMonth, year: this.displayYear },
