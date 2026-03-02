@@ -23,6 +23,7 @@ const styles = css`
   }
   :host::part(combobox-button) {
     background-color: unset;
+    border: none;
     --mdc-button-height: var(--mdc-combobox-height);
     position: absolute;
     top: 0;
