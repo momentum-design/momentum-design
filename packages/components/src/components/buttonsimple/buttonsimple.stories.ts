@@ -29,7 +29,7 @@ const render = (args: Args) =>
   >`;
 
 const meta: Meta = {
-  title: 'Internal/buttonsimple',
+  title: 'Components/buttonsimple',
   tags: ['autodocs'],
   component: 'mdc-buttonsimple',
   render,
