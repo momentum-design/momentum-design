@@ -88,6 +88,7 @@ import Combobox from './components/combobox';
 import Slider from './components/slider';
 import ListBox from './components/listbox';
 import Banner from './components/banner';
+import Buttonsimple from './components/buttonsimple';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -225,6 +226,7 @@ export {
   Slider,
   ListBox,
   Banner,
+  Buttonsimple,
 };
 
 // Types Exports
