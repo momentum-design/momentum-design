@@ -83,11 +83,6 @@ class MenuItemRadio extends ControlTypeMixin(MenuItem) {
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
-  constructor() {
-    super();
-    this.addEventListener('click', this.handleMouseClick.bind(this));
-  }
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEMRADIO;
@@ -122,7 +117,8 @@ class MenuItemRadio extends ControlTypeMixin(MenuItem) {
    * If the menuitemradio is not checked, it sets its checked state to `true`
    * and sets all other menuitemradio elements of the same group with checked state to `false`.
    */
-  private handleMouseClick() {
+  override triggerClickEvent(event: Event) {
+    super.triggerClickEvent(event);
     if (this.disabled || this.softDisabled || this.checked) return;
 
     if (this.controlType !== 'controlled') {
