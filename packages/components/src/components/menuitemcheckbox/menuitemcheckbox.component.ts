@@ -80,6 +80,11 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleMouseClick.bind(this));
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEMCHECKBOX;
@@ -90,8 +95,7 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
    * If the menuitemcheckbox is disabled or soft-disabled, it does nothing.
    * If the menuitemcheckbox is not disabled, it toggles checked if uncontrolled, and dispatches the 'change' event.
    */
-  override triggerClickEvent(event: Event) {
-    super.triggerClickEvent(event);
+  private handleMouseClick() {
     if (this.disabled || this.softDisabled) return;
 
     if (this.controlType !== 'controlled') {
