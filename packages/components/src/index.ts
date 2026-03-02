@@ -23,6 +23,8 @@ import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
 import ControlTypeProvider from './components/controltypeprovider';
+import Calendar from './components/calendar';
+import DatePicker from './components/datepicker';
 import Dialog from './components/dialog';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
@@ -135,6 +137,8 @@ import {
 import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TimePickerChangeEvent, TimePickerInputEvent } from './components/timepicker/timepicker.types';
+import type { DatePickerChangeEvent, DatePickerInputEvent } from './components/datepicker/datepicker.types';
+import type { CalendarDateSelectedEvent, CalendarMonthChangedEvent } from './components/calendar/calendar.types';
 
 // Components Exports
 export {
@@ -153,6 +157,7 @@ export {
   Button,
   ButtonGroup,
   ButtonLink,
+  Calendar,
   Card,
   CardButton,
   CardCheckbox,
@@ -161,6 +166,7 @@ export {
   Chip,
   Coachmark,
   ControlTypeProvider,
+  DatePicker,
   Dialog,
   Divider,
   FilterChip,
@@ -268,6 +274,10 @@ export type {
   LinkButtonSize,
   TimePickerChangeEvent,
   TimePickerInputEvent,
+  DatePickerChangeEvent,
+  DatePickerInputEvent,
+  CalendarDateSelectedEvent,
+  CalendarMonthChangedEvent,
 };
 
 // Constants / Utils Exports
