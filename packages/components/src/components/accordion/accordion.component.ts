@@ -42,6 +42,7 @@ import styles from './accordion.styles';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @slot leading-header-text - The leading header text slot of the accordion on the header section. Placed after the prefix icon.
  * @slot leading-controls - The leading controls slot of the accordion on the header section. Placed after the header text.
  * @slot trailing-controls - The trailing controls slot of the accordion on the header section. Placed before the expand/collapse button.
  * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
@@ -123,7 +124,9 @@ class Accordion extends AccordionButton {
       <div part="header-section" @shown="${this.handleHeaderShownEvent}">
         <div part="leading-header">
           ${this.renderIcon(this.prefixIcon)}
-          <div role="${ROLE.HEADING}" aria-level="${this.dataAriaLevel}">${this.renderHeadingText()}</div>
+          <div role="${ROLE.HEADING}" aria-level="${this.dataAriaLevel}">
+            <slot name="leading-header-text">${this.renderHeadingText()}</slot>
+          </div>
           <slot name="leading-controls"></slot>
         </div>
         <div part="trailing-header">
