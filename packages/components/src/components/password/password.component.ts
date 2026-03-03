@@ -6,7 +6,6 @@ import { INPUT_TYPE } from '../input/input.constants';
 import type { InputType } from '../input/input.types';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
 
@@ -81,13 +80,6 @@ class Password extends Input {
    */
   @property({ type: String, attribute: 'hide-button-aria-label', reflect: true })
   hideButtonAriaLabel = '';
-
-  /**
-   * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
-   * @override
-   */
-  @property({ type: String, attribute: 'help-text-type' })
-  override helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
   override connectedCallback(): void {
     super.connectedCallback();
