@@ -158,6 +158,7 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
   }
 
@@ -187,9 +188,19 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
    */
   protected handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if (!event.defaultPrevented && (action === ACTIONS.ENTER || action === ACTIONS.SPACE)) {
+    if (!event.defaultPrevented && action === ACTIONS.ENTER) {
       if (!this.isEventFromInsideListItem(event)) {
         this.keyDownEventHandled();
+        event.preventDefault();
+        this.triggerClickEvent(event);
+      }
+    }
+  }
+
+  protected handleKeyUp(event: KeyboardEvent): void {
+    const action = this.getActionForKeyEvent(event);
+    if (!event.defaultPrevented && action === ACTIONS.SPACE) {
+      if (!this.isEventFromInsideListItem(event)) {
         event.preventDefault();
         this.triggerClickEvent(event);
       }
