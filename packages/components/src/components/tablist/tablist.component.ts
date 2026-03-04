@@ -7,9 +7,11 @@ import { Component } from '../../models';
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import { ROLE } from '../../utils/roles';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './tablist.styles';
-import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
+import { ARROW_BUTTON_DIRECTION } from './tablist.constants';
 import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
 
@@ -58,7 +60,7 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * @csspart container - The tablist container.
  */
-class TabList extends Component {
+class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
@@ -306,7 +308,7 @@ class TabList extends Component {
    *
    * @internal
    *
-   * @param tabId - The id of the new active tab in the tabs.
+   * @param newTab - The new tab to set tabindex 0.
    */
   private resetTabIndexAndSetNewTabIndex(newTab: Tab): void {
     this.tabs?.forEach(tab => {
@@ -319,7 +321,7 @@ class TabList extends Component {
    *
    * @internal
    *
-   * @param tabId - The id of the new active tab.
+   * @param newTab - The new active tab.
    */
   private setActiveTab(newTab: Tab): void {
     this.tabs?.forEach(tab => {
@@ -337,10 +339,11 @@ class TabList extends Component {
    * @internal
    *
    * @param tab - Tab to set focus on.
+   * @returns A promise that resolves to true if the tab was focused, false otherwise.
    */
-  private async focusTab(tab?: Tab): Promise<void> {
+  private async focusTab(tab?: Tab): Promise<boolean> {
     if (!(tab instanceof Tab)) {
-      return;
+      return false;
     }
 
     if (tab !== document?.activeElement) {
@@ -349,6 +352,7 @@ class TabList extends Component {
     }
 
     await this.handleArrowButtonVisibility();
+    return true;
   }
 
   /**
@@ -368,31 +372,39 @@ class TabList extends Component {
       return;
     }
 
-    const previousTab = getPreviousTab(this.tabs, tab);
-    const nextTab = getNextTab(this.tabs, tab);
+    const action = this.getActionForKeyEvent(event, true);
+    const loopBack = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+
+    const previousTab = getPreviousTab(this.tabs, tab, loopBack);
+    const nextTab = getNextTab(this.tabs, tab, loopBack);
     const firstTab = getFirstTab(this.tabs);
     const lastTab = getLastTab(this.tabs);
 
-    switch (event.code) {
-      case KEYCODES.LEFT:
+    let isKeyHandled = false;
+
+    switch (action) {
+      case ACTIONS.LEFT:
         event.preventDefault();
-        await this.focusTab(!this.isRtl() ? previousTab : nextTab);
+        isKeyHandled = previousTab !== tab && (await this.focusTab(previousTab));
         break;
 
-      case KEYCODES.RIGHT:
+      case ACTIONS.RIGHT:
         event.preventDefault();
-        await this.focusTab(!this.isRtl() ? nextTab : previousTab);
+        isKeyHandled = nextTab !== tab && (await this.focusTab(nextTab));
         break;
 
-      case KEYCODES.HOME:
-        await this.focusTab(firstTab);
+      case ACTIONS.HOME:
+        isKeyHandled = await this.focusTab(firstTab);
         break;
 
-      case KEYCODES.END:
-        await this.focusTab(lastTab);
+      case ACTIONS.END:
+        isKeyHandled = await this.focusTab(lastTab);
         break;
 
       default:
+    }
+    if (isKeyHandled) {
+      this.keyDownEventHandled();
     }
   }
 

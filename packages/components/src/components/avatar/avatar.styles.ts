@@ -9,7 +9,7 @@ const styles = [
       --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
       --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
       --mdc-avatar-loading-indicator-background-color: var(--mds-color-theme-common-text-primary-disabled);
-      --mdc-avatar-loading-indicator-foreground-color: var(--mdc-avatar-default-foreground-color);
+      --mdc-avatar-loading-indicator-foreground-color: var(--mds-color-theme-common-text-primary-normal);
       --mdc-avatar-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
     }
     :host([size='124']) {
@@ -81,6 +81,7 @@ const styles = [
       position: absolute;
       bottom: 0;
       right: 0;
+      z-index: 1;
     }
 
     :host([size='124'])::part(presence) {

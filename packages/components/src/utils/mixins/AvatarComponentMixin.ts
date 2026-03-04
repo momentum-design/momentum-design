@@ -50,6 +50,8 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(superClas
      * - `presenting`
      * - `quiet`
      * - `scheduled`
+     *
+     * @default undefined
      */
     @property({ type: String })
     presence?: PresenceType;
@@ -75,6 +77,8 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(superClas
      * then the avatar will be displayed as `99+`.
      * If the given number is a negative number,
      * then the avatar will be displayed as `0`.
+     *
+     * @default undefined
      */
     @property({ type: Number })
     counter?: number;

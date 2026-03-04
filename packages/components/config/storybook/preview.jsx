@@ -17,6 +17,7 @@ import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
+import { withSpatialNavigationProviderDecorator } from './provider/spatialNavigationProviderDecorator';
 
 const cssProperties = [];
 
@@ -138,6 +139,7 @@ const preview = {
           'Setup',
           'Styling',
           'Attributes',
+          'Providers',
           'Components',
           ['Docs', 'Accessibility', 'Example'],
           'Widgets',
@@ -153,6 +155,7 @@ const preview = {
     direction: 'ltr',
   },
   decorators: [
+    withSpatialNavigationProviderDecorator,
     storyDescription,
     withCssPropertyProvider(cssProperties),
     withThemeProvider,
@@ -170,6 +173,22 @@ const preview = {
         // Array of plain string values or MenuItem shape (see below)
         items: themes.map(theme => theme.displayName),
         // Change title based on selected value
+        dynamicTitle: true,
+      },
+    },
+    spatialNavigation: {
+      description: 'Enable or disable spatial navigation. More details in the "Spatial Navigation Provider" docs',
+      defaultValue: 'disabled',
+      toolbar: {
+        title: 'Spatial Navigation',
+        icon: 'compass',
+        items: [
+          { value: 'arrows', title: 'Spatial Nav On - Arrow keys + Enter + Esc' },
+          { value: 'awsd', title: 'Spatial Nav On - AWSD + E + Q' },
+          { value: 'arrowsWithWrapper', title: 'Spatial Nav On with Wrapper - Arrow keys + Enter + Esc' },
+          { value: 'awsdWithWrapper', title: 'Spatial Nav On with Wrapper - AWSD + E + Q' },
+          { value: 'disabled', title: 'Spatial Nav Off' },
+        ],
         dynamicTitle: true,
       },
     },

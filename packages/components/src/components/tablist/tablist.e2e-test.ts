@@ -2,6 +2,7 @@ import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import type { Variant } from '../tab/tab.types';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptionsType = {
   componentsPage: ComponentsPage;
@@ -198,6 +199,45 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press('ArrowRight');
       await componentsPage.page.keyboard.press('Enter');
       await expect(waitForChange).toEventEmitted();
+    });
+
+    await test.step('spatial navigation', async () => {
+      await setup({ componentsPage });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(tabs.nth(0)).toBeFocused();
+
+      // No loop back at the beginning of the list
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(tabs.nth(0)).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(1)).toBeFocused();
+
+      await keyboard.press('Enter');
+      await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+      await expect(tabs.nth(1)).toHaveAttribute('active');
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(2)).toBeFocused();
+
+      await expect(tabs.nth(2)).not.toHaveAttribute('aria-selected', 'true');
+      await expect(tabs.nth(2)).not.toHaveAttribute('active');
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+      await expect(tabs.nth(2)).toHaveAttribute('active');
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(3)).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(4)).toBeFocused();
+
+      // No loop back at the end of the list
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(tabs.nth(4)).toBeFocused();
     });
   });
 

@@ -270,7 +270,7 @@ export const WithNestedSubmenus: StoryObj = {
   render: (args: Args) => html`
     <div
       id="menupopover-test-wrapper"
-      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100%;"
     >
       <mdc-button id="trigger-btn">Options</mdc-button>
       ${createPopover(args, nestedSubmenuContent)}
@@ -282,7 +282,7 @@ export const WithNestedSubmenuContentAndSelectMenuItems: StoryObj = {
   render: (args: Args) => html`
     <div
       id="menupopover-test-wrapper"
-      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100%;"
     >
       <mdc-button id="trigger-btn">Options</mdc-button>
       ${createPopover(args, nestedSubmenuContentAndSelectMenuItems)}

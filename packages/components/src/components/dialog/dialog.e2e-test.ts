@@ -1,6 +1,7 @@
 import { expect, Locator } from '@playwright/test';
 
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './dialog.constants';
 import type Dialog from './dialog.component';
@@ -76,6 +77,15 @@ const setup = async (args: SetupOptions) => {
         dialogElement.visible = false;
       };
     }
+  }, restArgs.id);
+
+  await triggerButton.evaluate((el, id) => {
+    el.addEventListener('click', () => {
+      const dialogElement = document.querySelector(`#${id}`) as Dialog;
+      if (dialogElement) {
+        dialogElement.visible = true;
+      }
+    });
   }, restArgs.id);
 
   return { dialog, triggerButton };
@@ -731,6 +741,47 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
       // End AI-Assisted
     });
+
+    await test.step('spatial navigation', async () => {
+      const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const opener = componentsPage.page.getByText('Click Me!');
+      await expect(opener).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+
+      await expect(dialog).toBeVisible();
+      const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+      await expect(closeButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+      await expect(primaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+      await expect(secondaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const link = componentsPage.page.locator('[slot="footer-link"]');
+      await expect(link).toBeFocused();
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(closeButton).toBeFocused();
+
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(dialog).not.toBeVisible();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).toBeVisible();
+
+      // focus should be on close button after reopening the dialog
+      await expect(closeButton).toBeFocused();
+
+      // close the dialog with the close button
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).not.toBeVisible();
+    });
   });
 
   /**
@@ -917,6 +968,37 @@ test('mdc-dialog', async ({ componentsPage }) => {
         menuLvl6,
       } = await setup();
 
+      // Intercept onComponentStackChanged on all stacked overlay components to detect
+      // corrupted indices or re-entrancy (e.g. from popItem/popUntil/remove).
+      // Use exposeFunction to capture calls into a Node array.
+      const onComponentStackChangedCalls: { id: string; changed: string; zIndex: number }[] = [];
+      await componentsPage.page.exposeFunction(
+        'recordOnComponentStackChanged',
+        (id: string, changed: string, zIndex: number) => {
+          onComponentStackChangedCalls.push({ id, changed, zIndex });
+        },
+      );
+      await componentsPage.page.evaluate(() => {
+        const record = (window as any).recordOnComponentStackChanged as (
+          id: string,
+          changed: string,
+          zIndex: number,
+        ) => void;
+
+        const overlaySelectors = ['mdc-dialog', 'mdc-popover', 'mdc-menupopover'];
+        overlaySelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach((el: Element) => {
+            const overlay = el as { id?: string; zIndex?: number; onComponentStackChanged?: (change: string) => void };
+            const original = overlay.onComponentStackChanged;
+            if (typeof original !== 'function') return;
+            overlay.onComponentStackChanged = function interceptOnComponentStackChanged(changed: string) {
+              record(this.id ?? '', changed, typeof this.zIndex === 'number' ? this.zIndex : 0);
+              return original?.apply(this, [changed]);
+            };
+          });
+        });
+      });
+
       await test.step('Keyboard navigation work as expected', async () => {
         const stack: Locator[] = [];
         const stackItemsToBeVisible = () => Promise.all(stack.map(item => expect(item).toBeVisible()));
@@ -1017,8 +1099,40 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(dialogLvl1Trigger).toBeFocused();
       });
 
+      await test.step('onComponentStackChanged calls are consistent (no corrupted indices)', async () => {
+        const data = onComponentStackChangedCalls;
+
+        const overlayIds = ['dialogLvl1', 'popupLvl2', 'dialogLvl3', 'menuLvl4', 'menuLvl5', 'menuLvl6'];
+
+        // Each overlay must receive exactly one 'added' and exactly one 'removed'
+        for (const id of overlayIds) {
+          const added = data.filter(c => c.id === id && c.changed === 'added');
+          const removed = data.filter(c => c.id === id && c.changed === 'removed');
+          expect(added, `${id} should receive exactly one 'added'`).toHaveLength(1);
+          expect(removed, `${id} should receive exactly one 'removed'`).toHaveLength(1);
+        }
+
+        // 'added' calls for the six overlays must appear in open order
+        const addCallsInOrder = data.filter(c => c.changed === 'added' && overlayIds.includes(c.id));
+        expect(addCallsInOrder.map(c => c.id)).toEqual(overlayIds);
+
+        // 'removed' must come after 'added' for each overlay (no remove-before-add)
+        for (const id of overlayIds) {
+          const addIdx = data.findIndex(c => c.id === id && c.changed === 'added');
+          const removeIdx = data.findIndex(c => c.id === id && c.changed === 'removed');
+          expect(removeIdx, `${id} 'removed' must come after 'added'`).toBeGreaterThan(addIdx);
+        }
+
+        // No re-entrancy: no component must receive 'removed' twice in a row (corrupted stack)
+        for (let i = 1; i < data.length; i += 1) {
+          const prev = data[i - 1];
+          const curr = data[i];
+          const duplicateRemoved = prev.changed === 'removed' && curr.changed === 'removed' && prev.id === curr.id;
+          expect(duplicateRemoved, `re-entrancy: ${curr.id} should not receive 'removed' twice in a row`).toBe(false);
+        }
+      });
+
       await test.step('Closing intermediate overlay will close all child and grand-child overlays', async () => {
-        await componentsPage.page.pause();
         await dialogLvl1Trigger.click();
         await expect(dialogLvl1).toBeVisible();
 

@@ -1,11 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { getHelperIcon } from '../formfieldwrapper/formfieldwrapper.utils';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -246,6 +245,21 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(inputEl).toHaveValue('test');
       await componentsPage.actionability.pressTab();
       await expect(input).not.toBeFocused();
+    });
+
+    await test.step('focus using JavaScript focus() method', async () => {
+      // Use JavaScript to focus the element
+      await input.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal input element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await input.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('input');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
     });
 
     await test.step('dynamic help-text validation interaction test for mdc-input (FormFieldInputWithHelpTextValidation)', async () => {
@@ -591,6 +605,30 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         'Please use at least 5 characters (you are currently using 4 characters).',
         'Use at least 5 characters',
       ]).toContain(validationMessage);
+    });
+
+    await test.step('spatial navigation', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Placeholder',
+          required: true,
+          maxlength: 10,
+        },
+        true,
+      );
+      const input = form.locator('mdc-input');
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(input).toBeFocused();
+
+      // Enter does not trigger submit in spatial navigation mode
+      const waitForInput = await componentsPage.waitForEvent(form, 'submit');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForInput).not.toEventEmitted();
     });
   });
 

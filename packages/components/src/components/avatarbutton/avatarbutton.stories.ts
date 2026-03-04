@@ -30,7 +30,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/avatarbutton',
+  title: 'Components/avatar/avatarbutton',
   tags: ['autodocs'],
   component: 'mdc-avatarbutton',
   render,

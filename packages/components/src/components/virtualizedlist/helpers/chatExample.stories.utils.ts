@@ -362,6 +362,12 @@ export class ChatExampleStoriesUtils extends Component {
         <!-- End AI-Assisted -->
       </div>
       <style>
+        mdc-virtualizedlist-chat-example {
+          display: block;
+          width: 100%;
+          height: 100%;
+          flex: 1 1 auto;
+        }
         #VirtualizedDynamicList--wrapper {
           width: 100%;
           height: min(100%, 600px);

@@ -2,6 +2,7 @@
 import { expect, type Locator } from '@playwright/test';
 
 import { test } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './virtualizedlist.constants';
 import type { VirtualizedListE2E } from './helpers/virtualizedlist.e2e-test.utils';
@@ -225,6 +226,30 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     await componentsPage.page.keyboard.press('Home');
     await expect(listItemLocator(vlist, 0)).toBeFocused();
     await expect(listItemLocator(vlist, 0)).toBeInViewport();
+  });
+
+  await test.step('spatial navigation', async () => {
+    const { vlist } = await setup({ initialItemCount: 20 });
+
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    // Navigate far enough down the list to check scrolling
+    for (let i = 0; i <= 15; i += 1) {
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItemLocator(vlist, i)).toBeFocused();
+      await expect(listItemLocator(vlist, i)).toBeInViewport();
+    }
+
+    for (let i = 14; i >= 5; i -= 1) {
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(listItemLocator(vlist, i)).toBeFocused();
+      await expect(listItemLocator(vlist, i)).toBeInViewport();
+    }
+
+    await expect(listItemLocator(vlist, 5)).toBeFocused();
+    await keyboard.press(KEYS.ARROW_RIGHT);
+    await expect(listItemLocator(vlist, 5).locator('mdc-button')).toBeFocused();
   });
 
   await test.step('focus', async () => {

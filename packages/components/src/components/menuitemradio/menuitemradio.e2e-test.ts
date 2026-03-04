@@ -419,4 +419,42 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemradio-default');
   });
+
+  await test.step('spatial navigation', async () => {
+    const radio = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(radio).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(radio, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(radio).toBeChecked();
+    await expect(waitForClick).toEventEmitted();
+
+    await keyboard.press(KEYS.ENTER);
+    await expect(radio).toBeChecked();
+  });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const menuItemRadio = await setup({ componentsPage });
+
+      const waitForClickAfterChecked = await componentsPage.waitForEvent(menuItemRadio, 'click');
+      await menuItemRadio.evaluate((el: HTMLElement) => el.click());
+      await expect(menuItemRadio).toHaveAttribute('checked');
+      await expect(waitForClickAfterChecked).toEventEmitted();
+    });
+
+    await test.step('click method works as expected when the component disabled', async () => {
+      const menuItemRadio = await setup({ componentsPage, disabled: true });
+
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItemRadio, 'click');
+      await menuItemRadio.evaluate((el: HTMLElement) => el.click());
+
+      await expect(menuItemRadio).not.toHaveAttribute('checked');
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
+    });
+  });
 });

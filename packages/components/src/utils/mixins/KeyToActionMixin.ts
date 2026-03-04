@@ -1,6 +1,10 @@
 import { LitElement } from 'lit';
+import { ContextConsumer } from '@lit/context';
 
 import { KEYS } from '../keys';
+import providerUtils from '../provider';
+import SpatialNavigationProvider from '../../components/spatialnavigationprovider';
+import SpatialNavigationProviderContext from '../../components/spatialnavigationprovider/spatialnavigationprovider.context';
 
 import type { Constructor } from './index.types';
 
@@ -45,7 +49,18 @@ const DEFAULT_KEY_TO_ACTION: Record<string, Actions> = {
   [KEYS.END]: ACTIONS.END,
 };
 
+export type KeyboardNavModes = 'spatial' | 'default';
+
+export const NAV_MODES = {
+  /** Normal navigation mode, focus moved with Tab and Shift+Tab keys */
+  DEFAULT: 'default',
+  /** Spatial navigation mode, focus moved with arrow keys */
+  SPATIAL: 'spatial',
+} as const;
+
 export interface KeyToActionInterface {
+  /** @internal */
+  readonly spatialNavigationContext?: ContextConsumer<typeof SpatialNavigationProviderContext, any>;
   /**
    * Returns a (abstract) action for the given keyboard event based on the current spatial navigation context
    *
@@ -54,6 +69,20 @@ export interface KeyToActionInterface {
    * @returns The mapped key or `undefined` if no mapping exists
    */
   getActionForKeyEvent(evt: KeyboardEvent, applyWritingDirection?: boolean): Actions | undefined;
+
+  /**
+   * Returns the current keyboard navigation mode
+   * @internal
+   */
+  getKeyboardNavMode(): KeyboardNavModes;
+
+  /**
+   * Returns `true` if the given action is a direction action (up, down, left, right)
+   * @param action - The action to check
+   * @returns `true` if the action is a direction action, otherwise `false`
+   * @internal
+   */
+  isDirectionAction(action: Actions | undefined): boolean;
 }
 
 /**
@@ -76,7 +105,6 @@ export interface KeyToActionInterface {
  *
  * Action keys:
  * - 'action' (Enter key)
- * - 'abort' (Escape/Back key)
  *
  * Special keys:
  * - 'space' (Space key)
@@ -91,9 +119,27 @@ export interface KeyToActionInterface {
  */
 export const KeyToActionMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
-    /** @see KeyToActionInterface.getMappedKeyFromEvent */
+    /** @internal */
+    readonly spatialNavigationContext = providerUtils.consume({
+      host: this,
+      context: SpatialNavigationProvider.Context,
+    });
+
+    /**
+     * @see KeyToActionInterface.getKeyboardNavMode
+     * @internal
+     */
+    getKeyboardNavMode() {
+      const provider = this.spatialNavigationContext?.value as SpatialNavigationProvider | undefined;
+      return provider ? NAV_MODES.SPATIAL : NAV_MODES.DEFAULT;
+    }
+
+    /**
+     * @see KeyToActionInterface.getMappedKeyFromEvent
+     * @internal
+     */
     getActionForKeyEvent(evt: KeyboardEvent, applyWritingDirection: boolean = false): Actions | undefined {
-      const mapping = DEFAULT_KEY_TO_ACTION;
+      const mapping = this.spatialNavigationContext?.value?.keyToActionMap ?? DEFAULT_KEY_TO_ACTION;
       const key = mapping[evt.key];
 
       if (applyWritingDirection) {
@@ -103,6 +149,14 @@ export const KeyToActionMixin = <T extends Constructor<LitElement>>(superClass: 
         if (key === ACTIONS.RIGHT) return ACTIONS.LEFT;
       }
       return key;
+    }
+
+    /**
+     * @see KeyToActionInterface.isDirectionAction
+     * @internal
+     */
+    isDirectionAction(action: Actions): boolean {
+      return action === ACTIONS.UP || action === ACTIONS.DOWN || action === ACTIONS.LEFT || action === ACTIONS.RIGHT;
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type

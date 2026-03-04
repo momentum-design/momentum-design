@@ -118,6 +118,12 @@ class Linksimple extends DataAriaLabelMixin(DisabledMixin(Component)) {
     this.removeEventListener('keydown', this.handleNavigation.bind(this));
   }
 
+  override click() {
+    if (!this.disabled) {
+      this.shadowRoot?.querySelector?.('a')?.click?.();
+    }
+  }
+
   protected handleNavigation(e: MouseEvent | KeyboardEvent): void {
     if (this.disabled) {
       e.preventDefault();

@@ -33,7 +33,7 @@ const meta: Meta = {
       'role',
       'itemsStore',
     ]),
-    ...hideControls(['story']), // This is only used in the test helper to switch between list types
+    ...hideControls(['story', 'orientation']), // This is only used in the test helper to switch between list types
     ...classArgType,
     ...styleArgType,
   },
