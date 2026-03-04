@@ -31,6 +31,15 @@ const styles = css`
     width: 100%;
   }
 
+  :host::part(help-text-container) {
+    align-items: flex-start;
+  }
+
+  :host::part(helper-icon) {
+    flex-shrink: 0;
+    margin-top: calc((var(--mdc-help-text-line-height) - 1rem) / 2);
+  }
+
   :host::part(label) {
     font-size: var(--mdc-label-font-size);
     font-weight: var(--mdc-label-font-weight);
