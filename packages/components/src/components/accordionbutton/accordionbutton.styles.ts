@@ -76,6 +76,11 @@ const styles = css`
     align-items: center;
   }
 
+  .hidden {
+    display: none;
+  }
+
+  :host::part(leading-header__icon),
   :host::part(trailing-header__icon) {
     padding: 0.25rem;
   }

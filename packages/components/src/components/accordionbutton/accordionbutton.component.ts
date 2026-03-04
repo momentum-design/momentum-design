@@ -1,7 +1,7 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
-import { property } from 'lit/decorators.js';
+import { property, state, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -46,6 +46,8 @@ import styles from './accordionbutton.styles';
  * @dependency mdc-text
  *
  * @slot default - The default slot contains the body section of the accordion. User can place anything inside this body slot.
+ * @slot toggle-icon - Slot for custom placement of the expand/collapse icon. When used, the default trailing icon is hidden.
+ * The slotted icon will automatically receive the correct icon name based on the expanded state.
  *
  * @event shown - (React: onShown) This event is triggered when the accordion button is toggled (expanded or collapsed).
  *
@@ -58,6 +60,7 @@ import styles from './accordionbutton.styles';
  * @csspart header-button-section - The header button section of the accordion button.
  * @csspart header-section - The header section of the accordion button.
  * @csspart leading-header - The leading header of the accordion button.
+ * @csspart leading-header__icon - The leading header icon container for the toggle-icon slot.
  * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
  * @csspart trailing-header__icon - The trailing header icon of the accordion button.
@@ -109,6 +112,14 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
   /** @internal */
   protected bodySectionId = `body-section-${uuidv4()}`;
 
+  /** @internal */
+  @queryAssignedElements({ slot: 'toggle-icon' })
+  toggleIconSlot!: Array<HTMLElement>;
+
+  /** @internal */
+  @state()
+  protected hasToggleIconSlot = false;
+
   /**
    * Handles the click event of the header section.
    * If the accordion is disabled, it will not toggle the expanded state.
@@ -156,6 +167,27 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
     }
   }
 
+  /**
+   * Handles the slotchange event for the toggle-icon slot.
+   * Updates the hasToggleIconSlot state and configures the slotted icon.
+   */
+  protected handleToggleIconSlotChange(): void {
+    this.hasToggleIconSlot = this.toggleIconSlot.length > 0;
+    this.updateToggleIconSlot();
+  }
+
+  /**
+   * Updates the toggle-icon slot with the correct icon name based on expanded state.
+   * Only updates if an mdc-icon is slotted.
+   */
+  protected updateToggleIconSlot(): void {
+    const icon = this.toggleIconSlot[0];
+    if (!icon || icon.tagName.toLowerCase() !== 'mdc-icon') {
+      return;
+    }
+    icon.setAttribute('name', this.getArrowIconName());
+  }
+
   protected renderIcon(iconName?: IconNames): TemplateResult | typeof nothing {
     return iconName ? html`<mdc-icon name="${iconName}" length-unit="rem" size="1"></mdc-icon>` : nothing;
   }
@@ -170,6 +202,36 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
           >${this.headerText}</mdc-text
         >`
       : nothing;
+  }
+
+  /**
+   * Renders the toggle-icon slot in the leading header position.
+   * The slot is always rendered (hidden when empty) to detect slotchange events.
+   * The visible container is only rendered when content is slotted.
+   * @returns The toggle-icon slot template.
+   */
+  protected renderToggleIconSlot(): TemplateResult {
+    return html`
+      <div part="leading-header__icon" class="${this.hasToggleIconSlot ? '' : 'hidden'}">
+        <slot name="toggle-icon" @slotchange="${this.handleToggleIconSlotChange}"></slot>
+      </div>
+    `;
+  }
+
+  /**
+   * Renders the default trailing icon.
+   * Only renders if toggle-icon slot is not being used.
+   * @returns The trailing icon template or nothing if toggle-icon slot is used.
+   */
+  protected renderTrailingIcon(): TemplateResult | typeof nothing {
+    if (this.hasToggleIconSlot) {
+      return nothing;
+    }
+    return html`
+      <div part="trailing-header">
+        <div part="trailing-header__icon">${this.renderIcon(this.getArrowIconName())}</div>
+      </div>
+    `;
   }
 
   protected renderHeader(): TemplateResult {
@@ -189,10 +251,10 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
           aria-expanded="${this.expanded}"
           aria-controls="${this.bodySectionId}"
         >
-          <div part="leading-header">${this.renderIcon(this.prefixIcon)} ${this.renderHeadingText()}</div>
-          <div part="trailing-header">
-            <div part="trailing-header__icon">${this.renderIcon(this.getArrowIconName())}</div>
+          <div part="leading-header">
+            ${this.renderToggleIconSlot()} ${this.renderIcon(this.prefixIcon)} ${this.renderHeadingText()}
           </div>
+          ${this.renderTrailingIcon()}
         </div>
       </div>
     `;
@@ -243,6 +305,9 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
     }
     if (changedProperties.has('variant') && !this.variant) {
       this.variant = DEFAULTS.VARIANT;
+    }
+    if (changedProperties.has('expanded')) {
+      this.updateToggleIconSlot();
     }
   }
 

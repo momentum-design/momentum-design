@@ -5,10 +5,14 @@ import '.';
 import '../accordion';
 import '../accordionbutton';
 import '../avatarbutton';
+import '../badge';
+import '../button';
 import '../chip';
 import '../divider';
+import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideAllControls } from '../../../config/storybook/utils';
 import { ROLE } from '../../utils/roles';
 
 import { DEFAULTS, SIZE, VARIANT } from './accordiongroup.constants';
@@ -162,4 +166,89 @@ export const MultiInteractiveAccordion: StoryObj = {
     'allow-multiple': false,
   },
   render: renderMultiInteractive,
+};
+
+/**
+ * Group of accordionbuttons with left-positioned toggle icon.
+ * Use the `toggle-icon` slot on `mdc-accordionbutton` to position the expand/collapse icon on the left.
+ */
+export const AccordionButtonsWithLeftToggleIcon: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}">
+      <mdc-accordiongroup size="${SIZE.SMALL}" variant="${VARIANT.BORDERLESS}">
+        <mdc-accordionbutton header-text="Why is the moon sometimes out during the day?" expanded>
+          <mdc-icon slot="toggle-icon" name="arrow-up-bold" length-unit="rem" size="1"></mdc-icon>
+          ${defaultChildren}
+        </mdc-accordionbutton>
+        <mdc-accordionbutton header-text="Why is the sky blue?">
+          <mdc-icon slot="toggle-icon" name="arrow-down-bold" length-unit="rem" size="1"></mdc-icon>
+          ${defaultChildren}
+        </mdc-accordionbutton>
+        <mdc-accordionbutton header-text="Will we ever discover aliens?">
+          <mdc-icon slot="toggle-icon" name="arrow-down-bold" length-unit="rem" size="1"></mdc-icon>
+          ${defaultChildren}
+        </mdc-accordionbutton>
+      </mdc-accordiongroup>
+    </div>
+  `,
+  ...hideAllControls(),
+};
+
+/**
+ * Group of accordions with left-positioned toggle button.
+ * Use the `toggle-button` slot on `mdc-accordion` to position the expand/collapse button on the left.
+ */
+export const AccordionsWithLeftToggleButton: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}">
+      <mdc-accordiongroup size="${SIZE.SMALL}" variant="${VARIANT.BORDERLESS}">
+        <mdc-accordion
+          header-text="Identify Your Goals"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Identify Your Goals"
+          close-button-aria-label="Close Identify Your Goals"
+          expanded
+        >
+          <mdc-button slot="toggle-button"></mdc-button>
+          <mdc-chip slot="leading-controls" label="Step 1"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #1" slot="trailing-controls" initials="#1"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="Write Your Goals"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Write Your Goals"
+          close-button-aria-label="Close Write Your Goals"
+        >
+          <mdc-button slot="toggle-button"></mdc-button>
+          <mdc-chip slot="leading-controls" label="Step 2"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #2" slot="trailing-controls" initials="#2"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="Need Analysis"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open Need Analysis"
+          close-button-aria-label="Close Need Analysis"
+        >
+          <mdc-button slot="toggle-button"></mdc-button>
+          <mdc-chip slot="leading-controls" label="Step 3"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #3" slot="trailing-controls" initials="#3"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+        <mdc-accordion
+          header-text="List Objectives"
+          prefix-icon="add-option-bold"
+          open-button-aria-label="Open List Objectives"
+          close-button-aria-label="Close List Objectives"
+        >
+          <mdc-button slot="toggle-button"></mdc-button>
+          <mdc-chip slot="leading-controls" label="Step 4"></mdc-chip>
+          <mdc-avatarbutton aria-label="avatar #4" slot="trailing-controls" initials="#4"></mdc-avatarbutton>
+          ${defaultChildren}
+        </mdc-accordion>
+      </mdc-accordiongroup>
+    </div>
+  `,
+  ...hideAllControls(),
 };

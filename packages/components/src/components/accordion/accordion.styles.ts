@@ -11,8 +11,12 @@ const styles = css`
   :host::part(header-section):active {
     background-color: unset;
   }
+  :host::part(leading-header__button),
   :host::part(trailing-header__button) {
     margin: 0.125rem;
+  }
+  .hidden {
+    display: none;
   }
 `;
 

@@ -5,6 +5,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import '../button';
+import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls } from '../../../config/storybook/utils';
@@ -152,6 +153,38 @@ export const AllVariants: StoryObj = {
           >${defaultChildren}</mdc-accordionbutton
         >
       </section>
+    </div>
+  `,
+  ...hideAllControls(),
+};
+
+/**
+ * Use the `toggle-icon` slot to position the expand/collapse icon on the left side.
+ * Simply place an `mdc-icon` element with `slot="toggle-icon"` inside the accordion.
+ */
+export const LeftToggleButton: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}" style="display: flex; flex-direction: column; gap: 1rem;">
+      <mdc-accordionbutton
+        @shown=${action('onshown')}
+        header-text="Heading"
+        prefix-icon="placeholder-bold"
+        variant="borderless"
+        expanded
+      >
+        <mdc-icon slot="toggle-icon" name="arrow-up-bold" length-unit="rem" size="1"></mdc-icon>
+        ${defaultChildren}
+      </mdc-accordionbutton>
+
+      <mdc-accordionbutton
+        header-text="Heading (Disabled)"
+        prefix-icon="placeholder-bold"
+        variant="borderless"
+        disabled
+      >
+        <mdc-icon slot="toggle-icon" name="arrow-down-bold" length-unit="rem" size="1"></mdc-icon>
+        ${defaultChildren}
+      </mdc-accordionbutton>
     </div>
   `,
   ...hideAllControls(),

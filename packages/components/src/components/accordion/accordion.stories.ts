@@ -202,3 +202,49 @@ export const AllVariants: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+/**
+ * Use the `toggle-button` slot to position the expand/collapse button on the left side.
+ * Simply place an `mdc-button` element with `slot="toggle-button"` inside the accordion.
+ */
+export const LeftToggleButton: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}" style="display: flex; flex-direction: column; gap: 1rem;">
+      <mdc-accordion
+        @shown=${action('onshown')}
+        header-text="Heading"
+        prefix-icon="placeholder-regular"
+        variant="borderless"
+        expanded
+        open-button-aria-label="Open accordion"
+        close-button-aria-label="Close accordion"
+      >
+        <mdc-button slot="toggle-button"></mdc-button>
+        <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
+        <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-chip slot="trailing-controls" label="Label"></mdc-chip>
+        <mdc-badge slot="trailing-controls" type="counter" counter="911" max-counter="99"></mdc-badge>
+        ${defaultBodyContent}
+      </mdc-accordion>
+
+      <mdc-accordion
+        header-text="Heading (Disabled)"
+        prefix-icon="placeholder-regular"
+        variant="borderless"
+        disabled
+        open-button-aria-label="Open accordion"
+        close-button-aria-label="Close accordion"
+      >
+        <mdc-button slot="toggle-button"></mdc-button>
+        <mdc-chip slot="leading-controls" label="Label"></mdc-chip>
+        <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-chip slot="trailing-controls" label="Label"></mdc-chip>
+        <mdc-badge slot="trailing-controls" type="counter" counter="911" max-counter="99"></mdc-badge>
+        ${defaultBodyContent}
+      </mdc-accordion>
+    </div>
+  `,
+  ...hideAllControls(),
+};
