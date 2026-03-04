@@ -1,5 +1,6 @@
 {
   "accessibility-bold": "./svg/accessibility-bold.svg",
+  "accessibility-filled": "./svg/accessibility-filled.svg",
   "accessibility-light": "./svg/accessibility-light.svg",
   "accessibility-regular": "./svg/accessibility-regular.svg",
   "accessories-bold": "./svg/accessories-bold.svg",
@@ -145,6 +146,7 @@
   "app-push-light": "./svg/app-push-light.svg",
   "app-push-regular": "./svg/app-push-regular.svg",
   "appearance-bold": "./svg/appearance-bold.svg",
+  "appearance-filled": "./svg/appearance-filled.svg",
   "appearance-light": "./svg/appearance-light.svg",
   "appearance-regular": "./svg/appearance-regular.svg",
   "applause-bold": "./svg/applause-bold.svg",
@@ -1853,6 +1855,7 @@
   "multimedia-light": "./svg/multimedia-light.svg",
   "multimedia-regular": "./svg/multimedia-regular.svg",
   "multipled-devices-bold": "./svg/multipled-devices-bold.svg",
+  "multipled-devices-filled": "./svg/multipled-devices-filled.svg",
   "multipled-devices-light": "./svg/multipled-devices-light.svg",
   "multipled-devices-regular": "./svg/multipled-devices-regular.svg",
   "music-mode-circle-bold": "./svg/music-mode-circle-bold.svg",
