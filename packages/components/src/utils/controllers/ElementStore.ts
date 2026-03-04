@@ -144,6 +144,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * @param event - The event triggered when an item is created.
    */
   protected itemCreationHandler = (event: Event) => {
+    event.stopPropagation();
     this.addItem(event.target as TItem, undefined);
   };
 
@@ -153,6 +154,7 @@ export class ElementStore<TItem extends HTMLElement> implements ReactiveControll
    * @param event - The event triggered when an item is destroyed.
    */
   protected itemDestroyHandler = (event: CustomEvent) => {
+    event.stopPropagation();
     this.delete(event.detail.originalTarget as TItem);
   };
 
