@@ -4,12 +4,13 @@ import { property, eventOptions, query } from 'lit/decorators.js';
 import { defaultRangeExtractor, type Range, ScrollToOptions, type VirtualItem } from '@tanstack/virtual-core';
 
 import List from '../list/list.component';
+import { ORIENTATION } from '../list/list.constants';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { Interval } from '../../utils/range';
 import { type BaseArray, VirtualIndexArray } from '../../utils/virtualIndexArray';
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
@@ -82,7 +83,7 @@ import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.
  * @csspart container - The container of the virtualized list.
  * @csspart scroll - The scrollable area of the virtualized list.
  */
-class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
+class VirtualizedList extends DataAriaLabelMixin(List) {
   /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are three required object props in order to get virtualization to work properly.
@@ -310,6 +311,7 @@ class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
 
   constructor() {
     super();
+    this.orientation = ORIENTATION.VERTICAL;
     this.addEventListener('wheel', this.handleWheelEvent.bind(this));
     this.addEventListener(LIFE_CYCLE_EVENTS.FIRST_UPDATE_COMPLETED, this.handleElementFirstUpdateCompleted.bind(this));
   }
@@ -359,6 +361,12 @@ class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
    */
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
+
+    // Orientation is always 'vertical' for virtualized lists.
+    // Horizontal orientation is not supported.
+    if (changedProperties.has('orientation') && this.orientation !== ORIENTATION.VERTICAL) {
+      this.orientation = ORIENTATION.VERTICAL;
+    }
 
     if (changedProperties.has('virtualizerProps')) {
       await this.handleVirtualizerPropsUpdate(changedProperties.get('virtualizerProps') as VirtualizerProps);
@@ -688,7 +696,7 @@ class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
     oldIndex?: number,
     focusNewItem = true,
     scrollToNewItem = focusNewItem,
-  ): void {
+  ): boolean {
     const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
 
     if (elementToFocus === undefined) {
@@ -698,11 +706,13 @@ class VirtualizedList extends KeyToActionMixin(DataAriaLabelMixin(List)) {
         this.setSelectedIndex(newIndex);
       });
 
-      return;
+      return true;
     }
 
-    super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
+    const result = super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
     this.setSelectedIndex(newIndex);
+
+    return result;
   }
 
   /** @internal */

@@ -5,6 +5,7 @@ import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtu
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
+import { KEYS } from '../../utils/keys';
 
 interface CardCheckboxArgs {
   cardTitle?: string;
@@ -229,6 +230,49 @@ test.describe.parallel('mdc-cardcheckbox', () => {
           await componentsPage.page.keyboard.press('Space');
           await expect(cards.nth(0)).toBeChecked();
         });
+      });
+
+      await test.step('spatial navigation', async () => {
+        const checkbox = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(checkbox).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(checkbox).toBeChecked();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(checkbox).not.toBeChecked();
+      });
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const cardCheckbox = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
+
+        // Check programmatically
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(cardCheckbox).toHaveAttribute('checked', '');
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Uncheck programmatically
+        const waitForClickAfterUnchecked = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(cardCheckbox).not.toHaveAttribute('checked', '');
+        await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const cardCheckbox = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(cardCheckbox, 'click');
+        await cardCheckbox.evaluate((el: HTMLElement) => el.click());
+
+        await expect(cardCheckbox).not.toHaveAttribute('checked', '');
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
   });

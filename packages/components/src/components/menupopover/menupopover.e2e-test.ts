@@ -1,4 +1,5 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -650,6 +651,97 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'true');
         // menu remain visible after checkbox toggle with space
         await expect(menupopover).not.toBeVisible();
+      });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const { keyboard } = componentsPage.page;
+
+      await test.step('nested menu opening and closing', async () => {
+        const { triggerElement } = await setup({ componentsPage, html: nestedHTML });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+
+        const menuPopover1 = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
+        const menuPopover2 = componentsPage.page.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+        const menuPopover3 = componentsPage.page.locator('mdc-menupopover[triggerid="security-id"]');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(triggerElement).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover1).toBeVisible();
+        await expect(menuPopover2).not.toBeVisible();
+        await expect(menuPopover3).not.toBeVisible();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover1).toBeVisible();
+        await expect(menuPopover2).toBeVisible();
+        await expect(menuPopover3).not.toBeVisible();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover1).toBeVisible();
+        await expect(menuPopover2).toBeVisible();
+        await expect(menuPopover3).toBeVisible();
+
+        await keyboard.press(KEYS.ESCAPE);
+        await expect(menuPopover1).toBeVisible();
+        await expect(menuPopover2).toBeVisible();
+        await expect(menuPopover3).not.toBeVisible();
+
+        await keyboard.press(KEYS.ESCAPE);
+        await expect(menuPopover1).toBeVisible();
+        await expect(menuPopover2).not.toBeVisible();
+        await expect(menuPopover3).not.toBeVisible();
+
+        await keyboard.press(KEYS.ESCAPE);
+        await expect(menuPopover1).not.toBeVisible();
+        await expect(menuPopover2).not.toBeVisible();
+        await expect(menuPopover3).not.toBeVisible();
+      });
+
+      await test.step('nested menu opening and closing', async () => {
+        const { triggerElement } = await setup({ componentsPage, html: groupHTML });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const menuPopover = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
+        const menuItem = menuPopover.locator('mdc-menuitem[label="Profile"]');
+        const menuItemCheckbox = menuPopover.locator('mdc-menuitemcheckbox[label="Enable feature"]');
+        const menuItemRadio = menuPopover.locator('mdc-menuitemradio[label="Light"]');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(triggerElement).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+
+        await expect(menuItem).toBeFocused();
+
+        const waitForMenuItemClick = await componentsPage.waitForEvent(menuItem, 'click');
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForMenuItemClick).toEventEmitted();
+        await expect(menuPopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItemCheckbox).toBeFocused();
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForMenuItemClick).toEventEmitted();
+        await expect(menuPopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
+        await expect(menuItemCheckbox).toHaveAttribute('aria-checked', 'true');
+
+        await keyboard.press(KEYS.ENTER);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItemRadio).toBeFocused();
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForMenuItemClick).toEventEmitted();
+        await expect(menuPopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
+        await expect(menuItemRadio).toHaveAttribute('aria-checked', 'true');
       });
     });
   });

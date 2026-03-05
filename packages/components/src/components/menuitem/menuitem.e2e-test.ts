@@ -1,5 +1,6 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -336,6 +337,19 @@ test.describe('Menuitem Feature Scenarios', () => {
       });
     });
 
+    await test.step('spatial navigation', async () => {
+      const menuitem = await setup({ componentsPage, label: primaryLabel });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(menuitem).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(menuitem, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
+    });
+
     /**
      * ARIA AND ACCESSIBILITY ATTRIBUTES
      */
@@ -392,6 +406,24 @@ test.describe('Menuitem Feature Scenarios', () => {
 
         await menuitem.press('ArrowUp');
         await expect(waitForKeyUp).toEventEmitted();
+      });
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const menuItem = await setup({ componentsPage });
+        const waitForClick = await componentsPage.waitForEvent(menuItem, 'click');
+        await menuItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClick).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const menuItem = await setup({ componentsPage, disabled: true });
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItem, 'click');
+        await menuItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
   });

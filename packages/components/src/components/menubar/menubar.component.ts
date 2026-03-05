@@ -10,7 +10,8 @@ import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.cons
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
 import MenuPopover from '../menupopover';
 import { DepthManager } from '../../utils/controllers/DepthManager';
-import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import styles from './menubar.styles';
@@ -38,7 +39,7 @@ import styles from './menubar.styles';
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
  */
-class MenuBar extends KeyToActionMixin(Component) {
+class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   /** track the depth of the popover for z-index calculation
    * @internal
    */
@@ -217,7 +218,10 @@ class MenuBar extends KeyToActionMixin(Component) {
       menuItems[newIndex]?.setAttribute('tabindex', '0');
     }
 
-    menuItems[newIndex]?.focus();
+    if (menuItems[newIndex]) {
+      menuItems[newIndex].focus();
+      this.keyDownEventHandled();
+    }
   }
 
   private navigateToMenuItem(currentIndex: number, direction: 'prev' | 'next', shouldOpenSubmenu = false): void {
@@ -225,13 +229,25 @@ class MenuBar extends KeyToActionMixin(Component) {
     if (length === 0) return;
 
     let newIndex = currentIndex;
+    const loopBack = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
 
-    newIndex = direction === 'prev' ? (currentIndex - 1 + length) % length : (currentIndex + 1) % length;
+    if (loopBack) {
+      newIndex = direction === 'prev' ? (currentIndex - 1 + length) % length : (currentIndex + 1) % length;
+    } else {
+      newIndex = direction === 'prev' ? Math.max(0, currentIndex - 1) : Math.min(currentIndex + 1, length - 1);
+    }
+
+    if (newIndex === currentIndex) {
+      return;
+    }
+    this.keyDownEventHandled();
+
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');
       if (this.getSubmenu(triggerId) && !this.menuItems[newIndex].hasAttribute('soft-disabled')) {
         this.showSubmenu(triggerId);
+        this.keyDownEventHandled();
       }
     }
   }
@@ -287,10 +303,14 @@ class MenuBar extends KeyToActionMixin(Component) {
   private async crossMenubarNavigationOnRight(element: HTMLElement): Promise<void> {
     if (this.isTopLevelMenuItem(element) && this.getSubmenu(element.id) && !element.hasAttribute('soft-disabled')) {
       this.showSubmenu(element.id);
+      this.keyDownEventHandled();
     } else if (this.isNestedMenuItem(element) && !this.getSubmenu(element.id)) {
       await this.closeAllMenuPopovers();
       const parentIndex = this.getParentMenuItemIndex(element);
-      if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
+      this.keyDownEventHandled();
+      if (parentIndex >= 0) {
+        this.navigateToMenuItem(parentIndex, 'next', true);
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -120,6 +121,20 @@ test('mdc-filterchip', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Space');
         await expect(filterchip).not.toHaveAttribute('selected');
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(filterchip).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(filterchip).toHaveAttribute('selected');
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(filterchip).not.toHaveAttribute('selected');
     });
   });
 });

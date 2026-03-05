@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
 
-import { disableControls } from '../../../config/storybook/utils';
+import { describeStory, disableControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 import '../tab';
@@ -115,6 +115,14 @@ export const ActiveTabAttributeSet: StoryObj = {
 };
 
 export const TablistWithPanels: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html` <b>Note:</b> This logic of updating the tab panels based on the active tab has been added only on this
+        storybook example. <code>mdc-tablist</code> component does not control this logic. This implementation has to be
+        added on the consumer's side`,
+      true,
+    ),
+  },
   render: args => {
     const updateTabPanel = (event: CustomEvent) => {
       const activeTab = document.querySelector(`mdc-tab[tab-id="${event.detail.tabId}"]`);
@@ -190,14 +198,7 @@ This markup is not part of the component and is only provided for context. -->
       <div id="meetings-panel" role="tabpanel" hidden>
         <p>Meetings panel</p>
       </div>
-      <!-- End of example markup for the tab panels -->
-      <br />
-      <br />
-      <p>
-        <b>Note:</b> This logic of updating the tab panels based on the active tab has been added only on this storybook
-        example. <code>mdc-tablist</code> component does not control this logic. This implementation has to be added on
-        the consumer's side
-      </p>`;
+      <!-- End of example markup for the tab panels -->`;
   },
   args: {
     tabvariant: 'glass',

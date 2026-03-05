@@ -136,3 +136,31 @@ export const InlineLinkInverted: StoryObj = {
     ...readOnlyControls(['inline', 'inverted']),
   },
 };
+
+const renderMultiLine = (args: Args) =>
+  html`<div style="width: 200px;">
+    <mdc-link
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @focus="${action('onfocus')}"
+      @blur="${action('onblur')}"
+      ?disabled="${args.disabled}"
+      icon-name="${args['icon-name']}"
+      ?inline="${args.inline}"
+      ?inverted="${args.inverted}"
+      size="${args.size}"
+      href="${args.href}"
+      target="${args.target}"
+      rel="${args.rel}"
+      data-aria-label="${args['data-aria-label']}"
+      >${args.children}</mdc-link
+    >
+  </div>`;
+
+export const MultiLineLink: StoryObj = {
+  render: renderMultiLine,
+  args: {
+    ...defaultArgs,
+    children: 'This is a link that will wrap onto multiple lines',
+  },
+};

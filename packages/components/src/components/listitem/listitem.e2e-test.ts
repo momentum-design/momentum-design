@@ -1,5 +1,6 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
@@ -416,6 +417,52 @@ test.describe.parallel('mdc-listitem', () => {
         await expect(tooltip).toBeVisible();
         const text = await tooltip.textContent();
         expect(text?.trim()).toBe('The long label associated with the listitem is displayed here');
+      });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const listitem = await setup({
+        componentsPage,
+        label: primaryLabel,
+        children: `
+            <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
+            <mdc-button slot="trailing-controls">Click</mdc-button>
+          `,
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listitem).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(listitem, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
+
+      // Focus on nested focusable element
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(listitem.locator('mdc-checkbox')).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listitem.locator('mdc-button')).toBeFocused();
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const listItem = await setup({ componentsPage });
+
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(listItem, 'click');
+        await listItem.evaluate((el: HTMLElement) => el.click());
+        await expect(waitForClickAfterChecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const listItem = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(listItem, 'click');
+        await listItem.evaluate((el: HTMLElement) => el.click());
+
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
   });

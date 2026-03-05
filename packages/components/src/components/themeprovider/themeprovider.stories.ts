@@ -37,7 +37,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Components/themeprovider',
+  title: 'Providers/Theme Provider',
   tags: ['autodocs'],
   component: 'mdc-themeprovider',
   render,

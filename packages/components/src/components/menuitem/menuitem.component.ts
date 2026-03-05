@@ -85,11 +85,6 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true }) value?: string;
 
-  constructor() {
-    super();
-    this.addEventListener('keyup', this.handleKeyUp.bind(this));
-  }
-
   /**
    * Handles the keydown event for the menu item.
    * If the Enter key is pressed, it triggers a click event on the menu item.
@@ -106,6 +101,7 @@ class MenuItem extends ListItem {
     if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) {
       this.triggerClickEvent(event);
       event.preventDefault();
+      this.keyDownEventHandled();
     }
   }
 
@@ -121,7 +117,7 @@ class MenuItem extends ListItem {
    * Note: Action triggered by Enter on the keydown event.
    * @param event - The keyboard event that triggered the action.
    */
-  private handleKeyUp(event: KeyboardEvent): void {
+  override handleKeyUp(event: KeyboardEvent): void {
     if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       this.triggerClickEvent(event);
       event.preventDefault();

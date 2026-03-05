@@ -27,8 +27,8 @@ export class ComboboxEventManager {
    * @param instance - The combobox instance.
    * @param option - The value and label of the selected option.
    */
-  static onInputCombobox(instance: Combobox, option: Option): void {
-    this.dispatchComboboxEvent(instance, 'input', option);
+  static onInputCombobox(instance: Combobox, option: Option | null): void {
+    this.dispatchComboboxEvent(instance, 'input', option!);
   }
 
   /**
@@ -37,7 +37,7 @@ export class ComboboxEventManager {
    * @param instance - The combobox instance.
    * @param option - The value and label of the selected option.
    */
-  static onChangeCombobox(instance: Combobox, option: Option): void {
-    this.dispatchComboboxEvent(instance, 'change', option);
+  static onChangeCombobox(instance: Combobox, option: Option | null): void {
+    this.dispatchComboboxEvent(instance, 'change', option!);
   }
 }

@@ -53,6 +53,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
+  test.setTimeout(40000);
+
   /**
    * FUNCTIONALITY
    */
@@ -292,6 +294,34 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
         });
       }
     });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const menuItemCheckbox = await setup({ componentsPage });
+
+        // Check programmatically
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(menuItemCheckbox).toHaveAttribute('checked');
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Uncheck programmatically
+        const waitForClickAfterUnchecked = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+        await expect(menuItemCheckbox).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected', async () => {
+        const menuItemCheckbox = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(menuItemCheckbox, 'click');
+        await menuItemCheckbox.evaluate((el: HTMLElement) => el.click());
+
+        await expect(menuItemCheckbox).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
   };
   await testFunctionality({ controlType: 'controlled', expectedControlType: 'controlled', testAllFunctionality: true });
   await testFunctionality({
@@ -449,5 +479,22 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemcheckbox-default');
+  });
+
+  await test.step('spatial navigation', async () => {
+    const checkbox = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(checkbox).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(checkbox, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(checkbox).toBeChecked();
+    await expect(waitForClick).toEventEmitted();
+
+    await keyboard.press(KEYS.ENTER);
+    await expect(checkbox).not.toBeChecked();
   });
 });
