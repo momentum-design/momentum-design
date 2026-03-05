@@ -738,6 +738,31 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(combobox.locator('[part="no-result-text"]')).toContainText('No results found');
       });
 
+      await test.step('should close popover on Tab when no results match', async () => {
+        const { input, options, combobox, dropdown } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-result-text': 'No results found',
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('invalid');
+
+        // Verify no matching options are visible
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(0);
+
+        // Verify the no-result-text is shown (popover is open)
+        await expect(combobox.locator('[part="no-result-text"]')).toContainText('No results found');
+        await expect(dropdown).toBeVisible();
+
+        // Press Tab to leave the combobox
+        await componentsPage.actionability.pressTab();
+        await expect(dropdown).not.toBeVisible();
+      });
+
       await test.step('should type and select an option using keyboard when uncontrolled', async () => {
         const { combobox, input, dropdown, getOptionByText } = await setup({
           componentsPage,
@@ -1112,6 +1137,34 @@ test.describe('Combobox Feature Scenarios', () => {
           }
         });
         await expect(combobox).toHaveAttribute('value', 'brazil');
+      });
+
+      await test.step('should clear selected attribute from all options when value is set to empty programmatically', async () => {
+        const { input, combobox, options, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          id: 'combobox-clear-selection',
+        });
+
+        // Select an option via click
+        await input.click();
+        await getOptionByText('Brazil').click();
+        await expect(combobox).toHaveAttribute('value', 'brazil');
+        await expect(combobox.locator('mdc-option[value="brazil"]')).toHaveAttribute('selected');
+
+        // Programmatically set the value to empty string
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox[id="combobox-clear-selection"]') as Combobox;
+          if (combobox) {
+            combobox.value = '';
+          }
+        });
+
+        // Expect no options have the selected attribute
+        await expect(combobox).toHaveAttribute('value', '');
+        expect(await options.locator('[selected]').count()).toBe(0);
       });
 
       await test.step('spatial navigation', async () => {

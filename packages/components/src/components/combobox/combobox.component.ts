@@ -426,9 +426,8 @@ class Combobox
     this.lastCommittedValue = value;
     this.internals.setFormValue(this.value);
     this.updateHiddenOptions();
-    if (option) {
-      this.updateSelectedOption(option);
-    }
+    this.updateSelectedOption(option);
+    this.resetFocusedOption();
     this.setInputValidity();
     this.resetHelpText();
 
@@ -476,7 +475,7 @@ class Combobox
     // keep value-attribute based default selection working for both
     // controlled and uncontrolled modes, while avoiding change/input events
     // by delegating to setSelectedValue with updateFromValue=true.
-    if (name === 'value' && newValue !== '' && this.navItems.length) {
+    if (name === 'value' && this.navItems.length) {
       const firstSelectedOption = this.getFirstSelectedOption();
       const valueBasedOption = this.navItems.find(option => option.value === newValue);
       let optionToSelect: Option | null = null;
@@ -647,7 +646,7 @@ class Combobox
   }
 
   /** @internal */
-  private updateSelectedOption(newOption: Option): void {
+  private updateSelectedOption(newOption: Option | null): void {
     this.navItems.forEach(option => {
       option.removeAttribute('selected');
     });
@@ -927,11 +926,8 @@ class Combobox
     if (this.disabled || this.readonly) {
       return false;
     }
-    if (optionsLength) {
+    if (optionsLength || this.noResultText) {
       return this.isOpen;
-    }
-    if (this.noResultText) {
-      return true;
     }
     return false;
   }
