@@ -20,6 +20,7 @@ import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from
  * - Unified size and variant applied to all child buttons
  * - Optional compact mode for reduced height
  * - Supported sizes: 24, 28 (default), 32, 40
+ * - Supported variants: primary (default), secondary, tertiary
  *
  * ## Usage
  * - Only `mdc-button` components are allowed as direct children
