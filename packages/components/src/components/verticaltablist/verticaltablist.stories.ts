@@ -50,12 +50,15 @@ const meta: Meta = {
   argTypes: {
     'aria-label': {
       control: 'text',
+      description:
+        'Label for the tab list used for accessibility. This is required for the component to be accessible.',
     },
     'active-tab-id': {
-      control: 'text',
+      control: 'select',
       description: 'ID of the active tab. Defaults to the first tab if not provided.',
+      options: tabItems.map(tab => tab.tabId),
     },
-    ...hideControls(['itemsStore']),
+    ...hideControls(['itemsStore', 'orientation', 'loop', 'initial-focus']),
     ...classArgType,
     ...styleArgType,
   },
@@ -174,8 +177,10 @@ export const TabsWithPanels: StoryObj = {
     </div>
   `,
   args: {
-    'data-aria-label': 'Settings navigation',
     'active-tab-id': 'general',
+  },
+  argTypes: {
+    ...hideControls(['active-tab-id']),
   },
 };
 

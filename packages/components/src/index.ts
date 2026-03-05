@@ -127,6 +127,7 @@ import type {
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
 import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
 import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
+import type { VerticaltablistChangeEvent } from './components/verticaltablist/verticaltablist.types';
 
 // Constants / Utils Imports
 import {
@@ -280,6 +281,7 @@ export type {
   DatePickerInputEvent,
   CalendarDateSelectedEvent,
   CalendarMonthChangedEvent,
+  VerticaltablistChangeEvent,
 };
 
 // Constants / Utils Exports

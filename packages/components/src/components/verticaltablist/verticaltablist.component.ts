@@ -1,4 +1,4 @@
-import type { CSSResult } from 'lit';
+import { html, type CSSResult } from 'lit';
 
 import List from '../list/list.component';
 import { ROLE } from '../../utils/roles';
@@ -16,7 +16,8 @@ import styles from './verticaltablist.styles';
  * It organizes tabs vertically and follows the same WCAG standards as the horizontal tablist.
  *
  * Children of the vertical tab list are `mdc-tab` elements, sent to the default slot.
- * Currently only "line" variant of the tab is supported.
+ * Currently only "line" variant of the tab is supported, setting other variants doesn't have any effect.
+ * The variant is automatically set on the tab when it is added to the vertical tab list, so there is no need to set it manually.
  *
  * The tabs can be navigated using the up/down arrow keys, and selected by clicking,
  * or pressing the Enter and Space keys.
@@ -34,6 +35,7 @@ import styles from './verticaltablist.styles';
  * - The `tablist` element needs to have a label provided by `data-aria-label`.
  * - Each element with role `tab` has the property `aria-controls`
  *   that should refer to its associated `tabpanel` element.
+ * - The vertical orientation is conveyed through the aria-orientation property on the `tablist` element, which is set to `vertical` by the component.
  * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
  *
  * @tagname mdc-verticaltablist
@@ -79,6 +81,14 @@ class Verticaltablist extends TabListComponentMixin(List) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TABLIST;
+    this.setAttribute('aria-orientation', 'vertical');
+  }
+
+  public override render() {
+    return html`
+      <!-- make the container slot role presentation to keep it ignored in a11y tree -->
+      <slot part="container" role="presentation"></slot>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...List.styles, ...styles];
