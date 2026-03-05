@@ -79,6 +79,7 @@ import type { Placement } from './combobox.types';
  * @event focus - (React: onFocus) This event is dispatched when the combobox receives focus.
  *
  * @cssproperty --mdc-combobox-border-color - The border color of the combobox
+ * @cssproperty --mdc-combobox-height - The height of the combobox trigger control
  * @cssproperty --mdc-combobox-icon-color - The icon color of the combobox
  * @cssproperty --mdc-combobox-listbox-height - The height of the listbox inside the combobox
  * @cssproperty --mdc-combobox-listbox-width - The width of the listbox inside the combobox
