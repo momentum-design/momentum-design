@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="arrow-triangle-right-filled" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M23.502 15.078a1.103 1.103 0 0 1 0 1.844L9.62 25.833c-.705.453-1.62-.068-1.62-.922V7.089c0-.854.915-1.375 1.62-.922z"/></svg>`;
+
+export default icon;
