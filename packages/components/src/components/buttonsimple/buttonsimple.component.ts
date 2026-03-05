@@ -302,8 +302,9 @@ class Buttonsimple extends KeyDownHandledMixin(
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
+      const wasPressed = this.classList.contains('pressed');
       this.classList.remove('pressed');
-      if (action === ACTIONS.SPACE) {
+      if (action === ACTIONS.SPACE && wasPressed) {
         this.triggerClickEvent();
       }
     }
