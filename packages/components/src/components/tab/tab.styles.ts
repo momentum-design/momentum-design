@@ -69,6 +69,7 @@ const styles = [
       width: var(--mdc-tab-line-active-indicator-width);
       height: var(--mdc-tab-line-active-indicator-height);
       background-color: var(--mdc-tab-background-color);
+      left: 0;
       bottom: 0;
       position: absolute;
       visibility: hidden;

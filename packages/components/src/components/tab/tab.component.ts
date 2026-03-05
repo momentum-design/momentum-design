@@ -8,6 +8,7 @@ import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
+import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import type { Variant } from './tab.types';
 import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
@@ -68,7 +69,7 @@ import styles from './tab.styles';
  * @csspart indicator - The indicator of the tab.
  * @csspart text - The text of the tab.
  */
-class Tab extends IconNameMixin(Buttonsimple) {
+class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   /**
    * The tab's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the tab is considered to be in an active state, meaning it is toggled on.

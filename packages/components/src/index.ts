@@ -91,6 +91,7 @@ import Slider from './components/slider';
 import ListBox from './components/listbox';
 import Banner from './components/banner';
 import Buttonsimple from './components/buttonsimple';
+import Verticaltablist from './components/verticaltablist';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -233,6 +234,7 @@ export {
   ListBox,
   Banner,
   Buttonsimple,
+  Verticaltablist,
 };
 
 // Types Exports

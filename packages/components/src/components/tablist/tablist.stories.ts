@@ -3,8 +3,9 @@ import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
 
-import { describeStory, disableControls } from '../../../config/storybook/utils';
+import { describeStory, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
+
 import '../badge';
 import '../tab';
 
@@ -84,7 +85,9 @@ const meta: Meta = {
 
   argTypes: {
     'active-tab-id': {
-      control: 'text',
+      control: 'select',
+      description: 'ID of the active tab. Defaults to the first tab if not provided.',
+      options: ['calls-tab', 'videos-tab', 'music-tab', 'documents-tab', 'meetings-tab'],
     },
     'data-aria-label': {
       control: 'text',
@@ -94,7 +97,7 @@ const meta: Meta = {
       description: 'Set the variant of tab inside the tablist',
       options: Object.values(TAB_VARIANTS),
     },
-    ...disableControls(['Default']),
+    ...hideControls(['itemsStore']),
   },
 };
 
@@ -102,15 +105,9 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    tabvariant: 'line',
-  },
-};
-
-export const ActiveTabAttributeSet: StoryObj = {
-  args: {
-    tabvariant: 'glass',
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
+    tabvariant: 'line',
   },
 };
 

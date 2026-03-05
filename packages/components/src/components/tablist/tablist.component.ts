@@ -1,19 +1,28 @@
-import { CSSResult, html, nothing } from 'lit';
-import type { PropertyValues } from 'lit';
-import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+/* eslint-disable no-void */
+/* eslint-disable no-param-reassign */
+import { html, nothing } from 'lit';
+import type { CSSResult } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
 import Tab from '../tab/tab.component';
+import { TAG_NAME as TAB_TAGNAME } from '../tab/tab.constants';
 import Button from '../button/button.component';
 import { ROLE } from '../../utils/roles';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
-import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
+import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle/CaptureDestroyEventForChildElement';
+import { ElementStore, type ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
+import type { OrientationType } from '../list/list.types';
+import type { BaseArray } from '../../utils/virtualIndexArray';
+import { TabListComponentMixin } from '../../utils/mixins/TabListComponentMixin';
 
 import styles from './tablist.styles';
 import { ARROW_BUTTON_DIRECTION } from './tablist.constants';
 import type { ArrowButtonDirectionType } from './tablist.types';
-import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
+import { getFirstTab, getLastTab, getActiveTab } from './tablist.utils';
 
 /**
  * Tab list organizes tabs into a container.
@@ -60,19 +69,32 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * @csspart container - The tablist container.
  */
-class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
-  /**
-   * ID of the active tab, defaults to the first tab if not provided
-   */
-  @property({ type: String, attribute: 'active-tab-id', reflect: true })
-  activeTabId?: string;
-
+class TabList extends ListNavigationMixin(
+  CaptureDestroyEventForChildElement(KeyDownHandledMixin(KeyToActionMixin(TabListComponentMixin(Component)))),
+) {
   /**
    * Label for the tablist.
    * This is used when the tablist does not have a visible label.
    */
   @property({ type: String, attribute: 'data-aria-label' })
   dataAriaLabel?: string;
+
+  /**
+   * @internal
+   */
+  protected override get navItems(): BaseArray<Tab> {
+    return this.itemsStore.items;
+  }
+
+  /**
+   * @internal
+   */
+  private itemsStore: ElementStore<Tab>;
+
+  /**
+   * @internal
+   */
+  protected override orientation: OrientationType = 'horizontal';
 
   /**
    * The tab container element.
@@ -88,13 +110,6 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    */
   @query('mdc-button:not(:focus-visible)')
   private notFocusedArrowButton?: Button;
-
-  /**
-   * Children of the tablist, elements of type `mdc-tab`.
-   * @internal
-   */
-  @queryAssignedElements({ selector: 'mdc-tab' })
-  private tabs?: Tab[];
 
   /**
    * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
@@ -122,12 +137,62 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     );
   }
 
+  /**
+   * @internal
+   */
+  protected isValidItem(item: Element): boolean {
+    return item.matches(`${TAB_TAGNAME}:not([disabled])`);
+  }
+
+  /**
+   * @internal
+   */
+  protected onElementStoreUpdate(item: Tab, changeType: ElementStoreChangeTypes, index: number) {
+    if (changeType === 'added') {
+      // Update the tabIndex of the list items when a new item is added.
+      item.tabIndex = -1;
+      if (this.navItems.length === 0) {
+        // If this is the first item added, set its tabIndex to 0 to make it focusable
+        item.tabIndex = 0;
+      }
+    } else if (changeType === 'removed' && item.tabIndex === 0) {
+      let newIndex = index + 1;
+      if (newIndex >= this.navItems.length) {
+        newIndex = index - 1;
+      }
+
+      const tab = this.navItems.at(newIndex);
+      if (tab instanceof Tab) {
+        tab.focus();
+      }
+      this.resetTabIndexes(newIndex, false);
+    }
+  }
+
+  /**
+   * Overriding the resetTabIndexAndSetFocus function to set the focus on the new active tab when the active tab changes.
+   * Also, handle the visibility of the arrow buttons after resetting the tab indexes and setting the focus.
+   * @internal
+   */
+  protected override resetTabIndexAndSetFocus(newIndex: number, oldIndex?: number): boolean {
+    const result = super.resetTabIndexAndSetFocus(newIndex, oldIndex, false, false);
+    const itemToFocus = this.navItems?.at(newIndex);
+    if (itemToFocus instanceof Tab) {
+      itemToFocus.focus();
+    }
+    this.handleArrowButtonVisibility();
+    return result;
+  }
+
   constructor() {
     super();
 
-    this.addEventListener('keydown', this.handleKeydown.bind(this));
-    // Reason for assertion below: https://github.com/microsoft/TypeScript/issues/28357
-    this.addEventListener('activechange', this.handleNestedTabActiveChange as (event: Event) => Promise<void>);
+    // This must be initialized after the destroyed event listener
+    // to keep the element in the itemStore in order to move the focus correctly
+    this.itemsStore = new ElementStore<Tab>(this, {
+      isValidItem: this.isValidItem,
+      onStoreUpdate: this.onElementStoreUpdate.bind(this),
+    });
   }
 
   /**
@@ -138,7 +203,7 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    * Also set up the event listeners.
    */
   protected override async firstUpdated(): Promise<void> {
-    if (!this.tabs) {
+    if (!this.navItems) {
       return;
     }
 
@@ -146,266 +211,62 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
      * If there are no tabs, skip the initialization of the active tab and the event listeners.
      * Then throw an error.
      */
-    if (Array.isArray(this.tabs) && this.tabs.length === 0) {
+    if (Array.isArray(this.navItems) && this.navItems.length === 0) {
       if (this.onerror) {
         this.onerror('The tablist component must have at least one child tab');
       }
       return;
     }
 
-    const tabIds = this.tabs.map(tab => tab.tabId);
-    if (new Set(tabIds).size !== this.tabs.length) {
+    const tabIds = this.navItems.map(tab => tab.tabId);
+    if (new Set(tabIds).size !== this.navItems.length) {
       if (this.onerror) {
         this.onerror('The tabs inside the tab list must have unique tab ids');
       }
     }
 
     const resizeObserver = new ResizeObserver(async () => {
-      await this.handleArrowButtonVisibility();
+      this.handleArrowButtonVisibility();
     });
     resizeObserver.observe(this);
 
     if (!this.activeTabId) {
-      this.activeTabId = getFirstTab(this.tabs)?.tabId;
+      this.activeTabId = getFirstTab(this.navItems)?.tabId;
     }
 
     this.tabsContainer?.addEventListener('focusin', this.handleFocus.bind(this));
-    this.tabsContainer?.addEventListener('mousedown', this.handleMousedown.bind(this));
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.tabsContainer?.removeEventListener('focusin', this.handleFocus);
-    this.tabsContainer?.removeEventListener('mousedown', this.handleMousedown);
-  }
-
-  /**
-   * Observe the tablist element for changes in the activeTabId attribute.
-   * Find the new tab with the new activeTabId.
-   * If the new tab is not found, then do nothing.
-   *
-   * If the new tab exists:
-   * Set the new tab as active.
-   *
-   * Fire the tab change event.
-   *
-   * @param changedProperties - Map of changed properties with old values.
-   */
-  public override async update(changedProperties: PropertyValues<this>): Promise<void> {
-    super.update(changedProperties);
-
-    if (changedProperties.has('activeTabId')) {
-      if (!this.tabs || !this.activeTabId) {
-        return;
-      }
-
-      const newTab = findTab(this.tabs, this.activeTabId);
-      if (!(newTab instanceof Tab)) {
-        return;
-      }
-
-      this.setActiveTab(newTab);
-
-      /**
-       * If the previous activeTabId was not undefined, focus the new tab.
-       *
-       * Otherwise, reset the tabindex of all tabs and set the new tabindex.
-       */
-      if (changedProperties.get('activeTabId')) {
-        this.fireTabChangeEvent(newTab);
-        await this.focusTab(newTab);
-      } else {
-        this.resetTabIndexAndSetNewTabIndex(newTab);
-      }
-    }
-  }
-
-  /**
-   * Dispatch the change event.
-   *
-   * @internal
-   *
-   * @param newTab - the new tab that is active.
-   */
-  private fireTabChangeEvent(newTab: Tab): void {
-    const event = new CustomEvent('change', {
-      detail: { tabId: newTab.tabId },
-    });
-
-    this.dispatchEvent(event);
   }
 
   /**
    * When the tablist receives focus, then focus the active tab.
    *
-   * @internal
-   *
    * @param event - Focus event.
+   * @internal
    */
   private async handleFocus(event: FocusEvent) {
     /**
      * If the element losing focus is a tab, do nothing.
+     * If the element gaining focus is not a tab, do nothing.
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
      */
-    if (event.relatedTarget instanceof Tab) {
-      return;
-    }
-    /**
-     * If the element gaining focus is not a tab, do nothing.
-     */
-    if (!(event.target instanceof Tab)) {
+    if (event.relatedTarget instanceof Tab || !(event.target instanceof Tab)) {
       return;
     }
 
-    const activeTab = getActiveTab(this.tabs || []);
+    const activeTab = getActiveTab(this.navItems || []);
 
     if (!(activeTab instanceof Tab)) {
       return;
     }
 
-    await this.focusTab(activeTab);
-  }
+    const activeTabIndex = this.navItems.findIndex(tab => tab === activeTab);
 
-  /**
-   * Prevent the mousedown event from triggering a focus event before the click event.
-   *
-   * @internal
-   *
-   * @param event - Mouse event.
-   */
-  private handleMousedown(event: MouseEvent) {
-    if (!(event.target instanceof Tab)) {
-      return;
-    }
-
-    event.preventDefault();
-  }
-
-  /**
-   * Handle the tab active change event fired from the nested tab.
-   *
-   * @internal
-   *
-   * @param event - Custom Event fired from the nested tab.
-   */
-  private async handleNestedTabActiveChange(event: CustomEvent<any>): Promise<void> {
-    event.stopPropagation();
-    const tab = event.target;
-    if (!(tab instanceof Tab)) {
-      return;
-    }
-
-    this.setActiveTab(tab);
-    await this.focusTab(tab);
-
-    this.activeTabId = tab.tabId;
-  }
-
-  /**
-   * Resets all tabs' tabindex to -1 and sets the tabindex of the
-   * given tab to 0.
-   * This is used when navigating the tabs via keyboard.
-   *
-   * @internal
-   *
-   * @param newTab - The new tab to set tabindex 0.
-   */
-  private resetTabIndexAndSetNewTabIndex(newTab: Tab): void {
-    this.tabs?.forEach(tab => {
-      tab.setAttribute('tabindex', tab === newTab ? '0' : '-1');
-    });
-  }
-
-  /**
-   * Removes active attribute from all tabs and sets active on the new tab.
-   *
-   * @internal
-   *
-   * @param newTab - The new active tab.
-   */
-  private setActiveTab(newTab: Tab): void {
-    this.tabs?.forEach(tab => {
-      if (tab === newTab) {
-        tab.setAttribute('active', '');
-      } else {
-        tab.removeAttribute('active');
-      }
-    });
-  }
-
-  /**
-   * Set focus on the new tab, then scroll it into view.
-   *
-   * @internal
-   *
-   * @param tab - Tab to set focus on.
-   * @returns A promise that resolves to true if the tab was focused, false otherwise.
-   */
-  private async focusTab(tab?: Tab): Promise<boolean> {
-    if (!(tab instanceof Tab)) {
-      return false;
-    }
-
-    if (tab !== document?.activeElement) {
-      this.resetTabIndexAndSetNewTabIndex(tab);
-      tab.focus();
-    }
-
-    await this.handleArrowButtonVisibility();
-    return true;
-  }
-
-  /**
-   * Handle the keydown event. The arrow keys, Home, End, Enter, and Space keys are supported.
-   *
-   * @internal
-   *
-   * @param event - HTML Keyboard Event.
-   */
-  private async handleKeydown(event: KeyboardEvent): Promise<void> {
-    const tab = event.target;
-
-    if (!(tab instanceof Tab)) {
-      return;
-    }
-    if (!this.tabs) {
-      return;
-    }
-
-    const action = this.getActionForKeyEvent(event, true);
-    const loopBack = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
-
-    const previousTab = getPreviousTab(this.tabs, tab, loopBack);
-    const nextTab = getNextTab(this.tabs, tab, loopBack);
-    const firstTab = getFirstTab(this.tabs);
-    const lastTab = getLastTab(this.tabs);
-
-    let isKeyHandled = false;
-
-    switch (action) {
-      case ACTIONS.LEFT:
-        event.preventDefault();
-        isKeyHandled = previousTab !== tab && (await this.focusTab(previousTab));
-        break;
-
-      case ACTIONS.RIGHT:
-        event.preventDefault();
-        isKeyHandled = nextTab !== tab && (await this.focusTab(nextTab));
-        break;
-
-      case ACTIONS.HOME:
-        isKeyHandled = await this.focusTab(firstTab);
-        break;
-
-      case ACTIONS.END:
-        isKeyHandled = await this.focusTab(lastTab);
-        break;
-
-      default:
-    }
-    if (isKeyHandled) {
-      this.keyDownEventHandled();
-    }
+    this.resetTabIndexAndSetFocus(activeTabIndex, undefined);
   }
 
   /**
@@ -425,10 +286,9 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    *
    * @internal
    */
-  private async switchFocus(): Promise<void> {
-    await this.updateComplete;
+  private switchFocus(): void {
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
-      getActiveTab(this.tabs || [])?.focus();
+      getActiveTab(this.navItems || [])?.focus();
     } else if (
       (this.showBackwardArrowButton && !this.showForwardArrowButton) ||
       (this.showForwardArrowButton && !this.showBackwardArrowButton)
@@ -443,11 +303,8 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
    *
    * @internal
    */
-  private async handleArrowButtonVisibility(): Promise<void> {
-    if (!this.tabs) {
-      return;
-    }
-    if (!this.tabsContainer) {
+  private handleArrowButtonVisibility(): void {
+    if (!this.navItems || !this.tabsContainer) {
       return;
     }
 
@@ -461,8 +318,8 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       isArrowButtonFocused = true;
     }
 
-    const firstTab = getFirstTab(this.tabs)!;
-    const lastTab = getLastTab(this.tabs)!;
+    const firstTab = getFirstTab(this.navItems)!;
+    const lastTab = getLastTab(this.navItems)!;
     const firstTabLeftEdgePosition = firstTab.getBoundingClientRect().left;
     const tabListLeftEdgePosition = this.tabsContainer?.getBoundingClientRect().left;
     const lastTabRightEdgePosition = lastTab.getBoundingClientRect().right;
@@ -486,7 +343,7 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       }
 
       if (isArrowButtonFocused) {
-        await this.switchFocus();
+        this.switchFocus();
       }
       return;
     }
@@ -504,7 +361,7 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
     }
 
     if (isArrowButtonFocused) {
-      await this.switchFocus();
+      this.switchFocus();
     }
   }
 
@@ -527,7 +384,7 @@ class TabList extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
       behavior: 'instant',
     });
 
-    await this.handleArrowButtonVisibility();
+    this.handleArrowButtonVisibility();
   }
 
   public override render() {
