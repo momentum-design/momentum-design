@@ -11,7 +11,7 @@ const styles = css`
   :host::part(header-section):active {
     background-color: unset;
   }
-  :host::part(trailing-header__button) {
+  :host::part(toggle-button) {
     margin: 0.125rem;
   }
 `;

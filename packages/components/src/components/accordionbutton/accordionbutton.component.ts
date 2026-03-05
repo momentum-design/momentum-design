@@ -60,7 +60,7 @@ import styles from './accordionbutton.styles';
  * @csspart leading-header - The leading header of the accordion button.
  * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
- * @csspart trailing-header__icon - The trailing header icon of the accordion button.
+ * @csspart toggle-icon - The expand/collapse toggle icon of the accordion button.
  */
 class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Component))) {
   /**
@@ -186,7 +186,7 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
    * @returns The rendered toggle icon.
    */
   protected renderToggleIcon(): TemplateResult {
-    return html`<div part="trailing-header__icon">${this.renderIcon(this.getArrowIconName())}</div>`;
+    return html`<div part="toggle-icon">${this.renderIcon(this.getArrowIconName())}</div>`;
   }
 
   protected renderHeader(): TemplateResult {

@@ -58,7 +58,7 @@ import styles from './accordion.styles';
  * @csspart leading-header - The leading header of the accordion.
  * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion.
- * @csspart trailing-header__button - The trailing header button of the accordion.
+ * @csspart toggle-button - The expand/collapse toggle button of the accordion.
  */
 class Accordion extends AccordionButton {
   /** @internal */
@@ -117,7 +117,7 @@ class Accordion extends AccordionButton {
   private renderToggleButton() {
     return html`
       <mdc-button
-        part="trailing-header__button"
+        part="toggle-button"
         ?disabled="${this.disabled}"
         @click="${this.handleHeaderClick}"
         aria-controls="${this.bodySectionId}"
