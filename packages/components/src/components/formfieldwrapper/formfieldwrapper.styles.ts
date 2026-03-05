@@ -31,13 +31,10 @@ const styles = css`
     width: 100%;
   }
 
-  :host::part(help-text-container) {
-    align-items: flex-start;
-  }
-
   :host::part(helper-icon) {
+    align-self: flex-start;
     flex-shrink: 0;
-    margin-top: calc((var(--mdc-help-text-line-height) - 1rem) / 2);
+    height: var(--mdc-help-text-line-height);
   }
 
   :host::part(label) {
