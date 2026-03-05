@@ -7,6 +7,7 @@ const styles = css`
     --mdc-datepicker-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-datepicker-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-datepicker-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-datepicker-height: 2rem;
     --mdc-datepicker-width: fit-content;
 
     display: flex;
@@ -30,7 +31,7 @@ const styles = css`
   }
 
   :host::part(container) {
-    height: 2rem;
+    height: var(--mdc-datepicker-height);
     width: 100%;
     position: relative;
     display: flex;

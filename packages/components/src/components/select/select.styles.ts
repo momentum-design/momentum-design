@@ -7,6 +7,7 @@ const styles = css`
     --mdc-select-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-select-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-select-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-select-height: 2rem;
     --mdc-select-width: 100%;
     --mdc-select-listbox-width: var(--mdc-select-width);
     --mdc-select-listbox-height: auto;
@@ -30,7 +31,7 @@ const styles = css`
     z-index: -1;
   }
   :host::part(container) {
-    height: 2rem;
+    height: var(--mdc-select-height);
     width: 100%;
     position: relative;
     display: flex;

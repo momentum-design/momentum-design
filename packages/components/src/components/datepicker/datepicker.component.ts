@@ -59,6 +59,7 @@ import {
  * @cssproperty --mdc-datepicker-background-color - Background color of the datepicker input.
  * @cssproperty --mdc-datepicker-border-color - Border color of the datepicker input.
  * @cssproperty --mdc-datepicker-text-color - Text color of the datepicker input.
+ * @cssproperty --mdc-datepicker-height - The height of the datepicker trigger control.
  * @cssproperty --mdc-datepicker-width - Width of the datepicker component.
  *
  * @csspart label - The label element.
