@@ -254,6 +254,32 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
     });
   });
 
+  await test.step('should not fire click on Space keyup if keydown was not received by button', async () => {
+    const button = await setup({ componentsPage, children: 'Click Me', secondButtonForFocus: true });
+
+    await componentsPage.page.evaluate(() => {
+      const btn = document.getElementsByTagName('mdc-buttonsimple')[0];
+      btn.addEventListener('click', () => {
+        btn.classList.add('clicked');
+      });
+    });
+
+    // Focus the second button so Space keydown does not go to the first button
+    const secondButton = componentsPage.page.locator('mdc-buttonsimple').nth(1);
+    await secondButton.focus();
+    await expect(secondButton).toBeFocused();
+
+    // Press Space down on the second button, then move focus to the first button before releasing
+    await componentsPage.page.keyboard.down('Space');
+    await button.focus();
+    await expect(button).toBeFocused();
+    await expect(button).not.toHaveClass(/pressed/);
+
+    // Release Space — should NOT trigger a click on the first button
+    await componentsPage.page.keyboard.up('Space');
+    await expect(button).not.toHaveClass(/clicked/);
+  });
+
   await test.step('programmatic control', async () => {
     await test.step('click method works as expected', async () => {
       const button = await setup({ componentsPage });
