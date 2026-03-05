@@ -7,6 +7,7 @@ const styles = css`
     --mdc-timepicker-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-timepicker-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-timepicker-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-timepicker-height: 2rem;
     --mdc-timepicker-width: fit-content;
     --mdc-timepicker-listbox-width: 100%;
     --mdc-timepicker-listbox-height: 15rem;
@@ -32,7 +33,7 @@ const styles = css`
   }
 
   :host::part(container) {
-    height: 2rem;
+    height: var(--mdc-timepicker-height);
     width: 100%;
     position: relative;
     display: flex;
