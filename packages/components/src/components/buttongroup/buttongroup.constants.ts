@@ -17,6 +17,7 @@ const BUTTON_GROUP_ORIENTATION = {
 const BUTTON_GROUP_VARIANT = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
+  TERTIARY: 'tertiary',
 } as const;
 
 const DEFAULTS = {
