@@ -21,28 +21,22 @@ const styles = css`
     position: relative;
     border-radius: 0.5rem;
   }
-  :host::part(combobox-button) {
-    background-color: unset;
-    border: none;
-    --mdc-button-height: var(--mdc-combobox-height);
-    position: absolute;
-    top: 0;
-    height: var(--mdc-combobox-height);
-    width: 2rem;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   :host(:dir(ltr))::part(combobox-button) {
+    background-color: unset;
     border-radius: 0 0.5rem 0.5rem 0;
     border-left: 1px solid var(--mdc-combobox-border-color);
+    position: absolute;
+    height: var(--mdc-combobox-height);
+    padding: 0.5rem;
     right: 0;
   }
   :host(:dir(rtl))::part(combobox-button) {
+    background-color: unset;
     border-radius: 0.5rem 0 0 0.5rem;
     border-right: 1px solid var(--mdc-combobox-border-color);
+    position: absolute;
+    height: var(--mdc-combobox-height);
+    padding: 0.5rem;
     left: 0;
   }
   :host([disabled])::part(combobox-button) {
@@ -70,6 +64,7 @@ const styles = css`
     pointer-events: none;
   }
   :host::part(input-text) {
+    /* 2rem is the complete width of dropdown button */
     width: calc(100% - 2rem);
   }
   mdc-input {
