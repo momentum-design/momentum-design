@@ -4,6 +4,7 @@ const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-combobox-icon-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-combobox-height: 2rem;
     --mdc-combobox-width: 100%;
     --mdc-combobox-listbox-width: var(--mdc-combobox-width);
     --mdc-combobox-listbox-height: auto;
@@ -25,6 +26,7 @@ const styles = css`
     border-radius: 0 0.5rem 0.5rem 0;
     border-left: 1px solid var(--mdc-combobox-border-color);
     position: absolute;
+    height: var(--mdc-combobox-height);
     padding: 0.5rem;
     right: 0;
   }
@@ -33,6 +35,7 @@ const styles = css`
     border-radius: 0.5rem 0 0 0.5rem;
     border-right: 1px solid var(--mdc-combobox-border-color);
     position: absolute;
+    height: var(--mdc-combobox-height);
     padding: 0.5rem;
     left: 0;
   }
@@ -66,6 +69,7 @@ const styles = css`
   }
   mdc-input {
     --mdc-input-border-color: var(--mdc-combobox-border-color);
+    --mdc-input-height: var(--mdc-combobox-height);
   }
   :host([disabled]) input,
   :host([disabled]) mdc-input {
