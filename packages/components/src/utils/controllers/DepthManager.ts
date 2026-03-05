@@ -29,6 +29,12 @@ export interface StackedOverlayComponent extends Component {
    * ID of the trigger element associated with this overlay component
    */
   triggerID?: string;
+
+  /**
+   * The name of the stack group this component belongs to.
+   * Components with the same stack group name will be grouped together.
+   */
+  stackGroupName?: string;
 }
 
 /**
@@ -181,10 +187,11 @@ export class DepthManager implements ReactiveController {
     if (!this.has(item)) {
       return undefined;
     }
-    const itemIdx = elementStack.indexOf(item);
+    const items = elementStack.filter(e => e.stackGroupName === item.stackGroupName);
+    const itemIdx = items.indexOf(item);
     const toRemove: StackedOverlayComponent[] = [];
-    for (let i = elementStack.length - 1; i >= itemIdx; i -= 1) {
-      const it = elementStack[i];
+    for (let i = items.length - 1; i >= itemIdx; i -= 1) {
+      const it = items[i];
       // Skip siblings that share the same trigger (e.g.: tooltip + popover on same trigger)
       if (it === item || it.triggerID !== item.triggerID) {
         toRemove.push(it);
