@@ -11,7 +11,7 @@ import { hideAllControls } from '../../../config/storybook/utils';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import { ROLE } from '../../utils/roles';
 
-import { VARIANT } from './accordionbutton.constants';
+import { VARIANT, TOGGLE_POSITION } from './accordionbutton.constants';
 
 const defaultChildren = html`Loreum impusm sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
   labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui p ex
@@ -30,6 +30,7 @@ const render = (args: Args) =>
       prefix-icon="${ifDefined(args['prefix-icon'])}"
       size="${ifDefined(args.size)}"
       variant="${ifDefined(args.variant)}"
+      toggle-position="${ifDefined(args['toggle-position'])}"
     >
       ${defaultChildren}
     </mdc-accordionbutton>
@@ -67,6 +68,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANT),
     },
+    'toggle-position': {
+      control: 'select',
+      options: Object.values(TOGGLE_POSITION),
+    },
   },
 };
 
@@ -81,6 +86,7 @@ export const Example: StoryObj = {
     size: SIZE.SMALL,
     expanded: true,
     variant: VARIANT.DEFAULT,
+    'toggle-position': TOGGLE_POSITION.TRAILING,
   },
 };
 
@@ -105,6 +111,14 @@ export const SmallSize: StoryObj = {
     ...Example.args,
     size: SIZE.SMALL,
     expanded: false,
+  },
+};
+
+export const LeadingToggle: StoryObj = {
+  args: {
+    ...Example.args,
+    'toggle-position': TOGGLE_POSITION.LEADING,
+    expanded: true,
   },
 };
 
