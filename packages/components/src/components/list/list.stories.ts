@@ -413,3 +413,53 @@ export const HorizontalOrientation: StoryObj = {
     'aria-label': 'Horizontal participants list',
   },
 };
+
+// AI-Assisted
+export const NestedList: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="p" type="body-large-bold">Nested List</mdc-text>
+          <ul>
+            <li>A list can be nested inside a list item to create hierarchical structures</li>
+            <li>Each nested list maintains its own keyboard navigation context</li>
+          </ul>`,
+      },
+    },
+  },
+  render: args => html`
+    <mdc-list aria-label="${args['aria-label']}">
+      ${args.textPassedToListHeader
+        ? html`<mdc-listheader slot="list-header" header-text="${args.textPassedToListHeader}"></mdc-listheader>`
+        : ''}
+      <mdc-listitem @click=${action('onclick')} label="Fruits">
+        <mdc-icon slot="leading-controls" name="category-bold"></mdc-icon>
+        <mdc-list slot="trailing-controls" aria-label="Fruits sublist">
+          <mdc-listitem @click=${action('onclick')} label="Apples"></mdc-listitem>
+          <mdc-listitem @click=${action('onclick')} label="Bananas"></mdc-listitem>
+          <mdc-listitem @click=${action('onclick')} label="Oranges"></mdc-listitem>
+        </mdc-list>
+      </mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="Vegetables">
+        <mdc-icon slot="leading-controls" name="category-bold"></mdc-icon>
+        <mdc-list slot="trailing-controls" aria-label="Vegetables sublist">
+          <mdc-listitem @click=${action('onclick')} label="Carrots"></mdc-listitem>
+          <mdc-listitem @click=${action('onclick')} label="Broccoli"></mdc-listitem>
+          <mdc-listitem @click=${action('onclick')} label="Spinach"></mdc-listitem>
+        </mdc-list>
+      </mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="Dairy">
+        <mdc-icon slot="leading-controls" name="category-bold"></mdc-icon>
+        <mdc-list slot="trailing-controls" aria-label="Dairy sublist">
+          <mdc-listitem @click=${action('onclick')} label="Milk"></mdc-listitem>
+          <mdc-listitem @click=${action('onclick')} label="Cheese"></mdc-listitem>
+        </mdc-list>
+      </mdc-listitem>
+    </mdc-list>
+  `,
+  args: {
+    textPassedToListHeader: 'Grocery Categories',
+    'aria-label': 'Grocery list with nested categories',
+  },
+};
+// End AI-Assisted

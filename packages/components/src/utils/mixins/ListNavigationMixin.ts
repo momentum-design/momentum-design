@@ -302,6 +302,11 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       // Ensure newIndex is valid
       const newItem = navItems.at(newIndex) ?? navItems.find(Boolean)!;
 
+      // When there is only one item in the list, we should not reset its tabindex to -1, otherwise it will not be focusable anymore.
+      if (newIndex === 0 && oldIndex === 0 && navItems.length === 1) {
+        return true;
+      }
+
       if (newIndex === oldIndex && newItem && newItem.getAttribute('tabindex') === '0') {
         return false;
       }
