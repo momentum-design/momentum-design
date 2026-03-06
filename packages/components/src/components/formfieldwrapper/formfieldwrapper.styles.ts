@@ -31,6 +31,12 @@ const styles = css`
     width: 100%;
   }
 
+  :host::part(helper-icon) {
+    align-self: flex-start;
+    flex-shrink: 0;
+    height: var(--mdc-help-text-line-height);
+  }
+
   :host::part(label) {
     font-size: var(--mdc-label-font-size);
     font-weight: var(--mdc-label-font-weight);

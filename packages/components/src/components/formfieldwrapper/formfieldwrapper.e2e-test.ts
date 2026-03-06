@@ -185,6 +185,16 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       'info-icon-aria-label': 'Info Icon',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
+    // With long help text that wraps to multiple lines
+    wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Label',
+      'help-text':
+        'This is a very long help text that should wrap to multiple lines ' +
+        'to verify the icon alignment stays vertically centered with the first line of text',
+      style: 'width: 300px',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION });
     await wrapperStickerSheet.mountStickerSheet();
     wrapperStickerSheet.getWrapperContainer();
 
