@@ -76,7 +76,7 @@ const styles = css`
     align-items: center;
   }
 
-  :host::part(trailing-header__icon) {
+  :host::part(toggle-icon) {
     padding: 0.25rem;
   }
 

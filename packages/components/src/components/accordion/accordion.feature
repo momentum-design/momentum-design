@@ -4,13 +4,14 @@ Feature: Accordion Component
     Given the Accordion component is rendered on the page
     And the accordion header has role="heading"
     And the accordion contains:
-      | Property         | Value                  | State    |
-      | ---------------- | ---------------------- | -------- |
-      | Header Text      | string                 | Optional |
-      | Leading Label    | string                 | Optional |
-      | Trailing Label   | string                 | Optional |
-      | Expanded         | true/false             | Required |
-      | Disabled         | true/false             | Optional |
+      | Property         | Value                    | State    |
+      | ---------------- | ------------------------ | -------- |
+      | Header Text      | string                   | Optional |
+      | Leading Label    | string                   | Optional |
+      | Trailing Label   | string                   | Optional |
+      | Expanded         | true/false               | Required |
+      | Disabled         | true/false               | Optional |
+      | Toggle Position  | 'leading'/'trailing'     | Optional |
 
   Rule: ✅ Rendering and Visual States
 
@@ -40,6 +41,20 @@ Feature: Accordion Component
       When the accordion is rendered
       Then the trailing controls should be positioned before the arrow up/down icon
       And the layout should be properly aligned
+
+  Rule: ✅ Toggle Position
+
+    Scenario: Default trailing toggle position
+      Given the accordion is rendered with default settings
+      When the accordion is displayed
+      Then the expand/collapse button should appear at the end (trailing position)
+      And the header text, prefix icon, and controls should appear at the start
+
+    Scenario: Leading toggle position
+      Given the accordion has toggle-position="leading"
+      When the accordion is rendered
+      Then the expand/collapse button should appear at the start (leading position)
+      And the header text, prefix icon, and controls should appear after the toggle button
 
   Rule: ✅ User Interaction
 
