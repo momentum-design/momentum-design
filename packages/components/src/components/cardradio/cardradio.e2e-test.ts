@@ -1,12 +1,11 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
+import { KEYS } from '../../utils/keys';
 
 interface CardRadioArgs {
   name?: string;
@@ -235,6 +234,42 @@ test.describe.parallel('mdc-cardradio', () => {
           await expect(cards.nth(0)).toBeFocused();
           await expect(cards.nth(0)).toBeChecked();
         });
+      });
+
+      await test.step('spatial navigation', async () => {
+        const radio = await setup({ componentsPage });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(radio).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio).toBeChecked();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(radio).toBeChecked();
+      });
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const cardRadio = await setup({ componentsPage });
+
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(cardRadio, 'click');
+        await cardRadio.evaluate((el: HTMLElement) => el.click());
+        await expect(cardRadio).toHaveAttribute('checked');
+        await expect(waitForClickAfterChecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const cardRadio = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(cardRadio, 'click');
+        await cardRadio.evaluate((el: HTMLElement) => el.click());
+
+        await expect(cardRadio).not.toHaveAttribute('checked');
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
       });
     });
   });

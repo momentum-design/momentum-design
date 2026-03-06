@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 import '../button';
 import '../buttongroup';
@@ -20,8 +20,9 @@ import '../divider';
 import type Popover from '.';
 import type Dialog from '../dialog';
 
-import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
+import { BOUNDARY_ROOT, COLOR, DEFAULTS, POPOVER_PLACEMENT, STRATEGY } from './popover.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
   <mdc-popover
@@ -39,6 +40,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?disable-flip=${args['disable-flip']}
+    element-index-to-receive-focus="${args['element-index-to-receive-focus']}"
     ?size=${args.size}
     ?backdrop=${args.backdrop}
     ?close-button=${args['close-button']}
@@ -55,6 +57,12 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
     ?keep-connected-tooltip-open="${args['keep-connected-tooltip-open']}"
+    backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
+    ?is-backdrop-invisible="${args['is-backdrop-invisible']}"
+    boundary="${ifDefined(args.boundary)}"
+    boundary-padding="${ifDefined(args['boundary-padding'])}"
+    boundary-root="${ifDefined(args['boundary-root'])}"
+    strategy="${ifDefined(args.strategy)}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -298,6 +306,9 @@ const meta: Meta = {
     'append-to': {
       control: 'text',
     },
+    'element-index-to-receive-focus': {
+      control: 'number',
+    },
     'close-button-aria-label': {
       control: 'text',
     },
@@ -316,18 +327,27 @@ const meta: Meta = {
     'disable-aria-expanded': {
       control: 'boolean',
     },
-    ...hideControls([
-      'arrowElement',
-      'onOutsidePopoverClick',
-      'onEscapeKeydown',
-      'onPopoverFocusOut',
-      'startCloseDelay',
-      'cancelCloseDelay',
-      'enabledPreventScroll',
-      'enabledFocusTrap',
-      'shouldWrapFocus',
-      'utils',
-    ]),
+    'backdrop-append-to': {
+      control: 'text',
+    },
+    'is-backdrop-invisible': {
+      control: 'boolean',
+    },
+    boundary: {
+      control: 'text',
+    },
+    'boundary-padding': {
+      control: 'number',
+    },
+    'boundary-root': {
+      control: 'select',
+      options: Object.values(BOUNDARY_ROOT),
+    },
+    strategy: {
+      control: 'select',
+      options: Object.values(STRATEGY),
+    },
+    ...hideControls(['aria-label', 'arrowElement', 'hide', 'show', 'togglePopoverVisible', 'triggerElement', 'utils']),
   },
 };
 
@@ -369,6 +389,7 @@ export const interactiveContent: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': false,
+    'element-index-to-receive-focus': 5,
   },
 };
 
@@ -570,6 +591,15 @@ export const MultipleSingleLevelPopovers: StoryObj = {
   `,
 };
 export const AppendTo: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html`
+        <mdc-text> To breakout stacking context is necessary to use append to. </mdc-text>
+        <mdc-text> Trigger and popover dynamically added to the DOM </mdc-text>
+      `,
+      true,
+    ),
+  },
   render: () => {
     const hover = (event: Event) => {
       const target = event.target as HTMLElement;
@@ -619,9 +649,6 @@ export const AppendTo: StoryObj = {
       </template>
 
       <div class="root" id="root">
-        <mdc-text> To breakout stacking context is necessary to use append to. </mdc-text>
-        <mdc-text> Trigger and popover dynamically added to the DOM </mdc-text>
-
         <mdc-divider style="margin-block: 1rem"></mdc-divider>
 
         <div class="container" @mouseenter=${hover} @mouseleave=${leave} data-tpl="menu-without-append-to-tpl">
@@ -800,6 +827,17 @@ export const PopoverInChangingList: StoryObj = {
     'hide-on-outside-click': true,
     size: true,
   },
+  parameters: {
+    ...describeStory(
+      html` <mdc-text>
+          Frameworks might detach and re-attach elements when list content change. <br />
+          If it happens with the trigger but not the popover then it breaks the connection.
+        </mdc-text>
+
+        <mdc-text> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>`,
+      true,
+    ),
+  },
   render: () => {
     let btnVersion = 1;
     const updateButton = () => {
@@ -845,12 +883,6 @@ export const PopoverInChangingList: StoryObj = {
             ><div></div
           ></mdc-popover>
         </template>
-        <mdc-text>
-          Frameworks might detach and re-attach elements when list content change. <br />
-          If it happens with the trigger but not the popover then it breaks the connection.
-        </mdc-text>
-
-        <mdc-text> "Open" popover buttons works before and after "Update" button pressed. </mdc-text>
 
         <mdc-buttongroup>
           <mdc-button @click="${updateButton}">Update Open buttons</mdc-button>

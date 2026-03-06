@@ -4,6 +4,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 import { VARIANTS } from './alertchip.constants';
 import type { VariantType } from './alertchip.types';
@@ -137,6 +138,16 @@ test('mdc-alertchip', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(alertchip).toHaveClass('alertchip-listener alertchip-onclick');
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await alertchip.blur();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(alertchip).toBeFocused();
     });
   });
 });

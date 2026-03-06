@@ -1,7 +1,5 @@
-import { expect } from '@playwright/test';
-
 import { KEYS } from '../../utils/keys';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -86,6 +84,46 @@ test('mdc-listbox', async ({ componentsPage }) => {
       // Select option with Enter
       await componentsPage.page.keyboard.press(KEYS.ENTER);
       await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    });
+
+    await test.step('spatial navigation', async () => {
+      const listbox = await setup({ componentsPage, children: defaultChildren() });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+      const beforeBtn = componentsPage.page.locator('mdc-button');
+      const firstOption = listbox.locator('mdc-option').nth(0);
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(beforeBtn).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(firstOption).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listbox.locator('mdc-option').nth(1)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listbox.locator('mdc-option').nth(2)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listbox.locator('mdc-option').nth(2)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(listbox.locator('mdc-option').nth(1)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(firstOption).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(beforeBtn).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+
+      // Select option with Enter
+      const waitForClick = await componentsPage.waitForEvent(firstOption, 'click');
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(firstOption).toHaveAttribute('selected');
+      await expect(waitForClick).toEventEmitted();
     });
   });
 

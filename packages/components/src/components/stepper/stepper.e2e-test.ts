@@ -1,11 +1,10 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
 import { VARIANT } from '../stepperitem/stepperitem.constants';
 import type { OrientationType } from '../stepperconnector/stepperconnector.types';
 import type { VariantType } from '../stepperitem/stepperitem.types';
+import { KEYS } from '../../utils/keys';
 
 type Args = {
   orientation?: OrientationType;
@@ -134,18 +133,18 @@ test('mdc-stepper', async ({ componentsPage }) => {
     ]);
     await componentsPage.actionability.pressAndCheckFocus('Shift+Tab', [items.nth(2), items.nth(1), items.nth(0)]);
     // Keyboard Enter
-    const waitForClickEnter = componentsPage.waitForEvent(items.nth(0), 'click');
+    const waitForClickAfterEnter = await componentsPage.waitForEvent(items.nth(0), 'click');
     await componentsPage.page.keyboard.press('Enter');
-    await waitForClickEnter;
+    await expect(waitForClickAfterEnter).toEventEmitted();
     // Keyboard Space
     await componentsPage.actionability.pressTab();
-    const waitForClickSpace = componentsPage.waitForEvent(items.nth(1), 'click');
+    const waitForClickAfterSpace = await componentsPage.waitForEvent(items.nth(1), 'click');
     await componentsPage.page.keyboard.press('Space');
-    await waitForClickSpace;
+    await expect(waitForClickAfterSpace).toEventEmitted();
     // Mouse click
-    const waitForClick = componentsPage.waitForEvent(items.nth(2), 'click');
+    const waitForClick = await componentsPage.waitForEvent(items.nth(2), 'click');
     await items.nth(2).click();
-    await waitForClick;
+    await expect(waitForClick).toEventEmitted();
   });
 
   /**
@@ -160,5 +159,23 @@ test('mdc-stepper', async ({ componentsPage }) => {
       await takeScreenshot(componentsPage, ORIENTATION.VERTICAL);
       await componentsPage.accessibility.checkForA11yViolations('stepper-vertical');
     }
+  });
+
+  await test.step('spatial navigation', async () => {
+    await setup(componentsPage, { children });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const items = componentsPage.page.locator('mdc-stepperitem');
+
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(items.nth(0)).toBeFocused();
+
+    await keyboard.press(KEYS.ARROW_RIGHT);
+    await expect(items.nth(1)).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(items.nth(1), 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(waitForClick).toEventEmitted();
   });
 });

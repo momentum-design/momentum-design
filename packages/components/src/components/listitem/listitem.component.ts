@@ -2,13 +2,14 @@ import { CSSResult, html, nothing, PropertyValues, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { DEFAULTS } from './listitem.constants';
 import { ListItemEventManager } from './listitem.events';
@@ -72,7 +73,7 @@ import { ListItemVariants } from './listitem.types';
  * @event created - (React: onCreated) This event is dispatched after the listitem is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) This event is dispatched after the listitem is destroyed (removed from the DOM)
  */
-class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
+class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))))) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -157,6 +158,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
   }
 
@@ -185,12 +187,34 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
    * @param event - The keyboard event triggered when a key is pressed down.
    */
   protected handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
-      const eventDispatched = this.triggerClickEvent(event);
-      if (eventDispatched) {
+    const action = this.getActionForKeyEvent(event);
+    if (!event.defaultPrevented && action === ACTIONS.ENTER) {
+      if (!this.isEventFromInsideListItem(event)) {
+        this.keyDownEventHandled();
         event.preventDefault();
+        this.triggerClickEvent(event);
       }
     }
+  }
+
+  protected handleKeyUp(event: KeyboardEvent): void {
+    const action = this.getActionForKeyEvent(event);
+    if (!event.defaultPrevented && action === ACTIONS.SPACE) {
+      if (!this.isEventFromInsideListItem(event)) {
+        event.preventDefault();
+        this.triggerClickEvent(event);
+      }
+    }
+  }
+
+  /**
+   * Checks if the event originated from within the list item.
+   * @param event - The event to check.
+   * @internal
+   */
+  private isEventFromInsideListItem(event: Event): boolean {
+    const target = event.target as HTMLElement;
+    return target !== this && document.activeElement === target && this.contains(target);
   }
 
   /**
@@ -199,19 +223,14 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
    * @param event - The event that triggered the click.
    * @returns - Returns true if the click event was dispatched, false otherwise.
    */
-  protected triggerClickEvent(event: Event): boolean {
-    const target = event.target as HTMLElement;
-    // Do not emit click event when the target is a focusable element inside the list item.
-    if (target !== this && document.activeElement === event.target) {
-      return false;
-    }
+  protected triggerClickEvent(event: Event): void {
+    if (this.isEventFromInsideListItem(event)) return;
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
       view: window,
     });
     this.dispatchEvent(clickEvent);
-    return true;
   }
 
   /**
@@ -303,12 +322,18 @@ class ListItem extends DisabledMixin(TabIndexMixin(LifeCycleMixin(Component))) {
    * @param event - The mouse event triggered when a click occurs.
    */
   protected stopEventPropagation(event: Event): void {
-    if (
-      (event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE)) ||
-      event instanceof MouseEvent
-    ) {
+    if (event instanceof KeyboardEvent) {
+      const action = this.getActionForKeyEvent(event);
+      if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
+        event.stopPropagation();
+      }
+    } else if (event instanceof MouseEvent) {
       event.stopPropagation();
     }
+  }
+
+  override click() {
+    this.triggerClickEvent(new Event('click'));
   }
 
   public override render() {

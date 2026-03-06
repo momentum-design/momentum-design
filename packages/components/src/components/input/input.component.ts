@@ -8,8 +8,8 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
 import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -60,6 +60,7 @@ import styles from './input.styles';
  * @cssproperty --mdc-input-text-color - Text color for the input field
  * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
+ * @cssproperty --mdc-input-height - Height for the input container
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
@@ -81,7 +82,7 @@ import styles from './input.styles';
  */
 
 class Input
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
@@ -283,7 +284,7 @@ class Input
    * @param event - Keyboard event
    */
   protected handleKeyDown(event: KeyboardEvent) {
-    if (event.key === KEYS.ENTER) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.ENTER && this.getKeyboardNavMode() === NAV_MODES.DEFAULT) {
       this.form?.requestSubmit();
     }
   }
@@ -416,6 +417,8 @@ class Input
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Input;

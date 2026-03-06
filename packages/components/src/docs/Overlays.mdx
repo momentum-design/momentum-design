@@ -1,0 +1,180 @@
+# Overlays
+
+There are many components in Momentum Design that create overlays. An overlay is
+any element that appears on top of the main content, often blocking interaction
+with the underlying content until it is dismissed.
+
+- Dialog, and extends:
+  - Announcement dialog
+- Popover, and extends:
+  - Menu popover
+  - Tooltip
+  - Toggle
+  - Coachmark
+
+Also, there are other components that create uses overlays, such as:
+
+- Select
+- Combobox
+- Search popover
+
+## Stacking overlays
+
+Depth of the overlays is managed using a stack. When an overlay is opened, it is
+added to the top of the stack. When an overlay is closed, it is removed from the
+stack.
+
+### Opening overlays
+
+When an overlay is opened, it is added to the top of the stack and given focus.
+If there is another overlay already open, it remains in the stack but loses
+focus.
+
+An overlay can appear only once in the stack. If an attempt is made to open an
+overlay that is already in the stack, it will stay the same position in the
+stack.
+
+### Closing overlays
+
+When an overlay is closed, it is removed from the stack and focus is returned to
+the next overlay in the stack (if any).
+
+There are multiple ways to close an overlay:
+
+- press the Escape key
+- click outside the overlay, on the backdrop (if present)
+- click on a close button inside the overlay
+- programmatically via the `hide()` method
+
+#### Closing with Escape key
+
+When the Escape key is pressed, only the topmost overlay in the stack is closed.
+
+##### Open multiple overlays from a single element
+
+When multiple overlays are opened from a single trigger element (e.g., a button
+which opens an popover, but it also has a tooltip) the opening and closing order
+matters.
+
+Depth manager can handle this scenario correctly but only if all "sibling"
+overlays have `triggerid` attribute with the same value.
+
+for example:
+
+```html
+<mdc-button id="opener">Open dialog</mdc-button>
+<mdc-dialog triggerid="opener">...</mdc-dialog>
+<mdc-tooltip triggerid="opener">...</mdc-tooltip>
+```
+
+> Note: `triggerid` attribute is needed even if the overlay manually opened.
+
+#### Closing multiple overlays
+
+When there are multiple overlays open and not the topmost overlay is closed
+(e.g., programmatically, or by clicking a close button inside a dialog with open
+popover(s)), all overlays above it **within the same stack group** are also
+closed. Overlays belonging to a different group remain open.
+
+### Stack groups
+
+Overlays can be assigned to a **stack group** using the `stack-group-name`
+attribute. Stack groups allow independent sets of overlays to coexist in the
+same global stack without interfering with each other.
+
+In a conventional stack, removing an element also removes every element above
+it. With stack groups, only the elements that belong to the **same group** are
+affected — elements from other groups are left untouched.
+
+#### How it works
+
+When an overlay is closed (popped), the DepthManager:
+
+1. Filters the global stack to find only the elements that share the same
+   `stack-group-name` as the overlay being closed.
+2. Removes the target overlay and all same-group elements above it from the
+   stack.
+3. Recalculates the z-index of the remaining elements to fill any gaps left by
+   the removal, ensuring continuous layering with no z-index holes.
+
+Elements that do not specify a `stack-group-name` (or use an empty string) are
+all considered part of the **default group** and behave as before.
+
+#### Example: Dialog with a warning popover and a combobox dropdown
+
+Consider a dialog that contains a combobox and a warning popover. The warning
+popover is assigned to a separate group so that dismissing it does not cascade
+to the combobox dropdown:
+
+```
+Stack (bottom → top): [ Dialog, Warning Popover, Combobox Dropdown ]
+                        group: ""  group: "warning"   group: ""
+```
+
+When the warning popover is dismissed:
+
+1. Only elements in the `"warning"` group are considered — the warning popover
+   is removed.
+2. The dialog and combobox dropdown (both in the default group) are **not**
+   affected and remain open.
+3. Z-indices are recalculated so all remaining overlays layer correctly without
+   gaps.
+
+```
+Stack after removal:   [ Dialog, Combobox Dropdown ]
+                         group: ""  group: ""
+```
+
+Without stack groups, closing the warning popover (a middle element) would also
+close the combobox dropdown above it, since it would cascade upward through the
+entire stack.
+
+#### Usage
+
+Set the `stack-group-name` attribute on the overlay element:
+
+```html
+<mdc-popover stack-group-name="warning-overlay" trigger="manual">
+  ...
+</mdc-popover>
+```
+
+Overlays with the same `stack-group-name` value form a group. Closing any
+overlay in the group cascades only within that group. Overlays without a
+`stack-group-name` (or with an empty value) belong to the default group.
+
+#### Z-index recalculation
+
+When elements are removed from the middle of the stack, the remaining elements
+receive a `moved` notification. This triggers a z-index recalculation so that
+every overlay in the stack maintains continuous, gap-free layering based on its
+new position.
+
+## Layering components
+
+Overlays are layered using CSS `z-index` property which is calculated based on
+the position of the overlay in the stack.
+
+Z-index is incremented by 3 for each overlay in the stack, starting from a base
+value of 1000.
+
+This allows for proper layering of overlay, backdrops, and trigger elements, for
+example the first overlay in the stack will have the following z-index values:
+
+- 1000: z-index of the overlay element (e.g. popover, dialog, etc.)
+- 999: z-index of the trigger component (if any)
+- 998: z-index of the backdrop (if any)
+
+The next overlay will have z-index values of 1003, 1002, and 1001 respectively,
+and so on.
+
+### Overwriting z-index
+
+In some cases, it might be necessary to overwrite the calculated z-index of an
+overlay. It can be done by setting the `z-index` attribute on the overlay
+element.
+
+Backdrop and trigger elements will have their z-index adjusted accordingly.
+
+> ⚠️Setting a custom z-index might cause layering issues with other overlays in
+> the stack. ⚠️

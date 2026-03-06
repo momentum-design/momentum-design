@@ -11,6 +11,7 @@ const styles = [
       --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
       --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
       --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
+      --mdc-input-height: 2rem;
     }
     :host,
     :host::part(input-container),
@@ -54,7 +55,7 @@ const styles = [
     }
 
     :host::part(input-container) {
-      height: 2rem;
+      height: var(--mdc-input-height);
       border-radius: 0.5rem;
       border: 0.0625rem solid var(--mdc-input-border-color);
       display: flex;

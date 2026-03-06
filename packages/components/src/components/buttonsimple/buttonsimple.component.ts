@@ -3,20 +3,39 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import type { RoleType } from '../../utils/roles';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
 import type { ButtonSize, ButtonType } from './buttonsimple.types';
 
 /**
- * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
- * It is used as an internal component and is not intended to be used directly by consumers.
- * Consumers should use the `mdc-button` component instead.
+ * `mdc-buttonsimple` is a simple button component that can be configured in various ways to suit different use cases.
+ * It can be used standalone or as a base for more complex button components like `mdc-button`.
+ *
+ * ### Button Types
+ *
+ * The button type defines the behavior when clicked:
+ *
+ * - **button**: Standard button that performs an action on click
+ * - **submit**: Submits the form data to the server
+ * - **reset**: Resets the form data to its initial state
+ *
+ * ### Active State
+ *
+ * The `active` attribute toggles the button's active/toggled state,
+ * automatically setting the appropriate ARIA state (e.g., `aria-pressed`).
+ * This is useful for toggle buttons or buttons indicating a selected state.
+ *
+ * ### Disabled States
+ *
+ * - **disabled**: Completely disables the button, removing it from the tab order
+ * - **soft-disabled**: Button appears disabled but remains focusable for accessibility
  *
  * @tagname mdc-buttonsimple
  *
@@ -27,12 +46,14 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
  * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
- * @cssproperty --mdc-button-height - Height for button size
+ * @cssproperty --mdc-button-height - Height of the button
  * @cssproperty --mdc-button-background - Background color of the button
  * @cssproperty --mdc-button-border-color - Border color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  */
-class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component))) {
+class Buttonsimple extends KeyDownHandledMixin(
+  KeyToActionMixin(AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Component)))),
+) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -231,13 +252,7 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
   }
 
   private triggerClickEvent() {
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      view: window,
-    });
-    this.dispatchEvent(clickEvent);
+    this.click();
   }
 
   /**
@@ -259,10 +274,13 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.add('pressed');
-      if (event.key === KEYS.ENTER) {
+      if (action === ACTIONS.ENTER) {
         this.triggerClickEvent();
+        this.keyDownEventHandled();
       }
 
       // preventing the default event behavior for space key
@@ -281,9 +299,12 @@ class Buttonsimple extends AutoFocusOnMountMixin(TabIndexMixin(DisabledMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if ([KEYS.ENTER, KEYS.SPACE].includes(event.key)) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
+      const wasPressed = this.classList.contains('pressed');
       this.classList.remove('pressed');
-      if (event.key === KEYS.SPACE) {
+      if (action === ACTIONS.SPACE && wasPressed) {
         this.triggerClickEvent();
       }
     }

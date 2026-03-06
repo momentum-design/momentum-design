@@ -4,15 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
 import type { Size } from '../accordiongroup/accordiongroup.types';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { KeyToActionMixin, ACTIONS } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
-import { DEFAULTS, ICON_NAME } from './accordionbutton.constants';
-import type { IconName, Variant } from './accordionbutton.types';
+import { DEFAULTS, ICON_NAME, TOGGLE_POSITION } from './accordionbutton.constants';
+import type { IconName, Variant, TogglePosition } from './accordionbutton.types';
 import styles from './accordionbutton.styles';
 
 /**
@@ -59,9 +60,9 @@ import styles from './accordionbutton.styles';
  * @csspart leading-header - The leading header of the accordion button.
  * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion button.
- * @csspart trailing-header__icon - The trailing header icon of the accordion button.
+ * @csspart toggle-icon - The expand/collapse toggle icon of the accordion button.
  */
-class AccordionButton extends DisabledMixin(Component) {
+class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(Component))) {
   /**
    * Controls the spacing and padding of the accordion.
    * - Small provides 1rem (16px) padding, large provides 1.5rem (24px) padding.
@@ -102,6 +103,15 @@ class AccordionButton extends DisabledMixin(Component) {
    */
   @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: IconNames;
 
+  /**
+   * Controls the position of the expand/collapse toggle icon.
+   * - 'trailing' (default): Toggle icon appears at the end (right side in LTR).
+   * - 'leading': Toggle icon appears at the start (left side in LTR).
+   * @default 'trailing'
+   */
+  @property({ type: String, reflect: true, attribute: 'toggle-position' })
+  togglePosition: TogglePosition = DEFAULTS.TOGGLE_POSITION;
+
   /** @internal */
   private headSectionId = `head-section-${uuidv4()}`;
 
@@ -117,6 +127,12 @@ class AccordionButton extends DisabledMixin(Component) {
     if (this.disabled) return;
     this.expanded = !this.expanded;
     this.dispatchHeaderClickEvent();
+  }
+
+  override click() {
+    if (this.disabled) return;
+    super.click();
+    this.handleHeaderClick();
   }
 
   /**
@@ -142,8 +158,10 @@ class AccordionButton extends DisabledMixin(Component) {
    * @param event - The KeyboardEvent fired.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+    if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.handleHeaderClick();
+      this.keyDownEventHandled();
     }
   }
 
@@ -163,7 +181,16 @@ class AccordionButton extends DisabledMixin(Component) {
       : nothing;
   }
 
+  /**
+   * Renders the toggle icon for expand/collapse.
+   * @returns The rendered toggle icon.
+   */
+  protected renderToggleIcon(): TemplateResult {
+    return html`<div part="toggle-icon">${this.renderIcon(this.getArrowIconName())}</div>`;
+  }
+
   protected renderHeader(): TemplateResult {
+    const isLeading = this.togglePosition === TOGGLE_POSITION.LEADING;
     return html`
       <div
         part="header-section"
@@ -180,10 +207,11 @@ class AccordionButton extends DisabledMixin(Component) {
           aria-expanded="${this.expanded}"
           aria-controls="${this.bodySectionId}"
         >
-          <div part="leading-header">${this.renderIcon(this.prefixIcon)} ${this.renderHeadingText()}</div>
-          <div part="trailing-header">
-            <div part="trailing-header__icon">${this.renderIcon(this.getArrowIconName())}</div>
+          <div part="leading-header">
+            ${isLeading ? this.renderToggleIcon() : nothing} ${this.renderIcon(this.prefixIcon)}
+            ${this.renderHeadingText()}
           </div>
+          ${isLeading ? nothing : html`<div part="trailing-header">${this.renderToggleIcon()}</div>`}
         </div>
       </div>
     `;
@@ -234,6 +262,9 @@ class AccordionButton extends DisabledMixin(Component) {
     }
     if (changedProperties.has('variant') && !this.variant) {
       this.variant = DEFAULTS.VARIANT;
+    }
+    if (changedProperties.has('togglePosition') && !this.togglePosition) {
+      this.togglePosition = DEFAULTS.TOGGLE_POSITION;
     }
   }
 

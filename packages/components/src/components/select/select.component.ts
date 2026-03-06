@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 import { ElementStore } from '../../utils/controllers/ElementStore';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -23,6 +22,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
 import { debounce } from '../../utils/debounce';
 import type { Debounced } from '../../utils/debounce';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICON, DEFAULTS, LISTBOX_ID, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
@@ -83,13 +83,18 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
  * @cssproperty --mdc-select-text-color - The text color of the select.
  * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-height - The height of the select trigger control.
  * @cssproperty --mdc-select-width - The width of the select.
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
  */
 class Select
   extends ListNavigationMixin(
-    CaptureDestroyEventForChildElement(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      CaptureDestroyEventForChildElement(
+        AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))),
+      ),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -149,7 +154,7 @@ class Select
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
-  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+  popoverZIndex?: number = undefined;
 
   /**
    * Determines whether the dropdown should flip its position when it hits the boundary.
@@ -274,7 +279,10 @@ class Select
   ): void => {
     switch (changeType) {
       case 'added':
-        option.setAttribute('tabindex', '-1');
+        option.setAttribute('tabindex', index === 0 && options.length === 0 ? '0' : '-1');
+        if (option.hasAttribute('selected')) {
+          this.resetTabIndexes(index);
+        }
         break;
       case 'removed': {
         if (index === -1 || options.length === 0) {
@@ -436,6 +444,9 @@ class Select
       !option.hasAttribute('soft-disabled')
     ) {
       this.setSelectedOption(option);
+      if (option.isKeyDownEventHandled) {
+        this.keyDownEventHandled();
+      }
       this.displayPopover = false;
       this.fireEvents();
     }
@@ -638,38 +649,77 @@ class Select
       return;
     }
 
-    switch (event.key) {
-      case KEYS.ARROW_DOWN:
-      case KEYS.ARROW_UP:
-      case KEYS.ENTER:
-      case KEYS.SPACE:
-        this.displayPopover = true;
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      case KEYS.HOME: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(0);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      case KEYS.END: {
-        this.displayPopover = true;
-        this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
-        event.preventDefault();
-        event.stopPropagation();
-        break;
-      }
-      default: {
-        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+    const action = this.getActionForKeyEvent(event);
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+
+    if (isDefaultNavigation) {
+      switch (action) {
+        case ACTIONS.DOWN:
+        case ACTIONS.UP:
+        case ACTIONS.ENTER:
+          if (!this.displayPopover) {
+            this.keyDownEventHandled();
+          }
           this.displayPopover = true;
-          this.handleSelectedOptionByKeyInput(event.key);
           event.preventDefault();
           event.stopPropagation();
+          break;
+        case ACTIONS.SPACE:
+          event.preventDefault();
+          event.stopPropagation();
+          break;
+        case ACTIONS.HOME: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(0);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
         }
-        break;
+        case ACTIONS.END: {
+          this.displayPopover = true;
+          this.resetTabIndexAndSetFocusAfterUpdate(this.navItems.length - 1);
+          event.preventDefault();
+          event.stopPropagation();
+          break;
+        }
+        default: {
+          if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+            this.displayPopover = true;
+            this.handleSelectedOptionByKeyInput(event.key);
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          break;
+        }
       }
+    } else if (action === ACTIONS.ENTER) {
+      this.displayPopover = true;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  /**
+   * Handles the keyup event on the select element when the popover is closed for Space Key, following the default
+   * onKeyDown = Enter, onKeyUp = Space behavior as a button has.
+   *
+   * @param event - The keyboard event.
+   */
+  private handleKeyupCombobox(event: KeyboardEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      return;
+    }
+
+    const action = this.getActionForKeyEvent(event);
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+
+    if (isDefaultNavigation && action === ACTIONS.SPACE) {
+      if (!this.displayPopover) {
+        this.keyDownEventHandled();
+      }
+      this.displayPopover = true;
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -710,7 +760,8 @@ class Select
   }
 
   private handleKeydownPopover(event: KeyboardEvent): void {
-    if (event.key.length === 1) {
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+    if (isDefaultNavigation && event.key.length === 1) {
       this.handleSelectedOptionByKeyInput(event.key);
     }
   }
@@ -724,6 +775,7 @@ class Select
           part="base-container"
           @click="${this.handleClickCombobox}"
           @keydown="${this.handleKeydownCombobox}"
+          @keyup="${this.handleKeyupCombobox}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
@@ -792,8 +844,10 @@ class Select
           boundary="${ifDefined(this.boundary)}"
           strategy="${ifDefined(this.strategy)}"
           placement="${this.placement}"
-          @closebyescape="${() => {
-            this.displayPopover = false;
+          @closebyescape="${(event: Event) => {
+            if (event.target === event.currentTarget) {
+              this.displayPopover = false;
+            }
           }}"
           @closebyoutsideclick="${() => {
             this.displayPopover = false;

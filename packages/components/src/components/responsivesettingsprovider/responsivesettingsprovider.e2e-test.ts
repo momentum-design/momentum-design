@@ -69,7 +69,6 @@ const setup = async (args: SetupOptions) => {
       html: renderResponsiveSettingsProvider(),
     });
   }
-  await componentsPage.page.pause();
 };
 
 const testToRun = async ({

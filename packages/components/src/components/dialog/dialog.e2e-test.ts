@@ -1,6 +1,7 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { DEFAULTS } from './dialog.constants';
 import type Dialog from './dialog.component';
@@ -76,6 +77,15 @@ const setup = async (args: SetupOptions) => {
         dialogElement.visible = false;
       };
     }
+  }, restArgs.id);
+
+  await triggerButton.evaluate((el, id) => {
+    el.addEventListener('click', () => {
+      const dialogElement = document.querySelector(`#${id}`) as Dialog;
+      if (dialogElement) {
+        dialogElement.visible = true;
+      }
+    });
   }, restArgs.id);
 
   return { dialog, triggerButton };
@@ -268,7 +278,6 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       await test.step('matches screenshot for dialog with a focused textarea in body', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithTextarea, size: 'small' });
-        await componentsPage.page.pause();
         await componentsPage.actionability.pressTab();
 
         await componentsPage.visualRegression.takeScreenshot('mdc-dialog-with-textarea', { element: dialog });
@@ -286,6 +295,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       triggerId: 'trigger-btn',
       closeButtonAriaLabel: 'Close button label',
       ariaLabel: 'dialog-attribute',
+      zIndex: 1000,
     });
 
     await test.step('default attributes', async () => {
@@ -731,6 +741,47 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
       // End AI-Assisted
     });
+
+    await test.step('spatial navigation', async () => {
+      const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const opener = componentsPage.page.getByText('Click Me!');
+      await expect(opener).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+
+      await expect(dialog).toBeVisible();
+      const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+      await expect(closeButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_DOWN);
+      const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+      await expect(primaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+      await expect(secondaryButton).toBeFocused();
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const link = componentsPage.page.locator('[slot="footer-link"]');
+      await expect(link).toBeFocused();
+      await keyboard.press(KEYS.ARROW_UP);
+      await expect(closeButton).toBeFocused();
+
+      await keyboard.press(KEYS.ESCAPE);
+      await expect(dialog).not.toBeVisible();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).toBeVisible();
+
+      // focus should be on close button after reopening the dialog
+      await expect(closeButton).toBeFocused();
+
+      // close the dialog with the close button
+      await keyboard.press(KEYS.ENTER);
+      await expect(dialog).not.toBeVisible();
+    });
   });
 
   /**
@@ -778,6 +829,336 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.removeAttribute(responsiveSettings, 'force-fullscreen-dialog');
 
       await expect(dialog).toHaveAttribute('size', 'medium');
+    });
+  });
+
+  await test.step('handle multiple overlays', async () => {
+    const setup = async () => {
+      await componentsPage.mount({
+        html: `
+          <div id="wrapper">
+            <mdc-button id="dialogLvl1Trigger">Open Dialog (lvl 1)</mdc-button>
+            <mdc-dialog triggerid="dialogLvl1Trigger" id="dialogLvl1" close-button-aria-label="Close lvl1 dialog">
+              <div slot="dialog-body">
+                <p>Dialog lvl 1.</p>
+                <mdc-button id="popupLvl2Trigger">Open Popover (lvl 2)</mdc-button>
+                <mdc-tooltip id="tooltipLvl1" triggerid="popupLvl2Trigger" placement="top"
+                  >Open Popover (lvl 2)</mdc-tooltip
+                >
+                <mdc-popover
+                  id="popupLvl2"
+                  triggerid="popupLvl2Trigger"
+                  hide-on-escape
+                  focus-back-to-trigger
+                  interactive
+                  focus-trap
+                  style="top: 30% !important;"
+                >
+                  <p>Popover lvl 2.</p>
+                  <mdc-button id="dialogLvl3Trigger">Open Dialog (lvl 3)</mdc-button>
+                  <mdc-tooltip id="tooltipLvl2" triggerid="dialogLvl3Trigger" placement="top"
+                    >Open Dialog (lvl 3)</mdc-tooltip
+                  >
+                  <mdc-dialog
+                    id="dialogLvl3"
+                    triggerid="dialogLvl3Trigger"
+                    aria-label="dialog-lvl3"
+                    size="small"
+                    close-button-aria-label="Close nested dialog"
+                  >
+                    <div slot="dialog-body">
+                      <p>Dialog lvl 3.</p>
+                      <mdc-button id="menuLvl4Trigger">Open Menu (lvl 4)</mdc-button>
+                      <mdc-tooltip id="tooltipLvl3" triggerid="menuLvl4Trigger" placement="top"
+                        >Open Menu (lvl 4)</mdc-tooltip
+                      >
+                      <mdc-menupopover id="menuLvl4" triggerid="menuLvl4Trigger">
+                        <mdc-menuitem label="Profile"></mdc-menuitem>
+                        <mdc-menuitem id="menuLvl5Trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+                        <mdc-menuitem label="Notifications"></mdc-menuitem>
+                        <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+                        <mdc-menupopover id="menuLvl5" triggerID="menuLvl5Trigger" placement="right">
+                          <mdc-menupopover id="menuLvl6" triggerID="menuLvl6Trigger" placement="right-start">
+                            <mdc-menuitem label="Change Password"></mdc-menuitem>
+                            <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+                            <mdc-menuitem label="Security Questions"></mdc-menuitem>
+                          </mdc-menupopover>
+                          <mdc-menuitem label="Account"></mdc-menuitem>
+                          <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+                          <mdc-menuitem label="Security" id="menuLvl6Trigger" arrow-position="trailing"></mdc-menuitem>
+                          <mdc-menuitem label="Advanced"></mdc-menuitem>
+                        </mdc-menupopover>
+                      </mdc-menupopover></div
+                  ></mdc-dialog>
+                </mdc-popover>
+              </div>
+            </mdc-dialog>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        document.addEventListener(
+          'click',
+          e => {
+            const triggerId = (e.target as HTMLElement)?.getAttribute('id');
+            if (triggerId && triggerId.endsWith('Trigger')) {
+              const dialog = document.getElementById(triggerId.replace(/Trigger$/, ''));
+              if (dialog && dialog.tagName === 'MDC-DIALOG') {
+                dialog?.toggleAttribute('visible');
+              }
+            }
+          },
+          { capture: true },
+        );
+        document.addEventListener(
+          'close',
+          e => {
+            const dialog = e.target as HTMLElement;
+            if (dialog && dialog.tagName === 'MDC-DIALOG') {
+              dialog?.toggleAttribute('visible');
+            }
+          },
+          { capture: true },
+        );
+      });
+
+      const ids = [
+        'wrapper',
+        'dialogLvl1Trigger',
+        'dialogLvl1',
+        'popupLvl2Trigger',
+        'tooltipLvl1',
+        'popupLvl2',
+        'dialogLvl3Trigger',
+        'tooltipLvl2',
+        'dialogLvl3',
+        'menuLvl4Trigger',
+        'tooltipLvl3',
+        'menuLvl4',
+        'menuLvl5Trigger',
+        'menuLvl5',
+        'menuLvl6',
+        'menuLvl6Trigger',
+      ] as const;
+
+      return Object.fromEntries(ids.map(id => [id, componentsPage.page.locator(`#${id}`)])) as Record<
+        (typeof ids)[number],
+        Locator
+      >;
+    };
+
+    await test.step('Setup overlay structure', async () => {
+      const {
+        dialogLvl1Trigger,
+        dialogLvl1,
+        tooltipLvl1,
+        popupLvl2Trigger,
+        popupLvl2,
+        tooltipLvl2,
+        dialogLvl3Trigger,
+        dialogLvl3,
+        tooltipLvl3,
+        menuLvl4Trigger,
+        menuLvl4,
+        menuLvl5Trigger,
+        menuLvl5,
+        menuLvl6Trigger,
+        menuLvl6,
+      } = await setup();
+
+      // Intercept onComponentStackChanged on all stacked overlay components to detect
+      // corrupted indices or re-entrancy (e.g. from popItem/popUntil/remove).
+      // Use exposeFunction to capture calls into a Node array.
+      const onComponentStackChangedCalls: { id: string; changed: string; zIndex: number }[] = [];
+      await componentsPage.page.exposeFunction(
+        'recordOnComponentStackChanged',
+        (id: string, changed: string, zIndex: number) => {
+          onComponentStackChangedCalls.push({ id, changed, zIndex });
+        },
+      );
+      await componentsPage.page.evaluate(() => {
+        const record = (window as any).recordOnComponentStackChanged as (
+          id: string,
+          changed: string,
+          zIndex: number,
+        ) => void;
+
+        const overlaySelectors = ['mdc-dialog', 'mdc-popover', 'mdc-menupopover'];
+        overlaySelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach((el: Element) => {
+            const overlay = el as { id?: string; zIndex?: number; onComponentStackChanged?: (change: string) => void };
+            const original = overlay.onComponentStackChanged;
+            if (typeof original !== 'function') return;
+            overlay.onComponentStackChanged = function interceptOnComponentStackChanged(changed: string) {
+              record(this.id ?? '', changed, typeof this.zIndex === 'number' ? this.zIndex : 0);
+              return original?.apply(this, [changed]);
+            };
+          });
+        });
+      });
+
+      await test.step('Keyboard navigation work as expected', async () => {
+        const stack: Locator[] = [];
+        const stackItemsToBeVisible = () => Promise.all(stack.map(item => expect(item).toBeVisible()));
+
+        await componentsPage.actionability.pressTab();
+        await expect(dialogLvl1Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+
+        await expect(dialogLvl1).toBeVisible();
+        await expect(dialogLvl1).toHaveAttribute('z-index', '1000');
+        stack.push(dialogLvl1);
+
+        await componentsPage.actionability.pressTab();
+        await expect(popupLvl2Trigger).toBeFocused();
+        await expect(tooltipLvl1).toBeVisible();
+        await expect(tooltipLvl1).toHaveAttribute('z-index', '1003');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl1).not.toBeVisible();
+
+        await expect(popupLvl2).toBeVisible();
+        await expect(popupLvl2).toHaveAttribute('z-index', '1003');
+        stack.push(popupLvl2);
+
+        await componentsPage.actionability.pressTab();
+        await expect(dialogLvl3Trigger).toBeFocused();
+        await expect(tooltipLvl2).toBeVisible();
+        await expect(tooltipLvl2).toHaveAttribute('z-index', '1006');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl2).not.toBeVisible();
+
+        await expect(dialogLvl3).toBeVisible();
+        await expect(dialogLvl3).toHaveAttribute('z-index', '1006');
+        stack.push(dialogLvl3);
+
+        await componentsPage.actionability.pressTab();
+        await expect(menuLvl4Trigger).toBeFocused();
+        await expect(tooltipLvl3).toBeVisible();
+        await expect(tooltipLvl3).toHaveAttribute('z-index', '1009');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tooltipLvl3).not.toBeVisible();
+
+        await expect(menuLvl4).toBeVisible();
+        await expect(menuLvl4).toHaveAttribute('z-index', '1009');
+        stack.push(menuLvl4);
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(menuLvl5Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+
+        await expect(menuLvl5).toBeVisible();
+        await expect(menuLvl5).toHaveAttribute('z-index', '1012');
+        stack.push(menuLvl5);
+
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(menuLvl6Trigger).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+
+        await expect(menuLvl6).toBeVisible();
+        await expect(menuLvl6).toHaveAttribute('z-index', '1015');
+        stack.push(menuLvl6);
+
+        await componentsPage.visualRegression.takeScreenshot('mdc-dialog-multiple-overlays');
+
+        // lvl 6 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+
+        // lvl 5 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+
+        // lvl 4 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+
+        // lvl 3 close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+
+        // lvl 2 tooltip close
+        await expect(tooltipLvl2).toBeVisible();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(tooltipLvl2).not.toBeVisible();
+        await stackItemsToBeVisible();
+
+        // lvl 2  close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+
+        // lvl 1  close
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(stack.pop()!).not.toBeVisible();
+        await stackItemsToBeVisible();
+        await expect(dialogLvl1Trigger).toBeFocused();
+      });
+
+      await test.step('onComponentStackChanged calls are consistent (no corrupted indices)', async () => {
+        const data = onComponentStackChangedCalls;
+
+        const overlayIds = ['dialogLvl1', 'popupLvl2', 'dialogLvl3', 'menuLvl4', 'menuLvl5', 'menuLvl6'];
+
+        // Each overlay must receive exactly one 'added' and exactly one 'removed'
+        for (const id of overlayIds) {
+          const added = data.filter(c => c.id === id && c.changed === 'added');
+          const removed = data.filter(c => c.id === id && c.changed === 'removed');
+          expect(added, `${id} should receive exactly one 'added'`).toHaveLength(1);
+          expect(removed, `${id} should receive exactly one 'removed'`).toHaveLength(1);
+        }
+
+        // 'added' calls for the six overlays must appear in open order
+        const addCallsInOrder = data.filter(c => c.changed === 'added' && overlayIds.includes(c.id));
+        expect(addCallsInOrder.map(c => c.id)).toEqual(overlayIds);
+
+        // 'removed' must come after 'added' for each overlay (no remove-before-add)
+        for (const id of overlayIds) {
+          const addIdx = data.findIndex(c => c.id === id && c.changed === 'added');
+          const removeIdx = data.findIndex(c => c.id === id && c.changed === 'removed');
+          expect(removeIdx, `${id} 'removed' must come after 'added'`).toBeGreaterThan(addIdx);
+        }
+
+        // No re-entrancy: no component must receive 'removed' twice in a row (corrupted stack)
+        for (let i = 1; i < data.length; i += 1) {
+          const prev = data[i - 1];
+          const curr = data[i];
+          const duplicateRemoved = prev.changed === 'removed' && curr.changed === 'removed' && prev.id === curr.id;
+          expect(duplicateRemoved, `re-entrancy: ${curr.id} should not receive 'removed' twice in a row`).toBe(false);
+        }
+      });
+
+      await test.step('Closing intermediate overlay will close all child and grand-child overlays', async () => {
+        await dialogLvl1Trigger.click();
+        await expect(dialogLvl1).toBeVisible();
+
+        await popupLvl2Trigger.click();
+        await expect(popupLvl2).toBeVisible();
+
+        const closeDialogLvl1Button = componentsPage.page.locator(
+          'mdc-button[part="dialog-close-btn"][aria-label="Close lvl1 dialog"]',
+        );
+
+        await expect(dialogLvl1).toBeVisible();
+        await expect(popupLvl2).toBeVisible();
+
+        // Closing the first level dialog closes all child overlays and focuses back to the trigger
+        await closeDialogLvl1Button.click();
+
+        await expect(dialogLvl1).not.toBeVisible();
+        await expect(popupLvl2).not.toBeVisible();
+
+        await expect(dialogLvl1Trigger).toBeFocused();
+
+        // Re-open dialog lvl 1 and confirm other overlays are closed
+        await dialogLvl1Trigger.click();
+        await expect(dialogLvl1).toBeVisible();
+        await expect(popupLvl2).not.toBeVisible();
+      });
     });
   });
 });

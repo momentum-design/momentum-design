@@ -1,11 +1,12 @@
 import type { ValueOf, TypedCustomEvent } from '../../utils/types';
 
 import type Popover from './popover.component';
-import { POPOVER_PLACEMENT, TRIGGER, COLOR, STRATEGY } from './popover.constants';
+import { POPOVER_PLACEMENT, TRIGGER, COLOR, STRATEGY, BOUNDARY_ROOT } from './popover.constants';
 
 type PopoverPlacement = ValueOf<typeof POPOVER_PLACEMENT>;
 type PopoverColor = ValueOf<typeof COLOR>;
 type PopoverStrategy = ValueOf<typeof STRATEGY>;
+type PopoverBoundaryRoot = ValueOf<typeof BOUNDARY_ROOT>;
 type PopoverTrigger = ValueOf<typeof TRIGGER> | `${ValueOf<typeof TRIGGER>} ${ValueOf<typeof TRIGGER>}`;
 
 type PopoverShownEvent = TypedCustomEvent<Popover, { show: boolean }>;
@@ -24,6 +25,7 @@ export type {
   PopoverPlacement,
   PopoverColor,
   PopoverStrategy,
+  PopoverBoundaryRoot,
   PopoverTrigger,
   Events,
   PopoverShownEvent,

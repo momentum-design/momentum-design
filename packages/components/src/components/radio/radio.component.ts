@@ -9,8 +9,9 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
+import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './radio.styles';
 
@@ -64,7 +65,9 @@ import styles from './radio.styles';
  */
 
 class Radio
-  extends AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))
+  extends KeyDownHandledMixin(
+    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
   /**
@@ -222,6 +225,11 @@ class Radio
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
+  override click() {
+    super.click();
+    this.handleChange();
+  }
+
   /**
    * Updates the state of the radio button at the specified index within the enabled radios.
    * Focuses the radio button and triggers the change event.
@@ -243,7 +251,9 @@ class Radio
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.disabled) return;
 
-    if ((this.readonly || this.softDisabled) && event.key === KEYS.SPACE) {
+    const action = this.getActionForKeyEvent(event);
+
+    if ((this.readonly || this.softDisabled) && action === ACTIONS.SPACE) {
       event.preventDefault();
     }
 
@@ -251,20 +261,36 @@ class Radio
     const enabledRadios = radios.filter(radio => !radio.disabled);
     const currentIndex = enabledRadios.indexOf(this);
 
-    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+    // Leave navigation between radios to the spatial navigation context if it exists
+    if (this.getKeyboardNavMode() !== NAV_MODES.DEFAULT) {
+      if (action === ACTIONS.ENTER) {
+        this.updateRadio(enabledRadios, currentIndex);
+        this.keyDownEventHandled();
+      }
+      const radios = this.getAllRadiosWithinSameGroup();
+      radios.forEach(radio => {
+        const input = radio.shadowRoot?.querySelector('input');
+        if (input) {
+          input.tabIndex = 0;
+        }
+      });
+      return;
+    }
+
+    if (action === ACTIONS.DOWN || action === ACTIONS.RIGHT) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledRadios.length;
       this.updateRadio(enabledRadios, nextIndex);
-    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+    } else if (action === ACTIONS.UP || action === ACTIONS.LEFT) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
       this.updateRadio(enabledRadios, prevIndex);
-    } else if (event.key === KEYS.SPACE) {
+    } else if (action === ACTIONS.SPACE) {
       this.updateRadio(enabledRadios, currentIndex);
     }
     this.updateTabIndex();
 
-    if (event.key === KEYS.ENTER) {
+    if (action === ACTIONS.ENTER) {
       this.form?.requestSubmit();
     }
   }

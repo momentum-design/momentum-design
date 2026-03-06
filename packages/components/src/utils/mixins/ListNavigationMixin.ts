@@ -1,18 +1,22 @@
 /* eslint-disable max-classes-per-file */
 import { PropertyValues } from 'lit';
 
-import type { Component } from '../../models';
-import { KEYS } from '../keys';
+import { Component } from '../../models';
 import type { BaseArray } from '../virtualIndexArray';
+import type { SpatialNavigationEvent } from '../../components/spatialnavigationprovider/spatialnavigationprovider.events';
+import { getElementOrHost } from '../dom';
 
 import type { Constructor } from './index.types';
+import { Actions, ACTIONS, KeyToActionInterface, KeyToActionMixin, NAV_MODES } from './KeyToActionMixin';
+import { KeyDownHandledMixin, KeyDownHandledMixinInterface } from './KeyDownHandledMixin';
+import { LIFE_CYCLE_EVENTS } from './lifecycle/lifecycle.contants';
 
 export declare abstract class ListNavigationMixinInterface {
   protected loop: 'true' | 'false';
 
-  protected propagateAllKeyEvents: boolean;
-
   protected initialFocus: number;
+
+  protected orientation: 'vertical' | 'horizontal';
 
   protected abstract get navItems(): BaseArray<HTMLElement>;
 
@@ -23,7 +27,7 @@ export declare abstract class ListNavigationMixinInterface {
     oldIndex?: number,
     focusNewItem?: boolean,
     scrollToNewItem?: boolean,
-  ): void;
+  ): boolean;
 
   protected setInitialFocus(): void;
 
@@ -33,13 +37,14 @@ export declare abstract class ListNavigationMixinInterface {
 /**
  * This mixin extends the passed class with list like navigation capabilities.
  *
- * It handles up and down arrow keys, home and end keys to navigate through a list of items.
+ * It handles up & down (or left & right for horizontal orientation) arrow keys, home and end keys to navigate through a list of items.
  * Key mapping aligned to reading direction (RTL or LTR).
  *
  * @example
  * ```ts
  * class MyComponent extends ListNavigationMixin(Component) {
  *   protected override loop = false; // Enable looping navigation
+ *   protected override orientation = 'horizontal'; // Set horizontal navigation
  *
  *   protected get navItems() {
  *      return this.shadowRoot?.querySelectorAll('.mdc-listitem') || [];
@@ -49,7 +54,7 @@ export declare abstract class ListNavigationMixinInterface {
  * @param superClass - The class to extend with the mixin.
  */
 export const ListNavigationMixin = <T extends Constructor<Component>>(superClass: T) => {
-  abstract class InnerMixinClass extends superClass {
+  abstract class InnerMixinClass extends KeyDownHandledMixin(KeyToActionMixin(superClass)) {
     /**
      * Whether to loop navigation when reaching the end of the list.
      * If 'true', pressing the down arrow on the last item will focus the first item,
@@ -80,6 +85,17 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     protected initialFocus: number = 0;
 
     /**
+     * The orientation of the list.
+     * Controls the direction of keyboard navigation:
+     * - 'vertical': Up/Down arrow keys navigate between items
+     * - 'horizontal': Left/Right arrow keys navigate between items
+     *
+     * @default 'vertical'
+     * @internal
+     */
+    protected orientation: 'vertical' | 'horizontal' = 'vertical';
+
+    /**
      * Get list items from the passed property
      * @internal
      */
@@ -88,9 +104,39 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
     constructor(...rest: any[]) {
       super(...rest);
 
+      this.addEventListener(LIFE_CYCLE_EVENTS.CREATED, this.handleItemCreation);
       this.addEventListener('keydown', this.handleNavigationKeyDown.bind(this));
       this.addEventListener('click', this.handleNavigationClick);
     }
+
+    override connectedCallback() {
+      super.connectedCallback();
+      // Most probably triggered outside this component, so we need to listen on document
+      document.addEventListener('navbeforefocus', this.handleNavBeforeFocus);
+    }
+
+    override disconnectedCallback() {
+      super.disconnectedCallback();
+      document.removeEventListener('navbeforefocus', this.handleNavBeforeFocus);
+    }
+
+    /**
+     * Register created event listener on the item when it is created.
+     *
+     * Make sure the first created item is focusable. It is useful when the parent element moved.
+     *
+     * @param event - The event triggered when an item is created.
+     * @internal
+     */
+    protected handleItemCreation = (event: CustomEvent | Event) => {
+      const { target } = event;
+
+      const isLifecycleEvent = event instanceof CustomEvent && event.detail?.lifecycle;
+
+      if (this.navItems.length === 0 && target instanceof Component && isLifecycleEvent) {
+        target.setAttribute('tabindex', '0');
+      }
+    };
 
     /**
      * Reset tabindex and set focus to the first item in the list after the component is first updated.
@@ -120,11 +166,15 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @internal
      */
     protected handleNavigationKeyDown(event: KeyboardEvent) {
-      const keysToHandle = new Set([KEYS.ARROW_DOWN, KEYS.ARROW_UP, KEYS.HOME, KEYS.END]);
-      const isRtl = window.getComputedStyle(this).direction === 'rtl';
-      const targetKey = this.resolveDirectionKey(event.key, isRtl);
+      const action = this.getActionForKeyEvent(event, true);
+      const isVertical = this.orientation === 'vertical';
+      const actionsToHandle = new Set<Actions>(
+        isVertical
+          ? [ACTIONS.DOWN, ACTIONS.UP, ACTIONS.HOME, ACTIONS.END]
+          : [ACTIONS.LEFT, ACTIONS.RIGHT, ACTIONS.HOME, ACTIONS.END],
+      );
 
-      if (!keysToHandle.has(targetKey)) {
+      if (!action || !actionsToHandle.has(action)) {
         return;
       }
 
@@ -132,41 +182,45 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       const currentIndex = this.getCurrentIndex(target);
       if (currentIndex === -1) return;
       this.resetTabIndexes(currentIndex);
+      let navigationHandled = false;
 
-      switch (targetKey) {
-        case KEYS.HOME: {
+      switch (action) {
+        case ACTIONS.HOME: {
           // Move focus to the first item
-          this.resetTabIndexAndSetFocus(0, currentIndex);
+          navigationHandled = this.resetTabIndexAndSetFocus(0, currentIndex);
           break;
         }
-        case KEYS.END: {
+        case ACTIONS.END: {
           // Move focus to the last item
-          this.resetTabIndexAndSetFocus(this.navItems.length - 1, currentIndex);
+          navigationHandled = this.resetTabIndexAndSetFocus(this.navItems.length - 1, currentIndex);
           break;
         }
-        case KEYS.ARROW_DOWN: {
+        case ACTIONS.DOWN:
+        case ACTIONS.RIGHT: {
           // Move focus to the next item
           const eolIndex = this.shouldLoop() ? 0 : currentIndex;
           const newIndex = currentIndex + 1 === this.navItems.length ? eolIndex : currentIndex + 1;
-          this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+          navigationHandled = this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
         }
-        case KEYS.ARROW_UP: {
+        case ACTIONS.UP:
+        case ACTIONS.LEFT: {
           // Move focus to the prev item
           const eolIndex = this.shouldLoop() ? this.navItems.length - 1 : currentIndex;
           const newIndex = currentIndex - 1 === -1 ? eolIndex : currentIndex - 1;
-          this.resetTabIndexAndSetFocus(newIndex, currentIndex);
+          navigationHandled = this.resetTabIndexAndSetFocus(newIndex, currentIndex);
           break;
         }
         default:
           break;
       }
 
-      // When the component consume any of the pressed key, we need to stop propagation
-      // to prevent the event from bubbling up and being handled by parent components which might use the same key.
-      if (!this.propagateAllKeyEvents) {
-        event.stopPropagation();
-        event.preventDefault();
+      if (navigationHandled) {
+        this.keyDownEventHandled();
+        if (!this.propagateAllKeyEvents) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
       }
     }
 
@@ -195,7 +249,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param target - The target element that triggered the event.
      * @returns - The index of the current item in the `navItems` array.
      */
-    private getCurrentIndex(target: HTMLElement | null): number {
+    private getCurrentIndex(target: HTMLElement | null | undefined): number {
       if (!target) return -1;
 
       return this.navItems.findIndex(
@@ -233,23 +287,29 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * @param newIndex - The index of the new item to focus.
      * @param oldIndex - The index of the currently focused item.
      * @param focusNewItem - Call focus() on the new item or not. It should be false during firstUpdate
-     * @returns - This method does not return anything.
+     * @param scrollToNewItem - Scroll the new item into view when focused.
+     * @returns - true when navigation was successful, false otherwise.
      */
     protected resetTabIndexAndSetFocus(
       newIndex: number,
       oldIndex?: number,
       focusNewItem = true,
       scrollToNewItem = true,
-    ) {
+    ): boolean {
       const { navItems } = this;
 
-      if (navItems.length === 0) return;
+      if (navItems.length === 0) return false;
 
       // Ensure newIndex is valid
       const newItem = navItems.at(newIndex) ?? navItems.find(Boolean)!;
 
+      // When there is only one item in the list, we should not reset its tabindex to -1, otherwise it will not be focusable anymore.
+      if (newIndex === 0 && oldIndex === 0 && navItems.length === 1) {
+        return true;
+      }
+
       if (newIndex === oldIndex && newItem && newItem.getAttribute('tabindex') === '0') {
-        return;
+        return false;
       }
 
       if (oldIndex === undefined) {
@@ -268,36 +328,42 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
           newItem.scrollIntoView({ block: 'nearest' });
         }
       }
-    }
-
-    /**
-     * Resolves the key pressed by the user based on the direction of the layout.
-     * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
-     * It checks if the layout is RTL and adjusts the arrow keys accordingly.
-     * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
-     *
-     * @param key - The key pressed by the user.
-     * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
-     * @returns - The resolved key based on the direction.
-     */
-    private resolveDirectionKey(key: string, isRtl: boolean) {
-      if (!isRtl) return key;
-
-      switch (key) {
-        case KEYS.ARROW_LEFT:
-          return KEYS.ARROW_RIGHT;
-        case KEYS.ARROW_RIGHT:
-          return KEYS.ARROW_LEFT;
-        default:
-          return key;
-      }
+      return true;
     }
 
     private shouldLoop() {
-      return this.loop !== 'false';
+      return this.getKeyboardNavMode() === NAV_MODES.SPATIAL ? false : this.loop !== 'false';
     }
+
+    /**
+     * Handles the 'navbeforefocus' event to manage focus transitions into the list.
+     * If the focus is moving from outside the list to an element within the list,
+     * it prevents the default focus behavior and sets the appropriate tabindex
+     * on the target list item.
+     *
+     * @param event - The SpatialNavigationEvent triggered before focus changes.
+     * @internal
+     */
+    private handleNavBeforeFocus = (event: SpatialNavigationEvent) => {
+      const focusCandidate = getElementOrHost(event.relatedTarget as Element);
+      if (
+        this !== focusCandidate &&
+        !this.contains(document.activeElement as HTMLElement) &&
+        this.contains(focusCandidate)
+      ) {
+        event.preventDefault();
+
+        const targetListItem = this.navItems.find(item => item.contains(focusCandidate));
+        const currentIndex = this.getCurrentIndex(targetListItem);
+        if (currentIndex === -1) return;
+        this.resetTabIndexes(currentIndex);
+      }
+    };
   }
 
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<Component & ListNavigationMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<
+    Component & ListNavigationMixinInterface & KeyToActionInterface & KeyDownHandledMixinInterface
+  > &
+    T;
 };

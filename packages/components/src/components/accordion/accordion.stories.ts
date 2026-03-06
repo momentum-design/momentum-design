@@ -11,7 +11,7 @@ import '../icon';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
-import { VARIANT } from '../accordionbutton/accordionbutton.constants';
+import { VARIANT, TOGGLE_POSITION } from '../accordionbutton/accordionbutton.constants';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import { ROLE } from '../../utils/roles';
 
@@ -43,6 +43,7 @@ const render = (args: Args) =>
       close-button-aria-label="${ifDefined(args['close-button-aria-label'])}"
       size="${ifDefined(args.size)}"
       variant="${ifDefined(args.variant)}"
+      toggle-position="${ifDefined(args['toggle-position'])}"
     >
       ${defaultChildren}
     </mdc-accordion>
@@ -86,6 +87,10 @@ const meta: Meta = {
     'close-button-aria-label': {
       control: 'text',
     },
+    'toggle-position': {
+      control: 'select',
+      options: Object.values(TOGGLE_POSITION),
+    },
     ...hideControls(['--mdc-accordionbutton-hover-color', '--mdc-accordionbutton-active-color']),
   },
 };
@@ -103,6 +108,7 @@ export const Example: StoryObj = {
     variant: VARIANT.DEFAULT,
     'open-button-aria-label': 'Open accordion',
     'close-button-aria-label': 'Close accordion',
+    'toggle-position': TOGGLE_POSITION.TRAILING,
   },
 };
 
@@ -127,6 +133,14 @@ export const SmallSize: StoryObj = {
     ...Example.args,
     size: SIZE.SMALL,
     expanded: false,
+  },
+};
+
+export const LeadingToggle: StoryObj = {
+  args: {
+    ...Example.args,
+    'toggle-position': TOGGLE_POSITION.LEADING,
+    expanded: true,
   },
 };
 

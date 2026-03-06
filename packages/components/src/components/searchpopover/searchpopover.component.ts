@@ -5,8 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
 import Searchfield from '../searchfield/searchfield.component';
-import { KEYS } from '../../utils/keys';
-import { POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
 
@@ -110,7 +109,7 @@ class Searchpopover extends Searchfield {
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'popover-z-index' })
-  popoverZIndex: number = POPOVER_DEFAULTS.Z_INDEX;
+  popoverZIndex?: number = undefined;
 
   /**
    * The aria-label for the popover within Searchpopover.
@@ -170,9 +169,9 @@ class Searchpopover extends Searchfield {
         <div part="scrollable-container" tabindex="-1">
           <div
             part="filters-container"
-            @click=${() => this.inputElement.focus()}
-            @keydown=${(e: KeyboardEvent) => (e.key === KEYS.ENTER ? this.inputElement.focus() : null)}
-            @keyup=${(e: KeyboardEvent) => (e.key === KEYS.SPACE ? this.inputElement.focus() : null)}
+            @click=${this.handleFilterContainerClick}
+            @keydown=${this.handleFilterContainerKeyDown}
+            @keyup=${this.handleFilterContainerKeyUp}
           >
             <slot name="filters" @slotchange=${this.renderInputChips}></slot>
           </div>

@@ -5,7 +5,7 @@ import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
-import { KEYS } from '../../utils/keys';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { ARROW_ICONS, ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 import type { ArrowPositions, ArrowDirections } from './menuitem.types';
@@ -85,11 +85,6 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true }) value?: string;
 
-  constructor() {
-    super();
-    this.addEventListener('keyup', this.handleKeyUp.bind(this));
-  }
-
   /**
    * Handles the keydown event for the menu item.
    * If the Enter key is pressed, it triggers a click event on the menu item.
@@ -103,9 +98,10 @@ class MenuItem extends ListItem {
    * @param event - The keyboard event that triggered the action.
    */
   override handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.ENTER) {
       this.triggerClickEvent(event);
       event.preventDefault();
+      this.keyDownEventHandled();
     }
   }
 
@@ -121,8 +117,8 @@ class MenuItem extends ListItem {
    * Note: Action triggered by Enter on the keydown event.
    * @param event - The keyboard event that triggered the action.
    */
-  private handleKeyUp(event: KeyboardEvent): void {
-    if (event.key === KEYS.SPACE) {
+  override handleKeyUp(event: KeyboardEvent): void {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       this.triggerClickEvent(event);
       event.preventDefault();
     }

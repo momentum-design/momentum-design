@@ -1,6 +1,7 @@
-import { expect, Locator } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 type MenuItemConfig = {
   id: string;
@@ -132,9 +133,9 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step(`Click on menubar menuitem that does not have submenu 
     triggers action and no submenu opens`, async () => {
       const { file } = await setup({ componentsPage });
-      const waitForClick = componentsPage.waitForEvent(file, 'click');
+      const waitForClick = await componentsPage.waitForEvent(file, 'click');
       await file.click();
-      await waitForClick;
+      await expect(waitForClick).toEventEmitted();
     });
 
     await test.step('Click on menubar menuitem that has submenu opens submenu and sets aria-expanded', async () => {
@@ -177,9 +178,9 @@ test.describe('Menubar Feature Scenarios', () => {
       const editPopover = componentsPage.page.locator('#edit-popover');
       await expect(editPopover).toBeVisible();
       await expect(edit).toHaveAttribute('aria-expanded', 'true');
-      const waitForClick = componentsPage.waitForEvent(help, 'click');
+      const waitForClick = await componentsPage.waitForEvent(help, 'click');
       await help.click();
-      await waitForClick;
+      await expect(waitForClick).toEventEmitted();
       await expect(editPopover).not.toBeVisible();
       await expect(edit).toHaveAttribute('aria-expanded', 'false');
     });
@@ -203,15 +204,15 @@ test.describe('Menubar Feature Scenarios', () => {
 
     await test.step('Activate menubar menuitem without submenu with Enter/Space', async () => {
       const { file } = await setup({ componentsPage });
-      const waitForClickOnEnter = componentsPage.waitForEvent(file, 'click');
-      const waitForClickOnSpace = componentsPage.waitForEvent(file, 'click');
+      const waitForClickOnEnter = await componentsPage.waitForEvent(file, 'click');
+      const waitForClickOnSpace = await componentsPage.waitForEvent(file, 'click');
       await componentsPage.actionability.pressTab();
       await expect(file).toBeFocused();
       await componentsPage.page.keyboard.press('Enter');
-      await waitForClickOnEnter; // Ensure click event was triggered
+      await expect(waitForClickOnEnter).toEventEmitted(); // Ensure click event was triggered
       await expect(file).toBeFocused(); // Focus remains on the clicked item
       await componentsPage.page.keyboard.press('Space');
-      await waitForClickOnSpace; // Ensure click event was triggered
+      await expect(waitForClickOnSpace).toEventEmitted(); // Ensure click event was triggered
       await expect(file).toBeFocused(); // Focus remains on the clicked item
     });
 
@@ -447,6 +448,52 @@ test.describe('Menubar Feature Scenarios', () => {
         await expect(styleSubmenu).toBeVisible();
         await expect(submenuSmall).toBeFocused();
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const locators = await setup({ componentsPage });
+
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.file).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.edit).toBeFocused();
+
+      // open submenu
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      const submenu = componentsPage.page.locator('#edit-popover');
+      await expect(submenu).toBeVisible();
+      await expect(submenu.locator('#edit-undo')).toBeFocused();
+
+      // close submenu
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(locators.file).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.edit).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.view).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.window).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.preferences).toBeFocused();
+
+      // Soft disabled focus remains on the item and submenu does not open
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(locators.preferences).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(locators.help).toBeFocused();
+
+      // No loop back
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(componentsPage.page.locator('#outside')).toBeFocused();
     });
   });
 });

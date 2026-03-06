@@ -1,4 +1,4 @@
-import { html, PropertyValues } from 'lit';
+import { type PropertyValues, html } from 'lit';
 import { state, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -130,6 +130,12 @@ export class VirtualizedWrapperStoriesUtils extends Component {
         </mdc-virtualizedlist>
       </div>
       <style>
+        mdc-virtualizedwrapper{
+          display: block;
+          width: 100%;
+          height: 100%;
+          flex: 1 1 auto;
+        }
         #VirtualizedWrapper--wrapper {
           ${{
           text: `

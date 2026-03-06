@@ -1,12 +1,11 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable no-await-in-loop */
-import { expect } from '@playwright/test';
-
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
+import { KEYS } from '../../utils/keys';
 
 interface SetupOptions {
   componentsPage: ComponentsPage;
@@ -147,24 +146,24 @@ test.describe.parallel('mdc-cardbutton', () => {
       await test.step('mouse/pointer', async () => {
         await test.step('component should toggle checked state when clicked using mouse', async () => {
           await setup(setupArgs);
-          const eventResolve = await componentsPage.waitForEvent(cardbutton, 'click');
+          const waitForClick = await componentsPage.waitForEvent(cardbutton, 'click');
           await cardbutton.click();
-          await eventResolve();
+          await expect(waitForClick).toEventEmitted();
         });
       });
 
       await test.step('keyboard & focus', async () => {
         await test.step('component should toggle checked state when pressed enter/space', async () => {
           await setup(setupArgs);
-          const eventResolveAfterEnter = await componentsPage.waitForEvent(cardbutton, 'click');
+          const WaitForClickAfterEnter = await componentsPage.waitForEvent(cardbutton, 'click');
           await componentsPage.actionability.pressTab();
           await expect(cardbutton).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
-          await eventResolveAfterEnter();
+          await expect(WaitForClickAfterEnter).toEventEmitted();
 
-          const eventResolveAfterSpace = await componentsPage.waitForEvent(cardbutton, 'click');
+          const waitForClickAfterSpace = await componentsPage.waitForEvent(cardbutton, 'click');
           await componentsPage.page.keyboard.press('Space');
-          await eventResolveAfterSpace();
+          await expect(waitForClickAfterSpace).toEventEmitted();
         });
 
         await test.step('component should not be focused in disabled state', async () => {
@@ -172,6 +171,21 @@ test.describe.parallel('mdc-cardbutton', () => {
           await componentsPage.actionability.pressTab();
           await expect(cardbutton).not.toBeFocused();
         });
+      });
+
+      await test.step('spatial navigation', async () => {
+        const cardbutton = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        await componentsPage.page.evaluate(() => (document.activeElement as HTMLElement)?.blur());
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(cardbutton).toBeFocused();
+
+        const waitForClick = await componentsPage.waitForEvent(cardbutton, 'click');
+        await keyboard.press(KEYS.ENTER);
+        await expect(waitForClick).toEventEmitted();
       });
     });
   });

@@ -204,6 +204,17 @@ const interactiveChildren = html`<mdc-text slot="body" type="body-midsize-medium
   <mdc-button slot="footer-button-secondary">Label</mdc-button>
   <mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
+const interactiveChildrenWithoutHeader = html`<mdc-text slot="body" type="body-midsize-medium" tagname="span"
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate aliquet risus, eget auctor ante egestas
+    facilisis. Curabitur malesuada tempor pulvinar. Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.
+    Praesent gravida dui diam, non elementum risus laoreet vitae. Sed sed nunc ullamcorper, porttitor dui id, posuere
+    justo. Curabitur laoreet sem ut pharetra hendrerit. Vivamus mattis ligula eget imperdiet tempor. Ut in massa luctus
+    lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text
+  >
+  <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
+  <mdc-button slot="footer-button-secondary">Label</mdc-button>
+  <mdc-button slot="footer-button-primary">Label</mdc-button>`;
+
 export const InteractiveHorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
@@ -238,7 +249,7 @@ export const InteractiveCardWithoutHeader: StoryObj = {
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
-    children: interactiveChildren,
+    children: interactiveChildrenWithoutHeader,
   },
 };
 

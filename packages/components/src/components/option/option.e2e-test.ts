@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 
@@ -155,19 +153,19 @@ test('mdc-option', async ({ componentsPage }) => {
   await test.step('interactions', async () => {
     await test.step('should dispatch click event when clicked', async () => {
       const option = await setup({ componentsPage, label: 'Clickable Option' });
-      const clickPromise = componentsPage.waitForEvent(option, 'click');
+      const waitForClick = await componentsPage.waitForEvent(option, 'click');
       await option.click();
-      await clickPromise;
+      await expect(waitForClick).toEventEmitted();
     });
 
     await test.step('should dispatch keydown and keyup events when keys are pressed', async () => {
       const option = await setup({ componentsPage, label: 'Key Option' });
-      const keydownPromise = componentsPage.waitForEvent(option, 'keydown');
-      const keyupPromise = componentsPage.waitForEvent(option, 'keyup');
+      const waitForKeyDown = await componentsPage.waitForEvent(option, 'keydown');
+      const waitForKeyUp = await componentsPage.waitForEvent(option, 'keyup');
       await option.focus();
       await option.press('Space');
-      await keydownPromise;
-      await keyupPromise;
+      await expect(waitForKeyDown).toEventEmitted();
+      await expect(waitForKeyUp).toEventEmitted();
     });
 
     await test.step('should be focusable and have aria-disabled when soft-disabled is set', async () => {

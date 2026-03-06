@@ -4,10 +4,10 @@ const styles = css`
   :host {
     --mdc-combobox-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-combobox-icon-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-combobox-height: 2rem;
     --mdc-combobox-width: 100%;
     --mdc-combobox-listbox-width: var(--mdc-combobox-width);
     --mdc-combobox-listbox-height: auto;
-    --mdc-combobox-text-color-disabled: var(--mds-color-theme-text-primary-disabled);
     --mdc-combobox-hover-background-color: var(--mds-color-theme-background-primary-hover);
 
     display: flex;
@@ -15,51 +15,50 @@ const styles = css`
     row-gap: 0.5rem;
     width: var(--mdc-combobox-width);
   }
-  :host::part(combobox__base) {
+  :host::part(combobox-base) {
     width: 100%;
     display: flex;
     position: relative;
     border-radius: 0.5rem;
   }
-  :host(:dir(ltr))::part(combobox__button) {
+  :host(:dir(ltr))::part(combobox-button) {
     background-color: unset;
     border-radius: 0 0.5rem 0.5rem 0;
     border-left: 1px solid var(--mdc-combobox-border-color);
     position: absolute;
+    height: var(--mdc-combobox-height);
     padding: 0.5rem;
     right: 0;
   }
-  :host(:dir(rtl))::part(combobox__button) {
+  :host(:dir(rtl))::part(combobox-button) {
     background-color: unset;
     border-radius: 0.5rem 0 0 0.5rem;
     border-right: 1px solid var(--mdc-combobox-border-color);
     position: absolute;
+    height: var(--mdc-combobox-height);
     padding: 0.5rem;
     left: 0;
   }
-  :host([disabled])::part(combobox__button) {
+  :host([disabled])::part(combobox-button) {
     cursor: unset;
   }
-  :host(:focus-within)::part(combobox__button) {
+  :host(:focus-within)::part(combobox-button) {
     border-inline-start-color: var(--mdc-combobox-border-color);
   }
-  :host(:not([disabled]))::part(combobox__base):hover {
+  :host(:not([disabled]))::part(combobox-base):hover {
     background-color: var(--mdc-combobox-hover-background-color);
   }
-  :host([help-text-type='error'])::part(combobox__button),
-  :host([help-text-type='warning'])::part(combobox__button),
-  :host([help-text-type='success'])::part(combobox__button),
-  :host([help-text-type='priority'])::part(combobox__button) {
+  :host([help-text-type='error'])::part(combobox-button),
+  :host([help-text-type='warning'])::part(combobox-button),
+  :host([help-text-type='success'])::part(combobox-button),
+  :host([help-text-type='priority'])::part(combobox-button) {
     border-color: var(--mdc-help-text-color);
   }
-  :host([disabled])::part(combobox__button) {
-    border-inline-start-color: var(--mdc-combobox-text-color-disabled);
-  }
-  :host::part(combobox__button-icon) {
+  :host::part(combobox-button-icon) {
     --mdc-icon-fill-color: var(--mdc-combobox-icon-color);
   }
-  :host([disabled])::part(combobox__button-icon) {
-    --mdc-icon-fill-color: var(--mdc-combobox-text-color-disabled);
+  :host([disabled])::part(combobox-button-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
   }
   :host::part(no-result-text) {
     pointer-events: none;
@@ -67,6 +66,10 @@ const styles = css`
   :host::part(input-text) {
     /* 2rem is the complete width of dropdown button */
     width: calc(100% - 2rem);
+  }
+  mdc-input {
+    --mdc-input-border-color: var(--mdc-combobox-border-color);
+    --mdc-input-height: var(--mdc-combobox-height);
   }
   :host([disabled]) input,
   :host([disabled]) mdc-input {
@@ -102,7 +105,7 @@ const styles = css`
   }
   /* High Contrast Mode */
   @media (forced-colors: active) {
-    :host::part(combobox__button-icon) {
+    :host::part(combobox-button-icon) {
       --mdc-icon-fill-color: ButtonText;
     }
   }

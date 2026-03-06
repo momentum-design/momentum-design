@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -12,7 +12,7 @@ import styles from './card.styles';
 /**
  * The card component allows users to organize information in a structured and tangible
  * format that is visually appealing. `mdc-card` is a static component.
- * 
+ *
  * ## Card Structure
  * - **Image**: Optional visual content at the top
  * - **Header**: Contains icon, title, subtitle, and action buttons
@@ -32,6 +32,8 @@ import styles from './card.styles';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
+ * @slot title - This slot is for passing the title of the card in the header section
+ * @slot subtitle - This slot is for passing the subtitle of the card in the header section
  * @slot icon-button - This slot supports action icon buttons in the header section (maximum of 3 buttons)
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of
@@ -88,9 +90,6 @@ class Card extends CardComponentMixin(FooterMixin(Component)) {
    * @returns The header element
    */
   protected renderHeader() {
-    if (!this.cardTitle) {
-      return nothing;
-    }
     return html`<div part="header">
       ${this.renderIcon()} ${this.renderTitle()}
       <div part="icon-button"><slot name="icon-button" @slotchange=${this.handleIconButtons}></slot></div>

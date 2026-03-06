@@ -1,10 +1,9 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
+import { KEYS } from '../../utils/keys';
 
 import { TOAST_VARIANT } from './toast.constants';
 
@@ -286,9 +285,9 @@ test.describe('Toast Feature Scenarios', () => {
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
         await closeBtn.waitFor();
 
-        const closePromise = componentsPage.waitForEvent(toast, 'close');
+        const waitForCloseEvent = await componentsPage.waitForEvent(toast, 'close');
         await closeBtn.click();
-        await closePromise;
+        await expect(waitForCloseEvent).toEventEmitted();
       });
 
       await test.step('User expands/collapses toast body using mouse', async () => {
@@ -362,9 +361,9 @@ test.describe('Toast Feature Scenarios', () => {
         const closeBtn = componentsPage.page.locator('mdc-toast [part="toast-close-btn"]');
         await expect(closeBtn).toBeFocused();
 
-        const closePromise = componentsPage.waitForEvent(toast, 'close');
+        const waitForCloseEvent = await componentsPage.waitForEvent(toast, 'close');
         await closeBtn.press('Enter');
-        await closePromise;
+        await expect(waitForCloseEvent).toEventEmitted();
       });
 
       await test.step('User expands/collapses toast body with keyboard', async () => {
@@ -415,6 +414,29 @@ test.describe('Toast Feature Scenarios', () => {
           element: toast,
         });
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      await setup({
+        componentsPage,
+        children: `
+            <mdc-text tagname="span" slot="toast-body-normal">Normal</mdc-text>
+            <mdc-text tagname="span" slot="toast-body-detailed">Detailed</mdc-text>
+            <mdc-button slot="footer-button-primary">Primary</mdc-button>
+            <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+          `,
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(componentsPage.page.locator('mdc-toast [part="toast-close-btn"]')).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(componentsPage.page.locator('mdc-button[slot="footer-button-primary"]')).toBeFocused();
+
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(componentsPage.page.locator('mdc-button[slot="footer-button-secondary"]')).toBeFocused();
     });
   });
 });

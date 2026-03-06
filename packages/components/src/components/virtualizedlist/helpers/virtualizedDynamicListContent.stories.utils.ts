@@ -165,6 +165,12 @@ class VirtualizedDynamicListContentStoriesUtils extends Component {
       </div>
 
       <style>
+        mdc-virtualizeddynamiclistcontent {
+          display: block;
+          width: 100%;
+          height: 100%;
+          flex: 1 1 auto;
+        }
         .vlist-dynamic-content--wrapper {
           width: 100%;
           margin-block: 1rem;

@@ -1,7 +1,6 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -374,10 +373,10 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           active: true,
         });
 
-        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
+        const waitForActiveChange = await componentsPage.waitForEvent(navmenuitem, 'activechange');
         await navmenuitem.click();
 
-        await eventPromise;
+        await expect(waitForActiveChange).toEventEmitted();
       });
 
       await test.step('click on cannot-activate navmenuitem should not fire activechange event', async () => {
@@ -390,10 +389,10 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           'cannot-activate': true,
         });
 
-        const eventPromise = await componentsPage.waitForEvent(navmenuitem, 'activechange');
+        const waitForActiveChange = await componentsPage.waitForEvent(navmenuitem, 'activechange');
         await navmenuitem.click();
 
-        await componentsPage.expectPromiseTimesOut(eventPromise(), true);
+        await expect(waitForActiveChange).not.toEventEmitted();
       });
 
       await test.step('click on disabled navmenuitem', async () => {
@@ -458,6 +457,25 @@ test.describe('NavMenuItem Feature Scenarios', () => {
           await expect(navmenuitem).toBeFocused();
         });
       });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const navmenuitem = await setup({
+        componentsPage,
+        label: primaryLabel,
+        'icon-name': iconName,
+        'nav-id': navId,
+        'show-label': true,
+      });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(navmenuitem).toBeFocused();
+
+      const waitForClick = await componentsPage.waitForEvent(navmenuitem, 'click');
+      await keyboard.press(KEYS.ENTER);
+      await expect(waitForClick).toEventEmitted();
     });
 
     /**

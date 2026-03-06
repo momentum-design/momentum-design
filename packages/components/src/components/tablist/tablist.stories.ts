@@ -3,8 +3,9 @@ import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
 
-import { disableControls } from '../../../config/storybook/utils';
+import { describeStory, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
+
 import '../badge';
 import '../tab';
 
@@ -84,7 +85,9 @@ const meta: Meta = {
 
   argTypes: {
     'active-tab-id': {
-      control: 'text',
+      control: 'select',
+      description: 'ID of the active tab. Defaults to the first tab if not provided.',
+      options: ['calls-tab', 'videos-tab', 'music-tab', 'documents-tab', 'meetings-tab'],
     },
     'data-aria-label': {
       control: 'text',
@@ -94,7 +97,7 @@ const meta: Meta = {
       description: 'Set the variant of tab inside the tablist',
       options: Object.values(TAB_VARIANTS),
     },
-    ...disableControls(['Default']),
+    ...hideControls(['itemsStore']),
   },
 };
 
@@ -102,19 +105,21 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'active-tab-id': 'documents-tab',
+    'data-aria-label': 'Media types',
     tabvariant: 'line',
   },
 };
 
-export const ActiveTabAttributeSet: StoryObj = {
-  args: {
-    tabvariant: 'glass',
-    'active-tab-id': 'documents-tab',
-    'data-aria-label': 'Media types',
-  },
-};
-
 export const TablistWithPanels: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html` <b>Note:</b> This logic of updating the tab panels based on the active tab has been added only on this
+        storybook example. <code>mdc-tablist</code> component does not control this logic. This implementation has to be
+        added on the consumer's side`,
+      true,
+    ),
+  },
   render: args => {
     const updateTabPanel = (event: CustomEvent) => {
       const activeTab = document.querySelector(`mdc-tab[tab-id="${event.detail.tabId}"]`);
@@ -190,14 +195,7 @@ This markup is not part of the component and is only provided for context. -->
       <div id="meetings-panel" role="tabpanel" hidden>
         <p>Meetings panel</p>
       </div>
-      <!-- End of example markup for the tab panels -->
-      <br />
-      <br />
-      <p>
-        <b>Note:</b> This logic of updating the tab panels based on the active tab has been added only on this storybook
-        example. <code>mdc-tablist</code> component does not control this logic. This implementation has to be added on
-        the consumer's side
-      </p>`;
+      <!-- End of example markup for the tab panels -->`;
   },
   args: {
     tabvariant: 'glass',

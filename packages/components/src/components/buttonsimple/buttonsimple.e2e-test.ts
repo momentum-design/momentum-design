@@ -1,6 +1,5 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { KEYS } from '../../utils/keys';
 
 import { BUTTON_SIZES, DEFAULTS } from './buttonsimple.constants';
 
@@ -253,5 +252,63 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
       });
       await expect(buttonAutoFocus).toBeFocused();
     });
+  });
+
+  await test.step('should not fire click on Space keyup if keydown was not received by button', async () => {
+    const button = await setup({ componentsPage, children: 'Click Me', secondButtonForFocus: true });
+
+    await componentsPage.page.evaluate(() => {
+      const btn = document.getElementsByTagName('mdc-buttonsimple')[0];
+      btn.addEventListener('click', () => {
+        btn.classList.add('clicked');
+      });
+    });
+
+    // Focus the second button so Space keydown does not go to the first button
+    const secondButton = componentsPage.page.locator('mdc-buttonsimple').nth(1);
+    await secondButton.focus();
+    await expect(secondButton).toBeFocused();
+
+    // Press Space down on the second button, then move focus to the first button before releasing
+    await componentsPage.page.keyboard.down('Space');
+    await button.focus();
+    await expect(button).toBeFocused();
+    await expect(button).not.toHaveClass(/pressed/);
+
+    // Release Space — should NOT trigger a click on the first button
+    await componentsPage.page.keyboard.up('Space');
+    await expect(button).not.toHaveClass(/clicked/);
+  });
+
+  await test.step('programmatic control', async () => {
+    await test.step('click method works as expected', async () => {
+      const button = await setup({ componentsPage });
+
+      const waitForClick = await componentsPage.waitForEvent(button, 'click');
+      await button.evaluate((el: HTMLElement) => el.click());
+      await expect(waitForClick).toEventEmitted();
+    });
+
+    await test.step('click method works as expected when component disabled', async () => {
+      const button = await setup({ componentsPage, disabled: true });
+
+      const waitForClickAfterDisabled = await componentsPage.waitForEvent(button, 'click');
+      await button.evaluate((el: HTMLElement) => el.click());
+
+      await expect(waitForClickAfterDisabled).not.toEventEmitted();
+    });
+  });
+
+  await test.step('spatial navigation', async () => {
+    const button = await setup({ componentsPage });
+    await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+    const { keyboard } = componentsPage.page;
+
+    await keyboard.press(KEYS.ARROW_DOWN);
+    await expect(button).toBeFocused();
+
+    const waitForClick = await componentsPage.waitForEvent(button, 'click');
+    await keyboard.press(KEYS.ENTER);
+    await expect(waitForClick).toEventEmitted();
   });
 });

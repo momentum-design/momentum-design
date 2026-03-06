@@ -1,6 +1,4 @@
-import { expect } from '@playwright/test';
-
-import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 
@@ -274,6 +272,23 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(checkbox).toBeFocused();
     });
 
+    await test.step('focus using JavaScript focus() method', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
+
+      // Use JavaScript to focus the element
+      await checkbox.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal checkbox input is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await checkbox.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const input = shadowRoot.querySelector('input[type="checkbox"]');
+        return document.activeElement === el && input === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
+    });
+
     await test.step('checkbox should be checked when space key is pressed with keyboard', async () => {
       const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
 
@@ -416,6 +431,55 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       // 3. Reset form and check help-text resets
       await resetButton.click();
       await expectHelpText('', 'default');
+    });
+
+    await test.step('programmatic control', async () => {
+      await test.step('click method works as expected', async () => {
+        const checkbox = await setup({ componentsPage });
+
+        // Check programmatically
+        const waitForClickAfterChecked = await componentsPage.waitForEvent(checkbox, 'click');
+        await checkbox.evaluate((el: HTMLElement) => el.click());
+        await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
+        await expect(waitForClickAfterChecked).toEventEmitted();
+
+        // Uncheck programmatically
+        const waitForClickAfterUnchecked = await componentsPage.waitForEvent(checkbox, 'click');
+        await checkbox.evaluate((el: HTMLElement) => el.click());
+        await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+        await expect(waitForClickAfterUnchecked).toEventEmitted();
+      });
+
+      await test.step('click method works as expected when component disabled', async () => {
+        const checkbox = await setup({ componentsPage, disabled: true });
+
+        const waitForClickAfterDisabled = await componentsPage.waitForEvent(checkbox, 'click');
+        await checkbox.evaluate((el: HTMLElement) => el.click());
+
+        await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+        await expect(waitForClickAfterDisabled).not.toEventEmitted();
+      });
+    });
+
+    await test.step('spatial navigation', async () => {
+      const checkbox = await setup({ componentsPage });
+      await componentsPage.wrapElement({ wrapperTagName: 'form' });
+      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      const { keyboard } = componentsPage.page;
+
+      const form = componentsPage.page.locator('form');
+      const waitForSubmit = await componentsPage.waitForEvent(form, 'submit');
+
+      await keyboard.press(KEYS.ARROW_DOWN);
+      await expect(checkbox).toBeFocused();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(checkbox.locator('input[type="checkbox"]')).toBeChecked();
+
+      await keyboard.press(KEYS.ENTER);
+      await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+
+      await expect(waitForSubmit).not.toEventEmitted();
     });
   });
 });

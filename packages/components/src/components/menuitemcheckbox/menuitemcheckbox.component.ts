@@ -104,6 +104,11 @@ class MenuItemCheckbox extends ControlTypeMixin(MenuItem) {
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
+  override click() {
+    if (this.disabled || this.softDisabled) return;
+    super.click();
+  }
+
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('checked')) {
