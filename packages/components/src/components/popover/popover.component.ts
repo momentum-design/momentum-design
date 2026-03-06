@@ -12,7 +12,7 @@ import type { ValueOf } from '../../utils/types';
 import type Tooltip from '../tooltip/tooltip.component';
 import { Timers } from '../../utils/controllers/Timers';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
-import { DepthManager, StackChange } from '../../utils/controllers/DepthManager';
+import { DepthManager, StackChange, StackedOverlayComponent } from '../../utils/controllers/DepthManager';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TIMEOUTS, TRIGGER } from './popover.constants';
@@ -95,9 +95,10 @@ import { PopoverUtils } from './popover.utils';
  * @csspart popover-content - The content of the popover.
  * @csspart popover-hover-bridge - The hover bridge of the popover.
  */
-class Popover extends KeyDownHandledMixin(
-  KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))),
-) {
+class Popover
+  extends KeyDownHandledMixin(KeyToActionMixin(BackdropMixin(PreventScrollMixin(FocusTrapMixin(Component)))))
+  implements StackedOverlayComponent
+{
   /** track the depth of the popover for z-index calculation
    * @internal
    */
@@ -475,6 +476,13 @@ class Popover extends KeyDownHandledMixin(
    */
   @property({ type: Number, attribute: 'element-index-to-receive-focus', reflect: true })
   elementIndexToReceiveFocus: number | null = null;
+
+  /**
+   * The name of the stack group this popover belongs to.
+   * Popovers with the same stack group name will be grouped together.
+   */
+  @property({ type: String, attribute: 'stack-group-name', reflect: true })
+  stackGroupName: string = '';
 
   /** @internal */
   public arrowElement: HTMLElement | null = null;

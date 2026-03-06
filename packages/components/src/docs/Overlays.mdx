@@ -73,7 +73,82 @@ for example:
 
 When there are multiple overlays open and not the topmost overlay is closed
 (e.g., programmatically, or by clicking a close button inside a dialog with open
-popover(s)), all overlays above it in the stack also closed.
+popover(s)), all overlays above it **within the same stack group** are also
+closed. Overlays belonging to a different group remain open.
+
+### Stack groups
+
+Overlays can be assigned to a **stack group** using the `stack-group-name`
+attribute. Stack groups allow independent sets of overlays to coexist in the
+same global stack without interfering with each other.
+
+In a conventional stack, removing an element also removes every element above
+it. With stack groups, only the elements that belong to the **same group** are
+affected — elements from other groups are left untouched.
+
+#### How it works
+
+When an overlay is closed (popped), the DepthManager:
+
+1. Filters the global stack to find only the elements that share the same
+   `stack-group-name` as the overlay being closed.
+2. Removes the target overlay and all same-group elements above it from the
+   stack.
+3. Recalculates the z-index of the remaining elements to fill any gaps left by
+   the removal, ensuring continuous layering with no z-index holes.
+
+Elements that do not specify a `stack-group-name` (or use an empty string) are
+all considered part of the **default group** and behave as before.
+
+#### Example: Dialog with a warning popover and a combobox dropdown
+
+Consider a dialog that contains a combobox and a warning popover. The warning
+popover is assigned to a separate group so that dismissing it does not cascade
+to the combobox dropdown:
+
+```
+Stack (bottom → top): [ Dialog, Warning Popover, Combobox Dropdown ]
+                        group: ""  group: "warning"   group: ""
+```
+
+When the warning popover is dismissed:
+
+1. Only elements in the `"warning"` group are considered — the warning popover
+   is removed.
+2. The dialog and combobox dropdown (both in the default group) are **not**
+   affected and remain open.
+3. Z-indices are recalculated so all remaining overlays layer correctly without
+   gaps.
+
+```
+Stack after removal:   [ Dialog, Combobox Dropdown ]
+                         group: ""  group: ""
+```
+
+Without stack groups, closing the warning popover (a middle element) would also
+close the combobox dropdown above it, since it would cascade upward through the
+entire stack.
+
+#### Usage
+
+Set the `stack-group-name` attribute on the overlay element:
+
+```html
+<mdc-popover stack-group-name="warning-overlay" trigger="manual">
+  ...
+</mdc-popover>
+```
+
+Overlays with the same `stack-group-name` value form a group. Closing any
+overlay in the group cascades only within that group. Overlays without a
+`stack-group-name` (or with an empty value) belong to the default group.
+
+#### Z-index recalculation
+
+When elements are removed from the middle of the stack, the remaining elements
+receive a `moved` notification. This triggers a z-index recalculation so that
+every overlay in the stack maintains continuous, gap-free layering based on its
+new position.
 
 ## Layering components
 

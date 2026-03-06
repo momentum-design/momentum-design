@@ -283,6 +283,13 @@ class Dialog
   hideBackdrop: boolean = DEFAULTS.HIDE_BACKDROP;
 
   /**
+   * The name of the stack group this dialog belongs to.
+   * Dialogs with the same stack group name will be grouped together.
+   */
+  @property({ type: String, attribute: 'stack-group-name', reflect: true })
+  stackGroupName: string = '';
+
+  /**
    * For now preventScroll is always true as the dialog is a modal component only.
    * This means scroll will be prevented when the dialog is open.
    */
