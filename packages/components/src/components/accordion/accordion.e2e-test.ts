@@ -4,7 +4,7 @@ import type { Size } from '../accordiongroup/accordiongroup.types';
 import { KEYS } from '../../utils/keys';
 import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import type { Variant } from '../accordionbutton/accordionbutton.types';
-import { VARIANT } from '../accordionbutton/accordionbutton.constants';
+import { VARIANT, TOGGLE_POSITION } from '../accordionbutton/accordionbutton.constants';
 import { ROLE } from '../../utils/roles';
 
 type SetupOptions = {
@@ -99,6 +99,18 @@ test.describe('Accordion Feature Scenarios', () => {
         'close-button-aria-label': defaultCloseButtonAriaLabel,
         disabled: true,
       });
+      await accordionSheet.createMarkupWithCombination({}, options);
+
+      // Leading toggle position (expanded)
+      accordionSheet.setAttributes({
+        'header-text': defaultHeaderText,
+        'prefix-icon': defaultPrefixIcon,
+        'open-button-aria-label': defaultOpenButtonAriaLabel,
+        'close-button-aria-label': defaultCloseButtonAriaLabel,
+        'toggle-position': TOGGLE_POSITION.LEADING,
+        expanded: true,
+      });
+      accordionSheet.setChildren(defaultContent);
       await accordionSheet.createMarkupWithCombination({}, options);
 
       await accordionSheet.mountStickerSheet();

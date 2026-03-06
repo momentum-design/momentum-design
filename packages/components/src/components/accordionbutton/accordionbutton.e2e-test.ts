@@ -6,7 +6,7 @@ import { SIZE } from '../accordiongroup/accordiongroup.constants';
 import { ROLE } from '../../utils/roles';
 
 import type { Variant } from './accordionbutton.types';
-import { VARIANT } from './accordionbutton.constants';
+import { VARIANT, TOGGLE_POSITION } from './accordionbutton.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -81,6 +81,16 @@ test.describe('AccordionButton Feature Scenarios', () => {
         'prefix-icon': defaultPrefixIcon,
         disabled: true,
       });
+      await accordionSheet.createMarkupWithCombination({}, options);
+
+      // Leading toggle position (expanded)
+      accordionSheet.setAttributes({
+        'header-text': defaultHeaderText,
+        'prefix-icon': defaultPrefixIcon,
+        'toggle-position': TOGGLE_POSITION.LEADING,
+        expanded: true,
+      });
+      accordionSheet.setChildren(defaultContent);
       await accordionSheet.createMarkupWithCombination({}, options);
 
       await accordionSheet.mountStickerSheet();

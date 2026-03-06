@@ -1,10 +1,11 @@
 import type { CSSResult, PropertyValues } from 'lit';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { queryAssignedElements, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { ROLE } from '../../utils/roles';
 import AccordionButton from '../accordionbutton/accordionbutton.component';
+import { TOGGLE_POSITION } from '../accordionbutton/accordionbutton.constants';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 
 import styles from './accordion.styles';
@@ -57,7 +58,7 @@ import styles from './accordion.styles';
  * @csspart leading-header - The leading header of the accordion.
  * @csspart leading-header-text - The leading header text of the accordion button.
  * @csspart trailing-header - The trailing header of the accordion.
- * @csspart trailing-header__button - The trailing header button of the accordion.
+ * @csspart toggle-button - The expand/collapse toggle button of the accordion.
  */
 class Accordion extends AccordionButton {
   /** @internal */
@@ -110,6 +111,26 @@ class Accordion extends AccordionButton {
   }
 
   /**
+   * Renders the expand/collapse toggle button.
+   * @returns The rendered toggle button.
+   */
+  private renderToggleButton() {
+    return html`
+      <mdc-button
+        part="toggle-button"
+        ?disabled="${this.disabled}"
+        @click="${this.handleHeaderClick}"
+        aria-controls="${this.bodySectionId}"
+        aria-expanded="${this.expanded}"
+        aria-label="${ifDefined(this.expanded ? this.closeButtonAriaLabel : this.openButtonAriaLabel)}"
+        prefix-icon="${this.getArrowIconName()}"
+        variant="${BUTTON_VARIANTS.TERTIARY}"
+        size="${ICON_BUTTON_SIZES[20]}"
+      ></mdc-button>
+    `;
+  }
+
+  /**
    * Renders the header section of the accordion.
    * This includes the leading icon, text and controls, and the trailing controls.
    * The trailing controls include the expand/collapse button.
@@ -120,10 +141,11 @@ class Accordion extends AccordionButton {
    * @returns The rendered header section of the accordion.
    */
   public override renderHeader() {
+    const isLeading = this.togglePosition === TOGGLE_POSITION.LEADING;
     return html`
       <div part="header-section" @shown="${this.handleHeaderShownEvent}">
         <div part="leading-header">
-          ${this.renderIcon(this.prefixIcon)}
+          ${isLeading ? this.renderToggleButton() : nothing} ${this.renderIcon(this.prefixIcon)}
           <div role="${ROLE.HEADING}" aria-level="${this.dataAriaLevel}">
             <slot name="leading-header-text">${this.renderHeadingText()}</slot>
           </div>
@@ -131,17 +153,7 @@ class Accordion extends AccordionButton {
         </div>
         <div part="trailing-header">
           <slot name="trailing-controls"></slot>
-          <mdc-button
-            part="trailing-header__button"
-            ?disabled="${this.disabled}"
-            @click="${this.handleHeaderClick}"
-            aria-controls="${this.bodySectionId}"
-            aria-expanded="${this.expanded}"
-            aria-label="${ifDefined(this.expanded ? this.closeButtonAriaLabel : this.openButtonAriaLabel)}"
-            prefix-icon="${this.getArrowIconName()}"
-            variant="${BUTTON_VARIANTS.TERTIARY}"
-            size="${ICON_BUTTON_SIZES[20]}"
-          ></mdc-button>
+          ${isLeading ? nothing : this.renderToggleButton()}
         </div>
       </div>
     `;
