@@ -23,6 +23,7 @@ const styles = [
       --mdc-tab-background-color: var(--mds-color-theme-button-secondary-normal);
       --mdc-tab-color: var(--mds-color-theme-text-secondary-normal);
       --mdc-tab-border-radius: 0.5rem;
+      --mdc-tab-content-justification: center;
 
       flex-direction: column;
       flex-shrink: 0;
@@ -37,12 +38,19 @@ const styles = [
     }
 
     :host::part(container) {
-      align-items: center;
       display: flex;
+      width: 100%;
+      align-items: center;
       flex-direction: row;
       gap: var(--mdc-tab-content-gap);
-      justify-content: center;
-      width: fit-content;
+      justify-content: var(--mdc-tab-content-justification);
+    }
+
+    :host::part(leading),
+    :host::part(trailing) {
+      display: flex;
+      align-items: center;
+      gap: var(--mdc-tab-content-gap);
     }
 
     :host::part(text) {

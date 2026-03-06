@@ -20,6 +20,7 @@ const styles = css`
     align-items: flex-start;
     --mdc-tab-line-active-indicator-height: 100%;
     --mdc-tab-line-active-indicator-width: 0.125rem;
+    --mdc-tab-content-justification: space-between;
   }
 `;
 

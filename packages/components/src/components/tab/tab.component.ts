@@ -53,6 +53,7 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-background-color - The background color of the tab.
  * @cssproperty --mdc-tab-color - The text color of the tab.
  * @cssproperty --mdc-tab-border-radius - The border radius of the tab.
+ * @cssproperty --mdc-tab-content-justification - The justification of the content in the tab.
  *
  * @cssproperty --mdc-tab-line-active-indicator-height - The height of the active indicator line.
  * @cssproperty --mdc-tab-line-active-indicator-width - The width of the active indicator line.
@@ -203,22 +204,26 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   public override render() {
     return html`
       <div part="container">
-        <slot name="prefix">
-          ${this.iconName
-            ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+        <div part="leading">
+          <slot name="prefix">
+            ${this.iconName
+              ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+              : nothing}
+          </slot>
+          ${this.text
+            ? html` <mdc-text
+                type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+                tagname=${VALID_TEXT_TAGS.SPAN}
+                data-text=${this.text}
+                part="text"
+                >${this.text}</mdc-text
+              >`
             : nothing}
-        </slot>
-        ${this.text
-          ? html` <mdc-text
-              type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-              tagname=${VALID_TEXT_TAGS.SPAN}
-              data-text=${this.text}
-              part="text"
-              >${this.text}</mdc-text
-            >`
-          : nothing}
-        <slot name="badge"></slot>
-        <slot name="chip"></slot>
+        </div>
+        <div part="trailing">
+          <slot name="badge"></slot>
+          <slot name="chip"></slot>
+        </div>
       </div>
       <div part="indicator"></div>
     `;
