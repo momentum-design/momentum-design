@@ -46,11 +46,13 @@ const defaultOptions = [
   { value: 'canada', label: 'Canada' },
 ];
 
-const createOptionsMarkup = (options: Array<{ value: string; label: string; disabled?: boolean }>) => `
+const createOptionsMarkup = (
+  options: Array<{ value: string; label: string; disabled?: boolean; selected?: boolean }>,
+) => `
     <mdc-selectlistbox>${options
       .map(
         option =>
-          `<mdc-option value="${option.value}" label="${option.label}" ${option.disabled ? 'disabled' : ''}></mdc-option>`,
+          `<mdc-option value="${option.value}" label="${option.label}" ${option.disabled ? 'disabled' : ''} ${option.selected ? 'selected' : ''}></mdc-option>`,
       )
       .join('\n')}</mdc-selectlistbox>
   `;
@@ -1041,7 +1043,7 @@ test.describe('Combobox Feature Scenarios', () => {
      */
     await test.step('interactions', async () => {
       await test.step('selected option should be updated when changing the value attribute programmatically', async () => {
-        const { input, combobox, options } = await setup({
+        const { input, combobox } = await setup({
           componentsPage,
           label: defaultLabel,
           placeholder: defaultPlaceholder,
@@ -1062,7 +1064,27 @@ test.describe('Combobox Feature Scenarios', () => {
           await expect(combobox.locator('mdc-option').nth(2)).toHaveAttribute('selected');
         });
 
-        await test.step('should fallback to placeholder when an invalid value is passed', async () => {
+        await test.step('should not update value when an invalid value is passed', async () => {
+          await componentsPage.page.evaluate(() => {
+            const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
+            if (combobox) {
+              combobox.value = 'invalid-option';
+            }
+          });
+
+          await expect(combobox).toHaveAttribute('value', 'australia');
+          await expect(combobox.locator('mdc-option').nth(2)).toHaveAttribute('selected');
+          await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
+        });
+
+        await test.step('should reset to placeholder when an invalid value is passed and no option is selected', async () => {
+          const { input, combobox, options } = await setup({
+            componentsPage,
+            label: defaultLabel,
+            placeholder: defaultPlaceholder,
+            options: defaultOptions,
+            id: 'combobox-value-change',
+          });
           await componentsPage.page.evaluate(() => {
             const combobox = document.querySelector('mdc-combobox[id="combobox-value-change"]') as Combobox;
             if (combobox) {
@@ -1074,6 +1096,20 @@ test.describe('Combobox Feature Scenarios', () => {
           expect(await options.locator('[selected]').count()).toBe(0);
           await expect(input).toHaveAttribute('placeholder', defaultPlaceholder);
         });
+      });
+
+      await test.step('should update the value attribute when an option is selected programmatically', async () => {
+        const optionsWithSelected = defaultOptions.map(option =>
+          option.value === 'austria' ? { ...option, selected: true } : option,
+        );
+        const { combobox } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: optionsWithSelected,
+        });
+
+        await expect(combobox).toHaveAttribute('value', 'austria');
       });
 
       await test.step('should hide all non-selected options (including dynamically added) when controlled and dropdown opens', async () => {
