@@ -126,6 +126,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * Make sure the first created item is focusable. It is useful when the parent element moved.
      *
      * @param event - The event triggered when an item is created.
+     * @internal
      */
     protected handleItemCreation = (event: CustomEvent | Event) => {
       const { target } = event;
@@ -341,6 +342,7 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
      * on the target list item.
      *
      * @param event - The SpatialNavigationEvent triggered before focus changes.
+     * @internal
      */
     private handleNavBeforeFocus = (event: SpatialNavigationEvent) => {
       const focusCandidate = getElementOrHost(event.relatedTarget as Element);
