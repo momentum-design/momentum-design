@@ -211,7 +211,7 @@ class AccordionButton extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin
             ${isLeading ? this.renderToggleIcon() : nothing} ${this.renderIcon(this.prefixIcon)}
             ${this.renderHeadingText()}
           </div>
-          <div part="trailing-header">${isLeading ? nothing : this.renderToggleIcon()}</div>
+          ${isLeading ? nothing : html`<div part="trailing-header">${this.renderToggleIcon()}</div>`}
         </div>
       </div>
     `;
