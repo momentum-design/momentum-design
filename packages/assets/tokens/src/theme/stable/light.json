@@ -1405,56 +1405,47 @@
           "cobalt": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.cobalt.40}",
-            "description": ""
+            "value": "{color.decorative.cobalt.60}"
           },
           "gold": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.gold.40}",
-            "description": ""
+            "value": "{color.decorative.gold.60}"
           },
           "lime": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.lime.40}",
-            "description": ""
+            "value": "{color.decorative.lime.60}"
           },
           "mint": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.mint.40}",
-            "description": ""
+            "value": "{color.decorative.mint.60}"
           },
           "orange": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.orange.40}",
-            "description": ""
+            "value": "{color.core.orange.60}"
           },
           "pink": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.pink.40}",
-            "description": ""
+            "value": "{color.decorative.pink.60}"
           },
           "purple": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.purple.40}",
-            "description": ""
+            "value": "{color.decorative.purple.60}"
           },
           "slate": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.slate.40}",
-            "description": ""
+            "value": "{color.decorative.slate.60}"
           },
           "violet": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.decorative.violet.40}",
-            "description": ""
+            "value": "{color.decorative.violet.60}"
           }
         },
         "promotion": {
