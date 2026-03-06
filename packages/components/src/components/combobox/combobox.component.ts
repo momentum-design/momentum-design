@@ -39,6 +39,10 @@ import type { Placement } from './combobox.types';
  * When the user starts typing, the filter uses a "starts with" search and displays options based on the text entered by the user.
  * If the user entered text that doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
  *
+ * When the `no-filter` attribute is set, the combobox will not perform any internal filtering and will display
+ * all slotted options as-is. This is useful when the consumer manages filtering externally (e.g., fetching
+ * results from an API based on the user's input) and dynamically updates the slotted options.
+ *
  * If there is no text in the `no-result-text` attribute then nothing will be shown.
  *
  * Combobox is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
@@ -193,6 +197,15 @@ class Combobox
   popoverZIndex?: number = undefined;
 
   /**
+   * When set to true, the combobox will not filter the options based on the input text.
+   * This is useful when the consumer handles filtering externally (e.g., via an API)
+   * and dynamically updates the slotted options.
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'no-filter', reflect: true })
+  noFilter = false;
+
+  /**
    * ID of the element where the backdrop will be appended to.
    * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
    * If not set, the backdrop will be appended to the parent element of the combobox.
@@ -275,6 +288,9 @@ class Combobox
 
   /** @internal */
   private getVisibleOptions(internalValue: string): Option[] {
+    if (this.noFilter) {
+      return this.navItems;
+    }
     return this.navItems.filter(option => this.compareOptionWithValue(option, internalValue));
   }
 
@@ -850,7 +866,7 @@ class Combobox
 
     // First pass: update options and collect visibility info per optgroup
     this.navItems.forEach(option => {
-      const matchesFilter = this.compareOptionWithValue(option, this.filteredValue);
+      const matchesFilter = this.noFilter || this.compareOptionWithValue(option, this.filteredValue);
 
       if (matchesFilter) {
         option.removeAttribute('data-hidden');

@@ -233,3 +233,29 @@ Feature: Combobox component
       But the combobox input text should only update if controlled externally
       And the dropdown should show filtered options based on the typed value "bra"
       And the visual focus should remain available for keyboard navigation
+
+  Rule: ✅ No Filter (External Filtering)
+
+    Scenario: All options remain visible when no-filter is set and user types text
+      Given the combobox component has the attribute no-filter set
+      And I see the combobox component with the placeholder "Start typing to search"
+      When I type the character "xyz"
+      Then I see the dropdown open with all options "Argentina", "Austria", "Australia", "Bangladesh", "Brazil", and "Canada"
+      And no options should be hidden
+
+    Scenario: User can still select an option when no-filter is set
+      Given the combobox component has the attribute no-filter set
+      And I have opened the combobox component with the placeholder "Start typing to search"
+      When I click on the option "Brazil" using the mouse
+      Then the combobox input text should be updated to "Brazil"
+      And the dropdown should be closed
+
+    Scenario: Keyboard navigation works across all options when no-filter is set
+      Given the combobox component has the attribute no-filter set
+      And I see the combobox component with the placeholder "Start typing to search"
+      When I type the character "b"
+      Then I see the dropdown open with all options
+      And I press the Arrow Down key to navigate in the dropdown option
+      Then the visual focus should move to the first option "Argentina"
+      And I press the Enter key to select the option "Argentina"
+      Then the combobox input text should be updated to "Argentina"

@@ -33,6 +33,7 @@ type SetupOptions = {
   'toggletip-placement'?: string;
   'toggletip-strategy'?: string;
   'invalid-custom-value-text'?: string;
+  'no-filter'?: boolean;
 };
 
 const defaultLabel = 'Top Countries list';
@@ -88,6 +89,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
           ${restArgs['toggletip-placement'] ? `toggletip-placement="${restArgs['toggletip-placement']}"` : ''}
           ${restArgs['toggletip-strategy'] ? `toggletip-strategy="${restArgs['toggletip-strategy']}"` : ''}
           ${restArgs['invalid-custom-value-text'] ? `invalid-custom-value-text="${restArgs['invalid-custom-value-text']}"` : ''}
+          ${restArgs['no-filter'] ? 'no-filter' : ''}
         >
           ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}
         </mdc-combobox>
@@ -1236,6 +1238,97 @@ test.describe('Combobox Feature Scenarios', () => {
         await keyboard.press(KEYS.ENTER);
         await expect(input).toHaveValue('Argentina');
         await expect(dropdown).not.toBeVisible();
+      });
+    });
+
+    /**
+     * NO-FILTER
+     */
+    await test.step('no-filter', async () => {
+      await test.step('should show all options regardless of typed text when no-filter is set', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-filter': true,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('xyz');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(6);
+      });
+
+      await test.step('should still allow selecting an option when no-filter is set', async () => {
+        const { input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-filter': true,
+        });
+
+        await input.click();
+        await expect(dropdown).toBeVisible();
+        await getOptionByText('Brazil').click();
+
+        await expect(input).toHaveValue('Brazil');
+        await expect(dropdown).not.toBeVisible();
+      });
+
+      await test.step('should show all options after typing partial text when no-filter is set', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-filter': true,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(6);
+      });
+
+      await test.step('should allow keyboard navigation across all options when no-filter is set', async () => {
+        const { input, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          'no-filter': true,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('b');
+
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(getOptionByText('Argentina')).toHaveAttribute('aria-selected', 'true');
+
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(getOptionByText('Austria')).toHaveAttribute('aria-selected', 'true');
+
+        await input.press(KEYS.ENTER);
+        await expect(input).toHaveValue('Austria');
+      });
+
+      await test.step('should filter options normally when no-filter is not set', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(2);
       });
     });
 

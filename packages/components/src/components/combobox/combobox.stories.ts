@@ -35,6 +35,7 @@ const render = (args: Args) =>
       control-type="${ifDefined(args['control-type'])}"
       data-aria-label="${ifDefined(args['data-aria-label'])}"
       ?disabled="${args.disabled}"
+      ?no-filter="${args['no-filter']}"
       help-text="${ifDefined(args['help-text'])}"
       help-text-type="${ifDefined(args['help-text-type'])}"
       info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
@@ -102,6 +103,9 @@ const meta: Meta = {
     },
     name: {
       control: 'text',
+    },
+    'no-filter': {
+      control: 'boolean',
     },
     'no-result-text': {
       control: 'text',
@@ -527,6 +531,67 @@ export const ComboboxWithHelpTextValidation: StoryObj = {
         <mdc-option value="tactics" label="Tactics"></mdc-option>
       </mdc-selectlistbox>
     `,
+  },
+};
+
+export const ComboboxWithNoFilter: StoryObj = {
+  render: () => {
+    const allCountries = [
+      { value: 'arg', label: 'Argentina' },
+      { value: 'aus', label: 'Australia' },
+      { value: 'au', label: 'Austria' },
+      { value: 'ban', label: 'Bangladesh' },
+      { value: 'bel', label: 'Belgium' },
+      { value: 'bra', label: 'Brazil' },
+      { value: 'can', label: 'Canada' },
+      { value: 'chi', label: 'China' },
+      { value: 'col', label: 'Colombia' },
+      { value: 'den', label: 'Denmark' },
+    ];
+
+    const handleInput = (event: CustomEvent) => {
+      const query = event.detail?.value?.toLowerCase() ?? '';
+      const combobox = event.target as HTMLElement;
+      const listbox = combobox.querySelector('mdc-selectlistbox');
+      if (!listbox) return;
+
+      const filtered = allCountries.filter(c => c.label.toLowerCase().includes(query));
+
+      listbox.innerHTML = '';
+      for (const item of filtered) {
+        const option = document.createElement('mdc-option');
+        option.setAttribute('value', item.value);
+        option.setAttribute('label', item.label);
+        listbox.appendChild(option);
+      }
+    };
+
+    return wrapper(html`
+      <mdc-combobox
+        @input="${handleInput}"
+        label="Search Countries (API-filtered)"
+        placeholder="Type to search (uses includes)"
+        no-filter
+        no-result-text="No countries found"
+        data-aria-label="Search countries"
+      >
+        <mdc-selectlistbox>
+          ${allCountries.map(c => html`<mdc-option value="${c.value}" label="${c.label}"></mdc-option>`)}
+        </mdc-selectlistbox>
+      </mdc-combobox>
+    `);
+  },
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`<p role="region">
+        This story demonstrates the <code>no-filter</code> attribute. When set, the combobox does not perform internal
+        "starts with" filtering. Instead, the consumer handles filtering externally (e.g., via an API) and dynamically
+        updates the slotted options. In this example, filtering uses "includes" logic instead of the default "starts
+        with".
+      </p>`,
+      true,
+    ),
   },
 };
 
