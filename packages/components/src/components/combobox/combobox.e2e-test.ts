@@ -1157,7 +1157,7 @@ test.describe('Combobox Feature Scenarios', () => {
         await expect(getOptionByText('Chile')).toBeHidden();
       });
 
-      await test.step('should update the value attribute when an option is selected programattically', async () => {
+      await test.step('should update the value attribute when an option is selected programmatically', async () => {
         const { combobox } = await setup({
           componentsPage,
           label: defaultLabel,
@@ -1201,6 +1201,80 @@ test.describe('Combobox Feature Scenarios', () => {
         // Expect no options have the selected attribute
         await expect(combobox).toHaveAttribute('value', '');
         expect(await options.locator('[selected]').count()).toBe(0);
+      });
+
+      await test.step('should not close combobox dropdown when warning popover is dismissed via stack group', async () => {
+        await componentsPage.mount({
+          html: `
+            <mdc-dialog visible style="width: 40rem; height: 40rem;" aria-label="dialog" close-button-aria-label="close dialog">
+              <div slot="dialog-body">
+                <mdc-combobox
+                  style="width: 15rem;"
+                  label="Select a country"
+                  data-aria-label="Select a country"
+                  placeholder="Start typing"
+                  value="brazil"
+                  id="combo-23"
+                >
+                  ${createOptionsMarkup(defaultOptions)}
+                </mdc-combobox>
+                <br />
+                <mdc-button id="reset-button">Reset Value!</mdc-button>
+                <mdc-popover
+                  stack-group-name="warning-overlay"
+                  id="popover-23"
+                  show-arrow
+                  placement="bottom"
+                  triggerID="combo-23"
+                  trigger="manual"
+                  style="width: 18rem;"
+                >
+                  This is a warning popover.
+                </mdc-popover>
+              </div>
+            </mdc-dialog>
+          `,
+          clearDocument: true,
+        });
+
+        // Set up event handlers (replicating the Playground story's script)
+        await componentsPage.page.evaluate(() => {
+          const popover = document.querySelector('mdc-popover[id="popover-23"]');
+          const combobox = document.querySelector('mdc-combobox[id="combo-23"]');
+          document.querySelector('mdc-button[id="reset-button"]')?.addEventListener('click', () => {
+            combobox?.setAttribute('value', '');
+            popover?.setAttribute('visible', '');
+          });
+          document.querySelector('mdc-combobox[id="combo-23"]')?.addEventListener('keydown', () => {
+            popover?.removeAttribute('visible');
+          });
+        });
+
+        const combobox = componentsPage.page.locator('mdc-combobox[id="combo-23"]');
+        const input = combobox.locator(`[role="${ROLE.COMBOBOX}"]`);
+        const comboboxDropdown = combobox.locator('mdc-popover');
+        const warningPopover = componentsPage.page.locator('mdc-popover[id="popover-23"]');
+        const resetButton = componentsPage.page.locator('mdc-button[id="reset-button"]');
+
+        await combobox.waitFor();
+
+        await expect(combobox).toHaveAttribute('value', 'brazil');
+        await expect(warningPopover).not.toHaveAttribute('visible');
+
+        // Click Reset button to clear value and show warning popover
+        await resetButton.click();
+        await expect(combobox).toHaveAttribute('value', '');
+        await expect(warningPopover).toHaveAttribute('visible', '');
+
+        // Focus combobox input and press ArrowDown to open dropdown
+        await input.click();
+        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+
+        // Warning popover should be closed (keydown handler removed visible attribute)
+        await expect(warningPopover).not.toHaveAttribute('visible');
+
+        // Combobox dropdown should still be visible (not cascaded by warning popover's removal)
+        await expect(comboboxDropdown).toBeVisible();
       });
 
       await test.step('spatial navigation', async () => {

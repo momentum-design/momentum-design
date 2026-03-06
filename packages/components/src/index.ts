@@ -91,6 +91,7 @@ import Slider from './components/slider';
 import ListBox from './components/listbox';
 import Banner from './components/banner';
 import Buttonsimple from './components/buttonsimple';
+import Verticaltablist from './components/verticaltablist';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -126,6 +127,7 @@ import type {
 import type { TablistChangeEvent } from './components/tablist/tablist.types';
 import type { ToggleOnChangeEvent } from './components/toggle/toggle.types';
 import type { CheckboxOnChangeEvent } from './components/checkbox/checkbox.types';
+import type { VerticaltablistChangeEvent } from './components/verticaltablist/verticaltablist.types';
 
 // Constants / Utils Imports
 import {
@@ -233,6 +235,7 @@ export {
   ListBox,
   Banner,
   Buttonsimple,
+  Verticaltablist,
 };
 
 // Types Exports
@@ -278,6 +281,7 @@ export type {
   DatePickerInputEvent,
   CalendarDateSelectedEvent,
   CalendarMonthChangedEvent,
+  VerticaltablistChangeEvent,
 };
 
 // Constants / Utils Exports
