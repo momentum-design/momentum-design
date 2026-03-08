@@ -7,7 +7,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import '../button';
 import '../radiogroup';
-import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <div role="main">
@@ -25,11 +24,6 @@ const render = (args: Args) => html`
       ?readonly=${args.readonly}
       ?soft-disabled=${args['soft-disabled']}
       ?required="${args.required}"
-      data-aria-label="${args['data-aria-label']}"
-      toggletip-text="${args['toggletip-text']}"
-      toggletip-placement="${args['toggletip-placement']}"
-      toggletip-strategy="${args['toggletip-strategy']}"
-      info-icon-aria-label="${args['info-icon-aria-label']}"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     ></mdc-radio>
   </div>
@@ -66,25 +60,8 @@ const meta: Meta = {
     'help-text': {
       control: 'text',
     },
-    'data-aria-label': {
-      control: 'text',
-    },
     required: {
       control: 'boolean',
-    },
-    'toggletip-text': {
-      control: 'text',
-    },
-    'toggletip-placement': {
-      control: 'select',
-      options: Object.values(POPOVER_PLACEMENT),
-    },
-    'toggletip-strategy': {
-      control: 'select',
-      options: Object.values(STRATEGY),
-    },
-    'info-icon-aria-label': {
-      control: 'text',
     },
     'auto-focus-on-mount': {
       control: 'boolean',
@@ -142,15 +119,12 @@ export const withNameGroup: StoryObj = {
 };
 
 export const WithoutLabel: StoryObj = {
-  args: {
-    'data-aria-label': 'Radio button without label',
-  },
   parameters: {
     docs: {
       description: {
         story:
           "If we don't want to display a label, we can omit the 'label' attribute, " +
-          'but it is recommended to pass an aria label through data-aria-label for accessibility. ',
+          'but it is recommended to pass an aria label for accessibility. ',
       },
     },
   },

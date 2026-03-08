@@ -1,13 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
+import { CSSResult, html, PropertyValueMap, PropertyValues, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
-import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
@@ -27,16 +24,19 @@ import styles from './radio.styles';
  * **Note:** This component internally renders a native radio input element with custom styling.
  *
  * ## When to use
+ *
  * Use radio buttons when users must select exactly one option from a list of 2-5 choices. For longer lists,
  * consider using a dropdown menu instead.
  *
  * ## Accessibility
+ *
  * - Provide clear labels that describe each option
  * - Use `data-aria-label` when a visual label is not present
  * - Keyboard navigation: Arrow keys to move between options, Space to select, Tab to navigate groups, Enter to submit form
  * - Group related radio buttons using the same `name` attribute or `mdc-radiogroup` component
  *
  * ## Styling
+ *
  * Use the `static-radio` part to apply custom styles to the radio visual element.
  * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
  *
@@ -48,26 +48,20 @@ import styles from './radio.styles';
  *
  * @tagname mdc-radio
  *
- * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
+ * @event input - (React: onInput) Event that gets dispatched when the radio state changes (before the change event).
+ * @event change - (React: onChange) Event that gets dispatched when the radio state changes (after the input event).
  * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
- * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
- * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
- * @csspart help-text - The helper/validation text element.
- * @csspart helper-icon - The helper/validation icon element that is displayed next to the helper/validation text.
- * @csspart help-text-container - The container for the helper/validation icon and text elements.
- * @csspart radio-input - The native radio input element that provides the interactive functionality.
- * @csspart text-container - The container for the label and helper text elements.
  * @csspart static-radio - The staticradio that provides the visual radio appearance.
+ *
+ * @slot indicator - Slot for the radio indicator element. If not provided, a default styled radio will be rendered.
+ * @slot label - Slot for the label of the radio.
  */
-
 class Radio
-  extends KeyDownHandledMixin(
-    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
-  )
+  extends KeyDownHandledMixin(KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(FormfieldWrapper))))
   implements AssociatedFormControl
 {
   /**
@@ -77,10 +71,19 @@ class Radio
    */
   @property({ type: Boolean, reflect: true }) checked = false;
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleClick);
+    this.addEventListener('keydown', this.handleKeyDown);
+    this.shouldRenderLabel = false;
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     // Radio does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.role = ROLE.RADIO;
+    this.updateAriaLabel();
   }
 
   protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -89,8 +92,8 @@ class Radio
     // set the element to auto focus if autoFocusOnMount is set to true
     // before running the super method, so that the AutoFocusOnMountMixin can use it
     // to focus the correct element
-    if (this.inputElement && this.autoFocusOnMount) {
-      this.elementToAutoFocus = this.inputElement;
+    if (this.autoFocusOnMount) {
+      this.elementToAutoFocus = this;
     }
     super.firstUpdated(_changedProperties);
   }
@@ -138,11 +141,6 @@ class Radio
     if (isValid) {
       this.internals.setValidity({});
     } else if (this.required && !this.checked) {
-      if (this.validationMessage) {
-        this.inputElement.setCustomValidity(this.validationMessage);
-      } else {
-        this.inputElement.setCustomValidity('');
-      }
       this.setValidity();
     }
     this.updateTabIndex();
@@ -157,15 +155,9 @@ class Radio
   private setGroupValidity(radios: Radio[], isValid: boolean) {
     this.updateComplete
       .then(() => {
-        radios.forEach(radio => {
-          radio.setComponentValidity(isValid);
-        });
+        radios.forEach(radio => radio.setComponentValidity(isValid));
       })
-      .catch(error => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
+      .catch(error => this.onerror?.(error));
   }
 
   /**
@@ -175,59 +167,47 @@ class Radio
    * @internal
    */
   private setActualFormValue() {
-    let actualValue: string | null = '';
-
-    if (this.checked) {
-      actualValue = !this.value ? 'on' : this.value;
-    } else {
-      actualValue = null;
-    }
-
     const radios = this.getAllRadiosWithinSameGroup();
+
     if (this.checked) {
       this.setGroupValidity(radios, true);
+      this.internals.setFormValue(this.value || 'on');
     } else {
       const anyRequired = radios.some(r => r.required);
-      const anyChecked = !!radios.find(r => r.checked);
+      const anyChecked = radios.some(r => r.checked);
       const isInvalid = anyRequired && !anyChecked;
-      this.setGroupValidity(radios, !isInvalid);
-    }
 
-    this.internals.setFormValue(actualValue);
+      this.setGroupValidity(radios, !isInvalid);
+      this.internals.setFormValue(null);
+    }
   }
 
   /**
    * Handles the change event on the radio element.
    * Unchecks all other radios in the same group and checks this radio.
    * Dispatches the change event.
+   * @param emitClick - A boolean when click event must be emitted before other events
    * @internal
    */
-  private handleChange(): void {
-    if (this.disabled || this.readonly || this.softDisabled) return;
+  private handleChange(emitClick = false): void {
+    if (this.checked || this.disabled || this.readonly || this.softDisabled) return;
 
     const radios = this.getAllRadiosWithinSameGroup();
+    //  Uncheck all radios in the same group (name)
     radios.forEach(radio => {
-      /**
-       *  Uncheck all radios in the same group (name)
-       */
-      const radioElement = radio.shadowRoot?.querySelector('input');
-      if (radioElement) {
-        radio.checked = false;
-        radioElement.checked = false;
-      }
+      radio.checked = false;
     });
     this.checked = true;
-    const inputElement = this.shadowRoot?.querySelector('input');
-    if (inputElement) {
-      inputElement.checked = true;
-    }
 
-    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    // Native radio input emits click, input and change event in this order when
+    if (emitClick) {
+      super.click();
+    }
+    this.emitCheckedChangeEvent();
   }
 
   override click() {
-    super.click();
-    this.handleChange();
+    this.handleChange(true);
   }
 
   /**
@@ -238,8 +218,20 @@ class Radio
    * @internal
    */
   private updateRadio(enabledRadios: Radio[], index: number) {
-    enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
-    enabledRadios[index].handleChange();
+    const radio = enabledRadios[index] as Radio;
+    radio.focus();
+    radio.handleChange();
+  }
+
+  private handleClick(): void {
+    this.handleChange();
+  }
+
+  private emitCheckedChangeEvent(): void {
+    if (this.checked) {
+      this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
   }
 
   /**
@@ -262,18 +254,13 @@ class Radio
     const currentIndex = enabledRadios.indexOf(this);
 
     // Leave navigation between radios to the spatial navigation context if it exists
-    if (this.getKeyboardNavMode() !== NAV_MODES.DEFAULT) {
+    if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
       if (action === ACTIONS.ENTER) {
         this.updateRadio(enabledRadios, currentIndex);
         this.keyDownEventHandled();
       }
-      const radios = this.getAllRadiosWithinSameGroup();
-      radios.forEach(radio => {
-        const input = radio.shadowRoot?.querySelector('input');
-        if (input) {
-          input.tabIndex = 0;
-        }
-      });
+      this.updateTabIndex();
+
       return;
     }
 
@@ -303,18 +290,20 @@ class Radio
    * @internal
    */
   private updateTabIndex(): void {
+    // Leave navigation between radios to the spatial navigation context if it exists
+    const isSpatialNavMode = this.getKeyboardNavMode() === NAV_MODES.SPATIAL;
     const radios = this.getAllRadiosWithinSameGroup();
     const checked = radios.find(radio => radio.checked);
     const firstEnabledRadio = radios.find(radio => !radio.disabled);
     radios.forEach(radio => {
-      const inputElement = radio.shadowRoot?.querySelector('input');
-      if (inputElement) {
-        inputElement.tabIndex = -1;
-        if (radio === checked) {
-          inputElement.tabIndex = 0;
-        } else if (!checked && radio === firstEnabledRadio) {
-          inputElement.tabIndex = 0;
-        }
+      radio.tabIndex = -1;
+
+      if (isSpatialNavMode) {
+        radio.tabIndex = 0;
+      } else if (radio === checked) {
+        radio.tabIndex = 0;
+      } else if (!checked && radio === firstEnabledRadio) {
+        radio.tabIndex = 0;
       }
     });
   }
@@ -323,46 +312,49 @@ class Radio
     super.update(changedProperties);
 
     if (changedProperties.has('checked')) {
+      this.ariaChecked = this.checked.toString();
       this.setActualFormValue();
+    }
+    if (changedProperties.has('label')) {
+      this.updateAriaLabel();
     }
   }
 
-  /** @internal */
-  private renderLabelAndHelperText = () => {
-    if (!this.label) return nothing;
-    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
-  };
+  /**
+   * Updates the aria-label of the radio element based on the label or data-aria-label attribute.
+   * @internal
+   */
+  private updateAriaLabel() {
+    if (!this.ariaLabel && this.ariaLabel !== this.label) {
+      this.ariaLabel = this.label || '';
+    }
+  }
+
+  override setValidity() {
+    if (this.required && !this.checked && this.validationMessage) {
+      this.internals.setValidity({ valueMissing: true, customError: true }, this.validationMessage, this);
+    }
+    this.internals.setValidity({});
+  }
 
   public override render() {
     return html`
-      <mdc-staticradio
-        class="mdc-focus-ring"
-        ?checked="${this.checked}"
-        ?disabled="${this.disabled}"
-        ?readonly="${this.readonly}"
-        ?soft-disabled="${this.softDisabled}"
-        part="static-radio"
-      >
-        <input
-          id="${this.inputId}"
-          part="radio-input"
-          type="radio"
-          role="${ROLE.RADIO}"
-          ?autofocus="${this.autofocus}"
-          name="${ifDefined(this.name)}"
-          value="${ifDefined(this.value)}"
-          ?required="${this.required}"
-          @change=${this.handleChange}
-          @keydown=${this.handleKeyDown}
-          ?checked=${this.checked}
-          ?readonly=${this.readonly}
-          ?disabled=${this.disabled}
-          aria-checked="${this.checked}"
-          aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-          aria-label="${this.dataAriaLabel ?? ''}"
-        />
-      </mdc-staticradio>
-      ${this.renderLabelAndHelperText()}
+      <slot name="indicator">
+        <mdc-staticradio
+          part="radio-indicator"
+          role="presentation"
+          class="mdc-focus-ring"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
+          ?soft-disabled="${this.softDisabled}"
+        >
+        </mdc-staticradio>
+      </slot>
+      <div part="label-text">
+        <slot name="label">${this.renderLabelElement()}</slot>
+        ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
+      </div>
     `;
   }
 

@@ -98,15 +98,9 @@ export const RadioGroupInForm = () => {
         help-text="Choose a plan that best suits your needs"
         required
       >
-        <mdc-radio
-          value="standard"
-          data-aria-label="Standard Plan"
-          label="Standard Plan"
-          validation-message="Select a plan to continue"
-        >
-        </mdc-radio>
-        <mdc-radio value="premium" data-aria-label="Premium Plan" label="Premium Plan"> </mdc-radio>
-        <mdc-radio value="enterprise" data-aria-label="Enterprise Plan" label="Enterprise Plan"> </mdc-radio>
+        <mdc-radio value="standard" label="Standard Plan" validation-message="Select a plan to continue"> </mdc-radio>
+        <mdc-radio value="premium" label="Premium Plan"> </mdc-radio>
+        <mdc-radio value="enterprise" label="Enterprise Plan"> </mdc-radio>
       </mdc-radiogroup>
       <br />
       <div style="display: flex; gap: 0.25rem;">
@@ -158,11 +152,9 @@ export const RadioGroupInFormWithHelpTextValidation = () => {
         help-text="Choose a plan that best suits your needs"
         required
       >
-        <mdc-radio value="standard" name="course-plan" data-aria-label="Standard Plan" label="Standard Plan">
-        </mdc-radio>
-        <mdc-radio value="premium" name="course-plan" data-aria-label="Premium Plan" label="Premium Plan"> </mdc-radio>
-        <mdc-radio value="enterprise" name="course-plan" data-aria-label="Enterprise Plan" label="Enterprise Plan">
-        </mdc-radio>
+        <mdc-radio value="standard" name="course-plan" label="Standard Plan"> </mdc-radio>
+        <mdc-radio value="premium" name="course-plan" label="Premium Plan"> </mdc-radio>
+        <mdc-radio value="enterprise" name="course-plan" label="Enterprise Plan"> </mdc-radio>
       </mdc-radiogroup>
       <br />
       <div style="display: flex; gap: 0.25rem;">
