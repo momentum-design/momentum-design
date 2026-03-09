@@ -46,6 +46,26 @@ const styles = [
       justify-content: var(--mdc-tab-content-justification);
     }
 
+    :host::part(icon-container) {
+      position: relative;
+    }
+
+    :host([active])::part(regular-icon) {
+      display: none;
+    }
+
+    :host([active])::part(filled-icon) {
+      display: block;
+    }
+
+    :host::part(regular-icon) {
+      display: block;
+    }
+
+    :host::part(filled-icon) {
+      display: none;
+    }
+
     :host::part(leading),
     :host::part(trailing) {
       display: flex;
