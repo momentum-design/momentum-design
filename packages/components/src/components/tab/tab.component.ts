@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { IconNames } from '../icon/icon.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
@@ -63,10 +64,9 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-line-border-top-left-radius - The border top left radius of the active indicator line.
  * @cssproperty --mdc-tab-line-border-top-right-radius - The border top right radius of the active indicator line.
  *
- *
- *
  * @csspart container - The container of the tab.
- * @csspart icon - The icon of the tab.
+ * @csspart regular-icon - The icon of the tab, if inactive.
+ * @csspart filled-icon - The icon of the tab, if active.
  * @csspart indicator - The indicator of the tab.
  * @csspart text - The text of the tab.
  */
@@ -114,11 +114,6 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   @property({ type: String, reflect: true, attribute: 'tab-id' })
   tabId?: string;
 
-  /**
-   * @internal
-   */
-  private prevIconName?: string;
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
@@ -129,26 +124,6 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
 
     if (!this.tabId && this.onerror) {
       this.onerror('tab id is required');
-    }
-  }
-
-  /**
-   * Modifies the icon name based on the active state.
-   * If the tab is active, the icon name is suffixed with '-filled'.
-   * If the tab is inactive, the icon name is restored to its original value.
-   * If '-filled' icon is not available, the icon name remains unchanged.
-   *
-   * @param active - The active state.
-   */
-
-  private modifyIconName(active: boolean): void {
-    if (this.iconName) {
-      if (active) {
-        this.prevIconName = this.iconName;
-        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
-      } else if (this.prevIconName) {
-        this.iconName = this.prevIconName as IconNames;
-      }
     }
   }
 
@@ -176,17 +151,18 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
     this.dispatchEvent(event);
   };
 
-  /**
-   * Sets the aria-selected attribute based on the active state of the Tab.
-   * If the tab is active, the filled version of the icon is displayed,
-   * else the icon is restored to its original value.
-   *
-   * @param element - The tab element.
-   * @param active - The active state of the tab.
-   */
-  protected override setActive(element: HTMLElement, active: boolean) {
-    super.setActive(element, active);
-    this.modifyIconName(active);
+  private getFilledIconName(): IconNames | undefined {
+    if (!this.iconName) {
+      return undefined;
+    }
+
+    const isFilled = this.iconName.endsWith('-filled');
+    if (isFilled) {
+      return undefined;
+    }
+
+    const baseIcon = getIconNameWithoutStyle(this.iconName);
+    return `${baseIcon}-filled` as IconNames;
   }
 
   protected override executeAction() {
@@ -207,7 +183,22 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
         <div part="leading">
           <slot name="prefix">
             ${this.iconName
-              ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+              ? html`
+                  <div part="icon-container">
+                    <mdc-icon
+                      name="${this.iconName as IconNames}"
+                      size="1"
+                      length-unit="rem"
+                      part="regular-icon"
+                    ></mdc-icon>
+                    <mdc-icon
+                      name="${ifDefined(this.getFilledIconName())}"
+                      size="1"
+                      length-unit="rem"
+                      part="filled-icon"
+                    ></mdc-icon>
+                  </div>
+                `
               : nothing}
           </slot>
           ${this.text
