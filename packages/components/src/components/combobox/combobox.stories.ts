@@ -6,12 +6,14 @@ import '../button';
 import '../divider';
 import '../optgroup';
 import '../option';
+import '../dialog';
+import '../popover';
 import '../selectlistbox';
 import '../tooltip';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { VALID_VALUES } from '../controltypeprovider/controltypeprovider.constants';
@@ -264,27 +266,30 @@ export const AllVariants: StoryObj = {
 
 export const ComboboxWithControlled: StoryObj = {
   render: (args: Args) => {
-    const handleInput = (event: CustomEvent) => {
+    const handleChange = (event: CustomEvent) => {
       event.stopPropagation();
-      document.querySelector('mdc-combobox')!.value = event.detail.value;
+      document.querySelector('mdc-combobox')?.setAttribute('value', event.detail.value);
     };
-    return html`
+    return wrapper(html`
       <mdc-combobox
-        @change="${handleInput}"
+        @change="${handleChange}"
         placeholder="${args.placeholder}"
         label="${args.label}"
         value="${args.value}"
         control-type="${args['control-type']}"
+        data-aria-label="${args['data-aria-label']}"
+        required="${args.required}"
       >
         ${args.children}
       </mdc-combobox>
-    `;
+    `);
   },
   args: {
     label: 'Top Countries',
     'control-type': 'controlled',
     value: 'den',
     placeholder: 'Start typing',
+    'data-aria-label': 'Select a country',
     children: html`
       <mdc-selectlistbox>
         <mdc-option value="arg" label="Argentina"></mdc-option>
@@ -522,5 +527,128 @@ export const ComboboxWithHelpTextValidation: StoryObj = {
         <mdc-option value="tactics" label="Tactics"></mdc-option>
       </mdc-selectlistbox>
     `,
+  },
+};
+
+export const ComboboxInsidePopover: StoryObj = {
+  render: () => html`
+    <div style="width: 10rem; height: 8rem; margin: 5rem;">
+      <mdc-button id="combobox-trigger-button">Click me!</mdc-button>
+      <mdc-popover
+        triggerID="combobox-trigger-button"
+        interactive
+        hide-on-escape
+        hide-on-outside-click
+        focus-trap
+        focus-back-to-trigger
+      >
+        <div style="width: 15rem;">
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 1" value="option-1"></mdc-option>
+              <mdc-option label="Option 2" value="option-2"></mdc-option>
+              <mdc-option label="Option 3" value="option-3"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 4" value="option-4"></mdc-option>
+              <mdc-option label="Option 5" value="option-5"></mdc-option>
+              <mdc-option label="Option 6" value="option-6"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+          <mdc-combobox placeholder="select one">
+            <mdc-selectlistbox>
+              <mdc-option label="Option 7" value="option-7"></mdc-option>
+              <mdc-option label="Option 8" value="option-8"></mdc-option>
+              <mdc-option label="Option 9" value="option-9"></mdc-option>
+            </mdc-selectlistbox>
+          </mdc-combobox>
+        </div>
+      </mdc-popover>
+    </div>
+  `,
+  ...hideAllControls(),
+};
+
+export const ComboboxWithMultiplePopovers: StoryObj = {
+  render: () => html`
+    <script>
+      const popover = document.querySelector('mdc-popover[id="popover-23"]');
+      const combobox = document.querySelector('mdc-combobox[id="combo-23"]');
+      const handleClick = () => {
+        combobox?.setAttribute('value', '');
+        popover?.setAttribute('visible', '');
+      };
+      const handleKeydown = event => {
+        popover?.removeAttribute('visible');
+      };
+      const toggleDialogClick = () => {
+        const dialog = document.querySelector('mdc-dialog[id="dialog-23"]');
+        dialog?.toggleAttribute('visible');
+      };
+      document.querySelector('mdc-combobox[id="combo-23"]')?.addEventListener('keydown', handleKeydown);
+      document.querySelector('mdc-button[id="reset-button"]')?.addEventListener('click', handleClick);
+      document.querySelector('mdc-button[id="dialog-trigger"]')?.addEventListener('click', toggleDialogClick);
+    </script>
+    <mdc-dialog
+      id="dialog-23"
+      style="width: 40rem; height: 40rem;"
+      aria-label="dialog"
+      close-button-aria-label="close dialog"
+      triggerID="dialog-trigger"
+    >
+      <div slot="dialog-body">
+        <mdc-combobox
+          no-result-text="No results found"
+          style="width: 15rem;"
+          label="Select a country"
+          data-aria-label="Select a country"
+          placeholder="Start typing"
+          value="den"
+          id="combo-23"
+        >
+          <mdc-selectlistbox>
+            <mdc-option value="arg" label="Argentina"></mdc-option>
+            <mdc-option value="aus" label="Australia"></mdc-option>
+            <mdc-option value="au" label="Austria"></mdc-option>
+            <mdc-option value="ban" label="Bangladesh"></mdc-option>
+            <mdc-option value="bel" label="Belgium"></mdc-option>
+            <mdc-option value="bra" label="Brazil"></mdc-option>
+            <mdc-option value="can" label="Canada"></mdc-option>
+            <mdc-option value="chi" label="China"></mdc-option>
+            <mdc-option value="col" label="Colombia"></mdc-option>
+            <mdc-option value="den" label="Denmark"></mdc-option>
+          </mdc-selectlistbox>
+        </mdc-combobox>
+        <br />
+        <mdc-button id="reset-button">Reset Value!</mdc-button>
+        <mdc-popover
+          stack-group-name="warning-overlay"
+          id="popover-23"
+          show-arrow
+          placement="bottom"
+          triggerID="combo-23"
+          trigger="manual"
+          style="width: 18rem;"
+        >
+          This is a warning popover. It will appear when the button is clicked and disappear when a key is pressed on
+          the combobox.
+        </mdc-popover>
+      </div>
+    </mdc-dialog>
+    <mdc-button id="dialog-trigger">Open the dialog!</mdc-button>
+  `,
+  parameters: {
+    ...hideAllControls(true),
+    ...describeStory(
+      html`<p role="region">
+        This story tests the behavior of multiple popovers being open at the same time. When the "Reset Value" button is
+        clicked, a warning popover appears below the combobox. The warning popover should be dismissed when any key is
+        pressed while the combobox is focused, and the combobox dropdown should remain open after the warning popover is
+        dismissed.
+      </p> `,
+      true,
+    ),
   },
 };

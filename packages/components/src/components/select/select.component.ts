@@ -83,6 +83,7 @@ import type { Placement } from './select.types';
  * @cssproperty --mdc-select-background-color - The background color of the combobox of select.
  * @cssproperty --mdc-select-text-color - The text color of the select.
  * @cssproperty --mdc-select-border-color - The border color of the select.
+ * @cssproperty --mdc-select-height - The height of the select trigger control.
  * @cssproperty --mdc-select-width - The width of the select.
  * @cssproperty --mdc-select-listbox-height - The height of the listbox inside the select.
  * @cssproperty --mdc-select-listbox-width - The width of the listbox inside the select (default: `--mdc-select-width`).
@@ -656,11 +657,14 @@ class Select
         case ACTIONS.DOWN:
         case ACTIONS.UP:
         case ACTIONS.ENTER:
-        case ACTIONS.SPACE:
           if (!this.displayPopover) {
             this.keyDownEventHandled();
           }
           this.displayPopover = true;
+          event.preventDefault();
+          event.stopPropagation();
+          break;
+        case ACTIONS.SPACE:
           event.preventDefault();
           event.stopPropagation();
           break;
@@ -689,6 +693,30 @@ class Select
         }
       }
     } else if (action === ACTIONS.ENTER) {
+      this.displayPopover = true;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  /**
+   * Handles the keyup event on the select element when the popover is closed for Space Key, following the default
+   * onKeyDown = Enter, onKeyUp = Space behavior as a button has.
+   *
+   * @param event - The keyboard event.
+   */
+  private handleKeyupCombobox(event: KeyboardEvent): void {
+    if (this.disabled || this.softDisabled || this.readonly) {
+      return;
+    }
+
+    const action = this.getActionForKeyEvent(event);
+    const isDefaultNavigation = this.getKeyboardNavMode() === NAV_MODES.DEFAULT;
+
+    if (isDefaultNavigation && action === ACTIONS.SPACE) {
+      if (!this.displayPopover) {
+        this.keyDownEventHandled();
+      }
       this.displayPopover = true;
       event.preventDefault();
       event.stopPropagation();
@@ -747,6 +775,7 @@ class Select
           part="base-container"
           @click="${this.handleClickCombobox}"
           @keydown="${this.handleKeydownCombobox}"
+          @keyup="${this.handleKeyupCombobox}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"

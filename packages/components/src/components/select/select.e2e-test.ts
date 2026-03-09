@@ -237,7 +237,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await expect(popover).toHaveAttribute('size');
       await expect(popover).not.toHaveAttribute('disable-flip');
       await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
-      await expect(popover).toHaveAttribute('z-index', '-1');
+      await expect(popover).toHaveAttribute('z-index', '1000');
     });
 
     await test.step('should respect select width, listbox width and height overrides via CSS variables', async () => {
@@ -834,6 +834,27 @@ test('mdc-select', async ({ componentsPage }) => {
           </mdc-selectlistbox>
         `,
       };
+
+      await test.step('component should focus on the base-container and not the select element with no options', async () => {
+        const select = await setup({
+          componentsPage,
+          children: `
+            <mdc-selectlistbox></mdc-selectlistbox>
+          `,
+        });
+
+        await componentsPage.actionability.pressTab();
+
+        await expect(select.locator(`div[id="${TRIGGER_ID}"]`)).toBeFocused();
+      });
+
+      await test.step('component should focus on the base-container and not the select element with options', async () => {
+        const select = await setup(setupArguments);
+
+        await componentsPage.actionability.pressTab();
+
+        await expect(select.locator(`div[id="${TRIGGER_ID}"]`)).toBeFocused();
+      });
 
       await test.step('component should focus an option by typing a letter', async () => {
         const select = await setup(setupArguments);

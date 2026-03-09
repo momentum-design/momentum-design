@@ -60,6 +60,7 @@ import styles from './input.styles';
  * @cssproperty --mdc-input-text-color - Text color for the input field
  * @cssproperty --mdc-input-border-color - Border color for the input container
  * @cssproperty --mdc-input-background-color - Background color for the input field
+ * @cssproperty --mdc-input-height - Height for the input container
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
@@ -416,6 +417,8 @@ class Input
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+
+  static override shadowRootOptions = { ...FormfieldWrapper.shadowRootOptions, delegatesFocus: true };
 }
 
 export default Input;

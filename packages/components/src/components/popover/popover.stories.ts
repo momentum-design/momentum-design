@@ -40,6 +40,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?disable-flip=${args['disable-flip']}
+    element-index-to-receive-focus="${args['element-index-to-receive-focus']}"
     ?size=${args.size}
     ?backdrop=${args.backdrop}
     ?close-button=${args['close-button']}
@@ -305,6 +306,9 @@ const meta: Meta = {
     'append-to': {
       control: 'text',
     },
+    'element-index-to-receive-focus': {
+      control: 'number',
+    },
     'close-button-aria-label': {
       control: 'text',
     },
@@ -385,6 +389,7 @@ export const interactiveContent: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': false,
+    'element-index-to-receive-focus': 5,
   },
 };
 

@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { IconNames } from '../icon/icon.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
@@ -8,6 +9,7 @@ import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
+import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
 import type { Variant } from './tab.types';
 import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
@@ -52,6 +54,7 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-background-color - The background color of the tab.
  * @cssproperty --mdc-tab-color - The text color of the tab.
  * @cssproperty --mdc-tab-border-radius - The border radius of the tab.
+ * @cssproperty --mdc-tab-content-justification - The justification of the content in the tab.
  *
  * @cssproperty --mdc-tab-line-active-indicator-height - The height of the active indicator line.
  * @cssproperty --mdc-tab-line-active-indicator-width - The width of the active indicator line.
@@ -61,14 +64,13 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-line-border-top-left-radius - The border top left radius of the active indicator line.
  * @cssproperty --mdc-tab-line-border-top-right-radius - The border top right radius of the active indicator line.
  *
- *
- *
  * @csspart container - The container of the tab.
- * @csspart icon - The icon of the tab.
+ * @csspart regular-icon - The icon of the tab, if inactive.
+ * @csspart filled-icon - The icon of the tab, if active.
  * @csspart indicator - The indicator of the tab.
  * @csspart text - The text of the tab.
  */
-class Tab extends IconNameMixin(Buttonsimple) {
+class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   /**
    * The tab's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the tab is considered to be in an active state, meaning it is toggled on.
@@ -112,11 +114,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
   @property({ type: String, reflect: true, attribute: 'tab-id' })
   tabId?: string;
 
-  /**
-   * @internal
-   */
-  private prevIconName?: string;
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
@@ -127,26 +124,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
 
     if (!this.tabId && this.onerror) {
       this.onerror('tab id is required');
-    }
-  }
-
-  /**
-   * Modifies the icon name based on the active state.
-   * If the tab is active, the icon name is suffixed with '-filled'.
-   * If the tab is inactive, the icon name is restored to its original value.
-   * If '-filled' icon is not available, the icon name remains unchanged.
-   *
-   * @param active - The active state.
-   */
-
-  private modifyIconName(active: boolean): void {
-    if (this.iconName) {
-      if (active) {
-        this.prevIconName = this.iconName;
-        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
-      } else if (this.prevIconName) {
-        this.iconName = this.prevIconName as IconNames;
-      }
     }
   }
 
@@ -174,17 +151,18 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.dispatchEvent(event);
   };
 
-  /**
-   * Sets the aria-selected attribute based on the active state of the Tab.
-   * If the tab is active, the filled version of the icon is displayed,
-   * else the icon is restored to its original value.
-   *
-   * @param element - The tab element.
-   * @param active - The active state of the tab.
-   */
-  protected override setActive(element: HTMLElement, active: boolean) {
-    super.setActive(element, active);
-    this.modifyIconName(active);
+  private getFilledIconName(): IconNames | undefined {
+    if (!this.iconName) {
+      return undefined;
+    }
+
+    const isFilled = this.iconName.endsWith('-filled');
+    if (isFilled) {
+      return undefined;
+    }
+
+    const baseIcon = getIconNameWithoutStyle(this.iconName);
+    return `${baseIcon}-filled` as IconNames;
   }
 
   protected override executeAction() {
@@ -202,22 +180,41 @@ class Tab extends IconNameMixin(Buttonsimple) {
   public override render() {
     return html`
       <div part="container">
-        <slot name="prefix">
-          ${this.iconName
-            ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+        <div part="leading">
+          <slot name="prefix">
+            ${this.iconName
+              ? html`
+                  <div part="icon-container">
+                    <mdc-icon
+                      name="${this.iconName as IconNames}"
+                      size="1"
+                      length-unit="rem"
+                      part="regular-icon"
+                    ></mdc-icon>
+                    <mdc-icon
+                      name="${ifDefined(this.getFilledIconName())}"
+                      size="1"
+                      length-unit="rem"
+                      part="filled-icon"
+                    ></mdc-icon>
+                  </div>
+                `
+              : nothing}
+          </slot>
+          ${this.text
+            ? html` <mdc-text
+                type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+                tagname=${VALID_TEXT_TAGS.SPAN}
+                data-text=${this.text}
+                part="text"
+                >${this.text}</mdc-text
+              >`
             : nothing}
-        </slot>
-        ${this.text
-          ? html` <mdc-text
-              type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-              tagname=${VALID_TEXT_TAGS.SPAN}
-              data-text=${this.text}
-              part="text"
-              >${this.text}</mdc-text
-            >`
-          : nothing}
-        <slot name="badge"></slot>
-        <slot name="chip"></slot>
+        </div>
+        <div part="trailing">
+          <slot name="badge"></slot>
+          <slot name="chip"></slot>
+        </div>
       </div>
       <div part="indicator"></div>
     `;

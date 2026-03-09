@@ -6,7 +6,7 @@ import '../avatarbutton';
 import { spatialNavigationStoryWrapper } from './spatialnavigationprovider.stories.utils';
 
 const meta: Meta = {
-  title: 'Components/spatialnavigationprovider',
+  title: 'Providers/Spatial Navigation Provider',
   tags: ['autodocs'],
   component: 'mdc-spatialnavigationprovider',
   argTypes: {},

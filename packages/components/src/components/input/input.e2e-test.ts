@@ -247,6 +247,21 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(input).not.toBeFocused();
     });
 
+    await test.step('focus using JavaScript focus() method', async () => {
+      // Use JavaScript to focus the element
+      await input.evaluate((el: HTMLElement) => el.focus());
+
+      // Verify the internal input element is focused (delegatesFocus delegates to shadow DOM)
+      const isFocused = await input.evaluate(el => {
+        const { shadowRoot } = el;
+        if (!shadowRoot) return false;
+        const anchor = shadowRoot.querySelector('input');
+        return document.activeElement === el && anchor === shadowRoot.activeElement;
+      });
+
+      expect(isFocused).toBe(true);
+    });
+
     await test.step('dynamic help-text validation interaction test for mdc-input (FormFieldInputWithHelpTextValidation)', async () => {
       const args = {
         label: 'First Name',

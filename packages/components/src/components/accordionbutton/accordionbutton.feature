@@ -3,14 +3,15 @@ Feature: Accordion Button Component
   Background:
     Given the Accordion Button component is rendered on the page
     And the accordion button contains:
-      | Property      | Value                  | State    |
-      | ------------- | ---------------------- | -------- |
-      | Prefix Icon   | icon name              | Optional |
-      | Header Text   | string                 | Optional |
-      | Expanded      | true/false             | Required |
-      | Size          | 'small'/'large'        | Optional |
-      | Variant       | 'default'/'borderless' | Optional |
-      | Disabled      | true/false             | Optional |
+      | Property        | Value                    | State    |
+      | --------------- | ------------------------ | -------- |
+      | Prefix Icon     | icon name                | Optional |
+      | Header Text     | string                   | Optional |
+      | Expanded        | true/false               | Required |
+      | Size            | 'small'/'large'          | Optional |
+      | Variant         | 'default'/'borderless'   | Optional |
+      | Disabled        | true/false               | Optional |
+      | Toggle Position | 'leading'/'trailing'     | Optional |
 
   Rule: ✅ Rendering and Visual States
 
@@ -81,6 +82,20 @@ Feature: Accordion Button Component
       When the accordion button is rendered
       Then the accordion button should have proper sizing
       And the layout should be compact
+
+  Rule: ✅ Toggle Position
+
+    Scenario: Default trailing toggle position
+      Given the accordion button is rendered with default settings
+      When the accordion button is displayed
+      Then the expand/collapse toggle icon should appear at the end (trailing position)
+      And the header text and prefix icon should appear at the start
+
+    Scenario: Leading toggle position
+      Given the accordion button has toggle-position="leading"
+      When the accordion button is rendered
+      Then the expand/collapse toggle icon should appear at the start (leading position)
+      And the header text and prefix icon should appear after the toggle icon
 
   Rule: ✅ Event Handling
 

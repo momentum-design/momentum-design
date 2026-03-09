@@ -139,6 +139,7 @@ const preview = {
           'Setup',
           'Styling',
           'Attributes',
+          'Providers',
           'Components',
           ['Docs', 'Accessibility', 'Example'],
           'Widgets',
