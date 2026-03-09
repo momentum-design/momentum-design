@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { IconNames } from '../icon/icon.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
@@ -63,10 +64,9 @@ import styles from './tab.styles';
  * @cssproperty --mdc-tab-line-border-top-left-radius - The border top left radius of the active indicator line.
  * @cssproperty --mdc-tab-line-border-top-right-radius - The border top right radius of the active indicator line.
  *
- *
- *
  * @csspart container - The container of the tab.
- * @csspart icon - The icon of the tab.
+ * @csspart regular-icon - The icon of the tab, if inactive.
+ * @csspart filled-icon - The icon of the tab, if active.
  * @csspart indicator - The indicator of the tab.
  * @csspart text - The text of the tab.
  */
@@ -204,7 +204,7 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
                       part="regular-icon"
                     ></mdc-icon>
                     <mdc-icon
-                      name="${this.getFilledIconName()}"
+                      name="${ifDefined(this.getFilledIconName())}"
                       size="1"
                       length-unit="rem"
                       part="filled-icon"
