@@ -197,7 +197,12 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
             ${this.iconName
               ? html`
                   <div part="icon-container">
-                    <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>
+                    <mdc-icon
+                      name="${this.iconName as IconNames}"
+                      size="1"
+                      length-unit="rem"
+                      part="regular-icon"
+                    ></mdc-icon>
                     <mdc-icon
                       name="${this.getFilledIconName()}"
                       size="1"

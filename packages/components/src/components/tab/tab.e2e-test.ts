@@ -105,7 +105,7 @@ test('mdc-tab', async ({ componentsPage }) => {
       // icon-name
       await test.step('attribute icon-name should be present on tab', async () => {
         await componentsPage.setAttributes(tab, { 'icon-name': ICON_PLACEHOLDER });
-        await expect(tab.locator('mdc-icon[part="icon"]')).toHaveAttribute('name', ICON_PLACEHOLDER);
+        await expect(tab.locator('mdc-icon[part="regular-icon"]')).toHaveAttribute('name', ICON_PLACEHOLDER);
         await componentsPage.removeAttribute(tab, 'icon-name');
       });
 

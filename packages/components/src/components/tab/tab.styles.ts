@@ -50,7 +50,7 @@ const styles = [
       position: relative;
     }
 
-    :host([active])::part(icon) {
+    :host([active])::part(regular-icon) {
       display: none;
     }
 
@@ -58,7 +58,7 @@ const styles = [
       display: block;
     }
 
-    :host::part(icon) {
+    :host::part(regular-icon) {
       display: block;
     }
 
