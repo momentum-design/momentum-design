@@ -165,18 +165,6 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
     return `${baseIcon}-filled` as IconNames;
   }
 
-  /**
-   * Sets the aria-selected attribute based on the active state of the Tab.
-   * If the tab is active, the filled version of the icon is displayed,
-   * else the icon is restored to its original value.
-   *
-   * @param element - The tab element.
-   * @param active - The active state of the tab.
-   */
-  protected override setActive(element: HTMLElement, active: boolean) {
-    super.setActive(element, active);
-  }
-
   protected override executeAction() {
     // Toggle the active state of the tab.
     this.handleTabActiveChange(this.active);
