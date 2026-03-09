@@ -236,6 +236,11 @@ class Combobox
     return this.itemsStore.items;
   }
 
+  /** @internal - Unique id for the listbox element (used by aria-controls and listbox id) */
+  private get listboxId(): string {
+    return `${this.inputId}-listbox`;
+  }
+
   constructor() {
     super();
 
@@ -576,6 +581,17 @@ class Combobox
       if (this.dropDownButton && 'ariaControlsElements' in this.dropDownButton) {
         (this.dropDownButton as any).ariaControlsElements = this.slottedListboxes;
       }
+    }
+
+    // Set listbox id and accessible name for axe/ARIA (aria-input-field-name, aria-required-attr).
+    // aria-label is used instead of aria-labelledby because the label element lives in the
+    // combobox shadow DOM while the listbox is in the light DOM (cross-root ID refs don't work).
+    // aria-controls is set imperatively because ariaControlsElements may clear the string attribute.
+    const listbox = this.slottedListboxes?.[0];
+    if (listbox) {
+      listbox.id = this.listboxId;
+      listbox.setAttribute('aria-label', this.label || this.dataAriaLabel || '');
+      this.visualCombobox?.setAttribute('aria-controls', this.listboxId);
     }
 
     if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
@@ -1004,6 +1020,7 @@ class Combobox
         @keydown=${this.handleInputKeydown}
         @blur="${this.handleBlurChange}"
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
+        aria-controls=""
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
         aria-disabled="${this.disabled ? 'true' : 'false'}"
         aria-expanded="${this.isOpen ? 'true' : 'false'}"
