@@ -82,35 +82,6 @@ export const RadioGroupWithoutDescription: StoryObj = {
   },
 };
 
-export const RadioGroupInForm = () => {
-  const handleSubmit = (event: Event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    const selectedValue = formData.get('course-plan');
-    action('Form Submitted')({ name: 'course-plan', value: selectedValue });
-  };
-
-  return html`
-    <form @submit=${handleSubmit}>
-      <mdc-radiogroup
-        name="course-plan"
-        label="Select your course plan"
-        help-text="Choose a plan that best suits your needs"
-        required
-      >
-        <mdc-radio value="standard" label="Standard Plan" validation-message="Select a plan to continue"> </mdc-radio>
-        <mdc-radio value="premium" label="Premium Plan"> </mdc-radio>
-        <mdc-radio value="enterprise" label="Enterprise Plan"> </mdc-radio>
-      </mdc-radiogroup>
-      <br />
-      <div style="display: flex; gap: 0.25rem;">
-        <mdc-button type="submit" size="24">Submit</mdc-button>
-        <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
-      </div>
-    </form>
-  `;
-};
-
 export const RadioGroupInFormWithHelpTextValidation = () => {
   const validateRadioGroup = (form: HTMLFormElement): boolean => {
     const radioGroup = form.querySelector('mdc-radiogroup[name="course-plan"]') as RadioGroup;

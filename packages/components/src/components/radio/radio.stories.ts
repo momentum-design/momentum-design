@@ -163,20 +163,3 @@ export const ReadOnly: StoryObj = {
     },
   },
 };
-
-export const WithHelpText: StoryObj = {
-  args: {
-    label: 'Standard Plan',
-    'help-text': 'Standard plan provides basic features',
-    checked: false,
-    disabled: false,
-    readonly: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'To add help text to the radio button, use the `help-text` attribute. ',
-      },
-    },
-  },
-};
