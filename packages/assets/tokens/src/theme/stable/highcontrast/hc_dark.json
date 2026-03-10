@@ -1092,6 +1092,26 @@
             "type": "color",
             "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
+        },
+        "overlay": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color",
+            "$extensions": {
+              "com.figma.scopes": [
+                "ALL_FILLS",
+                "FRAME_FILL"
+              ],
+              "studio.tokens": {
+                "modify": {
+                  "type": "lighten",
+                  "value": "0.7",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": "Used for overlay background"
+          }
         }
       },
       "button": {
