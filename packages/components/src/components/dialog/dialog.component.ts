@@ -75,6 +75,7 @@ import styles from './dialog.styles';
  * @cssproperty --mdc-dialog-elevation-3 - elevation of the dialog
  * @cssproperty --mdc-dialog-width - width of the dialog
  * @cssproperty --mdc-dialog-height - height of the dialog
+ * @cssproperty --mdc-dialog-backdrop-color - background color of the backdrop (if backdrop is enabled)
  *
  * @csspart body - The body section of the dialog.
  * @csspart description-text - The description text of the dialog.

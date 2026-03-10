@@ -85,6 +85,10 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
       const backdrop = document.createElement('div');
       backdrop.classList.add(`${classNamePrefix}-backdrop`);
       const styleElement = document.createElement('style');
+      const bgColor = this.isBackdropInvisible
+        ? 'transparent'
+        : getComputedStyle(this).getPropertyValue('--mdc-backdrop-mixin-background-color') ||
+          `var(--mds-color-theme-common-overlays-secondary-normal)`;
       styleElement.textContent = `
         .${classNamePrefix}-backdrop {
           position: fixed;
@@ -92,9 +96,7 @@ export const BackdropMixin = <T extends Constructor<LitElement>>(superClass: T) 
           left: 0;
           width: 100%;
           height: 100%;
-          background: ${
-            this.isBackdropInvisible ? `transparent` : `var(--mds-color-theme-common-overlays-secondary-normal)`
-          };
+          background: ${bgColor};
           z-index: ${this.zIndex + OVERLAY_BACKDROP_Z_INDEX_OFFSET};
         }
       `;

@@ -14,6 +14,8 @@ const styles = css`
     --mdc-popover-width: unset;
     --mdc-popover-max-width: max-content;
     --mdc-popover-max-height: auto;
+    --mdc-popover-backdrop-color: var(--mds-color-theme-common-overlays-secondary-normal);
+    --mdc-backdrop-mixin-background-color: var(--mdc-popover-backdrop-color);
 
     display: none;
     position: absolute;
