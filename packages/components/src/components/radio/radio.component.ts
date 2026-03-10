@@ -9,6 +9,7 @@ import { ROLE } from '../../utils/roles';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import type { PopoverPlacement, PopoverStrategy } from '../popover/popover.types';
 
 import styles from './radio.styles';
 
@@ -79,6 +80,9 @@ class Radio
     this.addEventListener('click', this.handleClick);
     this.addEventListener('keydown', this.handleKeyDown);
     this.shouldRenderLabel = false;
+
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
+    this.toggletipStrategy = undefined as unknown as PopoverStrategy;
   }
 
   override connectedCallback(): void {
@@ -221,7 +225,7 @@ class Radio
    * @internal
    */
   private updateRadio(enabledRadios: Radio[], index: number) {
-    const radio = enabledRadios[index] as Radio;
+    const radio = enabledRadios[index];
     radio.focus();
     radio.handleChange();
   }
