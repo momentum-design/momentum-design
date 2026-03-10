@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { CSSResult, html, PropertyValueMap, PropertyValues, nothing } from 'lit';
+import { CSSResult, html, PropertyValueMap, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -25,6 +25,7 @@ import styles from './radio.styles';
  * ## Validation
  *
  * Radio component support native form validation. But it does not have default validation message.
+ * Also, `required` attribute does not render indicator (red asterisk) for the radio component.
  *
  * The recommended way to show validation message for radio groups is to wrap the `mdc-radio` with `mdc-radiogroup`
  * and set the `help-text` of the `mdc-radiogroup` based on its validation state.
@@ -58,7 +59,6 @@ import styles from './radio.styles';
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
- * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
  * @csspart static-radio - The staticradio that provides the visual radio appearance.
  *
  * @slot indicator - Slot for the radio indicator element. If not provided, a default styled radio will be rendered.
@@ -360,7 +360,6 @@ class Radio
       </slot>
       <div part="label-text">
         <slot name="label">${this.renderLabelElement()}</slot>
-        ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
       </div>
     `;
   }
