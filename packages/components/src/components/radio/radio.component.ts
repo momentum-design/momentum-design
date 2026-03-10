@@ -21,12 +21,15 @@ import styles from './radio.styles';
  * To create a group of radio buttons, use the `mdc-radiogroup` component or ensure all radio buttons
  * share the same `name` attribute.
  *
- * **Note:** This component internally renders a native radio input element with custom styling.
+ * ## Validation
  *
- * ## When to use
+ * Radio component support native form validation. But it does not have default validation message.
  *
- * Use radio buttons when users must select exactly one option from a list of 2-5 choices. For longer lists,
- * consider using a dropdown menu instead.
+ * The recommended way to show validation message for radio groups is to wrap the `mdc-radio` with `mdc-radiogroup`
+ * and set the `help-text` of the `mdc-radiogroup` based on its validation state.
+ *
+ * Alternatively you can also set the `validation-message` attribute of the `mdc-radio`. This message will appear
+ * in a native tooltip when the radio is checked and invalid.
  *
  * ## Accessibility
  *
