@@ -485,7 +485,7 @@ class Textarea extends KeyDownHandledMixin(
 
   public override render() {
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <div class="mdc-focus-ring" part="textarea-container">
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"

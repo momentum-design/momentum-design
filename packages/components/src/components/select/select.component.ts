@@ -768,7 +768,7 @@ class Select
 
   public override render() {
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <div part="container">
         <div
           id="${TRIGGER_ID}"
@@ -858,7 +858,7 @@ class Select
           <slot @click="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
-      ${this.renderHelperText()}
+      ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
 

@@ -871,7 +871,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     const hoursMax = is12h ? DEFAULTS.MAX_HOUR_12 : DEFAULTS.MAX_HOUR_24;
 
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <div part="container">
         <div
           id="${TRIGGER_ID}"

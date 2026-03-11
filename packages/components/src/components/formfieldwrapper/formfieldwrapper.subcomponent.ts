@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 
 import FormfieldWrapper from './formfieldwrapper.component';
 
@@ -8,9 +8,9 @@ import FormfieldWrapper from './formfieldwrapper.component';
 class SubComponentFormFieldWrapper extends FormfieldWrapper {
   public override render() {
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <slot></slot>
-      ${this.renderHelperText()}
+      ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
 }

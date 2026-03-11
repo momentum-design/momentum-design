@@ -803,7 +803,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   public override render() {
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <div part="container">
         ${this.variant === VARIANT.INPUT ? this.renderInputVariant() : this.renderDefaultVariant()}
         <input

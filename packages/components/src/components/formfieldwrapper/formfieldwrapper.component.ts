@@ -189,7 +189,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderLabel() {
-    if (!this.label) return nothing;
     const triggerId = `toggletip-trigger-${uuidv4()}`;
     const shouldDisableToggletip = this.disabled || this.softDisabled;
 
@@ -227,9 +226,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderHelperText() {
-    if (!this.helpText) {
-      return nothing;
-    }
     return html`<div part="help-text-container">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>

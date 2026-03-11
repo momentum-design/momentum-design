@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -150,7 +150,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
                 ? html`<span part="percentage">${this.clampedValue}%</span>`
                 : ''}
             </div>
-            ${this.renderProgressbar()} ${this.renderHelperText()}
+            ${this.renderProgressbar()} ${this.helpText ? this.renderHelperText() : nothing}
           `}
     `;
   }

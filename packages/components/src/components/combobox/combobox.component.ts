@@ -1011,7 +1011,7 @@ class Combobox
   public override render() {
     const options = this.getVisibleOptions(this.filteredValue);
     return html`
-      ${this.renderLabel()}
+      ${this.label ? this.renderLabel() : nothing}
       <div part="combobox-base" id="${TRIGGER_ID}">
         ${this.renderNativeInput()}
         <mdc-input
@@ -1066,7 +1066,7 @@ class Combobox
           <slot @mousedown="${this.handleOptionsClick}"></slot>
         </mdc-popover>
       </div>
-      ${this.renderHelperText()}
+      ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
 
