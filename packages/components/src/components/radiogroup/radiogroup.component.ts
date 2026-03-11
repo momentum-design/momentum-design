@@ -14,8 +14,6 @@ const isRadio = new RegExp(`^(${RADIO_TAGNAME}|${CARD_RADIO_TAGNAME})$`, 'i');
  *
  * @tagname mdc-radiogroup
  *
- * @cssproperty --mdc-radiogroup-description-text-normal - color of the description text
- *
  */
 class RadioGroup extends FormfieldGroup {
   /**
