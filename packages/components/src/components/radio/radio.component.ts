@@ -79,17 +79,16 @@ class Radio
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('keydown', this.handleKeyDown);
-    this.shouldRenderLabel = false;
-
-    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
-    this.toggletipStrategy = undefined as unknown as PopoverStrategy;
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-    // Radio does not contain helpTextType property.
-    this.helpTextType = undefined as unknown as ValidationType;
     this.role = ROLE.RADIO;
+    this.shouldRenderLabel = false;
+    // Radio should not contain these properties.
+    this.helpTextType = undefined as unknown as ValidationType;
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
+    this.toggletipStrategy = undefined as unknown as PopoverStrategy;
     this.updateAriaLabel();
   }
 
