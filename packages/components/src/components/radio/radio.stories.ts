@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { describeStory, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
 import '../radiogroup';
 
@@ -66,7 +66,30 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
-    ...hideControls(['help-text-type', 'id', 'internals', 'validation-message', 'validity', 'willValidate']),
+    ...hideControls([
+      'help-text-type',
+      'id',
+      'internals',
+      'validation-message',
+      'validity',
+      'willValidate',
+      'toggletip-placement',
+      'toggletip-strategy',
+      'toggletip-text',
+      'info-icon-aria-label',
+      'help-text',
+      '--mdc-help-text-color',
+      '--mdc-help-text-font-size',
+      '--mdc-help-text-font-weight',
+      '--mdc-help-text-line-height',
+      'Shadow Part Name: "help-text"',
+      'Shadow Part Name: "help-text-container"',
+      'Shadow Part Name: "helper-icon"',
+      'Shadow Part Name: "info-icon-btn"',
+      'Slot Name: "help-icon"',
+      'Slot Name: "help-text"',
+      'Slot Name: "toggletip"',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -106,60 +129,53 @@ export const withNameGroup: StoryObj = {
     </div>
   `,
   parameters: {
-    docs: {
-      description: {
-        story:
-          'Radio buttons with the same `name` attribute are grouped together. ' +
-          'When radio buttons share the same `name`, selecting one will automatically deselect the others in the ' +
-          'group. The example includes various states of radio buttons such as disabled, readonly, ' +
-          'and different labels. We can use flex layout to display radio buttons in a column.',
-      },
-    },
+    ...describeStory(
+      html`
+        <p role="region">
+          Radio buttons with the same <b>name</b> attribute are grouped together. When radio buttons share the same
+          <b>name</b>, selecting one will automatically deselect the others in the group. The example includes various
+          states of radio buttons such as disabled, readonly, and different labels. We can use flex layout to display
+          radio buttons in a column.
+        </p>
+      `,
+      true,
+    ),
+    ...hideAllControls(true),
   },
 };
 
 export const WithoutLabel: StoryObj = {
+  render: () => html`<div role="main"><mdc-radio aria-label="Option 1 without label"></mdc-radio></div> `,
   parameters: {
-    docs: {
-      description: {
-        story:
-          "If we don't want to display a label, we can omit the 'label' attribute, " +
-          'but it is recommended to pass an aria label for accessibility. ',
-      },
-    },
+    ...describeStory(
+      html`<p role="region">
+        If we don't want to display a label, we can omit the 'label' attribute, but it is recommended to pass an aria
+        label for accessibility.
+      </p>`,
+      true,
+    ),
+    ...hideAllControls(true),
   },
 };
 
 export const Disabled: StoryObj = {
   render: () =>
     html` <div role="main">
-      <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
         <mdc-radio label="Disabled Standard Plan" disabled></mdc-radio>
         <mdc-radio label="Selected But Disabled Standard Plan" disabled checked></mdc-radio>
       </div>
     </div>`,
-  parameters: {
-    docs: {
-      description: {
-        story: 'To disable the radio button, use the `disabled` attribute. ',
-      },
-    },
-  },
+  ...describeStory(html`<p role="region">To disable the radio button, use the <b>disabled</b> attribute.</p>`),
 };
 
 export const ReadOnly: StoryObj = {
   render: () =>
     html` <div role="main">
-      <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
         <mdc-radio name="read" value="option1" label="Unselected" readonly></mdc-radio>
         <mdc-radio name="read" value="option2" label="Selected" readonly checked></mdc-radio>
       </div>
     </div>`,
-  parameters: {
-    docs: {
-      description: {
-        story: 'To make the radio button read-only, use the `readonly` attribute. ',
-      },
-    },
-  },
+  ...describeStory(html`<p role="region">To make the radio button read-only, use the <b>readonly</b> attribute.</p>`),
 };
