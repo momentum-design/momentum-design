@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { hideControls } from '../../../config/storybook/utils';
 import type Radio from '../radio/radio.component';
 
@@ -12,20 +13,22 @@ import '../radio';
 import '../button';
 
 const render = (args: Args) =>
-  html` <mdc-radiogroup
-    name="${args.name}"
-    label="${args.label}"
-    help-text="${args['help-text']}"
-    data-aria-label="${args['data-aria-label']}"
-    ?required="${args.required}"
-  >
-    <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
-    <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
-    <mdc-radio label="Hawkeye" value="hawkeye"></mdc-radio>
-    <mdc-radio label="The hulk" value="the-hulk"></mdc-radio>
-    <mdc-radio label="Iron Man" value="iron-man"></mdc-radio>
-    <mdc-radio label="Thor" value="Thor"></mdc-radio>
-  </mdc-radiogroup>`;
+  html` <div role="main">
+    <mdc-radiogroup
+      name="${args.name}"
+      label="${args.label}"
+      help-text="${args['help-text']}"
+      help-text-type="${args['help-text-type']}"
+      ?required="${args.required}"
+    >
+      <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
+      <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
+      <mdc-radio label="Hawkeye" value="hawkeye"></mdc-radio>
+      <mdc-radio label="The hulk" value="the-hulk"></mdc-radio>
+      <mdc-radio label="Iron Man" value="iron-man"></mdc-radio>
+      <mdc-radio label="Thor" value="Thor"></mdc-radio>
+    </mdc-radiogroup>
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/radiogroup',
@@ -45,13 +48,22 @@ const meta: Meta = {
     'help-text': {
       control: { type: 'text' },
     },
-    'data-aria-label': {
-      control: 'text',
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
     },
     required: {
       control: 'boolean',
     },
-    ...hideControls(['help-text-type', 'disabled']),
+    ...hideControls([
+      'disabled',
+      'info-icon-aria-label',
+      'isRadio',
+      'Slot Name: "toggletip"',
+      'toggletip-placement',
+      'toggletip-strategy',
+      'toggletip-text',
+    ]),
   },
 };
 
@@ -61,9 +73,9 @@ export const Example: StoryObj = {
   args: {
     label: 'Select your team captain',
     'help-text': 'The team captain should have previous experience leading the team through challenging situations.',
+    'help-text-type': VALIDATION.DEFAULT,
     name: 'team-captain-with-experience',
     required: true,
-    'data-aria-label': 'Team Captain',
   },
 };
 
@@ -96,7 +108,6 @@ export const RadioGroupInFormWithHelpTextValidation = () => {
     radioGroup?.setAttribute('help-text-type', 'success');
     return true;
   };
-
   const handleSubmit = (event: Event) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
@@ -117,16 +128,18 @@ export const RadioGroupInFormWithHelpTextValidation = () => {
 
   return html`
     <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
-      <mdc-radiogroup
-        name="course-plan"
-        label="Select your course plan"
-        help-text="Choose a plan that best suits your needs"
-        required
-      >
-        <mdc-radio value="standard" name="course-plan" label="Standard Plan"> </mdc-radio>
-        <mdc-radio value="premium" name="course-plan" label="Premium Plan"> </mdc-radio>
-        <mdc-radio value="enterprise" name="course-plan" label="Enterprise Plan"> </mdc-radio>
-      </mdc-radiogroup>
+      <div role="main">
+        <mdc-radiogroup
+          name="course-plan"
+          label="Select your course plan"
+          help-text="Choose a plan that best suits your needs"
+          required
+        >
+          <mdc-radio value="standard" name="course-plan" label="Standard Plan"> </mdc-radio>
+          <mdc-radio value="premium" name="course-plan" label="Premium Plan"> </mdc-radio>
+          <mdc-radio value="enterprise" name="course-plan" label="Enterprise Plan"> </mdc-radio>
+        </mdc-radiogroup>
+      </div>
       <br />
       <div style="display: flex; gap: 0.25rem;">
         <mdc-button type="submit" size="24">Submit</mdc-button>
