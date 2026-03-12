@@ -410,27 +410,27 @@ test('mdc-radio', async ({ componentsPage }) => {
       const shadowHost = componentsPage.page.locator('#shadow-wrapper');
       await shadowHost.waitFor();
 
-      const radioInputs = shadowHost.locator('mdc-radio input[type="radio"]');
-      await radioInputs.nth(0).waitFor();
+      const radios = shadowHost.locator('mdc-radio');
+      await radios.nth(0).waitFor();
 
       // Click first radio — should become checked
-      await radioInputs.nth(0).click();
-      await expect(radioInputs.nth(0)).toBeChecked();
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
 
       // Click second radio — should become checked, first should uncheck
-      await radioInputs.nth(1).click();
-      await expect(radioInputs.nth(1)).toBeChecked();
-      await expect(radioInputs.nth(0)).not.toBeChecked();
+      await radios.nth(1).click();
+      await expect(radios.nth(1)).toBeChecked();
+      await expect(radios.nth(0)).not.toBeChecked();
 
       // Click third radio — should become checked, second should uncheck
-      await radioInputs.nth(2).click();
-      await expect(radioInputs.nth(2)).toBeChecked();
-      await expect(radioInputs.nth(1)).not.toBeChecked();
+      await radios.nth(2).click();
+      await expect(radios.nth(2)).toBeChecked();
+      await expect(radios.nth(1)).not.toBeChecked();
 
       // Click first radio again — should still work (this was the bug)
-      await radioInputs.nth(0).click();
-      await expect(radioInputs.nth(0)).toBeChecked();
-      await expect(radioInputs.nth(2)).not.toBeChecked();
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
+      await expect(radios.nth(2)).not.toBeChecked();
     });
 
     await test.step('change event should fire on every selection inside shadow DOM', async () => {
@@ -453,8 +453,9 @@ test('mdc-radio', async ({ componentsPage }) => {
       const shadowHost = componentsPage.page.locator('#shadow-wrapper-events');
       await shadowHost.waitFor();
 
+      const radios = shadowHost.locator('mdc-radio');
       // Wait for custom elements to upgrade
-      await shadowHost.locator('mdc-radio input[type="radio"]').nth(0).waitFor();
+      await radios.nth(0).waitFor();
 
       // Attach change event counters via data attributes
       await componentsPage.page.evaluate(() => {
@@ -467,17 +468,14 @@ test('mdc-radio', async ({ componentsPage }) => {
         });
       });
 
-      const radios = shadowHost.locator('mdc-radio');
-      const radioInputs = shadowHost.locator('mdc-radio input[type="radio"]');
-
-      await radioInputs.nth(0).click();
+      await radios.nth(0).click();
       await expect(radios.nth(0)).toHaveAttribute('data-change-count', '1');
 
-      await radioInputs.nth(1).click();
+      await radios.nth(1).click();
       await expect(radios.nth(1)).toHaveAttribute('data-change-count', '1');
 
       // Click first again — change should still fire
-      await radioInputs.nth(0).click();
+      await radios.nth(0).click();
       await expect(radios.nth(0)).toHaveAttribute('data-change-count', '2');
     });
 
@@ -502,27 +500,27 @@ test('mdc-radio', async ({ componentsPage }) => {
       const shadowHost = componentsPage.page.locator('#shadow-wrapper-keys');
       await shadowHost.waitFor();
 
-      const radioInputs = shadowHost.locator('mdc-radio input[type="radio"]');
-      await radioInputs.nth(0).waitFor();
+      const radios = shadowHost.locator('mdc-radio');
+      await radios.nth(0).waitFor();
 
       // Focus first radio and select it
-      await radioInputs.nth(0).click();
-      await expect(radioInputs.nth(0)).toBeChecked();
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
 
       // Arrow down to second
       await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(radioInputs.nth(1)).toBeFocused();
-      await expect(radioInputs.nth(1)).toBeChecked();
+      await expect(radios.nth(1)).toBeFocused();
+      await expect(radios.nth(1)).toBeChecked();
 
       // Arrow down to third
       await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(radioInputs.nth(2)).toBeFocused();
-      await expect(radioInputs.nth(2)).toBeChecked();
+      await expect(radios.nth(2)).toBeFocused();
+      await expect(radios.nth(2)).toBeChecked();
 
       // Arrow up back to second
       await componentsPage.page.keyboard.press('ArrowUp');
-      await expect(radioInputs.nth(1)).toBeFocused();
-      await expect(radioInputs.nth(1)).toBeChecked();
+      await expect(radios.nth(1)).toBeFocused();
+      await expect(radios.nth(1)).toBeChecked();
     });
   });
 
