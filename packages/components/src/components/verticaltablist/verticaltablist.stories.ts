@@ -81,16 +81,16 @@ export const TabsWithBadges: StoryObj = {
       @change="${action('change')}"
     >
       <mdc-tab tab-id="messages" text="Messages" icon-name="chat-regular" @click="${action('onclick')}">
-        <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
+        <mdc-badge slot="postfix" type="counter" counter="5"></mdc-badge>
       </mdc-tab>
       <mdc-tab tab-id="favorites" text="Favorites" icon-name="favorite-regular" @click="${action('onclick')}">
       </mdc-tab>
       <mdc-tab tab-id="contacts" text="Contacts" icon-name="contact-card-regular" @click="${action('onclick')}">
-        <mdc-badge slot="badge" type="dot"></mdc-badge>
+        <mdc-badge slot="postfix" type="dot"></mdc-badge>
       </mdc-tab>
       <mdc-tab tab-id="meetings" text="Meetings" icon-name="meetings-regular" @click="${action('onclick')}"> </mdc-tab>
       <mdc-tab tab-id="calls" text="Calls" icon-name="handset-regular" @click="${action('onclick')}">
-        <mdc-badge slot="badge" type="counter" counter="3"></mdc-badge>
+        <mdc-badge slot="postfix" type="counter" counter="3"></mdc-badge>
       </mdc-tab>
     </mdc-verticaltablist>
   `,
