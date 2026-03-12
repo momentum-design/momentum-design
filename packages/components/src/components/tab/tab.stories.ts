@@ -8,6 +8,7 @@ import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { hideAllControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { ROLE } from '../../utils/roles';
 
 import { TAB_VARIANTS } from './tab.constants';
 
@@ -165,8 +166,8 @@ export const CustomPrefixSlot: StoryObj = {
 
 export const TabWithSlots: StoryObj = {
   render: () => html`
-    <div role="main" style="display: flex; gap: 2rem; flex-direction: column;">
-      <div style="display: flex; gap: 1rem;" role="tablist">
+    <div role="${ROLE.MAIN}" style="display: flex; gap: 2rem; flex-direction: column;">
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">
         <mdc-tab text="Postfix Icon">
           <mdc-icon slot="postfix" name="placeholder-bold"></mdc-icon>
         </mdc-tab>
@@ -174,7 +175,7 @@ export const TabWithSlots: StoryObj = {
           <mdc-icon slot="prefix" name="placeholder-bold"></mdc-icon>
         </mdc-tab>
       </div>
-      <div style="display: flex; gap: 1rem;" role="tablist">
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">">
         <mdc-tab text="Postfix Badge">
           <mdc-badge slot="postfix" type="counter" counter="1"></mdc-badge>
         </mdc-tab>
@@ -182,7 +183,7 @@ export const TabWithSlots: StoryObj = {
           <mdc-badge slot="prefix"></mdc-badge>
         </mdc-tab>
       </div>
-      <div style="display: flex; gap: 1rem;" role="tablist">
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">">
         <mdc-tab text="Postfix Chip">
           <mdc-staticchip slot="postfix" label="Alpha"></mdc-chip>
         </mdc-tab>
