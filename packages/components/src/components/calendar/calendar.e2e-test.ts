@@ -33,6 +33,10 @@ const setup = async (args: SetupOptions) => {
 
   const calendar = componentsPage.page.locator('mdc-calendar');
   await calendar.waitFor();
+  await Promise.all([
+    componentsPage.page.waitForResponse(/arrow-right/),
+    componentsPage.page.waitForResponse(/arrow-left/),
+  ]);
   return calendar;
 };
 
