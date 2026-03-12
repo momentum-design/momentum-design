@@ -7,11 +7,10 @@ type SetupOptions = {
   name?: string;
   value?: string;
   label?: string;
-  'help-text'?: string;
   readonly?: boolean;
   disabled?: boolean;
   checked?: boolean;
-  'data-aria-label'?: string;
+  'aria-label'?: string;
   secondRadioBtn?: boolean;
   'soft-disabled'?: boolean;
 };
@@ -25,12 +24,11 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs.value ? `value="${restArgs.value}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
-          ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.checked ? 'checked' : ''}
           ${restArgs.readonly ? 'readonly' : ''}
           ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
-          ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
+          ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
         >
         </mdc-radio>
         ${
@@ -68,7 +66,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Radio btn without label
       radioStickerSheet.setAttributes({
-        'data-aria-label': 'Standard Plan',
+        'aria-label': 'Standard Plan',
       });
 
       // Radio btn with label
@@ -98,8 +96,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
 
       // Readonly but checked radio btn
@@ -109,8 +105,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         'help-text': 'This is a help text',
         readonly: true,
         checked: true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
 
       // Disabled radio btn
@@ -119,8 +113,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Disabled Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
 
       // Disabled but checked radio btn
@@ -130,8 +122,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         'help-text': 'This is a help text',
         disabled: true,
         checked: true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
@@ -139,8 +129,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'Soft Disabled Radio Label',
         'help-text': 'This is a help text',
         'soft-disabled': true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       radioStickerSheet.setAttributes({
@@ -148,8 +136,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         'help-text': 'This is a help text',
         'soft-disabled': true,
         checked: true,
-        'toggletip-text': 'This is a toggletip that provides additional context',
-        'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
@@ -158,8 +144,6 @@ test('mdc-radio', async ({ componentsPage }) => {
         label: 'This is a very long label that should wrap to multiple lines when constrained to a short width',
         'help-text': 'This is also a very long help text that should wrap properly',
         style: 'width: 7.5rem;',
-        'toggletip-text': 'This is additional toggletip text that provides more context',
-        'info-icon-aria-label': 'Additional information',
       });
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
@@ -191,7 +175,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
       await test.step('select radio by pressing space', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student' });
-        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio');
 
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press(KEYS.SPACE);
@@ -200,7 +184,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       await test.step('radio clicked', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student' });
-        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio');
 
         await radio.click();
         await expect(radio).toBeChecked();
@@ -208,7 +192,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       await test.step('radio focus and click on disabled radio', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student', disabled: true });
-        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio');
 
         await componentsPage.actionability.pressTab();
         await expect(radio).not.toBeFocused();
@@ -223,8 +207,9 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           readonly: true,
         });
-        const radio = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radio = componentsPage.page.locator('mdc-radio[name="student-plan"]');
         await componentsPage.actionability.pressTab();
+        await componentsPage.page.pause();
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
 
@@ -243,7 +228,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           'soft-disabled': true,
         });
-        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio');
 
         await componentsPage.actionability.pressTab();
         await expect(radio).toBeFocused();
@@ -265,7 +250,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           secondRadioBtn: true,
         });
 
-        const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radios = componentsPage.page.locator('mdc-radio[name="student-plan"]');
         const changeEvents: Array<{ value: string; method: string }> = [];
 
         // Expose function to capture change events
@@ -313,7 +298,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           secondRadioBtn: true,
         });
-        const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radios = componentsPage.page.locator('mdc-radio[name="student-plan"]');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('ArrowDown');
         await expect(radios.nth(1)).toBeChecked();
@@ -337,10 +322,10 @@ test('mdc-radio', async ({ componentsPage }) => {
         await expect(radio).toBeFocused();
 
         await keyboard.press(KEYS.ENTER);
-        await expect(radio.locator('input[type="radio"]')).toBeChecked();
+        await expect(radio).toBeChecked();
 
         await keyboard.press(KEYS.ENTER);
-        await expect(radio.locator('input[type="radio"]')).toBeChecked();
+        await expect(radio).toBeChecked();
 
         await expect(waitForSubmit).not.toEventEmitted();
       });
@@ -354,16 +339,15 @@ test('mdc-radio', async ({ componentsPage }) => {
       // For label
       await test.step('should have label element when the label attribute is passed', async () => {
         await componentsPage.setAttributes(radio, { label: 'Radio label' });
-        const label = componentsPage.page.locator('label');
+        const label = componentsPage.page.locator('mdc-text');
         await expect(label).toHaveText('Radio label');
       });
 
       // For help text
-      await test.step('should have mdc-text element when the help-text attribute is passed', async () => {
+      await test.step('should not have mdc-text element when the help-text attribute is passed', async () => {
         await componentsPage.setAttributes(radio, { 'help-text': 'Help text for additional info' });
-        const mdcText = componentsPage.page.locator('mdc-text');
-        const textContent = await mdcText.textContent();
-        expect(textContent?.trim()).toBe('Help text for additional info');
+        const mdcText = componentsPage.page.locator('mdc-text').getByText('Help text for additional info');
+        await expect(mdcText).not.toBeVisible();
       });
 
       // Disabled
@@ -408,10 +392,14 @@ test('mdc-radio', async ({ componentsPage }) => {
     await test.step('click method works as expected', async () => {
       const radio = await setup({ componentsPage });
       const waitForClickAfterChecked = await componentsPage.waitForEvent(radio, 'click');
+      const waitForInputAfterChecked = await componentsPage.waitForEvent(radio, 'input');
+      const waitForChangeAfterChecked = await componentsPage.waitForEvent(radio, 'change');
       await radio.evaluate((el: HTMLElement) => el.click());
 
       await expect(radio).toHaveAttribute('checked');
       await expect(waitForClickAfterChecked).toEventEmitted();
+      await expect(waitForInputAfterChecked).toEventEmitted();
+      await expect(waitForChangeAfterChecked).toEventEmitted();
     });
 
     await test.step('click method works as expected when component disabled', async () => {
