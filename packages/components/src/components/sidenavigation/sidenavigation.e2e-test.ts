@@ -168,9 +168,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
               toggleButton,
             ]);
             const waitForToggleAfterEnter = await componentsPage.waitForEvent(sidenav, 'toggle');
+            const waitForIcon = componentsPage.page.waitForResponse(/arrow-right-regular/);
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
+            await waitForIcon;
             await expect(waitForToggleAfterEnter).toEventEmitted();
             await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
               source: 'userflow',
