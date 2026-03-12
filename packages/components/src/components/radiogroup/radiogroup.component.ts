@@ -5,14 +5,14 @@ import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 import { TAG_NAME as CARD_RADIO_TAGNAME } from '../cardradio/cardradio.constants';
 
+const isRadio = new RegExp(`^(${RADIO_TAGNAME}|${CARD_RADIO_TAGNAME})$`, 'i');
+
 /**
  * `mdc-radiogroup` - This is the wrapper component for radio buttons which are grouped together.
  * It can have a header text and a description. It enables users to select a single option from a set of options.
  * It is often used in forms, settings, and selection in lists. It automatically group the radio buttons inside it.
  *
  * @tagname mdc-radiogroup
- *
- * @cssproperty --mdc-radiogroup-description-text-normal - color of the description text
  *
  */
 class RadioGroup extends FormfieldGroup {
@@ -26,7 +26,6 @@ class RadioGroup extends FormfieldGroup {
   constructor() {
     super();
     // This is used to set the role of the component as `radiogroup`.
-    /** @internal */
     this.isRadio = true;
   }
 
@@ -36,12 +35,13 @@ class RadioGroup extends FormfieldGroup {
    */
   override firstUpdated() {
     Array.from(this.shadowRoot?.querySelectorAll('slot') || [])
-      ?.flatMap(slot => slot.assignedElements({ flatten: true }))
-      ?.filter(el => el.tagName.toLowerCase() === RADIO_TAGNAME || el.tagName.toLowerCase() === CARD_RADIO_TAGNAME)
-      ?.filter(radio => !radio.hasAttribute('name'))
-      ?.forEach(radio => {
-        radio.setAttribute('name', this.name);
-        if (this.required) radio.setAttribute('required', this.required.toString());
+      .flatMap(slot => slot.assignedElements({ flatten: true }))
+      .filter(el => isRadio.test(el.tagName))
+      .forEach(radio => {
+        if (!radio.hasAttribute('name')) {
+          radio.setAttribute('name', this.name);
+        }
+        radio.toggleAttribute('required', this.required);
       });
   }
 
