@@ -14,6 +14,10 @@ interface SetupOptions {
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
+  const iconResponses = [
+    componentsPage.page.waitForResponse(/arrow-right/),
+    componentsPage.page.waitForResponse(/arrow-left/),
+  ];
   await componentsPage.mount({
     html: `
       <mdc-calendar
@@ -33,10 +37,7 @@ const setup = async (args: SetupOptions) => {
 
   const calendar = componentsPage.page.locator('mdc-calendar');
   await calendar.waitFor();
-  await Promise.all([
-    componentsPage.page.waitForResponse(/arrow-right/),
-    componentsPage.page.waitForResponse(/arrow-left/),
-  ]);
+  await Promise.all(iconResponses);
   return calendar;
 };
 
