@@ -109,7 +109,8 @@ class Radio
    * @internal
    */
   private getAllRadiosWithinSameGroup(): Radio[] {
-    return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
+    const root = this.getRootNode() as Document | ShadowRoot;
+    return Array.from(root.querySelectorAll(`mdc-radio[name="${this.name}"]`));
   }
 
   /** @internal */
