@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
+import { Page, expect, Locator, TestInfo, test, type Request as PlaywrightRequest } from '@playwright/test';
 
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
@@ -31,6 +31,8 @@ interface ComponentsPage {
   debugUtils: DebugUtils;
 }
 
+type SetledCallback = (url: string, error: ReturnType<PlaywrightRequest['failure']>) => void;
+
 /**
  * Components Page Object Model
  *
@@ -38,6 +40,19 @@ interface ComponentsPage {
  * used for Momentum components E2E testing
  */
 class ComponentsPage {
+  // AI-Assisted
+  /**
+   * Set of URLs for icon requests that are currently in-flight.
+   * Populated by the persistent listener initialized in `setup()`.
+   */
+  private pendingIconRequests: Set<string> = new Set();
+
+  /**
+   * Callbacks to notify `waitForPendingIconRequests` when a pending request settles.
+   */
+  private pendingIconSettleCallbacks: Set<SetledCallback> = new Set();
+  // End AI-Assisted
+
   constructor(page: Page, testInfo: TestInfo) {
     this.page = page;
     this.testInfo = testInfo;
@@ -71,10 +86,57 @@ class ComponentsPage {
    * **Setup function**
    *
    * to run before the test to navigate correctly
+   * and start tracking icon requests
    */
   async setup() {
+    this.startTrackingIconRequests();
     await this.navigate();
   }
+
+  // AI-Assisted
+  /**
+   * Starts persistently tracking all icon (.svg) network requests on the page.
+   *
+   * When a matching request is initiated, its URL is added to the pending set.
+   * When the response or failure arrives, the URL is removed from the pending set
+   * and any registered settle callbacks are notified.
+   *
+   * This is called automatically in `setup()` so that tracking is active
+   * for the entire test lifecycle. Developers can call `waitForPendingIconRequests()`
+   * at any point to wait for all currently pending icon requests to finish.
+   */
+  private startTrackingIconRequests() {
+    const matchesPattern = (url: string) => /\.svg$/.test(url);
+
+    const onSettled: SetledCallback = (url, error) => {
+      this.pendingIconRequests.delete(url);
+      if (this.pendingIconRequests.size === 0) {
+        this.pendingIconSettleCallbacks.forEach(cb => cb(url, error));
+      }
+    };
+
+    this.page.on('request', request => {
+      const url = request.url();
+      if (matchesPattern(url)) {
+        this.pendingIconRequests.add(url);
+      }
+    });
+
+    this.page.on('response', response => {
+      const url = response.url();
+      if (matchesPattern(url)) {
+        onSettled(url, null);
+      }
+    });
+
+    this.page.on('requestfailed', request => {
+      const url = request.url();
+      if (matchesPattern(url)) {
+        onSettled(url, request.failure());
+      }
+    });
+  }
+  // End AI-Assisted
 
   /**
    * **TearDown function**
@@ -269,6 +331,62 @@ class ComponentsPage {
       { qualifiedName },
     );
   }
+
+  // AI-Assisted
+  /**
+   * Waits for all currently pending icon (.svg) network requests to finish.
+   *
+   * The icon request tracking is started automatically in `setup()`, so this method
+   * can be called at any point during a test to wait for outstanding icon fetches.
+   * Requests that have already completed before this call are not waited on.
+   *
+   * @param options - optional configuration object with `timeout` (max wait in ms, defaults to 10000)
+   *
+   * @example
+   * ```ts
+   * await componentsPage.mount({ html, clearDocument: true });
+   * await componentsPage.waitForPendingIconRequests();
+   * ```
+   */
+  async waitForPendingIcons(options?: { timeout?: number }) {
+    const timeout = options?.timeout ?? 10_000;
+
+    await test.step('Waiting for pending icon requests to finish', async () => {
+      if (this.pendingIconRequests.size === 0) {
+        return;
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+        const onSettled: SetledCallback = (url, error) => {
+          if (this.pendingIconRequests.size === 0) {
+            if (timeoutId !== undefined) {
+              clearTimeout(timeoutId);
+            }
+            this.pendingIconSettleCallbacks.delete(onSettled);
+            if (error) {
+              reject(new Error(`Icon request for ${url} failed with error: ${error.errorText}`));
+            } else {
+              resolve();
+            }
+          }
+        };
+
+        timeoutId = setTimeout(() => {
+          this.pendingIconSettleCallbacks.delete(onSettled);
+          reject(
+            new Error(
+              `Timed out after ${timeout}ms waiting for ${this.pendingIconRequests.size} pending icon request(s) to finish: ${Array.from(this.pendingIconRequests).join(', ')}`,
+            ),
+          );
+        }, timeout);
+
+        this.pendingIconSettleCallbacks.add(onSettled);
+      });
+    });
+  }
+  // End AI-Assisted
 
   /**
    * Check if a promise times out after a certain amount of time

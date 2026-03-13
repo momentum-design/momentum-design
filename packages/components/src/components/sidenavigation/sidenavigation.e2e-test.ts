@@ -61,7 +61,9 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
       <mdc-button>Button on the outside to be focused</mdc-button>
     </div>
   `;
+
   await componentsPage.mount({ html, clearDocument: true });
+  await componentsPage.waitForPendingIcons();
   const sidenav = componentsPage.page.locator('mdc-sidenavigation');
   await sidenav.waitFor();
   const toggleButton = sidenav.locator('[grabber-btn-aria-label], [aria-label="Toggle Side navigation"], mdc-button');
@@ -168,11 +170,11 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
               toggleButton,
             ]);
             const waitForToggleAfterEnter = await componentsPage.waitForEvent(sidenav, 'toggle');
-            const waitForIcon = componentsPage.page.waitForResponse(/arrow-right-regular/);
+
             await componentsPage.page.keyboard.press('Enter');
             await expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
             await expect(toggleButton.locator('mdc-icon[name="arrow-right-regular"]')).toBeVisible();
-            await waitForIcon;
+            await componentsPage.waitForPendingIcons();
             await expect(waitForToggleAfterEnter).toEventEmitted();
             await componentsPage.visualRegression.takeScreenshot(`sidenavigation-${variant}`, {
               source: 'userflow',
