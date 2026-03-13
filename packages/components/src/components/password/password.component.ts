@@ -8,6 +8,7 @@ import { BUTTON_VARIANTS } from '../button/button.constants';
 import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 
 import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
+import styles from './password.styles';
 
 /**
  * `mdc-password` is a component that allows users to input their password.
@@ -130,7 +131,7 @@ class Password extends Input {
     return super.renderInputElement(inputType, hidePlaceholder);
   }
 
-  public static override styles: Array<CSSResult> = [...Input.styles];
+  public static override styles: Array<CSSResult> = [...Input.styles, ...styles];
 }
 
 export default Password;
