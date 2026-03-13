@@ -32,13 +32,13 @@ const renderTextOnlyTabs = () => `
 
 const renderTabsWithBadges = () => `
   <mdc-tab text="Messages" icon-name="chat-regular" tab-id="messages-tab" aria-controls="messages-panel" active>
-    <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New messages"></mdc-badge>
+    <mdc-badge slot="postfix" type="counter" counter="5" aria-label="5 New messages"></mdc-badge>
   </mdc-tab>
   <mdc-tab text="Contacts" icon-name="contact-card-regular" tab-id="contacts-tab" aria-controls="contacts-panel">
-    <mdc-badge slot="badge" type="dot"></mdc-badge>
+    <mdc-badge slot="postfix" type="dot"></mdc-badge>
   </mdc-tab>
   <mdc-tab text="Calls" icon-name="handset-regular" tab-id="calls-tab" aria-controls="calls-panel">
-    <mdc-badge slot="badge" type="counter" counter="3" aria-label="3 Missed calls"></mdc-badge>
+    <mdc-badge slot="postfix" type="counter" counter="3" aria-label="3 Missed calls"></mdc-badge>
   </mdc-tab>
 `;
 
