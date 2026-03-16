@@ -40,7 +40,7 @@ export const Example: StoryObj = {
         aria-label="Avatar Button"
       ></mdc-avatarbutton>
       <mdc-tab icon-name="placeholder-bold" tabindex="0" text="Tab 1" variant="pill">
-        <mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>
+        <mdc-badge slot="postfix" type="counter" counter="1"></mdc-badge>
       </mdc-tab>
     </div>
   `,

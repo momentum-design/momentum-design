@@ -141,11 +141,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
     --mdc-button-background: var(--mds-color-theme-button-accent-normal);
   }
-  :host([color='accent'][variant='primary']:hover) {
+  :host([color='accent'][variant='primary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-accent-hover);
   }
-  :host([color='accent'][variant='primary']:active),
-  :host([color='accent'][variant='primary'].pressed) {
+  :host([color='accent'][variant='primary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='accent'][variant='primary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-accent-pressed);
   }
 
@@ -153,11 +153,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-accent-normal);
     --mdc-button-border-color: var(--mds-color-theme-outline-theme-normal);
   }
-  :host([color='accent'][variant='secondary']:hover) {
+  :host([color='accent'][variant='secondary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
-  :host([color='accent'][variant='secondary']:active),
-  :host([color='accent'][variant='secondary'].pressed) {
+  :host([color='accent'][variant='secondary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='accent'][variant='secondary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
@@ -165,11 +165,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
     --mdc-button-background: var(--mds-color-theme-button-join-normal);
   }
-  :host([color='positive'][variant='primary']:hover) {
+  :host([color='positive'][variant='primary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-join-hover);
   }
-  :host([color='positive'][variant='primary']:active),
-  :host([color='positive'][variant='primary'].pressed) {
+  :host([color='positive'][variant='primary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='positive'][variant='primary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-join-pressed);
   }
 
@@ -177,11 +177,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-success-normal);
     --mdc-button-border-color: var(--mds-color-theme-outline-join-normal);
   }
-  :host([color='positive'][variant='secondary']:hover) {
+  :host([color='positive'][variant='secondary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
-  :host([color='positive'][variant='secondary']:active),
-  :host([color='positive'][variant='secondary'].pressed) {
+  :host([color='positive'][variant='secondary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='positive'][variant='secondary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
@@ -189,11 +189,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
     --mdc-button-background: var(--mds-color-theme-button-cancel-normal);
   }
-  :host([color='negative'][variant='primary']:hover) {
+  :host([color='negative'][variant='primary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-cancel-hover);
   }
-  :host([color='negative'][variant='primary']:active),
-  :host([color='negative'][variant='primary'].pressed) {
+  :host([color='negative'][variant='primary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='negative'][variant='primary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-cancel-pressed);
   }
 
@@ -201,11 +201,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-error-normal);
     --mdc-button-border-color: var(--mds-color-theme-outline-cancel-normal);
   }
-  :host([color='negative'][variant='secondary']:hover) {
+  :host([color='negative'][variant='secondary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
-  :host([color='negative'][variant='secondary']:active),
-  :host([color='negative'][variant='secondary'].pressed) {
+  :host([color='negative'][variant='secondary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='negative'][variant='secondary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
@@ -213,11 +213,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-common-text-primary-normal);
     --mdc-button-background: var(--mds-color-theme-common-button-promotion-normal);
   }
-  :host([color='promotional'][variant='primary']:hover) {
+  :host([color='promotional'][variant='primary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-common-button-promotion-hover);
   }
-  :host([color='promotional'][variant='primary']:active),
-  :host([color='promotional'][variant='primary'].pressed) {
+  :host([color='promotional'][variant='primary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='promotional'][variant='primary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-common-button-promotion-active);
   }
 
@@ -225,11 +225,11 @@ const styles = css`
     --mdc-button-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-button-border-color: var(--mds-color-theme-outline-promotion-normal);
   }
-  :host([color='promotional'][variant='secondary']:hover) {
+  :host([color='promotional'][variant='secondary']:hover:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
   }
-  :host([color='promotional'][variant='secondary']:active),
-  :host([color='promotional'][variant='secondary'].pressed) {
+  :host([color='promotional'][variant='secondary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='promotional'][variant='secondary'].pressed:not([disabled]):not([soft-disabled])) {
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 

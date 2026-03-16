@@ -35,7 +35,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.tabIndex ? `tabindex="${restArgs.tabIndex}"` : ''}
         ${restArgs.text ? `text="${restArgs.text}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : DEFAULTS.VARIANT}>
-        <mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>
+        <mdc-badge slot="postfix" type="counter" counter="1"></mdc-badge>
       </mdc-tab>
       <mdc-tab text="Dummy Tab"></mdc-tab>
     </div>
@@ -177,7 +177,7 @@ test('mdc-tab', async ({ componentsPage }) => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-tab');
 
     // Add badge to tab
-    stickerSheet.setChildren('<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>');
+    stickerSheet.setChildren('<mdc-badge slot="postfix" type="counter" counter="1"></mdc-badge>');
 
     // Tabs with label, badge and icon - not active
     stickerSheet.setAttributes({ text: 'Inactive', 'icon-name': ICON_PLACEHOLDER });

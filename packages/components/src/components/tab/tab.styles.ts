@@ -66,8 +66,7 @@ const styles = [
       display: none;
     }
 
-    :host::part(leading),
-    :host::part(trailing) {
+    :host::part(leading) {
       display: flex;
       align-items: center;
       gap: var(--mdc-tab-content-gap);

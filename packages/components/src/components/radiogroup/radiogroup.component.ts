@@ -4,6 +4,9 @@ import { property } from 'lit/decorators.js';
 import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 import { TAG_NAME as CARD_RADIO_TAGNAME } from '../cardradio/cardradio.constants';
+import type { PopoverStrategy, PopoverPlacement } from '../popover/popover.types';
+
+const isRadio = new RegExp(`^(${RADIO_TAGNAME}|${CARD_RADIO_TAGNAME})$`, 'i');
 
 /**
  * `mdc-radiogroup` - This is the wrapper component for radio buttons which are grouped together.
@@ -12,8 +15,6 @@ import { TAG_NAME as CARD_RADIO_TAGNAME } from '../cardradio/cardradio.constants
  *
  * @tagname mdc-radiogroup
  *
- * @cssproperty --mdc-radiogroup-description-text-normal - color of the description text
- *
  */
 class RadioGroup extends FormfieldGroup {
   /**
@@ -21,13 +22,19 @@ class RadioGroup extends FormfieldGroup {
    * They are used to group elements in a form together.
    * @default ''
    */
-  @property({ type: String }) name = '';
+  @property({ type: String, reflect: true }) name = '';
 
   constructor() {
     super();
     // This is used to set the role of the component as `radiogroup`.
-    /** @internal */
     this.isRadio = true;
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // toggletipPlacement and toggletipStrategy are set to undefined as they are not used by radiogroup.
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
+    this.toggletipStrategy = undefined as unknown as PopoverStrategy;
   }
 
   /**
@@ -36,12 +43,13 @@ class RadioGroup extends FormfieldGroup {
    */
   override firstUpdated() {
     Array.from(this.shadowRoot?.querySelectorAll('slot') || [])
-      ?.flatMap(slot => slot.assignedElements({ flatten: true }))
-      ?.filter(el => el.tagName.toLowerCase() === RADIO_TAGNAME || el.tagName.toLowerCase() === CARD_RADIO_TAGNAME)
-      ?.filter(radio => !radio.hasAttribute('name'))
-      ?.forEach(radio => {
-        radio.setAttribute('name', this.name);
-        if (this.required) radio.setAttribute('required', this.required.toString());
+      .flatMap(slot => slot.assignedElements({ flatten: true }))
+      .filter(el => isRadio.test(el.tagName))
+      .forEach(radio => {
+        if (!radio.hasAttribute('name')) {
+          radio.setAttribute('name', this.name);
+        }
+        radio.toggleAttribute('required', this.required);
       });
   }
 

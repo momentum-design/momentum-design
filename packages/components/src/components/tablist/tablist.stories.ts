@@ -5,9 +5,9 @@ import { html } from 'lit';
 
 import { describeStory, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
-
 import '../badge';
 import '../tab';
+import { ROLE } from '../../utils/roles';
 
 const render = (args: Args) =>
   html` <mdc-tablist
@@ -30,7 +30,7 @@ const render = (args: Args) =>
         tab-id="videos-tab"
         aria-controls="videos-panel"
       >
-        <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
+        <mdc-badge slot="postfix" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
       </mdc-tab>
       <mdc-tab
         variant=${args.tabvariant}
@@ -202,4 +202,23 @@ This markup is not part of the component and is only provided for context. -->
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
   },
+};
+
+export const TablistWithButtons: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}">
+      <mdc-tablist active-tab-id="tab-2" data-aria-label="Tablist with a lot of tabs">
+        ${new Array(100)
+          .fill(undefined)
+          .map((_, i) => html`<mdc-tab text="Tab #${i + 1}" tab-id="tab-${i + 1}"></mdc-tab>`)}
+      </mdc-tablist>
+    </div>
+  `,
+  ...describeStory(
+    html`<p role="${ROLE.REGION}">
+      When the tabs overflow the available space, arrow buttons appear at the left and right ends of the tablist. These
+      buttons allow users to scroll through the tabs horizontally. The arrow buttons are automatically shown or hidden
+      based on the scroll position.
+    </p>`,
+  ),
 };
