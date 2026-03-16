@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 import { TAG_NAME as CARD_RADIO_TAGNAME } from '../cardradio/cardradio.constants';
+import type { PopoverStrategy, PopoverPlacement } from '../popover/popover.types';
 
 const isRadio = new RegExp(`^(${RADIO_TAGNAME}|${CARD_RADIO_TAGNAME})$`, 'i');
 
@@ -21,12 +22,19 @@ class RadioGroup extends FormfieldGroup {
    * They are used to group elements in a form together.
    * @default ''
    */
-  @property({ type: String }) name = '';
+  @property({ type: String, reflect: true }) name = '';
 
   constructor() {
     super();
     // This is used to set the role of the component as `radiogroup`.
     this.isRadio = true;
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // toggletipPlacement and toggletipStrategy are set to undefined as they are not used by radiogroup.
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
+    this.toggletipStrategy = undefined as unknown as PopoverStrategy;
   }
 
   /**
