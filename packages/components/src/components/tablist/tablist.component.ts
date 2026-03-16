@@ -318,8 +318,13 @@ class TabList extends ListNavigationMixin(
       isArrowButtonFocused = true;
     }
 
-    const firstTab = getFirstTab(this.navItems)!;
-    const lastTab = getLastTab(this.navItems)!;
+    const firstTab = getFirstTab(this.navItems);
+    const lastTab = getLastTab(this.navItems);
+
+    if (!firstTab || !lastTab) {
+      return;
+    }
+
     const firstTabLeftEdgePosition = firstTab.getBoundingClientRect().left;
     const tabListLeftEdgePosition = this.tabsContainer?.getBoundingClientRect().left;
     const lastTabRightEdgePosition = lastTab.getBoundingClientRect().right;

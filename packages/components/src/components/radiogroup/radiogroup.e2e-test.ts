@@ -92,7 +92,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
     // For help text
     await test.step('should have help text when the help text attribute is passed', async () => {
       await componentsPage.setAttributes(radioGroup, { 'help-text': 'Help Text' });
-      const mdcText = componentsPage.page.locator('mdc-text');
+      const mdcText = componentsPage.page.locator('mdc-text').getByText('Help Text');
       const textContent = await mdcText.textContent();
       expect(textContent?.trim()).toBe('Help Text');
       await componentsPage.removeAttribute(radioGroup, 'help-text');
@@ -116,7 +116,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
         label: 'Select your plan',
         name: 'student-plan',
       });
-      const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+      const radios = componentsPage.page.locator('mdc-radio[name="student-plan"]');
       await componentsPage.actionability.pressTab();
       await expect(radios.nth(0)).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
@@ -160,7 +160,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       const radioGroup = form.locator('mdc-radiogroup[name="plan"]');
       const submitButton = form.locator('mdc-button[type="submit"]');
       const resetButton = form.locator('mdc-button[type="reset"]');
-      const radios = radioGroup.locator('mdc-radio input[type="radio"]');
+      const radios = radioGroup.locator('mdc-radio');
 
       // Always re-query help-text
       const getHelpText = () => radioGroup.locator('mdc-text[part="help-text"]');
@@ -224,7 +224,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
         label: 'Select your plan',
         name: 'student-plan',
       });
-      const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+      const radios = componentsPage.page.locator('mdc-radio[name="student-plan"]');
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
 
       const { keyboard } = componentsPage.page;

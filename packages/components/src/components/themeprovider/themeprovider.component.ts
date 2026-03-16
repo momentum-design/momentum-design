@@ -42,7 +42,6 @@ import styles from './themeprovider.styles';
  * @cssproperty --mdc-themeprovider-font-family - Option to override the font family,
  * default: `Momentum` (from momentum-design/fonts)
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: `400`
- * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
  * default: `-0.25px` (this is to match the old CiscoSans)
  * @cssproperty --mdc-themeprovider-font-feature-settings - Option to override the font feature settings,
  * default: `"ss02" on`

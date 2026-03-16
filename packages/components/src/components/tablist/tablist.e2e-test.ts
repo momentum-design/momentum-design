@@ -25,7 +25,7 @@ const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `
   icon-name="video-bold"
   tab-id="videos-tab"
   aria-controls="videos-panel">
-  <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
+  <mdc-badge slot="postfix" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
   </mdc-tab>
   <mdc-tab variant=${variant}
   ${hideText ? '' : 'text="Music"'}
@@ -310,7 +310,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await test.step(`Given a tablist component with 5 tabs and a smaller viewport,
           if any arrow button is focused, when both arrow buttons disappear, 
           the active tab should gain focus`, async () => {
-        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await componentsPage.page.setViewportSize({ width: 330, height: 450 });
         await setup({ componentsPage });
         await componentsPage.actionability.pressTab();
         await componentsPage.actionability.pressAndCheckFocus('ArrowRight', [tabs.nth(1), tabs.nth(2)]);
