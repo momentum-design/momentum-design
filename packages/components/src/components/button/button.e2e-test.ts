@@ -723,6 +723,30 @@ test.describe.parallel('mdc-button', () => {
     await expect(bothButtons[1]).toBeFocused();
   });
 
+  test('soft-disabled button with color should not change background on hover', async ({ componentsPage }) => {
+    for (const color of Object.values(BUTTON_COLORS).filter(c => c !== BUTTON_COLORS.DEFAULT)) {
+      for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.SECONDARY]) {
+        await test.step(`color="${color}" variant="${variant}" soft-disabled hover should use disabled style`, async () => {
+          const button = await setup({
+            componentsPage,
+            children: 'Test Button',
+            color,
+            variant,
+            softDisabled: true,
+          });
+
+          const bgBeforeHover = await button.evaluate(el => getComputedStyle(el).getPropertyValue('background'));
+
+          await button.hover();
+
+          const bgAfterHover = await button.evaluate(el => getComputedStyle(el).getPropertyValue('background'));
+
+          expect(bgAfterHover).toBe(bgBeforeHover);
+        });
+      }
+    }
+  });
+
   test('interactions', async ({ componentsPage }) => {
     await test.step('spatial navigation', async () => {
       const button = await setup({ componentsPage });
