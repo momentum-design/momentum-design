@@ -69,13 +69,20 @@ class FormfieldGroup extends FormfieldWrapper {
     this.role = this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP;
 
     this.ariaDescription = this.helpText ?? '';
-    this.ariaLabel = this.label || '';
+    // Add aria-label if not provided by the consumer, to make it accessible.
+    // It will use the label property for the aria-label if aria-label is not provided.
+    if (!this.hasAttribute('aria-label')) {
+      this.setAttribute('aria-label', this.label || '');
+    }
   }
 
   override update(changedProperties: Map<string, unknown>): void {
     super.update(changedProperties);
     if (changedProperties.has('label') && !this.ariaLabel) {
       this.ariaLabel = this.label || '';
+    }
+    if (changedProperties.has('helpText') && !this.ariaDescription) {
+      this.ariaDescription = this.helpText || '';
     }
   }
 
