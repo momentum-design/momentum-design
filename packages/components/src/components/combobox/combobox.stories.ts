@@ -19,6 +19,7 @@ import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { VALID_VALUES } from '../controltypeprovider/controltypeprovider.constants';
 import { ROLE } from '../../utils/roles';
 
+import { FILTER } from './combobox.constants';
 import type Combobox from './combobox.component';
 
 const wrapper = (contents: TemplateResult) =>
@@ -35,7 +36,7 @@ const render = (args: Args) =>
       control-type="${ifDefined(args['control-type'])}"
       data-aria-label="${ifDefined(args['data-aria-label'])}"
       ?disabled="${args.disabled}"
-      ?no-filter="${args['no-filter']}"
+      filter="${ifDefined(args.filter)}"
       help-text="${ifDefined(args['help-text'])}"
       help-text-type="${ifDefined(args['help-text-type'])}"
       info-icon-aria-label="${ifDefined(args['info-icon-aria-label'])}"
@@ -104,8 +105,9 @@ const meta: Meta = {
     name: {
       control: 'text',
     },
-    'no-filter': {
-      control: 'boolean',
+    filter: {
+      control: 'select',
+      options: Object.values(FILTER),
     },
     'no-result-text': {
       control: 'text',
@@ -571,7 +573,7 @@ export const ComboboxWithNoFilter: StoryObj = {
         @input="${handleInput}"
         label="Search Countries (API-filtered)"
         placeholder="Type to search (uses includes)"
-        no-filter
+        filter="none"
         no-result-text="No countries found"
         data-aria-label="Search countries"
       >
@@ -585,10 +587,10 @@ export const ComboboxWithNoFilter: StoryObj = {
     ...hideAllControls(true),
     ...describeStory(
       html`<p role="region">
-        This story demonstrates the <code>no-filter</code> attribute. When set, the combobox does not perform internal
-        "starts with" filtering. Instead, the consumer handles filtering externally (e.g., via an API) and dynamically
-        updates the slotted options. In this example, filtering uses "includes" logic instead of the default "starts
-        with".
+        This story demonstrates the <code>filter="none"</code> attribute. When set, the combobox does not perform
+        internal "starts with" filtering. Instead, the consumer handles filtering externally (e.g., via an API) and
+        dynamically updates the slotted options. In this example, filtering uses "includes" logic instead of the default
+        "starts with".
       </p>`,
       true,
     ),
