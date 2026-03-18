@@ -6,6 +6,7 @@ type SetupOptions = {
   children: string;
   label?: string;
   name?: string;
+  multiple?: boolean;
 };
 
 const label = 'Headquarters Location';
@@ -24,6 +25,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-listbox
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.name ? `name="${restArgs.name}"` : ''}
+        ${restArgs.multiple ? 'multiple' : ''}
       >
         ${restArgs.children}
       </mdc-listbox>
@@ -153,6 +155,78 @@ test('mdc-listbox', async ({ componentsPage }) => {
 
     await test.step('matches screenshot of listbox', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-listbox', {
+        element: listbox,
+      });
+    });
+  });
+});
+
+test('mdc-listbox multiselect', async ({ componentsPage }) => {
+  /**
+   * ARIA MULTISELECTABLE
+   */
+  await test.step('has aria-multiselectable when multiple is true', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+    await expect(listbox).toHaveAttribute('aria-multiselectable', 'true');
+  });
+
+  /**
+   * TOGGLE SELECTION WITH CLICK
+   */
+  await test.step('toggles selection on click', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    // Click first option to select
+    await listbox.locator('mdc-option').nth(0).click();
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+
+    // Click second option - first should remain selected
+    await listbox.locator('mdc-option').nth(1).click();
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+
+    // Click first again to deselect
+    await listbox.locator('mdc-option').nth(0).click();
+    await expect(listbox.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+  });
+
+  /**
+   * TOGGLE SELECTION WITH KEYBOARD
+   */
+  await test.step('toggles selection with Enter and Space', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+    await componentsPage.page.locator('mdc-button').focus();
+    await componentsPage.actionability.pressTab();
+
+    // Select with Enter
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+
+    // Navigate down and select with Space
+    await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+
+    // Deselect with Enter
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression for multiselect listbox', async () => {
+    await componentsPage.page.setViewportSize({ width: 600, height: 2100 });
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    // Select multiple options for visual snapshot
+    await listbox.locator('mdc-option').nth(0).click();
+    await listbox.locator('mdc-option').nth(2).click();
+
+    await test.step('matches screenshot of multiselect listbox', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-listbox-multiselect', {
         element: listbox,
       });
     });

@@ -14,7 +14,10 @@ import { ElementStore } from '../../utils/controllers/ElementStore';
 import styles from './listbox.styles';
 
 /**
- * listbox component presents a list of options and allows a user to select one of them.
+ * listbox component presents a list of options and allows a user to select one or more of them.
+ *
+ * When `multiple` is enabled, clicking/pressing Enter/Space on an option toggles its selection
+ * instead of replacing the current selection.
  *
  * Notes:
  * - This is a standalone listbox component. Select has its own mdc-selectlistbox component.
@@ -55,6 +58,12 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    */
   @property({ type: String, reflect: true }) value?: undefined | string = undefined;
 
+  /**
+   * When true, multiple options can be selected.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) multiple = false;
+
   /** @internal */
   @state() selectedOption?: Option | null;
 
@@ -87,11 +96,14 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
         this.itemsStore.delete(item);
         break;
       case 'selected':
-        // When selection changed on the option
-        this.setSelectedOption(item, false, false);
+        if (!this.multiple) {
+          this.setSelectedOption(item, false, false);
+        }
         break;
       case 'unselected':
-        this.handleNoSelection();
+        if (!this.multiple) {
+          this.handleNoSelection();
+        }
         break;
       default:
         break;
@@ -128,9 +140,33 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (this.isValidItem(target)) {
-      this.setSelectedOption(target as Option);
+    if (!this.isValidItem(target)) return;
+
+    const option = target as Option;
+
+    if (this.multiple) {
+      this.toggleOptionSelection(option);
+    } else {
+      this.setSelectedOption(option);
     }
+  }
+
+  /**
+   * Toggles the selection state of an option (for multiselect mode).
+   * @internal
+   */
+  private toggleOptionSelection(option: Option): void {
+    if (option.disabled || option.softDisabled) return;
+
+    const isCurrentlySelected = option.hasAttribute('selected');
+    option.toggleAttribute('selected', !isCurrentlySelected);
+
+    // Update value to reflect first selected option (like native <select multiple>)
+    const firstSelected = this.getFirstSelectedOption();
+    this.value = firstSelected?.value;
+    this.selectedOption = firstSelected ?? null;
+
+    this.fireEvents();
   }
 
   /** @internal */
@@ -139,12 +175,37 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   }
 
   /**
+   * Override to focus the first selected option per W3C APG.
+   * This applies to both single-select and multi-select listboxes.
+   * @internal
+   */
+  protected override setInitialFocus(): void {
+    const firstSelected = this.getFirstSelectedOption();
+    if (firstSelected) {
+      const index = this.itemsStore.items.indexOf(firstSelected);
+      if (index !== -1) {
+        this.resetTabIndexAndSetFocus(index, undefined, false);
+        return;
+      }
+    }
+    super.setInitialFocus();
+  }
+
+  /**
    * Handles the updated lifecycle event.
    *
    * @param changedProperties - The properties that have changed since the last update.
    */
   protected override updated(changedProperties: PropertyValues): void {
-    if (changedProperties.has('value')) {
+    if (changedProperties.has('multiple')) {
+      if (this.multiple) {
+        this.setAttribute('aria-multiselectable', 'true');
+      } else {
+        this.removeAttribute('aria-multiselectable');
+      }
+    }
+
+    if (changedProperties.has('value') && !this.multiple) {
       const newSelectedOption = this.itemsStore.items.find(option => option.value === this.value);
       if (newSelectedOption) {
         this.setSelectedOption(newSelectedOption, false);
@@ -188,12 +249,10 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   }
 
   /**
-   * Dispatch change event when an option is selected.
+   * Dispatch change event when selection changes.
    */
   private fireEvents(): void {
-    if (this.selectedOption) {
-      this.dispatchEvent(new Event('change', { composed: true, bubbles: true }));
-    }
+    this.dispatchEvent(new Event('change', { composed: true, bubbles: true }));
   }
 
   override render() {
