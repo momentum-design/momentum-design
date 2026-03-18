@@ -254,6 +254,22 @@ test.describe('mdc-timepicker', () => {
       expect(count).toBe(96);
     });
 
+    test('should zero-pad minutes below 10 in dropdown labels for 12h format', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '13:00',
+        timeFormat: '12h',
+        interval: 5,
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const option = timepicker.locator('mdc-option[label="1:05 PM"]');
+      await expect(option).toHaveCount(1);
+    });
+
     test('should show 24h format options in dropdown', async ({ componentsPage }) => {
       const timepicker = await setup({
         componentsPage,
