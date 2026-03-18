@@ -10,6 +10,8 @@ const styles = css`
     --mdc-dialog-width: 27rem; /* Default to small */
     --mdc-dialog-height: auto;
     --mdc-dialog-padding: 1.5rem;
+    --mdc-dialog-backdrop-color: var(--mds-color-theme-common-overlays-secondary-normal);
+    --mdc-backdrop-mixin-background-color: var(--mdc-dialog-backdrop-color);
 
     background-color: var(--mdc-dialog-primary-background-color);
     border: 0.0625rem solid var(--mdc-dialog-border-color);

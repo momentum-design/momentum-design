@@ -14,6 +14,7 @@ interface SetupOptions {
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
+
   await componentsPage.mount({
     html: `
       <mdc-calendar
@@ -33,6 +34,7 @@ const setup = async (args: SetupOptions) => {
 
   const calendar = componentsPage.page.locator('mdc-calendar');
   await calendar.waitFor();
+  await componentsPage.waitForPendingIcons();
   return calendar;
 };
 

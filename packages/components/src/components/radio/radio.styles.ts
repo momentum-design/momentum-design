@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
+import { focusRingBoxShadow, hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [
   hostFitContentStyles,
@@ -15,28 +15,18 @@ const styles = [
       gap: 0.5rem;
     }
 
-    :host::part(radio-input) {
-      position: absolute;
-      opacity: 0;
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-      z-index: 1;
-    }
-
-    :host::part(text-container) {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.25rem;
-      flex: 1;
+    :host::part(radio-indicator) {
+      flex: none;
     }
 
     :host::part(label) {
       cursor: pointer;
       word-break: break-word;
       white-space: normal;
+    }
+
+    :host::part(label-text) {
+      display: contents;
     }
 
     :host(:hover)::part(static-radio) {
@@ -61,6 +51,30 @@ const styles = [
     :host([disabled]),
     :host([soft-disabled]) {
       pointer-events: none;
+    }
+
+    :host(:focus-within),
+    :host(:focus-visible) {
+      outline: none;
+    }
+
+    :host(:focus-visible)::part(radio-indicator) {
+      outline: none;
+    }
+    :host([disabled]:focus) {
+      box-shadow: none;
+    }
+
+    :host(:focus-within)::part(radio-indicator) {
+      position: relative;
+      box-shadow: ${focusRingBoxShadow};
+    }
+
+    /* High Contrast Mode */
+    @media (forced-colors: active) {
+      :host(:focus-visible)::part(radio-indicator) {
+        outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+      }
     }
   `,
   ...hostFocusRingStyles(true),

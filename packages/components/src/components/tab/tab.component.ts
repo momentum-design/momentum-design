@@ -69,6 +69,9 @@ import styles from './tab.styles';
  * @csspart filled-icon - The icon of the tab, if active.
  * @csspart indicator - The indicator of the tab.
  * @csspart text - The text of the tab.
+ *
+ * @slot prefix - The slot for the content before the text, typically used for the icon.
+ * @slot postfix - The slot for the content after the text, typically used for the badge or chip.
  */
 class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   /**
@@ -142,6 +145,7 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
    * Dispatch the activechange event.
    *
    * @param active - The active state of the tab.
+   * @internal
    */
   private handleTabActiveChange = (active?: boolean): void => {
     const event = new CustomEvent('activechange', {
@@ -211,10 +215,7 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
               >`
             : nothing}
         </div>
-        <div part="trailing">
-          <slot name="badge"></slot>
-          <slot name="chip"></slot>
-        </div>
+        <slot name="postfix"></slot>
       </div>
       <div part="indicator"></div>
     `;

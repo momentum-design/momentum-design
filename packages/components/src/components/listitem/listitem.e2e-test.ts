@@ -66,7 +66,7 @@ test.describe.parallel('mdc-listitem', () => {
     `);
       await listitemSheet.createMarkupWithCombination({}, options);
       listitemSheet.setChildren(`
-      <mdc-radio checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-radio>
+      <mdc-radio checked slot="leading-controls" aria-label="${primaryLabel}"></mdc-radio>
     `);
       await listitemSheet.createMarkupWithCombination({}, options);
       listitemSheet.setAttributes({

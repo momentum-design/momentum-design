@@ -1,12 +1,14 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../badge';
+import '../staticchip';
 import '../brandvisual';
 import { html, nothing } from 'lit';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { ROLE } from '../../utils/roles';
 
 import { TAB_VARIANTS } from './tab.constants';
 
@@ -28,8 +30,7 @@ const render = (args: Args) =>
       variant="${ifDefined(args.variant)}"
       tab-id="tab1"
       ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
-      >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab
-    >
+    ></mdc-tab>
   </div>`;
 
 const meta: Meta = {
@@ -52,11 +53,6 @@ const meta: Meta = {
     'icon-name': {
       control: 'text',
     },
-    showBadge: {
-      control: 'boolean',
-      description: 'This is an internal argument to show the badge in the story',
-      table: { disable: true },
-    },
     tabIndex: {
       control: 'number',
     },
@@ -70,7 +66,7 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
-    ...hideControls(['role', 'size', 'type']),
+    ...hideControls(['role', 'size', 'type', 'Slot Name: ""']),
   },
 };
 
@@ -81,17 +77,15 @@ const defaultArgs = {
   disabled: false,
   'icon-name': 'placeholder-bold',
   role: 'tab',
-  showBadge: false,
   tabIndex: 0,
   text: 'Label',
-  variant: 'pill',
+  variant: TAB_VARIANTS.PILL,
 };
 
 export const Example: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    showBadge: true,
   },
 };
 
@@ -99,7 +93,7 @@ export const GlassTab: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    variant: 'glass',
+    variant: TAB_VARIANTS.GLASS,
   },
   argTypes: {
     ...readOnlyControls(['variant']),
@@ -110,7 +104,7 @@ export const LineTab: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    variant: 'line',
+    variant: TAB_VARIANTS.LINE,
   },
   argTypes: {
     ...readOnlyControls(['variant']),
@@ -121,7 +115,7 @@ export const PillTab: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    variant: 'pill',
+    variant: TAB_VARIANTS.PILL,
   },
   argTypes: {
     ...readOnlyControls(['variant']),
@@ -168,4 +162,36 @@ export const CustomPrefixSlot: StoryObj = {
   argTypes: {
     ...hideControls(['icon-name']),
   },
+};
+
+export const TabWithSlots: StoryObj = {
+  render: () => html`
+    <div role="${ROLE.MAIN}" style="display: flex; gap: 2rem; flex-direction: column;">
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">
+        <mdc-tab text="Postfix Icon">
+          <mdc-icon slot="postfix" name="placeholder-bold"></mdc-icon>
+        </mdc-tab>
+        <mdc-tab active text="Prefix Icon">
+          <mdc-icon slot="prefix" name="placeholder-bold"></mdc-icon>
+        </mdc-tab>
+      </div>
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">">
+        <mdc-tab text="Postfix Badge">
+          <mdc-badge slot="postfix" type="counter" counter="1"></mdc-badge>
+        </mdc-tab>
+        <mdc-tab active text="Prefix Badge">
+          <mdc-badge slot="prefix"></mdc-badge>
+        </mdc-tab>
+      </div>
+      <div style="display: flex; gap: 1rem;" role="${ROLE.TABLIST}">">
+        <mdc-tab text="Postfix Chip">
+          <mdc-staticchip slot="postfix" label="Alpha"></mdc-chip>
+        </mdc-tab>
+        <mdc-tab active text="Prefix Chip">
+          <mdc-staticchip slot="prefix" label="Beta"></mdc-chip>
+        </mdc-tab>
+      </div>
+    </div>
+  `,
+  ...hideAllControls(),
 };

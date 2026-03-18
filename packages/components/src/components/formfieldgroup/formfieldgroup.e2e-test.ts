@@ -11,7 +11,7 @@ type SetupOptions = {
   'help-text'?: string;
   children: string;
   'help-text-type'?: string;
-  'data-aria-label'?: string;
+  'aria-label'?: string;
   required?: boolean;
 };
 
@@ -38,7 +38,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
         ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
-        ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
+        ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
         ?required=${restArgs.required || false}
       >${restArgs.children}</mdc-formfieldgroup>
     `,
@@ -106,8 +106,8 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
       expect(textContent?.trim()).toBe(helpText);
     });
 
-    await test.step('attribute `data-aria-label` should be present on component when set', async () => {
-      await componentsPage.setAttributes(formfieldgroup, { 'data-aria-label': ariaLabel });
+    await test.step('attribute `aria-label` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'aria-label': ariaLabel });
       const ariaLabelContent = await componentsPage.page.getByRole(ROLE.GROUP).getAttribute('aria-label');
       expect(ariaLabelContent).toBe(ariaLabel);
     });
