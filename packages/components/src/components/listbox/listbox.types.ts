@@ -1,8 +1,13 @@
-import { OverrideEventTarget } from '../../utils/types';
+import type { TypedCustomEvent } from '../../utils/types';
 
 import type ListBox from './listbox.component';
 
-export type ListBoxChangeEvent = OverrideEventTarget<Event, ListBox>;
+export interface ListBoxChangeEventDetail {
+  value: string | undefined;
+  selectedValues: string[];
+}
+
+export type ListBoxChangeEvent = TypedCustomEvent<ListBox, ListBoxChangeEventDetail>;
 
 interface Events {
   onChangeEvent: ListBoxChangeEvent;

@@ -161,7 +161,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     const isCurrentlySelected = option.hasAttribute('selected');
     option.toggleAttribute('selected', !isCurrentlySelected);
 
-    // Update value to reflect first selected option (like native <select multiple>)
+    // Update value to reflect first selected option
     const firstSelected = this.getFirstSelectedOption();
     this.value = firstSelected?.value;
     this.selectedOption = firstSelected ?? null;
@@ -172,6 +172,14 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private getFirstSelectedOption() {
     return this.itemsStore.items.find(el => el.matches('[selected]'));
+  }
+
+  /** @internal */
+  private getSelectedValues(): string[] {
+    return this.itemsStore.items
+      .filter(option => option.hasAttribute('selected'))
+      .map(option => option.value)
+      .filter((value): value is string => value !== undefined);
   }
 
   /**
@@ -252,7 +260,16 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    * Dispatch change event when selection changes.
    */
   private fireEvents(): void {
-    this.dispatchEvent(new Event('change', { composed: true, bubbles: true }));
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: {
+          value: this.value,
+          selectedValues: this.getSelectedValues(),
+        },
+        composed: true,
+        bubbles: true,
+      }),
+    );
   }
 
   override render() {

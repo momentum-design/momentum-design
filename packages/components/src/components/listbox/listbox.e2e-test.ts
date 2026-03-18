@@ -1,5 +1,9 @@
+import { Locator } from '@playwright/test';
+
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+
+import type { ListBoxChangeEventDetail } from './listbox.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -38,6 +42,18 @@ const setup = async (args: SetupOptions) => {
   await listbox.waitFor();
   return listbox;
 };
+
+const captureChangeDetail = (listbox: Locator) =>
+  listbox.evaluate(
+    el =>
+      new Promise<ListBoxChangeEventDetail>(resolve => {
+        el.addEventListener(
+          'change',
+          (e: Event) => resolve((e as CustomEvent<ListBoxChangeEventDetail>).detail),
+          { once: true },
+        );
+      }),
+  );
 
 test('mdc-listbox', async ({ componentsPage }) => {
   /**
@@ -173,45 +189,66 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
   /**
    * TOGGLE SELECTION WITH CLICK
    */
-  await test.step('toggles selection on click', async () => {
+  await test.step('toggles selection on click and emits correct event detail', async () => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
 
     // Click first option to select
+    let detailPromise = captureChangeDetail(listbox);
     await listbox.locator('mdc-option').nth(0).click();
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    let detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['london']);
+    expect(detail.value).toBe('london');
 
     // Click second option - first should remain selected
+    detailPromise = captureChangeDetail(listbox);
     await listbox.locator('mdc-option').nth(1).click();
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+    detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['london', 'newyork']);
+    expect(detail.value).toBe('london');
 
     // Click first again to deselect
+    detailPromise = captureChangeDetail(listbox);
     await listbox.locator('mdc-option').nth(0).click();
     await expect(listbox.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+    detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['newyork']);
+    expect(detail.value).toBe('newyork');
   });
 
   /**
    * TOGGLE SELECTION WITH KEYBOARD
    */
-  await test.step('toggles selection with Enter and Space', async () => {
+  await test.step('toggles selection with Enter and Space and emits correct event detail', async () => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
     await componentsPage.page.locator('mdc-button').focus();
     await componentsPage.actionability.pressTab();
 
     // Select with Enter
+    let detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.ENTER);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    let detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['london']);
 
     // Navigate down and select with Space
     await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+    detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.SPACE);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+    detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['london', 'newyork']);
 
     // Deselect with Enter
+    detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.ENTER);
     await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
+    detail = await detailPromise;
+    expect(detail.selectedValues).toEqual(['london']);
   });
 
   /**

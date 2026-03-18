@@ -141,6 +141,7 @@ import { inMemoryCache, webAPIAssetsCache } from './utils/assets-cache';
 import type { TimePickerChangeEvent, TimePickerInputEvent } from './components/timepicker/timepicker.types';
 import type { DatePickerChangeEvent, DatePickerInputEvent } from './components/datepicker/datepicker.types';
 import type { CalendarDateSelectedEvent, CalendarMonthChangedEvent } from './components/calendar/calendar.types';
+import type { ListBoxChangeEvent } from './components/listbox/listbox.types';
 
 // Components Exports
 export {
@@ -282,6 +283,7 @@ export type {
   CalendarDateSelectedEvent,
   CalendarMonthChangedEvent,
   VerticaltablistChangeEvent,
+  ListBoxChangeEvent,
 };
 
 // Constants / Utils Exports
