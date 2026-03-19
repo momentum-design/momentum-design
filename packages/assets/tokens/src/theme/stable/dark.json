@@ -1120,12 +1120,12 @@
           },
           "radial": {
             "0": {
-              "value": "{color.core.white-alpha.40}",
+              "value": "{color.core.white-alpha.5}",
               "type": "color",
               "description": "Used for operation pop background. "
             },
             "1": {
-              "value": "{color.core.white-alpha.5}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
               "description": "Used for operation pop background. "
             }
