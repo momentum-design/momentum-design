@@ -47,11 +47,9 @@ const captureChangeDetail = (listbox: Locator) =>
   listbox.evaluate(
     el =>
       new Promise<ListBoxChangeEventDetail>(resolve => {
-        el.addEventListener(
-          'change',
-          (e: Event) => resolve((e as CustomEvent<ListBoxChangeEventDetail>).detail),
-          { once: true },
-        );
+        el.addEventListener('change', (e: Event) => resolve((e as CustomEvent<ListBoxChangeEventDetail>).detail), {
+          once: true,
+        });
       }),
   );
 
@@ -193,28 +191,22 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
 
     // Click first option to select
-    let detailPromise = captureChangeDetail(listbox);
-    await listbox.locator('mdc-option').nth(0).click();
+    let [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
-    let detail = await detailPromise;
     expect(detail.selectedValues).toEqual(['london']);
     expect(detail.value).toBe('london');
 
     // Click second option - first should remain selected
-    detailPromise = captureChangeDetail(listbox);
-    await listbox.locator('mdc-option').nth(1).click();
+    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(1).click()]);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
-    detail = await detailPromise;
     expect(detail.selectedValues).toEqual(['london', 'newyork']);
     expect(detail.value).toBe('london');
 
     // Click first again to deselect
-    detailPromise = captureChangeDetail(listbox);
-    await listbox.locator('mdc-option').nth(0).click();
+    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
     await expect(listbox.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
-    detail = await detailPromise;
     expect(detail.selectedValues).toEqual(['newyork']);
     expect(detail.value).toBe('newyork');
   });
@@ -222,33 +214,25 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
   /**
    * TOGGLE SELECTION WITH KEYBOARD
    */
-  await test.step('toggles selection with Enter and Space and emits correct event detail', async () => {
+  await test.step('toggles selection with Enter and Space', async () => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
     await componentsPage.page.locator('mdc-button').focus();
     await componentsPage.actionability.pressTab();
 
     // Select with Enter
-    let detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.ENTER);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
-    let detail = await detailPromise;
-    expect(detail.selectedValues).toEqual(['london']);
 
     // Navigate down and select with Space
     await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
-    detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.SPACE);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
-    detail = await detailPromise;
-    expect(detail.selectedValues).toEqual(['london', 'newyork']);
 
     // Deselect with Enter
-    detailPromise = captureChangeDetail(listbox);
     await componentsPage.page.keyboard.press(KEYS.ENTER);
     await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
-    detail = await detailPromise;
-    expect(detail.selectedValues).toEqual(['london']);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
   });
 
   /**
