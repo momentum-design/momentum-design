@@ -176,10 +176,13 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
 
   /** @internal */
   private getSelectedValues(): string[] {
-    return this.itemsStore.items
-      .filter(option => option.hasAttribute('selected'))
-      .map(option => option.value)
-      .filter((value): value is string => value !== undefined);
+    return this.itemsStore.items.reduce<string[]>((acc, option) => {
+      const { value } = option;
+      if (option.hasAttribute('selected') && value !== undefined) {
+        acc.push(value);
+      }
+      return acc;
+    }, []);
   }
 
   /**

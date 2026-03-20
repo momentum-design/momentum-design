@@ -216,8 +216,9 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
    */
   await test.step('toggles selection with Enter and Space', async () => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
-    await componentsPage.page.locator('mdc-button').focus();
     await componentsPage.actionability.pressTab();
+    await componentsPage.actionability.pressTab();
+    await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
 
     // Select with Enter
     await componentsPage.page.keyboard.press(KEYS.ENTER);
