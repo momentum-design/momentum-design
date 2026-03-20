@@ -1,5 +1,15 @@
 /* eslint-disable no-restricted-syntax */
-import { arrow, autoUpdate, computePosition, flip, offset, OffsetOptions, shift, size } from '@floating-ui/dom';
+import {
+  arrow,
+  autoUpdate,
+  computePosition,
+  flip,
+  inline as inlineMiddleware,
+  offset,
+  OffsetOptions,
+  shift,
+  size,
+} from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -467,6 +477,19 @@ class Popover
    */
   @property({ type: Boolean, reflect: true, attribute: 'animation-frame' })
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
+
+  /**
+   * Improves positioning for inline reference elements that span over multiple lines,
+   * such as hyperlinks or range selections.
+   *
+   * When enabled, the floating-ui `inline` middleware is used to position the popover
+   * based on the individual client rects of the inline element, rather than its full bounding box.
+   *
+   * @default false
+   * @see [Floating UI - inline](https://floating-ui.com/docs/inline)
+   */
+  @property({ type: Boolean, reflect: true })
+  inline: boolean = DEFAULTS.INLINE;
 
   /**
    * The index of the interactive element to receive focus when the popover opens with focus trap enabled.
@@ -1084,13 +1107,19 @@ class Popover
         : Array.from(document.querySelectorAll(this.boundary));
     const rootBoundary = this.boundaryRoot;
 
-    const middleware = [
+    const middleware: ReturnType<typeof shift>[] = [];
+
+    if (this.inline) {
+      middleware.push(inlineMiddleware());
+    }
+
+    middleware.push(
       shift({
         boundary,
         rootBoundary,
         padding: this.boundaryPadding,
       }),
-    ];
+    );
 
     if (!this.disableFlip) {
       middleware.push(

@@ -70,6 +70,7 @@ const DEFAULTS = {
   KEEP_CONNECTED_TOOLTIP_OPEN: false,
   IS_BACKDROP_INVISIBLE: true,
   ANIMATION_FRAME: false,
+  INLINE: false,
 } as const;
 
 const TIMEOUTS = {
