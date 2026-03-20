@@ -457,7 +457,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         const period = h < 12 ? this.localeAmLabel : this.localePmLabel;
         let displayHour = h % 12;
         if (displayHour === 0) displayHour = 12;
-        const displayMin = m === 0 ? '00' : String(m);
+        const displayMin = String(m).padStart(2, '0');
         label = `${displayHour}:${displayMin} ${period}`;
       } else {
         label = `${h}:${String(m).padStart(2, '0')}`;
