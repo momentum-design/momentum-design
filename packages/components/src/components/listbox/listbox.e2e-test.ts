@@ -152,6 +152,22 @@ test('mdc-listbox', async ({ componentsPage }) => {
   });
 
   /**
+   * HANDLE MODIFIED EVENT
+   */
+  await test.step('handleModifiedEvent syncs value when option selected attribute is set programmatically', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren() });
+
+    await listbox
+      .locator('mdc-option')
+      .nth(1)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync
+    const value = await listbox.evaluate((el: any) => el.value);
+    expect(value).toBe('newyork');
+  });
+
+  /**
    * ACCESSIBILITY ROLES & ATTRIBUTES
    */
   await test.step('accessibility roles and attributes', async () => {
@@ -234,6 +250,43 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
     await componentsPage.page.keyboard.press(KEYS.ENTER);
     await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+  });
+
+  /**
+   * HANDLE MODIFIED EVENT
+   */
+  await test.step('handleModifiedEvent syncs value when options selected attribute is set programmatically', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    await listbox
+      .locator('mdc-option')
+      .nth(1)
+      .evaluate(el => el.setAttribute('selected', ''));
+    await listbox
+      .locator('mdc-option')
+      .nth(2)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync to first selected option
+    const value = await listbox.evaluate((el: any) => el.value);
+    expect(value).toBe('newyork');
+
+    await listbox
+      .locator('mdc-option')
+      .nth(0)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync to newly selected first option
+    const newValue = await listbox.evaluate((el: any) => el.value);
+    expect(newValue).toBe('london');
+
+    // Remove selection from london - value should sync to newyork
+    await listbox
+      .locator('mdc-option')
+      .nth(0)
+      .evaluate(el => el.removeAttribute('selected'));
+    const valueAfterRemove = await listbox.evaluate((el: any) => el.value);
+    expect(valueAfterRemove).toBe('newyork');
   });
 
   /**
