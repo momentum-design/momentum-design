@@ -5,9 +5,11 @@ import { html } from 'lit';
 import '.';
 import { hideControls } from '../../../config/storybook/utils';
 import '../button';
+import '../link';
 import '../list';
 import '../listitem';
 import '../popover';
+import '../text';
 import { COLOR, DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
@@ -198,5 +200,22 @@ export const TooltipInsidePopover: StoryObj = {
         </mdc-popover>
       </div>
     </mdc-popover>
+  `,
+};
+
+export const TooltipOnInlineLink: StoryObj = {
+  render: () => html`
+    <div style="margin: 100px; max-width: 300px;">
+      <mdc-text type="body-large-regular" tagname="p">
+        Here is some text with a
+        <mdc-link id="inline-link-trigger" href="https://example.com" inline style="display: inline;">
+          longer inline link that should wrap across multiple lines to demonstrate positioning
+        </mdc-link>
+        and more text after the link.
+      </mdc-text>
+      <mdc-tooltip triggerid="inline-link-trigger" placement="top" inline>
+        This tooltip is attached to an inline link
+      </mdc-tooltip>
+    </div>
   `,
 };

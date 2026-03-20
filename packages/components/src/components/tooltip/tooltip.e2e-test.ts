@@ -374,4 +374,58 @@ test('mdc-tooltip', async ({ componentsPage }) => {
 
     await componentsPage.accessibility.checkForA11yViolations('tooltip');
   });
+
+  /**
+   * INLINE POSITIONING
+   */
+  await test.step('inline positioning for tooltip on inline link', async () => {
+    await componentsPage.mount({
+      html: `
+        <div id="wrapper" style="max-width: 300px; margin: 100px;">
+          <mdc-text type="body-large-regular" tagname="p">
+            Here is some text with a
+            <mdc-link id="inline-link" href="https://example.com" inline style="display: inline;">
+              longer inline link that should wrap across multiple lines to demonstrate positioning
+            </mdc-link>
+            and more text after the link.
+          </mdc-text>
+          <mdc-tooltip
+            id="inline-tooltip"
+            triggerid="inline-link"
+            placement="top"
+            inline
+          >
+            This tooltip is attached to an inline link
+          </mdc-tooltip>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const wrapper = componentsPage.page.locator('#wrapper');
+    await wrapper.waitFor();
+
+    const tooltip = componentsPage.page.locator('#inline-tooltip');
+    const link = componentsPage.page.locator('#inline-link');
+
+    await test.step('should have inline attribute set', async () => {
+      await expect(tooltip).toHaveAttribute('inline');
+    });
+
+    await test.step('should show tooltip when hovering over inline link', async () => {
+      await link.hover();
+      await expect(tooltip).toBeVisible();
+    });
+
+    await test.step('should position tooltip correctly over inline link', async () => {
+      await link.hover();
+      await expect(tooltip).toBeVisible();
+      await componentsPage.visualRegression.takeScreenshot('mdc-tooltip-inline-link');
+    });
+
+    await test.step('should hide tooltip when mouse leaves inline link', async () => {
+      await componentsPage.page.mouse.move(1000, 1000);
+      await expect(tooltip).not.toBeVisible();
+    });
+  });
 });
