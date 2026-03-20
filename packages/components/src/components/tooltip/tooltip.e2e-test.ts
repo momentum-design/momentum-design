@@ -381,7 +381,7 @@ test('mdc-tooltip', async ({ componentsPage }) => {
   await test.step('inline positioning for tooltip on inline link', async () => {
     await componentsPage.mount({
       html: `
-        <div id="wrapper" style="max-width: 300px; margin: 100px;">
+        <div id="wrapper" style="max-width: 300px; padding: 100px;">
           <mdc-text type="body-large-regular" tagname="p">
             Here is some text with a
             <mdc-link id="inline-link" href="https://example.com" inline style="display: inline;">
@@ -412,19 +412,19 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await expect(tooltip).toHaveAttribute('inline');
     });
 
-    await test.step('should show tooltip when hovering over inline link', async () => {
-      await link.hover();
-      await expect(tooltip).toBeVisible();
-    });
-
     await test.step('should position tooltip correctly over inline link', async () => {
       await link.hover();
       await expect(tooltip).toBeVisible();
-      await componentsPage.visualRegression.takeScreenshot('mdc-tooltip-inline-link');
+      await componentsPage.visualRegression.takeScreenshot('mdc-tooltip-inline-link', {
+        assertionAfterSwitchingDirection: async page => {
+          await page.locator('#inline-link').hover();
+          await expect(page.locator('#inline-tooltip')).toBeVisible();
+        },
+      });
     });
 
     await test.step('should hide tooltip when mouse leaves inline link', async () => {
-      await componentsPage.page.mouse.move(1000, 1000);
+      await componentsPage.page.mouse.move(1, 1);
       await expect(tooltip).not.toBeVisible();
     });
   });

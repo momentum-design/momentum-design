@@ -208,7 +208,7 @@ export const TooltipOnInlineLink: StoryObj = {
     <div style="margin: 100px; max-width: 300px;">
       <mdc-text type="body-large-regular" tagname="p">
         Here is some text with a
-        <mdc-link id="inline-link-trigger" href="https://example.com" inline style="display: inline;">
+        <mdc-link id="inline-link-trigger" inline style="display: inline;">
           longer inline link that should wrap across multiple lines to demonstrate positioning
         </mdc-link>
         and more text after the link.
