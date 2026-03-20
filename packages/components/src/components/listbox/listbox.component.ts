@@ -96,12 +96,16 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
         this.itemsStore.delete(item);
         break;
       case 'selected':
-        if (!this.multiple) {
+        if (this.multiple) {
+          this.syncValueToFirstSelected();
+        } else {
           this.setSelectedOption(item, false, false);
         }
         break;
       case 'unselected':
-        if (!this.multiple) {
+        if (this.multiple) {
+          this.syncValueToFirstSelected();
+        } else {
           this.handleNoSelection();
         }
         break;
@@ -161,17 +165,23 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
     const isCurrentlySelected = option.hasAttribute('selected');
     option.toggleAttribute('selected', !isCurrentlySelected);
 
-    // Update value to reflect first selected option
-    const firstSelected = this.getFirstSelectedOption();
-    this.value = firstSelected?.value;
-    this.selectedOption = firstSelected ?? null;
-
+    this.syncValueToFirstSelected();
     this.fireEvents();
   }
 
   /** @internal */
   private getFirstSelectedOption() {
     return this.itemsStore.items.find(el => el.matches('[selected]'));
+  }
+
+  /**
+   * Syncs value and selectedOption to reflect the first selected option (when multiple)
+   * @internal
+   */
+  private syncValueToFirstSelected(): void {
+    const firstSelected = this.getFirstSelectedOption();
+    this.value = firstSelected?.value;
+    this.selectedOption = firstSelected ?? null;
   }
 
   /** @internal */
