@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-import { focusRingBoxShadow, hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [
   hostFitContentStyles,
@@ -58,32 +58,14 @@ const styles = [
       outline: none;
     }
 
-    :host(:focus-visible)::part(radio-indicator) {
-      outline: none;
-    }
-
-    :host(:focus-within)::part(radio-indicator),
-    :host(.mdc-focus-ring:focus-within) {
-      position: relative;
-      box-shadow: ${focusRingBoxShadow};
-    }
-
-    :host([disabled]:focus) {
-      box-shadow: none;
-    }
-
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host(:focus-visible)::part(radio-indicator),
-      :host(.mdc-focus-ring:focus-visible) {
+      :host(:focus-within)::part(radio-indicator) {
         outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
-      }
-      :host(.mdc-focus-ring:focus-visible)::part(radio-indicator) {
-        outline: none;
       }
     }
   `,
-  ...hostFocusRingStyles(true),
+  ...hostFocusRingStyles(true, 'parent-to-child'),
 ];
 
 export default styles;
