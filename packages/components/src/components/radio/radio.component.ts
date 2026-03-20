@@ -45,6 +45,21 @@ import styles from './radio.styles';
  * Use the `static-radio` part to apply custom styles to the radio visual element.
  * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
  *
+ * ## Custom Indicator
+ *
+ * The `indicator` slot allows replacing the default radio circle with a custom element.
+ * When a custom indicator is slotted, the component automatically sets a `data-custom-indicator`
+ * attribute on the host. This shifts the focus ring from the default static radio to the
+ * entire host element, ensuring keyboard focus remains visible.
+ *
+ * ```html
+ * <mdc-radio>
+ *   <div slot="indicator">
+ *     <my-custom-element></my-custom-element>
+ *   </div>
+ * </mdc-radio>
+ * ```
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -343,9 +358,27 @@ class Radio
     this.internals.setValidity({});
   }
 
+  /**
+   * Handles the slotchange event on the indicator slot.
+   * Sets the `data-custom-indicator` attribute on the host when
+   * a custom indicator is slotted.
+   *
+   * This allows the component to apply focus styles to
+   * the entire host element when a custom indicator is used,
+   * since the default focus styles are applied to the mdc-staticradio
+   * part which will not be present when a custom indicator is used.
+   *
+   * @internal
+   */
+  private handleIndicatorSlotChange(event: Event): void {
+    const slot = event.target as HTMLSlotElement;
+    const assignedNodes = slot.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE);
+    this.toggleAttribute('data-custom-indicator', assignedNodes.length > 0);
+  }
+
   public override render() {
     return html`
-      <slot name="indicator">
+      <slot name="indicator" @slotchange=${this.handleIndicatorSlotChange}>
         <mdc-staticradio
           part="radio-indicator"
           role="presentation"

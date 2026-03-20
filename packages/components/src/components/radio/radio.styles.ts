@@ -61,19 +61,30 @@ const styles = [
     :host(:focus-visible)::part(radio-indicator) {
       outline: none;
     }
-    :host([disabled]:focus) {
-      box-shadow: none;
-    }
 
     :host(:focus-within)::part(radio-indicator) {
       position: relative;
       box-shadow: ${focusRingBoxShadow};
     }
 
+    :host([data-custom-indicator]:focus-within) {
+      position: relative;
+      box-shadow: ${focusRingBoxShadow};
+    }
+
+    :host([disabled]:focus),
+    :host([data-custom-indicator]:focus-within)::part(radio-indicator) {
+      box-shadow: none;
+    }
+
     /* High Contrast Mode */
     @media (forced-colors: active) {
-      :host(:focus-visible)::part(radio-indicator) {
+      :host(:focus-visible)::part(radio-indicator),
+      :host([data-custom-indicator]:focus-visible) {
         outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+      }
+      :host([data-custom-indicator]:focus-visible)::part(radio-indicator) {
+        outline: none;
       }
     }
   `,
