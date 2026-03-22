@@ -1,6 +1,6 @@
 import { CSSResult, html } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { property } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
@@ -8,6 +8,7 @@ import Searchfield from '../searchfield/searchfield.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { ROLE } from '../../utils/roles';
+import type Popover from '../popover/popover.component';
 
 import styles from './searchpopover.styles';
 import { DEFAULTS, TRIGGER_ID, POPOVER_ID } from './searchpopover.constants';
@@ -83,6 +84,9 @@ import type { Placement } from './searchpopover.types';
  * @csspart popover-content - The popover content element.
  */
 class Searchpopover extends Searchfield {
+  @query(`#${POPOVER_ID}`)
+  protected popoverElement!: Popover;
+
   /**
    * Whether to display the popover.
    * @default false
@@ -118,6 +122,12 @@ class Searchpopover extends Searchfield {
   @property({ type: String, reflect: true, attribute: 'popover-aria-label' })
   popoverAriaLabel?: string;
 
+  private onInputFocus() {
+    if (this.displayPopover) {
+      this.popoverElement.show();
+    }
+  }
+
   protected override renderInputElement() {
     const placeholderText = this.hasInputChips ? '' : this.placeholder;
 
@@ -151,6 +161,7 @@ class Searchpopover extends Searchfield {
       @input=${this.onInput}
       @change=${this.onChange}
       @keydown=${this.handleKeyDown}
+      @focus=${this.onInputFocus}
       role=${ifDefined(ROLE.COMBOBOX)}
     />`;
   }
