@@ -7,6 +7,9 @@ import { action } from 'storybook/actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../inputchip';
+import '../chip';
+import '../staticchip';
+import '../alertchip';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE } from '../input/input.constants';
 
 const render = (args: Args) =>
@@ -169,8 +172,72 @@ export const WithInputChipFilters: StoryObj = {
           slot="filters"
           @remove="${clearFilter}"
         ></mdc-inputchip>
-        <mdc-chip label="This does not render" slot="filters"></mdc-chip>
       </mdc-searchfield>
     `;
   },
 };
+
+// AI-Assisted
+export const WithStaticChipFilters: StoryObj = {
+  render: () => html`
+    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-staticchip label="Status: Active" slot="filters"></mdc-staticchip>
+      <mdc-staticchip label="Priority: High" slot="filters"></mdc-staticchip>
+    </mdc-searchfield>
+  `,
+};
+
+export const WithAlertChipFilters: StoryObj = {
+  render: () => {
+    const clearFilter = (e: Event) => {
+      (e.target as HTMLElement).remove();
+    };
+    return html`
+      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+        <mdc-alertchip
+          label="Warning: Unsaved changes"
+          variant="warning"
+          slot="filters"
+          @click="${clearFilter}"
+        ></mdc-alertchip>
+        <mdc-alertchip
+          label="Error: Invalid input"
+          variant="error"
+          slot="filters"
+          @click="${clearFilter}"
+        ></mdc-alertchip>
+      </mdc-searchfield>
+    `;
+  },
+};
+
+export const WithMixedChipFilters: StoryObj = {
+  render: () => {
+    const clearFilter = (e: Event) => {
+      (e.target as HTMLElement).remove();
+    };
+    return html`
+      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+        <mdc-inputchip
+          clear-aria-label="Clear"
+          label="Query: momentum"
+          slot="filters"
+          @remove="${clearFilter}"
+        ></mdc-inputchip>
+        <mdc-staticchip label="Type: Component" slot="filters"></mdc-staticchip>
+        <mdc-alertchip label="Updated: 2 days ago" slot="filters" @remove="${clearFilter}"></mdc-alertchip>
+      </mdc-searchfield>
+    `;
+  },
+};
+
+export const WithBasicChips: StoryObj = {
+  render: () => html`
+    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-chip label="Filter 1" slot="filters"></mdc-chip>
+      <mdc-chip label="Filter 2" slot="filters"></mdc-chip>
+      <mdc-chip label="Filter 3" slot="filters"></mdc-chip>
+    </mdc-searchfield>
+  `,
+};
+// End AI-Assisted

@@ -9,26 +9,23 @@ const styles = css`
 
   :host::part(input-text) {
     white-space: nowrap;
-    min-width: 90%;
   }
 
-  input[type="search"]::-webkit-search-cancel-button {
+  input[type='search']::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
 
-  input[type="search"]:hover::-webkit-search-cancel-button {
+  input[type='search']:hover::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
 
-  :host::part(scrollable-container) {
+  :host::part(searchfield-container) {
     display: flex;
-    flex-grow: 1;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    position: relative;
-    scrollbar-width: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 `;
 

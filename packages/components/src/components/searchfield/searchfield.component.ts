@@ -8,12 +8,12 @@ import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
 import styles from './searchfield.styles';
-import { DEFAULTS } from './searchfield.constants';
+import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
 
 /**
  * `mdc-searchfield` component is used as an input field for search functionality.
  *
- * It supports `mdc-inputchip` as filters.
+ * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-staticchip`, `mdc-alertchip`, `mdc-chip`)
  *
  * This component is built by extending the `mdc-input` component.
  *
@@ -75,7 +75,7 @@ import { DEFAULTS } from './searchfield.constants';
  */
 class Searchfield extends KeyDownHandledMixin(Input) {
   @queryAssignedElements({ slot: 'filters' })
-  inputChips?: Array<HTMLElement>;
+  chips?: Array<HTMLElement>;
 
   /**
    * @internal
@@ -85,7 +85,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   /**
    * @internal
    */
-  @state() hasInputChips = false;
+  @state() hasChips = false;
 
   /**
    * Handles the keydown event of the search field.
@@ -113,15 +113,15 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   }
 
   /**
-   * This method is used to render the input chips inside filters slot.
-   * It will remove any elements that are not input chips.
+   * This method is used to render the chips inside filters slot.
+   * It will remove any elements that are not supported chips.
    * @internal
    */
-  protected renderInputChips() {
-    this.hasInputChips = !!this.inputChips?.length;
-    if (this.inputChips) {
-      this.inputChips.forEach(element => {
-        if (!element.matches(DEFAULTS.INPUT_CHIP_TAG)) {
+  protected renderChips() {
+    this.hasChips = !!this.chips?.length;
+    if (this.chips) {
+      this.chips.forEach(element => {
+        if (!element.matches(CHIP_SELECTOR)) {
           element.remove();
         }
       });
@@ -145,8 +145,8 @@ class Searchfield extends KeyDownHandledMixin(Input) {
 
   override clearInputText() {
     super.clearInputText();
-    this.inputChips?.forEach(element => {
-      // Dispatch the custom 'remove' event from inputChip
+    this.chips?.forEach(element => {
+      // Dispatch the custom 'remove' event from any Chip component
       element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
   }
@@ -178,18 +178,18 @@ class Searchfield extends KeyDownHandledMixin(Input) {
         part="input-container"
       >
         ${this.renderLeadingIcon()}
-        <div part="scrollable-container" tabindex="-1">
+        <div part="searchfield-container">
           <div
             part="filters-container"
             @click=${this.handleFilterContainerClick}
             @keydown=${this.handleFilterContainerKeyDown}
             @keyup=${this.handleFilterContainerKeyUp}
           >
-            <slot name="filters" @slotchange=${this.renderInputChips}></slot>
+            <slot name="filters" @slotchange=${this.renderChips}></slot>
           </div>
-          ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
+          ${this.renderInputElement(DEFAULTS.TYPE, this.hasChips)}
         </div>
-        ${this.renderTrailingButton(this.hasInputChips)}
+        ${this.renderTrailingButton(this.hasChips)}
       </div>
     `;
   }
