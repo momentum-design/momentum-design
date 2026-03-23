@@ -55,10 +55,10 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ${
         restArgs.filters
-          ? `><mdc-inputchip 
+          ? `><mdc-chip 
         label="Selected" 
         slot="filters" 
-        ></mdc-inputchip>`
+        ></mdc-chip>`
           : '>'
       }</mdc-searchfield>
       <mdc-button>Second Button</mdc-button></div>
@@ -101,9 +101,18 @@ test('mdc-searchfield', async ({ componentsPage }) => {
 
     searchfieldStickerSheet.setChildren(`<mdc-inputchip 
         slot='filters' 
-        label='Query: value' 
+        label='InputChip' 
         clear-aria-label='clear'
-      ></mdc-inputchip>`);
+      ></mdc-inputchip>
+      <mdc-chip 
+        slot='filters' 
+        label='Chip'
+      ></mdc-chip>
+      <mdc-alertchip 
+        slot='filters' 
+        label='AlertChip'
+        variant="warning"
+      ></mdc-alertchip>`);
     searchfieldStickerSheet.setAttributes({
       value: '',
       placeholder: 'Search for value',
@@ -273,9 +282,9 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     });
 
     // AI-Assisted
+    const filterChip = searchField.locator('mdc-chip');
     await test.step('filter chip should be visible when present and tab should focus input', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
-      const filterChip = searchField.locator('mdc-inputchip');
       await expect(filterChip).toBeVisible();
       // Tab should focus the input directly, not the chip (chips are navigated via arrow keys)
       await componentsPage.actionability.pressTab();
@@ -284,7 +293,6 @@ test('mdc-searchfield', async ({ componentsPage }) => {
 
     await test.step('ArrowLeft at input start should focus the last chip', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
-      const filterChip = searchField.locator('mdc-inputchip');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       const { keyboard } = componentsPage.page;
@@ -297,7 +305,6 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       const { keyboard } = componentsPage.page;
       await keyboard.press(KEYS.ARROW_LEFT);
-      const filterChip = searchField.locator('mdc-inputchip');
       await expect(filterChip).toBeFocused();
       await keyboard.press(KEYS.ARROW_RIGHT);
       await expect(inputEl).toBeFocused();
@@ -305,7 +312,6 @@ test('mdc-searchfield', async ({ componentsPage }) => {
 
     await test.step('Backspace at input start should remove the last chip', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
-      const filterChip = searchField.locator('mdc-inputchip');
       await expect(filterChip).toBeVisible();
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
@@ -316,7 +322,6 @@ test('mdc-searchfield', async ({ componentsPage }) => {
 
     await test.step('Home key should always focus the first chip regardless of cursor position', async () => {
       await setup({ componentsPage, value: 'some text', clearAriaLabel: 'clear', filters: true });
-      const filterChip = searchField.locator('mdc-inputchip');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       // Cursor is at end of 'some text', pressing Home should jump straight to first chip
@@ -330,7 +335,6 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       const { keyboard } = componentsPage.page;
       await keyboard.press(KEYS.HOME);
-      const filterChip = searchField.locator('mdc-inputchip');
       await expect(filterChip).toBeFocused();
       await keyboard.press(KEYS.END);
       await expect(inputEl).toBeFocused();

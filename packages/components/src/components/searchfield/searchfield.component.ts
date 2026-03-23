@@ -137,7 +137,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     const input = this.inputElement as HTMLInputElement;
     const isAtStart = input.selectionStart === 0 && input.selectionEnd === 0;
 
-    if (event.key === ACTIONS.BACKSPACE && isAtStart) {
+    if (action === ACTIONS.BACKSPACE && isAtStart) {
       event.preventDefault();
       this.removeChipAtIndex(this.chips.length - 1);
       this.keyDownEventHandled();
