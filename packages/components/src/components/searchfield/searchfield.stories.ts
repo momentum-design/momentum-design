@@ -177,27 +177,12 @@ export const WithInputChipFilters: StoryObj = {
 };
 
 export const WithAlertChipFilters: StoryObj = {
-  render: () => {
-    const clearFilter = (e: Event) => {
-      (e.target as HTMLElement).remove();
-    };
-    return html`
-      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-        <mdc-alertchip
-          label="Warning: Unsaved changes"
-          variant="warning"
-          slot="filters"
-          @click="${clearFilter}"
-        ></mdc-alertchip>
-        <mdc-alertchip
-          label="Error: Invalid input"
-          variant="error"
-          slot="filters"
-          @click="${clearFilter}"
-        ></mdc-alertchip>
-      </mdc-searchfield>
-    `;
-  },
+  render: () => html`
+    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-alertchip label="Warning: Unsaved changes" variant="warning" slot="filters"></mdc-alertchip>
+      <mdc-alertchip label="Error: Invalid input" variant="error" slot="filters"></mdc-alertchip>
+    </mdc-searchfield>
+  `,
 };
 
 export const WithMixedChipFilters: StoryObj = {
@@ -213,7 +198,7 @@ export const WithMixedChipFilters: StoryObj = {
           slot="filters"
           @remove="${clearFilter}"
         ></mdc-inputchip>
-        <mdc-alertchip label="Updated: 2 days ago" slot="filters" @remove="${clearFilter}"></mdc-alertchip>
+        <mdc-alertchip label="Updated: 2 days ago" slot="filters"></mdc-alertchip>
       </mdc-searchfield>
     `;
   },

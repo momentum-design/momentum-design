@@ -18,6 +18,10 @@ const styles = css`
     pointer-events: none;
   }
 
+  :host::part(input-container) {
+    gap: 0.5rem;
+  }
+
   :host::part(searchfield-container) {
     display: flex;
     flex-wrap: nowrap;
@@ -27,10 +31,15 @@ const styles = css`
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
+    height: var(--mdc-input-height);
   }
 
   :host::part(searchfield-container)::-webkit-scrollbar {
     display: none;
+  }
+
+  slot[name='filters']::slotted(:first-child) {
+    margin-left: 0.25rem;
   }
 `;
 

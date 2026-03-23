@@ -332,7 +332,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     focusTarget.setAttribute('tabindex', '0');
     focusTarget.focus({ preventScroll: true });
     this.scrollChipIntoView(chip);
-    this.isInputFocused = true;
+    this.isInputFocused = false;
   }
 
   /**
