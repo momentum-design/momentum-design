@@ -8,7 +8,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import '../inputchip';
 import '../chip';
-import '../staticchip';
 import '../alertchip';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE } from '../input/input.constants';
 
@@ -177,16 +176,6 @@ export const WithInputChipFilters: StoryObj = {
   },
 };
 
-// AI-Assisted
-export const WithStaticChipFilters: StoryObj = {
-  render: () => html`
-    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-      <mdc-staticchip label="Status: Active" slot="filters"></mdc-staticchip>
-      <mdc-staticchip label="Priority: High" slot="filters"></mdc-staticchip>
-    </mdc-searchfield>
-  `,
-};
-
 export const WithAlertChipFilters: StoryObj = {
   render: () => {
     const clearFilter = (e: Event) => {
@@ -224,7 +213,6 @@ export const WithMixedChipFilters: StoryObj = {
           slot="filters"
           @remove="${clearFilter}"
         ></mdc-inputchip>
-        <mdc-staticchip label="Type: Component" slot="filters"></mdc-staticchip>
         <mdc-alertchip label="Updated: 2 days ago" slot="filters" @remove="${clearFilter}"></mdc-alertchip>
       </mdc-searchfield>
     `;

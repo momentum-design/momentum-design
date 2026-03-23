@@ -1,14 +1,11 @@
+// AI-Assisted
 import { css } from 'lit';
 
 const styles = css`
-  :host::part(filters-container) {
-    display: flex;
-    gap: 0.25rem;
-    margin: 0.25rem 0;
-  }
-
   :host::part(input-text) {
     white-space: nowrap;
+    flex: 0 0 auto;
+    min-width: 4rem;
   }
 
   input[type='search']::-webkit-search-cancel-button {
@@ -23,10 +20,19 @@ const styles = css`
 
   :host::part(searchfield-container) {
     display: flex;
-    justify-content: center;
+    flex-wrap: nowrap;
     align-items: center;
     width: 100%;
+    gap: 0.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  :host::part(searchfield-container)::-webkit-scrollbar {
+    display: none;
   }
 `;
 
 export default [styles];
+// End AI-Assisted

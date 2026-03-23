@@ -1,3 +1,4 @@
+// AI-Assisted
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -6,6 +7,7 @@ import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { TAG_NAME as INPUT_CHIP_TAG } from '../inputchip/inputchip.constants';
 
 import styles from './searchfield.styles';
 import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
@@ -13,7 +15,10 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
 /**
  * `mdc-searchfield` component is used as an input field for search functionality.
  *
- * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-staticchip`, `mdc-alertchip`, `mdc-chip`)
+ * It supports any interactable Chip component as filters. (`mdc-inputchip`, `mdc-alertchip`, `mdc-chip`)
+ * Chips are rendered inline with the search input text, behaving like single characters.
+ * Users can traverse the cursor between chips and text using arrow keys,
+ * and remove a chip by pressing Backspace when the cursor is adjacent to it.
  *
  * This component is built by extending the `mdc-input` component.
  *
@@ -32,7 +37,7 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
  *
- * @slot filters - Slot for input chips
+ * @slot filters - Slot for chip filters rendered inline with the input text
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
  * @slot toggletip - Slot for the toggletip info icon button. If not provided, the `toggletip-text` property will be used to render the info icon button and toggletip.
  * @slot help-icon - Slot for the helper/validation icon. If not provided, the icon will be rendered based on the `helpTextType` property.
@@ -72,6 +77,7 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
  * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
  * @csspart input-text - The input field element.
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
+ * @csspart searchfield-container - The inline flow container for chips and the input field.
  */
 class Searchfield extends KeyDownHandledMixin(Input) {
   @queryAssignedElements({ slot: 'filters' })
@@ -88,15 +94,68 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   @state() hasChips = false;
 
   /**
+   * Tracks which chip is currently focused for keyboard navigation.
+   * -1 means no chip is focused (input has focus).
+   * @internal
+   */
+  private focusedChipIndex = -1;
+
+  /**
+   * Flag to suppress scroll-to-start when programmatically focusing the input
+   * (e.g., ArrowRight from chip). When false, onfocus scrolls the container
+   * to position 0 so chips are visible (e.g., Tab into the component).
+   * @internal
+   */
+  private navigatingToInput = false;
+
+  /**
+   * Tracks which chip elements already have event listeners attached.
+   * @internal
+   */
+  private chipsWithListeners = new WeakSet<HTMLElement>();
+
+  /**
    * Handles the keydown event of the search field.
    * If the key pressed is 'Enter', it submits the form.
    * If the key pressed is 'Escape', it clears the input text.
+   * If 'Backspace' is pressed at cursor position 0, removes the last chip.
+   * If 'ArrowLeft' is pressed at cursor position 0, focuses the last chip.
    * @param event - Keyboard event
    */
   override handleKeyDown(event: KeyboardEvent) {
     super.handleKeyDown(event);
-    if (this.getActionForKeyEvent(event) === ACTIONS.ESCAPE) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ESCAPE) {
       this.clearInputText();
+      this.keyDownEventHandled();
+      return;
+    }
+
+    if (!this.hasChips || !this.chips?.length) return;
+
+    const input = this.inputElement as HTMLInputElement;
+    const isAtStart = input.selectionStart === 0 && input.selectionEnd === 0;
+
+    if (event.key === ACTIONS.BACKSPACE && isAtStart) {
+      event.preventDefault();
+      this.removeChipAtIndex(this.chips.length - 1);
+      this.keyDownEventHandled();
+      return;
+    }
+
+    if (action === ACTIONS.LEFT && isAtStart) {
+      event.preventDefault();
+      this.focusChipAtIndex(this.chips.length - 1);
+      this.keyDownEventHandled();
+      return;
+    }
+
+    // Home always navigates to the first chip regardless of cursor position,
+    // treating chips as part of the input content before the text.
+    if (action === ACTIONS.HOME) {
+      event.preventDefault();
+      this.focusChipAtIndex(0);
       this.keyDownEventHandled();
     }
   }
@@ -115,6 +174,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   /**
    * This method is used to render the chips inside filters slot.
    * It will remove any elements that are not supported chips.
+   * Sets up keyboard navigation listeners on valid chip elements.
    * @internal
    */
   protected renderChips() {
@@ -123,49 +183,284 @@ class Searchfield extends KeyDownHandledMixin(Input) {
       this.chips.forEach(element => {
         if (!element.matches(CHIP_SELECTOR)) {
           element.remove();
+          return;
+        }
+        // Remove chips from tab order; they are navigated via arrow keys from the input
+        element.setAttribute('tabindex', '-1');
+        if (!this.chipsWithListeners.has(element)) {
+          const focusTarget = this.getFocusTargetForChip(element);
+          focusTarget.addEventListener('keydown', this.handleChipKeyDown);
+          focusTarget.addEventListener('focus', this.handleChipFocus);
+          this.chipsWithListeners.add(element);
         }
       });
     }
+    this.focusedChipIndex = -1;
   }
 
   /**
    * This sets the focus ring state based on the input focus state.
+   * Also resets chip focus state when the input receives focus.
    * Eventually, this logic has to be omitted and achieved using CSS instead.
    * @override
    */
   protected override firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     this.inputElement.onfocus = () => {
       this.isInputFocused = true;
+      this.focusedChipIndex = -1;
+      this.resetChipTabIndices();
+
+      // When focus enters from outside (Tab / click), the browser auto-scrolls
+      // the overflow container to reveal the <input>, hiding the chips.
+      // Reset scroll to 0 so chips are visible first.
+      // Skip when we programmatically moved focus from chip → input.
+      if (!this.navigatingToInput && this.hasChips) {
+        const container = this.scrollContainer;
+        if (container) {
+          container.scrollLeft = 0;
+        }
+      }
+      this.navigatingToInput = false;
     };
     this.inputElement.onblur = () => {
-      this.isInputFocused = false;
+      // Only remove focus ring if focus is not moving to a chip
+      requestAnimationFrame(() => {
+        if (this.focusedChipIndex < 0) {
+          this.isInputFocused = false;
+        }
+      });
     };
     super.firstUpdated(_changedProperties);
   }
 
   override clearInputText() {
     super.clearInputText();
-    this.chips?.forEach(element => {
-      // Dispatch the custom 'remove' event from any Chip component
-      element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
+    // Directly remove all chips from DOM since not all chip types support the 'remove' event
+    const chipsToRemove = [...(this.chips ?? [])];
+    chipsToRemove.forEach(element => element.remove());
+  }
+
+  /**
+   * Handles keydown events on focused chip elements.
+   * Supports Backspace/Delete to remove, arrow keys to navigate,
+   * Escape to clear all, and printable characters to redirect to input.
+   * @internal
+   */
+  private handleChipKeyDown = (event: KeyboardEvent) => {
+    const action = this.getActionForKeyEvent(event);
+
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      event.preventDefault();
+      this.removeChipAtIndex(this.focusedChipIndex);
+      return;
+    }
+
+    if (action === ACTIONS.LEFT) {
+      event.preventDefault();
+      if (this.focusedChipIndex > 0) {
+        this.focusChipAtIndex(this.focusedChipIndex - 1);
+      }
+      return;
+    }
+
+    if (action === ACTIONS.RIGHT) {
+      event.preventDefault();
+      if (this.chips && this.focusedChipIndex < this.chips.length - 1) {
+        this.focusChipAtIndex(this.focusedChipIndex + 1);
+      } else {
+        this.focusInputField();
+      }
+      return;
+    }
+
+    if (action === ACTIONS.ESCAPE) {
+      event.preventDefault();
+      this.clearInputText();
+      this.keyDownEventHandled();
+      return;
+    }
+
+    if (action === ACTIONS.HOME) {
+      event.preventDefault();
+      this.focusChipAtIndex(0);
+      return;
+    }
+
+    if (action === ACTIONS.END) {
+      event.preventDefault();
+      this.focusInputField();
+      // Place cursor at end of text and scroll to show it
+      const input = this.inputElement as HTMLInputElement;
+      const len = input.value.length;
+      input.setSelectionRange(len, len);
+      this.scrollContainerToEnd();
+      return;
+    }
+
+    // Printable character: redirect focus to input so the character is typed there
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      this.focusInputField();
+    }
+  };
+
+  /**
+   * Handles focus events on chip elements to track focused chip index.
+   * @internal
+   */
+  private handleChipFocus = (event: FocusEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    const chip = this.getChipForFocusTarget(target);
+    const index = chip ? (this.chips?.indexOf(chip) ?? -1) : -1;
+    if (index >= 0) {
+      this.focusedChipIndex = index;
+      this.isInputFocused = true;
+    }
+  };
+
+  /**
+   * Focuses a chip at the given index and updates tabindex management.
+   * Scrolls the chip into view within the searchfield container.
+   * @param index - The index of the chip to focus
+   * @internal
+   */
+  private focusChipAtIndex(index: number) {
+    if (!this.chips || index < 0 || index >= this.chips.length) return;
+    this.focusedChipIndex = index;
+    this.resetChipTabIndices();
+    const chip = this.chips[index];
+    const focusTarget = this.getFocusTargetForChip(chip);
+    focusTarget.setAttribute('tabindex', '0');
+    focusTarget.focus({ preventScroll: true });
+    this.scrollChipIntoView(chip);
+    this.isInputFocused = true;
+  }
+
+  /**
+   * Returns focus to the input field and resets chip focus state.
+   * Uses preventScroll so the container scroll position is preserved.
+   * @internal
+   */
+  private focusInputField() {
+    this.focusedChipIndex = -1;
+    this.resetChipTabIndices();
+    this.navigatingToInput = true;
+    this.inputElement.focus({ preventScroll: true });
+  }
+
+  /**
+   * Removes a chip at the given index by directly removing it from the DOM.
+   * After removal, focuses the appropriate next element.
+   * @param index - The index of the chip to remove
+   * @internal
+   */
+  private removeChipAtIndex(index: number) {
+    if (!this.chips || index < 0 || index >= this.chips.length) return;
+    const chip = this.chips[index];
+    chip.remove();
+
+    // Wait for DOM/slot update after removal
+    requestAnimationFrame(() => {
+      if (this.chips && this.chips.length > 0) {
+        const newIndex = Math.min(index, this.chips.length - 1);
+        this.focusChipAtIndex(newIndex);
+      } else {
+        this.focusInputField();
+      }
     });
+  }
+
+  /**
+   * Resets tabindex to -1 on all chips.
+   * @internal
+   */
+  private resetChipTabIndices() {
+    this.chips?.forEach(c => {
+      const target = this.getFocusTargetForChip(c);
+      target.setAttribute('tabindex', '-1');
+    });
+  }
+
+  /**
+   * Returns the element that should receive focus for a given chip.
+   * For mdc-inputchip, this is the close button inside its shadow DOM.
+   * For mdc-chip and mdc-alertchip, this is the chip element itself.
+   * @internal
+   */
+  private getFocusTargetForChip(chip: HTMLElement): HTMLElement {
+    if (chip.matches(INPUT_CHIP_TAG)) {
+      const closeBtn = chip.shadowRoot?.querySelector<HTMLElement>('[part="close-icon"]');
+      if (closeBtn) return closeBtn;
+    }
+    return chip;
+  }
+
+  /**
+   * Returns the chip element corresponding to a focus target.
+   * For mdc-inputchip close buttons, returns the parent inputchip.
+   * For other chips, returns the element itself.
+   * @internal
+   */
+  private getChipForFocusTarget(target: HTMLElement): HTMLElement | null {
+    // If the target is a direct chip in the slot, return it
+    if (this.chips?.includes(target)) return target;
+    // Otherwise, it's the close button inside an inputchip's shadow DOM.
+    // Walk up to find the host element.
+    const host = (target.getRootNode() as ShadowRoot)?.host as HTMLElement;
+    if (host && this.chips?.includes(host)) return host;
+    return null;
+  }
+
+  /**
+   * Returns the searchfield-container element that holds chips and the input.
+   * @internal
+   */
+  private get scrollContainer(): HTMLElement | null {
+    return this.shadowRoot?.querySelector('[part="searchfield-container"]') ?? null;
+  }
+
+  /**
+   * Scrolls the given chip element into view within the searchfield container.
+   * @param chip - The chip element to scroll into view
+   * @internal
+   */
+  private scrollChipIntoView(chip: HTMLElement) {
+    const container = this.scrollContainer;
+    if (!container) return;
+
+    // For the first chip, always scroll to the very start
+    if (this.chips && this.chips.indexOf(chip) === 0) {
+      container.scrollLeft = 0;
+      return;
+    }
+
+    // Use getBoundingClientRect to get positions relative to the viewport,
+    // then compare against the container's visible bounds.
+    const containerRect = container.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+
+    if (chipRect.left < containerRect.left) {
+      container.scrollLeft -= containerRect.left - chipRect.left;
+    } else if (chipRect.right > containerRect.right) {
+      container.scrollLeft += chipRect.right - containerRect.right;
+    }
+  }
+
+  /**
+   * Scrolls the searchfield container so that the input element's right edge
+   * is just visible, without over-scrolling past it.
+   * @internal
+   */
+  private scrollContainerToEnd() {
+    const container = this.scrollContainer;
+    const input = this.inputElement as HTMLElement;
+    if (!container || !input) return;
+    const inputRight = input.offsetLeft + input.offsetWidth;
+    const desiredScroll = inputRight - container.clientWidth;
+    container.scrollLeft = Math.max(0, desiredScroll);
   }
 
   handleFilterContainerClick = () => {
     this.inputElement.focus();
-  };
-
-  protected handleFilterContainerKeyDown = (e: KeyboardEvent) => {
-    if (this.getActionForKeyEvent(e) === ACTIONS.ENTER) {
-      this.handleFilterContainerClick();
-      this.keyDownEventHandled();
-    }
-  };
-
-  protected handleFilterContainerKeyUp = (e: KeyboardEvent) => {
-    if (this.getActionForKeyEvent(e) === ACTIONS.SPACE) {
-      this.handleFilterContainerClick();
-    }
   };
 
   public override render() {
@@ -178,15 +473,8 @@ class Searchfield extends KeyDownHandledMixin(Input) {
         part="input-container"
       >
         ${this.renderLeadingIcon()}
-        <div part="searchfield-container">
-          <div
-            part="filters-container"
-            @click=${this.handleFilterContainerClick}
-            @keydown=${this.handleFilterContainerKeyDown}
-            @keyup=${this.handleFilterContainerKeyUp}
-          >
-            <slot name="filters" @slotchange=${this.renderChips}></slot>
-          </div>
+        <div part="searchfield-container" @click=${this.handleFilterContainerClick}>
+          <slot name="filters" @slotchange=${this.renderChips}></slot>
           ${this.renderInputElement(DEFAULTS.TYPE, this.hasChips)}
         </div>
         ${this.renderTrailingButton(this.hasChips)}
@@ -198,3 +486,4 @@ class Searchfield extends KeyDownHandledMixin(Input) {
 }
 
 export default Searchfield;
+// End AI-Assisted

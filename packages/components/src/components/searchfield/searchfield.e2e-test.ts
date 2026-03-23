@@ -272,22 +272,70 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await componentsPage.removeAttribute(searchField, 'disabled');
     });
 
-    await test.step('filter chip should be focusable and interactable when present', async () => {
+    // AI-Assisted
+    await test.step('filter chip should be visible when present and tab should focus input', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
-      const inputChipBtn = searchField.locator('mdc-button[part="close-icon"]');
-      await inputChipBtn.evaluate(btn => {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('remove-filter');
-        });
-      });
       const filterChip = searchField.locator('mdc-inputchip');
       await expect(filterChip).toBeVisible();
-      await expect(inputChipBtn).toHaveClass('');
+      // Tab should focus the input directly, not the chip (chips are navigated via arrow keys)
       await componentsPage.actionability.pressTab();
-      await expect(inputChipBtn).toBeFocused();
-      await inputChipBtn.click();
-      await expect(inputChipBtn).toHaveClass('remove-filter');
+      await expect(inputEl).toBeFocused();
     });
+
+    await test.step('ArrowLeft at input start should focus the last chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      const filterChip = searchField.locator('mdc-inputchip');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(filterChip).toBeFocused();
+    });
+
+    await test.step('ArrowRight on focused chip should return focus to input', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.ARROW_LEFT);
+      const filterChip = searchField.locator('mdc-inputchip');
+      await expect(filterChip).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(inputEl).toBeFocused();
+    });
+
+    await test.step('Backspace at input start should remove the last chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      const filterChip = searchField.locator('mdc-inputchip');
+      await expect(filterChip).toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.BACKSPACE);
+      await expect(filterChip).not.toBeAttached();
+    });
+
+    await test.step('Home key should always focus the first chip regardless of cursor position', async () => {
+      await setup({ componentsPage, value: 'some text', clearAriaLabel: 'clear', filters: true });
+      const filterChip = searchField.locator('mdc-inputchip');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      // Cursor is at end of 'some text', pressing Home should jump straight to first chip
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.HOME);
+      await expect(filterChip).toBeFocused();
+    });
+
+    await test.step('End key on focused chip should return focus to input', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.HOME);
+      const filterChip = searchField.locator('mdc-inputchip');
+      await expect(filterChip).toBeFocused();
+      await keyboard.press(KEYS.END);
+      await expect(inputEl).toBeFocused();
+    });
+    // End AI-Assisted
 
     await test.step('spatial navigation', async () => {
       const input = await setup({
