@@ -42,8 +42,13 @@ import styles from './radio.styles';
  *
  * ## Styling
  *
- * Use the `static-radio` part to apply custom styles to the radio visual element.
+ * Use the `radio-indicator` part to apply custom styles to the radio visual element.
  * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
+ *
+ * The `indicator` slot allows replacing the default radio circle with a custom element.
+ * When a custom indicator is slotted, the component automatically adds the `mdc-focus-ring`
+ * class to the host element. This shifts the focus ring from the default static radio to the
+ * entire host element, ensuring keyboard focus remains visible.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -59,7 +64,7 @@ import styles from './radio.styles';
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
- * @csspart static-radio - The staticradio that provides the visual radio appearance.
+ * @csspart radio-indicator - The staticradio that provides the visual radio appearance.
  *
  * @slot indicator - Slot for the radio indicator element. If not provided, a default styled radio will be rendered.
  * @slot label - Slot for the label of the radio.
@@ -343,9 +348,23 @@ class Radio
     this.internals.setValidity({});
   }
 
+  /**
+   * Handles the slotchange event on the indicator slot.
+   * Adds the `mdc-focus-ring` class to the host when a custom indicator
+   * is slotted, so the focus ring shifts from the default static radio
+   * to the entire host element.
+   *
+   * @internal
+   */
+  private handleIndicatorSlotChange(event: Event): void {
+    const slot = event.target as HTMLSlotElement;
+    const assignedNodes = slot.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE);
+    this.classList.toggle('mdc-focus-ring', assignedNodes.length > 0);
+  }
+
   public override render() {
     return html`
-      <slot name="indicator">
+      <slot name="indicator" @slotchange=${this.handleIndicatorSlotChange}>
         <mdc-staticradio
           part="radio-indicator"
           role="presentation"

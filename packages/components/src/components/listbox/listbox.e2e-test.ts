@@ -1,11 +1,16 @@
+import { Locator } from '@playwright/test';
+
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+
+import type { ListBoxChangeEventDetail } from './listbox.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   children: string;
   label?: string;
   name?: string;
+  multiple?: boolean;
 };
 
 const label = 'Headquarters Location';
@@ -24,6 +29,7 @@ const setup = async (args: SetupOptions) => {
       <mdc-listbox
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.name ? `name="${restArgs.name}"` : ''}
+        ${restArgs.multiple ? 'multiple' : ''}
       >
         ${restArgs.children}
       </mdc-listbox>
@@ -36,6 +42,16 @@ const setup = async (args: SetupOptions) => {
   await listbox.waitFor();
   return listbox;
 };
+
+const captureChangeDetail = (listbox: Locator) =>
+  listbox.evaluate(
+    el =>
+      new Promise<ListBoxChangeEventDetail>(resolve => {
+        el.addEventListener('change', (e: Event) => resolve((e as CustomEvent<ListBoxChangeEventDetail>).detail), {
+          once: true,
+        });
+      }),
+  );
 
 test('mdc-listbox', async ({ componentsPage }) => {
   /**
@@ -136,6 +152,22 @@ test('mdc-listbox', async ({ componentsPage }) => {
   });
 
   /**
+   * HANDLE MODIFIED EVENT
+   */
+  await test.step('handleModifiedEvent syncs value when option selected attribute is set programmatically', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren() });
+
+    await listbox
+      .locator('mdc-option')
+      .nth(1)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync
+    const value = await listbox.evaluate((el: any) => el.value);
+    expect(value).toBe('newyork');
+  });
+
+  /**
    * ACCESSIBILITY ROLES & ATTRIBUTES
    */
   await test.step('accessibility roles and attributes', async () => {
@@ -153,6 +185,123 @@ test('mdc-listbox', async ({ componentsPage }) => {
 
     await test.step('matches screenshot of listbox', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-listbox', {
+        element: listbox,
+      });
+    });
+  });
+});
+
+test('mdc-listbox multiselect', async ({ componentsPage }) => {
+  /**
+   * ARIA MULTISELECTABLE
+   */
+  await test.step('has aria-multiselectable when multiple is true', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+    await expect(listbox).toHaveAttribute('aria-multiselectable', 'true');
+  });
+
+  /**
+   * TOGGLE SELECTION WITH CLICK
+   */
+  await test.step('toggles selection on click and emits correct event detail', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    // Click first option to select
+    let [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    expect(detail.selectedValues).toEqual(['london']);
+    expect(detail.value).toBe('london');
+
+    // Click second option - first should remain selected
+    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(1).click()]);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+    expect(detail.selectedValues).toEqual(['london', 'newyork']);
+    expect(detail.value).toBe('london');
+
+    // Click first again to deselect
+    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
+    await expect(listbox.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+    expect(detail.selectedValues).toEqual(['newyork']);
+    expect(detail.value).toBe('newyork');
+  });
+
+  /**
+   * TOGGLE SELECTION WITH KEYBOARD
+   */
+  await test.step('toggles selection with Enter and Space', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+    await componentsPage.actionability.pressTab();
+    await componentsPage.actionability.pressTab();
+    await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
+
+    // Select with Enter
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+
+    // Navigate down and select with Space
+    await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
+
+    // Deselect with Enter
+    await componentsPage.page.keyboard.press(KEYS.ENTER);
+    await expect(listbox.locator('mdc-option').nth(1)).not.toHaveAttribute('selected');
+    await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
+  });
+
+  /**
+   * HANDLE MODIFIED EVENT
+   */
+  await test.step('handleModifiedEvent syncs value when options selected attribute is set programmatically', async () => {
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    await listbox
+      .locator('mdc-option')
+      .nth(1)
+      .evaluate(el => el.setAttribute('selected', ''));
+    await listbox
+      .locator('mdc-option')
+      .nth(2)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync to first selected option
+    const value = await listbox.evaluate((el: any) => el.value);
+    expect(value).toBe('newyork');
+
+    await listbox
+      .locator('mdc-option')
+      .nth(0)
+      .evaluate(el => el.setAttribute('selected', ''));
+
+    // Value should sync to newly selected first option
+    const newValue = await listbox.evaluate((el: any) => el.value);
+    expect(newValue).toBe('london');
+
+    // Remove selection from london - value should sync to newyork
+    await listbox
+      .locator('mdc-option')
+      .nth(0)
+      .evaluate(el => el.removeAttribute('selected'));
+    const valueAfterRemove = await listbox.evaluate((el: any) => el.value);
+    expect(valueAfterRemove).toBe('newyork');
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression for multiselect listbox', async () => {
+    await componentsPage.page.setViewportSize({ width: 600, height: 2100 });
+    const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
+
+    // Select multiple options for visual snapshot
+    await listbox.locator('mdc-option').nth(0).click();
+    await listbox.locator('mdc-option').nth(2).click();
+
+    await test.step('matches screenshot of multiselect listbox', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-listbox-multiselect', {
         element: listbox,
       });
     });
