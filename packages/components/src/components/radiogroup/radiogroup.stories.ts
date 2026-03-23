@@ -5,11 +5,13 @@ import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 import type Radio from '../radio/radio.component';
+import { AnimationNames } from '../animation/animation.types';
 
 import type RadioGroup from './radiogroup.component';
 import '../radio';
+import '../animation';
 import '../button';
 
 const render = (args: Args) =>
@@ -147,4 +149,56 @@ export const RadioGroupInFormWithHelpTextValidation = () => {
       </div>
     </form>
   `;
+};
+
+export const RadioGroupWithCustomRadioSlot: StoryObj = {
+  render: () => {
+    let selectedValue = 'medium';
+    const handleChange = (event: Event) => {
+      const radio = event.target as HTMLInputElement;
+      selectedValue = radio.value;
+    };
+    return html`
+      <style>
+        .skinTonePickerWrapper {
+          display: flex;
+          width: auto;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .skinToneOption {
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+
+          &[checked] {
+            background-color: var(--mds-color-theme-background-primary-active);
+          }
+
+          &:hover {
+            background-color: var(--mds-color-theme-background-primary-hover);
+          }
+        }
+      </style>
+      <main>
+        <h5>Select your skin tone</h5>
+        <mdc-radiogroup class="skinTonePickerWrapper" name="skin-tone-picker">
+          ${['yellow', 'light', 'medium_light', 'medium', 'medium_dark', 'dark'].map(
+            name =>
+              html` <mdc-radio ?checked="${name === selectedValue}" onChange="${handleChange}" class="skinToneOption">
+                <mdc-animation
+                  style="width: 2rem; height: 2rem;"
+                  slot="indicator"
+                  name="${`thumb_up_${name}` as AnimationNames}"
+                  loop="false"
+                  aria-label="${`Select ${name} skin tone`}"
+                ></mdc-animation>
+              </mdc-radio>`,
+          )}
+        </mdc-radiogroup>
+      </main>
+    `;
+  },
+  ...hideAllControls(),
 };
