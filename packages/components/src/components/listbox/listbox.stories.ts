@@ -249,3 +249,24 @@ export const Multiselect: StoryObj = {
     `),
   ...hideAllControls(),
 };
+
+export const ListboxWithAvatarInOptions: StoryObj = {
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-listbox @change="${action('onchange')}">
+        <mdc-option value="user1" label="John Doe" secondary-label="john.doe@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user2" label="Jane Smith" secondary-label="jane.smith@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/64/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user3" label="Bob Wilson" secondary-label="bob.wilson@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/65/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user4" label="Alice Brown" secondary-label="alice.brown@example.com">
+          <mdc-avatar slot="leading-controls" initials="AB" size="32"></mdc-avatar>
+        </mdc-option>
+      </mdc-listbox>
+    `),
+  ...hideAllControls(),
+};
