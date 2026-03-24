@@ -473,7 +473,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
         part="input-container"
       >
         ${this.renderLeadingIcon()}
-        <div part="searchfield-container" @click=${this.handleFilterContainerClick}>
+        <div part="searchfield-container" @click=${this.handleFilterContainerClick} tabindex="-1">
           <slot name="filters" @slotchange=${this.renderChips}></slot>
           ${this.renderInputElement(DEFAULTS.TYPE, this.hasChips)}
         </div>

@@ -175,10 +175,11 @@ class Searchpopover extends Searchfield {
         id="${TRIGGER_ID}"
       >
         ${this.renderLeadingIcon()}
-        <div part="filters-container" @click=${this.handleFilterContainerClick}>
+        <div part="filters-container" @click=${this.handleFilterContainerClick} tabindex="-1">
           <slot name="filters" @slotchange=${this.renderChips}></slot>
-          ${this.renderInputElement()} ${this.renderTrailingButton(this.hasChips)}
+          ${this.renderInputElement()}
         </div>
+        ${this.renderTrailingButton(this.hasChips)}
       </div>
       <mdc-popover
         triggerID="${TRIGGER_ID}"

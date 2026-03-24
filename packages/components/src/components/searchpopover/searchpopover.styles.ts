@@ -10,6 +10,7 @@ const styles = css`
     overflow-y: hidden;
     scrollbar-width: none;
     height: var(--mdc-input-height);
+    flex-grow: 1;
   }
 
   :host::part(filters-container)::-webkit-scrollbar {
