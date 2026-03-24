@@ -144,9 +144,8 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!this.isValidItem(target)) return;
-
-    const option = target as Option;
+    const option = target.closest(OPTION_TAGNAME) as Option | null;
+    if (!option || !this.isValidItem(option)) return;
 
     if (this.multiple) {
       this.toggleOptionSelection(option);
