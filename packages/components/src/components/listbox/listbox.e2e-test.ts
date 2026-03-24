@@ -71,6 +71,20 @@ test('mdc-listbox', async ({ componentsPage }) => {
         await listbox.locator('mdc-option').nth(1).click();
         await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
       });
+
+      await test.step('should select option when clicking on nested avatar', async () => {
+        const listbox = await setup({
+          componentsPage,
+          children: `
+            <mdc-option value="user1" label="John Doe">
+              <mdc-avatar slot="leading-controls" initials="JD" size="32"></mdc-avatar>
+            </mdc-option>
+          `,
+        });
+
+        await listbox.locator('mdc-option').locator('mdc-avatar').click();
+        await expect(listbox.locator('mdc-option')).toHaveAttribute('selected');
+      });
     });
 
     await test.step('keyboard navigation and selection', async () => {
