@@ -29,6 +29,8 @@ export const ACTIONS = {
   HOME: 'home',
   /** End key */
   END: 'end',
+  /** Backspace key */
+  BACKSPACE: 'backspace',
 } as const;
 
 export type Actions = (typeof ACTIONS)[keyof typeof ACTIONS];
@@ -47,6 +49,7 @@ const DEFAULT_KEY_TO_ACTION: Record<string, Actions> = {
   [KEYS.TAB]: ACTIONS.TAB,
   [KEYS.HOME]: ACTIONS.HOME,
   [KEYS.END]: ACTIONS.END,
+  [KEYS.BACKSPACE]: ACTIONS.BACKSPACE,
 };
 
 export type KeyboardNavModes = 'spatial' | 'default';

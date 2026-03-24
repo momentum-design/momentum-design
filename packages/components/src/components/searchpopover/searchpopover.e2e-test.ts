@@ -88,9 +88,12 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
     const searchpopoverStickerSheet = new StickerSheet(componentsPage, 'mdc-searchpopover');
 
     searchpopoverStickerSheet.setAttributes(attributes);
-    searchpopoverStickerSheet.setChildren(
-      '<mdc-list><mdc-listitem label="Result 1"></mdc-listitem><mdc-listitem label="Result 2"></mdc-listitem></mdc-list>',
-    );
+
+    searchpopoverStickerSheet.setChildren(`<mdc-chip slot="filters" label="Category"></mdc-chip><mdc-chip slot="filters" label="Priority"></mdc-chip>
+      <mdc-list>
+        <mdc-listitem label="Result 1"></mdc-listitem>
+        <mdc-listitem label="Result 2"></mdc-listitem>
+      </mdc-list>`);
     await searchpopoverStickerSheet.createMarkupWithCombination({});
 
     await searchpopoverStickerSheet.mountStickerSheet({

@@ -22,7 +22,7 @@ import type { Placement } from './searchpopover.types';
  * - Don't use this when search results are displayed inline on the page -\> use Searchfield component instead.
  * - Don't use this when a list of options is filtered based on the search input -\> use Combobox component instead.
  *
- * It supports `mdc-inputchip` as filters.
+ * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-alertchip`, `mdc-chip`)
  *
  * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
  *
@@ -118,8 +118,17 @@ class Searchpopover extends Searchfield {
   @property({ type: String, reflect: true, attribute: 'popover-aria-label' })
   popoverAriaLabel?: string;
 
+  /**
+   * Overrides the parent scroll container to target the `filters-container` part,
+   * which is the scrollable chip row in the searchpopover layout.
+   * @internal
+   */
+  protected override get scrollContainer(): HTMLElement | null {
+    return this.shadowRoot?.querySelector('[part="filters-container"]') ?? null;
+  }
+
   protected override renderInputElement() {
-    const placeholderText = this.hasInputChips ? '' : this.placeholder;
+    const placeholderText = this.hasChips ? '' : this.placeholder;
 
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
@@ -166,18 +175,11 @@ class Searchpopover extends Searchfield {
         id="${TRIGGER_ID}"
       >
         ${this.renderLeadingIcon()}
-        <div part="scrollable-container" tabindex="-1">
-          <div
-            part="filters-container"
-            @click=${this.handleFilterContainerClick}
-            @keydown=${this.handleFilterContainerKeyDown}
-            @keyup=${this.handleFilterContainerKeyUp}
-          >
-            <slot name="filters" @slotchange=${this.renderInputChips}></slot>
-          </div>
+        <div part="filters-container" @click=${this.handleFilterContainerClick} tabindex="-1">
+          <slot name="filters" @slotchange=${this.renderChips}></slot>
           ${this.renderInputElement()}
         </div>
-        ${this.renderTrailingButton(this.hasInputChips)}
+        ${this.renderTrailingButton(this.hasChips)}
       </div>
       <mdc-popover
         triggerID="${TRIGGER_ID}"
