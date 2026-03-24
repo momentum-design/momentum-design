@@ -22,7 +22,7 @@ import type { Placement } from './searchpopover.types';
  * - Don't use this when search results are displayed inline on the page -\> use Searchfield component instead.
  * - Don't use this when a list of options is filtered based on the search input -\> use Combobox component instead.
  *
- * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-staticchip`, `mdc-alertchip`, `mdc-chip`)
+ * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-alertchip`, `mdc-chip`)
  *
  * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
  *
