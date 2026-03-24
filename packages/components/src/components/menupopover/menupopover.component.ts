@@ -262,6 +262,9 @@ class MenuPopover extends Popover {
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.closeAllMenuPopovers();
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 

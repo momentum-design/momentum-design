@@ -782,6 +782,9 @@ class Popover
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 

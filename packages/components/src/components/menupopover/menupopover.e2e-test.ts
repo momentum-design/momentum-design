@@ -559,6 +559,77 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(popover2).toBeVisible();
     });
 
+    // AI-Assisted
+    await test.step('Backdrop click stops event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-menupopover id="first-menupopover" triggerID="trigger-1">
+              <mdc-menuitem label="Menu 1"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-menupopover id="second-menupopover" triggerID="trigger-2">
+              <mdc-menuitem label="Menu 2"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const menuPopover1 = componentsPage.page.locator('#first-menupopover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const menuPopover2 = componentsPage.page.locator('#second-menupopover');
+
+      await trigger1.click();
+      await expect(menuPopover1).toBeVisible();
+
+      // Force-clicking trigger-2 through the auto-set backdrop should close menuPopover1
+      // but NOT open menuPopover2, because the backdrop click stops event propagation
+      await trigger2.click({ force: true });
+      await expect(menuPopover1).not.toBeVisible();
+      await expect(menuPopover2).not.toBeVisible();
+
+      // After the backdrop is gone, clicking trigger-2 normally does open menuPopover2
+      await trigger2.click();
+      await expect(menuPopover2).toBeVisible();
+    });
+
+    await test.step('Outside click without backdrop does not stop event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-menuitem id="trigger-1" label="Trigger 1"></mdc-menuitem>
+            <mdc-menupopover id="first-menupopover" triggerID="trigger-1">
+              <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menupopover triggerid="submenu-trigger" placement="right-start">
+                <mdc-menuitem label="Account"></mdc-menuitem>
+              </mdc-menupopover>
+            </mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const menuPopover1 = componentsPage.page.locator('#first-menupopover');
+      const submenu = menuPopover1.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+
+      await trigger1.click();
+      await expect(menuPopover1).toBeVisible();
+
+      // Open the submenu (triggered by a menuitem, so no backdrop is auto-set)
+      const submenuTrigger = menuPopover1.locator('#submenu-trigger');
+      await submenuTrigger.click();
+      await expect(submenu).toBeVisible();
+
+      // Clicking outside the submenu (not on a backdrop) closes the submenu
+      // and event propagation continues — the parent menupopover remains visible
+      await componentsPage.page.mouse.click(200, 300);
+      await expect(submenu).not.toBeVisible();
+      await expect(menuPopover1).not.toBeVisible();
+    });
+    // End AI-Assisted
+
     // Group: Menuitem types: checkbox and radio (with grouped navigation)
     await test.step('Menuitem types: checkbox and radio', async () => {
       const { wrapper, triggerElement } = await setup({ componentsPage, html: groupHTML });

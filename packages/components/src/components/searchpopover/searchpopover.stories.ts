@@ -7,6 +7,7 @@ import { action } from 'storybook/actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../inputchip';
+import '../chip';
 import '../list';
 import '../listitem';
 import '../text';
@@ -148,6 +149,55 @@ const meta: Meta = {
 
 export default meta;
 
+// AI-Assisted
+const filterCategories = [
+  { label: 'Tropical', items: ['Mango', 'Pineapple', 'Kiwi', 'Banana'] },
+  { label: 'Berries', items: ['Strawberry', 'Blueberry', 'Grapes'] },
+  { label: 'Citrus', items: ['Orange'] },
+  { label: 'Common', items: ['Apple', 'Watermelon'] },
+];
+
+const renderWithFilters = (args: Args) => {
+  const searchValue: string = args.value ?? '';
+  const selectedFilters: string[] = args.selectedFilters ?? [];
+
+  const filteredItems = allItems.filter(item => {
+    const matchesSearch = item.toLowerCase().includes(searchValue.toLowerCase());
+    if (selectedFilters.length === 0) return matchesSearch;
+    const matchesFilter = filterCategories
+      .filter(cat => selectedFilters.includes(cat.label))
+      .some(cat => cat.items.includes(item));
+    return matchesSearch && matchesFilter;
+  });
+
+  return html`
+    <mdc-searchpopover
+      @input="${action('oninput')}"
+      @change="${action('onchange')}"
+      @focus="${action('onfocus')}"
+      @blur="${action('onblur')}"
+      @clear="${action('onclear')}"
+      label="${args.label}"
+      placeholder="${args.placeholder}"
+      name="${args.name}"
+      value="${args.value}"
+      ?disabled="${args.disabled}"
+      id="${args.id}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
+      clear-aria-label="${ifDefined(args['clear-aria-label'])}"
+      class="${args.class}"
+      style="${args.style}"
+      ?readonly="${args.readonly}"
+      ?display-popover="${args['display-popover']}"
+      popover-aria-label="${ifDefined(args['popover-aria-label'])}"
+    >
+      ${filterCategories.map(cat => html`<mdc-chip slot="filters" label="${cat.label}"></mdc-chip>`)}
+      <mdc-list> ${filteredItems.map(item => html`<mdc-listitem label="${item}"></mdc-listitem>`)} </mdc-list>
+    </mdc-searchpopover>
+  `;
+};
+// End AI-Assisted
+
 export const Example: StoryObj = {
   args: {
     'display-popover': true,
@@ -176,3 +226,32 @@ export const Example: StoryObj = {
     },
   },
 };
+
+// AI-Assisted
+export const WithFilters: StoryObj = {
+  render: renderWithFilters,
+  args: {
+    'display-popover': true,
+    value: '',
+    label: 'Fruits',
+    placeholder: 'Search fruits',
+    'popover-aria-label': 'Search results',
+    disabled: false,
+    'clear-aria-label': 'Clear',
+    selectedFilters: ['Tropical', 'Berries'],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
+          The Searchpopover supports filter chips via the <code>filters</code> slot. Chip components (e.g.
+          <code>mdc-filterchip</code>) placed in this slot appear inside the search input area and can be used to apply
+          category filters alongside the text search. <br /><br />In this example, filter chips narrow the list of
+          fruits shown in the popover. The consumer is responsible for managing the selected state of each chip and
+          updating the displayed results accordingly.
+        </mdc-text>`,
+      },
+    },
+  },
+};
+// End AI-Assisted
