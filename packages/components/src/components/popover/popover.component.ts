@@ -934,8 +934,6 @@ class Popover
         }
       }
       PopoverEventManager.onHidePopover(this);
-
-      this.depthManager.popHost();
     }
   }
 
