@@ -118,6 +118,15 @@ class Searchpopover extends Searchfield {
   @property({ type: String, reflect: true, attribute: 'popover-aria-label' })
   popoverAriaLabel?: string;
 
+  /**
+   * Overrides the parent scroll container to target the `filters-container` part,
+   * which is the scrollable chip row in the searchpopover layout.
+   * @internal
+   */
+  protected override get scrollContainer(): HTMLElement | null {
+    return this.shadowRoot?.querySelector('[part="filters-container"]') ?? null;
+  }
+
   protected override renderInputElement() {
     const placeholderText = this.hasChips ? '' : this.placeholder;
 
@@ -166,15 +175,10 @@ class Searchpopover extends Searchfield {
         id="${TRIGGER_ID}"
       >
         ${this.renderLeadingIcon()}
-        <div
-          part="filters-container"
-          @click=${this.handleFilterContainerClick}
-          @keydown=${this.handleFilterContainerKeyDown}
-          @keyup=${this.handleFilterContainerKeyUp}
-        >
+        <div part="filters-container" @click=${this.handleFilterContainerClick}>
           <slot name="filters" @slotchange=${this.renderChips}></slot>
+          ${this.renderInputElement()} ${this.renderTrailingButton(this.hasChips)}
         </div>
-        ${this.renderInputElement()} ${this.renderTrailingButton(this.hasChips)}
       </div>
       <mdc-popover
         triggerID="${TRIGGER_ID}"

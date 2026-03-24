@@ -411,10 +411,10 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   }
 
   /**
-   * Returns the searchfield-container element that holds chips and the input.
+   * Returns the scrollable container element that holds chips and the input.
    * @internal
    */
-  private get scrollContainer(): HTMLElement | null {
+  protected get scrollContainer(): HTMLElement | null {
     return this.shadowRoot?.querySelector('[part="searchfield-container"]') ?? null;
   }
 
