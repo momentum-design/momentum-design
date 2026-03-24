@@ -109,10 +109,10 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   private navigatingToInput = false;
 
   /**
-   * Tracks which chip elements already have event listeners attached.
+   * Maps each chip element to its focus target, for listener cleanup.
    * @internal
    */
-  private chipsWithListeners = new WeakSet<HTMLElement>();
+  private chipsWithListeners = new WeakMap<HTMLElement, HTMLElement>();
 
   /**
    * Handles the keydown event of the search field.
@@ -160,6 +160,11 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     }
   }
 
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.chips?.forEach(chip => this.removeChipListeners(chip));
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.leadingIcon = DEFAULTS.ICON;
@@ -191,7 +196,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
           const focusTarget = this.getFocusTargetForChip(element);
           focusTarget.addEventListener('keydown', this.handleChipKeyDown);
           focusTarget.addEventListener('focus', this.handleChipFocus);
-          this.chipsWithListeners.add(element);
+          this.chipsWithListeners.set(element, focusTarget);
         }
       });
     }
@@ -237,7 +242,24 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     super.clearInputText();
     // Directly remove all chips from DOM since not all chip types support the 'remove' event
     const chipsToRemove = [...(this.chips ?? [])];
-    chipsToRemove.forEach(element => element.remove());
+    chipsToRemove.forEach(element => {
+      this.removeChipListeners(element);
+      element.remove();
+    });
+  }
+
+  /**
+   * Removes keydown and focus event listeners from the focus target of a chip.
+   * @param chip - The chip element whose listeners should be removed
+   * @internal
+   */
+  private removeChipListeners(chip: HTMLElement) {
+    const focusTarget = this.chipsWithListeners.get(chip);
+    if (focusTarget) {
+      focusTarget.removeEventListener('keydown', this.handleChipKeyDown);
+      focusTarget.removeEventListener('focus', this.handleChipFocus);
+      this.chipsWithListeners.delete(chip);
+    }
   }
 
   /**
@@ -356,6 +378,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
   private removeChipAtIndex(index: number) {
     if (!this.chips || index < 0 || index >= this.chips.length) return;
     const chip = this.chips[index];
+    this.removeChipListeners(chip);
     chip.remove();
 
     // Wait for DOM/slot update after removal
