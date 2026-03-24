@@ -191,14 +191,7 @@ const renderWithFilters = (args: Args) => {
       ?display-popover="${args['display-popover']}"
       popover-aria-label="${ifDefined(args['popover-aria-label'])}"
     >
-      ${filterCategories.map(
-        cat =>
-          html`<mdc-chip
-            slot="filters"
-            label="${cat.label}"
-            ?selected="${selectedFilters.includes(cat.label)}"
-          ></mdc-chip>`,
-      )}
+      ${filterCategories.map(cat => html`<mdc-chip slot="filters" label="${cat.label}"></mdc-chip>`)}
       <mdc-list> ${filteredItems.map(item => html`<mdc-listitem label="${item}"></mdc-listitem>`)} </mdc-list>
     </mdc-searchpopover>
   `;
