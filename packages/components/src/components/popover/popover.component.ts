@@ -782,6 +782,9 @@ class Popover
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 
@@ -931,6 +934,8 @@ class Popover
         }
       }
       PopoverEventManager.onHidePopover(this);
+
+      this.depthManager.popHost();
     }
   }
 

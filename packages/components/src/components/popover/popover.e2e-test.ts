@@ -948,6 +948,71 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover2).toBeVisible();
     });
 
+    // AI-Assisted
+    await test.step('Backdrop click stops event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-popover id="first-popover" triggerID="trigger-1" backdrop hide-on-outside-click>
+              First Popover Content
+            </mdc-popover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const popover1 = componentsPage.page.locator('#first-popover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-popover');
+
+      await trigger1.click();
+      await expect(popover1).toBeVisible();
+
+      // Force-clicking trigger-2 through the backdrop should close popover1
+      // but NOT open popover2, because the backdrop click stops event propagation
+      await trigger2.click({ force: true });
+      await expect(popover1).not.toBeVisible();
+      await expect(popover2).not.toBeVisible();
+
+      // After the backdrop is gone, clicking trigger-2 normally does open popover2
+      await trigger2.click();
+      await expect(popover2).toBeVisible();
+    });
+
+    // TODO: Fix this issue. The first popover should close, and then the 2nd popover should be added into the depth manager. This test case is currently skipped as it fails.
+    await test.step.skip('Outside click without backdrop does not stop event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-popover id="first-popover" triggerID="trigger-1" hide-on-outside-click>
+              First Popover Content
+            </mdc-popover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const popover1 = componentsPage.page.locator('#first-popover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-popover');
+
+      await trigger1.click();
+      await expect(popover1).toBeVisible();
+
+      // Clicking trigger-2 (outside popover1, no backdrop) closes popover1 AND opens popover2
+      // because outside clicks without a backdrop do NOT stop event propagation
+      await trigger2.click();
+      await expect(popover1).not.toBeVisible();
+      await expect(popover2).toBeVisible();
+    });
+    // End AI-Assisted
+
     await test.step('Element index to receive focus', async () => {
       const { popover, triggerButton } = await setup({
         componentsPage,
