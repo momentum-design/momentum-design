@@ -1,0 +1,1 @@
+import{u as t}from"./iframe-eduPLbBc.js";const L=t.constructTagName("listitem"),T={FULL_WIDTH:"full-width",INSET_PILL:"inset-pill",INSET_RECTANGLE:"inset-rectangle"},I={VARIANT:T.FULL_WIDTH};export{I as D,T as L,L as T};
