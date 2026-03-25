@@ -192,6 +192,12 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(activeTab).toHaveAttribute('active');
     });
 
+    await test.step('component should not fire change event on initial mount', async () => {
+      await setup({ componentsPage });
+      const waitForChange = await componentsPage.waitForEvent(mdcTablist, 'change');
+      await expect(waitForChange).not.toEventEmitted();
+    });
+
     await test.step('component should fire change event when active tab changes', async () => {
       await setup({ componentsPage });
       const waitForChange = await componentsPage.waitForEvent(mdcTablist, 'change');
