@@ -60,7 +60,12 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
         }
 
         this.setActiveTab(newTab);
-        this.fireTabChangeEvent(newTab);
+
+        // Only fire the change event if activeTabId was previously set (not the initial assignment).
+        // On first render, old value is undefined by default, which means it's being set for the first time.
+        if (changedProperties.get('activeTabId')) {
+          this.fireTabChangeEvent(newTab);
+        }
       }
     }
 
