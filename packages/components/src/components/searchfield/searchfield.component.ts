@@ -7,6 +7,7 @@ import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ControlTypeMixin } from '../../utils/mixins/ControlTypeMixin';
 import { TAG_NAME as INPUT_CHIP_TAG } from '../inputchip/inputchip.constants';
 
 import styles from './searchfield.styles';
@@ -36,6 +37,7 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
+ * @event removed - (React: onRemoved) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip. In `uncontrolled` mode (default) the chip is removed from the DOM automatically; in `controlled` mode only the event is fired and the consumer is responsible for removing the chip.
  *
  * @slot filters - Slot for chip filters rendered inline with the input text
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
@@ -79,7 +81,7 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
  * @csspart searchfield-container - The inline flow container for chips and the input field.
  */
-class Searchfield extends KeyDownHandledMixin(Input) {
+class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
   @queryAssignedElements({ slot: 'filters' })
   chips?: Array<HTMLElement>;
 
@@ -187,7 +189,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     if (this.chips) {
       this.chips.forEach(element => {
         if (!element.matches(CHIP_SELECTOR)) {
-          element.remove();
+          this.removeChip(element);
           return;
         }
         // Remove chips from tab order; they are navigated via arrow keys from the input
@@ -238,13 +240,26 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     super.firstUpdated(_changedProperties);
   }
 
+  /**
+   * Removes a chip element from the DOM and dispatches the 'removed' event with the chip detail.
+   * In controlled mode, the chip is not removed from the DOM, only the event is dispatched.
+   * @param chip - The chip element to be removed
+   */
+  private removeChip(chip: HTMLElement) {
+    this.dispatchEvent(new CustomEvent('removed', { detail: { chip }, bubbles: true, composed: true }));
+    if (this.controlType !== 'controlled') {
+      chip.remove();
+    }
+  }
+
   override clearInputText() {
     super.clearInputText();
-    // Directly remove all chips from DOM since not all chip types support the 'remove' event
+    // Directly remove all chips from DOM since not all chip types support the 'removed' event
+    // In uncontrolled mode, removeChip handles DOM removal.
+    // In controlled mode, only the 'removed' event is fired per chip.
     const chipsToRemove = [...(this.chips ?? [])];
     chipsToRemove.forEach(element => {
-      this.removeChipListeners(element);
-      element.remove();
+      this.removeChip(element);
     });
   }
 
@@ -379,7 +394,7 @@ class Searchfield extends KeyDownHandledMixin(Input) {
     if (!this.chips || index < 0 || index >= this.chips.length) return;
     const chip = this.chips[index];
     this.removeChipListeners(chip);
-    chip.remove();
+    this.removeChip(chip);
 
     // Wait for DOM/slot update after removal
     requestAnimationFrame(() => {

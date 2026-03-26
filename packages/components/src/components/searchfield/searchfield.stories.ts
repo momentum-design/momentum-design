@@ -18,6 +18,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     @clear="${action('onclear')}"
+    @removed="${action('onremoved')}"
     label="${args.label}"
     placeholder="${args.placeholder}"
     name="${args.name}"
@@ -158,7 +159,12 @@ export const WithInputChipFilters: StoryObj = {
       (e.target as HTMLElement).remove();
     };
     return html`
-      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-searchfield
+        @removed="${action('onremoved')}"
+        label="Label"
+        placeholder="Placeholder"
+        clear-aria-label="Clear"
+      >
         <mdc-inputchip
           clear-aria-label="Clear"
           label="Query: value"
@@ -178,7 +184,7 @@ export const WithInputChipFilters: StoryObj = {
 
 export const WithAlertChipFilters: StoryObj = {
   render: () => html`
-    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+    <mdc-searchfield @removed="${action('onremoved')}" label="Label" placeholder="Placeholder" clear-aria-label="Clear">
       <mdc-alertchip label="Warning: Unsaved changes" variant="warning" slot="filters"></mdc-alertchip>
       <mdc-alertchip label="Error: Invalid input" variant="error" slot="filters"></mdc-alertchip>
     </mdc-searchfield>
@@ -191,7 +197,12 @@ export const WithMixedChipFilters: StoryObj = {
       (e.target as HTMLElement).remove();
     };
     return html`
-      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-searchfield
+        @removed="${action('onremoved')}"
+        label="Label"
+        placeholder="Placeholder"
+        clear-aria-label="Clear"
+      >
         <mdc-inputchip
           clear-aria-label="Clear"
           label="Query: momentum"
@@ -206,7 +217,7 @@ export const WithMixedChipFilters: StoryObj = {
 
 export const WithBasicChips: StoryObj = {
   render: () => html`
-    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+    <mdc-searchfield @removed="${action('onremoved')}" label="Label" placeholder="Placeholder" clear-aria-label="Clear">
       <mdc-chip label="Filter 1" slot="filters"></mdc-chip>
       <mdc-chip label="Filter 2" slot="filters"></mdc-chip>
       <mdc-chip label="Filter 3" slot="filters"></mdc-chip>
