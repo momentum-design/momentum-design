@@ -7,6 +7,6 @@ import InputChip from '../inputchip';
 import Searchfield from './searchfield.component';
 
 type Events = InputEvents & {
-  onRemovedEvent: TypedCustomEvent<Searchfield, { chip: Chip | InputChip | AlertChip }>;
+  onChipRemoveEvent: TypedCustomEvent<Searchfield, { chip: Chip | InputChip | AlertChip }>;
 };
 export type { Events };

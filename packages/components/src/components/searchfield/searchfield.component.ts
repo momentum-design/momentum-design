@@ -37,7 +37,7 @@ import { CHIP_SELECTOR, DEFAULTS } from './searchfield.constants';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
- * @event removed - (React: onRemoved) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip. In `uncontrolled` mode (default) the chip is removed from the DOM automatically; in `controlled` mode only the event is fired and the consumer is responsible for removing the chip.
+ * @event chipRemove - (React: onChipRemove) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip. In `uncontrolled` mode (default) the chip is removed from the DOM automatically; in `controlled` mode only the event is fired and the consumer is responsible for removing the chip.
  *
  * @slot filters - Slot for chip filters rendered inline with the input text
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
@@ -241,12 +241,12 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
   }
 
   /**
-   * Removes a chip element from the DOM and dispatches the 'removed' event with the chip detail.
+   * Removes a chip element from the DOM and dispatches the 'chipRemove' event with the chip detail.
    * In controlled mode, the chip is not removed from the DOM, only the event is dispatched.
    * @param chip - The chip element to be removed
    */
   private removeChip(chip: HTMLElement) {
-    this.dispatchEvent(new CustomEvent('removed', { detail: { chip }, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('chipRemove', { detail: { chip }, bubbles: true, composed: true }));
     if (this.controlType !== 'controlled') {
       chip.remove();
     }
@@ -256,7 +256,7 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
     super.clearInputText();
     // Directly remove all chips from DOM since not all chip types support the 'removed' event
     // In uncontrolled mode, removeChip handles DOM removal.
-    // In controlled mode, only the 'removed' event is fired per chip.
+    // In controlled mode, only the 'chipRemove' event is fired per chip.
     const chipsToRemove = [...(this.chips ?? [])];
     chipsToRemove.forEach(element => {
       this.removeChip(element);

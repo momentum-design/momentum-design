@@ -18,7 +18,7 @@ const render = (args: Args) =>
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     @clear="${action('onclear')}"
-    @removed="${action('onremoved')}"
+    @chipRemove="${action('onChipRemove')}"
     label="${args.label}"
     placeholder="${args.placeholder}"
     name="${args.name}"
@@ -160,7 +160,7 @@ export const WithInputChipFilters: StoryObj = {
     };
     return html`
       <mdc-searchfield
-        @removed="${action('onremoved')}"
+        @chipRemove="${action('onChipRemove')}"
         label="Label"
         placeholder="Placeholder"
         clear-aria-label="Clear"
@@ -184,7 +184,12 @@ export const WithInputChipFilters: StoryObj = {
 
 export const WithAlertChipFilters: StoryObj = {
   render: () => html`
-    <mdc-searchfield @removed="${action('onremoved')}" label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+    <mdc-searchfield
+      @chipRemove="${action('onChipRemove')}"
+      label="Label"
+      placeholder="Placeholder"
+      clear-aria-label="Clear"
+    >
       <mdc-alertchip label="Warning: Unsaved changes" variant="warning" slot="filters"></mdc-alertchip>
       <mdc-alertchip label="Error: Invalid input" variant="error" slot="filters"></mdc-alertchip>
     </mdc-searchfield>
@@ -198,7 +203,7 @@ export const WithMixedChipFilters: StoryObj = {
     };
     return html`
       <mdc-searchfield
-        @removed="${action('onremoved')}"
+        @chipRemove="${action('onChipRemove')}"
         label="Label"
         placeholder="Placeholder"
         clear-aria-label="Clear"
@@ -217,7 +222,12 @@ export const WithMixedChipFilters: StoryObj = {
 
 export const WithBasicChips: StoryObj = {
   render: () => html`
-    <mdc-searchfield @removed="${action('onremoved')}" label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+    <mdc-searchfield
+      @chipRemove="${action('onChipRemove')}"
+      label="Label"
+      placeholder="Placeholder"
+      clear-aria-label="Clear"
+    >
       <mdc-chip label="Filter 1" slot="filters"></mdc-chip>
       <mdc-chip label="Filter 2" slot="filters"></mdc-chip>
       <mdc-chip label="Filter 3" slot="filters"></mdc-chip>

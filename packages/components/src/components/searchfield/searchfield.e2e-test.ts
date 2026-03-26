@@ -348,12 +348,12 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
     });
 
-    await test.step('control-type=controlled: removed event fires but chip stays in DOM on Backspace', async () => {
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Backspace', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
       await expect(searchField).toHaveAttribute('control-type', 'controlled');
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
@@ -362,12 +362,12 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(filterChip).toBeAttached();
     });
 
-    await test.step('control-type=uncontrolled: removed event fires and chip is removed from DOM on Backspace', async () => {
+    await test.step('control-type=uncontrolled: remove event fires and chip is removed from DOM on Backspace', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'uncontrolled' });
       await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
@@ -376,7 +376,7 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(filterChip).not.toBeAttached();
     });
 
-    await test.step('control-type=controlled: removed event fires but chip stays in DOM on Delete from chip', async () => {
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Delete from chip', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
       await expect(filterChip).toBeAttached();
 
@@ -384,13 +384,13 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT); // focus chip
       await expect(filterChip).toBeFocused();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
       await componentsPage.page.keyboard.press(KEYS.DELETE);
       await expect(waitForRemoved).toEventEmitted();
       await expect(filterChip).toBeAttached();
     });
 
-    await test.step('control-type=controlled: clear button fires removed event per chip but chips stay in DOM', async () => {
+    await test.step('control-type=controlled: clear button fires remove event per chip but chips stay in DOM', async () => {
       await setup({
         componentsPage,
         value: 'search',
@@ -400,7 +400,7 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       });
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
       const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
       await clearBtn.click();
       await expect(waitForRemoved).toEventEmitted();
@@ -418,7 +418,7 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       });
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
       const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
       await clearBtn.click();
       await expect(waitForRemoved).toEventEmitted();

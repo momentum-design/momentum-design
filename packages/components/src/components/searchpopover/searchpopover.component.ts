@@ -33,7 +33,7 @@ import type { Placement } from './searchpopover.types';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
- * @event removed - (React: onRemoved) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip.
+ * @event chipRemove - (React: onChipRemove) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip.
  * In **controlled** mode (`control-type="controlled"`), the chip is NOT removed from the DOM automatically — the consumer is responsible for removing it.
  * In **uncontrolled** mode (default), the chip is removed from the DOM automatically.
  * @event shown - (React: onShown) This event is dispatched when the popover is shown

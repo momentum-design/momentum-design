@@ -250,7 +250,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(searchpopover).toHaveAttribute('control-type', 'uncontrolled');
     });
 
-    await test.step('control-type=controlled: removed event fires but chip stays in DOM on Backspace', async () => {
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Backspace', async () => {
       await setup({
         componentsPage,
         value: '',
@@ -261,7 +261,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(searchpopover).toHaveAttribute('control-type', 'controlled');
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'chipRemove');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       // Backspace at cursor position 0 in an empty input triggers removal of the last chip
@@ -271,7 +271,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(filterChip).toBeAttached();
     });
 
-    await test.step('control-type=uncontrolled: removed event fires and chip is removed from DOM on Backspace', async () => {
+    await test.step('control-type=uncontrolled: remove event fires and chip is removed from DOM on Backspace', async () => {
       await setup({
         componentsPage,
         value: '',
@@ -282,7 +282,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(searchpopover).toHaveAttribute('control-type', 'uncontrolled');
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'chipRemove');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).toBeFocused();
       // Backspace at cursor position 0 in an empty input triggers removal of the last chip
@@ -292,7 +292,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await expect(filterChip).not.toBeAttached();
     });
 
-    await test.step('control-type=controlled: removed event fires but chip stays in DOM on Delete from chip', async () => {
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Delete from chip', async () => {
       await setup({
         componentsPage,
         value: '',
@@ -306,13 +306,13 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press('ArrowLeft'); // focus chip
       await expect(filterChip).toBeFocused();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'chipRemove');
       await componentsPage.page.keyboard.press('Delete');
       await expect(waitForRemoved).toEventEmitted();
       await expect(filterChip).toBeAttached();
     });
 
-    await test.step('control-type=controlled: clear button fires removed event per chip but chips stay in DOM', async () => {
+    await test.step('control-type=controlled: clear button fires remove event per chip but chips stay in DOM', async () => {
       await setup({
         componentsPage,
         value: 'search',
@@ -322,7 +322,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       });
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'chipRemove');
       const clearBtn2 = searchpopover.locator('mdc-button[part="trailing-button"]');
       await clearBtn2.click();
       await expect(waitForRemoved).toEventEmitted();
@@ -340,7 +340,7 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
       });
       await expect(filterChip).toBeAttached();
 
-      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'removed');
+      const waitForRemoved = await componentsPage.waitForEvent(searchpopover, 'chipRemove');
       const clearBtn2 = searchpopover.locator('mdc-button[part="trailing-button"]');
       await clearBtn2.click();
       await expect(waitForRemoved).toEventEmitted();
