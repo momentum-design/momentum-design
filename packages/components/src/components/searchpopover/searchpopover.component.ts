@@ -26,6 +26,10 @@ import type { Placement } from './searchpopover.types';
  *
  * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
  *
+ * Searchpopover supports controlled vs uncontrolled behavior for chip filters, which can be set via the `control-type` attribute:
+ * - In **uncontrolled** mode (default), when a chip is removed via the UI, it is automatically removed from the DOM and a `chipRemove` event is dispatched with the removed chip in the event detail. The consumer can listen to the `chipRemove` event but does not need to do anything to remove the chip from the DOM.
+ * - In **controlled** mode (`control-type="controlled"`), when a chip is removed via the UI, it is NOT removed from the DOM, but a `chipRemove` event is still dispatched with the "removed" chip in the event detail. The consumer must listen to the `chipRemove` event and handle removing the chip from the DOM themselves (e.g., by updating their state that controls which chips are rendered).
+ *
  * @tagname mdc-searchpopover
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
