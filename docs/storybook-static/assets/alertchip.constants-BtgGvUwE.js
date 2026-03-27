@@ -1,1 +1,0 @@
-import{u as T,T as A,V as E,a,R as s}from"./iframe-eduPLbBc.js";const r=T.constructTagName("alertchip"),N={NEUTRAL:"neutral",ERROR:"error",SUCCESS:"success",WARNING:"warning",INFORMATIONAL:"informational"},t={VARIANT:N.NEUTRAL,TEXT_TYPE:A.BODY_MIDSIZE_REGULAR,TAG_NAME:E.SPAN,SIZE:a[24],ROLE:s.BUTTON};export{t as D,r as T,N as V};
