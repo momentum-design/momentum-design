@@ -26,6 +26,7 @@ type SetupOptions = {
   dataAriaLabel?: string;
   clearAriaLabel?: string;
   filters?: boolean;
+  controlType?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -53,6 +54,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
+      ${restArgs.controlType ? `control-type="${restArgs.controlType}"` : ''}
       ${
         restArgs.filters
           ? `><mdc-chip 
@@ -338,6 +340,89 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(filterChip).toBeFocused();
       await keyboard.press(KEYS.END);
       await expect(inputEl).toBeFocused();
+    });
+
+    // AI-Assisted: controlled/uncontrolled chip removal tests
+    await test.step('control-type attribute defaults to uncontrolled', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
+    });
+
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Backspace', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
+      await expect(searchField).toHaveAttribute('control-type', 'controlled');
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
+      await expect(waitForRemoved).toEventEmitted();
+      // In controlled mode the chip must NOT be removed from the DOM
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=uncontrolled: remove event fires and chip is removed from DOM on Backspace', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'uncontrolled' });
+      await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
+      await expect(waitForRemoved).toEventEmitted();
+      // In uncontrolled mode the chip must be removed from the DOM
+      await expect(filterChip).not.toBeAttached();
+    });
+
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Delete from chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
+      await expect(filterChip).toBeAttached();
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT); // focus chip
+      await expect(filterChip).toBeFocused();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.page.keyboard.press(KEYS.DELETE);
+      await expect(waitForRemoved).toEventEmitted();
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=controlled: clear button fires remove event per chip but chips stay in DOM', async () => {
+      await setup({
+        componentsPage,
+        value: 'search',
+        clearAriaLabel: 'clear',
+        filters: true,
+        controlType: 'controlled',
+      });
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await clearBtn.click();
+      await expect(waitForRemoved).toEventEmitted();
+      // Chip must remain in DOM; consumer controls removal
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=uncontrolled: clear button removes all chips from DOM', async () => {
+      await setup({
+        componentsPage,
+        value: 'search',
+        clearAriaLabel: 'clear',
+        filters: true,
+        controlType: 'uncontrolled',
+      });
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await clearBtn.click();
+      await expect(waitForRemoved).toEventEmitted();
+      await expect(filterChip).not.toBeAttached();
     });
     // End AI-Assisted
 
