@@ -34,7 +34,7 @@ Source for each asset library lives under [`packages/assets/`](./packages/assets
 
 ### Components
 
-[**@momentum-design/components**](https://www.npmjs.com/package/@momentum-design/components) is a **Web Component** library built with **Lit**. Because Web Components are a web standard, you can use these elements in **any web stack**—plain HTML, React, Vue, Angular, or server-rendered apps—without being tied to a single framework. The package also exposes **React** entrypoints for teams that prefer idiomatic React usage.
+[**@momentum-design/components**](https://www.npmjs.com/package/@momentum-design/components) is a **Web Component** library built with **Lit**(https://lit.dev/).
 
 Source, Storybook, and tests live in [`packages/components/`](./packages/components/).
 
