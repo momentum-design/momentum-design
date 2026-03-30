@@ -1,37 +1,44 @@
 # General Consumption Guide
 
-Consumption can vary by package - the information below is for general consumption.
+How you install depends on whether you use **npm** (or Yarn, pnpm, etc.) or need **raw files** without a package manager.
 
-## with NPM
+### With npm (or compatible package managers)
 
-Consume each individual package by adding the NPM dependency to `package.json` with the version number required:
+Add the packages you need to `package.json` with the versions your project requires. Typical usage is one or more of:
 
-* [**@momentum-design/components**](https://github.com/momentum-design/momentum-design/tree/main/packages/components) - Web Components. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/components)
-* [**@momentum-design/animations**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/animations) - Animation assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/animations)
-* [**@momentum-design/brand-visuals**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/brand-visuals) - Brand Visual assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/brand-visuals)
-* [**@momentum-design/fonts**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/fonts) - Fonts assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/fonts)
-* [**@momentum-design/icons**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/icons) - Icon assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/icons)
-* [**@momentum-design/illustrations**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/illustrations) - Illustration assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/illustrations)
-* [**@momentum-design/tokens**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/tokens) - Token assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/tokens)
-* [**@momentum-design/utils**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/utils) - Common utilities. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/utils)
+- [**@momentum-design/components**](https://www.npmjs.com/package/@momentum-design/components) — Web Components (and React wrappers where applicable).
+- [**@momentum-design/animations**](https://www.npmjs.com/package/@momentum-design/animations)
+- [**@momentum-design/brand-visuals**](https://www.npmjs.com/package/@momentum-design/brand-visuals)
+- [**@momentum-design/fonts**](https://www.npmjs.com/package/@momentum-design/fonts)
+- [**@momentum-design/icons**](https://www.npmjs.com/package/@momentum-design/icons)
+- [**@momentum-design/illustrations**](https://www.npmjs.com/package/@momentum-design/illustrations)
+- [**@momentum-design/tokens**](https://www.npmjs.com/package/@momentum-design/tokens)
+- [**@momentum-design/utils**](https://www.npmjs.com/package/@momentum-design/utils)
 
-## without NPM
+Each package’s `dist/` layout may differ; refer to **momentum.design** and package READMEs for import paths and frameworks-specific notes.
 
-Assets can be collected directly from `unpkg`, which is a layer on top of npmjs that serves the files in a raw format. To consume these files, a GET request can be made to the files path:
+### Without npm: CDN-style access via unpkg
 
-```
-# dark-stable theme as json
+For quick experiments or non-Node pipelines, you can fetch published files from **[unpkg](https://unpkg.com)** (files as served from npm). Examples for theme token JSON:
+
+```text
+# dark-stable theme (JSON)
 https://unpkg.com/@momentum-design/tokens/dist/json/theme/webex/dark-stable.json
 
-# light-stable theme as json
-https://unpkg.com/@momentum-design/tokens/dist/json/theme/webex/light-stable.json 
+# light-stable theme (JSON)
+https://unpkg.com/@momentum-design/tokens/dist/json/theme/webex/light-stable.json
 ```
 
-If a team would like to consume the full package [all assets delivered within the scope of @momentum-design/tokens i.e.], the tar.gz can be acquired by using `curl` and `tar` commands (both available on Mac and [latest Windows](https://learn.microsoft.com/en-us/virtualization/community/team-blog/2017/20171219-tar-and-curl-come-to-windows)).
+Replace the package name and path to match the asset and version you need. Pinning a version in the URL (`/package@version/path`) is recommended for production.
 
-The snippet example below will download the version of the defined package as a `.tgz` and extract its content (`tokens` as an example, replace accordingly to your needs).
+### Without npm: full package tarball
+
+To download the **entire** contents of a published package (for example all files under `@momentum-design/tokens`), you can pull the `.tgz` from the registry and extract it. `curl` and `tar` are available on macOS and on [recent Windows](https://learn.microsoft.com/en-us/virtualization/community/team-blog/2017/20171219-tar-and-curl-come-to-windows) builds.
 
 ```bash
-curl https://registry.npmjs.org/@momentum-design/tokens/-/tokens-0.0.46.tgz --output tokens.tgz
+# Example: download a specific version of @momentum-design/tokens (adjust version and package name)
+curl "https://registry.npmjs.org/@momentum-design/tokens/-/tokens-0.0.46.tgz" --output tokens.tgz
 tar -xf tokens.tgz
 ```
+
+Swap `@momentum-design/tokens` / `tokens-0.0.46.tgz` for the scope, package tarball name, and version you want.
