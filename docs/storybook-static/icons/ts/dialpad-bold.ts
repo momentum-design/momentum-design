@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="icon" data-name="dialpad-bold" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path stroke-width="2" d="M16 22a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-8-8a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM8 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>`;
+  html`<svg aria-hidden="true" part="icon" data-name="dialpad-bold" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path stroke-width="2" d="M15.75 24.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm-7-6.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm-14-6.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5ZM8.75 5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm7 0a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Z"/></svg>`;
 
 export default icon;

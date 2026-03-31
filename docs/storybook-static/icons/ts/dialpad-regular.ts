@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="icon" data-name="dialpad-regular" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 21.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm-8-8a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm-16-8a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>`;
+  html`<svg aria-hidden="true" part="icon" data-name="dialpad-regular" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path stroke-width="1.5" d="M15.75 24.25a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-7-6.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-14-6.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-14-6.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>`;
 
 export default icon;
