@@ -57,3 +57,9 @@ The [`packages/tools/`](./packages/tools/) folder holds **internal CLI packages 
 | **Telemetry** (`@momentum-design/telemetry`) | Telemetry hooks for tooling (usage and operational signals from build/automation CLIs). |
 | **Figma plugin — assets export** (`@momentum-design/figma-plugin-assets-export`) | Figma plugin under `packages/tools/figma-plugins/assets-export` for exporting assets from Figma into the repo’s asset pipelines. |
 | **Storybook addon — code preview** (`packages/tools/storybook-addon-code-preview`) | Custom Storybook addon used in component documentation and development workflows. |
+
+## Consumption
+Please see [consumption guide(https://github.com/momentum-design/momentum-design/blob/main/CONSUMPTION.md)] for resources on how to consume this project.
+
+## Contributing
+Please see [contributing guide(https://github.com/momentum-design/momentum-design/blob/main/CONTRIBUTING.md)] for resources on how to contribute to this project.
