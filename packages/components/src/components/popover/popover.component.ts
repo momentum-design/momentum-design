@@ -720,7 +720,10 @@ class Popover
     }
 
     if (changedProperties.has('appendTo')) {
-      if (this.appendTo) {
+      // only setup appendTo when the component is connected to the DOM
+      // this fixes an issue which causes popovers to be orphaned in the DOM without the appendTo logic being cleaned up,
+      // cause of Lit deferring the updated() to fire after a disconnect
+      if (this.appendTo && this.isConnected) {
         this.utils.setupAppendTo();
       } else {
         this.utils.cleanupAppendTo();
