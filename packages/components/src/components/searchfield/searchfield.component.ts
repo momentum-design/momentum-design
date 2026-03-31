@@ -166,6 +166,15 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
     }
   }
 
+  /**
+   * Overrides the focus method to allow programmatically focusing the input field.
+   * Delegate focus didn't work as expect since we have a scrollable container that contains both chips and the input, and we want to focus the input when the component itself is focused. We need to override the focus method to achieve this behavior.
+   * @param options - Focus options
+   */
+  override focus(options?: FocusOptions): void {
+    this.inputElement?.focus(options);
+  }
+
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.chips?.forEach(chip => this.removeChipListeners(chip));

@@ -284,6 +284,20 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     });
 
     // AI-Assisted
+    await test.step('programmatic focus() on searchfield should delegate to the native input element', async () => {
+      await setup({ componentsPage, placeholder: 'Placeholder', clearAriaLabel: 'clear' });
+      await searchField.evaluate((el: HTMLElement) => el.focus());
+      await expect(inputEl).toBeFocused();
+    });
+
+    await test.step('programmatic focus() on searchfield with chips should delegate to the native input element', async () => {
+      await setup({ componentsPage, placeholder: 'Placeholder', clearAriaLabel: 'clear', filters: true });
+      await searchField.evaluate((el: HTMLElement) => el.focus());
+      await expect(inputEl).toBeFocused();
+    });
+    // End AI-Assisted
+
+    // AI-Assisted
     const filterChip = searchField.locator('mdc-chip');
     await test.step('filter chip should be visible when present and tab should focus input', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
