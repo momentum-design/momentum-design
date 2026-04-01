@@ -238,7 +238,17 @@ export const ListNavigationMixin = <T extends Constructor<Component>>(superClass
       if (newIndex !== -1) {
         // When user clicked on a focusable element inside the item, we update the navigation index, but
         // keep the focus on the clicked element.
-        const focusNewItem = !(this.navItems.at(newIndex) !== target && document.activeElement === event.target);
+
+        const isActiveElementTarget = document.activeElement === target;
+        const isActiveElementContainedByTarget =
+          document.activeElement &&
+          // eslint-disable-next-line no-bitwise
+          document.activeElement.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_CONTAINED_BY;
+
+        const focusNewItem = !(
+          this.navItems.at(newIndex) !== target &&
+          (isActiveElementTarget || isActiveElementContainedByTarget)
+        );
         this.resetTabIndexAndSetFocus(newIndex, undefined, focusNewItem, false);
       }
     };
