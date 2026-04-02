@@ -887,6 +887,87 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover.locator('#first')).toBeFocused();
     });
 
+    // AI-Assisted
+    await test.step('Focus trap with list should respect roving tabindex', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        focusTrap: true,
+        interactive: true,
+        children: `
+          <mdc-list>
+            <mdc-listitem label="Item 1" aria-label="item 1">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-1" aria-label="action 1">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+            <mdc-listitem label="Item 2" aria-label="item 2">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-2" aria-label="action 2">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+            <mdc-listitem label="Item 3" aria-label="item 3">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-3" aria-label="action 3">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+          </mdc-list>
+        `,
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+
+      // Focus trap initial focus should land on first list item
+      const listItem1 = popover.locator('mdc-listitem[label="Item 1"]');
+      const listItem2 = popover.locator('mdc-listitem[label="Item 2"]');
+      const listItem3 = popover.locator('mdc-listitem[label="Item 3"]');
+      const btn1 = popover.locator('#btn-1');
+      const btn2 = popover.locator('#btn-2');
+
+      await expect(listItem1).toBeFocused();
+
+      // Tab should move focus to the button inside the active (first) list item only
+      await componentsPage.actionability.pressTab();
+      await expect(btn1).toBeFocused();
+
+      // Tab again should wrap back to the first list item (not jump to btn-2 or btn-3)
+      await componentsPage.actionability.pressTab();
+      await expect(listItem1).toBeFocused();
+
+      // Shift+Tab should move focus to the button inside the active (first) list item only
+      await componentsPage.actionability.pressShiftTab();
+      await expect(btn1).toBeFocused();
+
+      // Shift+Tab again should wrap back to the first list item (not jump to btn-2 or btn-3)
+      await componentsPage.actionability.pressShiftTab();
+      await expect(listItem1).toBeFocused();
+
+      // Arrow Down should move to the second list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItem2).toBeFocused();
+
+      // Tab should now move to the button inside the second list item
+      await componentsPage.actionability.pressTab();
+      await expect(btn2).toBeFocused();
+
+      // Tab again should wrap back to the second list item
+      await componentsPage.actionability.pressTab();
+      await expect(listItem2).toBeFocused();
+
+      // Arrow Down should move to the third list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItem3).toBeFocused();
+
+      // Arrow Up should move back to the second list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(listItem2).toBeFocused();
+    });
+    // End AI-Assisted
+
     await test.step('Prevent outside scroll', async () => {
       await componentsPage.setAttributes(popover, {
         preventScroll: 'true',

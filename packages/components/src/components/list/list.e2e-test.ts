@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { htmlRootElementSelector } from '../../../config/playwright/setup/Components.page';
 
 type SetUpOptions = {
   componentsPage: ComponentsPage;
@@ -309,35 +310,76 @@ test('mdc-list', async ({ componentsPage }) => {
     });
 
     await test.step('spatial navigation', async () => {
-      const list = await setup({ componentsPage, children: generateChildren(6), 'header-text': 'List header' });
-      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
-      const { keyboard } = componentsPage.page;
+      await test.step('generic navigation', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(6), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
 
-      const listItems = list.locator('mdc-listitem');
+        const listItems = list.locator('mdc-listitem');
 
-      await componentsPage.setAttributes(listItems.nth(1), { disabled: '' });
+        await componentsPage.setAttributes(listItems.nth(1), { disabled: '' });
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
 
-      // Skip disabled list item
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(2)).toBeFocused();
+        // Skip disabled list item
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(2)).toBeFocused();
 
-      await keyboard.press(KEYS.ARROW_LEFT);
-      await expect(listItems.nth(2).locator('mdc-checkbox')).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(1)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_LEFT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(3).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(2)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(2).locator('mdc-checkbox')).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(1)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(3).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(2)).toBeFocused();
+      });
+      await test.step('single list item', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(1), 'header-text': 'List header' });
+        // Add before and after buttons
+        await componentsPage.page.evaluate(
+          ({ htmlRootElementSelector }) => {
+            const snp = document.querySelector(htmlRootElementSelector)!;
+            const btn1 = document.createElement('mdc-button');
+            btn1.textContent = 'before button';
+            btn1.style.margin = 'auto';
+            snp.prepend(btn1);
+            const btn2 = document.createElement('mdc-button');
+            btn2.textContent = 'after button';
+            btn2.style.margin = 'auto';
+            snp.append(btn2);
+          },
+          { htmlRootElementSelector },
+        );
+
+        const { keyboard } = componentsPage.page;
+
+        const listItems = list.locator('mdc-listitem');
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+
+        const beforeBtn = componentsPage.page.getByText('before button');
+        const afterBtn = componentsPage.page.getByText('after button');
+
+        await componentsPage.page.pause();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(beforeBtn).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(afterBtn).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(beforeBtn).toBeFocused();
+      });
     });
   });
 

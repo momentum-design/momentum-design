@@ -8,7 +8,7 @@ import Actionability from './utils/actionability';
 import { DebugUtils } from './utils/debugUtils';
 
 const componentsDevPageTitle = 'Momentum Components Dev Page';
-const htmlRootElementSelector = '#root';
+export const htmlRootElementSelector = '#root';
 
 interface MountOptions {
   html: string;
