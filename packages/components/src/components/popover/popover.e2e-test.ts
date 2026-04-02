@@ -938,6 +938,14 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(listItem1).toBeFocused();
 
+      // Shift+Tab should move focus to the button inside the active (first) list item only
+      await componentsPage.actionability.pressShiftTab();
+      await expect(btn1).toBeFocused();
+
+      // Shift+Tab again should wrap back to the first list item (not jump to btn-2 or btn-3)
+      await componentsPage.actionability.pressShiftTab();
+      await expect(listItem1).toBeFocused();
+
       // Arrow Down should move to the second list item
       await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
       await expect(listItem2).toBeFocused();
