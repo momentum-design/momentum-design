@@ -10,6 +10,12 @@ type FindFocusableOptions = {
   excludedElements?: HTMLElement[];
   /** Selectors to include in the search. */
   includeSelectors?: string[];
+  /**
+   * When true, elements with `tabindex="-1"` and their subtrees are excluded from the search.
+   * This supports composite widget patterns (e.g., roving tabindex in lists) where
+   * inactive items and their children should not be reachable via Tab navigation.
+   */
+  stopAtNonTabbable?: boolean;
 };
 
 /**
@@ -213,10 +219,14 @@ export const findFocusable = (
 
   const excludesSet = new Set(options?.excludedElements ?? []);
   const includeSelectors = options?.includeSelectors ?? [];
+  const stopAtNonTabbable = options?.stopAtNonTabbable ?? false;
   const matches = new Set<HTMLElement>();
 
   const focusableCheck = (element: HTMLElement) => {
     if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
+      return 'stop';
+    }
+    if (stopAtNonTabbable && !(element instanceof HTMLSlotElement) && element.getAttribute('tabindex') === '-1') {
       return 'stop';
     }
     return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))
@@ -257,6 +267,11 @@ export const findFocusable = (
         const assignedNodes = (element as HTMLSlotElement).assignedElements({ flatten: true });
         assignedNodes.forEach(node => {
           if (node instanceof HTMLElement) {
+            // When stopAtNonTabbable is enabled, skip non-tabbable slotted elements and their
+            // subtrees to support composite widget patterns (e.g., roving tabindex in lists)
+            if (stopAtNonTabbable && !(node instanceof HTMLSlotElement) && node.getAttribute('tabindex') === '-1') {
+              return;
+            }
             finder(node);
           }
         });
