@@ -154,17 +154,27 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
   @property({ type: Boolean, reflect: true, attribute: 'active' })
   active?: boolean;
 
+  private wasSpacePressed: boolean = false;
+
   constructor() {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('blur', this.handleBlur.bind(this));
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
+  }
+
+  /**
+   * Handles the blur event on the list item. It resets the `wasSpacePressed` flag to false.
+   */
+  private handleBlur(): void {
+    this.wasSpacePressed = false;
   }
 
   /**
@@ -188,22 +198,29 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
    */
   protected handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
+
+    if (this.isEventFromInsideListItem(event)) {
+      return;
+    }
+
     if (!event.defaultPrevented && action === ACTIONS.ENTER) {
-      if (!this.isEventFromInsideListItem(event)) {
-        this.keyDownEventHandled();
-        event.preventDefault();
-        this.triggerClickEvent(event);
-      }
+      this.keyDownEventHandled();
+      event.preventDefault();
+      this.triggerClickEvent(event);
+    } else if (action === ACTIONS.SPACE) {
+      this.wasSpacePressed = true;
     }
   }
 
   protected handleKeyUp(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if (!event.defaultPrevented && action === ACTIONS.SPACE) {
-      if (!this.isEventFromInsideListItem(event)) {
+    if (action === ACTIONS.SPACE) {
+      if (!this.isEventFromInsideListItem(event) && !event.defaultPrevented && this.wasSpacePressed) {
         event.preventDefault();
         this.triggerClickEvent(event);
       }
+
+      this.wasSpacePressed = false;
     }
   }
 

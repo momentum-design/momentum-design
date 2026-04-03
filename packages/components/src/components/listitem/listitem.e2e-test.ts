@@ -395,6 +395,70 @@ test.describe.parallel('mdc-listitem', () => {
           await expect(waitForListItemKeyDown).not.toEventEmitted();
           await expect(waitForListItemKeyUp).not.toEventEmitted();
         });
+
+        await test.step('should trigger click event when space is pressed and released on component', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel });
+          const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await componentsPage.page.keyboard.press('Space');
+          await expect(waitForListItemClick).toEventEmitted();
+        });
+
+        await test.step('should not trigger click event on listitem when space was down on a different element and then released on listitem', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel });
+          const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
+          await componentsPage.page.keyboard.down('Space');
+          await componentsPage.page.keyboard.press('Tab');
+          await expect(listitem).toBeFocused();
+          await componentsPage.page.keyboard.up('Space');
+          await expect(waitForListItemClick).not.toEventEmitted();
+        });
+
+        await test.step('should not trigger click event on listitem when space was pressed on an element in content (with preventDefault and stopPropagation) and focus moves to listitem', async () => {
+          const listitem = await setup({
+            componentsPage,
+            children: `
+              <div slot="content">
+                <p id="content">Hello</p>
+                <mdc-button id="button">Hello World</mdc-button>
+              </div>
+            `,
+          });
+
+          await componentsPage.page.evaluate(() => {
+            const listitem = document.querySelector('mdc-listitem')!;
+            const content = document.getElementById('content')!;
+            const button = document.getElementById('button')!;
+
+            button.style.display = 'none';
+
+            listitem.addEventListener('click', () => {
+              button.style.display = 'flex';
+              content.style.display = 'none';
+              button.focus();
+            });
+
+            button.addEventListener('click', e => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              button.style.display = 'none';
+              content.style.display = 'block';
+              listitem.focus();
+            });
+          });
+
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await componentsPage.page.keyboard.press('Space');
+          await expect(listitem.locator('#button')).toBeFocused();
+          const waitForListItemClick = await componentsPage.waitForEvent(listitem, 'click');
+          await componentsPage.page.keyboard.press('Space');
+          await expect(waitForListItemClick).not.toEventEmitted();
+          await expect(listitem.locator('#content')).toBeVisible();
+          await expect(listitem.locator('#button')).not.toBeVisible();
+        });
       });
 
       await test.step('component should show tooltip when the listitem is focused and tooltip associated with it', async () => {
