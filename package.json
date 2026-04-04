@@ -41,6 +41,7 @@
     "docs": "yarn workspace @momentum-design/docs",
     "builder": "yarn workspace @momentum-design/builder",
     "common": "yarn workspace @momentum-design/common",
+    "codeconnect-generator": "yarn workspace @momentum-design/codeconnect-generator",
     "animations": "yarn workspace @momentum-design/animations",
     "brand-visuals": "yarn workspace @momentum-design/brand-visuals",
     "fonts": "yarn workspace @momentum-design/fonts",
