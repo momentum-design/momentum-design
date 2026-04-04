@@ -388,6 +388,142 @@ test('mdc-radio', async ({ componentsPage }) => {
     });
   });
 
+  await test.step('radios inside shadow DOM', async () => {
+    await test.step('should find radios within same group when rendered inside a shadow DOM host', async () => {
+      await componentsPage.mount({
+        html: `<div id="shadow-wrapper"></div>`,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        const wrapper = document.getElementById('shadow-wrapper');
+        if (wrapper) {
+          const shadow = wrapper.attachShadow({ mode: 'open' });
+          shadow.innerHTML = `
+            <mdc-radio name="shadow-group" value="alpha" label="Alpha"></mdc-radio>
+            <mdc-radio name="shadow-group" value="beta" label="Beta"></mdc-radio>
+            <mdc-radio name="shadow-group" value="gamma" label="Gamma"></mdc-radio>
+          `;
+        }
+      });
+
+      const shadowHost = componentsPage.page.locator('#shadow-wrapper');
+      await shadowHost.waitFor();
+
+      const radios = shadowHost.locator('mdc-radio');
+      await radios.nth(0).waitFor();
+
+      // Click first radio — should become checked
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
+
+      // Click second radio — should become checked, first should uncheck
+      await radios.nth(1).click();
+      await expect(radios.nth(1)).toBeChecked();
+      await expect(radios.nth(0)).not.toBeChecked();
+
+      // Click third radio — should become checked, second should uncheck
+      await radios.nth(2).click();
+      await expect(radios.nth(2)).toBeChecked();
+      await expect(radios.nth(1)).not.toBeChecked();
+
+      // Click first radio again — should still work (this was the bug)
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
+      await expect(radios.nth(2)).not.toBeChecked();
+    });
+
+    await test.step('change event should fire on every selection inside shadow DOM', async () => {
+      await componentsPage.mount({
+        html: `<div id="shadow-wrapper-events"></div>`,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        const wrapper = document.getElementById('shadow-wrapper-events');
+        if (wrapper) {
+          const shadow = wrapper.attachShadow({ mode: 'open' });
+          shadow.innerHTML = `
+            <mdc-radio name="shadow-events" value="one" label="One"></mdc-radio>
+            <mdc-radio name="shadow-events" value="two" label="Two"></mdc-radio>
+          `;
+        }
+      });
+
+      const shadowHost = componentsPage.page.locator('#shadow-wrapper-events');
+      await shadowHost.waitFor();
+
+      const radios = shadowHost.locator('mdc-radio');
+      // Wait for custom elements to upgrade
+      await radios.nth(0).waitFor();
+
+      // Attach change event counters via data attributes
+      await componentsPage.page.evaluate(() => {
+        const wrapper = document.getElementById('shadow-wrapper-events');
+        wrapper?.shadowRoot?.querySelectorAll('mdc-radio[name="shadow-events"]').forEach(radio => {
+          radio.addEventListener('change', () => {
+            const count = parseInt(radio.getAttribute('data-change-count') || '0', 10);
+            radio.setAttribute('data-change-count', String(count + 1));
+          });
+        });
+      });
+
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toHaveAttribute('data-change-count', '1');
+
+      await radios.nth(1).click();
+      await expect(radios.nth(1)).toHaveAttribute('data-change-count', '1');
+
+      // Click first again — change should still fire
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toHaveAttribute('data-change-count', '2');
+    });
+
+    await test.step('arrow key navigation should work inside shadow DOM', async () => {
+      await componentsPage.mount({
+        html: `<div id="shadow-wrapper-keys"></div>`,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        const wrapper = document.getElementById('shadow-wrapper-keys');
+        if (wrapper) {
+          const shadow = wrapper.attachShadow({ mode: 'open' });
+          shadow.innerHTML = `
+            <mdc-radio name="shadow-keys" value="first" label="First"></mdc-radio>
+            <mdc-radio name="shadow-keys" value="second" label="Second"></mdc-radio>
+            <mdc-radio name="shadow-keys" value="third" label="Third"></mdc-radio>
+          `;
+        }
+      });
+
+      const shadowHost = componentsPage.page.locator('#shadow-wrapper-keys');
+      await shadowHost.waitFor();
+
+      const radios = shadowHost.locator('mdc-radio');
+      await radios.nth(0).waitFor();
+
+      // Focus first radio and select it
+      await radios.nth(0).click();
+      await expect(radios.nth(0)).toBeChecked();
+
+      // Arrow down to second
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(radios.nth(1)).toBeFocused();
+      await expect(radios.nth(1)).toBeChecked();
+
+      // Arrow down to third
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(radios.nth(2)).toBeFocused();
+      await expect(radios.nth(2)).toBeChecked();
+
+      // Arrow up back to second
+      await componentsPage.page.keyboard.press('ArrowUp');
+      await expect(radios.nth(1)).toBeFocused();
+      await expect(radios.nth(1)).toBeChecked();
+    });
+  });
+
   await test.step('programmatic control', async () => {
     await test.step('click method works as expected', async () => {
       const radio = await setup({ componentsPage });
