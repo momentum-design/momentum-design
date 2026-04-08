@@ -5,14 +5,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import type { IconNames } from '../icon/icon.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
-import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
+import type { ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
 import { LifeCycleMixin } from '../../utils/mixins/lifecycle/LifeCycleMixin';
 
-import type { Variant } from './tab.types';
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
+import type { TabSize, Variant } from './tab.types';
+import { DEFAULTS, TAB_SIZES, TAB_VARIANTS } from './tab.constants';
 import styles from './tab.styles';
 
 /**
@@ -109,6 +109,15 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   variant: Variant = DEFAULTS.VARIANT;
 
   /**
+   * Size of the tab in pixels.
+   * - `32`: Default size (2rem)
+   * - `28`: Compact size (1.75rem)
+   * @default 32
+   */
+  @property({ type: Number, reflect: true })
+  override size: TabSize = DEFAULTS.SIZE;
+
+  /**
    * Id of the tab (used as a identificator when used in the tablist)
    * Note: has to be unique!
    *
@@ -120,7 +129,6 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.TAB;
-    this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 
     this.ariaStateKey = 'aria-selected';
@@ -139,6 +147,17 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
    */
   private setVariant(variant: Variant): void {
     this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
+  }
+
+  /**
+   * Sets the size attribute for the tab component.
+   * If the provided size is not included in TAB_SIZES,
+   * it defaults to the value specified in DEFAULTS.SIZE.
+   *
+   * @param size - The size to set.
+   */
+  private setSize(size: TabSize): void {
+    this.setAttribute('size', Object.values(TAB_SIZES).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
   }
 
   /**
@@ -176,6 +195,9 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
+    if (changedProperties.has('size')) {
+      this.setSize(this.size);
+    }
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
     }

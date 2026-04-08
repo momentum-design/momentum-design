@@ -37,6 +37,10 @@ const styles = [
       border-radius: var(--mdc-tab-border-radius);
     }
 
+    :host([size='28']) {
+      --mdc-tab-height: 1.75rem;
+    }
+
     :host::part(container) {
       display: flex;
       width: 100%;

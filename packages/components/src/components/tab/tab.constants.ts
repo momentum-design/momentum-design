@@ -8,9 +8,15 @@ const TAB_VARIANTS = {
   PILL: 'pill',
 } as const;
 
+const TAB_SIZES = {
+  32: 32,
+  28: 28,
+} as const;
+
 const DEFAULTS = {
   VARIANT: TAB_VARIANTS.PILL,
   ACTIVE: false,
+  SIZE: TAB_SIZES[32],
 } as const;
 
-export { DEFAULTS, TAG_NAME, TAB_VARIANTS };
+export { DEFAULTS, TAG_NAME, TAB_VARIANTS, TAB_SIZES };
