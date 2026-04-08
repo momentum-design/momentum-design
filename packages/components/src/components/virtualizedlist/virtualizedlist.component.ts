@@ -106,6 +106,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
   public virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
   /**
+   * Returns the isItemNavigable callback, falling back to the default that treats all items as navigable.
+   * @internal
+   */
+  private get isItemNavigable(): (index: number) => boolean {
+    return this.virtualizerProps.isItemNavigable ?? DEFAULTS.VIRTUALIZER_PROPS.isItemNavigable;
+  }
+
+  /**
    * Whether to loop navigation when reaching the end of the list.
    * If 'true', pressing the down arrow on the last item will focus the first item,
    * and pressing the up arrow on the first item will focus the last item.
@@ -588,6 +596,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       // eslint-disable-next-line no-param-reassign
       item.tabIndex = tabable ? 0 : -1;
 
+      // onStoreUpdate fires before the item enters the cache, so super.navItems is still empty
+      // for the first navigable item. If selectedIndex targets a non-navigable item,
+      // fall back to this first navigable item.
+      if (!tabable && super.navItems.length === 0) {
+        if (!this.isItemNavigable(this.selectedIndex)) {
+          // eslint-disable-next-line no-param-reassign
+          item.tabIndex = 0;
+          const itemIndex = this.virtualizer?.indexFromElement(item);
+          if (itemIndex !== undefined) {
+            this.setSelectedIndex(itemIndex);
+          }
+        }
+      }
+
       this.setAriaSetSize(item);
     } else if (changeType === 'removed') {
       if (item.tabIndex === 0) {
@@ -691,6 +713,19 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.setSelectedIndex(index);
   }
 
+  /**
+   * Finds the next navigable index using the isItemNavigable callback.
+   * Returns null if no navigable item exists in the given direction.
+   */
+  private findNextNavigableIndex(fromIndex: number, direction: 1 | -1): number | null {
+    const { count } = this.virtualizerProps;
+
+    for (let i = fromIndex; i >= 0 && i < count; i += direction) {
+      if (this.isItemNavigable(i)) return i;
+    }
+    return null;
+  }
+
   protected override resetTabIndexAndSetFocus(
     newIndex: number,
     oldIndex?: number,
@@ -700,6 +735,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
 
     if (elementToFocus === undefined) {
+      // If the target is non-navigable (e.g. disabled or header), skip to the next navigable index.
+      if (!this.isItemNavigable(newIndex) && oldIndex !== undefined) {
+        const direction = newIndex >= oldIndex ? 1 : -1;
+        const nextNavigable = this.findNextNavigableIndex(newIndex + direction, direction);
+        if (nextNavigable !== null) {
+          return this.resetTabIndexAndSetFocus(nextNavigable, oldIndex, focusNewItem, scrollToNewItem);
+        }
+        return false;
+      }
+
       this.scrollToIndex(newIndex, {});
       this.endOfScrollQueue.push(() => {
         super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
