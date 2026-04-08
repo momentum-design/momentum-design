@@ -267,7 +267,6 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    // Re-setup after Escape hid the popover so subsequent steps start with a visible popover
     const searchpopover = await setup({
       componentsPage,
       placeholder: 'Placeholder',
