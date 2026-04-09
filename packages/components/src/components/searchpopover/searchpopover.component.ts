@@ -134,6 +134,18 @@ class Searchpopover extends Searchfield {
     return this.shadowRoot?.querySelector('[part="filters-container"]') ?? null;
   }
 
+  /**
+   * Handles the popover hidden event by focusing the input element.
+   * This replaces `focus-back-to-trigger` since the trigger is a non-focusable div.
+   * Only moves focus to the input if focus is currently within the searchpopover component.
+   * If focus is outside the component, it is left unchanged.
+   */
+  private handlePopoverHidden() {
+    if (this === document.activeElement || this.contains(document.activeElement)) {
+      this.inputElement?.focus();
+    }
+  }
+
   protected override renderInputElement() {
     const placeholderText = this.hasChips ? '' : this.placeholder;
 
@@ -196,8 +208,8 @@ class Searchpopover extends Searchfield {
         ?visible=${this.displayPopover}
         hide-on-outside-click
         hide-on-escape
-        focus-back-to-trigger
         size
+        @hidden=${this.handlePopoverHidden}
         placement="${this.placement}"
         aria-label="${ifDefined(this.popoverAriaLabel)}"
         disable-aria-expanded

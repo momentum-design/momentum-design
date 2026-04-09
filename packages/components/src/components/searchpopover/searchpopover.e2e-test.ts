@@ -114,21 +114,21 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('searchpopover-default');
   });
 
-  const searchpopover = await setup({
-    componentsPage,
-    placeholder: 'Placeholder',
-    label: 'Label',
-    clearAriaLabel: 'clear',
-    value: 'Result',
-    displayPopover: true,
-    children:
-      '<mdc-list><mdc-listitem label="Result 1"></mdc-listitem><mdc-listitem label="Result 2"></mdc-listitem></mdc-list>',
-  });
-
   /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    const searchpopover = await setup({
+      componentsPage,
+      placeholder: 'Placeholder',
+      label: 'Label',
+      clearAriaLabel: 'clear',
+      value: 'Result',
+      displayPopover: true,
+      children:
+        '<mdc-list><mdc-listitem label="Result 1"></mdc-listitem><mdc-listitem label="Result 2"></mdc-listitem></mdc-list>',
+    });
+
     await test.step('attributes should be present on component', async () => {
       await expect(searchpopover).toHaveAttribute('placeholder', 'Placeholder');
       await expect(searchpopover).toHaveAttribute('label', 'Label');
@@ -217,10 +217,67 @@ test('mdc-searchpopover', async ({ componentsPage }) => {
     });
   });
 
+  await test.step('focus', async () => {
+    await test.step('focus should move to input when popover is closed and focus is within popover', async () => {
+      const searchpopover = await setup({
+        componentsPage,
+        placeholder: 'Placeholder',
+        label: 'Label',
+        clearAriaLabel: 'clear',
+        value: 'Result',
+        displayPopover: true,
+        children:
+          '<mdc-list><mdc-listitem label="Result 1"></mdc-listitem><mdc-listitem label="Result 2"></mdc-listitem></mdc-list>',
+      });
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+      await componentsPage.actionability.pressTab();
+      await expect(searchpopover.locator('mdc-listitem').first()).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(searchpopover.locator('input')).toBeFocused();
+    });
+
+    await test.step('focus should not move to input when popover is closed and focus is outside of popover', async () => {
+      await componentsPage.mount({
+        html: `
+          <div id="wrapper">
+            <mdc-button id="before">Before</mdc-button>
+            <mdc-searchpopover display-popover>
+              <mdc-list><mdc-listitem label="Item 1"></mdc-listitem></mdc-list>
+            </mdc-searchpopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.pause();
+      const element = componentsPage.page.locator('mdc-searchpopover');
+      await element.waitFor();
+
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.locator('#before')).toBeFocused();
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(componentsPage.page.locator('#before')).toBeFocused();
+    });
+  });
+
   /**
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
+    const searchpopover = await setup({
+      componentsPage,
+      placeholder: 'Placeholder',
+      label: 'Label',
+      clearAriaLabel: 'clear',
+      value: 'Result',
+      displayPopover: true,
+      children:
+        '<mdc-list><mdc-listitem label="Result 1"></mdc-listitem><mdc-listitem label="Result 2"></mdc-listitem></mdc-list>',
+    });
+
     const inputEl = searchpopover.locator('input');
     const clearBtn = searchpopover.locator('mdc-button[part="trailing-button"]');
     const firstListItemInPopover = searchpopover.locator('mdc-listitem').first();
