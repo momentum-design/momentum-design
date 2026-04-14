@@ -502,11 +502,14 @@ test('mdc-list', async ({ componentsPage }) => {
 
     // AI-Assisted
     await test.step('should not scroll the list when Space is pressed on a focused listitem', async () => {
+      // tabindex=-1 is needed here to stop Firefox from giving the scrollable region focus instead of the list items
       await componentsPage.mount({
         html: `
-          <mdc-list style="height: 150px; overflow: auto;">
-            ${generateBasicChildren(20)}
-          </mdc-list>
+          <div style="height: 150px; overflow-y: auto;" tabindex="-1">
+            <mdc-list>
+              ${generateBasicChildren(20)}
+            </mdc-list>
+          </div>
         `,
         clearDocument: true,
       });
