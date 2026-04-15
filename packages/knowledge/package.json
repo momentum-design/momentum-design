@@ -1,0 +1,24 @@
+{
+  "name": "@momentum-design/knowledge",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "yarn@3.2.4",
+  "description": "In-repository markdown knowledge base for Momentum Design (humans and AI readers).",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "export:accordion-guidelines-imgs": "node ./scripts/export-accordion-guideline-imgs.mjs",
+    "export:appheader-guidelines-imgs": "node ./scripts/export-appheader-guideline-imgs.mjs",
+    "export:avatar-guidelines-imgs": "node ./scripts/export-avatar-guideline-imgs.mjs",
+    "export:badge-guidelines-imgs": "node ./scripts/export-badge-guideline-imgs.mjs",
+    "analyze": "echo \"@momentum-design/knowledge: analyze (no checks in phase 1)\"",
+    "build": "echo \"@momentum-design/knowledge: no build output\"",
+    "clean": "echo \"@momentum-design/knowledge: nothing to clean\"",
+    "test": "echo \"@momentum-design/knowledge: no tests\"",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\""
+  }
+}
