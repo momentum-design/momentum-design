@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       component-name:
-        description: 'Component name to update snapshots for. If not provided, it updates all the components'
+        description: "Component name to update snapshots for. If not provided, it updates all the components"
         required: false
         type: string
       other-args:
-        description: 'Other arguments to pass to the update-snapshot command'
+        description: "Other arguments to pass to the update-snapshot command"
         required: false
         type: string
 
@@ -23,10 +23,10 @@ jobs:
           ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+          cache: "yarn"
+
       - name: Validate Dependencies
         id: validate-dependencies
         uses: actions/cache@v4
@@ -59,10 +59,10 @@ jobs:
           ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+          cache: "yarn"
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -82,7 +82,7 @@ jobs:
       - name: Cache Dist
         uses: actions/cache@v4
         with:
-          path: '**/dist'
+          path: "**/dist"
           key: dist-${{ env.rid }}
 
   update-snapshots:
@@ -96,10 +96,10 @@ jobs:
           ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+          cache: "yarn"
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -111,7 +111,7 @@ jobs:
       - name: Uncache Dist
         uses: actions/cache@v4
         with:
-          path: '**/dist'
+          path: "**/dist"
           key: dist-${{ env.rid }}
 
       - name: Synchronize Packages
@@ -125,7 +125,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Pull image
-        run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0
+        run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0
 
       - name: Update Snapshots
         run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} ${{ github.event.inputs['other-args'] }}
