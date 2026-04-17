@@ -13,6 +13,7 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 import type { BaseArray } from '../../utils/virtualIndexArray';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import type { OrientationType } from './list.types';
 import styles from './list.styles';
@@ -75,6 +76,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
+    this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.handleFocusEvent);
     this.addEventListener('focusout', this.handleFocusEvent);
 
@@ -113,6 +115,17 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
       }
 
       this.resetTabIndexes(newIndex, this.focusWithin);
+    }
+  }
+
+  /** @internal */
+  private handleKeyDown(event: KeyboardEvent) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.SPACE && this.navItems.find(item => item === event.target)) {
+      this.keyDownEventHandled();
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 
