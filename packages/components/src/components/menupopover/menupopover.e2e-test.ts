@@ -839,6 +839,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(triggerElement).toBeFocused();
 
         await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+        await expect(menuItem).toBeFocused();
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(menuItemCheckbox).toBeFocused();
         await keyboard.press(KEYS.ENTER);
@@ -848,6 +850,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menuItemCheckbox).toHaveAttribute('aria-checked', 'true');
 
         await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+        await expect(menuItemCheckbox).toBeFocused();
         await keyboard.press(KEYS.ARROW_DOWN);
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(menuItemRadio).toBeFocused();

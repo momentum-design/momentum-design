@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/playwright:v1.52.0-noble
+FROM mcr.microsoft.com/playwright:v1.59.0-noble
 
-RUN npm install -g playwright@1.52.0
+RUN npm install -g playwright@1.59.0
 
 RUN npx playwright install
 
