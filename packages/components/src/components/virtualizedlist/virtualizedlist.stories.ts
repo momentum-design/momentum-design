@@ -129,12 +129,5 @@ export const WithPaddingAndGaps: StoryObj = {
 };
 
 export const WithHeaders: StoryObj = {
-  parameters: {
-    docs: {
-      description: {
-        story: html`<p>Test</p>`,
-      },
-    },
-  },
   render: () => html` <mdc-virtualizedwrapperwithheaders></mdc-virtualizedwrapperwithheaders>`,
 };
