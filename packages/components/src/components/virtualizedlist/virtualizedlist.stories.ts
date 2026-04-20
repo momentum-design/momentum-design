@@ -8,6 +8,7 @@ import './helpers/chatExample.stories.utils';
 import './helpers/virtualizedDynamicList.stories.utils';
 import './helpers/virtualizedDynamicListContent.stories.utils';
 import './helpers/virtualizedWrapper.stories.utils';
+import './helpers/virtualizedWrapperWithHeaders.stories.utils';
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
@@ -125,4 +126,8 @@ export const WithPaddingAndGaps: StoryObj = {
           margin-bottom: 0.25rem;
         }
       </style> `,
+};
+
+export const WithHeaders: StoryObj = {
+  render: () => html` <mdc-virtualizedwrapperwithheaders></mdc-virtualizedwrapperwithheaders>`,
 };
