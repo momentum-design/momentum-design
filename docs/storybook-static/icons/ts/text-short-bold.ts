@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="text-short-bold" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M25 13H7a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2M16 18H7.032a1 1 0 0 0 0 2H16a1 1 0 0 0 0-2"/></svg>`;
+
+export default icon;
