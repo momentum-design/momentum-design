@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -8,6 +8,7 @@ import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE } from '../text/text.constants';
 import type { TagName } from '../text/text.types';
+import type Text from '../text/index';
 
 import { DEFAULTS } from './toast.constants';
 import { getIconNameForVariant } from './toast.utils';
@@ -54,6 +55,8 @@ import type { ToastVariant } from './toast.types';
  * @cssproperty --mdc-toast-padding - Padding inside the toast.
  */
 class Toast extends FooterMixin(Component) {
+  @query("[part='toast-header']") private headerTextElement!: Text;
+
   /**
    * Type of toast
    * - Can be `custom`, `success`, `warning` or `error`.
@@ -107,6 +110,9 @@ class Toast extends FooterMixin(Component) {
   @state()
   private hasDetailedSlot: boolean = false;
 
+  @state()
+  private hasLongTitle: boolean = false;
+
   @queryAssignedElements({ slot: 'toast-body-detailed', flatten: true })
   private detailedElements!: HTMLElement[];
 
@@ -129,6 +135,12 @@ class Toast extends FooterMixin(Component) {
 
   private toggleDetailVisibility() {
     this.isDetailVisible = !this.isDetailVisible;
+
+    if (this.isDetailVisible) {
+      this.setAttribute('data-expanded', 'true');
+    } else {
+      this.removeAttribute('data-expanded');
+    }
   }
 
   private updateDetailedSlotPresence() {
@@ -144,9 +156,12 @@ class Toast extends FooterMixin(Component) {
         : '';
   }
 
-  protected override firstUpdated(changedProperties: PropertyValues): void {
+  protected override async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
     this.updateDetailedSlotPresence();
+
+    await this.updateComplete;
+    this.hasLongTitle = this.headerTextElement.isHeightOverflowing();
   }
 
   protected renderIcon(iconName: string) {
@@ -157,7 +172,7 @@ class Toast extends FooterMixin(Component) {
   }
 
   private shouldRenderToggleButton() {
-    return this.hasDetailedSlot && this.showMoreText && this.showLessText;
+    return (this.hasDetailedSlot || this.hasLongTitle) && this.showMoreText && this.showLessText;
   }
 
   private renderToggleDetailButton() {
