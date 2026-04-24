@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { Component, Provider } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
+import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
@@ -103,6 +104,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
   @property({ type: Boolean, reflect: true, attribute: 'hide-fixed-section-divider' })
   hideFixedSectionDivider: boolean = false;
 
+  /**
+   * When `is-dropdown` is true, navMenuItems with a sibling element with a matching `data-trigger` attribute will render their dropdown submenu in the sibling element when the sidenavigation is expanded. Dropdown submenus will not render when the sidenavigation is collapsed, regardless of the value of `is-dropdown`.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'is-dropdown' })
+  isDropdown: boolean = false;
+
   constructor() {
     super({
       context: SideNavigationContext.context,
@@ -110,6 +117,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     });
 
     this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
+    this.addEventListener('keydown', this.handleDropdownKeyDown.bind(this));
   }
 
   override connectedCallback(): void {
@@ -229,8 +237,27 @@ class SideNavigation extends Provider<SideNavigationContext> {
       }
     }
 
-    if (changedProperties.has('variant') || changedProperties.has('expanded')) {
+    if (changedProperties.has('variant') || changedProperties.has('expanded') || changedProperties.has('isDropdown')) {
       this.updateContext();
+    }
+
+    // When collapsing or when isDropdown is turned off, close all dropdown containers
+    if (changedProperties.has('expanded') || changedProperties.has('isDropdown')) {
+      if (!this.expanded || !this.isDropdown) {
+        this.closeAllDropdowns();
+      }
+
+      // Handle dropdown-to-flyout conversion
+      if (this.isDropdown) {
+        if (!this.expanded) {
+          this.convertDropdownsToFlyouts();
+        } else {
+          this.convertFlyoutsToDropdowns();
+        }
+      } else {
+        // If isDropdown is turned off, clean up any dynamic menupopover elements
+        this.convertFlyoutsToDropdowns();
+      }
     }
   }
 
@@ -244,6 +271,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
       this.expanded = true;
       this.updateContext();
     }
+
+    // Hide all dropdown containers by default
+    this.hideAllDropdownContainers();
+
+    // If initially collapsed with isDropdown, convert to flyouts
+    if (this.isDropdown && !this.expanded) {
+      this.convertDropdownsToFlyouts();
+    }
   }
 
   /**
@@ -253,9 +288,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Is called on every re-render, see Provider class
    */
   protected updateContext(): void {
-    if (this.context.value.variant !== this.variant || this.context.value.expanded !== this.expanded) {
+    if (
+      this.context.value.variant !== this.variant ||
+      this.context.value.expanded !== this.expanded ||
+      this.context.value.isDropdown !== this.isDropdown
+    ) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
+      this.context.value.isDropdown = this.isDropdown;
       this.context.updateObservers();
     }
   }
@@ -287,6 +327,191 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   private get navMenuItems(): NavMenuItem[] {
     return Array.from(this.querySelectorAll(`${NAVMENUITEM_TAGNAME}:not([disabled])`));
+  }
+
+  /**
+   * Closes all open dropdown containers and resets their parent navmenuitems.
+   * @internal
+   */
+  private closeAllDropdowns(): void {
+    const dropdownParents = this.navMenuItems.filter(item => this.context.value.isDropDownParent(item));
+    dropdownParents.forEach(item => {
+      item.closeDropdown();
+    });
+
+    // Also hide all dropdown containers
+    this.hideAllDropdownContainers();
+  }
+
+  /**
+   * Hides all div[data-trigger] elements within the sidenavigation.
+   * @internal
+   */
+  private hideAllDropdownContainers(): void {
+    const containers = this.querySelectorAll<HTMLElement>('div[data-trigger]');
+    containers.forEach(container => {
+      Object.assign(container.style, {
+        display: 'none',
+        flexDirection: 'column',
+        gap: '0.25rem',
+      });
+    });
+  }
+
+  /**
+   * When collapsed with isDropdown, converts div[data-trigger] children into dynamically
+   * created menupopover elements for flyout behavior.
+   * @internal
+   */
+  private convertDropdownsToFlyouts(): void {
+    const containers = this.querySelectorAll<HTMLElement>('div[data-trigger]');
+    containers.forEach(container => {
+      const triggerId = container.getAttribute('data-trigger');
+      if (!triggerId) return;
+
+      // Check if a dynamic menupopover already exists for this trigger
+      const existingPopover = container.parentElement?.querySelector(
+        `${MENUPOPOVER_TAGNAME}[triggerid="${CSS.escape(triggerId)}"][data-dynamic-popover]`,
+      );
+      if (existingPopover) return;
+
+      // Create menupopover
+      const popover = document.createElement(MENUPOPOVER_TAGNAME);
+      popover.setAttribute('triggerid', triggerId);
+      popover.setAttribute('data-dynamic-popover', '');
+      popover.setAttribute('placement', 'right-start');
+
+      // Move children from div to menupopover
+      while (container.firstChild) {
+        popover.appendChild(container.firstChild);
+      }
+
+      // Insert menupopover after the div
+      container.after(popover);
+
+      // Hide the empty div
+      Object.assign(container.style, { display: 'none' });
+    });
+  }
+
+  /**
+   * When expanding with isDropdown, converts dynamically created menupopover elements
+   * back to div[data-trigger] containers.
+   * @internal
+   */
+  private convertFlyoutsToDropdowns(): void {
+    const dynamicPopovers = this.querySelectorAll<HTMLElement>(`${MENUPOPOVER_TAGNAME}[data-dynamic-popover]`);
+    dynamicPopovers.forEach(popover => {
+      const triggerId = popover.getAttribute('triggerid');
+      if (!triggerId) return;
+
+      // Find the corresponding div[data-trigger]
+      const container = this.querySelector<HTMLElement>(`div[data-trigger="${CSS.escape(triggerId)}"]`);
+      if (!container) return;
+
+      // Move children back from menupopover to div
+      while (popover.firstChild) {
+        container.appendChild(popover.firstChild);
+      }
+
+      // Remove the dynamic menupopover
+      popover.remove();
+    });
+  }
+
+  /**
+   * Handles Escape key inside dropdown containers to close the dropdown
+   * and return focus to the parent trigger navmenuitem.
+   * @internal
+   */
+  private handleDropdownKeyDown(event: KeyboardEvent): void {
+    if (!this.isDropdown || !this.expanded) return;
+
+    const target = event.target as HTMLElement;
+    const isNavMenuItem = target.tagName.toLowerCase() === NAVMENUITEM_TAGNAME;
+    if (!isNavMenuItem) return;
+
+    const targetItem = target as NavMenuItem;
+
+    if (event.key === KEYS.ESCAPE) {
+      const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+      if (!dropdownContainer) return;
+
+      const triggerId = dropdownContainer.getAttribute('data-trigger');
+      if (!triggerId) return;
+
+      const triggerItem = this.querySelector(`${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`) as NavMenuItem | null;
+      if (triggerItem) {
+        triggerItem.closeDropdown();
+        triggerItem.focus();
+        event.stopPropagation();
+      }
+      return;
+    }
+
+    if (event.key === KEYS.ARROW_DOWN || event.key === KEYS.ARROW_UP) {
+      const context = this.context.value;
+      const isDropDownParent = context.isDropDownParent(targetItem);
+      const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
+
+      if (event.key === KEYS.ARROW_DOWN && isDropDownParent) {
+        // Only navigate into the dropdown if it is already open
+        const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          const dropdownContainer = targetItem.parentElement?.querySelector(
+            `div[data-trigger="${targetItem.id}"]`,
+          ) as HTMLElement | null;
+          if (!dropdownContainer) return;
+
+          const firstChild = dropdownContainer.querySelector(
+            `${NAVMENUITEM_TAGNAME}:not([disabled])`,
+          ) as NavMenuItem | null;
+          if (firstChild) {
+            event.preventDefault();
+            firstChild.focus();
+          }
+          return;
+        }
+        // If dropdown is closed, let the default arrow behavior move to the next navitem
+        return;
+      }
+
+      if (isInsideDropdown) {
+        const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+        if (!dropdownContainer) return;
+
+        const children = Array.from(
+          dropdownContainer.querySelectorAll<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`),
+        );
+        const currentIndex = children.indexOf(targetItem);
+        if (currentIndex === -1) return;
+
+        if (event.key === KEYS.ARROW_DOWN) {
+          const nextIndex = currentIndex + 1;
+          if (nextIndex < children.length) {
+            event.preventDefault();
+            children[nextIndex].focus();
+          }
+        } else if (event.key === KEYS.ARROW_UP) {
+          if (currentIndex === 0) {
+            // At first child, ArrowUp moves focus back to the parent trigger
+            const triggerId = dropdownContainer.getAttribute('data-trigger');
+            if (triggerId) {
+              const triggerItem = this.querySelector(
+                `${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`,
+              ) as NavMenuItem | null;
+              if (triggerItem) {
+                event.preventDefault();
+                triggerItem.focus();
+              }
+            }
+          } else {
+            event.preventDefault();
+            children[currentIndex - 1].focus();
+          }
+        }
+      }
+    }
   }
 
   /**

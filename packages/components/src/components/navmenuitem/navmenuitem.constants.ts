@@ -14,6 +14,7 @@ const ALLOWED_BADGE_TYPES = {
 
 const ICON_NAME = {
   RIGHT_ARROW: 'arrow-right-bold' as Extract<IconNames, 'arrow-right-bold'>,
+  DOWN_ARROW: 'arrow-down-bold' as Extract<IconNames, 'arrow-down-bold'>,
 } as const;
 
 const DEFAULTS = {
