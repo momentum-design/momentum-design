@@ -358,6 +358,125 @@ const renderNestedSideNavigation = (args: Args) => {
   </div>`;
 };
 
+// AI-Assisted
+const renderDropdownSideNavigation = (args: Args) => html`
+  <div style="height: 90vh; margin: 1rem">
+    <mdc-sidenavigation
+      variant="${args.variant}"
+      ?expanded="${args.expanded}"
+      footer-text=${args['footer-text']}
+      grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
+      ?is-dropdown="${args['is-dropdown']}"
+      @activechange="${action('onactivechange')}"
+      @toggle="${action('ontoggle')}"
+    >
+      <!-- Upper Nav (scrollable section) -->
+      <mdc-menusection slot="scrollable-menubar" show-divider>
+        <mdc-navmenuitem
+          badge-type="counter"
+          counter="2"
+          max-counter="66"
+          icon-name="chat-bold"
+          nav-id="1"
+          label="Messaging"
+          tooltip-text="Messaging"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="meetings-bold"
+          nav-id="2"
+          label="Meetings"
+          tooltip-text="Meetings"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          badge-type="dot"
+          icon-name="audio-call-bold"
+          nav-id="3"
+          label="Calling"
+          tooltip-text="Calling"
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section name">
+        <mdc-navmenuitem
+          icon-name="chat-bold"
+          nav-id="4"
+          label="Messaging"
+          id="dropdown-trigger-1"
+          tooltip-text="Messaging"
+          is-active-parent-tooltip-text="Messaging, contains active navmenuitem"
+        ></mdc-navmenuitem>
+        <div data-trigger="dropdown-trigger-1">
+          <mdc-navmenuitem label="Sub Item 1" nav-id="4-1" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sub Item 2" nav-id="4-2" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sub Item 3" nav-id="4-3" icon-name="placeholder-bold"></mdc-navmenuitem>
+        </div>
+
+        <mdc-navmenuitem
+          icon-name="meetings-bold"
+          nav-id="5"
+          label="Meetings"
+          id="dropdown-trigger-2"
+          tooltip-text="Meetings"
+          is-active-parent-tooltip-text="Meetings, contains active navmenuitem"
+        ></mdc-navmenuitem>
+        <div data-trigger="dropdown-trigger-2">
+          <mdc-navmenuitem label="Daily Standup" nav-id="5-1" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sprint Review" nav-id="5-2" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Retrospective" nav-id="5-3" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Planning" nav-id="5-4" icon-name="placeholder-bold"></mdc-navmenuitem>
+        </div>
+
+        <mdc-navmenuitem
+          icon-name="audio-call-bold"
+          nav-id="6"
+          label="Calling"
+          tooltip-text="Calling"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="7" label="Teams" tooltip-text="Teams"></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <mdc-menusection slot="scrollable-menubar" header-text="Section name">
+        <mdc-navmenuitem icon-name="chat-bold" nav-id="8" label="Messaging" tooltip-text="Messaging"></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="meetings-bold"
+          nav-id="9"
+          label="Meetings"
+          tooltip-text="Meetings"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="audio-call-bold"
+          nav-id="10"
+          label="Calling"
+          tooltip-text="Calling"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="11" label="Teams" tooltip-text="Teams"></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <!-- Lower Nav (Fixed section) -->
+      <mdc-menusection slot="fixed-menubar">
+        <mdc-navmenuitem
+          icon-name="settings-bold"
+          nav-id="12"
+          label="Settings"
+          tooltip-text="Settings"
+        ></mdc-navmenuitem>
+        <mdc-navmenuitem
+          icon-name="help-circle-bold"
+          nav-id="13"
+          label="Help"
+          tooltip-text="Help"
+          disable-aria-current
+        ></mdc-navmenuitem>
+      </mdc-menusection>
+
+      <!-- Brand Logo (Fixed section) -->
+      <mdc-icon slot="brand-logo" aria-label="This is the brand logo icon" name="apple-bold"> </mdc-icon>
+    </mdc-sidenavigation>
+  </div>
+`;
+// End AI-Assisted
+
 const meta: Meta = {
   title: 'Components/sidenavigation/sidenavigation',
   tags: ['autodocs'],
@@ -375,6 +494,9 @@ const meta: Meta = {
       control: 'text',
     },
     'hide-fixed-section-divider': {
+      control: 'boolean',
+    },
+    'is-dropdown': {
       control: 'boolean',
     },
     ...hideControls(['Context']),
@@ -428,5 +550,25 @@ export const NestedSideNavigation: StoryObj = {
   render: renderNestedSideNavigation,
   args: {
     ...Example.args,
+  },
+};
+
+export const DropdownSideNavigation: StoryObj = {
+  render: renderDropdownSideNavigation,
+  parameters: {
+    docs: {
+      description: {
+        story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
+          The Dropdown Side Navigation example demonstrates the use of NavMenuItems with inline dropdown submenus. When
+          the sidenavigation is expanded and <code>is-dropdown</code> is set to true, clicking a parent NavMenuItem
+          toggles its child items inline below it. When collapsed, flyout menus are used instead.
+          <br />
+        </mdc-text>`,
+      },
+    },
+  },
+  args: {
+    ...Example.args,
+    'is-dropdown': true,
   },
 };

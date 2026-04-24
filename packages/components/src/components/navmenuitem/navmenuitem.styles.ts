@@ -177,12 +177,26 @@ const styles = [
       flex-shrink: 0;
 
       position: absolute;
-      inset-inline-end: -0.25rem;
+      inset-inline-end: -0.125rem;
       top: 0.875rem;
     }
 
     :host([show-label])::part(trailing-arrow) {
       flex-shrink: 0;
+    }
+
+    /* Arrow rotation when dropdown is open */
+    .arrow-rotated {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown child items: render inline without left active bar */
+    :host([in-dropdown-container]) {
+      width: 100%;
+    }
+
+    :host([in-dropdown-container])::before {
+      display: none;
     }
 
     :host mdc-badge {

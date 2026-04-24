@@ -244,3 +244,97 @@ Feature: SideNavigation Accessibility and User Interaction
       When I press `VO + →`
       And focus reaches sidenavigation back again
       Then VoiceOver announces: "end of navigation"
+
+  # AI-Assisted
+  Rule: Dropdown SideNavigation (is-dropdown mode)
+
+    Background:
+      Given the SideNavigation has `is-dropdown` set to true
+      And parent navmenuitems have an `id` attribute
+      And sibling `div[data-trigger]` elements contain child navmenuitems
+
+    Scenario: Expanded dropdown – clicking parent toggles inline children
+      Given the sidenavigation is expanded
+      And a parent navmenuitem has a sibling div[data-trigger] with child navmenuitems
+      When I click the parent navmenuitem
+      Then the dropdown container becomes visible inline below the parent
+      And the parent navmenuitem has `aria-expanded="true"`
+      And a down-arrow icon is displayed rotated on the parent
+
+    Scenario: Expanded dropdown – clicking parent again closes inline children
+      Given the sidenavigation is expanded
+      And the dropdown is open with `aria-expanded="true"`
+      When I click the parent navmenuitem again
+      Then the dropdown container is hidden
+      And the parent navmenuitem has `aria-expanded` removed
+      And the down-arrow icon rotates back to default
+
+    Scenario: Expanded dropdown – selecting a child marks only the child as active
+      Given the sidenavigation is expanded
+      And the dropdown is open
+      When I click a child navmenuitem inside the dropdown
+      Then the child receives `aria-current="page"` and `active` attribute
+      And the parent navmenuitem does NOT have the `active` attribute
+      And the parent has `hasActiveChild` set to true
+
+    Scenario: Expanded dropdown – closing dropdown with active child shows parent as active
+      Given the sidenavigation is expanded
+      And a child navmenuitem inside a dropdown has `aria-current="page"`
+      When I click the parent navmenuitem to close the dropdown
+      Then the parent navmenuitem gains the `active` attribute
+      And the parent shows filled icon styling
+
+    Scenario: Collapsed dropdown – converts to flyout menus
+      Given the sidenavigation has `is-dropdown` set to true
+      And the sidenavigation is expanded with dropdown children
+      When the sidenavigation is collapsed
+      Then all dropdown containers are hidden
+      And dynamic `mdc-menupopover` elements are created from dropdown children
+      And the parent navmenuitems show a right-arrow icon (flyout indicator)
+
+    Scenario: Collapsed with active child – parent shows active styling
+      Given a child navmenuitem inside a dropdown has `aria-current="page"`
+      When the sidenavigation is collapsed
+      Then the parent navmenuitem gains the `active` attribute
+      And the parent shows the tooltip with `is-active-parent-tooltip-text`
+
+    Scenario: Expanding after collapse – restores dropdown mode
+      Given the sidenavigation was collapsed with flyout menus
+      When the sidenavigation is expanded again
+      Then the dynamic `mdc-menupopover` elements are removed
+      And children are moved back into their `div[data-trigger]` containers
+      And dropdown behavior is restored
+
+    Scenario: Keyboard – ArrowDown on parent with open dropdown focuses first child
+      Given the sidenavigation is expanded
+      And the dropdown is open (parent has `aria-expanded="true"`)
+      When I press ArrowDown on the parent navmenuitem
+      Then focus moves to the first child navmenuitem in the dropdown
+
+    Scenario: Keyboard – ArrowDown on parent with closed dropdown moves to next item
+      Given the sidenavigation is expanded
+      And the dropdown is closed
+      When I press ArrowDown on the parent navmenuitem
+      Then focus moves to the next sibling navmenuitem (not into the dropdown)
+
+    Scenario: Keyboard – ArrowDown/ArrowUp inside dropdown navigates children
+      Given the sidenavigation is expanded
+      And focus is on a child navmenuitem inside a dropdown
+      When I press ArrowDown
+      Then focus moves to the next child navmenuitem
+      When I press ArrowUp
+      Then focus moves to the previous child navmenuitem
+
+    Scenario: Keyboard – ArrowUp on first dropdown child focuses parent
+      Given focus is on the first child navmenuitem in a dropdown
+      When I press ArrowUp
+      Then focus moves back to the parent trigger navmenuitem
+
+    Scenario: Keyboard – Escape inside dropdown closes it and focuses parent
+      Given the dropdown is open
+      And focus is on a child navmenuitem inside the dropdown
+      When I press Escape
+      Then the dropdown closes
+      And focus returns to the parent trigger navmenuitem
+
+# End AI-Assisted

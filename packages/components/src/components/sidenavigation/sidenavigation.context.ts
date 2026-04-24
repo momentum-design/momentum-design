@@ -12,13 +12,16 @@ class SideNavigationContext {
 
   public expanded?: boolean;
 
+  public isDropdown?: boolean;
+
   private currentActiveNavMenuItem?: NavMenuItem;
 
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
-  constructor(defaultVariant?: string, defaultExpanded?: boolean) {
+  constructor(defaultVariant?: string, defaultExpanded?: boolean, defaultIsDropdown?: boolean) {
     this.variant = defaultVariant;
     this.expanded = defaultExpanded;
+    this.isDropdown = defaultIsDropdown;
   }
 
   public hasSiblingWithTriggerId(navMenuItem: NavMenuItem | undefined) {
@@ -34,6 +37,19 @@ class SideNavigationContext {
     );
   }
 
+  public isDropDownParent(navMenuItem: NavMenuItem | undefined) {
+    const id = navMenuItem?.getAttribute('id');
+    if (!id) return false;
+
+    const siblings = Array.from(navMenuItem?.parentElement?.children ?? []);
+    return siblings.some(
+      sibling =>
+        sibling !== navMenuItem &&
+        sibling.tagName.toLowerCase() === 'div' &&
+        sibling.getAttribute('data-trigger') === id,
+    );
+  }
+
   private getParentNavMenuItems(navMenuItem: NavMenuItem | undefined): NavMenuItem[] {
     if (!navMenuItem) return [];
 
@@ -41,15 +57,19 @@ class SideNavigationContext {
     let current = navMenuItem;
 
     while (current) {
-      // Walk up to find the menupopover
+      let triggeringNavMenuItem: NavMenuItem | null = null;
+
+      // A navmenuitem is either inside a menupopover (flyout) or a div[data-trigger] (dropdown), never both.
       const popover = current?.closest(MENUPOPOVER_TAGNAME);
-      if (!popover) break;
+      if (popover) {
+        triggeringNavMenuItem = this.getTriggerElement(popover, 'triggerid');
+      } else {
+        const dropdownContainer = current?.parentElement?.closest('div[data-trigger]') as HTMLElement | null;
+        if (dropdownContainer) {
+          triggeringNavMenuItem = this.getTriggerElement(dropdownContainer, 'data-trigger');
+        }
+      }
 
-      const triggerId = popover.getAttribute('triggerid');
-      if (!triggerId) break;
-
-      // Find the NavMenuItem that triggered this menupopover
-      const triggeringNavMenuItem = document.getElementById(triggerId) as NavMenuItem | null;
       if (triggeringNavMenuItem && triggeringNavMenuItem.tagName.toLowerCase() === NAVMENUITEM_TAGNAME) {
         parents.push(triggeringNavMenuItem);
         current = triggeringNavMenuItem;
@@ -61,10 +81,19 @@ class SideNavigationContext {
     return parents;
   }
 
+  private getTriggerElement(container: Element, attribute: string): NavMenuItem | null {
+    const triggerId = container.getAttribute(attribute);
+    if (!triggerId) return null;
+    return document.getElementById(triggerId) as NavMenuItem | null;
+  }
+
   public setCurrentActiveNavMenuItem(navMenuItem: NavMenuItem | undefined) {
     const isSameItem = this.currentActiveNavMenuItem?.navId === navMenuItem?.navId;
     const shouldSkip =
-      navMenuItem?.cannotActivate || this.hasSiblingWithTriggerId(navMenuItem) || navMenuItem?.softDisabled;
+      navMenuItem?.cannotActivate ||
+      this.hasSiblingWithTriggerId(navMenuItem) ||
+      (this.isDropdown && this.expanded && this.isDropDownParent(navMenuItem)) ||
+      navMenuItem?.softDisabled;
 
     if (isSameItem || shouldSkip) return;
 

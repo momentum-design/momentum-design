@@ -217,6 +217,13 @@ class NavMenuItem extends MenuItem {
   public hasActiveChild: boolean = false;
 
   /**
+   * Tracks whether the dropdown submenu controlled by this navmenuitem is currently open.
+   * @internal
+   */
+  @state()
+  private dropdownOpen: boolean = false;
+
+  /**
    * @internal
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
@@ -236,6 +243,9 @@ class NavMenuItem extends MenuItem {
 
     // Set in-menupopover attribute if nested
     this.toggleAttribute('in-menupopover', this.isNested());
+
+    // Set in-dropdown-container attribute if inside a dropdown div
+    this.toggleAttribute('in-dropdown-container', this.isInsideDropdownContainer());
   }
 
   override disconnectedCallback(): void {
@@ -273,7 +283,31 @@ class NavMenuItem extends MenuItem {
     if (!context) return;
 
     // Determine expansion state
-    this.showLabel = this.isNested() ? true : context.expanded;
+    this.showLabel = this.isNested() || this.isInsideDropdownContainer() ? true : context.expanded;
+
+    // When sidenavigation collapses, close any open dropdown
+    if (!context.expanded && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+
+    // When isDropdown mode is turned off, close any open dropdown
+    if (!context.isDropdown && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+
+    // In dropdown mode, manage parent active styling based on expanded state:
+    // Expanded + dropdown open: only the child should appear active, not the parent.
+    // Expanded + dropdown closed: parent should appear active when it has an active child.
+    // Collapsed (icon-only): parent should appear active when it has an active child.
+    if (context.isDropdown && this.hasActiveChild && context.isDropDownParent(this)) {
+      if (context.expanded && this.dropdownOpen) {
+        this.removeAttribute('active');
+        this.active = false;
+      } else {
+        this.setAttribute('active', '');
+        this.active = true;
+      }
+    }
   }
 
   private renderDynamicTooltip(): void {
@@ -338,6 +372,21 @@ class NavMenuItem extends MenuItem {
   }
 
   /**
+   * Check whether the navmenuitem is inside a dropdown container (div[data-trigger]).
+   * @internal
+   */
+  private isInsideDropdownContainer(): boolean {
+    let parent = this.parentElement;
+    while (parent) {
+      if (parent.tagName.toLowerCase() === 'div' && parent.hasAttribute('data-trigger')) {
+        return true;
+      }
+      parent = parent.parentElement;
+    }
+    return false;
+  }
+
+  /**
    * Dispatch the activechange event.
    * @internal
    * @param active - The active state of the navMenuItem.
@@ -352,7 +401,52 @@ class NavMenuItem extends MenuItem {
 
   private handleClickEvent(): void {
     if (this.disabled || this.cannotActivate) return;
+
+    const context = this.sideNavigationContext?.value;
+    if (context?.isDropdown && context?.expanded && context?.isDropDownParent(this)) {
+      this.toggleDropdown();
+      return;
+    }
+
     this.emitNavMenuItemActiveChange(this.active as boolean);
+  }
+
+  /**
+   * Toggles the visibility of the dropdown container associated with this navmenuitem.
+   * @internal
+   */
+  private toggleDropdown(): void {
+    const dropdownContainer = this.getDropdownContainer();
+    if (!dropdownContainer) return;
+
+    this.dropdownOpen = !this.dropdownOpen;
+    dropdownContainer.style.display = this.dropdownOpen ? 'flex' : 'none';
+
+    this.setAttribute('aria-expanded', String(this.dropdownOpen));
+  }
+
+  /**
+   * Closes the dropdown if it is open.
+   * @internal
+   */
+  public closeDropdown(): void {
+    if (!this.dropdownOpen) return;
+
+    const dropdownContainer = this.getDropdownContainer();
+    if (dropdownContainer) {
+      dropdownContainer.style.display = 'none';
+    }
+    this.dropdownOpen = false;
+    this.removeAttribute('aria-expanded');
+  }
+
+  /**
+   * Returns the sibling div[data-trigger] element associated with this navmenuitem.
+   * @internal
+   */
+  private getDropdownContainer(): HTMLElement | null {
+    if (!this.id) return null;
+    return this.parentElement?.querySelector(`div[data-trigger="${this.id}"]`) as HTMLElement | null;
   }
 
   private getFilledIconName(): IconNames | undefined {
@@ -389,12 +483,16 @@ class NavMenuItem extends MenuItem {
 
   public override render() {
     const context = this.sideNavigationContext?.value;
+    const isDropdownMode = context?.isDropdown && context?.expanded;
+    const isDropDownParent = context?.isDropDownParent(this);
+    const hasFlyoutSibling = context?.hasSiblingWithTriggerId(this);
+
     return html`
       <div part="icon-container">
-        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="regular-icon"></mdc-icon>
+        <mdc-icon name="${this.iconName as IconNames}" size="1.5" length-unit="rem" part="regular-icon"></mdc-icon>
         ${!this.cannotActivate
           ? html`<mdc-icon
-              name="${this.getFilledIconName()}"
+              name="${this.getFilledIconName() as IconNames}"
               size="1.5"
               length-unit="rem"
               part="filled-icon"
@@ -414,7 +512,16 @@ class NavMenuItem extends MenuItem {
             ${this.renderBadge(this.showLabel)}
           `
         : nothing}
-      ${context?.hasSiblingWithTriggerId(this)
+      ${isDropdownMode && isDropDownParent
+        ? html` <mdc-icon
+            name=${ICON_NAME.DOWN_ARROW}
+            length-unit="rem"
+            part="trailing-arrow"
+            class="${this.dropdownOpen ? 'arrow-rotated' : ''}"
+          >
+          </mdc-icon>`
+        : nothing}
+      ${hasFlyoutSibling
         ? html` <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow"> </mdc-icon>`
         : nothing}
     `;
