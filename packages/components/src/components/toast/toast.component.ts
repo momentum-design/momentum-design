@@ -55,6 +55,10 @@ import type { ToastVariant } from './toast.types';
  * @cssproperty --mdc-toast-padding - Padding inside the toast.
  */
 class Toast extends FooterMixin(Component) {
+  /**
+   * Reference to the header text element
+   * @internal
+   */
   @query("[part='toast-header']") private headerTextElement!: Text;
 
   /**
@@ -110,8 +114,13 @@ class Toast extends FooterMixin(Component) {
   @state()
   private hasDetailedSlot: boolean = false;
 
+  /**
+   * Indicates whether the header text is overflowing and requires the show more/less toggle button to be shown when detailed content is present.
+   * This is determined on first update and will not update dynamically if the header text changes after initial render.
+   * @internal
+   */
   @state()
-  private hasLongTitle: boolean = false;
+  private hasOverflowingHeaderText: boolean = false;
 
   @queryAssignedElements({ slot: 'toast-body-detailed', flatten: true })
   private detailedElements!: HTMLElement[];
@@ -161,7 +170,7 @@ class Toast extends FooterMixin(Component) {
     this.updateDetailedSlotPresence();
 
     await this.updateComplete;
-    this.hasLongTitle = this.headerTextElement.isHeightOverflowing();
+    this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
   }
 
   protected renderIcon(iconName: string) {
@@ -172,7 +181,7 @@ class Toast extends FooterMixin(Component) {
   }
 
   private shouldRenderToggleButton() {
-    return (this.hasDetailedSlot || this.hasLongTitle) && this.showMoreText && this.showLessText;
+    return (this.hasDetailedSlot || this.hasOverflowingHeaderText) && this.showMoreText && this.showLessText;
   }
 
   private renderToggleDetailButton() {
