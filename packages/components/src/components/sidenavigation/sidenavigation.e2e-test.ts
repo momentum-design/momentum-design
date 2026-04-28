@@ -806,6 +806,10 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       // Children should be back in the div[data-trigger]
       const childrenInContainer = dropdownContainer1.locator('mdc-navmenuitem');
       await expect(childrenInContainer).toHaveCount(3);
+      const trigger = sidenav.locator('mdc-navmenuitem#dropdown-trigger-1');
+      await trigger.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+      await expect(dropdownContainer1.locator('mdc-navmenuitem').first()).toBeVisible();
 
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-re-expanded');
     });
