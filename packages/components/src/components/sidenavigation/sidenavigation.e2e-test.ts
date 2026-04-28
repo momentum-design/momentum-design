@@ -684,7 +684,6 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
 
       // Parent should now show as active because it has an active child
       await expect(parentItem1).toHaveAttribute('active', '');
-      await parentItem1.focus(); // to show tooltip and active state together
 
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-closed-parent-active');
     });
