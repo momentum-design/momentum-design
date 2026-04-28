@@ -435,6 +435,8 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
       `,
       clearDocument: true,
     });
+    // Move mouse away after mount to prevent hover on any menuitemcheckbox
+    await componentsPage.page.mouse.move(0, 0);
     await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-default-and-toggle');
     await componentsPage.mount({
       html: `
@@ -455,6 +457,7 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
       `,
       clearDocument: true,
     });
+    await componentsPage.page.mouse.move(0, 0);
     await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-none-and-checkmark');
     await componentsPage.mount({
       html: `
@@ -471,6 +474,7 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
       `,
       clearDocument: true,
     });
+    await componentsPage.page.mouse.move(0, 0);
     await componentsPage.visualRegression.takeScreenshot('mdc-menuitemcheckbox-secondary-label');
   });
 
