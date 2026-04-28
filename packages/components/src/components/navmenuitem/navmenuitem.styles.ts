@@ -186,7 +186,15 @@ const styles = [
     }
 
     /* Arrow rotation when dropdown is open */
-    .arrow-rotated {
+    :host(:dir(ltr)) .arrow-rotated {
+      transform: rotate(180deg);
+    }
+
+    :host(:dir(rtl))::part(trailing-arrow) {
+      transform: rotate(0deg);
+    }
+
+    :host(:dir(rtl)) .arrow-rotated {
       transform: rotate(180deg);
     }
 
