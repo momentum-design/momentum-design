@@ -181,20 +181,13 @@ const styles = [
       top: 0.875rem;
     }
 
-    :host([show-label])::part(trailing-arrow) {
+    :host([show-label])::part(trailing-arrow),
+    :host([show-label])::part(trailing-arrow-dropdown) {
       flex-shrink: 0;
     }
 
     /* Arrow rotation when dropdown is open */
-    :host(:dir(ltr)) .arrow-rotated {
-      transform: rotate(180deg);
-    }
-
-    :host(:dir(rtl))::part(trailing-arrow) {
-      transform: rotate(0deg);
-    }
-
-    :host(:dir(rtl)) .arrow-rotated {
+    .arrow-rotated {
       transform: rotate(180deg);
     }
 
