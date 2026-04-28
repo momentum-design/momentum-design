@@ -7,7 +7,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
-import '../menuitem';
 import '../menupopover';
 import '../navmenuitem';
 import '../icon';

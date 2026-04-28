@@ -256,7 +256,8 @@ class NavMenuItem extends MenuItem {
     if (
       changedProperties.has('tooltipText') ||
       changedProperties.has('showLabel') ||
-      changedProperties.has('hasActiveChild')
+      changedProperties.has('hasActiveChild') ||
+      changedProperties.has('dropdownOpen')
     ) {
       this.renderDynamicTooltip();
     }
@@ -301,7 +302,13 @@ class NavMenuItem extends MenuItem {
 
   private renderDynamicTooltip(): void {
     this.removeTooltip();
-
+    if (this.disabled) {
+      return;
+    }
+    // Do not show the tooltip when the dropdown is open and the navmenuitem has active child.
+    if (this.dropdownOpen) {
+      return;
+    }
     if (this.hasActiveChild && !this.isActiveParentTooltipText) {
       return;
     }
@@ -389,7 +396,7 @@ class NavMenuItem extends MenuItem {
   };
 
   private handleClickEvent(): void {
-    if (this.disabled || this.cannotActivate) return;
+    if (this.disabled || this.cannotActivate || this.softDisabled) return;
 
     const context = this.sideNavigationContext?.value;
     if (context?.isDropdown && context?.expanded && context?.isDropDownParent(this)) {
@@ -410,8 +417,11 @@ class NavMenuItem extends MenuItem {
 
     this.dropdownOpen = !this.dropdownOpen;
     dropdownContainer.style.display = this.dropdownOpen ? 'flex' : 'none';
-
-    this.setAttribute('aria-expanded', String(this.dropdownOpen));
+    if (this.dropdownOpen) {
+      this.setAttribute('aria-expanded', 'true');
+    } else {
+      this.removeAttribute('aria-expanded');
+    }
   }
 
   /**

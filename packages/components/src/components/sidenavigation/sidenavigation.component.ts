@@ -105,7 +105,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
   hideFixedSectionDivider: boolean = false;
 
   /**
-   * When `is-dropdown` is true, navMenuItems with a sibling element with a matching `data-trigger` attribute will render their dropdown submenu in the sibling element when the sidenavigation is expanded. Dropdown submenus will not render when the sidenavigation is collapsed, regardless of the value of `is-dropdown`.
+   * When `is-dropdown` is enabled, a parent `mdc-navmenuitem` can render its submenu inside a sibling
+   * `div[data-trigger="<navmenuitem-id>"]` while the sidenavigation is expanded. In collapsed mode,
+   * dropdown submenus are never rendered, even when `is-dropdown` is enabled.
    */
   @property({ type: Boolean, reflect: true, attribute: 'is-dropdown' })
   isDropdown: boolean = false;
