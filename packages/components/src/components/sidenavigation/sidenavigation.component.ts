@@ -46,6 +46,7 @@ import styles from './sidenavigation.styles';
  *    - **Dynamic behavior**: When collapsed, dropdowns automatically convert to flyout menus for usability. They revert to dropdowns when expanded.
  *    - **Important**: Dropdown submenus never render when collapsed, regardless of the `isDropdown` setting
  *    - **Accessibility**: The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed
+ *    - **Note**: There can be only 1 level of dropdown submenus. Nested dropdowns (dropdowns within dropdowns) are not supported in the current architecture due to accessibility and complexity concerns. If you need more than 1 level of submenu, we recommend using flyouts instead of dropdowns.
  *
  * 4. **Actionable navmenuitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
