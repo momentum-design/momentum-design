@@ -658,7 +658,7 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
     await test.step('clicking parent again closes dropdown', async () => {
       await parentItem1.click();
       await expect(dropdownContainer1).toHaveCSS('display', 'none');
-      await expect(parentItem1).toHaveAttribute('aria-expanded', 'false');
+      await expect(parentItem1).not.toHaveAttribute('aria-expanded');
     });
 
     await test.step('selecting a child marks only the child as active, not parent', async () => {

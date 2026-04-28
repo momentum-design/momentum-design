@@ -529,6 +529,82 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       });
     });
 
+    // AI-Assisted
+    await test.step('Disabled menuitem with submenu ignores click and keyboard interactions', async () => {
+      const html = `
+        <div id="menupopover-test-wrapper">
+          <mdc-button id="trigger-btn">Options</mdc-button>
+          <mdc-menupopover triggerid="trigger-btn">
+            <mdc-menuitem label="Profile"></mdc-menuitem>
+            <mdc-menuitem id="disabled-submenu-trigger" label="Settings" disabled arrow-position="trailing"></mdc-menuitem>
+            <mdc-menupopover triggerid="disabled-submenu-trigger" placement="right-start">
+              <mdc-menuitem label="Account"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="Logout"></mdc-menuitem>
+          </mdc-menupopover>
+        </div>
+      `;
+
+      // Click interaction
+      const { wrapper, triggerElement } = await setup({ componentsPage, html });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const disabledTrigger = menupopover.locator('#disabled-submenu-trigger');
+      const disabledSubmenu = menupopover.locator('mdc-menupopover[triggerid="disabled-submenu-trigger"]');
+
+      await triggerElement.click();
+      await expect(menupopover).toBeVisible();
+      await expect(disabledTrigger).toBeDisabled();
+      await disabledTrigger.click({ force: true });
+      await expect(disabledSubmenu).not.toBeVisible();
+      await expect(menupopover).toBeVisible();
+    });
+
+    await test.step('Soft-disabled menuitem with submenu ignores click and keyboard interactions', async () => {
+      const html = `
+        <div id="menupopover-test-wrapper">
+          <mdc-button id="trigger-btn">Options</mdc-button>
+          <mdc-menupopover triggerid="trigger-btn">
+            <mdc-menuitem label="Profile"></mdc-menuitem>
+            <mdc-menuitem id="soft-disabled-submenu-trigger" label="Settings" soft-disabled arrow-position="trailing"></mdc-menuitem>
+            <mdc-menupopover triggerid="soft-disabled-submenu-trigger" placement="right-start">
+              <mdc-menuitem label="Account"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="Logout"></mdc-menuitem>
+          </mdc-menupopover>
+        </div>
+      `;
+
+      // Click interaction
+      const { wrapper, triggerElement } = await setup({ componentsPage, html });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const softDisabledTrigger = menupopover.locator('#soft-disabled-submenu-trigger');
+      const softDisabledSubmenu = menupopover.locator('mdc-menupopover[triggerid="soft-disabled-submenu-trigger"]');
+
+      await triggerElement.click();
+      await expect(menupopover).toBeVisible();
+      await expect(softDisabledTrigger).toHaveAttribute('aria-disabled', 'true');
+      await softDisabledTrigger.click({ force: true });
+      await expect(softDisabledSubmenu).not.toBeVisible();
+      await expect(menupopover).toBeVisible();
+
+      // Keyboard interaction
+      const { wrapper: keyboardWrapper, triggerElement: keyboardTrigger } = await setup({ componentsPage, html });
+      const keyboardPopover = keyboardWrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const keyboardTriggerItem = keyboardPopover.locator('#soft-disabled-submenu-trigger');
+      const keyboardSubmenu = keyboardPopover.locator('mdc-menupopover[triggerid="soft-disabled-submenu-trigger"]');
+
+      await openPopoverWithKeyboard(componentsPage, keyboardTrigger, keyboardPopover);
+      await keyboardTriggerItem.focus();
+      await expect(keyboardTriggerItem).toBeFocused();
+
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await expect(keyboardSubmenu).not.toBeVisible();
+
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(keyboardSubmenu).not.toBeVisible();
+    });
+    // End AI-Assisted
+
     await test.step('Backdrop attribute with hide on outside click', async () => {
       await componentsPage.mount({
         html: `

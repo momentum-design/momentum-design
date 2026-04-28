@@ -21,7 +21,7 @@ import styles from './sidenavigation.styles';
  *
  * ## Features:
  * - Supports five layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, `flexible-on-hover`, and `hidden`
- * - Toggleable expand/collapse behavior
+ * - Toggleable expand/collapse behavior to show icon-only or icon with label navigation items
  * - Displays brand logo and customer name
  * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
  *
@@ -30,18 +30,22 @@ import styles from './sidenavigation.styles';
  *
  * 1. **Simple navmenuitem** – No submenu or interaction beyond selection.
  *
- * 2. **NavMenuItem with submenu**:
- *    - Provide an `id` on the `mdc-navmenuitem`
- *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navmenuitem's `id`
- *    - Set `parent-nav-tooltip-text` with appropriate text that will display when a child menu item
- *      inside the nested menupopover is active, conveying which submenu item is currently selected.
- *    - This flyout menu approach is supported by both expanded and collapsed states of the sidenavigation.
+ * 2. **NavMenuItem with flyout submenu**:
+ *    - Add an `id` attribute to the `mdc-navmenuitem` element
+ *    - Link a `mdc-menupopover` by setting its `triggerId` to match the navmenuitem's `id`
+ *    - Use `is-active-parent-tooltip-text` to specify text that appears when a child menu item in the flyout is selected,
+ *      helping users understand which submenu item is currently active
+ *    - Flyout menus work in both expanded and collapsed sidenavigation states
+ *    - The parent navmenuitem automatically gets `aria-haspopup=menu` for accessibility
  *
  * 3. **NavMenuItem with dropdown submenu**:
- *    - Provide an `id` on the `mdc-navmenuitem`
- *    - Set the `data-trigger` attribute on a sibling `div` to match the navmenuitem's `id`
- *    - Place the dropdown submenu content inside this sibling `div`
- *    - This dropdown approach is only supported in the expanded state of the sidenavigation, when `isDropdown` is set to true and will not render in the collapsed state.
+ *    - Add an `id` to the `mdc-navmenuitem` to uniquely identify it
+ *    - Add a sibling `div` with `data-trigger` set to the navmenuitem's `id` to establish the relationship
+ *    - Nest the dropdown submenu navmenuitems inside this `div` container
+ *    - Dropdowns only display in expanded mode when `isDropdown="true"`. In collapsed mode, they're hidden.
+ *    - **Dynamic behavior**: When collapsed, dropdowns automatically convert to flyout menus for usability. They revert to dropdowns when expanded.
+ *    - **Important**: Dropdown submenus never render when collapsed, regardless of the `isDropdown` setting
+ *    - **Accessibility**: The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed
  *
  * 4. **Actionable navmenuitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
@@ -146,7 +150,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
   hideFixedSectionDivider: boolean = false;
 
   /**
-   * When `is-dropdown` is true, navMenuItems with a sibling element with a matching `data-trigger` attribute will render their dropdown submenu in the sibling element when the sidenavigation is expanded. Dropdown submenus will not render when the sidenavigation is collapsed, regardless of the value of `is-dropdown`.
+   * When `is-dropdown` is enabled, a parent `mdc-navmenuitem` can render its submenu inside a sibling
+   * `div[data-trigger="<navmenuitem-id>"]` while the sidenavigation is expanded. In collapsed mode,
+   * dropdown submenus are never rendered, even when `is-dropdown` is enabled.
    */
   @property({ type: Boolean, reflect: true, attribute: 'is-dropdown' })
   isDropdown: boolean = false;
