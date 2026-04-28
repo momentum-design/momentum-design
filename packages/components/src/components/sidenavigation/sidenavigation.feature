@@ -251,7 +251,7 @@ Feature: SideNavigation Accessibility and User Interaction
     Background:
       Given the SideNavigation has `is-dropdown` set to true
       And parent navmenuitems have an `id` attribute
-      And sibling `div[data-trigger]` elements contain child navmenuitems
+      And sibling `div` with [data-trigger] set to the parent `id` elements contain child navmenuitems
 
     Scenario: Expanded dropdown – clicking parent toggles inline children
       Given the sidenavigation is expanded
@@ -279,7 +279,7 @@ Feature: SideNavigation Accessibility and User Interaction
 
     Scenario: Expanded dropdown – closing dropdown with active child shows parent as active
       Given the sidenavigation is expanded
-      And a child navmenuitem inside a dropdown has `aria-current="page"`
+      And a child navmenuitem inside a dropdown has `aria-current="page"` and is active
       When I click the parent navmenuitem to close the dropdown
       Then the parent navmenuitem gains the `active` attribute
       And the parent shows filled icon styling
@@ -287,14 +287,14 @@ Feature: SideNavigation Accessibility and User Interaction
     Scenario: Collapsed dropdown – converts to flyout menus
       Given the sidenavigation has `is-dropdown` set to true
       And the sidenavigation is expanded with dropdown children
-      When the sidenavigation is collapsed
+      When the sidenavigation is collapsed horizontally
       Then all dropdown containers are hidden
       And dynamic `mdc-menupopover` elements are created from dropdown children
       And the parent navmenuitems show a right-arrow icon (flyout indicator)
 
     Scenario: Collapsed with active child – parent shows active styling
-      Given a child navmenuitem inside a dropdown has `aria-current="page"`
-      When the sidenavigation is collapsed
+      Given a child navmenuitem inside a dropdown has `aria-current="page"` and is active
+      When the sidenavigation is collapsed horizontally
       Then the parent navmenuitem gains the `active` attribute
       And the parent shows the tooltip with `is-active-parent-tooltip-text`
 
@@ -336,5 +336,6 @@ Feature: SideNavigation Accessibility and User Interaction
       When I press Escape
       Then the dropdown closes
       And focus returns to the parent trigger navmenuitem
+
 
 # End AI-Assisted
