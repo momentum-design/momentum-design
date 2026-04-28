@@ -54,7 +54,8 @@ import styles from './navmenuitem.styles';
  * @csspart badge - The badge of the navmenuitem.
  * @csspart icon-container - The container of the icon.
  * @csspart text-container - The container of the text.
- * @csspart trailing-arrow - The trailing arrow of the navmenuitem.
+ * @csspart trailing-arrow - The trailing arrow of the navmenuitem when it has a flyout menu.
+ * @csspart trailing-arrow-dropdown - The trailing arrow of the navmenuitem when it has a dropdown menu.
  */
 class NavMenuItem extends MenuItem {
   /**
@@ -515,7 +516,7 @@ class NavMenuItem extends MenuItem {
         ? html` <mdc-icon
             name=${ICON_NAME.DOWN_ARROW}
             length-unit="rem"
-            part="trailing-arrow"
+            part="trailing-arrow-dropdown"
             class="${this.dropdownOpen ? 'arrow-rotated' : ''}"
           >
           </mdc-icon>`
