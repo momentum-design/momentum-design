@@ -42,13 +42,22 @@ type SetledCallback = (url: string, error: ReturnType<PlaywrightRequest['failure
 class ComponentsPage {
   // AI-Assisted
   /**
-   * Set of URLs for icon requests that are currently in-flight.
-   * Populated by the persistent listener initialized in `setup()`.
+   * Reference-counting map of icon (.svg) URLs currently in-flight.
+   * A URL's count is incremented on each request event and decremented on
+   * each response/failure event. The URL is considered settled when its count
+   * reaches 0. This correctly handles multiple simultaneous requests for the
+   * same URL (e.g. many icon elements loading the same icon before the cache
+   * is populated).
    */
-  private pendingIconRequests: Set<string> = new Set();
+  private pendingIconRequests: Map<string, number> = new Map();
 
   /**
-   * Callbacks to notify `waitForPendingIconRequests` when a pending request settles.
+   * Total number of in-flight icon requests across all URLs.
+   */
+  private pendingIconRequestCount = 0;
+
+  /**
+   * Callbacks to notify `waitForPendingIcons` when all pending requests settle.
    */
   private pendingIconSettleCallbacks: Set<SetledCallback> = new Set();
   // End AI-Assisted
@@ -60,7 +69,7 @@ class ComponentsPage {
     // creates utility objects on components page and inject dependencies:
     this.accessibility = new Accessibility(this.page, this.testInfo);
     this.actionability = new Actionability(this.page);
-    this.visualRegression = new VisualRegression(this.page);
+    this.visualRegression = new VisualRegression(this.page, () => this.waitForPendingIcons());
     this.debugUtils = new DebugUtils(this.page);
   }
 
@@ -109,8 +118,14 @@ class ComponentsPage {
     const matchesPattern = (url: string) => /\.svg$/.test(url);
 
     const onSettled: SetledCallback = (url, error) => {
-      this.pendingIconRequests.delete(url);
-      if (this.pendingIconRequests.size === 0) {
+      const count = (this.pendingIconRequests.get(url) ?? 1) - 1;
+      if (count <= 0) {
+        this.pendingIconRequests.delete(url);
+      } else {
+        this.pendingIconRequests.set(url, count);
+      }
+      this.pendingIconRequestCount = Math.max(0, this.pendingIconRequestCount - 1);
+      if (this.pendingIconRequestCount === 0) {
         this.pendingIconSettleCallbacks.forEach(cb => cb(url, error));
       }
     };
@@ -118,7 +133,8 @@ class ComponentsPage {
     this.page.on('request', request => {
       const url = request.url();
       if (matchesPattern(url)) {
-        this.pendingIconRequests.add(url);
+        this.pendingIconRequests.set(url, (this.pendingIconRequests.get(url) ?? 0) + 1);
+        this.pendingIconRequestCount += 1;
       }
     });
 
@@ -348,19 +364,19 @@ class ComponentsPage {
    * await componentsPage.waitForPendingIconRequests();
    * ```
    */
-  async waitForPendingIcons(options?: { timeout?: number }) {
+  async waitForPendingIcons(options?: { timeout?: number }): Promise<boolean> {
     const timeout = options?.timeout ?? 10_000;
 
-    await test.step('Waiting for pending icon requests to finish', async () => {
-      if (this.pendingIconRequests.size === 0) {
-        return;
+    return test.step('Waiting for pending icon requests to finish', async () => {
+      if (this.pendingIconRequestCount === 0) {
+        return false;
       }
 
       await new Promise<void>((resolve, reject) => {
         let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
         const onSettled: SetledCallback = (url, error) => {
-          if (this.pendingIconRequests.size === 0) {
+          if (this.pendingIconRequestCount === 0) {
             if (timeoutId !== undefined) {
               clearTimeout(timeoutId);
             }
@@ -377,13 +393,15 @@ class ComponentsPage {
           this.pendingIconSettleCallbacks.delete(onSettled);
           reject(
             new Error(
-              `Timed out after ${timeout}ms waiting for ${this.pendingIconRequests.size} pending icon request(s) to finish: ${Array.from(this.pendingIconRequests).join(', ')}`,
+              `Timed out after ${timeout}ms waiting for ${this.pendingIconRequestCount} pending icon request(s) to finish: ${Array.from(this.pendingIconRequests.keys()).join(', ')}`,
             ),
           );
         }, timeout);
 
         this.pendingIconSettleCallbacks.add(onSettled);
       });
+
+      return true;
     });
   }
   // End AI-Assisted

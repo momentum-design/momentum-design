@@ -334,6 +334,7 @@ test.describe('Menubar Feature Scenarios', () => {
       await componentsPage.page.keyboard.press('ArrowRight');
       const undoSubmenu = componentsPage.page.locator('#edit-undo-popover');
       await expect(undoSubmenu).toBeVisible();
+      await expect(undoSubmenu.locator('#edit-undo-typing')).toBeFocused();
       await componentsPage.visualRegression.takeScreenshot('mdc-menubar-undo-popover');
       await componentsPage.page.keyboard.press('ArrowRight');
       await expect(undoSubmenu).not.toBeVisible();
@@ -454,6 +455,7 @@ test.describe('Menubar Feature Scenarios', () => {
       const locators = await setup({ componentsPage });
 
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      await componentsPage.page.locator('mdc-spatialnavigationprovider').waitFor();
       const { keyboard } = componentsPage.page;
 
       await keyboard.press(KEYS.ARROW_DOWN);
@@ -470,6 +472,7 @@ test.describe('Menubar Feature Scenarios', () => {
 
       // close submenu
       await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(submenu).not.toHaveAttribute('visible');
       await expect(locators.file).toBeFocused();
 
       await keyboard.press(KEYS.ARROW_DOWN);

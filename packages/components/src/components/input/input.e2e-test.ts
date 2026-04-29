@@ -77,6 +77,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
   if (isForm) {
     const form = componentsPage.page.locator('form');
     await form.waitFor();
+    // Wait for the custom element inside the form to upgrade and render its shadow DOM
+    await form.locator('mdc-input input').waitFor();
     return form;
   }
   const text = componentsPage.page.locator('mdc-input');
@@ -84,10 +86,10 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return text;
 };
 
-test.use({ viewport: { width: 800, height: 1500 } });
-test('mdc-input', async ({ componentsPage, browserName }) => {
-  const input = await setup({
-    componentsPage,
+test.describe('mdc-input', () => {
+  test.use({ viewport: { width: 800, height: 1500 } });
+
+  const defaultSetupOptions = {
     id: 'test-mdc-input',
     placeholder: 'Placeholder',
     maxlength: 10,
@@ -99,12 +101,13 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     helpText: 'Help Text',
     secondButtonForFocus: true,
     dataAriaDescribedby: 'custom-helper-text-id', // custom aria-describedby
-  });
+  };
 
   /**
    * ATTRIBUTES
    */
-  await test.step('attributes', async () => {
+  test('attributes', async ({ componentsPage }) => {
+    const input = await setup({ componentsPage, ...defaultSetupOptions });
     await test.step('attributes should be present on component', async () => {
       await expect(input).toHaveAttribute('id', 'test-mdc-input');
       await expect(input).toHaveAttribute('placeholder', 'Placeholder');
@@ -236,7 +239,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
   /**
    * INTERACTIONS
    */
-  await test.step('interactions', async () => {
+  test('interactions', async ({ componentsPage, browserName }) => {
+    const input = await setup({ componentsPage, ...defaultSetupOptions });
     const inputEl = input.locator('input');
     await test.step('component should be focusable with tab', async () => {
       await componentsPage.actionability.pressTab();
@@ -482,6 +486,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const mdcInput = form.locator('mdc-input');
       const submitButton = form.locator('mdc-button[type="submit"]');
       const inputEl = mdcInput.locator('input');
+      await expect(inputEl).toBeVisible();
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
       await inputEl.fill('He');
@@ -635,7 +640,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
+  test('visual-regression', async ({ componentsPage }) => {
     const attributes = {
       id: 'test-mdc-input',
       placeholder: 'Placeholder',
@@ -707,7 +712,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => {
+  test('accessibility', async ({ componentsPage }) => {
+    await setup({ componentsPage, ...defaultSetupOptions });
     await componentsPage.accessibility.checkForA11yViolations('input-default');
   });
 });
