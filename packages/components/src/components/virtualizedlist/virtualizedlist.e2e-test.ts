@@ -530,6 +530,74 @@ test('mdc-virtualizedlist', async ({ componentsPage }) => {
     });
   });
 
+  await test.step('navigating via keyboard should skip disabled items', async () => {
+    const { wrapper, vlist } = await setup();
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      wrapperEl.addItem('Disabled Item 1', undefined, { disabled: true });
+      wrapperEl.addItem('Item 2');
+      wrapperEl.addItem('Item 3');
+      wrapperEl.addItem('Disabled Item 4', undefined, { disabled: true });
+      wrapperEl.addItem('Item 5');
+      wrapperEl.addItem('Disabled Item 6', undefined, { disabled: true });
+      wrapperEl.addItem('Disabled Item 7', undefined, { disabled: true });
+      wrapperEl.addItem('Item 8');
+    });
+
+    await expect(listItemLocator(vlist, 0)).toHaveAttribute('disabled');
+    await expect(listItemLocator(vlist, 3)).toHaveAttribute('disabled');
+    await expect(listItemLocator(vlist, 5)).toHaveAttribute('disabled');
+    await expect(listItemLocator(vlist, 6)).toHaveAttribute('disabled');
+
+    await componentsPage.actionability.pressTab();
+    await expect(listItemLocator(vlist, 1)).toBeFocused();
+
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await expect(listItemLocator(vlist, 4)).toBeFocused();
+
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await expect(listItemLocator(vlist, 7)).toBeFocused();
+  });
+
+  await test.step('navigating via keyboard should skip disabled items even when they are not rendered', async () => {
+    const { wrapper, vlist } = await setup();
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      wrapperEl.addItem('Item 1');
+      for (let i = 0; i < 50; i += 1) {
+        wrapperEl.addItem(`Disabled Item ${i + 1}`, undefined, { disabled: true });
+      }
+      wrapperEl.addItem('Item End');
+    });
+
+    await componentsPage.actionability.pressTab();
+    await expect(listItemLocator(vlist, 0)).toBeFocused();
+
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await expect(listItemLocator(vlist, 51)).toBeFocused();
+  });
+
+  await test.step('navigating via keyboard should skip listheaders in the list body', async () => {
+    const { wrapper, vlist } = await setup();
+
+    await wrapper.evaluate((wrapperEl: VirtualizedListE2E) => {
+      wrapperEl.addItem('Header 1', undefined, { header: true });
+      wrapperEl.addItem('Item 1');
+      wrapperEl.addItem('Item 2');
+      wrapperEl.addItem('Header 2', undefined, { header: true });
+      wrapperEl.addItem('Item 3');
+      wrapperEl.addItem('Item 4');
+    });
+
+    await componentsPage.actionability.pressTab();
+    await expect(listItemLocator(vlist, 1)).toBeFocused();
+
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await componentsPage.page.keyboard.press('ArrowDown');
+    await expect(listItemLocator(vlist, 4)).toBeFocused();
+  });
+
   await test.step('scroll anchoring', async () => {
     await test.step('observe-size-changes = false', async () => {
       const { wrapper, vlist } = await setup({ scrollAnchoring: true, initialItemCount: 100, initialFocus: 50 });

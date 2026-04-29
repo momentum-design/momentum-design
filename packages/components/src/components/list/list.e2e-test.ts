@@ -20,7 +20,7 @@ const generateBasicChildren = (count: number) =>
     .fill(1)
     .map(
       (_, index) => `
-  <mdc-listitem label="List Item ${index + 1}"><mdc-listitem>
+  <mdc-listitem label="List Item ${index + 1}"></mdc-listitem>
 `,
     )
     .join('');
@@ -367,7 +367,6 @@ test('mdc-list', async ({ componentsPage }) => {
         const beforeBtn = componentsPage.page.getByText('before button');
         const afterBtn = componentsPage.page.getByText('after button');
 
-        await componentsPage.page.pause();
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(beforeBtn).toBeFocused();
         await keyboard.press(KEYS.ARROW_DOWN);
@@ -500,6 +499,35 @@ test('mdc-list', async ({ componentsPage }) => {
       await componentsPage.actionability.pressShiftTab();
       await expect(listitems.nth(2)).toBeFocused();
     });
+
+    // AI-Assisted
+    await test.step('should not scroll the list when Space is pressed on a focused listitem', async () => {
+      // tabindex=-1 is needed here to stop Firefox from giving the scrollable region focus instead of the list items
+      await componentsPage.mount({
+        html: `
+          <div style="height: 150px; overflow-y: auto;" tabindex="-1">
+            <mdc-list>
+              ${generateBasicChildren(20)}
+            </mdc-list>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const container = componentsPage.page.locator('mdc-list').first();
+      await container.waitFor();
+
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.locator('mdc-listitem').first()).toBeFocused();
+
+      const scrollTopBefore = await container.evaluate(el => el.scrollTop);
+
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+
+      const scrollTopAfter = await container.evaluate(el => el.scrollTop);
+      expect(scrollTopAfter).toBe(scrollTopBefore);
+    });
+    // End AI-Assisted
   });
 
   await test.step('should keep the focus on interactive elements inside list items', async () => {

@@ -4,7 +4,7 @@ import '.';
 import { html } from 'lit';
 
 import { describeStory, hideControls } from '../../../config/storybook/utils';
-import { TAB_VARIANTS } from '../tab/tab.constants';
+import { TAB_SIZES, TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 import '../tab';
 import { ROLE } from '../../utils/roles';
@@ -16,6 +16,7 @@ const render = (args: Args) =>
       data-aria-label=${args['data-aria-label']}
     >
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Calls"
         icon-name="audio-call-bold"
@@ -24,6 +25,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Videos"
         icon-name="video-bold"
@@ -33,6 +35,7 @@ const render = (args: Args) =>
         <mdc-badge slot="postfix" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Music"
         icon-name="file-music-bold"
@@ -41,6 +44,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Documents"
         icon-name="document-bold"
@@ -49,6 +53,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Meetings"
         icon-name="calendar-month-bold"
@@ -97,6 +102,11 @@ const meta: Meta = {
       description: 'Set the variant of tab inside the tablist',
       options: Object.values(TAB_VARIANTS),
     },
+    tabsize: {
+      control: 'select',
+      description: 'Set the size of tabs inside the tablist',
+      options: Object.values(TAB_SIZES),
+    },
     ...hideControls(['itemsStore']),
   },
 };
@@ -107,6 +117,7 @@ export const Example: StoryObj = {
   args: {
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
+    tabsize: TAB_SIZES[32],
     tabvariant: 'line',
   },
 };
@@ -136,6 +147,7 @@ export const TablistWithPanels: StoryObj = {
         data-aria-label=${args['data-aria-label']}
       >
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Calls"
           icon-name="audio-call-bold"
@@ -144,6 +156,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Videos"
           icon-name="video-bold"
@@ -153,6 +166,7 @@ export const TablistWithPanels: StoryObj = {
           <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Music"
           icon-name="file-music-bold"
@@ -161,6 +175,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Documents"
           icon-name="document-bold"
@@ -169,6 +184,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Meetings"
           icon-name="calendar-month-bold"
@@ -199,6 +215,7 @@ This markup is not part of the component and is only provided for context. -->
   },
   args: {
     tabvariant: 'glass',
+    tabsize: TAB_SIZES[32],
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
   },

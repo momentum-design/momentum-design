@@ -1511,12 +1511,12 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).not.toBeVisible();
     await expect(popoverActionButton).toBeFocused();
 
-    // Press Space on action inside popover to open dialog
+    // Press Escape to close popover
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).not.toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Focus does return to trigger when popover has focus-back-to-trigger attribute', async () => {
@@ -1552,9 +1552,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     // Press Space on action inside popover to open dialog
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Tooltip on trigger element does not open if it does not have visual focus when popover is closed', async () => {
@@ -1597,9 +1597,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     // Click on backdrop to close popover
     await backdrop.click({ force: true });
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Popover should determine z-index for backdrop with default values', async () => {

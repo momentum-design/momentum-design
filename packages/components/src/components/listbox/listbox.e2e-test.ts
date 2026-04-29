@@ -43,15 +43,25 @@ const setup = async (args: SetupOptions) => {
   return listbox;
 };
 
-const captureChangeDetail = (listbox: Locator) =>
-  listbox.evaluate(
-    el =>
-      new Promise<ListBoxChangeEventDetail>(resolve => {
-        el.addEventListener('change', (e: Event) => resolve((e as CustomEvent<ListBoxChangeEventDetail>).detail), {
-          once: true,
-        });
-      }),
-  );
+// AI-Assisted
+/**
+ * Registers a one-time change listener on the listbox element.
+ * Must be awaited before performing the action that triggers the event
+ * to avoid a race between listener setup and the event firing.
+ */
+const setupChangeListener = async (listbox: Locator): Promise<void> => {
+  await listbox.evaluate(el => {
+    // eslint-disable-next-line no-param-reassign
+    (el as any).pendingChangeDetail = new Promise<any>(resolve => {
+      el.addEventListener('change', (e: Event) => resolve((e as CustomEvent).detail), { once: true });
+    });
+  });
+};
+
+/** Retrieves the event detail captured by a previously registered change listener. */
+const getChangeDetail = (listbox: Locator): Promise<ListBoxChangeEventDetail> =>
+  listbox.evaluate((el: any) => el.pendingChangeDetail);
+// End AI-Assisted
 
 test('mdc-listbox', async ({ componentsPage }) => {
   /**
@@ -221,20 +231,26 @@ test('mdc-listbox multiselect', async ({ componentsPage }) => {
     const listbox = await setup({ componentsPage, children: defaultChildren(), multiple: true });
 
     // Click first option to select
-    let [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
+    await setupChangeListener(listbox);
+    await listbox.locator('mdc-option').nth(0).click();
+    let detail = await getChangeDetail(listbox);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     expect(detail.selectedValues).toEqual(['london']);
     expect(detail.value).toBe('london');
 
     // Click second option - first should remain selected
-    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(1).click()]);
+    await setupChangeListener(listbox);
+    await listbox.locator('mdc-option').nth(1).click();
+    detail = await getChangeDetail(listbox);
     await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
     expect(detail.selectedValues).toEqual(['london', 'newyork']);
     expect(detail.value).toBe('london');
 
     // Click first again to deselect
-    [detail] = await Promise.all([captureChangeDetail(listbox), listbox.locator('mdc-option').nth(0).click()]);
+    await setupChangeListener(listbox);
+    await listbox.locator('mdc-option').nth(0).click();
+    detail = await getChangeDetail(listbox);
     await expect(listbox.locator('mdc-option').nth(0)).not.toHaveAttribute('selected');
     await expect(listbox.locator('mdc-option').nth(1)).toHaveAttribute('selected');
     expect(detail.selectedValues).toEqual(['newyork']);

@@ -17,7 +17,7 @@ function generateUUID(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-type Item = { id: string; message: string; size?: number };
+type Item = { id: string; message: string; size?: number; disabled?: boolean; header?: true };
 
 export class VirtualizedListE2E extends Component {
   @property({ type: Number, reflect: true, attribute: 'item-height' })
@@ -83,8 +83,9 @@ export class VirtualizedListE2E extends Component {
   private getVirtualizerProps(): VirtualizerProps {
     return {
       count: this.items.length,
-      estimateSize: () => this.itemHeight,
+      estimateSize: index => (this.items[index].header ? 36 : this.itemHeight),
       getItemKey: index => this.items[index]?.id,
+      isItemNavigable: index => !this.items[index]?.disabled && !this.items[index]?.header,
     };
   }
 
@@ -160,13 +161,18 @@ export class VirtualizedListE2E extends Component {
   }
 
   private generateListItem({ index }: VirtualItem): TemplateResult {
-    const { message, size } = this.items[index];
+    const { message, size, header, disabled } = this.items[index];
+
+    if (header) {
+      return html`<mdc-listheader data-index=${index} header-text="${message}"></mdc-listheader>`;
+    }
 
     return html`
       <mdc-listitem
         data-index=${index}
         label=${message}
         style=${styleMap({ '--mdc-listitem-height': size ? `${size}px` : undefined })}
+        ?disabled=${disabled}
       >
         <mdc-button slot="trailing-controls" variant="secondary" size="24" id="btn-${index}">Label</mdc-button>
         ${this.withTooltip
