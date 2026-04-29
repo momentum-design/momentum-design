@@ -29,6 +29,8 @@ const setup = async (componentsPage: ComponentsPage, args: Args) => {
 };
 
 const takeScreenshot = async (componentsPage: ComponentsPage, orientation: OrientationType) => {
+  // Move mouse away to prevent accidental hover on any stepperitem after previous interactions
+  await componentsPage.page.mouse.move(0, 0);
   if (orientation === ORIENTATION.VERTICAL) {
     await componentsPage.page.setViewportSize({ width: 700, height: 1000 });
   }

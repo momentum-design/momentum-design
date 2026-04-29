@@ -1,0 +1,92 @@
+{
+  "motion": {
+    "duration": {
+      "instant": {
+        "value": "100ms",
+        "type": "duration",
+        "description": "Direct user feedback — press scale, toggle, focus ring"
+      },
+      "fast": {
+        "value": "200ms",
+        "type": "duration",
+        "description": "Immediate response — dropdown open, hover, button background"
+      },
+      "normal": {
+        "value": "300ms",
+        "type": "duration",
+        "description": "System choreography — accordion expand, stagger, carousel"
+      },
+      "relaxed": {
+        "value": "450ms",
+        "type": "duration",
+        "description": "Dramatic entrances — dialog pop, sheet reveal, page transitions"
+      },
+      "slow": {
+        "value": "600ms",
+        "type": "duration",
+        "description": "Deliberate slow reveals — onboarding sequences, hero sections"
+      }
+    },
+    "easing": {
+      "standard": {
+        "value": "cubic-bezier(0.44, 0, 0, 1)",
+        "type": "cubicBezier",
+        "description": "State changes — background, border, color; hover, press, toggle"
+      },
+      "entrance": {
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "type": "cubicBezier",
+        "description": "Elements entering the screen; give users time to orient"
+      },
+      "exit": {
+        "value": "cubic-bezier(0.5, 0, 1, 1)",
+        "type": "cubicBezier",
+        "description": "Elements leaving the screen; get out of the way quickly"
+      },
+      "linear": {
+        "value": "cubic-bezier(0, 0, 1, 1)",
+        "type": "cubicBezier",
+        "description": "Constant-speed transitions with no acceleration or deceleration"
+      }
+    },
+    "delay": {
+      "none": {
+        "value": "0ms",
+        "type": "duration",
+        "description": "No intentional pause before animation starts"
+      },
+      "short": {
+        "value": "200ms",
+        "type": "duration",
+        "description": "Hover delay before tooltip appears"
+      },
+      "medium": {
+        "value": "400ms",
+        "type": "duration",
+        "description": "Sequential reveals and debounced responses"
+      },
+      "long": {
+        "value": "600ms",
+        "type": "duration",
+        "description": "Extended pause for complex sequential animations"
+      }
+    },
+    "stagger": {
+      "tight": {
+        "value": "30ms",
+        "type": "duration",
+        "description": "Delay between consecutive items — dropdown menu items"
+      },
+      "normal": {
+        "value": "60ms",
+        "type": "duration",
+        "description": "Delay between consecutive items — card grids"
+      },
+      "relaxed": {
+        "value": "100ms",
+        "type": "duration",
+        "description": "Delay between consecutive items — onboarding steps"
+      }
+    }
+  }
+}
