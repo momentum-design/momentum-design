@@ -114,7 +114,8 @@ const styles = [
       background-color: var(--mdc-navmenuitem-pressed-active-background-color);
     }
 
-    :host(:not([in-menupopover]))::before {
+    :host(:not([in-menupopover]))::before,
+    :host([in-dropdown-container])::before {
       content: '';
       display: block;
       position: absolute;
@@ -189,15 +190,6 @@ const styles = [
     /* Arrow rotation when dropdown is open */
     .arrow-rotated {
       transform: rotate(180deg);
-    }
-
-    /* Dropdown child items: render inline without left active bar */
-    :host([in-dropdown-container]) {
-      width: 100%;
-    }
-
-    :host([in-dropdown-container])::before {
-      display: none;
     }
 
     :host mdc-badge {
