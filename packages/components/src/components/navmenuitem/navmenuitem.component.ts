@@ -303,11 +303,7 @@ class NavMenuItem extends MenuItem {
 
   private renderDynamicTooltip(): void {
     this.removeTooltip();
-    if (this.disabled) {
-      return;
-    }
-    // Do not show the tooltip when the dropdown is open and the navmenuitem has active child.
-    if (this.dropdownOpen) {
+    if (this.disabled || this.dropdownOpen) {
       return;
     }
     if (this.hasActiveChild && !this.isActiveParentTooltipText) {
@@ -375,7 +371,7 @@ class NavMenuItem extends MenuItem {
   private isInsideDropdownContainer(): boolean {
     let parent = this.parentElement;
     while (parent) {
-      if (parent.tagName.toLowerCase() === 'div' && parent.hasAttribute('data-trigger')) {
+      if (parent.matches('div[data-trigger]')) {
         return true;
       }
       parent = parent.parentElement;

@@ -711,7 +711,10 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
   });
 
   test('dropdown keyboard interactions', async ({ componentsPage }) => {
-    const { parentItem1, dropdownContainer1, child1, child2, child3 } = await setupDropdown(componentsPage, 'flexible');
+    const { parentItem1, parentItem2, dropdownContainer1, child1, child2, child3 } = await setupDropdown(
+      componentsPage,
+      'flexible',
+    );
 
     await test.step('ArrowDown on closed parent does NOT open dropdown', async () => {
       await parentItem1.focus();
@@ -739,6 +742,13 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(child3).toBeFocused();
     });
 
+    await test.step('ArrowDown on last child does not move focus outside dropdown', async () => {
+      // child3 is already focused from the previous step
+      await componentsPage.page.keyboard.press('ArrowDown');
+      // Focus should stay on the last child
+      await expect(child3).toBeFocused();
+    });
+
     await test.step('ArrowUp navigates back through children', async () => {
       await componentsPage.page.keyboard.press('ArrowUp');
       await expect(child2).toBeFocused();
@@ -746,8 +756,28 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(child1).toBeFocused();
     });
 
-    await test.step('ArrowUp on first child focuses parent', async () => {
+    await test.step('ArrowUp on first child does not move focus to parent', async () => {
+      // child1 is already focused from the previous step
       await componentsPage.page.keyboard.press('ArrowUp');
+      // Focus should stay on the first child
+      await expect(child1).toBeFocused();
+    });
+
+    await test.step('Tab on a child moves focus to the next outer navmenuitem after the trigger', async () => {
+      // child1 is focused; Tab should skip the rest of the dropdown and focus parentItem2
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(parentItem2).toBeFocused();
+    });
+
+    await test.step('Shift+Tab on a child moves focus back to the parent trigger', async () => {
+      // The dropdown is still open from the previous step (Tab only moves focus, it does not close the dropdown)
+      // Focus parentItem1 and ArrowDown into the first child
+      await parentItem1.focus();
+      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(child1).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Shift+Tab');
       await expect(parentItem1).toBeFocused();
     });
 

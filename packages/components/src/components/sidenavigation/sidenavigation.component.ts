@@ -336,10 +336,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * @internal
    */
   private closeAllDropdowns(): void {
-    const dropdownParents = this.navMenuItems.filter(item => this.context.value.isDropDownParent(item));
-    dropdownParents.forEach(item => {
-      item.closeDropdown();
-    });
+    this.navMenuItems.filter(item => this.context.value.isDropDownParent(item)).forEach(item => item.closeDropdown());
 
     // Also hide all dropdown containers
     this.hideAllDropdownContainers();
@@ -451,6 +448,37 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return;
     }
 
+    if (event.key === KEYS.TAB) {
+      const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
+      if (isInsideDropdown) {
+        const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+        if (!dropdownContainer) return;
+
+        const triggerId = dropdownContainer.getAttribute('data-trigger');
+        if (!triggerId) return;
+
+        if (event.shiftKey) {
+          // Shift+Tab: move focus back to the parent trigger navmenuitem
+          const triggerItem = this.querySelector(
+            `${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`,
+          ) as NavMenuItem | null;
+          if (triggerItem) {
+            event.preventDefault();
+            triggerItem.focus();
+          }
+        } else {
+          // Tab: move focus to the next navmenuitem outside the dropdown container
+          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
+          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+          if (triggerIndex !== -1 && triggerIndex + 1 < outerItems.length) {
+            event.preventDefault();
+            outerItems[triggerIndex + 1].focus();
+          }
+        }
+      }
+      return;
+    }
+
     if (event.key === KEYS.ARROW_DOWN || event.key === KEYS.ARROW_UP) {
       const context = this.context.value;
       const isDropDownParent = context.isDropDownParent(targetItem);
@@ -494,20 +522,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
             event.preventDefault();
             children[nextIndex].focus();
           }
+          // At last child: do nothing, focus stays on the last item
         } else if (event.key === KEYS.ARROW_UP) {
-          if (currentIndex === 0) {
-            // At first child, ArrowUp moves focus back to the parent trigger
-            const triggerId = dropdownContainer.getAttribute('data-trigger');
-            if (triggerId) {
-              const triggerItem = this.querySelector(
-                `${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`,
-              ) as NavMenuItem | null;
-              if (triggerItem) {
-                event.preventDefault();
-                triggerItem.focus();
-              }
-            }
-          } else {
+          if (currentIndex !== 0) {
             event.preventDefault();
             children[currentIndex - 1].focus();
           }
