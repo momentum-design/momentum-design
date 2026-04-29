@@ -560,7 +560,8 @@ export const DropdownSideNavigation: StoryObj = {
         story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
           The Dropdown Side Navigation example demonstrates the use of NavMenuItems with inline dropdown submenus. When
           the sidenavigation is expanded and <code>is-dropdown</code> is set to true, clicking a parent NavMenuItem
-          toggles its child items inline below it. When collapsed, flyout menus are used instead.
+          toggles its child items inline below it. When collapsed, flyout menus are used instead. This works only for a
+          single level of nesting to avoid complexity and accessibility issues.
           <br />
         </mdc-text>`,
       },
