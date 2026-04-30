@@ -3,6 +3,7 @@
     "core/value",
     "core/typography",
     "core/elevation",
+    "core/motion",
     "core/effect",
     "theme/stable/dark",
     "theme/stable/light",

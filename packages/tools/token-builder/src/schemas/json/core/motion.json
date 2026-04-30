@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/MotionFile",
+  "definitions": {
+    "MotionFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "motion": {
+          "$ref": "#/definitions/Motion"
+        }
+      },
+      "required": [
+        "motion"
+      ],
+      "title": "MotionFile"
+    },
+    "Motion": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/definitions/TokenCategory"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Motion"
+    },
+    "TokenCategory": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/definitions/MotionToken"
+        }
+      },
+      "additionalProperties": false,
+      "title": "TokenCategory"
+    },
+    "MotionToken": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["duration", "cubicBezier"]
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "type"
+      ],
+      "additionalProperties": false,
+      "if": {
+        "properties": { "type": { "const": "duration" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": { "value": { "type": "string", "pattern": "^\\d+ms$" } }
+      },
+      "else": {
+        "properties": { "value": { "type": "string", "pattern": "^cubic-bezier\\(.+\\)$" } }
+      },
+      "title": "MotionToken"
+    }
+  }
+}
