@@ -9,7 +9,6 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.cons
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as SIDENAV_TAGNAME } from '../sidenavigation/sidenavigation.constants';
 import MenuPopover from '../menupopover';
-import { DepthManager } from '../../utils/controllers/DepthManager';
 import { ACTIONS, KeyToActionMixin, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
@@ -40,11 +39,6 @@ import styles from './menubar.styles';
  * @slot default - Contains the menu items and their associated popovers
  */
 class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
-  /** track the depth of the popover for z-index calculation
-   * @internal
-   */
-  protected depthManager = new DepthManager(this);
-
   @queryAssignedElements({ selector: 'mdc-menusection', flatten: true })
   menusections!: Array<HTMLElement>;
 
@@ -278,9 +272,9 @@ class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = this.depthManager.popUntil(item => this.contains(item));
-
-    await Promise.all(popovers.map(popover => popover.updateComplete));
+    const openPopovers = this.getAllPopovers().filter(p => (p as MenuPopover).visible) as MenuPopover[];
+    openPopovers.forEach(p => p.hide());
+    await Promise.all(openPopovers.map(p => p.updateComplete));
   }
 
   private async crossMenubarNavigationOnLeft(element: HTMLElement): Promise<void> {
