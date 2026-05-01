@@ -42,16 +42,6 @@ Load fonts and token CSS, set typography class, and use **ThemeProvider** / **Ic
 
 ### Import this component
 
-**Web component** (registers the custom element):
-
-```javascript
-import '@momentum-design/components/components/combobox';
-```
-
-```html
-<mdc-combobox></mdc-combobox>
-```
-
 **React** wrapper (from `@lit/react` codegen):
 
 ```javascript
