@@ -16,6 +16,7 @@ type SetupOptions = {
   helpTextType?: string;
   min?: string;
   max?: string;
+  width?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -35,6 +36,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
         ${restArgs.min ? `min="${restArgs.min}"` : ''}
         ${restArgs.max ? `max="${restArgs.max}"` : ''}
+        ${restArgs.width ? `style="--mdc-timepicker-width: ${restArgs.width};"` : ''}
         locale-hours-label="hours"
         locale-minutes-label="minutes"
         locale-period-label="period"
@@ -184,6 +186,43 @@ test.describe('mdc-timepicker', () => {
 
       const listbox = timepicker.locator('[part="listbox"]');
       await expect(listbox).toBeVisible();
+    });
+
+    test('should open dropdown when blank area between spinbuttons and arrow is clicked', async ({
+      componentsPage,
+    }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        width: '12rem',
+      });
+
+      const spinbuttonGroup = timepicker.locator('[part="spinbutton-group"]');
+      const box = await spinbuttonGroup.boundingBox();
+      if (!box) {
+        throw new Error('Expected spinbutton group bounding box');
+      }
+
+      await spinbuttonGroup.click({ position: { x: box.width - 4, y: box.height / 2 } });
+
+      const listbox = timepicker.locator('[part="listbox"]');
+      await expect(listbox).toBeVisible();
+    });
+
+    test('should keep dropdown closed when a spinbutton is clicked', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+      });
+
+      const hoursInput = timepicker.locator('#hours-spinbutton');
+      await hoursInput.click();
+
+      await expect(hoursInput).toBeFocused();
+      const listbox = timepicker.locator('[part="listbox"]');
+      await expect(listbox).not.toBeVisible();
     });
 
     test('should close dropdown when clicking outside', async ({ componentsPage }) => {

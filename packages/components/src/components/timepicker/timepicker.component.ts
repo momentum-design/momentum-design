@@ -512,15 +512,21 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   /**
-   * Handles clicking on the spinbutton area (not the dropdown button).
-   * Focuses the nearest spinbutton.
+   * Handles clicking on the base container.
    * @internal
    */
-  private handleSpinbuttonAreaClick(event: MouseEvent): void {
+  private handleBaseContainerClick(event: MouseEvent): void {
     if (this.disabled || this.softDisabled || this.readonly) return;
     const target = event.target as HTMLElement;
     // If clicking on a spinbutton itself, let it handle focus
     if (target.getAttribute('role') === 'spinbutton') return;
+    // If clicking the non-editable blank area, treat it like the dropdown button.
+    if (target.getAttribute('part') === 'base-container' || target.getAttribute('part') === 'spinbutton-group') {
+      this.displayPopover = !this.displayPopover;
+      this.dropdownButton?.focus();
+      event.stopPropagation();
+      return;
+    }
     // Otherwise focus the hours spinbutton
     this.hoursInput?.focus();
     this.hoursInput?.select();
@@ -877,7 +883,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           id="${TRIGGER_ID}"
           part="base-container"
           class="mdc-focus-ring"
-          @click="${this.handleSpinbuttonAreaClick}"
+          @click="${this.handleBaseContainerClick}"
           @keydown="${this.handleBaseKeydown}"
         >
           <div part="spinbutton-group">
