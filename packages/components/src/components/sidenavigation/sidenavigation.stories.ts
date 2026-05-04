@@ -75,16 +75,15 @@ const render = (args: Args) => html`
           label="Meetings"
         ></mdc-navmenuitem>
         <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="13" label="Calling"></mdc-navmenuitem>
-        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="14" label="Teams"></mdc-navmenuitem>
+        <mdc-navmenuitem nav-id="14" label="Teams" icon-name="webex-teams-bold"></mdc-navmenuitem>
         <mdc-navmenuitem
           badge-type="counter"
           counter="3"
           max-counter="66"
-          icon-name="placeholder-bold"
           nav-id="15"
           label="Contacts"
         ></mdc-navmenuitem>
-        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="16" label="Whiteboards"></mdc-navmenuitem>
+        <mdc-navmenuitem nav-id="16" label="Whiteboards"></mdc-navmenuitem>
       </mdc-menusection>
 
       <mdc-menusection slot="scrollable-menubar" header-text="Section 4">
@@ -222,10 +221,10 @@ const renderNestedSideNavigation = (args: Args) => {
         <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Main Meetings" slot="scrollable-menubar" tooltip-text="Meetings"></mdc-navmenuitem>
         <mdc-navmenuitem icon-name="audio-call-bold" nav-id="verify2" label="Main Calling" slot="scrollable-menubar" id="temp" tooltip-text="Calling" is-active-parent-tooltip-text="Calling, contains active navmenuitem"></mdc-navmenuitem>
         <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
-          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" ></mdc-navmenuitem>
+          <mdc-navmenuitem label="Team Insights" nav-id="verify4" ></mdc-navmenuitem>
+          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" ></mdc-navmenuitem>
+          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" ></mdc-navmenuitem>
         </mdc-menupopover>
         <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 1">
           <mdc-navmenuitem
@@ -258,36 +257,36 @@ const renderNestedSideNavigation = (args: Args) => {
             >
           </mdc-navmenuitem>
           <mdc-menupopover triggerid="menu-button-trigger">
-            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navmenuitem>
+            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" ></mdc-navmenuitem>
+            <mdc-navmenuitem label="Personal Insights" nav-id="6" ></mdc-navmenuitem>
             <mdc-navmenuitem
               label="What's new?"
               nav-id="7"
               badge-type="counter"
               counter="2"
               max-counter="66"
-              icon-name="placeholder-bold"
+              
             ></mdc-navmenuitem>
-            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Collaboration Tools" nav-id="8"  id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
             <mdc-menupopover triggerid="share-id">
               <mdc-navmenuitem
                 label="Webex App Hub"
                 nav-id="temp1"
                 badge-type="dot"
-                icon-name="placeholder-bold"
+                
               ></mdc-navmenuitem>
                 <mdc-menusection>
-                  <mdc-navmenuitem label="Team Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navmenuitem>
+                  <mdc-navmenuitem label="Team Insights" nav-id="temp2" ></mdc-navmenuitem>
                   <mdc-navmenuitem
                     label="Release Notes"
                     nav-id="temp3"
                     badge-type="counter"
                     counter="2"
                     max-counter="66"
-                    icon-name="placeholder-bold"
+                    
                   ></mdc-navmenuitem>
                 </mdc-menusection>
-                <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navmenuitem>
+                <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4" ></mdc-navmenuitem>
               </mdc-menusection>
             </mdc-menupopover>
           </mdc-menupopover>
@@ -406,9 +405,9 @@ const renderDropdownSideNavigation = (args: Args) => html`
           is-active-parent-tooltip-text="Messaging, contains active navmenuitem"
         ></mdc-navmenuitem>
         <div data-trigger="dropdown-trigger-1">
-          <mdc-navmenuitem label="Sub Item 1" nav-id="4-1" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Sub Item 2" nav-id="4-2" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Sub Item 3" nav-id="4-3" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sub Item 1" nav-id="4-1"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sub Item 2" nav-id="4-2"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sub Item 3" nav-id="4-3"></mdc-navmenuitem>
         </div>
 
         <mdc-navmenuitem
@@ -420,10 +419,10 @@ const renderDropdownSideNavigation = (args: Args) => html`
           is-active-parent-tooltip-text="Meetings, contains active navmenuitem"
         ></mdc-navmenuitem>
         <div data-trigger="dropdown-trigger-2">
-          <mdc-navmenuitem label="Daily Standup" nav-id="5-1" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Sprint Review" nav-id="5-2" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Retrospective" nav-id="5-3" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Planning" nav-id="5-4" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Daily Standup" nav-id="5-1"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Sprint Review" nav-id="5-2"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Retrospective" nav-id="5-3"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Planning" nav-id="5-4"></mdc-navmenuitem>
         </div>
 
         <mdc-navmenuitem
@@ -432,7 +431,7 @@ const renderDropdownSideNavigation = (args: Args) => html`
           label="Calling"
           tooltip-text="Calling"
         ></mdc-navmenuitem>
-        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="7" label="Teams" tooltip-text="Teams"></mdc-navmenuitem>
+        <mdc-navmenuitem nav-id="7" label="Teams" tooltip-text="Teams" icon-name="webex-teams-bold"></mdc-navmenuitem>
       </mdc-menusection>
 
       <mdc-menusection slot="scrollable-menubar" header-text="Section name">
@@ -449,7 +448,7 @@ const renderDropdownSideNavigation = (args: Args) => html`
           label="Calling"
           tooltip-text="Calling"
         ></mdc-navmenuitem>
-        <mdc-navmenuitem icon-name="placeholder-bold" nav-id="11" label="Teams" tooltip-text="Teams"></mdc-navmenuitem>
+        <mdc-navmenuitem nav-id="11" label="Teams" tooltip-text="Teams" icon-name="webex-teams-bold"></mdc-navmenuitem>
       </mdc-menusection>
 
       <!-- Lower Nav (Fixed section) -->

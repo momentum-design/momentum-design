@@ -496,8 +496,15 @@ class NavMenuItem extends MenuItem {
 
     return html`
       <div part="icon-container">
-        <mdc-icon name="${this.iconName as IconNames}" size="1.5" length-unit="rem" part="regular-icon"></mdc-icon>
-        ${!this.cannotActivate
+        ${this.iconName
+          ? html`<mdc-icon
+              name="${this.iconName as IconNames}"
+              size="1.5"
+              length-unit="rem"
+              part="regular-icon"
+            ></mdc-icon>`
+          : nothing}
+        ${!this.cannotActivate && this.iconName
           ? html`<mdc-icon
               name="${this.getFilledIconName() as IconNames}"
               size="1.5"

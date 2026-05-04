@@ -27,6 +27,7 @@ const styles = [
 
       position: relative;
       flex-shrink: 0;
+      height: 2.5rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -56,8 +57,10 @@ const styles = [
       display: none;
     }
 
-    :host([in-menupopover]) {
+    :host([in-menupopover]),
+    :host([in-dropdown-container]) {
       width: 100%;
+      padding: 1rem;
     }
 
     :host(:not([in-menupopover])) {

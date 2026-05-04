@@ -56,6 +56,7 @@ import styles from './sidenavigation.styles';
  * - Use `mdc-text` for section headers
  * - Use `mdc-divider` with the attribute `variant="gradient"` for section dividers
  * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
+ * - It is recommended to use icons for parent navmenuitems only. For submenu items (in both flyouts and dropdowns), it is recommended to use text labels without icons to ensure readability and usability.
  *
  * #### Accessibility Notes:
  * - Always provide meaningful `aria-label` attributes for both `mdc-navmenuitem` and `mdc-menubar`
