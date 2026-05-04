@@ -14,10 +14,10 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
         <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Meetings" slot="scrollable-menubar"></mdc-navmenuitem>
         <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
         <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
-          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Team Insights" nav-id="verify4"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6"></mdc-navmenuitem>
         </mdc-menupopover>
         <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section1">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1" label="Messaging"></mdc-navmenuitem>
@@ -25,15 +25,15 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3" label="Callings"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
           <mdc-menupopover triggerid="menu-button-trigger">
-            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
+            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Personal Insights" nav-id="6"></mdc-navmenuitem>
+            <mdc-navmenuitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
             <mdc-menupopover triggerid="share-id">
-              <mdc-navmenuitem label="Webex App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Team Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Webex App Hub" nav-id="temp1" badge-type="dot"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Team Insights" nav-id="temp2"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4"></mdc-navmenuitem>
             </mdc-menupopover>
           </mdc-menupopover>
         </mdc-menusection>
@@ -561,9 +561,9 @@ const setupDropdown = async (componentsPage: ComponentsPage, variant: string, ex
             is-active-parent-tooltip-text="Parent Item, contains active navmenuitem"
           ></mdc-navmenuitem>
           <div data-trigger="dropdown-trigger-1">
-            <mdc-navmenuitem label="Child 1" nav-id="3-1" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Child 2" nav-id="3-2" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Child 3" nav-id="3-3" icon-name="placeholder-bold"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child 1" nav-id="3-1"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child 2" nav-id="3-2"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child 3" nav-id="3-3"></mdc-navmenuitem>
           </div>
 
           <mdc-navmenuitem
@@ -575,8 +575,8 @@ const setupDropdown = async (componentsPage: ComponentsPage, variant: string, ex
             is-active-parent-tooltip-text="Parent Item 2, contains active navmenuitem"
           ></mdc-navmenuitem>
           <div data-trigger="dropdown-trigger-2">
-            <mdc-navmenuitem label="Child A" nav-id="4-1" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Child B" nav-id="4-2" icon-name="placeholder-bold"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child A" nav-id="4-1"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child B" nav-id="4-2"></mdc-navmenuitem>
           </div>
 
           <mdc-navmenuitem
