@@ -601,6 +601,7 @@ const setupDropdown = async (componentsPage: ComponentsPage, variant: string, ex
   const sidenav = componentsPage.page.locator('mdc-sidenavigation');
   await sidenav.waitFor();
 
+  const meetingsMenuItem = sidenav.locator('mdc-navmenuitem[nav-id="2"]');
   const parentItem1 = sidenav.locator('mdc-navmenuitem#dropdown-trigger-1');
   const parentItem2 = sidenav.locator('mdc-navmenuitem#dropdown-trigger-2');
   const dropdownContainer1 = sidenav.locator('div[data-trigger="dropdown-trigger-1"]');
@@ -613,6 +614,7 @@ const setupDropdown = async (componentsPage: ComponentsPage, variant: string, ex
 
   return {
     sidenav,
+    meetingsMenuItem,
     parentItem1,
     parentItem2,
     dropdownContainer1,
@@ -651,6 +653,10 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(child2).toBeVisible();
       await expect(child3).toBeVisible();
 
+      // Tooltip should NOT be visible when dropdown is open (renderDynamicTooltip returns early if dropdownOpen)
+      const parentItem1Tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="dropdown-trigger-1"]`);
+      await expect(parentItem1Tooltip).not.toBeAttached();
+
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-expanded-open');
       await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-expanded-open');
     });
@@ -675,17 +681,26 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(parentItem1).not.toHaveAttribute('active');
 
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-child-active');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-child-active');
     });
 
     await test.step('closing dropdown with active child shows parent as active', async () => {
-      // Close the dropdown
-      await parentItem1.click();
+      // Close the dropdown using escape key
+      await componentsPage.page.keyboard.press('Escape');
       await expect(dropdownContainer1).toHaveCSS('display', 'none');
 
       // Parent should now show as active because it has an active child
       await expect(parentItem1).toHaveAttribute('active', '');
 
+      // Tooltip should now be visible (is-active-parent-tooltip-text) when dropdown is closed and parent has active child
+      const parentItem1Tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="dropdown-trigger-1"]`);
+      await parentItem1.hover();
+      await expect(parentItem1Tooltip).toBeVisible();
+      const tooltipText = await parentItem1Tooltip.textContent();
+      expect(tooltipText?.trim()).toBe('Parent Item, contains active navmenuitem');
+
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-closed-parent-active');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-closed-parent-active');
     });
 
     await test.step('re-opening dropdown removes active from parent', async () => {
@@ -711,10 +726,8 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
   });
 
   test('dropdown keyboard interactions', async ({ componentsPage }) => {
-    const { parentItem1, parentItem2, dropdownContainer1, child1, child2, child3 } = await setupDropdown(
-      componentsPage,
-      'flexible',
-    );
+    const { meetingsMenuItem, parentItem1, dropdownContainer1, dropdownContainer2, child1, child2, child3 } =
+      await setupDropdown(componentsPage, 'flexible');
 
     await test.step('ArrowDown on closed parent does NOT open dropdown', async () => {
       await parentItem1.focus();
@@ -724,72 +737,63 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(parentItem1).not.toHaveAttribute('aria-expanded', 'true');
     });
 
-    await test.step('ArrowDown on open parent focuses first child', async () => {
+    await test.step('ArrowDown navigates through children and wraps focus', async () => {
       await parentItem1.focus();
-      // Open the dropdown first via click
-      await parentItem1.click();
+      // Open the dropdown first via enter key
+      await componentsPage.page.keyboard.press('Enter');
       await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
 
-      // Now ArrowDown should focus first child
-      await componentsPage.page.keyboard.press('ArrowDown');
+      // Now ArrowDown should navigate through children
       await expect(child1).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [child2, child3, child1]);
     });
 
-    await test.step('ArrowDown navigates through children', async () => {
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(child2).toBeFocused();
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(child3).toBeFocused();
-    });
-
-    await test.step('ArrowDown on last child does not move focus outside dropdown', async () => {
-      // child3 is already focused from the previous step
-      await componentsPage.page.keyboard.press('ArrowDown');
-      // Focus should stay on the last child
-      await expect(child3).toBeFocused();
-    });
-
-    await test.step('ArrowUp navigates back through children', async () => {
-      await componentsPage.page.keyboard.press('ArrowUp');
-      await expect(child2).toBeFocused();
-      await componentsPage.page.keyboard.press('ArrowUp');
-      await expect(child1).toBeFocused();
-    });
-
-    await test.step('ArrowUp on first child does not move focus to parent', async () => {
-      // child1 is already focused from the previous step
-      await componentsPage.page.keyboard.press('ArrowUp');
-      // Focus should stay on the first child
-      await expect(child1).toBeFocused();
-    });
-
-    await test.step('Tab on a child moves focus to the next outer navmenuitem after the trigger', async () => {
-      // child1 is focused; Tab should skip the rest of the dropdown and focus parentItem2
-      await componentsPage.page.keyboard.press('Tab');
-      await expect(parentItem2).toBeFocused();
-    });
-
-    await test.step('Shift+Tab on a child moves focus back to the parent trigger', async () => {
-      // The dropdown is still open from the previous step (Tab only moves focus, it does not close the dropdown)
-      // Focus parentItem1 and ArrowDown into the first child
-      await parentItem1.focus();
-      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
-      await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(child1).toBeFocused();
-
-      await componentsPage.page.keyboard.press('Shift+Tab');
-      await expect(parentItem1).toBeFocused();
+    await test.step('ArrowUp navigates back through children and wraps focus', async () => {
+      // child1 is focused from the previous step
+      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [child3, child2, child1]);
     });
 
     await test.step('Escape closes dropdown and focuses parent', async () => {
       // Navigate back into the dropdown
       await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(child1).toBeFocused();
+      await expect(child2).toBeFocused();
 
       await componentsPage.page.keyboard.press('Escape');
       await expect(dropdownContainer1).toHaveCSS('display', 'none');
       await expect(parentItem1).toBeFocused();
       await expect(parentItem1).not.toHaveAttribute('aria-expanded');
+    });
+
+    await test.step('ArrowRight from child navigates to first child in the next dropdown item', async () => {
+      // Open dropdown1 and focus first child
+      await parentItem1.click();
+      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
+      await expect(child1).toBeFocused();
+
+      // ArrowRight should move focus to the first child of the next parent item (dropdown2)
+      await componentsPage.page.keyboard.press('ArrowRight');
+      const dropdownContainer2Child1 = dropdownContainer2.locator('mdc-navmenuitem').nth(0);
+      await expect(dropdownContainer2Child1).toBeFocused();
+    });
+
+    await test.step('ArrowLeft from child in second dropdown navigates back to first child of the previous parent item', async () => {
+      // Open parentItem2 dropdown and focus first child
+      const dropdownContainer2Child1 = dropdownContainer2.locator('mdc-navmenuitem').nth(0);
+      await expect(dropdownContainer2Child1).toBeFocused();
+
+      // ArrowLeft should move focus back to the first child of the previous parent item (dropdown1)
+      await componentsPage.page.keyboard.press('ArrowLeft');
+      await expect(child1).toBeFocused();
+    });
+
+    await test.step('ArrowDown on open parent focuses first child', async () => {
+      // child1 is currently in focus
+      await componentsPage.page.keyboard.press('ArrowLeft');
+      await expect(meetingsMenuItem).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(parentItem1).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(child1).toBeFocused();
     });
   });
 
@@ -841,6 +845,7 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(dropdownContainer1.locator('mdc-navmenuitem').first()).toBeVisible();
 
       await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-re-expanded');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-re-expanded');
     });
   });
 });

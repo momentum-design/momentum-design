@@ -472,7 +472,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   private handleDropdownKeyDown(event: KeyboardEvent): void {
     if (!this.isDropdown || !this.expanded) return;
-
     const target = event.target as HTMLElement;
     const isNavMenuItem = target.tagName.toLowerCase() === NAVMENUITEM_TAGNAME;
     if (!isNavMenuItem) return;
@@ -495,87 +494,121 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return;
     }
 
-    if (event.key === KEYS.TAB) {
-      const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
-      if (isInsideDropdown) {
-        const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
-        if (!dropdownContainer) return;
+    const context = this.context.value;
+    const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
+    const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
 
-        const triggerId = dropdownContainer.getAttribute('data-trigger');
-        if (!triggerId) return;
-
-        if (event.shiftKey) {
-          // Shift+Tab: move focus back to the parent trigger navmenuitem
-          const triggerItem = this.querySelector(
-            `${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`,
-          ) as NavMenuItem | null;
-          if (triggerItem) {
-            event.preventDefault();
-            triggerItem.focus();
-          }
-        } else {
-          // Tab: move focus to the next navmenuitem outside the dropdown container
-          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
-          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
-          if (triggerIndex !== -1 && triggerIndex + 1 < outerItems.length) {
-            event.preventDefault();
-            outerItems[triggerIndex + 1].focus();
-          }
+    if (isOpen) {
+      if (event.key === KEYS.ARROW_UP) {
+        // If dropdown is open and user presses Arrow Up on the parent trigger, move focus to the previous navmenuitem in the main list (if exists) and close the dropdown
+        const previousItem = targetItem.previousElementSibling as NavMenuItem | null;
+        if (previousItem) {
+          event.preventDefault();
+          previousItem.focus();
         }
-      }
-      return;
-    }
 
-    if (event.key === KEYS.ARROW_DOWN || event.key === KEYS.ARROW_UP) {
-      const context = this.context.value;
-      const isDropDownParent = context.isDropDownParent(targetItem);
-      const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
-
-      if (event.key === KEYS.ARROW_DOWN && isDropDownParent) {
-        // Only navigate into the dropdown if it is already open
-        const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
-        if (isOpen) {
-          const dropdownContainer = targetItem.parentElement?.querySelector(
-            `div[data-trigger="${targetItem.id}"]`,
-          ) as HTMLElement | null;
-          if (!dropdownContainer) return;
-
-          const firstChild = dropdownContainer.querySelector(
-            `${NAVMENUITEM_TAGNAME}:not([disabled])`,
-          ) as NavMenuItem | null;
-          if (firstChild) {
-            event.preventDefault();
-            firstChild.focus();
-          }
-          return;
-        }
-        // If dropdown is closed, let the default arrow behavior move to the next navitem
+        targetItem.closeDropdown();
         return;
       }
-
-      if (isInsideDropdown) {
-        const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+      if (event.key === KEYS.ARROW_DOWN) {
+        // If dropdown is open and user presses Arrow Down on the parent trigger, move focus to the first child navmenuitem in the dropdown container
+        const dropdownContainer = targetItem.parentElement?.querySelector(
+          `div[data-trigger="${CSS.escape(targetItem.id)}"]`,
+        ) as HTMLElement | null;
         if (!dropdownContainer) return;
 
-        const children = Array.from(
-          dropdownContainer.querySelectorAll<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`),
-        );
-        const currentIndex = children.indexOf(targetItem);
-        if (currentIndex === -1) return;
-
-        if (event.key === KEYS.ARROW_DOWN) {
-          const nextIndex = currentIndex + 1;
-          if (nextIndex < children.length) {
-            event.preventDefault();
-            children[nextIndex].focus();
-          }
-          // At last child: do nothing, focus stays on the last item
-        } else if (event.key === KEYS.ARROW_UP) {
-          if (currentIndex !== 0) {
-            event.preventDefault();
-            children[currentIndex - 1].focus();
-          }
+        const firstChild = dropdownContainer.querySelector(
+          `${NAVMENUITEM_TAGNAME}:not([disabled])`,
+        ) as NavMenuItem | null;
+        if (firstChild) {
+          event.preventDefault();
+          firstChild.focus();
         }
+        return;
+      }
+    }
+
+    if (isInsideDropdown) {
+      const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+      if (!dropdownContainer) return;
+
+      const children = Array.from(
+        dropdownContainer.querySelectorAll<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`),
+      );
+      const currentIndex = children.indexOf(targetItem);
+      if (currentIndex === -1) return;
+
+      switch (event.key) {
+        case KEYS.ARROW_DOWN:
+          // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
+          event.preventDefault();
+          if (currentIndex + 1 < children.length) {
+            children[currentIndex + 1].focus();
+          } else {
+            children[0].focus();
+          }
+          break;
+        case KEYS.ARROW_UP:
+          // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
+          event.preventDefault();
+          if (currentIndex > 0) {
+            children[currentIndex - 1].focus();
+          } else {
+            children[children.length - 1].focus();
+          }
+          break;
+        case KEYS.ARROW_RIGHT: {
+          // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
+          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
+          const triggerId = dropdownContainer.getAttribute('data-trigger');
+          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+          if (triggerIndex !== -1 && triggerIndex + 1 < outerItems.length) {
+            const nextItem = outerItems[triggerIndex + 1];
+            nextItem.focus();
+            if (context.isDropDownParent(nextItem)) {
+              nextItem.openDropdown();
+              const nextDropdownContainer = nextItem.parentElement?.querySelector(
+                `div[data-trigger="${nextItem.id}"]`,
+              ) as HTMLElement | null;
+              if (nextDropdownContainer) {
+                const firstChild = nextDropdownContainer.querySelector(
+                  `${NAVMENUITEM_TAGNAME}:not([disabled])`,
+                ) as NavMenuItem | null;
+                if (firstChild) {
+                  firstChild.focus();
+                }
+              }
+            }
+          }
+          break;
+        }
+        case KEYS.ARROW_LEFT: {
+          // Arrow Left: move focus to the previous parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
+          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
+          const triggerId = dropdownContainer.getAttribute('data-trigger');
+          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+          if (triggerIndex > 0) {
+            const previousItem = outerItems[triggerIndex - 1];
+            previousItem.focus();
+            if (context.isDropDownParent(previousItem)) {
+              previousItem.openDropdown();
+              const previousDropdownContainer = previousItem.parentElement?.querySelector(
+                `div[data-trigger="${previousItem.id}"]`,
+              ) as HTMLElement | null;
+              if (previousDropdownContainer) {
+                const firstChild = previousDropdownContainer.querySelector(
+                  `${NAVMENUITEM_TAGNAME}:not([disabled])`,
+                ) as NavMenuItem | null;
+                if (firstChild) {
+                  firstChild.focus();
+                }
+              }
+            }
+          }
+          break;
+        }
+        default:
+          event.preventDefault();
       }
     }
   }
