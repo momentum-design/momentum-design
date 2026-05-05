@@ -200,11 +200,9 @@ test.describe('mdc-timepicker', () => {
 
       const spinbuttonGroup = timepicker.locator('[part="spinbutton-group"]');
       const box = await spinbuttonGroup.boundingBox();
-      if (!box) {
-        throw new Error('Expected spinbutton group bounding box');
-      }
+      expect(box).not.toBeNull();
 
-      await spinbuttonGroup.click({ position: { x: box.width - 4, y: box.height / 2 } });
+      await spinbuttonGroup.click({ position: { x: box!.width - 4, y: box!.height / 2 } });
 
       const listbox = timepicker.locator('[part="listbox"]');
       await expect(listbox).toBeVisible();
