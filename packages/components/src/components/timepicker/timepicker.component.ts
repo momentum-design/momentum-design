@@ -302,16 +302,27 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private focusMenuItemOnOpen(): void {
-    const options = this.getTimeOptions();
-    const currentValue = this.internalToValue();
-    const selectedIndex = options.findIndex(opt => opt.value === currentValue);
-    this.focusedOptionIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    this.focusedOptionIndex = this.getMenuItemFocusIndex();
 
     this.updateComplete
       .then(() => {
-        this.focusCurrentMenuItem();
+        window.requestAnimationFrame(() => {
+          this.focusCurrentMenuItem();
+        });
       })
       .catch(() => {});
+  }
+
+  /**
+   * Gets the option index that should receive focus when the menu opens.
+   * @internal
+   */
+  private getMenuItemFocusIndex(): number {
+    const options = this.getTimeOptions();
+    const currentValue = this.internalToValue();
+    const selectedIndex = options.findIndex(opt => opt.value === currentValue);
+
+    return selectedIndex >= 0 ? selectedIndex : 0;
   }
 
   /**
@@ -322,8 +333,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     const listbox = this.shadowRoot?.querySelector(`#${LISTBOX_ID}`);
     if (!listbox) return;
     const items = listbox.querySelectorAll('mdc-option');
-    if (items[this.focusedOptionIndex]) {
-      (items[this.focusedOptionIndex] as HTMLElement).focus();
+    const item = items[this.focusedOptionIndex] as HTMLElement | undefined;
+    if (item) {
+      item.focus({ preventScroll: true });
+      item.scrollIntoView({ block: 'nearest' });
     }
   }
 
@@ -512,15 +525,21 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   /**
-   * Handles clicking on the spinbutton area (not the dropdown button).
-   * Focuses the nearest spinbutton.
+   * Handles clicking on the base container.
    * @internal
    */
-  private handleSpinbuttonAreaClick(event: MouseEvent): void {
+  private handleBaseContainerClick(event: MouseEvent): void {
     if (this.disabled || this.softDisabled || this.readonly) return;
     const target = event.target as HTMLElement;
     // If clicking on a spinbutton itself, let it handle focus
     if (target.getAttribute('role') === 'spinbutton') return;
+    // If clicking the non-editable blank area, treat it like the dropdown button.
+    if (target.getAttribute('part') === 'base-container' || target.getAttribute('part') === 'spinbutton-group') {
+      this.displayPopover = !this.displayPopover;
+      this.dropdownButton?.focus();
+      event.stopPropagation();
+      return;
+    }
     // Otherwise focus the hours spinbutton
     this.hoursInput?.focus();
     this.hoursInput?.select();
@@ -877,7 +896,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           id="${TRIGGER_ID}"
           part="base-container"
           class="mdc-focus-ring"
-          @click="${this.handleSpinbuttonAreaClick}"
+          @click="${this.handleBaseContainerClick}"
           @keydown="${this.handleBaseKeydown}"
         >
           <div part="spinbutton-group">
@@ -974,6 +993,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           hide-on-escape
           focus-back-to-trigger
           focus-trap
+          element-index-to-receive-focus="${this.getMenuItemFocusIndex()}"
           disable-aria-expanded
           size
           ?disable-flip="${this.disableFlip}"
