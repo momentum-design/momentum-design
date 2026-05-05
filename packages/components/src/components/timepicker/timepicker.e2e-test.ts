@@ -275,6 +275,53 @@ test.describe('mdc-timepicker', () => {
       await expect(selectedOption).toContainText('8:30 AM');
     });
 
+    test('should focus selected option when dropdown opens', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        timeFormat: '12h',
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const selectedOption = timepicker.locator('mdc-option[selected]');
+      await expect(selectedOption).toBeFocused();
+    });
+
+    test('should scroll selected option into view when dropdown opens', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '20:30',
+        timeFormat: '12h',
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const selectedOption = timepicker.locator('mdc-option[selected]');
+      await expect(selectedOption).toBeFocused();
+      await expect
+        .poll(() =>
+          selectedOption.evaluate(option => {
+            const popover = option.closest('mdc-popover');
+            const popoverContent = popover?.shadowRoot?.querySelector('[part="popover-content"]');
+            if (!popoverContent) return false;
+
+            const optionRect = option.getBoundingClientRect();
+            const contentRect = popoverContent.getBoundingClientRect();
+            const scrollMargin = parseFloat(getComputedStyle(option).scrollMarginBlockStart) || 0;
+            return (
+              optionRect.top >= contentRect.top + scrollMargin - 0.5 &&
+              optionRect.bottom <= contentRect.bottom - scrollMargin + 0.5
+            );
+          }),
+        )
+        .toBe(true);
+    });
+
     test('should show 15-minute intervals when configured', async ({ componentsPage }) => {
       const timepicker = await setup({
         componentsPage,
