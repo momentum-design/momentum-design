@@ -11,6 +11,7 @@ const styles = css`
     --mdc-timepicker-width: fit-content;
     --mdc-timepicker-listbox-width: 100%;
     --mdc-timepicker-listbox-height: 15rem;
+    --mdc-timepicker-option-scroll-margin: 0.25rem;
 
     display: flex;
     flex-direction: column;
@@ -150,6 +151,10 @@ const styles = css`
     display: flex;
     flex-direction: column;
     max-height: var(--mdc-popover-internal-available-height);
+  }
+
+  :host mdc-option {
+    scroll-margin-block: var(--mdc-timepicker-option-scroll-margin);
   }
 
   /* Help text border colors */
