@@ -8,7 +8,8 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.cons
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
-import { KEYS } from '../../utils/keys';
+import { KeyToActionMixin, ACTIONS, type KeyToActionInterface } from '../../utils/mixins/KeyToActionMixin';
+import type { Constructor } from '../../utils/mixins/index.types';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
@@ -102,7 +103,22 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-bottom-padding - padding for the bottom of the scrollable section
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
-class SideNavigation extends Provider<SideNavigationContext> {
+// AI-Assisted
+// Apply KeyToActionMixin to Provider. The type cast is needed because Provider has a
+// non-standard constructor signature that doesn't match the generic Constructor<T> type.
+const KeyToActionProvider = KeyToActionMixin(
+  Provider as unknown as Constructor<Provider<SideNavigationContext>>,
+) as unknown as {
+  new (options: {
+    context: { __context__: SideNavigationContext };
+    initialValue?: SideNavigationContext;
+  }): Provider<SideNavigationContext> & KeyToActionInterface;
+  prototype: Provider<SideNavigationContext> & KeyToActionInterface;
+  styles: (typeof Provider)['styles'];
+};
+// End AI-Assisted
+
+class SideNavigation extends KeyToActionProvider {
   /**
    * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -477,8 +493,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (!isNavMenuItem) return;
 
     const targetItem = target as NavMenuItem;
+    const action = this.getActionForKeyEvent(event);
 
-    if (event.key === KEYS.ESCAPE) {
+    if (action === ACTIONS.ESCAPE) {
       const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
       if (!dropdownContainer) return;
 
@@ -508,8 +525,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
       const currentIndex = children.indexOf(targetItem);
       if (currentIndex === -1) return;
 
-      switch (event.key) {
-        case KEYS.ARROW_DOWN:
+      switch (action) {
+        case ACTIONS.DOWN:
           // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
           event.preventDefault();
           if (currentIndex + 1 < children.length) {
@@ -518,7 +535,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             children[0].focus();
           }
           break;
-        case KEYS.ARROW_UP:
+        case ACTIONS.UP:
           // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
           event.preventDefault();
           if (currentIndex > 0) {
@@ -527,7 +544,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             children[children.length - 1].focus();
           }
           break;
-        case KEYS.ARROW_RIGHT: {
+        case ACTIONS.RIGHT: {
           // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -552,7 +569,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           }
           break;
         }
-        case KEYS.ARROW_LEFT: {
+        case ACTIONS.LEFT: {
           // Arrow Left: move focus to the previous parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -583,7 +600,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
 
     // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
-    if (event.key === KEYS.ARROW_RIGHT) {
+    if (action === ACTIONS.RIGHT) {
       const dropdownContainer = targetItem.parentElement?.querySelector(
         `div[data-trigger="${targetItem.id}"]`,
       ) as HTMLElement | null;
@@ -633,7 +650,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
     // Prevent default space key behavior to avoid scrolling the page
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       event.preventDefault();
     }
   }
