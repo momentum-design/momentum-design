@@ -6,18 +6,18 @@ import { v4 } from 'uuid';
 
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import MenuItem from '../menuitem/menuitem.component';
 import type { ListItemVariants } from '../listitem/listitem.types';
 import providerUtils from '../../utils/provider';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import type { TooltipType } from '../tooltip/tooltip.types';
 
 import type { BadgeType } from './navmenuitem.types';
-import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME } from './navmenuitem.constants';
+import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME, TAG_NAME as NAVMENUITEM_TAGNAME } from './navmenuitem.constants';
 import styles from './navmenuitem.styles';
 
 /**
@@ -398,6 +398,12 @@ class NavMenuItem extends MenuItem {
     const context = this.sideNavigationContext?.value;
     if (context?.isDropdown && context?.expanded && context?.isDropDownParent(this)) {
       this.toggleDropdown();
+      // move the focus to the first navmenuitem in the dropdown when opening the dropdown
+      if (this.dropdownOpen) {
+        const dropdownContainer = this.getDropdownContainer();
+        const firstNavMenuItem = dropdownContainer?.querySelector(NAVMENUITEM_TAGNAME) as HTMLElement | null;
+        firstNavMenuItem?.focus();
+      }
       return;
     }
 
@@ -422,8 +428,21 @@ class NavMenuItem extends MenuItem {
   }
 
   /**
+   * Opens the dropdown if it is closed.
+   */
+  public openDropdown(): void {
+    if (this.dropdownOpen) return;
+
+    const dropdownContainer = this.getDropdownContainer();
+    if (dropdownContainer) {
+      dropdownContainer.style.display = 'flex';
+    }
+    this.dropdownOpen = true;
+    this.setAttribute('aria-expanded', 'true');
+  }
+
+  /**
    * Closes the dropdown if it is open.
-   * @internal
    */
   public closeDropdown(): void {
     if (!this.dropdownOpen) return;
