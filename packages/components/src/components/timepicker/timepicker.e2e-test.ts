@@ -16,6 +16,7 @@ type SetupOptions = {
   helpTextType?: string;
   min?: string;
   max?: string;
+  width?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -35,6 +36,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
         ${restArgs.min ? `min="${restArgs.min}"` : ''}
         ${restArgs.max ? `max="${restArgs.max}"` : ''}
+        ${restArgs.width ? `style="--mdc-timepicker-width: ${restArgs.width};"` : ''}
         locale-hours-label="hours"
         locale-minutes-label="minutes"
         locale-period-label="period"
@@ -186,6 +188,41 @@ test.describe('mdc-timepicker', () => {
       await expect(listbox).toBeVisible();
     });
 
+    test('should open dropdown when blank area between spinbuttons and arrow is clicked', async ({
+      componentsPage,
+    }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        width: '12rem',
+      });
+
+      const spinbuttonGroup = timepicker.locator('[part="spinbutton-group"]');
+      const box = await spinbuttonGroup.boundingBox();
+      expect(box).not.toBeNull();
+
+      await spinbuttonGroup.click({ position: { x: box!.width - 4, y: box!.height / 2 } });
+
+      const listbox = timepicker.locator('[part="listbox"]');
+      await expect(listbox).toBeVisible();
+    });
+
+    test('should keep dropdown closed when a spinbutton is clicked', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+      });
+
+      const hoursInput = timepicker.locator('#hours-spinbutton');
+      await hoursInput.click();
+
+      await expect(hoursInput).toBeFocused();
+      const listbox = timepicker.locator('[part="listbox"]');
+      await expect(listbox).not.toBeVisible();
+    });
+
     test('should close dropdown when clicking outside', async ({ componentsPage }) => {
       const timepicker = await setup({
         componentsPage,
@@ -234,6 +271,53 @@ test.describe('mdc-timepicker', () => {
 
       const selectedOption = timepicker.locator('mdc-option[selected]');
       await expect(selectedOption).toContainText('8:30 AM');
+    });
+
+    test('should focus selected option when dropdown opens', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        timeFormat: '12h',
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const selectedOption = timepicker.locator('mdc-option[selected]');
+      await expect(selectedOption).toBeFocused();
+    });
+
+    test('should scroll selected option into view when dropdown opens', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '20:30',
+        timeFormat: '12h',
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const selectedOption = timepicker.locator('mdc-option[selected]');
+      await expect(selectedOption).toBeFocused();
+      await expect
+        .poll(() =>
+          selectedOption.evaluate(option => {
+            const popover = option.closest('mdc-popover');
+            const popoverContent = popover?.shadowRoot?.querySelector('[part="popover-content"]');
+            if (!popoverContent) return false;
+
+            const optionRect = option.getBoundingClientRect();
+            const contentRect = popoverContent.getBoundingClientRect();
+            const scrollMargin = parseFloat(getComputedStyle(option).scrollMarginBlockStart) || 0;
+            return (
+              optionRect.top >= contentRect.top + scrollMargin - 0.5 &&
+              optionRect.bottom <= contentRect.bottom - scrollMargin + 0.5
+            );
+          }),
+        )
+        .toBe(true);
     });
 
     test('should show 15-minute intervals when configured', async ({ componentsPage }) => {
