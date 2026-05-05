@@ -786,13 +786,13 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       await expect(child1).toBeFocused();
     });
 
-    await test.step('ArrowDown on open parent focuses first child', async () => {
+    await test.step('ArrowRight on open parent focuses first child', async () => {
       // child1 is currently in focus
       await componentsPage.page.keyboard.press('ArrowLeft');
       await expect(meetingsMenuItem).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
       await expect(parentItem1).toBeFocused();
-      await componentsPage.page.keyboard.press('ArrowDown');
+      await componentsPage.page.keyboard.press('ArrowRight');
       await expect(child1).toBeFocused();
     });
   });

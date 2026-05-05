@@ -498,36 +498,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
     const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
     const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
 
-    if (isOpen) {
-      if (event.key === KEYS.ARROW_UP) {
-        // If dropdown is open and user presses Arrow Up on the parent trigger, move focus to the previous navmenuitem in the main list (if exists) and close the dropdown
-        const previousItem = targetItem.previousElementSibling as NavMenuItem | null;
-        if (previousItem) {
-          event.preventDefault();
-          previousItem.focus();
-        }
-
-        targetItem.closeDropdown();
-        return;
-      }
-      if (event.key === KEYS.ARROW_DOWN) {
-        // If dropdown is open and user presses Arrow Down on the parent trigger, move focus to the first child navmenuitem in the dropdown container
-        const dropdownContainer = targetItem.parentElement?.querySelector(
-          `div[data-trigger="${CSS.escape(targetItem.id)}"]`,
-        ) as HTMLElement | null;
-        if (!dropdownContainer) return;
-
-        const firstChild = dropdownContainer.querySelector(
-          `${NAVMENUITEM_TAGNAME}:not([disabled])`,
-        ) as NavMenuItem | null;
-        if (firstChild) {
-          event.preventDefault();
-          firstChild.focus();
-        }
-        return;
-      }
-    }
-
     if (isInsideDropdown) {
       const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
       if (!dropdownContainer) return;
@@ -609,6 +579,25 @@ class SideNavigation extends Provider<SideNavigationContext> {
         }
         default:
           event.preventDefault();
+      }
+    }
+
+    // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
+    if (event.key === KEYS.ARROW_RIGHT) {
+      const dropdownContainer = targetItem.parentElement?.querySelector(
+        `div[data-trigger="${targetItem.id}"]`,
+      ) as HTMLElement | null;
+      if (dropdownContainer) {
+        if (!isOpen) {
+          targetItem.openDropdown();
+        }
+        const firstChild = dropdownContainer.querySelector(
+          `${NAVMENUITEM_TAGNAME}:not([disabled])`,
+        ) as NavMenuItem | null;
+        if (firstChild) {
+          firstChild.focus();
+          event.preventDefault();
+        }
       }
     }
   }
