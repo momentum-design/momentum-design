@@ -10,10 +10,12 @@ import posix from 'path';
 
 import Ajv from 'ajv/dist/2019';
 import * as draft6MetaSchema from 'ajv/dist/refs/json-schema-draft-06.json';
+import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json';
 import { Config, IValidator, SchemaMap, ValidatorMap } from '../common/types';
 
 const ajv = new Ajv();
 ajv.addMetaSchema(draft6MetaSchema);
+ajv.addMetaSchema(draft7MetaSchema);
 ajv.addFormat('integer', (v) => !!Number.isSafeInteger(parseInt(v, 10)));
 
 const PACKAGE = 'token-builder';

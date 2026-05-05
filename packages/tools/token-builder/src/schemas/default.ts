@@ -7,12 +7,13 @@ import * as ThemeWebexDarkSchema from './json/theme/webex/dark.json';
 import * as ThemeWebexLightSchema from './json/theme/webex/light.json';
 import * as CoreSpacingSchema from './json/core/spacing.json';
 import * as CoreElevationSchema from './json/core/elevation.json';
+import * as CoreMotionSchema from './json/core/motion.json';
 import * as CoreTypeAppsSchema from './json/core/type/apps.json';
 import * as CoreTypeDisplaySchema from './json/core/type/display.json';
 
 // typescript and AJV do not play super well together
 // https://github.com/ajv-validator/ajv/issues/1988
-type TypeConversionWorkaround = SomeJSONSchema & {$ref: string};
+type TypeConversionWorkaround = SomeJSONSchema & { $ref: string };
 
 const SCHEMA_MAP = [
   {
@@ -30,6 +31,10 @@ const SCHEMA_MAP = [
   {
     fileName: 'core/elevation.json',
     jsonSchema: CoreElevationSchema as unknown as TypeConversionWorkaround,
+  },
+  {
+    fileName: 'core/motion.json',
+    jsonSchema: CoreMotionSchema as unknown as TypeConversionWorkaround,
   },
   {
     fileName: 'core/type/apps.json',
