@@ -418,6 +418,8 @@ class TabList extends ListNavigationMixin(
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default TabList;
