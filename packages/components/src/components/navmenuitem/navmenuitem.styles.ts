@@ -14,6 +14,7 @@ const styles = [
       --mdc-navmenuitem-in-sidenav-collapsed-margin-right: var(--mdc-sidenavigation-collapsed-right-padding, 1rem);
 
       --mdc-navmenuitem-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-navmenuitem-notch-color: var(--mds-color-theme-text-primary-normal);
       --mdc-navmenuitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
 
       /* Background color when in default (normal) or active state */
@@ -122,7 +123,7 @@ const styles = [
       content: '';
       display: block;
       position: absolute;
-      background-color: var(--mdc-navmenuitem-color);
+      background-color: var(--mdc-navmenuitem-notch-color);
       width: 0.25rem;
       height: 1rem;
       pointer-events: none;
