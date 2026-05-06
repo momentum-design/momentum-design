@@ -59,7 +59,7 @@
     "copy:icons": "node scripts/copyIcons.js",
     "copy:illustrations": "node scripts/copyIllustrations.js",
     "copy:brandvisuals": "node scripts/copyBrandvisuals.js",
-    "copy:fonts": "yarn workspace @momentum-design/fonts build && node scripts/copyFonts.js",
+    "copy:fonts": "node scripts/copyFonts.js",
     "copy:animations": "node scripts/copyAnimations.js",
     "generate:image-fixtures": "node scripts/pngToDataurl.js",
     "docs": "echo \"script 'docs' has not been implemented\"",
