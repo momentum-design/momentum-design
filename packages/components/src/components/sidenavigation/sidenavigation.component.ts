@@ -8,8 +8,7 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.cons
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
-import { KeyToActionMixin, ACTIONS, type KeyToActionInterface } from '../../utils/mixins/KeyToActionMixin';
-import type { Constructor } from '../../utils/mixins/index.types';
+import { KEYS } from '../../utils/keys';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
@@ -29,7 +28,7 @@ import styles from './sidenavigation.styles';
  * ### Usage:
  * In a sidenavigation, navmenuitems can be used in the following ways:
  *
- * 1. **Simple navmenuitem** – No submenu or interaction beyond selection.
+ * 1. **Simple navmenuitem** – No submenu or interevent.key beyond selection.
  *
  * 2. **NavMenuItem with flyout submenu**:
  *    - Add an `id` attribute to the `mdc-navmenuitem` element
@@ -49,9 +48,9 @@ import styles from './sidenavigation.styles';
  *    - **Accessibility**: The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed
  *    - **Note**: There can be only 1 level of dropdown submenus. Nested dropdowns (dropdowns within dropdowns) are not supported in the current architecture due to accessibility and complexity concerns. If you need more than 1 level of submenu, we recommend using flyouts instead of dropdowns.
  *
- * 4. **Actionable navmenuitem (no submenu)**:
- *    - Performs an action such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
- *    - To maintain active state without navigation behavior, set `disable-aria-current="true"` on the navmenuitem. This allows the item to visually appear active while preventing screen readers from announcing it as the current page, which is ideal for items that trigger actions rather than navigation.
+ * 4. **event.keyable navmenuitem (no submenu)**:
+ *    - Performs an event.key such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
+ *    - To maintain active state without navigation behavior, set `disable-aria-current="true"` on the navmenuitem. This allows the item to visually appear active while preventing screen readers from announcing it as the current page, which is ideal for items that trigger KEYS rather than navigation.
  *
  * ### Recommendations:
  * - Use `mdc-text` for section headers
@@ -103,22 +102,8 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-bottom-padding - padding for the bottom of the scrollable section
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
-// AI-Assisted
-// Apply KeyToActionMixin to Provider. The type cast is needed because Provider has a
-// non-standard constructor signature that doesn't match the generic Constructor<T> type.
-const KeyToActionProvider = KeyToActionMixin(
-  Provider as unknown as Constructor<Provider<SideNavigationContext>>,
-) as unknown as {
-  new (options: {
-    context: { __context__: SideNavigationContext };
-    initialValue?: SideNavigationContext;
-  }): Provider<SideNavigationContext> & KeyToActionInterface;
-  prototype: Provider<SideNavigationContext> & KeyToActionInterface;
-  styles: (typeof Provider)['styles'];
-};
-// End AI-Assisted
 
-class SideNavigation extends KeyToActionProvider {
+class SideNavigation extends Provider<SideNavigationContext> {
   /**
    * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -493,9 +478,9 @@ class SideNavigation extends KeyToActionProvider {
     if (!isNavMenuItem) return;
 
     const targetItem = target as NavMenuItem;
-    const action = this.getActionForKeyEvent(event);
+    // const event.key = this.getevent.keyForKeyEvent(event);
 
-    if (action === ACTIONS.ESCAPE) {
+    if (event.key === KEYS.ESCAPE) {
       const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
       if (!dropdownContainer) return;
 
@@ -525,8 +510,8 @@ class SideNavigation extends KeyToActionProvider {
       const currentIndex = children.indexOf(targetItem);
       if (currentIndex === -1) return;
 
-      switch (action) {
-        case ACTIONS.DOWN:
+      switch (event.key) {
+        case KEYS.ARROW_DOWN:
           // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
           event.preventDefault();
           if (currentIndex + 1 < children.length) {
@@ -535,7 +520,7 @@ class SideNavigation extends KeyToActionProvider {
             children[0].focus();
           }
           break;
-        case ACTIONS.UP:
+        case KEYS.ARROW_UP:
           // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
           event.preventDefault();
           if (currentIndex > 0) {
@@ -544,7 +529,7 @@ class SideNavigation extends KeyToActionProvider {
             children[children.length - 1].focus();
           }
           break;
-        case ACTIONS.RIGHT: {
+        case KEYS.ARROW_RIGHT: {
           // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -569,7 +554,7 @@ class SideNavigation extends KeyToActionProvider {
           }
           break;
         }
-        case ACTIONS.LEFT: {
+        case KEYS.ARROW_LEFT: {
           // Arrow Left: move focus to the previous parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -600,7 +585,7 @@ class SideNavigation extends KeyToActionProvider {
     }
 
     // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
-    if (action === ACTIONS.RIGHT) {
+    if (event.key === KEYS.ARROW_RIGHT) {
       const dropdownContainer = targetItem.parentElement?.querySelector(
         `div[data-trigger="${targetItem.id}"]`,
       ) as HTMLElement | null;
@@ -650,7 +635,7 @@ class SideNavigation extends KeyToActionProvider {
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
     // Prevent default space key behavior to avoid scrolling the page
-    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
+    if (event.key === KEYS.SPACE) {
       event.preventDefault();
     }
   }
