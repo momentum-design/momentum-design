@@ -2,6 +2,41 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$ref": "#/definitions/AnimationFile",
   "definitions": {
+    "TokenRef": {
+      "type": "string",
+      "pattern": "^\\{[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)+\\}$"
+    },
+    "TokenIdentifier": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+    },
+    "CssAnimatableProperty": {
+      "type": "string",
+      "enum": [
+        "background-color",
+        "border-color",
+        "border-radius",
+        "border-width",
+        "box-shadow",
+        "clip-path",
+        "color",
+        "filter",
+        "font-size",
+        "gap",
+        "height",
+        "letter-spacing",
+        "max-height",
+        "max-width",
+        "opacity",
+        "outline",
+        "rotate",
+        "scale",
+        "transform",
+        "translate",
+        "visibility",
+        "width"
+      ]
+    },
     "AnimationFile": {
       "type": "object",
       "additionalProperties": false,
@@ -33,12 +68,12 @@
           "type": "string",
           "enum": ["transition", "keyframe", "compoundTransitions", "compoundKeyframes"]
         },
-        "duration": { "type": "string" },
-        "easing": { "type": "string" },
-        "delay": { "type": "string" },
+        "duration": { "$ref": "#/definitions/TokenRef" },
+        "easing": { "$ref": "#/definitions/TokenRef" },
+        "delay": { "$ref": "#/definitions/TokenRef" },
         "properties": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": { "$ref": "#/definitions/CssAnimatableProperty" },
           "minItems": 1
         },
         "keyframes": {
@@ -48,7 +83,7 @@
         },
         "animations": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": { "$ref": "#/definitions/TokenIdentifier" },
           "minItems": 1
         },
         "composition": {
@@ -66,6 +101,68 @@
           "enum": ["none", "forwards", "backwards", "both"]
         }
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "transition" } },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["properties"],
+            "properties": {
+              "keyframes": false,
+              "iterationCount": false,
+              "fillMode": false,
+              "animations": false,
+              "composition": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "keyframe" } },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["keyframes"],
+            "properties": {
+              "properties": false,
+              "animations": false,
+              "composition": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "compoundTransitions" } },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["animations", "composition"],
+            "properties": {
+              "properties": false,
+              "keyframes": false,
+              "iterationCount": false,
+              "fillMode": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "compoundKeyframes" } },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["animations"],
+            "properties": {
+              "properties": false,
+              "keyframes": false,
+              "iterationCount": false,
+              "fillMode": false
+            }
+          }
+        }
+      ],
       "title": "AnimationToken"
     },
     "KeyframeEntry": {
@@ -73,7 +170,7 @@
       "required": ["propertyName", "from", "to"],
       "additionalProperties": false,
       "properties": {
-        "propertyName": { "type": "string" },
+        "propertyName": { "$ref": "#/definitions/CssAnimatableProperty" },
         "from": { "type": "string" },
         "to": { "type": "string" }
       },
