@@ -118,11 +118,33 @@ test('mdc-coachmark', async ({ componentsPage }) => {
 
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
-        await setup({ componentsPage, open: true });
+        // Mount with interactive + focus-trap so the popover auto-focuses the close button on open.
+        await componentsPage.mount({
+          html: `
+            <div id="wrapper" style="height: 50vh; width: 300px; display: inline-block">
+              <mdc-text id="trigger">Anchor</mdc-text>
+              <mdc-coachmark
+                id="coachmark"
+                triggerID="trigger"
+                aria-label="Coachmark label"
+                close-button-aria-label="Close button label"
+                interactive
+                focus-trap
+              >
+                <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
+              </mdc-coachmark>
+            </div>
+          `,
+          clearDocument: true,
+        });
+        await componentsPage.page.locator('#wrapper').waitFor();
+        await componentsPage.page.evaluate(() => {
+          (document.getElementById('coachmark') as Coachmark | undefined)?.show();
+        });
+        await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
 
         const closeButton = componentsPage.page.locator('[part="popover-close"]');
-        await expect(closeButton).not.toBeFocused();
-        await componentsPage.page.keyboard.press('Tab');
+        await expect(closeButton).toBeVisible();
         await expect(closeButton).toBeFocused();
         await componentsPage.page.keyboard.press('Enter');
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();

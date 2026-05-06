@@ -7,6 +7,7 @@ export const DEFAULTS = {
     count: 0,
     estimateSize: () => 0,
     getItemKey: (index: number) => index,
+    isItemNavigable: () => true,
   },
   LOOP: 'false',
   SCROLL_ANCHORING: false,

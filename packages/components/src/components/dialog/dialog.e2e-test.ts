@@ -740,6 +740,72 @@ test('mdc-dialog', async ({ componentsPage }) => {
         /* eslint-enable no-await-in-loop */
       });
       // End AI-Assisted
+
+      // AI-Assisted
+      await test.step('focus trap should include searchfield input when dialog contains a searchfield with delegatesFocus', async () => {
+        /**
+         * mdc-searchfield has a shadow root with delegatesFocus: true. Its internal container
+         * div has tabindex="-1". The findFocusable() function with stopAtNonTabbable: true must
+         * NOT stop traversal at that div because the shadow root uses delegatesFocus. This ensures
+         * the native <input> inside the searchfield is included in the dialog's focus trap cycle.
+         */
+        const dialogWithSearchfield = {
+          id: 'dialog',
+          triggerId: 'trigger-btn',
+          ariaLabel: 'dialog with searchfield',
+          visible: false,
+          variant: 'default',
+          closeButtonAriaLabel: 'Close button label',
+          headerText: 'Dialog with Searchfield',
+          children: `
+            <div slot="dialog-body">
+              <mdc-searchfield
+                id="dialog-searchfield"
+                label="Search"
+                placeholder="Type to search"
+                clear-aria-label="clear"
+              ></mdc-searchfield>
+              <mdc-button id="extra-btn">Extra</mdc-button>
+            </div>
+          `,
+        };
+
+        const { dialog } = await setup({ componentsPage, ...dialogWithSearchfield });
+        await dialog.evaluate(d => d.toggleAttribute('visible'));
+        await expect(dialog).toBeVisible();
+
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        const searchfield = componentsPage.page.locator('mdc-searchfield#dialog-searchfield');
+        const searchInput = searchfield.locator('input');
+        const extraButton = componentsPage.page.locator('mdc-button#extra-btn');
+
+        // After dialog opens, close button has initial focus
+        await expect(closeButton).toBeFocused();
+
+        // Tab → searchfield input (input must be reachable via focus trap despite
+        // the internal div[tabindex="-1"] inside the delegatesFocus shadow root)
+        await componentsPage.actionability.pressTab();
+        await expect(searchInput).toBeFocused();
+
+        // Tab → extra button
+        await componentsPage.actionability.pressTab();
+        await expect(extraButton).toBeFocused();
+
+        // Tab → wraps back to close button (focus trap cycle)
+        await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+
+        // Shift+Tab backwards through the same cycle
+        await componentsPage.actionability.pressShiftTab();
+        await expect(extraButton).toBeFocused();
+
+        await componentsPage.actionability.pressShiftTab();
+        await expect(searchInput).toBeFocused();
+
+        await componentsPage.actionability.pressShiftTab();
+        await expect(closeButton).toBeFocused();
+      });
+      // End AI-Assisted
     });
 
     await test.step('spatial navigation', async () => {

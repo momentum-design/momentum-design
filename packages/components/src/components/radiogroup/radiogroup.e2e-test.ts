@@ -226,12 +226,13 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       });
       const radios = componentsPage.page.locator('mdc-radio[name="student-plan"]');
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+      await componentsPage.page.locator('mdc-spatialnavigationprovider').waitFor();
 
       const { keyboard } = componentsPage.page;
       const form = componentsPage.page.locator('form');
       const waitForSubmit = await componentsPage.waitForEvent(form, 'submit');
 
-      await keyboard.press(KEYS.ARROW_DOWN);
+      await componentsPage.actionability.pressTab();
       await expect(radios.nth(0)).toBeFocused();
       await keyboard.press(KEYS.ARROW_DOWN);
       // As the second radio is disabled, it should skip to the third radio directly
@@ -239,6 +240,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
       await expect(radios.nth(2)).not.toBeChecked();
       await keyboard.press(KEYS.ENTER);
       await expect(radios.nth(2)).toBeChecked();
+      await expect(radios.nth(2)).toBeFocused();
 
       await keyboard.press(KEYS.ARROW_UP);
       await expect(radios.nth(0)).toBeFocused();
