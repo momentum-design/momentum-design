@@ -52,6 +52,7 @@ import styles from './navmenuitem.styles';
  * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-left - Left margin of the navmenuitem, when collapsed.
  * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-right - Right margin of the navmenuitem, when collapsed.
  * @cssproperty --mdc-navmenuitem-color - Text color of the navmenuitem in its normal state.
+ * @cssproperty --mdc-navmenuitem-notch-color - Notch color of the navmenuitem (if applicable) when active.
  * @cssproperty --mdc-navmenuitem-disabled-color - Text color of the navmenuitem when disabled.
  * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
  * @cssproperty --mdc-navmenuitem-hover-background-color - Background color of the navmenuitem when hovered.
