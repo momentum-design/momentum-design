@@ -208,6 +208,49 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(menupopover).toBeVisible();
       await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-truncate-overflowing-text');
     });
+
+    await test.step('should scroll the menu-popover correctly when the popover-content has a max-height', async () => {
+      await setup({
+        componentsPage,
+        html: `<div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+            </mdc-menupopover>
+            <style>
+              mdc-menupopover::part(popover-content) {
+                max-height: 10rem;
+                overflow-y: auto;
+              }
+            </style>
+          </div>`,
+      });
+
+      await componentsPage.actionability.pressTab();
+      await expect(triggerElement).toBeFocused();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(menupopover).toBeVisible();
+      const firstItem = menupopover.locator(menuItemSelector).first();
+      await expect(firstItem).toBeFocused();
+      await expect(firstItem).toBeVisible();
+      // Press ArrowDown multiple times to scroll through the menu items
+      for (let i = 0; i < 8; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await componentsPage.page.keyboard.press('ArrowDown');
+      }
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-scrolling');
+    });
   });
 
   /**

@@ -207,7 +207,8 @@ class MenuPopover extends Popover {
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[currentIndex].setAttribute('tabindex', '0');
-      this.menuItems[currentIndex].focus();
+      this.menuItems[currentIndex].focus({ preventScroll: true });
+      this.menuItems[currentIndex].scrollIntoView({ block: 'nearest' });
     }
   }
 
@@ -230,7 +231,8 @@ class MenuPopover extends Popover {
     if (newIndex === oldIndex) return;
     this.menuItems[oldIndex].setAttribute('tabindex', '-1');
     this.menuItems[newIndex].setAttribute('tabindex', '0');
-    this.menuItems[newIndex].focus();
+    this.menuItems[newIndex].focus({ preventScroll: true });
+    this.menuItems[newIndex].scrollIntoView({ block: 'nearest' });
   }
 
   /**
