@@ -71,11 +71,13 @@ import { getIconNameWithoutStyle } from './button.utils';
  *
  * @cssproperty --mdc-button-height - Height for button size
  * @cssproperty --mdc-button-background - Background of the button
- * @cssproperty --mdc-button-border-color - Borer color of the button
+ * @cssproperty --mdc-button-border-color - Border color of the button
  * @cssproperty --mdc-button-text-color - Text color of the button
  * @cssproperty --mdc-button-prefix-icon-size - Size of the prefix icon
  * @cssproperty --mdc-button-postfix-icon-size - Size of the postfix icon
  * @cssproperty --mdc-button-line-height - Line height of the button text
+ *
+ * @cssstate loading - Active when `loading` is `true`. Use `mdc-button:state(loading)` to style externally.
  */
 class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   /**
@@ -106,6 +108,32 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    */
   @property({ type: Number })
   override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
+
+  /**
+   * Indicates the button is in a loading state. When set:
+   * - Suppresses interaction
+   * - Sets `aria-busy="true"` to notify screen readers that the action is in progress.
+   * - Exposes `:state(loading)` via CSS Custom States API (`ElementInternals.states`).
+   *
+   * @default false
+   */
+  @property({ type: Boolean })
+  get loading(): boolean {
+    return this.loadingValue;
+  }
+
+  set loading(val: boolean) {
+    this.loadingValue = val;
+    this.setCustomState('loading', val);
+    if (val) {
+      this.setAttribute('aria-busy', 'true');
+    } else {
+      this.removeAttribute('aria-busy');
+    }
+  }
+
+  /** @internal */
+  private loadingValue: boolean = DEFAULTS.LOADING;
 
   /**
    * Inverts the button's color scheme for use on dark backgrounds.
@@ -173,6 +201,14 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
       this.inferFilledIconName(this.active);
       this.inferButtonType();
     }
+  }
+
+  /**
+   * Blocks action execution while the button is in a loading state.
+   */
+  protected override executeAction(): void {
+    if (this.loading) return;
+    super.executeAction();
   }
 
   /**

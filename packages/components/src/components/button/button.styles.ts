@@ -285,6 +285,12 @@ const styles = css`
   :host::part(postfix-icon) {
     flex-shrink: 0;
   }
+
+  // will be override by loading state in case of loading
+  :host(:state(loading)) {
+    cursor: wait;
+    pointer-events: none;
+  }
 `;
 
 export default [styles];

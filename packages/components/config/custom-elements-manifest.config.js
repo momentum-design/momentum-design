@@ -1,4 +1,5 @@
 const { pascalCase } = require('pascal-case');
+const { jsDocTagsPlugin } = require('@wc-toolkit/jsdoc-tags');
 
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
@@ -118,6 +119,16 @@ module.exports = {
         }
       },
     },
+    // Parses `@cssstate name - description` JSDoc tags and writes them into
+    // `declaration.cssCustomStates` on each class in the manifest using @wc-toolkit/jsdoc-tags.
+    jsDocTagsPlugin({
+      tags: {
+        cssstate: {
+          mappedName: 'cssCustomStates',
+          isArray: true,
+        },
+      },
+    }),
     {
       name: 'momentum-sort-modules',
       packageLinkPhase({ customElementsManifest }) {

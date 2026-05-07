@@ -149,6 +149,21 @@ class Buttonsimple extends KeyDownHandledMixin(
     return this.internals.form;
   }
 
+  /**
+   * Adds or removes a CSS Custom State on the element via `ElementInternals.states`.
+   * Subclasses should call this to expose custom `:state()` pseudo-classes (e.g. `:state(loading)`).
+   *
+   * @param name - The state name (e.g. `'loading'`)
+   * @param active - `true` to add the state, `false` to remove it
+   */
+  protected setCustomState(name: string, active: boolean): void {
+    if (active) {
+      this.internals.states.add(name);
+    } else {
+      this.internals.states.delete(name);
+    }
+  }
+
   constructor() {
     super();
     /** @internal */

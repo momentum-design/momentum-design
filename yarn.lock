@@ -3149,6 +3149,7 @@ __metadata:
     "@storybook/web-components": ^9.1.5
     "@storybook/web-components-vite": ^9.1.5
     "@tanstack/lit-virtual": ^3.13.2
+    "@wc-toolkit/jsdoc-tags": ^1.2.0
     axe-html-reporter: ^2.2.11
     chalk: ^4.1.2
     concurrently: ^8.2.2
@@ -5225,6 +5226,13 @@ __metadata:
   version: 0.0.18
   resolution: "@vscode/l10n@npm:0.0.18"
   checksum: c33876cebdef0385359619200ecb5d7c46d7f9abffb80f9fab1f83abb5d6bfdb44cc6d792d1b1b9c736c729121274733bbdcd5d2d2eea0d157bdf662d521edef
+  languageName: node
+  linkType: hard
+
+"@wc-toolkit/jsdoc-tags@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@wc-toolkit/jsdoc-tags@npm:1.2.0"
+  checksum: 9a7ccb849c63517d04741f33cf68b4b1f114d7bb4113fb7ee8b0d67e89fd0b364a52fac9597f4fe66d6b455960669ffdc93fa3054ba9429ac586f89aaa979b75
   languageName: node
   linkType: hard
 

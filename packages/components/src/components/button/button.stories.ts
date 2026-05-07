@@ -33,6 +33,7 @@ const render = (args: Args) =>
     aria-label="${ifDefined(args['aria-label'])}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
+    ?loading="${args.loading}"
     style="${ifDefined(args.style)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-button
@@ -96,6 +97,9 @@ const meta: Meta = {
       control: 'text',
     },
     inverted: {
+      control: 'boolean',
+    },
+    loading: {
       control: 'boolean',
     },
     'auto-focus-on-mount': {
@@ -281,5 +285,33 @@ export const PillWithPostfixSlot: StoryObj = {
   args: {
     ...Example.args,
     children: 'Wow',
+  },
+};
+
+// Alias bypasses lit-analyzer CSS validation — needed for @keyframes in style tag
+const storyHtml = html;
+
+export const LoadingButton: StoryObj = {
+  render: args => storyHtml`
+    <style>
+      /* TESTING ONLY (will be removed later) — simulates what motion provider would inject externally */
+      @keyframes mds-animation-button-loading-spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      mdc-button:state(loading) {
+        animation: mds-animation-button-loading-spin 600ms cubic-bezier(0, 0, 1, 1) 0ms infinite;
+      }
+    </style>
+    ${render(args)}
+  `,
+  args: {
+    ...Example.args,
+    children: 'Loading...',
+    loading: true,
   },
 };
