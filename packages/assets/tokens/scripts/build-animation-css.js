@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const get = require('lodash/get');
+const kebabCase = require('lodash/kebabCase');
 
 const SRC_ANIMATION = path.join(__dirname, '../src/motion/animation.json');
 const RESOLVED_MOTION = path.join(__dirname, '../dist/json/motion/complete.json');
@@ -9,48 +11,24 @@ const OUTPUT_FILE = path.join(OUTPUT_DIR, 'animation.css');
 const CSS_SELECTOR = '.mds-motion';
 const TOKEN_REF_PATTERN = /^\{(.+)\}$/;
 
-/**
- * Resolve a token reference like "{motion.duration.instant}" to its actual value
- * by traversing the resolved motion token tree.
- */
 function resolveRef(ref, resolvedTokens) {
   const match = ref.match(TOKEN_REF_PATTERN);
   if (!match) return ref;
 
-  const parts = match[1].split('.');
-  let current = resolvedTokens;
-  for (const part of parts) {
-    if (current == null || typeof current !== 'object') {
-      throw new Error(`Unresolved token reference: "${ref}" — path segment "${part}" not found.`);
-    }
-    current = current[part];
-  }
-  if (!current || !current.value) {
+  const value = get(resolvedTokens, `${match[1]}.value`);
+  if (!value) {
     throw new Error(`Unresolved token reference: "${ref}" — no value found.`);
   }
-  return current.value;
+  return value;
 }
 
-/**
- * Resolve all token references in an animation token's fields.
- */
 function resolveToken(token, resolvedTokens) {
   return {
     ...token,
-    duration: resolveRef(token.duration, resolvedTokens),
-    easing: resolveRef(token.easing, resolvedTokens),
-    delay: resolveRef(token.delay, resolvedTokens),
+    ...(token.duration !== undefined && { duration: resolveRef(token.duration, resolvedTokens) }),
+    ...(token.easing !== undefined && { easing: resolveRef(token.easing, resolvedTokens) }),
+    ...(token.delay !== undefined && { delay: resolveRef(token.delay, resolvedTokens) }),
   };
-}
-
-function toKebab(camelName) {
-  return camelName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
-
-function buildTransitionValue(token) {
-  return token.properties
-    .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
-    .join(', ');
 }
 
 function buildKeyframeBlock(kfName, token) {
@@ -63,6 +41,12 @@ function buildKeyframeBlock(kfName, token) {
   const fromStr = Object.entries(fromProps).map(([p, v]) => `${p}: ${v}`).join('; ');
   const toStr = Object.entries(toProps).map(([p, v]) => `${p}: ${v}`).join('; ');
   return `@keyframes ${kfName} {\n  from { ${fromStr}; }\n  to { ${toStr}; }\n}`;
+}
+
+function buildTransitionValue(token) {
+  return token.properties
+    .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
+    .join(', ');
 }
 
 function generate() {
@@ -85,7 +69,7 @@ function generate() {
   const variableLines = [];
 
   for (const [name, token] of Object.entries(resolved)) {
-    const kebab = toKebab(name);
+    const kebab = kebabCase(name);
 
     if (token.type === 'transition') {
       variableLines.push(`  --mds-transition-${kebab}: ${buildTransitionValue(token)};`);
@@ -95,10 +79,10 @@ function generate() {
       keyframeBlocks.push(buildKeyframeBlock(kfName, token));
       const iteration = token.iterationCount ? ` ${token.iterationCount}` : '';
       variableLines.push(
-        `  --mds-animation-${kebab}: ${kfName} ${token.duration} ${token.easing} ${token.delay}${iteration};`,
+        `  --mds-animation-${kebab}: ${token.duration} ${token.easing} ${token.delay}${iteration} ${kfName};`,
       );
 
-    } else if (token.type === 'compoundTransitions') {
+    } else if (token.type === 'transitionCompound') {
       const parts = token.animations.flatMap((refName) => {
         const ref = resolved[refName];
         return ref ? buildTransitionValue(ref).split(', ') : [];
@@ -107,13 +91,13 @@ function generate() {
         variableLines.push(`  --mds-transition-${kebab}: ${parts.join(', ')};`);
       }
 
-    } else if (token.type === 'compoundKeyframes') {
+    } else if (token.type === 'keyframeCompound') {
       const parts = token.animations.map((refName) => {
         const ref = resolved[refName];
-        if (!ref) return null;
-        const refKebab = toKebab(refName);
+        if (!ref) throw new Error(`Invalid animation reference: "${refName}" not found in resolved animations.`);
+        const refKebab = kebabCase(refName);
         const iteration = ref.iterationCount ? ` ${ref.iterationCount}` : '';
-        return `mds-animation-${refKebab} ${ref.duration} ${ref.easing} ${ref.delay}${iteration}`;
+        return `${ref.duration} ${ref.easing} ${ref.delay}${iteration} mds-animation-${refKebab}`;
       }).filter(Boolean);
       if (parts.length) {
         variableLines.push(`  --mds-animation-${kebab}: ${parts.join(', ')};`);
@@ -133,4 +117,8 @@ function generate() {
   console.log(`✔︎ dist/css/motion/animation.css`);
 }
 
-generate();
+if (require.main === module) {
+  generate();
+}
+
+module.exports = { resolveRef, resolveToken, buildKeyframeBlock, buildTransitionValue };

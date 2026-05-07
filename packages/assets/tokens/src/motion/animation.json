@@ -34,21 +34,15 @@
     },
     "buttonPress": {
       "description": "Button press effect combining background and icon transitions",
-      "type": "compoundTransitions",
+      "type": "transitionCompound",
       "animations": ["buttonBackground", "buttonIcon"],
-      "composition": "parallel",
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "composition": "parallel"
     },
     "buttonHover": {
       "description": "Button hover effect combining background and border transitions",
-      "type": "compoundTransitions",
+      "type": "transitionCompound",
       "animations": ["buttonBackground", "buttonBorder"],
-      "composition": "parallel",
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "composition": "parallel"
     },
     "buttonLoadingSpin": {
       "description": "Button loading spinner - continuous rotation for button loading states",
@@ -79,6 +73,12 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}",
       "iterationCount": "infinite"
+    },
+    "buttonLoadingSpinPulse": {
+      "description": "Button loading state combining spin and pulse keyframe animations",
+      "type": "keyframeCompound",
+      "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
+      "composition": "parallel"
     }
   }
 }

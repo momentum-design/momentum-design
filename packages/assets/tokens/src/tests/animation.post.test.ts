@@ -42,7 +42,7 @@ describe('Animation tokens (post-build)', () => {
 
   it('transition tokens should emit --mds-transition-* variables', () => {
     const transitionTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'transition' || t.type === 'compoundTransitions',
+      ([, t]) => t.type === 'transition' || t.type === 'transitionCompound',
     );
     expect(transitionTokens.length).toBeGreaterThan(0);
     transitionTokens.forEach(([name]) => {
@@ -53,7 +53,7 @@ describe('Animation tokens (post-build)', () => {
 
   it('keyframe tokens should emit --mds-animation-* variables', () => {
     const keyframeTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'keyframe' || t.type === 'compoundKeyframes',
+      ([, t]) => t.type === 'keyframe' || t.type === 'keyframeCompound',
     );
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
@@ -63,9 +63,7 @@ describe('Animation tokens (post-build)', () => {
   });
 
   it('keyframe tokens should have matching @keyframes block', () => {
-    const keyframeTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'keyframe',
-    );
+    const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
       const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -74,16 +72,14 @@ describe('Animation tokens (post-build)', () => {
   });
 
   it('@keyframes name in variable value should match the @keyframes block name', () => {
-    const keyframeTokens = Object.entries(source).filter(
-      ([, t]) => t.type === 'keyframe',
-    );
+    const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     keyframeTokens.forEach(([name]) => {
       const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
       const kfName = `mds-animation-${kebab}`;
-      // The variable value should start with the keyframe name
       const varLineMatch = css.match(new RegExp(`--mds-animation-${kebab}:\\s*([^;]+);`));
       expect(varLineMatch).not.toBeNull();
-      expect(varLineMatch[1].trim()).toMatch(new RegExp(`^${kfName}\\b`));
+      // The keyframe name must be last in the animation shorthand
+      expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));
     });
   });
 
@@ -105,7 +101,6 @@ describe('Animation tokens (post-build)', () => {
   });
 
   it('no variables should use incorrect prefix (mds-motion-)', () => {
-    // Ensure we don't accidentally emit core motion token names
     const varLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
     varLines.forEach((line) => {
       expect(line.trim()).not.toMatch(/^--mds-motion-/);
