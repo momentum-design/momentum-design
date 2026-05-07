@@ -112,6 +112,14 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.removeAttribute(tab, 'icon-name');
       });
 
+      // icon-name already ends in -filled (e.g. encryption-filled)
+      await test.step('when icon-name already ends in -filled, both regular-icon and filled-icon render with the same name', async () => {
+        await componentsPage.setAttributes(tab, { 'icon-name': 'encryption-filled' });
+        await expect(tab.locator('mdc-icon[part="regular-icon"]')).toHaveAttribute('name', 'encryption-filled');
+        await expect(tab.locator('mdc-icon[part="filled-icon"]')).toHaveAttribute('name', 'encryption-filled');
+        await componentsPage.removeAttribute(tab, 'icon-name');
+      });
+
       // custom prefix slot with brand-visual
       await test.step('custom prefix slot with brand-visual should work', async () => {
         // Mount a new tab with brand-visual in prefix slot
