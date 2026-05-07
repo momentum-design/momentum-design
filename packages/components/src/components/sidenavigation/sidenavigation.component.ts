@@ -49,9 +49,9 @@ import SideNavigationBase from './sidenavigationbase';
  *    - **Accessibility**: The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed
  *    - **Note**: There can be only 1 level of dropdown submenus. Nested dropdowns (dropdowns within dropdowns) are not supported in the current architecture due to accessibility and complexity concerns. If you need more than 1 level of submenu, we recommend using flyouts instead of dropdowns.
  *
- * 4. **event.keyable navmenuitem (no submenu)**:
- *    - Performs an event.key such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
- *    - To maintain active state without navigation behavior, set `disable-aria-current="true"` on the navmenuitem. This allows the item to visually appear active while preventing screen readers from announcing it as the current page, which is ideal for items that trigger KEYS rather than navigation.
+ * 4. **Action-based navmenuitem (no submenu)**:
+ *    - Performs an action such as navigation or alert trigger or expand/collapse (in case of dropdown) when clicked
+ *    - To maintain active state without navigation behavior, set `disable-aria-current="true"` on the navmenuitem. This allows the item to visually appear active while preventing screen readers from announcing it as the current page, which is ideal for items that trigger actions rather than navigation.
  *
  * ### Recommendations:
  * - Use `mdc-text` for section headers

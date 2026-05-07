@@ -21,16 +21,32 @@ import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME, TAG_NAME as NAVMENUITEM_TAGNA
 import styles from './navmenuitem.styles';
 
 /**
- * `mdc-navmenuitem` is a menuitem styled to work as a navigation tab.
+ * `mdc-navmenuitem` is a menuitem role component that is styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * The navmenuitem can be in an active or inactive state, indicating whether it is currently selected.
+ * The navmenuitem can be used in various configurations to support different navigation patterns:
  *
- * Note: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
+ * 1. **Simple navmenuitem**:
+ *    - Contains text and optionally an icon and/or badge.
+ *    - Can be active or inactive.
+ *
+ * 2. **Navmenuitem in flyout submenu**:
+ *    - Contains a nested `mdc-menupopover` that serves as a flyout submenu.
+ *    - The flyout opens on hover or click (configurable) and contains additional navmenuitems.
+ *   - The parent navmenuitem gets `aria-haspopup="true"` to indicate it has a submenu, and the submenu gets `role="menu"` for accessibility.
+ *   - When any of the child navmenuitems in the flyout submenu is active, the parent navmenuitem also gets `active` styling to indicate it has an active child, but does not get `aria-current` set to avoid confusion for screen readers. Hovering on the parent navmenuitem in this state will show a tooltip (if `is-active-parent-tooltip-text` is provided) that indicates the parent has an active child, providing additional context to users.
+ *
+ * 3. **Navmenuitem in dropdown submenu**:
+ *   - Contains a sibling `div[data-trigger]` that serves as a dropdown submenu.
+ *   - The dropdown opens on click and contains additional navmenuitems.
+ *    - The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed for accessibility.
+ *    - When any of the child navmenuitems in the dropdown submenu is active, the parent navmenuitem also gets `active` styling only when the dropdown is closed to indicate it has an active child. When the dropdown is open, only the active child navmenuitem gets active styling to avoid confusion. Hovering on the parent navmenuitem in this state will show a tooltip (if `is-active-parent-tooltip-text` is provided) that indicates the parent has an active child, providing additional context to users.
+ *
+ * **Note**: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
- * the visual and functional requirements of side navigation layouts.
+ * the visual and functional requirements of side-navigation layouts.
  *
- * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the navmenuitem. This tooltip is useful when an active navmenuitem is present within a submenu of the sidenavigation component.
+ * When `tooltip-text` is set with appropriate text content, the component will render a tooltip on hover. The tooltip is particularly useful in scenarios where the sidenavigation is collapsed (showing only icons) or when an active navmenuitem is nested within a submenu, providing additional context to users about the navmenuitem's purpose or state.
  *
  * @tagname mdc-navmenuitem
  *
