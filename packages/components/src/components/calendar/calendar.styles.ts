@@ -70,6 +70,9 @@ const styles = css`
     display: contents;
   }
 
+  /* AI-Assisted: range fill is rendered via a ::before pseudo aligned to the
+     day-circle (1.75rem) instead of filling the full grid column, so the rounded
+     ends line up with the today/selected circle. */
   .calendar-day-wrapper {
     display: flex;
     align-items: center;
@@ -78,25 +81,41 @@ const styles = css`
     position: relative;
   }
 
-  .calendar-day-wrapper.in-range {
+  .calendar-day-wrapper.in-range::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     background: var(--mdc-calendar-range-bg);
     border-top: 1px solid var(--mdc-calendar-day-selected-bg);
     border-bottom: 1px solid var(--mdc-calendar-day-selected-bg);
+    z-index: 0;
+    pointer-events: none;
   }
 
-  .calendar-day-wrapper.range-start,
-  .calendar-day-wrapper.in-range:first-child {
-    border-start-start-radius: 1.125rem;
-    border-end-start-radius: 1.125rem;
+  .calendar-day-wrapper.in-range > .calendar-day {
+    position: relative;
+    z-index: 1;
+  }
+
+  .calendar-day-wrapper.range-start::before,
+  .calendar-day-wrapper.in-range:first-child::before {
+    inset-inline-start: calc(50% - 0.875rem);
+    border-start-start-radius: 0.875rem;
+    border-end-start-radius: 0.875rem;
     border-inline-start: 1px solid var(--mdc-calendar-day-selected-bg);
   }
 
-  .calendar-day-wrapper.range-end,
-  .calendar-day-wrapper.in-range:last-child {
-    border-start-end-radius: 1.125rem;
-    border-end-end-radius: 1.125rem;
+  .calendar-day-wrapper.range-end::before,
+  .calendar-day-wrapper.in-range:last-child::before {
+    inset-inline-end: calc(50% - 0.875rem);
+    border-start-end-radius: 0.875rem;
+    border-end-end-radius: 0.875rem;
     border-inline-end: 1px solid var(--mdc-calendar-day-selected-bg);
   }
+  /* End AI-Assisted */
 
   .calendar-day {
     display: flex;
