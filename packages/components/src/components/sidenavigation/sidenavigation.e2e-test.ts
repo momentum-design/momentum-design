@@ -695,11 +695,15 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       // Tooltip should now be visible (is-active-parent-tooltip-text) when dropdown is closed and parent has active child
       const parentItem1Tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="dropdown-trigger-1"]`);
       await parentItem1.hover();
+
       await expect(parentItem1Tooltip).toBeVisible();
       const tooltipText = await parentItem1Tooltip.textContent();
       expect(tooltipText?.trim()).toBe('Parent Item, contains active navmenuitem');
 
-      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-closed-parent-active');
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown', {
+        source: 'userflow',
+        fileNameSuffix: 'closed-parent-active',
+      });
       await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-closed-parent-active');
     });
 
