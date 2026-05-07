@@ -612,6 +612,58 @@ test.describe('mdc-input', () => {
       ]).toContain(validationMessage);
     });
 
+    await test.step('noncomposed change event is propagated to mdc-input when dispatched on internal input element', async () => {
+      const mdcInput = await setup({ componentsPage, id: 'test-mdc-input', placeholder: 'Placeholder' });
+      const innerInput = mdcInput.locator('input');
+
+      // Register listener on the host before dispatching so it is captured
+      const waitForChangeOnHost = await componentsPage.waitForEvent(mdcInput, 'change');
+
+      // The 'change' event is never composed, so the component's onChange handler always
+      // re-dispatches it on the host to ensure it propagates outside the shadow DOM.
+      await innerInput.evaluate((el: HTMLInputElement) => {
+        el.dispatchEvent(new Event('change', { bubbles: true, composed: false }));
+      });
+
+      await expect(waitForChangeOnHost).toEventEmitted();
+    });
+
+    await test.step('composed input event is propagated to mdc-input only once when dispatched on internal input element', async () => {
+      const mdcInput = await setup({ componentsPage, id: 'test-mdc-input', placeholder: 'Placeholder' });
+
+      // Register a counter listener on the host and dispatch in the same evaluate call so
+      // the synchronous shadow-DOM propagation is captured atomically.
+      // A composed event naturally crosses the shadow boundary — onInput must NOT re-dispatch
+      // it, otherwise the host would receive it twice.
+      const eventCount = await mdcInput.evaluate((host: HTMLElement) => {
+        let count = 0;
+        host.addEventListener('input', () => {
+          count += 1;
+        });
+        const inner = host.shadowRoot!.querySelector('input')!;
+        inner.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+        return count;
+      });
+
+      expect(eventCount).toBe(1);
+    });
+
+    await test.step('noncomposed input event is propagated to mdc-input when dispatched on internal input element', async () => {
+      const mdcInput = await setup({ componentsPage, id: 'test-mdc-input', placeholder: 'Placeholder' });
+      const innerInput = mdcInput.locator('input');
+
+      // Register listener on the host before dispatching so it is captured
+      const waitForInputOnHost = await componentsPage.waitForEvent(mdcInput, 'input');
+
+      // Dispatch a non-composed input event directly on the internal <input> element.
+      // The component's onInput handler re-dispatches it on the host when composed is false.
+      await innerInput.evaluate((el: HTMLInputElement) => {
+        el.dispatchEvent(new Event('input', { bubbles: true, composed: false }));
+      });
+
+      await expect(waitForInputOnHost).toEventEmitted();
+    });
+
     await test.step('spatial navigation', async () => {
       const form = await setup(
         {

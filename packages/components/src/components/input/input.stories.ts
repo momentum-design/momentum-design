@@ -404,3 +404,19 @@ export const SlottedInputElement: StoryObj = {
     },
   },
 };
+
+export const EmailInput: StoryObj = {
+  render: () => html`
+    <form @submit=${(e: Event) => e.preventDefault()} style="width: 300px;">
+      <mdc-input
+        label="Email"
+        placeholder="Enter your email"
+        type="email"
+        help-text="We'll never share your email."
+        required
+        @input=${e => console.log('mdc-input', e)}
+        @change=${e => console.log('mdc-input', e)}
+      ></mdc-input>
+    </form>
+  `,
+};
