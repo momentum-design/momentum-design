@@ -1,19 +1,20 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import { Component, Provider } from '../../models';
+import { Component } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
-import { KEYS } from '../../utils/keys';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
 import type { SideNavigationVariant } from './sidenavigation.types';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
+import SideNavigationBase from './sidenavigationbase';
 
 /**
  * @tagname mdc-sidenavigation
@@ -56,7 +57,7 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
 
-class SideNavigation extends Provider<SideNavigationContext> {
+class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
   /**
    * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -290,7 +291,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
    *
    * Is called on every re-render, see Provider class
    */
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (
       this.context.value.variant !== this.variant ||
       this.context.value.expanded !== this.expanded ||
@@ -431,9 +432,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (!isNavMenuItem) return;
 
     const targetItem = target as NavMenuItem;
-    // const event.key = this.getevent.keyForKeyEvent(event);
+    const action = this.getActionForKeyEvent(event);
 
-    if (event.key === KEYS.ESCAPE) {
+    if (action === ACTIONS.ESCAPE) {
       const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
       if (!dropdownContainer) return;
 
@@ -463,8 +464,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
       const currentIndex = children.indexOf(targetItem);
       if (currentIndex === -1) return;
 
-      switch (event.key) {
-        case KEYS.ARROW_DOWN:
+      switch (action) {
+        case ACTIONS.DOWN:
           // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
           event.preventDefault();
           if (currentIndex + 1 < children.length) {
@@ -473,7 +474,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             children[0].focus();
           }
           break;
-        case KEYS.ARROW_UP:
+        case ACTIONS.UP:
           // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
           event.preventDefault();
           if (currentIndex > 0) {
@@ -482,7 +483,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             children[children.length - 1].focus();
           }
           break;
-        case KEYS.ARROW_RIGHT: {
+        case ACTIONS.RIGHT: {
           // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -507,7 +508,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           }
           break;
         }
-        case KEYS.ARROW_LEFT: {
+        case ACTIONS.LEFT: {
           // Arrow Left: move focus to the previous parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
@@ -538,7 +539,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
 
     // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
-    if (event.key === KEYS.ARROW_RIGHT) {
+    if (action === ACTIONS.RIGHT) {
       const dropdownContainer = targetItem.parentElement?.querySelector(
         `div[data-trigger="${targetItem.id}"]`,
       ) as HTMLElement | null;
@@ -588,7 +589,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
     // Prevent default space key behavior to avoid scrolling the page
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       event.preventDefault();
     }
   }

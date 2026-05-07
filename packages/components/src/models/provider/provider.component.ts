@@ -16,7 +16,7 @@ type ConstructorOptions<C> = {
  *
  * @public
  */
-abstract class Provider<C> extends Component {
+class Provider<C> extends Component {
   /**
    * Constructor of the Provider.
    *
@@ -65,7 +65,7 @@ abstract class Provider<C> extends Component {
    * re-render. If the `render()` method is overwritten, this call must be made
    * manually.
    */
-  protected abstract updateContext(): void;
+  protected updateContext(): void {}
 
   /**
    * Render this Provider.

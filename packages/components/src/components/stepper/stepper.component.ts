@@ -64,7 +64,7 @@ class Stepper extends Provider<StepperContext> {
    *
    * Is called on every re-render, see Provider class
    */
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (this.context.value.variant !== this.variant || this.context.value.orientation !== this.orientation) {
       this.context.value.variant = this.variant;
       this.context.value.orientation = this.orientation;
