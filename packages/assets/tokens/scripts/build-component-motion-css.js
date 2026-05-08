@@ -15,32 +15,20 @@ const TRANSITION_TYPES = new Set(['transition', 'transitionCompound']);
 // Custom component states must be declared via @cssstate in the component and will resolve
 // to :state(name) in step 2. Unknown states not in either source will throw an error.
 const NATIVE_PSEUDO_CLASSES = new Set([
+  // Interaction states — browser sets these on any element
   'hover',
   'active',
   'focus',
   'focus-visible',
   'focus-within',
+  // Form states — browser sets these on form-associated custom elements
+  // via ElementInternals (static formAssociated = true)
   'disabled',
   'enabled',
-  'checked',
-  'indeterminate',
-  'placeholder-shown',
   'valid',
   'invalid',
   'required',
   'optional',
-  'read-only',
-  'read-write',
-  'visited',
-  'link',
-  'any-link',
-  'target',
-  'empty',
-  'root',
-  'first-child',
-  'last-child',
-  'first-of-type',
-  'last-of-type',
 ]);
 
 /**
