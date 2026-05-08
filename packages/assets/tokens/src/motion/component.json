@@ -1,0 +1,27 @@
+{
+  "component": {
+    "mdc-button": [
+      {
+        "part": ":host",
+        "state": ["hover"],
+        "animation": "buttonHover"
+      },
+      {
+        "part": ":host",
+        "state": ["active"],
+        "animation": "buttonPress"
+      },
+      {
+        "part": ":host",
+        "state": ["focus-visible"],
+        "animation": "buttonFocusRing"
+      },
+      {
+        "part": "prefix-icon",
+        "state": ["loading"],
+        "animation": "buttonLoadingSpin"
+      }
+    ]
+  }
+}
+

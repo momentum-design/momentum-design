@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ComponentFile",
+  "definitions": {
+    "AnimationIdentifier": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9]*$",
+      "description": "A camelCase identifier referencing an animation token by name"
+    },
+    "StateName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "A CSS pseudo-class name (e.g. 'hover', 'focus-visible') or CustomStateSet name (e.g. 'loading')"
+    },
+    "PartName": {
+      "type": "string",
+      "description": "':host' for the element itself, or a CSS part name (e.g. 'prefix-icon')",
+      "oneOf": [
+        { "const": ":host" },
+        { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+      ]
+    },
+    "ComponentFile": {
+      "type": "object",
+      "description": "Root structure of a component animation token source file",
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$ref": "#/definitions/ComponentMap"
+        }
+      },
+      "required": ["component"],
+      "title": "ComponentFile"
+    },
+    "ComponentMap": {
+      "type": "object",
+      "description": "A map of component element names (e.g. 'mdc-button') to their animation entries",
+      "patternProperties": {
+        "^mdc-[a-z][a-z0-9-]*$": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ComponentEntry" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "title": "ComponentMap"
+    },
+    "ComponentEntry": {
+      "type": "object",
+      "description": "Binds an animation token to a component part and optional state(s)",
+      "required": ["part", "animation"],
+      "additionalProperties": false,
+      "properties": {
+        "part": { "$ref": "#/definitions/PartName" },
+        "state": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/StateName" },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "One or more states that must be active for this rule to apply"
+        },
+        "animation": { "$ref": "#/definitions/AnimationIdentifier" }
+      },
+      "title": "ComponentEntry"
+    }
+  }
+}
