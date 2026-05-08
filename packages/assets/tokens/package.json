@@ -14,7 +14,7 @@
     "build:typography": "md-token-builder --config ./config/tokens/typography.json --input ./src --output ./dist",
     "build:elevation": "md-token-builder --config ./config/tokens/elevation.json --input ./src --output ./dist",
     "build:motion": "md-token-builder --config ./config/tokens/motion.json --input ./src --output ./dist",
-    "build:animation": "node ./scripts/build-animation-css.js",
+    "build:animation": "node ./scripts/build-animation-motion-css.js",
     "build:additionalthemes": "md-token-builder --config ./config/tokens/additional-themes.json --input ./src --output ./dist",
     "build:components": "node ./scripts/build-components-css.js",
     "clean": "yarn clean:dist",

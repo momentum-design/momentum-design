@@ -82,7 +82,8 @@
         "keyframes": {
           "type": "array",
           "items": { "$ref": "#/definitions/KeyframeEntry" },
-          "minItems": 1
+          "minItems": 1,
+          "uniqueItems": true
         },
         "animations": {
           "type": "array",

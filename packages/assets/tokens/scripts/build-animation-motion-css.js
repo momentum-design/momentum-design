@@ -1,48 +1,69 @@
 const fs = require('fs');
 const path = require('path');
-const get = require('lodash/get');
 const kebabCase = require('lodash/kebabCase');
 
 const SRC_ANIMATION = path.join(__dirname, '../src/motion/animation.json');
-const RESOLVED_MOTION = path.join(__dirname, '../dist/json/motion/complete.json');
 const OUTPUT_DIR = path.join(__dirname, '../dist/css/motion');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'animation.css');
 
 const CSS_SELECTOR = '.mds-motion';
 const TOKEN_REF_PATTERN = /^\{(.+)\}$/;
 
-function resolveRef(ref, resolvedTokens) {
+/**
+ * Converts a token reference (e.g. "{motion.duration.instant}") to a CSS
+ * var() expression (e.g. "var(--mds-motion-duration-instant)").
+ * Returns the raw value unchanged if it is not a token reference.
+ *
+ * @param {string} ref
+ * @returns {string}
+ */
+function resolveRef(ref) {
   const match = ref.match(TOKEN_REF_PATTERN);
   if (!match) return ref;
-
-  const value = get(resolvedTokens, `${match[1]}.value`);
-  if (!value) {
-    throw new Error(`Unresolved token reference: "${ref}" — no value found.`);
-  }
-  return value;
+  const varName = `--mds-${match[1].replace(/\./g, '-')}`;
+  return `var(${varName})`;
 }
 
-function resolveToken(token, resolvedTokens) {
+/**
+ * Resolves duration, easing, and delay fields on a token to CSS var() refs.
+ *
+ * @param {object} token
+ * @returns {object}
+ */
+function resolveToken(token) {
   return {
     ...token,
-    ...(token.duration !== undefined && { duration: resolveRef(token.duration, resolvedTokens) }),
-    ...(token.easing !== undefined && { easing: resolveRef(token.easing, resolvedTokens) }),
-    ...(token.delay !== undefined && { delay: resolveRef(token.delay, resolvedTokens) }),
+    ...(token.duration !== undefined && { duration: resolveRef(token.duration) }),
+    ...(token.easing !== undefined && { easing: resolveRef(token.easing) }),
+    ...(token.delay !== undefined && { delay: resolveRef(token.delay) }),
   };
 }
 
+/**
+ * Builds a CSS @keyframes block from a resolved keyframe token.
+ *
+ * @param {string} kfName - The @keyframes identifier.
+ * @param {object} token  - Resolved keyframe token.
+ * @returns {string}
+ */
 function buildKeyframeBlock(kfName, token) {
   const fromProps = {};
   const toProps = {};
   token.keyframes.forEach(({ propertyName, from, to }) => {
-    fromProps[propertyName] = from;
-    toProps[propertyName] = to;
+    fromProps[propertyName] = resolveRef(from);
+    toProps[propertyName] = resolveRef(to);
   });
   const fromStr = Object.entries(fromProps).map(([p, v]) => `${p}: ${v}`).join('; ');
   const toStr = Object.entries(toProps).map(([p, v]) => `${p}: ${v}`).join('; ');
   return `@keyframes ${kfName} {\n  from { ${fromStr}; }\n  to { ${toStr}; }\n}`;
 }
 
+/**
+ * Builds the CSS transition shorthand value for a resolved transition token.
+ *
+ * @param {object} token - Resolved transition token with duration, easing, delay, properties.
+ * @returns {string}
+ */
 function buildTransitionValue(token) {
   return token.properties
     .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
@@ -50,19 +71,18 @@ function buildTransitionValue(token) {
 }
 
 function generate() {
-  if (!fs.existsSync(RESOLVED_MOTION)) {
-    console.error(`Error: ${RESOLVED_MOTION} not found. Run 'yarn build:motion' first.`);
+  if (!fs.existsSync(SRC_ANIMATION)) {
+    console.error(`Error: ${SRC_ANIMATION} not found.`);
     process.exit(1);
   }
 
   const source = JSON.parse(fs.readFileSync(SRC_ANIMATION, 'utf8'));
-  const resolvedMotion = JSON.parse(fs.readFileSync(RESOLVED_MOTION, 'utf8'));
   const animations = source.animation;
 
   // Pre-resolve all tokens so compound types can look up resolved siblings
   const resolved = {};
   for (const [name, token] of Object.entries(animations)) {
-    resolved[name] = resolveToken(token, resolvedMotion);
+    resolved[name] = resolveToken(token);
   }
 
   const keyframeBlocks = [];
@@ -78,14 +98,23 @@ function generate() {
       const kfName = `mds-animation-${kebab}`;
       keyframeBlocks.push(buildKeyframeBlock(kfName, token));
       const iteration = token.iterationCount ? ` ${token.iterationCount}` : '';
+      // TODO: `fillMode` ('none' | 'forwards' | 'backwards' | 'both') is declared in the
+      // schema but not yet emitted. The CSS animation shorthand order is:
+      // duration easing delay iteration-count direction fill-mode play-state name.
+      // Supporting fillMode requires inserting it after iteration-count in that order.
       variableLines.push(
         `  --mds-animation-${kebab}: ${token.duration} ${token.easing} ${token.delay}${iteration} ${kfName};`,
       );
 
     } else if (token.type === 'transitionCompound') {
+      // TODO: `composition` ('parallel' | 'sequential') is stored in the token but not yet
+      // implemented. Currently all compound transitions are emitted as parallel (all listed
+      // in a single `transition` declaration). Sequential composition would require
+      // incrementally offsetting `delay` values across sub-transitions.
       const parts = token.animations.flatMap((refName) => {
         const ref = resolved[refName];
-        return ref ? buildTransitionValue(ref).split(', ') : [];
+        if (!ref) throw new Error(`Invalid animation reference: "${refName}" not found in resolved animations.`);
+        return buildTransitionValue(ref).split(', ');
       });
       if (parts.length) {
         variableLines.push(`  --mds-transition-${kebab}: ${parts.join(', ')};`);
@@ -98,7 +127,7 @@ function generate() {
         const refKebab = kebabCase(refName);
         const iteration = ref.iterationCount ? ` ${ref.iterationCount}` : '';
         return `${ref.duration} ${ref.easing} ${ref.delay}${iteration} mds-animation-${refKebab}`;
-      }).filter(Boolean);
+      });
       if (parts.length) {
         variableLines.push(`  --mds-animation-${kebab}: ${parts.join(', ')};`);
       }

@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 /**
- * Unit tests for the animation CSS generator (build-animation-css.js).
+ * Unit tests for the animation CSS generator (build-animation-motion-css.js).
  * Tests the pure helper functions in isolation, without file system access.
  */
 
@@ -11,42 +11,29 @@ const {
   resolveToken,
   buildKeyframeBlock,
   buildTransitionValue,
-} = require('../../scripts/build-animation-css');
-
-const MOCK_TOKENS = {
-  motion: {
-    duration: {
-      instant: { value: '100ms' },
-      fast: { value: '200ms' },
-    },
-    easing: {
-      standard: { value: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-    },
-    delay: {
-      none: { value: '0ms' },
-    },
-  },
-};
+} = require('../../scripts/build-animation-motion-css');
 
 describe('Animation CSS generator — unit tests', () => {
   describe('resolveRef', () => {
     it('returns the raw value when ref is not a token reference', () => {
-      expect(resolveRef('100ms', MOCK_TOKENS)).toBe('100ms');
+      expect(resolveRef('100ms')).toBe('100ms');
     });
 
-    it('resolves a valid token reference to its value', () => {
-      expect(resolveRef('{motion.duration.instant}', MOCK_TOKENS)).toBe('100ms');
+    it('converts a token reference to a CSS var() expression', () => {
+      expect(resolveRef('{motion.duration.instant}')).toBe('var(--mds-motion-duration-instant)');
     });
 
-    it('throws when the token path does not exist', () => {
-      expect(() => resolveRef('{motion.duration.unknown}', MOCK_TOKENS)).toThrow(
-        'Unresolved token reference: "{motion.duration.unknown}"',
-      );
+    it('converts a nested token path to a flat CSS var() name', () => {
+      expect(resolveRef('{motion.easing.standard}')).toBe('var(--mds-motion-easing-standard)');
+    });
+
+    it('returns a var() even for unknown token paths — runtime resolution', () => {
+      expect(resolveRef('{motion.duration.unknown}')).toBe('var(--mds-motion-duration-unknown)');
     });
   });
 
   describe('resolveToken', () => {
-    it('resolves duration, easing and delay refs on a token', () => {
+    it('converts duration, easing and delay refs to CSS var() expressions', () => {
       const token = {
         type: 'transition',
         duration: '{motion.duration.instant}',
@@ -54,10 +41,10 @@ describe('Animation CSS generator — unit tests', () => {
         delay: '{motion.delay.none}',
         properties: ['opacity'],
       };
-      const resolved = resolveToken(token, MOCK_TOKENS);
-      expect(resolved.duration).toBe('100ms');
-      expect(resolved.easing).toBe('cubic-bezier(0.4, 0, 0.2, 1)');
-      expect(resolved.delay).toBe('0ms');
+      const resolved = resolveToken(token);
+      expect(resolved.duration).toBe('var(--mds-motion-duration-instant)');
+      expect(resolved.easing).toBe('var(--mds-motion-easing-standard)');
+      expect(resolved.delay).toBe('var(--mds-motion-delay-none)');
     });
 
     it('does not crash for compound tokens that have no duration/easing/delay', () => {
@@ -66,7 +53,7 @@ describe('Animation CSS generator — unit tests', () => {
         animations: ['buttonBackground'],
         composition: 'parallel',
       };
-      const resolved = resolveToken(token, MOCK_TOKENS);
+      const resolved = resolveToken(token);
       expect(resolved.duration).toBeUndefined();
       expect(resolved.easing).toBeUndefined();
       expect(resolved.delay).toBeUndefined();
@@ -116,6 +103,30 @@ describe('Animation CSS generator — unit tests', () => {
       const result = buildKeyframeBlock('mds-animation-pop-in', token);
       expect(result).toContain('opacity: 0');
       expect(result).toContain('transform: scale(0)');
+    });
+
+    it('resolves token references in from/to values to CSS var() expressions', () => {
+      const token = {
+        keyframes: [
+          {
+            propertyName: 'background-color',
+            from: '{color.background.primary}',
+            to: '{color.background.hover}',
+          },
+        ],
+      };
+      const result = buildKeyframeBlock('mds-animation-bg-fade', token);
+      expect(result).toContain('from { background-color: var(--mds-color-background-primary); }');
+      expect(result).toContain('to { background-color: var(--mds-color-background-hover); }');
+    });
+
+    it('leaves plain CSS values unchanged in from/to', () => {
+      const token = {
+        keyframes: [{ propertyName: 'opacity', from: '0', to: '1' }],
+      };
+      const result = buildKeyframeBlock('mds-animation-fade', token);
+      expect(result).toContain('from { opacity: 0; }');
+      expect(result).toContain('to { opacity: 1; }');
     });
   });
 });

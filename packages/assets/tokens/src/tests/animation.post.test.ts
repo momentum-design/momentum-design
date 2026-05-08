@@ -5,26 +5,30 @@
  * Post-build tests for animation tokens.
  *
  * NOTE: Unlike motion.post.test.ts, this test only validates CSS output.
- * animation.json is processed by a custom Node script (build-animation-css.js),
+ * animation.json is processed by a custom Node script (build-animation-motion-css.js),
  * not Style Dictionary — so there are no SCSS, XML, Swift, or JSON platform outputs.
  * Native platform outputs (Android/iOS) will be addressed in a future PR.
  */
 
 const nodePath = require('path');
 const fs = require('fs');
+const kebabCase = require('lodash/kebabCase');
 
 const distBase = nodePath.join(__dirname, '../../dist');
 const srcBase = nodePath.join(__dirname, '../motion');
 
 const CSS_FILE = nodePath.join(distBase, 'css/motion/animation.css');
+const CORE_CSS_FILE = nodePath.join(distBase, 'css/motion/complete.css');
 const SRC_FILE = nodePath.join(srcBase, 'animation.json');
 
 describe('Animation tokens (post-build)', () => {
   let css;
+  let coreCss;
   let source;
 
   beforeAll(() => {
     css = fs.readFileSync(CSS_FILE, 'utf8');
+    coreCss = fs.readFileSync(CORE_CSS_FILE, 'utf8');
     source = JSON.parse(fs.readFileSync(SRC_FILE, 'utf8')).animation;
   });
 
@@ -46,8 +50,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(transitionTokens.length).toBeGreaterThan(0);
     transitionTokens.forEach(([name]) => {
-      const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-      expect(css).toContain(`--mds-transition-${kebab}:`);
+      expect(css).toContain(`--mds-transition-${kebabCase(name)}:`);
     });
   });
 
@@ -57,8 +60,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-      expect(css).toContain(`--mds-animation-${kebab}:`);
+      expect(css).toContain(`--mds-animation-${kebabCase(name)}:`);
     });
   });
 
@@ -66,17 +68,15 @@ describe('Animation tokens (post-build)', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-      expect(css).toContain(`@keyframes mds-animation-${kebab}`);
+      expect(css).toContain(`@keyframes mds-animation-${kebabCase(name)}`);
     });
   });
 
   it('@keyframes name in variable value should match the @keyframes block name', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     keyframeTokens.forEach(([name]) => {
-      const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-      const kfName = `mds-animation-${kebab}`;
-      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebab}:\\s*([^;]+);`));
+      const kfName = `mds-animation-${kebabCase(name)}`;
+      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\s*([^;]+);`));
       expect(varLineMatch).not.toBeNull();
       // The keyframe name must be last in the animation shorthand
       expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));
@@ -91,6 +91,11 @@ describe('Animation tokens (post-build)', () => {
       expect(line).toMatch(/--[\w-]+:\s*.+;/);
       // Should not contain unresolved token refs
       expect(line).not.toContain('{motion.');
+      // Every var() reference must be well-formed: var(--identifier)
+      const varCalls = line.match(/var\([^)]*\)/g) || [];
+      varCalls.forEach((call) => {
+        expect(call).toMatch(/^var\(--[\w-]+\)$/);
+      });
     });
   });
 
@@ -104,6 +109,22 @@ describe('Animation tokens (post-build)', () => {
     const varLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
     varLines.forEach((line) => {
       expect(line.trim()).not.toMatch(/^--mds-motion-/);
+    });
+  });
+
+  it('every {motion.*} ref in animation.json must resolve to a var in complete.css', () => {
+    const TOKEN_REF_PATTERN = /^\{(.+)\}$/;
+    const fields = ['duration', 'easing', 'delay'];
+
+    Object.values(source).forEach((token) => {
+      fields
+        .filter((field) => !!token[field])
+        .forEach((field) => {
+          const match = token[field].match(TOKEN_REF_PATTERN);
+          if (!match) return;
+          const varName = `--mds-${match[1].replace(/\./g, '-')}`;
+          expect(coreCss).toContain(`${varName}:`);
+        });
     });
   });
 });
