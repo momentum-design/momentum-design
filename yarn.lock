@@ -3125,7 +3125,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/components@workspace:*, @momentum-design/components@workspace:packages/components":
+"@momentum-design/components@workspace:*, @momentum-design/components@workspace:^, @momentum-design/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@momentum-design/components@workspace:packages/components"
   dependencies:
@@ -3352,6 +3352,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
+    "@momentum-design/components": "workspace:^"
     "@momentum-design/token-builder": "workspace:^"
     "@types/jest": ^29.5.12
     jest: ^29.7.0
