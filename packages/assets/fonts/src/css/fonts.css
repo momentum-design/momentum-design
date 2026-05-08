@@ -3,6 +3,7 @@
     src: url("../inter/Inter.var.woff2") format("woff2");
     font-style: normal;
     font-display: swap;
+    font-feature-settings: "ss02" on;
     /* Required for Safari support */
-    font-weight: 1 1000;   
+    font-weight: 1 1000;
 }
