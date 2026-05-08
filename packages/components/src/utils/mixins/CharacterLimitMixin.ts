@@ -44,12 +44,13 @@ export declare class CharacterLimitMixinInterface {
  * - Call `handleCharacterOverflowStateChange()` when `value` changes
  * - Call `announceCharacterLimitWarning()` when `helpText` changes or value is updated
  *
- * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
- * exceeds or restored.
- *
  * @param superClass - The base class to extend.
  */
 export const CharacterLimitMixin = <T extends Constructor<LitElement & CharacterLimitHost>>(superClass: T) => {
+  /**
+   * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
+   * exceeds or restored.
+   */
   class InnerMixinClass extends superClass {
     /**
      * The maximum character limit for the field for character counter.
