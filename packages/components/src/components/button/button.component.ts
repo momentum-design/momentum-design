@@ -176,18 +176,6 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
     }
   }
 
-  protected override executeAction(): void {
-    super.executeAction();
-  }
-
-  protected override handleKeyDown(event: KeyboardEvent): void {
-    super.handleKeyDown(event);
-  }
-
-  protected override handleKeyUp(event: KeyboardEvent): void {
-    super.handleKeyUp(event);
-  }
-
   /**
    * Modifies the icon name based on the active state.
    * If the button is active, the icon name is suffixed with '-filled'.
