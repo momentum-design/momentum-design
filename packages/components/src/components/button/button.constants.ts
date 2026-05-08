@@ -44,7 +44,6 @@ const DEFAULTS = {
   TYPE_INTERNAL: BUTTON_TYPE_INTERNAL.ICON,
   TYPE: BUTTON_TYPE.BUTTON,
   INVERTED: false,
-  LOADING: false,
 } as const;
 
 export {

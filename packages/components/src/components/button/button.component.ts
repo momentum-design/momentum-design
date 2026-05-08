@@ -77,7 +77,6 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @cssproperty --mdc-button-postfix-icon-size - Size of the postfix icon
  * @cssproperty --mdc-button-line-height - Line height of the button text
  *
- * @cssstate loading - Active when `loading` is `true`.
  */
 class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   /**
@@ -108,32 +107,6 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    */
   @property({ type: Number })
   override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
-
-  /**
-   * Indicates the button is in a loading state. When set:
-   * - Suppresses interaction
-   * - Sets `aria-busy="true"` to notify screen readers that the action is in progress.
-   * - Set CSS `:state(loading)`.
-   *
-   * @default false
-   */
-  @property({ type: Boolean })
-  get loading(): boolean {
-    return this.loadingValue;
-  }
-
-  set loading(val: boolean) {
-    this.loadingValue = val;
-    this.setCustomState('loading', val);
-    if (val) {
-      this.setAttribute('aria-busy', 'true');
-    } else {
-      this.removeAttribute('aria-busy');
-    }
-  }
-
-  /** @internal */
-  private loadingValue: boolean = DEFAULTS.LOADING;
 
   /**
    * Inverts the button's color scheme for use on dark backgrounds.
@@ -203,29 +176,15 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
     }
   }
 
-  /**
-   * Blocks action execution while the button is in a loading state.
-   */
   protected override executeAction(): void {
-    if (this.loading) return;
     super.executeAction();
   }
 
-  /**
-   * Suppresses keyboard interaction while the button is in a loading state.
-   * @param event - The keyboard event.
-   */
   protected override handleKeyDown(event: KeyboardEvent): void {
-    if (this.loading) return;
     super.handleKeyDown(event);
   }
 
-  /**
-   * Suppresses keyboard interaction while the button is in a loading state.
-   * @param event - The keyboard event.
-   */
   protected override handleKeyUp(event: KeyboardEvent): void {
-    if (this.loading) return;
     super.handleKeyUp(event);
   }
 

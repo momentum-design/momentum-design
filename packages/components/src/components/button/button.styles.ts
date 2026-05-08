@@ -285,26 +285,6 @@ const styles = css`
   :host::part(postfix-icon) {
     flex-shrink: 0;
   }
-
-  /* overridden by loading state */
-  :host(:state(loading)) {
-    cursor: wait;
-    pointer-events: none;
-  }
-
-  /* TESTING ONLY (will be removed later) — simulates what motion provider would inject externally */
-  @keyframes mdc-icon-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  :host(:state(loading))::part(prefix-icon) {
-    animation: mdc-icon-spin 600ms linear infinite;
-  }
 `;
 
 export default [styles];

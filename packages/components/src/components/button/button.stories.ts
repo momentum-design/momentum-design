@@ -33,7 +33,6 @@ const render = (args: Args) =>
     aria-label="${ifDefined(args['aria-label'])}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
-    ?loading="${args.loading}"
     style="${ifDefined(args.style)}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     >${args.children}</mdc-button
@@ -97,9 +96,6 @@ const meta: Meta = {
       control: 'text',
     },
     inverted: {
-      control: 'boolean',
-    },
-    loading: {
       control: 'boolean',
     },
     'auto-focus-on-mount': {
@@ -285,15 +281,5 @@ export const PillWithPostfixSlot: StoryObj = {
   args: {
     ...Example.args,
     children: 'Wow',
-  },
-};
-
-export const LoadingIcon: StoryObj = {
-  render,
-  args: {
-    ...Example.args,
-    children: 'Loading...',
-    'prefix-icon': 'placeholder-bold',
-    loading: true,
   },
 };
