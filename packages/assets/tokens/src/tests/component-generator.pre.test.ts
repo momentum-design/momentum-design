@@ -45,19 +45,51 @@ const MOCK_ANIMATIONS = {
   },
 };
 
+const MOCK_CEM = {
+  modules: [
+    {
+      declarations: [
+        {
+          tagName: 'mdc-button',
+          cssCustomStates: [{ name: 'loading', description: 'Active when loading.' }],
+        },
+        {
+          tagName: 'mdc-checkbox',
+          cssCustomStates: [{ name: 'checked', description: 'Active when checked.' }],
+        },
+      ],
+    },
+  ],
+};
+
 describe('Component motion CSS generator — unit tests', () => {
   describe('stateToSelector', () => {
-    it('maps native pseudo-classes to :name syntax', () => {
-      expect(stateToSelector('hover')).toBe(':hover');
-      expect(stateToSelector('focus-visible')).toBe(':focus-visible');
-      expect(stateToSelector('active')).toBe(':active');
-      expect(stateToSelector('disabled')).toBe(':disabled');
+    it('returns empty string for :noState', () => {
+      expect(stateToSelector(':noState', 'mdc-button', MOCK_CEM)).toBe('');
     });
 
-    it('maps custom state names to :state(name) syntax', () => {
-      expect(stateToSelector('loading')).toBe(':state(loading)');
-      expect(stateToSelector('open')).toBe(':state(open)');
-      expect(stateToSelector('my-custom-state')).toBe(':state(my-custom-state)');
+    it('maps a component custom state to :state(name) when found in CEM', () => {
+      expect(stateToSelector('loading', 'mdc-button', MOCK_CEM)).toBe(':state(loading)');
+      expect(stateToSelector('checked', 'mdc-checkbox', MOCK_CEM)).toBe(':state(checked)');
+    });
+
+    it('maps native pseudo-classes to :name syntax', () => {
+      expect(stateToSelector('hover', 'mdc-button', MOCK_CEM)).toBe(':hover');
+      expect(stateToSelector('focus-visible', 'mdc-button', MOCK_CEM)).toBe(':focus-visible');
+      expect(stateToSelector('active', 'mdc-button', MOCK_CEM)).toBe(':active');
+      expect(stateToSelector('disabled', 'mdc-button', MOCK_CEM)).toBe(':disabled');
+    });
+
+    it('falls back to native pseudo-class even without CEM', () => {
+      expect(stateToSelector('hover', 'mdc-button', null)).toBe(':hover');
+    });
+
+    it('throws for unknown states not in CEM or NATIVE_PSEUDO_CLASSES', () => {
+      expect(() => stateToSelector('unknown-state', 'mdc-button', MOCK_CEM)).toThrow('Unknown state "unknown-state"');
+    });
+
+    it('throws when no CEM and state is not a native pseudo-class', () => {
+      expect(() => stateToSelector('loading', 'mdc-button', null)).toThrow('Unknown state "loading"');
     });
   });
 
@@ -95,33 +127,35 @@ describe('Component motion CSS generator — unit tests', () => {
 
   describe('buildSelector', () => {
     it('builds a bare element selector when no state and part is :host', () => {
-      expect(buildSelector('mdc-button', ':host', [])).toBe('mdc-button');
+      expect(buildSelector('mdc-button', ':host', [], MOCK_CEM)).toBe('mdc-button');
     });
 
     it('handles undefined states gracefully', () => {
-      expect(buildSelector('mdc-button', ':host', undefined)).toBe('mdc-button');
+      expect(buildSelector('mdc-button', ':host', undefined, MOCK_CEM)).toBe('mdc-button');
     });
 
     it('builds a native pseudo-class selector on :host', () => {
-      expect(buildSelector('mdc-button', ':host', ['hover'])).toBe('mdc-button:hover');
+      expect(buildSelector('mdc-button', ':host', ['hover'], MOCK_CEM)).toBe('mdc-button:hover');
     });
 
     it('builds a custom state selector on :host', () => {
-      expect(buildSelector('mdc-button', ':host', ['loading'])).toBe('mdc-button:state(loading)');
+      expect(buildSelector('mdc-button', ':host', ['loading'], MOCK_CEM)).toBe('mdc-button:state(loading)');
     });
 
     it('builds a ::part selector with no state', () => {
-      expect(buildSelector('mdc-button', 'prefix-icon', [])).toBe('mdc-button::part(prefix-icon)');
+      expect(buildSelector('mdc-button', 'prefix-icon', [], MOCK_CEM)).toBe('mdc-button::part(prefix-icon)');
     });
 
     it('builds a ::part selector with a custom state', () => {
-      expect(buildSelector('mdc-button', 'prefix-icon', ['loading'])).toBe(
+      expect(buildSelector('mdc-button', 'prefix-icon', ['loading'], MOCK_CEM)).toBe(
         'mdc-button:state(loading)::part(prefix-icon)',
       );
     });
 
     it('builds a selector with multiple states', () => {
-      expect(buildSelector('mdc-button', ':host', ['hover', 'focus-visible'])).toBe('mdc-button:hover:focus-visible');
+      expect(buildSelector('mdc-button', ':host', ['hover', 'focus-visible'], MOCK_CEM)).toBe(
+        'mdc-button:hover:focus-visible',
+      );
     });
   });
 

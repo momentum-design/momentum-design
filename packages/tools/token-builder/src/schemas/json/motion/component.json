@@ -8,9 +8,11 @@
       "description": "A camelCase identifier referencing an animation token by name"
     },
     "StateName": {
-      "type": "string",
-      "pattern": "^[a-z][a-z0-9-]*$",
-      "description": "A CSS pseudo-class name (e.g. 'hover', 'focus-visible') or CustomStateSet name (e.g. 'loading')"
+      "oneOf": [
+        { "const": ":noState" },
+        { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+      ],
+      "description": "component state eg.: hover, enable, checked, etc. ':noState' is a special state to represent default/no state of the component"
     },
     "PartName": {
       "type": "string",
@@ -34,7 +36,7 @@
     },
     "ComponentMap": {
       "type": "object",
-      "description": "A map of component element names (e.g. 'mdc-button') to their animation entries",
+      "description": "A map of component element names (e.g. 'button') to their animation entries",
       "patternProperties": {
         "^mdc-[a-z][a-z0-9-]*$": {
           "type": "array",
@@ -47,8 +49,8 @@
     },
     "ComponentEntry": {
       "type": "object",
-      "description": "Binds an animation token to a component part and optional state(s)",
-      "required": ["part", "animation"],
+      "description": "Binds the animation token to the component's part when the state(s) are active on the component",
+      "required": ["part", "state", "animation"],
       "additionalProperties": false,
       "properties": {
         "part": { "$ref": "#/definitions/PartName" },
@@ -57,7 +59,7 @@
           "items": { "$ref": "#/definitions/StateName" },
           "minItems": 1,
           "uniqueItems": true,
-          "description": "One or more states that must be active for this rule to apply"
+          "description": "One or more states that must be active for this rule to apply. Use [\":noState\"] to represent the default/no-state rule."
         },
         "animation": { "$ref": "#/definitions/AnimationIdentifier" }
       },

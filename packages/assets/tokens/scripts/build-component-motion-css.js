@@ -4,14 +4,16 @@ const kebabCase = require('lodash/kebabCase');
 
 const SRC_COMPONENT = path.join(__dirname, '../src/motion/component.json');
 const SRC_ANIMATION = path.join(__dirname, '../src/motion/animation.json');
+const CEM_PATH = path.join(__dirname, '../../../components/dist/custom-elements.json');
 const OUTPUT_DIR = path.join(__dirname, '../dist/css/motion');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'component.css');
 
 const KEYFRAME_TYPES = new Set(['keyframe', 'keyframeCompound']);
 const TRANSITION_TYPES = new Set(['transition', 'transitionCompound']);
 
-// Native CSS pseudo-classes that map to `:name` syntax.
-// Everything else is treated as a CustomStateSet selector: `:state(name)`.
+// Native CSS pseudo-classes that map directly to `:name` syntax (step 3 of stateToSelector).
+// Custom component states must be declared via @cssstate in the component and will resolve
+// to :state(name) in step 2. Unknown states not in either source will throw an error.
 const NATIVE_PSEUDO_CLASSES = new Set([
   'hover',
   'active',
@@ -43,13 +45,35 @@ const NATIVE_PSEUDO_CLASSES = new Set([
 
 /**
  * Maps a single state name to its CSS pseudo-class string.
- * Native pseudo-classes use `:name`; custom states use `:state(name)`.
+ *
+ * Resolution order:
+ * 1. If state is ':noState' → return '' (no pseudo-class)
+ * 2. If componentName is given and state appears in that component's cssCustomStates
+ *    in the CEM → use `:state(name)`
+ * 3. If state is in NATIVE_PSEUDO_CLASSES → use `:name`
+ * 4. Otherwise → throw an error
  *
  * @param {string} state
+ * @param {string} [componentName] - e.g. "mdc-button"
+ * @param {object|null} [cem] - parsed custom-elements.json manifest
  * @returns {string}
  */
-function stateToSelector(state) {
-  return NATIVE_PSEUDO_CLASSES.has(state) ? `:${state}` : `:state(${state})`;
+function stateToSelector(state, componentName, cem) {
+  if (state === ':noState') return '';
+
+  const declaration = cem?.modules
+    .flatMap(mod => mod.declarations ?? [])
+    .find(dec => dec.tagName === componentName);
+  const customStates = declaration?.cssCustomStates ?? [];
+  if (customStates.some(s => s.name === state)) {
+    return `:state(${state})`;
+  }
+
+  if (NATIVE_PSEUDO_CLASSES.has(state)) {
+    return `:${state}`;
+  }
+
+  throw new Error(`Unknown state "${state}" for component "${componentName}". Add it to NATIVE_PSEUDO_CLASSES or expose it as a CSS custom state via @cssstate in the component.`);
 }
 
 /**
@@ -81,10 +105,11 @@ function resolveAnimation(name, animations) {
  * @param {string} componentName - e.g. "mdc-button"
  * @param {string} part - ":host" or a part name e.g. "prefix-icon"
  * @param {string[]} states - Array of state names; may be empty or omitted.
+ * @param {object|null} [cem] - parsed custom-elements.json manifest
  * @returns {string}
  */
-function buildSelector(componentName, part, states) {
-  const stateStr = (states || []).map(stateToSelector).join('');
+function buildSelector(componentName, part, states, cem) {
+  const stateStr = (states || []).map(s => stateToSelector(s, componentName, cem)).join('');
   if (part === ':host') {
     return `${componentName}${stateStr}`;
   }
@@ -116,6 +141,7 @@ function generate() {
 
   const source = JSON.parse(fs.readFileSync(SRC_COMPONENT, 'utf8'));
   const animations = JSON.parse(fs.readFileSync(SRC_ANIMATION, 'utf8')).animation;
+  const cem = fs.existsSync(CEM_PATH) ? JSON.parse(fs.readFileSync(CEM_PATH, 'utf8')) : null;
 
   const rules = [];
 
@@ -123,7 +149,7 @@ function generate() {
     for (const entry of entries) {
       const { part, state, animation } = entry;
       const { cssProp, cssVar } = resolveAnimation(animation, animations);
-      const selector = buildSelector(componentName, part, state);
+      const selector = buildSelector(componentName, part, state, cem);
       rules.push(buildCSSRule(selector, cssProp, cssVar));
     }
   }

@@ -1,0 +1,121 @@
+{
+  "animation": {
+    "buttonBackground": {
+      "description": "Button background color transition on hover/press",
+      "type": "transition",
+      "properties": ["background-color"],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "buttonBorder": {
+      "description": "Button border and shadow transition on focus",
+      "type": "transition",
+      "properties": ["border-color", "box-shadow"],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "buttonIcon": {
+      "description": "Button icon color and transform transition",
+      "type": "transition",
+      "properties": ["color", "transform"],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "buttonFocusRing": {
+      "description": "Button focus ring appearance",
+      "type": "transition",
+      "properties": ["box-shadow", "outline"],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "buttonPress": {
+      "description": "Button press effect combining background and icon transitions",
+      "type": "transitionCompound",
+      "animations": ["buttonBackground", "buttonIcon"],
+      "composition": "parallel"
+    },
+    "buttonHover": {
+      "description": "Button hover effect combining background and border transitions",
+      "type": "transitionCompound",
+      "animations": ["buttonBackground", "buttonBorder"],
+      "composition": "parallel"
+    },
+    "buttonLoadingSpin": {
+      "description": "Button loading spinner - continuous rotation for button loading states",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "transform",
+          "from": "rotate(0deg)",
+          "to": "rotate(360deg)"
+        }
+      ],
+      "duration": "{motion.duration.slow}",
+      "easing": "{motion.easing.linear}",
+      "delay": "{motion.delay.none}",
+      "iterationCount": "infinite"
+    },
+    "buttonLoadingPulse": {
+      "description": "Button loading pulse - opacity animation for button skeleton/loading state",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "opacity",
+          "from": "1",
+          "to": "0.4"
+        }
+      ],
+      "duration": "{motion.duration.slow}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}",
+      "iterationCount": "infinite"
+    },
+    "buttonLoadingSpinPulse": {
+      "description": "Button loading state combining spin and pulse keyframe animations",
+      "type": "keyframeCompound",
+      "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
+      "composition": "parallel"
+    },
+    "checkboxDefault": {
+      "description": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
+      "type": "transition",
+      "properties": ["background-color", "border-color"],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "checkboxChecked": {
+      "description": "Checkbox checked state animation — scale-in effect applied when the checkbox becomes checked",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "transform",
+          "from": "scale(0.8)",
+          "to": "scale(1)"
+        }
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "checkboxCheckedIcon": {
+      "description": "Checkmark icon draw-in animation when the checkbox becomes checked",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "opacity",
+          "from": "0",
+          "to": "1"
+        }
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    }
+  }
+}
+

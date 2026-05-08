@@ -15,11 +15,23 @@
         "part": ":host",
         "state": ["focus-visible"],
         "animation": "buttonFocusRing"
+      }
+    ],
+    "mdc-checkbox": [
+      {
+        "part": ":host",
+        "state": [":noState"],
+        "animation": "checkboxDefault"
       },
       {
-        "part": "prefix-icon",
-        "state": ["loading"],
-        "animation": "buttonLoadingSpin"
+        "part": ":host",
+        "state": ["checked"],
+        "animation": "checkboxChecked"
+      },
+      {
+        "part": "static-checkbox",
+        "state": ["checked"],
+        "animation": "checkboxCheckedIcon"
       }
     ]
   }

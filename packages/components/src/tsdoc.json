@@ -35,6 +35,11 @@
       "tagName": "@default",
       "syntaxKind": "modifier",
       "allowMultiple": false
+    },
+    {
+      "tagName": "@cssstate",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
     }
   ]
 }

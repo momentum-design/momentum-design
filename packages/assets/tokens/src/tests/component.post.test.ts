@@ -18,6 +18,7 @@ const { stateToSelector } = require('../../scripts/build-component-motion-css');
 
 const distBase = nodePath.join(__dirname, '../../dist');
 const srcBase = nodePath.join(__dirname, '../motion');
+const CEM_PATH = nodePath.join(__dirname, '../../../../components/dist/custom-elements.json');
 
 const CSS_FILE = nodePath.join(distBase, 'css/motion/component.css');
 const SRC_COMPONENT = nodePath.join(srcBase, 'component.json');
@@ -27,11 +28,13 @@ describe('Component motion tokens (post-build)', () => {
   let css;
   let componentSource;
   let animationSource;
+  let cem;
 
   beforeAll(() => {
     css = fs.readFileSync(CSS_FILE, 'utf8');
     componentSource = JSON.parse(fs.readFileSync(SRC_COMPONENT, 'utf8')).component;
     animationSource = JSON.parse(fs.readFileSync(SRC_ANIMATION, 'utf8')).animation;
+    cem = fs.existsSync(CEM_PATH) ? JSON.parse(fs.readFileSync(CEM_PATH, 'utf8')) : null;
   });
 
   it('CSS output file should exist', () => {
@@ -46,7 +49,7 @@ describe('Component motion tokens (post-build)', () => {
     Object.entries(componentSource).forEach(([componentName, entries]) => {
       entries.forEach((entry) => {
         const { part, state, animation } = entry;
-        const stateStr = (state || []).map(stateToSelector).join('');
+        const stateStr = (state || []).map((s) => stateToSelector(s, componentName, cem)).join('');
         const hostSelector = `${componentName}${stateStr}`;
         const partSelector = `${componentName}${stateStr}::part(${part})`;
         const selector = part === ':host' ? hostSelector : partSelector;
