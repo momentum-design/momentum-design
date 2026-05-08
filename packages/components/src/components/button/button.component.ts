@@ -77,7 +77,7 @@ import { getIconNameWithoutStyle } from './button.utils';
  * @cssproperty --mdc-button-postfix-icon-size - Size of the postfix icon
  * @cssproperty --mdc-button-line-height - Line height of the button text
  *
- * @cssstate loading - Active when `loading` is `true`. Use `mdc-button:state(loading)` to style externally.
+ * @cssstate loading - Active when `loading` is `true`.
  */
 class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   /**
@@ -113,7 +113,7 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
    * Indicates the button is in a loading state. When set:
    * - Suppresses interaction
    * - Sets `aria-busy="true"` to notify screen readers that the action is in progress.
-   * - Exposes `:state(loading)` via CSS Custom States API (`ElementInternals.states`).
+   * - Set CSS `:state(loading)`.
    *
    * @default false
    */
@@ -209,6 +209,24 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
   protected override executeAction(): void {
     if (this.loading) return;
     super.executeAction();
+  }
+
+  /**
+   * Suppresses keyboard interaction while the button is in a loading state.
+   * @param event - The keyboard event.
+   */
+  protected override handleKeyDown(event: KeyboardEvent): void {
+    if (this.loading) return;
+    super.handleKeyDown(event);
+  }
+
+  /**
+   * Suppresses keyboard interaction while the button is in a loading state.
+   * @param event - The keyboard event.
+   */
+  protected override handleKeyUp(event: KeyboardEvent): void {
+    if (this.loading) return;
+    super.handleKeyUp(event);
   }
 
   /**

@@ -288,7 +288,7 @@ class Buttonsimple extends KeyDownHandledMixin(
    *
    * @param event - The keyboard event.
    */
-  private handleKeyDown(event: KeyboardEvent) {
+  protected handleKeyDown(event: KeyboardEvent) {
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
@@ -313,7 +313,7 @@ class Buttonsimple extends KeyDownHandledMixin(
    *
    * @param event - The keyboard event.
    */
-  private handleKeyUp(event: KeyboardEvent) {
+  protected handleKeyUp(event: KeyboardEvent) {
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {

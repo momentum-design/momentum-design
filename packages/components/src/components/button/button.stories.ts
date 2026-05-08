@@ -288,30 +288,12 @@ export const PillWithPostfixSlot: StoryObj = {
   },
 };
 
-// Alias bypasses lit-analyzer CSS validation — needed for @keyframes in style tag
-const storyHtml = html;
-
-export const LoadingButton: StoryObj = {
-  render: args => storyHtml`
-    <style>
-      /* TESTING ONLY (will be removed later) — simulates what motion provider would inject externally */
-      @keyframes mds-animation-button-loading-spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      mdc-button:state(loading) {
-        animation: mds-animation-button-loading-spin 600ms cubic-bezier(0, 0, 1, 1) 0ms infinite;
-      }
-    </style>
-    ${render(args)}
-  `,
+export const LoadingIcon: StoryObj = {
+  render,
   args: {
     ...Example.args,
     children: 'Loading...',
+    'prefix-icon': 'placeholder-bold',
     loading: true,
   },
 };

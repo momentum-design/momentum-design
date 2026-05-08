@@ -286,10 +286,24 @@ const styles = css`
     flex-shrink: 0;
   }
 
-  // will be override by loading state in case of loading
+  /* overridden by loading state */
   :host(:state(loading)) {
     cursor: wait;
     pointer-events: none;
+  }
+
+  /* TESTING ONLY (will be removed later) — simulates what motion provider would inject externally */
+  @keyframes mdc-icon-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  :host(:state(loading))::part(prefix-icon) {
+    animation: mdc-icon-spin 600ms linear infinite;
   }
 `;
 

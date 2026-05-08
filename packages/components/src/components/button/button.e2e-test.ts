@@ -747,6 +747,40 @@ test.describe.parallel('mdc-button', () => {
     }
   });
 
+  // AI-Assisted
+  test('loading state suppresses keyboard interaction', async ({ componentsPage }) => {
+    const button = await setup({ componentsPage, children: 'Loading', secondButtonForFocus: true });
+
+    await componentsPage.page.evaluate(() => {
+      const btn = document.getElementsByTagName('mdc-button')[0];
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('btn-clicked');
+      });
+    });
+
+    await componentsPage.setAttributes(button, { loading: '' });
+
+    await test.step('loading button should be focusable via Tab', async () => {
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(button).toBeFocused();
+    });
+
+    await test.step('Space key should not trigger click when loading', async () => {
+      await componentsPage.page.keyboard.down('Space');
+      await expect(button).not.toHaveClass('pressed');
+      await componentsPage.page.keyboard.up('Space');
+      await expect(button).not.toHaveClass('btn-clicked');
+    });
+
+    await test.step('Enter key should not trigger click when loading', async () => {
+      await componentsPage.page.keyboard.down('Enter');
+      await expect(button).not.toHaveClass('pressed');
+      await componentsPage.page.keyboard.up('Enter');
+      await expect(button).not.toHaveClass('btn-clicked');
+    });
+  });
+  // End AI-Assisted
+
   test('interactions', async ({ componentsPage }) => {
     await test.step('spatial navigation', async () => {
       const button = await setup({ componentsPage });
