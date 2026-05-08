@@ -34,6 +34,14 @@ class Animation extends Component {
   name?: AnimationNames;
 
   /**
+   * URL pointing to a Lottie JSON animation file.
+   * When provided, it takes precedence over the `name` property.
+   * @default undefined
+   */
+  @property({ type: String, reflect: true })
+  src?: string;
+
+  /**
    * How many times to loop the animation
    * - "true" - infinite
    * - "false" - no loop
@@ -131,7 +139,9 @@ class Animation extends Component {
    * Import animation data dynamically
    */
   private getAnimationData(): void {
-    if (this.name && animationManifest[this.name]) {
+    if (this.src) {
+      this.fetchAnimationFromUrl(this.src);
+    } else if (this.name && animationManifest[this.name]) {
       // Make sure the path is point to a folder (and its sub-folders) that contains animation data only
       // otherwise bundlers (eg. webpack) will try to process everything in this folder including the types.d.ts
       const path = animationManifest[this.name].replace(/^\.\/lottie/, '');
@@ -144,13 +154,33 @@ class Animation extends Component {
     }
   }
 
+  /**
+   * Fetch animation data from a URL
+   */
+  private fetchAnimationFromUrl(url: string): void {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch animation from URL: ${url} (${response.status})`);
+        }
+        return response.json();
+      })
+      .then((animationData: any) => this.onLoadSuccessHandler(animationData))
+      .catch((error: Error) => this.onLoadFailHandler(error));
+  }
+
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
     // fetch animation data when new animation needed or any animation parameter changed
     // note: we re-create the animation for parameter changes as well, because lottie
     //       does not API for changing them on the fly
-    if (changedProperties.has('name') || changedProperties.has('loop') || changedProperties.has('autoplay')) {
+    if (
+      changedProperties.has('name') ||
+      changedProperties.has('src') ||
+      changedProperties.has('loop') ||
+      changedProperties.has('autoplay')
+    ) {
       this.getAnimationData();
     }
 
