@@ -14,6 +14,7 @@ import { withCssPropertyProvider } from './provider/cssPropertyProvider';
 import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
+import { cssCustomStateEnhancer } from './enhancers/cssCustomStateEnhancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
@@ -153,6 +154,7 @@ const preview = {
       },
     },
     direction: 'ltr',
+    customElementsManifest: refactoredCustomElements,
   },
   decorators: [
     withSpatialNavigationProviderDecorator,
@@ -198,6 +200,7 @@ const preview = {
 export const argTypesEnhancers = [
   cssPartEnhancer,
   cssPropertyEnhancer,
+  cssCustomStateEnhancer,
   disableSlotControls,
   eventsEnhancer,
   sortArgTypes,

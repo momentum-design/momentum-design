@@ -133,6 +133,7 @@
     "@storybook/addon-links": "^9.1.5",
     "@storybook/web-components": "^9.1.5",
     "@storybook/web-components-vite": "^9.1.5",
+    "@wc-toolkit/jsdoc-tags": "^1.2.0",
     "axe-html-reporter": "^2.2.11",
     "chalk": "^4.1.2",
     "concurrently": "^8.2.2",
