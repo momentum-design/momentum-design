@@ -7,6 +7,9 @@ import { describeStory, hideControls } from '../../../config/storybook/utils';
 import { TAB_SIZES, TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 import '../tab';
+import '../dialog';
+import '../button';
+import '../popover';
 import { ROLE } from '../../utils/roles';
 
 const render = (args: Args) =>
@@ -238,4 +241,86 @@ export const TablistWithButtons: StoryObj = {
       based on the scroll position.
     </p>`,
   ),
+};
+
+export const TablistInsideDialog: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html`<p>
+        A <code>mdc-tablist</code> inside an <code>mdc-dialog</code> with <code>focus-trap</code> enabled. Use
+        <kbd>Tab</kbd> to navigate between the tabs and interactive elements inside the dialog.
+      </p>`,
+      true,
+    ),
+  },
+  render: () => {
+    const dialogId = 'tablist-dialog';
+
+    const toggleVisibility = () => {
+      const dialog = document.getElementById(dialogId) as HTMLElement;
+      dialog?.toggleAttribute('visible');
+    };
+
+    const onClose = () => {
+      const dialog = document.getElementById(dialogId) as HTMLElement;
+      dialog?.removeAttribute('visible');
+    };
+
+    const updateTabPanel = (event: CustomEvent) => {
+      const dialog = document.getElementById(dialogId);
+      const activeTab = dialog?.querySelector(`mdc-tab[tab-id="${event.detail.tabId}"]`);
+      const panelId = activeTab?.getAttribute('aria-controls');
+      const panels = dialog?.querySelectorAll('[role="tabpanel"]');
+      panels?.forEach(panelElement => {
+        const el = panelElement as HTMLElement;
+        el.hidden = el.id !== panelId;
+      });
+    };
+
+    return html`
+      <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+        <mdc-button @click="${toggleVisibility}" id="tablist-dialog-trigger">Open Dialog</mdc-button>
+      </div>
+
+      <mdc-dialog
+        id="${dialogId}"
+        header-text="Tabbed Dialog"
+        close-button-aria-label="Close dialog"
+        triggerId="tablist-dialog-trigger"
+        focus-trap
+        @close="${onClose}"
+      >
+        <div slot="dialog-body">
+          <mdc-tablist @change="${updateTabPanel}" active-tab-id="calls-tab" data-aria-label="Media types">
+            <mdc-tab text="Calls" icon-name="audio-call-bold" tab-id="calls-tab" aria-controls="dialog-calls-panel">
+            </mdc-tab>
+            <mdc-tab text="Videos" icon-name="video-bold" tab-id="videos-tab" aria-controls="dialog-videos-panel">
+            </mdc-tab>
+            <mdc-tab
+              text="Documents"
+              icon-name="document-bold"
+              tab-id="documents-tab"
+              aria-controls="dialog-documents-panel"
+            >
+            </mdc-tab>
+          </mdc-tablist>
+
+          <div id="dialog-calls-panel" role="tabpanel">
+            <p>Calls panel content.</p>
+            <mdc-button>Action in Calls</mdc-button>
+          </div>
+          <div id="dialog-videos-panel" role="tabpanel" hidden>
+            <p>Videos panel content.</p>
+            <mdc-button>Action in Videos</mdc-button>
+          </div>
+          <div id="dialog-documents-panel" role="tabpanel" hidden>
+            <p>Documents panel content.</p>
+            <mdc-button>Action in Documents</mdc-button>
+          </div>
+        </div>
+        <mdc-button slot="footer-button-secondary" @click="${onClose}">Cancel</mdc-button>
+        <mdc-button slot="footer-button-primary" @click="${onClose}">Confirm</mdc-button>
+      </mdc-dialog>
+    `;
+  },
 };
