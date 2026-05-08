@@ -181,7 +181,7 @@ class Tab extends IconNameMixin(LifeCycleMixin(Buttonsimple)) {
 
     const isFilled = this.iconName.endsWith('-filled');
     if (isFilled) {
-      return undefined;
+      return this.iconName as IconNames;
     }
 
     const baseIcon = getIconNameWithoutStyle(this.iconName);

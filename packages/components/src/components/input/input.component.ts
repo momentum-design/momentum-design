@@ -254,10 +254,17 @@ class Input
    * Updates the value and sets the validity of the input field.
    * @internal
    */
-  protected onInput() {
+  protected onInput(event: Event) {
     this.updateValue();
     this.setInputValidity();
     this.checkValidity();
+
+    // Some versions of the 'input' event are not composed.
+    // If the event is not composed, we need to re-dispatch the same event to ensure it is propagated correctly.
+    if (!event.composed) {
+      const EventConstructor = event.constructor as typeof Event;
+      this.dispatchEvent(new EventConstructor(event.type, event));
+    }
   }
 
   /**
