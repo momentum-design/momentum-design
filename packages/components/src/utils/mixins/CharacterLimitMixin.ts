@@ -8,6 +8,12 @@ export interface CharacterLimitHost {
   helpText?: string;
 }
 
+interface Events {
+  onLimitExceededEvent: CustomEvent;
+}
+
+export type { Events };
+
 export declare class CharacterLimitMixinInterface {
   maxCharacterLimit?: number;
 
@@ -37,6 +43,9 @@ export declare class CharacterLimitMixinInterface {
  * - Have a `helpText` property (string)
  * - Call `handleCharacterOverflowStateChange()` when `value` changes
  * - Call `announceCharacterLimitWarning()` when `helpText` changes or value is updated
+ *
+ * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
+ * exceeds or restored.
  *
  * @param superClass - The base class to extend.
  */
