@@ -2,7 +2,7 @@ import utils from '../../utils/tag-name';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
-import { TYPE, TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('input');
 
@@ -42,7 +42,6 @@ const DEFAULTS = {
   PREFIX_TEXT_TAG: VALID_TEXT_TAGS.SPAN,
   AUTO_COMPLETE: AUTO_COMPLETE.OFF,
   INPUT_TYPE: INPUT_TYPE.TEXT,
-  CHARACTER_COUNTER_TYPE: FONT_TYPE.BODY_MIDSIZE_REGULAR,
 } as const;
 
 export { TAG_NAME, PREFIX_TEXT_OPTIONS, AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_TYPE, DEFAULTS };
