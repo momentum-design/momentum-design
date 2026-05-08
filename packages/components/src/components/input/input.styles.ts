@@ -12,6 +12,7 @@ const styles = [
       --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
       --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
       --mdc-input-height: 2rem;
+      --mdc-input-text-secondary-normal: var(--mds-color-theme-text-secondary-normal);
     }
     :host,
     :host::part(input-container),
@@ -123,6 +124,26 @@ const styles = [
     .hidden {
       opacity: 0;
       pointer-events: none;
+    }
+
+    :host::part(input-footer) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    :host::part(character-counter) {
+      margin-left: auto;
+      color: var(--mdc-input-text-secondary-normal);
+    }
+
+    :host([help-text-type='error'])::part(character-counter) {
+      color: var(--mdc-help-text-color);
+    }
+
+    :host([disabled])::part(character-counter) {
+      color: var(--mds-color-theme-text-primary-disabled);
     }
   `,
   ...hostFocusRingStyles(true),

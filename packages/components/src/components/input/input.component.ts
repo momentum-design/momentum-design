@@ -1,10 +1,10 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
@@ -33,6 +33,8 @@ import styles from './input.styles';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
+ * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
+ * exceeds or restored.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -64,6 +66,7 @@ import styles from './input.styles';
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
+ * @cssproperty --mdc-input-text-secondary-normal - Text color for the character counter
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -79,6 +82,8 @@ import styles from './input.styles';
  * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
  * @csspart input-text - The input field element.
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
+ * @csspart input-footer - The footer element that contains the helper text and character counter.
+ * @csspart character-counter - The character counter element.
  */
 
 class Input
@@ -168,6 +173,30 @@ class Input
   @property({ type: String, reflect: true, attribute: 'data-aria-describedby' })
   dataAriaDescribedby: string | null = null;
 
+  /**
+   * The maximum character limit for the input field for character counter.
+   */
+  @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
+
+  /**
+   * Template string for the announcement that will be read by screen readers when the max character limit is set.
+   * Consumers must use the placeholders `%{number-of-characters}` and `%{max-character-limit}` in the string,
+   * which will be dynamically replaced with the actual values at runtime.
+   * For example: `%{number-of-characters} out of %{max-character-limit} characters are typed.`
+   * Example output: "93 out of 140 characters are typed."
+   */
+  @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
+
+  /**
+   * @internal
+   */
+  @state() private ariaLiveAnnouncer?: string;
+
+  /**
+   * @internal
+   */
+  private characterLimitExceedingFired: boolean = false;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.updateComplete
@@ -235,8 +264,83 @@ class Input
     this.inputElement.setCustomValidity('');
     if (!this.inputElement.validity.valid && this.validationMessage) {
       this.inputElement.setCustomValidity(this.validationMessage);
+    } else if (
+      this.maxCharacterLimit &&
+      this.value.length > this.maxCharacterLimit &&
+      this.helpTextType === VALIDATION.ERROR &&
+      this.helpText
+    ) {
+      this.inputElement.setCustomValidity(this.helpText);
     }
     this.setValidity();
+  }
+
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this.handleCharacterOverflowStateChange();
+    }
+    if (changedProperties.has('helpText')) {
+      this.announceMaxLengthWarning();
+    }
+  }
+
+  /**
+   * Dispatches the character overflow state change event.
+   * @returns void
+   */
+  private dispatchCharacterOverflowStateChangeEvent() {
+    this.dispatchEvent(
+      new CustomEvent('limitexceeded', {
+        detail: {
+          currentCharacterCount: this.value.length,
+          maxCharacterLimit: this.maxCharacterLimit,
+          value: this.value,
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  /**
+   * Handles the character overflow state change.
+   * Dispatches the character overflow state change event if the character limit is exceeded or restored.
+   * @returns void
+   */
+  private handleCharacterOverflowStateChange() {
+    if (this.maxCharacterLimit) {
+      if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
+        this.dispatchCharacterOverflowStateChangeEvent();
+        this.characterLimitExceedingFired = true;
+      } else if (this.value.length <= this.maxCharacterLimit && this.characterLimitExceedingFired) {
+        this.dispatchCharacterOverflowStateChangeEvent();
+        this.characterLimitExceedingFired = false;
+      }
+    }
+  }
+
+  /**
+   * Announces the character limit warning based on the current value length.
+   * If the value length exceeds the max character limit, the help text is announced (if help text is present).
+   * If the value length does not exceed the max character limit, then the character limit announcement is announced.
+   */
+  private announceMaxLengthWarning() {
+    this.ariaLiveAnnouncer = '';
+    if (!this.maxCharacterLimit || this.value.length === 0) {
+      return;
+    }
+    if (this.helpText && this.value.length > this.maxCharacterLimit) {
+      this.updateComplete
+        .then(() => {
+          this.ariaLiveAnnouncer = this.helpText;
+        })
+        .catch(() => {});
+    } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
+      this.ariaLiveAnnouncer = this.characterLimitAnnouncement
+        .replace('%{number-of-characters}', this.value.length.toString())
+        .replace('%{max-character-limit}', this.maxCharacterLimit.toString());
+    }
   }
 
   /**
@@ -247,6 +351,7 @@ class Input
   private updateValue() {
     this.value = this.inputElement.value;
     this.internals.setFormValue(this.inputElement.value);
+    this.announceMaxLengthWarning();
   }
 
   /**
@@ -408,6 +513,24 @@ class Input
     />`;
   }
 
+  protected renderCharacterCounter() {
+    if (!this.maxCharacterLimit) {
+      return nothing;
+    }
+    return html`
+      <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
+        ${this.value.length}/${this.maxCharacterLimit}
+      </mdc-text>
+    `;
+  }
+
+  protected renderInputFooter() {
+    if (!this.helpText && !this.maxCharacterLimit) {
+      return nothing;
+    }
+    return html` <div part="input-footer">${this.renderHelperText()} ${this.renderCharacterCounter()}</div> `;
+  }
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -419,7 +542,13 @@ class Input
         </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.helpText ? this.renderHelperText() : nothing}
+      <mdc-screenreaderannouncer
+        identity="${this.inputId}"
+        announcement="${ifDefined(this.ariaLiveAnnouncer)}"
+        data-aria-live="polite"
+        delay="500"
+      ></mdc-screenreaderannouncer>
+      ${this.renderInputFooter()}
     `;
   }
 

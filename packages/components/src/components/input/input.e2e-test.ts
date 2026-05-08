@@ -16,6 +16,8 @@ type SetupOptions = {
   disabled?: boolean;
   maxlength?: number;
   minlength?: number;
+  maxCharacterLimit?: number;
+  characterLimitAnnouncement?: string;
   prefixText?: string;
   leadingIcon?: string;
   trailingButton?: boolean;
@@ -51,6 +53,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
       ${restArgs.minlength ? `minlength="${restArgs.minlength}"` : ''}
+      ${restArgs.maxCharacterLimit ? `max-character-limit="${restArgs.maxCharacterLimit}"` : ''}
+      ${restArgs.characterLimitAnnouncement ? `character-limit-announcement="${restArgs.characterLimitAnnouncement}"` : ''}
       ${restArgs.prefixText ? `prefix-text="${restArgs.prefixText}"` : ''}
       ${restArgs.leadingIcon ? `leading-icon="${restArgs.leadingIcon}"` : ''}
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
@@ -173,6 +177,14 @@ test.describe('mdc-input', () => {
       await componentsPage.setAttributes(input, { 'validation-message': 'Custom validation error' });
       await expect(input).toHaveAttribute('validation-message', 'Custom validation error');
       await componentsPage.removeAttribute(input, 'validation-message');
+    });
+
+    await test.step('attributes max-character-limit should be present on component', async () => {
+      await componentsPage.setAttributes(input, { 'max-character-limit': '100' });
+      await expect(input).toHaveAttribute('max-character-limit', '100');
+      const characterCounter = input.locator('mdc-text[part="character-counter"]');
+      await expect(characterCounter).toHaveText('0/100');
+      await componentsPage.removeAttribute(input, 'max-character-limit');
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
@@ -664,6 +676,139 @@ test.describe('mdc-input', () => {
       await expect(waitForInputOnHost).toEventEmitted();
     });
 
+    await test.step('component should have character counter when max-character-limit is set', async () => {
+      await componentsPage.setAttributes(input, { 'max-character-limit': '10', value: '' });
+      const characterCounter = input.locator('mdc-text[part="character-counter"]');
+      await expect(characterCounter).toHaveText('0/10');
+      await inputEl.fill('This is a long text');
+      await expect(inputEl).toHaveValue('This is a long text');
+      await expect(characterCounter).toHaveText('19/10');
+      await componentsPage.removeAttribute(input, 'max-character-limit');
+    });
+
+    await test.step('component in form should be validated for max character limit', async () => {
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Placeholder',
+          required: true,
+          maxCharacterLimit: 11,
+          helpText: 'Input must not exceed 11 characters',
+          helpTextType: 'error',
+          value: 'This is a long text',
+        },
+        true,
+      );
+
+      const mdcInput = form.locator('mdc-input');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const inputEl = mdcInput.locator('input');
+      await submitButton.click();
+      const validationMessage = await inputEl.evaluate(element => {
+        const input = element as HTMLInputElement;
+        return input.validationMessage;
+      });
+
+      expect(validationMessage).toContain('Input must not exceed 11 characters');
+
+      await inputEl.fill('short text');
+      await componentsPage.removeAttribute(mdcInput, 'help-text-type');
+      await componentsPage.removeAttribute(mdcInput, 'help-text');
+      await expect(inputEl).toHaveValue('short text');
+    });
+
+    await test.step('should update help-text and help-text-type dynamically based on input character limit', async () => {
+      await componentsPage.mount({
+        html: `
+          <form id="test-form" novalidate>
+            <fieldset>
+              <legend>Form Example With Character Counter</legend>
+              <mdc-input
+                id="test-mdc-input"
+                name="message"
+                label="Message"
+                required
+                max-character-limit="20"
+                help-text="Enter your message"
+                help-text-type="default"
+                placeholder="Write a message"
+              ></mdc-input>
+              <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+                <mdc-button type="submit" size="24">Submit</mdc-button>
+                <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+              </div>
+            </fieldset>
+          </form>
+        `,
+        clearDocument: true,
+      });
+      const form = componentsPage.page.locator('#test-form');
+      const mdcInput = componentsPage.page.locator('mdc-input');
+      const inputEl = mdcInput.locator('input');
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      const resetButton = form.locator('mdc-button[type="reset"]');
+      const helpText = mdcInput.locator('mdc-text[part="help-text"]');
+      const characterCounter = mdcInput.locator('mdc-text[part="character-counter"]');
+
+      await form.evaluate(formEl => {
+        formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          const input = formEl.querySelector('mdc-input');
+          const nativeInput = input?.shadowRoot?.querySelector('input');
+          if (input && nativeInput) {
+            const { value } = nativeInput;
+            const maxCharLimit = Number(input.getAttribute('max-character-limit')) || 20;
+            if (!value) {
+              input.setAttribute('help-text', 'Message is required');
+              input.setAttribute('help-text-type', 'error');
+            } else if (value.length > maxCharLimit) {
+              input.setAttribute('help-text', `Message must not exceed ${maxCharLimit} characters`);
+              input.setAttribute('help-text-type', 'error');
+            } else {
+              input.setAttribute('help-text', 'Looks good!');
+              input.setAttribute('help-text-type', 'success');
+            }
+          }
+        });
+        formEl.addEventListener('reset', () => {
+          const input = formEl.querySelector('mdc-input');
+          if (input) {
+            input.setAttribute('help-text', 'Enter your message');
+            input.setAttribute('help-text-type', 'default');
+          }
+        });
+      });
+
+      async function expectHelpText(text: string, type: string) {
+        await expect(helpText).toHaveText(text);
+        await expect(mdcInput).toHaveAttribute('help-text-type', type);
+      }
+
+      // Character counter should show initial state
+      await expect(characterCounter).toHaveText('0/20');
+
+      // 1. Submit with empty input
+      await submitButton.click();
+      await expectHelpText('Message is required', 'error');
+
+      // 2. Fill above max character limit
+      await inputEl.fill('A'.repeat(25));
+      await expect(characterCounter).toHaveText('25/20');
+      await submitButton.click();
+      await expectHelpText('Message must not exceed 20 characters', 'error');
+
+      // 3. Fill valid message
+      await inputEl.fill('Hello World');
+      await expect(characterCounter).toHaveText('11/20');
+      await submitButton.click();
+      await expectHelpText('Looks good!', 'success');
+
+      // 4. Reset form
+      await resetButton.click();
+      await expectHelpText('Enter your message', 'default');
+    });
+
     await test.step('spatial navigation', async () => {
       const form = await setup(
         {
@@ -739,6 +884,14 @@ test.describe('mdc-input', () => {
 
     // input that is marked required
     inputStickerSheet.setAttributes({ ...attributes, required: '', placeholder: 'Input is required' });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // input with character counter
+    inputStickerSheet.setAttributes({
+      ...attributes,
+      value: 'Character counter',
+      'max-character-limit': '75',
+    });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // Short width test for word wrapping
