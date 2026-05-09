@@ -8,6 +8,7 @@ import * as ThemeWebexLightSchema from './json/theme/webex/light.json';
 import * as CoreSpacingSchema from './json/core/spacing.json';
 import * as CoreElevationSchema from './json/core/elevation.json';
 import * as CoreMotionSchema from './json/core/motion.json';
+import * as MotionAnimationSchema from './json/motion/animation.json';
 import * as CoreTypeAppsSchema from './json/core/type/apps.json';
 import * as CoreTypeDisplaySchema from './json/core/type/display.json';
 
@@ -35,6 +36,10 @@ const SCHEMA_MAP = [
   {
     fileName: 'core/motion.json',
     jsonSchema: CoreMotionSchema as unknown as TypeConversionWorkaround,
+  },
+  {
+    fileName: 'animation.json',
+    jsonSchema: MotionAnimationSchema as unknown as TypeConversionWorkaround,
   },
   {
     fileName: 'core/type/apps.json',

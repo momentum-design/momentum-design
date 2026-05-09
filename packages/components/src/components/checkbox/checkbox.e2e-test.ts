@@ -482,4 +482,43 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(waitForSubmit).not.toEventEmitted();
     });
   });
+
+  /**
+   * CUSTOM STATE
+   */
+  await test.step('custom state', async () => {
+    await test.step(':state(checked) should be active when checkbox is checked', async () => {
+      const checkbox = await setup({ componentsPage });
+
+      await expect(checkbox).not.toHaveCSS('display', 'none'); // ensure mounted
+
+      const isCheckedState = await checkbox.evaluate((el: Element) =>
+        (el as HTMLElement & { internals?: ElementInternals }).internals?.states?.has('checked'),
+      );
+      expect(isCheckedState).toBe(false);
+
+      await checkbox.click();
+
+      const isCheckedStateAfterClick = await checkbox.evaluate((el: Element) =>
+        (el as HTMLElement & { internals?: ElementInternals }).internals?.states?.has('checked'),
+      );
+      expect(isCheckedStateAfterClick).toBe(true);
+    });
+
+    await test.step(':state(checked) should be removed when checkbox is unchecked', async () => {
+      const checkbox = await setup({ componentsPage, checked: true });
+
+      const isCheckedState = await checkbox.evaluate((el: Element) =>
+        (el as HTMLElement & { internals?: ElementInternals }).internals?.states?.has('checked'),
+      );
+      expect(isCheckedState).toBe(true);
+
+      await checkbox.click();
+
+      const isCheckedStateAfterClick = await checkbox.evaluate((el: Element) =>
+        (el as HTMLElement & { internals?: ElementInternals }).internals?.states?.has('checked'),
+      );
+      expect(isCheckedStateAfterClick).toBe(false);
+    });
+  });
 });
