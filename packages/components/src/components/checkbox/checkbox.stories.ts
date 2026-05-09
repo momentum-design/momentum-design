@@ -262,3 +262,26 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   },
   ...hideAllControls(),
 };
+
+export const CustomStateChecked: StoryObj = {
+  decorators: [
+    story => {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        mdc-checkbox:state(checked) { animation: fade-in 400ms ease-in-out; }
+      `;
+      document.head.appendChild(style);
+      return story();
+    },
+  ],
+  render: () => html`
+    <div role="main" style="display: flex; flex-direction: column; gap: 1rem;">
+      <p style="margin: 0; font-size: 0.875rem;">
+        When checked, <code>mdc-checkbox:state(checked)</code> triggers a fade-in on the checkbox host element.
+      </p>
+      <mdc-checkbox label="Click me to see the fade-in animation"></mdc-checkbox>
+    </div>
+  `,
+  ...hideAllControls(),
+};
