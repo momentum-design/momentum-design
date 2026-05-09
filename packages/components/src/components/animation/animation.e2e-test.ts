@@ -45,7 +45,7 @@ test.describe('mdc-animation with src', () => {
   test.beforeEach(async ({ componentsPage }) => {
     await componentsPage.mount({
       html: `
-        <mdc-animation autoplay src="https://assets2.lottiefiles.com/packages/lf20_UJNc2t.json" loop="1" style="width: 100px; height: 100px;"/>
+        <mdc-animation autoplay src="/assets/animations/animation.json" loop="1" style="width: 100px; height: 100px;"/>
       `,
     });
   });
