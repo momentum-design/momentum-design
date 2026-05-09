@@ -79,6 +79,12 @@ class Animation extends Component {
   private lottieInstance?: AnimationItem;
 
   /**
+   * Cached animation data from the last successful fetch/import
+   * @internal
+   */
+  private cachedAnimationData?: any;
+
+  /**
    * Container for the animation
    * @internal
    */
@@ -100,9 +106,19 @@ class Animation extends Component {
   }
 
   /**
-   * Create new lotty instance for the loaded data
+   * Create new lottie instance for the loaded data
    */
   private onLoadSuccessHandler(animationData: any): void {
+    this.cachedAnimationData = animationData;
+    this.createLottieInstance(animationData);
+    // Dispatch load event when animation ready to play
+    this.dispatchEvent(new CustomEvent('load', { bubbles: true, cancelable: true, detail: { name: this.name } }));
+  }
+
+  /**
+   * Create or re-create the lottie instance with the given animation data
+   */
+  private createLottieInstance(animationData: any): void {
     if (this.lottieInstance) {
       this.lottieInstance.removeEventListener('complete', this.onCompleteHandler);
       this.lottieInstance.destroy();
@@ -119,8 +135,6 @@ class Animation extends Component {
       });
       this.lottieInstance.addEventListener('complete', this.onCompleteHandler);
     }
-    // Dispatch load event when animation ready to play
-    this.dispatchEvent(new CustomEvent('load', { bubbles: true, cancelable: true, detail: { name: this.name } }));
   }
 
   /**
@@ -172,16 +186,14 @@ class Animation extends Component {
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    // fetch animation data when new animation needed or any animation parameter changed
-    // note: we re-create the animation for parameter changes as well, because lottie
-    //       does not API for changing them on the fly
-    if (
-      changedProperties.has('name') ||
-      changedProperties.has('src') ||
-      changedProperties.has('loop') ||
-      changedProperties.has('autoplay')
-    ) {
+    // fetch animation data when the animation source changes
+    if (changedProperties.has('name') || changedProperties.has('src')) {
+      this.cachedAnimationData = undefined;
       this.getAnimationData();
+    } else if ((changedProperties.has('loop') || changedProperties.has('autoplay')) && this.cachedAnimationData) {
+      // re-create the lottie instance from cache for parameter changes,
+      // because lottie does not have an API for changing them on the fly
+      this.createLottieInstance(this.cachedAnimationData);
     }
 
     if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledby')) {
