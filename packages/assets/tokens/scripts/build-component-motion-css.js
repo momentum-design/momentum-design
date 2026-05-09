@@ -11,18 +11,12 @@ const OUTPUT_FILE = path.join(OUTPUT_DIR, 'component.css');
 const KEYFRAME_TYPES = new Set(['keyframe', 'keyframeCompound']);
 const TRANSITION_TYPES = new Set(['transition', 'transitionCompound']);
 
-// Native CSS pseudo-classes that map directly to `:name` syntax (step 3 of stateToSelector).
-// Custom component states must be declared via @cssstate in the component and will resolve
-// to :state(name) in step 2. Unknown states not in either source will throw an error.
 const NATIVE_PSEUDO_CLASSES = new Set([
-  // Interaction states — browser sets these on any element
   'hover',
   'active',
   'focus',
   'focus-visible',
   'focus-within',
-  // Form states — browser sets these on form-associated custom elements
-  // via ElementInternals (static formAssociated = true)
   'disabled',
   'enabled',
   'valid',
@@ -129,7 +123,14 @@ function generate() {
 
   const source = JSON.parse(fs.readFileSync(SRC_COMPONENT, 'utf8'));
   const animations = JSON.parse(fs.readFileSync(SRC_ANIMATION, 'utf8')).animation;
-  const cem = fs.existsSync(CEM_PATH) ? JSON.parse(fs.readFileSync(CEM_PATH, 'utf8')) : null;
+
+  if (!fs.existsSync(CEM_PATH)) {
+    console.error(`Error: Custom Elements Manifest not found at ${CEM_PATH}.`);
+    console.error('Run the full root build (yarn build) so the components package generates it before motion tokens.');
+    process.exit(1);
+  }
+
+  const cem = JSON.parse(fs.readFileSync(CEM_PATH, 'utf8'));
 
   const rules = [];
 

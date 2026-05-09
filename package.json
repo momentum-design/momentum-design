@@ -15,7 +15,7 @@
     "analyze:config": "eslint \"./config/**\"",
     "analyze:root": "yarn analyze:config && yarn analyze:dependencies",
     "analyze": "yarn workspaces foreach --topological-dev -p run analyze",
-    "build": "yarn workspaces foreach --topological-dev -p run build",
+    "build": "yarn workspaces foreach --topological-dev -p run build && yarn tokens build:component-motion",
     "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
     "clean": "yarn workspaces foreach --topological-dev -p run clean",
     "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
