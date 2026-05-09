@@ -118,6 +118,17 @@ export const Example: StoryObj = {
   },
 };
 
+export const LongTitle: StoryObj = {
+  args: {
+    variant: 'success',
+    'header-tag-name': 'span',
+    'header-text': 'This is a very long toast title that should overflow and trigger the show more/less functionality',
+    'show-more-text': 'Show more',
+    'show-less-text': 'Show less',
+    'close-button-aria-label': 'Close toast',
+  },
+};
+
 export const AllVariants: StoryObj = {
   name: 'All Variants',
   render: () => html`

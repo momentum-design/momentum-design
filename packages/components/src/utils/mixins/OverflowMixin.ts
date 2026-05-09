@@ -6,6 +6,8 @@ export declare abstract class OverflowMixinInterface {
   protected get overflowElement(): HTMLElement;
 
   public isWidthOverflowing(): boolean;
+
+  public isHeightOverflowing(): boolean;
 }
 
 export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) => {
@@ -27,6 +29,11 @@ export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) 
     public isWidthOverflowing(): boolean {
       const el = this.overflowElement;
       return el.scrollWidth > el.clientWidth;
+    }
+
+    public isHeightOverflowing(): boolean {
+      const el = this.overflowElement;
+      return el.scrollHeight > el.clientHeight;
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type

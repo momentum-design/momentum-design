@@ -4,6 +4,7 @@ import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { KEYS } from '../../utils/keys';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { TOAST_VARIANT } from './toast.constants';
 
@@ -74,20 +75,22 @@ test.describe('Toast Feature Scenarios', () => {
      */
     await test.step('visual-regression', async () => {
       await componentsPage.page.setViewportSize({ width: 800, height: 800 });
-      const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
-      const COMMON_ATTRS = {
-        'close-button-aria-label': 'Close toast',
-        'header-tag-name': 'span',
-      };
 
-      // Default toast with less content
-      toastSheet.setAttributes({
-        ...COMMON_ATTRS,
-        'header-text': 'Default Title',
-        'show-more-text': SHOW_MORE_TEXT,
-        'show-less-text': SHOW_LESS_TEXT,
-      });
-      toastSheet.setChildren(`
+      await test.step('matches screenshot of element', async () => {
+        const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
+        const COMMON_ATTRS = {
+          'close-button-aria-label': 'Close toast',
+          'header-tag-name': 'span',
+        };
+
+        // Default toast with less content
+        toastSheet.setAttributes({
+          ...COMMON_ATTRS,
+          'header-text': 'Default Title',
+          'show-more-text': SHOW_MORE_TEXT,
+          'show-less-text': SHOW_LESS_TEXT,
+        });
+        toastSheet.setChildren(`
         <mdc-icon slot="content-prefix" name="placeholder-bold" size="1.5"></mdc-icon>
         <mdc-text slot="toast-body-normal" tagname="span">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -97,43 +100,41 @@ test.describe('Toast Feature Scenarios', () => {
         <mdc-button slot="footer-button-secondary">Cancel</mdc-button>
         <mdc-button slot="footer-button-primary">Confirm</mdc-button>
       `);
-      await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
+        await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
 
-      // Variant icons
-      toastSheet.setAttributes({
-        ...COMMON_ATTRS,
-        'header-text': 'Action Status',
-      });
-      toastSheet.setChildren(`
+        // Variant icons
+        toastSheet.setAttributes({
+          ...COMMON_ATTRS,
+          'header-text': 'Action Status',
+        });
+        toastSheet.setChildren(`
         <mdc-text slot="toast-body-normal" tagname="span">Status message</mdc-text>
         <mdc-button slot="footer-button-secondary">Dismiss</mdc-button>
         <mdc-button slot="footer-button-primary">Retry</mdc-button>
       `);
-      await toastSheet.createMarkupWithCombination({
-        variant: [TOAST_VARIANT.SUCCESS, TOAST_VARIANT.WARNING, TOAST_VARIANT.ERROR],
-      });
+        await toastSheet.createMarkupWithCombination({
+          variant: [TOAST_VARIANT.SUCCESS, TOAST_VARIANT.WARNING, TOAST_VARIANT.ERROR],
+        });
 
-      // Avatar prefix
-      const src = imageFixtures.avatar;
-      toastSheet.setAttributes({ ...COMMON_ATTRS, 'header-text': '' });
-      toastSheet.setChildren(`
+        // Avatar prefix
+        const src = imageFixtures.avatar;
+        toastSheet.setAttributes({ ...COMMON_ATTRS, 'header-text': '' });
+        toastSheet.setChildren(`
         <mdc-avatar slot="content-prefix" src="${src}" size="24"></mdc-avatar>
         <mdc-text slot="toast-body-normal" tagname="span"><b>Username</b> joined the session.</mdc-text>
       `);
-      await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
+        await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
 
-      // Spinner prefix
-      toastSheet.setAttributes({
-        ...COMMON_ATTRS,
-        'header-text': 'Connecting',
-      });
-      toastSheet.setChildren(`<mdc-spinner slot="content-prefix" size="small"></mdc-spinner>`);
-      await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
+        // Spinner prefix
+        toastSheet.setAttributes({
+          ...COMMON_ATTRS,
+          'header-text': 'Connecting',
+        });
+        toastSheet.setChildren(`<mdc-spinner slot="content-prefix" size="small"></mdc-spinner>`);
+        await toastSheet.createMarkupWithCombination({ variant: [TOAST_VARIANT.CUSTOM] });
 
-      await toastSheet.mountStickerSheet();
-      const container = toastSheet.getWrapperContainer();
-
-      await test.step('matches screenshot of element', async () => {
+        await toastSheet.mountStickerSheet();
+        const container = toastSheet.getWrapperContainer();
         const avatarComp = container.locator('mdc-avatar[src]');
         const image = avatarComp.locator('img');
         await image.waitFor();
@@ -142,6 +143,27 @@ test.describe('Toast Feature Scenarios', () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
           element: container,
           animations: 'disabled',
+        });
+      });
+
+      await test.step('matches screenshot with clamped title', async () => {
+        await componentsPage.page.setViewportSize({ width: 800, height: 1200 });
+        const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
+
+        toastSheet.setAttributes({
+          'header-text':
+            'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
+          'close-button-aria-label': 'Close toast',
+        });
+
+        await toastSheet.createMarkupWithCombination({
+          'header-tag-name': VALID_TEXT_TAGS,
+        });
+
+        await toastSheet.mountStickerSheet();
+        const container = toastSheet.getWrapperContainer();
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast-long-title', {
+          element: container,
         });
       });
 
@@ -414,6 +436,51 @@ test.describe('Toast Feature Scenarios', () => {
           element: toast,
         });
       });
+    });
+
+    await test.step('User expands/collapses toast title with keyboard', async () => {
+      const toast = await setup({
+        componentsPage,
+        headerText:
+          'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
+        headerTagName: 'span',
+        closeButtonAriaLabel: 'Close toast',
+        showMoreText: SHOW_MORE_TEXT,
+        showLessText: SHOW_LESS_TEXT,
+        children: `
+            <mdc-text tagname="span" slot="toast-body-normal">This is normal content.</mdc-text>
+            <mdc-text tagname="span" slot="toast-body-detailed">This is detailed content.</mdc-text>
+          `,
+      });
+
+      const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+      const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
+
+      await toggleBtn.focus();
+      await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+        source: 'userflow',
+        fileNameSuffix: 'long-title-collapsed-view',
+        element: toast,
+      });
+      await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
+
+      await toggleBtn.press('Enter'); // expand
+      await expect(detailedSlot).toBeVisible();
+      await expect(toggleBtn.locator('mdc-icon[name="arrow-up-bold"]')).toBeVisible();
+      await expect(toggleBtn).toContainText(SHOW_LESS_TEXT);
+      await expect(toggleBtn).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+        source: 'userflow',
+        fileNameSuffix: 'long-title-expanded-view',
+        element: toast,
+      });
+      await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
+
+      await toggleBtn.press('Enter'); // collapse
+      await expect(detailedSlot).not.toBeVisible();
+      await expect(toggleBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
+      await expect(toggleBtn).toContainText(SHOW_MORE_TEXT);
+      await expect(toggleBtn).toBeFocused();
     });
 
     await test.step('spatial navigation', async () => {
