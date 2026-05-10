@@ -7,6 +7,15 @@ const animationExampleFile = require.resolve('@momentum-design/animations/dist/l
 
 const root = process.cwd();
 const playwrightPublicDist = path.join(root, 'playwright-temp', 'assets', 'animations', 'animation.json');
+const playwrightPublicServeDist = path.join(
+  root,
+  'config',
+  'playwright',
+  'public',
+  'assets',
+  'animations',
+  'animation.json',
+);
 const storybookPublicDist = path.join(root, 'config', 'storybook', 'public', 'animations');
 
 const copyFolderToDest = (srcDir, destDir) => {
@@ -19,6 +28,7 @@ const copyFolderToDest = (srcDir, destDir) => {
 
 if (process.argv[2] === 'playwright') {
   copyFolderToDest(animationExampleFile, playwrightPublicDist);
+  copyFolderToDest(animationExampleFile, playwrightPublicServeDist);
   console.log(chalk.gray('Icons have been copied successfully to Playwright public!'));
   return;
 }
