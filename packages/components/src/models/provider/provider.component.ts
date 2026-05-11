@@ -65,7 +65,9 @@ class Provider<C> extends Component {
    * re-render. If the `render()` method is overwritten, this call must be made
    * manually.
    */
-  protected updateContext(): void {}
+  protected updateContext(): void {
+    throw new Error('Not implemented');
+  }
 
   /**
    * Render this Provider.
