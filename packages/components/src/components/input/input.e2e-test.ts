@@ -548,7 +548,7 @@ test.describe('mdc-input', () => {
       await componentsPage.actionability.pressTab();
       await expect(submitButton).toBeFocused();
       // 1. Submit with empty input: should show 'Please enter a valid name'
-      await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Enter');
 
       let validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a valid name');
@@ -557,7 +557,7 @@ test.describe('mdc-input', () => {
       await inputEl.fill('abc');
       await componentsPage.actionability.pressTab();
       await expect(submitButton).toBeFocused();
-      await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Enter');
 
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a name with at least 5 characters');
@@ -566,7 +566,7 @@ test.describe('mdc-input', () => {
       await inputEl.fill('');
       await componentsPage.actionability.pressTab();
       await expect(submitButton).toBeFocused();
-      await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Enter');
 
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
       expect(validationMessage).toBe('Please enter a name');
@@ -600,7 +600,7 @@ test.describe('mdc-input', () => {
       await expect(mdcInput).toBeFocused();
       await componentsPage.actionability.pressTab();
       await expect(submitButton).toBeFocused();
-      await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Enter');
 
       if (browserName === 'webkit') {
         expect(validationMessage).toContain('Fill out this field');
@@ -613,7 +613,7 @@ test.describe('mdc-input', () => {
 
       await componentsPage.actionability.pressTab();
       await expect(submitButton).toBeFocused();
-      await componentsPage.page.keyboard.down('Enter');
+      await componentsPage.page.keyboard.press('Enter');
 
       validationMessage = await inputEl.evaluate(element => (element as HTMLInputElement).validationMessage);
 
