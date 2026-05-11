@@ -19,13 +19,13 @@ export declare class CharacterLimitMixinInterface {
 
   characterLimitAnnouncement?: string;
 
-  characterLimitAriaLiveAnnouncer?: string;
+  protected characterLimitAriaLiveAnnouncer?: string;
 
-  handleCharacterOverflowStateChange(): void;
+  protected handleCharacterOverflowStateChange(): void;
 
-  announceCharacterLimitWarning(): void;
+  protected announceCharacterLimitWarning(): void;
 
-  renderCharacterCounter(): typeof nothing | ReturnType<typeof html>;
+  protected renderCharacterCounter(): typeof nothing | ReturnType<typeof html>;
 }
 
 /**
@@ -98,7 +98,7 @@ export const CharacterLimitMixin = <T extends Constructor<LitElement & Character
      * Handles the character overflow state change.
      * Dispatches the character overflow state change event if the character limit is exceeded or restored.
      */
-    handleCharacterOverflowStateChange() {
+    protected handleCharacterOverflowStateChange() {
       if (this.maxCharacterLimit) {
         if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
           this.dispatchCharacterOverflowStateChangeEvent();
@@ -115,7 +115,7 @@ export const CharacterLimitMixin = <T extends Constructor<LitElement & Character
      * If the value length exceeds the max character limit, the help text is announced (if help text is present).
      * If the value length does not exceed the max character limit, then the character limit announcement is announced.
      */
-    announceCharacterLimitWarning() {
+    protected announceCharacterLimitWarning() {
       this.characterLimitAriaLiveAnnouncer = '';
       if (!this.maxCharacterLimit || this.value.length === 0) {
         return;
@@ -136,7 +136,7 @@ export const CharacterLimitMixin = <T extends Constructor<LitElement & Character
     /**
      * Renders the character counter element.
      */
-    renderCharacterCounter() {
+    protected renderCharacterCounter() {
       if (!this.maxCharacterLimit) {
         return nothing;
       }
@@ -148,5 +148,5 @@ export const CharacterLimitMixin = <T extends Constructor<LitElement & Character
     }
   }
 
-  return InnerMixinClass as Constructor<CharacterLimitMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<CharacterLimitMixinInterface> & T;
 };
