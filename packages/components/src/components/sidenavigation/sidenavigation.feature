@@ -246,10 +246,10 @@ Feature: SideNavigation Accessibility and User Interaction
       Then VoiceOver announces: "end of navigation"
 
   # AI-Assisted
-  Rule: Dropdown SideNavigation (is-dropdown mode)
+  Rule: Dropdown SideNavigation (submenu-type dropdown)
 
     Background:
-      Given the SideNavigation has `is-dropdown` set to true
+      Given the SideNavigation has `submenu-type` set to `dropdown`
       And parent navmenuitems have an `id` attribute
       And sibling `div` with [data-trigger] set to the parent `id` elements contain child navmenuitems
 
@@ -285,7 +285,7 @@ Feature: SideNavigation Accessibility and User Interaction
       And the parent shows filled icon styling
 
     Scenario: Collapsed dropdown – converts to flyout menus
-      Given the sidenavigation has `is-dropdown` set to true
+      Given the sidenavigation has `submenu-type` set to `dropdown`
       And the sidenavigation is expanded with dropdown children
       When the sidenavigation is collapsed horizontally
       Then all dropdown containers are hidden

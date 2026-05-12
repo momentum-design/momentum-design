@@ -5,23 +5,28 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.cons
 import type NavMenuItem from '../navmenuitem/navmenuitem.component';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
 
-import { TAG_NAME } from './sidenavigation.constants';
+import { SUBMENU_TYPES, TAG_NAME } from './sidenavigation.constants';
+import type { SideNavigationSubmenuType } from './sidenavigation.types';
 
 class SideNavigationContext {
   public variant?: string;
 
   public expanded?: boolean;
 
-  public isDropdown?: boolean;
+  public submenuType?: SideNavigationSubmenuType;
 
   private currentActiveNavMenuItem?: NavMenuItem;
 
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
-  constructor(defaultVariant?: string, defaultExpanded?: boolean, defaultIsDropdown?: boolean) {
+  constructor(defaultVariant?: string, defaultExpanded?: boolean, defaultSubmenuType?: SideNavigationSubmenuType) {
     this.variant = defaultVariant;
     this.expanded = defaultExpanded;
-    this.isDropdown = defaultIsDropdown;
+    this.submenuType = defaultSubmenuType;
+  }
+
+  public get isDropdownSubmenuType(): boolean {
+    return this.submenuType === SUBMENU_TYPES.DROPDOWN;
   }
 
   public hasSiblingWithTriggerId(navMenuItem: NavMenuItem | undefined) {
@@ -92,7 +97,7 @@ class SideNavigationContext {
     const shouldSkip =
       navMenuItem?.cannotActivate ||
       this.hasSiblingWithTriggerId(navMenuItem) ||
-      (this.isDropdown && this.expanded && this.isDropDownParent(navMenuItem)) ||
+      (this.isDropdownSubmenuType && this.expanded && this.isDropDownParent(navMenuItem)) ||
       navMenuItem?.softDisabled;
 
     if (isSameItem || shouldSkip) return;
