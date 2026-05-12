@@ -3,20 +3,27 @@ import { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
 
 import { toKebabCase } from '../../common';
 import CONSTANTS from './constants';
-import { resolveRefsScss, buildKeyframeBlock, KeyframeEntry } from '../animation/utils';
+import { resolveRefsScss, buildKeyframeBlock, KeyframeEntry, validateRefs } from '../animation/utils';
+
+const ANIMATION_TYPES = new Set(['transition', 'keyframe', 'transitionCompound', 'keyframeCompound']);
 
 class AnimationScssFormat {
   public get formatter(): SDFormatter {
     return ({ dictionary }): string => {
       const keyframeBlocks: string[] = [];
       const variableLines: string[] = [];
+      const validRefs = new Set(dictionary.allTokens.map((t) => t.path.join('.')));
 
       dictionary.allTokens.forEach((token) => {
         const tokenType = token.original.type as string;
+        if (!ANIMATION_TYPES.has(tokenType)) return;
+
         const kebab = toKebabCase(token.path.at(-1) as string);
         // Use the original (pre-transform) value so that cross-file references
         // become $mds-* SCSS variable references instead of resolved values.
-        const resolvedValue = resolveRefsScss(String(token.original.value));
+        const rawValue = String(token.original.value);
+        validateRefs(rawValue, validRefs, token.path.join('.'));
+        const resolvedValue = resolveRefsScss(rawValue);
 
         if (tokenType === 'transition' || tokenType === 'transitionCompound') {
           variableLines.push(`$mds-transition-${kebab}: ${resolvedValue};`);
