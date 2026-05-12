@@ -1,5 +1,4 @@
 import utils from '../../utils/tag-name';
-import { TYPE as FONT_TYPE } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('textarea');
 
@@ -14,7 +13,6 @@ const AUTO_COMPLETE = {
 } as const;
 
 const DEFAULTS = {
-  CHARACTER_COUNTER_TYPE: FONT_TYPE.BODY_MIDSIZE_REGULAR,
   ROWS: 5,
   COLS: 40,
   WRAP: WRAP.SOFT,
