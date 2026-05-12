@@ -322,6 +322,21 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(callingPopover).toBeVisible();
         });
 
+        await test.step('ArrowRight from a submenu closes the current popover before moving to next parent', async () => {
+          await setup(componentsPage, variant);
+          await callingNavMenuItem.focus();
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(callingPopover).toBeVisible();
+          await expect(callingPopover.locator('mdc-navmenuitem').first()).toBeFocused();
+
+          await componentsPage.page.keyboard.press('ArrowRight');
+
+          await expect(callingPopover).not.toBeVisible();
+          await expect(
+            sidenav.locator('mdc-menusection[slot="scrollable-menubar"]').first().locator('mdc-navmenuitem').first(),
+          ).toBeFocused();
+        });
+
         // --- Nested menuitem: select nested menuitem (1st level submenu) ---
         await test.step('Select nested menuitem with mouse inside 1st level submenu', async () => {
           await setup(componentsPage, variant);
