@@ -1,5 +1,19 @@
 // AI-Assisted
+
 export type KeyframeEntry = { propertyName: string; from: string; to: string };
+
+/**
+ * Throws if any `{a.b.c}` reference in `value` does not correspond to a path in `validRefs`.
+ * Build `validRefs` once before iterating tokens: `new Set(dictionary.allTokens.map(t => t.path.join('.')))`.
+ */
+export function validateRefs(value: string, validRefs: Set<string>, tokenName: string): void {
+  const refs = [...value.matchAll(/\{([^}]+)\}/g)].map((m) => m[1]);
+  refs.forEach((ref) => {
+    if (!validRefs.has(ref)) {
+      throw new Error(`AnimationFormat: token "${tokenName}" contains unknown ref "{${ref}}".`);
+    }
+  });
+}
 
 /**
  * Replaces every `{a.b.c}` token reference in a composite value string with a

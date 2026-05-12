@@ -43,8 +43,19 @@ const COMPOUND_KEYFRAME_TOKEN = makeToken(
   + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} infinite mds-animation-pulse',
 );
 
+/** Motion primitive tokens that animation tokens reference via \{motion.*\} refs. */
+const MOTION_PRIMITIVE_TOKENS = [
+  { path: ['motion', 'duration', 'instant'], original: { value: '100ms' } },
+  { path: ['motion', 'duration', 'fast'], original: { value: '200ms' } },
+  { path: ['motion', 'duration', 'slow'], original: { value: '500ms' } },
+  { path: ['motion', 'easing', 'standard'], original: { value: 'cubic-bezier(0.4, 0, 0.2, 1)' } },
+  { path: ['motion', 'easing', 'linear'], original: { value: 'linear' } },
+  { path: ['motion', 'delay', 'none'], original: { value: '0ms' } },
+];
+
 function makeDictionary(tokens: ReturnType<typeof makeToken>[]) {
-  return { allTokens: tokens };
+  const allTokens = [...MOTION_PRIMITIVE_TOKENS, ...tokens];
+  return { allTokens };
 }
 
 describe('@momentum-design/token-builder - formats.AnimationCssFormat', () => {

@@ -100,7 +100,7 @@ const PARSER_INPUT = {
         duration: '{motion.duration.slow}',
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
-        iterationCount: '1',
+        iterationCount: 1,
         fillMode: 'forwards',
       },
       exit: {

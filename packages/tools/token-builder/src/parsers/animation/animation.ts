@@ -11,8 +11,8 @@ type RawAnimationToken = {
   duration?: string;
   easing?: string;
   delay?: string;
-  iterationCount?: string | number;
-  fillMode?: string;
+  iterationCount?: 'infinite' | number;
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   keyframes?: Array<{ propertyName: string; from: string; to: string }>;
   animations?: string[];
   composition?: 'parallel' | 'sequential';
@@ -94,10 +94,7 @@ class AnimationParser {
             if (!ref) {
               throw new Error(`AnimationParser: compound token "${name}" references unknown animation "${refName}".`);
             }
-            const refKebab = toKebabCase(refName);
-            const iteration = ref.iterationCount ? ` ${ref.iterationCount}` : '';
-            const fill = ref.fillMode ? ` ${ref.fillMode}` : '';
-            return `${ref.duration} ${ref.easing} ${ref.delay}${iteration}${fill} mds-animation-${refKebab}`;
+            return buildKeyframeValue(toKebabCase(refName), ref);
           });
           injected[name] = { ...token, value: parts.join(', ') };
         }
