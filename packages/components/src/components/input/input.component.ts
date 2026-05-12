@@ -4,12 +4,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
+import { CharacterLimitMixin } from '../../utils/mixins/CharacterLimitMixin';
 
 import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -33,6 +34,8 @@ import styles from './input.styles';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
+ * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
+ * exceeds or restored.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -79,10 +82,14 @@ import styles from './input.styles';
  * @csspart input-section - The container for the input field, leading icon, and prefix text elements.
  * @csspart input-text - The input field element.
  * @csspart trailing-button - The trailing button element that is displayed to clear the input field when the `trailingButton` property is set to true.
+ * @csspart input-footer - The footer element that contains the helper text and character counter.
+ * @csspart character-counter - The character counter element.
  */
 
 class Input
-  extends KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper))))
+  extends CharacterLimitMixin(
+    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  )
   implements AssociatedFormControl
 {
   /**
@@ -235,8 +242,25 @@ class Input
     this.inputElement.setCustomValidity('');
     if (!this.inputElement.validity.valid && this.validationMessage) {
       this.inputElement.setCustomValidity(this.validationMessage);
+    } else if (
+      this.maxCharacterLimit &&
+      this.value.length > this.maxCharacterLimit &&
+      this.helpTextType === VALIDATION.ERROR &&
+      this.helpText
+    ) {
+      this.inputElement.setCustomValidity(this.helpText);
     }
     this.setValidity();
+  }
+
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this.handleCharacterOverflowStateChange();
+    }
+    if (changedProperties.has('helpText')) {
+      this.announceCharacterLimitWarning();
+    }
   }
 
   /**
@@ -247,6 +271,7 @@ class Input
   private updateValue() {
     this.value = this.inputElement.value;
     this.internals.setFormValue(this.inputElement.value);
+    this.announceCharacterLimitWarning();
   }
 
   /**
@@ -408,6 +433,13 @@ class Input
     />`;
   }
 
+  protected renderInputFooter() {
+    if (!this.helpText && !this.maxCharacterLimit) {
+      return nothing;
+    }
+    return html` <div part="input-footer">${this.renderHelperText()} ${this.renderCharacterCounter()}</div> `;
+  }
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -419,7 +451,13 @@ class Input
         </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.helpText ? this.renderHelperText() : nothing}
+      <mdc-screenreaderannouncer
+        identity="${this.inputId}"
+        announcement="${ifDefined(this.characterLimitAriaLiveAnnouncer)}"
+        data-aria-live="polite"
+        delay="500"
+      ></mdc-screenreaderannouncer>
+      ${this.renderInputFooter()}
     `;
   }
 

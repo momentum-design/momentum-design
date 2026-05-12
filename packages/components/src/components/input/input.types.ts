@@ -12,6 +12,7 @@ type InputChangeEvent = TypedCustomEvent<Input>;
 type InputFocusEvent = OverrideEventTarget<FocusEvent, Input>;
 type InputBlurEvent = OverrideEventTarget<FocusEvent, Input>;
 type InputClearEvent = TypedCustomEvent<Input>;
+type InputLimitExceededEvent = TypedCustomEvent<Input>;
 
 interface Events {
   onInputEvent: InputInputEvent;
@@ -19,6 +20,7 @@ interface Events {
   onFocusEvent: InputFocusEvent;
   onBlurEvent: InputBlurEvent;
   onClearEvent: InputClearEvent;
+  onLimitExceededEvent: InputLimitExceededEvent;
 }
 
 export type {
@@ -30,5 +32,6 @@ export type {
   InputFocusEvent,
   InputBlurEvent,
   InputClearEvent,
+  InputLimitExceededEvent,
   Events,
 };

@@ -124,6 +124,26 @@ const styles = [
       opacity: 0;
       pointer-events: none;
     }
+
+    :host::part(input-footer) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    :host::part(character-counter) {
+      margin-left: auto;
+      color: var(--mdc-input-support-text-color);
+    }
+
+    :host([help-text-type='error'])::part(character-counter) {
+      color: var(--mdc-help-text-color);
+    }
+
+    :host([disabled])::part(character-counter) {
+      color: var(--mds-color-theme-text-primary-disabled);
+    }
   `,
   ...hostFocusRingStyles(true),
 ];
