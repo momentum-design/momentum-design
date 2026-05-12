@@ -180,7 +180,9 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
 
   describe('parser — transitionCompound token', () => {
     it('should expand compound by concatenating the parts of each referenced primitive', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.transitionCompound, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser(
+        { contents: PARSER_INPUT.transitionCompound, filePath: 'motion/animation.json' },
+      ) as any;
       expect(result.animation.buttonHover.value).toBe(
         'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
@@ -191,7 +193,9 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
 
   describe('parser — keyframeCompound token', () => {
     it('should expand compound to a comma-separated animation shorthand list', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser(
+        { contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' },
+      ) as any;
       expect(result.animation.spinPulse.value).toBe(
         '{motion.duration.slow} {motion.easing.linear} {motion.delay.none} infinite mds-animation-spin,'
         + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} infinite mds-animation-pulse',
@@ -199,7 +203,9 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
 
     it('should include fillMode from each referenced keyframe in compound expansion', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser(
+        { contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' },
+      ) as any;
       expect(result.animation.enterExit.value).toBe(
         '{motion.duration.slow} {motion.easing.standard} {motion.delay.none} 1 forwards mds-animation-enter,'
         + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} backwards mds-animation-exit',
