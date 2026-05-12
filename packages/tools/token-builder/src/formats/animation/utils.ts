@@ -17,7 +17,7 @@ export function resolveRefsScss(value: string): string {
   return value.replace(/\{([^}]+)\}/g, (_, refPath: string) => `$mds-${refPath.replace(/\./g, '-')}`);
 }
 
-/** Builds a CSS @keyframes block from a list of KeyframeEntry descriptors. */
+/** Builds a CSS keyframes block from a list of KeyframeEntry descriptors. */
 export function buildKeyframeBlock(kfName: string, keyframes: KeyframeEntry[]): string {
   const fromProps: Record<string, string> = {};
   const toProps: Record<string, string> = {};

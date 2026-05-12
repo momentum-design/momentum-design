@@ -58,4 +58,3 @@ class AnimationScssFormat {
 
 export default AnimationScssFormat;
 // End AI-Assisted
-

@@ -117,7 +117,7 @@ class AnimationParser {
   /**
    * Registers the animation parser on a Style Dictionary instance.
    *
-   * MUST be called AFTER `registerTransforms()` from @tokens-studio/sd-transforms.
+   * MUST be called AFTER `registerTransforms()` from \@tokens-studio/sd-transforms.
    * Both `registerTransforms` and this parser register on the same SD singleton
    * parser list. SD uses last-matching-pattern wins, so if AnimationParser is
    * registered first, the tokens-studio parser will overwrite it and animation
