@@ -79,6 +79,42 @@
       "type": "keyframeCompound",
       "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
       "composition": "parallel"
+    },
+    "checkboxDefault": {
+      "description": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
+      "type": "transition",
+      "properties": ["background-color", "border-color"],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "checkboxChecked": {
+      "description": "Checkbox checked state animation — scale-in effect applied when the checkbox becomes checked",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "transform",
+          "from": "scale(0.8)",
+          "to": "scale(1)"
+        }
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "checkboxCheckedIcon": {
+      "description": "Checkmark icon draw-in animation when the checkbox becomes checked",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "opacity",
+          "from": "0",
+          "to": "1"
+        }
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
     }
   }
 }

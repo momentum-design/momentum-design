@@ -4,15 +4,19 @@
 /**
  * Post-build tests for animation tokens.
  *
- * NOTE: Unlike motion.post.test.ts, this test only validates CSS output.
- * animation.json is processed by a custom Node script (build-animation-motion-css.js),
- * not Style Dictionary — so there are no SCSS, XML, Swift, or JSON platform outputs.
- * Native platform outputs (Android/iOS) will be addressed in a future PR.
+ * NOTE: Native platform outputs (Android/iOS) will be addressed in a future PR.
  */
 
 const nodePath = require('path');
 const fs = require('fs');
-const kebabCase = require('lodash/kebabCase');
+
+/** camelCase → kebab-case — mirrors the token-builder implementation exactly */
+function toKebabCase(str) {
+  return str
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .toLowerCase();
+}
 
 const distBase = nodePath.join(__dirname, '../../dist');
 const srcBase = nodePath.join(__dirname, '../motion');
@@ -36,8 +40,8 @@ describe('Animation tokens (post-build)', () => {
     expect(fs.existsSync(CSS_FILE)).toBe(true);
   });
 
-  it('CSS output should use the correct .mds-motion selector', () => {
-    expect(css).toContain('.mds-motion {');
+  it('CSS output should use the correct .mds-animation selector', () => {
+    expect(css).toContain('.mds-animation {');
   });
 
   it('CSS output should contain the do-not-edit header', () => {
@@ -50,7 +54,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(transitionTokens.length).toBeGreaterThan(0);
     transitionTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-transition-${kebabCase(name)}:`);
+      expect(css).toContain(`--mds-transition-${toKebabCase(name)}:`);
     });
   });
 
@@ -60,7 +64,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-animation-${kebabCase(name)}:`);
+      expect(css).toContain(`--mds-animation-${toKebabCase(name)}:`);
     });
   });
 
@@ -68,15 +72,15 @@ describe('Animation tokens (post-build)', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`@keyframes mds-animation-${kebabCase(name)}`);
+      expect(css).toContain(`@keyframes mds-animation-${toKebabCase(name)}`);
     });
   });
 
   it('@keyframes name in variable value should match the @keyframes block name', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     keyframeTokens.forEach(([name]) => {
-      const kfName = `mds-animation-${kebabCase(name)}`;
-      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\s*([^;]+);`));
+      const kfName = `mds-animation-${toKebabCase(name)}`;
+      const varLineMatch = css.match(new RegExp(`--mds-animation-${toKebabCase(name)}:\\s*([^;]+);`));
       expect(varLineMatch).not.toBeNull();
       // The keyframe name must be last in the animation shorthand
       expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));

@@ -1,0 +1,9 @@
+// AI-Assisted
+import { CONSTANTS as COMMON_CONSTANTS } from '../../common';
+
+const CONSTANTS = {
+  NAME: COMMON_CONSTANTS.FORMATS.MD_ANIMATION_CSS.FORMAT,
+};
+
+export default CONSTANTS;
+// End AI-Assisted
