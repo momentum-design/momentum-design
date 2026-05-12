@@ -6,7 +6,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
-import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
+import { VARIANTS, DEFAULTS, SUBMENU_TYPES } from './sidenavigation.constants';
 import '../menupopover';
 import '../navmenuitem';
 import '../icon';
@@ -21,6 +21,7 @@ const render = (args: Args) => html`
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
+      submenu-type="${args['submenu-type']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -128,6 +129,7 @@ const renderMixedSideNavigation = (args: Args) => html`
       variant="${args.variant}"
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
+      submenu-type="${args['submenu-type']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -215,6 +217,7 @@ const renderNestedSideNavigation = (args: Args) => {
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
+      submenu-type="${args['submenu-type']}"
       @activechange="${action('onactivechange')}"
     >
       <!-- Upper Nav (scrollable section) -->
@@ -365,7 +368,7 @@ const renderDropdownSideNavigation = (args: Args) => html`
       footer-text=${args['footer-text']}
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       ?hide-fixed-section-divider="${args['hide-fixed-section-divider']}"
-      ?is-dropdown="${args['is-dropdown']}"
+      submenu-type="${args['submenu-type']}"
       @activechange="${action('onactivechange')}"
       @toggle="${action('ontoggle')}"
     >
@@ -494,8 +497,9 @@ const meta: Meta = {
     'hide-fixed-section-divider': {
       control: 'boolean',
     },
-    'is-dropdown': {
-      control: 'boolean',
+    'submenu-type': {
+      control: 'select',
+      options: Object.values(SUBMENU_TYPES),
     },
     ...hideControls(['Context']),
     ...classArgType,
@@ -509,6 +513,7 @@ export const Example: StoryObj = {
   args: {
     expanded: true,
     variant: DEFAULTS.VARIANT,
+    'submenu-type': DEFAULTS.SUBMENU_TYPE,
     'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
   },
@@ -538,6 +543,7 @@ export const Mixed: StoryObj = {
   args: {
     expanded: true,
     variant: DEFAULTS.VARIANT,
+    'submenu-type': DEFAULTS.SUBMENU_TYPE,
     'footer-text': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
     'hide-fixed-section-divider': true,
@@ -558,9 +564,9 @@ export const DropdownSideNavigation: StoryObj = {
       description: {
         story: html`<mdc-text tagname="span" style="margin-bottom: 0.5rem;">
           The Dropdown Side Navigation example demonstrates the use of NavMenuItems with inline dropdown submenus. When
-          the sidenavigation is expanded and <code>is-dropdown</code> is set to true, clicking a parent NavMenuItem
-          toggles its child items inline below it. When collapsed, flyout menus are used instead. This works only for a
-          single level of nesting to avoid complexity and accessibility issues.
+          the sidenavigation is expanded and <code>submenu-type="dropdown"</code>, clicking a parent NavMenuItem toggles
+          its child items inline below it. When collapsed, flyout menus are used instead. This works only for a single
+          level of nesting to avoid complexity and accessibility issues.
           <br />
         </mdc-text>`,
       },
@@ -568,6 +574,6 @@ export const DropdownSideNavigation: StoryObj = {
   },
   args: {
     ...Example.args,
-    'is-dropdown': true,
+    'submenu-type': SUBMENU_TYPES.DROPDOWN,
   },
 };

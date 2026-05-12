@@ -10,8 +10,8 @@ import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
-import type { SideNavigationVariant } from './sidenavigation.types';
-import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
+import type { SideNavigationSubmenuType, SideNavigationVariant } from './sidenavigation.types';
+import { DEFAULTS, SUBMENU_TYPES, VARIANTS } from './sidenavigation.constants';
 import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
 import SideNavigationBase from './sidenavigationbase';
@@ -107,17 +107,22 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
   hideFixedSectionDivider: boolean = false;
 
   /**
-   * When `is-dropdown` is enabled, a parent `mdc-navmenuitem` can render its submenu inside a sibling
-   * `div[data-trigger="<navmenuitem-id>"]` while the sidenavigation is expanded. In collapsed mode,
-   * dropdown submenus are never rendered, even when `is-dropdown` is enabled.
+   * Determines how sibling submenus are displayed. There are 2 types of submenus supported:
+   *
+   * - `flyout`: Submenus are shown with `mdc-menupopover`.
+   * - `dropdown`: A parent `mdc-navmenuitem` can render its submenu inside a sibling
+   *   `div[data-trigger="<navmenuitem-id>"]` while the sidenavigation is expanded. In collapsed mode,
+   *   dropdown submenus are converted to flyout menus.
+   *
+   * @default flyout
    */
-  @property({ type: Boolean, reflect: true, attribute: 'is-dropdown' })
-  isDropdown: boolean = false;
+  @property({ type: String, reflect: true, attribute: 'submenu-type' })
+  submenuType: SideNavigationSubmenuType = DEFAULTS.SUBMENU_TYPE;
 
   constructor() {
     super({
       context: SideNavigationContext.context,
-      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
+      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true, DEFAULTS.SUBMENU_TYPE),
     });
 
     this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
@@ -241,25 +246,25 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
       }
     }
 
-    if (changedProperties.has('variant') || changedProperties.has('expanded') || changedProperties.has('isDropdown')) {
+    if (changedProperties.has('variant') || changedProperties.has('expanded') || changedProperties.has('submenuType')) {
       this.updateContext();
     }
 
-    // When collapsing or when isDropdown is turned off, close all dropdown containers
-    if (changedProperties.has('expanded') || changedProperties.has('isDropdown')) {
-      if (!this.expanded || !this.isDropdown) {
+    // When collapsing or when dropdown submenus are turned off, close all dropdown containers
+    if (changedProperties.has('expanded') || changedProperties.has('submenuType')) {
+      if (!this.expanded || this.submenuType !== SUBMENU_TYPES.DROPDOWN) {
         this.closeAllDropdowns();
       }
 
       // Handle dropdown-to-flyout conversion
-      if (this.isDropdown) {
+      if (this.submenuType === SUBMENU_TYPES.DROPDOWN) {
         if (!this.expanded) {
           this.convertDropdownsToFlyouts();
         } else {
           this.convertFlyoutsToDropdowns();
         }
       } else {
-        // If isDropdown is turned off, clean up any dynamic menupopover elements
+        // If dropdown submenus are turned off, clean up any dynamic menupopover elements
         this.convertFlyoutsToDropdowns();
       }
     }
@@ -279,8 +284,8 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
     // Hide all dropdown containers by default
     this.hideAllDropdownContainers();
 
-    // If initially collapsed with isDropdown, convert to flyouts
-    if (this.isDropdown && !this.expanded) {
+    // If initially collapsed with dropdown submenus, convert to flyouts
+    if (this.submenuType === SUBMENU_TYPES.DROPDOWN && !this.expanded) {
       this.convertDropdownsToFlyouts();
     }
   }
@@ -295,11 +300,11 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
     if (
       this.context.value.variant !== this.variant ||
       this.context.value.expanded !== this.expanded ||
-      this.context.value.isDropdown !== this.isDropdown
+      this.context.value.submenuType !== this.submenuType
     ) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
-      this.context.value.isDropdown = this.isDropdown;
+      this.context.value.submenuType = this.submenuType;
       this.context.updateObservers();
     }
   }
@@ -360,7 +365,7 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
   }
 
   /**
-   * When collapsed with isDropdown, converts div[data-trigger] children into dynamically
+   * When collapsed with dropdown submenus, converts div[data-trigger] children into dynamically
    * created menupopover elements for flyout behavior.
    * @internal
    */
@@ -396,7 +401,7 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
   }
 
   /**
-   * When expanding with isDropdown, converts dynamically created menupopover elements
+   * When expanding with dropdown submenus, converts dynamically created menupopover elements
    * back to div[data-trigger] containers.
    * @internal
    */
@@ -426,7 +431,7 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
    * @internal
    */
   private handleDropdownKeyDown(event: KeyboardEvent): void {
-    if (!this.isDropdown || !this.expanded) return;
+    if (this.submenuType !== SUBMENU_TYPES.DROPDOWN || !this.expanded) return;
     const target = event.target as HTMLElement;
     const isNavMenuItem = target.tagName.toLowerCase() === NAVMENUITEM_TAGNAME;
     if (!isNavMenuItem) return;

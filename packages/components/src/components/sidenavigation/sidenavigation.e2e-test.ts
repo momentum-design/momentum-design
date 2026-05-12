@@ -549,7 +549,7 @@ const setupDropdown = async (componentsPage: ComponentsPage, variant: string, ex
         ${expanded ? 'expanded' : ''}
         footer-text="%Customer Name%"
         grabber-btn-aria-label="Toggle Side navigation"
-        is-dropdown
+        submenu-type="dropdown"
       >
         <mdc-menusection slot="scrollable-menubar" show-divider>
           <mdc-navmenuitem
@@ -651,8 +651,8 @@ test.describe.parallel('SideNavigation (Dropdown mode)', () => {
       'flexible',
     );
 
-    await test.step('attributes – is-dropdown is set', async () => {
-      await expect(sidenav).toHaveAttribute('is-dropdown');
+    await test.step('attributes – submenu-type is dropdown', async () => {
+      await expect(sidenav).toHaveAttribute('submenu-type', 'dropdown');
       await expect(sidenav).toHaveAttribute('expanded');
     });
 

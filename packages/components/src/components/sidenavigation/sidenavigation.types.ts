@@ -1,9 +1,10 @@
 import type { TypedCustomEvent, ValueOf } from '../../utils/types';
 
 import type SideNavigation from './sidenavigation.component';
-import { VARIANTS } from './sidenavigation.constants';
+import { SUBMENU_TYPES, VARIANTS } from './sidenavigation.constants';
 
 type SideNavigationVariant = ValueOf<typeof VARIANTS>;
+type SideNavigationSubmenuType = ValueOf<typeof SUBMENU_TYPES>;
 type SideNavigationActiveChangeEvent = TypedCustomEvent<SideNavigation, { navId: string; active: boolean }>;
 type SideNavigationToggleEvent = TypedCustomEvent<SideNavigation, { expanded: boolean }>;
 interface Events {
@@ -11,4 +12,4 @@ interface Events {
   onToggleEvent: SideNavigationToggleEvent;
 }
 
-export type { SideNavigationVariant, Events };
+export type { SideNavigationVariant, SideNavigationSubmenuType, Events };

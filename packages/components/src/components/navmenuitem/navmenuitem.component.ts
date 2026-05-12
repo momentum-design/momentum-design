@@ -282,8 +282,8 @@ class NavMenuItem extends MenuItem {
       this.closeDropdown();
     }
 
-    // When isDropdown mode is turned off, close any open dropdown
-    if (!context.isDropdown && this.dropdownOpen) {
+    // When dropdown submenu type is turned off, close any open dropdown
+    if (!context.isDropdownSubmenuType && this.dropdownOpen) {
       this.closeDropdown();
     }
 
@@ -291,7 +291,7 @@ class NavMenuItem extends MenuItem {
     // Expanded + dropdown open: only the child should appear active, not the parent.
     // Expanded + dropdown closed: parent should appear active when it has an active child.
     // Collapsed (icon-only): parent should appear active when it has an active child.
-    if (context.isDropdown && this.hasActiveChild && context.isDropDownParent(this)) {
+    if (context.isDropdownSubmenuType && this.hasActiveChild && context.isDropDownParent(this)) {
       if (context.expanded && this.dropdownOpen) {
         this.removeAttribute('active');
         this.active = false;
@@ -397,7 +397,7 @@ class NavMenuItem extends MenuItem {
     if (this.disabled || this.cannotActivate || this.softDisabled) return;
 
     const context = this.sideNavigationContext?.value;
-    if (context?.isDropdown && context?.expanded && context?.isDropDownParent(this)) {
+    if (context?.isDropdownSubmenuType && context?.expanded && context?.isDropDownParent(this)) {
       this.toggleDropdown();
       // move the focus to the first navmenuitem in the dropdown when opening the dropdown
       if (this.dropdownOpen) {
@@ -499,7 +499,7 @@ class NavMenuItem extends MenuItem {
 
   public override render() {
     const context = this.sideNavigationContext?.value;
-    const isDropdownMode = context?.isDropdown && context?.expanded;
+    const isDropdownMode = context?.isDropdownSubmenuType && context?.expanded;
     const isDropDownParent = context?.isDropDownParent(this);
     const hasFlyoutSibling = context?.hasSiblingWithTriggerId(this);
 
