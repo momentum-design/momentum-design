@@ -2,6 +2,7 @@
 import AnimationParser from './animation';
 
 const PARSER_INPUT = {
+  // Single fixture with two tokens: covers single-property and multi-property transitions
   transition: JSON.stringify({
     animation: {
       buttonBackground: {
@@ -12,10 +13,6 @@ const PARSER_INPUT = {
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
       },
-    },
-  }),
-  multiPropTransition: JSON.stringify({
-    animation: {
       buttonBorder: {
         description: 'Button border and shadow',
         type: 'transition',
@@ -26,6 +23,7 @@ const PARSER_INPUT = {
       },
     },
   }),
+  // Single fixture with two tokens: covers iterationCount (without fillMode) and fillMode (without iterationCount)
   keyframe: JSON.stringify({
     animation: {
       buttonLoadingSpin: {
@@ -36,6 +34,15 @@ const PARSER_INPUT = {
         easing: '{motion.easing.linear}',
         delay: '{motion.delay.none}',
         iterationCount: 'infinite',
+      },
+      fadeIn: {
+        description: 'Fade in',
+        type: 'keyframe',
+        keyframes: [{ propertyName: 'opacity', from: '0', to: '1' }],
+        duration: '{motion.duration.slow}',
+        easing: '{motion.easing.standard}',
+        delay: '{motion.delay.none}',
+        fillMode: 'forwards',
       },
     },
   }),
@@ -65,6 +72,7 @@ const PARSER_INPUT = {
       },
     },
   }),
+  // Single fixture covering: iterationCount-only, fillMode-only, iterationCount+fillMode compounds
   keyframeCompound: JSON.stringify({
     animation: {
       spin: {
@@ -85,28 +93,6 @@ const PARSER_INPUT = {
         delay: '{motion.delay.none}',
         iterationCount: 'infinite',
       },
-      spinPulse: {
-        description: 'Spin + pulse compound',
-        type: 'keyframeCompound',
-        animations: ['spin', 'pulse'],
-      },
-    },
-  }),
-  keyframeWithFillMode: JSON.stringify({
-    animation: {
-      fadeIn: {
-        description: 'Fade in',
-        type: 'keyframe',
-        keyframes: [{ propertyName: 'opacity', from: '0', to: '1' }],
-        duration: '{motion.duration.slow}',
-        easing: '{motion.easing.standard}',
-        delay: '{motion.delay.none}',
-        fillMode: 'forwards',
-      },
-    },
-  }),
-  keyframeCompoundWithFillMode: JSON.stringify({
-    animation: {
       enter: {
         description: 'Enter',
         type: 'keyframe',
@@ -125,6 +111,11 @@ const PARSER_INPUT = {
         easing: '{motion.easing.standard}',
         delay: '{motion.delay.none}',
         fillMode: 'backwards',
+      },
+      spinPulse: {
+        description: 'Spin + pulse compound',
+        type: 'keyframeCompound',
+        animations: ['spin', 'pulse'],
       },
       enterExit: {
         description: 'Enter then exit compound',
@@ -163,7 +154,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
 
     it('should build a comma-separated list for multi-property transitions', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.multiPropTransition, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.buttonBorder.value).toBe(
         'border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' box-shadow {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
@@ -180,7 +171,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
 
     it('should include fillMode in the value when present', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframeWithFillMode, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.fadeIn.value).toBe(
         '{motion.duration.slow} {motion.easing.standard} {motion.delay.none} forwards mds-animation-fade-in',
       );
@@ -208,7 +199,7 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
 
     it('should include fillMode from each referenced keyframe in compound expansion', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframeCompoundWithFillMode, filePath: 'motion/animation.json' }) as any;
+      const result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.enterExit.value).toBe(
         '{motion.duration.slow} {motion.easing.standard} {motion.delay.none} 1 forwards mds-animation-enter,'
         + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} backwards mds-animation-exit',
