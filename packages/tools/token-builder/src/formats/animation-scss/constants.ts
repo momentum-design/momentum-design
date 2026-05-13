@@ -1,4 +1,3 @@
-// AI-Assisted
 import { CONSTANTS as COMMON_CONSTANTS } from '../../common';
 
 const CONSTANTS = {
@@ -6,4 +5,3 @@ const CONSTANTS = {
 };
 
 export default CONSTANTS;
-// End AI-Assisted

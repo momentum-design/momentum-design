@@ -1,29 +1,18 @@
-// AI-Assisted
 import AnimationScssFormat from './animation-scss';
-
-/** Minimal mock of an SD TransformedToken for animation use. */
-function makeToken(
-  name: string,
-  type: string,
-  originalValue: string,
-  extra: Record<string, unknown> = {},
-) {
-  return {
-    path: ['animation', name],
-    original: { type, value: originalValue, ...extra },
-  };
-}
+import { makeToken, makeDictionary } from '../animation/animation.fixture';
 
 const TRANSITION_TOKEN = makeToken(
   'buttonBackground',
   'transition',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
+  'background-color 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 );
 
 const KEYFRAME_TOKEN = makeToken(
   'buttonLoadingSpin',
   'keyframe',
   '{motion.duration.slow} {motion.easing.linear} {motion.delay.none} infinite mds-animation-button-loading-spin',
+  '500ms linear 0ms infinite mds-animation-button-loading-spin',
   {
     keyframes: [{ propertyName: 'transform', from: 'rotate(0deg)', to: 'rotate(360deg)' }],
   },
@@ -34,6 +23,8 @@ const COMPOUND_TRANSITION_TOKEN = makeToken(
   'transitionCompound',
   'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
   + ' border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
+  'background-color 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,'
+  + ' border-color 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 );
 
 const COMPOUND_KEYFRAME_TOKEN = makeToken(
@@ -41,22 +32,9 @@ const COMPOUND_KEYFRAME_TOKEN = makeToken(
   'keyframeCompound',
   '{motion.duration.slow} {motion.easing.linear} {motion.delay.none} infinite mds-animation-spin,'
   + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} infinite mds-animation-pulse',
+  '500ms linear 0ms infinite mds-animation-spin,'
+  + ' 500ms cubic-bezier(0.4, 0, 0.2, 1) 0ms infinite mds-animation-pulse',
 );
-
-/** Motion primitive tokens that animation tokens reference via \{motion.*\} refs. */
-const MOTION_PRIMITIVE_TOKENS = [
-  { path: ['motion', 'duration', 'instant'], original: { value: '100ms' } },
-  { path: ['motion', 'duration', 'fast'], original: { value: '200ms' } },
-  { path: ['motion', 'duration', 'slow'], original: { value: '500ms' } },
-  { path: ['motion', 'easing', 'standard'], original: { value: 'cubic-bezier(0.4, 0, 0.2, 1)' } },
-  { path: ['motion', 'easing', 'linear'], original: { value: 'linear' } },
-  { path: ['motion', 'delay', 'none'], original: { value: '0ms' } },
-];
-
-function makeDictionary(tokens: ReturnType<typeof makeToken>[]) {
-  const allTokens = [...MOTION_PRIMITIVE_TOKENS, ...tokens];
-  return { allTokens };
-}
 
 describe('@momentum-design/token-builder - formats.AnimationScssFormat', () => {
   let format: AnimationScssFormat;
@@ -65,93 +43,88 @@ describe('@momentum-design/token-builder - formats.AnimationScssFormat', () => {
     format = new AnimationScssFormat();
   });
 
-  describe('name', () => {
-    it('should be the md-animation-scss format name', () => {
-      expect(format.name).toBe('md-animation-scss');
-    });
-  });
-
   describe('sdConfig', () => {
     it('should expose a name and formatter', () => {
+      expect(format.name).toBe('md-animation-scss');
       expect(format.sdConfig.name).toBe(format.name);
       expect(typeof format.sdConfig.formatter).toBe('function');
     });
   });
 
   describe('formatter — transition token', () => {
+    let output: string;
+
+    beforeEach(() => {
+      output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
+    });
+
     it('should emit a $mds-transition-* SCSS variable', () => {
-      const output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
       expect(output).toContain('$mds-transition-button-background:');
     });
 
-    it('should resolve {token.refs} to $mds-* SCSS variables (not var())', () => {
-      const output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
-      expect(output).toContain('$mds-motion-duration-instant');
-      expect(output).toContain('$mds-motion-easing-standard');
+    it('should output resolved scalar values (not token references)', () => {
+      expect(output).toContain('100ms');
+      expect(output).toContain('cubic-bezier(0.4, 0, 0.2, 1)');
       expect(output).not.toContain('var(--');
       expect(output).not.toContain('{motion.');
     });
 
     it('should NOT wrap variables in a class selector', () => {
-      const output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
       expect(output).not.toContain('.mds-animation');
       expect(output).not.toContain('{');
     });
 
     it('should emit variables at file level (not indented)', () => {
-      const output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
       const varLine = output.split('\n').find((l) => l.includes('$mds-transition-button-background'));
       expect(varLine).toBeDefined();
       expect(varLine!.startsWith('$')).toBe(true);
     });
+
+    it('should include the do-not-edit header', () => {
+      expect(output).toContain('Do not edit directly');
+    });
   });
 
   describe('formatter — keyframe token', () => {
+    let output: string;
+
+    beforeEach(() => {
+      output = format.formatter({ dictionary: makeDictionary([KEYFRAME_TOKEN]) } as any);
+    });
+
     it('should emit a @keyframes block', () => {
-      const output = format.formatter({ dictionary: makeDictionary([KEYFRAME_TOKEN]) } as any);
       expect(output).toContain('@keyframes mds-animation-button-loading-spin');
     });
 
     it('should emit a $mds-animation-* SCSS variable for the animation shorthand', () => {
-      const output = format.formatter({ dictionary: makeDictionary([KEYFRAME_TOKEN]) } as any);
       expect(output).toContain('$mds-animation-button-loading-spin:');
     });
 
-    it('should resolve refs in the animation shorthand to $mds-* variables', () => {
-      const output = format.formatter({ dictionary: makeDictionary([KEYFRAME_TOKEN]) } as any);
-      expect(output).toContain('$mds-motion-duration-slow');
+    it('should resolve refs in the animation shorthand to scalar values', () => {
+      expect(output).toContain('500ms');
       expect(output).not.toContain('var(--');
     });
 
     it('@keyframes block should appear before variable declarations', () => {
-      const output = format.formatter({ dictionary: makeDictionary([KEYFRAME_TOKEN]) } as any);
       expect(output.indexOf('@keyframes')).toBeLessThan(output.indexOf('$mds-animation-'));
     });
   });
 
   describe('formatter — transitionCompound token', () => {
-    it('should emit a $mds-transition-* SCSS variable with $mds-* refs', () => {
+    it('should emit a $mds-transition-* SCSS variable with resolved values', () => {
       const output = format.formatter({ dictionary: makeDictionary([COMPOUND_TRANSITION_TOKEN]) } as any);
       expect(output).toContain('$mds-transition-button-hover:');
-      expect(output).toContain('$mds-motion-duration-instant');
+      expect(output).toContain('100ms');
       expect(output).not.toContain('var(--');
     });
   });
 
   describe('formatter — keyframeCompound token', () => {
-    it('should emit a $mds-animation-* SCSS variable with $mds-* refs', () => {
+    it('should emit a $mds-animation-* SCSS variable with resolved values', () => {
       const output = format.formatter({ dictionary: makeDictionary([COMPOUND_KEYFRAME_TOKEN]) } as any);
       expect(output).toContain('$mds-animation-spin-pulse:');
-      expect(output).toContain('$mds-motion-duration-slow');
+      expect(output).toContain('500ms');
       expect(output).not.toContain('var(--');
     });
   });
-
-  describe('formatter — file header', () => {
-    it('should include the do-not-edit header', () => {
-      const output = format.formatter({ dictionary: makeDictionary([TRANSITION_TOKEN]) } as any);
-      expect(output).toContain('Do not edit directly');
-    });
-  });
 });
-// End AI-Assisted

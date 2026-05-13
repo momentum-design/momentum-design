@@ -1,4 +1,3 @@
-// AI-Assisted
 import StyleDictionary, {
   Parser as SDParser,
   DesignTokens,
@@ -55,20 +54,12 @@ type AnimationToken =
 
 type AnimationFile = { animation: Record<string, AnimationToken> };
 
-/**
- * Builds the raw (un-resolved) transition shorthand value string for one transition token.
- * Token references like `{motion.duration.instant}` are kept intact — SD resolves them.
- */
 function buildTransitionValue(token: AnimationTransition): string {
   return (token.properties ?? [])
     .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
     .join(', ');
 }
 
-/**
- * Builds the raw (un-resolved) animation shorthand value for one keyframe token.
- * The keyframe name is derived from the camelCase token name passed in.
- */
 function buildKeyframeValue(
   kebabName: string,
   token: AnimationKeyframe,
@@ -78,16 +69,6 @@ function buildKeyframeValue(
   return `${token.duration} ${token.easing} ${token.delay}${iteration}${fill} mds-animation-${kebabName}`;
 }
 
-/**
- * Injects a `value` field into every animation token so that Style Dictionary
- * treats them as proper tokens (SD only recognises nodes that have a `value` key).
- *
- * Cross-file references such as `{motion.duration.instant}` are left as-is so
- * that SD can resolve them natively when `outputReferences: true` is set.
- *
- * Same-file compound references (`animations: ["buttonBackground"]`) are
- * expanded inline here because SD has no way to resolve those.
- */
 class AnimationParser {
   public get pattern(): RegExp {
     return ANIMATION_FILE_PATTERN;
@@ -100,7 +81,6 @@ class AnimationParser {
 
       const injected: Record<string, AnimationToken & { value: string }> = {};
 
-      // First pass — inject value for primitive token types
       Object.entries(tokens).forEach(([name, token]) => {
         const kebab = toKebabCase(name);
         let value: string;
@@ -110,38 +90,33 @@ class AnimationParser {
         } else if (token.type === 'keyframe') {
           value = buildKeyframeValue(kebab, token);
         } else {
-          // compound types — resolved in second pass
           value = '';
         }
 
         injected[name] = { ...token, value };
       });
 
-      // Second pass — resolve compound types from the already-injected primitives
+      const resolveRef = (refName: string, compoundName: string): AnimationToken & { value: string } => {
+        const ref = injected[refName];
+        if (!ref) {
+          throw new Error(
+            `AnimationParser: compound token "${compoundName}" references unknown animation "${refName}".`,
+          );
+        }
+        return ref;
+      };
+
       Object.entries(tokens).forEach(([name, token]) => {
         if (token.type === 'transitionCompound') {
+          // eslint-disable-next-line arrow-body-style
           const parts = (token.animations ?? []).flatMap((refName) => {
-            const ref = injected[refName];
-            if (!ref) {
-              throw new Error(
-                `AnimationParser: compound token "${name}" references unknown animation "${refName}".`,
-              );
-            }
-            return buildTransitionValue(ref as AnimationTransition).split(', ');
+            return buildTransitionValue(resolveRef(refName, name) as AnimationTransition).split(', ');
           });
           injected[name] = { ...token, value: parts.join(', ') };
         } else if (token.type === 'keyframeCompound') {
+          // eslint-disable-next-line arrow-body-style
           const parts = (token.animations ?? []).map((refName) => {
-            const ref = injected[refName];
-            if (!ref) {
-              throw new Error(
-                `AnimationParser: compound token "${name}" references unknown animation "${refName}".`,
-              );
-            }
-            return buildKeyframeValue(
-              toKebabCase(refName),
-              ref as AnimationKeyframe,
-            );
+            return buildKeyframeValue(toKebabCase(refName), resolveRef(refName, name) as AnimationKeyframe);
           });
           injected[name] = { ...token, value: parts.join(', ') };
         }
@@ -173,4 +148,3 @@ class AnimationParser {
 }
 
 export default AnimationParser;
-// End AI-Assisted
