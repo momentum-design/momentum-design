@@ -8,6 +8,7 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
+  TERTIARY_BUTTON_COLORS,
 } from '../../components/button/button.constants';
 import type {
   ButtonColor,
@@ -77,7 +78,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
      * - `promotional`: For promotional actions
      * - `default`: For standard actions
      *
-     * Note: Tertiary buttons always use default color.
+     * Note: Tertiary buttons only support default, accent, and negative colors.
      * @default default
      */
     @property({ type: String })
@@ -100,12 +101,17 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
 
     /**
      * Sets the color attribute for the button.
-     * Defaults to DEFAULTS.COLOR if invalid or for tertiary button.
+     * Defaults to DEFAULTS.COLOR if invalid or if the color is not supported for the current variant.
+     * Tertiary buttons only support default, accent, and negative colors.
      *
      * @param color - The color to set.
      */
     protected setColor(color: ButtonColor) {
-      if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
+      const isValidColor = Object.values(BUTTON_COLORS).includes(color);
+      const isTertiaryUnsupported =
+        this.variant === BUTTON_VARIANTS.TERTIARY && !Object.values(TERTIARY_BUTTON_COLORS).includes(color as any);
+
+      if (!isValidColor || isTertiaryUnsupported) {
         this.setAttribute('color', `${DEFAULTS.COLOR}`);
       } else {
         this.setAttribute('color', color);

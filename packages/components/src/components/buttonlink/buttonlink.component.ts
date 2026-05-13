@@ -95,6 +95,7 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
     }
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+      this.setColor(this.color);
       this.setSize(this.size);
     }
     if (changedProperties.has('color')) {

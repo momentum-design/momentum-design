@@ -47,6 +47,12 @@ import { getIconNameWithoutStyle } from './button.utils';
  * - **Accent**: For informational actions
  * - **Promotional**: For promotional actions
  *
+ * Color options for **Tertiary** buttons:
+ *
+ * - **Default**: For standard actions
+ * - **Accent**: For informational actions
+ * - **Negative**: For destructive or error actions
+ *
  * ### Button Sizes
  *
  * Size options for different button configurations in REM:
@@ -162,6 +168,7 @@ class Button extends OverflowMixin(ButtonComponentMixin(Buttonsimple)) {
     }
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+      this.setColor(this.color);
       this.setSize(this.size);
     }
     if (changedProperties.has('color')) {
