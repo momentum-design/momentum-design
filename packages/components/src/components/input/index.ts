@@ -1,5 +1,6 @@
 import '../button';
 import '../icon';
+import '../screenreaderannouncer';
 import '../text';
 import '../toggletip';
 import Input from './input.component';

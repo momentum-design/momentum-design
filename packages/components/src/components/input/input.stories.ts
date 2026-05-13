@@ -22,6 +22,7 @@ const render = (args: Args) => {
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     @clear="${action('onclear')}"
+    @limitexceeded="${action('onlimitexceeded')}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -45,6 +46,8 @@ const render = (args: Args) => {
     leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
+    max-character-limit="${ifDefined(args['max-character-limit'])}"
+    character-limit-announcement="${ifDefined(args['character-limit-announcement'])}"
     autocapitalize="${args.autocapitalize}"
     ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
     autocomplete="${ifDefined(args.autocomplete)}"
@@ -111,6 +114,12 @@ const meta: Meta = {
     },
     maxlength: {
       control: 'number',
+    },
+    'max-character-limit': {
+      control: 'number',
+    },
+    'character-limit-announcement': {
+      control: 'text',
     },
     autocapitalize: {
       control: 'select',
@@ -374,6 +383,34 @@ export const FormFieldInputWithCustomValidationMessage: StoryObj = {
           </div>
         </fieldset>
       </form>
+    `;
+  },
+};
+
+export const InputWithCharacterCounter: StoryObj = {
+  render: () => {
+    const handleLimitExceeded = (event: CustomEvent) => {
+      const input = event.target as HTMLElement;
+      const { currentCharacterCount, maxCharacterLimit } = event.detail;
+      action('onlimitexceeded')(event.detail);
+      if (currentCharacterCount > maxCharacterLimit) {
+        input.setAttribute('help-text-type', 'error');
+        input.setAttribute('help-text', `Character limit exceeded. Maximum ${maxCharacterLimit} characters allowed.`);
+      } else {
+        input.setAttribute('help-text-type', 'default');
+        input.setAttribute('help-text', 'Helper text');
+      }
+    };
+    return html`
+      <mdc-input
+        label="Label"
+        required
+        placeholder="Placeholder"
+        help-text="Helper text"
+        max-character-limit="75"
+        character-limit-announcement="%{number-of-characters} out of %{max-character-limit} characters are typed."
+        @limitexceeded="${handleLimitExceeded}"
+      ></mdc-input>
     `;
   },
 };
