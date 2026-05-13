@@ -961,6 +961,17 @@ class Popover
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
 
+    // When the trigger contains shadow DOM children (e.g. an icon with internal SVG elements),
+    // mouseleave fires on internal elements as the mouse moves between them.
+    // Only close if the mouse has actually left the trigger element.
+    const mouseEvent = event as MouseEvent;
+    const { triggerElement } = this;
+    if (triggerElement && mouseEvent.relatedTarget instanceof Node) {
+      if (this.isDescendantOfTrigger(mouseEvent.relatedTarget, triggerElement)) {
+        return;
+      }
+    }
+
     this.isHovered = false;
     this.startCloseDelay();
   };
@@ -1208,6 +1219,27 @@ class Popover
       return event.composedPath().some(el => (el as HTMLElement)?.id === this.triggerID);
     }
     return (event.target as HTMLElement)?.id === this.triggerID;
+  }
+
+  /**
+   * Checks if a node is a descendant of the trigger element, crossing shadow DOM boundaries.
+   * This is needed because `Element.contains()` does not traverse into shadow roots.
+   * @param node - The node to check.
+   * @param trigger - The trigger element.
+   * @returns True if the node is inside the trigger element.
+   * @internal
+   */
+  private isDescendantOfTrigger(node: Node, trigger: HTMLElement): boolean {
+    let current: Node | null = node;
+    while (current) {
+      if (current === trigger) return true;
+      if (current instanceof ShadowRoot) {
+        current = current.host;
+      } else {
+        current = current.parentNode;
+      }
+    }
+    return false;
   }
 
   /**
