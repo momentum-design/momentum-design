@@ -100,6 +100,28 @@ const styles = css`
     --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
   }
 
+  :host([color='accent'][variant='tertiary']) {
+    --mdc-button-text-color: var(--mds-color-theme-text-accent-normal);
+  }
+  :host([color='accent'][variant='tertiary']:hover:not([disabled]):not([soft-disabled])) {
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
+  }
+  :host([color='accent'][variant='tertiary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='accent'][variant='tertiary'].pressed:not([disabled]):not([soft-disabled])) {
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
+  }
+
+  :host([color='negative'][variant='tertiary']) {
+    --mdc-button-text-color: var(--mds-color-theme-text-error-normal);
+  }
+  :host([color='negative'][variant='tertiary']:hover:not([disabled]):not([soft-disabled])) {
+    --mdc-button-background: var(--mds-color-theme-button-secondary-hover);
+  }
+  :host([color='negative'][variant='tertiary']:active:not([disabled]):not([soft-disabled])),
+  :host([color='negative'][variant='tertiary'].pressed:not([disabled]):not([soft-disabled])) {
+    --mdc-button-background: var(--mds-color-theme-button-secondary-pressed);
+  }
+
   :host([size='64'][data-btn-type='icon']),
   :host([size='52'][data-btn-type='icon']),
   :host([size='40'][data-btn-type='icon']),
