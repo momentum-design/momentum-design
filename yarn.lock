@@ -3329,7 +3329,7 @@ __metadata:
     "@tokens-studio/sd-transforms": ^0.12.2
     "@types/glob": ^8.0.0
     "@types/jest": ^29.5.12
-    "@types/lodash": ^4.17.0
+    "@types/lodash": ^4.17.7
     "@types/node": 20.14.9
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": ^5.62.0
@@ -4629,13 +4629,6 @@ __metadata:
     "@types/fined": "*"
     "@types/node": "*"
   checksum: f29ca5e1ab34d75e0643972e3398c33fdfbed3748279fe6e5578335cf9447ffd7cbd07023128e8b7700e658d99ff89a9a0905439414b8c8056f816497d3f9083
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:^4.17.0":
-  version: 4.17.24
-  resolution: "@types/lodash@npm:4.17.24"
-  checksum: 2b254973145ecdf9b052d83f00ebaa111245f319d45b217c78f81cea8892fda81180fc749bd50a99c08f4e5efceb834c774d3f74153a50a9c4a28648343dc9f3
   languageName: node
   linkType: hard
 
