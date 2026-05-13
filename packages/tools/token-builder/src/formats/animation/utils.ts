@@ -32,12 +32,16 @@ export function resolveRefsScss(value: string): string {
 }
 
 /** Builds a CSS keyframes block from a list of KeyframeEntry descriptors. */
-export function buildKeyframeBlock(kfName: string, keyframes: KeyframeEntry[]): string {
+export function buildKeyframeBlock(
+  kfName: string,
+  keyframes: KeyframeEntry[],
+  resolveRefs: (value: string) => string,
+): string {
   const fromProps: Record<string, string> = {};
   const toProps: Record<string, string> = {};
   keyframes.forEach(({ propertyName, from, to }) => {
-    fromProps[propertyName] = from;
-    toProps[propertyName] = to;
+    fromProps[propertyName] = resolveRefs(from);
+    toProps[propertyName] = resolveRefs(to);
   });
   const fromStr = Object.entries(fromProps)
     .map(([p, v]) => `${p}: ${v}`)

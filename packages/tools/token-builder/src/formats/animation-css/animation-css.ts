@@ -32,7 +32,11 @@ class AnimationCssFormat {
         } else if (tokenType === 'keyframe') {
           const kfName = `mds-animation-${kebab}`;
           const keyframes = (token.original.keyframes ?? []) as KeyframeEntry[];
-          keyframeBlocks.push(buildKeyframeBlock(kfName, keyframes));
+          keyframes.forEach(({ from, to }) => {
+            validateRefs(from, validRefs, `${token.path.join('.')}.from`);
+            validateRefs(to, validRefs, `${token.path.join('.')}.to`);
+          });
+          keyframeBlocks.push(buildKeyframeBlock(kfName, keyframes, resolveRefsCss));
           variableLines.push(`  --mds-animation-${kebab}: ${resolvedValue};`);
         } else if (tokenType === 'keyframeCompound') {
           variableLines.push(`  --mds-animation-${kebab}: ${resolvedValue};`);
