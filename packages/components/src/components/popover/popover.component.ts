@@ -15,6 +15,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -966,8 +967,8 @@ class Popover
     // Only close if the mouse has actually left the trigger element.
     const mouseEvent = event as MouseEvent;
     const { triggerElement } = this;
-    if (triggerElement && mouseEvent.relatedTarget instanceof Node) {
-      if (this.isDescendantOfTrigger(mouseEvent.relatedTarget, triggerElement)) {
+    if (triggerElement && mouseEvent.relatedTarget instanceof Element) {
+      if (getHostComposePath(mouseEvent.relatedTarget).includes(triggerElement)) {
         return;
       }
     }
@@ -1219,27 +1220,6 @@ class Popover
       return event.composedPath().some(el => (el as HTMLElement)?.id === this.triggerID);
     }
     return (event.target as HTMLElement)?.id === this.triggerID;
-  }
-
-  /**
-   * Checks if a node is a descendant of the trigger element, crossing shadow DOM boundaries.
-   * This is needed because `Element.contains()` does not traverse into shadow roots.
-   * @param node - The node to check.
-   * @param trigger - The trigger element.
-   * @returns True if the node is inside the trigger element.
-   * @internal
-   */
-  private isDescendantOfTrigger(node: Node, trigger: HTMLElement): boolean {
-    let current: Node | null = node;
-    while (current) {
-      if (current === trigger) return true;
-      if (current instanceof ShadowRoot) {
-        current = current.host;
-      } else {
-        current = current.parentNode;
-      }
-    }
-    return false;
   }
 
   /**
