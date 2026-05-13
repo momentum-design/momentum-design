@@ -10,6 +10,15 @@ import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
 import { AriaLive } from './screenreaderannouncer.types';
 
+// AI-Assisted
+/**
+ * Module-scope refcount: tracks how many live ScreenreaderAnnouncer instances
+ * reference each identity. When the count drops to zero the DOM node created
+ * by createAnnouncementAriaLiveRegion() is removed.
+ */
+const identityRefCount = new Map<string, number>();
+// End AI-Assisted
+
 /**
  * `mdc-screenreaderannouncer` can be used to announce messages with the screen reader.
  *
@@ -119,6 +128,12 @@ class ScreenreaderAnnouncer extends Component {
    */
   @property({ type: Number, reflect: true, attribute: 'debounce-time' })
   debounceTime: number = DEFAULTS.DEBOUNCE;
+
+  /**
+   * Whether this instance currently holds a ref for its identity.
+   * @internal
+   */
+  private hasIdentityRef = false;
 
   /**
    * Array to store timeOutIds for clearing timeouts later.
@@ -290,12 +305,44 @@ class ScreenreaderAnnouncer extends Component {
     }, this.debounceTime);
   }
 
+  // AI-Assisted
+  /**
+   * Increments the refcount for the current identity.
+   */
+  private acquireIdentityRef() {
+    if (this.hasIdentityRef) return;
+    identityRefCount.set(this.identity, (identityRefCount.get(this.identity) ?? 0) + 1);
+    this.hasIdentityRef = true;
+  }
+
+  /**
+   * Decrements the refcount for the current identity.
+   * When the count reaches zero the live-region DOM node is removed.
+   */
+  private releaseIdentityRef() {
+    if (!this.hasIdentityRef) return;
+    const next = (identityRefCount.get(this.identity) ?? 1) - 1;
+    if (next <= 0) {
+      identityRefCount.delete(this.identity);
+      const node = this.getElementByIdAcrossShadowRoot(this.identity);
+      // Only remove nodes WE created (they carry our class).
+      if (node?.classList.contains('mdc-screenreaderannouncer__visually-hidden')) {
+        node.remove();
+      }
+    } else {
+      identityRefCount.set(this.identity, next);
+    }
+    this.hasIdentityRef = false;
+  }
+  // End AI-Assisted
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (this.identity.length === 0) {
       this.identity = DEFAULTS.IDENTITY;
     }
     this.createAnnouncementAriaLiveRegion();
+    this.acquireIdentityRef();
     this.setupDebouncedAnnounce();
   }
 
@@ -304,6 +351,7 @@ class ScreenreaderAnnouncer extends Component {
     this.clearTimeOutsAndAnnouncements();
     // cancel any pending debounced action and clear DOM timeouts
     this.debouncedAnnounce?.cancel();
+    this.releaseIdentityRef();
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {

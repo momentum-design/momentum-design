@@ -306,3 +306,102 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
     });
   });
 });
+
+// AI-Assisted
+test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPage }) => {
+  await test.step('removes live-region div from document.body when last announcer disconnects', async () => {
+    await componentsPage.mount({
+      html: `
+        <div id="cleanup-wrapper">
+          <mdc-textarea id="ta1" label="TA1"></mdc-textarea>
+          <mdc-textarea id="ta2" label="TA2"></mdc-textarea>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const wrapper = componentsPage.page.locator('#cleanup-wrapper');
+    await wrapper.waitFor();
+
+    // Wait for components to fully initialize
+    await componentsPage.page.waitForTimeout(500);
+
+    // Count live-region divs created by the textareas (unique per textarea)
+    const countBefore = await componentsPage.page.evaluate(() => {
+      return document.querySelectorAll('body > div[id^="mdc-el-"]').length;
+    });
+
+    expect(countBefore).toBe(2);
+
+    // Remove the wrapper (disconnects both textareas)
+    await componentsPage.page.evaluate(() => {
+      document.getElementById('cleanup-wrapper')?.remove();
+    });
+
+    await componentsPage.page.waitForTimeout(200);
+
+    // All live-region divs should be removed
+    const countAfter = await componentsPage.page.evaluate(() => {
+      return document.querySelectorAll('body > div[id^="mdc-el-"]').length;
+    });
+
+    expect(countAfter).toBe(0);
+  });
+
+  await test.step('shared identity div persists until last announcer disconnects', async () => {
+    await componentsPage.mount({
+      html: `
+        <div id="shared-wrapper">
+          <mdc-screenreaderannouncer id="a1" identity="shared-cleanup-id"></mdc-screenreaderannouncer>
+          <mdc-screenreaderannouncer id="a2" identity="shared-cleanup-id"></mdc-screenreaderannouncer>
+          <mdc-screenreaderannouncer id="a3" identity="shared-cleanup-id"></mdc-screenreaderannouncer>
+        </div>
+      `,
+      clearDocument: true,
+    });
+
+    const wrapper = componentsPage.page.locator('#shared-wrapper');
+    await wrapper.waitFor();
+    await componentsPage.page.waitForTimeout(300);
+
+    // The shared div should exist
+    const existsInitially = await componentsPage.page.evaluate(() => {
+      return document.getElementById('shared-cleanup-id') !== null;
+    });
+    expect(existsInitially).toBe(true);
+
+    // Remove first announcer - div should still exist
+    await componentsPage.page.evaluate(() => {
+      document.getElementById('a1')?.remove();
+    });
+    await componentsPage.page.waitForTimeout(100);
+
+    const existsAfterFirst = await componentsPage.page.evaluate(() => {
+      return document.getElementById('shared-cleanup-id') !== null;
+    });
+    expect(existsAfterFirst).toBe(true);
+
+    // Remove second announcer - div should still exist
+    await componentsPage.page.evaluate(() => {
+      document.getElementById('a2')?.remove();
+    });
+    await componentsPage.page.waitForTimeout(100);
+
+    const existsAfterSecond = await componentsPage.page.evaluate(() => {
+      return document.getElementById('shared-cleanup-id') !== null;
+    });
+    expect(existsAfterSecond).toBe(true);
+
+    // Remove last announcer - div should be removed
+    await componentsPage.page.evaluate(() => {
+      document.getElementById('a3')?.remove();
+    });
+    await componentsPage.page.waitForTimeout(100);
+
+    const existsAfterAll = await componentsPage.page.evaluate(() => {
+      return document.getElementById('shared-cleanup-id') !== null;
+    });
+    expect(existsAfterAll).toBe(false);
+  });
+});
+// End AI-Assisted
