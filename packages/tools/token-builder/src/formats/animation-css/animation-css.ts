@@ -1,15 +1,13 @@
-// AI-Assisted
 import { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
 
 import CONSTANTS from './constants';
-import { resolveRefsCss, buildAnimationOutput } from '../animation/utils';
+import { buildAnimationOutput } from '../animation/utils';
 
 class AnimationCssFormat {
   public get formatter(): SDFormatter {
     return ({ dictionary, options }): string => {
       const selector = (options?.selector as string | undefined) ?? '.mds-animation';
       return buildAnimationOutput(dictionary, {
-        resolveRefs: resolveRefsCss,
         makeTransitionLine: (kebab, value) => `  --mds-transition-${kebab}: ${value};`,
         makeAnimationLine: (kebab, value) => `  --mds-animation-${kebab}: ${value};`,
         buildVariablesSection: (lines) => `${selector} {\n${lines.join('\n')}\n}`,
@@ -34,4 +32,3 @@ class AnimationCssFormat {
 }
 
 export default AnimationCssFormat;
-// End AI-Assisted

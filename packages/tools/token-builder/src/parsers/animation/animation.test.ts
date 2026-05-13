@@ -1,4 +1,3 @@
-// AI-Assisted
 import AnimationParser from './animation';
 
 const PARSER_INPUT = {
@@ -146,15 +145,19 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   });
 
   describe('parser — transition token', () => {
+    let result: any;
+
+    beforeEach(() => {
+      result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' });
+    });
+
     it('should inject a value string composed from properties, duration, easing and delay', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.buttonBackground.value).toBe(
         'background-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
       );
     });
 
     it('should build a comma-separated list for multi-property transitions', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.transition, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.buttonBorder.value).toBe(
         'border-color {motion.duration.instant} {motion.easing.standard} {motion.delay.none},'
         + ' box-shadow {motion.duration.instant} {motion.easing.standard} {motion.delay.none}',
@@ -163,15 +166,19 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   });
 
   describe('parser — keyframe token', () => {
+    let result: any;
+
+    beforeEach(() => {
+      result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' });
+    });
+
     it('should inject a value string including duration, easing, delay, iterationCount and keyframe name', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.buttonLoadingSpin.value).toBe(
         '{motion.duration.slow} {motion.easing.linear} {motion.delay.none} infinite mds-animation-button-loading-spin',
       );
     });
 
     it('should include fillMode in the value when present', () => {
-      const result = parser.parser({ contents: PARSER_INPUT.keyframe, filePath: 'motion/animation.json' }) as any;
       expect(result.animation.fadeIn.value).toBe(
         '{motion.duration.slow} {motion.easing.standard} {motion.delay.none} forwards mds-animation-fade-in',
       );
@@ -192,10 +199,13 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
   });
 
   describe('parser — keyframeCompound token', () => {
+    let result: any;
+
+    beforeEach(() => {
+      result = parser.parser({ contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' });
+    });
+
     it('should expand compound to a comma-separated animation shorthand list', () => {
-      const result = parser.parser(
-        { contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' },
-      ) as any;
       expect(result.animation.spinPulse.value).toBe(
         '{motion.duration.slow} {motion.easing.linear} {motion.delay.none} infinite mds-animation-spin,'
         + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} infinite mds-animation-pulse',
@@ -203,9 +213,6 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
 
     it('should include fillMode from each referenced keyframe in compound expansion', () => {
-      const result = parser.parser(
-        { contents: PARSER_INPUT.keyframeCompound, filePath: 'motion/animation.json' },
-      ) as any;
       expect(result.animation.enterExit.value).toBe(
         '{motion.duration.slow} {motion.easing.standard} {motion.delay.none} 1 forwards mds-animation-enter,'
         + ' {motion.duration.slow} {motion.easing.standard} {motion.delay.none} backwards mds-animation-exit',
@@ -242,4 +249,3 @@ describe('@momentum-design/token-builder - parsers.AnimationParser', () => {
     });
   });
 });
-// End AI-Assisted

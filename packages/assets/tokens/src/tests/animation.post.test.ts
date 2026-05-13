@@ -1,4 +1,3 @@
-// AI-Assisted
 // @ts-nocheck
 
 /**
@@ -10,7 +9,7 @@
 const nodePath = require('path');
 const fs = require('fs');
 
-const { kebabCase: toKebabCase } = require('lodash');
+const kebabCase = require('lodash/kebabCase');
 
 const distBase = nodePath.join(__dirname, '../../dist');
 const srcBase = nodePath.join(__dirname, '../motion');
@@ -48,7 +47,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(transitionTokens.length).toBeGreaterThan(0);
     transitionTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-transition-${toKebabCase(name)}:`);
+      expect(css).toContain(`--mds-transition-${kebabCase(name)}:`);
     });
   });
 
@@ -58,7 +57,7 @@ describe('Animation tokens (post-build)', () => {
     );
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`--mds-animation-${toKebabCase(name)}:`);
+      expect(css).toContain(`--mds-animation-${kebabCase(name)}:`);
     });
   });
 
@@ -66,15 +65,15 @@ describe('Animation tokens (post-build)', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     expect(keyframeTokens.length).toBeGreaterThan(0);
     keyframeTokens.forEach(([name]) => {
-      expect(css).toContain(`@keyframes mds-animation-${toKebabCase(name)}`);
+      expect(css).toContain(`@keyframes mds-animation-${kebabCase(name)}`);
     });
   });
 
   it('@keyframes name in variable value should match the @keyframes block name', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     keyframeTokens.forEach(([name]) => {
-      const kfName = `mds-animation-${toKebabCase(name)}`;
-      const varLineMatch = css.match(new RegExp(`--mds-animation-${toKebabCase(name)}:\\s*([^;]+);`));
+      const kfName = `mds-animation-${kebabCase(name)}`;
+      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\\s*([^;]+);`));
       expect(varLineMatch).not.toBeNull();
       // The keyframe name must be last in the animation shorthand
       expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));
@@ -126,4 +125,3 @@ describe('Animation tokens (post-build)', () => {
     });
   });
 });
-// End AI-Assisted
