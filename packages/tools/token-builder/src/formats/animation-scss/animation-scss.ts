@@ -1,54 +1,19 @@
 // AI-Assisted
 import { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
 
-import { toKebabCase } from '../../common';
 import CONSTANTS from './constants';
-import { resolveRefsScss, buildKeyframeBlock, KeyframeEntry, validateRefs } from '../animation/utils';
-
-const ANIMATION_TYPES = new Set(['transition', 'keyframe', 'transitionCompound', 'keyframeCompound']);
+import { resolveRefsScss, buildAnimationOutput } from '../animation/utils';
 
 class AnimationScssFormat {
   public get formatter(): SDFormatter {
-    return ({ dictionary }): string => {
-      const keyframeBlocks: string[] = [];
-      const variableLines: string[] = [];
-      const validRefs = new Set(dictionary.allTokens.map((t) => t.path.join('.')));
-
-      dictionary.allTokens.forEach((token) => {
-        const tokenType = token.original.type as string;
-        if (!ANIMATION_TYPES.has(tokenType)) return;
-
-        const kebab = toKebabCase(token.path.at(-1) as string);
-        // Use the original (pre-transform) value so that cross-file references
-        // become $mds-* SCSS variable references instead of resolved values.
-        const rawValue = String(token.original.value);
-        validateRefs(rawValue, validRefs, token.path.join('.'));
-        const resolvedValue = resolveRefsScss(rawValue);
-
-        if (tokenType === 'transition' || tokenType === 'transitionCompound') {
-          variableLines.push(`$mds-transition-${kebab}: ${resolvedValue};`);
-        } else if (tokenType === 'keyframe') {
-          const kfName = `mds-animation-${kebab}`;
-          const keyframes = (token.original.keyframes ?? []) as KeyframeEntry[];
-          keyframes.forEach(({ from, to }) => {
-            validateRefs(from, validRefs, `${token.path.join('.')}.from`);
-            validateRefs(to, validRefs, `${token.path.join('.')}.to`);
-          });
-          keyframeBlocks.push(buildKeyframeBlock(kfName, keyframes, resolveRefsScss));
-          variableLines.push(`$mds-animation-${kebab}: ${resolvedValue};`);
-        } else if (tokenType === 'keyframeCompound') {
-          variableLines.push(`$mds-animation-${kebab}: ${resolvedValue};`);
-        }
-      });
-
+    // eslint-disable-next-line arrow-body-style
+    return ({ dictionary }): string => buildAnimationOutput(dictionary, {
+      resolveRefs: resolveRefsScss,
+      makeTransitionLine: (kebab, value) => `$mds-transition-${kebab}: ${value};`,
+      makeAnimationLine: (kebab, value) => `$mds-animation-${kebab}: ${value};`,
       // SCSS variables are file-level — no class selector wrapper.
-      // @keyframes blocks are standard CSS and valid at the top level of a .scss file.
-      const header = '/**\n * Do not edit directly\n */';
-      const keyframesSection = keyframeBlocks.join('\n\n');
-      const variablesSection = variableLines.join('\n');
-
-      return `${[header, keyframesSection, variablesSection].filter(Boolean).join('\n\n')}\n`;
-    };
+      buildVariablesSection: (lines) => lines.join('\n'),
+    });
   }
 
   public get name(): string {

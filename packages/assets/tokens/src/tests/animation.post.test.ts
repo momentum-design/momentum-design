@@ -10,12 +10,7 @@
 const nodePath = require('path');
 const fs = require('fs');
 
-function toKebabCase(str) {
-  return str
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
-    .toLowerCase();
-}
+const { kebabCase: toKebabCase } = require('lodash');
 
 const distBase = nodePath.join(__dirname, '../../dist');
 const srcBase = nodePath.join(__dirname, '../motion');

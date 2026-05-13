@@ -1,38 +1,78 @@
 // AI-Assisted
-import StyleDictionary, { Parser as SDParser, DesignTokens } from 'style-dictionary';
+import StyleDictionary, {
+  Parser as SDParser,
+  DesignTokens,
+} from 'style-dictionary';
 import { toKebabCase } from '../../common';
 
 const ANIMATION_FILE_PATTERN = /motion[/\\\\]animation\.json$/;
 
-type RawAnimationToken = {
+type AnimationTransition = {
+  type: 'transition';
   description: string;
-  type: 'transition' | 'keyframe' | 'transitionCompound' | 'keyframeCompound';
   properties?: string[];
   duration?: string;
   easing?: string;
   delay?: string;
+};
+
+type AnimationKeyframeEntry = {
+  propertyName: string;
+  from: string;
+  to: string;
+};
+
+type AnimationKeyframe = {
+  type: 'keyframe';
+  description: string;
+  duration?: string;
+  easing?: string;
+  delay?: string;
+  keyframes?: AnimationKeyframeEntry[];
   iterationCount?: 'infinite' | number;
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
-  keyframes?: Array<{ propertyName: string; from: string; to: string }>;
+};
+
+type AnimationTransitionCompound = {
+  type: 'transitionCompound';
+  description: string;
+  animations?: string[];
+  composition: 'parallel' | 'sequential';
+};
+
+type AnimationKeyframeCompound = {
+  type: 'keyframeCompound';
+  description: string;
   animations?: string[];
   composition?: 'parallel' | 'sequential';
 };
 
-type AnimationFile = { animation: Record<string, RawAnimationToken> };
+type AnimationToken =
+  | AnimationTransition
+  | AnimationKeyframe
+  | AnimationTransitionCompound
+  | AnimationKeyframeCompound;
+
+type AnimationFile = { animation: Record<string, AnimationToken> };
 
 /**
  * Builds the raw (un-resolved) transition shorthand value string for one transition token.
  * Token references like `{motion.duration.instant}` are kept intact — SD resolves them.
  */
-function buildTransitionValue(token: RawAnimationToken): string {
-  return (token.properties ?? []).map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`).join(', ');
+function buildTransitionValue(token: AnimationTransition): string {
+  return (token.properties ?? [])
+    .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
+    .join(', ');
 }
 
 /**
  * Builds the raw (un-resolved) animation shorthand value for one keyframe token.
  * The keyframe name is derived from the camelCase token name passed in.
  */
-function buildKeyframeValue(kebabName: string, token: RawAnimationToken): string {
+function buildKeyframeValue(
+  kebabName: string,
+  token: AnimationKeyframe,
+): string {
   const iteration = token.iterationCount ? ` ${token.iterationCount}` : '';
   const fill = token.fillMode ? ` ${token.fillMode}` : '';
   return `${token.duration} ${token.easing} ${token.delay}${iteration}${fill} mds-animation-${kebabName}`;
@@ -58,7 +98,7 @@ class AnimationParser {
       const source = JSON.parse(contents) as AnimationFile;
       const tokens = source.animation;
 
-      const injected: Record<string, RawAnimationToken & { value: string }> = {};
+      const injected: Record<string, AnimationToken & { value: string }> = {};
 
       // First pass — inject value for primitive token types
       Object.entries(tokens).forEach(([name, token]) => {
@@ -83,18 +123,25 @@ class AnimationParser {
           const parts = (token.animations ?? []).flatMap((refName) => {
             const ref = injected[refName];
             if (!ref) {
-              throw new Error(`AnimationParser: compound token "${name}" references unknown animation "${refName}".`);
+              throw new Error(
+                `AnimationParser: compound token "${name}" references unknown animation "${refName}".`,
+              );
             }
-            return buildTransitionValue(ref).split(', ');
+            return buildTransitionValue(ref as AnimationTransition).split(', ');
           });
           injected[name] = { ...token, value: parts.join(', ') };
         } else if (token.type === 'keyframeCompound') {
           const parts = (token.animations ?? []).map((refName) => {
             const ref = injected[refName];
             if (!ref) {
-              throw new Error(`AnimationParser: compound token "${name}" references unknown animation "${refName}".`);
+              throw new Error(
+                `AnimationParser: compound token "${name}" references unknown animation "${refName}".`,
+              );
             }
-            return buildKeyframeValue(toKebabCase(refName), ref);
+            return buildKeyframeValue(
+              toKebabCase(refName),
+              ref as AnimationKeyframe,
+            );
           });
           injected[name] = { ...token, value: parts.join(', ') };
         }
