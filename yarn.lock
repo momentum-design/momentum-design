@@ -3329,6 +3329,7 @@ __metadata:
     "@tokens-studio/sd-transforms": ^0.12.2
     "@types/glob": ^8.0.0
     "@types/jest": ^29.5.12
+    "@types/lodash": ^4.17.7
     "@types/node": 20.14.9
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": ^5.62.0
@@ -3338,6 +3339,7 @@ __metadata:
     eslint-plugin-import: ^2.26.0
     handlebars: ^4.7.8
     jest: ^29.7.0
+    lodash: ^4.17.21
     rimraf: ^6.0.1
     style-dictionary: ^3.7.1
     ts-jest: ^29.2.4
@@ -3355,7 +3357,6 @@ __metadata:
     "@momentum-design/token-builder": "workspace:^"
     "@types/jest": ^29.5.12
     jest: ^29.7.0
-    lodash: ^4.17.21
     rimraf: ^6.0.1
     ts-jest: ^29.2.4
   languageName: unknown
