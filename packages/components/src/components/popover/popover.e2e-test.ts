@@ -500,6 +500,68 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
     });
 
+    await test.step('does not hide popover when mouse moves within trigger shadow DOM', async () => {
+      await componentsPage.mount({
+        html: `
+          <div id="wrapper">
+            <div style="height: 20vh">
+              <mdc-button id="trigger-button-shadow" prefix-icon="placeholder-bold">
+                Hover me
+              </mdc-button>
+            </div>
+            <mdc-popover
+              id="popover-hover-shadow"
+              triggerID="trigger-button-shadow"
+              trigger="${TRIGGER.MOUSEENTER}"
+              delay="0,100"
+              interactive
+            >
+              Hover popover content
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const popover = componentsPage.page.locator('#popover-hover-shadow');
+      const triggerButton = componentsPage.page.locator('#trigger-button-shadow');
+      await expect(triggerButton.locator('mdc-icon')).toBeVisible();
+
+      await triggerButton.hover();
+      await expect(popover).toBeVisible();
+
+      const relatedTarget = await triggerButton.locator('mdc-icon').elementHandle();
+      expect(relatedTarget).not.toBeNull();
+
+      await triggerButton.evaluate((trigger, target) => {
+        if (!target) return;
+
+        trigger.dispatchEvent(
+          new MouseEvent('mouseleave', {
+            bubbles: false,
+            composed: true,
+            relatedTarget: target,
+          }),
+        );
+      }, relatedTarget);
+
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).toBeVisible();
+
+      await triggerButton.evaluate(trigger => {
+        trigger.dispatchEvent(
+          new MouseEvent('mouseleave', {
+            bubbles: false,
+            composed: true,
+            relatedTarget: document.body,
+          }),
+        );
+      });
+
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).not.toBeVisible();
+    });
+
     await test.step('should keep popover open when mouse moves between trigger and popover', async () => {
       const ADJUSTMENT = 15;
       const placementsToTest = [
