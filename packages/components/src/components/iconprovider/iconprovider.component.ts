@@ -153,7 +153,7 @@ class IconProvider extends Provider<IconProviderContext> {
     }
   }
 
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (
       this.context.value.fileExtension !== this.fileExtension ||
       this.context.value.iconSet !== this.iconSet ||

@@ -278,7 +278,8 @@ class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = this.depthManager.popUntil(item => this.contains(item));
+    const allPopovers = this.getAllPopovers();
+    const popovers = this.depthManager.popUntil(item => allPopovers.includes(item));
 
     await Promise.all(popovers.map(popover => popover.updateComplete));
   }

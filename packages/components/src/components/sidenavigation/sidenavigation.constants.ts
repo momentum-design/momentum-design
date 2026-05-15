@@ -10,8 +10,14 @@ const VARIANTS = {
   HIDDEN: 'hidden',
 };
 
+const SUBMENU_TYPES = {
+  FLYOUT: 'flyout',
+  DROPDOWN: 'dropdown',
+};
+
 const DEFAULTS = {
   VARIANT: VARIANTS.FLEXIBLE,
+  SUBMENU_TYPE: SUBMENU_TYPES.FLYOUT,
 } as const;
 
-export { DEFAULTS, VARIANTS, TAG_NAME };
+export { DEFAULTS, VARIANTS, SUBMENU_TYPES, TAG_NAME };

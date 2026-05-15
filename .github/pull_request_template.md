@@ -17,6 +17,6 @@ NOTE: Pull Requests from forked repositories will need to be "validated" by a Mo
 
 _Please replace this line with a description of the changes made in this Pull Request._
 
-### Links
+### Breaking Change
 
-_Please replace this line with relevant links to the changes made in this Pull Request._
+_Please replace this line with the details of the changes made in this Pull Request._

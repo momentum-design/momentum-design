@@ -6,31 +6,47 @@ import { v4 } from 'uuid';
 
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import MenuItem from '../menuitem/menuitem.component';
 import type { ListItemVariants } from '../listitem/listitem.types';
 import providerUtils from '../../utils/provider';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import type { TooltipType } from '../tooltip/tooltip.types';
 
 import type { BadgeType } from './navmenuitem.types';
-import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME } from './navmenuitem.constants';
+import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME, TAG_NAME as NAVMENUITEM_TAGNAME } from './navmenuitem.constants';
 import styles from './navmenuitem.styles';
 
 /**
- * `mdc-navmenuitem` is a menuitem styled to work as a navigation tab.
+ * `mdc-navmenuitem` is a menuitem role component that is styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * The navmenuitem can be in an active or inactive state, indicating whether it is currently selected.
+ * The navmenuitem can be used in various configurations to support different navigation patterns:
  *
- * Note: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
+ * 1. **Simple navmenuitem**:
+ *    - Contains text and optionally an icon and/or badge.
+ *    - Can be active or inactive.
+ *
+ * 2. **Navmenuitem in flyout submenu**:
+ *    - Contains a nested `mdc-menupopover` that serves as a flyout submenu.
+ *    - The flyout opens on hover or click (configurable) and contains additional navmenuitems.
+ *   - The parent navmenuitem gets `aria-haspopup="true"` to indicate it has a submenu, and the submenu gets `role="menu"` for accessibility.
+ *   - When any of the child navmenuitems in the flyout submenu is active, the parent navmenuitem also gets `active` styling to indicate it has an active child, but does not get `aria-current` set to avoid confusion for screen readers. Hovering on the parent navmenuitem in this state will show a tooltip (if `is-active-parent-tooltip-text` is provided) that indicates the parent has an active child, providing additional context to users.
+ *
+ * 3. **Navmenuitem in dropdown submenu**:
+ *   - Contains a sibling `div[data-trigger]` that serves as a dropdown submenu.
+ *   - The dropdown opens on click and contains additional navmenuitems.
+ *    - The parent navmenuitem gets `aria-expanded="true"` when the dropdown opens and `aria-expanded="false"` when closed for accessibility.
+ *    - When any of the child navmenuitems in the dropdown submenu is active, the parent navmenuitem also gets `active` styling only when the dropdown is closed to indicate it has an active child. When the dropdown is open, only the active child navmenuitem gets active styling to avoid confusion. Hovering on the parent navmenuitem in this state will show a tooltip (if `is-active-parent-tooltip-text` is provided) that indicates the parent has an active child, providing additional context to users.
+ *
+ * **Note**: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
- * the visual and functional requirements of side navigation layouts.
+ * the visual and functional requirements of side-navigation layouts.
  *
- * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the navmenuitem. This tooltip is useful when an active navmenuitem is present within a submenu of the sidenavigation component.
+ * When `tooltip-text` is set with appropriate text content, the component will render a tooltip on hover. The tooltip is particularly useful in scenarios where the sidenavigation is collapsed (showing only icons) or when an active navmenuitem is nested within a submenu, providing additional context to users about the navmenuitem's purpose or state.
  *
  * @tagname mdc-navmenuitem
  *
@@ -52,6 +68,7 @@ import styles from './navmenuitem.styles';
  * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-left - Left margin of the navmenuitem, when collapsed.
  * @cssproperty --mdc-navmenuitem-in-sidenav-collapsed-margin-right - Right margin of the navmenuitem, when collapsed.
  * @cssproperty --mdc-navmenuitem-color - Text color of the navmenuitem in its normal state.
+ * @cssproperty --mdc-navmenuitem-notch-color - Notch color of the navmenuitem (if applicable) when active.
  * @cssproperty --mdc-navmenuitem-disabled-color - Text color of the navmenuitem when disabled.
  * @cssproperty --mdc-navmenuitem-rest-active-background-color - Background color of the active nav item in its rest state.
  * @cssproperty --mdc-navmenuitem-hover-background-color - Background color of the navmenuitem when hovered.
@@ -65,7 +82,8 @@ import styles from './navmenuitem.styles';
  * @csspart badge - The badge of the navmenuitem.
  * @csspart icon-container - The container of the icon.
  * @csspart text-container - The container of the text.
- * @csspart trailing-arrow - The trailing arrow of the navmenuitem.
+ * @csspart trailing-arrow - The trailing arrow of the navmenuitem when it has a flyout menu.
+ * @csspart trailing-arrow-dropdown - The trailing arrow of the navmenuitem when it has a dropdown menu.
  */
 class NavMenuItem extends MenuItem {
   /**
@@ -217,6 +235,13 @@ class NavMenuItem extends MenuItem {
   public hasActiveChild: boolean = false;
 
   /**
+   * Tracks whether the dropdown submenu controlled by this navmenuitem is currently open.
+   * @internal
+   */
+  @state()
+  private dropdownOpen: boolean = false;
+
+  /**
    * @internal
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
@@ -236,6 +261,9 @@ class NavMenuItem extends MenuItem {
 
     // Set in-menupopover attribute if nested
     this.toggleAttribute('in-menupopover', this.isNested());
+
+    // Set in-dropdown-container attribute if inside a dropdown div
+    this.toggleAttribute('in-dropdown-container', this.isInsideDropdownContainer());
   }
 
   override disconnectedCallback(): void {
@@ -257,7 +285,8 @@ class NavMenuItem extends MenuItem {
     if (
       changedProperties.has('tooltipText') ||
       changedProperties.has('showLabel') ||
-      changedProperties.has('hasActiveChild')
+      changedProperties.has('hasActiveChild') ||
+      changedProperties.has('dropdownOpen')
     ) {
       this.renderDynamicTooltip();
     }
@@ -273,12 +302,38 @@ class NavMenuItem extends MenuItem {
     if (!context) return;
 
     // Determine expansion state
-    this.showLabel = this.isNested() ? true : context.expanded;
+    this.showLabel = this.isNested() || this.isInsideDropdownContainer() ? true : context.expanded;
+
+    // When sidenavigation collapses, close any open dropdown
+    if (!context.expanded && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+
+    // When dropdown submenu type is turned off, close any open dropdown
+    if (!context.isDropdownSubmenuType && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+
+    // In dropdown mode, manage parent active styling based on expanded state:
+    // Expanded + dropdown open: only the child should appear active, not the parent.
+    // Expanded + dropdown closed: parent should appear active when it has an active child.
+    // Collapsed (icon-only): parent should appear active when it has an active child.
+    if (context.isDropdownSubmenuType && this.hasActiveChild && context.isDropDownParent(this)) {
+      if (context.expanded && this.dropdownOpen) {
+        this.removeAttribute('active');
+        this.active = false;
+      } else {
+        this.setAttribute('active', '');
+        this.active = true;
+      }
+    }
   }
 
   private renderDynamicTooltip(): void {
     this.removeTooltip();
-
+    if (this.disabled || this.dropdownOpen) {
+      return;
+    }
     if (this.hasActiveChild && !this.isActiveParentTooltipText) {
       return;
     }
@@ -338,6 +393,21 @@ class NavMenuItem extends MenuItem {
   }
 
   /**
+   * Check whether the navmenuitem is inside a dropdown container (div[data-trigger]).
+   * @internal
+   */
+  private isInsideDropdownContainer(): boolean {
+    let parent = this.parentElement;
+    while (parent) {
+      if (parent.matches('div[data-trigger]')) {
+        return true;
+      }
+      parent = parent.parentElement;
+    }
+    return false;
+  }
+
+  /**
    * Dispatch the activechange event.
    * @internal
    * @param active - The active state of the navMenuItem.
@@ -351,8 +421,75 @@ class NavMenuItem extends MenuItem {
   };
 
   private handleClickEvent(): void {
-    if (this.disabled || this.cannotActivate) return;
+    if (this.disabled || this.cannotActivate || this.softDisabled) return;
+
+    const context = this.sideNavigationContext?.value;
+    if (context?.isDropdownSubmenuType && context?.expanded && context?.isDropDownParent(this)) {
+      this.toggleDropdown();
+      // move the focus to the first navmenuitem in the dropdown when opening the dropdown
+      if (this.dropdownOpen) {
+        const dropdownContainer = this.getDropdownContainer();
+        const firstNavMenuItem = dropdownContainer?.querySelector(NAVMENUITEM_TAGNAME) as HTMLElement | null;
+        firstNavMenuItem?.focus();
+      }
+      return;
+    }
+
     this.emitNavMenuItemActiveChange(this.active as boolean);
+  }
+
+  /**
+   * Toggles the visibility of the dropdown container associated with this navmenuitem.
+   * @internal
+   */
+  private toggleDropdown(): void {
+    const dropdownContainer = this.getDropdownContainer();
+    if (!dropdownContainer) return;
+
+    this.dropdownOpen = !this.dropdownOpen;
+    dropdownContainer.style.display = this.dropdownOpen ? 'flex' : 'none';
+    if (this.dropdownOpen) {
+      this.setAttribute('aria-expanded', 'true');
+    } else {
+      this.removeAttribute('aria-expanded');
+    }
+  }
+
+  /**
+   * Opens the dropdown if it is closed.
+   */
+  public openDropdown(): void {
+    if (this.dropdownOpen) return;
+
+    const dropdownContainer = this.getDropdownContainer();
+    if (dropdownContainer) {
+      dropdownContainer.style.display = 'flex';
+    }
+    this.dropdownOpen = true;
+    this.setAttribute('aria-expanded', 'true');
+  }
+
+  /**
+   * Closes the dropdown if it is open.
+   */
+  public closeDropdown(): void {
+    if (!this.dropdownOpen) return;
+
+    const dropdownContainer = this.getDropdownContainer();
+    if (dropdownContainer) {
+      dropdownContainer.style.display = 'none';
+    }
+    this.dropdownOpen = false;
+    this.removeAttribute('aria-expanded');
+  }
+
+  /**
+   * Returns the sibling div[data-trigger] element associated with this navmenuitem.
+   * @internal
+   */
+  private getDropdownContainer(): HTMLElement | null {
+    if (!this.id) return null;
+    return this.parentElement?.querySelector(`div[data-trigger="${this.id}"]`) as HTMLElement | null;
   }
 
   private getFilledIconName(): IconNames | undefined {
@@ -389,12 +526,23 @@ class NavMenuItem extends MenuItem {
 
   public override render() {
     const context = this.sideNavigationContext?.value;
+    const isDropdownMode = context?.isDropdownSubmenuType && context?.expanded;
+    const isDropDownParent = context?.isDropDownParent(this);
+    const hasFlyoutSibling = context?.hasSiblingWithTriggerId(this);
+
     return html`
       <div part="icon-container">
-        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="regular-icon"></mdc-icon>
-        ${!this.cannotActivate
+        ${this.iconName
           ? html`<mdc-icon
-              name="${this.getFilledIconName()}"
+              name="${this.iconName as IconNames}"
+              size="1.5"
+              length-unit="rem"
+              part="regular-icon"
+            ></mdc-icon>`
+          : nothing}
+        ${!this.cannotActivate && this.iconName
+          ? html`<mdc-icon
+              name="${this.getFilledIconName() as IconNames}"
               size="1.5"
               length-unit="rem"
               part="filled-icon"
@@ -414,7 +562,16 @@ class NavMenuItem extends MenuItem {
             ${this.renderBadge(this.showLabel)}
           `
         : nothing}
-      ${context?.hasSiblingWithTriggerId(this)
+      ${isDropdownMode && isDropDownParent
+        ? html` <mdc-icon
+            name=${ICON_NAME.DOWN_ARROW}
+            length-unit="rem"
+            part="trailing-arrow-dropdown"
+            class="${this.dropdownOpen ? 'arrow-rotated' : ''}"
+          >
+          </mdc-icon>`
+        : nothing}
+      ${hasFlyoutSibling
         ? html` <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow"> </mdc-icon>`
         : nothing}
     `;
