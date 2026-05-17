@@ -6,10 +6,14 @@ import type { OverflowMixinInterface } from './mixins/OverflowMixin';
  * Options for finding focusable elements.
  */
 type FindFocusableOptions = {
-  /** Elements to exclude from the search. */
+  /** Elements to include (and its subtree) in the search. */
+  includeElements?: HTMLElement[];
+  /** Elements to exclude (and its subtree) from the search. */
   excludedElements?: HTMLElement[];
   /** Selectors to include in the search. */
   includeSelectors?: string[];
+  /** Selectors to exclude from the search. */
+  excludeSelectors?: string[];
   /**
    * When true, elements with `tabindex="-1"` and their subtrees are excluded from the search.
    * This supports composite widget patterns (e.g., roving tabindex in lists) where
@@ -219,8 +223,9 @@ export const findFocusable = (
 
   const excludesSet = new Set(options?.excludedElements ?? []);
   const includeSelectors = options?.includeSelectors ?? [];
+  const excludeSelectors = options?.excludeSelectors ?? [];
   const stopAtNonTabbable = options?.stopAtNonTabbable ?? false;
-  const matches = new Set<HTMLElement>();
+  const matches = new Set<HTMLElement>(options.includeElements ?? []);
 
   const focusableCheck = (element: HTMLElement) => {
     if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
@@ -243,7 +248,7 @@ export const findFocusable = (
   };
 
   const finder = (root: ShadowRoot | HTMLElement) => {
-    if (excludesSet.has(root as HTMLElement)) {
+    if (excludesSet.has(root as HTMLElement) || (root instanceof HTMLElement && isMatchAny(root, excludeSelectors))) {
       return;
     }
     if (root instanceof HTMLElement && focusableCheck(root) === 'focusable') {
