@@ -228,7 +228,10 @@ export const findFocusable = (
   const matches = new Set<HTMLElement>(options.includeElements ?? []);
 
   const focusableCheck = (element: HTMLElement) => {
-    if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
+    if (
+      !(element instanceof HTMLSlotElement) &&
+      (isHidden(element) || isDisabled(element) || isMatchAny(element, excludeSelectors))
+    ) {
       return 'stop';
     }
     if (stopAtNonTabbable && !(element instanceof HTMLSlotElement) && element.getAttribute('tabindex') === '-1') {
