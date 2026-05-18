@@ -327,9 +327,9 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     await componentsPage.page.waitForTimeout(500);
 
     // Count live-region divs created by the textareas (unique per textarea)
-    const countBefore = await componentsPage.page.evaluate(() => {
-      return document.querySelectorAll('body > div[id^="mdc-el-"]').length;
-    });
+    const countBefore = await componentsPage.page.evaluate(
+      () => document.querySelectorAll('body > div[id^="mdc-el-"]').length,
+    );
 
     expect(countBefore).toBe(2);
 
@@ -341,9 +341,9 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     await componentsPage.page.waitForTimeout(200);
 
     // All live-region divs should be removed
-    const countAfter = await componentsPage.page.evaluate(() => {
-      return document.querySelectorAll('body > div[id^="mdc-el-"]').length;
-    });
+    const countAfter = await componentsPage.page.evaluate(
+      () => document.querySelectorAll('body > div[id^="mdc-el-"]').length,
+    );
 
     expect(countAfter).toBe(0);
   });
@@ -361,13 +361,13 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     });
 
     const wrapper = componentsPage.page.locator('#shared-wrapper');
-    await wrapper.waitFor();
+    await wrapper.waitFor({ state: 'attached' });
     await componentsPage.page.waitForTimeout(300);
 
     // The shared div should exist
-    const existsInitially = await componentsPage.page.evaluate(() => {
-      return document.getElementById('shared-cleanup-id') !== null;
-    });
+    const existsInitially = await componentsPage.page.evaluate(
+      () => document.getElementById('shared-cleanup-id') !== null,
+    );
     expect(existsInitially).toBe(true);
 
     // Remove first announcer - div should still exist
@@ -376,9 +376,9 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     });
     await componentsPage.page.waitForTimeout(100);
 
-    const existsAfterFirst = await componentsPage.page.evaluate(() => {
-      return document.getElementById('shared-cleanup-id') !== null;
-    });
+    const existsAfterFirst = await componentsPage.page.evaluate(
+      () => document.getElementById('shared-cleanup-id') !== null,
+    );
     expect(existsAfterFirst).toBe(true);
 
     // Remove second announcer - div should still exist
@@ -387,9 +387,9 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     });
     await componentsPage.page.waitForTimeout(100);
 
-    const existsAfterSecond = await componentsPage.page.evaluate(() => {
-      return document.getElementById('shared-cleanup-id') !== null;
-    });
+    const existsAfterSecond = await componentsPage.page.evaluate(
+      () => document.getElementById('shared-cleanup-id') !== null,
+    );
     expect(existsAfterSecond).toBe(true);
 
     // Remove last announcer - div should be removed
@@ -398,9 +398,9 @@ test('mdc-screenreaderannouncer - cleanup on disconnect', async ({ componentsPag
     });
     await componentsPage.page.waitForTimeout(100);
 
-    const existsAfterAll = await componentsPage.page.evaluate(() => {
-      return document.getElementById('shared-cleanup-id') !== null;
-    });
+    const existsAfterAll = await componentsPage.page.evaluate(
+      () => document.getElementById('shared-cleanup-id') !== null,
+    );
     expect(existsAfterAll).toBe(false);
   });
 });
