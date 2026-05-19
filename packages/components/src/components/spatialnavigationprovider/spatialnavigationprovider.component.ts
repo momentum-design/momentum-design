@@ -49,6 +49,9 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * Elements with `data-spatial-focusable` are treated as focusable even if they would otherwise not be
  * (e.g., `tabindex="-1"`).
  *
+ * Elements with `data-spatial-exclude` are excluded (with its subtree) from the navigation, even if they
+ * are focusable.
+ *
  * ### Overwrite next element
  *
  * Override automatic navigation by adding one of these attributes to a focusable element:
@@ -99,7 +102,8 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * | `data-spatial-right`   | element id  | N/A     | Focus this element when Right is pressed                                            |
  * | `data-spatial-down`    | element id  | N/A     | Focus this element when Down is pressed                                             |
  * | `data-spatial-go-back` | N/A         | N/A     | First focusable element with this attribute is clicked on Back/Escape               |
- * | `data-spatial-focusable` | N/A       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
+ * | `data-spatial-focusable` | N/A       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)       |
+ * | `data-spatial-exclude` | N/A         | N/A     | Exclude focusable element (and its subtree) from the navigation                     |
  *
  * ## Event emitting order
  *
@@ -378,6 +382,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
           ...findFocusable(el, {
             excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
             includeSelectors: ['[data-spatial-focusable]'],
+            excludeSelectors: ['[data-spatial-exclude]'],
           }),
         );
         const result = this.focusNextInFocusableAria(focusableElements, direction);
