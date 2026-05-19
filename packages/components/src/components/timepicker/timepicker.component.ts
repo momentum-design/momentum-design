@@ -9,10 +9,11 @@ import { KEYS } from '../../utils/keys';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
+import type { IconNames } from '../icon/icon.types';
 
 import { ARROW_ICON, DEFAULTS, TIME_FORMAT, TRIGGER_ID, LISTBOX_ID } from './timepicker.constants';
 import styles from './timepicker.styles';
-import type { Placement, TimeFormat } from './timepicker.types';
+import type { OptionLabelFormatter, Placement, TimeFormat } from './timepicker.types';
 
 /**
  * mdc-timepicker is a component that allows users to select a specific time
@@ -70,6 +71,7 @@ import type { Placement, TimeFormat } from './timepicker.types';
  * @csspart separator - The colon separator between spinbuttons.
  * @csspart period - The AM/PM period spinbutton.
  * @csspart icon-container - The dropdown arrow button container.
+ * @csspart leading-icon - The prefix icon element displayed before spinbuttons.
  * @csspart native-input - The hidden native input for form participation.
  * @csspart listbox - The dropdown list container.
  */
@@ -194,6 +196,20 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    */
   @property({ type: String, attribute: 'locale-pm-label' })
   localePmLabel = '';
+
+  /**
+   * The icon name to display as a prefix icon in the timepicker input.
+   */
+  @property({ type: String, reflect: true, attribute: 'prefix-icon' })
+  prefixIcon?: IconNames;
+
+  /**
+   * A callback function to format the label of each dropdown option.
+   * Receives the default label string and the 24h value string, and should return a formatted label.
+   * When not set, the default time formatting is used.
+   */
+  @property({ attribute: false })
+  optionLabelFormatter?: OptionLabelFormatter;
 
   /**
    * Accessible label for the dropdown toggle button.
@@ -875,7 +891,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     return options.map(
       option => html`
         <mdc-option
-          label="${option.label}"
+          label="${this.optionLabelFormatter ? this.optionLabelFormatter(option.label, option.value) : option.label}"
           ?selected="${option.value === currentValue}"
           aria-selected="${option.value === currentValue ? 'true' : 'false'}"
           @click="${() => this.handleOptionClick(option.value)}"
@@ -899,6 +915,9 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           @click="${this.handleBaseContainerClick}"
           @keydown="${this.handleBaseKeydown}"
         >
+          ${this.prefixIcon
+            ? html`<mdc-icon part="leading-icon" name="${this.prefixIcon}" size="1"></mdc-icon>`
+            : nothing}
           <div part="spinbutton-group">
             <input
               id="hours-spinbutton"
