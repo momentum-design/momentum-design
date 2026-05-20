@@ -243,6 +243,20 @@ class TabList extends ListNavigationMixin(
   }
 
   /**
+   * Override focus to delegate to the active tab.
+   * When a dialog focus-trap or any other caller invokes `.focus()` on the tablist host,
+   * focus is forwarded directly to the active tab instead of landing on the shadow host.
+   */
+  public override focus(options?: FocusOptions): void {
+    const activeTab = getActiveTab(this.navItems);
+    if (activeTab) {
+      activeTab.focus(options);
+    } else {
+      super.focus(options);
+    }
+  }
+
+  /**
    * When the tablist receives focus, then focus the active tab.
    *
    * @param event - Focus event.
@@ -251,7 +265,8 @@ class TabList extends ListNavigationMixin(
   private async handleFocus(event: FocusEvent) {
     /**
      * If the element losing focus is a tab, do nothing.
-     * If the element gaining focus is not a tab, do nothing.
+     * If the element gaining focus is not a tab or the container itself (e.g., via delegatesFocus
+     * or a click on the container), do nothing — the focus() override handles the programmatic case.
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
      */
     if (event.relatedTarget instanceof Tab || !(event.target instanceof Tab)) {
@@ -418,6 +433,8 @@ class TabList extends ListNavigationMixin(
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default TabList;

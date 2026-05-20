@@ -207,6 +207,21 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(waitForChange).toEventEmitted();
     });
 
+    await test.step('focus using JavaScript focus() method delegates to active tab', async () => {
+      await setup({ componentsPage });
+
+      // Programmatically focus the tablist host element
+      await mdcTablist.evaluate((el: HTMLElement) => el.focus());
+
+      // With delegatesFocus: true, focus should delegate to the active tab in the slot
+      const isFocused = await mdcTablist.evaluate(el => {
+        const activeTab = el.querySelector('mdc-tab[active]');
+        return activeTab !== null && document.activeElement === activeTab;
+      });
+
+      expect(isFocused).toBe(true);
+    });
+
     await test.step('spatial navigation', async () => {
       await setup({ componentsPage });
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });

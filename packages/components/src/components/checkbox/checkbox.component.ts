@@ -58,6 +58,8 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart checkbox-input - The native checkbox input element that provides the interactive functionality.
  * @csspart text-container - The container for the label and helper text elements.
  * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
+ *
+ * @cssstate checked - Active when the checkbox is checked.
  */
 class Checkbox
   extends KeyDownHandledMixin(
@@ -213,6 +215,11 @@ class Checkbox
 
     if (changedProperties.has('checked')) {
       this.setFormValue();
+      if (this.checked) {
+        this.internals.states.add('checked');
+      } else {
+        this.internals.states.delete('checked');
+      }
     }
   }
 

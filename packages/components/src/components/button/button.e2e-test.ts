@@ -5,7 +5,14 @@ import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 
-import { BUTTON_COLORS, BUTTON_VARIANTS, DEFAULTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
+import {
+  BUTTON_COLORS,
+  BUTTON_VARIANTS,
+  DEFAULTS,
+  ICON_BUTTON_SIZES,
+  PILL_BUTTON_SIZES,
+  TERTIARY_BUTTON_COLORS,
+} from './button.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -280,7 +287,7 @@ test.describe.parallel('mdc-button', () => {
       await commonMount();
       // tertiary
       buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // disabled
       buttonSheet.setAttributes({ disabled: '' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -303,7 +310,7 @@ test.describe.parallel('mdc-button', () => {
       });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // active disabled
       buttonSheet.setAttributes({ active: '', disabled: '' });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
@@ -342,7 +349,7 @@ test.describe.parallel('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'prefix-icon': 'placeholder-light',
       });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // disabled
       buttonSheet.setAttributes({ disabled: '', 'prefix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -373,7 +380,7 @@ test.describe.parallel('mdc-button', () => {
       });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // active disabled
       buttonSheet.setAttributes({ active: '', disabled: '', 'prefix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
@@ -412,7 +419,7 @@ test.describe.parallel('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'postfix-icon': 'placeholder-light',
       });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // disabled
       buttonSheet.setAttributes({ disabled: '', 'postfix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -443,7 +450,7 @@ test.describe.parallel('mdc-button', () => {
       });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // active disabled
       buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
@@ -486,7 +493,7 @@ test.describe.parallel('mdc-button', () => {
 
       // tertiary
       buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
 
       // disabled
       buttonSheet.setAttributes({ disabled: '' });
@@ -518,7 +525,7 @@ test.describe.parallel('mdc-button', () => {
 
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
-      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
 
       // active disabled
       buttonSheet.setAttributes({ active: '', disabled: '' });
@@ -553,7 +560,7 @@ test.describe.parallel('mdc-button', () => {
         variant: BUTTON_VARIANTS.TERTIARY,
         'aria-label': 'icon-button',
       });
-      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // disabled
       buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
       await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -587,7 +594,7 @@ test.describe.parallel('mdc-button', () => {
         'prefix-icon': 'placeholder-light',
         'aria-label': 'icon-button',
       });
-      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
+      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
       // active disabled
       buttonSheet.setAttributes({
         active: '',

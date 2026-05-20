@@ -15,6 +15,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -960,6 +961,17 @@ class Popover
    */
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+
+    // When the trigger contains shadow DOM children (e.g. an icon with internal SVG elements),
+    // mouseleave fires on internal elements as the mouse moves between them.
+    // Only close if the mouse has actually left the trigger element.
+    const mouseEvent = event as MouseEvent;
+    const { triggerElement } = this;
+    if (triggerElement && mouseEvent.relatedTarget instanceof Element) {
+      if (getHostComposePath(mouseEvent.relatedTarget).includes(triggerElement)) {
+        return;
+      }
+    }
 
     this.isHovered = false;
     this.startCloseDelay();
