@@ -8,7 +8,7 @@ import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE } from '../text/text.constants';
 import type { TagName } from '../text/text.types';
-import type Text from '../text/index';
+import { hasOverflowMixin } from '../../utils/dom';
 
 import { DEFAULTS } from './toast.constants';
 import { getIconNameForVariant } from './toast.utils';
@@ -59,7 +59,7 @@ class Toast extends FooterMixin(Component) {
    * Reference to the header text element
    * @internal
    */
-  @query("[part='toast-header']") private headerTextElement!: Text;
+  @query("[part='toast-header']") private headerTextElement!: HTMLElement;
 
   /**
    * Type of toast
@@ -170,7 +170,9 @@ class Toast extends FooterMixin(Component) {
     this.updateDetailedSlotPresence();
 
     await this.updateComplete;
-    this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
+    if (hasOverflowMixin(this.headerTextElement)) {
+      this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
+    }
   }
 
   protected renderIcon(iconName: string) {
