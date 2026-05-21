@@ -366,3 +366,105 @@ export const VerticalLayout: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+export const WithPrefixIcon: StoryObj = {
+  render: () => html`
+    <mdc-timepicker
+      label="Start time"
+      value="08:30"
+      time-format="12h"
+      prefix-icon="recents-bold"
+      locale-hours-label="hours"
+      locale-minutes-label="minutes"
+      locale-period-label="period"
+      locale-hours-placeholder="hh"
+      locale-minutes-placeholder="mm"
+      locale-period-placeholder="--"
+      locale-am-label="AM"
+      locale-pm-label="PM"
+      locale-show-time-picker-label="Show time picker"
+      locale-time-options-label="Time options"
+      locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
+    ></mdc-timepicker>
+  `,
+  ...hideAllControls(),
+};
+
+export const WithOptionLabelFormatter: StoryObj = {
+  render: () => {
+    const startTime = '08:30';
+    const formatter = (label: string, value: string) => {
+      const [startH, startM] = startTime.split(':').map(Number);
+      const [h, m] = value.split(':').map(Number);
+      const diffMinutes = h * 60 + m - (startH * 60 + startM);
+      if (diffMinutes <= 0) return label;
+      const hours = Math.floor(diffMinutes / 60);
+      const mins = diffMinutes % 60;
+      const duration = hours > 0 ? `${hours}h ${mins > 0 ? `${mins}m` : ''}`.trim() : `${mins}m`;
+      return `${label} (${duration})`;
+    };
+
+    return html`
+      <mdc-timepicker
+        label="End time"
+        value="09:00"
+        time-format="12h"
+        min="08:30"
+        max="17:00"
+        .optionLabelFormatter="${formatter}"
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
+      ></mdc-timepicker>
+    `;
+  },
+  ...hideAllControls(),
+};
+
+export const WithPrefixIconAndFormatter: StoryObj = {
+  render: () => {
+    const startTime = '08:30';
+    const formatter = (label: string, value: string) => {
+      const [startH, startM] = startTime.split(':').map(Number);
+      const [h, m] = value.split(':').map(Number);
+      const diffMinutes = h * 60 + m - (startH * 60 + startM);
+      if (diffMinutes <= 0) return label;
+      const hours = Math.floor(diffMinutes / 60);
+      const mins = diffMinutes % 60;
+      const duration = hours > 0 ? `${hours}h ${mins > 0 ? `${mins}m` : ''}`.trim() : `${mins}m`;
+      return `${label} (${duration})`;
+    };
+
+    return html`
+      <mdc-timepicker
+        label="End time"
+        value="09:00"
+        time-format="12h"
+        min="08:30"
+        max="17:00"
+        prefix-icon="recents-bold"
+        .optionLabelFormatter="${formatter}"
+        locale-hours-label="hours"
+        locale-minutes-label="minutes"
+        locale-period-label="period"
+        locale-hours-placeholder="hh"
+        locale-minutes-placeholder="mm"
+        locale-period-placeholder="--"
+        locale-am-label="AM"
+        locale-pm-label="PM"
+        locale-show-time-picker-label="Show time picker"
+        locale-time-options-label="Time options"
+        locale-spinbutton-description="To set value, use the up/down arrow keys or type a value"
+      ></mdc-timepicker>
+    `;
+  },
+  ...hideAllControls(),
+};

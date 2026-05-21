@@ -17,6 +17,7 @@ type SetupOptions = {
   min?: string;
   max?: string;
   width?: string;
+  prefixIcon?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -36,6 +37,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
         ${restArgs.min ? `min="${restArgs.min}"` : ''}
         ${restArgs.max ? `max="${restArgs.max}"` : ''}
+        ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
         ${restArgs.width ? `style="--mdc-timepicker-width: ${restArgs.width};"` : ''}
         locale-hours-label="hours"
         locale-minutes-label="minutes"
@@ -754,6 +756,99 @@ test.describe('mdc-timepicker', () => {
       await test.step('error state', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-timepicker-error');
       });
+    });
+  });
+
+  test.describe('prefix-icon', () => {
+    test('should render prefix icon in the input container', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        timeFormat: '12h',
+        prefixIcon: 'recents-bold',
+      });
+
+      const prefixIcon = timepicker.locator('mdc-icon[part="leading-icon"]');
+      await expect(prefixIcon).toBeVisible();
+      await expect(prefixIcon).toHaveAttribute('name', 'recents-bold');
+    });
+
+    test('should not render prefix icon when not configured', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        timeFormat: '12h',
+      });
+
+      const prefixIcon = timepicker.locator('mdc-icon[part="leading-icon"]');
+      await expect(prefixIcon).toHaveCount(0);
+    });
+  });
+
+  test.describe('optionLabelFormatter', () => {
+    test('should use custom formatter for option labels', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'End time',
+        value: '09:00',
+        timeFormat: '12h',
+        min: '08:30',
+        max: '10:00',
+      });
+
+      // Set the optionLabelFormatter via JS property
+      await timepicker.evaluate(async (el: any) => {
+        Object.assign(el, { optionLabelFormatter: (label: string) => `${label} (custom)` });
+        await el.updateComplete;
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const firstOption = timepicker.locator('mdc-option').first();
+      await expect(firstOption).toHaveAttribute('label', '8:30 AM (custom)');
+    });
+
+    test('should use default labels when formatter is not set', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'Start time',
+        value: '08:30',
+        timeFormat: '12h',
+        min: '08:00',
+        max: '09:00',
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const firstOption = timepicker.locator('mdc-option').first();
+      await expect(firstOption).toHaveAttribute('label', '8:00 AM');
+    });
+
+    test('should receive both label and value in formatter callback', async ({ componentsPage }) => {
+      const timepicker = await setup({
+        componentsPage,
+        label: 'End time',
+        value: '09:00',
+        timeFormat: '12h',
+        min: '09:00',
+        max: '10:00',
+      });
+
+      // Set formatter that includes the 24h value in the label
+      await timepicker.evaluate(async (el: any) => {
+        Object.assign(el, { optionLabelFormatter: (label: string, value: string) => `${label} [${value}]` });
+        await el.updateComplete;
+      });
+
+      const dropdownButton = timepicker.locator('mdc-button[part="icon-container"]');
+      await dropdownButton.click();
+
+      const firstOption = timepicker.locator('mdc-option').first();
+      await expect(firstOption).toHaveAttribute('label', '9:00 AM [09:00]');
     });
   });
 });
