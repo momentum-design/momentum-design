@@ -32,8 +32,7 @@ export const OverflowMixin = <T extends Constructor<LitElement>>(superClass: T) 
     }
 
     public isHeightOverflowing(): boolean {
-      const el = this.overflowElement;
-      return el.scrollHeight > el.clientHeight;
+      return this.scrollHeight > this.clientHeight;
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
