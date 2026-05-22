@@ -438,6 +438,39 @@ test.describe('Toast Feature Scenarios', () => {
       });
     });
 
+    await test.step('Clamped Title', async () => {
+      for (const [title, headerTagName] of Object.entries(VALID_TEXT_TAGS)) {
+        await test.step(`Short title does not show toggle button (${title})`, async () => {
+          const toast = await setup({
+            componentsPage,
+            headerText: 'This is a short title',
+            headerTagName,
+            closeButtonAriaLabel: 'Close toast',
+            showMoreText: SHOW_MORE_TEXT,
+            showLessText: SHOW_LESS_TEXT,
+          });
+
+          const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+          await expect(toggleBtn).not.toBeVisible();
+        });
+
+        await test.step(`Long title does not show toggle button (${title})`, async () => {
+          const toast = await setup({
+            componentsPage,
+            headerText:
+              'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
+            headerTagName,
+            closeButtonAriaLabel: 'Close toast',
+            showMoreText: SHOW_MORE_TEXT,
+            showLessText: SHOW_LESS_TEXT,
+          });
+
+          const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+          await expect(toggleBtn).toBeVisible();
+        });
+      }
+    });
+
     await test.step('User expands/collapses toast title with keyboard', async () => {
       const toast = await setup({
         componentsPage,
