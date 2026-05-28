@@ -68,28 +68,29 @@ export function buildAnimationOutput(
     return t ? String(t.value) : value;
   });
 
-  dictionary.allTokens.forEach((token) => {
-    const tokenType = token.original.type as string;
-    if (!ANIMATION_TYPES.has(tokenType)) return;
+  dictionary.allTokens
+    .filter((token) => ANIMATION_TYPES.has(token.original.type))
+    .forEach((token) => {
+      const tokenType = token.original.type as string;
 
-    const kebab = toKebabCase(token.path.at(-1) as string);
-    const resolvedValue = String(token.value);
+      const kebab = toKebabCase(token.path.at(-1) as string);
+      const resolvedValue = String(token.value);
 
-    if (tokenType === 'transition' || tokenType === 'transitionCompound') {
-      variableLines.push(makeTransitionLine(kebab, resolvedValue));
-    } else if (tokenType === 'keyframe') {
-      const kfName = `mds-animation-${kebab}`;
-      const keyframes = (token.original.keyframes ?? []) as KeyframeEntry[];
-      keyframes.forEach(({ from, to }) => {
-        validateRefs(from, validRefs, `${token.path.join('.')}.from`);
-        validateRefs(to, validRefs, `${token.path.join('.')}.to`);
-      });
-      keyframeBlocks.push(buildKeyframeBlock(kfName, keyframes, resolveValue));
-      variableLines.push(makeAnimationLine(kebab, resolvedValue));
-    } else if (tokenType === 'keyframeCompound') {
-      variableLines.push(makeAnimationLine(kebab, resolvedValue));
-    }
-  });
+      if (tokenType === 'transition' || tokenType === 'transitionCompound') {
+        variableLines.push(makeTransitionLine(kebab, resolvedValue));
+      } else if (tokenType === 'keyframe') {
+        const kfName = `mds-animation-${kebab}`;
+        const keyframes = (token.original.keyframes ?? []) as KeyframeEntry[];
+        keyframes.forEach(({ from, to }) => {
+          validateRefs(from, validRefs, `${token.path.join('.')}.from`);
+          validateRefs(to, validRefs, `${token.path.join('.')}.to`);
+        });
+        keyframeBlocks.push(buildKeyframeBlock(kfName, keyframes, resolveValue));
+        variableLines.push(makeAnimationLine(kebab, resolvedValue));
+      } else if (tokenType === 'keyframeCompound') {
+        variableLines.push(makeAnimationLine(kebab, resolvedValue));
+      }
+    });
 
   const header = '/**\n * Do not edit directly\n */';
   const keyframesSection = keyframeBlocks.join('\n\n');

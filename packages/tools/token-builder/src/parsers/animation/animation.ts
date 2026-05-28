@@ -9,10 +9,10 @@ const ANIMATION_FILE_PATTERN = /motion[/\\\\]animation\.json$/;
 type AnimationTransition = {
   type: 'transition';
   description: string;
-  properties?: string[];
-  duration?: string;
-  easing?: string;
-  delay?: string;
+  properties: string[];
+  duration: string;
+  easing: string;
+  delay: string;
 };
 
 type AnimationKeyframeEntry = {
@@ -24,26 +24,26 @@ type AnimationKeyframeEntry = {
 type AnimationKeyframe = {
   type: 'keyframe';
   description: string;
-  duration?: string;
-  easing?: string;
-  delay?: string;
-  keyframes?: AnimationKeyframeEntry[];
-  iterationCount?: 'infinite' | number;
-  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+  duration: string;
+  easing: string;
+  delay: string;
+  keyframes: AnimationKeyframeEntry[];
+  iterationCount: 'infinite' | number;
+  fillMode: 'none' | 'forwards' | 'backwards' | 'both';
 };
 
 type AnimationTransitionCompound = {
   type: 'transitionCompound';
   description: string;
-  animations?: string[];
+  animations: string[];
   composition: 'parallel' | 'sequential';
 };
 
 type AnimationKeyframeCompound = {
   type: 'keyframeCompound';
   description: string;
-  animations?: string[];
-  composition?: 'parallel' | 'sequential';
+  animations: string[];
+  composition: 'parallel' | 'sequential';
 };
 
 type AnimationToken =
@@ -55,9 +55,7 @@ type AnimationToken =
 type AnimationFile = { animation: Record<string, AnimationToken> };
 
 function buildTransitionValue(token: AnimationTransition): string {
-  return (token.properties ?? [])
-    .map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`)
-    .join(', ');
+  return (token.properties ?? []).map((prop) => `${prop} ${token.duration} ${token.easing} ${token.delay}`).join(', ');
 }
 
 function buildKeyframeValue(
