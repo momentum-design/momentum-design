@@ -17,3 +17,14 @@ export default meta;
 export const Example: StoryObj = spatialNavigationStoryWrapper({
   render: () => html` <mdc-avatarbutton initials="MD"></mdc-avatarbutton> `,
 });
+
+export const WithExclude: StoryObj = spatialNavigationStoryWrapper({
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar button is excluded from spatial navigation using `data-spatial-exclude` attribute.',
+      },
+    },
+  },
+  render: () => html` <mdc-avatarbutton data-spatial-exclude initials="MD"></mdc-avatarbutton> `,
+});

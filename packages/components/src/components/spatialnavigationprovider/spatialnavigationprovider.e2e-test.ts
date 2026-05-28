@@ -390,7 +390,22 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
       await keyboard.press('ArrowDown');
       await expect(locators.btn1).toBeFocused();
 
-      // skip btn2 and focus btn3
+      // skip btn4 and focus btn7
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn7).toBeFocused();
+    });
+
+    await test.step('data-spatial-exclude make element not navigable', async () => {
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
+
+      await componentsPage.setAttributes(locators.btn4, { 'data-spatial-exclude': '' });
+
+      // initial focus on btn1
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn1).toBeFocused();
+
+      // skip btn4 and focus btn7
       await keyboard.press('ArrowDown');
       await expect(locators.btn7).toBeFocused();
     });
