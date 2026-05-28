@@ -527,6 +527,14 @@ class Popover
   /** @internal */
   private floatingUICleanupFunction: (() => void) | null = null;
 
+  /**
+   * Tracks the element currently bound to the mouseenter/mouseleave hover listeners.
+   * Required so `removeTriggerListeners` always detaches from the same element it attached to,
+   * even if `triggerElement` has since been swapped or moved.
+   * @internal
+   */
+  private hoverListenerTarget: HTMLElement | null = null;
+
   /** @internal */
   protected shouldSuppressOpening: boolean = false;
 
@@ -586,15 +594,29 @@ class Popover
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
 
+    // Safety net: if the trigger was not in the DOM at connectedCallback time, the mouseenter
+    // listener will not have been attached. By firstUpdated, sibling rendering in the same Lit
+    // batch is normally complete, so try once more. Idempotency in setupTriggerListeners makes
+    // this safe to call even if the listener is already bound.
+    if (this.trigger.includes('mouseenter') && !this.hoverListenerTarget) {
+      this.setupTriggerListeners();
+    }
+
     PopoverEventManager.onCreatedPopover(this);
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
 
-    this.utils.setupAppendTo();
-
+    // setupTriggerListeners must run BEFORE setupAppendTo: the trigger lookup uses
+    // getRootNode().querySelector(...), which is reliable while the popover still shares a root
+    // with its siblings. After setupAppendTo moves the popover to <body>, getRootNode() becomes
+    // `document` and shadow-DOM-nested triggers become unfindable. The disconnect/reconnect cycle
+    // that setupAppendTo's appendChild triggers is safely handled by setupTriggerListeners'
+    // idempotency guard (it no-ops if already bound to the current triggerElement).
     this.setupTriggerListeners();
+
+    this.utils.setupAppendTo();
   }
 
   override async disconnectedCallback() {
@@ -622,8 +644,19 @@ class Popover
    * Sets up the trigger related event listeners, based on the trigger type.
    * Includes fallback for mouseenter trigger to also handle focusin for non-interactive popovers.
    *
-   * We are using capture phase for to make sure we capture trigger events even when they are not propagated during the
-   * bubble phase (e.g.: buttons in list item)
+   * We use capture phase for click/focusin/focusout listeners (which remain on `document`) to make
+   * sure we capture trigger events even when they are not propagated during the bubble phase (e.g.:
+   * buttons in list item).
+   *
+   * mouseenter/mouseleave are bound directly to the trigger element rather than to `document`,
+   * because those events are spec'd as `composed: false` and would not reach a document-level
+   * listener when the trigger lives inside a shadow root (e.g. wrapped in `mdc-iconprovider` or
+   * `mdc-themeprovider`). Direct binding also makes capture vs bubble irrelevant for these
+   * non-bubbling events.
+   *
+   * This method is idempotent: if the hover listeners are already bound to the current
+   * `triggerElement`, the mouseenter branch no-ops. This protects against double-binding when
+   * `connectedCallback`, `firstUpdated`, and the `updated()` rebind paths overlap.
    * @internal
    */
   private setupTriggerListeners = () => {
@@ -636,10 +669,22 @@ class Popover
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
       hoverBridge?.addEventListener('mouseenter', this.show);
-      document.addEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-      document.addEventListener('mouseleave', this.handleMouseLeave, { capture: true });
       this.addEventListener('mouseenter', this.cancelCloseDelay);
       this.addEventListener('mouseleave', this.startCloseDelay);
+
+      const currentTrigger = this.triggerElement;
+      if (currentTrigger && this.hoverListenerTarget !== currentTrigger) {
+        // Detach from any stale target before re-binding (e.g. trigger swapped).
+        if (this.hoverListenerTarget) {
+          this.hoverListenerTarget.removeEventListener('mouseenter', this.handleMouseEnter);
+          this.hoverListenerTarget.removeEventListener('mouseleave', this.handleMouseLeave);
+        }
+        currentTrigger.addEventListener('mouseenter', this.handleMouseEnter);
+        currentTrigger.addEventListener('mouseleave', this.handleMouseLeave);
+        this.hoverListenerTarget = currentTrigger;
+      }
+      // If currentTrigger is null, skip silently — firstUpdated or the opportunistic updated()
+      // rebind will pick it up once the trigger appears.
     }
     if (this.trigger.includes('focusin')) {
       document.addEventListener('focusin', this.handleFocusIn, { capture: true });
@@ -659,8 +704,11 @@ class Popover
     // mouseenter trigger
     const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
     hoverBridge?.removeEventListener('mouseenter', this.show);
-    document.removeEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-    document.removeEventListener('mouseleave', this.handleMouseLeave, { capture: true });
+    if (this.hoverListenerTarget) {
+      this.hoverListenerTarget.removeEventListener('mouseenter', this.handleMouseEnter);
+      this.hoverListenerTarget.removeEventListener('mouseleave', this.handleMouseLeave);
+      this.hoverListenerTarget = null;
+    }
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
@@ -701,6 +749,12 @@ class Popover
 
     if (changedProperties.has('trigger')) {
       this.parseTrigger();
+      this.removeTriggerListeners();
+      this.setupTriggerListeners();
+    } else if (changedProperties.has('triggerID')) {
+      // triggerID changed but trigger type didn't — rebind hover (and other trigger-bound) listeners
+      // to the new trigger element. With document-level listeners this was unnecessary; with
+      // element-level binding we must explicitly re-target.
       this.removeTriggerListeners();
       this.setupTriggerListeners();
     }
@@ -766,6 +820,14 @@ class Popover
       } else if (this.preventScroll && this.visible) {
         this.activatePreventScroll();
       }
+    }
+
+    // Opportunistic hover-listener rebind: covers the case where a parent component renders the
+    // popover in one commit and the trigger element in a later one. If the mouseenter trigger is
+    // active but no element listener is currently bound, try to attach now. setupTriggerListeners
+    // is idempotent and a no-op if the trigger is still missing.
+    if (this.trigger.includes('mouseenter') && !this.hoverListenerTarget && this.triggerElement) {
+      this.setupTriggerListeners();
     }
   }
 
