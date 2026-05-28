@@ -1,0 +1,39 @@
+{
+  "component": {
+    "mdc-button": [
+      {
+        "part": ":host",
+        "state": ["hover"],
+        "animation": "buttonHover"
+      },
+      {
+        "part": ":host",
+        "state": ["active"],
+        "animation": "buttonPress"
+      },
+      {
+        "part": ":host",
+        "state": ["focus-visible"],
+        "animation": "buttonFocusRing"
+      }
+    ],
+    "mdc-checkbox": [
+      {
+        "part": ":host",
+        "state": [":noState"],
+        "animation": "checkboxDefault"
+      },
+      {
+        "part": ":host",
+        "state": ["checked"],
+        "animation": "checkboxChecked"
+      },
+      {
+        "part": "static-checkbox",
+        "state": ["checked"],
+        "animation": "checkboxCheckedIcon"
+      }
+    ]
+  }
+}
+
