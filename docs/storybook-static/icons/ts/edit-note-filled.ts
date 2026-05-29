@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="edit-note-filled" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 4s1 0 1 1-1 1-1 1H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8s0-1 1-1 1 1 1 1v8l-.005.206a4 4 0 0 1-3.789 3.79L24 28H8a4 4 0 0 1-3.995-3.794L4 24V8a4 4 0 0 1 4-4zM25.525 4a2.476 2.476 0 0 1 1.75 4.225l-9.604 9.603a.58.58 0 0 1-.412.172h-2.676a.583.583 0 0 1-.583-.583v-2.676a.58.58 0 0 1 .17-.412l9.605-9.604A2.48 2.48 0 0 1 25.525 4"/></svg>`;
+
+export default icon;
