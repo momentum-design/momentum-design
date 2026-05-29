@@ -14,7 +14,7 @@
     "build:typography": "md-token-builder --config ./config/tokens/typography.json --input ./src --output ./dist",
     "build:elevation": "md-token-builder --config ./config/tokens/elevation.json --input ./src --output ./dist",
     "build:motion": "md-token-builder --config ./config/tokens/motion.json --input ./src --output ./dist",
-    "build:animation": "node ./scripts/build-animation-motion-css.js",
+    "build:animation": "md-token-builder --config ./config/tokens/animation.json --input ./src --output ./dist",
     "build:additionalthemes": "md-token-builder --config ./config/tokens/additional-themes.json --input ./src --output ./dist",
     "build:components": "node ./scripts/build-components-css.js",
     "clean": "yarn clean:dist",
@@ -33,7 +33,6 @@
     "@momentum-design/token-builder": "workspace:^",
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
-    "lodash": "^4.17.21",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.4"
   }
