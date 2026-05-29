@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://momentum-design/config/knowledge-base/index.schema.json",
+  "title": "Knowledge Base Index",
+  "description": "Repo-wide generated index of every knowledge-base topic file. Produced by scripts/knowledge-base/generate-index.js. Per-field constraints (title, summary, status, tier, owner, canonical, component) are sourced from config/knowledge-base/frontmatter.config.json so the index and the frontmatter contract cannot drift.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generatedFrom",
+    "topics"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "_comment": {
+      "type": "string"
+    },
+    "generatedFrom": {
+      "type": "string",
+      "description": "Repo-relative path to the generator script."
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/topic"
+      }
+    }
+  },
+  "definitions": {
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tier",
+        "path",
+        "title",
+        "summary",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable, path-derived identifier in the form tier<n>/<repo-relative-path-without-extension>."
+        },
+        "path": {
+          "type": "string",
+          "description": "Repo-relative path to the topic markdown file."
+        },
+        "canonical": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Repo-relative path to the canonical topic file when this entry is a cross-tier stub. Null otherwise."
+        },
+        "tier": {
+          "$ref": "./frontmatter.config.json#/default/properties/tier"
+        },
+        "title": {
+          "$ref": "./frontmatter.config.json#/default/properties/title"
+        },
+        "summary": {
+          "$ref": "./frontmatter.config.json#/default/properties/summary"
+        },
+        "status": {
+          "$ref": "./frontmatter.config.json#/default/properties/status"
+        },
+        "owner": {
+          "$ref": "./frontmatter.config.json#/default/properties/owner"
+        },
+        "component": {
+          "$ref": "./frontmatter.config.json#/tiers/3/properties/component"
+        }
+      }
+    }
+  }
+}

@@ -19,12 +19,11 @@ Package-specific implementation details, conventions, and workflows must live in
 
 ## Knowledge Base Capture
 
-All knowledge base content **must follow the [Knowledge Base Schema](KNOWLEDGE_BASE_SCHEMA.md)**.
+All knowledge base content **must follow the [Knowledge Base Schema](config/knowledge-base/SCHEMA.md)**.
 
 - When a user asks a question that produces a repeatable answer, ask whether they want it saved to the knowledge base.
-- Question-and-answer captures should be concise, reusable, and frontmatter-based where relevant.
+- To **add or update** any knowledge-base topic, follow the [`contributing-to-knowledge-base` skill](.github/skills/contributing-to-knowledge-base/SKILL.md). The skill owns the step-by-step workflow; the schema owns the structural rules it enforces.
 - Do not duplicate knowledge — each topic has exactly one canonical location. Other levels link to it.
-- Refer to [KNOWLEDGE_BASE_SCHEMA.md](KNOWLEDGE_BASE_SCHEMA.md) to determine the correct tier and location for any new knowledge base entry.
 
 ## Monorepo Scope
 
@@ -74,13 +73,6 @@ Run commands from repo root.
 - Build docs entry points: yarn docs:build
 
 When possible, run targeted package scripts instead of broad repo-wide commands during iteration.
-
-## Working Across Packages
-
-- Prefer package-targeted scripts for local development speed and lower CI churn.
-- Keep changes scoped to the minimum set of packages required for the task.
-- Avoid introducing package-specific conventions into this root file.
-- When behavior differs by package, document it in that package's AGENTS.md.
 
 ## Dependency and Version Hygiene
 
