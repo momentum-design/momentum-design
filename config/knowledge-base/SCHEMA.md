@@ -67,7 +67,7 @@ source:
 packages/components/src/components/<component>/knowledge-base/<topic>.md
 ```
 
-**Tier 3 topic names are constrained.** The canonical list of allowed Tier 3
+**Iron Law**: Tier 3 topic names are constrained. The canonical list of allowed Tier 3
 topic file names — and the scope of each — lives in
 [`topic-constraints.config.json`](./topic-constraints.config.json) and is enforced by the index
 generator. Consult that file for the authoritative names and descriptions;
@@ -109,7 +109,7 @@ from the frontmatter of every topic file across all tiers. Do not hand-edit
 it; the file carries a `generatedFrom` field and is validated against
 [`config/knowledge-base/index.schema.json`](./index.schema.json).
 
-Agents should consume the index as the single discovery entry point:
+**Golden Rule**: Agents should consume the index as the single discovery entry point:
 
 1. Read `knowledge-base/index.json`.
 2. Filter by `tier`, `owner`, `status`, or `component`.
