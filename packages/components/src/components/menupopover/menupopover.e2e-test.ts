@@ -861,6 +861,61 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(triggerElement).toBeFocused();
         await expect(menuItemRadio).toHaveAttribute('aria-checked', 'true');
       });
+
+      await test.step('prevent menu navigation', async () => {
+        const { triggerElement } = await setup({
+          componentsPage,
+          html: `
+          <div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem id="menu-item-1" data-spatial-up="" data-spatial-down="menu-item-3"  label="Profile"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-2" label="Settings"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-3" label="Notifications"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-4" data-spatial-up="menu-item-1" label="Logout"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `,
+        });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const menuPopover = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
+        const menuItem1 = menuPopover.locator('#menu-item-1');
+        const menuItem3 = menuPopover.locator('#menu-item-3');
+        const menuItem4 = menuPopover.locator('#menu-item-4');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(triggerElement).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+
+        await expect(menuItem1).toBeFocused();
+
+        // Jump to item 3
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem3).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem4).toBeFocused();
+
+        // Loop back to the first item
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem1).toBeFocused();
+
+        // No loop back to the last item since item 1 has data-spatial-up=""
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(menuItem1).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem3).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem4).toBeFocused();
+
+        // Jump to item 1
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(menuItem1).toBeFocused();
+      });
     });
   });
 });

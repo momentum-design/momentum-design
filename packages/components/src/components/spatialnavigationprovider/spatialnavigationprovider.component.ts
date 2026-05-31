@@ -18,24 +18,43 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
 
 // AI-Assisted
 /**
- * This component manages focus using spatial navigation and provides context for child components.
- *
- * Place it at the root of the application.
+ * Spatial navigation focus manager
  *
  * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) lets users move focus among
  * elements on a 2D plane, common on TVs and game consoles with remotes or gamepads.
+ *
+ * It should have only one instance and it should placed at the root of the application.
  *
  * ## Focus management
  *
  * The provider listens to keyboard events and moves focus among elements based on arrow key input.
  * You can influence or override this behavior.
  *
- * Note: The algorithm is distance-based, so the UI should be designed so focusable elements are
- * predictably reachable. Relative element positions should remain stable; responsive layouts can
- * make navigation unpredictable. This is less of an issue on fixed-size TV UIs but can show unexpected
- * behavior in Storybook when resizing. See the "Limitations" section.
+ * ### Steps
  *
- * ### Automatic
+ * Spatial navigation goes trough the following steps after each keydown:
+ *
+ * 1. Handle `keydown` in the capture phase.
+ *    When active element has `data-spatial-{direction}` attribute then prevent all component navigation and call the
+ *    provider own `keydown` handler (see step 3).
+ * 2. Component own `keydown` handler executed (bubble phase) (e.g., list moves focus internally) it it was not
+ *    prevented.
+ * 3. Spatial Navigation Provider's `keydown` handler executed (bubble phase)
+ *    - If key event was not prevented in step 1. emit `navbeforeprocess` to check if any component want to handle
+ *      the key event itself. If `navbeforeprocess` event is prevented, stop here.
+ *    - If the component did not handle `keydown`, it calculate the next focusable item
+ *      - if the active element has `data-spatial-{direction}` attribute, it will try to focus the element with the id.
+ *      - Otherwise calculate the next focused item based on the direction and distances.
+ *    - If there is no next item, it emits `navnotarget` event
+ *    - Otherwise emit `navbeforefocus`,
+ *      - If this event prevented, nothing happens
+ *      - Otherwise the focus moves to the next element
+ *
+ * ### Determine next focus
+ *
+ * The provider use multiple ways to determine the next focused element. The order defined in the "Steps" section.
+ *
+ * #### Calculated focus
  *
  * By default, the next focus target is computed from element positions:
  *
@@ -52,9 +71,14 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * Elements with `data-spatial-exclude` are excluded (with its subtree) from the navigation, even if they
  * are focusable.
  *
- * ### Overwrite next element
+ * Note: The algorithm is distance-based, so the UI should be designed to focusable elements are
+ * predictably reachable. Relative element positions should remain stable; responsive layouts can
+ * make navigation unpredictable. This is less of an issue on fixed-size TV UIs but can show unexpected
+ * behavior in Storybook when resizing. See the "Limitations" section.
  *
- * Override automatic navigation by adding one of these attributes to a focusable element:
+ * #### Overwrite next element
+ *
+ * Override calculated navigation by adding one of these attributes to a focusable element:
  *
  * - `data-spatial-up`
  * - `data-spatial-down`
@@ -63,7 +87,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Each attribute value must be the id of the element to focus when the corresponding key is pressed.
  *
- * ### Element internal navigation
+ * #### Element internal navigation
  *
  * Complex components (List, Combobox, Tree, etc.) may handle their own navigation. For example, a List moves
  * focus internally on Down until the last item, after which Down should fall back to provider navigation.
@@ -95,15 +119,15 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute              | Value       | Default | Description                                                                         |
- * |------------------------|-------------|---------|-------------------------------------------------------------------------------------|
- * | `data-spatial-left`    | element id  | N/A     | Focus this element when Left is pressed                                             |
- * | `data-spatial-up`      | element id  | N/A     | Focus this element when Up is pressed                                               |
- * | `data-spatial-right`   | element id  | N/A     | Focus this element when Right is pressed                                            |
- * | `data-spatial-down`    | element id  | N/A     | Focus this element when Down is pressed                                             |
- * | `data-spatial-go-back` | N/A         | N/A     | First focusable element with this attribute is clicked on Back/Escape               |
- * | `data-spatial-focusable` | N/A       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)       |
- * | `data-spatial-exclude` | N/A         | N/A     | Exclude focusable element (and its subtree) from the navigation                     |
+ * | Attribute                | Value                     | Default | Description                                                                   |
+ * |--------------------------|---------------------------|---------|-------------------------------------------------------------------------------|
+ * | `data-spatial-left`      | empty string / element id | N/A     | Prevent native navigation in Left direction and focus element if exists       |
+ * | `data-spatial-up`        | empty string / element id | N/A     | Prevent native navigation in Up direction and focus element if exists         |
+ * | `data-spatial-right`     | empty string / element id | N/A     | Prevent native navigation in Right direction and focus element if exists      |
+ * | `data-spatial-down`      | empty string / element id | N/A     | Prevent native navigation in Down direction and focus element if exists       |
+ * | `data-spatial-go-back`   | N/A                       | N/A     | First focusable element with this attribute is clicked on Back/Escape         |
+ * | `data-spatial-focusable` | N/A                       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`) |
+ * | `data-spatial-exclude`   | N/A                       | N/A     | Exclude focusable element (and its subtree) from the navigation               |
  *
  * ## Event emitting order
  *
@@ -271,7 +295,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   /**
    * List of navigation keys
    */
-  get navigationKeys() {
+  isNavigationKey(key: string): boolean {
     return [
       this.navigationKeyMapping.up,
       this.navigationKeyMapping.down,
@@ -279,7 +303,19 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       this.navigationKeyMapping.right,
       this.navigationKeyMapping.enter,
       this.navigationKeyMapping.escape,
-    ];
+    ].includes(key);
+  }
+
+  /**
+   * List of navigation keys
+   */
+  isDirectionKey(key: string): boolean {
+    return [
+      this.navigationKeyMapping.up,
+      this.navigationKeyMapping.down,
+      this.navigationKeyMapping.left,
+      this.navigationKeyMapping.right,
+    ].includes(key);
   }
 
   constructor() {
@@ -293,6 +329,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('keydown', this.handleKeyDownBefore, { capture: true });
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('focus', this.handleFocus);
     this.initActiveElement();
@@ -300,6 +337,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   override disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener('keydown', this.handleKeyDownBefore, { capture: true });
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('focus', this.handleFocus);
 
@@ -418,6 +456,23 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   }
 
   /**
+   * Check if the current active element has instruction to find the next focusable
+   * We look for the element in all the shadow DOMs in the composed path of the active element,
+   * so mdc component can use this feature as well.
+   *
+   * @param currentDomActiveElement - The current active element in the DOM
+   * @param direction - Direction
+   */
+  private getElementIdForDirectionAttr(
+    currentDomActiveElement: HTMLElement | null,
+    direction: Direction,
+  ): string | undefined {
+    const dataAttrName = `data-spatial-${direction}`;
+
+    return currentDomActiveElement?.getAttribute(dataAttrName) ?? undefined;
+  }
+
+  /**
    * Focus the next element in the given direction.
    *
    * @param elements - List of focusable elements
@@ -426,11 +481,6 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @internal
    */
   private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): HTMLElement | undefined {
-    // Do nothing when there is no focusable element
-    if (elements.length === 0) {
-      return undefined;
-    }
-
     let currentActiveElement = this.getActiveElement();
     const currentDomActiveElement = getDomActiveElement() as HTMLElement | null;
 
@@ -451,11 +501,6 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       this.setActiveElement(currentActiveElement);
     }
 
-    // If DOM active element is not in the ficus area then move focus back to the current active element
-    if (currentActiveElement !== getDomActiveElement()) {
-      return currentActiveElement;
-    }
-
     // Check if the current active element has instruction to find the next focusable
     // We look for the element in all the shadow DOMs in the composed path of the active element,
     // so mdc component can use this feature as well.
@@ -472,6 +517,16 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
           return nextElement;
         }
       }
+    }
+
+    // If DOM active element is not in the focus area then move focus back to the current active element
+    if (currentActiveElement !== getDomActiveElement()) {
+      return currentActiveElement;
+    }
+
+    // Do nothing when there is no focusable element
+    if (elements.length === 0) {
+      return undefined;
     }
 
     // Find the closest element in the given direction
@@ -534,6 +589,24 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     return this.activeElement?.deref();
   }
 
+  private handleKeyDownBefore = (evt: KeyboardEvent) => {
+    if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.isNavigationKey(evt.key)) {
+      return;
+    }
+    const action = this.context.value!.keyToActionMap[evt.key];
+    if (
+      this.isDirectionKey(evt.key) &&
+      this.getElementIdForDirectionAttr(evt.target as HTMLElement, action as Direction) !== undefined
+    ) {
+      // prevent native key events
+      evt.preventDefault();
+      // prevent MDC component key events
+      evt.stopImmediatePropagation();
+      // Need to call Spatial navigation key handler manually after all propagation stopped
+      this.handleKeyDown(evt);
+    }
+  };
+
   /**
    * Handle keydown event
    *
@@ -541,7 +614,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @internal
    */
   private handleKeyDown = (evt: KeyboardEvent) => {
-    if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.navigationKeys.includes(evt.key)) {
+    if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.isNavigationKey(evt.key)) {
       return;
     }
     const action = this.context.value!.keyToActionMap[evt.key];
