@@ -1,6 +1,6 @@
 ---
-name: contributing-to-knowledge-base
-description: "Add a new topic to, or update an existing topic in, the Momentum Design knowledge base. Use whenever a user asks to capture, document, save, or revise knowledge-base content at any tier (design system, package, or component). Enforces tier selection, deduplication, frontmatter, and index regeneration."
+name: momentum-contributing-to-knowledge-base
+description: 'Add a new topic to, or update an existing topic in, the Momentum Design knowledge base. Use whenever a user asks to capture, document, save, or revise knowledge-base content at any tier (design system, package, or component). Enforces tier selection, deduplication, frontmatter, and index regeneration.'
 ---
 
 # Contributing to the Knowledge Base
@@ -36,7 +36,13 @@ skill is not the place to change rules.
    - One package → Tier 2.
    - One component → Tier 3.
 
-2. **Search before writing.** The index is sharded by tier — see the
+2. **Confirm the tier with the user.** Present the chosen tier and the
+   reasoning behind it, and ask the user whether they agree or want a
+   different tier. Do **not** proceed to Step 3 until the user has
+   explicitly confirmed the tier. If the user picks a different tier,
+   revise the selection and re-confirm before continuing.
+
+3. **Search before writing.** The index is sharded by tier — see the
    [Index section of the schema](../../../config/knowledge-base/SCHEMA.md#index)
    for the full lookup order. Read **only** the shard that matches the
    tier you chose in Step 1:
@@ -51,7 +57,7 @@ skill is not the place to change rules.
    (see [Rule 3 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
    Only create a new file when no overlap is found.
 
-3. **Create or update `knowledge-base/<topic>.md`** at the chosen level.
+4. **Create or update `knowledge-base/<topic>.md`** at the chosen level.
 
    - For Tier 3 (component) topics, the file name **must** appear in
      [`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json).
@@ -62,7 +68,7 @@ skill is not the place to change rules.
      `knowledge-base/images/...`) — see the
      [Iron Law in the schema](../../../config/knowledge-base/SCHEMA.md#knowledge-base-schema).
 
-4. **Add or update the required frontmatter.** The required fields, value
+5. **Add or update the required frontmatter.** The required fields, value
    constraints, and tier-specific overrides are defined in
    [`frontmatter.config.json`](../../../config/knowledge-base/frontmatter.config.json).
    Read that file directly to produce a valid frontmatter block; do not
@@ -73,7 +79,7 @@ skill is not the place to change rules.
      before promotion to `stable`
      (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
-5. **Regenerate the index.** Run:
+6. **Regenerate the index.** Run:
 
    ```bash
    yarn knowledge-base:index
@@ -84,7 +90,7 @@ skill is not the place to change rules.
    alongside your topic file. The generator also runs in `--check` mode in
    pre-commit and CI; a stale or invalid shard will fail the build.
 
-6. **Route through a human reviewer.** AI-drafted knowledge-base content
+7. **Route through a human reviewer.** AI-drafted knowledge-base content
    must be confirmed by a human before merge
    (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
    Surface the diff explicitly so the reviewer can verify both content

@@ -22,7 +22,7 @@ Package-specific implementation details, conventions, and workflows must live in
 All knowledge base content **must follow the [Knowledge Base Schema](config/knowledge-base/SCHEMA.md)**.
 
 - When a user asks a question that produces a repeatable answer, ask whether they want it saved to the knowledge base.
-- To **add or update** any knowledge-base topic, follow the [`contributing-to-knowledge-base` skill](.github/skills/contributing-to-knowledge-base/SKILL.md). The skill owns the step-by-step workflow; the schema owns the structural rules it enforces.
+- To **add or update** any knowledge-base topic, follow the [`momentum-contributing-to-knowledge-base` skill](.github/skills/momentum-contributing-to-knowledge-base/SKILL.md). The skill owns the step-by-step workflow; the schema owns the structural rules it enforces.
 - Do not duplicate knowledge — each topic has exactly one canonical location. Other levels link to it.
 
 ## Monorepo Scope
