@@ -157,5 +157,5 @@ and commit the updated `knowledge-base/index.*.json` files.
   described in [Index](#index) are enforced.
 - The workflow for **adding new** or **updating existing** topic files is
   not defined here. That workflow is owned by the
-  [`contributing-to-knowledge-base` skill](../../.github/skills/contributing-to-knowledge-base/SKILL.md);
+  [`momentum-contributing-to-knowledge-base` skill](../../.github/skills/momentum-contributing-to-knowledge-base/SKILL.md);
   this schema only defines the structural rules the skill enforces.
