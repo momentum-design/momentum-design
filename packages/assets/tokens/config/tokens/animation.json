@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "destination": "motion/animation",
+      "cssSelector": ".mds-animation",
+      "targets": ["core/motion.json", "motion/animation.json"]
+    }
+  ],
+  "formats": ["MD_ANIMATION_CSS", "MD_ANIMATION_SCSS", "WEB_JSON", "MD_JSON_MINIMAL"],
+  "prefix": "mds",
+  "outputReferences": true
+}

@@ -110,6 +110,22 @@ const LOCAL_FORMATS = {
       'COLOR_MODIFIER',
     ] as Array<Transform>,
   },
+  MD_ANIMATION_CSS: {
+    EXTENSION: 'css',
+    FORMAT: 'md-animation-css',
+    GROUP: 'css',
+    NAME: 'md/animation-css',
+    PATH: './css/',
+    TRANSFORMS: [] as Array<Transform>,
+  },
+  MD_ANIMATION_SCSS: {
+    EXTENSION: 'scss',
+    FORMAT: 'md-animation-scss',
+    GROUP: 'scss',
+    NAME: 'md/animation-scss',
+    PATH: './scss/',
+    TRANSFORMS: [] as Array<Transform>,
+  },
   IOS_WEBEX: {
     EXTENSION: 'swift',
     FORMAT: 'md-ios-webex',

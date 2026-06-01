@@ -1,17 +1,14 @@
-// AI-Assisted
 // @ts-nocheck
 
 /**
  * Post-build tests for animation tokens.
  *
- * NOTE: Unlike motion.post.test.ts, this test only validates CSS output.
- * animation.json is processed by a custom Node script (build-animation-motion-css.js),
- * not Style Dictionary — so there are no SCSS, XML, Swift, or JSON platform outputs.
- * Native platform outputs (Android/iOS) will be addressed in a future PR.
+ * NOTE: Native platform outputs (Android/iOS) will be addressed in a future PR.
  */
 
 const nodePath = require('path');
 const fs = require('fs');
+
 const kebabCase = require('lodash/kebabCase');
 
 const distBase = nodePath.join(__dirname, '../../dist');
@@ -36,8 +33,8 @@ describe('Animation tokens (post-build)', () => {
     expect(fs.existsSync(CSS_FILE)).toBe(true);
   });
 
-  it('CSS output should use the correct .mds-motion selector', () => {
-    expect(css).toContain('.mds-motion {');
+  it('CSS output should use the correct .mds-animation selector', () => {
+    expect(css).toContain('.mds-animation {');
   });
 
   it('CSS output should contain the do-not-edit header', () => {
@@ -76,7 +73,7 @@ describe('Animation tokens (post-build)', () => {
     const keyframeTokens = Object.entries(source).filter(([, t]) => t.type === 'keyframe');
     keyframeTokens.forEach(([name]) => {
       const kfName = `mds-animation-${kebabCase(name)}`;
-      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\s*([^;]+);`));
+      const varLineMatch = css.match(new RegExp(`--mds-animation-${kebabCase(name)}:\\s*([^;]+);`));
       expect(varLineMatch).not.toBeNull();
       // The keyframe name must be last in the animation shorthand
       expect(varLineMatch[1].trim()).toMatch(new RegExp(`\\b${kfName}$`));
@@ -128,4 +125,3 @@ describe('Animation tokens (post-build)', () => {
     });
   });
 });
-// End AI-Assisted
