@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="dock-window-closed-filled" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M25 5a5 5 0 0 1 5 5v12a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V10a5 5 0 0 1 5-5zm-4 21h2V6h-2zm-8.293-14.707a1 1 0 0 0-1.414 0l-4 4a1 1 0 0 0-.25.415l-.012.05q-.03.117-.031.242.001.125.031.241l.013.051a1 1 0 0 0 .125.263q.054.082.124.152l4 4a1 1 0 0 0 1.414-1.414L10.414 17H18a1 1 0 0 0 0-2h-7.586l2.293-2.293a1 1 0 0 0 0-1.414"/></svg>`;
+
+export default icon;

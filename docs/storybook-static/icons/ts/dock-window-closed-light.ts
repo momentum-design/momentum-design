@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="dock-window-closed-light" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M18.5 15.941a.5.5 0 0 1-.495.505l-9.293.095 3.179 3.114a.5.5 0 0 1-.7.715l-4.04-3.96a.5.5 0 0 1-.008-.706l3.959-4.04a.5.5 0 0 1 .714.699L8.702 15.54l9.293-.095a.5.5 0 0 1 .505.495M7 5.5A4.5 4.5 0 0 0 2.5 10v12A4.5 4.5 0 0 0 7 26.5h18a4.5 4.5 0 0 0 4.5-4.5V10A4.5 4.5 0 0 0 25 5.5zM3.5 10A3.5 3.5 0 0 1 7 6.5h15.5v19H7A3.5 3.5 0 0 1 3.5 22zm20 15.5v-19H25a3.5 3.5 0 0 1 3.5 3.5v12a3.5 3.5 0 0 1-3.5 3.5z"/></svg>`;
+
+export default icon;
