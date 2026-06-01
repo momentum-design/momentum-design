@@ -350,6 +350,7 @@ export const CustomMenu: StoryObj = {
         flex-wrap: wrap;
         gap: 0.25rem;
         width: 21rem;
+        flex-direction: row;
       }
 
       .layout-section::part(header-text) {
@@ -385,13 +386,35 @@ export const CustomMenu: StoryObj = {
     ${createPopover(
       args,
       html` <mdc-menusection headerText="Layout" class="layout-section">
-          <mdc-menuitemradio name="layout" label="Grid" checked indicator="none">
+          <mdc-menuitemradio
+            data-spatial-focusable
+            data-spatial-up="notification-menu-item"
+            data-spatial-down="enable-feature"
+            name="layout"
+            label="Grid"
+            checked
+            indicator="none"
+          >
             <mdc-icon name="video-layout-equal-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
           </mdc-menuitemradio>
-          <mdc-menuitemradio name="layout" label="Stack" indicator="none">
+          <mdc-menuitemradio
+            data-spatial-focusable
+            data-spatial-up="notification-menu-item"
+            data-spatial-down="enable-feature"
+            name="layout"
+            label="Stack"
+            indicator="none"
+          >
             <mdc-icon name="video-layout-stack-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
           </mdc-menuitemradio>
-          <mdc-menuitemradio name="layout" label="Side by side" indicator="none">
+          <mdc-menuitemradio
+            data-spatial-focusable
+            data-spatial-up="notification-menu-item"
+            data-spatial-down="enable-feature"
+            name="layout"
+            label="Side by side"
+            indicator="none"
+          >
             <mdc-icon
               name="layout-side-by-side-vertical-light"
               size="2"
@@ -402,11 +425,11 @@ export const CustomMenu: StoryObj = {
         </mdc-menusection>
         <mdc-divider></mdc-divider>
         <mdc-menusection headerText="Preferences">
-          <mdc-menuitemcheckbox label="Enable feature"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox id="enable-feature" label="Enable feature"></mdc-menuitemcheckbox>
           <mdc-menuitemcheckbox label="Beta mode" checked></mdc-menuitemcheckbox>
         </mdc-menusection>
         <mdc-divider></mdc-divider>
-        <mdc-menuitem label="Notifications"></mdc-menuitem>`,
+        <mdc-menuitem id="notification-menu-item" label="Notifications"></mdc-menuitem>`,
     )}
   `,
 };
