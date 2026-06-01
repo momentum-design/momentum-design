@@ -5,4 +5,4 @@ if ! command -v nvm > /dev/null ; then
     nvm use
 fi
 
-yarn components lint:staging
+yarn lint:staged

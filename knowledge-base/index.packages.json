@@ -1,0 +1,7 @@
+{
+  "$schema": "../config/knowledge-base/index.schema.json",
+  "_comment": "GENERATED FILE — DO NOT HAND-EDIT. Run `yarn knowledge-base:index` to regenerate.",
+  "generatedFrom": "scripts/knowledge-base/generate-index.js",
+  "tier": 2,
+  "topics": []
+}

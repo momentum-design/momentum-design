@@ -1,0 +1,56 @@
+{
+  "default": {
+    "required": [
+      "title",
+      "summary",
+      "status",
+      "tier",
+      "owner"
+    ],
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "summary": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "status": {
+        "enum": [
+          "stable",
+          "draft",
+          "planned"
+        ]
+      },
+      "tier": {
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      },
+      "owner": {
+        "type": "string",
+        "minLength": 1
+      },
+      "canonical": {
+        "type": "string"
+      }
+    }
+  },
+  "tiers": {
+    "3": {
+      "required": [
+        "component"
+      ],
+      "properties": {
+        "component": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
