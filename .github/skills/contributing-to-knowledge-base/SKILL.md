@@ -31,19 +31,28 @@ skill is not the place to change rules.
 
 1. **Decide the tier.** Apply the tier-selection guidance in the
    [Structure section of the schema](../../../config/knowledge-base/SCHEMA.md#structure).
+
    - Design system as a whole → Tier 1.
    - One package → Tier 2.
    - One component → Tier 3.
 
-2. **Search before writing.** Read
-   [`knowledge-base/index.json`](../../../knowledge-base/index.json) and
-   filter by `tier`, `owner`, `component`, or title/summary keywords to
-   find any existing canonical topic. If one already exists at another
-   tier, **link to it instead of duplicating**
+2. **Search before writing.** The index is sharded by tier — see the
+   [Index section of the schema](../../../config/knowledge-base/SCHEMA.md#index)
+   for the full lookup order. Read **only** the shard that matches the
+   tier you chose in Step 1:
+
+   - Tier 3 (component) → [`knowledge-base/index.components.json`](../../../knowledge-base/index.components.json), filter by `component`/`owner`.
+   - Tier 2 (package) → [`knowledge-base/index.packages.json`](../../../knowledge-base/index.packages.json), filter by `owner`.
+   - Tier 1 (design system) → [`knowledge-base/index.root.json`](../../../knowledge-base/index.root.json).
+
+   If the narrowest shard has no canonical entry, escalate outward
+   (component → packages → root). If a canonical topic already exists at
+   another tier, **link to it instead of duplicating**
    (see [Rule 3 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
    Only create a new file when no overlap is found.
 
 3. **Create or update `knowledge-base/<topic>.md`** at the chosen level.
+
    - For Tier 3 (component) topics, the file name **must** appear in
      [`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json).
      Do not invent new Tier 3 topic names; if a new one is genuinely
@@ -58,6 +67,7 @@ skill is not the place to change rules.
    [`frontmatter.config.json`](../../../config/knowledge-base/frontmatter.config.json).
    Read that file directly to produce a valid frontmatter block; do not
    guess.
+
    - When an AI agent drafts the content, set `status: draft` (or
      `planned` for a placeholder) so the human reviewer signs it off
      before promotion to `stable`
@@ -69,9 +79,10 @@ skill is not the place to change rules.
    yarn knowledge-base:index
    ```
 
-   Commit the updated [`knowledge-base/index.json`](../../../knowledge-base/index.json)
+   Commit every updated
+   [`knowledge-base/index.*.json`](../../../knowledge-base/) shard
    alongside your topic file. The generator also runs in `--check` mode in
-   pre-commit and CI; a stale or invalid index will fail the build.
+   pre-commit and CI; a stale or invalid shard will fail the build.
 
 6. **Route through a human reviewer.** AI-drafted knowledge-base content
    must be confirmed by a human before merge

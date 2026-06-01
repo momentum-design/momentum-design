@@ -102,23 +102,45 @@ component: button
 
 ## Index
 
-The repo-wide knowledge-base index lives at
-[`knowledge-base/index.json`](../../knowledge-base/index.json). It is
-**generated** by [`scripts/knowledge-base/generate-index.js`](../../scripts/knowledge-base/generate-index.js)
-from the frontmatter of every topic file across all tiers. Do not hand-edit
-it; the file carries a `generatedFrom` field and is validated against
+The knowledge-base index is **sharded by tier** into three files at the repo
+root so agents can read only the slice they need and keep token usage
+bounded as the knowledge base grows:
+
+| File | Tier | Contents |
+| --- | --- | --- |
+| [`knowledge-base/index.root.json`](../../knowledge-base/index.root.json) | 1 | Design-system-wide topics. |
+| [`knowledge-base/index.packages.json`](../../knowledge-base/index.packages.json) | 2 | Package-wide topics (one entry per `packages/<package>/knowledge-base/<topic>.md`). |
+| [`knowledge-base/index.components.json`](../../knowledge-base/index.components.json) | 3 | Component-scoped topics (one entry per `packages/components/src/components/<component>/knowledge-base/<topic>.md`). |
+
+Every shard has the same shape: `{ $schema, generatedFrom, tier, topics }`.
+All three files are **generated** by
+[`scripts/knowledge-base/generate-index.js`](../../scripts/knowledge-base/generate-index.js)
+from the frontmatter of every topic file. Do not hand-edit them; each
+carries a `generatedFrom` field and is validated against
 [`config/knowledge-base/index.schema.json`](./index.schema.json).
 
-**Golden Rule**: Agents should consume the index as the single discovery entry point:
+**Golden Rule — search in the order that minimises bytes read:**
 
-1. Read `knowledge-base/index.json`.
-2. Filter by `tier`, `owner`, `status`, or `component`.
-3. Fetch the entry's `path` for full content.
+1. **Pick the narrowest shard first.**
+   - Looking for guidance about a specific component (e.g. `button`) → read
+     `index.components.json` and filter by `component` / `owner`. Stop
+     here if you find a canonical entry.
+   - Looking for guidance about a package (e.g. `components`, `assets`)
+     → read `index.packages.json` and filter by `owner`.
+   - Looking for cross-cutting design-system guidance → read
+     `index.root.json`.
+2. **Escalate only on miss.** If the narrowest shard has no canonical
+   entry, walk outward: component → packages → root. A topic always has
+   exactly one canonical location (Rule 3), so the first hit during this
+   walk is authoritative.
+3. **Fetch the entry's `path` for full content.** Never load a shard you
+   don't need; never re-load a shard you've already read in the same
+   task.
 
-The index is kept in sync by:
+The shards are kept in sync by:
 
 - Pre-commit: `yarn lint:staging` runs `yarn knowledge-base:index:check` whenever a KB file is staged.
-- CI: `yarn analyze:root` runs the same check; stale or invalid KB content fails the build.
+- CI: `yarn analyze:root` runs the same check; a stale or invalid shard fails the build.
 
 To regenerate after editing or adding topics, run:
 
@@ -126,7 +148,7 @@ To regenerate after editing or adding topics, run:
 yarn knowledge-base:index
 ```
 
-and commit the updated `knowledge-base/index.json`.
+and commit the updated `knowledge-base/index.*.json` files.
 
 ## Non-goals
 
