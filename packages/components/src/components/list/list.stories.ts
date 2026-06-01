@@ -14,6 +14,7 @@ import '../avatarbutton';
 import '../badge';
 import '../button';
 import '../checkbox';
+import '../chip';
 import '../divider';
 import '../icon';
 import '../listitem';
@@ -463,3 +464,118 @@ export const NestedList: StoryObj = {
   },
 };
 // End AI-Assisted
+
+export const ScrollableListWithLongListItems: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story: html` <mdc-text tagname="h1" type="body-large-bold"
+            >Handle list with oversized items in spatial navigation</mdc-text
+          >
+          <mdc-text tagname="p" type="body-large-bold">List item marked:</mdc-text>
+          <ul>
+            <li style="padding-block-end: 0.5rem">
+              <mdc-chip
+                color="lime"
+                label="Scroll active element in the given direction when it does not fit into the scroll view"
+              ></mdc-chip>
+            </li>
+            <li><mdc-chip color="pink" label="No scroll"></mdc-chip></li>
+          </ul>`,
+      },
+    },
+  },
+  render: args => html`
+    <style>
+      mdc-listitem {
+        outline: 2px solid var(--mds-color-theme-background-label-lime-active);
+        outline-offset: -3px;
+      }
+      mdc-listitem[data-spatial-noscroll] {
+        outline: 2px solid var(--mds-color-theme-background-label-pink-active);
+      }
+    </style>
+    <mdc-list
+      aria-label="${args['aria-label']}"
+      style="height: 200px; overflow-y: auto; padding: 0.5rem"
+      id="scrollable-list"
+    >
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero. Vestibulum lacinia dignissim efficitur. Ut quis velit at lectus ultricies
+          faucibus at a risus. Nunc accumsan augue euismod nibh bibendum ullamcorper. Mauris bibendum elit nec orci
+          eleifend, ut ornare risus rutrum. Maecenas sit amet magna placerat, ultricies lectus in, malesuada quam. Donec
+          vestibulum nisi eu viverra vehicula. Morbi sem tellus, faucibus ac ligula interdum, suscipit porttitor nunc.
+          Nullam sit amet justo eros. Curabitur et tincidunt justo. Mauris lobortis velit nec porttitor gravida. Proin
+          elementum aliquet ante at tincidunt.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero. Vestibulum lacinia dignissim efficitur. Ut quis velit at lectus ultricies
+          faucibus at a risus. Nunc accumsan augue euismod nibh bibendum ullamcorper. Mauris bibendum elit nec orci
+          eleifend, ut ornare risus rutrum. Maecenas sit amet magna placerat, ultricies lectus in, malesuada quam. Donec
+          vestibulum nisi eu viverra vehicula. Morbi sem tellus, faucibus ac ligula interdum, suscipit porttitor nunc.
+          Nullam sit amet justo eros. Curabitur et tincidunt justo. Mauris lobortis velit nec porttitor gravida. Proin
+          elementum aliquet ante at tincidunt.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}" data-spatial-noscroll>
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}" data-spatial-noscroll>
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+          Vestibulum lobortis sollicitudin arcu ultricies tristique. Pellentesque iaculis risus condimentum purus ornare
+          egestas. Proin vitae augue libero. Vestibulum lacinia dignissim efficitur. Ut quis velit at lectus ultricies
+          faucibus at a risus. Nunc accumsan augue euismod nibh bibendum ullamcorper. Mauris bibendum elit nec orci
+          eleifend, ut ornare risus rutrum. Maecenas sit amet magna placerat, ultricies lectus in, malesuada quam. Donec
+          vestibulum nisi eu viverra vehicula. Morbi sem tellus, faucibus ac ligula interdum, suscipit porttitor nunc.
+          Nullam sit amet justo eros. Curabitur et tincidunt justo. Mauris lobortis velit nec porttitor gravida. Proin
+          elementum aliquet ante at tincidunt.
+        </mdc-text>
+      </mdc-listitem>
+      <mdc-listitem @click="${action('onclick')}" variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}">
+        <mdc-text slot="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium erat ac egestas molestie.
+        </mdc-text>
+      </mdc-listitem>
+    </mdc-list>
+  `,
+  args: {
+    textPassedToListHeader: 'Scrollable Participants List',
+    'aria-label': 'View all participants',
+  },
+};
