@@ -537,8 +537,8 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
         if (!target) return;
 
         trigger.dispatchEvent(
-          new MouseEvent('mouseleave', {
-            bubbles: false,
+          new MouseEvent('mouseout', {
+            bubbles: true,
             composed: true,
             relatedTarget: target,
           }),
@@ -550,14 +550,73 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
       await triggerButton.evaluate(trigger => {
         trigger.dispatchEvent(
-          new MouseEvent('mouseleave', {
-            bubbles: false,
+          new MouseEvent('mouseout', {
+            bubbles: true,
             composed: true,
             relatedTarget: document.body,
           }),
         );
       });
 
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('shows popover on hover when trigger lives inside a shadow root', async () => {
+      // Regression test for the original shadow-DOM hover bug:
+      // mouseenter/mouseleave are spec'd as `composed: false`, so a document-level listener never
+      // sees those events when the trigger is in a shadow root. The fix delegates hover via
+      // `mouseover`/`mouseout`, which are `composed: true` and bubble, so they cross the shadow
+      // boundary and reach the document-level listener. We host both the popover and its trigger
+      // inside a single open shadow root to exercise that cross-boundary path.
+      await componentsPage.mount({
+        html: `<div id="wrapper"><shadow-host-popover-test></shadow-host-popover-test></div>`,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        if (!customElements.get('shadow-host-popover-test')) {
+          customElements.define(
+            'shadow-host-popover-test',
+            class extends HTMLElement {
+              connectedCallback() {
+                if (this.shadowRoot) return;
+                const root = this.attachShadow({ mode: 'open' });
+                root.innerHTML = `
+                  <div style="height: 20vh">
+                    <mdc-button id="shadow-trigger-button">Hover me</mdc-button>
+                  </div>
+                  <mdc-popover
+                    id="shadow-popover"
+                    triggerID="shadow-trigger-button"
+                    trigger="mouseenter"
+                    delay="0,100"
+                  >
+                    Shadow popover content
+                  </mdc-popover>
+                `;
+              }
+            },
+          );
+        }
+      });
+
+      const triggerButton = componentsPage.page.locator('shadow-host-popover-test mdc-button#shadow-trigger-button');
+      const popover = componentsPage.page.locator('shadow-host-popover-test mdc-popover#shadow-popover');
+
+      await expect(triggerButton).toBeVisible();
+
+      await triggerButton.hover();
+      await expect(popover).toBeVisible();
+
+      // Move the pointer clearly outside the trigger's bounding box. The trigger sits in the
+      // top-left corner, so moving to (0,0) would still land on it; compute an empty point past
+      // its bottom-right edge to guarantee the pointer actually leaves the trigger subtree.
+      const triggerBox = (await triggerButton.boundingBox())!;
+      await componentsPage.page.mouse.move(
+        triggerBox.x + triggerBox.width + 200,
+        triggerBox.y + triggerBox.height + 200,
+      );
       await componentsPage.page.waitForTimeout(200);
       await expect(popover).not.toBeVisible();
     });
