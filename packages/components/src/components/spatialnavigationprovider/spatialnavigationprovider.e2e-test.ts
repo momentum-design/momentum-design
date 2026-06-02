@@ -409,5 +409,72 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
       await keyboard.press('ArrowDown');
       await expect(locators.btn7).toBeFocused();
     });
+
+
+    await test.step('data-spatial-{direction}', async () => {
+      await test.step('it does nothing when it has no value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        // Set data-spatial-right with no value on btn1
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': '',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // With empty value, normal navigation should apply — focus moves to btn2
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn2).toBeFocused();
+        // End AI-Assisted
+      });
+
+      await test.step('it accepts id as value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        // Set data-spatial-right to an id (without #) to jump to btn9
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': 'btn-9',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // Focus should jump to btn9 based on id value
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn9).toBeFocused();
+        // End AI-Assisted
+      });
+
+      await test.step('it accepts css selector as value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        await componentsPage.setAttributes(locators.btn8, {
+          'data-select-me': '',
+        });
+
+        // Set data-spatial-right to a CSS selector to jump to btn9
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': 'mdc-button[data-select-me]',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // Focus should jump to btn9 based on CSS selector value
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn8).toBeFocused();
+        // End AI-Assisted
+      });
+    })
   });
 });
