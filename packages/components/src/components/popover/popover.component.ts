@@ -950,14 +950,33 @@ class Popover
   }
 
   /**
+   * Determines whether a delegated `mouseover`/`mouseout` event is movement that stays within the
+   * trigger's subtree rather than a genuine enter/leave of the trigger.
+   *
+   * Both events fire repeatedly while the pointer moves between elements inside the trigger
+   * (e.g. an icon with internal SVG elements). `relatedTarget` is the element on the other side of
+   * the boundary (the element being left for `mouseover`, or entered for `mouseout`); if it
+   * resolves to the trigger or one of its shadow hosts, the pointer has not crossed the trigger
+   * boundary and the event should be ignored.
+   * @internal
+   */
+  private isHoverWithinTrigger = (event: Event): boolean => {
+    const { triggerElement } = this;
+    const { relatedTarget } = event as MouseEvent;
+    if (triggerElement && relatedTarget instanceof Element) {
+      return getHostComposePath(relatedTarget).includes(triggerElement);
+    }
+    return false;
+  };
+
+  /**
    * Handles the pointer moving over the trigger element (delegated `mouseover`).
    * This method sets the `isHovered` flag to true and shows the popover.
-   * `mouseover` also fires for descendants of the trigger, but `show()` is idempotent so the
-   * repeated calls while moving within the trigger are harmless.
    * @internal
    */
   private handleMouseEnter = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = true;
     this.show();
@@ -971,17 +990,7 @@ class Popover
    */
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
-
-    // `mouseout` also fires while the pointer moves between elements inside the trigger
-    // (e.g. an icon with internal SVG elements). Only close if the pointer has actually left the
-    // trigger's subtree — i.e. the element being entered is not the trigger or one of its hosts.
-    const mouseEvent = event as MouseEvent;
-    const { triggerElement } = this;
-    if (triggerElement && mouseEvent.relatedTarget instanceof Element) {
-      if (getHostComposePath(mouseEvent.relatedTarget).includes(triggerElement)) {
-        return;
-      }
-    }
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = false;
     this.startCloseDelay();
