@@ -223,12 +223,6 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * - Avoid nested focusable elements where possible.
  * - Tune algorithm weights to match your UI layout.
  *
- * ### Scrollable containers
- *
- * Content scrolling is not supported yet, e.g.:
- * - Focused element larger than the viewport.
- * - Scrollable content without interactive children.
- *
  * ### Nested providers
  *
  * Only one provider instance is supported in the application at a time.
