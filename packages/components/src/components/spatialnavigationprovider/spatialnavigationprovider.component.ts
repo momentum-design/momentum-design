@@ -122,16 +122,16 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                | Value                     | Default | Description                                                                        |
- * |--------------------------|---------------------------|---------|------------------------------------------------------------------------------------|
- * | `data-spatial-left`      | empty string / element id | N/A     | Prevent native navigation in Left direction and focus element if exists            |
- * | `data-spatial-up`        | empty string / element id | N/A     | Prevent native navigation in Up direction and focus element if exists              |
- * | `data-spatial-right`     | empty string / element id | N/A     | Prevent native navigation in Right direction and focus element if exists           |
- * | `data-spatial-down`      | empty string / element id | N/A     | Prevent native navigation in Down direction and focus element if exists            |
- * | `data-spatial-go-back`   | N/A                       | N/A     | First focusable element with this attribute is clicked on Back/Escape              |
- * | `data-spatial-focusable` | N/A                       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
- * | `data-spatial-exclude`   | N/A                       | N/A     | Exclude focusable element (and its subtree) from the navigation                    |
- * | `data-spatial-noscroll`  | N/A                       | N/A     | Prevent scroll for ative element in scrollable area even if the is not fit in view |
+ * | Attribute                | Value                         | Default | Description                                                                        |
+ * |--------------------------|-------------------------------|---------|------------------------------------------------------------------------------------|
+ * | `data-spatial-left`      | empty string /  id / selector | N/A     | Prevent native navigation in Left direction and focus element if exists            |
+ * | `data-spatial-up`        | empty string /  id / selector | N/A     | Prevent native navigation in Up direction and focus element if exists              |
+ * | `data-spatial-right`     | empty string /  id / selector | N/A     | Prevent native navigation in Right direction and focus element if exists           |
+ * | `data-spatial-down`      | empty string /  id / selector | N/A     | Prevent native navigation in Down direction and focus element if exists            |
+ * | `data-spatial-go-back`   | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape              |
+ * | `data-spatial-focusable` | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
+ * | `data-spatial-exclude`   | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                    |
+ * | `data-spatial-noscroll`  | N/A                           | N/A     | Prevent scroll for ative element in scrollable area even if the is not fit in view |
  *
  * ## Event emitting order
  *
@@ -461,7 +461,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @param currentDomActiveElement - The current active element in the DOM
    * @param direction - Direction
    */
-  private getElementIdForDirectionAttr(
+  private getElementSelectorForDirectionAttr(
     currentDomActiveElement: HTMLElement | null,
     direction: Direction,
   ): string | undefined {
@@ -502,15 +502,16 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     // Check if the current active element has instruction to find the next focusable
     // We look for the element in all the shadow DOMs in the composed path of the active element,
     // so mdc component can use this feature as well.
-    const dataAttrName = `data-spatial-${direction}`;
     if (currentDomActiveElement) {
+      const dataAttrName = `data-spatial-${direction}`;
       const elementWithDataset = getHostComposePath(currentDomActiveElement).find(node =>
         node.hasAttribute(dataAttrName),
       );
-      const nextElementId = elementWithDataset?.getAttribute(dataAttrName);
+      const nextElementSelector = elementWithDataset?.getAttribute(dataAttrName);
 
-      if (elementWithDataset && nextElementId) {
-        const nextElement = (elementWithDataset.getRootNode() as Document | ShadowRoot)?.getElementById(nextElementId);
+      if (elementWithDataset && nextElementSelector) {
+        const root = (elementWithDataset.getRootNode() as Document | ShadowRoot)
+        const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
         if (nextElement) {
           return nextElement;
         }
@@ -596,7 +597,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     const action = this.context.value!.keyToActionMap[evt.key];
     if (
       this.isDirectionKey(evt.key) &&
-      this.getElementIdForDirectionAttr(target as HTMLElement, action as Direction) !== undefined
+      this.getElementSelectorForDirectionAttr(target as HTMLElement, action as Direction) !== undefined
     ) {
       eventHandled = true;
       // Need to call Spatial navigation key handler manually after all propagation stopped
