@@ -122,16 +122,17 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                | Value                         | Default | Description                                                                        |
- * |--------------------------|-------------------------------|---------|------------------------------------------------------------------------------------|
- * | `data-spatial-left`      | empty string /  id / selector | N/A     | Prevent native navigation in Left direction and focus element if exists            |
- * | `data-spatial-up`        | empty string /  id / selector | N/A     | Prevent native navigation in Up direction and focus element if exists              |
- * | `data-spatial-right`     | empty string /  id / selector | N/A     | Prevent native navigation in Right direction and focus element if exists           |
- * | `data-spatial-down`      | empty string /  id / selector | N/A     | Prevent native navigation in Down direction and focus element if exists            |
- * | `data-spatial-go-back`   | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape              |
- * | `data-spatial-focusable` | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
- * | `data-spatial-exclude`   | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                    |
- * | `data-spatial-noscroll`  | N/A                           | N/A     | Prevent scroll for ative element in scrollable area even if the is not fit in view |
+ * | Attribute                    | Value                         | Default | Description                                                                         |
+ * |------------------------------|-------------------------------|---------|-------------------------------------------------------------------------------------|
+ * | `data-spatial-left`          | empty string /  id / selector | N/A     | Prevent native navigation in Left direction and focus element if exists             |
+ * | `data-spatial-up`            | empty string /  id / selector | N/A     | Prevent native navigation in Up direction and focus element if exists               |
+ * | `data-spatial-right`         | empty string /  id / selector | N/A     | Prevent native navigation in Right direction and focus element if exists            |
+ * | `data-spatial-down`          | empty string /  id / selector | N/A     | Prevent native navigation in Down direction and focus element if exists             |
+ * | `data-spatial-go-back`       | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape               |
+ * | `data-spatial-focusable`     | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)       |
+ * | `data-spatial-exclude`       | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                     |
+ * | `data-spatial-noscroll`      | N/A                           | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view |
+ * | `data-spatial-scroll-parent` | id                            | N/A     | Id of the closest scrollable area if it is not the parent                           |
  *
  * ## Event emitting order
  *
@@ -606,7 +607,14 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     // Handle over sized elements inside scrollable area
     if (target.parentElement && !target.hasAttribute('data-spatial-noscroll')) {
-      const parent = target.parentElement as HTMLElement;
+      let parent
+      if (target.hasAttribute('data-spatial-scroll-parent')) {
+        parent = (target.getRootNode() as Document | ShadowRoot)?.getElementById(target.getAttribute('data-spatial-scroll-parent')!) as HTMLElement | null;
+      }
+      if (!parent) {
+        parent = target.parentElement as HTMLElement;
+      }
+
       const targetScrollAxis = getScrollableAxis(parent);
       if (targetScrollAxis) {
         const targetBB = target.getBoundingClientRect();
