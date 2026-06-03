@@ -3,5 +3,16 @@
   "_comment": "GENERATED FILE — DO NOT HAND-EDIT. Run `yarn knowledge-base:index` to regenerate.",
   "generatedFrom": "scripts/knowledge-base/generate-index.js",
   "tier": 3,
-  "topics": []
+  "topics": [
+    {
+      "id": "tier3/packages/components/src/components/accordion/knowledge-base/accordion.component",
+      "tier": 3,
+      "path": "packages/components/src/components/accordion/knowledge-base/accordion.component.md",
+      "title": "Accordion",
+      "summary": "Usage, guidelines, and accessibility for the mdc-accordion component — a vertically stacked header/body component with dedicated expand/collapse controls.",
+      "status": "draft",
+      "canonical": null,
+      "component": "accordion"
+    }
+  ]
 }

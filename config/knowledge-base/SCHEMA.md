@@ -34,7 +34,7 @@ file only when tiers or rules change.
    Example: a single repo-root `knowledge-base/accessibility.md` referenced from package and component files instead of being copied into each.
 4. **Placeholders require frontmatter.** A topic file may have no body, but
    it must still declare the required frontmatter (see
-   [`frontmatter.config.json`](./frontmatter.config.json)) — typically with
+   [`content/frontmatter.config.json`](./content/frontmatter.config.json)) — typically with
    `status: planned`. Do not delete placeholders to "clean up".
 5. **Human review gate.** When an AI agent drafts knowledge-base content,
    a human reviewer must confirm the content before it is merged. The AI
@@ -83,7 +83,7 @@ Image assets may be placed in nested folders (for example
 
 Every topic file must begin with YAML frontmatter. The required fields,
 their value constraints, and any tier-specific overrides are defined in
-[`frontmatter.config.json`](./frontmatter.config.json) — that file is the
+[`content/frontmatter.config.json`](./content/frontmatter.config.json) — that file is the
 source of truth (the generator reads it directly). Always consult it for
 the current contract rather than relying on a copy here.
 
@@ -139,7 +139,7 @@ carries a `generatedFrom` field and is validated against
 
 The shards are kept in sync by:
 
-- Pre-commit: `yarn lint:staging` runs `yarn knowledge-base:index:check` whenever a KB file is staged.
+- Pre-commit: `yarn lint:staging` runs `yarn knowledge-base:validate` whenever a KB file is staged.
 - CI: `yarn analyze:root` runs the same check; a stale or invalid shard fails the build.
 
 To regenerate after editing or adding topics, run:

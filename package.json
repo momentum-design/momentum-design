@@ -13,9 +13,9 @@
   "scripts": {
     "analyze:dependencies": "yarn syncpack lint",
     "analyze:config": "eslint \"./config/**/*.{js,json}\"",
-    "analyze:root": "yarn analyze:config && yarn analyze:dependencies && yarn knowledge-base:index:check",
+    "analyze:root": "yarn analyze:config && yarn analyze:dependencies && yarn knowledge-base:validate",
     "knowledge-base:index": "node ./scripts/knowledge-base/generate-index.js",
-    "knowledge-base:index:check": "node ./scripts/knowledge-base/generate-index.js --check",
+    "knowledge-base:validate": "node ./scripts/knowledge-base/validate-knowledge-base.js",
     "lint:staged": "lint-staged --config ./config/lint-staged/lint-staged.config.js",
     "analyze": "yarn workspaces foreach --topological-dev -p run analyze",
     "build": "yarn workspaces foreach --topological-dev -p run build",

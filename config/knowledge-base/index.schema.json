@@ -1,8 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://momentum-design/config/knowledge-base/index.schema.json",
   "title": "Knowledge Base Index Shard",
-  "description": "A tier-sharded slice of the repo-wide knowledge-base index. One file per tier (index.root.json, index.packages.json, index.components.json) is produced by scripts/knowledge-base/generate-index.js. Per-field constraints are sourced from config/knowledge-base/frontmatter.config.json so the index and the frontmatter contract cannot drift.",
+  "description": "A tier-sharded slice of the repo-wide knowledge-base index. One file per tier (index.root.json, index.packages.json, index.components.json) is produced by scripts/knowledge-base/generate-index.js. Per-field constraints are sourced from config/knowledge-base/content/frontmatter.config.json so the index and the frontmatter contract cannot drift.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -22,7 +21,7 @@
       "description": "Repo-relative path to the generator script."
     },
     "tier": {
-      "$ref": "./frontmatter.config.json#/default/properties/tier",
+      "$ref": "./content/frontmatter.config.json#/default/properties/tier",
       "description": "Tier number that this shard contains. All entries in `topics` share this tier."
     },
     "topics": {
@@ -42,8 +41,7 @@
         "path",
         "title",
         "summary",
-        "status",
-        "owner"
+        "status"
       ],
       "properties": {
         "id": {
@@ -62,22 +60,19 @@
           "description": "Repo-relative path to the canonical topic file when this entry is a cross-tier stub. Null otherwise."
         },
         "tier": {
-          "$ref": "./frontmatter.config.json#/default/properties/tier"
+          "$ref": "./content/frontmatter.config.json#/default/properties/tier"
         },
         "title": {
-          "$ref": "./frontmatter.config.json#/default/properties/title"
+          "$ref": "./content/frontmatter.config.json#/default/properties/title"
         },
         "summary": {
-          "$ref": "./frontmatter.config.json#/default/properties/summary"
+          "$ref": "./content/frontmatter.config.json#/default/properties/summary"
         },
         "status": {
-          "$ref": "./frontmatter.config.json#/default/properties/status"
-        },
-        "owner": {
-          "$ref": "./frontmatter.config.json#/default/properties/owner"
+          "$ref": "./content/frontmatter.config.json#/default/properties/status"
         },
         "component": {
-          "$ref": "./frontmatter.config.json#/tiers/3/properties/component"
+          "$ref": "./content/frontmatter.config.json#/tiers/3/properties/component"
         }
       }
     }

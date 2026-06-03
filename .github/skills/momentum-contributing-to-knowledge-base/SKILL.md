@@ -8,10 +8,14 @@ description: 'Add a new topic to, or update an existing topic in, the Momentum D
 This skill is the step-by-step workflow for **adding new** or **updating existing**
 topic files in the Momentum Design knowledge base.
 
-It does **not** restate structural rules, tiers, frontmatter fields, or
-allowed topic names. Those are defined once in the
-[Knowledge Base Schema](../../../config/knowledge-base/SCHEMA.md) and the
-config files it references. Always consult the schema before and during the
+It does **not** restate structural rules, tiers, frontmatter fields,
+allowed topic names, or body heading conventions. Those are defined once in
+the [Knowledge Base Schema](../../../config/knowledge-base/SCHEMA.md) and
+the config files it references
+([`frontmatter.config.json`](../../../config/knowledge-base/content/frontmatter.config.json),
+[`body.config.json`](../../../config/knowledge-base/content/body.config.json),
+[`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json)).
+Always consult the schema and its sibling config files before and during the
 steps below.
 
 ## When to use this skill
@@ -70,7 +74,7 @@ skill is not the place to change rules.
 
 5. **Add or update the required frontmatter.** The required fields, value
    constraints, and tier-specific overrides are defined in
-   [`frontmatter.config.json`](../../../config/knowledge-base/frontmatter.config.json).
+   [`frontmatter.config.json`](../../../config/knowledge-base/content/frontmatter.config.json).
    Read that file directly to produce a valid frontmatter block; do not
    guess.
 
@@ -79,7 +83,34 @@ skill is not the place to change rules.
      before promotion to `stable`
      (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
-6. **Regenerate the index.** Run:
+6. **Structure the body (Tier 3 topics only).** For component-level topics,
+   the body must follow the heading hierarchy defined in
+   [`body.config.json`](../../../config/knowledge-base/content/body.config.json).
+   Read that file directly before drafting or editing content. Key rules:
+
+   - Do **not** include a level-1 heading (`# …`) — the frontmatter
+     `title` is the implicit H1.
+   - Top-level sections must appear in this exact order: **Overview**,
+     **Guidelines**, **Accessibility**.
+   - Sub-sections must appear in the order listed under their parent in
+     the config.
+   - Sections marked `required: true` must always be present.
+   - Sections marked `recommended: true` should be present unless
+     genuinely not applicable.
+   - Headings must use sentence case and must not end with a colon.
+   - Do not invent new section or sub-section headings without first
+     adding them to `body.config.json` and calling that out to the user.
+
+7. **Validate the knowledge-base.** Run:
+
+   ```bash
+   yarn knowledge-base:validate
+   ```
+
+   Fix any errors before proceeding. Validation checks frontmatter fields,
+   body structure, and topic-constraint adherence.
+
+8. **Regenerate the index.** Run:
 
    ```bash
    yarn knowledge-base:index
@@ -90,7 +121,7 @@ skill is not the place to change rules.
    alongside your topic file. The generator also runs in `--check` mode in
    pre-commit and CI; a stale or invalid shard will fail the build.
 
-7. **Route through a human reviewer.** AI-drafted knowledge-base content
+9. **Route through a human reviewer.** AI-drafted knowledge-base content
    must be confirmed by a human before merge
    (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
    Surface the diff explicitly so the reviewer can verify both content
@@ -112,8 +143,9 @@ The workflow above applies. Additional notes:
 ## What this skill deliberately does not cover
 
 - Tier definitions, frontmatter contract, allowed Tier 3 topic names,
-  index schema, and structural rules — all owned by the
-  [schema](../../../config/knowledge-base/SCHEMA.md) and its sibling
-  config files.
-- Prose style, heading conventions, or depth of topic files — explicitly a
-  non-goal of the schema.
+  body heading conventions, index schema, and structural rules — all owned
+  by the [schema](../../../config/knowledge-base/SCHEMA.md) and its sibling
+  config files (`frontmatter.config.json`, `body.config.json`,
+  `topic-constraints.config.json`).
+- Prose style or depth of content within sections — not governed by any
+  config file and left to the author's judgment.
