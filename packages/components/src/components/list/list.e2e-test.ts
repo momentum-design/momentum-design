@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect , Locator, Keyboard } from '@playwright/test';
 
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
@@ -382,88 +382,115 @@ test('mdc-list', async ({ componentsPage }) => {
     });
 
     await test.step('scroll when items does not fit into the view', async () => {
-      const list = await setup({ componentsPage, children: generateChildren(7), 'header-text': 'List header' });
-      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
-      const { keyboard } = componentsPage.page;
+      const navigationSteps = async (keyboard: Keyboard, scrollRoot: Locator, listItems: Locator) => {
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
 
-      const listItems = list.locator('mdc-listitem');
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(1)).toBeFocused();
 
-      // change heights
-      await componentsPage.setAttributes(list, { style: 'height: 200px; overflow-y: auto' });
-      await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 400px' });
-      await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 400px', 'data-spatial-noscroll': '' });
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(2)).toBeFocused();
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        const scrollDownTop = await scrollRoot.evaluate(l => l.scrollTop)
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(1)).toBeFocused();
+        // Remain the focus on element 3 ...
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 100);
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(2)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 200);
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      expect(await list.evaluate(l => l.scrollTop)).toBe(176);
+        // ... until its last part scroll into view
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 300);
 
-      // Remain the focus on element 3 ...
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      expect(await list.evaluate(l => l.scrollTop)).toBe(276);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(4)).toBeFocused();
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      expect(await list.evaluate(l => l.scrollTop)).toBe(376);
+        // No scrolling
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(5)).toBeFocused();
 
-      // ... until its last part scroll into view
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      expect(await list.evaluate(l => l.scrollTop)).toBe(476);
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(6)).toBeFocused();
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(4)).toBeFocused();
+        // No scrolling
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(5)).toBeFocused();
 
-      // No scrolling
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(5)).toBeFocused();
-
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(6)).toBeFocused();
-
-      // No scrolling
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(5)).toBeFocused();
-
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(4)).toBeFocused();
-
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(3)).toBeFocused();
-
-      // Skip these steps on Webkit.
-      // When focus moves up and the item need to scroll into view. Chrome and Firefox do the shortest scroll
-      // so the element's bottom will be aligned to the bottom of the viewport, while Webkit will align the element's
-      // top to the top of the viewport.
-      // Spatial navigation used in embedded systems (eg.: TV) which using chromium based browsers. It is Ok to skip it.
-      if (test.info().project.name !== 'webkit') {
-        expect(await list.evaluate(l => l.scrollTop)).toBe(384);
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(4)).toBeFocused();
 
         await keyboard.press(KEYS.ARROW_UP);
         await expect(listItems.nth(3)).toBeFocused();
-        expect(await list.evaluate(l => l.scrollTop)).toBe(284);
+
+        // Skip these steps on Webkit.
+        // When focus moves up and the item need to scroll into view. Chrome and Firefox do the shortest scroll
+        // so the element's bottom will be aligned to the bottom of the viewport, while Webkit will align the element's
+        // top to the top of the viewport.
+        // Spatial navigation used in embedded systems (eg.: TV) which using chromium based browsers. It is Ok to skip it.
+        if (test.info().project.name !== 'webkit') {
+          const scrollUpTop = await scrollRoot.evaluate(l => l.scrollTop);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 100);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 200);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 300);
+        }
 
         await keyboard.press(KEYS.ARROW_UP);
-        await expect(listItems.nth(3)).toBeFocused();
-        expect(await list.evaluate(l => l.scrollTop)).toBe(184);
+        await expect(listItems.nth(2)).toBeFocused();
+      };
 
-        await keyboard.press(KEYS.ARROW_UP);
-        await expect(listItems.nth(3)).toBeFocused();
-        expect(await list.evaluate(l => l.scrollTop)).toBe(84);
+      await test.step('scroll root is the parent', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(7), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
 
-      }
+        const listItems = list.locator('mdc-listitem');
 
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(2)).toBeFocused();
+        // change heights
+        await componentsPage.setAttributes(list, { style: 'height: 200px; overflow-y: auto' });
+        await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 400px' });
+        await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 400px', 'data-spatial-noscroll': '' });
+
+        await navigationSteps(keyboard, list, listItems);
+      });
+
+      await test.step('scroll is not the direct parent of the focusables', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(7), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        const listItems = list.locator('mdc-listitem');
+
+        const listParent = componentsPage.page.locator('mdc-spatialnavigationprovider > div');
+
+        // change heights
+        await componentsPage.setAttributes(listParent, { style: 'height: 200px; overflow-y: auto', id: 'scroll-root' });
+        await listItems.evaluateAll(items => {
+          items.forEach(item => {
+            item.setAttribute('data-spatial-scroll-parent', 'scroll-root');
+          });
+        });
+        await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 404px' });
+        await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 404px', 'data-spatial-noscroll': '' });
+
+        await navigationSteps(keyboard, listParent, listItems);
+      });
     });
   });
 
