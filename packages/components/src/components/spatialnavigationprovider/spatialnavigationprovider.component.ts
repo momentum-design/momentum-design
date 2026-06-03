@@ -1,7 +1,7 @@
 import { property } from 'lit/decorators.js';
 
 import { Provider } from '../../models';
-import { findFocusable, getDomActiveElement, getHostComposePath, isScrollable } from '../../utils/dom';
+import { findFocusable, getDomActiveElement, getHostComposePath, getScrollableAxis } from '../../utils/dom';
 import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
@@ -35,8 +35,11 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * Spatial navigation goes trough the following steps after each keydown:
  *
  * 1. Handle `keydown` in the capture phase.
- *    When active element has `data-spatial-{direction}` attribute then prevent all component navigation and call the
- *    provider own `keydown` handler (see step 3).
+ *    - When active element has `data-spatial-{direction}` attribute then prevent all component navigation and call the
+ *      provider own `keydown` handler (see step 3).
+ *    - When active element's parent is scrollable and it is not fully visible in the given direction and it does not
+ *      have `data-spatial-noscroll` attribute, prevent all navigation and scroll in the give direction half size of the
+ *      scroll view.
  * 2. Component own `keydown` handler executed (bubble phase) (e.g., list moves focus internally) it it was not
  *    prevented.
  * 3. Spatial Navigation Provider's `keydown` handler executed (bubble phase)
@@ -119,15 +122,16 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                | Value                     | Default | Description                                                                   |
- * |--------------------------|---------------------------|---------|-------------------------------------------------------------------------------|
- * | `data-spatial-left`      | empty string / element id | N/A     | Prevent native navigation in Left direction and focus element if exists       |
- * | `data-spatial-up`        | empty string / element id | N/A     | Prevent native navigation in Up direction and focus element if exists         |
- * | `data-spatial-right`     | empty string / element id | N/A     | Prevent native navigation in Right direction and focus element if exists      |
- * | `data-spatial-down`      | empty string / element id | N/A     | Prevent native navigation in Down direction and focus element if exists       |
- * | `data-spatial-go-back`   | N/A                       | N/A     | First focusable element with this attribute is clicked on Back/Escape         |
- * | `data-spatial-focusable` | N/A                       | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`) |
- * | `data-spatial-exclude`   | N/A                       | N/A     | Exclude focusable element (and its subtree) from the navigation               |
+ * | Attribute                | Value                         | Default | Description                                                                        |
+ * |--------------------------|-------------------------------|---------|------------------------------------------------------------------------------------|
+ * | `data-spatial-left`      | empty string /  id / selector | N/A     | Prevent native navigation in Left direction and focus element if exists            |
+ * | `data-spatial-up`        | empty string /  id / selector | N/A     | Prevent native navigation in Up direction and focus element if exists              |
+ * | `data-spatial-right`     | empty string /  id / selector | N/A     | Prevent native navigation in Right direction and focus element if exists           |
+ * | `data-spatial-down`      | empty string /  id / selector | N/A     | Prevent native navigation in Down direction and focus element if exists            |
+ * | `data-spatial-go-back`   | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape              |
+ * | `data-spatial-focusable` | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)      |
+ * | `data-spatial-exclude`   | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                    |
+ * | `data-spatial-noscroll`  | N/A                           | N/A     | Prevent scroll for ative element in scrollable area even if the is not fit in view |
  *
  * ## Event emitting order
  *
@@ -218,12 +222,6 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * - Avoid overlap along horizontal or vertical axes.
  * - Avoid nested focusable elements where possible.
  * - Tune algorithm weights to match your UI layout.
- *
- * ### Scrollable containers
- *
- * Content scrolling is not supported yet, e.g.:
- * - Focused element larger than the viewport.
- * - Scrollable content without interactive children.
  *
  * ### Nested providers
  *
@@ -414,7 +412,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     path = path.includes(this.root) ? path : [this.root];
     // Walk through the composed path to find the focus areas (scrollable or focus trap)
     for (const el of path) {
-      if (el === activeTrap || el === this.root || isScrollable(el)) {
+      if (el === activeTrap || el === this.root || getScrollableAxis(el)) {
         // Find focusable elements within the current focus area (excluding the already checked focus areas)
         focusableElements.push(
           ...findFocusable(el, {
@@ -463,7 +461,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
    * @param currentDomActiveElement - The current active element in the DOM
    * @param direction - Direction
    */
-  private getElementIdForDirectionAttr(
+  private getElementSelectorForDirectionAttr(
     currentDomActiveElement: HTMLElement | null,
     direction: Direction,
   ): string | undefined {
@@ -504,15 +502,16 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     // Check if the current active element has instruction to find the next focusable
     // We look for the element in all the shadow DOMs in the composed path of the active element,
     // so mdc component can use this feature as well.
-    const dataAttrName = `data-spatial-${direction}`;
     if (currentDomActiveElement) {
+      const dataAttrName = `data-spatial-${direction}`;
       const elementWithDataset = getHostComposePath(currentDomActiveElement).find(node =>
         node.hasAttribute(dataAttrName),
       );
-      const nextElementId = elementWithDataset?.getAttribute(dataAttrName);
+      const nextElementSelector = elementWithDataset?.getAttribute(dataAttrName);
 
-      if (elementWithDataset && nextElementId) {
-        const nextElement = (elementWithDataset.getRootNode() as Document | ShadowRoot)?.getElementById(nextElementId);
+      if (elementWithDataset && nextElementSelector) {
+        const root = (elementWithDataset.getRootNode() as Document | ShadowRoot)
+        const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
         if (nextElement) {
           return nextElement;
         }
@@ -593,17 +592,58 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.isNavigationKey(evt.key)) {
       return;
     }
+    let eventHandled = false;
+    const target = evt.target as HTMLElement;
     const action = this.context.value!.keyToActionMap[evt.key];
     if (
       this.isDirectionKey(evt.key) &&
-      this.getElementIdForDirectionAttr(evt.target as HTMLElement, action as Direction) !== undefined
+      this.getElementSelectorForDirectionAttr(target as HTMLElement, action as Direction) !== undefined
     ) {
+      eventHandled = true;
+      // Need to call Spatial navigation key handler manually after all propagation stopped
+      this.handleKeyDown(evt);
+    }
+
+    // Handle over sized elements inside scrollable area
+    if (target.parentElement && !target.hasAttribute('data-spatial-noscroll')) {
+      const parent = target.parentElement as HTMLElement;
+      const targetScrollAxis = getScrollableAxis(parent);
+      if (targetScrollAxis) {
+        const targetBB = target.getBoundingClientRect();
+        const parentBB = parent.getBoundingClientRect();
+
+        // Vertical scrolling
+        if (targetScrollAxis === 'vertical' || targetScrollAxis === 'both') {
+          if (action === 'up' && targetBB.top < parentBB.top && parent.scrollTop > 0) {
+            parent.scrollTo({ top: parent.scrollTop - parentBB.height / 2, behavior: 'auto' });
+            eventHandled = true;
+          }
+          if (action === 'down' && targetBB.bottom > parentBB.bottom && (parent.scrollTop + parentBB.height) < parent.scrollHeight) {
+            parent.scrollTo({ top: parent.scrollTop + parentBB.height / 2, behavior: 'auto' });
+            eventHandled = true;
+          }
+        }
+
+        // horizontal scrolling
+        if (targetScrollAxis === 'horizontal' || targetScrollAxis === 'both') {
+          if (action === 'right' && targetBB.left < parentBB.left &&parent.scrollLeft > 0) {
+            parent.scrollTo({ left: parent.scrollLeft - parentBB.width / 2, behavior: 'auto' });
+            eventHandled = true;
+          }
+
+          if (action === 'left' && targetBB.right > parentBB.right && (parent.scrollLeft + parentBB.width) < parent.scrollWidth) {
+            parent.scrollTo({ left: parent.scrollLeft + parentBB.width / 2, behavior: 'auto' });
+            eventHandled = true;
+          }
+        }
+      }
+    }
+
+    if (eventHandled) {
       // prevent native key events
       evt.preventDefault();
       // prevent MDC component key events
       evt.stopImmediatePropagation();
-      // Need to call Spatial navigation key handler manually after all propagation stopped
-      this.handleKeyDown(evt);
     }
   };
 

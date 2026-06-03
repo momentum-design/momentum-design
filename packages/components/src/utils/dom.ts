@@ -79,13 +79,18 @@ export const hasZeroDimensions = (element: HTMLElement) => {
  * @param element - The element to check.
  * @returns True if the element is scrollable.
  */
-export const isScrollable = (element: HTMLElement): boolean => {
-  if (!(element instanceof Element)) return false;
+export const getScrollableAxis = (element: HTMLElement): null | 'horizontal' | 'vertical' | 'both' => {
+  if (!(element instanceof Element)) return null;
   const computedStyle = getComputedStyle(element);
   const { overflowX, overflowY } = computedStyle;
 
-  // Check if overflow is set to scrollable values
-  return overflowX === 'auto' || overflowX === 'scroll' || overflowY === 'auto' || overflowY === 'scroll';
+  const horizontal = overflowX === 'auto' || overflowX === 'scroll'
+  const vertical = overflowY === 'auto' || overflowY === 'scroll';
+
+  if (horizontal && vertical) return 'both';
+  if (horizontal) return 'horizontal';
+  if (vertical) return 'vertical';
+  return null;
 };
 
 /**

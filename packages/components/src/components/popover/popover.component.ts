@@ -622,8 +622,16 @@ class Popover
    * Sets up the trigger related event listeners, based on the trigger type.
    * Includes fallback for mouseenter trigger to also handle focusin for non-interactive popovers.
    *
-   * We are using capture phase for to make sure we capture trigger events even when they are not propagated during the
-   * bubble phase (e.g.: buttons in list item)
+   * We use capture phase on `document` for all trigger listeners to make sure we capture trigger
+   * events even when they are not propagated during the bubble phase (e.g.: buttons in list item).
+   *
+   * Hover is detected via `mouseover`/`mouseout` (not `mouseenter`/`mouseleave`). The latter are
+   * spec'd as `composed: false` and do not bubble, so a document-level listener never sees them
+   * when the trigger lives inside a shadow root (e.g. wrapped in `mdc-iconprovider` or
+   * `mdc-themeprovider`). `mouseover`/`mouseout` are `composed: true` and bubble, so they cross
+   * shadow boundaries and reach `document`, letting us keep event delegation (no direct reference
+   * to the trigger element and no dependency on its mount/unmount lifecycle). The handlers filter
+   * out movements that stay within the trigger's subtree, recreating enter/leave semantics.
    * @internal
    */
   private setupTriggerListeners = () => {
@@ -636,10 +644,10 @@ class Popover
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
       hoverBridge?.addEventListener('mouseenter', this.show);
-      document.addEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-      document.addEventListener('mouseleave', this.handleMouseLeave, { capture: true });
       this.addEventListener('mouseenter', this.cancelCloseDelay);
       this.addEventListener('mouseleave', this.startCloseDelay);
+      document.addEventListener('mouseover', this.handleMouseEnter, { capture: true });
+      document.addEventListener('mouseout', this.handleMouseLeave, { capture: true });
     }
     if (this.trigger.includes('focusin')) {
       document.addEventListener('focusin', this.handleFocusIn, { capture: true });
@@ -659,8 +667,8 @@ class Popover
     // mouseenter trigger
     const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
     hoverBridge?.removeEventListener('mouseenter', this.show);
-    document.removeEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-    document.removeEventListener('mouseleave', this.handleMouseLeave, { capture: true });
+    document.removeEventListener('mouseover', this.handleMouseEnter, { capture: true });
+    document.removeEventListener('mouseout', this.handleMouseLeave, { capture: true });
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
@@ -942,36 +950,47 @@ class Popover
   }
 
   /**
-   * Handles mouse enter event on the trigger element.
-   * This method sets the `isHovered` flag to true and shows the popover
+   * Determines whether a delegated `mouseover`/`mouseout` event is movement that stays within the
+   * trigger's subtree rather than a genuine enter/leave of the trigger.
+   *
+   * Both events fire repeatedly while the pointer moves between elements inside the trigger
+   * (e.g. an icon with internal SVG elements). `relatedTarget` is the element on the other side of
+   * the boundary (the element being left for `mouseover`, or entered for `mouseout`); if it
+   * resolves to the trigger or one of its shadow hosts, the pointer has not crossed the trigger
+   * boundary and the event should be ignored.
+   * @internal
+   */
+  private isHoverWithinTrigger = (event: Event): boolean => {
+    const { triggerElement } = this;
+    const { relatedTarget } = event as MouseEvent;
+    if (triggerElement && relatedTarget instanceof Element) {
+      return getHostComposePath(relatedTarget).includes(triggerElement);
+    }
+    return false;
+  };
+
+  /**
+   * Handles the pointer moving over the trigger element (delegated `mouseover`).
+   * This method sets the `isHovered` flag to true and shows the popover.
    * @internal
    */
   private handleMouseEnter = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = true;
     this.show();
   };
 
   /**
-   * Handles mouse leave event on the trigger element.
+   * Handles the pointer leaving the trigger element (delegated `mouseout`).
    * This method sets the `isHovered` flag to false and starts the close delay
    * timer to hide the popover.
    * @internal
    */
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
-
-    // When the trigger contains shadow DOM children (e.g. an icon with internal SVG elements),
-    // mouseleave fires on internal elements as the mouse moves between them.
-    // Only close if the mouse has actually left the trigger element.
-    const mouseEvent = event as MouseEvent;
-    const { triggerElement } = this;
-    if (triggerElement && mouseEvent.relatedTarget instanceof Element) {
-      if (getHostComposePath(mouseEvent.relatedTarget).includes(triggerElement)) {
-        return;
-      }
-    }
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = false;
     this.startCloseDelay();
