@@ -86,20 +86,8 @@ skill is not the place to change rules.
 6. **Structure the body (Tier 3 topics only).** For component-level topics,
    the body must follow the heading hierarchy defined in
    [`body.config.json`](../../../config/knowledge-base/content/body.config.json).
-   Read that file directly before drafting or editing content. Key rules:
-
-   - Do **not** include a level-1 heading (`# …`) — the frontmatter
-     `title` is the implicit H1.
-   - Top-level sections must appear in this exact order: **Overview**,
-     **Guidelines**, **Accessibility**.
-   - Sub-sections must appear in the order listed under their parent in
-     the config.
-   - Sections marked `required: true` must always be present.
-   - Sections marked `recommended: true` should be present unless
-     genuinely not applicable.
-   - Headings must use sentence case and must not end with a colon.
-   - Do not invent new section or sub-section headings without first
-     adding them to `body.config.json` and calling that out to the user.
+   Read that file directly before drafting or editing content.
+   Do not invent new section or sub-section headings without first adding them to `body.config.json` and calling that out to the user.
 
 7. **Validate the knowledge-base.** Run:
 
@@ -139,13 +127,3 @@ The workflow above applies. Additional notes:
 - Updating only the body of a `status: planned` placeholder typically
   warrants flipping `status` to `draft` (AI-authored) or `stable`
   (human-authored or human-reviewed).
-
-## What this skill deliberately does not cover
-
-- Tier definitions, frontmatter contract, allowed Tier 3 topic names,
-  body heading conventions, index schema, and structural rules — all owned
-  by the [schema](../../../config/knowledge-base/SCHEMA.md) and its sibling
-  config files (`frontmatter.config.json`, `body.config.json`,
-  `topic-constraints.config.json`).
-- Prose style or depth of content within sections — not governed by any
-  config file and left to the author's judgment.

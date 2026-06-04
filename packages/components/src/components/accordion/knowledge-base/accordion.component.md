@@ -14,7 +14,7 @@ The accordion is a vertically stacked component with a header and an expandable/
 
 - Use `mdc-accordion` when you need additional interactive controls (chips, badges, buttons, icons) in the header alongside the expand/collapse behaviour.
 
-### When to not use
+### When not to use
 
 - Use `mdc-accordionbutton` instead when you only need a simple clickable header without extra controls in the header row.
 
@@ -29,8 +29,6 @@ import "@momentum-design/components/dist/components/accordion/index.js"; // cust
 // or via React wrapper
 import { Accordion } from '@momentum-design/components/dist/react';
 ```
-
-Tag name: `mdc-accordion`
 
 Minimal markup example:
 

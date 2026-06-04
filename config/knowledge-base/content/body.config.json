@@ -25,11 +25,11 @@
                                 "description": "User-facing scenarios in which this component is the right choice. Describe the interaction patterns and UI contexts the component is designed for."
                             },
                             {
-                                "heading": "When to not use",
+                                "heading": "When not to use",
                                 "level": 3,
                                 "required": true,
                                 "recommended": true,
-                                "description": "Scenarios where this component is the wrong choice. Call out adjacent components in the design system that should be used instead, and link to them."
+                                "description": "Scenarios where this component is the wrong choice. Provide alternative component options."
                             }
                         ]
                     }
@@ -69,7 +69,7 @@
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Known limitations of the component, edge cases (RTL, theming, nested usage), intentional non-goals, and behaviours that may surprise consumers."
+                                "description": "Known limitations of the component, edge cases, intentional non-goals, and behaviours that may surprise consumers."
                             },
                             {
                                 "heading": "Notes",
