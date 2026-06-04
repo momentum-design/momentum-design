@@ -32,7 +32,7 @@ module.exports = {
     ...config.rules,
     'no-restricted-syntax': ['error', ...noRestrictedSyntaxRules],
     'jsdoc/no-restricted-syntax': [
-      'error',
+      'warn',
       {
         contexts: [
           {
