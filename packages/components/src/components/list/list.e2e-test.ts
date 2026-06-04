@@ -480,12 +480,7 @@ test('mdc-list', async ({ componentsPage }) => {
         const listParent = componentsPage.page.locator('mdc-spatialnavigationprovider > div');
 
         // change heights
-        await componentsPage.setAttributes(listParent, { style: 'height: 200px; overflow-y: auto', id: 'scroll-root' });
-        await listItems.evaluateAll(items => {
-          items.forEach(item => {
-            item.setAttribute('data-spatial-scroll-parent', 'scroll-root');
-          });
-        });
+        await componentsPage.setAttributes(listParent, { style: 'height: 200px; overflow-y: auto', id: 'scroll-root', 'data-spatial-scroll-parent': '' });
         await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 404px' });
         await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 404px', 'data-spatial-noscroll': '' });
 
