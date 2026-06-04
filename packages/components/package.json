@@ -143,6 +143,7 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-jsdoc": "^48.0.0",
     "eslint-plugin-lit": "^1.14.0",
     "fs-extra": "^11.2.0",
     "lint-staged": "^16.1.2",

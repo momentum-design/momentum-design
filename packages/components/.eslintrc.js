@@ -26,10 +26,23 @@ const noRestrictedSyntaxRules = [
 module.exports = {
   ...config,
   extends: [...config.extends, 'plugin:lit/recommended', 'prettier'],
+  plugins: [...(config.plugins ?? []), 'jsdoc'],
   parserOptions: { ...config.parserOptions, project: ['./tsconfig.json', './src/tsconfig.json'], projectService: true },
   rules: {
     ...config.rules,
     'no-restricted-syntax': ['error', ...noRestrictedSyntaxRules],
+    'jsdoc/no-restricted-syntax': [
+      'error',
+      {
+        contexts: [
+          {
+            context: 'ClassDeclaration',
+            comment: 'JsdocBlock[description=/\\S/]',
+            message: 'Class TSDoc blocks must only contain tags — no free-form description text is allowed.',
+          },
+        ],
+      },
+    ],
     '@typescript-eslint/no-floating-promises': 'error',
     'no-redeclare': 'off',
     'implicit-arrow-linebreak': 'off',

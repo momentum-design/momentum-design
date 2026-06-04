@@ -1,12 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "description": "Schema describing the recommended heading structure of the body of knowledge-base topic markdown files. The 'body' is everything below the YAML frontmatter; the frontmatter contract itself lives in ./frontmatter.config.json. Topics MUST follow the heading hierarchy declared under `tiers.X.sections`, in the order listed.",
-    "default": {
-        "sections": [],
-        "conventions": {
-            "topLevelHeading": "Do not include a level-1 heading; the frontmatter `title` is the implicit H1."
-        }
-    },
     "tiers": {
         "3": {
             "sections": [
@@ -15,7 +9,7 @@
                     "level": 2,
                     "required": true,
                     "recommended": true,
-                    "description": "First section of the component topic. 1-3 sentences summarising what the component is and the user-facing problem it solves. Do not restate the frontmatter `title` (the component name) verbatim and do not introduce a level-1 heading ('# ...') anywhere in the body \u2014 the frontmatter `title` is the implicit H1.",
+                    "description": "First section of the component topic. 1-3 sentences summarising what the component is and the user-facing problem it solves. Do not restate the frontmatter `title` (the component name) verbatim and do not introduce a level-1 heading ('# ...') anywhere in the body - the frontmatter `title` is the implicit H1.",
                     "rules": {
                         "minSentences": 1,
                         "maxSentences": 3
@@ -61,14 +55,14 @@
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Guidance for the content rendered inside or alongside the component \u2014 slotted text, labels, icons, helper text \u2014 covering tone, length, casing, and editorial conventions."
+                                "description": "Guidance for the content rendered inside or alongside the component - slotted text, labels, icons, helper text - covering tone, length, casing, and editorial conventions."
                             },
                             {
                                 "heading": "Property/Attribute details",
                                 "level": 3,
                                 "required": false,
                                 "recommended": false,
-                                "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table \u2014 add context the table cannot express."
+                                "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table - add context the table cannot express."
                             },
                             {
                                 "heading": "Limitations",
@@ -144,16 +138,7 @@
                         ]
                     }
                 }
-            ],
-            "conventions": {
-                "headingCase": "Sentence case",
-                "trailingColons": false,
-                "topLevelHeading": "Do not include a level-1 heading; the frontmatter `title` (the component name) is the implicit H1.",
-                "sectionLevel": 2,
-                "subSectionLevel": 3,
-                "maxSubSectionDepth": 4,
-                "sectionOrder": "Top-level sections must appear in this order: Overview, Guidelines, Accessibility. Sub-sections must appear in the order listed under their parent. Unknown headings are discouraged; add new sections to this config first."
-            }
+            ]
         }
     }
 }

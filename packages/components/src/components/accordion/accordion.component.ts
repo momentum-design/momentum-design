@@ -11,12 +11,6 @@ import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import styles from './accordion.styles';
 
 /**
- * An accordion is a vertically stacked component with a header and expandable/collapsible body section.
- * Unlike `accordionbutton`, only the dedicated expand/collapse button is clickable — not the entire header.
- *
- * For full usage guidelines, property details, and accessibility requirements see
- * `knowledge-base/accordion.component.md` co-located with this component.
- *
  * @tagname mdc-accordion
  *
  * @dependency mdc-button

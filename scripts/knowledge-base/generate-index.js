@@ -21,19 +21,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const {
-  REPO_ROOT,
-  FRONTMATTER_CONFIG_PATH,
-  TOPIC_CONSTRAINTS_CONFIG_PATH,
-  collectTopics,
-  buildShards,
-} = require('./lib');
+const { REPO_ROOT, TOPIC_CONSTRAINTS_CONFIG_PATH, collectTopics, buildShards } = require('./lib');
 
 function main() {
-  const frontmatterConfig = JSON.parse(fs.readFileSync(FRONTMATTER_CONFIG_PATH, 'utf8'));
   const topicConstraintsConfig = JSON.parse(fs.readFileSync(TOPIC_CONSTRAINTS_CONFIG_PATH, 'utf8'));
 
-  const { topics } = collectTopics({ frontmatterConfig, topicConstraintsConfig });
+  const { topics } = collectTopics({ topicConstraintsConfig });
   const shards = buildShards(topics);
   for (const shard of shards) {
     fs.writeFileSync(shard.absPath, shard.serialized);
