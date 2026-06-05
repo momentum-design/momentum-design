@@ -1,13 +1,9 @@
 {
     "tiers": {
         "3": {
+            "filenamePattern": "{component}.{topic}.md",
             "allowedTopics": {
-                "accessibility": "Keyboard, screen reader, focus, and ARIA expectations.",
-                "anatomy": "Named parts of the component and how they map to the DOM.",
-                "usage": "When to use, when not to use, and content guidance.",
-                "theming": "Tokens, variants, and themable surfaces.",
-                "interaction": "States, gestures, motion, and event behavior.",
-                "api": "Public props, events, slots, and CSS custom properties."
+                "component": "All related component documentation in one file (accessibility, anatomy, usage, theming, interaction, and API)."
             }
         }
     }

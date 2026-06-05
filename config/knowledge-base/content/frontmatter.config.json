@@ -4,8 +4,7 @@
       "title",
       "summary",
       "status",
-      "tier",
-      "owner"
+      "tier"
     ],
     "properties": {
       "title": {
@@ -30,10 +29,6 @@
           2,
           3
         ]
-      },
-      "owner": {
-        "type": "string",
-        "minLength": 1
       },
       "canonical": {
         "type": "string"

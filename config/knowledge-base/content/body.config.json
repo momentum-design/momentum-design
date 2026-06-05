@@ -1,0 +1,144 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Schema describing the recommended heading structure of the body of knowledge-base topic markdown files. The 'body' is everything below the YAML frontmatter; the frontmatter contract itself lives in ./frontmatter.config.json. Topics MUST follow the heading hierarchy declared under `tiers.X.sections`, in the order listed.",
+    "tiers": {
+        "3": {
+            "sections": [
+                {
+                    "heading": "Overview",
+                    "level": 2,
+                    "required": true,
+                    "recommended": true,
+                    "description": "First section of the component topic. 1-3 sentences summarising what the component is and the user-facing problem it solves. Do not restate the frontmatter `title` (the component name) verbatim and do not introduce a level-1 heading ('# ...') anywhere in the body - the frontmatter `title` is the implicit H1.",
+                    "rules": {
+                        "minSentences": 1,
+                        "maxSentences": 3
+                    },
+                    "subSections": {
+                        "level": 3,
+                        "sections": [
+                            {
+                                "heading": "When to use",
+                                "level": 3,
+                                "required": true,
+                                "recommended": true,
+                                "description": "User-facing scenarios in which this component is the right choice. Describe the interaction patterns and UI contexts the component is designed for."
+                            },
+                            {
+                                "heading": "When not to use",
+                                "level": 3,
+                                "required": true,
+                                "recommended": true,
+                                "description": "Scenarios where this component is the wrong choice. Provide alternative component options."
+                            }
+                        ]
+                    }
+                },
+                {
+                    "heading": "Guidelines",
+                    "level": 2,
+                    "required": true,
+                    "recommended": true,
+                    "description": "How to use the component correctly. Organised into the level-3 sub-sections listed below; cover at minimum developer integration and the public API surface.",
+                    "subSections": {
+                        "level": 3,
+                        "sections": [
+                            {
+                                "heading": "Developer usage",
+                                "level": 3,
+                                "required": true,
+                                "recommended": true,
+                                "description": "How developers integrate the component: package import path, the custom-element tag, framework wrappers (React etc.), required slotted children, and a minimal working markup example."
+                            },
+                            {
+                                "heading": "Content guidance",
+                                "level": 3,
+                                "required": false,
+                                "recommended": true,
+                                "description": "Guidance for the content rendered inside or alongside the component - slotted text, labels, icons, helper text - covering tone, length, casing, and editorial conventions."
+                            },
+                            {
+                                "heading": "Property/Attribute details",
+                                "level": 3,
+                                "required": false,
+                                "recommended": false,
+                                "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table - add context the table cannot express."
+                            },
+                            {
+                                "heading": "Limitations",
+                                "level": 3,
+                                "required": false,
+                                "recommended": true,
+                                "description": "Known limitations of the component, edge cases, intentional non-goals, and behaviours that may surprise consumers."
+                            },
+                            {
+                                "heading": "Notes",
+                                "level": 3,
+                                "required": false,
+                                "recommended": false,
+                                "description": "Additional supporting context, history, or rationale about the component that does not fit the other sub-sections."
+                            }
+                        ]
+                    }
+                },
+                {
+                    "heading": "Accessibility",
+                    "level": 2,
+                    "required": false,
+                    "recommended": true,
+                    "description": "Accessibility contract for the component. Split into what the component handles internally and what the consumer must supply when adopting it.",
+                    "subSections": {
+                        "level": 3,
+                        "sections": [
+                            {
+                                "heading": "Built-in features",
+                                "level": 3,
+                                "required": false,
+                                "recommended": true,
+                                "description": "Accessibility behaviours the component implements out of the box: keyboard interaction, focus management, screen-reader semantics, and any reduced-motion or high-contrast handling. Consumers can rely on these without additional work.",
+                                "subSections": {
+                                    "level": 4,
+                                    "sections": [
+                                        {
+                                            "heading": "Internal ARIA managed by the component",
+                                            "level": 4,
+                                            "required": false,
+                                            "recommended": true,
+                                            "description": "ARIA roles, states, and properties that the component sets, updates, or removes on its internal DOM (for example `role`, `aria-expanded`, `aria-selected`, `aria-controls`). Consumers must not override these unless explicitly documented as overridable."
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "heading": "Implementation requirements",
+                                "level": 3,
+                                "required": false,
+                                "recommended": true,
+                                "description": "Accessibility responsibilities the consumer must satisfy when adopting the component for the resulting UI to be accessible.",
+                                "subSections": {
+                                    "level": 4,
+                                    "sections": [
+                                        {
+                                            "heading": "General",
+                                            "level": 4,
+                                            "required": false,
+                                            "recommended": false,
+                                            "description": "General accessibility requirements that don't fit under the other sub-sections, such as ensuring passing aria related attributes to the component, etc."
+                                        },
+                                        {
+                                            "heading": "Labelling",
+                                            "level": 4,
+                                            "required": false,
+                                            "recommended": true,
+                                            "description": "How the consumer must label the component for assistive technologies: which attribute or slot to use (visible label, `aria-label`, `aria-labelledby`, slotted label element), when each is appropriate, and examples for common cases such as icon-only usage."
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

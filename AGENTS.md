@@ -50,6 +50,19 @@ Each package should own its implementation details in its local AGENTS.md.
 
 See [package.json](package.json) for workspace configuration (package manager, workspace pattern, and orchestration details).
 
+### Scaffolding New Workspace Packages
+
+Never hand-roll a new workspace package — use the plop generator so the package starts with the standard folder layout and the root `package.json` workspace alias is wired up automatically.
+
+```bash
+yarn generate
+# Select the "workspace" generator, then answer:
+#   packageName            → e.g. eslint-plugin-tsdoc-components
+#   destinationFolderName  → e.g. tools  (subfolder under packages/)
+```
+
+The generator scaffolds `packages/<destinationFolderName>/<packageName>/` and adds a `yarn <packageName>` script alias to the root `package.json`. After it finishes, `yarn install` is run automatically (`generate` = `generate:plop && yarn install`). Implementation details (templates, actions, prompts) live in [config/plop](config/plop/).
+
 ## AI-Assisted Code Marker Rule
 
 - For generated code files, start generated blocks with a comment that begins with // AI-Assisted.
