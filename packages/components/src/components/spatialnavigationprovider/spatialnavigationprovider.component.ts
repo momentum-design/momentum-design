@@ -418,8 +418,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         focusableElements.push(
           ...findFocusable(el, {
             excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
-            includeSelectors: ['[data-spatial-focusable]'],
-            excludeSelectors: ['[data-spatial-exclude]'],
+            includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
+            excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
           }),
         );
         const result = this.focusNextInFocusableAria(focusableElements, direction);
