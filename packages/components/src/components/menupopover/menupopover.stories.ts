@@ -516,8 +516,7 @@ export const DynamicMenu: StoryObj = {
 };
 
 export const MenuXYZ: StoryObj = {
-  render: () => {
-    return html`
+  render: () => html`
           <div id="menupopover-test-wrapper">
             <mdc-button id="trigger-btn">Options</mdc-button>
             <mdc-menupopover triggerid="trigger-btn">
@@ -528,5 +527,4 @@ export const MenuXYZ: StoryObj = {
             </mdc-menupopover>
           </div>
         `
-  }
 }
