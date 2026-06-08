@@ -8,8 +8,6 @@ type FindFocusableCommands = 'focusable' | 'continue' | 'stop';
  * Options for finding focusable elements.
  */
 type FindFocusableOptions = {
-  /** Elements to include (and its subtree) in the search. */
-  includeElements?: HTMLElement[];
   /** Elements to exclude (and its subtree) from the search. */
   excludedElements?: HTMLElement[];
   /** Selectors to include in the search. */
@@ -240,7 +238,7 @@ export const findFocusable = (
   const includeSelectors = options?.includeSelectors ?? [];
   const excludeSelectors = options?.excludeSelectors ?? [];
   const stopAtNonTabbable = options?.stopAtNonTabbable ?? false;
-  const matches = new Set<HTMLElement>(options.includeElements ?? []);
+  const matches = new Set<HTMLElement>([]);
 
   const internalFocusableCheck = (element: HTMLElement) => {
     // Excluded

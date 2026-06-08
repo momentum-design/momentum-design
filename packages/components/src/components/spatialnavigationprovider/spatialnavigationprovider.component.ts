@@ -537,12 +537,14 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
         
         if (nextElement){
-          if (focusableElements.includes(nextElement)) {
+          const isNextElementInFocusables = focusableElements.includes(nextElement)
+
+          focusableElements = focusableElements.filter(el => nextElement.contains(el) && el);
+          if (isNextElementInFocusables || focusableElements.length <= 1) {
             // Use nextElement if it focusable
             return nextElement;
-          } 
-          // Search focusable inside nextElements sub-tree
-          focusableElements = focusableElements.filter(el => nextElement.contains(el));
+          }
+          // Else, fall back to the distance based navigation but search within the targeted element subtree only.
         }
       }
     }
@@ -635,7 +637,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     // Handle over sized elements inside scrollable area
     if (target.parentElement && !target.hasAttribute(DATA_ATTRIBUTES.NO_SCROLL)) {
-      const parent = target.closest(`[${DATA_ATTRIBUTES.SCROLL_PARENT}}]`) ?? target.parentElement;
+      const parent = target.closest(`[${DATA_ATTRIBUTES.SCROLL_PARENT}]`) ?? target.parentElement;
 
       const targetScrollAxis = getScrollableAxis(parent);
       if (targetScrollAxis) {

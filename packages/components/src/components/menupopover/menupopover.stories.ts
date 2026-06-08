@@ -514,3 +514,19 @@ export const DynamicMenu: StoryObj = {
       </mdc-menupopover>`;
   },
 };
+
+export const MenuXYZ: StoryObj = {
+  render: () => {
+    return html`
+          <div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem id="menu-item-1" data-spatial-up="" data-spatial-down="menu-item-3"  label="Profile"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-2" label="Settings"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-3" label="Notifications"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-4" data-spatial-up="menu-item-1" label="Logout"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `
+  }
+}
