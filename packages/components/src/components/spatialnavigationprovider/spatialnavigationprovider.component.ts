@@ -1,15 +1,7 @@
 import { property } from 'lit/decorators.js';
 
 import { Provider } from '../../models';
-import {
-  findFocusable,
-  getDomActiveElement,
-  getHostComposePath,
-  getScrollableAxis,
-  hasNoClientRects,
-  isInteractiveElement,
-  isTabbable,
-} from '../../utils/dom';
+import { findFocusable, getDomActiveElement, getHostComposePath, getScrollableAxis } from '../../utils/dom';
 import { FocusTrapStack } from '../../utils/mixins/focus/FocusTrapStack';
 
 import SpatialNavigationProviderContext from './spatialnavigationprovider.context';
@@ -426,21 +418,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         focusableElements.push(
           ...findFocusable(el, {
             excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
-            includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
-            excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
-            customFocusableCheck: (el, result) => {
-              // Handle elements that are hidden because they are not in the viewpoint of a scrollbar
-              if (
-                result === 'stop' &&
-                hasNoClientRects(el) &&
-                isInteractiveElement(el) &&
-                isTabbable(el) &&
-                el.closest(`[${DATA_ATTRIBUTES.SCROLL_PARENT}]`)
-              ) {
-                return 'focusable';
-              }
-              return result;
-            }
+            includeSelectors: ['[data-spatial-focusable]'],
+            excludeSelectors: ['[data-spatial-exclude]'],
           }),
         );
         const result = this.focusNextInFocusableAria(focusableElements, direction);
@@ -503,7 +482,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): HTMLElement | undefined {
     let currentActiveElement = this.getActiveElement();
     const currentDomActiveElement = getDomActiveElement() as HTMLElement | null;
-    let focusableElements = elements
+    let focusableElements = elements;
 
     // Sync current active element if necessary
     // It can be out of sync when:
@@ -533,11 +512,11 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       const nextElementSelector = elementWithDataset?.getAttribute(dataAttrName);
 
       if (elementWithDataset && nextElementSelector) {
-        const root = (elementWithDataset.getRootNode() as Document | ShadowRoot)
+        const root = elementWithDataset.getRootNode() as Document | ShadowRoot;
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
-        
-        if (nextElement){
-          const isNextElementInFocusables = focusableElements.includes(nextElement)
+
+        if (nextElement) {
+          const isNextElementInFocusables = focusableElements.includes(nextElement);
 
           focusableElements = focusableElements.filter(el => nextElement.contains(el) && el);
           if (isNextElementInFocusables || focusableElements.length <= 1) {
@@ -560,7 +539,12 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
 
     // Find the closest element in the given direction
-    const results = orderElementsByDistance(currentActiveElement, focusableElements, direction, this.distanceCalculationWeights);
+    const results = orderElementsByDistance(
+      currentActiveElement,
+      focusableElements,
+      direction,
+      this.distanceCalculationWeights,
+    );
     return results[0]?.candidate;
   }
 
