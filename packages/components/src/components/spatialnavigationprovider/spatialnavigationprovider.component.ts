@@ -516,10 +516,14 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
 
         if (nextElement) {
-          const isNextElementInFocusables = focusableElements.includes(nextElement);
+          const focusableAroundNextElement = findFocusable(nextElement.parentElement, {
+            includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
+            excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
+          })
+          const isNextElementInFocusables = focusableAroundNextElement.includes(nextElement);
 
-          focusableElements = focusableElements.filter(el => nextElement.contains(el) && el);
-          if (isNextElementInFocusables || focusableElements.length <= 1) {
+          focusableElements = focusableAroundNextElement.filter(el => nextElement.contains(el) && el !== nextElement);
+          if (isNextElementInFocusables || focusableElements.length <= 0) {
             // Use nextElement if it focusable
             return nextElement;
           }
