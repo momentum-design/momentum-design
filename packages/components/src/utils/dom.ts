@@ -2,12 +2,12 @@
 
 import type { OverflowMixinInterface } from './mixins/OverflowMixin';
 
+type FindFocusableCommands = 'focusable' | 'continue' | 'stop';
+
 /**
  * Options for finding focusable elements.
  */
 type FindFocusableOptions = {
-  /** Elements to include (and its subtree) in the search. */
-  includeElements?: HTMLElement[];
   /** Elements to exclude (and its subtree) from the search. */
   excludedElements?: HTMLElement[];
   /** Selectors to include in the search. */
@@ -20,6 +20,14 @@ type FindFocusableOptions = {
    * inactive items and their children should not be reachable via Tab navigation.
    */
   stopAtNonTabbable?: boolean;
+  /**
+   * When it is provided, it is executed after the default checked run.
+   * I get the result from the default checked run and can modify it.
+   *
+   * @param element - The element to check.
+   * @param result - The result of the default checked run.
+   */
+  customFocusableCheck?: (element: HTMLElement, result: FindFocusableCommands) => FindFocusableCommands;
 };
 
 /**
@@ -84,7 +92,7 @@ export const getScrollableAxis = (element: Element | null): null | 'horizontal' 
   const computedStyle = getComputedStyle(element);
   const { overflowX, overflowY } = computedStyle;
 
-  const horizontal = overflowX === 'auto' || overflowX === 'scroll'
+  const horizontal = overflowX === 'auto' || overflowX === 'scroll';
   const vertical = overflowY === 'auto' || overflowY === 'scroll';
 
   if (horizontal && vertical) return 'both';
@@ -230,15 +238,15 @@ export const findFocusable = (
   const includeSelectors = options?.includeSelectors ?? [];
   const excludeSelectors = options?.excludeSelectors ?? [];
   const stopAtNonTabbable = options?.stopAtNonTabbable ?? false;
-  const matches = new Set<HTMLElement>(options.includeElements ?? []);
+  const matches = new Set<HTMLElement>([]);
 
-  const focusableCheck = (element: HTMLElement) => {
-    if (
-      !(element instanceof HTMLSlotElement) &&
-      (isHidden(element) || isDisabled(element) || isMatchAny(element, excludeSelectors))
-    ) {
-      return 'stop';
-    }
+  const internalFocusableCheck = (element: HTMLElement) => {
+    // Excluded
+    if (excludesSet.has(root as HTMLElement) || isMatchAny(element, excludeSelectors)) return 'stop';
+
+    // Unreachable
+    if (isHidden(element) || isDisabled(element)) return 'stop';
+
     if (stopAtNonTabbable && !(element instanceof HTMLSlotElement) && element.getAttribute('tabindex') === '-1') {
       // AI-Assisted
       // Do not stop traversal for elements inside a shadow root with delegatesFocus: true.
@@ -250,56 +258,40 @@ export const findFocusable = (
       }
       // End AI-Assisted
     }
+
     return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))
       ? 'focusable'
       : 'continue';
   };
 
-  const finder = (root: ShadowRoot | HTMLElement) => {
-    if (excludesSet.has(root as HTMLElement) || (root instanceof HTMLElement && isMatchAny(root, excludeSelectors))) {
-      return;
-    }
-    if (root instanceof HTMLElement && focusableCheck(root) === 'focusable') {
-      matches.add(root);
-    }
+  const focusableCheck = options.customFocusableCheck
+    ? (el: HTMLElement) => options.customFocusableCheck!(el, internalFocusableCheck(el))
+    : internalFocusableCheck;
 
-    let children: HTMLElement[] = [];
-    if (root instanceof HTMLElement && root.shadowRoot) {
-      children = Array.from(root.shadowRoot.children) as HTMLElement[];
-    } else if (root.children.length) {
-      children = Array.from(root.children) as HTMLElement[];
-    }
-
-    children.forEach((child: Node) => {
-      const element = child as HTMLElement;
-      const isFocusableResult = focusableCheck(element);
+  const finder = (root: ShadowRoot | Element) => {
+    if (root instanceof HTMLElement) {
+      const isFocusableResult = focusableCheck(root);
 
       if (isFocusableResult === 'focusable') {
-        matches.add(element);
+        matches.add(root);
       }
 
       if (isFocusableResult === 'stop') {
         return;
       }
+    }
 
-      if (element.shadowRoot) {
-        finder(element.shadowRoot);
-      } else if (element.tagName === 'SLOT') {
-        const assignedNodes = (element as HTMLSlotElement).assignedElements({ flatten: true });
-        assignedNodes.forEach(node => {
-          if (node instanceof HTMLElement) {
-            // When stopAtNonTabbable is enabled, skip non-tabbable slotted elements and their
-            // subtrees to support composite widget patterns (e.g., roving tabindex in lists)
-            if (stopAtNonTabbable && !(node instanceof HTMLSlotElement) && node.getAttribute('tabindex') === '-1') {
-              return;
-            }
-            finder(node);
-          }
-        });
-      } else {
-        finder(element);
-      }
-    });
+    let children: Element[] = [];
+
+    if (root instanceof HTMLSlotElement) {
+      children = root.assignedElements({ flatten: true });
+    } else if (root instanceof HTMLElement && root.shadowRoot) {
+      children = Array.from(root.shadowRoot.children);
+    } else if (root.children.length) {
+      children = Array.from(root.children);
+    }
+
+    children.forEach(finder);
   };
 
   finder(root);

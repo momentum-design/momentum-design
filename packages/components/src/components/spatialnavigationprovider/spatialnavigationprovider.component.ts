@@ -12,7 +12,7 @@ import {
   SpatialNavigationActionToKeyMap,
   SpatialNavigationKeyToActionMap,
 } from './spatialnavigationprovider.types';
-import { DEFAULTS } from './spatialnavigationprovider.constants';
+import { DATA_ATTRIBUTES, DEFAULTS } from './spatialnavigationprovider.constants';
 import { orderElementsByDistance } from './spatialnavigationprovider.utils';
 import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
 
@@ -32,30 +32,30 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * ### Steps
  *
- * Spatial navigation goes trough the following steps after each keydown:
+ * Spatial navigation goes through the following steps after each keydown:
  *
  * 1. Handle `keydown` in the capture phase.
- *    - When active element has `data-spatial-{direction}` attribute then prevent all component navigation and call the
- *      provider own `keydown` handler (see step 3).
- *    - When active element's parent is scrollable and it is not fully visible in the given direction and it does not
- *      have `data-spatial-noscroll` attribute, prevent all navigation and scroll in the give direction half size of the
+ *    - When the active element has a `data-spatial-{direction}` attribute, then prevent all component navigation and call the
+ *      provider's own `keydown` handler (see step 3).
+ *    - When the active element's parent is scrollable and it is not fully visible in the given direction, and it does not
+ *      have a `data-spatial-noscroll` attribute, prevent all navigation and scroll in the given direction half-size of the
  *      scroll view.
  * 2. Component own `keydown` handler executed (bubble phase) (e.g., list moves focus internally) it it was not
  *    prevented.
  * 3. Spatial Navigation Provider's `keydown` handler executed (bubble phase)
- *    - If key event was not prevented in step 1. emit `navbeforeprocess` to check if any component want to handle
+ *    - If a key event was not prevented in step 1. emit `navbeforeprocess` to check if any component want to handle
  *      the key event itself. If `navbeforeprocess` event is prevented, stop here.
- *    - If the component did not handle `keydown`, it calculate the next focusable item
- *      - if the active element has `data-spatial-{direction}` attribute, it will try to focus the element with the id.
+ *    - If the component did not handle `keydown`, it calculates the next focusable item
+ *      - if the active element has a `data-spatial-{direction}` attribute, it will try to focus the element with the id.
  *      - Otherwise calculate the next focused item based on the direction and distances.
  *    - If there is no next item, it emits `navnotarget` event
  *    - Otherwise emit `navbeforefocus`,
- *      - If this event prevented, nothing happens
+ *      - If this event is prevented, nothing happens
  *      - Otherwise the focus moves to the next element
  *
  * ### Determine next focus
  *
- * The provider use multiple ways to determine the next focused element. The order defined in the "Steps" section.
+ * The provider uses multiple ways to determine the next focused element. The order defined in the "Steps" section.
  *
  * #### Calculated focus
  *
@@ -66,9 +66,9 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * 3. Compute distances from the current element to candidates using the W3C "find the shortest
  *    distance" algorithm: https://www.w3.org/TR/css-nav-1/#find-the-shortest-distance
  * 4. If no candidates are found, repeat from step 1, skipping areas already checked.
- * 5. Focus the closest candidate.
+ * 5. Focus on the closest candidate.
  *
- * Elements with `data-spatial-focusable` are treated as focusable even if they would otherwise not be
+ * Elements with `data-spatial-focusable` are treated as focusable even if they do otherwise not be
  * (e.g., `tabindex="-1"`).
  *
  * Elements with `data-spatial-exclude` are excluded (with its subtree) from the navigation, even if they
@@ -79,7 +79,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * make navigation unpredictable. This is less of an issue on fixed-size TV UIs but can show unexpected
  * behavior in Storybook when resizing. See the "Limitations" section.
  *
- * #### Overwrite next element
+ * #### Overwrite the next element
  *
  * Override calculated navigation by adding one of these attributes to a focusable element:
  *
@@ -122,17 +122,17 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                    | Value                         | Default | Description                                                                                                             |
- * |------------------------------|-------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------|
- * | `data-spatial-left`          | empty string /  id / selector | N/A     | Prevent native navigation in Left direction and focus element if exists                                                 |
- * | `data-spatial-up`            | empty string /  id / selector | N/A     | Prevent native navigation in Up direction and focus element if exists                                                   |
- * | `data-spatial-right`         | empty string /  id / selector | N/A     | Prevent native navigation in Right direction and focus element if exists                                                |
- * | `data-spatial-down`          | empty string /  id / selector | N/A     | Prevent native navigation in Down direction and focus element if exists                                                 |
- * | `data-spatial-go-back`       | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                   |
- * | `data-spatial-focusable`     | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                           |
- * | `data-spatial-exclude`       | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                                                         |
- * | `data-spatial-noscroll`      | N/A                           | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                     |
- * | `data-spatial-scroll-parent` | N/A                           | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element |                           |
+ * | Attribute                    | Value                         | Default | Description                                                                                                                        |
+ * |------------------------------|-------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|
+ * | `data-spatial-left`          | empty string /  id / selector | N/A     | Prevent native navigation in the Left direction, focus it if it's focusable otherwise limit the search in the selected container.  |
+ * | `data-spatial-up`            | empty string /  id / selector | N/A     | Prevent native navigation in Up direction, focus it if it's focusable otherwise limit the search in the selected container.        |
+ * | `data-spatial-right`         | empty string /  id / selector | N/A     | Prevent native navigation in the Right direction, focus it if it's focusable otherwise limit the search in the selected container. |
+ * | `data-spatial-down`          | empty string /  id / selector | N/A     | Prevent native navigation in Down direction, focus it if it's focusable otherwise limit the search in the selected container.      |
+ * | `data-spatial-go-back`       | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                              |
+ * | `data-spatial-focusable`     | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                                      |
+ * | `data-spatial-exclude`       | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                                                                    |
+ * | `data-spatial-noscroll`      | N/A                           | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                                |
+ * | `data-spatial-scroll-parent` | N/A                           | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element            |
  *
  * ## Event emitting order
  *
@@ -171,7 +171,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * ## Platform specific behaviors
  *
- * Consider remote/gamepad constraints. Often focus alone is not enough and users press Enter to "enter" an interactive mode:
+ * Consider remote/gamepad constraints. Often focus alone is not enough, and users press Enter to "enter" an interactive mode:
  * - Select: Enter opens options rather than arrow keys opening a popover.
  * - Text inputs: see the next section.
  * - Slider: Enter to start adjusting, arrow keys to change value, Enter/Escape to stop.
@@ -199,7 +199,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * - Escape - Escape
  *
  * With wrapper: wraps the component in a 3x3 grid with surrounding buttons for testing.
- * Without wrapper: renders the component alone.
+ * Without a wrapper: renders the component alone.
  *
  * ### Visual debugger
  *
@@ -418,8 +418,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         focusableElements.push(
           ...findFocusable(el, {
             excludedElements: checkedFocusArea ? [checkedFocusArea] : undefined,
-            includeSelectors: ['[data-spatial-focusable]'],
-            excludeSelectors: ['[data-spatial-exclude]'],
+            includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
+            excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
           }),
         );
         const result = this.focusNextInFocusableAria(focusableElements, direction);
@@ -482,6 +482,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   private focusNextInFocusableAria(elements: HTMLElement[], direction: Direction): HTMLElement | undefined {
     let currentActiveElement = this.getActiveElement();
     const currentDomActiveElement = getDomActiveElement() as HTMLElement | null;
+    let focusableElements = elements;
 
     // Sync current active element if necessary
     // It can be out of sync when:
@@ -489,13 +490,13 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     // - focus fallback to body or other non-focusable element
     if (
       !currentActiveElement ||
-      !elements.includes(currentActiveElement) ||
+      !focusableElements.includes(currentActiveElement) ||
       currentActiveElement !== currentDomActiveElement
     ) {
-      if (currentDomActiveElement && elements.includes(currentDomActiveElement)) {
+      if (currentDomActiveElement && focusableElements.includes(currentDomActiveElement)) {
         currentActiveElement = currentDomActiveElement;
       } else {
-        [currentActiveElement] = elements;
+        [currentActiveElement] = focusableElements;
       }
       this.setActiveElement(currentActiveElement);
     }
@@ -511,10 +512,18 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       const nextElementSelector = elementWithDataset?.getAttribute(dataAttrName);
 
       if (elementWithDataset && nextElementSelector) {
-        const root = (elementWithDataset.getRootNode() as Document | ShadowRoot)
+        const root = elementWithDataset.getRootNode() as Document | ShadowRoot;
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
+
         if (nextElement) {
-          return nextElement;
+          const isNextElementInFocusables = focusableElements.includes(nextElement);
+
+          focusableElements = focusableElements.filter(el => nextElement.contains(el) && el);
+          if (isNextElementInFocusables || focusableElements.length <= 1) {
+            // Use nextElement if it focusable
+            return nextElement;
+          }
+          // Else, fall back to the distance based navigation but search within the targeted element subtree only.
         }
       }
     }
@@ -530,7 +539,12 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
 
     // Find the closest element in the given direction
-    const results = orderElementsByDistance(currentActiveElement, elements, direction, this.distanceCalculationWeights);
+    const results = orderElementsByDistance(
+      currentActiveElement,
+      focusableElements,
+      direction,
+      this.distanceCalculationWeights,
+    );
     return results[0]?.candidate;
   }
 
@@ -550,7 +564,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   /**
    * Set the active element.
    *
-   * Also, setup MutationObserver to track the element removal from the DOM.
+   * Also, set up MutationObserver to track the element removal from the DOM.
    *
    * @param element - New active element
    * @internal
@@ -606,8 +620,8 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     }
 
     // Handle over sized elements inside scrollable area
-    if (target.parentElement && !target.hasAttribute('data-spatial-noscroll')) {
-      const parent = target.closest('[data-spatial-scroll-parent]') ?? target.parentElement;
+    if (target.parentElement && !target.hasAttribute(DATA_ATTRIBUTES.NO_SCROLL)) {
+      const parent = target.closest(`[${DATA_ATTRIBUTES.SCROLL_PARENT}]`) ?? target.parentElement;
 
       const targetScrollAxis = getScrollableAxis(parent);
       if (targetScrollAxis) {
@@ -620,7 +634,11 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
             parent.scrollTo({ top: parent.scrollTop - parentBB.height / 2, behavior: 'auto' });
             eventHandled = true;
           }
-          if (action === 'down' && targetBB.bottom > parentBB.bottom && (parent.scrollTop + parentBB.height) < parent.scrollHeight) {
+          if (
+            action === 'down' &&
+            targetBB.bottom > parentBB.bottom &&
+            parent.scrollTop + parentBB.height < parent.scrollHeight
+          ) {
             parent.scrollTo({ top: parent.scrollTop + parentBB.height / 2, behavior: 'auto' });
             eventHandled = true;
           }
@@ -628,12 +646,16 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
         // horizontal scrolling
         if (targetScrollAxis === 'horizontal' || targetScrollAxis === 'both') {
-          if (action === 'right' && targetBB.left < parentBB.left &&parent.scrollLeft > 0) {
+          if (action === 'right' && targetBB.left < parentBB.left && parent.scrollLeft > 0) {
             parent.scrollTo({ left: parent.scrollLeft - parentBB.width / 2, behavior: 'auto' });
             eventHandled = true;
           }
 
-          if (action === 'left' && targetBB.right > parentBB.right && (parent.scrollLeft + parentBB.width) < parent.scrollWidth) {
+          if (
+            action === 'left' &&
+            targetBB.right > parentBB.right &&
+            parent.scrollLeft + parentBB.width < parent.scrollWidth
+          ) {
             parent.scrollTo({ left: parent.scrollLeft + parentBB.width / 2, behavior: 'auto' });
             eventHandled = true;
           }
@@ -753,13 +775,12 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   /**
    * Handle back action
    *
-   * Either trigger click on goBack element if any
-   * otherwise call default go back handler
+   * Either trigger click on the goBack element if any otherwise call the default go back handler
    *
    * @returns true when go back handled, false otherwise
    */
   public goBack(): boolean {
-    const goBackElement = findFocusable(this.root).find(el => el.hasAttribute('data-spatial-go-back'));
+    const goBackElement = findFocusable(this.root).find(el => el.hasAttribute(DATA_ATTRIBUTES.GO_BACK));
     const isDefaultPrevented = this.emitGoBackEvent(goBackElement);
 
     if (goBackElement && !isDefaultPrevented) {

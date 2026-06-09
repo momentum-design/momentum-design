@@ -5,6 +5,7 @@ import type {
   ElementDistance,
   ShortestDistanceWeights,
 } from './spatialnavigationprovider.types';
+import { DATA_ATTRIBUTES } from './spatialnavigationprovider.constants';
 
 /**
  * Calculate the center point of the element
@@ -113,7 +114,14 @@ export const orderElementsByDistance = (
       // Skip the active element
       if (candidate === activeElement) return acc;
 
-      const cr = getElementRectWithMidPoint(candidate);
+      const scrollParent = candidate.closest(`[${DATA_ATTRIBUTES.SCROLL_PARENT}]`) as HTMLElement | null;
+
+      // Focusable inside scrollable container can be out of viewport and/or too small to pick up autofocus,
+      // so we measure the scroll parent instead.
+      const measuredElement = scrollParent && !scrollParent.contains(activeElement) ? scrollParent : candidate;
+
+      const cr = getElementRectWithMidPoint(measuredElement);
+
       // Filter out elements that are not in the navigation direction
       if (direction === 'left' && cr.right > reference.xMid) return acc;
       if (direction === 'right' && cr.left < reference.xMid) return acc;
