@@ -43,10 +43,13 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * 2. Component own `keydown` handler executed (bubble phase) (e.g., list moves focus internally) it it was not
  *    prevented.
  * 3. Spatial Navigation Provider's `keydown` handler executed (bubble phase)
- *    - If a key event was not prevented in step 1. emit `navbeforeprocess` to check if any component want to handle
+ *    - If a key event was not prevented in step 1. emit `navbeforeprocess` to check if any component wants to handle
  *      the key event itself. If `navbeforeprocess` event is prevented, stop here.
  *    - If the component did not handle `keydown`, it calculates the next focusable item
- *      - if the active element has a `data-spatial-{direction}` attribute, it will try to focus the element with the id.
+ *      - If the active element has a `data-spatial-{direction}` attribute,
+ *        - Evaluate the attribute value, try element ID, and falls back to css selector if needed
+ *          - If it is focusable, move the focus there.
+ *          - If it is not focusable and contains focusable elements, calculate the next focused item within that element subtree.
  *      - Otherwise calculate the next focused item based on the direction and distances.
  *    - If there is no next item, it emits `navnotarget` event
  *    - Otherwise emit `navbeforefocus`,
@@ -122,17 +125,17 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                    | Value                         | Default | Description                                                                                                                        |
- * |------------------------------|-------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|
- * | `data-spatial-left`          | empty string /  id / selector | N/A     | Prevent native navigation in the Left direction, focus it if it's focusable otherwise limit the search in the selected container.  |
- * | `data-spatial-up`            | empty string /  id / selector | N/A     | Prevent native navigation in Up direction, focus it if it's focusable otherwise limit the search in the selected container.        |
- * | `data-spatial-right`         | empty string /  id / selector | N/A     | Prevent native navigation in the Right direction, focus it if it's focusable otherwise limit the search in the selected container. |
- * | `data-spatial-down`          | empty string /  id / selector | N/A     | Prevent native navigation in Down direction, focus it if it's focusable otherwise limit the search in the selected container.      |
- * | `data-spatial-go-back`       | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                              |
- * | `data-spatial-focusable`     | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                                      |
- * | `data-spatial-exclude`       | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                                                                    |
- * | `data-spatial-noscroll`      | N/A                           | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                                |
- * | `data-spatial-scroll-parent` | N/A                           | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element            |
+ * | Attribute                    | Value                        | Default | Description                                                                                                                        |
+ * |------------------------------|------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|
+ * | `data-spatial-left`          | empty string / id / selector | N/A     | Prevent native navigation in the Left direction, focus it if it's focusable otherwise limit the search in the selected container.  |
+ * | `data-spatial-up`            | empty string / id / selector | N/A     | Prevent native navigation in Up direction, focus it if it's focusable otherwise limit the search in the selected container.        |
+ * | `data-spatial-right`         | empty string / id / selector | N/A     | Prevent native navigation in the Right direction, focus it if it's focusable otherwise limit the search in the selected container. |
+ * | `data-spatial-down`          | empty string / id / selector | N/A     | Prevent native navigation in Down direction, focus it if it's focusable otherwise limit the search in the selected container.      |
+ * | `data-spatial-go-back`       | N/A                          | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                              |
+ * | `data-spatial-focusable`     | N/A                          | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                                      |
+ * | `data-spatial-exclude`       | N/A                          | N/A     | Exclude focusable element (and its subtree) from the navigation                                                                    |
+ * | `data-spatial-noscroll`      | N/A                          | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                                |
+ * | `data-spatial-scroll-parent` | N/A                          | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element            |
  *
  * ## Event emitting order
  *
@@ -516,18 +519,21 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
 
         if (nextElement) {
-          const focusableAroundNextElement = findFocusable(nextElement.parentElement, {
+          const focusableAroundNextElement = findFocusable(nextElement, {
             includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
             excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
-          })
-          const isNextElementInFocusables = focusableAroundNextElement.includes(nextElement);
+          });
+          const isNextElementFocusable = focusableAroundNextElement.includes(nextElement);
 
-          focusableElements = focusableAroundNextElement.filter(el => nextElement.contains(el) && el !== nextElement);
-          if (isNextElementInFocusables || focusableElements.length <= 0) {
-            // Use nextElement if it focusable
+          // Use nextElement if it focusable
+          if (isNextElementFocusable) {
             return nextElement;
           }
-          // Else, fall back to the distance based navigation but search within the targeted element subtree only.
+          // Fall back to the distance-based navigation but search within the targeted element subtree only.
+          if (focusableAroundNextElement.length > 0) {
+            focusableElements = focusableAroundNextElement;
+          }
+          // Otherwise do normal navigation
         }
       }
     }
