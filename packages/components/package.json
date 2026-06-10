@@ -136,7 +136,7 @@
     "@wc-toolkit/jsdoc-tags": "^1.2.0",
     "axe-html-reporter": "^2.2.11",
     "chalk": "^4.1.2",
-    "concurrently": "^8.2.2",
+    "concurrently": "^10.0.3",
     "esbuild": "^0.23.0",
     "eslint": "8.27.0",
     "eslint-config-prettier": "^10.1.5",
