@@ -23,7 +23,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) lets users move focus among
  * elements on a 2D plane, common on TVs and game consoles with remotes or gamepads.
  *
- * It should have only one instance and it should placed at the root of the application.
+ * It should have only one instance, and it should be placed at the root of the application.
  *
  * ## Focus management
  *
@@ -35,18 +35,21 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * Spatial navigation goes through the following steps after each keydown:
  *
  * 1. Handle `keydown` in the capture phase.
- *    - When the active element has a `data-spatial-{direction}` attribute, then prevent all component navigation and call the
- *      provider's own `keydown` handler (see step 3).
+ *    - When the active element has a `data-spatial-{direction}` attribute, call the provider's own `keydown` handler (see step 3).
+ *      Falls back to component navigation provider did not handle the event.
  *    - When the active element's parent is scrollable and it is not fully visible in the given direction, and it does not
  *      have a `data-spatial-noscroll` attribute, prevent all navigation and scroll in the given direction half-size of the
  *      scroll view.
  * 2. Component own `keydown` handler executed (bubble phase) (e.g., list moves focus internally) it it was not
  *    prevented.
  * 3. Spatial Navigation Provider's `keydown` handler executed (bubble phase)
- *    - If a key event was not prevented in step 1. emit `navbeforeprocess` to check if any component want to handle
+ *    - If a key event was not prevented in step 1. emit `navbeforeprocess` to check if any component wants to handle
  *      the key event itself. If `navbeforeprocess` event is prevented, stop here.
  *    - If the component did not handle `keydown`, it calculates the next focusable item
- *      - if the active element has a `data-spatial-{direction}` attribute, it will try to focus the element with the id.
+ *      - If the active element has a `data-spatial-{direction}` attribute,
+ *        - Evaluate the attribute value, try element ID, and falls back to css selector if needed
+ *          - If it is focusable, move the focus there.
+ *          - If it is not focusable and contains focusable elements, calculate the next focused item within that element subtree.
  *      - Otherwise calculate the next focused item based on the direction and distances.
  *    - If there is no next item, it emits `navnotarget` event
  *    - Otherwise emit `navbeforefocus`,
@@ -122,17 +125,17 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  *
  * Supported data attributes:
  *
- * | Attribute                    | Value                         | Default | Description                                                                                                                        |
- * |------------------------------|-------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|
- * | `data-spatial-left`          | empty string /  id / selector | N/A     | Prevent native navigation in the Left direction, focus it if it's focusable otherwise limit the search in the selected container.  |
- * | `data-spatial-up`            | empty string /  id / selector | N/A     | Prevent native navigation in Up direction, focus it if it's focusable otherwise limit the search in the selected container.        |
- * | `data-spatial-right`         | empty string /  id / selector | N/A     | Prevent native navigation in the Right direction, focus it if it's focusable otherwise limit the search in the selected container. |
- * | `data-spatial-down`          | empty string /  id / selector | N/A     | Prevent native navigation in Down direction, focus it if it's focusable otherwise limit the search in the selected container.      |
- * | `data-spatial-go-back`       | N/A                           | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                              |
- * | `data-spatial-focusable`     | N/A                           | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                                      |
- * | `data-spatial-exclude`       | N/A                           | N/A     | Exclude focusable element (and its subtree) from the navigation                                                                    |
- * | `data-spatial-noscroll`      | N/A                           | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                                |
- * | `data-spatial-scroll-parent` | N/A                           | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element            |
+ * | Attribute                    | Value                        | Default | Description                                                                                                                        |
+ * |------------------------------|------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|
+ * | `data-spatial-left`          | empty string / id / selector | N/A     | Prevent native navigation in the Left direction, focus it if it's focusable otherwise limit the search in the selected container.  |
+ * | `data-spatial-up`            | empty string / id / selector | N/A     | Prevent native navigation in Up direction, focus it if it's focusable otherwise limit the search in the selected container.        |
+ * | `data-spatial-right`         | empty string / id / selector | N/A     | Prevent native navigation in the Right direction, focus it if it's focusable otherwise limit the search in the selected container. |
+ * | `data-spatial-down`          | empty string / id / selector | N/A     | Prevent native navigation in Down direction, focus it if it's focusable otherwise limit the search in the selected container.      |
+ * | `data-spatial-go-back`       | N/A                          | N/A     | First focusable element with this attribute is clicked on Back/Escape                                                              |
+ * | `data-spatial-focusable`     | N/A                          | N/A     | Treat element as focusable even if it normally is not (e.g., `tabindex="-1"`)                                                      |
+ * | `data-spatial-exclude`       | N/A                          | N/A     | Exclude focusable element (and its subtree) from the navigation                                                                    |
+ * | `data-spatial-noscroll`      | N/A                          | N/A     | Prevent scroll for active element in scrollable area even if the is not fit in view                                                |
+ * | `data-spatial-scroll-parent` | N/A                          | N/A     | When the focusable item in not a direct child of the scrollable aria use this attribute to mark scrollable area element            |
  *
  * ## Event emitting order
  *
@@ -328,7 +331,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('keydown', this.handleKeyDownBefore, { capture: true });
+    document.addEventListener('keydown', this.handleKeyDownCapture, { capture: true });
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('focus', this.handleFocus);
     this.initActiveElement();
@@ -336,7 +339,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener('keydown', this.handleKeyDownBefore, { capture: true });
+    document.removeEventListener('keydown', this.handleKeyDownCapture, { capture: true });
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('focus', this.handleFocus);
 
@@ -486,7 +489,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     // Sync current active element if necessary
     // It can be out of sync when:
-    // - the component handled the navigation (programmatically focused another element) so DOM active element is different
+    // - the component handled the navigation (programmatically focused another element), so DOM active element is different
     // - focus fallback to body or other non-focusable element
     if (
       !currentActiveElement ||
@@ -516,18 +519,22 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
         const nextElement = root?.getElementById(nextElementSelector) ?? root?.querySelector(nextElementSelector);
 
         if (nextElement) {
-          const focusableAroundNextElement = findFocusable(nextElement.parentElement, {
+          const focusableAroundNextElement = findFocusable(nextElement, {
             includeSelectors: [`[${DATA_ATTRIBUTES.FOCUSABLE}]`],
             excludeSelectors: [`[${DATA_ATTRIBUTES.EXCLUDE}]`],
-          })
-          const isNextElementInFocusables = focusableAroundNextElement.includes(nextElement);
+          });
+          const isNextElementFocusable = focusableAroundNextElement.includes(nextElement);
 
-          focusableElements = focusableAroundNextElement.filter(el => nextElement.contains(el) && el !== nextElement);
-          if (isNextElementInFocusables || focusableElements.length <= 0) {
-            // Use nextElement if it focusable
-            return nextElement;
+          // Use nextElement if it focusable
+          if (isNextElementFocusable) return nextElement;
+
+          // Fall back to the distance-based navigation but search within the targeted element subtree only.
+          if (focusableAroundNextElement.length > 0) {
+            focusableElements = focusableAroundNextElement;
+          } else {
+            // Focus it anyway
+            return nextElement
           }
-          // Else, fall back to the distance based navigation but search within the targeted element subtree only.
         }
       }
     }
@@ -607,7 +614,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     return this.activeElement?.deref();
   }
 
-  private handleKeyDownBefore = (evt: KeyboardEvent) => {
+  private handleKeyDownCapture = (evt: KeyboardEvent) => {
     if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.isNavigationKey(evt.key)) {
       return;
     }
@@ -619,8 +626,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       this.getElementSelectorForDirectionAttr(target as HTMLElement, action as Direction) !== undefined
     ) {
       eventHandled = true;
-      // Need to call Spatial navigation key handler manually after all propagation stopped
-      this.handleKeyDown(evt);
+      this.focusNext(evt, action as Direction);
     }
 
     // Handle over sized elements inside scrollable area
