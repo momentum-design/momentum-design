@@ -55,7 +55,7 @@ export const KeyDownHandledMixin = <T extends Constructor<LitElement>>(superClas
      * @internal
      */
     private keyDownEventHandledHandler = (): void => {
-      queueMicrotask(() => {
+      setTimeout(() => {
         this.keyDownEventHandledFlag = false;
       });
     };
