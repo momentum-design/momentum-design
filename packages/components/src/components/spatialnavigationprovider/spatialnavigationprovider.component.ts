@@ -23,7 +23,7 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * [Spatial navigation](https://en.wikipedia.org/wiki/Spatial_navigation) lets users move focus among
  * elements on a 2D plane, common on TVs and game consoles with remotes or gamepads.
  *
- * It should have only one instance and it should placed at the root of the application.
+ * It should have only one instance, and it should be placed at the root of the application.
  *
  * ## Focus management
  *
@@ -35,8 +35,8 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * Spatial navigation goes through the following steps after each keydown:
  *
  * 1. Handle `keydown` in the capture phase.
- *    - When the active element has a `data-spatial-{direction}` attribute, then prevent all component navigation and call the
- *      provider's own `keydown` handler (see step 3).
+ *    - When the active element has a `data-spatial-{direction}` attribute, call the provider's own `keydown` handler (see step 3).
+ *      Falls back to component navigation provider did not handle the event.
  *    - When the active element's parent is scrollable and it is not fully visible in the given direction, and it does not
  *      have a `data-spatial-noscroll` attribute, prevent all navigation and scroll in the given direction half-size of the
  *      scroll view.
@@ -331,7 +331,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('keydown', this.handleKeyDownBefore, { capture: true });
+    document.addEventListener('keydown', this.handleKeyDownCapture, { capture: true });
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('focus', this.handleFocus);
     this.initActiveElement();
@@ -339,7 +339,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener('keydown', this.handleKeyDownBefore, { capture: true });
+    document.removeEventListener('keydown', this.handleKeyDownCapture, { capture: true });
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('focus', this.handleFocus);
 
@@ -489,7 +489,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
 
     // Sync current active element if necessary
     // It can be out of sync when:
-    // - the component handled the navigation (programmatically focused another element) so DOM active element is different
+    // - the component handled the navigation (programmatically focused another element), so DOM active element is different
     // - focus fallback to body or other non-focusable element
     if (
       !currentActiveElement ||
@@ -526,14 +526,15 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
           const isNextElementFocusable = focusableAroundNextElement.includes(nextElement);
 
           // Use nextElement if it focusable
-          if (isNextElementFocusable) {
-            return nextElement;
-          }
+          if (isNextElementFocusable) return nextElement;
+
           // Fall back to the distance-based navigation but search within the targeted element subtree only.
           if (focusableAroundNextElement.length > 0) {
             focusableElements = focusableAroundNextElement;
+          } else {
+            // Focus it anyway
+            return nextElement
           }
-          // Otherwise do normal navigation
         }
       }
     }
@@ -613,7 +614,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     return this.activeElement?.deref();
   }
 
-  private handleKeyDownBefore = (evt: KeyboardEvent) => {
+  private handleKeyDownCapture = (evt: KeyboardEvent) => {
     if (evt.shiftKey || evt.ctrlKey || evt.altKey || evt.metaKey || !this.isNavigationKey(evt.key)) {
       return;
     }
@@ -625,8 +626,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
       this.getElementSelectorForDirectionAttr(target as HTMLElement, action as Direction) !== undefined
     ) {
       eventHandled = true;
-      // Need to call Spatial navigation key handler manually after all propagation stopped
-      this.handleKeyDown(evt);
+      this.focusNext(evt, action as Direction);
     }
 
     // Handle over sized elements inside scrollable area
