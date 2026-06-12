@@ -103,10 +103,15 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Automation
+        id: uncache-automation
         uses: actions/cache@v4
         with:
           path: '**/automation/dist'
           key: automation-dist-${{ env.rid }}
+
+      - name: Build Automation (cache miss fallback)
+        if: steps.uncache-automation.outputs.cache-hit != 'true'
+        run: yarn telemetry build && yarn automation build:cli
 
       - name: Uncache Dist
         uses: actions/cache@v4
@@ -122,7 +127,9 @@ jobs:
 
       - name: Get Changed Packages
         id: get-packages
-        run: echo "packages=$(yarn md-automation -- --command get-packages --changed --commit-index 1 --dependent)" >> $GITHUB_OUTPUT
+        run: |
+          PACKAGES=$(yarn md-automation -- --command get-packages --changed --commit-index 1 --dependent) || exit 1
+          echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
       - name: Filter Packages with Dist Changes
         id: filter-packages
