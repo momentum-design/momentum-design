@@ -29,13 +29,13 @@ import styles from './select.styles';
 import type { Placement } from './select.types';
 
 /**
+ * @tagname mdc-select
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-popover
  * @dependency mdc-text
  * @dependency mdc-toggletip
- *
- * @tagname mdc-select
  *
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
  * @event change - (React: onChange) This event is dispatched when the select is changed.

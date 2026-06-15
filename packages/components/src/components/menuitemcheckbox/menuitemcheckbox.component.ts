@@ -14,11 +14,11 @@ import type { Indicator } from './menuitemcheckbox.types';
 import styles from './menuitemcheckbox.styles';
 
 /**
+ * @tagname mdc-menuitemcheckbox
+ *
  * @dependency mdc-staticcheckbox
  * @dependency mdc-statictoggle
  * @dependency mdc-icon
- *
- * @tagname mdc-menuitemcheckbox
  *
  * @slot leading-controls - slot for menu item checkbox controls to appear of leading end.
  * @slot leading-text-primary-label - slot for menu item checkbox primary label.

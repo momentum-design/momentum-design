@@ -6,9 +6,9 @@ import type { PopoverTrigger } from '../popover/popover.types';
 import { DEFAULTS } from './coachmark.constants';
 
 /**
- * @dependency mdc-popover
- *
  * @tagname mdc-coachmark
+ *
+ * @dependency mdc-popover
  *
  * @event shown - (React: onShown) This event is dispatched when the coachmark is shown
  * @event hidden - (React: onHidden) This event is dispatched when the coachmark is hidden

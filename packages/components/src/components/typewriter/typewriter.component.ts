@@ -17,9 +17,9 @@ import type {
 } from './typewriter.types';
 
 /**
+ * @tagname mdc-typewriter
  * @dependency mdc-text
  *
- * @tagname mdc-typewriter
  * @slot - Default slot for text content
  *
  * @csspart container - Container for the text element

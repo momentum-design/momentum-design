@@ -15,13 +15,13 @@ import type { CheckboxValidationType } from './checkbox.types';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 /**
+ * @tagname mdc-checkbox
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-staticcheckbox
  * @dependency mdc-text
  * @dependency mdc-toggletip
- *
- * @tagname mdc-checkbox
  *
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.

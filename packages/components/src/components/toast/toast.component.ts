@@ -16,6 +16,8 @@ import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
 /**
+ * @tagname mdc-toast
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
@@ -26,8 +28,6 @@ import type { ToastVariant } from './toast.types';
  * @slot footer - Slot for custom footer content. Prefer using footer-button-primary and footer-button-secondary slots.
  * @slot footer-button-primary - Slot for passing the primary variant of `mdc-button` in the footer.
  * @slot footer-button-secondary - Slot for passing the secondary variant of `mdc-button` in the footer.
- *
- * @tagname mdc-toast
  *
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *

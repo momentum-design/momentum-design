@@ -10,10 +10,10 @@ import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 
 /**
+ * @tagname mdc-toggletip
+ *
  * @dependency mdc-screenreaderannouncer
  * @dependency mdc-button
- *
- * @tagname mdc-toggletip
  *
  * @event shown - (React: onShown) This event is dispatched when the toggletip is shown
  * @event hidden - (React: onHidden) This event is dispatched when the toggletip is hidden

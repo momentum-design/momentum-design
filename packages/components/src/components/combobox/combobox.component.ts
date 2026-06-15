@@ -33,13 +33,13 @@ import styles from './combobox.styles';
 import type { ComboboxFilter, Placement } from './combobox.types';
 
 /**
+ * @tagname mdc-combobox
+ *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
  * @dependency mdc-listitem
  * @dependency mdc-popover
- *
- * @tagname mdc-combobox
  *
  * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.

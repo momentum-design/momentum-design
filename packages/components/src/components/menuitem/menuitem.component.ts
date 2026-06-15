@@ -12,10 +12,10 @@ import type { ArrowPositions, ArrowDirections } from './menuitem.types';
 import styles from './menuitem.styles';
 
 /**
+ * @tagname mdc-menuitem
+ *
  * @dependency mdc-text
  * @dependency mdc-icon
- *
- * @tagname mdc-menuitem
  *
  * @slot leading-controls - slot for menu item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for menu item primary label.

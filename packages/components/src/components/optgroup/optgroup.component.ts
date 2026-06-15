@@ -13,9 +13,9 @@ import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 
 /**
- * @dependency mdc-text
- *
  * @tagname mdc-optgroup
+ *
+ * @dependency mdc-text
  *
  * @slot default - This is a default slot for mdc-option elements.
  *

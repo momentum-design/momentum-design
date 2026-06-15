@@ -17,13 +17,13 @@ import styles from './toggle.styles';
 import type { ToggleSize } from './toggle.types';
 
 /**
+ * @tagname mdc-toggle
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-statictoggle
  * @dependency mdc-text
  * @dependency mdc-toggletip
- *
- * @tagname mdc-toggle
  *
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.

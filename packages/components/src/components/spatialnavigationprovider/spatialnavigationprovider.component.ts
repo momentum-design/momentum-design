@@ -16,8 +16,8 @@ import { DATA_ATTRIBUTES, DEFAULTS } from './spatialnavigationprovider.constants
 import { orderElementsByDistance } from './spatialnavigationprovider.utils';
 import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
 
-// AI-Assisted
 /**
+ * @tagname mdc-spatialnavigationprovider
  * @event navbeforeprocess - (React: onNavBeforeProcess) This event dispatched before spatial navigation process any key event.
  *                           It can be canceled to prevent any action from spatial navigation, e.g.: back, click or calculating the next candidate.
  * @event navbeforefocus - (React: onNavBeforeFocus) This event is dispatched before the focus is changing to the next element.
@@ -28,7 +28,6 @@ import { SpatialNavigationEvent } from './spatialnavigationprovider.events';
  * @event navnotarget - (React: onNavNoTarget) This event is dispatched when there is no target to focus in the current focus area and
  *                      in the given direction .
  *
- * @tagname mdc-spatialnavigationprovider
  */
 class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> {
   /**
@@ -320,7 +319,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
             focusableElements = focusableAroundNextElement;
           } else {
             // Focus it anyway
-            return nextElement
+            return nextElement;
           }
         }
       }

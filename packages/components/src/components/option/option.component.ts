@@ -13,10 +13,10 @@ import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
 /**
+ * @tagname mdc-option
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
- *
- * @tagname mdc-option
  *
  * @event click - (React: onClick) This event is dispatched when the option is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the option.

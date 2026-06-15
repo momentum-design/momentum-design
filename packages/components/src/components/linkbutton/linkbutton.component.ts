@@ -11,9 +11,9 @@ import { getIconSize } from './linkbutton.utils';
 import styles from './linkbutton.styles';
 
 /**
- * @dependency mdc-icon
- *
  * @tagname mdc-linkbutton
+ *
+ * @dependency mdc-icon
  *
  * @slot - Text label of the linkbutton.
  *

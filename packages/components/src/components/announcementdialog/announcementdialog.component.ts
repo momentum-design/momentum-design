@@ -12,10 +12,10 @@ import styles from './announcementdialog.styles';
 import { DEFAULTS } from './announcementdialog.constants';
 
 /**
+ * @tagname mdc-announcementdialog
+ *
  * @dependency mdc-illustration
  * @dependency mdc-text
- *
- * @tagname mdc-announcementdialog
  *
  * @event shown - (React: onShown) Dispatched when the dialog is shown
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden

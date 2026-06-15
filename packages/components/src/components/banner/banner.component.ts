@@ -12,6 +12,8 @@ import type { BannerVariant } from './banner.types';
 import { getIconNameForVariant } from './banner.utils';
 
 /**
+ * @tagname mdc-banner
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
@@ -19,8 +21,6 @@ import { getIconNameForVariant } from './banner.utils';
  * @slot leading-icon - Custom icon content. Overrides the default variant-based icon.
  * @slot leading-text - Custom text content. Overrides the label and secondaryLabel properties.
  * @slot trailing-actions - Custom action buttons and controls. Use this for dismiss buttons, reset buttons, or any other actions.
- *
- * @tagname mdc-banner
  *
  * @csspart leading - The leading section containing the icon and text.
  * @csspart leading-icon - The icon displayed for variants or custom icon slot.

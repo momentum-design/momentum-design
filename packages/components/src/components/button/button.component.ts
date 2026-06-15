@@ -15,9 +15,9 @@ import type { IconButtonSize, PillButtonSize } from './button.types';
 import { getIconNameWithoutStyle } from './button.utils';
 
 /**
- * @dependency mdc-icon
- *
  * @tagname mdc-button
+ *
+ * @dependency mdc-icon
  *
  * @slot - Text label of the button.
  * @slot prefix - Content to be displayed before the text label.

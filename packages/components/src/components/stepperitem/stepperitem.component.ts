@@ -15,10 +15,10 @@ import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
 import type { StatusType, VariantType } from './stepperitem.types';
 
 /**
+ * @tagname mdc-stepperitem
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
- *
- * @tagname mdc-stepperitem
  *
  * @event click - (React: onClick) This event is dispatched when the stepperitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the stepperitem.

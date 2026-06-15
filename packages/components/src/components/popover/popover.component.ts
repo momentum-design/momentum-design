@@ -33,9 +33,9 @@ import { PopoverBoundaryRoot, PopoverColor, PopoverPlacement, PopoverStrategy, P
 import { PopoverUtils } from './popover.utils';
 
 /**
- * @dependency mdc-button
- *
  * @tagname mdc-popover
+ *
+ * @dependency mdc-button
  *
  * @event shown - (React: onShown) This event is dispatched when the popover is shown
  * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden

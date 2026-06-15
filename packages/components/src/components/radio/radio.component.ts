@@ -14,13 +14,13 @@ import type { PopoverPlacement, PopoverStrategy } from '../popover/popover.types
 import styles from './radio.styles';
 
 /**
+ * @tagname mdc-radio
+ *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-staticradio
  * @dependency mdc-toggletip
- *
- * @tagname mdc-radio
  *
  * @event input - (React: onInput) Event that gets dispatched when the radio state changes (before the change event).
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes (after the input event).

@@ -13,11 +13,11 @@ import type { AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize } from './avatar.utils';
 
 /**
+ * @tagname mdc-avatar
+ *
  * @dependency mdc-icon
  * @dependency mdc-presence
  * @dependency mdc-text
- *
- * @tagname mdc-avatar
  *
  * @cssproperty --mdc-avatar-default-background-color - Allows customization of the default background color.
  * @cssproperty --mdc-avatar-default-foreground-color - Allows customization of the default foreground color.

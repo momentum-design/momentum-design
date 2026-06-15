@@ -9,9 +9,9 @@ import type { PresenceType, PresenceSize } from './presence.types';
 import { getIconValue, getPresenceIconSize } from './presence.utils';
 
 /**
- * @dependency mdc-icon
- *
  * @tagname mdc-presence
+ *
+ * @dependency mdc-icon
  *
  * @cssproperty --mdc-presence-active-background-color - The background color of the presence type active.
  * @cssproperty --mdc-presence-away-background-color - The background color of the presence type away.

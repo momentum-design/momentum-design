@@ -9,9 +9,9 @@ import styles from './link.styles';
 import type { LinkSize } from './link.types';
 
 /**
- * @dependency mdc-icon
- *
  * @tagname mdc-link
+ *
+ * @dependency mdc-icon
  *
  * @event click - (React: onClick) Fired when the user activates the Link using a mouse or assistive technology.
  * @event keydown - (React: onKeyDown) Fired when the user presses a key while the Link has focus.

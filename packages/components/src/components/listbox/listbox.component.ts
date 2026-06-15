@@ -14,13 +14,13 @@ import { ElementStore } from '../../utils/controllers/ElementStore';
 import styles from './listbox.styles';
 
 /**
+ * @tagname mdc-listbox
+ *
  * @dependency mdc-list
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-option
  * @dependency mdc-optgroup
- *
- * @tagname mdc-listbox
  *
  * @cssproperty --mdc-listbox-max-height - max height of the listbox
  *

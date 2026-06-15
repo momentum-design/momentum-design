@@ -11,9 +11,9 @@ import type { IconButtonSize, PillButtonSize } from '../button/button.types';
 import styles from './buttonlink.styles';
 
 /**
- * @dependency mdc-icon
- *
  * @tagname mdc-buttonlink
+ *
+ * @dependency mdc-icon
  *
  * @slot default - The default slot for buttonlink text content.
  *

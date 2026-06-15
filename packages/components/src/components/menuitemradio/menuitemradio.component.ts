@@ -15,12 +15,12 @@ import { INDICATOR, DEFAULTS } from './menuitemradio.constants';
 import styles from './menuitemradio.styles';
 
 /**
+ * @tagname mdc-menuitemradio
+ *
  * @dependency mdc-icon
  * @dependency mdc-staticradio
  * @dependency mdc-text
  * @dependency mdc-tooltip
- *
- * @tagname mdc-menuitemradio
  *
  * @slot leading-controls - slot for menu item radio controls to appear of leading end.
  * @slot leading-text-primary-label - slot for menu item radio primary label.

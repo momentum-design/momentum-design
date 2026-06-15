@@ -15,14 +15,14 @@ import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
 
 /**
+ * @tagname mdc-sidenavigation
+ *
  * @dependency mdc-text
  * @dependency mdc-button
  * @dependency mdc-divider
  * @dependency mdc-menubar
  *
  * @event activechange - (React: onActiveChange) Dispatched when the active state of the navmenuitem changes.
- *
- * @tagname mdc-sidenavigation
  *
  * @slot scrollable-section - Slot for the scrollable content area of the side navigation.
  * @slot scrollable-menubar - Slot for the menubar inside the scrollable section.

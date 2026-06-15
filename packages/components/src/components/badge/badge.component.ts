@@ -14,10 +14,10 @@ import styles from './badge.styles';
 import type { BadgeType, IconVariant } from './badge.types';
 
 /**
+ * @tagname mdc-badge
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
- *
- * @tagname mdc-badge
  *
  * @cssproperty --mdc-badge-primary-foreground-color - The foreground color of the primary badge.
  * @cssproperty --mdc-badge-primary-background-color - The background color of the primary badge.

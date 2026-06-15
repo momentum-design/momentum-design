@@ -16,6 +16,8 @@ import { DEFAULTS, TAB_SIZES, TAB_VARIANTS } from './tab.constants';
 import styles from './tab.styles';
 
 /**
+ * @tagname mdc-tab
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  *
@@ -29,8 +31,6 @@ import styles from './tab.styles';
  * <br />
  * Note: the activechange event is used by the tab list component to react to the change in state of the tab,
  * so this event won't be needed if the tab list is used.
- *
- * @tagname mdc-tab
  *
  * @cssproperty --mdc-tab-height - The height of the tab.
  * @cssproperty --mdc-tab-padding-left - The left padding of the tab.

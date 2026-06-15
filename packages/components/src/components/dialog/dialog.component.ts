@@ -22,10 +22,10 @@ import { DialogEventManager } from './dialog.events';
 import styles from './dialog.styles';
 
 /**
+ * @tagname mdc-dialog
+ *
  * @dependency mdc-button
  * @dependency mdc-text
- *
- * @tagname mdc-dialog
  *
  * @event shown - (React: onShown) Dispatched when the dialog is shown
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden

@@ -14,14 +14,14 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import styles from './avatarbutton.styles';
 
 /**
+ * @tagname mdc-avatarbutton
+ *
  * @dependency mdc-avatar
  *
  * @event click - (React: onClick) Dispatched when the avatar button is clicked.
  * @event keydown - (React: onKeyDown) Dispatched when a key is pressed on the avatar button.
  * @event keyup - (React: onKeyUp) Dispatched when a key is released on the avatar button.
  * @event focus - (React: onFocus) Dispatched when the avatar button receives focus.
- *
- * @tagname mdc-avatarbutton
  *
  * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state.
  * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state.
