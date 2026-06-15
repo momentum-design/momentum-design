@@ -13,20 +13,6 @@ import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
 /**
- * Option component, which is used within Selectlistbox within Select component.
- *
- * The label and secondary label of the option can be set using the `label` and `secondaryLabel` properties respectively.
- * The `label` is the primary text displayed in the option, while the `secondaryLabel` is the secondary text displayed below the primary label.
- *
- * The `selected` property is used to indicate whether the option is selected or not.
- * When the `selected` property is set to true, a checkmark icon will be displayed
- * on the right side of the option to indicate that it is selected.
- *
- * The `prefixIcon` property can be used to display an icon on the left side of the option label.
- *
- * **Note**: If an option contains a long text, it is recommended to create a tooltip for the option that displays the full text on hover.
- * Consumers need to add a unique ID to this option and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the option using the `triggerID` attribute.
- *
  * @dependency mdc-icon
  * @dependency mdc-text
  *

@@ -12,20 +12,6 @@ import type { ArrowPositions, ArrowDirections } from './menuitem.types';
 import styles from './menuitem.styles';
 
 /**
- * menuitem component is inherited by listitem component with the role set `menuitem`.<br/>
- * A menu item can contain an icon on the leading or trailing side.
- *
- * The leading and trailing slots can be used to display controls and text.<br/>
- * Based on the leading/trailing slot, the position of the controls and text can be adjusted.
- *
- * Please use element with role=menu as a parent element even when there is only menuitem for a11y purpose.
- * For example mdc-menupopover or mdc-menubar.
- *
- * Menu item has `name` and `value` attribute that can be used to identify the menu item when it is selected.
- *
- * **Note**: If a menuitem contains a long text, it is recommended to create a tooltip for the menuitem that displays the full text on hover.
- * Consumers need to add a unique ID to this menuitem and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the menuitem using the `triggerID` attribute.
- *
  * @dependency mdc-text
  * @dependency mdc-icon
  *

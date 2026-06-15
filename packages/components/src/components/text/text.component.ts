@@ -9,18 +9,6 @@ import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
 
 /**
- * Text component for creating styled text elements.
- * It has to be mounted within the ThemeProvider to access color and font tokens.
- *
- * The `type` attribute allows changing the text style.
- * The `tagname` attribute allows changing the tag name of the text element.
- * The default tag name is `p`.
- *
- * The `tagname` attribute should be a valid HTML tag name.
- * If the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.
- *
- * The styling is applied based on the `type` attribute.
- *
  * @tagname mdc-text
  * @slot - Default slot for text content
  *

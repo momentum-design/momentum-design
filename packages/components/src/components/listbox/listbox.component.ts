@@ -14,16 +14,6 @@ import { ElementStore } from '../../utils/controllers/ElementStore';
 import styles from './listbox.styles';
 
 /**
- * listbox component presents a list of options and allows a user to select one or more of them.
- *
- * When `multiple` is enabled, clicking/pressing Enter/Space on an option toggles its selection
- * instead of replacing the current selection.
- *
- * Notes:
- * - This is a standalone listbox component. Select has its own mdc-selectlistbox component.
- * - this component has name and value attributes and also emits change event,
- *   but it is not a form control (yet).
- *
  * @dependency mdc-list
  * @dependency mdc-icon
  * @dependency mdc-text

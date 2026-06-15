@@ -15,40 +15,6 @@ import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
 
 /**
- * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
- * typically used in layouts with persistent or collapsible sidebars.
- *
- * ## Features:
- * - Supports five layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, `flexible-on-hover`, and `hidden`
- * - Toggleable expand/collapse behavior
- * - Displays brand logo and customer name
- * - Serves as a context provider for descendant components - `mdc-menubar` and `mdc-navmenuitem`
- *
- * ### Usage:
- * In a sidenavigation, navmenuitems can be used in the following ways:
- *
- * 1. **Simple navmenuitem** – No submenu or interaction beyond selection.
- *
- * 2. **NavMenuItem with submenu**:
- *    - Provide an `id` on the `mdc-navmenuitem`
- *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navmenuitem's `id`
- *    - Set `parent-nav-tooltip-text` with appropriate text that will display when a child menu item
- *      inside the nested menupopover is active, conveying which submenu item is currently selected
- *
- * 3. **Actionable navmenuitem (no submenu)**:
- *    - Performs an action such as navigation or alert trigger
- *    - Set `disable-aria-current="true"` to maintain visual active state without navigation behavior
- *
- * ### Recommendations:
- * - Use `mdc-text` for section headers
- * - Use `mdc-divider` with the attribute `variant="gradient"` for section dividers
- * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
- *
- * #### Accessibility Notes:
- * - Always provide meaningful `aria-label` attributes for both `mdc-navmenuitem` and `mdc-menubar`
- * to ensure screen reader support
- * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
- *
  * @dependency mdc-text
  * @dependency mdc-button
  * @dependency mdc-divider

@@ -9,12 +9,6 @@ import type { PresenceType, PresenceSize } from './presence.types';
 import { getIconValue, getPresenceIconSize } from './presence.utils';
 
 /**
- * The `mdc-presence` component is a versatile UI element used to
- * display the presence status of a user or entity within an avatar component.
- *
- * This component is ideal for use within avatar UIs where the presence status
- * needs to be visually represented.
- *
  * @dependency mdc-icon
  *
  * @tagname mdc-presence

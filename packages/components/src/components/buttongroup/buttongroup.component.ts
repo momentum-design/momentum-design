@@ -8,23 +8,6 @@ import styles from './buttongroup.styles';
 import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from './buttongroup.types';
 
 /**
- * `mdc-buttongroup` is a wrapper component that groups multiple buttons together.
- *
- * ## Supported button types
- * - Icon buttons
- * - Pill buttons
- * - Combination of icon and pill buttons
- *
- * ## Features
- * - Horizontal or vertical orientation
- * - Unified size and variant applied to all child buttons
- * - Optional compact mode for reduced height
- * - Supported sizes: 24, 28 (default), 32, 40
- *
- * ## Usage
- * - Only `mdc-button` components are allowed as direct children
- * - The `size` and `variant` set on buttongroup override individual button settings
- *
  * @tagname mdc-buttongroup
  *
  * @slot default - This is a default/unnamed slot, which contains the buttons

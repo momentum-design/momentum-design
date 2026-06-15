@@ -13,8 +13,6 @@ import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 
 /**
- * optgroup component, which creates a grouping of mdc-option within a listbox element.
- *
  * @dependency mdc-text
  *
  * @tagname mdc-optgroup

@@ -16,20 +16,6 @@ import styles from './timepicker.styles';
 import type { OptionLabelFormatter, Placement, TimeFormat } from './timepicker.types';
 
 /**
- * mdc-timepicker is a component that allows users to select a specific time
- * or enter a time manually. It supports both 12-hour and 24-hour formats.
- *
- * The component consists of:
- * - label - describes the time picker field
- * - input field - made up of 2-3 spinbuttons (hours, minutes, optional AM/PM period)
- * - dropdown arrow button - opens a flyout menu with predefined time intervals
- * - helper text - displayed below the input field
- *
- * Users can input values by:
- * - Manually entering numbers/characters in spinbuttons
- * - Navigating using arrow keys to increment/decrement values
- * - Selecting a predefined time from the dropdown menu
- *
  * @tagname mdc-timepicker
  *
  * @dependency mdc-button

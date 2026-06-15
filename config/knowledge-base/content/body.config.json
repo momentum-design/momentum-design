@@ -134,6 +134,13 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "heading": "Notes",
+                                "level": 3,
+                                "required": false,
+                                "recommended": false,
+                                "description": "Additional accessibility context, caveats, known assistive-technology quirks, or rationale that does not fit under built-in features or implementation requirements."
                             }
                         ]
                     }

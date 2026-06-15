@@ -11,17 +11,6 @@ import { PASSWORD_VISIBILITY_ICONS } from './password.constants';
 import styles from './password.styles';
 
 /**
- * `mdc-password` is a component that allows users to input their password.
- *  It extends the `mdc-input` component and provides additional features specific to password fields.
- *  It contains:
- * - `label` field - describe the password field.
- * - `password` field - contains the value
- * - `help-text` or `validation-message` - displayed below the password field.
- * - `help-text-type` - type of the help text, can be 'default', 'error', 'warning', 'success', 'priority'.
- * - `show-button-aria-label` - aria label for the trailing show button.
- * - `hide-button-aria-label` - aria label for the trailing hide button.
- * - all the attributes of the native password field.
- *
  * @tagname mdc-password
  *
  * @event input - (React: onInput) This event is dispatched when the value of the password field changes (every press).

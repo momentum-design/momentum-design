@@ -50,7 +50,8 @@
     "components": "yarn workspace @momentum-design/components",
     "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
     "utils": "yarn workspace @momentum-design/utils",
-    "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview"
+    "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview",
+    "storybook-addon-docs": "yarn workspace @momentum-design/storybook-addon-docs"
   },
   "resolutions": {
     "form-data": "^4.0.4"

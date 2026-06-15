@@ -17,36 +17,6 @@ import type {
 } from './typewriter.types';
 
 /**
- * Typewriter component that creates a typewriter effect on text content.
- * It uses the Text component internally, adding a progressive typing effect.
- *
- * The `type` attribute allows changing the text style (passed to the internal Text component).
- * The `tagname` attribute allows changing the tag name of the text element (passed to the internal Text component).
- * The default tag name is `p`.
- *
- * The `speed` attribute controls typing speed in milliseconds per character:
- * - 'very-slow' = 240ms per character
- * - 'slow' = 120ms per character
- * - 'normal' = 60ms per character (default)
- * - 'fast' = 20ms per character
- * - 'very-fast' = 1ms per character
- * - Or any numeric string representing milliseconds
- *
- * Advanced features:
- * - Dynamic speed adjustment during typing
- * - Chunked text addition via addTextChunk() method
- * - Instant text addition via addInstantTextChunk() method or instant parameter
- * - Mixed instant and animated chunks in queue
- * - Continues typing in background tabs
- * - Performance optimized for large text
- * - maxQueueSize to limit memory usage from excessive queuing
- * - event handling for typing completion and content changes
- *
- * The component includes accessibility features:
- * - Screen readers announce the complete text, not character by character
- * - Uses aria-live="polite" for dynamic content updates
- * - Sets aria-busy during typing animation
- *
  * @dependency mdc-text
  *
  * @tagname mdc-typewriter

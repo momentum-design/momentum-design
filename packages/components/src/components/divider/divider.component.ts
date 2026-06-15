@@ -17,29 +17,6 @@ import styles from './divider.styles';
 import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
- * The Divider component provides a visual line to separate and organize content within layouts.
- * It supports both horizontal and vertical orientations with solid or gradient styles, and can
- * optionally include centered text labels or interactive grabber buttons.
- *
- * The divider automatically infers its type based on the content in its slot:
- * - **Primary**: Simple line with no content
- * - **Text**: Horizontal line with centered text label
- * - **Grabber Button**: Line with centered interactive button
- * 
- * **Note:**
- * - Vertical text dividers are not currently supported.
- * - If the slot contains invalid tag names or multiple elements, the divider defaults to the Primary type
- * - Use the provided CSS custom properties to customize divider styles
- *
- * ## When to use
- * Use dividers to create visual separation between content sections, list items, or layout regions.
- * Add text labels to provide context, or grabber buttons to create resizable panes.
- *
- * ## Accessibility
- * - When using a grabber button, provide `aria-label` to describe its purpose
- * - Set `aria-expanded` on the button to indicate the current state of resizable sections
- * - Ensure sufficient color contrast for the divider line
- *
  * @tagname mdc-divider
  *
  * @cssproperty --mdc-divider-background-color - Background color of the divider line.

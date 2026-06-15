@@ -13,19 +13,6 @@ import styles from './tooltip.styles';
 import type { TooltipType } from './tooltip.types';
 
 /**
- * A Tooltip is a special type of popovers that provide additional context to content on the screen. <br/>
- * Tooltip is triggered by mouse hover or by keyboard focus and will disappear upon mouse exit or focus change.
- *
- * Because of this, tooltips cannot contain content that can be focused or interacted with.
- * When a tooltip must contain a focusable element like a link or button, use a toggle tip instead.
- *
- * A tooltip is triggered by mouse hover or by keyboard focus
- * and will disappear upon mouse exit or focus change.
- *
- * Note:
- *  - Tooltips cannot contain content that can be focused or interacted with.
- *  - Tooltips will contain the default `aria-hidden="true"` so that VO will never focus the tooltip.
- *
  * @tagname mdc-tooltip
  *
  * @event shown - (React: onShown) This event is dispatched when the tooltip is shown

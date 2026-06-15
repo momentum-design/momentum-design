@@ -15,52 +15,6 @@ import type { IconButtonSize, PillButtonSize } from './button.types';
 import { getIconNameWithoutStyle } from './button.utils';
 
 /**
- * `mdc-button` is a component that can be configured in various ways to suit different use cases.
- *
- * ## Button configuration
- *
- * The appearance of the button depends on combination of multiple attributes.
- *
- * ### Button Types
- *
- * The type of button is inferred based on the presence of slot and/or prefix and postfix icons/slots:
- *
- * - **Pill button**: Contains text value, commonly used for call to action, tags, or filters
- * - **Pill button with icons**: Contains an icon on the left or right side of the button
- * - **Icon button**: Represented by just an icon without any text
- *
- * ### Button Variants:
- *
- * Options for button backgrounds and borders:
- *
- * - **Primary**: Solid background color
- * - **Secondary**: Transparent background with solid border
- * - **Tertiary**: No background or border, text-only appearance
- *
- * ### Button Colors
- *
- * Color options for **Primary** and **Secondary** buttons:
- *
- * - **Default**: For standard actions
- * - **Positive**: For success or confirmation actions
- * - **Negative**: For destructive or error actions
- * - **Accent**: For informational actions
- * - **Promotional**: For promotional actions
- *
- * Color options for **Tertiary** buttons:
- *
- * - **Default**: For standard actions
- * - **Accent**: For informational actions
- * - **Negative**: For destructive or error actions
- *
- * ### Button Sizes
- *
- * Size options for different button configurations in REM:
- *
- * - **Pill button**: 40, 32, 28, 24
- * - **Icon button**: 64, 52, 40, 32, 28, 24
- * - **Tertiary icon button**: 20
- *
  * @dependency mdc-icon
  *
  * @tagname mdc-button

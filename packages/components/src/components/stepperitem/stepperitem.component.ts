@@ -15,15 +15,6 @@ import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
 import type { StatusType, VariantType } from './stepperitem.types';
 
 /**
- * stepperitem component is used to represent a single step in a stepper component. It is used within a `mdc-stepper` component to indicate the current step in a process.
- * It can have different statuses such as `completed`, `current`, `incomplete`, `error-current`, and `error-incomplete`.
- * The component supports various visual styles and can be customized with labels, help text, and step numbers.
- *
- * This is an uncontrolled component, meaning it does not manage its own state. Instead, it relies on the consumer's to manage the state of each step.
- * Make sure to set `aria-current="step"` on the current stepper item. It is applicable only when status is `current` or `error-current`. This ensures accessibility for the stepper component. Only one stepper item should have this attribute at a time.
- *
- * Additionally, make use of `aria-label` to provide a descriptive detail about the stepper item, especially for screen readers. If this aria-label is not set, it would read out only the label text and doesn't provide enough context for the user.
- *
  * @dependency mdc-icon
  * @dependency mdc-text
  *

@@ -14,15 +14,6 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import styles from './avatarbutton.styles';
 
 /**
- * The `mdc-avatarbutton` component is an interactive, clickable version of `mdc-avatar`.
- * It wraps the avatar component in a button, making it focusable and actionable.
- *
- * This component extends `buttonsimple` and includes all avatar display features (photo, initials, icon, counter, presence).
- * Use CSS parts to customize the avatar's appearance inside the button.
- *
- * ## Accessibility
- * - Always provide an `aria-label` attribute to describe the button's purpose
- *
  * @dependency mdc-avatar
  *
  * @event click - (React: onClick) Dispatched when the avatar button is clicked.

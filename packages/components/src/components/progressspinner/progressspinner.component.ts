@@ -11,23 +11,6 @@ import { DEFAULTS, ICON_NAME } from './progressspinner.constants';
 import styles from './progressspinner.styles';
 
 /**
- * `mdc-progressspinner` is a customizable, circular progress indicator component.
- * It visually represents the current completion state of a process, such as loading,
- * syncing, uploading, or any ongoing task that has a measurable percentage.
- *
- * The spinner is built using SVG with two concentric `<circle>` elements:
- * - The `progress` arc represents the portion of work completed.
- * - The `track` arc represents the remaining part.
- *
- * A visual gap is maintained between the progress and track arcs to clearly
- * distinguish the two segments. The component smoothly animates arc length
- * and respects accessibility best practices with ARIA attributes.
- *
- * The component supports different states:
- * - **Default**: Circular spinner shows the progress.
- * - **Success**: Displays a checkmark icon when progress reaches 100%.
- * - **Error**: Displays an error icon when in an error state.
- *
  * @tagname mdc-progressspinner
  *
  * @cssproperty --mdc-spinner-size - The size of the spinner.

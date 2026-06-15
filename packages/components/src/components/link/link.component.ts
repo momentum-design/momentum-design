@@ -9,14 +9,6 @@ import styles from './link.styles';
 import type { LinkSize } from './link.types';
 
 /**
- * `mdc-link` component can be used to navigate to a different page
- * within the application or to an external site. It can be used to link to
- * emails or phone numbers.
- *
- * The `children` of the link component is expected to be the text content.
- *
- * For `icon`, the `mdc-icon` component is used to render the icon.
- *
  * @dependency mdc-icon
  *
  * @tagname mdc-link

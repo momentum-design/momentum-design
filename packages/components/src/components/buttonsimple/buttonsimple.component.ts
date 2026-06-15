@@ -15,28 +15,6 @@ import styles from './buttonsimple.styles';
 import type { ButtonSize, ButtonType } from './buttonsimple.types';
 
 /**
- * `mdc-buttonsimple` is a simple button component that can be configured in various ways to suit different use cases.
- * It can be used standalone or as a base for more complex button components like `mdc-button`.
- *
- * ### Button Types
- *
- * The button type defines the behavior when clicked:
- *
- * - **button**: Standard button that performs an action on click
- * - **submit**: Submits the form data to the server
- * - **reset**: Resets the form data to its initial state
- *
- * ### Active State
- *
- * The `active` attribute toggles the button's active/toggled state,
- * automatically setting the appropriate ARIA state (e.g., `aria-pressed`).
- * This is useful for toggle buttons or buttons indicating a selected state.
- *
- * ### Disabled States
- *
- * - **disabled**: Completely disables the button, removing it from the tab order
- * - **soft-disabled**: Button appears disabled but remains focusable for accessibility
- *
  * @tagname mdc-buttonsimple
  *
  * @slot - Text label of the button.

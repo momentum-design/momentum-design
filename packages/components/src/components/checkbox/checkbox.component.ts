@@ -15,27 +15,6 @@ import type { CheckboxValidationType } from './checkbox.types';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
 
 /**
- * The Checkbox component allows users to select one or multiple options from a list, toggle features on/off,
- * or indicate agreement in forms and settings. These are commonly used in forms, lists, and settings panels
- * where users need to make selections or express preferences.
- *
- * To create a group of checkboxes, use the `mdc-formfieldgroup` component.
- *
- * **Note:** This component internally renders a native checkbox input element with custom styling.
- *
- * ## When to use
- *
- * Use checkboxes when users can select multiple options from a list, or when a single checkbox represents a binary choice (e.g., agreeing to terms).
- *
- * ## Accessibility
- * - Provide clear labels that describe what the checkbox controls
- * - Use `data-aria-label` when a visual label is not present
- * - Keyboard navigation: Space to toggle, Tab to navigate, Enter to submit form
- *
- * ## Styling
- * Use the `static-checkbox` part to apply custom styles to the checkbox visual element.
- * This part exposes the underlying [StaticCheckbox](?path=/docs/components-decorator-staticcheckbox--docs) component for advanced styling.
- *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-staticcheckbox
