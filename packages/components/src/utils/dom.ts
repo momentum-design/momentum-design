@@ -319,7 +319,7 @@ export const getDomActiveElement = (root: Document | Element = document): Elemen
  * @returns True if the element has the OverflowMixin methods
  */
 export const hasOverflowMixin = <T extends HTMLElement>(element: T): element is T & OverflowMixinInterface =>
-  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';
+  element && 'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';
 
 /**
  * Recursively gets the host element if the provided element is inside a shadow DOM.
