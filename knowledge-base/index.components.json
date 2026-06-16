@@ -785,6 +785,16 @@
       "component": "statictoggle"
     },
     {
+      "id": "tier3/packages/components/src/components/statusmessage/knowledge-base/statusmessage.component",
+      "tier": 3,
+      "path": "packages/components/src/components/statusmessage/knowledge-base/statusmessage.component.md",
+      "title": "Status Message",
+      "summary": "Usage, guidelines, and accessibility for the mdc-statusmessage component - an inline severity message with optional icon.",
+      "status": "draft",
+      "canonical": null,
+      "component": "statusmessage"
+    },
+    {
       "id": "tier3/packages/components/src/components/stepper/knowledge-base/stepper.component",
       "tier": 3,
       "path": "packages/components/src/components/stepper/knowledge-base/stepper.component.md",

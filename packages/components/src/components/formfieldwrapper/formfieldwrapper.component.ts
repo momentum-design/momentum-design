@@ -226,10 +226,14 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.helpText) {
       return nothing;
     }
-    return html`<div part="help-text-container">
-      <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
+    return html`<mdc-statusmessage
+      part="help-text-container"
+      severity="${DEFAULTS.VALIDATION}"
+      exportparts="container: help-text-container, icon: helper-icon, text: help-text"
+    >
+      <slot name="help-icon" slot="icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
-    </div>`;
+    </mdc-statusmessage>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

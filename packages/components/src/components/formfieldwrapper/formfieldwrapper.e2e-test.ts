@@ -75,8 +75,18 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
         const icon = getHelperIcon(type);
         if (icon) {
           await expect(formfieldwrapper.locator(`mdc-icon[name="${icon}"]`)).toBeVisible();
+        } else {
+          await expect(formfieldwrapper.locator('mdc-icon[part="helper-icon"]')).toHaveCount(0);
         }
       }
+    });
+
+    await test.step('helper text id should remain in the formfieldwrapper shadow root', async () => {
+      const hasHelperTextInShadowRoot = await formfieldwrapper.evaluate(
+        element => !!element.shadowRoot?.querySelector('#helper-text-id'),
+      );
+
+      expect(hasHelperTextInShadowRoot).toBe(true);
     });
 
     await test.step('disabled attribute', async () => {
