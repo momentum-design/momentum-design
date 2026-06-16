@@ -303,23 +303,7 @@ test.describe('mdc-timepicker', () => {
 
       const selectedOption = timepicker.locator('mdc-option[selected]');
       await expect(selectedOption).toBeFocused();
-      await expect
-        .poll(() =>
-          selectedOption.evaluate(option => {
-            const popover = option.closest('mdc-popover');
-            const popoverContent = popover?.shadowRoot?.querySelector('[part="popover-content"]');
-            if (!popoverContent) return false;
-
-            const optionRect = option.getBoundingClientRect();
-            const contentRect = popoverContent.getBoundingClientRect();
-            const scrollMargin = parseFloat(getComputedStyle(option).scrollMarginBlockStart) || 0;
-            return (
-              optionRect.top >= contentRect.top + scrollMargin - 0.5 &&
-              optionRect.bottom <= contentRect.bottom - scrollMargin + 0.5
-            );
-          }),
-        )
-        .toBe(true);
+      await expect(selectedOption).toBeInViewport({ ratio: 1 });
     });
 
     test('should show 15-minute intervals when configured', async ({ componentsPage }) => {
