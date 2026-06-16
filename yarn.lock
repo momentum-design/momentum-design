@@ -3136,7 +3136,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/components@workspace:*, @momentum-design/components@workspace:^, @momentum-design/components@workspace:packages/components":
+"@momentum-design/components@workspace:*, @momentum-design/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@momentum-design/components@workspace:packages/components"
   dependencies:
@@ -3314,7 +3314,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/storybook-addon-docs@workspace:packages/tools/storybook-addon-docs"
   dependencies:
-    "@momentum-design/components": "workspace:^"
+    "@momentum-design/components": "workspace:*"
     "@storybook/addon-docs": ^9.1.5
     "@storybook/react-vite": ^9.1.5
     "@types/node": 20.14.9
