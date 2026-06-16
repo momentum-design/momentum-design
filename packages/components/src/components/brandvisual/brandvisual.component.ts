@@ -7,16 +7,6 @@ import styles from './brandvisual.styles';
 import type { BrandVisualNames, imageProps } from './brandvisual.types';
 
 /**
- * The `mdc-brandvisual` component is responsible for rendering logos dynamically & ensures they are
- * displayed correctly within applications.
- *
- * Features:
- * - Dynamically loads brandvisuals based on the `name` attribute.
- * - Emits a `load` event when the brandvisual is successfully fetched.
- * - Emits an `error` event when the brandvisual import fails.
- * - Supports accessibility best practices.
- * - Used for brand representation within the design system.
- *
  * @tagname mdc-brandvisual
  *
  * @event load - (React: onLoad) This event is dispatched when the brandvisual has been successfully loaded.

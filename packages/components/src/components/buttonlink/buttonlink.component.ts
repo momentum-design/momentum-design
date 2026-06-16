@@ -11,19 +11,9 @@ import type { IconButtonSize, PillButtonSize } from '../button/button.types';
 import styles from './buttonlink.styles';
 
 /**
- * `mdc-buttonlink` combines the functional behavior of `mdc-linksimple` with the visual and structural
- * features of `mdc-button`. This includes support for variants, sizing, and optional
- * prefix and postfix icons.
- *
- * ### Features:
- * - Behaves like a link while visually resembling a button.
- * - Customizable size, color, and variant through attributes.
- * - Supports prefix and postfix icons.
- * - Inherits accessibility and keyboard interaction support from `mdc-linksimple`.
+ * @tagname mdc-buttonlink
  *
  * @dependency mdc-icon
- *
- * @tagname mdc-buttonlink
  *
  * @slot default - The default slot for buttonlink text content.
  *

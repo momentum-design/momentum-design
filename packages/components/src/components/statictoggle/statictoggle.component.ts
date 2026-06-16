@@ -10,23 +10,6 @@ import styles from './statictoggle.styles';
 import type { ToggleSize } from './statictoggle.types';
 
 /**
- * The StaticToggle component is a decorative, non-interactive toggle switch used for visual
- * presentation. It shares the same styling as the interactive `mdc-toggle` component but does
- * not provide user interaction functionality.
- *
- * This component supports multiple visual states: checked, disabled, readonly, soft-disabled,
- * and size variations (default, compact).
- *
- * ## When to use
- * Use StaticToggle to display toggle states in read-only contexts such as summary views,
- * confirmation screens, or as a building block within custom interactive components. For
- * interactive toggles, use `mdc-toggle` instead.
- *
- * ## Accessibility
- * - StaticToggle is decorative and non-interactive by design
- * - When used within parent components, ensure proper ARIA attributes are provided by the parent
- * - Do not use this as a replacement for interactive toggles in forms
- *
  * @tagname mdc-statictoggle
  *
  * @dependency mdc-icon

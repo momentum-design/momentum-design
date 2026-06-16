@@ -16,6 +16,17 @@ const setCanvasBackgroundOnDocs = backgroundColor => {
   }
 };
 
+const allThemeClasses = themes.map(t => t.themeclass);
+
+const syncBodyTheme = themeClass => {
+  const body = document.querySelector('body.sb-show-main');
+  if (!body) return;
+  for (const cls of allThemeClasses) {
+    if (cls !== themeClass) body.classList.remove(cls);
+  }
+  body.classList.add(themeClass);
+};
+
 export const withThemeProvider = (story, context) => {
   const currentTheme = context.globals.theme;
   const themeObject = themes.find(theme => theme.displayName === currentTheme);
@@ -25,6 +36,11 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, 'bodyOverride');
   applyStyle(body, 'mds-typography');
   applyStyle(body, 'mds-elevation');
+
+  // Mirror the active theme onto <body> so non-story chrome (e.g. the
+  // knowledge-base Docs page rendered by `@momentum-design/storybook-addon-docs`)
+  // can resolve `--mds-*` tokens.
+  syncBodyTheme(themeObject.themeclass);
 
   // This will set the all canvas in "Docs" with the current theme background color
   setCanvasBackgroundOnDocs(themeObject.backgroundColor);

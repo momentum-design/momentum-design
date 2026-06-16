@@ -16,17 +16,6 @@ import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.ty
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import styles from './input.styles';
 /**
- * mdc-input is a component that allows users to input text.
- *  It contains:
- * - label field - describe the input field.
- * - input field - contains the value
- * - help text or validation message - displayed below the input field.
- * - trailing button - it displays a clear the input field.
- * - prefix text - displayed before the input field.
- * - leading icon - displayed before the input field.
- * - clear-aria-label - aria label for the trailing button.
- * - all the attributes of the input field.
- *
  * @tagname mdc-input
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).

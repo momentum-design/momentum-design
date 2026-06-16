@@ -28,15 +28,6 @@ import {
 } from './datepicker.utils';
 
 /**
- * mdc-datepicker is a component that allows users to select a date
- * or enter a date manually. It supports two variants:
- *
- * - `input`: Manual date entry with spinbutton inputs for month, day, and year
- * - `default`: A select-like trigger that opens a calendar for date range selection
- *
- * The component uses `mdc-calendar` inside a popover for date selection
- * and supports localization via a BCP 47 locale string.
- *
  * @tagname mdc-datepicker
  *
  * @dependency mdc-button

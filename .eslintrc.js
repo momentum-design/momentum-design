@@ -4,7 +4,10 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['airbnb-base', 'plugin:json/recommended', 'plugin:astro/recommended'],
+  // Note: 'prettier' (eslint-config-prettier) MUST be last so it disables every airbnb-base
+  // style rule that conflicts with Prettier's output. Otherwise editor-on-save (ESLint --fix
+  // followed by Prettier formatOnSave) re-introduces lint errors on every save.
+  extends: ['airbnb-base', 'plugin:json/recommended', 'plugin:astro/recommended', 'prettier'],
   globals: {
     BufferEncoding: 'readonly',
   },

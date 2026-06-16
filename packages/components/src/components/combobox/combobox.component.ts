@@ -33,44 +33,13 @@ import styles from './combobox.styles';
 import type { ComboboxFilter, Placement } from './combobox.types';
 
 /**
- * The Combobox component is a text-based dropdown control that allows users to select an option from a predefined list.
- * Users can type text to filter the options and select their desired choice.
- *
- * When the user starts typing, the filter uses a "starts with" search and displays options based on the text entered by the user.
- * If the user entered text that doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
- *
- * The `filter` attribute controls how options are narrowed as the user types.
- * The default `'match-starts-with'` strategy shows options whose label starts with the typed text.
- * Setting `filter="none"` disables internal filtering, which is useful when the consumer manages
- * filtering externally (e.g., fetching results from an API) and dynamically updates the slotted options.
- * A custom function can also be provided via the `filter` property for full control over the logic.
- *
- * If there is no text in the `no-result-text` attribute then nothing will be shown.
- *
- * Combobox is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
- * The component ensures accessibility and usability while handling various use cases, including long text truncation with tooltip support.
- *
- * Every mdc-option should have a `value` attribute set to ensure proper form submission.
- *
- * To set a default option, use the `selected` attribute on the `mdc-option` element.
- *
- * When the combobox `control-type` attribute is "controlled", then the value should be set by the parent only, and the combobox will emit `change` and `input` events
- * with the selected option details when the user makes a selection or types in the input, but it won't update the selected value internally.
- * The parent component is expected to listen to these events and update the `value` property of the combobox accordingly to reflect the changes in the UI.
- *
- * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-combobox` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
- *
- * If you need to use `mdc-tooltip` with any options, make sure to place the tooltip component outside the `mdc-selectlistbox` element. Read more about it in Options documentation.
- *
- * To understand more about combobox and its patterns, refer to this [WCAG example](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/).
+ * @tagname mdc-combobox
  *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
  * @dependency mdc-listitem
  * @dependency mdc-popover
- *
- * @tagname mdc-combobox
  *
  * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.

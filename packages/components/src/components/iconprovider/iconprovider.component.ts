@@ -7,29 +7,6 @@ import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconp
 import type { CacheStrategy, IconSet } from './iconprovider.types';
 
 /**
- * IconProvider component, which allows to be consumed from sub components
- * (see `providerUtils.consume` for how to consume)
- *
- * Attribute `iconSet` can be set to either `momentum-icons` or `custom-icons`.
- * If `momentum-icons` is selected, the icons will be fetched from the
- * Momentum Design System icon set per a dynamic JS Import (no need to provide a URL).
- * This requires the consumer to have the `@momentum-design/icons` package installed and the
- * build tooling needs to support dynamic imports.
- *
- * If `custom-icons` is selected, the icons will be fetched from the provided URL.
- * This requires the consumer to provide a URL from which the icons will be fetched and
- * the consumer needs to make sure to bundle the icons in the application.
- *
- * If `cacheStrategy` is provided (only works with iconSet = `custom-icons`), the
- * IconProvider will cache the icons in the selected cache (either web-api-cache or in-memory-cache),
- * to avoid fetching the same icon multiple times over the network.
- * This is useful when the same icon is used multiple times in the application.
- * To consider:
- * - The `in-memory-cache` is not persisted and will be lost when the
- * IconProvider is removed from the DOM.
- * - The `web-api-cache` is persisted, but only works in https environments
- * (https://developer.mozilla.org/en-US/docs/Web/API/Cache).
- *
  * @tagname mdc-iconprovider
  *
  * @slot - children

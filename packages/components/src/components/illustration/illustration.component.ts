@@ -12,36 +12,6 @@ import { DEFAULTS } from './illustration.constants';
 import type { IllustrationNames } from './illustration.types';
 
 /**
- * Illustration component that dynamically displays SVG illustrations based on a valid name.
- *
- * This component must be mounted within an `IllustrationProvider` component.
- *
- * The `IllustrationProvider` defines the source URL from which illustrations are consumed.
- * The `Illustration` component accepts a `name` attribute, which corresponds to
- * the file name of the illustration to be loaded from the specified URL.
- *
- * Once fetched, the illustration will be rendered. If the fetching process is unsuccessful,
- * no illustration will be displayed.
- *
- * Default sizing of the illustration is controlled by choosing a different illustration name, can be overridden with the `--mdc-illustration-size` CSS property.
- * Coloring of the illustration is currently baked into the svg, meaning that the illustration name determines
- * the coloring.
- *
- * Regarding accessibility, there are two types of illustrations: decorative and informative.
- *
- * ### Decorative Illustrations
- * - Decorative illustrations do not convey any essential information to the content of a page.
- * - They should be hidden from screen readers (SR) to prevent confusion for users.
- * - For decorative illustrations, an `aria-label` is not required, and the `role` will be set to null.
- *
- * ### Informative Illustrations
- * - Informative illustrations convey important information that is not adequately represented
- *   by surrounding text or components.
- * - They provide valuable context and must be announced by assistive technologies.
- * - For informative illustrations, an `aria-label` is required, and the `role` will be set to "img" automatically.
- * - If an `aria-label` is provided, the role will be set to 'img'; if it is absent,
- *   the role will be unset.
- *
  * @tagname mdc-illustration
  *
  * @cssproperty --mdc-illustration-size - Allows customization of the illustration size.

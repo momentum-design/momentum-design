@@ -11,15 +11,6 @@ import { DEFAULTS } from './chip.constants';
 import styles from './chip.styles';
 
 /**
- * mdc-chip is an interactive element that can be used to represent a chip. It supports a leading icon along with label.
- * Consumers can wrap this component around a tooltip to provide additional context.
- *
- * It is recommended to keep the label text for the chip component concise and compact.<br/>
- * For best results, we recommend limiting the <b>maximum length of the label text to 20 characters</b>,
- * including empty spaces to split words.
- *
- * This component is built by extending `Buttonsimple`.
- *
  * @tagname mdc-chip
  *
  * @dependency mdc-icon

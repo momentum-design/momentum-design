@@ -10,33 +10,10 @@ import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 
 /**
- * A toggletip is triggered by clicking a trigger element and can contain interactive content.
- * Unlike tooltips which disappear on blur, toggletips remain visible until explicitly dismissed
- * by clicking outside, pressing escape, or clicking the optional close button.
- *
- * Toggletips are ideal for displaying contextual help text, additional information, or interactive
- * elements like links and buttons that users need time to read and interact with.
- *
- * The component uses [mdc-screenreaderannouncer](?path=/docs/components-screenreaderannouncer--docs) internally to announce the toggletip content
- * to screen readers when shown, ensuring proper accessibility support.
- *
- * **Note:** This component extends the Popover component with toggletip-specific defaults.
- *
- * ## When to use
- * Use toggletips when you need to display interactive content or detailed information that requires
- * user interaction. For simple, non-interactive text hints, use tooltips instead.
- *
- * ## Accessibility
- * - Toggletip content is announced to screen readers when shown
- * - Use `screenreader-announcer-identity` attribute to control announcement placement in the DOM
- * - Focus is trapped within the toggletip when open, allowing navigation of interactive elements
- * - Keyboard shortcuts: Escape to close, Tab to move between elements
- * - Focus returns to the trigger element when the toggletip is closed
+ * @tagname mdc-toggletip
  *
  * @dependency mdc-screenreaderannouncer
  * @dependency mdc-button
- *
- * @tagname mdc-toggletip
  *
  * @event shown - (React: onShown) This event is dispatched when the toggletip is shown
  * @event hidden - (React: onHidden) This event is dispatched when the toggletip is hidden

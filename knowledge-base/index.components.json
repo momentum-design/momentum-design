@@ -13,6 +13,936 @@
       "status": "draft",
       "canonical": null,
       "component": "accordion"
+    },
+    {
+      "id": "tier3/packages/components/src/components/accordionbutton/knowledge-base/accordionbutton.component",
+      "tier": 3,
+      "path": "packages/components/src/components/accordionbutton/knowledge-base/accordionbutton.component.md",
+      "title": "Accordion Button",
+      "summary": "Usage, guidelines, and accessibility for the mdc-accordionbutton component — a vertically stacked component with a fully clickable header and an expandable/collapsible body section.",
+      "status": "draft",
+      "canonical": null,
+      "component": "accordionbutton"
+    },
+    {
+      "id": "tier3/packages/components/src/components/accordiongroup/knowledge-base/accordiongroup.component",
+      "tier": 3,
+      "path": "packages/components/src/components/accordiongroup/knowledge-base/accordiongroup.component.md",
+      "title": "Accordion Group",
+      "summary": "Usage, guidelines, and accessibility for the mdc-accordiongroup component — a container that manages multiple accordion or accordionbutton components as a unified set.",
+      "status": "draft",
+      "canonical": null,
+      "component": "accordiongroup"
+    },
+    {
+      "id": "tier3/packages/components/src/components/alertchip/knowledge-base/alertchip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/alertchip/knowledge-base/alertchip.component.md",
+      "title": "Alert Chip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip used to represent an alert with a leading icon and label.",
+      "status": "draft",
+      "canonical": null,
+      "component": "alertchip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/animation/knowledge-base/animation.component",
+      "tier": 3,
+      "path": "packages/components/src/components/animation/knowledge-base/animation.component.md",
+      "title": "Animation",
+      "summary": "Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labelled animations.",
+      "status": "draft",
+      "canonical": null,
+      "component": "animation"
+    },
+    {
+      "id": "tier3/packages/components/src/components/announcementdialog/knowledge-base/announcementdialog.component",
+      "tier": 3,
+      "path": "packages/components/src/components/announcementdialog/knowledge-base/announcementdialog.component.md",
+      "title": "Announcement Dialog",
+      "summary": "Usage, guidelines, and accessibility for the mdc-announcementdialog component — a modal dialog used to display announcements with an illustration, content, and footer actions.",
+      "status": "draft",
+      "canonical": null,
+      "component": "announcementdialog"
+    },
+    {
+      "id": "tier3/packages/components/src/components/appheader/knowledge-base/appheader.component",
+      "tier": 3,
+      "path": "packages/components/src/components/appheader/knowledge-base/appheader.component.md",
+      "title": "App Header",
+      "summary": "Usage, guidelines, and accessibility for the mdc-appheader component — a structured app header layout with leading, center, and trailing sections.",
+      "status": "draft",
+      "canonical": null,
+      "component": "appheader"
+    },
+    {
+      "id": "tier3/packages/components/src/components/avatar/knowledge-base/avatar.component",
+      "tier": 3,
+      "path": "packages/components/src/components/avatar/knowledge-base/avatar.component.md",
+      "title": "Avatar",
+      "summary": "Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that displays a person or group as a photo, initials, icon, or counter.",
+      "status": "draft",
+      "canonical": null,
+      "component": "avatar"
+    },
+    {
+      "id": "tier3/packages/components/src/components/avatarbutton/knowledge-base/avatarbutton.component",
+      "tier": 3,
+      "path": "packages/components/src/components/avatarbutton/knowledge-base/avatarbutton.component.md",
+      "title": "Avatar Button",
+      "summary": "Usage, guidelines, and accessibility for the mdc-avatarbutton component — an interactive, focusable avatar wrapped in a button.",
+      "status": "draft",
+      "canonical": null,
+      "component": "avatarbutton"
+    },
+    {
+      "id": "tier3/packages/components/src/components/badge/knowledge-base/badge.component",
+      "tier": 3,
+      "path": "packages/components/src/components/badge/knowledge-base/badge.component.md",
+      "title": "Badge",
+      "summary": "Usage, guidelines, and accessibility for the mdc-badge component — a small non-interactive indicator used to display a dot, icon, counter, or status (success, warning, error).",
+      "status": "draft",
+      "canonical": null,
+      "component": "badge"
+    },
+    {
+      "id": "tier3/packages/components/src/components/banner/knowledge-base/banner.component",
+      "tier": 3,
+      "path": "packages/components/src/components/banner/knowledge-base/banner.component.md",
+      "title": "Banner",
+      "summary": "Usage, guidelines, and accessibility for the mdc-banner component — an in-page message used to communicate important information that requires user awareness or action to dismiss.",
+      "status": "draft",
+      "canonical": null,
+      "component": "banner"
+    },
+    {
+      "id": "tier3/packages/components/src/components/brandvisual/knowledge-base/brandvisual.component",
+      "tier": 3,
+      "path": "packages/components/src/components/brandvisual/knowledge-base/brandvisual.component.md",
+      "title": "Brandvisual",
+      "summary": "Usage, guidelines, and accessibility for the mdc-brandvisual component — a dynamic loader that renders branded logos and wordmarks from the Momentum brand-visuals package.",
+      "status": "draft",
+      "canonical": null,
+      "component": "brandvisual"
+    },
+    {
+      "id": "tier3/packages/components/src/components/bullet/knowledge-base/bullet.component",
+      "tier": 3,
+      "path": "packages/components/src/components/bullet/knowledge-base/bullet.component.md",
+      "title": "Bullet",
+      "summary": "Usage, guidelines, and accessibility for the mdc-bullet component — a small circular visual indicator used to mark or separate list-style content.",
+      "status": "draft",
+      "canonical": null,
+      "component": "bullet"
+    },
+    {
+      "id": "tier3/packages/components/src/components/button/knowledge-base/button.component",
+      "tier": 3,
+      "path": "packages/components/src/components/button/knowledge-base/button.component.md",
+      "title": "Button",
+      "summary": "Usage, guidelines, and accessibility for the mdc-button component — a configurable button that supports pill, pill-with-icon, and icon-only layouts in multiple variants, colors, and sizes.",
+      "status": "draft",
+      "canonical": null,
+      "component": "button"
+    },
+    {
+      "id": "tier3/packages/components/src/components/buttongroup/knowledge-base/buttongroup.component",
+      "tier": 3,
+      "path": "packages/components/src/components/buttongroup/knowledge-base/buttongroup.component.md",
+      "title": "ButtonGroup",
+      "summary": "Usage, guidelines, and accessibility for the mdc-buttongroup component — a container that groups related buttons into a visually unified, segmented control with shared size and variant.",
+      "status": "draft",
+      "canonical": null,
+      "component": "buttongroup"
+    },
+    {
+      "id": "tier3/packages/components/src/components/buttonlink/knowledge-base/buttonlink.component",
+      "tier": 3,
+      "path": "packages/components/src/components/buttonlink/knowledge-base/buttonlink.component.md",
+      "title": "ButtonLink",
+      "summary": "Usage, guidelines, and accessibility for the mdc-buttonlink component — a link that looks like a button, supporting variant, color, size, and prefix/postfix icons while rendering as an anchor.",
+      "status": "draft",
+      "canonical": null,
+      "component": "buttonlink"
+    },
+    {
+      "id": "tier3/packages/components/src/components/buttonsimple/knowledge-base/buttonsimple.component",
+      "tier": 3,
+      "path": "packages/components/src/components/buttonsimple/knowledge-base/buttonsimple.component.md",
+      "title": "ButtonSimple",
+      "summary": "Usage, guidelines, and accessibility for the mdc-buttonsimple component — an unstyled, form-associated button primitive supplying keyboard, focus, disabled, and toggle semantics.",
+      "status": "draft",
+      "canonical": null,
+      "component": "buttonsimple"
+    },
+    {
+      "id": "tier3/packages/components/src/components/calendar/knowledge-base/calendar.component",
+      "tier": 3,
+      "path": "packages/components/src/components/calendar/knowledge-base/calendar.component.md",
+      "title": "Calendar",
+      "summary": "Usage, guidelines, and accessibility for the mdc-calendar component — a monthly grid for selecting a single date, a week, or a date range with keyboard navigation and locale-aware formatting.",
+      "status": "draft",
+      "canonical": null,
+      "component": "calendar"
+    },
+    {
+      "id": "tier3/packages/components/src/components/card/knowledge-base/card.component",
+      "tier": 3,
+      "path": "packages/components/src/components/card/knowledge-base/card.component.md",
+      "title": "Card",
+      "summary": "Usage, guidelines, and accessibility for the mdc-card component — a static container grouping related information into image, header, body, and footer with link and button slots.",
+      "status": "draft",
+      "canonical": null,
+      "component": "card"
+    },
+    {
+      "id": "tier3/packages/components/src/components/cardbutton/knowledge-base/cardbutton.component",
+      "tier": 3,
+      "path": "packages/components/src/components/cardbutton/knowledge-base/cardbutton.component.md",
+      "title": "Card button",
+      "summary": "Usage, guidelines, and accessibility for the mdc-cardbutton component — a card-shaped surface that behaves as a single button, so clicking or activating anywhere on the card fires the click event.",
+      "status": "draft",
+      "canonical": null,
+      "component": "cardbutton"
+    },
+    {
+      "id": "tier3/packages/components/src/components/cardcheckbox/knowledge-base/cardcheckbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/cardcheckbox/knowledge-base/cardcheckbox.component.md",
+      "title": "Card checkbox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-cardcheckbox component — a card surface that behaves as a single checkbox, toggling on click or Enter/Space.",
+      "status": "draft",
+      "canonical": null,
+      "component": "cardcheckbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/cardradio/knowledge-base/cardradio.component",
+      "tier": 3,
+      "path": "packages/components/src/components/cardradio/knowledge-base/cardradio.component.md",
+      "title": "Card radio",
+      "summary": "Usage, guidelines, and accessibility for the mdc-cardradio component — a card surface behaving as a radio option; only one card per name group can be selected at a time.",
+      "status": "draft",
+      "canonical": null,
+      "component": "cardradio"
+    },
+    {
+      "id": "tier3/packages/components/src/components/checkbox/knowledge-base/checkbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/checkbox/knowledge-base/checkbox.component.md",
+      "title": "Checkbox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-checkbox component — a form control that lets users select one or multiple options, toggle a feature on/off, or indicate agreement.",
+      "status": "draft",
+      "canonical": null,
+      "component": "checkbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/chip/knowledge-base/chip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/chip/knowledge-base/chip.component.md",
+      "title": "Chip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-chip component — a small interactive button-shaped element representing compact info, an attribute, or a quick action with optional icon and label.",
+      "status": "draft",
+      "canonical": null,
+      "component": "chip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/coachmark/knowledge-base/coachmark.component",
+      "tier": 3,
+      "path": "packages/components/src/components/coachmark/knowledge-base/coachmark.component.md",
+      "title": "Coachmark",
+      "summary": "Usage, guidelines, and accessibility for the mdc-coachmark component — a contextual onboarding overlay that highlights a UI element with an arrow-anchored bubble to explain its purpose.",
+      "status": "draft",
+      "canonical": null,
+      "component": "coachmark"
+    },
+    {
+      "id": "tier3/packages/components/src/components/combobox/knowledge-base/combobox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/combobox/knowledge-base/combobox.component.md",
+      "title": "Combobox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-combobox component — a text-based dropdown that lets users either type to filter or pick from a predefined list of options.",
+      "status": "draft",
+      "canonical": null,
+      "component": "combobox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/controltypeprovider/knowledge-base/controltypeprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/controltypeprovider/knowledge-base/controltypeprovider.component.md",
+      "title": "Control type provider",
+      "summary": "Usage and guidelines for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.",
+      "status": "draft",
+      "canonical": null,
+      "component": "controltypeprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/datepicker/knowledge-base/datepicker.component",
+      "tier": 3,
+      "path": "packages/components/src/components/datepicker/knowledge-base/datepicker.component.md",
+      "title": "Datepicker",
+      "summary": "Usage, guidelines, and accessibility for the mdc-datepicker component — a date input offering manual entry or a calendar popover for single, range, or week selection with locale support.",
+      "status": "draft",
+      "canonical": null,
+      "component": "datepicker"
+    },
+    {
+      "id": "tier3/packages/components/src/components/dialog/knowledge-base/dialog.component",
+      "tier": 3,
+      "path": "packages/components/src/components/dialog/knowledge-base/dialog.component.md",
+      "title": "Dialog",
+      "summary": "Usage, guidelines, and accessibility for the mdc-dialog component — a modal overlay with a titled, optionally described surface containing custom body content and footer actions.",
+      "status": "draft",
+      "canonical": null,
+      "component": "dialog"
+    },
+    {
+      "id": "tier3/packages/components/src/components/divider/knowledge-base/divider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/divider/knowledge-base/divider.component.md",
+      "title": "Divider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.",
+      "status": "draft",
+      "canonical": null,
+      "component": "divider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/filterchip/knowledge-base/filterchip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/filterchip/knowledge-base/filterchip.component.md",
+      "title": "Filterchip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-filterchip component — a togglable chip used to apply or remove a single filter, with a built-in checkmark indicator when selected.",
+      "status": "draft",
+      "canonical": null,
+      "component": "filterchip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component",
+      "tier": 3,
+      "path": "packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component.md",
+      "title": "Formfieldgroup",
+      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.",
+      "status": "draft",
+      "canonical": null,
+      "component": "formfieldgroup"
+    },
+    {
+      "id": "tier3/packages/components/src/components/formfieldwrapper/knowledge-base/formfieldwrapper.component",
+      "tier": 3,
+      "path": "packages/components/src/components/formfieldwrapper/knowledge-base/formfieldwrapper.component.md",
+      "title": "Formfieldwrapper",
+      "summary": "Internal base component that renders the label, helper/validation text, optional toggletip info icon, and required indicator shared by every form field component.",
+      "status": "draft",
+      "canonical": null,
+      "component": "formfieldwrapper"
+    },
+    {
+      "id": "tier3/packages/components/src/components/icon/knowledge-base/icon.component",
+      "tier": 3,
+      "path": "packages/components/src/components/icon/knowledge-base/icon.component.md",
+      "title": "Icon",
+      "summary": "Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its URL from a parent mdc-iconprovider, supporting decorative and informative roles.",
+      "status": "draft",
+      "canonical": null,
+      "component": "icon"
+    },
+    {
+      "id": "tier3/packages/components/src/components/iconprovider/knowledge-base/iconprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/iconprovider/knowledge-base/iconprovider.component.md",
+      "title": "Iconprovider",
+      "summary": "Usage and guidelines for the mdc-iconprovider component — a context provider supplying icon source, file extension, default sizing, and optional caching to every nested mdc-icon.",
+      "status": "draft",
+      "canonical": null,
+      "component": "iconprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/illustration/knowledge-base/illustration.component",
+      "tier": 3,
+      "path": "packages/components/src/components/illustration/knowledge-base/illustration.component.md",
+      "title": "Illustration",
+      "summary": "Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its URL from a parent mdc-illustrationprovider.",
+      "status": "draft",
+      "canonical": null,
+      "component": "illustration"
+    },
+    {
+      "id": "tier3/packages/components/src/components/illustrationprovider/knowledge-base/illustrationprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/illustrationprovider/knowledge-base/illustrationprovider.component.md",
+      "title": "Illustrationprovider",
+      "summary": "Usage and guidelines for the mdc-illustrationprovider component — a context provider supplying illustration source, file extension, and optional caching to every nested mdc-illustration.",
+      "status": "draft",
+      "canonical": null,
+      "component": "illustrationprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/input/knowledge-base/input.component",
+      "tier": 3,
+      "path": "packages/components/src/components/input/knowledge-base/input.component.md",
+      "title": "Input",
+      "summary": "Usage, guidelines, and accessibility for the mdc-input component — a single-line text input with label, helper/validation text, optional leading icon, prefix text, and clear button.",
+      "status": "draft",
+      "canonical": null,
+      "component": "input"
+    },
+    {
+      "id": "tier3/packages/components/src/components/inputchip/knowledge-base/inputchip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/inputchip/knowledge-base/inputchip.component.md",
+      "title": "Inputchip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.",
+      "status": "draft",
+      "canonical": null,
+      "component": "inputchip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/link/knowledge-base/link.component",
+      "tier": 3,
+      "path": "packages/components/src/components/link/knowledge-base/link.component.md",
+      "title": "Link",
+      "summary": "Usage, guidelines, and accessibility for the mdc-link component — a navigational hyperlink for in-app routing, external sites, or email/phone handlers, with optional trailing icon.",
+      "status": "draft",
+      "canonical": null,
+      "component": "link"
+    },
+    {
+      "id": "tier3/packages/components/src/components/linkbutton/knowledge-base/linkbutton.component",
+      "tier": 3,
+      "path": "packages/components/src/components/linkbutton/knowledge-base/linkbutton.component.md",
+      "title": "Linkbutton",
+      "summary": "Usage, guidelines, and accessibility for the mdc-linkbutton component — a control that looks like a hyperlink but behaves as a button, used for in-page actions that should visually read as a link.",
+      "status": "draft",
+      "canonical": null,
+      "component": "linkbutton"
+    },
+    {
+      "id": "tier3/packages/components/src/components/linksimple/knowledge-base/linksimple.component",
+      "tier": 3,
+      "path": "packages/components/src/components/linksimple/knowledge-base/linksimple.component.md",
+      "title": "Linksimple",
+      "summary": "Usage, guidelines, and accessibility for the mdc-linksimple component — a lightweight, unstyled-by-default hyperlink with no built-in size or icon, suitable for custom child content.",
+      "status": "draft",
+      "canonical": null,
+      "component": "linksimple"
+    },
+    {
+      "id": "tier3/packages/components/src/components/list/knowledge-base/list.component",
+      "tier": 3,
+      "path": "packages/components/src/components/list/knowledge-base/list.component.md",
+      "title": "List",
+      "summary": "Usage, guidelines, and accessibility for the mdc-list component — a keyboard-navigable container grouping mdc-listitem elements with an optional header slot and configurable orientation.",
+      "status": "draft",
+      "canonical": null,
+      "component": "list"
+    },
+    {
+      "id": "tier3/packages/components/src/components/listbox/knowledge-base/listbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/listbox/knowledge-base/listbox.component.md",
+      "title": "Listbox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-listbox component — a single- or multi-select list of mdc-option (optionally grouped by mdc-optgroup) that follows the WAI-ARIA listbox pattern.",
+      "status": "draft",
+      "canonical": null,
+      "component": "listbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/listheader/knowledge-base/listheader.component",
+      "tier": 3,
+      "path": "packages/components/src/components/listheader/knowledge-base/listheader.component.md",
+      "title": "Listheader",
+      "summary": "Usage, guidelines, and accessibility for the mdc-listheader component — a non-interactive header row for an mdc-list, with optional prefix and postfix icons and a default slot for actionable elements.",
+      "status": "draft",
+      "canonical": null,
+      "component": "listheader"
+    },
+    {
+      "id": "tier3/packages/components/src/components/listitem/knowledge-base/listitem.component",
+      "tier": 3,
+      "path": "packages/components/src/components/listitem/knowledge-base/listitem.component.md",
+      "title": "Listitem",
+      "summary": "Usage, guidelines, and accessibility for the mdc-listitem component — a flexible row inside an mdc-list with optional leading/trailing controls, three label slots, and keyboard activation.",
+      "status": "draft",
+      "canonical": null,
+      "component": "listitem"
+    },
+    {
+      "id": "tier3/packages/components/src/components/marker/knowledge-base/marker.component",
+      "tier": 3,
+      "path": "packages/components/src/components/marker/knowledge-base/marker.component.md",
+      "title": "Marker",
+      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.",
+      "status": "draft",
+      "canonical": null,
+      "component": "marker"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menubar/knowledge-base/menubar.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menubar/knowledge-base/menubar.component.md",
+      "title": "Menubar",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menubar component — a vertical container for menu items with keyboard navigation and nested submenu support.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menubar"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menuitem/knowledge-base/menuitem.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menuitem/knowledge-base/menuitem.component.md",
+      "title": "Menuitem",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menuitem component — an actionable item inside a menubar or menu popover with leading/trailing controls and an optional arrow indicator.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menuitem"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menuitemcheckbox/knowledge-base/menuitemcheckbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menuitemcheckbox/knowledge-base/menuitemcheckbox.component.md",
+      "title": "Menuitemcheckbox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menuitemcheckbox component — a checkable menu item with checkbox, checkmark, or toggle indicators.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menuitemcheckbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menuitemradio/knowledge-base/menuitemradio.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menuitemradio/knowledge-base/menuitemradio.component.md",
+      "title": "Menuitemradio",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menuitemradio component — a single-select menu item with radio, checkmark, or no indicator.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menuitemradio"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menupopover/knowledge-base/menupopover.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menupopover/knowledge-base/menupopover.component.md",
+      "title": "Menupopover",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menupopover component — a floating menu overlay for menu items and nested submenus.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menupopover"
+    },
+    {
+      "id": "tier3/packages/components/src/components/menusection/knowledge-base/menusection.component",
+      "tier": 3,
+      "path": "packages/components/src/components/menusection/knowledge-base/menusection.component.md",
+      "title": "Menusection",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menusection component — a labelled grouping of menu items inside a menu or menubar.",
+      "status": "draft",
+      "canonical": null,
+      "component": "menusection"
+    },
+    {
+      "id": "tier3/packages/components/src/components/navmenuitem/knowledge-base/navmenuitem.component",
+      "tier": 3,
+      "path": "packages/components/src/components/navmenuitem/knowledge-base/navmenuitem.component.md",
+      "title": "Navmenuitem",
+      "summary": "Usage, guidelines, and accessibility for the mdc-navmenuitem component — a navigation-styled menu item with leading icon, optional badge, and tooltip support.",
+      "status": "draft",
+      "canonical": null,
+      "component": "navmenuitem"
+    },
+    {
+      "id": "tier3/packages/components/src/components/optgroup/knowledge-base/optgroup.component",
+      "tier": 3,
+      "path": "packages/components/src/components/optgroup/knowledge-base/optgroup.component.md",
+      "title": "Optgroup",
+      "summary": "Usage, guidelines, and accessibility for the mdc-optgroup component — a labelled grouping of mdc-option elements inside a listbox.",
+      "status": "draft",
+      "canonical": null,
+      "component": "optgroup"
+    },
+    {
+      "id": "tier3/packages/components/src/components/option/knowledge-base/option.component",
+      "tier": 3,
+      "path": "packages/components/src/components/option/knowledge-base/option.component.md",
+      "title": "Option",
+      "summary": "Usage, guidelines, and accessibility for the mdc-option component — a selectable option inside a listbox, typically used within mdc-select.",
+      "status": "draft",
+      "canonical": null,
+      "component": "option"
+    },
+    {
+      "id": "tier3/packages/components/src/components/password/knowledge-base/password.component",
+      "tier": 3,
+      "path": "packages/components/src/components/password/knowledge-base/password.component.md",
+      "title": "Password",
+      "summary": "Usage, guidelines, and accessibility for the mdc-password component — a password input with a built-in show/hide toggle.",
+      "status": "draft",
+      "canonical": null,
+      "component": "password"
+    },
+    {
+      "id": "tier3/packages/components/src/components/popover/knowledge-base/popover.component",
+      "tier": 3,
+      "path": "packages/components/src/components/popover/knowledge-base/popover.component.md",
+      "title": "Popover",
+      "summary": "Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behaviour.",
+      "status": "draft",
+      "canonical": null,
+      "component": "popover"
+    },
+    {
+      "id": "tier3/packages/components/src/components/presence/knowledge-base/presence.component",
+      "tier": 3,
+      "path": "packages/components/src/components/presence/knowledge-base/presence.component.md",
+      "title": "Presence",
+      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status badge that visually represents the availability or activity state of a user or entity.",
+      "status": "draft",
+      "canonical": null,
+      "component": "presence"
+    },
+    {
+      "id": "tier3/packages/components/src/components/progressbar/knowledge-base/progressbar.component",
+      "tier": 3,
+      "path": "packages/components/src/components/progressbar/knowledge-base/progressbar.component.md",
+      "title": "Progressbar",
+      "summary": "Usage, guidelines, and accessibility for the mdc-progressbar component — a determinate, linear progress indicator with optional label, percentage readout, and helper/validation text.",
+      "status": "draft",
+      "canonical": null,
+      "component": "progressbar"
+    },
+    {
+      "id": "tier3/packages/components/src/components/progressspinner/knowledge-base/progressspinner.component",
+      "tier": 3,
+      "path": "packages/components/src/components/progressspinner/knowledge-base/progressspinner.component.md",
+      "title": "Progressspinner",
+      "summary": "Usage, guidelines, and accessibility for the mdc-progressspinner component — a determinate, circular progress indicator with success and error end states.",
+      "status": "draft",
+      "canonical": null,
+      "component": "progressspinner"
+    },
+    {
+      "id": "tier3/packages/components/src/components/radio/knowledge-base/radio.component",
+      "tier": 3,
+      "path": "packages/components/src/components/radio/knowledge-base/radio.component.md",
+      "title": "Radio",
+      "summary": "Usage, guidelines, and accessibility for the mdc-radio component — a single, form-associated radio button with label, optional helper text, custom indicator slot, and keyboard navigation.",
+      "status": "draft",
+      "canonical": null,
+      "component": "radio"
+    },
+    {
+      "id": "tier3/packages/components/src/components/radiogroup/knowledge-base/radiogroup.component",
+      "tier": 3,
+      "path": "packages/components/src/components/radiogroup/knowledge-base/radiogroup.component.md",
+      "title": "Radiogroup",
+      "summary": "Usage, guidelines, and accessibility for the mdc-radiogroup component — a labelled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.",
+      "status": "draft",
+      "canonical": null,
+      "component": "radiogroup"
+    },
+    {
+      "id": "tier3/packages/components/src/components/responsivesettingsprovider/knowledge-base/responsivesettingsprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/responsivesettingsprovider/knowledge-base/responsivesettingsprovider.component.md",
+      "title": "Responsivesettingsprovider",
+      "summary": "Usage and guidelines for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.",
+      "status": "draft",
+      "canonical": null,
+      "component": "responsivesettingsprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/screenreaderannouncer/knowledge-base/screenreaderannouncer.component",
+      "tier": 3,
+      "path": "packages/components/src/components/screenreaderannouncer/knowledge-base/screenreaderannouncer.component.md",
+      "title": "Screenreaderannouncer",
+      "summary": "Usage, guidelines, and accessibility for the mdc-screenreaderannouncer component — a non-visual helper pushing messages into a shared aria-live region for assistive tech announcements.",
+      "status": "draft",
+      "canonical": null,
+      "component": "screenreaderannouncer"
+    },
+    {
+      "id": "tier3/packages/components/src/components/searchfield/knowledge-base/searchfield.component",
+      "tier": 3,
+      "path": "packages/components/src/components/searchfield/knowledge-base/searchfield.component.md",
+      "title": "Searchfield",
+      "summary": "Usage, guidelines, and accessibility for the mdc-searchfield component — a single-line search input that supports inline chip filters and keyboard navigation between chips and text.",
+      "status": "draft",
+      "canonical": null,
+      "component": "searchfield"
+    },
+    {
+      "id": "tier3/packages/components/src/components/searchpopover/knowledge-base/searchpopover.component",
+      "tier": 3,
+      "path": "packages/components/src/components/searchpopover/knowledge-base/searchpopover.component.md",
+      "title": "Searchpopover",
+      "summary": "Usage, guidelines, and accessibility for the mdc-searchpopover component — a searchfield wired to a popover so results or suggestions can appear below with combobox semantics.",
+      "status": "draft",
+      "canonical": null,
+      "component": "searchpopover"
+    },
+    {
+      "id": "tier3/packages/components/src/components/select/knowledge-base/select.component",
+      "tier": 3,
+      "path": "packages/components/src/components/select/knowledge-base/select.component.md",
+      "title": "Select",
+      "summary": "Usage, guidelines, and accessibility for the mdc-select component — a form-associated dropdown that lets users pick a single value from a predefined list of options.",
+      "status": "draft",
+      "canonical": null,
+      "component": "select"
+    },
+    {
+      "id": "tier3/packages/components/src/components/selectlistbox/knowledge-base/selectlistbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/selectlistbox/knowledge-base/selectlistbox.component.md",
+      "title": "Select List Box",
+      "summary": "Usage, guidelines, and accessibility for the mdc-selectlistbox component — a light-DOM wrapper that gives `mdc-option` children the correct listbox role inside `mdc-select` and `mdc-combobox`.",
+      "status": "draft",
+      "canonical": null,
+      "component": "selectlistbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/sidenavigation/knowledge-base/sidenavigation.component",
+      "tier": 3,
+      "path": "packages/components/src/components/sidenavigation/knowledge-base/sidenavigation.component.md",
+      "title": "Side Navigation",
+      "summary": "Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behaviour and support for nested menu items.",
+      "status": "draft",
+      "canonical": null,
+      "component": "sidenavigation"
+    },
+    {
+      "id": "tier3/packages/components/src/components/skeleton/knowledge-base/skeleton.component",
+      "tier": 3,
+      "path": "packages/components/src/components/skeleton/knowledge-base/skeleton.component.md",
+      "title": "Skeleton",
+      "summary": "Usage, guidelines, and accessibility for the mdc-skeleton component — a grey placeholder block that signals loading content.",
+      "status": "draft",
+      "canonical": null,
+      "component": "skeleton"
+    },
+    {
+      "id": "tier3/packages/components/src/components/slider/knowledge-base/slider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/slider/knowledge-base/slider.component.md",
+      "title": "Slider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-slider component — a single-value or range input rendered as one or two thumbs on a track.",
+      "status": "draft",
+      "canonical": null,
+      "component": "slider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component.md",
+      "title": "Spatial Navigation Provider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to arrow, Enter, and Escape keys.",
+      "status": "draft",
+      "canonical": null,
+      "component": "spatialnavigationprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/spinner/knowledge-base/spinner.component",
+      "tier": 3,
+      "path": "packages/components/src/components/spinner/knowledge-base/spinner.component.md",
+      "title": "Spinner",
+      "summary": "Usage, guidelines, and accessibility for the mdc-spinner component — an indeterminate loading indicator for processes with unknown or variable duration.",
+      "status": "draft",
+      "canonical": null,
+      "component": "spinner"
+    },
+    {
+      "id": "tier3/packages/components/src/components/staticcheckbox/knowledge-base/staticcheckbox.component",
+      "tier": 3,
+      "path": "packages/components/src/components/staticcheckbox/knowledge-base/staticcheckbox.component.md",
+      "title": "Static Checkbox",
+      "summary": "Usage, guidelines, and accessibility for the mdc-staticcheckbox component — a decorative, non-interactive checkbox for read-only or summary views.",
+      "status": "draft",
+      "canonical": null,
+      "component": "staticcheckbox"
+    },
+    {
+      "id": "tier3/packages/components/src/components/staticchip/knowledge-base/staticchip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/staticchip/knowledge-base/staticchip.component.md",
+      "title": "Static Chip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.",
+      "status": "draft",
+      "canonical": null,
+      "component": "staticchip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/staticradio/knowledge-base/staticradio.component",
+      "tier": 3,
+      "path": "packages/components/src/components/staticradio/knowledge-base/staticradio.component.md",
+      "title": "Static Radio",
+      "summary": "Usage, guidelines, and accessibility for the mdc-staticradio component — a decorative, non-interactive radio button for read-only or summary views.",
+      "status": "draft",
+      "canonical": null,
+      "component": "staticradio"
+    },
+    {
+      "id": "tier3/packages/components/src/components/statictoggle/knowledge-base/statictoggle.component",
+      "tier": 3,
+      "path": "packages/components/src/components/statictoggle/knowledge-base/statictoggle.component.md",
+      "title": "Static Toggle",
+      "summary": "Usage, guidelines, and accessibility for the mdc-statictoggle component — a decorative non-interactive toggle switch used to display on/off state visually.",
+      "status": "draft",
+      "canonical": null,
+      "component": "statictoggle"
+    },
+    {
+      "id": "tier3/packages/components/src/components/stepper/knowledge-base/stepper.component",
+      "tier": 3,
+      "path": "packages/components/src/components/stepper/knowledge-base/stepper.component.md",
+      "title": "Stepper",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepper component — the container that orchestrates a sequence of steps and their connectors.",
+      "status": "draft",
+      "canonical": null,
+      "component": "stepper"
+    },
+    {
+      "id": "tier3/packages/components/src/components/stepperconnector/knowledge-base/stepperconnector.component",
+      "tier": 3,
+      "path": "packages/components/src/components/stepperconnector/knowledge-base/stepperconnector.component.md",
+      "title": "Stepper Connector",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperconnector component — the visual line drawn between two stepper items.",
+      "status": "draft",
+      "canonical": null,
+      "component": "stepperconnector"
+    },
+    {
+      "id": "tier3/packages/components/src/components/stepperitem/knowledge-base/stepperitem.component",
+      "tier": 3,
+      "path": "packages/components/src/components/stepperitem/knowledge-base/stepperitem.component.md",
+      "title": "Stepper Item",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step inside an mdc-stepper sequence.",
+      "status": "draft",
+      "canonical": null,
+      "component": "stepperitem"
+    },
+    {
+      "id": "tier3/packages/components/src/components/tab/knowledge-base/tab.component",
+      "tier": 3,
+      "path": "packages/components/src/components/tab/knowledge-base/tab.component.md",
+      "title": "Tab",
+      "summary": "Usage, guidelines, and accessibility for the mdc-tab component — an individual tab control used inside mdc-tablist.",
+      "status": "draft",
+      "canonical": null,
+      "component": "tab"
+    },
+    {
+      "id": "tier3/packages/components/src/components/tablist/knowledge-base/tablist.component",
+      "tier": 3,
+      "path": "packages/components/src/components/tablist/knowledge-base/tablist.component.md",
+      "title": "Tab List",
+      "summary": "Usage, guidelines, and accessibility for the mdc-tablist component — the container that organizes mdc-tab elements with roving focus and overflow scrolling.",
+      "status": "draft",
+      "canonical": null,
+      "component": "tablist"
+    },
+    {
+      "id": "tier3/packages/components/src/components/text/knowledge-base/text.component",
+      "tier": 3,
+      "path": "packages/components/src/components/text/knowledge-base/text.component.md",
+      "title": "Text",
+      "summary": "Usage, guidelines, and accessibility for the mdc-text component — the typography primitive that renders styled text with a configurable semantic tag.",
+      "status": "draft",
+      "canonical": null,
+      "component": "text"
+    },
+    {
+      "id": "tier3/packages/components/src/components/textarea/knowledge-base/textarea.component",
+      "tier": 3,
+      "path": "packages/components/src/components/textarea/knowledge-base/textarea.component.md",
+      "title": "Textarea",
+      "summary": "Usage, guidelines, and accessibility for the mdc-textarea component — a form-associated multi-line text input with helper text, character limit, and optional keyboard-resizable height.",
+      "status": "draft",
+      "canonical": null,
+      "component": "textarea"
+    },
+    {
+      "id": "tier3/packages/components/src/components/themeprovider/knowledge-base/themeprovider.component",
+      "tier": 3,
+      "path": "packages/components/src/components/themeprovider/knowledge-base/themeprovider.component.md",
+      "title": "Theme Provider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-themeprovider component — the context wrapper that applies a Momentum theme class to its subtree.",
+      "status": "draft",
+      "canonical": null,
+      "component": "themeprovider"
+    },
+    {
+      "id": "tier3/packages/components/src/components/timepicker/knowledge-base/timepicker.component",
+      "tier": 3,
+      "path": "packages/components/src/components/timepicker/knowledge-base/timepicker.component.md",
+      "title": "Time Picker",
+      "summary": "Usage, guidelines, and accessibility for the mdc-timepicker component — a form-associated control for entering or selecting a time in 12-hour or 24-hour format.",
+      "status": "draft",
+      "canonical": null,
+      "component": "timepicker"
+    },
+    {
+      "id": "tier3/packages/components/src/components/toast/knowledge-base/toast.component",
+      "tier": 3,
+      "path": "packages/components/src/components/toast/knowledge-base/toast.component.md",
+      "title": "Toast",
+      "summary": "Usage, guidelines, and accessibility for the mdc-toast component — a lightweight, non-blocking alert used to inform users about application processes.",
+      "status": "draft",
+      "canonical": null,
+      "component": "toast"
+    },
+    {
+      "id": "tier3/packages/components/src/components/toggle/knowledge-base/toggle.component",
+      "tier": 3,
+      "path": "packages/components/src/components/toggle/knowledge-base/toggle.component.md",
+      "title": "Toggle",
+      "summary": "Usage, guidelines, and accessibility for the mdc-toggle component — a form-associated switch for binary on/off settings.",
+      "status": "draft",
+      "canonical": null,
+      "component": "toggle"
+    },
+    {
+      "id": "tier3/packages/components/src/components/toggletip/knowledge-base/toggletip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/toggletip/knowledge-base/toggletip.component.md",
+      "title": "Toggletip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-toggletip component — a click-triggered overlay for interactive contextual content.",
+      "status": "draft",
+      "canonical": null,
+      "component": "toggletip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/tooltip/knowledge-base/tooltip.component",
+      "tier": 3,
+      "path": "packages/components/src/components/tooltip/knowledge-base/tooltip.component.md",
+      "title": "Tooltip",
+      "summary": "Usage, guidelines, and accessibility for the mdc-tooltip component — a hover/focus-triggered overlay for short, non-interactive hints.",
+      "status": "draft",
+      "canonical": null,
+      "component": "tooltip"
+    },
+    {
+      "id": "tier3/packages/components/src/components/typewriter/knowledge-base/typewriter.component",
+      "tier": 3,
+      "path": "packages/components/src/components/typewriter/knowledge-base/typewriter.component.md",
+      "title": "Typewriter",
+      "summary": "Usage, guidelines, and accessibility for the mdc-typewriter component — an animated text component that progressively reveals its content.",
+      "status": "draft",
+      "canonical": null,
+      "component": "typewriter"
+    },
+    {
+      "id": "tier3/packages/components/src/components/verticaltablist/knowledge-base/verticaltablist.component",
+      "tier": 3,
+      "path": "packages/components/src/components/verticaltablist/knowledge-base/verticaltablist.component.md",
+      "title": "Verticaltablist",
+      "summary": "Usage, guidelines, and accessibility for the mdc-verticaltablist component — a vertically oriented tablist for switching between content panels.",
+      "status": "draft",
+      "canonical": null,
+      "component": "verticaltablist"
+    },
+    {
+      "id": "tier3/packages/components/src/components/virtualizedlist/knowledge-base/virtualizedlist.component",
+      "tier": 3,
+      "path": "packages/components/src/components/virtualizedlist/knowledge-base/virtualizedlist.component.md",
+      "title": "Virtualizedlist",
+      "summary": "Usage, guidelines, and accessibility for the mdc-virtualizedlist component — a windowed list that renders only the visible items.",
+      "status": "draft",
+      "canonical": null,
+      "component": "virtualizedlist"
     }
   ]
 }

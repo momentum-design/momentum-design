@@ -33,55 +33,9 @@ import { PopoverBoundaryRoot, PopoverColor, PopoverPlacement, PopoverStrategy, P
 import { PopoverUtils } from './popover.utils';
 
 /**
- * Popover is generic overlay which can be triggered by any actionable element.
- *
- * It can be used for tooltips, dropdowns, menus or any showing any other contextual content.
- *
- * The popover automatically positions itself based on available space and
- * supports dynamic height adjustments with scrollable content when needed.
- * It uses [Floating UI](https://floating-ui.com/) for maintaining the position of the popover.
- *
- * ## Limitations
- *
- * ### On trigger for multiple popovers
- *
- * A component (button, etc.) can trigger more than one popover, but only one of them should change the
- * aria-expanded and aria-haspopup attributes on the trigger.
- *
- * To prevent unexpected attribute changes on the trigger `disable-aria-expanded` attribute must be set on all linked
- * Popovers except one.
- *
- * ### React Popover with append-to attribute
- *
- * React mounts the popover based on the virtual DOM, but when the append-to attribute is set, the popover removes itself
- * and mounts to the specified element. React will not know about the move and will not know about the
- * newly created mdc-popoverportal element either. This throws a `NotFoundError` error when the Popover is directly
- * added/removed by React, for example:
- *
- * ```tsx
- * const SomeComponent = () => {
- *    const [isOpen, setIsOpen] = useState(false);
- *    return (<div>
- *      {isOpen && <Popover append-to="some-element-id">...</mdc-popover>}
- *    </div>);
- * }
- * ```
- * As a workaround Popover need to wrap with any other element/component, for example:
- * ```tsx
- * const SomeComponent = () => {
- *    const [isOpen, setIsOpen] = useState(false);
- *    return (<div>
- *      {isOpen && <div>
- *        <Popover append-to="some-element-id">...</mdc-popover>
- *      <div>}
- *    </div>);
- * }
- * ```
- * Note the wrapper <div> around the Popover component (React.Fragment does not work).
+ * @tagname mdc-popover
  *
  * @dependency mdc-button
- *
- * @tagname mdc-popover
  *
  * @event shown - (React: onShown) This event is dispatched when the popover is shown
  * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden

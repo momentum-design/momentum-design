@@ -7,9 +7,6 @@ import type { IconNames } from '../icon/icon.types';
 import styles from './listheader.styles';
 
 /**
- * Listheader component is used to display a header in a list.
- * It can include icons before and after the header text, and allows for additional content via slots.
- *
  * @tagname mdc-listheader
  *
  * @slot default - to pass in actionable content like buttons or links

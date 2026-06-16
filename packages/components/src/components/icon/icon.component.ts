@@ -10,45 +10,6 @@ import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
 /**
- * Icon component that dynamically displays SVG icons based on a valid name.
- *
- * This component must be mounted within an `IconProvider` component.
- *
- * The `IconProvider` defines the source URL from which icons are consumed.
- * The `Icon` component accepts a `name` attribute, which corresponds to
- * the file name of the icon to be loaded from the specified URL.
- *
- * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
- * no icon will be displayed.
- *
- * The `size` attribute allows for dynamic sizing of the icon based on the provided
- * `length-unit` attribute. This unit can either come from the `IconProvider`
- * or can be overridden for each individual icon. For example:
- * if `size = 1` and `length-unit = 'em'`, the dimensions of the icon will be
- * `width: 1em; height: 1em`.
- *
- * Regarding accessibility, there are three types of icons: decorative, informative and informative standalone.
- *
- * ### Decorative Icons
- * - Decorative icons do not convey any essential information to the content of a page.
- * - They should be hidden from screen readers (SR) to prevent confusion for users.
- * - For decorative icons, an `aria-label` is not required, and the `role` will be set to null.
- *
- * ### Informative Icons
- * - Informative icons convey important information that is not adequately represented
- *   by surrounding text or components.
- * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an `aria-label` is required, and the `role` will be set to "img" automatically.
- * - If an `aria-label` is provided, the role will be set to 'img'; if it is absent,
- *   the role will be unset.
- *
- * ### Informative Standalone Icons
- * - If an icon is informative (as mentioned above) and does not belong to a button (=standalone), it must
- * have a Tooltip that describes what it means.
- * - For informative standalone icons, an `aria-label` & `tabindex="0"` is required,
- * and the `role` will be set to "img" automatically.
- * - **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**
- *
  * @tagname mdc-icon
  *
  * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.

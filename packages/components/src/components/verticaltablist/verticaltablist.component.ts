@@ -12,32 +12,6 @@ import type { OrientationType } from '../list/list.types';
 import styles from './verticaltablist.styles';
 
 /**
- * `mdc-verticaltablist` is a vertical tab list component that extends the List component.
- * It organizes tabs vertically and follows the same WCAG standards as the horizontal tablist.
- *
- * Children of the vertical tab list are `mdc-tab` elements, sent to the default slot.
- * Currently only "line" variant of the tab is supported, setting other variants doesn't have any effect.
- * The variant is automatically set on the tab when it is added to the vertical tab list, so there is no need to set it manually.
- *
- * The tabs can be navigated using the up/down arrow keys, and selected by clicking,
- * or pressing the Enter and Space keys.
- *
- * **Implicit accessibility rules**
- *
- * - The element that serves as the container for the set of tabs has role `tablist`.
- * - Each element that serves as a tab has role `tab` and is contained within the element with role `tablist` (Tab components passed in to default slot).
- * - The active tab element has the state `aria-selected` set to `true`
- *   and all other tab elements have it set to `false`.
- *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
- *
- * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
- * - The `tablist` element needs to have a label provided by `data-aria-label`.
- * - Each element with role `tab` has the property `aria-controls`
- *   that should refer to its associated `tabpanel` element.
- * - The vertical orientation is conveyed through the aria-orientation property on the `tablist` element, which is set to `vertical` by the component.
- * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
- *
  * @tagname mdc-verticaltablist
  *
  * @dependency mdc-tab

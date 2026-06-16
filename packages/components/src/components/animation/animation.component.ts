@@ -14,11 +14,6 @@ import type { AnimationNames, LoopType } from './animation.types';
 import { DEFAULTS } from './animation.constants';
 
 /**
- * The `mdc-animation` component is a wrapper around the Lottie animation library.
- * It fetches the animation data dynamically based on the provided name and renders it.
- * This is a display only component that does not have any interactive functionality.
- * From accessibility perspective, (by default) it is a decorative image component.
- *
  * @tagname mdc-animation
  *
  * @event load - (React: onLoad) This event is dispatched when the animation is loaded

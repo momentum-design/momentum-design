@@ -16,11 +16,7 @@ import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
 /**
- * `mdc-toast` is a lightweight, non-blocking alert used to inform users about application processes.
- * It supports success, warning, error, and custom messages, and is designed to be controlled externally.
- *
- * **Note**: When using `slot="toast-body-normal"` and `slot="toast-body-detailed"`, it's strongly recommended to wrap the content with `<mdc-text tagname="span">`.
- * If not used, ensure your custom content is styled appropriately to match the design and alignment expectations of the toast component.
+ * @tagname mdc-toast
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -32,8 +28,6 @@ import type { ToastVariant } from './toast.types';
  * @slot footer - Slot for custom footer content. Prefer using footer-button-primary and footer-button-secondary slots.
  * @slot footer-button-primary - Slot for passing the primary variant of `mdc-button` in the footer.
  * @slot footer-button-secondary - Slot for passing the secondary variant of `mdc-button` in the footer.
- *
- * @tagname mdc-toast
  *
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *

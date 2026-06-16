@@ -22,44 +22,10 @@ import { DialogEventManager } from './dialog.events';
 import styles from './dialog.styles';
 
 /**
- * Dialog component is a modal dialog that can be used to display information or prompt the user for input.
- * It can be used to create custom dialogs where content for the body and footer actions is provided by the consumer.
- * The dialog is available in 5 sizes: small, medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
- * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
- *
- * Dialog component have 2 variants: default and promotional.
- *
- * ## Visibility
- *
- * The dialog can be controlled solely through the `visible` property, no trigger element is required.
- * If a `triggerID` is provided, the dialog will manage focus with that element, otherwise it will
- * remember the previously focused element before the dialog was opened.
- *
- * The dialog is a controlled component, meaning it does not have its own state management for visibility.
- * Use the `visible` property to control the visibility of the dialog.
- * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
- * or Escape is pressed).
- *
- * ## Accessibility
- *
- * Some attributes have to be explicitly set by the consumer of the component:
- *
- * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
- * - Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
- *
- * ## Responsive design
- *
- * Dialog has few built in logic to prevent content clipping on small screens
- *
- * - maximum height limited to the viewport height
- * - dialog body has `overflow: auto` by default
- * - dialog itself also has `overflow: auto`, it activates only when the body can not shrink more
- *
+ * @tagname mdc-dialog
  *
  * @dependency mdc-button
  * @dependency mdc-text
- *
- * @tagname mdc-dialog
  *
  * @event shown - (React: onShown) Dispatched when the dialog is shown
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden

@@ -38,14 +38,6 @@ import {
 } from './calendar.utils';
 
 /**
- * mdc-calendar is a component that displays a monthly calendar grid
- * allowing users to select dates, weeks, or date ranges.
- *
- * The component supports three selection modes:
- * - `single`: Select a single date
- * - `week`: Select an entire week
- * - `range`: Select a date range (start and end)
- *
  * @tagname mdc-calendar
  *
  * @dependency mdc-button

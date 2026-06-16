@@ -8,15 +8,6 @@ import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
 import styles from './cardbutton.styles';
 
 /**
- * cardbutton component looks like a card and behaves as a button component.
- *
- * ## Features
- * - Supports two orientations (vertical and horizontal) and three visual variants (border, ghost, and promotional).
- * - Interacting anywhere on the card triggers the click event.
- * - Use `name` and `value` attributes when using within forms.
- *
- * **Note**: Only pass non-interactable elements within the slots to avoid nested interactive elements.
- *
  * @tagname mdc-cardbutton
  *
  * @dependency mdc-icon

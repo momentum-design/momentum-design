@@ -3152,6 +3152,7 @@ __metadata:
     "@momentum-design/fonts": "workspace:*"
     "@momentum-design/icons": "workspace:*"
     "@momentum-design/storybook-addon-code-preview": "workspace:*"
+    "@momentum-design/storybook-addon-docs": "workspace:*"
     "@momentum-design/tokens": "workspace:*"
     "@playwright/test": ^1.59.0
     "@storybook/addon-a11y": ^9.1.5
@@ -3305,6 +3306,34 @@ __metadata:
     typescript: ^5.9.2
     vite: ^5.4.0
   peerDependencies:
+    storybook: ^9.1.5
+  languageName: unknown
+  linkType: soft
+
+"@momentum-design/storybook-addon-docs@workspace:*, @momentum-design/storybook-addon-docs@workspace:packages/tools/storybook-addon-docs":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/storybook-addon-docs@workspace:packages/tools/storybook-addon-docs"
+  dependencies:
+    "@storybook/addon-docs": ^9.1.5
+    "@storybook/react-vite": ^9.1.5
+    "@types/node": 20.14.9
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18.3.0
+    "@vitejs/plugin-react": ^4.2.1
+    concurrently: ^10.0.3
+    markdown-to-jsx: ^7.5.0
+    prettier: ^3.3.3
+    react: ^18.3.1
+    react-dom: ^18.3.1
+    rimraf: ^6.0.1
+    storybook: ^9.1.5
+    tsup: ^8.2.4
+    typescript: ^5.9.2
+    vite: ^5.4.0
+  peerDependencies:
+    "@momentum-design/components": "workspace:^"
+    "@storybook/addon-docs": ^9.1.5
+    react: ^18.0.0
     storybook: ^9.1.5
   languageName: unknown
   linkType: soft
@@ -12770,6 +12799,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-to-jsx@npm:^7.5.0":
+  version: 7.7.17
+  resolution: "markdown-to-jsx@npm:7.7.17"
+  peerDependencies:
+    react: ">= 0.14.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+  checksum: fd0c50f7ed11d036dd607b48e7d8283f86aea23028e4a0be0051e2717aa9da15967bd219a24b84480c5efb825d33b855f2f972de269720377a63bae810de5df9
+  languageName: node
+  linkType: hard
+
 "markdownlint-micromark@npm:0.1.12":
   version: 0.1.12
   resolution: "markdownlint-micromark@npm:0.1.12"
@@ -13866,6 +13907,7 @@ __metadata:
     esbuild: ^0.23.0
     eslint: 8.27.0
     eslint-config-airbnb-base: ^15.0.0
+    eslint-config-prettier: ^10.1.5
     eslint-plugin-astro: ^0.21.0
     eslint-plugin-import: ^2.26.0
     eslint-plugin-json: ^3.1.0

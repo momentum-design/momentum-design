@@ -21,17 +21,6 @@ import { ALLOWED_BADGE_TYPES, DEFAULTS, ICON_NAME } from './navmenuitem.constant
 import styles from './navmenuitem.styles';
 
 /**
- * `mdc-navmenuitem` is a menuitem styled to work as a navigation tab.
- * It supports a leading icon, optional badge and dynamic text rendering.
- *
- * The navmenuitem can be in an active or inactive state, indicating whether it is currently selected.
- *
- * Note: `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of the sideNavigation
- * component. Its structure, spacing, and interactions are designed to align with
- * the visual and functional requirements of side navigation layouts.
- *
- * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the navmenuitem. This tooltip is useful when an active navmenuitem is present within a submenu of the sidenavigation component.
- *
  * @tagname mdc-navmenuitem
  *
  * @dependency mdc-icon

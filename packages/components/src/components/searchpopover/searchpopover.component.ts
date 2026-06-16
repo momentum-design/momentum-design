@@ -14,22 +14,6 @@ import { DEFAULTS, TRIGGER_ID, POPOVER_ID } from './searchpopover.constants';
 import type { Placement } from './searchpopover.types';
 
 /**
- * `mdc-searchpopover` widget is a combination of the Searchfield and Popover components, connected to ensure
- * proper accessibility. This component should be used when search results or suggestions need to be displayed
- * in a popover below the search input field, where the search results hold individual actions like navigating to a
- * a different url etc.
- *
- * - Don't use this when search results are displayed inline on the page -\> use Searchfield component instead.
- * - Don't use this when a list of options is filtered based on the search input -\> use Combobox component instead.
- *
- * It supports any Chip component as filters. (`mdc-inputchip`, `mdc-alertchip`, `mdc-chip`)
- *
- * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
- *
- * Searchpopover supports controlled vs uncontrolled behavior for chip filters, which can be set via the `control-type` attribute:
- * - In **uncontrolled** mode (default), when a chip is removed via the UI, it is automatically removed from the DOM and a `chipRemove` event is dispatched with the removed chip in the event detail. The consumer can listen to the `chipRemove` event but does not need to do anything to remove the chip from the DOM.
- * - In **controlled** mode (`control-type="controlled"`), when a chip is removed via the UI, it is NOT removed from the DOM, but a `chipRemove` event is still dispatched with the "removed" chip in the event detail. The consumer must listen to the `chipRemove` event and handle removing the chip from the DOM themselves (e.g., by updating their state that controls which chips are rendered).
- *
  * @tagname mdc-searchpopover
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
