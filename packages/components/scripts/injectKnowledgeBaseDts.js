@@ -46,14 +46,7 @@ function formatOverviewForJsDoc(overview) {
 }
 
 function convertHeadingLinesToBold(lines) {
-  return lines.map(line => {
-    const headingMatch = line.match(/^\s*#{1,6}\s+(.+)$/);
-    if (!headingMatch) {
-      return line;
-    }
-
-    return `**${headingMatch[1].trim()}**`;
-  });
+  return lines.map(formatOverviewForJsDoc);
 }
 
 function parseJsDocBlock(blockText) {
