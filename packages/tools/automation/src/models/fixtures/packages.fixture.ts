@@ -13,12 +13,11 @@ export const packagesList = [
   '@momentum-design/common',
   '@momentum-design/figma-plugin-assets-export',
   '@momentum-design/storybook-addon-code-preview',
+  '@momentum-design/storybook-addon-docs',
   '@momentum-design/telemetry',
   '@momentum-design/token-builder',
 ];
 
-export const patchVersionIncrementList: string[] = packagesList
-  .map((packageName) => `${packageName}: 0.0.0 => 0.0.1`);
+export const patchVersionIncrementList: string[] = packagesList.map((packageName) => `${packageName}: 0.0.0 => 0.0.1`);
 
-export const minorVersionIncrementList: string[] = packagesList
-  .map((packageName) => `${packageName}: 0.0.0 => 0.1.0`);
+export const minorVersionIncrementList: string[] = packagesList.map((packageName) => `${packageName}: 0.0.0 => 0.1.0`);
