@@ -1,7 +1,6 @@
 ---
 title: Verticaltablist
 summary: Usage, guidelines, and accessibility for the mdc-verticaltablist component — a vertically oriented tablist for switching between content panels.
-status: draft
 tier: 3
 component: verticaltablist
 ---

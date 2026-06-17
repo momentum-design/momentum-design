@@ -1,7 +1,6 @@
 ---
 title: ButtonLink
 summary: Usage, guidelines, and accessibility for the mdc-buttonlink component — a link that looks like a button, supporting variant, color, size, and prefix/postfix icons while rendering as an anchor.
-status: draft
 tier: 3
 component: buttonlink
 ---

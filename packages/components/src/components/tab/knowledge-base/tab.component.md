@@ -1,7 +1,6 @@
 ---
 title: Tab
 summary: Usage, guidelines, and accessibility for the mdc-tab component — an individual tab control used inside mdc-tablist.
-status: draft
 tier: 3
 component: tab
 ---

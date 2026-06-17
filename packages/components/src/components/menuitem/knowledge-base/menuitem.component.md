@@ -1,7 +1,6 @@
 ---
 title: Menuitem
 summary: Usage, guidelines, and accessibility for the mdc-menuitem component — an actionable item inside a menubar or menu popover with leading/trailing controls and an optional arrow indicator.
-status: draft
 tier: 3
 component: menuitem
 ---

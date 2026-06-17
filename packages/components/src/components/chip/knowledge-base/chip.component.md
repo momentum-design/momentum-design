@@ -1,7 +1,6 @@
 ---
 title: Chip
 summary: Usage, guidelines, and accessibility for the mdc-chip component — a small interactive button-shaped element representing compact info, an attribute, or a quick action with optional icon and label.
-status: draft
 tier: 3
 component: chip
 ---

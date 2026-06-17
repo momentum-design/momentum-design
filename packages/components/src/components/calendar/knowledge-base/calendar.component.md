@@ -1,7 +1,6 @@
 ---
 title: Calendar
 summary: Usage, guidelines, and accessibility for the mdc-calendar component — a monthly grid for selecting a single date, a week, or a date range with keyboard navigation and locale-aware formatting.
-status: draft
 tier: 3
 component: calendar
 ---

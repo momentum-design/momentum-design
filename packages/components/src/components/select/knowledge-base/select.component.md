@@ -1,7 +1,6 @@
 ---
 title: Select
 summary: Usage, guidelines, and accessibility for the mdc-select component — a form-associated dropdown that lets users pick a single value from a predefined list of options.
-status: draft
 tier: 3
 component: select
 ---

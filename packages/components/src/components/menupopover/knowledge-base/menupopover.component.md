@@ -1,7 +1,6 @@
 ---
 title: Menupopover
 summary: Usage, guidelines, and accessibility for the mdc-menupopover component — a floating menu overlay for menu items and nested submenus.
-status: draft
 tier: 3
 component: menupopover
 ---

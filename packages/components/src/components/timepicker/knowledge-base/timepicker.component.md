@@ -1,7 +1,6 @@
 ---
 title: Time Picker
 summary: Usage, guidelines, and accessibility for the mdc-timepicker component — a form-associated control for entering or selecting a time in 12-hour or 24-hour format.
-status: draft
 tier: 3
 component: timepicker
 ---

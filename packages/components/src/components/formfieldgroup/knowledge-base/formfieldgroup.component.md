@@ -1,7 +1,6 @@
 ---
 title: Formfieldgroup
 summary: Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.
-status: draft
 tier: 3
 component: formfieldgroup
 ---

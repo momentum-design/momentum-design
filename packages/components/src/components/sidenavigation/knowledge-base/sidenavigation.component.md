@@ -1,7 +1,6 @@
 ---
 title: Side Navigation
 summary: Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behaviour and support for nested menu items.
-status: draft
 tier: 3
 component: sidenavigation
 ---

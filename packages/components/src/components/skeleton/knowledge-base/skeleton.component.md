@@ -1,7 +1,6 @@
 ---
 title: Skeleton
 summary: Usage, guidelines, and accessibility for the mdc-skeleton component — a grey placeholder block that signals loading content.
-status: draft
 tier: 3
 component: skeleton
 ---

@@ -1,7 +1,6 @@
 ---
 title: Badge
 summary: Usage, guidelines, and accessibility for the mdc-badge component — a small non-interactive indicator used to display a dot, icon, counter, or status (success, warning, error).
-status: draft
 tier: 3
 component: badge
 ---

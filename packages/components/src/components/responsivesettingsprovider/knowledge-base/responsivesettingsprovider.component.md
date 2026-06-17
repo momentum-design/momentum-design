@@ -1,7 +1,6 @@
 ---
 title: Responsivesettingsprovider
 summary: Usage and guidelines for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.
-status: draft
 tier: 3
 component: responsivesettingsprovider
 ---

@@ -1,7 +1,6 @@
 ---
 title: Link
 summary: Usage, guidelines, and accessibility for the mdc-link component — a navigational hyperlink for in-app routing, external sites, or email/phone handlers, with optional trailing icon.
-status: draft
 tier: 3
 component: link
 ---

@@ -1,7 +1,6 @@
 ---
 title: Toggle
 summary: Usage, guidelines, and accessibility for the mdc-toggle component — a form-associated switch for binary on/off settings.
-status: draft
 tier: 3
 component: toggle
 ---

@@ -1,7 +1,6 @@
 ---
 title: Textarea
 summary: Usage, guidelines, and accessibility for the mdc-textarea component — a form-associated multi-line text input with helper text, character limit, and optional keyboard-resizable height.
-status: draft
 tier: 3
 component: textarea
 ---

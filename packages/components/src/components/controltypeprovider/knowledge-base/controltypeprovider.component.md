@@ -1,7 +1,6 @@
 ---
 title: Control type provider
 summary: Usage and guidelines for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.
-status: draft
 tier: 3
 component: controltypeprovider
 ---

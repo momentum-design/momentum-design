@@ -1,7 +1,6 @@
 ---
 title: Screenreaderannouncer
 summary: Usage, guidelines, and accessibility for the mdc-screenreaderannouncer component — a non-visual helper pushing messages into a shared aria-live region for assistive tech announcements.
-status: draft
 tier: 3
 component: screenreaderannouncer
 ---

@@ -1,7 +1,6 @@
 ---
 title: ButtonSimple
 summary: Usage, guidelines, and accessibility for the mdc-buttonsimple component — an unstyled, form-associated button primitive supplying keyboard, focus, disabled, and toggle semantics.
-status: draft
 tier: 3
 component: buttonsimple
 ---

@@ -1,7 +1,6 @@
 ---
 title: Toast
 summary: Usage, guidelines, and accessibility for the mdc-toast component — a lightweight, non-blocking alert used to inform users about application processes.
-status: draft
 tier: 3
 component: toast
 ---

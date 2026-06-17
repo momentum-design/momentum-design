@@ -1,7 +1,6 @@
 ---
 title: Progressspinner
 summary: Usage, guidelines, and accessibility for the mdc-progressspinner component — a determinate, circular progress indicator with success and error end states.
-status: draft
 tier: 3
 component: progressspinner
 ---

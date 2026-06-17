@@ -1,7 +1,6 @@
 ---
 title: Linksimple
 summary: Usage, guidelines, and accessibility for the mdc-linksimple component — a lightweight, unstyled-by-default hyperlink with no built-in size or icon, suitable for custom child content.
-status: draft
 tier: 3
 component: linksimple
 ---

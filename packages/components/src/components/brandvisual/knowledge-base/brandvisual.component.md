@@ -1,7 +1,6 @@
 ---
 title: Brandvisual
 summary: Usage, guidelines, and accessibility for the mdc-brandvisual component — a dynamic loader that renders branded logos and wordmarks from the Momentum brand-visuals package.
-status: draft
 tier: 3
 component: brandvisual
 ---

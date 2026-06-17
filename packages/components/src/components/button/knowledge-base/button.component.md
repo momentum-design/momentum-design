@@ -1,7 +1,6 @@
 ---
 title: Button
 summary: Usage, guidelines, and accessibility for the mdc-button component — a configurable button that supports pill, pill-with-icon, and icon-only layouts in multiple variants, colors, and sizes.
-status: draft
 tier: 3
 component: button
 ---

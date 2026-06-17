@@ -1,7 +1,6 @@
 ---
 title: Static Toggle
 summary: Usage, guidelines, and accessibility for the mdc-statictoggle component — a decorative non-interactive toggle switch used to display on/off state visually.
-status: draft
 tier: 3
 component: statictoggle
 ---

@@ -1,7 +1,6 @@
 ---
 title: Select List Box
 summary: Usage, guidelines, and accessibility for the mdc-selectlistbox component — a light-DOM wrapper that gives `mdc-option` children the correct listbox role inside `mdc-select` and `mdc-combobox`.
-status: draft
 tier: 3
 component: selectlistbox
 ---

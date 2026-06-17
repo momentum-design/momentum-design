@@ -1,7 +1,6 @@
 ---
 title: Illustrationprovider
 summary: Usage and guidelines for the mdc-illustrationprovider component — a context provider supplying illustration source, file extension, and optional caching to every nested mdc-illustration.
-status: draft
 tier: 3
 component: illustrationprovider
 ---

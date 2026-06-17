@@ -1,7 +1,6 @@
 ---
 title: Listbox
 summary: Usage, guidelines, and accessibility for the mdc-listbox component — a single- or multi-select list of mdc-option (optionally grouped by mdc-optgroup) that follows the WAI-ARIA listbox pattern.
-status: draft
 tier: 3
 component: listbox
 ---

@@ -1,7 +1,6 @@
 ---
 title: Bullet
 summary: Usage, guidelines, and accessibility for the mdc-bullet component — a small circular visual indicator used to mark or separate list-style content.
-status: draft
 tier: 3
 component: bullet
 ---

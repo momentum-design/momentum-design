@@ -1,7 +1,6 @@
 ---
 title: Inputchip
 summary: Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.
-status: draft
 tier: 3
 component: inputchip
 ---

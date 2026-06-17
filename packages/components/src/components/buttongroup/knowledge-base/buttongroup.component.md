@@ -1,7 +1,6 @@
 ---
 title: ButtonGroup
 summary: Usage, guidelines, and accessibility for the mdc-buttongroup component — a container that groups related buttons into a visually unified, segmented control with shared size and variant.
-status: draft
 tier: 3
 component: buttongroup
 ---

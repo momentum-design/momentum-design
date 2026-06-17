@@ -1,7 +1,6 @@
 ---
 title: Radio
 summary: Usage, guidelines, and accessibility for the mdc-radio component — a single, form-associated radio button with label, optional helper text, custom indicator slot, and keyboard navigation.
-status: draft
 tier: 3
 component: radio
 ---

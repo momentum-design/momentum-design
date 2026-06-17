@@ -1,7 +1,6 @@
 ---
 title: Announcement Dialog
 summary: Usage, guidelines, and accessibility for the mdc-announcementdialog component — a modal dialog used to display announcements with an illustration, content, and footer actions.
-status: draft
 tier: 3
 component: announcementdialog
 ---

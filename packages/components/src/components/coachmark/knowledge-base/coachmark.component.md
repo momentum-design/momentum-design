@@ -1,7 +1,6 @@
 ---
 title: Coachmark
 summary: Usage, guidelines, and accessibility for the mdc-coachmark component — a contextual onboarding overlay that highlights a UI element with an arrow-anchored bubble to explain its purpose.
-status: draft
 tier: 3
 component: coachmark
 ---

@@ -1,7 +1,6 @@
 ---
 title: Animation
 summary: Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labelled animations.
-status: draft
 tier: 3
 component: animation
 ---

@@ -1,7 +1,6 @@
 ---
 title: Menuitemradio
 summary: Usage, guidelines, and accessibility for the mdc-menuitemradio component — a single-select menu item with radio, checkmark, or no indicator.
-status: draft
 tier: 3
 component: menuitemradio
 ---

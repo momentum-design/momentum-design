@@ -1,7 +1,6 @@
 ---
 title: Option
 summary: Usage, guidelines, and accessibility for the mdc-option component — a selectable option inside a listbox, typically used within mdc-select.
-status: draft
 tier: 3
 component: option
 ---

@@ -1,7 +1,6 @@
 ---
 title: Listheader
 summary: Usage, guidelines, and accessibility for the mdc-listheader component — a non-interactive header row for an mdc-list, with optional prefix and postfix icons and a default slot for actionable elements.
-status: draft
 tier: 3
 component: listheader
 ---

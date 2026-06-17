@@ -1,7 +1,6 @@
 ---
 title: Dialog
 summary: Usage, guidelines, and accessibility for the mdc-dialog component — a modal overlay with a titled, optionally described surface containing custom body content and footer actions.
-status: draft
 tier: 3
 component: dialog
 ---

@@ -1,7 +1,6 @@
 ---
 title: Accordion Button
 summary: Usage, guidelines, and accessibility for the mdc-accordionbutton component — a vertically stacked component with a fully clickable header and an expandable/collapsible body section.
-status: draft
 tier: 3
 component: accordionbutton
 ---
