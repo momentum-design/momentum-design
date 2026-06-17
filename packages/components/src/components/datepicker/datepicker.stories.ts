@@ -89,9 +89,11 @@ const meta: Meta = {
     },
     min: {
       control: 'text',
+      description: 'Minimum selectable date (ISO string)',
     },
     max: {
       control: 'text',
+      description: 'Maximum selectable date (ISO string)',
     },
     'locale-month-label': { control: 'text' },
     'locale-day-label': { control: 'text' },
