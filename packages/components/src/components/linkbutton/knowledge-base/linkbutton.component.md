@@ -1,7 +1,6 @@
 ---
 title: Linkbutton
 summary: Usage, guidelines, and accessibility for the mdc-linkbutton component — a control that looks like a hyperlink but behaves as a button, used for in-page actions that should visually read as a link.
-status: draft
 tier: 3
 component: linkbutton
 ---

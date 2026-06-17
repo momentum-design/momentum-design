@@ -1,7 +1,6 @@
 ---
 title: Spatial Navigation Provider
 summary: Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to arrow, Enter, and Escape keys.
-status: draft
 tier: 3
 component: spatialnavigationprovider
 ---

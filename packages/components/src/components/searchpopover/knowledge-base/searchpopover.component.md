@@ -1,7 +1,6 @@
 ---
 title: Searchpopover
 summary: Usage, guidelines, and accessibility for the mdc-searchpopover component — a searchfield wired to a popover so results or suggestions can appear below with combobox semantics.
-status: draft
 tier: 3
 component: searchpopover
 ---

@@ -1,7 +1,6 @@
 ---
 title: Listitem
 summary: Usage, guidelines, and accessibility for the mdc-listitem component — a flexible row inside an mdc-list with optional leading/trailing controls, three label slots, and keyboard activation.
-status: draft
 tier: 3
 component: listitem
 ---

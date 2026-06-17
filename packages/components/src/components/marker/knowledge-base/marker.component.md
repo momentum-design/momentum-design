@@ -1,7 +1,6 @@
 ---
 title: Marker
 summary: Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.
-status: draft
 tier: 3
 component: marker
 ---

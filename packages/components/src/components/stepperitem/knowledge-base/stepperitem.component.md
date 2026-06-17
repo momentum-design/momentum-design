@@ -1,7 +1,6 @@
 ---
 title: Stepper Item
 summary: Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step inside an mdc-stepper sequence.
-status: draft
 tier: 3
 component: stepperitem
 ---

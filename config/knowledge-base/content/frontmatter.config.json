@@ -3,7 +3,6 @@
     "required": [
       "title",
       "summary",
-      "status",
       "tier"
     ],
     "properties": {
@@ -15,13 +14,6 @@
         "type": "string",
         "minLength": 1,
         "maxLength": 200
-      },
-      "status": {
-        "enum": [
-          "stable",
-          "draft",
-          "planned"
-        ]
       },
       "tier": {
         "enum": [

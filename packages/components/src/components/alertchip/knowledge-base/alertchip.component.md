@@ -1,7 +1,6 @@
 ---
 title: Alert Chip
 summary: Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip used to represent an alert with a leading icon and label.
-status: draft
 tier: 3
 component: alertchip
 ---

@@ -1,7 +1,6 @@
 ---
 title: Static Chip
 summary: Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.
-status: draft
 tier: 3
 component: staticchip
 ---

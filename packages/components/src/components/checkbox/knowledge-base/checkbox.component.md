@@ -1,7 +1,6 @@
 ---
 title: Checkbox
 summary: Usage, guidelines, and accessibility for the mdc-checkbox component — a form control that lets users select one or multiple options, toggle a feature on/off, or indicate agreement.
-status: draft
 tier: 3
 component: checkbox
 ---

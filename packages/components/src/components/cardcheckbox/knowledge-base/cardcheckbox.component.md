@@ -1,7 +1,6 @@
 ---
 title: Card checkbox
 summary: Usage, guidelines, and accessibility for the mdc-cardcheckbox component — a card surface that behaves as a single checkbox, toggling on click or Enter/Space.
-status: draft
 tier: 3
 component: cardcheckbox
 ---

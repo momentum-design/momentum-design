@@ -1,7 +1,6 @@
 ---
 title: Stepper Connector
 summary: Usage, guidelines, and accessibility for the mdc-stepperconnector component — the visual line drawn between two stepper items.
-status: draft
 tier: 3
 component: stepperconnector
 ---

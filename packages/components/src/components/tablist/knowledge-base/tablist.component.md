@@ -1,7 +1,6 @@
 ---
 title: Tab List
 summary: Usage, guidelines, and accessibility for the mdc-tablist component — the container that organizes mdc-tab elements with roving focus and overflow scrolling.
-status: draft
 tier: 3
 component: tablist
 ---

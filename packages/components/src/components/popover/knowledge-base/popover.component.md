@@ -1,7 +1,6 @@
 ---
 title: Popover
 summary: Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behaviour.
-status: draft
 tier: 3
 component: popover
 ---

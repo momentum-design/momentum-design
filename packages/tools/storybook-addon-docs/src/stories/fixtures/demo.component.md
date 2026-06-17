@@ -1,7 +1,6 @@
 ---
 title: Demo Widget
 summary: A fixture markdown used to exercise the docs addon. Three sections, each with sub-headings, lists, and code samples.
-status: draft
 component: demo
 ---
 

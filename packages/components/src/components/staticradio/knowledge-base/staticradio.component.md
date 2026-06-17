@@ -1,7 +1,6 @@
 ---
 title: Static Radio
 summary: Usage, guidelines, and accessibility for the mdc-staticradio component — a decorative, non-interactive radio button for read-only or summary views.
-status: draft
 tier: 3
 component: staticradio
 ---

@@ -1,7 +1,6 @@
 ---
 title: Tooltip
 summary: Usage, guidelines, and accessibility for the mdc-tooltip component — a hover/focus-triggered overlay for short, non-interactive hints.
-status: draft
 tier: 3
 component: tooltip
 ---

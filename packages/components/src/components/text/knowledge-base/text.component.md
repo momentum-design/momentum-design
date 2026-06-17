@@ -1,7 +1,6 @@
 ---
 title: Text
 summary: Usage, guidelines, and accessibility for the mdc-text component — the typography primitive that renders styled text with a configurable semantic tag.
-status: draft
 tier: 3
 component: text
 ---

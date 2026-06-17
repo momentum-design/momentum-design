@@ -1,7 +1,6 @@
 ---
 title: Combobox
 summary: Usage, guidelines, and accessibility for the mdc-combobox component — a text-based dropdown that lets users either type to filter or pick from a predefined list of options.
-status: draft
 tier: 3
 component: combobox
 ---

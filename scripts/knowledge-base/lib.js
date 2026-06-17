@@ -287,7 +287,6 @@ function collectTopics({ topicConstraintsConfig }) {
       path: relPosix,
       title: data.title,
       summary: data.summary,
-      status: data.status,
       canonical: data.canonical || null,
     };
     if (tierInfo.tier === 3) {

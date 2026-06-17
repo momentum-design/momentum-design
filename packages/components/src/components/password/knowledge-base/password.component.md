@@ -1,7 +1,6 @@
 ---
 title: Password
 summary: Usage, guidelines, and accessibility for the mdc-password component — a password input with a built-in show/hide toggle.
-status: draft
 tier: 3
 component: password
 ---

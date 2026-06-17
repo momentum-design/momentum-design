@@ -78,10 +78,8 @@ skill is not the place to change rules.
    Read that file directly to produce a valid frontmatter block; do not
    guess.
 
-   - When an AI agent drafts the content, set `status: draft` (or
-     `planned` for a placeholder) so the human reviewer signs it off
-     before promotion to `stable`
-     (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
+   - AI-drafted content must still be signed off by a human reviewer
+     before merge (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
 6. **Structure the body (Tier 3 topics only).** For component-level topics,
    the body must follow the heading hierarchy defined in
@@ -124,6 +122,3 @@ The workflow above applies. Additional notes:
 - If an update would introduce duplication with another tier's canonical
   topic, **delete the duplicate content and link to the canonical instead**
   (Rule 3). Do not leave both copies.
-- Updating only the body of a `status: planned` placeholder typically
-  warrants flipping `status` to `draft` (AI-authored) or `stable`
-  (human-authored or human-reviewed).

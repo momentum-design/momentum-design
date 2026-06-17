@@ -1,7 +1,6 @@
 ---
 title: Typewriter
 summary: Usage, guidelines, and accessibility for the mdc-typewriter component — an animated text component that progressively reveals its content.
-status: draft
 tier: 3
 component: typewriter
 ---

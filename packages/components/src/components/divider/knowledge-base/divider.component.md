@@ -1,7 +1,6 @@
 ---
 title: Divider
 summary: Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.
-status: draft
 tier: 3
 component: divider
 ---

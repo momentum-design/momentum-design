@@ -1,7 +1,6 @@
 ---
 title: Accordion Group
 summary: Usage, guidelines, and accessibility for the mdc-accordiongroup component — a container that manages multiple accordion or accordionbutton components as a unified set.
-status: draft
 tier: 3
 component: accordiongroup
 ---

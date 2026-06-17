@@ -1,7 +1,6 @@
 ---
 title: Card
 summary: Usage, guidelines, and accessibility for the mdc-card component — a static container grouping related information into image, header, body, and footer with link and button slots.
-status: draft
 tier: 3
 component: card
 ---

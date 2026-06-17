@@ -1,7 +1,6 @@
 ---
 title: Presence
 summary: Usage, guidelines, and accessibility for the mdc-presence component — a small status badge that visually represents the availability or activity state of a user or entity.
-status: draft
 tier: 3
 component: presence
 ---

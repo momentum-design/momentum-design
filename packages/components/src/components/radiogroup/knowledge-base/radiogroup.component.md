@@ -1,7 +1,6 @@
 ---
 title: Radiogroup
 summary: Usage, guidelines, and accessibility for the mdc-radiogroup component — a labelled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.
-status: draft
 tier: 3
 component: radiogroup
 ---

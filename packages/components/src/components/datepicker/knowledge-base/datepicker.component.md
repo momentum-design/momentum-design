@@ -1,7 +1,6 @@
 ---
 title: Datepicker
 summary: Usage, guidelines, and accessibility for the mdc-datepicker component — a date input offering manual entry or a calendar popover for single, range, or week selection with locale support.
-status: draft
 tier: 3
 component: datepicker
 ---

@@ -1,7 +1,6 @@
 ---
 title: Accordion
 summary: Usage, guidelines, and accessibility for the mdc-accordion component — a vertically stacked header/body component with dedicated expand/collapse controls.
-status: draft
 tier: 3
 component: accordion
 ---

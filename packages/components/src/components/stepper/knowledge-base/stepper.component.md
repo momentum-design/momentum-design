@@ -1,7 +1,6 @@
 ---
 title: Stepper
 summary: Usage, guidelines, and accessibility for the mdc-stepper component — the container that orchestrates a sequence of steps and their connectors.
-status: draft
 tier: 3
 component: stepper
 ---
