@@ -34,8 +34,8 @@ file only when tiers or rules change.
    Example: a single repo-root `knowledge-base/accessibility.md` referenced from package and component files instead of being copied into each.
 4. **Placeholders require frontmatter.** A topic file may have no body, but
    it must still declare the required frontmatter (see
-   [`content/frontmatter.config.json`](./content/frontmatter.config.json)) — typically with
-   `status: planned`. Do not delete placeholders to "clean up".
+   [`content/frontmatter.config.json`](./content/frontmatter.config.json)).
+   Do not delete placeholders to "clean up".
 5. **Human review gate.** When an AI agent drafts knowledge-base content,
    a human reviewer must confirm the content before it is merged. The AI
    writes the theory; the human signs it off.
@@ -93,7 +93,6 @@ Example:
 ---
 title: Accessibility
 summary: Keyboard, screen reader, focus, and ARIA expectations for the button component.
-status: stable
 tier: 3
 owner: button
 component: button

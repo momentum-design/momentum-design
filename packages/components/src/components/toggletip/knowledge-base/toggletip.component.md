@@ -1,7 +1,6 @@
 ---
 title: Toggletip
 summary: Usage, guidelines, and accessibility for the mdc-toggletip component — a click-triggered overlay for interactive contextual content.
-status: draft
 tier: 3
 component: toggletip
 ---

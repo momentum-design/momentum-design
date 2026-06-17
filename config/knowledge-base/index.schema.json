@@ -40,8 +40,7 @@
         "tier",
         "path",
         "title",
-        "summary",
-        "status"
+        "summary"
       ],
       "properties": {
         "id": {
@@ -67,9 +66,6 @@
         },
         "summary": {
           "$ref": "./content/frontmatter.config.json#/default/properties/summary"
-        },
-        "status": {
-          "$ref": "./content/frontmatter.config.json#/default/properties/status"
         },
         "component": {
           "$ref": "./content/frontmatter.config.json#/tiers/3/properties/component"

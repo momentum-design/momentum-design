@@ -1,7 +1,6 @@
 ---
 title: Filterchip
 summary: Usage, guidelines, and accessibility for the mdc-filterchip component — a togglable chip used to apply or remove a single filter, with a built-in checkmark indicator when selected.
-status: draft
 tier: 3
 component: filterchip
 ---

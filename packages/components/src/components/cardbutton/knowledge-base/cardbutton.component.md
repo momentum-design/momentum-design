@@ -1,7 +1,6 @@
 ---
 title: Card button
 summary: Usage, guidelines, and accessibility for the mdc-cardbutton component — a card-shaped surface that behaves as a single button, so clicking or activating anywhere on the card fires the click event.
-status: draft
 tier: 3
 component: cardbutton
 ---

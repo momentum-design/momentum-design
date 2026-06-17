@@ -1,7 +1,6 @@
 ---
 title: Illustration
 summary: Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its URL from a parent mdc-illustrationprovider.
-status: draft
 tier: 3
 component: illustration
 ---

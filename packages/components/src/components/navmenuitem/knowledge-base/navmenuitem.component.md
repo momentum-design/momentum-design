@@ -1,7 +1,6 @@
 ---
 title: Navmenuitem
 summary: Usage, guidelines, and accessibility for the mdc-navmenuitem component — a navigation-styled menu item with leading icon, optional badge, and tooltip support.
-status: draft
 tier: 3
 component: navmenuitem
 ---

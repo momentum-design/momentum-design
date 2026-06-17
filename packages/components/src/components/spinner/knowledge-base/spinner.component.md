@@ -1,7 +1,6 @@
 ---
 title: Spinner
 summary: Usage, guidelines, and accessibility for the mdc-spinner component — an indeterminate loading indicator for processes with unknown or variable duration.
-status: draft
 tier: 3
 component: spinner
 ---

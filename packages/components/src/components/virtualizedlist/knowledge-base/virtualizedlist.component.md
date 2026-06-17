@@ -1,7 +1,6 @@
 ---
 title: Virtualizedlist
 summary: Usage, guidelines, and accessibility for the mdc-virtualizedlist component — a windowed list that renders only the visible items.
-status: draft
 tier: 3
 component: virtualizedlist
 ---

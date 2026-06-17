@@ -1,7 +1,6 @@
 ---
 title: Searchfield
 summary: Usage, guidelines, and accessibility for the mdc-searchfield component — a single-line search input that supports inline chip filters and keyboard navigation between chips and text.
-status: draft
 tier: 3
 component: searchfield
 ---

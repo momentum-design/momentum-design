@@ -1,7 +1,6 @@
 ---
 title: App Header
 summary: Usage, guidelines, and accessibility for the mdc-appheader component — a structured app header layout with leading, center, and trailing sections.
-status: draft
 tier: 3
 component: appheader
 ---

@@ -1,7 +1,6 @@
 ---
 title: Menuitemcheckbox
 summary: Usage, guidelines, and accessibility for the mdc-menuitemcheckbox component — a checkable menu item with checkbox, checkmark, or toggle indicators.
-status: draft
 tier: 3
 component: menuitemcheckbox
 ---

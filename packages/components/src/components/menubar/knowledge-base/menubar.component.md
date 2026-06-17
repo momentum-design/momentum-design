@@ -1,7 +1,6 @@
 ---
 title: Menubar
 summary: Usage, guidelines, and accessibility for the mdc-menubar component — a vertical container for menu items with keyboard navigation and nested submenu support.
-status: draft
 tier: 3
 component: menubar
 ---

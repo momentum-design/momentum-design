@@ -1,7 +1,6 @@
 ---
 title: Icon
 summary: Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its URL from a parent mdc-iconprovider, supporting decorative and informative roles.
-status: draft
 tier: 3
 component: icon
 ---

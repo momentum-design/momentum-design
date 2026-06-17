@@ -1,7 +1,6 @@
 ---
 title: Progressbar
 summary: Usage, guidelines, and accessibility for the mdc-progressbar component — a determinate, linear progress indicator with optional label, percentage readout, and helper/validation text.
-status: draft
 tier: 3
 component: progressbar
 ---

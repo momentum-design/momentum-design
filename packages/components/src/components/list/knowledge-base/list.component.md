@@ -1,7 +1,6 @@
 ---
 title: List
 summary: Usage, guidelines, and accessibility for the mdc-list component — a keyboard-navigable container grouping mdc-listitem elements with an optional header slot and configurable orientation.
-status: draft
 tier: 3
 component: list
 ---

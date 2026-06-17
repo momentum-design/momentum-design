@@ -1,7 +1,6 @@
 ---
 title: Card radio
 summary: Usage, guidelines, and accessibility for the mdc-cardradio component — a card surface behaving as a radio option; only one card per name group can be selected at a time.
-status: draft
 tier: 3
 component: cardradio
 ---

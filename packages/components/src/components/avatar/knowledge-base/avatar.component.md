@@ -1,7 +1,6 @@
 ---
 title: Avatar
 summary: Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that displays a person or group as a photo, initials, icon, or counter.
-status: draft
 tier: 3
 component: avatar
 ---

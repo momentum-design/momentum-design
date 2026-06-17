@@ -1,7 +1,6 @@
 ---
 title: Input
 summary: Usage, guidelines, and accessibility for the mdc-input component — a single-line text input with label, helper/validation text, optional leading icon, prefix text, and clear button.
-status: draft
 tier: 3
 component: input
 ---

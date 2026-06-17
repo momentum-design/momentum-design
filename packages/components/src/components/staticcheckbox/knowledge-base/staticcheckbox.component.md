@@ -1,7 +1,6 @@
 ---
 title: Static Checkbox
 summary: Usage, guidelines, and accessibility for the mdc-staticcheckbox component — a decorative, non-interactive checkbox for read-only or summary views.
-status: draft
 tier: 3
 component: staticcheckbox
 ---

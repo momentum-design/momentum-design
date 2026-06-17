@@ -1,7 +1,6 @@
 ---
 title: Slider
 summary: Usage, guidelines, and accessibility for the mdc-slider component — a single-value or range input rendered as one or two thumbs on a track.
-status: draft
 tier: 3
 component: slider
 ---

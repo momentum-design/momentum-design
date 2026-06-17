@@ -1,7 +1,6 @@
 ---
 title: Theme Provider
 summary: Usage, guidelines, and accessibility for the mdc-themeprovider component — the context wrapper that applies a Momentum theme class to its subtree.
-status: draft
 tier: 3
 component: themeprovider
 ---

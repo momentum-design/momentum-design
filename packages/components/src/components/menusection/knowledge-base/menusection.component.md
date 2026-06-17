@@ -1,7 +1,6 @@
 ---
 title: Menusection
 summary: Usage, guidelines, and accessibility for the mdc-menusection component — a labelled grouping of menu items inside a menu or menubar.
-status: draft
 tier: 3
 component: menusection
 ---

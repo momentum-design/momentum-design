@@ -1,7 +1,6 @@
 ---
 title: Avatar Button
 summary: Usage, guidelines, and accessibility for the mdc-avatarbutton component — an interactive, focusable avatar wrapped in a button.
-status: draft
 tier: 3
 component: avatarbutton
 ---

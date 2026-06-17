@@ -1,7 +1,6 @@
 ---
 title: Iconprovider
 summary: Usage and guidelines for the mdc-iconprovider component — a context provider supplying icon source, file extension, default sizing, and optional caching to every nested mdc-icon.
-status: draft
 tier: 3
 component: iconprovider
 ---

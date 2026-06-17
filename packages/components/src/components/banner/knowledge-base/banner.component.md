@@ -1,7 +1,6 @@
 ---
 title: Banner
 summary: Usage, guidelines, and accessibility for the mdc-banner component — an in-page message used to communicate important information that requires user awareness or action to dismiss.
-status: draft
 tier: 3
 component: banner
 ---

@@ -1,7 +1,6 @@
 ---
 title: Optgroup
 summary: Usage, guidelines, and accessibility for the mdc-optgroup component — a labelled grouping of mdc-option elements inside a listbox.
-status: draft
 tier: 3
 component: optgroup
 ---
