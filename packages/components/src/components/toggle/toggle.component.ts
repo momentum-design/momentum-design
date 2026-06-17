@@ -17,33 +17,13 @@ import styles from './toggle.styles';
 import type { ToggleSize } from './toggle.types';
 
 /**
- * The Toggle component is an interactive control used to switch between two mutually exclusive states,
- * such as On/Off or Active/Inactive. It is commonly used in settings panels, forms, and preference selections
- * where users need to enable or disable a feature.
- *
- * To create a group of toggles, use the `mdc-formfieldgroup` component.
- *
- * **Note:** This component internally renders a native checkbox input element with the `switch` role, styled as a toggle switch.
- *
- * ## When to use
- * Use toggles for binary choices where the change takes effect immediately, such as enabling/disabling settings or features.
- *
- * ## Accessibility
- * - Provide clear labels that describe what the toggle controls
- * - Use `data-aria-label` when a visual label is not present
- * - Keyboard navigation: Space to toggle, Tab to navigate, Enter to submit form
- *
- * ## Styling
- * Use the `static-toggle` part to apply custom styles to the toggle switch visual element.
- * This part exposes the underlying [StaticToggle](?path=/docs/components-decorator-statictoggle--docs) component for advanced styling.
+ * @tagname mdc-toggle
  *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-statictoggle
  * @dependency mdc-text
  * @dependency mdc-toggletip
- *
- * @tagname mdc-toggle
  *
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.

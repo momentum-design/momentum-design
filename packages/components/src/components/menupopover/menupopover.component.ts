@@ -17,40 +17,6 @@ import styles from './menupopover.styles';
 import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
 
 /**
- * A popover menu component that displays a list of menu items in a floating container.
- * It's designed to work in conjunction with `mdc-menubar` and `mdc-menuitem` to create
- * accessible, nested menu structures with the following features:
- * - Appears adjacent to the triggering menu item
- * - Supports keyboard navigation (arrow keys, Home, End)
- * - Manages focus trapping when open
- * - Closes on Escape key or outside click
- * - Supports both mouse and keyboard interactions
- * - Automatically handles ARIA attributes for accessibility
- *
- * The component extends `mdc-popover` and adds menu-specific behaviors and styling.
- * When nested within another `mdc-menupopover`, it automatically adjusts its behavior
- * to work as a submenu (right-aligned, shows on hover).
- *
- * The orientation of the menu popover is always set to `vertical`.
- *
- * Submenu opens when:
- * - Clicked on a menu item with a submenu
- * - Enter or Space key pressed on a menu item with a submenu
- *
- * Menu closes completely (with all sub menus) when:
- * - A menu item is clicked that does not have a submenu
- * - Enter key pressed on a menu item (not a submenu trigger), menu item radio or menu item checkbox
- * - Click outside the menu popover (on the backdrop)
- *
- * Close submenus when:
- * - Esc key pressed, only the current submenu closed
- * - Arrow Left key pressed, only the current submenu closed
- * - Open another submenu with Click, Enter or Space key,
- *   closes recursively all submenus until the selected item's submenu
- *
- * Menu does not close when:
- * - Space key pressed on a menu item radio or menu item checkbox
- *
  * @tagname mdc-menupopover
  *
  * @slot - Default slot for the menu popover content

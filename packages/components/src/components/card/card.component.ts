@@ -10,19 +10,6 @@ import { DEFAULTS } from './card.constants';
 import styles from './card.styles';
 
 /**
- * The card component allows users to organize information in a structured and tangible
- * format that is visually appealing. `mdc-card` is a static component.
- *
- * ## Card Structure
- * - **Image**: Optional visual content at the top
- * - **Header**: Contains icon, title, subtitle, and action buttons
- * - **Body**: Main text content area
- * - **Footer**: Optional footer with links and buttons
- *
- * ## Features
- * - Supports two orientations (vertical and horizontal) and three visual variants (border, ghost, and promotional).
- * - Can be made interactive by adding elements to slots like `icon-button`, `footer-link`, and footer buttons.
- *
  * @tagname mdc-card
  *
  * @dependency mdc-icon

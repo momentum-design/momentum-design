@@ -20,11 +20,6 @@ import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
 
 /**
- * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
- *
- * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
- * `mdc-listitem` components can be placed in the default slot.
- *
  * @tagname mdc-list
  *
  * @slot default - This is a default/unnamed slot, where listitems can be placed.

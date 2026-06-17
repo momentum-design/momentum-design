@@ -50,7 +50,8 @@
     "components": "yarn workspace @momentum-design/components",
     "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
     "utils": "yarn workspace @momentum-design/utils",
-    "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview"
+    "storybook-addon-code-preview": "yarn workspace @momentum-design/storybook-addon-code-preview",
+    "storybook-addon-docs": "yarn workspace @momentum-design/storybook-addon-docs"
   },
   "resolutions": {
     "form-data": "^4.0.4"
@@ -66,6 +67,7 @@
     "esbuild": "^0.23.0",
     "eslint": "8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-astro": "^0.21.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-json": "^3.1.0",

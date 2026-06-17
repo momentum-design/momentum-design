@@ -32,14 +32,18 @@ class PackageCollection {
   }
 
   public getDependents(recursive?: boolean): Promise<this> {
-    return Promise.all(this.collection.map((pack) => pack.getDependents(recursive)))
-      .then((packages) => {
-        const flattenedResults = packages.flat(Infinity) as Array<Package>;
-        const cleanedResults = [...new Set(flattenedResults)];
-        this.mount(...cleanedResults);
+    // Share a single visited set across all top-level packages so the recursive walk
+    // does not retraverse subtrees discovered by sibling roots, and is guarded against
+    // cyclic workspace dependency graphs.
+    const visited = new Set<string>();
 
-        return this;
-      });
+    return Promise.all(this.collection.map((pack) => pack.getDependents(recursive, visited))).then((packages) => {
+      const flattenedResults = packages.flat(Infinity) as Array<Package>;
+      const cleanedResults = [...new Set(flattenedResults)];
+      this.mount(...cleanedResults);
+
+      return this;
+    });
   }
 
   public getPackage(pack: Partial<Package>): Package | undefined {
@@ -78,8 +82,9 @@ class PackageCollection {
   }
 
   public static getAllPackageDetails(details: PackageListDetails): Promise<Array<ListItem>> {
-    return Yarn.list(details.since)
-      .then((list) => details.scope ? list.filter(({ name }) => name.includes(details?.scope ?? '')) : list);
+    return Yarn.list(details.since).then((list) =>
+      details.scope ? list.filter(({ name }) => name.includes(details?.scope ?? '')) : list,
+    );
   }
 }
 

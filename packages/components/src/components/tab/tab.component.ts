@@ -16,20 +16,7 @@ import { DEFAULTS, TAB_SIZES, TAB_VARIANTS } from './tab.constants';
 import styles from './tab.styles';
 
 /**
- * `mdc-tab` is Tab component to be used within the Tabgroup.
- *
- * Passing in the attribute `text` to the tab component is changing the text displayed in the tab.
- *
- * Pass attribute `tabid` when using inside of `tablist` component.
- *
- * The `slot="badge"` can be used to add a badge to the tab.
- *
- * The `slot="chip"` can be used to add a chip to the tab.
- *
- * For `icon`, the `mdc-icon` component is used to render the icon.
- *
- * Note: Icons can be used in conjunction with badges or chips.
- * Badges and chips should not be used at the same time.
+ * @tagname mdc-tab
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -44,8 +31,6 @@ import styles from './tab.styles';
  * <br />
  * Note: the activechange event is used by the tab list component to react to the change in state of the tab,
  * so this event won't be needed if the tab list is used.
- *
- * @tagname mdc-tab
  *
  * @cssproperty --mdc-tab-height - The height of the tab.
  * @cssproperty --mdc-tab-padding-left - The left padding of the tab.

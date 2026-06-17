@@ -17,19 +17,6 @@ import styles from './listitem.styles';
 import { ListItemVariants } from './listitem.types';
 
 /**
- * mdc-listitem component is used to display a label with different types of controls.
- * There can be three types of controls, a radio button, a checkbox on the
- * leading side and a toggle on the trailing side.
- * The list item can contain an avatar on the leading side and a badge on the trailing side.
- * Additionally, the list item can contain a side header and a subline text.
- *
- * The leading and trailing slots can be used to display controls and text. <br/>
- * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
- * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
- *
- * **Note**: If a listitem contains a long text, it is recommended to create a tooltip for the listitem that displays the full text on hover.
- * Consumers need to add a unique ID to this listitem and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the listitem using the `triggerID` attribute.
- *
  * @tagname mdc-listitem
  *
  * @dependency mdc-text

@@ -11,35 +11,6 @@ import type {
 import { DEFAULTS, VALID_MEDIA_VALUES, VALID_POPOVER_POSITIONING_VALUES } from './responsivesettingsprovider.constants';
 
 /**
- * `mdc-responsivesettingsprovider` is a provider component that supplies responsive settings
- * context to its child components.
- *
- * This component does not make any assumptions about how the values are determined. Values can be set
- * based on media queries or other device detection mechanisms.This way consumer can mix and match
- * different settings depending on their target devices and use cases.
- *
- * For example, when the device has table screen size/resolution, but because it is fixed dialog like
- * popovers provide better user experience.
- *
- * ## Responsive settings
- *
- * ### Media
- *
- * Generic media type to enforce responsive behavior in child components.
- * Consumer component can use the media type from the context or
- * just use CSS selector like [media="mobile"] to apply responsive styles.
- *
- * It is "unknown" by default so components can fall back to there default behavior.
- *
- * ### Popover Positioning
- *
- * By default, popovers are positioned close to the trigger element. But on small screens (e.g.: mobile devices),
- * it is often better to show popovers/menus at the center of the screen like dialogs.
- *
- * ### Force Fullscreen Dialog
- *
- * Some components like dialogs can be shown in fullscreen mode on small screens for better user experience.
- *
  * @tagname mdc-responsivesettingsprovider
  */
 class ResponsiveSettingsProvider extends Provider<ResponsiveSettings> {

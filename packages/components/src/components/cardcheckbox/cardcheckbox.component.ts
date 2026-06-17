@@ -13,20 +13,6 @@ import type { SelectionType } from './cardcheckbox.types';
 import styles from './cardcheckbox.styles';
 
 /**
- * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction.
- * Multiple cards can be checked simultaneously.
- *
- * ## Features
- * - Supports two orientations (vertical and horizontal), three visual variants (border, ghost, and promotional), and two selection types (check icon or checkbox component).
- * - Interacting anywhere on the card toggles the checked state and dispatches a `change` event.
- * - Card has `role="checkbox"` and manages `aria-checked` and `aria-disabled` attributes automatically.
- *
- * ## Usage
- * - The `card-title` attribute is required.
- * - When using within a form or group, wrap cards in a container with `role="group"` and provide an `aria-label`.
- *
- * **Note**: Only pass non-interactable elements within the slots to avoid nested interactive elements.
- *
  * @tagname mdc-cardcheckbox
  *
  * @dependency mdc-icon

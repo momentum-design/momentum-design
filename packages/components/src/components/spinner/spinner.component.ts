@@ -9,31 +9,6 @@ import { SpinnerSize, SpinnerVariant } from './spinner.types';
 import { DEFAULTS } from './spinner.constants';
 
 /**
- * `mdc-spinner` is loading spinner which is an indeterminate progress indicator, meaning
- * it's best for cases where the  progress or duration of a process is variable or unknown.
- *
- * Spinner Variants:
- * - **Standalone (Default)**: Track has a blue color.
- * - **Button**: To be used when placed in a button to show that the button’s action is currently in progress.
- * To ensure a minimum 3:1 contrast ratio, the color is changed internally to be the same color as the button’s
- * icon or label text.
- *
- * Spinner Sizes:
- * - **Large (96px)**: Use when replacing entire regions or pages that are still loading
- * - **MidSize (48px) (Default)**: Use for most use cases.
- * - **Small (24px)**: Use for inline with loading text.
- *
- * Customisation of the spinner size is allowed by setting the size to undefined and using the --mdc-spinner-size
- * CSS property.
- *
- * Spinner Colors:
- * - **Default**: Use for most use cases.
- * - **Inverted**: Only to be used within inverted components, such as coachmarks.
- *
- * Regarding accessibility, if an aria-label is provided, the role will be set to 'img'; if it is absent, the role
- * will be unset
- * and aria-hidden will be set to 'true' so the spinner will be ignored by screen readers.
- *
  * @tagname mdc-spinner
  *
  * @cssproperty --mdc-spinner-default-color - Allows customization of the default spinner color.

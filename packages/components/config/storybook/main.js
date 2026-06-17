@@ -8,6 +8,7 @@ const config = {
     '@storybook/addon-a11y',
     'storybook-addon-rtl',
     '@momentum-design/storybook-addon-code-preview',
+    '@momentum-design/storybook-addon-docs',
   ],
   framework: {
     name: '@storybook/web-components-vite',

@@ -11,13 +11,6 @@ import { getAlertIcon } from './alertchip.utils';
 import type { VariantType } from './alertchip.types';
 
 /**
- * mdc-alertchip component is an interactive chip that consumers can use to represent an alert.
- *
- * - It supports a leading icon along with label.
- * - It supports 5 variants of alerts - error, informational, neutral, success and warning.
- *
- * This component is built by extending Buttonsimple.
- *
  * @tagname mdc-alertchip
  *
  * @dependency mdc-icon

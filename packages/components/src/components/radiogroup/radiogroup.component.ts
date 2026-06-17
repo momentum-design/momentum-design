@@ -9,10 +9,6 @@ import type { PopoverStrategy, PopoverPlacement } from '../popover/popover.types
 const isRadio = new RegExp(`^(${RADIO_TAGNAME}|${CARD_RADIO_TAGNAME})$`, 'i');
 
 /**
- * `mdc-radiogroup` - This is the wrapper component for radio buttons which are grouped together.
- * It can have a header text and a description. It enables users to select a single option from a set of options.
- * It is often used in forms, settings, and selection in lists. It automatically group the radio buttons inside it.
- *
  * @tagname mdc-radiogroup
  *
  */

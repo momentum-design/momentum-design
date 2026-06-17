@@ -14,49 +14,13 @@ import type { PopoverPlacement, PopoverStrategy } from '../popover/popover.types
 import styles from './radio.styles';
 
 /**
- * The Radio component allows users to select a single option from a group of mutually exclusive choices.
- * Unlike checkboxes which allow multiple selections, radio buttons ensure only one option can be selected
- * at a time within the same group. These are commonly used in forms, surveys, and settings where users
- * need to make a single selection from multiple options.
- *
- * To create a group of radio buttons, use the `mdc-radiogroup` component or ensure all radio buttons
- * share the same `name` attribute.
- *
- * ## Validation
- *
- * Radio component support native form validation. But it does not have default validation message.
- * Also, `required` attribute does not render indicator (red asterisk) for the radio component.
- *
- * The recommended way to show validation message for radio groups is to wrap the `mdc-radio` with `mdc-radiogroup`
- * and set the `help-text` of the `mdc-radiogroup` based on its validation state.
- *
- * Alternatively you can also set the `validation-message` attribute of the `mdc-radio`. This message will appear
- * in a native tooltip when the radio is checked and invalid.
- *
- * ## Accessibility
- *
- * - Provide clear labels that describe each option
- * - Use `data-aria-label` when a visual label is not present
- * - Keyboard navigation: Arrow keys to move between options, Space to select, Tab to navigate groups, Enter to submit form
- * - Group related radio buttons using the same `name` attribute or `mdc-radiogroup` component
- *
- * ## Styling
- *
- * Use the `radio-indicator` part to apply custom styles to the radio visual element.
- * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
- *
- * The `indicator` slot allows replacing the default radio circle with a custom element.
- * When a custom indicator is slotted, the component automatically adds the `mdc-focus-ring`
- * class to the host element. This shifts the focus ring from the default static radio to the
- * entire host element, ensuring keyboard focus remains visible.
+ * @tagname mdc-radio
  *
  * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-staticradio
  * @dependency mdc-toggletip
- *
- * @tagname mdc-radio
  *
  * @event input - (React: onInput) Event that gets dispatched when the radio state changes (before the change event).
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes (after the input event).

@@ -1,8 +1,7 @@
-import React from 'react';
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
-import { Title, Subtitle, Description } from '@storybook/addon-docs/blocks';
 import { setCustomElementsManifest } from '@storybook/web-components';
+import { setupDocs } from '@momentum-design/storybook-addon-docs';
 
 import customElements from '../../dist/custom-elements.json';
 
@@ -75,6 +74,14 @@ const refactoredCustomElements = refactorCustomElements(customElements);
 
 setCustomElementsManifest(refactoredCustomElements);
 
+const knowledgeBaseMarkdown = import.meta.glob('../../src/components/*/knowledge-base/*.component.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+setupDocs({ markdown: knowledgeBaseMarkdown });
+
 const preview = {
   parameters: {
     a11y: {
@@ -86,13 +93,6 @@ const preview = {
       },
     },
     docs: {
-      page: () => (
-        <>
-          <Title />
-          <Subtitle />
-          <Description />
-        </>
-      ),
       source: {
         excludeDecorators: true,
       },

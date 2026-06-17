@@ -25,30 +25,6 @@ import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getActiveTab } from './tablist.utils';
 
 /**
- * Tab list organizes tabs into a container.
- *
- * Children of the tab list are `mdc-tab` elements, sent to the default slot.
- *
- * The tabs can be navigated using the left/right arrow keys, and selected by clicking,
- *  or pressing the Enter and Space keys.
- *
- * **Implicit accessibility rules**
- *
- * - The element that serves as the container for the set of tabs has role `tablist`.
- * - Each element that serves as a tab has role `tab` and is contained within the element with role `tablist`.
- * - The active tab element has the state `aria-selected` set to `true`
- *   and all other tab elements have it set to `false`.
- *
- *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
- *
- * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
- * - The `tablist` element needs to have a label provided by `data-aria-label`.
- * - Each element with role `tab` has the property `aria-controls`
- *  that should refer to its associated `tabpanel` element.
- * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
- * - If a `tab` element has a popup menu, it needs to have the property `aria-haspopup` set to either `menu` or `true`.
- *
  * @tagname mdc-tablist
  *
  * @dependency mdc-tab

@@ -14,10 +14,6 @@ import type { ValidationType } from './formfieldwrapper.types';
 import { getHelperIcon } from './formfieldwrapper.utils';
 
 /**
- * formfieldwrapper is a component that contains the label and helper/validation text
- *  that can be configured in various ways to suit different use cases (most of the input related components).
- * It is used as an internal component and is not intended to be used directly by consumers.
- *
  * @tagname mdc-formfieldwrapper
  *
  * @dependency mdc-text

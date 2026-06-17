@@ -12,21 +12,6 @@ import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 import styles from './cardradio.styles';
 
 /**
- * cardradio component extends `mdc-card` and supports radio selection interaction.
- * Only one card can be selected at a time within the same group (defined by `name` attribute).
- *
- * ## Features
- * - Supports two orientations (vertical and horizontal) and three visual variants (border, ghost, and promotional).
- * - Selecting a card automatically unselects other cards in the same group and dispatches a `change` event.
- * - Supports keyboard navigation with arrow keys to move between cards in the same group.
- * - Card has `role="radio"` and manages `aria-checked` and `aria-disabled` attributes automatically.
- *
- * ## Usage
- * - Both `card-title` and `name` attributes are required.
- * - When using within a form or group, wrap cards in a container with `role="radiogroup"` and provide an `aria-label`.
- *
- * **Note**: Only pass non-interactable elements within the slots to avoid nested interactive elements.
- *
  * @tagname mdc-cardradio
  *
  * @dependency mdc-icon

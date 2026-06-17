@@ -9,19 +9,6 @@ import styles from './skeleton.styles';
 import type { SkeletonVariant } from './skeleton.types';
 
 /**
- * `mdc-skeleton` is a component that shows a grey placeholder area.
- * It provides visual feedback to users that content is being loaded.
- *
- * **Skeleton Variants:**
- * - **rectangular**: Default variant with 0.25rem border radius
- * - **rounded**: Has 0.5rem border radius
- * - **circular**: Has 50% border radius for circular shapes
- * - **button**: Optimized for button placeholders with 1.25rem border radius
- *
- * **Sizing Behavior:**
- * 1. If wrapping content, takes dimensions of wrapped content
- * 2. Otherwise grows to fill parent container
- *
  * @tagname mdc-skeleton
  *
  * @slot - Content to wrap (optional). When provided, skeleton takes dimensions of this content.

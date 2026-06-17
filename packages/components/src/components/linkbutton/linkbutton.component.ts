@@ -11,16 +11,9 @@ import { getIconSize } from './linkbutton.utils';
 import styles from './linkbutton.styles';
 
 /**
- * `mdc-linkbutton` visually mimics a hyperlink while functioning as a button. It blends the appearance of `mdc-link` with the accessibility and interaction capabilities of `mdc-button`.
- *
- * ### Features:
- * - Looks like a link, behaves like a button.
- * - Supports slots for a text label and an optional trailing icon.
- * - Inherits accessibility and keyboard interaction behavior from `mdc-buttonsimple`.
+ * @tagname mdc-linkbutton
  *
  * @dependency mdc-icon
- *
- * @tagname mdc-linkbutton
  *
  * @slot - Text label of the linkbutton.
  *

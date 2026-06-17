@@ -17,61 +17,6 @@ import { DEFAULTS } from './virtualizedlist.constants';
 import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.types';
 
 /**
- * `mdc-virtualizedlist` is an extension of the `mdc-list` component that adds virtualization capabilities using
- * the Tanstack Virtual library.
- *
- * This component is thin wrapper around the Tanstack libray to provide additional funtionalities such as
- * keyboard navigation, focus management, scroll anchoring and accessibility features.
- *
- * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
- *
- * ## Setup
- *
- * `virtualizerProps` is a required prop that requires at least three properties to be set:
- * - `count` is the total number of items in the list
- * - `estimateSize` is a function that returns the estimated size (in pixels) of each item in the list
- * - `getItemKey` is a function that returns a unique key for each item in the list.
- *
- * ### Render list items
- *
- * To keep the component framework-agnostic, the rendering of the list items is left to the consumer.
- *
- * We need to render only the visible items. The list of visible items are provided by the `virtualitemschange` event.
- * The event detail contains the `virtualItems` array, which contains the information for the rendering.
- * List items must have an `data-index` attribute, the indexes are in the `virtualItems` list.
- *
- * ## Best practices
- *
- * ### List updates
- *
- * Tanstack needs only the count of the items in the list and the size of each item to perform virtualization.
- * List updates happens when
- * - when `virtualizerProps` property of the component instance changes
- * - when `observe-size-changes` is set and the item's size changes (it uses ResizeObserver internally)
- * - when `component.visualiser.measure` called manually.
- *
- * ### Header
- *
- * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
- *
- * ### Lists with dynamic content
- *
- * Unique keys for the list items are critical for dynamically changing list items or item's content.
- * If the key change with the content it will cause scrollbar and content shuttering.
- *
- * ### Top/Bottom Padding
- *
- * If padding is required at the top or the bottom of the list, do not apply padding/margin via CSS since this
- * will break the virtualization calculations and can cause scrollbars when they are not necessary.
- * Instead use the `paddingStart` and `paddingEnd` properties (in pixels) of the `virtualizerProps` prop.
- *
- * ### Gaps between items
- *
- * If you are adding gaps between items using CSS margin or gap properties, you must provide the same value in pixels
- * to the `gap` property of the `virtualizerProps` prop. This ensures that the virtualization calculations are accurate.
- * If you are using CSS margins, ensure that you are not applying the margin to the top of the first or the bottom of the last item.
- * If you need spacing there, use the `paddingStart` and `paddingEnd` properties of the `virtualizerProps` prop.
- *
  * @tagname mdc-virtualizedlist
  *
  * @event scroll - (React: onScroll) Event that gets called when user scrolls inside of list.

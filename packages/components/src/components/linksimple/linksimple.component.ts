@@ -10,13 +10,6 @@ import { DEFAULTS } from './linksimple.constants';
 import styles from './linksimple.styles';
 
 /**
- * `mdc-linksimple` is a lightweight link component that can be used to navigate
- * within the application or to an external URL. It does not have any predefined default size.
- *
- * The `children` of the `mdc-linksimple` component can be customized to suit
- * different use cases, including text, icons, or other inline content. For the child to be an icon,
- * the `mdc-icon` component should be used to render.
- *
  * @tagname mdc-linksimple
  *
  * @event click - (React: onClick) Fired when the user activates the buttonLink using a mouse or assistive technology.

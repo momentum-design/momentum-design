@@ -8,23 +8,6 @@ import styles from './staticcheckbox.styles';
 import { ICON_NAME } from './staticcheckbox.constants';
 
 /**
- * The StaticCheckbox component is a decorative, non-interactive checkbox used for visual
- * presentation in read-only scenarios. Unlike the interactive `mdc-checkbox`, it does not
- * handle user interactions or form submissions.
- *
- * This component supports multiple visual states: checked, indeterminate, disabled, readonly,
- * and soft-disabled.
- *
- * ## When to use
- * Use StaticCheckbox to display checkbox states in read-only contexts such as summary views,
- * confirmation screens, or when showing historical form data. For interactive checkboxes, use
- * `mdc-checkbox` instead.
- *
- * ## Accessibility
- * - StaticCheckbox is decorative and non-interactive by design
- * - Always pair with descriptive text labels in the default slot
- * - Do not use this as a replacement for interactive checkboxes in forms
- *
  * @tagname mdc-staticcheckbox
  *
  * @dependency mdc-icon

@@ -8,21 +8,6 @@ import type { MarkerVariants } from './marker.types';
 import { MARKER_VARIANTS } from './marker.constants';
 
 /**
- * The Marker component displays a vertical line (0.25rem wide) used to draw attention to specific content
- * or signify important information. It provides visual emphasis through color and pattern variations.
- *
- * Markers are commonly used alongside list items, cards, or content blocks to indicate status,
- * priority, or categorization.
- *
- * ## When to use
- * Use markers to highlight important content, indicate status or priority levels, or provide
- * visual categorization in lists and layouts.
- *
- * ## Accessibility
- * - Markers are purely decorative and should not convey information solely through color
- * - Always pair markers with text labels or other indicators to convey meaning
- * - Ensure sufficient color contrast for visibility
- *
  * @tagname mdc-marker
  *
  * @cssproperty --mdc-marker-solid-background-color - Background color for solid variant markers.

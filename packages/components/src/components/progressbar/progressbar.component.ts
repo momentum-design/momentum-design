@@ -13,15 +13,6 @@ import { DEFAULTS, VARIANT, TAG_NAME as PROGRESSBAR_TAGNAME } from './progressba
 import styles from './progressbar.styles';
 
 /**
- * mdc-progressbar component visually represents a progress indicator, typically used to show
- * the completion state of an ongoing process (e.g., loading, file upload, etc.).
- * It contains an optional label and an optional helper text.
- *
- * - It supports mainly two types: Default and Inline
- * - It supports three validation variants: Default, Success and Error.
- *
- * This component is created by extending FormfieldWrapper.
- *
  * @tagname mdc-progressbar
  *
  * @dependency mdc-icon

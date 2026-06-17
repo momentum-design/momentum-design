@@ -13,11 +13,9 @@ import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 
 /**
- * optgroup component, which creates a grouping of mdc-option within a listbox element.
+ * @tagname mdc-optgroup
  *
  * @dependency mdc-text
- *
- * @tagname mdc-optgroup
  *
  * @slot default - This is a default slot for mdc-option elements.
  *

@@ -12,17 +12,7 @@ import type { BannerVariant } from './banner.types';
 import { getIconNameForVariant } from './banner.utils';
 
 /**
- * `mdc-banner` is a component that allows applications to communicate important messages to users
- * and requires user action to dismiss them. It supports different message types with appropriate styling
- * and icons, and provides flexibility for customization through label, secondary label, icons, and actions.
- *
- * They are designed to be noticeable yet non-intrusive, helping users stay informed without interrupting their workflow.
- *
- * This component supports both structured content via properties and flexible customization via slots:
- * - Use the properties (`label`, `secondaryLabel`, `variant`) for standard banner layouts with automatic icon selection.
- * - Use slots for custom content and complete layout control.
- * - Combine both approaches for maximum flexibility.
- * - Create custom orientations and actions using CSS parts and slots.
+ * @tagname mdc-banner
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -31,8 +21,6 @@ import { getIconNameForVariant } from './banner.utils';
  * @slot leading-icon - Custom icon content. Overrides the default variant-based icon.
  * @slot leading-text - Custom text content. Overrides the label and secondaryLabel properties.
  * @slot trailing-actions - Custom action buttons and controls. Use this for dismiss buttons, reset buttons, or any other actions.
- *
- * @tagname mdc-banner
  *
  * @csspart leading - The leading section containing the icon and text.
  * @csspart leading-icon - The icon displayed for variants or custom icon slot.

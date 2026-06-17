@@ -11,11 +11,6 @@ import type { ColorType } from './staticchip.types';
 import styles from './staticchip.styles';
 
 /**
- * mdc-staticchip is an static element that can be used to represent a chip. It supports a leading icon along with label.
- *
- * It is recommended to keep the label text for the chip component concise and compact.<br/>
- * For best results, we recommend limiting the <b>maximum length of the label text to 20 characters</b>, including empty spaces to split words.
- *
  * @tagname mdc-staticchip
  *
  * @dependency mdc-icon
