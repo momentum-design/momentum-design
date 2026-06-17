@@ -1,1 +1,0 @@
-import{s as u}from"./iframe-BDHu_yvJ.js";const a=o=>{const{host:e,context:r,subscribe:c,callback:t,syncProperties:s}=o,n=(t||s)&&(i=>{s&&s.forEach(p=>{e.requestUpdate(p)}),t==null||t(i)});return new u(e,{context:r,callback:n,subscribe:c??!0})},f={consume:a};export{f as p};
