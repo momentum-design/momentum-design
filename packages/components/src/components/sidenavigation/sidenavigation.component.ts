@@ -459,8 +459,14 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
     const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
     const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
 
+    const getDropdownContainer = (item: NavMenuItem) =>
+      item.parentElement?.querySelector<HTMLElement>(`div[data-trigger="${item.id}"]`) ?? null;
+
+    const getFirstDropdownItem = (container: HTMLElement | null) =>
+      container?.querySelector<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`);
+
     if (isInsideDropdown) {
-      const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+      const dropdownContainer = target.closest<HTMLElement>('div[data-trigger]');
       if (!dropdownContainer) return;
 
       const children = Array.from(
@@ -470,45 +476,33 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
       if (currentIndex === -1) return;
 
       switch (action) {
-        case ACTIONS.DOWN:
+        case ACTIONS.DOWN: {
           // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
+          const idx = currentIndex + 1 < children.length ? currentIndex + 1 : 0;
+          children[idx].focus();
           event.preventDefault();
-          if (currentIndex + 1 < children.length) {
-            children[currentIndex + 1].focus();
-          } else {
-            children[0].focus();
-          }
           break;
-        case ACTIONS.UP:
+        }
+        case ACTIONS.UP: {
           // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
+          const idx = currentIndex > 0 ? currentIndex - 1 : children.length - 1;
+          children[idx].focus();
           event.preventDefault();
-          if (currentIndex > 0) {
-            children[currentIndex - 1].focus();
-          } else {
-            children[children.length - 1].focus();
-          }
           break;
+        }
         case ACTIONS.RIGHT: {
           // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
           const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+
           if (triggerIndex !== -1 && triggerIndex + 1 < outerItems.length) {
             const nextItem = outerItems[triggerIndex + 1];
             nextItem.focus();
             if (context.isDropDownParent(nextItem)) {
               nextItem.openDropdown();
-              const nextDropdownContainer = nextItem.parentElement?.querySelector(
-                `div[data-trigger="${nextItem.id}"]`,
-              ) as HTMLElement | null;
-              if (nextDropdownContainer) {
-                const firstChild = nextDropdownContainer.querySelector(
-                  `${NAVMENUITEM_TAGNAME}:not([disabled])`,
-                ) as NavMenuItem | null;
-                if (firstChild) {
-                  firstChild.focus();
-                }
-              }
+              const nextDropdownContainer = getDropdownContainer(nextItem);
+              getFirstDropdownItem(nextDropdownContainer)?.focus();
             }
           }
           break;
@@ -518,22 +512,14 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
           const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
           const triggerId = dropdownContainer.getAttribute('data-trigger');
           const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+
           if (triggerIndex > 0) {
             const previousItem = outerItems[triggerIndex - 1];
             previousItem.focus();
             if (context.isDropDownParent(previousItem)) {
               previousItem.openDropdown();
-              const previousDropdownContainer = previousItem.parentElement?.querySelector(
-                `div[data-trigger="${previousItem.id}"]`,
-              ) as HTMLElement | null;
-              if (previousDropdownContainer) {
-                const firstChild = previousDropdownContainer.querySelector(
-                  `${NAVMENUITEM_TAGNAME}:not([disabled])`,
-                ) as NavMenuItem | null;
-                if (firstChild) {
-                  firstChild.focus();
-                }
-              }
+              const previousDropdownContainer = getDropdownContainer(previousItem);
+              getFirstDropdownItem(previousDropdownContainer)?.focus();
             }
           }
           break;
@@ -545,16 +531,13 @@ class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
 
     // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
     if (action === ACTIONS.RIGHT) {
-      const dropdownContainer = targetItem.parentElement?.querySelector(
-        `div[data-trigger="${targetItem.id}"]`,
-      ) as HTMLElement | null;
+      const dropdownContainer = getDropdownContainer(targetItem);
       if (dropdownContainer) {
         if (!isOpen) {
           targetItem.openDropdown();
         }
-        const firstChild = dropdownContainer.querySelector(
-          `${NAVMENUITEM_TAGNAME}:not([disabled])`,
-        ) as NavMenuItem | null;
+
+        const firstChild = getFirstDropdownItem(dropdownContainer);
         if (firstChild) {
           firstChild.focus();
           event.preventDefault();

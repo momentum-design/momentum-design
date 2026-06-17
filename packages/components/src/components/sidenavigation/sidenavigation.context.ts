@@ -48,10 +48,7 @@ class SideNavigationContext {
 
     const siblings = Array.from(navMenuItem?.parentElement?.children ?? []);
     return siblings.some(
-      sibling =>
-        sibling !== navMenuItem &&
-        sibling.tagName.toLowerCase() === 'div' &&
-        sibling.getAttribute('data-trigger') === id,
+      sibling => sibling !== navMenuItem && sibling.matches(`div[data-trigger="${id}"]`),
     );
   }
 

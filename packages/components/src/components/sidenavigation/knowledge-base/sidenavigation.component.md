@@ -60,9 +60,24 @@ Slot structure:
 
 NavMenuItem patterns:
 
-- Simple item — no submenu, no extra action beyond selection.
-- Item with submenu — set an `id` on the `mdc-navmenuitem`, set `triggerid` on the corresponding `mdc-menupopover` to that id, and set `parent-nav-tooltip-text` so the tooltip can convey which submenu item is currently active.
-- Actionable item without submenu — performs an action such as navigation; set `disable-aria-current="true"` to keep the visual active state without the navigation behaviour.
+1. **Simple navmenuitem** — No submenu or action beyond selection.
+
+2. **NavMenuItem with flyout submenu**:
+   - Add an `id` to the `mdc-navmenuitem`.
+   - Set `triggerId` on the linked `mdc-menupopover` to match that `id`.
+   - Set `is-active-parent-tooltip-text` to convey which submenu item is currently active when the flyout is open.
+   - Flyout menus work in both expanded and collapsed navigation states.
+   - The component automatically adds `aria-haspopup="menu"` to the parent navmenuitem.
+
+3. **NavMenuItem with dropdown submenu**:
+   - Add an `id` to the `mdc-navmenuitem` and set `submenu-type="dropdown"`.
+   - Add a sibling `div` with `data-trigger` set to the navmenuitem's `id` and nest the dropdown submenu items inside it.
+   - Dropdowns only display in expanded mode. In collapsed mode they automatically convert to flyout menus and revert to dropdowns when the navigation is expanded again.
+   - Dropdown submenu items never render when the navigation is collapsed, regardless of `submenu-type`.
+   - Only one level of dropdown submenus is supported. For multi-level navigation use flyouts instead.
+   - The component manages `aria-expanded` on the parent navmenuitem automatically.
+
+4. **Action-based navmenuitem (no submenu)** — performs an action such as navigation or an alert trigger. Set `disable-aria-current="true"` to keep the visual active state without announcing the item as the current page to screen readers; this is ideal for items that trigger actions rather than navigate.
 
 Listen for `toggle` to react to user-driven expand/collapse and `activechange` to react to the active nav item changing.
 
@@ -71,6 +86,7 @@ Listen for `toggle` to react to user-driven expand/collapse and `activechange` t
 - Use `mdc-text` for section headers.
 - Use `mdc-divider` with `variant="gradient"` to separate sections.
 - Use an informative icon for the brand logo slot (refer to the Momentum Informative Icons set).
+- Use icons for parent navmenuitems only. For submenu items (in both flyouts and dropdowns), use text labels without icons to ensure readability.
 
 ### Property/Attribute details
 
@@ -85,6 +101,7 @@ Listen for `toggle` to react to user-driven expand/collapse and `activechange` t
 - `footer-text` — text rendered in the bottom brand-logo area. When empty, the entire brand-logo container (including the `brand-logo` slot) is not rendered.
 - `grabber-btn-aria-label` — accessible name applied to the expand/collapse grabber button.
 - `hide-fixed-section-divider` — when `true`, hides the divider between the scrollable and fixed sections. Default `false`.
+- `submenu-type` — controls how child submenu items are presented on a parent navmenuitem. Set to `"dropdown"` to render an inline dropdown in expanded mode. In collapsed mode the component automatically promotes a dropdown to a flyout. Omit or leave unset for flyout-only submenus using `mdc-menupopover`.
 
 Events dispatched by the host:
 
@@ -95,6 +112,8 @@ Events dispatched by the host:
 
 - For `fixed-collapsed` and `fixed-expanded` variants, `expanded` is hard-set internally and cannot be changed by the user or consumer.
 - When `variant="hidden"`, no DOM is rendered for the navigation.
+- Dropdown submenus support only one level of nesting. For multi-level navigation use flyout menus (`mdc-menupopover`) instead.
+- Dropdown submenu items do not render when the navigation is collapsed; they are automatically promoted to flyout menus in that state and revert to dropdowns when expanded again.
 
 ## Accessibility
 
@@ -112,13 +131,16 @@ For the `flexible-on-hover` variant, the grabber button is only made visible (vi
 | Grabber button                | `aria-label`    | mirrors `grabber-btn-aria-label`                                 |
 | Grabber button                | `aria-expanded` | reflects the current `expanded` state                            |
 | Grabber button                | `aria-controls` | id of the side navigation container                              |
+| NavMenuItem (flyout parent)   | `aria-haspopup` | `"menu"` — set automatically when linked to an `mdc-menupopover` |
+| NavMenuItem (dropdown parent) | `aria-expanded` | `"true"` when the dropdown is open, `"false"` when closed        |
 
 ### Implementation requirements
 
 #### General
 
 - Provide a meaningful `aria-label` on every nested `mdc-menubar` and `mdc-navmenuitem` so screen readers can identify them.
-- Pair each submenu pattern with `parent-nav-tooltip-text` on the `mdc-navmenuitem` so users can tell which submenu item is currently active.
+- Pair each flyout submenu pattern with `is-active-parent-tooltip-text` on the `mdc-navmenuitem` so users can tell which submenu item is currently active.
+- For dropdown submenus, the parent navmenuitem receives `aria-expanded` automatically — do not override it manually.
 
 #### Labelling
 
