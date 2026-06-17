@@ -258,8 +258,8 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     }
   }
 
-  private parseValueToInternal(): void {
-    const parts = parseISODate(this.value);
+  private parseValueToInternal(value = this.value): void {
+    const parts = parseISODate(value);
     if (parts) {
       this.internalMonth = parts.month;
       this.internalDay = parts.day;
@@ -274,6 +274,90 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   private internalToValue(): string {
     return buildISODate(this.internalMonth, this.internalDay, this.internalYear);
   }
+
+  // AI-Assisted: keep input spinbuttons aligned with valid min/max date boundaries.
+  private getParsedMin(): Date | undefined {
+    return this.min ? parseISO(this.min) ?? undefined : undefined;
+  }
+
+  private getParsedMax(): Date | undefined {
+    return this.max ? parseISO(this.max) ?? undefined : undefined;
+  }
+
+  private clampValueToRange(value: string): string {
+    const dt = parseISO(value);
+    if (!dt) return value;
+
+    const minDt = this.getParsedMin();
+    const maxDt = this.getParsedMax();
+
+    if (minDt && isBefore(dt, minDt)) return this.min ?? value;
+    if (maxDt && isAfter(dt, maxDt)) return this.max ?? value;
+    return value;
+  }
+
+  private getFieldRange(field: 'month' | 'day' | 'year') {
+    const currentMonth = parseInt(this.internalMonth, 10) || undefined;
+    const currentYear = parseInt(this.internalYear, 10) || undefined;
+    const baseMin = getFieldMin(field);
+    const baseMax = getFieldMax(field, currentMonth, currentYear);
+    let min = baseMin;
+    let max = baseMax;
+
+    const minDt = this.getParsedMin();
+    const maxDt = this.getParsedMax();
+
+    if (field === 'year') {
+      if (minDt) min = Math.max(min, minDt.getFullYear());
+      if (maxDt) max = Math.min(max, maxDt.getFullYear());
+    } else if (field === 'month' && currentYear) {
+      if (minDt && currentYear === minDt.getFullYear()) min = Math.max(min, minDt.getMonth() + 1);
+      if (maxDt && currentYear === maxDt.getFullYear()) max = Math.min(max, maxDt.getMonth() + 1);
+    } else if (field === 'day' && currentMonth && currentYear) {
+      if (
+        minDt &&
+        currentYear === minDt.getFullYear() &&
+        currentMonth === minDt.getMonth() + 1
+      ) {
+        min = Math.max(min, minDt.getDate());
+      }
+      if (
+        maxDt &&
+        currentYear === maxDt.getFullYear() &&
+        currentMonth === maxDt.getMonth() + 1
+      ) {
+        max = Math.min(max, maxDt.getDate());
+      }
+    }
+
+    if (min > max) {
+      return { min: baseMin, max: baseMax, isMinConstrained: false, isMaxConstrained: false };
+    }
+
+    return {
+      min,
+      max,
+      isMinConstrained: min !== baseMin,
+      isMaxConstrained: max !== baseMax,
+    };
+  }
+
+  private getNextSpinbuttonValue(
+    currentValue: number,
+    range: ReturnType<DatePicker['getFieldRange']>,
+    increment: boolean,
+  ): number {
+    if (increment) {
+      if (currentValue < range.min) return range.min;
+      if (currentValue >= range.max) return range.isMaxConstrained ? range.max : range.min;
+      return currentValue + 1;
+    }
+
+    if (currentValue > range.max) return range.max;
+    if (currentValue <= range.min) return range.isMinConstrained ? range.min : range.max;
+    return currentValue - 1;
+  }
+  // End AI-Assisted
 
   private syncFormValue(): void {
     const val = this.value || this.internalToValue();
@@ -291,15 +375,12 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private commitValue(): void {
     const newVal = this.internalToValue();
-    if (newVal && newVal !== this.value) {
-      const dt = parseISO(newVal);
-      if (dt) {
-        const minDt = this.min ? parseISO(this.min) : undefined;
-        const maxDt = this.max ? parseISO(this.max) : undefined;
-        if (minDt && isBefore(dt, minDt)) return;
-        if (maxDt && isAfter(dt, maxDt)) return;
-      }
-      this.value = newVal;
+    if (newVal) {
+      const clampedVal = this.clampValueToRange(newVal);
+      if (clampedVal !== newVal) this.parseValueToInternal(clampedVal);
+      if (clampedVal === this.value) return;
+
+      this.value = clampedVal;
       this.syncFormValue();
       this.notifyValueChange();
     }
@@ -452,23 +533,20 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private handleSpinbuttonKeydown(event: KeyboardEvent, field: 'month' | 'day' | 'year'): void {
     if (this.readonly) return;
-    const currentMonth = parseInt(this.internalMonth, 10) || undefined;
-    const currentYear = parseInt(this.internalYear, 10) || undefined;
-    const minVal = getFieldMin(field);
-    const maxVal = getFieldMax(field, currentMonth, currentYear);
+    const range = this.getFieldRange(field);
     const currentVal = parseInt(this.getFieldValue(field), 10) || 0;
 
     switch (event.key) {
       case KEYS.ARROW_UP: {
         event.preventDefault();
-        const newVal = currentVal >= maxVal ? minVal : currentVal + 1;
+        const newVal = this.getNextSpinbuttonValue(currentVal, range, true);
         this.setFieldValue(field, newVal);
         this.commitValue();
         break;
       }
       case KEYS.ARROW_DOWN: {
         event.preventDefault();
-        const newVal = currentVal <= minVal ? maxVal : currentVal - 1;
+        const newVal = this.getNextSpinbuttonValue(currentVal, range, false);
         this.setFieldValue(field, newVal);
         this.commitValue();
         break;
@@ -488,7 +566,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       default: {
         if (/^\d$/.test(event.key)) {
           event.preventDefault();
-          this.handleDigitInput(event.key, field, minVal, maxVal);
+          this.handleDigitInput(event.key, field, range.min, range.max);
         } else {
           event.preventDefault();
         }
@@ -644,10 +722,7 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private renderSpinbutton(field: 'month' | 'day' | 'year') {
     const value = this.getFieldValue(field);
-    const currentMonth = parseInt(this.internalMonth, 10) || undefined;
-    const currentYear = parseInt(this.internalYear, 10) || undefined;
-    const minVal = getFieldMin(field);
-    const maxVal = getFieldMax(field, currentMonth, currentYear);
+    const range = this.getFieldRange(field);
 
     const labelMap: Record<string, string> = {
       month: this.localeMonthLabel,
@@ -667,8 +742,8 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
         part="spinbutton spinbutton-${field}"
         role="spinbutton"
         aria-label="${labelMap[field]}"
-        aria-valuemin="${minVal}"
-        aria-valuemax="${maxVal}"
+        aria-valuemin="${range.min}"
+        aria-valuemax="${range.max}"
         aria-valuenow="${ifDefined(value ? parseInt(value, 10) : undefined)}"
         aria-description="${this.localeSpinbuttonDescription}"
         .value="${value}"
