@@ -28,13 +28,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls([
-      'defaultSlotNodes',
-      'hasDefaultSlotContent',
-      'renderIcon',
-      'renderMessage',
-      'updateDefaultSlotContent',
-    ]),
+    ...hideControls(['renderIcon', 'renderMessage']),
   },
 };
 
@@ -70,9 +64,9 @@ export const SlottedMessage: StoryObj = {
 
 export const CustomIcon: StoryObj = {
   render: () => html`
-    <mdc-statusmessage severity="priority" message="Status message with a custom icon">
-      <mdc-icon slot="icon" name="info-badge-filled"></mdc-icon>
-    </mdc-statusmessage>
+    <mdc-statusmessage severity="priority" message="Status message with a custom icon"
+      ><mdc-icon slot="icon" name="info-badge-filled"></mdc-icon
+    ></mdc-statusmessage>
   `,
   ...hideAllControls(),
 };

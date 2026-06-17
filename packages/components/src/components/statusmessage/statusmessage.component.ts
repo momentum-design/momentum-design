@@ -1,19 +1,14 @@
 // AI-Assisted
 import { CSSResult, html, nothing } from 'lit';
-import { property, queryAssignedNodes, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
 
-import { DEFAULTS } from './statusmessage.constants';
+import { DEFAULTS, STATUSMESSAGE_ICON_NAME_BY_SEVERITY } from './statusmessage.constants';
 import styles from './statusmessage.styles';
 import type { StatusMessageSeverity } from './statusmessage.types';
-import { getStatusMessageIcon } from './statusmessage.utils';
 
 /**
- * @remarks
- * Displays a compact inline status message with optional severity icon and color.
- * Use it for helper, validation, or status text where a full alert container is not needed.
- *
  * @tagname mdc-statusmessage
  *
  * @dependency mdc-icon
@@ -48,22 +43,8 @@ class StatusMessage extends Component {
   @property({ type: String, reflect: true })
   message?: string;
 
-  @queryAssignedNodes()
-  private defaultSlotNodes!: Node[];
-
-  @state()
-  private hasDefaultSlotContent = false;
-
-  protected override firstUpdated(): void {
-    this.updateDefaultSlotContent();
-  }
-
-  private updateDefaultSlotContent() {
-    this.hasDefaultSlotContent = this.defaultSlotNodes.some(node => Boolean(node.textContent?.trim()));
-  }
-
   private renderIcon() {
-    const icon = getStatusMessageIcon(this.severity || DEFAULTS.SEVERITY);
+    const icon = STATUSMESSAGE_ICON_NAME_BY_SEVERITY[this.severity || DEFAULTS.SEVERITY];
 
     if (!icon) {
       return nothing;
@@ -73,7 +54,7 @@ class StatusMessage extends Component {
   }
 
   private renderMessage() {
-    if (!this.message || this.hasDefaultSlotContent) {
+    if (!this.message) {
       return nothing;
     }
 
@@ -86,8 +67,7 @@ class StatusMessage extends Component {
     return html`
       <div part="container">
         <slot name="icon" part="icon">${this.renderIcon()}</slot>
-        <slot part="text" @slotchange="${this.updateDefaultSlotContent}"></slot>
-        ${this.renderMessage()}
+        <slot part="text">${this.renderMessage()}</slot>
       </div>
     `;
   }

@@ -5,9 +5,8 @@
 import { ComponentsPage, expect, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-import { STATUSMESSAGE_SEVERITY } from './statusmessage.constants';
+import { STATUSMESSAGE_ICON_NAME_BY_SEVERITY, STATUSMESSAGE_SEVERITY } from './statusmessage.constants';
 import type { StatusMessageSeverity } from './statusmessage.types';
-import { getStatusMessageIcon } from './statusmessage.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -54,7 +53,7 @@ test('mdc-statusmessage', async ({ componentsPage }) => {
         await componentsPage.setAttributes(statusMessage, { severity });
         await expect(statusMessage).toHaveAttribute('severity', severity);
 
-        const icon = getStatusMessageIcon(severity);
+        const icon = STATUSMESSAGE_ICON_NAME_BY_SEVERITY[severity];
         if (icon) {
           await expect(statusMessage.locator(`mdc-icon[name="${icon}"]`)).toBeVisible();
         }
@@ -72,7 +71,7 @@ test('mdc-statusmessage', async ({ componentsPage }) => {
       });
 
       await expect(slottedStatusMessage).toContainText('Slotted message');
-      await expect(slottedStatusMessage).not.toContainText('Attribute message');
+      await expect(slottedStatusMessage.locator('mdc-text[part="text"]')).not.toBeVisible();
     });
 
     await test.step('should render a custom icon when the icon slot is provided', async () => {
@@ -80,9 +79,7 @@ test('mdc-statusmessage', async ({ componentsPage }) => {
         componentsPage,
         severity: STATUSMESSAGE_SEVERITY.ERROR,
         message: 'Custom icon message',
-        children: `
-          <mdc-icon slot="icon" name="info-badge-filled" data-testid="custom-icon"></mdc-icon>
-        `,
+        children: '<mdc-icon slot="icon" name="info-badge-filled" data-testid="custom-icon"></mdc-icon>',
       });
 
       await expect(customIconStatusMessage.locator('[data-testid="custom-icon"]')).toBeVisible();

@@ -9,6 +9,7 @@ import providerUtils from '../../utils/provider';
 import Stepper from '../stepper/stepper.component';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { STATUSMESSAGE_SEVERITY } from '../statusmessage/statusmessage.constants';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -18,6 +19,7 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @tagname mdc-stepperitem
  *
  * @dependency mdc-icon
+ * @dependency mdc-statusmessage
  * @dependency mdc-text
  *
  * @event click - (React: onClick) This event is dispatched when the stepperitem is clicked.
@@ -186,20 +188,18 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
     if (!this.helpText) {
       return nothing;
     }
-    const helpTextContent = html`<mdc-text
-      part="help-text"
-      tagname=${VALID_TEXT_TAGS.SPAN}
-      type=${TYPE.BODY_MIDSIZE_REGULAR}
-      >${this.helpText}</mdc-text
-    >`;
 
-    if (this.status === STATUS.ERROR_INCOMPLETE || this.status === STATUS.ERROR_CURRENT) {
-      return html`<div part="help-text-container">
-        <mdc-icon part="help-icon" name=${STATUS_ICON.ERROR} length-unit="rem" size="1"></mdc-icon>
-        ${helpTextContent}
-      </div>`;
-    }
-    return helpTextContent;
+    const severity =
+      this.status === STATUS.ERROR_INCOMPLETE || this.status === STATUS.ERROR_CURRENT
+        ? STATUSMESSAGE_SEVERITY.ERROR
+        : STATUSMESSAGE_SEVERITY.DEFAULT;
+
+    return html`<mdc-statusmessage
+      part="help-text-container"
+      severity="${severity}"
+      message="${this.helpText}"
+      exportparts="container: help-text-container, icon: help-icon, text: help-text"
+    ></mdc-statusmessage>`;
   }
 
   public override render() {

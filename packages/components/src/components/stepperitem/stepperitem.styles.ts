@@ -27,6 +27,11 @@ const styles = css`
     color: var(--mdc-stepperitem-help-text-color);
   }
 
+  mdc-statusmessage[part='help-text-container'] {
+    --mdc-statusmessage-color: var(--mdc-stepperitem-help-text-color);
+    --mdc-statusmessage-gap: 0.25rem;
+  }
+
   :host::part(status-container) {
     display: flex;
     align-items: center;

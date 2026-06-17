@@ -56,7 +56,9 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
       label: 'Step Label',
       'help-text': 'Helper text',
     });
-    await expect(stepperitem.locator('[part="help-text"]')).toHaveText('Helper text');
+    const statusMessage = stepperitem.locator('mdc-statusmessage[part="help-text-container"]');
+    await expect(statusMessage).toHaveAttribute('severity', 'default');
+    await expect(statusMessage.locator('mdc-text[part="text"]')).toHaveText('Helper text');
   });
 
   await test.step('should render step number for not-started and error-incomplete', async () => {
@@ -104,9 +106,11 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
         status,
         'help-text': 'Error message',
       });
-      const statusIcon = stepperitem.locator('[part="help-icon"]');
+      const statusMessage = stepperitem.locator('mdc-statusmessage[part="help-text-container"]');
+      const statusIcon = statusMessage.locator('mdc-icon[part="icon"]');
       await expect(stepperitem).toHaveAttribute('status', status);
       await expect(stepperitem).toHaveAttribute('help-text', 'Error message');
+      await expect(statusMessage).toHaveAttribute('severity', 'error');
       await expect(statusIcon).toBeVisible();
       await expect(statusIcon).toHaveAttribute('name', 'error-legacy-badge-filled');
     }
