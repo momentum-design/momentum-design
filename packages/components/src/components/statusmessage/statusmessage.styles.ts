@@ -47,11 +47,12 @@ const styles = css`
 
   [part='icon'],
   ::slotted([slot='icon']) {
-    --computed-icon-size: var(--mdc-statusmessage-icon-size);
+    --mdc-icon-size: var(--mdc-statusmessage-icon-size);
 
     align-self: flex-start;
     flex-shrink: 0;
-    height: var(--mdc-statusmessage-line-height);
+    height: var(--mdc-statusmessage-icon-size);
+    margin-block-start: 0.125rem;
   }
 
   [part='text'],
