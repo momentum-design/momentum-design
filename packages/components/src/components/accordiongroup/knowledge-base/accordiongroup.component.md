@@ -7,17 +7,22 @@ component: accordiongroup
 
 ## Overview
 
-The accordion group is a container that manages multiple accordion or accordionbutton components as a unified set. It controls the visual styling, spacing, and expansion behavior of all child accordions. The group applies consistent `variant` and `size` attributes to all children automatically. By default, expanding one accordion collapses the others (`allow-multiple` is false); set `allow-multiple` to true to allow multiple expanded items.
+The accordion group is a container for multiple `mdc-accordion` or `mdc-accordionbutton` items stacked vertically. It applies consistent `variant` and `size` to all children and coordinates expansion behaviour across the set.
 
 ### When to use
 
-- Use `mdc-accordiongroup` when you need to render two or more related `mdc-accordion` or `mdc-accordionbutton` items with consistent styling, spacing, and coordinated expansion behaviour.
+- When presenting two or more related collapsible sections that users can expand individually.
+- When clear visual separation between items matters — for example onboarding flows, checkout steps, settings, dashboards, or FAQs.
+- When sections are independent and do not need to be read in sequence.
 
 ### When not to use
 
-- Use a single `mdc-accordion` or `mdc-accordionbutton` directly when only one collapsible section is needed.
+- When only one collapsible section is needed. Use a single `mdc-accordion` or `mdc-accordionbutton`.
 
 ## Guidelines
+
+### Behavior
+By default, expanding one accordion collapses the others (`allow-multiple` is false); set `allow-multiple` to true to allow multiple expanded items.
 
 ### Developer usage
 
@@ -41,6 +46,21 @@ Minimal markup example:
 ### Content guidance
 
 - Only `mdc-accordion` and `mdc-accordionbutton` elements are managed by the group; any other slotted elements are ignored.
+- Keep child header text concise so items remain scannable when stacked.
+
+### Property/Attribute details
+
+- **`variant`**: Applied to all child items.
+  - `stacked` (default): Items have clear visual separation with spacing between them. Use when users need to compare or browse across multiple items, or when structure aids clarity in content-heavy layouts.
+  - `borderless`: Removes borders from items and the group. Use in minimalist or dense interfaces such as forms, settings panels, FAQs, dialogs, or drawers where borders add visual weight.
+  - `contained`: Items share a continuous bordered container with no gaps. Use when sections are conceptually grouped — such as grouped FAQs or compact modules — and vertical space should be conserved.
+- **`size`**: `small` (16px padding) or `large` (24px padding), applied to all child items.
+- **`allow-multiple`**: Defaults to `false`, so expanding one item collapses the others. Set to `true` to allow multiple expanded items simultaneously.
+
+### Limitations
+
+- Panel width follows the parent container and responsive grid; horizontal scrolling inside panels is not supported.
+- Expanded panel height grows with content; scrolling should occur at the page or container level, not within individual panels.
 
 ## Accessibility
 
@@ -48,7 +68,7 @@ Minimal markup example:
 
 #### General
 
-- Set the `data-aria-level` of the child accordions to match the heading hierarchy of the surrounding page.
+- Set the `data-aria-level` of child accordions to match the heading hierarchy of the surrounding page.
 
 ### Notes
 

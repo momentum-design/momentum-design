@@ -9,7 +9,7 @@
       "tier": 3,
       "path": "packages/components/src/components/accordion/knowledge-base/accordion.component.md",
       "title": "Accordion",
-      "summary": "Usage, guidelines, and accessibility for the mdc-accordion component — a vertically stacked header/body component with dedicated expand/collapse controls.",
+      "summary": "Usage, guidelines, and accessibility for mdc-accordion — a multi-interactive accordion whose header supports additional controls alongside a dedicated expand/collapse button.",
       "canonical": null,
       "component": "accordion"
     },
@@ -18,7 +18,7 @@
       "tier": 3,
       "path": "packages/components/src/components/accordionbutton/knowledge-base/accordionbutton.component.md",
       "title": "Accordion Button",
-      "summary": "Usage, guidelines, and accessibility for the mdc-accordionbutton component — a vertically stacked component with a fully clickable header and an expandable/collapsible body section.",
+      "summary": "Usage, guidelines, and accessibility for mdc-accordionbutton — a single-interactive accordion with a fully clickable header and expandable body section.",
       "canonical": null,
       "component": "accordionbutton"
     },
@@ -27,7 +27,7 @@
       "tier": 3,
       "path": "packages/components/src/components/accordiongroup/knowledge-base/accordiongroup.component.md",
       "title": "Accordion Group",
-      "summary": "Usage, guidelines, and accessibility for the mdc-accordiongroup component — a container that manages multiple accordion or accordionbutton components as a unified set.",
+      "summary": "Usage, guidelines, and accessibility for mdc-accordiongroup — a container that manages multiple accordion items with shared styling and coordinated expansion behaviour.",
       "canonical": null,
       "component": "accordiongroup"
     },
