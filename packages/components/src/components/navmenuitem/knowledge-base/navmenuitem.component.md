@@ -7,7 +7,7 @@ component: navmenuitem
 
 ## Overview
 
-`mdc-navmenuitem` is a menu item styled to work as a navigation tab inside `mdc-sidenavigation`. It renders a leading icon, an optional badge, and a dynamic label that appears when the surrounding side navigation is expanded. The item can be in an active or inactive state to indicate the current page, and a tooltip can be attached for collapsed states or for parent items whose nested child is active.
+`mdc-navmenuitem` is a `menuitem`-role component styled as a navigation tab, supporting a leading icon, optional badge, and dynamic text rendering. It can operate as a simple item, as a parent with a flyout submenu (`mdc-menupopover`), or as a parent with an inline dropdown submenu, and a tooltip can be attached for collapsed states or when a nested child is active.
 
 ### When to use
 
@@ -46,6 +46,12 @@ Minimal markup example:
 
 A unique `nav-id` is required so the surrounding `mdc-sidenavigation` can manage active state and badge placement. When the navigation is collapsed and `tooltip-text` is provided, the component creates and attaches an `mdc-tooltip` as a sibling for the collapsed state automatically.
 
+The component supports three usage configurations:
+
+1. **Simple navmenuitem** — Contains text and optionally an icon and/or badge. Can be active or inactive to reflect the current route.
+2. **Navmenuitem with flyout submenu** — Contains a nested `mdc-menupopover` that opens on hover or click (configurable). The parent receives `aria-haspopup="true"` and the popover gets `role="menu"`. When a child is active, the parent receives `active` styling but not `aria-current`, to avoid confusion for screen readers. If `is-active-parent-tooltip-text` is provided, a tooltip is shown on hover of the parent.
+3. **Navmenuitem with dropdown submenu** — Contains a sibling `div[data-trigger]` that opens on click. The parent receives `aria-expanded="true"` when open and `aria-expanded="false"` when closed. Active styling is only applied to the parent when the dropdown is closed; when open, only the active child carries active styling. If `is-active-parent-tooltip-text` is provided, a tooltip is shown on hover of the parent.
+
 ### Property/Attribute details
 
 - `nav-id` — required unique identifier used by `mdc-sidenavigation` to track the item. If omitted, the component logs an error via `onerror`.
@@ -69,7 +75,8 @@ A unique `nav-id` is required so the surrounding `mdc-sidenavigation` can manage
 
 ### Notes
 
-- The tooltip is created and removed programmatically as a sibling of the navmenuitem; it is re-rendered whenever `tooltip-text`, `show-label`, or the parent's active-child state changes.
+- `mdc-navmenuitem` is intended to be used inside `mdc-menubar` as part of `mdc-sidenavigation`. Its structure, spacing, and interactions are designed to align with the visual and functional requirements of side-navigation layouts.
+- The tooltip is created and removed programmatically as a sibling of the navmenuitem; it is re-rendered whenever `tooltip-text`, `show-label`, or the parent's active-child state changes. When `tooltip-text` is set, the component renders a tooltip on hover — particularly useful when the side navigation is collapsed or when an active navmenuitem is nested within a submenu.
 - When the item is nested under an `mdc-menupopover`, an internal `in-menupopover` attribute is added and the item always shows its label (the collapse logic only applies to top-level items inside `mdc-sidenavigation`).
 
 ## Accessibility
@@ -77,6 +84,8 @@ A unique `nav-id` is required so the surrounding `mdc-sidenavigation` can manage
 ### Built-in features
 
 - Sets `role="menuitem"` on the host and supports `Enter` (on `keydown`) and `Space` (on `keyup`) to trigger a click — matching native menu item activation semantics.
+- When used as a parent with a flyout submenu, sets `aria-haspopup="true"` on the host and the `mdc-menupopover` receives `role="menu"`. When a child is active, the parent receives `active` styling but not `aria-current`, to avoid confusion for screen readers.
+- When used as a parent with a dropdown submenu, sets `aria-expanded="true"` when open and `aria-expanded="false"` when closed. Active styling on the parent is suppressed while the dropdown is open so only the active child navmenuitem carries the indicator.
 - When the item becomes active, the surrounding navigation sets `aria-current="page"` on it (unless `disable-aria-current` is set). The component also sets `aria-current="page"` on initial render when `active` is already `true`.
 - When the navigation collapses, the component copies `label` to `aria-label` if no `aria-label` is already set, so the icon-only display remains announceable.
 - When `tooltip-text` or `is-active-parent-tooltip-text` is provided, the component automatically generates an `mdc-tooltip` sibling, assigns the navmenuitem a unique `id` if missing, and points the tooltip's `triggerid` at it.
@@ -88,6 +97,8 @@ A unique `nav-id` is required so the surrounding `mdc-sidenavigation` can manage
 | --- | --- | --- |
 | host | role | `menuitem` |
 | host | aria-current | `page` while `active` (unless `disable-aria-current` or `cannot-activate`) |
+| host | aria-haspopup | `true` when the host contains a flyout submenu (`mdc-menupopover`) |
+| host | aria-expanded | `true` when a dropdown submenu is open; `false` when closed |
 | host | aria-label | mirrors `label` when `show-label` is false and no explicit `aria-label` is set |
 | host | aria-disabled | `true` when `disabled` or `soft-disabled` |
 | host | tabindex | managed by the parent navigation/menu roving tabindex |

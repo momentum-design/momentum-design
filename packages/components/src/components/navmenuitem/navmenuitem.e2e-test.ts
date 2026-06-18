@@ -169,6 +169,23 @@ test.describe('NavMenuItem Feature Scenarios', () => {
       });
       await navmenuitemSheet.createMarkupWithCombination({}, options);
 
+      // Basic navmenuitem with label only
+      navmenuitemSheet.setAttributes({
+        label: primaryLabel,
+        'nav-id': navId,
+        'show-label': true,
+      });
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
+
+      // Active navmenuitem with label only
+      navmenuitemSheet.setAttributes({
+        label: primaryLabel,
+        'nav-id': navId,
+        'show-label': true,
+        active: true,
+      });
+      await navmenuitemSheet.createMarkupWithCombination({}, options);
+
       await navmenuitemSheet.mountStickerSheet({ role: 'navigation' });
 
       await test.step('matches screenshot of element', async () => {

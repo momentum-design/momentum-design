@@ -70,7 +70,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
    *
    * Is called on every re-render, see Provider class
    */
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (this.context.value.themeclass !== this.themeclass) {
       this.context.value.themeclass = this.themeclass;
 

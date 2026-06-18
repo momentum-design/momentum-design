@@ -1,18 +1,20 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import { Component, Provider } from '../../models';
+import { Component } from '../../models';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TAG_NAME as NAVMENUITEM_TAGNAME } from '../navmenuitem/navmenuitem.constants';
+import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import { ROLE } from '../../utils/roles';
 import type NavMenuItem from '../navmenuitem';
-import { KEYS } from '../../utils/keys';
+import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 
-import type { SideNavigationVariant } from './sidenavigation.types';
-import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
+import type { SideNavigationSubmenuType, SideNavigationVariant } from './sidenavigation.types';
+import { DEFAULTS, SUBMENU_TYPES, VARIANTS } from './sidenavigation.constants';
 import SideNavigationContext from './sidenavigation.context';
 import styles from './sidenavigation.styles';
+import SideNavigationBase from './sidenavigationbase';
 
 /**
  * @tagname mdc-sidenavigation
@@ -54,7 +56,8 @@ import styles from './sidenavigation.styles';
  * @cssproperty --mdc-sidenavigation-bottom-padding - padding for the bottom of the scrollable section
  * @cssproperty --mdc-sidenavigation-vertical-divider-button-z-index - z-index of the vertical divider button
  */
-class SideNavigation extends Provider<SideNavigationContext> {
+
+class SideNavigation extends KeyToActionMixin(SideNavigationBase) {
   /**
    * Five variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -103,13 +106,27 @@ class SideNavigation extends Provider<SideNavigationContext> {
   @property({ type: Boolean, reflect: true, attribute: 'hide-fixed-section-divider' })
   hideFixedSectionDivider: boolean = false;
 
+  /**
+   * Determines how sibling submenus are displayed. There are 2 types of submenus supported:
+   *
+   * - `flyout`: Submenus are shown with `mdc-menupopover`.
+   * - `dropdown`: A parent `mdc-navmenuitem` can render its submenu inside a sibling
+   *   `div[data-trigger="<navmenuitem-id>"]` while the sidenavigation is expanded. In collapsed mode,
+   *   dropdown submenus are converted to flyout menus.
+   *
+   * @default flyout
+   */
+  @property({ type: String, reflect: true, attribute: 'submenu-type' })
+  submenuType: SideNavigationSubmenuType = DEFAULTS.SUBMENU_TYPE;
+
   constructor() {
     super({
       context: SideNavigationContext.context,
-      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
+      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true, DEFAULTS.SUBMENU_TYPE),
     });
 
     this.addEventListener('activechange', this.handleNestedNavMenuItemActiveChange.bind(this) as EventListener);
+    this.addEventListener('keydown', this.handleDropdownKeyDown.bind(this));
   }
 
   override connectedCallback(): void {
@@ -229,8 +246,27 @@ class SideNavigation extends Provider<SideNavigationContext> {
       }
     }
 
-    if (changedProperties.has('variant') || changedProperties.has('expanded')) {
+    if (changedProperties.has('variant') || changedProperties.has('expanded') || changedProperties.has('submenuType')) {
       this.updateContext();
+    }
+
+    // When collapsing or when dropdown submenus are turned off, close all dropdown containers
+    if (changedProperties.has('expanded') || changedProperties.has('submenuType')) {
+      if (!this.expanded || this.submenuType !== SUBMENU_TYPES.DROPDOWN) {
+        this.closeAllDropdowns();
+      }
+
+      // Handle dropdown-to-flyout conversion
+      if (this.submenuType === SUBMENU_TYPES.DROPDOWN) {
+        if (!this.expanded) {
+          this.convertDropdownsToFlyouts();
+        } else {
+          this.convertFlyoutsToDropdowns();
+        }
+      } else {
+        // If dropdown submenus are turned off, clean up any dynamic menupopover elements
+        this.convertFlyoutsToDropdowns();
+      }
     }
   }
 
@@ -244,6 +280,14 @@ class SideNavigation extends Provider<SideNavigationContext> {
       this.expanded = true;
       this.updateContext();
     }
+
+    // Hide all dropdown containers by default
+    this.hideAllDropdownContainers();
+
+    // If initially collapsed with dropdown submenus, convert to flyouts
+    if (this.submenuType === SUBMENU_TYPES.DROPDOWN && !this.expanded) {
+      this.convertDropdownsToFlyouts();
+    }
   }
 
   /**
@@ -252,10 +296,15 @@ class SideNavigation extends Provider<SideNavigationContext> {
    *
    * Is called on every re-render, see Provider class
    */
-  protected updateContext(): void {
-    if (this.context.value.variant !== this.variant || this.context.value.expanded !== this.expanded) {
+  protected override updateContext(): void {
+    if (
+      this.context.value.variant !== this.variant ||
+      this.context.value.expanded !== this.expanded ||
+      this.context.value.submenuType !== this.submenuType
+    ) {
       this.context.value.variant = this.variant;
       this.context.value.expanded = this.expanded;
+      this.context.value.submenuType = this.submenuType;
       this.context.updateObservers();
     }
   }
@@ -290,6 +339,214 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   /**
+   * Closes all open dropdown containers and resets their parent navmenuitems.
+   * @internal
+   */
+  private closeAllDropdowns(): void {
+    this.navMenuItems.filter(item => this.context.value.isDropDownParent(item)).forEach(item => item.closeDropdown());
+
+    // Also hide all dropdown containers
+    this.hideAllDropdownContainers();
+  }
+
+  /**
+   * Hides all div[data-trigger] elements within the sidenavigation.
+   * @internal
+   */
+  private hideAllDropdownContainers(): void {
+    const containers = this.querySelectorAll<HTMLElement>('div[data-trigger]');
+    containers.forEach(container => {
+      Object.assign(container.style, {
+        display: 'none',
+        flexDirection: 'column',
+        gap: '0.25rem',
+      });
+    });
+  }
+
+  /**
+   * When collapsed with dropdown submenus, converts div[data-trigger] children into dynamically
+   * created menupopover elements for flyout behavior.
+   * @internal
+   */
+  private convertDropdownsToFlyouts(): void {
+    const containers = this.querySelectorAll<HTMLElement>('div[data-trigger]');
+    containers.forEach(container => {
+      const triggerId = container.getAttribute('data-trigger');
+      if (!triggerId) return;
+
+      // Check if a dynamic menupopover already exists for this trigger
+      const existingPopover = container.parentElement?.querySelector(
+        `${MENUPOPOVER_TAGNAME}[triggerid="${CSS.escape(triggerId)}"][data-dynamic-popover]`,
+      );
+      if (existingPopover) return;
+
+      // Create menupopover
+      const popover = document.createElement(MENUPOPOVER_TAGNAME);
+      popover.setAttribute('triggerid', triggerId);
+      popover.setAttribute('data-dynamic-popover', '');
+      popover.setAttribute('placement', 'right-start');
+
+      // Move children from div to menupopover
+      while (container.firstChild) {
+        popover.appendChild(container.firstChild);
+      }
+
+      // Insert menupopover after the div
+      container.after(popover);
+
+      // Hide the empty div
+      Object.assign(container.style, { display: 'none' });
+    });
+  }
+
+  /**
+   * When expanding with dropdown submenus, converts dynamically created menupopover elements
+   * back to div[data-trigger] containers.
+   * @internal
+   */
+  private convertFlyoutsToDropdowns(): void {
+    const dynamicPopovers = this.querySelectorAll<HTMLElement>(`${MENUPOPOVER_TAGNAME}[data-dynamic-popover]`);
+    dynamicPopovers.forEach(popover => {
+      const triggerId = popover.getAttribute('triggerid');
+      if (!triggerId) return;
+
+      // Find the corresponding div[data-trigger]
+      const container = this.querySelector<HTMLElement>(`div[data-trigger="${CSS.escape(triggerId)}"]`);
+      if (!container) return;
+
+      // Move children back from menupopover to div
+      while (popover.firstChild) {
+        container.appendChild(popover.firstChild);
+      }
+
+      // Remove the dynamic menupopover
+      popover.remove();
+    });
+  }
+
+  /**
+   * Handles Escape key inside dropdown containers to close the dropdown
+   * and return focus to the parent trigger navmenuitem.
+   * @internal
+   */
+  private handleDropdownKeyDown(event: KeyboardEvent): void {
+    if (this.submenuType !== SUBMENU_TYPES.DROPDOWN || !this.expanded) return;
+    const target = event.target as HTMLElement;
+    const isNavMenuItem = target.tagName.toLowerCase() === NAVMENUITEM_TAGNAME;
+    if (!isNavMenuItem) return;
+
+    const targetItem = target as NavMenuItem;
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.ESCAPE) {
+      const dropdownContainer = target.closest('div[data-trigger]') as HTMLElement | null;
+      if (!dropdownContainer) return;
+
+      const triggerId = dropdownContainer.getAttribute('data-trigger');
+      if (!triggerId) return;
+
+      const triggerItem = this.querySelector(`${NAVMENUITEM_TAGNAME}#${CSS.escape(triggerId)}`) as NavMenuItem | null;
+      if (triggerItem) {
+        triggerItem.closeDropdown();
+        triggerItem.focus();
+        event.stopPropagation();
+      }
+      return;
+    }
+
+    const context = this.context.value;
+    const isInsideDropdown = targetItem.hasAttribute('in-dropdown-container');
+    const isOpen = targetItem.getAttribute('aria-expanded') === 'true';
+
+    const getDropdownContainer = (item: NavMenuItem) =>
+      item.parentElement?.querySelector<HTMLElement>(`div[data-trigger="${item.id}"]`) ?? null;
+
+    const getFirstDropdownItem = (container: HTMLElement | null) =>
+      container?.querySelector<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`);
+
+    if (isInsideDropdown) {
+      const dropdownContainer = target.closest<HTMLElement>('div[data-trigger]');
+      if (!dropdownContainer) return;
+
+      const children = Array.from(
+        dropdownContainer.querySelectorAll<NavMenuItem>(`${NAVMENUITEM_TAGNAME}:not([disabled])`),
+      );
+      const currentIndex = children.indexOf(targetItem);
+      if (currentIndex === -1) return;
+
+      switch (action) {
+        case ACTIONS.DOWN: {
+          // Arrow Down: move focus to the next child navmenuitem in the dropdown container, if exists. If on the last child, move focus back to the first child.
+          const idx = currentIndex + 1 < children.length ? currentIndex + 1 : 0;
+          children[idx].focus();
+          event.preventDefault();
+          break;
+        }
+        case ACTIONS.UP: {
+          // Arrow Up: move focus to the previous child navmenuitem in the dropdown container, if exists. If on the first child, move focus to the last child.
+          const idx = currentIndex > 0 ? currentIndex - 1 : children.length - 1;
+          children[idx].focus();
+          event.preventDefault();
+          break;
+        }
+        case ACTIONS.RIGHT: {
+          // Arrow Right: move focus to the next parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
+          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
+          const triggerId = dropdownContainer.getAttribute('data-trigger');
+          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+
+          if (triggerIndex !== -1 && triggerIndex + 1 < outerItems.length) {
+            const nextItem = outerItems[triggerIndex + 1];
+            nextItem.focus();
+            if (context.isDropDownParent(nextItem)) {
+              nextItem.openDropdown();
+              const nextDropdownContainer = getDropdownContainer(nextItem);
+              getFirstDropdownItem(nextDropdownContainer)?.focus();
+            }
+          }
+          break;
+        }
+        case ACTIONS.LEFT: {
+          // Arrow Left: move focus to the previous parent-level navmenuitem in the main list (if exists). If this parent-level navmenuitem has a dropdown, then open the dropdown and move focus to the first child navmenuitem in the dropdown container.
+          const outerItems = this.navMenuItems.filter(item => !item.hasAttribute('in-dropdown-container'));
+          const triggerId = dropdownContainer.getAttribute('data-trigger');
+          const triggerIndex = outerItems.findIndex(item => item.id === triggerId);
+
+          if (triggerIndex > 0) {
+            const previousItem = outerItems[triggerIndex - 1];
+            previousItem.focus();
+            if (context.isDropDownParent(previousItem)) {
+              previousItem.openDropdown();
+              const previousDropdownContainer = getDropdownContainer(previousItem);
+              getFirstDropdownItem(previousDropdownContainer)?.focus();
+            }
+          }
+          break;
+        }
+        default:
+          event.preventDefault();
+      }
+    }
+
+    // if the dropdown is closed and ArrowRight is pressed on the parent navmenuitem, open the dropdown and move focus to the first child navmenuitem in the dropdown container
+    if (action === ACTIONS.RIGHT) {
+      const dropdownContainer = getDropdownContainer(targetItem);
+      if (dropdownContainer) {
+        if (!isOpen) {
+          targetItem.openDropdown();
+        }
+
+        const firstChild = getFirstDropdownItem(dropdownContainer);
+        if (firstChild) {
+          firstChild.focus();
+          event.preventDefault();
+        }
+      }
+    }
+  }
+
+  /**
    * Sets the variant attribute for the sideNavigation component.
    * If the provided variant is not included in the variant,
    * it defaults to the value specified in DEFAULTS.VARIANT.
@@ -320,7 +577,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   private preventScrollOnSpace(event: KeyboardEvent): void {
     // Prevent default space key behavior to avoid scrolling the page
-    if (event.key === KEYS.SPACE) {
+    if (this.getActionForKeyEvent(event) === ACTIONS.SPACE) {
       event.preventDefault();
     }
   }

@@ -238,13 +238,13 @@ class MenuPopover extends Popover {
 
   /**
    * Toggles the visibility of the popover.
-   * This method checks if the trigger element has the `soft-disabled` attribute.
+   * This method checks if the trigger element has the `disabled` or `soft-disabled` attribute.
    * If it does, the popover will not be toggled.
    * If the popover is currently visible, it hides the popover; otherwise, it shows the popover.
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+    if (this.triggerElement?.hasAttribute('disabled') || this.triggerElement?.hasAttribute('soft-disabled')) return;
 
     // Handle mouse click in the parent menupopover to hide open sibling submenus
     if (event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this) {
@@ -397,7 +397,7 @@ class MenuPopover extends Popover {
       case ACTIONS.RIGHT: {
         // If there is a submenu, open it.
         const subMenu = this.getSubMenuPopoverOfTarget(target);
-        if (subMenu) {
+        if (subMenu && !target.hasAttribute('soft-disabled')) {
           subMenu.show();
           isKeyHandled = true;
         }
