@@ -27,23 +27,6 @@ const styles = css`
     color: var(--mdc-stepperitem-help-text-color);
   }
 
-  mdc-statusmessage[part='help-text-container'] {
-    --mdc-statusmessage-color: var(--mdc-stepperitem-help-text-color);
-    --mdc-statusmessage-gap: 0.25rem;
-  }
-
-  :host([variant='stacked']) mdc-statusmessage[part='help-text-container'] {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  :host([variant='stacked']) mdc-statusmessage[part='help-text-container']::part(text) {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   :host::part(status-container) {
     display: flex;
     align-items: center;
