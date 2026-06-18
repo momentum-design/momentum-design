@@ -106,7 +106,7 @@ class IllustrationProvider extends Provider<IllustrationProviderContext> {
     this.context.value.cacheStrategy = this.cacheStrategy;
   }
 
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (
       this.context.value.fileExtension !== this.fileExtension ||
       this.context.value.illustrationSet !== this.illustrationSet ||
