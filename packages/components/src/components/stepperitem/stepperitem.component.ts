@@ -189,14 +189,20 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
       return nothing;
     }
 
-    const severity =
-      this.status === STATUS.ERROR_INCOMPLETE || this.status === STATUS.ERROR_CURRENT
-        ? STATUSMESSAGE_SEVERITY.ERROR
-        : STATUSMESSAGE_SEVERITY.DEFAULT;
+    const helpTextContent = html`<mdc-text
+      part="help-text"
+      tagname=${VALID_TEXT_TAGS.SPAN}
+      type=${TYPE.BODY_MIDSIZE_REGULAR}
+      >${this.helpText}</mdc-text
+    >`;
+
+    if (this.status !== STATUS.ERROR_INCOMPLETE && this.status !== STATUS.ERROR_CURRENT) {
+      return helpTextContent;
+    }
 
     return html`<mdc-statusmessage
       part="help-text-container"
-      severity="${severity}"
+      severity="${STATUSMESSAGE_SEVERITY.ERROR}"
       message="${this.helpText}"
       exportparts="container: help-text-container, icon: help-icon, text: help-text"
     ></mdc-statusmessage>`;

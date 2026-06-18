@@ -56,9 +56,8 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
       label: 'Step Label',
       'help-text': 'Helper text',
     });
-    const statusMessage = stepperitem.locator('mdc-statusmessage[part="help-text-container"]');
-    await expect(statusMessage).toHaveAttribute('severity', 'default');
-    await expect(statusMessage.locator('mdc-text[part="text"]')).toHaveText('Helper text');
+    await expect(stepperitem.locator('[part="help-text"]')).toHaveText('Helper text');
+    await expect(stepperitem.locator('mdc-statusmessage[part="help-text-container"]')).toHaveCount(0);
   });
 
   await test.step('should render step number for not-started and error-incomplete', async () => {
