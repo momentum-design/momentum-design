@@ -9,7 +9,7 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
 import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import { ElementStore } from '../../utils/controllers/ElementStore';
+import { ElementStore, ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 
 import styles from './listbox.styles';
 
@@ -60,6 +60,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
+    onStoreUpdate: this.handleStoreUpdate.bind(this),
   });
 
   constructor() {
@@ -120,6 +121,35 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   private handleDestroyEvent = () => {
     this.handleNoSelection();
   };
+
+  /**
+   * Keeps the roving tabindex valid when options are removed from the store
+   * (e.g. when a consumer filters the list).
+   *
+   * If the option that currently holds `tabindex="0"` is removed, no remaining
+   * option would be focusable, making the listbox unreachable by keyboard. When
+   * that happens we re-assign `tabindex="0"` to the option that took the removed
+   * one's place (clamped to the new bounds) without moving focus, so a consumer
+   * filtering via an external input keeps focus where it is.
+   *
+   * The callback runs before the item is spliced out of the store, so the
+   * re-assignment is deferred to a microtask to act on the updated item list.
+   * @internal
+   */
+  private handleStoreUpdate(item: Option, changeType: ElementStoreChangeTypes, index: number): void {
+    if (changeType !== 'removed' || item.getAttribute('tabindex') !== '0') {
+      return;
+    }
+
+    queueMicrotask(() => {
+      const { navItems } = this;
+      if (navItems.length === 0 || navItems.some(navItem => navItem.getAttribute('tabindex') === '0')) {
+        return;
+      }
+      const newIndex = Math.min(index, navItems.length - 1);
+      this.resetTabIndexes(newIndex, false);
+    });
+  }
 
   /** @internal */
   protected get navItems(): HTMLElement[] {
