@@ -117,7 +117,7 @@
       "tier": 3,
       "path": "packages/components/src/components/bullet/knowledge-base/bullet.component.md",
       "title": "Bullet",
-      "summary": "Usage, guidelines, and accessibility for the mdc-bullet component — a small circular visual indicator used to mark or separate list-style content.",
+      "summary": "Usage, guidelines, and accessibility for mdc-bullet — a styled dot marker for unordered list items and inline content separation.",
       "canonical": null,
       "component": "bullet"
     },
@@ -270,7 +270,7 @@
       "tier": 3,
       "path": "packages/components/src/components/divider/knowledge-base/divider.component.md",
       "title": "Divider",
-      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.",
+      "summary": "Usage, guidelines, and accessibility for mdc-divider — a thin horizontal or vertical separator with optional centered label or grabber button.",
       "canonical": null,
       "component": "divider"
     },
@@ -423,7 +423,7 @@
       "tier": 3,
       "path": "packages/components/src/components/marker/knowledge-base/marker.component.md",
       "title": "Marker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.",
+      "summary": "Usage, guidelines, and accessibility for mdc-marker — a thin vertical visual indicator used to call out rows, calendar items, or content blocks.",
       "canonical": null,
       "component": "marker"
     },
