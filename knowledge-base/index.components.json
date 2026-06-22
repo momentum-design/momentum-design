@@ -809,7 +809,7 @@
       "id": "tier3/packages/components/src/components/toggletip/knowledge-base/toggletip.component",
       "tier": 3,
       "path": "packages/components/src/components/toggletip/knowledge-base/toggletip.component.md",
-      "title": "Toggletip",
+      "title": "Toggle tip",
       "summary": "Usage, guidelines, and accessibility for the mdc-toggletip component — a click-triggered overlay for interactive contextual content.",
       "canonical": null,
       "component": "toggletip"

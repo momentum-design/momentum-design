@@ -7,19 +7,19 @@ component: tooltip
 
 ## Overview
 
-`mdc-tooltip` is a lightweight overlay that surfaces a short, non-interactive hint about a target element. It opens on hover or keyboard focus of the trigger and disappears when the pointer leaves or focus moves away. It can be configured to act as the trigger's accessible description, label, or as a purely visual hint.
+A tooltip is a hover- and focus-triggered popover that surfaces short, non-interactive context about a target element. It can act as the trigger's accessible description, label, or as a purely visual hint.
 
 ### When to use
 
-- Reveal short, text-only context for a control whose purpose isn't fully clear from its visual presentation (e.g. icon-only buttons).
-- Provide an accessible name or description for a trigger that has no visible label.
-- Show the full text of a truncated label only when it is actually overflowing.
+- To reveal short, text-only context for a control whose purpose isn't fully clear from its visual presentation (e.g. icon-only buttons).
+- To provide an accessible name or description for a trigger that has no visible label.
+- To show the full text of a truncated label.
 
 ### When not to use
 
-- Use `mdc-toggletip` when the content needs to remain visible after activation or includes interactive elements (links, buttons).
-- Use `mdc-popover` for richer overlay content, click-triggered surfaces, or when you need explicit control over open/close behavior.
-- Avoid tooltips for critical information — users on touch devices and some assistive technologies may not surface hover-triggered content.
+- When the content must stay open after activation or includes interactive elements (links, buttons). Use `mdc-toggletip` instead.
+- For richer overlay content, click-triggered surfaces, or when you need explicit control over open/close behavior. Use `mdc-popover` instead.
+- When critical information needs to be displayed.
 
 ## Guidelines
 
@@ -41,6 +41,11 @@ Minimal markup example. The tooltip is a sibling of its target; connect it via `
   Saves the current document
 </mdc-tooltip>
 ```
+
+### Content guidance
+
+- While there is no set maximum number of lines or characters for a tooltip, try to keep content brief.
+- Do not truncate text inside a tooltip.
 
 ### Property/Attribute details
 

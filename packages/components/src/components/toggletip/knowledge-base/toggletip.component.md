@@ -1,5 +1,5 @@
 ---
-title: Toggletip
+title: Toggle tip
 summary: Usage, guidelines, and accessibility for the mdc-toggletip component — a click-triggered overlay for interactive contextual content.
 tier: 3
 component: toggletip
@@ -7,18 +7,18 @@ component: toggletip
 
 ## Overview
 
-`mdc-toggletip` is a click-triggered overlay used to surface contextual help text or interactive content (links, buttons) next to a target element. It stays visible until the user dismisses it via the close button, an outside click, or the Escape key, and announces its content to screen readers when it appears.
+A toggle tip is a click-triggered overlay used to surface contextual help text or interactive content (links, buttons) next to a target element. It stays visible until the user dismisses it via the close button, an outside click, or the Escape key.
 
 ### When to use
 
-- Reveal additional information or interactive controls that the user needs time to read or interact with (e.g. an info button next to a form label).
+- To reveal additional information or interactive controls that the user needs time to read or interact with (for example an info button next to a form label).
 - Group an action with a small amount of explanatory content that should remain visible after the user opens it.
 
 ### When not to use
 
-- Use `mdc-tooltip` for short, non-interactive hints that should appear on hover or focus and disappear automatically.
-- Use `mdc-popover` directly when you need full control over trigger semantics, placement defaults, or behavior beyond a click-triggered tip.
-- Use `mdc-dialog` for modal flows that require explicit user acknowledgement or block the rest of the page.
+- For short, non-interactive hints that should appear on hover or focus and disappear automatically. Use `mdc-tooltip` instead.
+- When you need full control over trigger semantics, placement defaults, or behavior beyond a click-triggered tip. Use `mdc-popover` instead.
+- For flows that require explicit user acknowledgement or block the rest of the page. Use `mdc-dialog` instead.
 
 ## Guidelines
 
@@ -41,6 +41,12 @@ Minimal markup example. The toggletip is a sibling of its target; connect it via
 </mdc-toggletip>
 ```
 
+### Content guidance
+
+- Toggle tips often contain a close button as a means of dismissal, but if they contain only text, then the close button is not mandatory, provided that they can be closed by clicking outside of the visible area or using the ESC key.
+- While there is no set maximum number of lines or characters for a toggle tip, try to keep content brief.
+- Do not truncate text inside a toggle tip.
+
 ### Property/Attribute details
 
 - `triggerid` — id of the target element that opens the toggletip when clicked. Required.
@@ -61,7 +67,7 @@ Minimal markup example. The toggletip is a sibling of its target; connect it via
 - Activates on click of the trigger element; pressing Escape or clicking outside closes it; the built-in close button also dismisses it.
 - The overlay traps focus while open so keyboard users can Tab between any interactive controls inside.
 - When the toggletip closes, focus returns to the trigger element.
-- A backdrop is rendered behind the toggletip; clicking the backdrop closes it.
+- A backdrop is rendered behind the toggletip; clicking the backdrop closes it without activating elements beneath it.
 - When the toggletip becomes visible, its text content is announced through `mdc-screenreaderannouncer` (with a 300ms delay) so users of assistive technologies hear the contents.
 
 #### Internal ARIA managed by the component
