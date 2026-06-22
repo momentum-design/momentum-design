@@ -81,7 +81,7 @@
       "tier": 3,
       "path": "packages/components/src/components/avatarbutton/knowledge-base/avatarbutton.component.md",
       "title": "Avatar Button",
-      "summary": "Usage, guidelines, and accessibility for the mdc-avatarbutton component — an interactive, focusable avatar wrapped in a button.",
+      "summary": "Usage, guidelines, and accessibility for mdc-avatarbutton — an interactive, focusable avatar wrapped in a button for profile menus, account switchers, and popover triggers.",
       "canonical": null,
       "component": "avatarbutton"
     },
@@ -531,7 +531,7 @@
       "tier": 3,
       "path": "packages/components/src/components/presence/knowledge-base/presence.component.md",
       "title": "Presence",
-      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status badge that visually represents the availability or activity state of a user or entity.",
+      "summary": "Usage, guidelines, and accessibility for mdc-presence — a small status badge that overlays an avatar to show a user's real-time availability or activity state.",
       "canonical": null,
       "component": "presence"
     },
