@@ -1,25 +1,23 @@
 ---
 title: Marker
-summary: Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.
+summary: Usage, guidelines, and accessibility for mdc-marker — a thin vertical visual indicator used to call out rows, calendar items, or content blocks.
 tier: 3
 component: marker
 ---
 
 ## Overview
 
-The marker is a thin vertical line (0.25rem wide by default) used to draw the eye to a piece of content — typically rendered alongside a list item, card, or content block to indicate status, priority, or categorisation. Two visual variants are available: `solid` (a single coloured line) and `striped` (a line with diagonal stripes for a high-attention variant).
-
-The marker is purely presentational; its meaning must be conveyed elsewhere (label, status text, icon) because it has no accessible name.
+Markers draw attention to specific parts of content and provide visual emphasis alongside list items, cards, or content blocks. `mdc-marker` renders a thin vertical line (0.25rem / 4px wide by default) in `solid` or `striped` variants. Fill color can be customized to match context — for example validation status or calendar meeting categories — but meaning must always be conveyed elsewhere because the marker has no accessible name.
 
 ### When to use
 
-- Use `mdc-marker` to draw attention to important content, signal priority, or visually categorise items inside a layout.
-- Use it as a decorative companion to a list item, card, or content block — never as the sole signal for the information.
+- When visually calling out a row, calendar meeting item, or content block where a vertical accent helps users scan and categorize information.
+- When a decorative companion to text or icons reinforces priority or categorization — never as the sole signal.
 
 ### When not to use
 
-- Use a label, status text, or an icon when the meaning must be announced to screen readers — the marker alone is invisible to assistive technology.
-- Use `mdc-divider` for separating content sections rather than highlighting a single block.
+- When the meaning must be announced to screen readers — use a label, status text, or icon instead; the marker alone is invisible to assistive technology.
+- When separating content sections rather than highlighting a single block. Use `mdc-divider` instead.
 
 ## Guidelines
 
@@ -48,7 +46,7 @@ Striped marker for higher-attention treatment:
 <mdc-marker variant="striped"></mdc-marker>
 ```
 
-Customise the colour and width with CSS custom properties:
+Customize color and width with CSS custom properties:
 
 ```html
 <mdc-marker
@@ -59,27 +57,32 @@ Customise the colour and width with CSS custom properties:
 
 ### Content guidance
 
-- Always pair the marker with text or an icon that conveys the same meaning — the colour and pattern alone are not accessible.
+- Always pair the marker with text or an icon that conveys the same meaning — color and pattern alone are not accessible.
 - Reserve the `striped` variant for the highest-priority or most urgent treatment so it retains its visual weight.
-- Use the CSS custom properties (`--mdc-marker-solid-background-color`, `--mdc-marker-striped-color`, `--mdc-marker-striped-background-color`, `--mdc-marker-width`) to map the marker into a theme's colour tokens.
+- Override fill color with CSS custom properties to denote status types or categories (e.g. meeting types in a calendar). Default color is `outline/secondary`.
+- Markers can be stretched to fill the height of their container based on layout context.
 
 ### Property/Attribute details
 
-- `variant` — `solid` (default; single coloured line) or `striped` (line with diagonal stripes for higher-attention treatment).
+- **`variant`**: `solid` (default; single colored line) or `striped` (line with diagonal stripes for higher-attention treatment).
+- **`--mdc-marker-solid-background-color`**: Fill color for the solid variant. Defaults to `outline/secondary`; override to match contextual status or category colors.
+- **`--mdc-marker-striped-color`** / **`--mdc-marker-striped-background-color`**: Stripe and background colors for the striped variant.
+- **`--mdc-marker-width`**: Line thickness. Defaults to 0.25rem (4px); increase when a bolder accent is needed in the layout.
 
 ### Limitations
 
-- The marker is decorative and has no accessible name. It is invisible to screen readers and must always be accompanied by a text or icon affordance that carries the same meaning.
+- The marker is decorative and has no accessible name. It is invisible to screen readers and must always be accompanied by text or an icon that carries the same meaning.
+- Width and height follow the container — ensure the parent layout gives the marker sufficient height to remain visible.
 
 ## Accessibility
 
 ### Built-in features
 
-The marker has no role, no accessible name, and no keyboard or focus behaviour — it is a purely decorative bar. Screen readers skip it.
+The marker has no role, no accessible name, and no keyboard or focus behavior — it is a purely decorative bar. Screen readers skip it.
 
 ### Implementation requirements
 
 #### General
 
-- Always pair the marker with a text label, status string, or icon that conveys the same meaning. Do not rely on colour or pattern alone.
-- Ensure sufficient colour contrast between the marker and the surrounding background so sighted users with low vision can perceive it.
+- Always pair the marker with a text label, status string, or icon that conveys the same meaning. Do not rely on color or pattern alone.
+- Ensure sufficient color contrast between the marker and the surrounding background so sighted users with low vision can perceive it.
