@@ -1,27 +1,27 @@
 ---
 title: Filterchip
-summary: Usage, guidelines, and accessibility for the mdc-filterchip component — a togglable chip used to apply or remove a single filter, with a built-in checkmark indicator when selected.
+summary: Usage, guidelines, and accessibility for mdc-filterchip — a togglable chip for applying or removing a single filter, with a checkmark indicator when selected.
 tier: 3
 component: filterchip
 ---
 
 ## Overview
 
-The filterchip is a compact, togglable chip used to represent a single filter in a list, table, or search context. Activating the chip flips its `selected` state and the component swaps its leading icon to a checkmark to indicate the active filter.
-
-Filterchips are typically rendered in a horizontal row next to a result set; users toggle them on and off to narrow the set.
+Filter chips let users refine content based on specific criteria — commonly beside lists, tables, or search results in e-commerce, dashboards, and data interfaces. `mdc-filterchip` is a compact, togglable chip: activating it flips the `selected` state, swaps the leading icon to a checkmark, and applies an active background with a 2px border.
 
 ### When to use
 
-- Use `mdc-filterchip` when each chip toggles a single filter that can be applied or removed independently.
-- Use it inside a row of filters where the selected state should be visually obvious at a glance.
+- When each chip toggles a single filter that can be applied or removed independently.
+- In a **group** of filter chips placed close to the result set they affect — filter chips are always used in a group, not as a single isolated chip.
+- On e-commerce, dashboard, or search surfaces where users narrow a list or table with quick filters.
 
 ### When not to use
 
-- Use `mdc-chip` when the chip triggers an action rather than a toggle.
-- Use `mdc-alertchip` when the chip communicates a status (information, warning, error) rather than a togglable filter.
-- Use `mdc-staticchip` when the chip is purely decorative and should not be interactive.
-- Use `mdc-checkbox` or `mdc-radio` when the control should appear inside a form field group rather than as a compact filter row.
+- When the chip triggers a one-off action rather than a toggle. Use `mdc-chip` instead.
+- When the chip communicates alert or validation status. Use `mdc-alertchip` instead.
+- When the chip is purely informational with no toggle behavior. Use `mdc-staticchip` instead.
+- When the control should appear inside a form field group. Use `mdc-checkbox` or `mdc-radio` instead.
+- When representing a removable user-entered value. Use `mdc-inputchip` instead.
 
 ## Guidelines
 
@@ -46,17 +46,22 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 ### Content guidance
 
-- Keep the `label` short — we recommend up to 20 characters including spaces, matching the underlying chip.
-- Phrase the label as the filter that gets applied when the chip is selected ("In stock", not "Toggle in stock"); the checkmark indicates state.
+- Keep the `label` short — limit to a maximum of **20 characters** including spaces.
+- Phrase the label as the filter that gets applied when selected ("In stock", not "Toggle in stock"); the checkmark indicates state.
 - Group related filterchips together and place the row close to the result set they affect.
 
 ### Property/Attribute details
 
-- `selected` — when `true`, the chip is in the active state, displays the checkmark icon, and sets `aria-pressed="true"`. Default `false`.
-- `label` — visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
-- `color` — fixed to the filterchip-specific colour token on connect; setting a different `color` has no effect after connect.
-- `disabled` — when `true`, the chip is non-interactive and removed from the tab order.
-- `autoFocusOnMount` — when `true`, focuses the chip on first render.
+- **`selected`**: When `true`, the chip is in the active state, displays the checkmark icon, shows the press/active background color with a 2px border, and sets `aria-pressed="true"`. Default `false`. Clicking a selected chip deselects it — the checkmark disappears and the chip returns to its normal neutral state.
+- **`label`**: Visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
+- **`color`**: Fixed to the filterchip-specific neutral color token on connect; setting a different `color` has no effect after connect. Do not apply the multi-color palette used by label chips.
+- **`disabled`**: When `true`, the chip is non-interactive and removed from the tab order.
+- **`autoFocusOnMount`**: When `true`, focuses the chip on first render.
+
+### Limitations
+
+- Fixed at 24px height; width grows with the label. Only one size is available.
+- Intended for use in groups — avoid rendering a lone filter chip without surrounding filter context.
 
 ## Accessibility
 
@@ -64,8 +69,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 The host renders with `role="button"` and a single tab stop. Activating the chip flips `selected` and updates `aria-pressed` accordingly, exposing the toggle state to assistive technology.
 
-- `Enter` activates the chip on `keydown` (matches native button behaviour).
-- `Space` activates the chip on `keyup` (matches native button behaviour; `keydown` is suppressed so the page does not scroll).
+- `Enter` activates the chip on `keydown` (matches native button behavior).
+- `Space` activates the chip on `keyup` (matches native button behavior; `keydown` is suppressed so the page does not scroll).
 - Click activates the chip.
 
 When `disabled` is `true`, click and keyboard activation are suppressed and the host is removed from the tab order.
@@ -74,11 +79,11 @@ The `label` provides the accessible name. When `selected` is `true`, the leading
 
 #### Internal ARIA managed by the component
 
-| Element | Attribute      | Value                                                  |
-| ------- | -------------- | ------------------------------------------------------ |
-| Host    | `role`         | `button`                                               |
-| Host    | `aria-pressed` | `true` when `selected`, `false` otherwise              |
-| Host    | `tabindex`     | `0` when enabled; `-1` when `disabled`                 |
+| Element | Attribute      | Value                                  |
+| ------- | -------------- | -------------------------------------- |
+| Host    | `role`         | `button`                               |
+| Host    | `aria-pressed` | `true` when `selected`, `false` otherwise |
+| Host    | `tabindex`     | `0` when enabled; `-1` when `disabled` |
 
 ### Implementation requirements
 

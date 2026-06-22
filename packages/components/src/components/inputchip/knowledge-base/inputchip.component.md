@@ -1,25 +1,26 @@
 ---
 title: Inputchip
-summary: Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.
+summary: Usage, guidelines, and accessibility for mdc-inputchip — a chip representing a tokenized user input value with an optional prefix, label, and removable close button.
 tier: 3
 component: inputchip
 ---
 
 ## Overview
 
-The inputchip represents a single tokenised value: a short label with an optional leading prefix (icon name or arbitrary slotted content such as an avatar) and a close button that fires a `remove` event when activated. It is used in patterns where multiple values are collected into a list of chips (recipients, filters, tags).
-
-The chip supports an `error` visual state for invalid values, a `disabled` state that also disables the close button, and a `prefix` slot that takes precedence over `icon-name` when both are provided.
+Input chips represent user-entered values — such as tags, email addresses, or other small tokens — inside a multi-value input pattern. `mdc-inputchip` shows a short label with an optional leading prefix (icon or slotted content such as an avatar) and a close button that fires a `remove` event when activated.
 
 ### When to use
 
-- Use `mdc-inputchip` to represent individual values inside a multi-value input pattern: token-style inputs for recipients, tags, filters, or any list of removable items.
-- Use it when the consumer needs full control over chip removal — the chip emits `remove` and the consumer decides what to do with that signal.
+- To represent individual values inside a multi-value input pattern: recipients, tags, filters, or any list of removable items the user has entered.
+- When input chips should be paired with a text field so users can add new values while existing ones appear as chips.
+- When the consumer needs full control over chip removal — the chip emits `remove` and the consumer decides how to update state.
 
 ### When not to use
 
-- Use `mdc-filterchip` for chips that toggle a selected/unselected state to filter a list, rather than representing a removable input value.
-- Use `mdc-chip` for static, non-removable display chips.
+- When the chip should toggle a selected/unselected filter state. Use `mdc-filterchip` instead.
+- When the chip is a static, non-removable label. Use `mdc-staticchip` or `mdc-chip` instead.
+- When the chip should communicate system alert status. Use `mdc-alertchip` instead.
+- As a standalone input without an accompanying text field when users still need to enter new values.
 
 ## Guidelines
 
@@ -55,21 +56,24 @@ Listen for the `remove` event to react to the close button being clicked.
 
 ### Content guidance
 
-- Keep the `label` short — we recommend a maximum length of 20 characters (including spaces). Longer values are visually truncated.
+- Keep the `label` short — limit to a maximum of **20 characters** including spaces. Longer values are visually truncated.
 - Use `icon-name` for simple iconographic prefixes; use the `prefix` slot for richer content such as avatars or presence indicators (slot content always wins over `icon-name`).
-- Set `error="true"` when the represented value fails validation; pair the chip with surrounding helper text that explains the failure.
+- Pair input chips with a text field when users need to enter values that become chips — for example adding tags to a post or recipients to an email field.
+- Set `error="true"` when the represented value fails validation — incorrect format, invalid data, duplication, or exceeding character limits. Pair the chip with surrounding helper text that explains the failure.
 
 ### Property/Attribute details
 
-- `label` — the visible text. Default `''`. Aim for ≤20 characters.
-- `icon-name` — name of the icon rendered in the leading prefix when no `prefix` slot content is provided. Default unset.
-- `error` — when `true`, switches the chip to its error visual treatment. Default `false`.
-- `disabled` — when `true`, dims the chip and disables the close button so the value cannot be removed by user interaction.
-- `clear-aria-label` — accessible name for the close button. Required (the close button has no visible text).
+- **`label`**: The visible text. Default `''`. Aim for ≤20 characters.
+- **`icon-name`**: Name of the icon rendered in the leading prefix when no `prefix` slot content is provided. Default unset.
+- **`error`**: When `true`, switches the chip to its error visual treatment (background red). Default `false`. Input chips use default gray for the normal state and red only for invalid or error states.
+- **`disabled`**: When `true`, dims the chip and disables the close button so the value cannot be removed by user interaction.
+- **`clear-aria-label`**: Accessible name for the close button. Required (the close button has no visible text).
 
 ### Limitations
 
-- The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serialising them when the form submits.
+- The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serializing them when the form submits.
+- Labels cannot be edited inline; users must remove the incorrect chip and add a new one to correct a value.
+- Fixed at 24px height; width grows with the label. Only one size is available.
 
 ## Accessibility
 
@@ -81,12 +85,16 @@ The label and prefix icon are presentational — the consumer chooses how to exp
 
 #### Internal ARIA managed by the component
 
-| Element        | Attribute     | Value                              |
-| -------------- | ------------- | ---------------------------------- |
-| Close button   | `aria-label`  | mirrors `clear-aria-label`         |
-| Close button   | `disabled`    | reflects `disabled`                |
+| Element      | Attribute    | Value                      |
+| ------------ | ------------ | -------------------------- |
+| Close button | `aria-label` | mirrors `clear-aria-label` |
+| Close button | `disabled`   | reflects `disabled`        |
 
 ### Implementation requirements
+
+#### General
+
+- Pair input chips with helper text or field-level error messaging when `error` is `true`, so users understand why a value failed validation.
 
 #### Labelling
 

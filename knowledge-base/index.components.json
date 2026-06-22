@@ -36,7 +36,7 @@
       "tier": 3,
       "path": "packages/components/src/components/alertchip/knowledge-base/alertchip.component.md",
       "title": "Alert Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip used to represent an alert with a leading icon and label.",
+      "summary": "Usage, guidelines, and accessibility for mdc-alertchip — an interactive chip that calls attention to status or crucial information using reserved alert colors and a leading icon.",
       "canonical": null,
       "component": "alertchip"
     },
@@ -216,7 +216,7 @@
       "tier": 3,
       "path": "packages/components/src/components/chip/knowledge-base/chip.component.md",
       "title": "Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-chip component — a small interactive button-shaped element representing compact info, an attribute, or a quick action with optional icon and label.",
+      "summary": "Usage, guidelines, and accessibility for mdc-chip — an interactive label chip for compact attributes, categories, or quick actions, with optional tooltip support.",
       "canonical": null,
       "component": "chip"
     },
@@ -279,7 +279,7 @@
       "tier": 3,
       "path": "packages/components/src/components/filterchip/knowledge-base/filterchip.component.md",
       "title": "Filterchip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-filterchip component — a togglable chip used to apply or remove a single filter, with a built-in checkmark indicator when selected.",
+      "summary": "Usage, guidelines, and accessibility for mdc-filterchip — a togglable chip for applying or removing a single filter, with a checkmark indicator when selected.",
       "canonical": null,
       "component": "filterchip"
     },
@@ -351,7 +351,7 @@
       "tier": 3,
       "path": "packages/components/src/components/inputchip/knowledge-base/inputchip.component.md",
       "title": "Inputchip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.",
+      "summary": "Usage, guidelines, and accessibility for mdc-inputchip — a chip representing a tokenized user input value with an optional prefix, label, and removable close button.",
       "canonical": null,
       "component": "inputchip"
     },
@@ -684,7 +684,7 @@
       "tier": 3,
       "path": "packages/components/src/components/staticchip/knowledge-base/staticchip.component.md",
       "title": "Static Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.",
+      "summary": "Usage, guidelines, and accessibility for mdc-staticchip — a non-interactive label chip for displaying short categories, metadata, or attributes.",
       "canonical": null,
       "component": "staticchip"
     },

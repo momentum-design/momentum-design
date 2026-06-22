@@ -1,27 +1,26 @@
 ---
 title: Chip
-summary: Usage, guidelines, and accessibility for the mdc-chip component — a small interactive button-shaped element representing compact info, an attribute, or a quick action with optional icon and label.
+summary: Usage, guidelines, and accessibility for mdc-chip — an interactive label chip for compact attributes, categories, or quick actions, with optional tooltip support.
 tier: 3
 component: chip
 ---
 
 ## Overview
 
-The chip is a compact interactive surface that renders an optional leading icon and a short label. It behaves like a button (single tap or `Enter`/`Space` activation, focus, hover, and disabled states) and is commonly used to represent a tag, attribute, filter trigger, or quick action.
-
-Keep the label short — we recommend a maximum of **20 characters** (including spaces). Chips can be connected to an `mdc-tooltip` (via the tooltip's `triggerid` pointing at the chip's `id`) to surface additional context when the label is truncated or needs explanation.
+Chips are small, interactive elements that represent a status, attribute, or action in a concise format. `mdc-chip` is the interactive label chip: a 24px-tall button-shaped surface with an optional leading icon and short label, commonly used when the chip needs to respond to pointer or keyboard input — for example to reveal supportive detail through an `mdc-tooltip`.
 
 ### When to use
 
-- Use `mdc-chip` to represent an attribute, tag, or quick action that fits in a single, short word or phrase.
-- Use it inside a horizontal row or wrap of chips when several short actions or attributes share the same visual weight.
+- When a short label or attribute should be interactive — such as surfacing extra context on hover or focus via an `mdc-tooltip`.
+- When several compact actions or attributes share the same visual weight in a horizontal row or wrap of chips.
 
 ### When not to use
 
-- Use `mdc-button` when the action needs more visual weight, more text, or icon-only treatment beyond a compact tag.
-- Use `mdc-filterchip` when the chip should reflect an applied filter that can be toggled and removed.
-- Use `mdc-alertchip` when the chip should communicate a status (information, warning, error) rather than trigger an action.
-- Use `mdc-staticchip` when the chip is purely decorative and should not be interactive (e.g. inside a list item that owns the click target).
+- When the chip is purely informational and does not need interaction. Use `mdc-staticchip` instead.
+- When the chip should toggle an applied filter on or off. Use `mdc-filterchip` instead.
+- When the chip should communicate alert or validation status. Use `mdc-alertchip` instead.
+- When the chip represents a removable user-entered value alongside an input pattern. Use `mdc-inputchip` instead.
+- When the action needs more visual weight or longer text. Use `mdc-button` instead.
 
 ## Guidelines
 
@@ -45,17 +44,19 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 ### Content guidance
 
-- Keep the `label` short — we recommend up to 20 characters including spaces.
-- Use `icon-name` only when the icon clarifies the chip; an icon-only chip is not supported (a label is required for an accessible name).
-- Pick a `color` token that matches the chip's semantic meaning in your surface; do not rely on color alone to convey meaning.
+- Keep the `label` short — limit to a maximum of **20 characters** including spaces. Labels should not need to be over-explained; use surrounding UI context and tooltips where needed.
+- Use `icon-name` only when the icon clarifies the chip; a label is required for an accessible name.
+- Use sentence case for the label.
 
 ### Property/Attribute details
 
-- `label` — visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
-- `icon-name` — optional leading icon, rendered through `mdc-icon`. When omitted, no icon is rendered.
-- `color` — visual treatment. One of `default` (default), `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`.
-- `disabled` — when `true`, the chip is non-interactive and removed from the tab order.
-- `autoFocusOnMount` — when `true`, focuses the chip on first render.
+- **`label`**: Visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
+- **`icon-name`**: Optional leading icon, rendered through `mdc-icon`. When omitted, no icon is rendered.
+- **`color`**: Visual treatment for categorization or emphasis — one of `default` (default), `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Do not use these colors to convey alert or validation status; reserve status colors for `mdc-alertchip`.
+- **`disabled`**: When `true`, the chip is non-interactive and removed from the tab order.
+- **`autoFocusOnMount`**: When `true`, focuses the chip on first render.
+
+Connect an `mdc-tooltip` (via the tooltip's `triggerid` pointing at the chip's `id`) when the label is truncated or needs supplementary explanation on hover or keyboard focus.
 
 ### Limitations
 
@@ -68,8 +69,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 The host renders with `role="button"` and a single tab stop. The component owns keyboard activation:
 
-- `Enter` activates the chip on `keydown` (matches native button behaviour).
-- `Space` activates the chip on `keyup` (matches native button behaviour; `keydown` is suppressed so the page does not scroll).
+- `Enter` activates the chip on `keydown` (matches native button behavior).
+- `Space` activates the chip on `keyup` (matches native button behavior; `keydown` is suppressed so the page does not scroll).
 - Click activates the chip.
 
 When `disabled` is `true`, click and keyboard activation are suppressed and the host is removed from the tab order.
@@ -78,10 +79,10 @@ The `label` provides the accessible name. The leading icon is decorative and is 
 
 #### Internal ARIA managed by the component
 
-| Element | Attribute   | Value                                  |
-| ------- | ----------- | -------------------------------------- |
-| Host    | `role`      | `button`                               |
-| Host    | `tabindex`  | `0` when enabled; `-1` when `disabled` |
+| Element | Attribute  | Value                                  |
+| ------- | ---------- | -------------------------------------- |
+| Host    | `role`     | `button`                               |
+| Host    | `tabindex` | `0` when enabled; `-1` when `disabled` |
 
 ### Implementation requirements
 
