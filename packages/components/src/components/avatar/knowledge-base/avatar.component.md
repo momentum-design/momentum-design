@@ -7,15 +7,16 @@ component: avatar
 
 ## Overview
 
-The avatar represents a person or a group. It can be rendered as a photo, initials, icon, or counter, and is non-interactive and non-focusable by default. An optional presence indicator and a typing loading state are also supported.
+An avatar visually represents a user, profile, or identity. `mdc-avatar` is the non-interactive variant: it renders as a photo, initials, icon, or counter and is omitted from tab order. An optional presence indicator and typing state can overlay the artwork when the representing user status or in-progress message composition.
 
 ### When to use
 
-- Use `mdc-avatar` to visually represent a person or group inline within content (e.g. lists, cards, message rows).
+- When a person or group needs a visual identity inline within content — for example in lists, cards, message rows, or participant strips.
 
 ### When not to use
 
-- Use `mdc-avatarbutton` when the avatar must be clickable or focusable (profile menu, account switcher, etc.).
+- When the avatar must be clickable or focusable (profile menu, account switcher, etc.). Use `mdc-avatarbutton` instead.
+- When a standalone status badge is needed without avatar artwork. Use `mdc-presence` instead.
 
 ## Guidelines
 
@@ -44,12 +45,18 @@ Minimal markup example:
 
 When multiple display attributes are provided, the avatar picks what to render in this priority order:
 
-1. **Photo** (`src`) — highest priority. While loading, `initials` show as an instant placeholder when provided, otherwise the icon is shown (after the icon library loads). On load error, the placeholder remains visible.
-2. **Icon** (`icon-name`) — used when `src` is not provided. If both `icon-name` and `initials` are provided (without `src`), the icon wins and `initials` are ignored, which means users may briefly see nothing while the icon library loads even though initials would have rendered instantly. Defaults to `user-regular` when nothing else is available.
-3. **Initials** (`initials`) — shown when neither `src` nor `icon-name` is provided. Renders instantly.
-4. **Counter** (`counter`) — shown only when none of the above are provided.
+1. **`src`** (photo) — highest priority. While loading, `initials` show as an instant placeholder when provided; otherwise the default icon is shown. On load error, the placeholder remains visible.
+2. **`icon-name`** — used when `src` is not provided. If both `icon-name` and `initials` are provided (without `src`), the icon wins and `initials` are ignored, which means users may briefly see nothing while the icon library loads even though initials would have rendered instantly.
+3. **`initials`** — shown when neither `src` nor `icon-name` is provided. Renders instantly.
+4. **`counter`** — shown only when none of the above are provided.
 
-Other behaviour worth knowing:
+Other supported attributes:
+
+- **`size`**: Avatar diameter in px — `24` (2X-Small), `32` (X-Small, default), `48` (Small), `64` (Midsize), `72` (Large), `88` (X-Large), `124` (2X-Large). Invalid values fall back to `32`. Match size to surrounding content density — smaller sizes for compact rows, larger sizes when the avatar is a focal identity marker.
+- **`presence`**: Activity status passed through to the nested `mdc-presence` badge. Accepts `active`, `away`, `away-calling`, `busy`, `dnd`, `meeting`, `on-call`, `on-device`, `on-mobile`, `pause`, `pto`, `presenting`, `quiet`, `scheduled`. Hidden when a counter is rendered or while typing.
+- **`is-typing`**: When `true`, overlays a three-dot typing loading indicator on top of the current content. Hidden when the avatar is in counter mode.
+
+### Limitations
 
 - When `is-typing` is `true`, a typing loading indicator overlays the existing content.
 - The presence indicator is hidden when the avatar is rendering a counter, or when it is in the typing state.
@@ -62,10 +69,10 @@ The avatar is treated as decorative by default — it is hidden from assistive t
 
 #### Internal ARIA managed by the component
 
-| Element        | Attribute     | Value                                                                              |
-| -------------- | ------------- | ---------------------------------------------------------------------------------- |
-| Host           | `aria-hidden` | `true` by default; consumers may set `aria-hidden="false"` when the avatar conveys meaning |
-| Photo (`img`)  | `aria-hidden` | `true` (the host carries the accessible exposure)                                   |
+| Element       | Attribute     | Value                                                                                        |
+| ------------- | ------------- | -------------------------------------------------------------------------------------------- |
+| Host          | `aria-hidden` | `true` by default; consumers may set `aria-hidden="false"` when the avatar conveys meaning   |
+| Photo (`img`) | `aria-hidden` | `true` (the host carries the accessible exposure when overridden)                            |
 
 ### Implementation requirements
 
