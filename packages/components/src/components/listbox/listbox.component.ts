@@ -123,22 +123,35 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   };
 
   /**
-   * Keeps the roving tabindex valid when options are removed from the store
-   * (e.g. when a consumer filters the list).
+   * Keeps the roving tabindex valid as options are added to or removed from the
+   * store (e.g. when a consumer filters the list, or enables/disables options).
    *
-   * If the option that currently holds `tabindex="0"` is removed, no remaining
-   * option would be focusable, making the listbox unreachable by keyboard. When
-   * that happens we re-assign `tabindex="0"` to a neighbouring option (the next
-   * one, or the previous one when the last option is removed) without moving
-   * focus, so a consumer filtering via an external input keeps focus where it is.
+   * On `added`, the new option is made non-tabbable (`tabindex="-1"`) to preserve
+   * the single-tab-stop invariant, unless it is the first option in an otherwise
+   * empty listbox, in which case it becomes focusable so the listbox is reachable
+   * by keyboard. This also covers options added via the `enabled` lifecycle, which
+   * the mixin's `created` handler does not see.
    *
-   * The callback runs before the removed item is spliced out of the store, so we
-   * pick a neighbour by offsetting from `index` rather than the post-removal
-   * bounds — mirroring the List / TabList components.
+   * On `removed`, if the option that currently holds `tabindex="0"` is removed no
+   * remaining option would be focusable, making the listbox unreachable by
+   * keyboard. When that happens we re-assign `tabindex="0"` to a neighbouring
+   * option (the next one, or the previous one when the last option is removed)
+   * without moving focus, so a consumer filtering via an external input keeps
+   * focus where it is.
+   *
+   * The callback runs before the store is updated, so for removals we pick a
+   * neighbour by offsetting from `index` rather than the post-removal bounds, and
+   * for additions an empty `navItems` means this is the first option — mirroring
+   * the List / TabList components.
    * @internal
    */
   protected onElementStoreUpdate(item: Option, changeType: ElementStoreChangeTypes, index: number): void {
-    if (changeType === 'removed' && item.tabIndex === 0) {
+    if (changeType === 'added') {
+      item.tabIndex = -1;
+      if (this.navItems.length === 0) {
+        item.tabIndex = 0;
+      }
+    } else if (changeType === 'removed' && item.tabIndex === 0) {
       let newIndex = index + 1;
       if (newIndex >= this.navItems.length) {
         newIndex = index - 1;
