@@ -3,5 +3,14 @@
   "_comment": "GENERATED FILE — DO NOT HAND-EDIT. Run `yarn knowledge-base:index` to regenerate.",
   "generatedFrom": "scripts/knowledge-base/generate-index.js",
   "tier": 1,
-  "topics": []
+  "topics": [
+    {
+      "id": "tier1/knowledge-base/content-guidelines",
+      "tier": 1,
+      "path": "knowledge-base/content-guidelines.md",
+      "title": "Content guidelines",
+      "summary": "Webex product UI/UX writing standards — voice, tone, style mechanics, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.",
+      "canonical": null
+    }
+  ]
 }
