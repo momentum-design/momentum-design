@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react';
-import Tablist from '@momentum-design/components/dist/react/tablist/index.js';
-import Tab from '@momentum-design/components/dist/react/tab/index.js';
+import React, { useMemo, useState } from "react";
+import { TabList, Tab } from "@momentum-design/components/react";
 
-import { MarkdownView } from './Markdown';
-import { slugify } from '../utils/slugify';
-import type { MarkdownSection } from '../types';
+import { MarkdownView } from "./Markdown";
+import { slugify } from "../utils/slugify";
+import type { MarkdownSection } from "../types";
 
 export interface DocsTabsProps {
   sections: MarkdownSection[];
@@ -22,9 +21,7 @@ export const DocsTabs: React.FC<DocsTabsProps> = ({ sections }) => {
     [sections],
   );
 
-  const [activeTabId, setActiveTabId] = useState<string | undefined>(
-    tabs[0]?.tabId,
-  );
+  const [activeTabId, setActiveTabId] = useState<string | undefined>(tabs[0]?.tabId);
 
   if (tabs.length === 0) return null;
 
@@ -32,7 +29,7 @@ export const DocsTabs: React.FC<DocsTabsProps> = ({ sections }) => {
 
   return (
     <div style={{ marginTop: 12 }}>
-      <Tablist
+      <TabList
         data-aria-label="Documentation sections"
         activeTabId={active.tabId}
         onChange={(event: CustomEvent<{ tabId: string }>) => {
@@ -40,21 +37,10 @@ export const DocsTabs: React.FC<DocsTabsProps> = ({ sections }) => {
         }}
       >
         {tabs.map((t) => (
-          <Tab
-            key={t.tabId}
-            tabId={t.tabId}
-            variant="pill"
-            text={t.section.heading}
-            aria-controls={t.panelId}
-          />
+          <Tab key={t.tabId} tabId={t.tabId} variant="pill" text={t.section.heading} aria-controls={t.panelId} />
         ))}
-      </Tablist>
-      <div
-        role="tabpanel"
-        id={active.panelId}
-        aria-labelledby={active.tabId}
-        style={{ padding: '8px 0 0' }}
-      >
+      </TabList>
+      <div role="tabpanel" id={active.panelId} aria-labelledby={active.tabId} style={{ padding: "8px 0 0" }}>
         <MarkdownView>{active.section.body}</MarkdownView>
       </div>
     </div>
