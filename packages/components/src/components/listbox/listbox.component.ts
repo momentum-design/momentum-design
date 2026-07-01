@@ -60,7 +60,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
-    onStoreUpdate: this.handleStoreUpdate.bind(this),
+    onStoreUpdate: this.onElementStoreUpdate.bind(this),
   });
 
   constructor() {
@@ -128,27 +128,24 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
    *
    * If the option that currently holds `tabindex="0"` is removed, no remaining
    * option would be focusable, making the listbox unreachable by keyboard. When
-   * that happens we re-assign `tabindex="0"` to the option that took the removed
-   * one's place (clamped to the new bounds) without moving focus, so a consumer
-   * filtering via an external input keeps focus where it is.
+   * that happens we re-assign `tabindex="0"` to a neighbouring option (the next
+   * one, or the previous one when the last option is removed) without moving
+   * focus, so a consumer filtering via an external input keeps focus where it is.
    *
-   * The callback runs before the item is spliced out of the store, so the
-   * re-assignment is deferred to a microtask to act on the updated item list.
+   * The callback runs before the removed item is spliced out of the store, so we
+   * pick a neighbour by offsetting from `index` rather than the post-removal
+   * bounds — mirroring the List / TabList components.
    * @internal
    */
-  private handleStoreUpdate(item: Option, changeType: ElementStoreChangeTypes, index: number): void {
-    if (changeType !== 'removed' || item.getAttribute('tabindex') !== '0') {
-      return;
-    }
-
-    queueMicrotask(() => {
-      const { navItems } = this;
-      if (navItems.length === 0 || navItems.some(navItem => navItem.getAttribute('tabindex') === '0')) {
-        return;
+  protected onElementStoreUpdate(item: Option, changeType: ElementStoreChangeTypes, index: number): void {
+    if (changeType === 'removed' && item.tabIndex === 0) {
+      let newIndex = index + 1;
+      if (newIndex >= this.navItems.length) {
+        newIndex = index - 1;
       }
-      const newIndex = Math.min(index, navItems.length - 1);
+
       this.resetTabIndexes(newIndex, false);
-    });
+    }
   }
 
   /** @internal */
