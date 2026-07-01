@@ -17,19 +17,6 @@ import styles from './listitem.styles';
 import { ListItemVariants } from './listitem.types';
 
 /**
- * mdc-listitem component is used to display a label with different types of controls.
- * There can be three types of controls, a radio button, a checkbox on the
- * leading side and a toggle on the trailing side.
- * The list item can contain an avatar on the leading side and a badge on the trailing side.
- * Additionally, the list item can contain a side header and a subline text.
- *
- * The leading and trailing slots can be used to display controls and text. <br/>
- * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
- * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
- *
- * **Note**: If a listitem contains a long text, it is recommended to create a tooltip for the listitem that displays the full text on hover.
- * Consumers need to add a unique ID to this listitem and use that ID in the tooltip's `triggerID` attribute. We are not creating the tooltip automatically, consumers need to add `<mdc-tooltip>` element manually and associate it with the listitem using the `triggerID` attribute.
- *
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
@@ -154,17 +141,27 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
   @property({ type: Boolean, reflect: true, attribute: 'active' })
   active?: boolean;
 
+  private wasSpacePressed: boolean = false;
+
   constructor() {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('blur', this.handleBlur.bind(this));
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
+  }
+
+  /**
+   * Handles the blur event on the list item. It resets the `wasSpacePressed` flag to false.
+   */
+  private handleBlur(): void {
+    this.wasSpacePressed = false;
   }
 
   /**
@@ -188,22 +185,29 @@ class ListItem extends KeyDownHandledMixin(KeyToActionMixin(DisabledMixin(TabInd
    */
   protected handleKeyDown(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
+
+    if (this.isEventFromInsideListItem(event)) {
+      return;
+    }
+
     if (!event.defaultPrevented && action === ACTIONS.ENTER) {
-      if (!this.isEventFromInsideListItem(event)) {
-        this.keyDownEventHandled();
-        event.preventDefault();
-        this.triggerClickEvent(event);
-      }
+      this.keyDownEventHandled();
+      event.preventDefault();
+      this.triggerClickEvent(event);
+    } else if (action === ACTIONS.SPACE) {
+      this.wasSpacePressed = true;
     }
   }
 
   protected handleKeyUp(event: KeyboardEvent): void {
     const action = this.getActionForKeyEvent(event);
-    if (!event.defaultPrevented && action === ACTIONS.SPACE) {
-      if (!this.isEventFromInsideListItem(event)) {
+    if (action === ACTIONS.SPACE) {
+      if (!this.isEventFromInsideListItem(event) && !event.defaultPrevented && this.wasSpacePressed) {
         event.preventDefault();
         this.triggerClickEvent(event);
       }
+
+      this.wasSpacePressed = false;
     }
   }
 

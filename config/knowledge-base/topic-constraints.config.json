@@ -1,0 +1,10 @@
+{
+    "tiers": {
+        "3": {
+            "filenamePattern": "{component}.{topic}.md",
+            "allowedTopics": {
+                "component": "All related component documentation in one file (accessibility, anatomy, usage, theming, interaction, and API)."
+            }
+        }
+    }
+}

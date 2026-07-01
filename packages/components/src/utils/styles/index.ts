@@ -1,5 +1,7 @@
 import { css } from 'lit';
 
+type FocusRingClassMode = 'focus-on-child' | 'parent-to-child';
+
 const hostFitContentStyles = css`
   :host {
     align-items: center;
@@ -30,8 +32,9 @@ const focusRingBoxShadow = css`0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc
     0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color)
   `;
 
-const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
-  if (applyFocusRingOnClass) {
+const hostFocusRingStyles = (applyFocusRingOnClass = false, classMode: FocusRingClassMode = 'focus-on-child') => {
+  if (applyFocusRingOnClass && classMode === 'focus-on-child') {
+    // the child is focused, the child gets the visual focus ring:
     return [
       baseHostStyleVariables,
       css`
@@ -42,6 +45,7 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
           box-shadow: none;
         }
         /* Add focus ring to parent when child is focused. The parent element must have class name mdc-focus-ring */
+        /* .mdc-focus-ring:focus-visible, */
         .mdc-focus-ring:focus-within {
           position: relative;
           box-shadow: ${focusRingBoxShadow};
@@ -61,6 +65,33 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
       `,
     ];
   }
+
+  if (applyFocusRingOnClass && classMode === 'parent-to-child') {
+    // the parent is focused, the child gets the visual focus ring:
+    return [
+      baseHostStyleVariables,
+      css`
+        :host([disabled]:focus) {
+          box-shadow: none;
+        }
+        :host(.mdc-focus-ring:focus-visible),
+        :host(:focus-visible) .mdc-focus-ring {
+          outline: none;
+          position: relative;
+          box-shadow: ${focusRingBoxShadow};
+        }
+        /* High Contrast Mode */
+        @media (forced-colors: active) {
+          :host(.mdc-focus-ring:focus-visible),
+          :host(:focus-visible) .mdc-focus-ring {
+            outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+          }
+        }
+      `,
+    ];
+  }
+
+  // the parent is focused, the parent gets the visual focus ring:
   return [
     baseHostStyleVariables,
     css`

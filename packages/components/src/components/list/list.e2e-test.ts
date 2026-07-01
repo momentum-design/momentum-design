@@ -1,8 +1,9 @@
-import { expect } from '@playwright/test';
+import { expect , Locator, Keyboard } from '@playwright/test';
 
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { htmlRootElementSelector } from '../../../config/playwright/setup/Components.page';
 
 type SetUpOptions = {
   componentsPage: ComponentsPage;
@@ -19,7 +20,7 @@ const generateBasicChildren = (count: number) =>
     .fill(1)
     .map(
       (_, index) => `
-  <mdc-listitem label="List Item ${index + 1}"><mdc-listitem>
+  <mdc-listitem label="List Item ${index + 1}"></mdc-listitem>
 `,
     )
     .join('');
@@ -309,35 +310,182 @@ test('mdc-list', async ({ componentsPage }) => {
     });
 
     await test.step('spatial navigation', async () => {
-      const list = await setup({ componentsPage, children: generateChildren(6), 'header-text': 'List header' });
-      await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
-      const { keyboard } = componentsPage.page;
+      await test.step('generic navigation', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(6), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
 
-      const listItems = list.locator('mdc-listitem');
+        const listItems = list.locator('mdc-listitem');
 
-      await componentsPage.setAttributes(listItems.nth(1), { disabled: '' });
+        await componentsPage.setAttributes(listItems.nth(1), { disabled: '' });
 
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
 
-      // Skip disabled list item
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(2)).toBeFocused();
+        // Skip disabled list item
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(2)).toBeFocused();
 
-      await keyboard.press(KEYS.ARROW_LEFT);
-      await expect(listItems.nth(2).locator('mdc-checkbox')).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(1)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_LEFT);
-      await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(listItems.nth(3)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_RIGHT);
-      await expect(listItems.nth(3).locator('mdc-button').nth(0)).toBeFocused();
-      await keyboard.press(KEYS.ARROW_UP);
-      await expect(listItems.nth(2)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(2).locator('mdc-checkbox')).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(1)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_LEFT);
+        await expect(listItems.nth(2).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_RIGHT);
+        await expect(listItems.nth(3).locator('mdc-button').nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(2)).toBeFocused();
+      });
+      await test.step('single list item', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(1), 'header-text': 'List header' });
+        // Add before and after buttons
+        await componentsPage.page.evaluate(
+          ({ htmlRootElementSelector }) => {
+            const snp = document.querySelector(htmlRootElementSelector)!;
+            const btn1 = document.createElement('mdc-button');
+            btn1.textContent = 'before button';
+            btn1.style.margin = 'auto';
+            snp.prepend(btn1);
+            const btn2 = document.createElement('mdc-button');
+            btn2.textContent = 'after button';
+            btn2.style.margin = 'auto';
+            snp.append(btn2);
+          },
+          { htmlRootElementSelector },
+        );
+
+        const { keyboard } = componentsPage.page;
+
+        const listItems = list.locator('mdc-listitem');
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+
+        const beforeBtn = componentsPage.page.getByText('before button');
+        const afterBtn = componentsPage.page.getByText('after button');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(beforeBtn).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(afterBtn).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(0)).toBeFocused();
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(beforeBtn).toBeFocused();
+      });
+    });
+
+    await test.step('scroll when items does not fit into the view', async () => {
+      const navigationSteps = async (keyboard: Keyboard, scrollRoot: Locator, listItems: Locator) => {
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(0)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(1)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(2)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        const scrollDownTop = await scrollRoot.evaluate(l => l.scrollTop)
+
+        // Remain the focus on element 3 ...
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 100);
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 200);
+
+        // ... until its last part scroll into view
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(3)).toBeFocused();
+        expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollDownTop + 300);
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(4)).toBeFocused();
+
+        // No scrolling
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(5)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(listItems.nth(6)).toBeFocused();
+
+        // No scrolling
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(5)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(4)).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(3)).toBeFocused();
+
+        // Skip these steps on Webkit.
+        // When focus moves up and the item need to scroll into view. Chrome and Firefox do the shortest scroll
+        // so the element's bottom will be aligned to the bottom of the viewport, while Webkit will align the element's
+        // top to the top of the viewport.
+        // Spatial navigation used in embedded systems (eg.: TV) which using chromium based browsers. It is Ok to skip it.
+        if (test.info().project.name !== 'webkit') {
+          const scrollUpTop = await scrollRoot.evaluate(l => l.scrollTop);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 100);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 200);
+
+          await keyboard.press(KEYS.ARROW_UP);
+          await expect(listItems.nth(3)).toBeFocused();
+          expect(await scrollRoot.evaluate(l => l.scrollTop)).toBe(scrollUpTop - 300);
+        }
+
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(listItems.nth(2)).toBeFocused();
+      };
+
+      await test.step('scroll root is the parent', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(7), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        const listItems = list.locator('mdc-listitem');
+
+        // change heights
+        await componentsPage.setAttributes(list, { style: 'height: 200px; overflow-y: auto' });
+        await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 400px' });
+        await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 400px', 'data-spatial-noscroll': '' });
+
+        await navigationSteps(keyboard, list, listItems);
+      });
+
+      await test.step('scroll is not the direct parent of the focusables', async () => {
+        const list = await setup({ componentsPage, children: generateChildren(7), 'header-text': 'List header' });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const { keyboard } = componentsPage.page;
+
+        const listItems = list.locator('mdc-listitem');
+
+        const listParent = componentsPage.page.locator('mdc-spatialnavigationprovider > div');
+
+        // change heights
+        await componentsPage.setAttributes(listParent, { style: 'height: 200px; overflow-y: auto', id: 'scroll-root', 'data-spatial-scroll-parent': '' });
+        await componentsPage.setAttributes(listItems.nth(3), { style: 'height: 404px' });
+        await componentsPage.setAttributes(listItems.nth(5), { style: 'height: 404px', 'data-spatial-noscroll': '' });
+
+        await navigationSteps(keyboard, listParent, listItems);
+      });
     });
   });
 
@@ -458,6 +606,35 @@ test('mdc-list', async ({ componentsPage }) => {
       await componentsPage.actionability.pressShiftTab();
       await expect(listitems.nth(2)).toBeFocused();
     });
+
+    // AI-Assisted
+    await test.step('should not scroll the list when Space is pressed on a focused listitem', async () => {
+      // tabindex=-1 is needed here to stop Firefox from giving the scrollable region focus instead of the list items
+      await componentsPage.mount({
+        html: `
+          <div style="height: 150px; overflow-y: auto;" tabindex="-1">
+            <mdc-list>
+              ${generateBasicChildren(20)}
+            </mdc-list>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const container = componentsPage.page.locator('mdc-list').first();
+      await container.waitFor();
+
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.locator('mdc-listitem').first()).toBeFocused();
+
+      const scrollTopBefore = await container.evaluate(el => el.scrollTop);
+
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+
+      const scrollTopAfter = await container.evaluate(el => el.scrollTop);
+      expect(scrollTopAfter).toBe(scrollTopBefore);
+    });
+    // End AI-Assisted
   });
 
   await test.step('should keep the focus on interactive elements inside list items', async () => {
@@ -556,99 +733,119 @@ test('mdc-list', async ({ componentsPage }) => {
        `);
     });
 
-    await test.step('horizontal orientation', async () => {
-      await test.step('should navigate with left/right arrow keys in horizontal orientation', async () => {
-        await componentsPage.mount({
-          html: `
+    await test.step('when clicking on a element inside of a focusable element, the focus should remain on the clicked element', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-list>
+            <mdc-listitem>
+              <div slot="content">
+                <div tabindex="0" contenteditable="true" data-test="">
+                  <p>This is test text</p>
+                </div>
+              </div>
+            </mdc-listitem>
+          </mdc-list>
+        `,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.locator('div[contenteditable]').locator('p').click();
+      await expect(componentsPage.page.locator('div[contenteditable]')).toBeFocused();
+    });
+  });
+
+  await test.step('horizontal orientation', async () => {
+    await test.step('should navigate with left/right arrow keys in horizontal orientation', async () => {
+      await componentsPage.mount({
+        html: `
             <mdc-list orientation="horizontal">
               ${generateChildren(4)}
             </mdc-list>
           `,
-          clearDocument: true,
-        });
-
-        const list = componentsPage.page.locator('mdc-list');
-        await list.waitFor();
-        const listItems = list.locator('mdc-listitem');
-
-        // Focus first item
-        await componentsPage.actionability.pressTab();
-        await expect(listItems.nth(0)).toBeFocused();
-
-        // Navigate right to next item
-        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
-        await expect(listItems.nth(1)).toBeFocused();
-
-        // Navigate right again
-        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
-        await expect(listItems.nth(2)).toBeFocused();
-
-        // Navigate left to previous item
-        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
-        await expect(listItems.nth(1)).toBeFocused();
-
-        // Home key should move to first item
-        await componentsPage.page.keyboard.press(KEYS.HOME);
-        await expect(listItems.nth(0)).toBeFocused();
-
-        // End key should move to last item
-        await componentsPage.page.keyboard.press(KEYS.END);
-        await expect(listItems.nth(3)).toBeFocused();
+        clearDocument: true,
       });
 
-      await test.step('should not navigate with up/down arrow keys in horizontal orientation', async () => {
-        await componentsPage.mount({
-          html: `
+      const list = componentsPage.page.locator('mdc-list');
+      await list.waitFor();
+      const listItems = list.locator('mdc-listitem');
+
+      // Focus first item
+      await componentsPage.actionability.pressTab();
+      await expect(listItems.nth(0)).toBeFocused();
+
+      // Navigate right to next item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(1)).toBeFocused();
+
+      // Navigate right again
+      await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(2)).toBeFocused();
+
+      // Navigate left to previous item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
+      await expect(listItems.nth(1)).toBeFocused();
+
+      // Home key should move to first item
+      await componentsPage.page.keyboard.press(KEYS.HOME);
+      await expect(listItems.nth(0)).toBeFocused();
+
+      // End key should move to last item
+      await componentsPage.page.keyboard.press(KEYS.END);
+      await expect(listItems.nth(3)).toBeFocused();
+    });
+
+    await test.step('should not navigate with up/down arrow keys in horizontal orientation', async () => {
+      await componentsPage.mount({
+        html: `
             <mdc-list orientation="horizontal">
               ${generateChildren(3)}
             </mdc-list>
           `,
-          clearDocument: true,
-        });
-
-        const list = componentsPage.page.locator('mdc-list');
-        await list.waitFor();
-        const listItems = list.locator('mdc-listitem');
-
-        // Focus first item
-        await componentsPage.actionability.pressTab();
-        await expect(listItems.nth(0)).toBeFocused();
-
-        // Up/Down arrows should not navigate (focus should remain on first item)
-        await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
-        await expect(listItems.nth(0)).toBeFocused();
-
-        await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
-        await expect(listItems.nth(0)).toBeFocused();
+        clearDocument: true,
       });
-    });
 
-    await test.step('vertical orientation', async () => {
-      await test.step('should not navigate with left/right arrow keys in vertical orientation', async () => {
-        await componentsPage.mount({
-          html: `
+      const list = componentsPage.page.locator('mdc-list');
+      await list.waitFor();
+      const listItems = list.locator('mdc-listitem');
+
+      // Focus first item
+      await componentsPage.actionability.pressTab();
+      await expect(listItems.nth(0)).toBeFocused();
+
+      // Up/Down arrows should not navigate (focus should remain on first item)
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItems.nth(0)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(listItems.nth(0)).toBeFocused();
+    });
+  });
+
+  await test.step('vertical orientation', async () => {
+    await test.step('should not navigate with left/right arrow keys in vertical orientation', async () => {
+      await componentsPage.mount({
+        html: `
             <mdc-list orientation="vertical">
               ${generateChildren(3)}
             </mdc-list>
           `,
-          clearDocument: true,
-        });
-
-        const list = componentsPage.page.locator('mdc-list');
-        await list.waitFor();
-        const listItems = list.locator('mdc-listitem');
-
-        // Focus first item
-        await componentsPage.actionability.pressTab();
-        await expect(listItems.nth(0)).toBeFocused();
-
-        // Left/Right arrows should not navigate (focus should remain on first item)
-        await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
-        await expect(listItems.nth(0)).toBeFocused();
-
-        await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
-        await expect(listItems.nth(0)).toBeFocused();
+        clearDocument: true,
       });
+
+      const list = componentsPage.page.locator('mdc-list');
+      await list.waitFor();
+      const listItems = list.locator('mdc-listitem');
+
+      // Focus first item
+      await componentsPage.actionability.pressTab();
+      await expect(listItems.nth(0)).toBeFocused();
+
+      // Left/Right arrows should not navigate (focus should remain on first item)
+      await componentsPage.page.keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(listItems.nth(0)).toBeFocused();
+
+      await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT);
+      await expect(listItems.nth(0)).toBeFocused();
     });
   });
 });

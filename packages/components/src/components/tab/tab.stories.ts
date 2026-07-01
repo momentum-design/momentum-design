@@ -10,7 +10,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { hideAllControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 import { ROLE } from '../../utils/roles';
 
-import { TAB_VARIANTS } from './tab.constants';
+import { TAB_SIZES, TAB_VARIANTS } from './tab.constants';
 
 const render = (args: Args) =>
   html`<div role="tablist">
@@ -25,6 +25,7 @@ const render = (args: Args) =>
       ?disabled="${args.disabled}"
       ?soft-disabled="${args['soft-disabled']}"
       icon-name="${ifDefined(args['icon-name'])}"
+      size="${ifDefined(args.size)}"
       tabIndex="${ifDefined(args.tabIndex)}"
       text="${ifDefined(args.text)}"
       variant="${ifDefined(args.variant)}"
@@ -56,6 +57,11 @@ const meta: Meta = {
     tabIndex: {
       control: 'number',
     },
+    size: {
+      control: 'select',
+      options: Object.values(TAB_SIZES),
+      description: 'Size of the tab in pixels.',
+    },
     text: {
       control: 'text',
     },
@@ -66,7 +72,7 @@ const meta: Meta = {
     'auto-focus-on-mount': {
       control: 'boolean',
     },
-    ...hideControls(['role', 'size', 'type', 'Slot Name: ""']),
+    ...hideControls(['role', 'type', 'Slot Name: ""']),
   },
 };
 
@@ -77,6 +83,7 @@ const defaultArgs = {
   disabled: false,
   'icon-name': 'placeholder-bold',
   role: 'tab',
+  size: TAB_SIZES[32],
   tabIndex: 0,
   text: 'Label',
   variant: TAB_VARIANTS.PILL,
@@ -146,6 +153,7 @@ export const CustomPrefixSlot: StoryObj = {
         aria-label="${ifDefined(args.text ? nothing : 'Label')}"
         ?disabled="${args.disabled}"
         ?soft-disabled="${args['soft-disabled']}"
+        size="${ifDefined(args.size)}"
         tabIndex="${ifDefined(args.tabIndex)}"
         text="${ifDefined(args.text)}"
         variant="${ifDefined(args.variant)}"

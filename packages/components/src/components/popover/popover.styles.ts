@@ -73,16 +73,6 @@ const styles = css`
     pointer-events: auto;
   }
 
-  :host::part(popover-arrow) {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    background-color: var(--mdc-popover-primary-background-color);
-    transform: rotate(45deg);
-    pointer-events: none;
-    border: var(--mdc-popover-arrow-border);
-  }
-
   :host::part(popover-close) {
     box-sizing: border-box;
     position: absolute;
@@ -95,6 +85,16 @@ const styles = css`
   :host(:dir(rtl))::part(popover-close) {
     right: auto;
     left: 0.75rem;
+  }
+
+  .popover-arrow {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--mdc-popover-primary-background-color);
+    transform: rotate(45deg);
+    pointer-events: none;
+    border: var(--mdc-popover-arrow-border);
   }
 
   .popover-arrow[data-side='top'] {

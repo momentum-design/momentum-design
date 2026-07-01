@@ -1,6 +1,6 @@
 import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
@@ -8,6 +8,7 @@ import { FooterMixin } from '../../utils/mixins/FooterMixin';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE } from '../text/text.constants';
 import type { TagName } from '../text/text.types';
+import { hasOverflowMixin } from '../../utils/dom';
 
 import { DEFAULTS } from './toast.constants';
 import { getIconNameForVariant } from './toast.utils';
@@ -15,11 +16,7 @@ import styles from './toast.styles';
 import type { ToastVariant } from './toast.types';
 
 /**
- * `mdc-toast` is a lightweight, non-blocking alert used to inform users about application processes.
- * It supports success, warning, error, and custom messages, and is designed to be controlled externally.
- *
- * **Note**: When using `slot="toast-body-normal"` and `slot="toast-body-detailed"`, it's strongly recommended to wrap the content with `<mdc-text tagname="span">`.
- * If not used, ensure your custom content is styled appropriately to match the design and alignment expectations of the toast component.
+ * @tagname mdc-toast
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -31,8 +28,6 @@ import type { ToastVariant } from './toast.types';
  * @slot footer - Slot for custom footer content. Prefer using footer-button-primary and footer-button-secondary slots.
  * @slot footer-button-primary - Slot for passing the primary variant of `mdc-button` in the footer.
  * @slot footer-button-secondary - Slot for passing the secondary variant of `mdc-button` in the footer.
- *
- * @tagname mdc-toast
  *
  * @event close - (React: onClose) Dispatched when the Close Button is clicked using mouse or keyboard.
  *
@@ -54,6 +49,12 @@ import type { ToastVariant } from './toast.types';
  * @cssproperty --mdc-toast-padding - Padding inside the toast.
  */
 class Toast extends FooterMixin(Component) {
+  /**
+   * Reference to the header text element
+   * @internal
+   */
+  @query("[part='toast-header']") private headerTextElement!: HTMLElement;
+
   /**
    * Type of toast
    * - Can be `custom`, `success`, `warning` or `error`.
@@ -107,6 +108,14 @@ class Toast extends FooterMixin(Component) {
   @state()
   private hasDetailedSlot: boolean = false;
 
+  /**
+   * Indicates whether the header text is overflowing and requires the show more/less toggle button to be shown when detailed content is present.
+   * This is determined on first update and will not update dynamically if the header text changes after initial render.
+   * @internal
+   */
+  @state()
+  private hasOverflowingHeaderText: boolean = false;
+
   @queryAssignedElements({ slot: 'toast-body-detailed', flatten: true })
   private detailedElements!: HTMLElement[];
 
@@ -129,6 +138,12 @@ class Toast extends FooterMixin(Component) {
 
   private toggleDetailVisibility() {
     this.isDetailVisible = !this.isDetailVisible;
+
+    if (this.isDetailVisible) {
+      this.setAttribute('data-expanded', 'true');
+    } else {
+      this.removeAttribute('data-expanded');
+    }
   }
 
   private updateDetailedSlotPresence() {
@@ -144,9 +159,14 @@ class Toast extends FooterMixin(Component) {
         : '';
   }
 
-  protected override firstUpdated(changedProperties: PropertyValues): void {
+  protected override async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
     this.updateDetailedSlotPresence();
+
+    await this.updateComplete;
+    if (hasOverflowMixin(this.headerTextElement)) {
+      this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
+    }
   }
 
   protected renderIcon(iconName: string) {
@@ -157,7 +177,7 @@ class Toast extends FooterMixin(Component) {
   }
 
   private shouldRenderToggleButton() {
-    return this.hasDetailedSlot && this.showMoreText && this.showLessText;
+    return (this.hasDetailedSlot || this.hasOverflowingHeaderText) && this.showMoreText && this.showLessText;
   }
 
   private renderToggleDetailButton() {

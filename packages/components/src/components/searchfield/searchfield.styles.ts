@@ -1,35 +1,47 @@
+// AI-Assisted
 import { css } from 'lit';
 
 const styles = css`
-  :host::part(filters-container) {
-    display: flex;
-    gap: 0.25rem;
-    margin: 0.25rem 0;
-  }
-
   :host::part(input-text) {
     white-space: nowrap;
-    min-width: 90%;
+    flex: 0 0 auto;
+    min-width: 4rem;
   }
 
-  input[type="search"]::-webkit-search-cancel-button {
+  input[type='search']::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
 
-  input[type="search"]:hover::-webkit-search-cancel-button {
+  input[type='search']:hover::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
 
-  :host::part(scrollable-container) {
+  :host::part(input-container) {
+    gap: 0.5rem;
+  }
+
+  :host::part(searchfield-container) {
     display: flex;
-    flex-grow: 1;
-    overflow-x: scroll;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    gap: 0.25rem;
+    overflow-x: auto;
     overflow-y: hidden;
-    position: relative;
     scrollbar-width: none;
+    height: var(--mdc-input-height);
+  }
+
+  :host::part(searchfield-container)::-webkit-scrollbar {
+    display: none;
+  }
+
+  slot[name='filters']::slotted(:first-child) {
+    margin-left: 0.25rem;
   }
 `;
 
 export default [styles];
+// End AI-Assisted

@@ -23,7 +23,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 
 const render = (args: Args) =>
   wrapWithDiv(html`
-    <mdc-listbox @change="${action('onchange')}" name="${args.name}" value="${args.value}">
+    <mdc-listbox @change="${action('onchange')}" name="${args.name}" value="${args.value}" ?multiple="${args.multiple}">
       <mdc-option value="london" label="London, UK"></mdc-option>
       <mdc-option selected value="losangeles" label="Los Angeles, CA"></mdc-option>
       <mdc-option value="newyork" label="New York, NY"></mdc-option>
@@ -45,6 +45,9 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
+    multiple: {
+      control: 'boolean',
+    },
     ...disableControls(['default']),
     ...classArgType,
     ...styleArgType,
@@ -55,7 +58,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    value: 'london',
+    value: 'losangeles',
   },
 };
 
@@ -231,5 +234,39 @@ export const ListboxWithChangingSelectedAfterMount: StoryObj = {
       </mdc-listbox>
     `);
   },
+  ...hideAllControls(),
+};
+
+export const Multiselect: StoryObj = {
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-listbox multiple @change="${action('onchange')}">
+        <mdc-option value="apple" label="Apple"></mdc-option>
+        <mdc-option value="banana" label="Banana" selected></mdc-option>
+        <mdc-option value="cherry" label="Cherry"></mdc-option>
+        <mdc-option value="date" label="Date" selected></mdc-option>
+      </mdc-listbox>
+    `),
+  ...hideAllControls(),
+};
+
+export const ListboxWithAvatarInOptions: StoryObj = {
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-listbox @change="${action('onchange')}">
+        <mdc-option value="user1" label="John Doe" secondary-label="john.doe@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user2" label="Jane Smith" secondary-label="jane.smith@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/64/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user3" label="Bob Wilson" secondary-label="bob.wilson@example.com">
+          <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/65/256" size="32"></mdc-avatar>
+        </mdc-option>
+        <mdc-option value="user4" label="Alice Brown" secondary-label="alice.brown@example.com">
+          <mdc-avatar slot="leading-controls" initials="AB" size="32"></mdc-avatar>
+        </mdc-option>
+      </mdc-listbox>
+    `),
   ...hideAllControls(),
 };

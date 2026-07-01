@@ -7,29 +7,6 @@ import { ALLOWED_FILE_EXTENSIONS, DEFAULTS } from './illustrationprovider.consta
 import type { CacheStrategy, IllustrationSet } from './illustrationprovider.types';
 
 /**
- * IllustrationProvider component, which allows to be consumed from sub components
- * (see `providerUtils.consume` for how to consume)
- *
- * Attribute `illustrationSet` can be set to either `momentum-illustrations` or `custom-illustrations`.
- * If `momentum-illustrations` is selected, the illustrations will be fetched from the
- * Momentum Design System illustration set per a dynamic JS Import (no need to provide a URL).
- * This requires the consumer to have the `@momentum-design/illustrations` package installed and the
- * build tooling needs to support dynamic imports.
- *
- * If `custom-illustrations` is selected, the illustrations will be fetched from the provided URL.
- * This requires the consumer to provide a URL from which the illustrations will be fetched and
- * the consumer needs to make sure to bundle the illustrations in the application.
- *
- * If `cacheStrategy` is provided (only works with illustrationSet = `custom-illustrations`), the
- * IllustrationProvider will cache the illustrations in the selected cache (either web-api-cache or in-memory-cache),
- * to avoid fetching the same illustration multiple times over the network.
- * This is useful when the same illustration is used multiple times in the application.
- * To consider:
- * - The `in-memory-cache` is not persisted and will be lost when the
- * IllustrationProvider is removed from the DOM.
- * - The `web-api-cache` is persisted, but only works in https environments
- * (https://developer.mozilla.org/en-US/docs/Web/API/Cache).
- *
  * @tagname mdc-illustrationprovider
  *
  * @slot - children
@@ -129,7 +106,7 @@ class IllustrationProvider extends Provider<IllustrationProviderContext> {
     this.context.value.cacheStrategy = this.cacheStrategy;
   }
 
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (
       this.context.value.fileExtension !== this.fileExtension ||
       this.context.value.illustrationSet !== this.illustrationSet ||

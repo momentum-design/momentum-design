@@ -8,31 +8,6 @@ import ThemeProviderContext from './themeprovider.context';
 import styles from './themeprovider.styles';
 
 /**
- * ThemeProvider component, which sets the passed in themeclass as class.
- * If the themeclass switches, the existing themeclass will be removed as a class
- * and the new themeclass will be added.
- *
- * CSS variables defined in the themeclass will be used for the styling of child dom nodes.
- *
- * Available Momentum theme classes:
- *
- * `mds-theme-stable-darkWebex`, `mds-theme-stable-lightWebex`
- *
- * `mds-theme-stable-darkBronzeWebex`, `mds-theme-stable-lightBronzeWebex`
- *
- * `mds-theme-stable-darkIndigoWebex`, `mds-theme-stable-lightIndigoWebex`
- *
- * `mds-theme-stable-darkJadeWebex`, `mds-theme-stable-lightJadeWebex`
- *
- * `mds-theme-stable-darkLavenderWebex`, `mds-theme-stable-lightLavenderWebex`
- *
- * `mds-theme-stable-darkRoseWebex`, `mds-theme-stable-lightRoseWebex`
- *
- * Themeclass context can be be consumed from Lit child components
- * (see providerUtils.consume for how to consume)
- *
- * ThemeProvider also includes basic font defaults for text.
- *
  * @tagname mdc-themeprovider
  *
  * @slot - children
@@ -43,8 +18,6 @@ import styles from './themeprovider.styles';
  * default: `Momentum` (from momentum-design/fonts)
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: `400`
  * default: `-0.25px` (this is to match the old CiscoSans)
- * @cssproperty --mdc-themeprovider-font-feature-settings - Option to override the font feature settings,
- * default: `"ss02" on`
  * @cssproperty --mdc-themeprovider-scrollbar-track-color - Option to override the color of the scrollbar track.
  * @cssproperty --mdc-themeprovider-scrollbar-thumb-color - Option to override the color of the scrollbar thumb.
  */
@@ -97,7 +70,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
    *
    * Is called on every re-render, see Provider class
    */
-  protected updateContext(): void {
+  protected override updateContext(): void {
     if (this.context.value.themeclass !== this.themeclass) {
       this.context.value.themeclass = this.themeclass;
 

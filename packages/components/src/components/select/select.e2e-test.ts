@@ -109,6 +109,9 @@ test('mdc-select', async ({ componentsPage }) => {
     await expect(tooltip).toBeVisible();
     await expect(tooltip).toHaveText('White and Black are the biggest colors on the spectrum');
 
+    // Wait for tooltip positioning to stabilize (floating-ui may recompute position)
+    await componentsPage.page.waitForTimeout(500);
+
     // Visual regression snapshot of the tooltip
     await componentsPage.visualRegression.takeScreenshot('mdc-select', {
       source: 'userflow',
@@ -326,7 +329,7 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await select.click();
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
 
       await test.step('component should open dropdown and select 2nd option and close popover', async () => {
@@ -336,7 +339,7 @@ test('mdc-select', async ({ componentsPage }) => {
 
         await select.locator('mdc-option').nth(1).click();
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
     });
 
@@ -396,7 +399,7 @@ test('mdc-select', async ({ componentsPage }) => {
       await mdcSelect.locator('mdc-option').nth(1).click();
 
       // Verify the selected value and popover is closed
-      await expect(mdcSelect.locator('mdc-popover')).not.toBeVisible();
+      await expect(mdcSelect.locator('mdc-popover')).not.toHaveAttribute('visible');
       await expect(mdcSelect).toHaveAttribute('value', 'option2');
 
       // Try to submit the form again
@@ -734,13 +737,13 @@ test('mdc-select', async ({ componentsPage }) => {
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.ENTER);
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
         await expect(select.locator('mdc-popover')).toBeVisible();
 
         await componentsPage.page.keyboard.press(KEYS.SPACE);
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
 
       await test.step('component should open dropdown select an option and then close the dropdown', async () => {
@@ -752,7 +755,7 @@ test('mdc-select', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
         await componentsPage.page.keyboard.press(KEYS.ENTER);
         await expect(select.locator('mdc-text[part="base-text selected"]')).toHaveText('Option Label 2');
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
 
       await test.step('component should navigate in between options list', async () => {
@@ -823,7 +826,7 @@ test('mdc-select', async ({ componentsPage }) => {
 
         // press escape to close the popover
         await componentsPage.page.keyboard.press(KEYS.ESCAPE);
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
 
       const setupArguments = {
@@ -912,13 +915,13 @@ test('mdc-select', async ({ componentsPage }) => {
 
         // Pressing a letter with modifier keys should not open the popover or trigger type-ahead
         await componentsPage.page.keyboard.press('Meta+Shift+c');
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
 
         await componentsPage.page.keyboard.press('Control+c');
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
 
         await componentsPage.page.keyboard.press('Alt+c');
-        await expect(select.locator('mdc-popover')).not.toBeVisible();
+        await expect(select.locator('mdc-popover')).not.toHaveAttribute('visible');
       });
 
       await test.step('component should not change focus of already selected option if the letter doesn`t match any option', async () => {
@@ -1010,9 +1013,9 @@ test('mdc-select', async ({ componentsPage }) => {
       await keyboard.press(KEYS.ARROW_DOWN);
 
       await keyboard.press(KEYS.ARROW_DOWN);
-      await expect(popover).not.toBeVisible();
+      await expect(popover).not.toHaveAttribute('visible');
       await keyboard.press(KEYS.ARROW_UP);
-      await expect(popover).not.toBeVisible();
+      await expect(popover).not.toHaveAttribute('visible');
 
       // Open Select oly via ENTER key
       await componentsPage.page.keyboard.press(KEYS.ENTER);
@@ -1020,7 +1023,7 @@ test('mdc-select', async ({ componentsPage }) => {
 
       // Escape closes the popover
       await keyboard.press(KEYS.ESCAPE);
-      await expect(popover).not.toBeVisible();
+      await expect(popover).not.toHaveAttribute('visible');
 
       await keyboard.press(KEYS.ENTER);
       await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toBeFocused();
@@ -1040,7 +1043,7 @@ test('mdc-select', async ({ componentsPage }) => {
       // Select option via ENTER key
       await keyboard.press(KEYS.ENTER);
       await expect(select.locator('mdc-option').filter({ hasText: 'Option Label 1' })).toHaveAttribute('selected');
-      await expect(popover).not.toBeVisible();
+      await expect(popover).not.toHaveAttribute('visible');
     });
   });
 });

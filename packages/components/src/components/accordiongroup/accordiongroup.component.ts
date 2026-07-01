@@ -11,20 +11,6 @@ import styles from './accordiongroup.styles';
 import type { Size, Variant } from './accordiongroup.types';
 
 /**
- * An accordion group is a container that manages multiple accordion or accordionbutton components as a unified set.
- * It controls the visual styling, spacing, and expansion behavior of all child accordions.
- *
- * The group applies consistent `variant` and `size` attributes to all children automatically.
- * By default, expanding one accordion collapses others (`allow-multiple` is false). Set `allow-multiple` to true to allow multiple expanded items.
- *
- * ## Accepted children
- * - Use `mdc-accordionbutton` children for simple clickable headers.
- * - Use `mdc-accordion` children when you need additional controls (chips, badges, icons) in the headers.
- * - Other elements in the slot are ignored.
- *
- * ## Accessibility
- * - Note: Screen readers may lose focus when toggling if the first accordion is expanded by default.
- *
  * @tagname mdc-accordiongroup
  *
  * @slot default - The default slot can contain the `accordion` or `accordionbutton` components.

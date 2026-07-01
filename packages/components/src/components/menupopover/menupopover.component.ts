@@ -17,40 +17,6 @@ import styles from './menupopover.styles';
 import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
 
 /**
- * A popover menu component that displays a list of menu items in a floating container.
- * It's designed to work in conjunction with `mdc-menubar` and `mdc-menuitem` to create
- * accessible, nested menu structures with the following features:
- * - Appears adjacent to the triggering menu item
- * - Supports keyboard navigation (arrow keys, Home, End)
- * - Manages focus trapping when open
- * - Closes on Escape key or outside click
- * - Supports both mouse and keyboard interactions
- * - Automatically handles ARIA attributes for accessibility
- *
- * The component extends `mdc-popover` and adds menu-specific behaviors and styling.
- * When nested within another `mdc-menupopover`, it automatically adjusts its behavior
- * to work as a submenu (right-aligned, shows on hover).
- *
- * The orientation of the menu popover is always set to `vertical`.
- *
- * Submenu opens when:
- * - Clicked on a menu item with a submenu
- * - Enter or Space key pressed on a menu item with a submenu
- *
- * Menu closes completely (with all sub menus) when:
- * - A menu item is clicked that does not have a submenu
- * - Enter key pressed on a menu item (not a submenu trigger), menu item radio or menu item checkbox
- * - Click outside the menu popover (on the backdrop)
- *
- * Close submenus when:
- * - Esc key pressed, only the current submenu closed
- * - Arrow Left key pressed, only the current submenu closed
- * - Open another submenu with Click, Enter or Space key,
- *   closes recursively all submenus until the selected item's submenu
- *
- * Menu does not close when:
- * - Space key pressed on a menu item radio or menu item checkbox
- *
  * @tagname mdc-menupopover
  *
  * @slot - Default slot for the menu popover content
@@ -207,7 +173,8 @@ class MenuPopover extends Popover {
     if (this.menuItems.length > 0) {
       this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[currentIndex].setAttribute('tabindex', '0');
-      this.menuItems[currentIndex].focus();
+      this.menuItems[currentIndex].focus({ preventScroll: true });
+      this.menuItems[currentIndex].scrollIntoView({ block: 'nearest' });
     }
   }
 
@@ -230,7 +197,8 @@ class MenuPopover extends Popover {
     if (newIndex === oldIndex) return;
     this.menuItems[oldIndex].setAttribute('tabindex', '-1');
     this.menuItems[newIndex].setAttribute('tabindex', '0');
-    this.menuItems[newIndex].focus();
+    this.menuItems[newIndex].focus({ preventScroll: true });
+    this.menuItems[newIndex].scrollIntoView({ block: 'nearest' });
   }
 
   /**
@@ -262,18 +230,21 @@ class MenuPopover extends Popover {
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.closeAllMenuPopovers();
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 
   /**
    * Toggles the visibility of the popover.
-   * This method checks if the trigger element has the `soft-disabled` attribute.
+   * This method checks if the trigger element has the `disabled` or `soft-disabled` attribute.
    * If it does, the popover will not be toggled.
    * If the popover is currently visible, it hides the popover; otherwise, it shows the popover.
    * @returns - This method does not return anything.
    */
   public override togglePopoverVisible = (event: Event) => {
-    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+    if (this.triggerElement?.hasAttribute('disabled') || this.triggerElement?.hasAttribute('soft-disabled')) return;
 
     // Handle mouse click in the parent menupopover to hide open sibling submenus
     if (event.composedPath().find(el => (el as HTMLElement).tagName === this.tagName) === this) {
@@ -426,7 +397,7 @@ class MenuPopover extends Popover {
       case ACTIONS.RIGHT: {
         // If there is a submenu, open it.
         const subMenu = this.getSubMenuPopoverOfTarget(target);
-        if (subMenu) {
+        if (subMenu && !target.hasAttribute('soft-disabled')) {
           subMenu.show();
           isKeyHandled = true;
         }

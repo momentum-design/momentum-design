@@ -67,6 +67,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
   if (isForm) {
     const form = componentsPage.page.locator('form');
     await form.waitFor();
+    // Wait for the custom element inside the form to upgrade and render its shadow DOM
+    await form.locator('mdc-password input').waitFor();
     return form;
   }
   const text = componentsPage.page.locator('mdc-password');
@@ -74,10 +76,10 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return text;
 };
 
-test.use({ viewport: { width: 800, height: 1500 } });
-test('mdc-password', async ({ componentsPage, browserName }) => {
+test.describe('mdc-password', () => {
+  test.use({ viewport: { width: 800, height: 1500 } });
+
   const defaultSetupOptions = {
-    componentsPage,
     id: 'test-mdc-password',
     placeholder: 'Placeholder',
     maxlength: 10,
@@ -89,15 +91,12 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     secondButtonForFocus: true,
   };
 
-  let password: any;
-
-  // Initial setup
-  password = await setup(defaultSetupOptions);
-
   /**
    * ATTRIBUTES
    */
-  await test.step('attributes', async () => {
+  test('attributes', async ({ componentsPage }) => {
+    // Initial setup
+    const password = await setup({ componentsPage, ...defaultSetupOptions });
     await test.step('should attributes be present in the component', async () => {
       await expect(password).toHaveAttribute('id', 'test-mdc-password');
       await expect(password).toHaveAttribute('placeholder', 'Placeholder');
@@ -112,25 +111,25 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the required attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { required: '' });
       await expect(password).toHaveAttribute('required', '');
     });
 
     await test.step('should the readonly attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { readonly: '' });
       await expect(password).toHaveAttribute('readonly');
     });
 
     await test.step('should the disabled attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { disabled: '' });
       await expect(password).toHaveAttribute('disabled');
     });
 
     await test.step('should the help-text-type attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       for (const type of Object.values(VALIDATION)) {
         await componentsPage.setAttributes(password, { 'help-text-type': type });
         await expect(password).toHaveAttribute('help-text-type', type);
@@ -144,7 +143,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the attributes size, minlength and maxlength be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { maxlength: '10', minlength: '5', size: '10' });
       await expect(password).toHaveAttribute('maxlength', '10');
       await expect(password).toHaveAttribute('minlength', '5');
@@ -152,7 +151,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the show- & hide-button-aria-label attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, {
         'show-button-aria-label': 'show password',
         'hide-button-aria-label': 'hide password',
@@ -166,19 +165,19 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the autofocus attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { 'auto-focus-on-mount': '' });
       await expect(password).toHaveAttribute('auto-focus-on-mount');
     });
 
     await test.step('should the dirname attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { dirname: 'ltr' });
       await expect(password).toHaveAttribute('dirname', 'ltr');
     });
 
     await test.step('should the pattern attribute be present in the component when it sets', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       await componentsPage.setAttributes(password, { pattern: '[A-Za-z]{3}' });
       await expect(password).toHaveAttribute('pattern', '[A-Za-z]{3}');
     });
@@ -187,17 +186,12 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
   /**
    * INTERACTIONS
    */
-  await test.step('interactions', async () => {
+  test('interactions', async ({ componentsPage, browserName }) => {
+    let password: any;
+
     await test.step('should the component be focusable with tab', async () => {
-      await setup({
-        componentsPage,
-        trailingButton: true,
-        showButtonAriaLabel: 'show button',
-        hideButtonAriaLabel: 'hide button',
-        secondButtonForFocus: true,
-      });
+      password = await setup({ componentsPage, ...defaultSetupOptions });
       const showHideButton = password.locator('mdc-button[part="trailing-button"]');
-      await setup(defaultSetupOptions);
       const passwordEl = password.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
@@ -277,7 +271,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('should the password element not be focusable when it is disabled', async () => {
-      await setup(defaultSetupOptions);
+      await setup({ componentsPage, ...defaultSetupOptions });
       const passwordEl = password.locator('input');
       await componentsPage.setAttributes(password, { disabled: '', value: 'Disabled' });
       await componentsPage.actionability.pressTab();
@@ -447,7 +441,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
   });
 
-  await test.step('should update help-text and help-text-type dynamically based on password validity (FormFieldPasswordWithHelpTextValidation)', async () => {
+  test('help-text validation', async ({ componentsPage }) => {
     await componentsPage.mount({
       html: `
         <form id="test-form" novalidate>
@@ -546,7 +540,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
+  test('visual-regression', async ({ componentsPage }) => {
     const attributes = {
       id: 'test-mdc-password',
       placeholder: 'Placeholder',
@@ -617,7 +611,8 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => {
+  test('accessibility', async ({ componentsPage }) => {
+    await setup({ componentsPage, ...defaultSetupOptions });
     await componentsPage.accessibility.checkForA11yViolations('password-default');
   });
 });

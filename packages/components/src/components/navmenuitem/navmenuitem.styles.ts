@@ -14,6 +14,7 @@ const styles = [
       --mdc-navmenuitem-in-sidenav-collapsed-margin-right: var(--mdc-sidenavigation-collapsed-right-padding, 1rem);
 
       --mdc-navmenuitem-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-navmenuitem-notch-color: var(--mds-color-theme-text-primary-normal);
       --mdc-navmenuitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
 
       /* Background color when in default (normal) or active state */
@@ -27,6 +28,7 @@ const styles = [
 
       position: relative;
       flex-shrink: 0;
+      height: 2.5rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -56,8 +58,10 @@ const styles = [
       display: none;
     }
 
-    :host([in-menupopover]) {
+    :host([in-menupopover]),
+    :host([in-dropdown-container]) {
       width: 100%;
+      padding: 1rem;
     }
 
     :host(:not([in-menupopover])) {
@@ -114,11 +118,12 @@ const styles = [
       background-color: var(--mdc-navmenuitem-pressed-active-background-color);
     }
 
-    :host(:not([in-menupopover]))::before {
+    :host(:not([in-menupopover]))::before,
+    :host([in-dropdown-container])::before {
       content: '';
       display: block;
       position: absolute;
-      background-color: var(--mdc-navmenuitem-color);
+      background-color: var(--mdc-navmenuitem-notch-color);
       width: 0.25rem;
       height: 1rem;
       pointer-events: none;
@@ -177,12 +182,18 @@ const styles = [
       flex-shrink: 0;
 
       position: absolute;
-      inset-inline-end: -0.25rem;
+      inset-inline-end: -0.125rem;
       top: 0.875rem;
     }
 
-    :host([show-label])::part(trailing-arrow) {
+    :host([show-label])::part(trailing-arrow),
+    :host([show-label])::part(trailing-arrow-dropdown) {
       flex-shrink: 0;
+    }
+
+    /* Arrow rotation when dropdown is open */
+    .arrow-rotated {
+      transform: rotate(180deg);
     }
 
     :host mdc-badge {

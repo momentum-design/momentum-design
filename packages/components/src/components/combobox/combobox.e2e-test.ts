@@ -33,6 +33,7 @@ type SetupOptions = {
   'toggletip-placement'?: string;
   'toggletip-strategy'?: string;
   'invalid-custom-value-text'?: string;
+  filter?: string;
 };
 
 const defaultLabel = 'Top Countries list';
@@ -90,6 +91,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
           ${restArgs['toggletip-placement'] ? `toggletip-placement="${restArgs['toggletip-placement']}"` : ''}
           ${restArgs['toggletip-strategy'] ? `toggletip-strategy="${restArgs['toggletip-strategy']}"` : ''}
           ${restArgs['invalid-custom-value-text'] ? `invalid-custom-value-text="${restArgs['invalid-custom-value-text']}"` : ''}
+          ${restArgs.filter ? `filter="${restArgs.filter}"` : ''}
         >
           ${restArgs.options ? createOptionsMarkup(restArgs.options) : ''}
         </mdc-combobox>
@@ -1324,6 +1326,150 @@ test.describe('Combobox Feature Scenarios', () => {
         // Select option via ENTER key
         await keyboard.press(KEYS.ENTER);
         await expect(input).toHaveValue('Argentina');
+        await expect(dropdown).not.toBeVisible();
+      });
+    });
+
+    /**
+     * FILTER
+     */
+    await test.step('filter', async () => {
+      await test.step('should show all options regardless of typed text when filter is "none"', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          filter: 'none',
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('xyz');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(6);
+      });
+
+      await test.step('should still allow selecting an option when filter is "none"', async () => {
+        const { input, dropdown, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          filter: 'none',
+        });
+
+        await input.click();
+        await expect(dropdown).toBeVisible();
+        await getOptionByText('Brazil').click();
+
+        await expect(input).toHaveValue('Brazil');
+        await expect(dropdown).not.toBeVisible();
+      });
+
+      await test.step('should show all options after typing partial text when filter is "none"', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          filter: 'none',
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(6);
+      });
+
+      await test.step('should allow keyboard navigation across all options when filter is "none"', async () => {
+        const { input, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+          filter: 'none',
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('b');
+
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(getOptionByText('Argentina')).toHaveAttribute('aria-selected', 'true');
+
+        await input.press(KEYS.ARROW_DOWN);
+        await expect(getOptionByText('Austria')).toHaveAttribute('aria-selected', 'true');
+
+        await input.press(KEYS.ENTER);
+        await expect(input).toHaveValue('Austria');
+      });
+
+      await test.step('should filter options with default "match-starts-with" strategy', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('aus');
+
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(2);
+      });
+
+      await test.step('should use a custom filter function when one is provided', async () => {
+        const { input, options } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox') as any;
+          combobox.filter = (option: Element, inputValue: string) => {
+            const label = option.getAttribute('label') || '';
+            return label.toLowerCase().includes(inputValue.toLowerCase());
+          };
+        });
+
+        await componentsPage.actionability.pressTab();
+        await input.fill('ra');
+
+        const visibleOptions = options.filter({ visible: true });
+        // "Australia" (contains "ra"), "Brazil" (contains "ra")
+        await expect(visibleOptions).toHaveCount(2);
+      });
+
+      await test.step('should allow selecting an option when a custom filter function is used', async () => {
+        const { input, dropdown, options, getOptionByText } = await setup({
+          componentsPage,
+          label: defaultLabel,
+          placeholder: defaultPlaceholder,
+          options: defaultOptions,
+        });
+
+        await componentsPage.page.evaluate(() => {
+          const combobox = document.querySelector('mdc-combobox') as any;
+          combobox.filter = (option: Element, inputValue: string) => {
+            const label = option.getAttribute('label') || '';
+            return label.toLowerCase().includes(inputValue.toLowerCase());
+          };
+        });
+
+        await input.click();
+        await input.fill('zil');
+        await expect(dropdown).toBeVisible();
+
+        // Only "Brazil" contains "zil"
+        const visibleOptions = options.filter({ visible: true });
+        await expect(visibleOptions).toHaveCount(1);
+
+        await getOptionByText('Brazil').click();
+        await expect(input).toHaveValue('Brazil');
         await expect(dropdown).not.toBeVisible();
       });
     });

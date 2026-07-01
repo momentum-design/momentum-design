@@ -192,6 +192,12 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(activeTab).toHaveAttribute('active');
     });
 
+    await test.step('component should not fire change event on initial mount', async () => {
+      await setup({ componentsPage });
+      const waitForChange = await componentsPage.waitForEvent(mdcTablist, 'change');
+      await expect(waitForChange).not.toEventEmitted();
+    });
+
     await test.step('component should fire change event when active tab changes', async () => {
       await setup({ componentsPage });
       const waitForChange = await componentsPage.waitForEvent(mdcTablist, 'change');
@@ -199,6 +205,21 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await componentsPage.page.keyboard.press('ArrowRight');
       await componentsPage.page.keyboard.press('Enter');
       await expect(waitForChange).toEventEmitted();
+    });
+
+    await test.step('focus using JavaScript focus() method delegates to active tab', async () => {
+      await setup({ componentsPage });
+
+      // Programmatically focus the tablist host element
+      await mdcTablist.evaluate((el: HTMLElement) => el.focus());
+
+      // With delegatesFocus: true, focus should delegate to the active tab in the slot
+      const isFocused = await mdcTablist.evaluate(el => {
+        const activeTab = el.querySelector('mdc-tab[active]');
+        return activeTab !== null && document.activeElement === activeTab;
+      });
+
+      expect(isFocused).toBe(true);
     });
 
     await test.step('spatial navigation', async () => {

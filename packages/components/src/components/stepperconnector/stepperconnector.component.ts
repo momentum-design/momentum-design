@@ -11,10 +11,6 @@ import styles from './stepperconnector.styles';
 import type { OrientationType, StatusType } from './stepperconnector.types';
 
 /**
- * StepperConnector component visually represents the connection between two stepper items.
- * Indicates whether the connection is complete or incomplete, and supports vertical or horizontal orientation.
- * They are used between 2 `mdc-stepperitem` components to visually connect them and wrapped in a `mdc-stepper` component.
- *
  * @tagname mdc-stepperconnector
  *
  * @csspart connector - The main connector line between steps

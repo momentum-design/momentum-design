@@ -14,36 +14,7 @@ import type { PopoverPlacement, PopoverStrategy } from '../popover/popover.types
 import styles from './radio.styles';
 
 /**
- * The Radio component allows users to select a single option from a group of mutually exclusive choices.
- * Unlike checkboxes which allow multiple selections, radio buttons ensure only one option can be selected
- * at a time within the same group. These are commonly used in forms, surveys, and settings where users
- * need to make a single selection from multiple options.
- *
- * To create a group of radio buttons, use the `mdc-radiogroup` component or ensure all radio buttons
- * share the same `name` attribute.
- *
- * ## Validation
- *
- * Radio component support native form validation. But it does not have default validation message.
- * Also, `required` attribute does not render indicator (red asterisk) for the radio component.
- *
- * The recommended way to show validation message for radio groups is to wrap the `mdc-radio` with `mdc-radiogroup`
- * and set the `help-text` of the `mdc-radiogroup` based on its validation state.
- *
- * Alternatively you can also set the `validation-message` attribute of the `mdc-radio`. This message will appear
- * in a native tooltip when the radio is checked and invalid.
- *
- * ## Accessibility
- *
- * - Provide clear labels that describe each option
- * - Use `data-aria-label` when a visual label is not present
- * - Keyboard navigation: Arrow keys to move between options, Space to select, Tab to navigate groups, Enter to submit form
- * - Group related radio buttons using the same `name` attribute or `mdc-radiogroup` component
- *
- * ## Styling
- *
- * Use the `static-radio` part to apply custom styles to the radio visual element.
- * This part exposes the underlying [StaticRadio](?path=/docs/components-decorator-staticradio--docs) component for advanced styling.
+ * @tagname mdc-radio
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -51,15 +22,13 @@ import styles from './radio.styles';
  * @dependency mdc-staticradio
  * @dependency mdc-toggletip
  *
- * @tagname mdc-radio
- *
  * @event input - (React: onInput) Event that gets dispatched when the radio state changes (before the change event).
  * @event change - (React: onChange) Event that gets dispatched when the radio state changes (after the input event).
  * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
- * @csspart static-radio - The staticradio that provides the visual radio appearance.
+ * @csspart radio-indicator - The staticradio that provides the visual radio appearance.
  *
  * @slot indicator - Slot for the radio indicator element. If not provided, a default styled radio will be rendered.
  * @slot label - Slot for the label of the radio.
@@ -109,7 +78,8 @@ class Radio
    * @internal
    */
   private getAllRadiosWithinSameGroup(): Radio[] {
-    return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
+    const root = this.getRootNode() as Document | ShadowRoot;
+    return Array.from(root.querySelectorAll(`mdc-radio[name="${this.name}"]`));
   }
 
   /** @internal */
@@ -343,9 +313,23 @@ class Radio
     this.internals.setValidity({});
   }
 
+  /**
+   * Handles the slotchange event on the indicator slot.
+   * Adds the `mdc-focus-ring` class to the host when a custom indicator
+   * is slotted, so the focus ring shifts from the default static radio
+   * to the entire host element.
+   *
+   * @internal
+   */
+  private handleIndicatorSlotChange(event: Event): void {
+    const slot = event.target as HTMLSlotElement;
+    const assignedNodes = slot.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE);
+    this.classList.toggle('mdc-focus-ring', assignedNodes.length > 0);
+  }
+
   public override render() {
     return html`
-      <slot name="indicator">
+      <slot name="indicator" @slotchange=${this.handleIndicatorSlotChange}>
         <mdc-staticradio
           part="radio-indicator"
           role="presentation"

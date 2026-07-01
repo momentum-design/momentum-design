@@ -62,14 +62,28 @@ async function loop() {
       .map(event => `${event.reactName}: '${event.name}' as EventName<Events['${event.reactName}Event']>`)
       .join(',\n');
 
-    const evInheritDefinedImportStrings = evInheritDefined
-      .map(event => `${event.reactName}: '${event.name}' as EventName<EventsInherited['${event.reactName}Event']>`)
-      .join(',\n');
-
     // ** TYPE IMPORTS **
     const convertModulePathToTypesFile = modulePath => {
       return modulePath.replace('src/', '').replace('.component.ts', '.types');
     };
+
+    // Group inherited events by their source module to support multi-level inheritance
+    const inheritedModules = [...new Set(evInheritDefined.map(event => event.inheritedFrom.module))];
+    const moduleAliasMap = {};
+    if (inheritedModules.length === 1) {
+      moduleAliasMap[inheritedModules[0]] = 'EventsInherited';
+    } else {
+      inheritedModules.forEach((mod, i) => {
+        moduleAliasMap[mod] = `EventsInherited${i}`;
+      });
+    }
+
+    const evInheritDefinedImportStrings = evInheritDefined
+      .map(event => {
+        const alias = moduleAliasMap[event.inheritedFrom.module];
+        return `${event.reactName}: '${event.name}' as EventName<${alias}['${event.reactName}Event']>`;
+      })
+      .join(',\n');
 
     let typeImports = '';
     let typeInheritedImports = '';
@@ -78,8 +92,11 @@ async function loop() {
       typeImports = `import type { Events } from '../../${webComponentTypesFile}';`;
     }
     if (evInheritDefined.length > 0) {
-      // this assumes that there can only be inherited from one other component:
-      typeInheritedImports = `import type { Events as EventsInherited } from '../../${convertModulePathToTypesFile(evInheritDefined[0].inheritedFrom.module)}';`;
+      typeInheritedImports = inheritedModules
+        .map(
+          mod => `import type { Events as ${moduleAliasMap[mod]} } from '../../${convertModulePathToTypesFile(mod)}';`,
+        )
+        .join('\n');
     }
 
     const source = await prettier.format(

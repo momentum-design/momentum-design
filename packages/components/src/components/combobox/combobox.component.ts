@@ -27,44 +27,19 @@ import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCy
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
 
-import { AUTOCOMPLETE_LIST, ICON_NAME, TRIGGER_ID } from './combobox.constants';
+import { AUTOCOMPLETE_LIST, FILTER, ICON_NAME, TRIGGER_ID } from './combobox.constants';
 import { ComboboxEventManager } from './combobox.events';
 import styles from './combobox.styles';
-import type { Placement } from './combobox.types';
+import type { ComboboxFilter, Placement } from './combobox.types';
 
 /**
- * The Combobox component is a text-based dropdown control that allows users to select an option from a predefined list.
- * Users can type text to filter the options and select their desired choice.
- *
- * When the user starts typing, the filter uses a "starts with" search and displays options based on the text entered by the user.
- * If the user entered text that doesn't match with any of the options, then the text in the `no-result-text` attribute will be displayed.
- *
- * If there is no text in the `no-result-text` attribute then nothing will be shown.
- *
- * Combobox is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
- * The component ensures accessibility and usability while handling various use cases, including long text truncation with tooltip support.
- *
- * Every mdc-option should have a `value` attribute set to ensure proper form submission.
- *
- * To set a default option, use the `selected` attribute on the `mdc-option` element.
- *
- * When the combobox `control-type` attribute is "controlled", then the value should be set by the parent only, and the combobox will emit `change` and `input` events
- * with the selected option details when the user makes a selection or types in the input, but it won't update the selected value internally.
- * The parent component is expected to listen to these events and update the `value` property of the combobox accordingly to reflect the changes in the UI.
- *
- * **Note:** Make sure to add `mdc-selectlistbox` as a child of `mdc-combobox` and wrap options/optgroup in it to ensure proper accessibility functionality. Read more about it in SelectListBox documentation.
- *
- * If you need to use `mdc-tooltip` with any options, make sure to place the tooltip component outside the `mdc-selectlistbox` element. Read more about it in Options documentation.
- *
- * To understand more about combobox and its patterns, refer to this [WCAG example](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/).
+ * @tagname mdc-combobox
  *
  * @dependency mdc-buttonsimple
  * @dependency mdc-icon
  * @dependency mdc-input
  * @dependency mdc-listitem
  * @dependency mdc-popover
- *
- * @tagname mdc-combobox
  *
  * @slot default - This is a default/unnamed slot for Selectlistbox including options and/or option group.
  * @slot label - Slot for the label element. If not provided, the `label` property will be used to render the label.
@@ -193,6 +168,32 @@ class Combobox
   popoverZIndex?: number = undefined;
 
   /**
+   * The filter strategy used to narrow the visible options based on the user's input.
+   *
+   * By default, filter is a string that selects a built-in strategy:
+   * - `'match-starts-with'` — options whose label starts with the typed text are shown (default)
+   * - `'none'` — no filtering is performed; all slotted options remain visible, which is useful
+   *   when the consumer handles filtering externally (e.g., via an API)
+   *
+   * Alternatively, filter accepts a custom function with the signature
+   * `(option: Option, inputValue: string) => boolean` for full control over the filter logic.
+   *
+   * Note: only string values are reflected in the `filter` attribute.
+   *
+   * @default 'match-starts-with'
+   */
+  @property({
+    type: String,
+    reflect: true,
+    converter: {
+      toAttribute(value: ComboboxFilter): string | null {
+        return typeof value === 'string' ? value : null;
+      },
+    },
+  })
+  filter: ComboboxFilter = FILTER.MATCH_STARTS_WITH;
+
+  /**
    * ID of the element where the backdrop will be appended to.
    * This is useful to ensure that the backdrop is appended to the correct element in the DOM.
    * If not set, the backdrop will be appended to the parent element of the combobox.
@@ -221,6 +222,11 @@ class Combobox
   /** @internal */
   get navItems(): Option[] {
     return this.itemsStore.items;
+  }
+
+  /** @internal - Unique id for the listbox element (used by aria-controls and listbox id) */
+  private get listboxId(): string {
+    return `${this.inputId}-listbox`;
   }
 
   constructor() {
@@ -268,6 +274,22 @@ class Combobox
     return optionValue.toLowerCase().startsWith(value?.toLowerCase());
   }
 
+  /**
+   * Evaluates whether a single option passes the current filter.
+   * Centralises the branching so that `getVisibleOptions` and `updateHiddenOptions` stay simple.
+   *
+   * @internal
+   */
+  private matchesFilter(option: Option, value: string): boolean {
+    if (typeof this.filter === 'function') {
+      return this.filter(option, value);
+    }
+    if (this.filter === FILTER.NONE) {
+      return true;
+    }
+    return this.compareOptionWithValue(option, value);
+  }
+
   /** @internal */
   private getFirstSelectedOption(): Option | undefined {
     return this.navItems.find(el => el.hasAttribute('selected'));
@@ -275,7 +297,7 @@ class Combobox
 
   /** @internal */
   private getVisibleOptions(internalValue: string): Option[] {
-    return this.navItems.filter(option => this.compareOptionWithValue(option, internalValue));
+    return this.navItems.filter(option => this.matchesFilter(option, internalValue));
   }
 
   /** @internal */
@@ -560,6 +582,17 @@ class Combobox
       if (this.dropDownButton && 'ariaControlsElements' in this.dropDownButton) {
         (this.dropDownButton as any).ariaControlsElements = this.slottedListboxes;
       }
+    }
+
+    // Set listbox id and accessible name for axe/ARIA (aria-input-field-name, aria-required-attr).
+    // aria-label is used instead of aria-labelledby because the label element lives in the
+    // combobox shadow DOM while the listbox is in the light DOM (cross-root ID refs don't work).
+    // aria-controls is set imperatively because ariaControlsElements may clear the string attribute.
+    const listbox = this.slottedListboxes?.[0];
+    if (listbox) {
+      listbox.id = this.listboxId;
+      listbox.setAttribute('aria-label', this.label || this.dataAriaLabel || '');
+      this.visualCombobox?.setAttribute('aria-controls', this.listboxId);
     }
 
     if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
@@ -853,7 +886,7 @@ class Combobox
 
     // First pass: update options and collect visibility info per optgroup
     this.navItems.forEach(option => {
-      const matchesFilter = this.compareOptionWithValue(option, this.filteredValue);
+      const matchesFilter = this.matchesFilter(option, this.filteredValue);
 
       if (matchesFilter) {
         option.removeAttribute('data-hidden');
@@ -988,6 +1021,7 @@ class Combobox
         @keydown=${this.handleInputKeydown}
         @blur="${this.handleBlurChange}"
         aria-autocomplete="${AUTOCOMPLETE_LIST}"
+        aria-controls=""
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
         aria-disabled="${this.disabled ? 'true' : 'false'}"
         aria-expanded="${this.isOpen ? 'true' : 'false'}"

@@ -208,6 +208,49 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(menupopover).toBeVisible();
       await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-truncate-overflowing-text');
     });
+
+    await test.step('should scroll the menu-popover correctly when the popover-content has a max-height', async () => {
+      await setup({
+        componentsPage,
+        html: `<div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+              <mdc-menuitem label="Profile"></mdc-menuitem>
+              <mdc-menuitem label="Settings"></mdc-menuitem>
+              <mdc-menuitem label="Notifications"></mdc-menuitem>
+              <mdc-menuitem label="Logout"></mdc-menuitem>
+            </mdc-menupopover>
+            <style>
+              mdc-menupopover::part(popover-content) {
+                max-height: 10rem;
+                overflow-y: auto;
+              }
+            </style>
+          </div>`,
+      });
+
+      await componentsPage.actionability.pressTab();
+      await expect(triggerElement).toBeFocused();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(menupopover).toBeVisible();
+      const firstItem = menupopover.locator(menuItemSelector).first();
+      await expect(firstItem).toBeFocused();
+      await expect(firstItem).toBeVisible();
+      // Press ArrowDown multiple times to scroll through the menu items
+      for (let i = 0; i < 8; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await componentsPage.page.keyboard.press('ArrowDown');
+      }
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-scrolling');
+    });
   });
 
   /**
@@ -529,6 +572,82 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       });
     });
 
+    // AI-Assisted
+    await test.step('Disabled menuitem with submenu ignores click and keyboard interactions', async () => {
+      const html = `
+        <div id="menupopover-test-wrapper">
+          <mdc-button id="trigger-btn">Options</mdc-button>
+          <mdc-menupopover triggerid="trigger-btn">
+            <mdc-menuitem label="Profile"></mdc-menuitem>
+            <mdc-menuitem id="disabled-submenu-trigger" label="Settings" disabled arrow-position="trailing"></mdc-menuitem>
+            <mdc-menupopover triggerid="disabled-submenu-trigger" placement="right-start">
+              <mdc-menuitem label="Account"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="Logout"></mdc-menuitem>
+          </mdc-menupopover>
+        </div>
+      `;
+
+      // Click interaction
+      const { wrapper, triggerElement } = await setup({ componentsPage, html });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const disabledTrigger = menupopover.locator('#disabled-submenu-trigger');
+      const disabledSubmenu = menupopover.locator('mdc-menupopover[triggerid="disabled-submenu-trigger"]');
+
+      await triggerElement.click();
+      await expect(menupopover).toBeVisible();
+      await expect(disabledTrigger).toBeDisabled();
+      await disabledTrigger.click({ force: true });
+      await expect(disabledSubmenu).not.toBeVisible();
+      await expect(menupopover).toBeVisible();
+    });
+
+    await test.step('Soft-disabled menuitem with submenu ignores click and keyboard interactions', async () => {
+      const html = `
+        <div id="menupopover-test-wrapper">
+          <mdc-button id="trigger-btn">Options</mdc-button>
+          <mdc-menupopover triggerid="trigger-btn">
+            <mdc-menuitem label="Profile"></mdc-menuitem>
+            <mdc-menuitem id="soft-disabled-submenu-trigger" label="Settings" soft-disabled arrow-position="trailing"></mdc-menuitem>
+            <mdc-menupopover triggerid="soft-disabled-submenu-trigger" placement="right-start">
+              <mdc-menuitem label="Account"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="Logout"></mdc-menuitem>
+          </mdc-menupopover>
+        </div>
+      `;
+
+      // Click interaction
+      const { wrapper, triggerElement } = await setup({ componentsPage, html });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const softDisabledTrigger = menupopover.locator('#soft-disabled-submenu-trigger');
+      const softDisabledSubmenu = menupopover.locator('mdc-menupopover[triggerid="soft-disabled-submenu-trigger"]');
+
+      await triggerElement.click();
+      await expect(menupopover).toBeVisible();
+      await expect(softDisabledTrigger).toHaveAttribute('aria-disabled', 'true');
+      await softDisabledTrigger.click({ force: true });
+      await expect(softDisabledSubmenu).not.toBeVisible();
+      await expect(menupopover).toBeVisible();
+
+      // Keyboard interaction
+      const { wrapper: keyboardWrapper, triggerElement: keyboardTrigger } = await setup({ componentsPage, html });
+      const keyboardPopover = keyboardWrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const keyboardTriggerItem = keyboardPopover.locator('#soft-disabled-submenu-trigger');
+      const keyboardSubmenu = keyboardPopover.locator('mdc-menupopover[triggerid="soft-disabled-submenu-trigger"]');
+
+      await openPopoverWithKeyboard(componentsPage, keyboardTrigger, keyboardPopover);
+      await keyboardTriggerItem.focus();
+      await expect(keyboardTriggerItem).toBeFocused();
+
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await expect(keyboardSubmenu).not.toBeVisible();
+
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(keyboardSubmenu).not.toBeVisible();
+    });
+    // End AI-Assisted
+
     await test.step('Backdrop attribute with hide on outside click', async () => {
       await componentsPage.mount({
         html: `
@@ -558,6 +677,77 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await trigger2.click();
       await expect(popover2).toBeVisible();
     });
+
+    // AI-Assisted
+    await test.step('Backdrop click stops event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-menupopover id="first-menupopover" triggerID="trigger-1">
+              <mdc-menuitem label="Menu 1"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-menupopover id="second-menupopover" triggerID="trigger-2">
+              <mdc-menuitem label="Menu 2"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const menuPopover1 = componentsPage.page.locator('#first-menupopover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const menuPopover2 = componentsPage.page.locator('#second-menupopover');
+
+      await trigger1.click();
+      await expect(menuPopover1).toBeVisible();
+
+      // Force-clicking trigger-2 through the auto-set backdrop should close menuPopover1
+      // but NOT open menuPopover2, because the backdrop click stops event propagation
+      await trigger2.click({ force: true });
+      await expect(menuPopover1).not.toBeVisible();
+      await expect(menuPopover2).not.toBeVisible();
+
+      // After the backdrop is gone, clicking trigger-2 normally does open menuPopover2
+      await trigger2.click();
+      await expect(menuPopover2).toBeVisible();
+    });
+
+    await test.step('Outside click without backdrop does not stop event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-menuitem id="trigger-1" label="Trigger 1"></mdc-menuitem>
+            <mdc-menupopover id="first-menupopover" triggerID="trigger-1">
+              <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menupopover triggerid="submenu-trigger" placement="right-start">
+                <mdc-menuitem label="Account"></mdc-menuitem>
+              </mdc-menupopover>
+            </mdc-menupopover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const menuPopover1 = componentsPage.page.locator('#first-menupopover');
+      const submenu = menuPopover1.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+
+      await trigger1.click();
+      await expect(menuPopover1).toBeVisible();
+
+      // Open the submenu (triggered by a menuitem, so no backdrop is auto-set)
+      const submenuTrigger = menuPopover1.locator('#submenu-trigger');
+      await submenuTrigger.click();
+      await expect(submenu).toBeVisible();
+
+      // Clicking outside the submenu (not on a backdrop) closes the submenu
+      // and event propagation continues — the parent menupopover remains visible
+      await componentsPage.page.mouse.click(200, 300);
+      await expect(submenu).not.toBeVisible();
+      await expect(menuPopover1).not.toBeVisible();
+    });
+    // End AI-Assisted
 
     // Group: Menuitem types: checkbox and radio (with grouped navigation)
     await test.step('Menuitem types: checkbox and radio', async () => {
@@ -725,6 +915,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(triggerElement).toBeFocused();
 
         await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+        await expect(menuItem).toBeFocused();
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(menuItemCheckbox).toBeFocused();
         await keyboard.press(KEYS.ENTER);
@@ -734,6 +926,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menuItemCheckbox).toHaveAttribute('aria-checked', 'true');
 
         await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+        await expect(menuItemCheckbox).toBeFocused();
         await keyboard.press(KEYS.ARROW_DOWN);
         await keyboard.press(KEYS.ARROW_DOWN);
         await expect(menuItemRadio).toBeFocused();
@@ -742,6 +936,61 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menuPopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
         await expect(menuItemRadio).toHaveAttribute('aria-checked', 'true');
+      });
+
+      await test.step('prevent menu navigation', async () => {
+        const { triggerElement } = await setup({
+          componentsPage,
+          html: `
+          <div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">Options</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn">
+              <mdc-menuitem id="menu-item-1" data-spatial-up="" data-spatial-down="menu-item-3"  label="Profile"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-2" label="Settings"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-3" label="Notifications"></mdc-menuitem>
+              <mdc-menuitem id="menu-item-4" data-spatial-up="menu-item-1" label="Logout"></mdc-menuitem>
+            </mdc-menupopover>
+          </div>
+        `,
+        });
+        await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
+        const menuPopover = componentsPage.page.locator('mdc-menupopover[triggerid="trigger-btn"]');
+        const menuItem1 = menuPopover.locator('#menu-item-1');
+        const menuItem3 = menuPopover.locator('#menu-item-3');
+        const menuItem4 = menuPopover.locator('#menu-item-4');
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(triggerElement).toBeFocused();
+
+        await keyboard.press(KEYS.ENTER);
+        await expect(menuPopover).toBeVisible();
+
+        await expect(menuItem1).toBeFocused();
+
+        // Jump to item 3
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem3).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem4).toBeFocused();
+
+        // Loop back to the first item
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem1).toBeFocused();
+
+        // No loop back to the last item since item 1 has data-spatial-up=""
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(menuItem1).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem3).toBeFocused();
+
+        await keyboard.press(KEYS.ARROW_DOWN);
+        await expect(menuItem4).toBeFocused();
+
+        // Jump to item 1
+        await keyboard.press(KEYS.ARROW_UP);
+        await expect(menuItem1).toBeFocused();
       });
     });
   });

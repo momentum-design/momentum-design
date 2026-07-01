@@ -9,26 +9,13 @@ import { KEYS } from '../../utils/keys';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { POPOVER_PLACEMENT, TRIGGER, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import type { PopoverStrategy } from '../popover/popover.types';
+import type { IconNames } from '../icon/icon.types';
 
 import { ARROW_ICON, DEFAULTS, TIME_FORMAT, TRIGGER_ID, LISTBOX_ID } from './timepicker.constants';
 import styles from './timepicker.styles';
-import type { Placement, TimeFormat } from './timepicker.types';
+import type { OptionLabelFormatter, Placement, TimeFormat } from './timepicker.types';
 
 /**
- * mdc-timepicker is a component that allows users to select a specific time
- * or enter a time manually. It supports both 12-hour and 24-hour formats.
- *
- * The component consists of:
- * - label - describes the time picker field
- * - input field - made up of 2-3 spinbuttons (hours, minutes, optional AM/PM period)
- * - dropdown arrow button - opens a flyout menu with predefined time intervals
- * - helper text - displayed below the input field
- *
- * Users can input values by:
- * - Manually entering numbers/characters in spinbuttons
- * - Navigating using arrow keys to increment/decrement values
- * - Selecting a predefined time from the dropdown menu
- *
  * @tagname mdc-timepicker
  *
  * @dependency mdc-button
@@ -70,6 +57,7 @@ import type { Placement, TimeFormat } from './timepicker.types';
  * @csspart separator - The colon separator between spinbuttons.
  * @csspart period - The AM/PM period spinbutton.
  * @csspart icon-container - The dropdown arrow button container.
+ * @csspart leading-icon - The prefix icon element displayed before spinbuttons.
  * @csspart native-input - The hidden native input for form participation.
  * @csspart listbox - The dropdown list container.
  */
@@ -196,6 +184,20 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   localePmLabel = '';
 
   /**
+   * The icon name to display as a prefix icon in the timepicker input.
+   */
+  @property({ type: String, reflect: true, attribute: 'prefix-icon' })
+  prefixIcon?: IconNames;
+
+  /**
+   * A callback function to format the label of each dropdown option.
+   * Receives the default label string and the 24h value string, and should return a formatted label.
+   * When not set, the default time formatting is used.
+   */
+  @property({ attribute: false })
+  optionLabelFormatter?: OptionLabelFormatter;
+
+  /**
    * Accessible label for the dropdown toggle button.
    * Consumers must provide a translated string.
    */
@@ -302,16 +304,27 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
    * @internal
    */
   private focusMenuItemOnOpen(): void {
-    const options = this.getTimeOptions();
-    const currentValue = this.internalToValue();
-    const selectedIndex = options.findIndex(opt => opt.value === currentValue);
-    this.focusedOptionIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    this.focusedOptionIndex = this.getMenuItemFocusIndex();
 
     this.updateComplete
       .then(() => {
-        this.focusCurrentMenuItem();
+        window.requestAnimationFrame(() => {
+          this.focusCurrentMenuItem();
+        });
       })
       .catch(() => {});
+  }
+
+  /**
+   * Gets the option index that should receive focus when the menu opens.
+   * @internal
+   */
+  private getMenuItemFocusIndex(): number {
+    const options = this.getTimeOptions();
+    const currentValue = this.internalToValue();
+    const selectedIndex = options.findIndex(opt => opt.value === currentValue);
+
+    return selectedIndex >= 0 ? selectedIndex : 0;
   }
 
   /**
@@ -322,8 +335,10 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     const listbox = this.shadowRoot?.querySelector(`#${LISTBOX_ID}`);
     if (!listbox) return;
     const items = listbox.querySelectorAll('mdc-option');
-    if (items[this.focusedOptionIndex]) {
-      (items[this.focusedOptionIndex] as HTMLElement).focus();
+    const item = items[this.focusedOptionIndex] as HTMLElement | undefined;
+    if (item) {
+      item.focus({ preventScroll: true });
+      item.scrollIntoView({ block: 'nearest' });
     }
   }
 
@@ -512,15 +527,21 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
   }
 
   /**
-   * Handles clicking on the spinbutton area (not the dropdown button).
-   * Focuses the nearest spinbutton.
+   * Handles clicking on the base container.
    * @internal
    */
-  private handleSpinbuttonAreaClick(event: MouseEvent): void {
+  private handleBaseContainerClick(event: MouseEvent): void {
     if (this.disabled || this.softDisabled || this.readonly) return;
     const target = event.target as HTMLElement;
     // If clicking on a spinbutton itself, let it handle focus
     if (target.getAttribute('role') === 'spinbutton') return;
+    // If clicking the non-editable blank area, treat it like the dropdown button.
+    if (target.getAttribute('part') === 'base-container' || target.getAttribute('part') === 'spinbutton-group') {
+      this.displayPopover = !this.displayPopover;
+      this.dropdownButton?.focus();
+      event.stopPropagation();
+      return;
+    }
     // Otherwise focus the hours spinbutton
     this.hoursInput?.focus();
     this.hoursInput?.select();
@@ -856,7 +877,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     return options.map(
       option => html`
         <mdc-option
-          label="${option.label}"
+          label="${this.optionLabelFormatter ? this.optionLabelFormatter(option.label, option.value) : option.label}"
           ?selected="${option.value === currentValue}"
           aria-selected="${option.value === currentValue ? 'true' : 'false'}"
           @click="${() => this.handleOptionClick(option.value)}"
@@ -877,9 +898,12 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           id="${TRIGGER_ID}"
           part="base-container"
           class="mdc-focus-ring"
-          @click="${this.handleSpinbuttonAreaClick}"
+          @click="${this.handleBaseContainerClick}"
           @keydown="${this.handleBaseKeydown}"
         >
+          ${this.prefixIcon
+            ? html`<mdc-icon part="leading-icon" name="${this.prefixIcon}" size="1"></mdc-icon>`
+            : nothing}
           <div part="spinbutton-group">
             <input
               id="hours-spinbutton"
@@ -974,6 +998,7 @@ class TimePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
           hide-on-escape
           focus-back-to-trigger
           focus-trap
+          element-index-to-receive-focus="${this.getMenuItemFocusIndex()}"
           disable-aria-expanded
           size
           ?disable-flip="${this.disableFlip}"

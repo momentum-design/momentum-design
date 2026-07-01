@@ -17,25 +17,6 @@ import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import styles from './menubar.styles';
 
 /**
- * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
- * with support for nested submenus and keyboard navigation. It serves as a container
- * for menu items and manages their interaction patterns, including:
- * - Keyboard navigation (Arrow keys, Home, End)
- * - Menu item activation (Enter/Space)
- * - Submenu toggling (Right/Left arrow keys)
- * - Focus management
- * - Integration with MenuPopover for nested menus
- *
- * A menubar will contain a set of menu items and their associated popovers.
- * Each menu item can have a popover for nested menus.
- *
- * The component automatically handles ARIA attributes and follows WAI-ARIA menu design patterns.
- * It works in conjunction with `mdc-menuitem` and `mdc-menupopover` to create accessible menu structures.
- *
- * **Note:** A menubar contains three types of menu items, including menuitem, menuitemradio and menuitemcheckbox. These menu items may optionally be nested in one or more group containers. Groups or items may optionally by separated with separator elements.
- *
- * `mdc-menubar` contains a group that wraps all its chilren passed within the default slot. This has been added to ensure the right accessibility behavior while using screen readers.
- *
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
  */
@@ -278,7 +259,8 @@ class MenuBar extends KeyDownHandledMixin(KeyToActionMixin(Component)) {
   }
 
   private async closeAllMenuPopovers() {
-    const popovers = this.depthManager.popUntil(item => this.contains(item));
+    const allPopovers = this.getAllPopovers();
+    const popovers = this.depthManager.popUntil(item => allPopovers.includes(item));
 
     await Promise.all(popovers.map(popover => popover.updateComplete));
   }

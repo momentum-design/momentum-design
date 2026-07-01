@@ -13,17 +13,13 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { LIFE_CYCLE_EVENTS } from '../../utils/mixins/lifecycle/lifecycle.contants';
 import type { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
 import type { BaseArray } from '../../utils/virtualIndexArray';
+import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import type { OrientationType } from './list.types';
 import styles from './list.styles';
 import { DEFAULTS } from './list.constants';
 
 /**
- * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
- *
- * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
- * `mdc-listitem` components can be placed in the default slot.
- *
  * @tagname mdc-list
  *
  * @slot default - This is a default/unnamed slot, where listitems can be placed.
@@ -75,6 +71,7 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
     super();
 
     this.addEventListener(LIFE_CYCLE_EVENTS.MODIFIED, this.handleModifiedEvent);
+    this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.handleFocusEvent);
     this.addEventListener('focusout', this.handleFocusEvent);
 
@@ -113,6 +110,17 @@ class List extends ListNavigationMixin(CaptureDestroyEventForChildElement(Compon
       }
 
       this.resetTabIndexes(newIndex, this.focusWithin);
+    }
+  }
+
+  /** @internal */
+  private handleKeyDown(event: KeyboardEvent) {
+    const action = this.getActionForKeyEvent(event);
+
+    if (action === ACTIONS.SPACE && this.navItems.find(item => item === event.target)) {
+      this.keyDownEventHandled();
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 

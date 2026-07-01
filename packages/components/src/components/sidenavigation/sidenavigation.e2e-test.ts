@@ -14,10 +14,10 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
         <mdc-navmenuitem icon-name="meetings-bold" nav-id="verify1" label="Meetings" slot="scrollable-menubar"></mdc-navmenuitem>
         <mdc-navmenuitem badge-type="dot" icon-name="audio-call-bold" nav-id="verify2" label="Calling" slot="scrollable-menubar" id="temp" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
         <mdc-menupopover triggerid="temp" slot="scrollable-menubar">
-          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Team Insights" nav-id="verify4" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6" icon-name="placeholder-bold"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Webex App Hub" nav-id="verify3" badge-type="dot"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Team Insights" nav-id="verify4"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Release Notes" nav-id="verify5" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+          <mdc-navmenuitem label="Cisco Spaces" nav-id="verify6"></mdc-navmenuitem>
         </mdc-menupopover>
         <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section1">
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1" label="Messaging"></mdc-navmenuitem>
@@ -25,15 +25,15 @@ const setup = async (componentsPage: ComponentsPage, variant: string) => {
           <mdc-navmenuitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3" label="Callings"></mdc-navmenuitem>
           <mdc-navmenuitem icon-name="more-circle-bold" nav-id="4" label="More" id="menu-button-trigger" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
           <mdc-menupopover triggerid="menu-button-trigger">
-            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
+            <mdc-navmenuitem label="App Hub" nav-id="5" badge-type="dot"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Personal Insights" nav-id="6"></mdc-navmenuitem>
+            <mdc-navmenuitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Collaboration Tools" nav-id="8" id="share-id" is-active-parent-tooltip-text="Contains active navmenuitem"></mdc-navmenuitem>
             <mdc-menupopover triggerid="share-id">
-              <mdc-navmenuitem label="Webex App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Team Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold"></mdc-navmenuitem>
-              <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Webex App Hub" nav-id="temp1" badge-type="dot"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Team Insights" nav-id="temp2"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66"></mdc-navmenuitem>
+              <mdc-navmenuitem label="Cisco Spaces" nav-id="temp4"></mdc-navmenuitem>
             </mdc-menupopover>
           </mdc-menupopover>
         </mdc-menusection>
@@ -322,6 +322,21 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
           await expect(callingPopover).toBeVisible();
         });
 
+        await test.step('ArrowRight from a submenu closes the current popover before moving to next parent', async () => {
+          await setup(componentsPage, variant);
+          await callingNavMenuItem.focus();
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(callingPopover).toBeVisible();
+          await expect(callingPopover.locator('mdc-navmenuitem').first()).toBeFocused();
+
+          await componentsPage.page.keyboard.press('ArrowRight');
+
+          await expect(callingPopover).not.toBeVisible();
+          await expect(
+            sidenav.locator('mdc-menusection[slot="scrollable-menubar"]').first().locator('mdc-navmenuitem').first(),
+          ).toBeFocused();
+        });
+
         // --- Nested menuitem: select nested menuitem (1st level submenu) ---
         await test.step('Select nested menuitem with mouse inside 1st level submenu', async () => {
           await setup(componentsPage, variant);
@@ -523,3 +538,334 @@ test.describe.parallel('SideNavigation (Nested, all scenarios, all variants)', (
     });
   });
 });
+
+// AI-Assisted
+// Setup function to mount dropdown sidenavigation and return locators
+const setupDropdown = async (componentsPage: ComponentsPage, variant: string, expanded = true) => {
+  const html = `
+    <div style="height: 90vh; margin: 1rem">
+      <mdc-sidenavigation
+        variant="${variant}"
+        ${expanded ? 'expanded' : ''}
+        footer-text="%Customer Name%"
+        grabber-btn-aria-label="Toggle Side navigation"
+        submenu-type="dropdown"
+      >
+        <mdc-menusection slot="scrollable-menubar" show-divider>
+          <mdc-navmenuitem
+            icon-name="chat-bold"
+            nav-id="1"
+            label="Messaging"
+            tooltip-text="Messaging"
+          ></mdc-navmenuitem>
+          <mdc-navmenuitem
+            icon-name="meetings-bold"
+            nav-id="2"
+            label="Meetings"
+            tooltip-text="Meetings"
+          ></mdc-navmenuitem>
+        </mdc-menusection>
+
+        <mdc-menusection slot="scrollable-menubar" show-divider header-text="Section 1">
+          <mdc-navmenuitem
+            icon-name="chat-bold"
+            nav-id="3"
+            label="Parent Item"
+            id="dropdown-trigger-1"
+            tooltip-text="Parent Item"
+            is-active-parent-tooltip-text="Parent Item, contains active navmenuitem"
+          ></mdc-navmenuitem>
+          <div data-trigger="dropdown-trigger-1">
+            <mdc-navmenuitem label="Child 1" nav-id="3-1"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child 2" nav-id="3-2"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child 3" nav-id="3-3"></mdc-navmenuitem>
+          </div>
+
+          <mdc-navmenuitem
+            icon-name="meetings-bold"
+            nav-id="4"
+            label="Parent Item 2"
+            id="dropdown-trigger-2"
+            tooltip-text="Parent Item 2"
+            is-active-parent-tooltip-text="Parent Item 2, contains active navmenuitem"
+          ></mdc-navmenuitem>
+          <div data-trigger="dropdown-trigger-2">
+            <mdc-navmenuitem label="Child A" nav-id="4-1"></mdc-navmenuitem>
+            <mdc-navmenuitem label="Child B" nav-id="4-2"></mdc-navmenuitem>
+          </div>
+
+          <mdc-navmenuitem
+            icon-name="audio-call-bold"
+            nav-id="5"
+            label="Regular Item"
+            tooltip-text="Regular Item"
+          ></mdc-navmenuitem>
+        </mdc-menusection>
+
+        <mdc-menusection slot="fixed-menubar">
+          <mdc-navmenuitem icon-name="settings-bold" nav-id="6" label="Settings" tooltip-text="Settings"></mdc-navmenuitem>
+        </mdc-menusection>
+
+        <mdc-icon slot="brand-logo" aria-label="Brand logo" name="apple-bold"></mdc-icon>
+      </mdc-sidenavigation>
+    </div>
+  `;
+
+  await componentsPage.mount({ html, clearDocument: true });
+  await componentsPage.waitForPendingIcons();
+  const sidenav = componentsPage.page.locator('mdc-sidenavigation');
+  await sidenav.waitFor();
+
+  const meetingsMenuItem = sidenav.locator('mdc-navmenuitem[nav-id="2"]');
+  const parentItem1 = sidenav.locator('mdc-navmenuitem#dropdown-trigger-1');
+  const parentItem2 = sidenav.locator('mdc-navmenuitem#dropdown-trigger-2');
+  const dropdownContainer1 = sidenav.locator('div[data-trigger="dropdown-trigger-1"]');
+  const dropdownContainer2 = sidenav.locator('div[data-trigger="dropdown-trigger-2"]');
+  const child1 = dropdownContainer1.locator('mdc-navmenuitem').nth(0);
+  const child2 = dropdownContainer1.locator('mdc-navmenuitem').nth(1);
+  const child3 = dropdownContainer1.locator('mdc-navmenuitem').nth(2);
+  const regularItem = sidenav.locator('mdc-navmenuitem[nav-id="5"]');
+  const toggleButton = sidenav.locator('[aria-label="Toggle Side navigation"]');
+
+  return {
+    sidenav,
+    meetingsMenuItem,
+    parentItem1,
+    parentItem2,
+    dropdownContainer1,
+    dropdownContainer2,
+    child1,
+    child2,
+    child3,
+    regularItem,
+    toggleButton,
+  };
+};
+
+test.describe.parallel('SideNavigation (Dropdown mode)', () => {
+  test.setTimeout(60000);
+
+  test('dropdown expanded interactions', async ({ componentsPage }) => {
+    const { sidenav, parentItem1, dropdownContainer1, child1, child2, child3 } = await setupDropdown(
+      componentsPage,
+      'flexible',
+    );
+
+    await test.step('attributes – submenu-type is dropdown', async () => {
+      await expect(sidenav).toHaveAttribute('submenu-type', 'dropdown');
+      await expect(sidenav).toHaveAttribute('expanded');
+    });
+
+    await test.step('dropdown containers are initially hidden', async () => {
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+    });
+
+    await test.step('clicking parent opens dropdown inline', async () => {
+      await parentItem1.click();
+      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+      await expect(child1).toBeVisible();
+      await expect(child2).toBeVisible();
+      await expect(child3).toBeVisible();
+
+      // Tooltip should NOT be visible when dropdown is open (renderDynamicTooltip returns early if dropdownOpen)
+      const parentItem1Tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="dropdown-trigger-1"]`);
+      await expect(parentItem1Tooltip).not.toBeAttached();
+
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-expanded-open');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-expanded-open');
+    });
+
+    await test.step('clicking parent again closes dropdown', async () => {
+      await parentItem1.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+      await expect(parentItem1).not.toHaveAttribute('aria-expanded');
+    });
+
+    await test.step('selecting a child marks only the child as active, not parent', async () => {
+      // Open the dropdown
+      await parentItem1.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+
+      // Click a child item
+      await child2.click();
+      await expect(child2).toHaveAttribute('aria-current', 'page');
+      await expect(child2).toHaveAttribute('active', '');
+
+      // Parent should NOT have active attribute while dropdown is open
+      await expect(parentItem1).not.toHaveAttribute('active');
+
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-child-active');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-child-active');
+    });
+
+    await test.step('closing dropdown with active child shows parent as active', async () => {
+      // Close the dropdown using escape key
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+
+      // Parent should now show as active because it has an active child
+      await expect(parentItem1).toHaveAttribute('active', '');
+
+      // Tooltip should now be visible (is-active-parent-tooltip-text) when dropdown is closed and parent has active child
+      const parentItem1Tooltip = componentsPage.page.locator(`mdc-tooltip[triggerid="dropdown-trigger-1"]`);
+      await parentItem1.hover();
+
+      await expect(parentItem1Tooltip).toBeVisible();
+      const tooltipText = await parentItem1Tooltip.textContent();
+      expect(tooltipText?.trim()).toBe('Parent Item, contains active navmenuitem');
+
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown', {
+        source: 'userflow',
+        fileNameSuffix: 'closed-parent-active',
+      });
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-closed-parent-active');
+    });
+
+    await test.step('re-opening dropdown removes active from parent', async () => {
+      // Open the dropdown again
+      await parentItem1.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+
+      // Parent should lose active styling when dropdown is open
+      await expect(parentItem1).not.toHaveAttribute('active');
+      // Child should still be active
+      await expect(child2).toHaveAttribute('active', '');
+    });
+
+    await test.step('selecting a different child updates active state', async () => {
+      // Click a different child
+      await child3.click();
+      await expect(child3).toHaveAttribute('aria-current', 'page');
+      await expect(child3).toHaveAttribute('active', '');
+      // Previous child should lose active
+      await expect(child2).not.toHaveAttribute('aria-current');
+      await expect(child2).not.toHaveAttribute('active');
+    });
+  });
+
+  test('dropdown keyboard interactions', async ({ componentsPage }) => {
+    const { meetingsMenuItem, parentItem1, dropdownContainer1, dropdownContainer2, child1, child2, child3 } =
+      await setupDropdown(componentsPage, 'flexible');
+
+    await test.step('ArrowDown on closed parent does NOT open dropdown', async () => {
+      await parentItem1.focus();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      // Dropdown should remain closed
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+      await expect(parentItem1).not.toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await test.step('ArrowDown navigates through children and wraps focus', async () => {
+      await parentItem1.focus();
+      // Open the dropdown first via enter key
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
+
+      // Now ArrowDown should navigate through children
+      await expect(child1).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [child2, child3, child1]);
+    });
+
+    await test.step('ArrowUp navigates back through children and wraps focus', async () => {
+      // child1 is focused from the previous step
+      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [child3, child2, child1]);
+    });
+
+    await test.step('Escape closes dropdown and focuses parent', async () => {
+      // Navigate back into the dropdown
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(child2).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+      await expect(parentItem1).toBeFocused();
+      await expect(parentItem1).not.toHaveAttribute('aria-expanded');
+    });
+
+    await test.step('ArrowRight from child navigates to first child in the next dropdown item', async () => {
+      // Open dropdown1 and focus first child
+      await parentItem1.click();
+      await expect(parentItem1).toHaveAttribute('aria-expanded', 'true');
+      await expect(child1).toBeFocused();
+
+      // ArrowRight should move focus to the first child of the next parent item (dropdown2)
+      await componentsPage.page.keyboard.press('ArrowRight');
+      const dropdownContainer2Child1 = dropdownContainer2.locator('mdc-navmenuitem').nth(0);
+      await expect(dropdownContainer2Child1).toBeFocused();
+    });
+
+    await test.step('ArrowLeft from child in second dropdown navigates back to first child of the previous parent item', async () => {
+      // Open parentItem2 dropdown and focus first child
+      const dropdownContainer2Child1 = dropdownContainer2.locator('mdc-navmenuitem').nth(0);
+      await expect(dropdownContainer2Child1).toBeFocused();
+
+      // ArrowLeft should move focus back to the first child of the previous parent item (dropdown1)
+      await componentsPage.page.keyboard.press('ArrowLeft');
+      await expect(child1).toBeFocused();
+    });
+
+    await test.step('ArrowRight on open parent focuses first child', async () => {
+      // child1 is currently in focus
+      await componentsPage.page.keyboard.press('ArrowLeft');
+      await expect(meetingsMenuItem).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(parentItem1).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await expect(child1).toBeFocused();
+    });
+  });
+
+  test('dropdown-to-flyout conversion on collapse', async ({ componentsPage }) => {
+    const { sidenav, parentItem1, dropdownContainer1, toggleButton } = await setupDropdown(componentsPage, 'flexible');
+
+    await test.step('open dropdown and select a child', async () => {
+      await parentItem1.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+      const child1 = dropdownContainer1.locator('mdc-navmenuitem').first();
+      await child1.click();
+      await expect(child1).toHaveAttribute('aria-current', 'page');
+    });
+
+    await test.step('collapsing converts dropdowns to flyout menupopover', async () => {
+      await toggleButton.click();
+      await expect(sidenav).not.toHaveAttribute('expanded');
+
+      // Dropdown containers should be hidden
+      await expect(dropdownContainer1).toHaveCSS('display', 'none');
+
+      // Dynamic menupopover should be created
+      const dynamicPopover = sidenav.locator('mdc-menupopover[triggerid="dropdown-trigger-1"][data-dynamic-popover]');
+      await expect(dynamicPopover).toBeAttached();
+
+      // Parent should show active styling (has active child)
+      await expect(parentItem1).toHaveAttribute('active', '');
+      await parentItem1.click();
+      await expect(dynamicPopover).toBeVisible();
+
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-collapsed-flyout');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-collapsed-flyout');
+    });
+
+    await test.step('expanding restores dropdown mode', async () => {
+      await toggleButton.click();
+      await expect(sidenav).toHaveAttribute('expanded');
+
+      // Dynamic menupopover should be removed
+      const dynamicPopover = sidenav.locator('mdc-menupopover[triggerid="dropdown-trigger-1"][data-dynamic-popover]');
+      await expect(dynamicPopover).not.toBeAttached();
+
+      // Children should be back in the div[data-trigger]
+      const childrenInContainer = dropdownContainer1.locator('mdc-navmenuitem');
+      await expect(childrenInContainer).toHaveCount(3);
+      const trigger = sidenav.locator('mdc-navmenuitem#dropdown-trigger-1');
+      await trigger.click();
+      await expect(dropdownContainer1).toHaveCSS('display', 'flex');
+      await expect(dropdownContainer1.locator('mdc-navmenuitem').first()).toBeVisible();
+
+      await componentsPage.visualRegression.takeScreenshot('sidenavigation-dropdown-re-expanded');
+      await componentsPage.accessibility.checkForA11yViolations('sidenavigation-dropdown-re-expanded');
+    });
+  });
+});
+// End AI-Assisted

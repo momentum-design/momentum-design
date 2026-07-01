@@ -25,30 +25,6 @@ import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getActiveTab } from './tablist.utils';
 
 /**
- * Tab list organizes tabs into a container.
- *
- * Children of the tab list are `mdc-tab` elements, sent to the default slot.
- *
- * The tabs can be navigated using the left/right arrow keys, and selected by clicking,
- *  or pressing the Enter and Space keys.
- *
- * **Implicit accessibility rules**
- *
- * - The element that serves as the container for the set of tabs has role `tablist`.
- * - Each element that serves as a tab has role `tab` and is contained within the element with role `tablist`.
- * - The active tab element has the state `aria-selected` set to `true`
- *   and all other tab elements have it set to `false`.
- *
- *
- * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
- *
- * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
- * - The `tablist` element needs to have a label provided by `data-aria-label`.
- * - Each element with role `tab` has the property `aria-controls`
- *  that should refer to its associated `tabpanel` element.
- * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
- * - If a `tab` element has a popup menu, it needs to have the property `aria-haspopup` set to either `menu` or `true`.
- *
  * @tagname mdc-tablist
  *
  * @dependency mdc-tab
@@ -243,6 +219,20 @@ class TabList extends ListNavigationMixin(
   }
 
   /**
+   * Override focus to delegate to the active tab.
+   * When a dialog focus-trap or any other caller invokes `.focus()` on the tablist host,
+   * focus is forwarded directly to the active tab instead of landing on the shadow host.
+   */
+  public override focus(options?: FocusOptions): void {
+    const activeTab = getActiveTab(this.navItems);
+    if (activeTab) {
+      activeTab.focus(options);
+    } else {
+      super.focus(options);
+    }
+  }
+
+  /**
    * When the tablist receives focus, then focus the active tab.
    *
    * @param event - Focus event.
@@ -251,7 +241,8 @@ class TabList extends ListNavigationMixin(
   private async handleFocus(event: FocusEvent) {
     /**
      * If the element losing focus is a tab, do nothing.
-     * If the element gaining focus is not a tab, do nothing.
+     * If the element gaining focus is not a tab or the container itself (e.g., via delegatesFocus
+     * or a click on the container), do nothing — the focus() override handles the programmatic case.
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
      */
     if (event.relatedTarget instanceof Tab || !(event.target instanceof Tab)) {
@@ -418,6 +409,8 @@ class TabList extends ListNavigationMixin(
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+
+  static override shadowRootOptions = { ...Component.shadowRootOptions, delegatesFocus: true };
 }
 
 export default TabList;

@@ -13,6 +13,7 @@ const KEYS = {
   SHIFT_TAB: 'Shift+Tab',
   SPACE: ' ',
   TAB: 'Tab',
+  DELETE: 'Delete',
 };
 
 export { KEYS };

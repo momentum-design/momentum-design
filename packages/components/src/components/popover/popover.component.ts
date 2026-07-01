@@ -1,10 +1,21 @@
 /* eslint-disable no-restricted-syntax */
-import { arrow, autoUpdate, computePosition, flip, offset, OffsetOptions, shift, size } from '@floating-ui/dom';
+import {
+  arrow,
+  autoUpdate,
+  computePosition,
+  flip,
+  inline as inlineMiddleware,
+  offset,
+  OffsetOptions,
+  shift,
+  size,
+} from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
+import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -22,55 +33,9 @@ import { PopoverBoundaryRoot, PopoverColor, PopoverPlacement, PopoverStrategy, P
 import { PopoverUtils } from './popover.utils';
 
 /**
- * Popover is generic overlay which can be triggered by any actionable element.
- *
- * It can be used for tooltips, dropdowns, menus or any showing any other contextual content.
- *
- * The popover automatically positions itself based on available space and
- * supports dynamic height adjustments with scrollable content when needed.
- * It uses [Floating UI](https://floating-ui.com/) for maintaining the position of the popover.
- *
- * ## Limitations
- *
- * ### On trigger for multiple popovers
- *
- * A component (button, etc.) can trigger more than one popover, but only one of them should change the
- * aria-expanded and aria-haspopup attributes on the trigger.
- *
- * To prevent unexpected attribute changes on the trigger `disable-aria-expanded` attribute must be set on all linked
- * Popovers except one.
- *
- * ### React Popover with append-to attribute
- *
- * React mounts the popover based on the virtual DOM, but when the append-to attribute is set, the popover removes itself
- * and mounts to the specified element. React will not know about the move and will not know about the
- * newly created mdc-popoverportal element either. This throws a `NotFoundError` error when the Popover is directly
- * added/removed by React, for example:
- *
- * ```tsx
- * const SomeComponent = () => {
- *    const [isOpen, setIsOpen] = useState(false);
- *    return (<div>
- *      {isOpen && <Popover append-to="some-element-id">...</mdc-popover>}
- *    </div>);
- * }
- * ```
- * As a workaround Popover need to wrap with any other element/component, for example:
- * ```tsx
- * const SomeComponent = () => {
- *    const [isOpen, setIsOpen] = useState(false);
- *    return (<div>
- *      {isOpen && <div>
- *        <Popover append-to="some-element-id">...</mdc-popover>
- *      <div>}
- *    </div>);
- * }
- * ```
- * Note the wrapper <div> around the Popover component (React.Fragment does not work).
+ * @tagname mdc-popover
  *
  * @dependency mdc-button
- *
- * @tagname mdc-popover
  *
  * @event shown - (React: onShown) This event is dispatched when the popover is shown
  * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden
@@ -469,6 +434,19 @@ class Popover
   animationFrame: boolean = DEFAULTS.ANIMATION_FRAME;
 
   /**
+   * Improves positioning for inline reference elements that span over multiple lines,
+   * such as hyperlinks or range selections.
+   *
+   * When enabled, the floating-ui `inline` middleware is used to position the popover
+   * based on the individual client rects of the inline element, rather than its full bounding box.
+   *
+   * @default false
+   * @see [Floating UI - inline](https://floating-ui.com/docs/inline)
+   */
+  @property({ type: Boolean, reflect: true })
+  inline: boolean = DEFAULTS.INLINE;
+
+  /**
    * The index of the interactive element to receive focus when the popover opens with focus trap enabled.
    * The index is based on the order of interactive elements in the popover, starting from 0.
    * If not set, the first interactive element (index 0) will receive focus by default.
@@ -598,8 +576,16 @@ class Popover
    * Sets up the trigger related event listeners, based on the trigger type.
    * Includes fallback for mouseenter trigger to also handle focusin for non-interactive popovers.
    *
-   * We are using capture phase for to make sure we capture trigger events even when they are not propagated during the
-   * bubble phase (e.g.: buttons in list item)
+   * We use capture phase on `document` for all trigger listeners to make sure we capture trigger
+   * events even when they are not propagated during the bubble phase (e.g.: buttons in list item).
+   *
+   * Hover is detected via `mouseover`/`mouseout` (not `mouseenter`/`mouseleave`). The latter are
+   * spec'd as `composed: false` and do not bubble, so a document-level listener never sees them
+   * when the trigger lives inside a shadow root (e.g. wrapped in `mdc-iconprovider` or
+   * `mdc-themeprovider`). `mouseover`/`mouseout` are `composed: true` and bubble, so they cross
+   * shadow boundaries and reach `document`, letting us keep event delegation (no direct reference
+   * to the trigger element and no dependency on its mount/unmount lifecycle). The handlers filter
+   * out movements that stay within the trigger's subtree, recreating enter/leave semantics.
    * @internal
    */
   private setupTriggerListeners = () => {
@@ -612,10 +598,10 @@ class Popover
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
       hoverBridge?.addEventListener('mouseenter', this.show);
-      document.addEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-      document.addEventListener('mouseleave', this.handleMouseLeave, { capture: true });
       this.addEventListener('mouseenter', this.cancelCloseDelay);
       this.addEventListener('mouseleave', this.startCloseDelay);
+      document.addEventListener('mouseover', this.handleMouseEnter, { capture: true });
+      document.addEventListener('mouseout', this.handleMouseLeave, { capture: true });
     }
     if (this.trigger.includes('focusin')) {
       document.addEventListener('focusin', this.handleFocusIn, { capture: true });
@@ -635,8 +621,8 @@ class Popover
     // mouseenter trigger
     const hoverBridge = this.renderRoot.querySelector('div[part="popover-hover-bridge"]');
     hoverBridge?.removeEventListener('mouseenter', this.show);
-    document.removeEventListener('mouseenter', this.handleMouseEnter, { capture: true });
-    document.removeEventListener('mouseleave', this.handleMouseLeave, { capture: true });
+    document.removeEventListener('mouseover', this.handleMouseEnter, { capture: true });
+    document.removeEventListener('mouseout', this.handleMouseLeave, { capture: true });
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
 
@@ -697,7 +683,10 @@ class Popover
     }
 
     if (changedProperties.has('appendTo')) {
-      if (this.appendTo) {
+      // only setup appendTo when the component is connected to the DOM
+      // this fixes an issue which causes popovers to be orphaned in the DOM without the appendTo logic being cleaned up,
+      // cause of Lit deferring the updated() to fire after a disconnect
+      if (this.appendTo && this.isConnected) {
         this.utils.setupAppendTo();
       } else {
         this.utils.cleanupAppendTo();
@@ -759,6 +748,9 @@ class Popover
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hide();
       PopoverEventManager.onClickOutside(this);
+      if (clickedOnBackdrop) {
+        event.stopPropagation();
+      }
     }
   };
 
@@ -912,25 +904,47 @@ class Popover
   }
 
   /**
-   * Handles mouse enter event on the trigger element.
-   * This method sets the `isHovered` flag to true and shows the popover
+   * Determines whether a delegated `mouseover`/`mouseout` event is movement that stays within the
+   * trigger's subtree rather than a genuine enter/leave of the trigger.
+   *
+   * Both events fire repeatedly while the pointer moves between elements inside the trigger
+   * (e.g. an icon with internal SVG elements). `relatedTarget` is the element on the other side of
+   * the boundary (the element being left for `mouseover`, or entered for `mouseout`); if it
+   * resolves to the trigger or one of its shadow hosts, the pointer has not crossed the trigger
+   * boundary and the event should be ignored.
+   * @internal
+   */
+  private isHoverWithinTrigger = (event: Event): boolean => {
+    const { triggerElement } = this;
+    const { relatedTarget } = event as MouseEvent;
+    if (triggerElement && relatedTarget instanceof Element) {
+      return getHostComposePath(relatedTarget).includes(triggerElement);
+    }
+    return false;
+  };
+
+  /**
+   * Handles the pointer moving over the trigger element (delegated `mouseover`).
+   * This method sets the `isHovered` flag to true and shows the popover.
    * @internal
    */
   private handleMouseEnter = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = true;
     this.show();
   };
 
   /**
-   * Handles mouse leave event on the trigger element.
+   * Handles the pointer leaving the trigger element (delegated `mouseout`).
    * This method sets the `isHovered` flag to false and starts the close delay
    * timer to hide the popover.
    * @internal
    */
   private handleMouseLeave = (event: Event) => {
     if (!this.isEventFromTrigger(event)) return;
+    if (this.isHoverWithinTrigger(event)) return;
 
     this.isHovered = false;
     this.startCloseDelay();
@@ -1084,13 +1098,19 @@ class Popover
         : Array.from(document.querySelectorAll(this.boundary));
     const rootBoundary = this.boundaryRoot;
 
-    const middleware = [
+    const middleware: ReturnType<typeof shift>[] = [];
+
+    if (this.inline) {
+      middleware.push(inlineMiddleware());
+    }
+
+    middleware.push(
       shift({
         boundary,
         rootBoundary,
         padding: this.boundaryPadding,
       }),
-    ];
+    );
 
     if (!this.disableFlip) {
       middleware.push(

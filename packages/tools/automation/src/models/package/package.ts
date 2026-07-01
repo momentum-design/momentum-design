@@ -46,27 +46,31 @@ class Package {
     return this.config.scope;
   }
 
-  public getDependents(recursive?: boolean): Promise<Array<Package>> {
+  public getDependents(recursive?: boolean, visited: Set<string> = new Set<string>()): Promise<Array<Package>> {
     const { packagesPath } = this.config;
+
+    // Record self in the visited set so cyclic dependency graphs (e.g. a workspace that
+    // depends on a tool that peer-depends on the workspace) terminate instead of recursing forever.
+    visited.add(this.package);
 
     return Yarn.why(this.package)
       .then((whyList) => whyList.filter((item) => item.value.startsWith(this.scope)))
       .then((whyList) => Package.generateConfigFromYarnWhy(...whyList))
-      .then((configs) => configs.map((config) => new Package({
-        ...config,
-        packagesPath,
-      })))
+      .then((configs) => configs.map((config) => new Package({ ...config, packagesPath })))
       .then((packages) => {
         if (!recursive) {
           return Promise.resolve(packages);
         }
 
-        return Promise.all(packages.map((pack) => pack.getDependents(recursive)))
+        const unvisitedPackages = packages.filter((pack) => !visited.has(pack.package));
+
+        return Promise.all(unvisitedPackages.map((pack) => pack.getDependents(recursive, visited)))
           .then((dependentsMatrix) => {
             const flatDependents = dependentsMatrix.flat(Infinity) as Array<Package>;
 
             return [...new Set(flatDependents)];
-          }).then((dependents) => [...new Set([...packages, ...dependents])]);
+          })
+          .then((dependents) => [...new Set([...packages, ...dependents])]);
       });
   }
 
@@ -92,7 +96,8 @@ class Package {
   }
 
   public readDefinition(): Promise<this> {
-    return fs.readFile(this.definitionFilePath)
+    return fs
+      .readFile(this.definitionFilePath)
       .then((buffer) => buffer.toString(Package.CONSTANTS.DEFINITION_FILE_ENCODING))
       .then((data) => JSON.parse(data))
       .then((definition) => {
@@ -108,8 +113,7 @@ class Package {
   }
 
   public writeDefinition(): Promise<this> {
-    return fs.writeFile(this.definitionFilePath, this.definitionSerial)
-      .then(() => this);
+    return fs.writeFile(this.definitionFilePath, this.definitionSerial).then(() => this);
   }
 
   public static get CONSTANTS(): typeof CONSTANTS {

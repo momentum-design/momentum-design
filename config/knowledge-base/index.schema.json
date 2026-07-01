@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Knowledge Base Index Shard",
+  "description": "A tier-sharded slice of the repo-wide knowledge-base index. One file per tier (index.root.json, index.packages.json, index.components.json) is produced by scripts/knowledge-base/generate-index.js. Per-field constraints are sourced from config/knowledge-base/content/frontmatter.config.json so the index and the frontmatter contract cannot drift.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generatedFrom",
+    "tier",
+    "topics"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "_comment": {
+      "type": "string"
+    },
+    "generatedFrom": {
+      "type": "string",
+      "description": "Repo-relative path to the generator script."
+    },
+    "tier": {
+      "$ref": "./content/frontmatter.config.json#/default/properties/tier",
+      "description": "Tier number that this shard contains. All entries in `topics` share this tier."
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/topic"
+      }
+    }
+  },
+  "definitions": {
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tier",
+        "path",
+        "title",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable, path-derived identifier in the form tier<n>/<repo-relative-path-without-extension>."
+        },
+        "path": {
+          "type": "string",
+          "description": "Repo-relative path to the topic markdown file."
+        },
+        "canonical": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Repo-relative path to the canonical topic file when this entry is a cross-tier stub. Null otherwise."
+        },
+        "tier": {
+          "$ref": "./content/frontmatter.config.json#/default/properties/tier"
+        },
+        "title": {
+          "$ref": "./content/frontmatter.config.json#/default/properties/title"
+        },
+        "summary": {
+          "$ref": "./content/frontmatter.config.json#/default/properties/summary"
+        },
+        "component": {
+          "$ref": "./content/frontmatter.config.json#/tiers/3/properties/component"
+        }
+      }
+    }
+  }
+}

@@ -17,61 +17,6 @@ import { DEFAULTS } from './virtualizedlist.constants';
 import { VirtualizerProps, Virtualizer, AtBottomValue } from './virtualizedlist.types';
 
 /**
- * `mdc-virtualizedlist` is an extension of the `mdc-list` component that adds virtualization capabilities using
- * the Tanstack Virtual library.
- *
- * This component is thin wrapper around the Tanstack libray to provide additional funtionalities such as
- * keyboard navigation, focus management, scroll anchoring and accessibility features.
- *
- * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
- *
- * ## Setup
- *
- * `virtualizerProps` is a required prop that requires at least three properties to be set:
- * - `count` is the total number of items in the list
- * - `estimateSize` is a function that returns the estimated size (in pixels) of each item in the list
- * - `getItemKey` is a function that returns a unique key for each item in the list.
- *
- * ### Render list items
- *
- * To keep the component framework-agnostic, the rendering of the list items is left to the consumer.
- *
- * We need to render only the visible items. The list of visible items are provided by the `virtualitemschange` event.
- * The event detail contains the `virtualItems` array, which contains the information for the rendering.
- * List items must have an `data-index` attribute, the indexes are in the `virtualItems` list.
- *
- * ## Best practices
- *
- * ### List updates
- *
- * Tanstack needs only the count of the items in the list and the size of each item to perform virtualization.
- * List updates happens when
- * - when `virtualizerProps` property of the component instance changes
- * - when `observe-size-changes` is set and the item's size changes (it uses ResizeObserver internally)
- * - when `component.visualiser.measure` called manually.
- *
- * ### Header
- *
- * To add a header to the list, use the `mdc-listheader` component and place it in the `list-header` slot.
- *
- * ### Lists with dynamic content
- *
- * Unique keys for the list items are critical for dynamically changing list items or item's content.
- * If the key change with the content it will cause scrollbar and content shuttering.
- *
- * ### Top/Bottom Padding
- *
- * If padding is required at the top or the bottom of the list, do not apply padding/margin via CSS since this
- * will break the virtualization calculations and can cause scrollbars when they are not necessary.
- * Instead use the `paddingStart` and `paddingEnd` properties (in pixels) of the `virtualizerProps` prop.
- *
- * ### Gaps between items
- *
- * If you are adding gaps between items using CSS margin or gap properties, you must provide the same value in pixels
- * to the `gap` property of the `virtualizerProps` prop. This ensures that the virtualization calculations are accurate.
- * If you are using CSS margins, ensure that you are not applying the margin to the top of the first or the bottom of the last item.
- * If you need spacing there, use the `paddingStart` and `paddingEnd` properties of the `virtualizerProps` prop.
- *
  * @tagname mdc-virtualizedlist
  *
  * @event scroll - (React: onScroll) Event that gets called when user scrolls inside of list.
@@ -104,6 +49,14 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
    */
   @property({ type: Object })
   public virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
+
+  /**
+   * Returns the isItemNavigable callback, falling back to the default that treats all items as navigable.
+   * @internal
+   */
+  private get isItemNavigable(): (index: number) => boolean {
+    return this.virtualizerProps.isItemNavigable ?? DEFAULTS.VIRTUALIZER_PROPS.isItemNavigable;
+  }
 
   /**
    * Whether to loop navigation when reaching the end of the list.
@@ -588,6 +541,20 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
       // eslint-disable-next-line no-param-reassign
       item.tabIndex = tabable ? 0 : -1;
 
+      // onStoreUpdate fires before the item enters the cache, so super.navItems is still empty
+      // for the first navigable item. If selectedIndex targets a non-navigable item,
+      // fall back to this first navigable item.
+      if (!tabable && super.navItems.length === 0) {
+        if (!this.isItemNavigable(this.selectedIndex)) {
+          // eslint-disable-next-line no-param-reassign
+          item.tabIndex = 0;
+          const itemIndex = this.virtualizer?.indexFromElement(item);
+          if (itemIndex !== undefined) {
+            this.setSelectedIndex(itemIndex);
+          }
+        }
+      }
+
       this.setAriaSetSize(item);
     } else if (changeType === 'removed') {
       if (item.tabIndex === 0) {
@@ -691,6 +658,19 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     this.setSelectedIndex(index);
   }
 
+  /**
+   * Finds the next navigable index using the isItemNavigable callback.
+   * Returns null if no navigable item exists in the given direction.
+   */
+  private findNextNavigableIndex(fromIndex: number, direction: 1 | -1): number | null {
+    const { count } = this.virtualizerProps;
+
+    for (let i = fromIndex; i >= 0 && i < count; i += direction) {
+      if (this.isItemNavigable(i)) return i;
+    }
+    return null;
+  }
+
   protected override resetTabIndexAndSetFocus(
     newIndex: number,
     oldIndex?: number,
@@ -700,6 +680,16 @@ class VirtualizedList extends DataAriaLabelMixin(List) {
     const elementToFocus = this.navItems.find(element => this.virtualizer?.indexFromElement(element) === newIndex);
 
     if (elementToFocus === undefined) {
+      // If the target is non-navigable (e.g. disabled or header), skip to the next navigable index.
+      if (!this.isItemNavigable(newIndex) && oldIndex !== undefined) {
+        const direction = newIndex >= oldIndex ? 1 : -1;
+        const nextNavigable = this.findNextNavigableIndex(newIndex + direction, direction);
+        if (nextNavigable !== null) {
+          return this.resetTabIndexAndSetFocus(nextNavigable, oldIndex, focusNewItem, scrollToNewItem);
+        }
+        return false;
+      }
+
       this.scrollToIndex(newIndex, {});
       this.endOfScrollQueue.push(() => {
         super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);

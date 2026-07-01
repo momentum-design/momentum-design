@@ -500,6 +500,127 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
     });
 
+    await test.step('does not hide popover when mouse moves within trigger shadow DOM', async () => {
+      await componentsPage.mount({
+        html: `
+          <div id="wrapper">
+            <div style="height: 20vh">
+              <mdc-button id="trigger-button-shadow" prefix-icon="placeholder-bold">
+                Hover me
+              </mdc-button>
+            </div>
+            <mdc-popover
+              id="popover-hover-shadow"
+              triggerID="trigger-button-shadow"
+              trigger="${TRIGGER.MOUSEENTER}"
+              delay="0,100"
+              interactive
+            >
+              Hover popover content
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+
+      const popover = componentsPage.page.locator('#popover-hover-shadow');
+      const triggerButton = componentsPage.page.locator('#trigger-button-shadow');
+      await expect(triggerButton.locator('mdc-icon')).toBeVisible();
+
+      await triggerButton.hover();
+      await expect(popover).toBeVisible();
+
+      const relatedTarget = await triggerButton.locator('mdc-icon').elementHandle();
+      expect(relatedTarget).not.toBeNull();
+
+      await triggerButton.evaluate((trigger, target) => {
+        if (!target) return;
+
+        trigger.dispatchEvent(
+          new MouseEvent('mouseout', {
+            bubbles: true,
+            composed: true,
+            relatedTarget: target,
+          }),
+        );
+      }, relatedTarget);
+
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).toBeVisible();
+
+      await triggerButton.evaluate(trigger => {
+        trigger.dispatchEvent(
+          new MouseEvent('mouseout', {
+            bubbles: true,
+            composed: true,
+            relatedTarget: document.body,
+          }),
+        );
+      });
+
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).not.toBeVisible();
+    });
+
+    await test.step('shows popover on hover when trigger lives inside a shadow root', async () => {
+      // Regression test for the original shadow-DOM hover bug:
+      // mouseenter/mouseleave are spec'd as `composed: false`, so a document-level listener never
+      // sees those events when the trigger is in a shadow root. The fix delegates hover via
+      // `mouseover`/`mouseout`, which are `composed: true` and bubble, so they cross the shadow
+      // boundary and reach the document-level listener. We host both the popover and its trigger
+      // inside a single open shadow root to exercise that cross-boundary path.
+      await componentsPage.mount({
+        html: `<div id="wrapper"><shadow-host-popover-test></shadow-host-popover-test></div>`,
+        clearDocument: true,
+      });
+
+      await componentsPage.page.evaluate(() => {
+        if (!customElements.get('shadow-host-popover-test')) {
+          customElements.define(
+            'shadow-host-popover-test',
+            class extends HTMLElement {
+              connectedCallback() {
+                if (this.shadowRoot) return;
+                const root = this.attachShadow({ mode: 'open' });
+                root.innerHTML = `
+                  <div style="height: 20vh">
+                    <mdc-button id="shadow-trigger-button">Hover me</mdc-button>
+                  </div>
+                  <mdc-popover
+                    id="shadow-popover"
+                    triggerID="shadow-trigger-button"
+                    trigger="mouseenter"
+                    delay="0,100"
+                  >
+                    Shadow popover content
+                  </mdc-popover>
+                `;
+              }
+            },
+          );
+        }
+      });
+
+      const triggerButton = componentsPage.page.locator('shadow-host-popover-test mdc-button#shadow-trigger-button');
+      const popover = componentsPage.page.locator('shadow-host-popover-test mdc-popover#shadow-popover');
+
+      await expect(triggerButton).toBeVisible();
+
+      await triggerButton.hover();
+      await expect(popover).toBeVisible();
+
+      // Move the pointer clearly outside the trigger's bounding box. The trigger sits in the
+      // top-left corner, so moving to (0,0) would still land on it; compute an empty point past
+      // its bottom-right edge to guarantee the pointer actually leaves the trigger subtree.
+      const triggerBox = (await triggerButton.boundingBox())!;
+      await componentsPage.page.mouse.move(
+        triggerBox.x + triggerBox.width + 200,
+        triggerBox.y + triggerBox.height + 200,
+      );
+      await componentsPage.page.waitForTimeout(200);
+      await expect(popover).not.toBeVisible();
+    });
+
     await test.step('should keep popover open when mouse moves between trigger and popover', async () => {
       const ADJUSTMENT = 15;
       const placementsToTest = [
@@ -887,6 +1008,87 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover.locator('#first')).toBeFocused();
     });
 
+    // AI-Assisted
+    await test.step('Focus trap with list should respect roving tabindex', async () => {
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        focusTrap: true,
+        interactive: true,
+        children: `
+          <mdc-list>
+            <mdc-listitem label="Item 1" aria-label="item 1">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-1" aria-label="action 1">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+            <mdc-listitem label="Item 2" aria-label="item 2">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-2" aria-label="action 2">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+            <mdc-listitem label="Item 3" aria-label="item 3">
+              <div slot="trailing-controls">
+                <mdc-button id="btn-3" aria-label="action 3">Action</mdc-button>
+              </div>
+            </mdc-listitem>
+          </mdc-list>
+        `,
+      });
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+
+      // Focus trap initial focus should land on first list item
+      const listItem1 = popover.locator('mdc-listitem[label="Item 1"]');
+      const listItem2 = popover.locator('mdc-listitem[label="Item 2"]');
+      const listItem3 = popover.locator('mdc-listitem[label="Item 3"]');
+      const btn1 = popover.locator('#btn-1');
+      const btn2 = popover.locator('#btn-2');
+
+      await expect(listItem1).toBeFocused();
+
+      // Tab should move focus to the button inside the active (first) list item only
+      await componentsPage.actionability.pressTab();
+      await expect(btn1).toBeFocused();
+
+      // Tab again should wrap back to the first list item (not jump to btn-2 or btn-3)
+      await componentsPage.actionability.pressTab();
+      await expect(listItem1).toBeFocused();
+
+      // Shift+Tab should move focus to the button inside the active (first) list item only
+      await componentsPage.actionability.pressShiftTab();
+      await expect(btn1).toBeFocused();
+
+      // Shift+Tab again should wrap back to the first list item (not jump to btn-2 or btn-3)
+      await componentsPage.actionability.pressShiftTab();
+      await expect(listItem1).toBeFocused();
+
+      // Arrow Down should move to the second list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItem2).toBeFocused();
+
+      // Tab should now move to the button inside the second list item
+      await componentsPage.actionability.pressTab();
+      await expect(btn2).toBeFocused();
+
+      // Tab again should wrap back to the second list item
+      await componentsPage.actionability.pressTab();
+      await expect(listItem2).toBeFocused();
+
+      // Arrow Down should move to the third list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+      await expect(listItem3).toBeFocused();
+
+      // Arrow Up should move back to the second list item
+      await componentsPage.page.keyboard.press(KEYS.ARROW_UP);
+      await expect(listItem2).toBeFocused();
+    });
+    // End AI-Assisted
+
     await test.step('Prevent outside scroll', async () => {
       await componentsPage.setAttributes(popover, {
         preventScroll: 'true',
@@ -947,6 +1149,71 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await trigger2.click();
       await expect(popover2).toBeVisible();
     });
+
+    // AI-Assisted
+    await test.step('Backdrop click stops event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-popover id="first-popover" triggerID="trigger-1" backdrop hide-on-outside-click>
+              First Popover Content
+            </mdc-popover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const popover1 = componentsPage.page.locator('#first-popover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-popover');
+
+      await trigger1.click();
+      await expect(popover1).toBeVisible();
+
+      // Force-clicking trigger-2 through the backdrop should close popover1
+      // but NOT open popover2, because the backdrop click stops event propagation
+      await trigger2.click({ force: true });
+      await expect(popover1).not.toBeVisible();
+      await expect(popover2).not.toBeVisible();
+
+      // After the backdrop is gone, clicking trigger-2 normally does open popover2
+      await trigger2.click();
+      await expect(popover2).toBeVisible();
+    });
+
+    // TODO: Fix this issue. The first popover should close, and then the 2nd popover should be added into the depth manager. This test case is currently skipped as it fails.
+    await test.step.skip('Outside click without backdrop does not stop event propagation', async () => {
+      await componentsPage.mount({
+        html: `
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-popover id="first-popover" triggerID="trigger-1" hide-on-outside-click>
+              First Popover Content
+            </mdc-popover>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
+      const popover1 = componentsPage.page.locator('#first-popover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-popover');
+
+      await trigger1.click();
+      await expect(popover1).toBeVisible();
+
+      // Clicking trigger-2 (outside popover1, no backdrop) closes popover1 AND opens popover2
+      // because outside clicks without a backdrop do NOT stop event propagation
+      await trigger2.click();
+      await expect(popover1).not.toBeVisible();
+      await expect(popover2).toBeVisible();
+    });
+    // End AI-Assisted
 
     await test.step('Element index to receive focus', async () => {
       const { popover, triggerButton } = await setup({
@@ -1365,12 +1632,12 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).not.toBeVisible();
     await expect(popoverActionButton).toBeFocused();
 
-    // Press Space on action inside popover to open dialog
+    // Press Escape to close popover
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).not.toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Focus does return to trigger when popover has focus-back-to-trigger attribute', async () => {
@@ -1406,9 +1673,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     // Press Space on action inside popover to open dialog
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Tooltip on trigger element does not open if it does not have visual focus when popover is closed', async () => {
@@ -1451,9 +1718,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     // Click on backdrop to close popover
     await backdrop.click({ force: true });
 
-    await expect(popover).not.toBeVisible();
-    await expect(tooltip).not.toBeVisible();
+    await expect(popover).not.toHaveAttribute('visible');
     await expect(trigger).toBeFocused();
+    await expect(tooltip).not.toHaveAttribute('visible');
   });
 
   await test.step('Popover should determine z-index for backdrop with default values', async () => {

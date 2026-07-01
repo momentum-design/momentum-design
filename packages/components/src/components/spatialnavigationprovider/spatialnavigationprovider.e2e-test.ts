@@ -15,25 +15,37 @@ const setup = async (args: SetupOptions) => {
 
   await componentsPage.mount({
     html: ` 
-      <div>
+      <div style="height: 100%">
         <style>
-          .button-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
+          .button-grid, .group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: space-around;
+          }
+          .group {
+            flex-direction: row;
           }
         </style>
         <mdc-spatialnavigationprovider id="snp-provider">
           <div class="button-grid">
-            <mdc-button id="btn-1">button 1</mdc-button>
-            <mdc-button id="btn-2">button 2</mdc-button>
-            <mdc-button id="btn-3">button 3</mdc-button>
-            <mdc-button id="btn-4">button 4</mdc-button>
-            <mdc-button id="btn-5">button 5</mdc-button>
-            <mdc-button id="btn-6">button 6</mdc-button>
-            <mdc-button id="btn-7">button 7</mdc-button>
-            <mdc-button id="btn-8">button 8</mdc-button>
-            <mdc-button id="btn-9">button 9</mdc-button>
+            <div class="group" id="group-1">
+              <mdc-button id="btn-1">button 1</mdc-button>
+              <mdc-button id="btn-2">button 2</mdc-button>
+              <mdc-button id="btn-3">button 3</mdc-button>
+            </div>
+            <div class="group" id="group-2">
+              <mdc-button id="btn-4">button 4</mdc-button>
+              <mdc-button id="btn-5">button 5</mdc-button>
+              <mdc-button id="btn-6">button 6</mdc-button>
+            </div>
+            <div class="group" id="group-3">
+              <mdc-button id="btn-7">button 7</mdc-button>
+              <mdc-button id="btn-8">button 8</mdc-button>
+              <mdc-button id="btn-9">button 9</mdc-button>
+            </div>
           </div>
         </mdc-spatialnavigationprovider
       </div>
@@ -390,9 +402,112 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
       await keyboard.press('ArrowDown');
       await expect(locators.btn1).toBeFocused();
 
-      // skip btn2 and focus btn3
+      // skip btn4 and focus btn7
       await keyboard.press('ArrowDown');
       await expect(locators.btn7).toBeFocused();
+    });
+
+    await test.step('data-spatial-exclude make element not navigable', async () => {
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
+
+      await componentsPage.setAttributes(locators.btn4, { 'data-spatial-exclude': '' });
+
+      // initial focus on btn1
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn1).toBeFocused();
+
+      // skip btn4 and focus btn7
+      await keyboard.press('ArrowDown');
+      await expect(locators.btn7).toBeFocused();
+    });
+
+    await test.step('data-spatial-{direction}', async () => {
+      await test.step('it does nothing when it has no value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        // Set data-spatial-right with no value on btn1
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': '',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // With empty value, normal navigation should apply — focus moves to btn2
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn2).toBeFocused();
+        // End AI-Assisted
+      });
+
+      await test.step('it accepts id as value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        // Set data-spatial-right to an id (without #) to jump to btn9
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': 'btn-9',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // Focus should jump to btn9 based on id value
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn9).toBeFocused();
+        // End AI-Assisted
+      });
+
+      await test.step('it accepts css selector as value', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        await componentsPage.setAttributes(locators.btn8, {
+          'data-select-me': '',
+        });
+
+        // Set data-spatial-right to a CSS selector to jump to btn9
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': 'mdc-button[data-select-me]',
+        });
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // Focus should jump to btn9 based on CSS selector value
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn8).toBeFocused();
+        // End AI-Assisted
+      });
+
+      await test.step('when a group targeted an item in the group will be focused', async () => {
+        // AI-Assisted
+        const locators = await setup({ componentsPage });
+        const { keyboard } = componentsPage.page;
+
+        // Set data-spatial-right to a group container (group-3) on btn1
+        await componentsPage.setAttributes(locators.btn1, {
+          'data-spatial-right': 'group-3',
+        });
+        await componentsPage.page.pause()
+
+        // Move to btn1 first
+        await keyboard.press('ArrowDown');
+        await expect(locators.btn1).toBeFocused();
+
+        // Focus should land on the second item of group 3 because
+        // we target group-3 and btn8 is to the right from btn-1
+        await keyboard.press('ArrowRight');
+        await expect(locators.btn8).toBeFocused();
+        // End AI-Assisted
+      });
     });
   });
 });

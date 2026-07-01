@@ -1,6 +1,6 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property, query, state } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -11,46 +11,13 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { CharacterLimitMixin } from '../../utils/mixins/CharacterLimitMixin';
 
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
 import styles from './textarea.styles';
 
 /**
- * mdc-textarea component, which is used to get the multi-line text input from the user.
- * It contains:
- * - label: It is the title of the textarea field.
- * - required: A boolean attribute depicting that the textarea field is required.
- * - Textarea: It is the multi-line text input field.
- * - helper-text: It is the text that provides additional information about the textarea field.
- * - max-character-limit: It is the text that shows the character count of the textarea field.
- * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
- *   about the textarea field based on the validation state.
- * - limitexceeded: It is the event that is dispatched when the character limit exceeds or restored.
- *   This event exposes 3 properties:
- *   - currentCharacterCount - the current number of characters in the textarea field,
- *   - maxCharacterLimit - the maximum number of characters allowed in the textarea field,
- *   - value - the current value of the textarea field,
- *
- * **Note**: Consumers must set the help-text-type with 'error' and
- * help-text attribute with the error message using limitexceeded event.
- * The same help-text value will be used for the validation message to be displayed.
- *
- * ### Accessibility
- *
- * #### Resize
- *
- * Accessible text area resizing can be turned on with the `resizable`.
- * It is strongly recommended to set the `resize-button-aria-label` attribute as well to describe what it is and what are the shortcuts (up/down arrows) of the button.
- *
- * #### Best practices
- *
- * - Always provide a `label` for screen readers to identify the textarea's purpose
- * - Use `help-text` to provide additional context or instructions
- * - When using `max-character-limit`, consider providing `character-limit-announcement` for screen reader updates
- * - Use appropriate `help-text-type` (error, warning, success) to convey validation state
- * - Ensure `validation-message` is set for form validation errors
- *
  * @tagname mdc-textarea
  *
  * @event input - (React: onInput) This event is dispatched when the value of the textarea field changes (every press).
@@ -102,8 +69,10 @@ import styles from './textarea.styles';
  * @cssproperty --mdc-textarea-container-background-color - Background color for the textarea container
  */
 
-class Textarea extends KeyDownHandledMixin(
-  KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+class Textarea extends CharacterLimitMixin(
+  KeyDownHandledMixin(
+    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+  ),
 ) {
   /**
    * The placeholder text that is displayed when the textarea field is empty.
@@ -156,20 +125,6 @@ class Textarea extends KeyDownHandledMixin(
   @property({ type: Number }) minlength?: number;
 
   /**
-   * The maximum character limit for the textarea field for character counter.
-   */
-  @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
-
-  /**
-   * Template string for the announcement that will be read by screen readers when the max character limit is set.
-   * Consumers must use the placeholders `%{number-of-characters}` and `%{max-character-limit}` in the string,
-   * which will be dynamically replaced with the actual values at runtime.
-   * For example: `%{number-of-characters} out of %{max-character-limit} characters are typed.`
-   * Example output: "93 out of 140 characters are typed."
-   */
-  @property({ type: String, attribute: 'character-limit-announcement' }) characterLimitAnnouncement?: string;
-
-  /**
    * Controls whether the textarea is resizable via the resize button.
    * When set to false, the resize button will be hidden.
    * @default false
@@ -188,12 +143,6 @@ class Textarea extends KeyDownHandledMixin(
    * The textarea element
    */
   @query('textarea') override inputElement!: HTMLTextAreaElement;
-
-  /** @internal */
-  @state() private ariaLiveAnnouncer?: string;
-
-  /** @internal */
-  private characterLimitExceedingFired: boolean = false;
 
   /** @internal */
   private resizeStartY: number = 0;
@@ -290,42 +239,7 @@ class Textarea extends KeyDownHandledMixin(
     }
     // When helpText gets changed, we need to re-announce the max length warning
     if (changedProperties.has('helpText')) {
-      this.announceMaxLengthWarning();
-    }
-  }
-
-  /**
-   * Dispatches the character overflow state change event.
-   * @returns void
-   */
-  private dispatchCharacterOverflowStateChangeEvent() {
-    this.dispatchEvent(
-      new CustomEvent('limitexceeded', {
-        detail: {
-          currentCharacterCount: this.value.length,
-          maxCharacterLimit: this.maxCharacterLimit,
-          value: this.value,
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
-  }
-
-  /**
-   * Handles the character overflow state change.
-   * Dispatches the character overflow state change event if the character limit is exceeded or restored.
-   * @returns void
-   */
-  private handleCharacterOverflowStateChange() {
-    if (this.maxCharacterLimit) {
-      if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
-        this.dispatchCharacterOverflowStateChangeEvent();
-        this.characterLimitExceedingFired = true;
-      } else if (this.value.length <= this.maxCharacterLimit && this.characterLimitExceedingFired) {
-        this.dispatchCharacterOverflowStateChangeEvent();
-        this.characterLimitExceedingFired = false;
-      }
+      this.announceCharacterLimitWarning();
     }
   }
 
@@ -337,33 +251,7 @@ class Textarea extends KeyDownHandledMixin(
   private updateValue() {
     this.value = this.textarea.value;
     this.internals.setFormValue(this.textarea.value);
-    this.announceMaxLengthWarning();
-  }
-
-  /**
-   * Announces the character limit warning based on the current value length.
-   * If the value length exceeds the max character limit, the help text is announced (if help text is present).
-   * If the value length does not exceed the max character limit, then the character limit announcement is announced.
-   */
-  private announceMaxLengthWarning() {
-    this.ariaLiveAnnouncer = '';
-    if (!this.maxCharacterLimit || this.value.length === 0) {
-      return;
-    }
-    if (this.helpText && this.value.length > this.maxCharacterLimit) {
-      // We need to assign the same value multiple times, when the input reaches the max limit,
-      // Lit does a `===` strict comparison and doesn't update the value
-      // Hence we need to manually wait for the update to complete and then assign the value.
-      this.updateComplete
-        .then(() => {
-          this.ariaLiveAnnouncer = this.helpText;
-        })
-        .catch(() => {});
-    } else if (this.characterLimitAnnouncement && this.value.length <= this.maxCharacterLimit) {
-      this.ariaLiveAnnouncer = this.characterLimitAnnouncement
-        .replace('%{number-of-characters}', this.value.length.toString())
-        .replace('%{max-character-limit}', this.maxCharacterLimit.toString());
-    }
+    this.announceCharacterLimitWarning();
   }
 
   /**
@@ -380,17 +268,6 @@ class Textarea extends KeyDownHandledMixin(
     this.updateValue();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
-  }
-
-  protected renderCharacterCounter() {
-    if (!this.maxCharacterLimit) {
-      return nothing;
-    }
-    return html`
-      <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
-        ${this.value.length}/${this.maxCharacterLimit}
-      </mdc-text>
-    `;
   }
 
   protected renderTextareaFooter() {
@@ -512,7 +389,7 @@ class Textarea extends KeyDownHandledMixin(
         ></textarea>
         <mdc-screenreaderannouncer
           identity="${this.inputId}"
-          announcement="${ifDefined(this.ariaLiveAnnouncer)}"
+          announcement="${ifDefined(this.characterLimitAriaLiveAnnouncer)}"
           data-aria-live="polite"
           delay="500"
         ></mdc-screenreaderannouncer>

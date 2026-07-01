@@ -8,11 +8,6 @@ import styles from './filterchip.styles';
 import { DEFAULTS } from './filterchip.constants';
 
 /**
- * mdc-filterchip component is an interactive chip that consumers can use to select or deselect.
- * They can be found with lists or tables as quick filters.
- *
- * This component is built on top of the mdc-chip component.
- *
  * @tagname mdc-filterchip
  *
  * @dependency mdc-icon

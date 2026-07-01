@@ -66,6 +66,16 @@ const styles = css`
     line-height: var(--mds-font-lineheight-body-large);
   }
 
+  [part='toast-header']::part(text) {
+    display: unset;
+    -webkit-box-orient: inherit;
+    -webkit-line-clamp: inherit;
+  }
+
+  :host([data-expanded='true'])::part(toast-header) {
+    -webkit-line-clamp: unset;
+  }
+
   :host::part(footer) {
     display: flex;
     justify-content: flex-end;

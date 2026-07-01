@@ -14,18 +14,6 @@ import { DEFAULTS, TRIGGER_ID, POPOVER_ID } from './searchpopover.constants';
 import type { Placement } from './searchpopover.types';
 
 /**
- * `mdc-searchpopover` widget is a combination of the Searchfield and Popover components, connected to ensure
- * proper accessibility. This component should be used when search results or suggestions need to be displayed
- * in a popover below the search input field, where the search results hold individual actions like navigating to a
- * a different url etc.
- *
- * - Don't use this when search results are displayed inline on the page -\> use Searchfield component instead.
- * - Don't use this when a list of options is filtered based on the search input -\> use Combobox component instead.
- *
- * It supports `mdc-inputchip` as filters.
- *
- * This component is built by extending the `mdc-searchfield` component & rendering the mdc-popover component inside.
- *
  * @tagname mdc-searchpopover
  *
  * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
@@ -33,6 +21,9 @@ import type { Placement } from './searchpopover.types';
  * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  * @event clear - (React: onClear) This event is dispatched when the input text is cleared.
+ * @event chipRemove - (React: onChipRemove) This event is dispatched when a chip filter is removed. The removed chip element is available in event.detail.chip.
+ * In **controlled** mode (`control-type="controlled"`), the chip is NOT removed from the DOM automatically — the consumer is responsible for removing it.
+ * In **uncontrolled** mode (default), the chip is removed from the DOM automatically.
  * @event shown - (React: onShown) This event is dispatched when the popover is shown
  * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden
  *
@@ -118,8 +109,29 @@ class Searchpopover extends Searchfield {
   @property({ type: String, reflect: true, attribute: 'popover-aria-label' })
   popoverAriaLabel?: string;
 
+  /**
+   * Overrides the parent scroll container to target the `filters-container` part,
+   * which is the scrollable chip row in the searchpopover layout.
+   * @internal
+   */
+  protected override get scrollContainer(): HTMLElement | null {
+    return this.shadowRoot?.querySelector('[part="filters-container"]') ?? null;
+  }
+
+  /**
+   * Handles the popover hidden event by focusing the input element.
+   * This replaces `focus-back-to-trigger` since the trigger is a non-focusable div.
+   * Only moves focus to the input if focus is currently within the searchpopover component.
+   * If focus is outside the component, it is left unchanged.
+   */
+  private handlePopoverHidden() {
+    if (this === document.activeElement || this.contains(document.activeElement)) {
+      this.inputElement?.focus();
+    }
+  }
+
   protected override renderInputElement() {
-    const placeholderText = this.hasInputChips ? '' : this.placeholder;
+    const placeholderText = this.hasChips ? '' : this.placeholder;
 
     return html`<input
       aria-label="${this.dataAriaLabel ?? ''}"
@@ -166,18 +178,11 @@ class Searchpopover extends Searchfield {
         id="${TRIGGER_ID}"
       >
         ${this.renderLeadingIcon()}
-        <div part="scrollable-container" tabindex="-1">
-          <div
-            part="filters-container"
-            @click=${this.handleFilterContainerClick}
-            @keydown=${this.handleFilterContainerKeyDown}
-            @keyup=${this.handleFilterContainerKeyUp}
-          >
-            <slot name="filters" @slotchange=${this.renderInputChips}></slot>
-          </div>
+        <div part="filters-container" @click=${this.handleFilterContainerClick} tabindex="-1">
+          <slot name="filters" @slotchange=${this.renderChips}></slot>
           ${this.renderInputElement()}
         </div>
-        ${this.renderTrailingButton(this.hasInputChips)}
+        ${this.renderTrailingButton(this.hasChips)}
       </div>
       <mdc-popover
         triggerID="${TRIGGER_ID}"
@@ -187,8 +192,8 @@ class Searchpopover extends Searchfield {
         ?visible=${this.displayPopover}
         hide-on-outside-click
         hide-on-escape
-        focus-back-to-trigger
         size
+        @hidden=${this.handlePopoverHidden}
         placement="${this.placement}"
         aria-label="${ifDefined(this.popoverAriaLabel)}"
         disable-aria-expanded

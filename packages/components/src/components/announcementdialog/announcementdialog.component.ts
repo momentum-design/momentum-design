@@ -12,29 +12,10 @@ import styles from './announcementdialog.styles';
 import { DEFAULTS } from './announcementdialog.constants';
 
 /**
- * AnnouncementDialog component is a modal dialog that can be used to display announcements, extending the existing Dialog component.
- * It can be used to create custom dialogs where a illustration, content and footer actions are provided by the consumer.
- * The dialog is available in 4 sizes:  medium, large, xlarge and fullscreen. It may also receive custom styling/sizing.
- * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
- *
- * The dialog can be controlled solely through the `visible` property, no trigger element is required.
- * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
- * remember the previously focused element before the dialog was opened.
- *
- * The dialog is a controlled component, meaning it does not have its own state management for visibility.
- * Use the `visible` property to control the visibility of the dialog.
- * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
- * or Escape is pressed).
- *
- * ## Accessibility
- * - You have to be explicitly set the following attributes:
- *  * The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
- *  * Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
+ * @tagname mdc-announcementdialog
  *
  * @dependency mdc-illustration
  * @dependency mdc-text
- *
- * @tagname mdc-announcementdialog
  *
  * @event shown - (React: onShown) Dispatched when the dialog is shown
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden

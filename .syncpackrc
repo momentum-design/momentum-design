@@ -93,6 +93,16 @@
       "pinVersion": "8.27.0"
     },
     {
+      "label": "Ensure Markdownlint is on version 0.36.1 due to ESM support needed in later versions",
+      "dependencies": [
+        "markdownlint"
+      ],
+      "packages": [
+        "**"
+      ],
+      "pinVersion": "0.36.1"
+    },
+    {
       "label": "Dependencies should be the same version",
       "dependencies": [
         "**"

@@ -2,14 +2,32 @@
 
 import type { OverflowMixinInterface } from './mixins/OverflowMixin';
 
+type FindFocusableCommands = 'focusable' | 'continue' | 'stop';
+
 /**
  * Options for finding focusable elements.
  */
 type FindFocusableOptions = {
-  /** Elements to exclude from the search. */
+  /** Elements to exclude (and its subtree) from the search. */
   excludedElements?: HTMLElement[];
   /** Selectors to include in the search. */
   includeSelectors?: string[];
+  /** Selectors to exclude from the search. */
+  excludeSelectors?: string[];
+  /**
+   * When true, elements with `tabindex="-1"` and their subtrees are excluded from the search.
+   * This supports composite widget patterns (e.g., roving tabindex in lists) where
+   * inactive items and their children should not be reachable via Tab navigation.
+   */
+  stopAtNonTabbable?: boolean;
+  /**
+   * When it is provided, it is executed after the default checked run.
+   * I get the result from the default checked run and can modify it.
+   *
+   * @param element - The element to check.
+   * @param result - The result of the default checked run.
+   */
+  customFocusableCheck?: (element: HTMLElement, result: FindFocusableCommands) => FindFocusableCommands;
 };
 
 /**
@@ -69,13 +87,18 @@ export const hasZeroDimensions = (element: HTMLElement) => {
  * @param element - The element to check.
  * @returns True if the element is scrollable.
  */
-export const isScrollable = (element: HTMLElement): boolean => {
-  if (!(element instanceof Element)) return false;
+export const getScrollableAxis = (element: Element | null): null | 'horizontal' | 'vertical' | 'both' => {
+  if (!(element instanceof Element)) return null;
   const computedStyle = getComputedStyle(element);
   const { overflowX, overflowY } = computedStyle;
 
-  // Check if overflow is set to scrollable values
-  return overflowX === 'auto' || overflowX === 'scroll' || overflowY === 'auto' || overflowY === 'scroll';
+  const horizontal = overflowX === 'auto' || overflowX === 'scroll';
+  const vertical = overflowY === 'auto' || overflowY === 'scroll';
+
+  if (horizontal && vertical) return 'both';
+  if (horizontal) return 'horizontal';
+  if (vertical) return 'vertical';
+  return null;
 };
 
 /**
@@ -213,57 +236,62 @@ export const findFocusable = (
 
   const excludesSet = new Set(options?.excludedElements ?? []);
   const includeSelectors = options?.includeSelectors ?? [];
-  const matches = new Set<HTMLElement>();
+  const excludeSelectors = options?.excludeSelectors ?? [];
+  const stopAtNonTabbable = options?.stopAtNonTabbable ?? false;
+  const matches = new Set<HTMLElement>([]);
 
-  const focusableCheck = (element: HTMLElement) => {
-    if (!(element instanceof HTMLSlotElement) && (isHidden(element) || isDisabled(element))) {
-      return 'stop';
+  const internalFocusableCheck = (element: HTMLElement) => {
+    // Excluded
+    if (excludesSet.has(root as HTMLElement) || isMatchAny(element, excludeSelectors)) return 'stop';
+
+    // Unreachable
+    if (isHidden(element) || isDisabled(element)) return 'stop';
+
+    if (stopAtNonTabbable && !(element instanceof HTMLSlotElement) && element.getAttribute('tabindex') === '-1') {
+      // AI-Assisted
+      // Do not stop traversal for elements inside a shadow root with delegatesFocus: true.
+      // Components like mdc-searchfield use delegatesFocus and have internal container divs
+      // with tabindex="-1" that should not block finding the actual focusable element (e.g., input).
+      const rootNode = element.getRootNode();
+      if (!(rootNode instanceof ShadowRoot && rootNode.delegatesFocus)) {
+        return 'stop';
+      }
+      // End AI-Assisted
     }
+
     return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))
       ? 'focusable'
       : 'continue';
   };
 
-  const finder = (root: ShadowRoot | HTMLElement) => {
-    if (excludesSet.has(root as HTMLElement)) {
-      return;
-    }
-    if (root instanceof HTMLElement && focusableCheck(root) === 'focusable') {
-      matches.add(root);
-    }
+  const focusableCheck = options.customFocusableCheck
+    ? (el: HTMLElement) => options.customFocusableCheck!(el, internalFocusableCheck(el))
+    : internalFocusableCheck;
 
-    let children: HTMLElement[] = [];
-    if (root instanceof HTMLElement && root.shadowRoot) {
-      children = Array.from(root.shadowRoot.children) as HTMLElement[];
-    } else if (root.children.length) {
-      children = Array.from(root.children) as HTMLElement[];
-    }
-
-    children.forEach((child: Node) => {
-      const element = child as HTMLElement;
-      const isFocusableResult = focusableCheck(element);
+  const finder = (root: ShadowRoot | Element) => {
+    if (root instanceof HTMLElement) {
+      const isFocusableResult = focusableCheck(root);
 
       if (isFocusableResult === 'focusable') {
-        matches.add(element);
+        matches.add(root);
       }
 
       if (isFocusableResult === 'stop') {
         return;
       }
+    }
 
-      if (element.shadowRoot) {
-        finder(element.shadowRoot);
-      } else if (element.tagName === 'SLOT') {
-        const assignedNodes = (element as HTMLSlotElement).assignedElements({ flatten: true });
-        assignedNodes.forEach(node => {
-          if (node instanceof HTMLElement) {
-            finder(node);
-          }
-        });
-      } else {
-        finder(element);
-      }
-    });
+    let children: Element[] = [];
+
+    if (root instanceof HTMLSlotElement) {
+      children = root.assignedElements({ flatten: true });
+    } else if (root instanceof HTMLElement && root.shadowRoot) {
+      children = Array.from(root.shadowRoot.children);
+    } else if (root.children.length) {
+      children = Array.from(root.children);
+    }
+
+    children.forEach(finder);
   };
 
   finder(root);
@@ -291,7 +319,7 @@ export const getDomActiveElement = (root: Document | Element = document): Elemen
  * @returns True if the element has the OverflowMixin methods
  */
 export const hasOverflowMixin = <T extends HTMLElement>(element: T): element is T & OverflowMixinInterface =>
-  'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';
+  element && 'isWidthOverflowing' in element && typeof (element as any).isWidthOverflowing === 'function';
 
 /**
  * Recursively gets the host element if the provided element is inside a shadow DOM.

@@ -77,7 +77,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     private setFocusableElements() {
       if (!this.shadowRoot) return;
 
-      this.focusableElements = findFocusable(this.shadowRoot);
+      this.focusableElements = findFocusable(this.shadowRoot, { stopAtNonTabbable: true });
     }
 
     /**

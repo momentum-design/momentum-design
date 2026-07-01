@@ -143,6 +143,93 @@ test.describe('mdc-datepicker', () => {
         const daySpinbutton = datepicker.locator('#day-spinbutton');
         await expect(daySpinbutton).toBeFocused();
       });
+
+      // AI-Assisted: cover datepicker input clamping against valid min/max boundaries.
+      test('should clamp typed dates after max to the max date', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date',
+          value: '2025-07-15',
+          max: '2026-07-15',
+        });
+
+        const yearSpinbutton = datepicker.locator('#year-spinbutton');
+        await yearSpinbutton.focus();
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+
+        await expect(datepicker.locator('#month-spinbutton')).toHaveValue('07');
+        await expect(datepicker.locator('#day-spinbutton')).toHaveValue('15');
+        await expect(yearSpinbutton).toHaveValue('2026');
+        await expect(datepicker).toHaveAttribute('value', '2026-07-15');
+      });
+
+      test('should clamp typed dates before min to the min date', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date',
+          value: '2025-07-15',
+          min: '2024-10-20',
+        });
+
+        const yearSpinbutton = datepicker.locator('#year-spinbutton');
+        await yearSpinbutton.focus();
+        await yearSpinbutton.press('0');
+        await yearSpinbutton.press('0');
+        await yearSpinbutton.press('0');
+        await yearSpinbutton.press('1');
+
+        await expect(datepicker.locator('#month-spinbutton')).toHaveValue('10');
+        await expect(datepicker.locator('#day-spinbutton')).toHaveValue('20');
+        await expect(yearSpinbutton).toHaveValue('2024');
+        await expect(datepicker).toHaveAttribute('value', '2024-10-20');
+      });
+
+      test('should clamp arrow key changes at max boundaries', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date',
+          value: '2026-07-15',
+          max: '2026-07-15',
+        });
+
+        const daySpinbutton = datepicker.locator('#day-spinbutton');
+        await expect(daySpinbutton).toHaveAttribute('aria-valuemax', '15');
+
+        await daySpinbutton.focus();
+        await daySpinbutton.press('ArrowUp');
+
+        await expect(datepicker.locator('#month-spinbutton')).toHaveValue('07');
+        await expect(daySpinbutton).toHaveValue('15');
+        await expect(datepicker.locator('#year-spinbutton')).toHaveValue('2026');
+        await expect(datepicker).toHaveAttribute('value', '2026-07-15');
+      });
+
+      test('should ignore invalid max values for typed input', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date',
+          value: '2025-07-15',
+          max: '2012',
+        });
+
+        const yearSpinbutton = datepicker.locator('#year-spinbutton');
+        await expect(yearSpinbutton).toHaveAttribute('aria-valuemax', '9999');
+
+        await yearSpinbutton.focus();
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+        await yearSpinbutton.press('9');
+
+        await expect(datepicker.locator('#month-spinbutton')).toHaveValue('07');
+        await expect(datepicker.locator('#day-spinbutton')).toHaveValue('15');
+        await expect(yearSpinbutton).toHaveValue('9999');
+        await expect(datepicker).toHaveAttribute('value', '9999-07-15');
+      });
+      // End AI-Assisted
     });
 
     test.describe('calendar popover', () => {

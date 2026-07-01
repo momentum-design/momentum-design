@@ -4,8 +4,8 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { IconNames } from '../icon/icon.types';
 
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
-import type { Variant } from './tab.types';
+import { DEFAULTS, TAB_SIZES, TAB_VARIANTS } from './tab.constants';
+import type { TabSize, Variant } from './tab.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -14,6 +14,7 @@ type SetupOptions = {
   softDisabled?: boolean;
   iconName?: IconNames;
   role?: string;
+  size?: TabSize;
   tabIndex?: number;
   text?: string;
   variant?: Variant;
@@ -32,6 +33,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.softDisabled ? 'soft-disabled' : ''}
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
+        ${restArgs.size ? `size="${restArgs.size}"` : ''}
         ${restArgs.tabIndex ? `tabindex="${restArgs.tabIndex}"` : ''}
         ${restArgs.text ? `text="${restArgs.text}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : DEFAULTS.VARIANT}>
@@ -66,6 +68,7 @@ test('mdc-tab', async ({ componentsPage }) => {
         await expect(tab).toHaveAttribute('aria-selected', 'false');
         await expect(tab).toHaveRole('tab');
         await expect(tab).toHaveAttribute('tabindex', '0');
+        await expect(tab).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
         await expect(tab).toHaveAttribute('text', 'Label');
         await expect(tab).toHaveAttribute('variant', DEFAULTS.VARIANT);
         await expect(tab).not.toHaveAttribute('active');
@@ -109,6 +112,14 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.removeAttribute(tab, 'icon-name');
       });
 
+      // icon-name already ends in -filled (e.g. encryption-filled)
+      await test.step('when icon-name already ends in -filled, both regular-icon and filled-icon render with the same name', async () => {
+        await componentsPage.setAttributes(tab, { 'icon-name': 'encryption-filled' });
+        await expect(tab.locator('mdc-icon[part="regular-icon"]')).toHaveAttribute('name', 'encryption-filled');
+        await expect(tab.locator('mdc-icon[part="filled-icon"]')).toHaveAttribute('name', 'encryption-filled');
+        await componentsPage.removeAttribute(tab, 'icon-name');
+      });
+
       // custom prefix slot with brand-visual
       await test.step('custom prefix slot with brand-visual should work', async () => {
         // Mount a new tab with brand-visual in prefix slot
@@ -140,15 +151,30 @@ test('mdc-tab', async ({ componentsPage }) => {
         await componentsPage.setAttributes(tab, { tabindex: '0' });
       });
 
+      // size
+      await Object.values(TAB_SIZES).reduce(async (previous, tabSize) => {
+        await previous;
+        await test.step(`attribute size ${tabSize} should be present as expected`, async () => {
+          await componentsPage.setAttributes(tab, { size: `${tabSize}` });
+          await expect(tab).toHaveAttribute('size', `${tabSize}`);
+        });
+      }, Promise.resolve());
+
+      // invalid tab size
+      const tabSize = '99';
+      await test.step(`attribute size with invalid value ${tabSize}, it should update to default`, async () => {
+        await componentsPage.setAttributes(tab, { size: tabSize });
+        await expect(tab).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
+      });
+
       // variant
-      // eslint-disable-next-line no-restricted-syntax
-      for (const tabVariant of Object.values(TAB_VARIANTS)) {
-        // eslint-disable-next-line no-await-in-loop
+      await Object.values(TAB_VARIANTS).reduce(async (previous, tabVariant) => {
+        await previous;
         await test.step(`attribute variant ${tabVariant} should be present as expected`, async () => {
           await componentsPage.setAttributes(tab, { variant: tabVariant });
           await expect(tab).toHaveAttribute('variant', tabVariant);
         });
-      }
+      }, Promise.resolve());
 
       // invalid tab variant
       const tabVariant = 'invalid-variant';

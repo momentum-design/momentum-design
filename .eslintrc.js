@@ -4,11 +4,10 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: [
-    'airbnb-base',
-    'plugin:json/recommended',
-    'plugin:astro/recommended',
-  ],
+  // Note: 'prettier' (eslint-config-prettier) MUST be last so it disables every airbnb-base
+  // style rule that conflicts with Prettier's output. Otherwise editor-on-save (ESLint --fix
+  // followed by Prettier formatOnSave) re-introduces lint errors on every save.
+  extends: ['airbnb-base', 'plugin:json/recommended', 'plugin:astro/recommended', 'prettier'],
   globals: {
     BufferEncoding: 'readonly',
   },
@@ -21,7 +20,7 @@ module.exports = {
     'scripts/**',
     '**/husky/**',
     '**/Dockerfile.*',
-    'stoyrebook-static/**',
+    'storybook-static/**',
     'react/**',
     'test-results/**',
     'node_modules/**',
@@ -29,6 +28,7 @@ module.exports = {
     'coverage/**',
     'playwright-temp/**',
     '*.feature',
+    'lint-staged',
   ],
   overrides: [
     {
@@ -60,10 +60,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-    'eslint-plugin-tsdoc',
-  ],
+  plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
   rules: {
     '@typescript-eslint/quotes': [
       'error',
@@ -76,13 +73,12 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'class-methods-use-this': 'off',
     'import/extensions': 'off',
-    'import/no-extraneous-dependencies': ['off', {
-      devDependencies: [
-        '**/config/**/*.*',
-        '**/jest.config.*',
-        '**/test/**/*.*',
-      ],
-    }],
+    'import/no-extraneous-dependencies': [
+      'off',
+      {
+        devDependencies: ['**/config/**/*.*', '**/jest.config.*', '**/test/**/*.*'],
+      },
+    ],
     'import/no-relative-packages': 'off',
     'import/prefer-default-export': 'off',
     'no-confusing-arrow': 'off',

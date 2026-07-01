@@ -4,9 +4,12 @@ import '.';
 import { html } from 'lit';
 
 import { describeStory, hideControls } from '../../../config/storybook/utils';
-import { TAB_VARIANTS } from '../tab/tab.constants';
+import { TAB_SIZES, TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 import '../tab';
+import '../dialog';
+import '../button';
+import '../popover';
 import { ROLE } from '../../utils/roles';
 
 const render = (args: Args) =>
@@ -16,6 +19,7 @@ const render = (args: Args) =>
       data-aria-label=${args['data-aria-label']}
     >
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Calls"
         icon-name="audio-call-bold"
@@ -24,6 +28,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Videos"
         icon-name="video-bold"
@@ -33,6 +38,7 @@ const render = (args: Args) =>
         <mdc-badge slot="postfix" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Music"
         icon-name="file-music-bold"
@@ -41,6 +47,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Documents"
         icon-name="document-bold"
@@ -49,6 +56,7 @@ const render = (args: Args) =>
       >
       </mdc-tab>
       <mdc-tab
+        size=${args.tabsize}
         variant=${args.tabvariant}
         text="Meetings"
         icon-name="calendar-month-bold"
@@ -97,6 +105,11 @@ const meta: Meta = {
       description: 'Set the variant of tab inside the tablist',
       options: Object.values(TAB_VARIANTS),
     },
+    tabsize: {
+      control: 'select',
+      description: 'Set the size of tabs inside the tablist',
+      options: Object.values(TAB_SIZES),
+    },
     ...hideControls(['itemsStore']),
   },
 };
@@ -107,6 +120,7 @@ export const Example: StoryObj = {
   args: {
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
+    tabsize: TAB_SIZES[32],
     tabvariant: 'line',
   },
 };
@@ -136,6 +150,7 @@ export const TablistWithPanels: StoryObj = {
         data-aria-label=${args['data-aria-label']}
       >
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Calls"
           icon-name="audio-call-bold"
@@ -144,6 +159,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Videos"
           icon-name="video-bold"
@@ -153,6 +169,7 @@ export const TablistWithPanels: StoryObj = {
           <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Music"
           icon-name="file-music-bold"
@@ -161,6 +178,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Documents"
           icon-name="document-bold"
@@ -169,6 +187,7 @@ export const TablistWithPanels: StoryObj = {
         >
         </mdc-tab>
         <mdc-tab
+          size=${args.tabsize}
           variant=${args.tabvariant}
           text="Meetings"
           icon-name="calendar-month-bold"
@@ -199,6 +218,7 @@ This markup is not part of the component and is only provided for context. -->
   },
   args: {
     tabvariant: 'glass',
+    tabsize: TAB_SIZES[32],
     'active-tab-id': 'documents-tab',
     'data-aria-label': 'Media types',
   },
@@ -221,4 +241,86 @@ export const TablistWithButtons: StoryObj = {
       based on the scroll position.
     </p>`,
   ),
+};
+
+export const TablistInsideDialog: StoryObj = {
+  parameters: {
+    ...describeStory(
+      html`<p>
+        A <code>mdc-tablist</code> inside an <code>mdc-dialog</code> with <code>focus-trap</code> enabled. Use
+        <kbd>Tab</kbd> to navigate between the tabs and interactive elements inside the dialog.
+      </p>`,
+      true,
+    ),
+  },
+  render: () => {
+    const dialogId = 'tablist-dialog';
+
+    const toggleVisibility = () => {
+      const dialog = document.getElementById(dialogId) as HTMLElement;
+      dialog?.toggleAttribute('visible');
+    };
+
+    const onClose = () => {
+      const dialog = document.getElementById(dialogId) as HTMLElement;
+      dialog?.removeAttribute('visible');
+    };
+
+    const updateTabPanel = (event: CustomEvent) => {
+      const dialog = document.getElementById(dialogId);
+      const activeTab = dialog?.querySelector(`mdc-tab[tab-id="${event.detail.tabId}"]`);
+      const panelId = activeTab?.getAttribute('aria-controls');
+      const panels = dialog?.querySelectorAll('[role="tabpanel"]');
+      panels?.forEach(panelElement => {
+        const el = panelElement as HTMLElement;
+        el.hidden = el.id !== panelId;
+      });
+    };
+
+    return html`
+      <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+        <mdc-button @click="${toggleVisibility}" id="tablist-dialog-trigger">Open Dialog</mdc-button>
+      </div>
+
+      <mdc-dialog
+        id="${dialogId}"
+        header-text="Tabbed Dialog"
+        close-button-aria-label="Close dialog"
+        triggerId="tablist-dialog-trigger"
+        focus-trap
+        @close="${onClose}"
+      >
+        <div slot="dialog-body">
+          <mdc-tablist @change="${updateTabPanel}" active-tab-id="calls-tab" data-aria-label="Media types">
+            <mdc-tab text="Calls" icon-name="audio-call-bold" tab-id="calls-tab" aria-controls="dialog-calls-panel">
+            </mdc-tab>
+            <mdc-tab text="Videos" icon-name="video-bold" tab-id="videos-tab" aria-controls="dialog-videos-panel">
+            </mdc-tab>
+            <mdc-tab
+              text="Documents"
+              icon-name="document-bold"
+              tab-id="documents-tab"
+              aria-controls="dialog-documents-panel"
+            >
+            </mdc-tab>
+          </mdc-tablist>
+
+          <div id="dialog-calls-panel" role="tabpanel">
+            <p>Calls panel content.</p>
+            <mdc-button>Action in Calls</mdc-button>
+          </div>
+          <div id="dialog-videos-panel" role="tabpanel" hidden>
+            <p>Videos panel content.</p>
+            <mdc-button>Action in Videos</mdc-button>
+          </div>
+          <div id="dialog-documents-panel" role="tabpanel" hidden>
+            <p>Documents panel content.</p>
+            <mdc-button>Action in Documents</mdc-button>
+          </div>
+        </div>
+        <mdc-button slot="footer-button-secondary" @click="${onClose}">Cancel</mdc-button>
+        <mdc-button slot="footer-button-primary" @click="${onClose}">Confirm</mdc-button>
+      </mdc-dialog>
+    `;
+  },
 };

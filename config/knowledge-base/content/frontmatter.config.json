@@ -1,0 +1,43 @@
+{
+  "default": {
+    "required": [
+      "title",
+      "summary",
+      "tier"
+    ],
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "summary": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "tier": {
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      },
+      "canonical": {
+        "type": "string"
+      }
+    }
+  },
+  "tiers": {
+    "3": {
+      "required": [
+        "component"
+      ],
+      "properties": {
+        "component": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

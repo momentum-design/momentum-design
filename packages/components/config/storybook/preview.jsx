@@ -1,8 +1,7 @@
-import React from 'react';
 import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/components/complete.css';
-import { Title, Subtitle, Description } from '@storybook/addon-docs/blocks';
 import { setCustomElementsManifest } from '@storybook/web-components';
+import { setupDocs } from '@momentum-design/storybook-addon-docs';
 
 import customElements from '../../dist/custom-elements.json';
 
@@ -14,6 +13,7 @@ import { withCssPropertyProvider } from './provider/cssPropertyProvider';
 import { storyDescription } from './provider/storyDescription';
 import { cssPartEnhancer } from './enhancers/cssPartEnhancer';
 import { cssPropertyEnhancer } from './enhancers/cssPropertyEnchancer';
+import { cssCustomStateEnhancer } from './enhancers/cssCustomStateEnhancer';
 import { eventsEnhancer } from './enhancers/eventsEnhancer';
 import { disableSlotControls } from './enhancers/disableSlotControls';
 import { sortArgTypes } from './enhancers/sortArgTypes';
@@ -74,6 +74,14 @@ const refactoredCustomElements = refactorCustomElements(customElements);
 
 setCustomElementsManifest(refactoredCustomElements);
 
+const knowledgeBaseMarkdown = import.meta.glob('../../src/components/*/knowledge-base/*.component.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+setupDocs({ markdown: knowledgeBaseMarkdown });
+
 const preview = {
   parameters: {
     a11y: {
@@ -85,13 +93,6 @@ const preview = {
       },
     },
     docs: {
-      page: () => (
-        <>
-          <Title />
-          <Subtitle />
-          <Description />
-        </>
-      ),
       source: {
         excludeDecorators: true,
       },
@@ -153,6 +154,7 @@ const preview = {
       },
     },
     direction: 'ltr',
+    customElementsManifest: refactoredCustomElements,
   },
   decorators: [
     withSpatialNavigationProviderDecorator,
@@ -198,6 +200,7 @@ const preview = {
 export const argTypesEnhancers = [
   cssPartEnhancer,
   cssPropertyEnhancer,
+  cssCustomStateEnhancer,
   disableSlotControls,
   eventsEnhancer,
   sortArgTypes,

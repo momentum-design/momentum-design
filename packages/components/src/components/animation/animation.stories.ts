@@ -23,6 +23,7 @@ const render = (args: Args) =>
     @complete="${action('complete')}"
     @error="${action('error')}"
     name="${args.name}"
+    src="${args.src}"
     loop="${args.loop}"
     ?autoplay="${args.autoplay}"
     aria-label="${args['aria-label']}"
@@ -37,7 +38,10 @@ const meta: Meta = {
   argTypes: {
     name: {
       control: 'select',
-      options: Object.keys(animationManifest),
+      options: [...Object.keys(animationManifest), undefined],
+    },
+    src: {
+      control: 'text',
     },
     loop: {
       control: 'text',
@@ -61,6 +65,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     name: 'celebrate',
+    src: '',
     loop: DEFAULTS.LOOP,
     autoplay: DEFAULTS.AUTO_PLAY,
     'aria-label': '',
@@ -108,4 +113,23 @@ export const EmojiAnimationGroup: StoryObj = {
     </mdc-buttongroup>
   `,
   ...hideAllControls(),
+};
+
+export const AnimationFromUrl: StoryObj = {
+  render: (args: Args) => html`
+    <mdc-animation
+      @load="${action('load')}"
+      @complete="${action('complete')}"
+      @error="${action('error')}"
+      src="${args.src}"
+      loop="${args.loop}"
+      ?autoplay="${args.autoplay}"
+      style="width: 200px; height: 200px;"
+    ></mdc-animation>
+  `,
+  args: {
+    src: 'https://assets2.lottiefiles.com/packages/lf20_UJNc2t.json',
+    loop: DEFAULTS.LOOP,
+    autoplay: DEFAULTS.AUTO_PLAY,
+  },
 };

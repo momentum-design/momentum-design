@@ -14,11 +14,6 @@ import type { AnimationNames, LoopType } from './animation.types';
 import { DEFAULTS } from './animation.constants';
 
 /**
- * The `mdc-animation` component is a wrapper around the Lottie animation library.
- * It fetches the animation data dynamically based on the provided name and renders it.
- * This is a display only component that does not have any interactive functionality.
- * From accessibility perspective, (by default) it is a decorative image component.
- *
  * @tagname mdc-animation
  *
  * @event load - (React: onLoad) This event is dispatched when the animation is loaded
@@ -32,6 +27,14 @@ class Animation extends Component {
    */
   @property({ type: String, reflect: true })
   name?: AnimationNames;
+
+  /**
+   * URL pointing to a Lottie JSON animation file.
+   * When provided, it takes precedence over the `name` property.
+   * @default undefined
+   */
+  @property({ type: String, reflect: true })
+  src?: string;
 
   /**
    * How many times to loop the animation
@@ -71,6 +74,12 @@ class Animation extends Component {
   private lottieInstance?: AnimationItem;
 
   /**
+   * Cached animation data from the last successful fetch/import
+   * @internal
+   */
+  private cachedAnimationData?: any;
+
+  /**
    * Container for the animation
    * @internal
    */
@@ -92,9 +101,19 @@ class Animation extends Component {
   }
 
   /**
-   * Create new lotty instance for the loaded data
+   * Create new lottie instance for the loaded data
    */
   private onLoadSuccessHandler(animationData: any): void {
+    this.cachedAnimationData = animationData;
+    this.createLottieInstance(animationData);
+    // Dispatch load event when animation ready to play
+    this.dispatchEvent(new CustomEvent('load', { bubbles: true, cancelable: true, detail: { name: this.name } }));
+  }
+
+  /**
+   * Create or re-create the lottie instance with the given animation data
+   */
+  private createLottieInstance(animationData: any): void {
     if (this.lottieInstance) {
       this.lottieInstance.removeEventListener('complete', this.onCompleteHandler);
       this.lottieInstance.destroy();
@@ -111,8 +130,6 @@ class Animation extends Component {
       });
       this.lottieInstance.addEventListener('complete', this.onCompleteHandler);
     }
-    // Dispatch load event when animation ready to play
-    this.dispatchEvent(new CustomEvent('load', { bubbles: true, cancelable: true, detail: { name: this.name } }));
   }
 
   /**
@@ -131,7 +148,9 @@ class Animation extends Component {
    * Import animation data dynamically
    */
   private getAnimationData(): void {
-    if (this.name && animationManifest[this.name]) {
+    if (this.src) {
+      this.fetchAnimationFromUrl(this.src);
+    } else if (this.name && animationManifest[this.name]) {
       // Make sure the path is point to a folder (and its sub-folders) that contains animation data only
       // otherwise bundlers (eg. webpack) will try to process everything in this folder including the types.d.ts
       const path = animationManifest[this.name].replace(/^\.\/lottie/, '');
@@ -144,14 +163,32 @@ class Animation extends Component {
     }
   }
 
+  /**
+   * Fetch animation data from a URL
+   */
+  private fetchAnimationFromUrl(url: string): void {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch animation from URL: ${url} (${response.status})`);
+        }
+        return response.json();
+      })
+      .then((animationData: any) => this.onLoadSuccessHandler(animationData))
+      .catch((error: Error) => this.onLoadFailHandler(error));
+  }
+
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    // fetch animation data when new animation needed or any animation parameter changed
-    // note: we re-create the animation for parameter changes as well, because lottie
-    //       does not API for changing them on the fly
-    if (changedProperties.has('name') || changedProperties.has('loop') || changedProperties.has('autoplay')) {
+    // fetch animation data when the animation source changes
+    if (changedProperties.has('name') || changedProperties.has('src')) {
+      this.cachedAnimationData = undefined;
       this.getAnimationData();
+    } else if ((changedProperties.has('loop') || changedProperties.has('autoplay')) && this.cachedAnimationData) {
+      // re-create the lottie instance from cache for parameter changes,
+      // because lottie does not have an API for changing them on the fly
+      this.createLottieInstance(this.cachedAnimationData);
     }
 
     if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledby')) {

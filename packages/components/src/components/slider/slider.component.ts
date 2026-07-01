@@ -13,17 +13,6 @@ import styles from './slider.styles';
 import type { ThumbStateType } from './slider.types';
 
 /**
- * Slider component is used to select a value or range of values from within a defined range.
- * It provides a visual representation of the current value(s) and allows users to adjust the value(s) by dragging the thumb(s) along the track.
- * It can be used as a single slider or a range slider. This is set by the boolean attribute `range`
- * If the step value is more than 1, tick marks are shown to represent the steps between the min and max values. The slider thumb will snap to the nearest tick mark.
- *
- * ## Spatial navigation
- *
- * In spatial navigation mode, the user has to step into edit mode to adjust the slider value using left and right navigation keys.
- * To enter edit mode, the user can press the Enter when one of the slider's handler is focused. User can leave edit mode by press
- * Enter or Escape.
- *
  * @tagname mdc-slider
  *
  * @dependency mdc-icon

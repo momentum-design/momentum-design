@@ -26,6 +26,7 @@ type SetupOptions = {
   dataAriaLabel?: string;
   clearAriaLabel?: string;
   filters?: boolean;
+  controlType?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -53,12 +54,13 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
+      ${restArgs.controlType ? `control-type="${restArgs.controlType}"` : ''}
       ${
         restArgs.filters
-          ? `><mdc-inputchip 
+          ? `><mdc-chip 
         label="Selected" 
         slot="filters" 
-        ></mdc-inputchip>`
+        ></mdc-chip>`
           : '>'
       }</mdc-searchfield>
       <mdc-button>Second Button</mdc-button></div>
@@ -101,9 +103,18 @@ test('mdc-searchfield', async ({ componentsPage }) => {
 
     searchfieldStickerSheet.setChildren(`<mdc-inputchip 
         slot='filters' 
-        label='Query: value' 
+        label='InputChip' 
         clear-aria-label='clear'
-      ></mdc-inputchip>`);
+      ></mdc-inputchip>
+      <mdc-chip 
+        slot='filters' 
+        label='Chip'
+      ></mdc-chip>
+      <mdc-alertchip 
+        slot='filters' 
+        label='AlertChip'
+        variant="warning"
+      ></mdc-alertchip>`);
     searchfieldStickerSheet.setAttributes({
       value: '',
       placeholder: 'Search for value',
@@ -272,22 +283,162 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await componentsPage.removeAttribute(searchField, 'disabled');
     });
 
-    await test.step('filter chip should be focusable and interactable when present', async () => {
-      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
-      const inputChipBtn = searchField.locator('mdc-button[part="close-icon"]');
-      await inputChipBtn.evaluate(btn => {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('remove-filter');
-        });
-      });
-      const filterChip = searchField.locator('mdc-inputchip');
-      await expect(filterChip).toBeVisible();
-      await expect(inputChipBtn).toHaveClass('');
-      await componentsPage.actionability.pressTab();
-      await expect(inputChipBtn).toBeFocused();
-      await inputChipBtn.click();
-      await expect(inputChipBtn).toHaveClass('remove-filter');
+    // AI-Assisted
+    await test.step('programmatic focus() on searchfield should delegate to the native input element', async () => {
+      await setup({ componentsPage, placeholder: 'Placeholder', clearAriaLabel: 'clear' });
+      await searchField.evaluate((el: HTMLElement) => el.focus());
+      await expect(inputEl).toBeFocused();
     });
+
+    await test.step('programmatic focus() on searchfield with chips should delegate to the native input element', async () => {
+      await setup({ componentsPage, placeholder: 'Placeholder', clearAriaLabel: 'clear', filters: true });
+      await searchField.evaluate((el: HTMLElement) => el.focus());
+      await expect(inputEl).toBeFocused();
+    });
+    // End AI-Assisted
+
+    // AI-Assisted
+    const filterChip = searchField.locator('mdc-chip');
+    await test.step('filter chip should be visible when present and tab should focus input', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await expect(filterChip).toBeVisible();
+      // Tab should focus the input directly, not the chip (chips are navigated via arrow keys)
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+    });
+
+    await test.step('ArrowLeft at input start should focus the last chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(filterChip).toBeFocused();
+    });
+
+    await test.step('ArrowRight on focused chip should return focus to input', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.ARROW_LEFT);
+      await expect(filterChip).toBeFocused();
+      await keyboard.press(KEYS.ARROW_RIGHT);
+      await expect(inputEl).toBeFocused();
+    });
+
+    await test.step('Backspace at input start should remove the last chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await expect(filterChip).toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.BACKSPACE);
+      await expect(filterChip).not.toBeAttached();
+    });
+
+    await test.step('Home key should always focus the first chip regardless of cursor position', async () => {
+      await setup({ componentsPage, value: 'some text', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      // Cursor is at end of 'some text', pressing Home should jump straight to first chip
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.HOME);
+      await expect(filterChip).toBeFocused();
+    });
+
+    await test.step('End key on focused chip should return focus to input', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await componentsPage.actionability.pressTab();
+      const { keyboard } = componentsPage.page;
+      await keyboard.press(KEYS.HOME);
+      await expect(filterChip).toBeFocused();
+      await keyboard.press(KEYS.END);
+      await expect(inputEl).toBeFocused();
+    });
+
+    // AI-Assisted: controlled/uncontrolled chip removal tests
+    await test.step('control-type attribute defaults to uncontrolled', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
+    });
+
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Backspace', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
+      await expect(searchField).toHaveAttribute('control-type', 'controlled');
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
+      await expect(waitForRemoved).toEventEmitted();
+      // In controlled mode the chip must NOT be removed from the DOM
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=uncontrolled: remove event fires and chip is removed from DOM on Backspace', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'uncontrolled' });
+      await expect(searchField).toHaveAttribute('control-type', 'uncontrolled');
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.BACKSPACE);
+      await expect(waitForRemoved).toEventEmitted();
+      // In uncontrolled mode the chip must be removed from the DOM
+      await expect(filterChip).not.toBeAttached();
+    });
+
+    await test.step('control-type=controlled: remove event fires but chip stays in DOM on Delete from chip', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true, controlType: 'controlled' });
+      await expect(filterChip).toBeAttached();
+
+      await componentsPage.actionability.pressTab();
+      await componentsPage.page.keyboard.press(KEYS.ARROW_LEFT); // focus chip
+      await expect(filterChip).toBeFocused();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      await componentsPage.page.keyboard.press(KEYS.DELETE);
+      await expect(waitForRemoved).toEventEmitted();
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=controlled: clear button fires remove event per chip but chips stay in DOM', async () => {
+      await setup({
+        componentsPage,
+        value: 'search',
+        clearAriaLabel: 'clear',
+        filters: true,
+        controlType: 'controlled',
+      });
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await clearBtn.click();
+      await expect(waitForRemoved).toEventEmitted();
+      // Chip must remain in DOM; consumer controls removal
+      await expect(filterChip).toBeAttached();
+    });
+
+    await test.step('control-type=uncontrolled: clear button removes all chips from DOM', async () => {
+      await setup({
+        componentsPage,
+        value: 'search',
+        clearAriaLabel: 'clear',
+        filters: true,
+        controlType: 'uncontrolled',
+      });
+      await expect(filterChip).toBeAttached();
+
+      const waitForRemoved = await componentsPage.waitForEvent(searchField, 'chipRemove');
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await clearBtn.click();
+      await expect(waitForRemoved).toEventEmitted();
+      await expect(filterChip).not.toBeAttached();
+    });
+    // End AI-Assisted
 
     await test.step('spatial navigation', async () => {
       const input = await setup({
