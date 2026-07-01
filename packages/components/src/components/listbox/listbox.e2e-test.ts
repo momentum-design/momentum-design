@@ -126,6 +126,29 @@ test('mdc-listbox', async ({ componentsPage }) => {
       await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('selected');
     });
 
+    await test.step('keeps a focusable option when the focused option is removed', async () => {
+      const listbox = await setup({ componentsPage, children: defaultChildren() });
+      await componentsPage.page.locator('mdc-button').focus();
+      await componentsPage.actionability.pressTab();
+      await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
+      await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('tabindex', '0');
+
+      // Removing the focusable option (e.g. when a consumer filters the list) must
+      // re-assign tabindex="0" to the option that takes its place so the listbox
+      // stays reachable by keyboard.
+      await listbox
+        .locator('mdc-option')
+        .nth(0)
+        .evaluate(el => el.remove());
+
+      await expect(listbox.locator('mdc-option').nth(0)).toHaveAttribute('tabindex', '0');
+
+      // The listbox remains keyboard reachable via Tab.
+      await componentsPage.page.locator('mdc-button').focus();
+      await componentsPage.actionability.pressTab();
+      await expect(listbox.locator('mdc-option').nth(0)).toBeFocused();
+    });
+
     await test.step('spatial navigation', async () => {
       const listbox = await setup({ componentsPage, children: defaultChildren() });
 
