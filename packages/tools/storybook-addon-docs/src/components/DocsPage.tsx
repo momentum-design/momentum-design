@@ -1,6 +1,6 @@
 import React from "react";
 import { DocsPage as StorybookDocsPage, useOf } from "@storybook/addon-docs/blocks";
-import Text from "@momentum-design/components/dist/react/text/index.js";
+import { Text } from "@momentum-design/components/react";
 
 import { DocsTabs } from "./DocsTabs";
 import { MarkdownView } from "./Markdown";
