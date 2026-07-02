@@ -16,7 +16,7 @@ the config files it references
 [`body.config.json`](../../../config/knowledge-base/content/body.config.json),
 [`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json)),
 and [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
-for Webex voice, tone, and in-product copy.
+for product voice, tone, and in-product copy.
 Always consult the schema, its sibling config files, and the content guidelines
 before and during the steps below.
 
@@ -128,7 +128,7 @@ skill is not the place to change rules.
 
 When drafting or editing user-facing prose in any topic file, read
 [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
-first. It is the canonical Tier 1 source for Webex UI/UX writing standards.
+first. It is the canonical Tier 1 source for product UI/UX writing standards.
 
 - Apply its rules to labels, helper text, error messages, empty states,
   button copy, and other in-product text you author in topic files.
