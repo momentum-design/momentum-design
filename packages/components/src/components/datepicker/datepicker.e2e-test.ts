@@ -320,6 +320,23 @@ test.describe('mdc-datepicker', () => {
         const text = await selectText.textContent();
         expect(text).toContain('Jul');
       });
+
+      for (const selectionMode of ['range', 'week']) {
+        test(`should display a locale-aware range placeholder for ${selectionMode} selection`, async ({
+          componentsPage,
+        }) => {
+          const datepicker = await setup({
+            componentsPage,
+            label: 'Date range',
+            variant: 'default',
+            selectionMode,
+            locale: 'en-GB',
+          });
+
+          const placeholder = datepicker.locator('[part~="select-placeholder"]');
+          await expect(placeholder).toHaveText('dd / mm / yyyy - dd / mm / yyyy');
+        });
+      }
     });
 
     test.describe('interaction', () => {
