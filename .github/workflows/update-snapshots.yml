@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           registry-url: "https://registry.npmjs.org"
@@ -29,7 +29,7 @@ jobs:
 
       - name: Validate Dependencies
         id: validate-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -40,7 +40,7 @@ jobs:
         run: yarn
 
       - name: Cache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
@@ -54,17 +54,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           registry-url: "https://registry.npmjs.org"
           cache: "yarn"
 
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -80,7 +80,7 @@ jobs:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
       - name: Cache Dist
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: "**/dist"
           key: dist-${{ env.rid }}
@@ -91,17 +91,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
           registry-url: "https://registry.npmjs.org"
           cache: "yarn"
 
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -109,7 +109,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: "**/dist"
           key: dist-${{ env.rid }}
