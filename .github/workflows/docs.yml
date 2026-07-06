@@ -71,11 +71,12 @@ jobs:
         run: PUBLIC_ALGOLIA_APP_ID=${{ env.PUBLIC_ALGOLIA_APP_ID }} PUBLIC_ALGOLIA_INDEX_NAME=${{ env.PUBLIC_ALGOLIA_INDEX_NAME }} PUBLIC_ALGOLIA_DOC_SEARCH=${{ env.PUBLIC_ALGOLIA_DOC_SEARCH }} yarn build
         working-directory: ${{ env.BUILD_PATH }}
         
-      - name: Cache Documentation
-        uses: actions/cache@v5
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v4
         with:
+          name: docs-${{ env.rid }}
           path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
-          key: docs-${{ env.rid }}
+          retention-days: 1
 
   deploy:
     name: Deploy
@@ -90,11 +91,11 @@ jobs:
         run: |
           rm -rf ${{ env.BUILD_PATH }}/docs
 
-      - name: Uncache Documentation
-        uses: actions/cache@v5
+      - name: Download Documentation
+        uses: actions/download-artifact@v4
         with:
+          name: docs-${{ env.rid }}
           path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
-          key: docs-${{ env.rid }}
       
       - name: Process Cached Docs
         run: cp -avr ${{ env.BUILD_PATH }}/packages/documentation/dist docs/
