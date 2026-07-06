@@ -76,7 +76,7 @@
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs",
     "publish": "yarn publish:npmjs",
     "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
-    "publish:npmjs:prepare": "node scripts/prepareForPublish.js && yarn inject:kb-dts",
+    "publish:npmjs:prepare": "yarn inject:kb-dts && node scripts/prepareForPublish.js",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:postbuild": "yarn test:e2e:docker",
