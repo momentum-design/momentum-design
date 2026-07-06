@@ -72,7 +72,7 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
         
       - name: Upload Documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs-${{ env.rid }}
           path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
@@ -92,7 +92,7 @@ jobs:
           rm -rf ${{ env.BUILD_PATH }}/docs
 
       - name: Download Documentation
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: docs-${{ env.rid }}
           path: ${{ env.BUILD_PATH }}/packages/documentation/dist/

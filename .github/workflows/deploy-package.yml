@@ -73,7 +73,7 @@ jobs:
         run: yarn telemetry build && yarn automation build:cli
 
       - name: Upload Automation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: automation-dist-${{ env.rid }}
           path: '**/automation/dist'
@@ -105,13 +105,13 @@ jobs:
 
       - name: Download Automation
         id: download-automation
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: automation-dist-${{ env.rid }}
           path: .
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -198,7 +198,7 @@ jobs:
         run: yarn build
 
       - name: Upload Dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.rid }}
           path: '**/dist'
@@ -231,7 +231,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -279,7 +279,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -322,7 +322,7 @@ jobs:
            key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
        - name: Download Dist
-         uses: actions/download-artifact@v4
+         uses: actions/download-artifact@v8
          with:
            name: dist-${{ env.rid }}
            path: .
