@@ -579,6 +579,7 @@ class SpatialNavigationProvider extends Provider<SpatialNavigationContextValue> 
     const goBackElement = findFocusable(this.root).find(el => el.hasAttribute(DATA_ATTRIBUTES.GO_BACK));
     const isDefaultPrevented = this.emitGoBackEvent(goBackElement);
 
+    // Skip default behavior when event was prevented by the user
     if (!isDefaultPrevented) {
       if (goBackElement) {
         goBackElement.click();
