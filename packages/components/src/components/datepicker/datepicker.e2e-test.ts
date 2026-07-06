@@ -262,6 +262,29 @@ test.describe('mdc-datepicker', () => {
         const popover = datepicker.locator('mdc-popover');
         await expect(popover).not.toHaveAttribute('visible');
       });
+
+      // AI-Assisted
+      test('should select a week when selection mode changes from its default', async ({ componentsPage }) => {
+        const datepicker = await setup({
+          componentsPage,
+          label: 'Date',
+          value: '2025-07-15',
+        });
+
+        await datepicker.evaluate(element => element.setAttribute('selection-mode', 'week'));
+        await expect(datepicker).toHaveAttribute('selection-mode', 'week');
+
+        const calendarButton = datepicker.locator('mdc-button[part="icon-container"]');
+        await calendarButton.click();
+
+        const calendar = datepicker.locator('mdc-calendar');
+        const day18 = calendar.locator('[data-date="2025-07-18"]');
+        await day18.click();
+
+        await expect(datepicker).toHaveAttribute('value', '2025-07-13');
+        await expect(datepicker).toHaveAttribute('end-value', '2025-07-19');
+      });
+      // End AI-Assisted
     });
 
     test.describe('disabled state', () => {
@@ -490,106 +513,116 @@ test.describe('mdc-datepicker', () => {
     });
   });
 
+  // AI-Assisted
   test.describe('visual regression', () => {
-    test('should match screenshot in default state', async ({ componentsPage }) => {
+    test('should match screenshot for empty single-date input', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Start date',
         variant: 'input',
+        selectionMode: 'single',
         locale: 'en-US',
         required: true,
       });
 
       await test.step('default state', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-input-single-empty');
       });
     });
 
-    test('should match screenshot with value', async ({ componentsPage }) => {
+    test('should match screenshot for single-date input with value', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Start date',
         value: '2025-07-15',
         variant: 'input',
+        selectionMode: 'single',
         locale: 'en-US',
         required: true,
       });
 
       await test.step('with value', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-with-value');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-input-single-value');
       });
     });
 
-    test('should match screenshot in disabled state', async ({ componentsPage }) => {
+    test('should match screenshot for disabled single-date input', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Start date',
         value: '2025-07-15',
         variant: 'input',
+        selectionMode: 'single',
         disabled: true,
       });
 
       await test.step('disabled state', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-disabled');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-input-single-disabled');
       });
     });
 
-    test('should match screenshot in readonly state', async ({ componentsPage }) => {
+    test('should match screenshot for readonly single-date input', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Start date',
         value: '2025-07-15',
         variant: 'input',
+        selectionMode: 'single',
         readonly: true,
       });
 
       await test.step('readonly state', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-readonly');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-input-single-readonly');
       });
     });
 
-    test('should match screenshot with error help text', async ({ componentsPage }) => {
+    test('should match screenshot for single-date input with error help text', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'End date',
         value: '2025-07-14',
         variant: 'input',
+        selectionMode: 'single',
         helpText: 'End date must occur after start date',
         helpTextType: 'error',
       });
 
       await test.step('error state', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-error');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-input-single-error');
       });
     });
 
-    test('should match screenshot of default variant', async ({ componentsPage }) => {
+    test('should match screenshot for empty default range', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Date range',
         variant: 'default',
+        selectionMode: 'range',
         locale: 'en-US',
         required: true,
       });
 
       await test.step('default variant', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-variant');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-range-empty');
       });
     });
 
-    test('should match screenshot of default variant with value', async ({ componentsPage }) => {
+    test('should match screenshot for default range with value', async ({ componentsPage }) => {
       await setup({
         componentsPage,
         label: 'Date range',
         value: '2025-07-15',
+        endValue: '2025-07-20',
         variant: 'default',
+        selectionMode: 'range',
         locale: 'en-US',
         required: true,
       });
 
       await test.step('default variant with value', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-variant-value');
+        await componentsPage.visualRegression.takeScreenshot('mdc-datepicker-default-range-value');
       });
     });
   });
+  // End AI-Assisted
 });
