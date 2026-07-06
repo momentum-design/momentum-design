@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/labeler@v5
+      - uses: actions/labeler@v6
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: .github/labeler.yml
@@ -221,7 +221,7 @@ jobs:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
       - name: Upload Dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.rid }}
           path: '**/dist'
@@ -285,7 +285,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -325,7 +325,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
       
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -365,7 +365,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -405,7 +405,7 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Dist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ env.rid }}
           path: .
@@ -421,7 +421,7 @@ jobs:
 
       - name: Log in to GitHub Container Registry
         if: ${{ matrix.package == '@momentum-design/components' }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -431,7 +431,7 @@ jobs:
         run: yarn workspace ${{ matrix.package }} test:postbuild  
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
         with:
           name: playwright-report
