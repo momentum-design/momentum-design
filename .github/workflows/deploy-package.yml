@@ -72,11 +72,12 @@ jobs:
       - name: Build Automation
         run: yarn telemetry build && yarn automation build:cli
 
-      - name: Cache Automation
-        uses: actions/cache@v5
+      - name: Upload Automation
+        uses: actions/upload-artifact@v4
         with:
+          name: automation-dist-${{ env.rid }}
           path: '**/automation/dist'
-          key: automation-dist-${{ env.rid }}
+          retention-days: 1
 
   generate-package-matrix:
     name: Generate Package Matrix with Dist Changes
@@ -102,22 +103,18 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Automation
-        id: uncache-automation
-        uses: actions/cache@v5
+      - name: Download Automation
+        id: download-automation
+        uses: actions/download-artifact@v4
         with:
-          path: '**/automation/dist'
-          key: automation-dist-${{ env.rid }}
+          name: automation-dist-${{ env.rid }}
+          path: .
 
-      - name: Build Automation (cache miss fallback)
-        if: steps.uncache-automation.outputs.cache-hit != 'true'
-        run: yarn telemetry build && yarn automation build:cli
-
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -200,11 +197,12 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Cache Dist
-        uses: actions/cache@v5
+      - name: Upload Dist
+        uses: actions/upload-artifact@v4
         with:
+          name: dist-${{ env.rid }}
           path: '**/dist'
-          key: dist-${{ env.rid }}
+          retention-days: 1
 
   deploy-npmjs:
     name: ( ${{ matrix.package }} ) Deploy - NPMJS
@@ -232,11 +230,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -280,11 +278,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -323,11 +321,11 @@ jobs:
             packages/**/node_modules
            key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-       - name: Uncache Dist
-         uses: actions/cache@v5
+       - name: Download Dist
+         uses: actions/download-artifact@v4
          with:
-           path: '**/dist'
-           key: dist-${{ env.rid }}
+           name: dist-${{ env.rid }}
+           path: .
 
        - name: Synchronize Packages
          run: yarn
