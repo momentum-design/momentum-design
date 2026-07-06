@@ -106,14 +106,9 @@ jobs:
       - name: Download Automation
         id: download-automation
         uses: actions/download-artifact@v4
-        continue-on-error: true
         with:
           name: automation-dist-${{ env.rid }}
           path: .
-
-      - name: Build Automation (artifact miss fallback)
-        if: steps.download-automation.outcome == 'failure'
-        run: yarn telemetry build && yarn automation build:cli
 
       - name: Download Dist
         uses: actions/download-artifact@v4
