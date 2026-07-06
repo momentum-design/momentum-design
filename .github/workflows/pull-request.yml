@@ -220,11 +220,12 @@ jobs:
         env:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
-      - name: Cache Dist
-        uses: actions/cache@v5
+      - name: Upload Dist
+        uses: actions/upload-artifact@v4
         with:
+          name: dist-${{ env.rid }}
           path: '**/dist'
-          key: dist-${{ env.rid }}
+          retention-days: 1
 
   analyze-root:
     name: Analyze Root
@@ -283,11 +284,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -323,11 +324,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
       
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -363,11 +364,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -403,11 +404,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v5
+      - name: Download Dist
+        uses: actions/download-artifact@v4
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Debug dist
         run: |
