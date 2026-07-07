@@ -380,6 +380,10 @@ jobs:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
     needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
+    # Safety net: previously this job could hang silently for hours (see "Stop Playwright Docker
+    # Browser Server" step below for the real fix) and would only ever be stopped by GitHub's
+    # default 6h job timeout. Fail fast instead so a regression is visible quickly.
+    timeout-minutes: 90
 
     strategy:
       matrix:
@@ -427,8 +431,26 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # The Playwright browser-server container is started/stopped as an explicit step here
+      # rather than being managed by Playwright's own `webServer` lifecycle hooks (see
+      # playwright.docker.config.ts). Previously Playwright owned starting AND stopping the
+      # container; shutting it down after the run could hang indefinitely with no error/timeout,
+      # so the job silently ran for hours until GitHub's default 6h job timeout killed it.
+      # Decoupling the container lifecycle from the test process means Playwright never has to
+      # reap it, and the "Stop" step below (which always runs, and is itself bounded by a
+      # `docker stop --time` grace period) guarantees cleanup regardless of test outcome.
+      - name: Start Playwright Docker Browser Server
+        if: ${{ matrix.package == '@momentum-design/components' }}
+        run: |
+          yarn workspace ${{ matrix.package }} test:e2e:docker:serve:ci
+          yarn workspace ${{ matrix.package }} test:e2e:docker:wait
+
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild  
+
+      - name: Stop Playwright Docker Browser Server
+        if: ${{ always() && matrix.package == '@momentum-design/components' }}
+        run: yarn workspace ${{ matrix.package }} test:e2e:docker:stop || docker kill mdc-pw-server || true
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v7
