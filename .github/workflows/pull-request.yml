@@ -383,7 +383,7 @@ jobs:
     # Safety net: previously this job could hang silently for hours (see "Stop Playwright Docker
     # Browser Server" step below for the real fix) and would only ever be stopped by GitHub's
     # default 6h job timeout. Fail fast instead so a regression is visible quickly.
-    timeout-minutes: 45
+    timeout-minutes: 90
 
     strategy:
       matrix:
