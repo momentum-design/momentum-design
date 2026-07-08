@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/labeler@v5
+      - uses: actions/labeler@v6
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: .github/labeler.yml
@@ -115,10 +115,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -126,7 +126,7 @@ jobs:
           
       - name: Validate Dependencies
         id: validate-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -137,7 +137,7 @@ jobs:
         run: yarn
 
       - name: Cache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
@@ -154,17 +154,17 @@ jobs:
       packages: ${{ steps.generate-package-matrix.outputs.packages }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -195,17 +195,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -220,11 +220,12 @@ jobs:
         env:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
-      - name: Cache Dist
-        uses: actions/cache@v4
+      - name: Upload Dist
+        uses: actions/upload-artifact@v7
         with:
+          name: dist-${{ env.rid }}
           path: '**/dist'
-          key: dist-${{ env.rid }}
+          retention-days: 1
 
   analyze-root:
     name: Analyze Root
@@ -232,17 +233,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -266,28 +267,28 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v4
+      - name: Download Dist
+        uses: actions/download-artifact@v8
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -306,28 +307,28 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
       
-      - name: Uncache Dist
-        uses: actions/cache@v4
+      - name: Download Dist
+        uses: actions/download-artifact@v8
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -346,28 +347,28 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v4
+      - name: Download Dist
+        uses: actions/download-artifact@v8
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Synchronize Packages
         run: yarn
@@ -379,6 +380,10 @@ jobs:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
     needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
+    # Safety net: previously this job could hang silently for hours (see "Stop Playwright Docker
+    # Browser Server" step below for the real fix) and would only ever be stopped by GitHub's
+    # default 6h job timeout. Fail fast instead so a regression is visible quickly.
+    timeout-minutes: 90
 
     strategy:
       matrix:
@@ -386,28 +391,28 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Dist
-        uses: actions/cache@v4
+      - name: Download Dist
+        uses: actions/download-artifact@v8
         with:
-          path: '**/dist'
-          key: dist-${{ env.rid }}
+          name: dist-${{ env.rid }}
+          path: .
 
       - name: Debug dist
         run: |
@@ -420,17 +425,35 @@ jobs:
 
       - name: Log in to GitHub Container Registry
         if: ${{ matrix.package == '@momentum-design/components' }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # The Playwright browser-server container is started/stopped as an explicit step here
+      # rather than being managed by Playwright's own `webServer` lifecycle hooks (see
+      # playwright.docker.config.ts). Previously Playwright owned starting AND stopping the
+      # container; shutting it down after the run could hang indefinitely with no error/timeout,
+      # so the job silently ran for hours until GitHub's default 6h job timeout killed it.
+      # Decoupling the container lifecycle from the test process means Playwright never has to
+      # reap it, and the "Stop" step below (which always runs, and is itself bounded by a
+      # `docker stop --time` grace period) guarantees cleanup regardless of test outcome.
+      - name: Start Playwright Docker Browser Server
+        if: ${{ matrix.package == '@momentum-design/components' }}
+        run: |
+          yarn workspace ${{ matrix.package }} test:e2e:docker:serve:ci
+          yarn workspace ${{ matrix.package }} test:e2e:docker:wait
+
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild  
 
+      - name: Stop Playwright Docker Browser Server
+        if: ${{ always() && matrix.package == '@momentum-design/components' }}
+        run: yarn workspace ${{ matrix.package }} test:e2e:docker:stop || docker kill mdc-pw-server || true
+
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
         with:
           name: playwright-report

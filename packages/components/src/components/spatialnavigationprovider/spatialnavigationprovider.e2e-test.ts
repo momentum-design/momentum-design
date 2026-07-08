@@ -324,6 +324,25 @@ test('mdc-spatialnavigationprovider', async ({ componentsPage }) => {
       await expect(waitForBtn5Click).not.toEventEmitted();
     });
 
+    await test.step('"navback" event canceled also prevents falling back to browser history', async () => {
+      // AI-Assisted
+      const locators = await setup({ componentsPage });
+      const { keyboard } = componentsPage.page;
+
+      // Push a history entry so `window.history.length` exceeds the provider's initial history length
+      await componentsPage.page.evaluate(() => window.history.pushState({}, '', '#pushed'));
+
+      await locators.snpProvider.evaluate(el => {
+        el.addEventListener('navback', event => event.preventDefault(), { once: true });
+      });
+
+      await keyboard.press('Escape');
+
+      // window.history.back() was not triggered, so the pushed URL remains unchanged
+      await expect(componentsPage.page).toHaveURL(/#pushed$/);
+      // End AI-Assisted
+    });
+
     await test.step('"navnotarget" event emitted when no focusable element found in the given direction', async () => {
       const locators = await setup({ componentsPage });
       const { keyboard } = componentsPage.page;

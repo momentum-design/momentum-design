@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DocsContainer as StorybookDocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks";
-import ThemeProvider from "@momentum-design/components/dist/react/themeprovider/index.js";
+import { ThemeProvider } from "@momentum-design/components/react";
 
 import { getThemeClassFromGlobal, getThemeGlobalKey } from "../registry";
 import type { DocsAddonParameters } from "../types";
