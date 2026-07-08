@@ -3,14 +3,5 @@
   "_comment": "GENERATED FILE — DO NOT HAND-EDIT. Run `yarn knowledge-base:index` to regenerate.",
   "generatedFrom": "scripts/knowledge-base/generate-index.js",
   "tier": 1,
-  "topics": [
-    {
-      "id": "tier1/knowledge-base/engineer-guide",
-      "tier": 1,
-      "path": "knowledge-base/engineer-guide.md",
-      "title": "Engineer guide",
-      "summary": "Engineer onboarding for the Momentum knowledge base — tiers, folder layout, index lookup, contributing workflow, and CI enforcement.",
-      "canonical": null
-    }
-  ]
+  "topics": []
 }
