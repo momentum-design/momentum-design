@@ -120,9 +120,20 @@ conditions is usually the right scope — more than that and the guidelines are
 covering for an unclear component contract.
 
 Format:
-"Use [component name] when [specific condition]."
 
-Examples (Button):
+Name the component once in a lead-in sentence, then write each bullet as a
+condition only. Do not repeat the component name at the end of every bullet —
+when all bullets recommend the same component, the trailing "use `mdc-...`"
+becomes identical boilerplate that adds nothing after the first mention.
+
+"Use [component name] when:" — followed by condition-only bullets.
+
+Repeat the component name per bullet **only** when the bullets recommend
+*different* variants of the same component. In that case the name carries
+information (it changes line to line), so each bullet leads with it, as the
+Button examples below do (primary / secondary / ghost).
+
+Examples (Button — the different-variant case, where each bullet names its variant):
 
 - Use a primary button for the single most important action in a context. There
   should be at most one primary button in any given view.
@@ -250,9 +261,10 @@ Before running validation, confirm:
 
 - `Overview` is one to three sentences, adds no `#` H1, and does not restate the
   frontmatter `title`.
-- `When to use` and `When not to use` follow the parallel format: condition
-  first ("When …"), recommendation second ("use …" / "use … instead"), and each
-  condition is specific enough to decide from.
+- `When to use` names the component once in a lead-in and then lists
+  condition-only bullets — repeating the component name per bullet only when the
+  bullets recommend different variants. `When not to use` states each misuse and
+  points to an alternative. Every condition is specific enough to decide from.
 - Every `When not to use` entry names an alternative.
 - Edge cases are real for this component, not generic.
 - Accessibility appears in context, not only in its own section.
