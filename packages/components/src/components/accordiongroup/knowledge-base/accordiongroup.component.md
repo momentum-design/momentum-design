@@ -11,7 +11,9 @@ The accordion group is a container that manages multiple `mdc-accordion` or `mdc
 
 ### When to use
 
-- When rendering two or more related accordion items that need consistent styling, spacing, and coordinated open/close behavior — for example grouped FAQs, settings sections, or multi-step content — use `mdc-accordiongroup`.
+Use `mdc-accordiongroup` when:
+
+- Two or more related accordion items need consistent styling, spacing, and coordinated open/close behavior — for example grouped FAQs, settings sections, or multi-step content.
 
 ### When not to use
 

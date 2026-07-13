@@ -11,8 +11,11 @@ The accordion is a vertically stacked header/body component whose header can hol
 
 ### When to use
 
-- When the header needs interactive controls (buttons, interactive chips, icons) in addition to expand/collapse, and those controls must remain independently clickable, use `mdc-accordion`.
-- When concealing secondary or independent content on information-heavy pages so users get a high-level overview first and open only the sections they need, use `mdc-accordion`.
+Use `mdc-accordion` when:
+
+- The header needs interactive controls (buttons, interactive chips, icons) alongside expand/collapse, and those controls must remain independently clickable.
+- Secondary or independent content on an information-heavy page should be concealed so users get a high-level overview first and open only the sections they need.
+- Sections are independent and do not need to be read in sequence, and grouping them compactly reduces page length and scrolling while keeping content scannable.
 
 ### When not to use
 
@@ -47,6 +50,7 @@ Minimal markup example:
 ### Content guidance
 
 - Keep header text concise — it summarizes the panel content. Long titles can collide with header controls (chips, buttons) and reduce scannability.
+- Slot header controls that match their purpose: use icon buttons for header-level actions such as opening settings or a drag handle, and use chips to surface a status, count, or type — interactive or non-interactive — for the section.
 - The panel accepts paragraphs, subheadings, or your own components via the default slot; structure longer content with subheadings so it stays scannable.
 
 ### Property/Attribute details
@@ -55,7 +59,8 @@ Minimal markup example:
 - `prefix-icon` renders an icon before the header text.
 - `leading-controls` and `trailing-controls` slots hold header controls; the toggle button always sits after `trailing-controls` (or before `leading-header` when `toggle-position="leading"`).
 - `toggle-position` (`trailing` default, or `leading`) places the expand/collapse button at the end or start of the header.
-- `size` (`small` default = 16px padding, `large` = 24px padding) and `variant` (`default` with borders, `borderless` without). When nested in `mdc-accordiongroup`, both are driven by the group: `size` takes the group's `size`, and `variant` takes the group's value (`stacked`, `borderless`, or `contained`) rather than the item's own `default`/`borderless`.
+- `size` (`small` default = 16px padding, `large` = 24px padding). Collapsed height is fixed per size; expanded height grows with the content so the panel is always fully visible.
+- `variant` sets the standalone look: `default` (with borders) where visual separation from surrounding content matters, such as dense or mixed layouts; `borderless` (without borders) for minimalist or embedded contexts such as forms, settings panels, or inline sections. When nested in `mdc-accordiongroup`, both `size` and `variant` are driven by the group — `variant` takes the group's value (`stacked`, `borderless`, or `contained`) rather than the item's own `default`/`borderless` — so set them on the group instead.
 - `disabled` disables the accordion and propagates `disabled` to any elements slotted into `leading-controls` and `trailing-controls`.
 
 ### Edge cases
@@ -63,7 +68,7 @@ Minimal markup example:
 - The accordion dispatches its own `shown` event (React: `onShown`, detail `{ expanded }`) when toggled. `shown` events from slotted header controls are stopped from bubbling so the group and consumers don't mistake them for the accordion toggling.
 - The header text does not wrap or truncate reliably and can collide with header controls — trim long titles rather than relying on layout to absorb them.
 - When `disabled`, the body is not rendered even if `expanded` is set, and slotted header controls are disabled alongside it.
-- Panels have no fixed maximum height and never scroll internally; let vertical scrolling happen at the page or container level.
+- Panels have no fixed maximum height and never scroll internally; let vertical scrolling happen at the page or container level. The accordion's width follows its parent grid or container's responsive rules and must never scroll horizontally.
 - The chevron always reflects state — up when expanded, down when collapsed — and cannot be removed or hidden.
 
 ### Notes
