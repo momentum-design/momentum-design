@@ -13,15 +13,15 @@ Keep the label short — we recommend a maximum of **20 characters** (including 
 
 ### When to use
 
-- Use `mdc-chip` to represent an attribute, tag, or quick action that fits in a single, short word or phrase.
-- Use it inside a horizontal row or wrap of chips when several short actions or attributes share the same visual weight.
+- When representing an attribute, tag, or quick action that fits in a single, short word or phrase, use `mdc-chip`.
+- When several short actions or attributes share the same visual weight in a horizontal row or wrap of chips, use `mdc-chip`.
 
 ### When not to use
 
-- Use `mdc-button` when the action needs more visual weight, more text, or icon-only treatment beyond a compact tag.
-- Use `mdc-filterchip` when the chip should reflect an applied filter that can be toggled and removed.
-- Use `mdc-alertchip` when the chip should communicate a status (information, warning, error) rather than trigger an action.
-- Use `mdc-staticchip` when the chip is purely decorative and should not be interactive (e.g. inside a list item that owns the click target).
+- When the action needs more visual weight, more text, or icon-only treatment beyond a compact tag, use `mdc-button` instead.
+- When the chip should reflect an applied filter that can be toggled and removed, use `mdc-filterchip` instead.
+- When the chip should communicate a status (information, warning, error) rather than trigger an action, use `mdc-alertchip` instead.
+- When the chip is purely decorative and should not be interactive (for example inside a list item that owns the click target), use `mdc-staticchip` instead.
 
 ## Guidelines
 

@@ -13,15 +13,15 @@ Filterchips are typically rendered in a horizontal row next to a result set; use
 
 ### When to use
 
-- Use `mdc-filterchip` when each chip toggles a single filter that can be applied or removed independently.
-- Use it inside a row of filters where the selected state should be visually obvious at a glance.
+- When each chip toggles a single filter that can be applied or removed independently, use `mdc-filterchip`.
+- When a row of filters needs the selected state to be visually obvious at a glance, use `mdc-filterchip`.
 
 ### When not to use
 
-- Use `mdc-chip` when the chip triggers an action rather than a toggle.
-- Use `mdc-alertchip` when the chip communicates a status (information, warning, error) rather than a togglable filter.
-- Use `mdc-staticchip` when the chip is purely decorative and should not be interactive.
-- Use `mdc-checkbox` or `mdc-radio` when the control should appear inside a form field group rather than as a compact filter row.
+- When the chip triggers an action rather than a toggle, use `mdc-chip` instead.
+- When the chip communicates a status (information, warning, error) rather than a togglable filter, use `mdc-alertchip` instead.
+- When the chip is purely decorative and should not be interactive, use `mdc-staticchip` instead.
+- When the control should appear inside a form field group rather than as a compact filter row, use `mdc-checkbox` or `mdc-radio` instead.
 
 ## Guidelines
 

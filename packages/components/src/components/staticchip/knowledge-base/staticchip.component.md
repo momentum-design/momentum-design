@@ -11,15 +11,15 @@ The static chip is a small, non-interactive element used to display a short labe
 
 ### When to use
 
-- Use `mdc-staticchip` to display a short label or status that the user cannot interact with (e.g. a tag, category, or read-only attribute).
-- Use it inside lists, cards, or summary rows where the chip is purely informational.
+- When displaying a short label or status that the user cannot interact with (for example a tag, category, or read-only attribute), use `mdc-staticchip`.
+- When a chip inside lists, cards, or summary rows is purely informational, use `mdc-staticchip`.
 
 ### When not to use
 
-- Use `mdc-chip` when the chip should respond to user interaction (click, selection).
-- Use `mdc-filterchip` for chips that toggle on/off as filters.
-- Use `mdc-inputchip` for editable, removable chips inside an input.
-- Use `mdc-badge` when you need a smaller, status-only indicator (especially for counts or notifications).
+- When the chip should respond to user interaction (click, selection), use `mdc-chip` instead.
+- When chips toggle on/off as filters, use `mdc-filterchip` instead.
+- When you need editable, removable chips inside an input, use `mdc-inputchip` instead.
+- When you need a smaller, status-only indicator (especially for counts or notifications), use `mdc-badge` instead.
 
 ## Guidelines
 

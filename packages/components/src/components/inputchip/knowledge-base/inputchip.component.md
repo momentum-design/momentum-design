@@ -13,13 +13,13 @@ The chip supports an `error` visual state for invalid values, a `disabled` state
 
 ### When to use
 
-- Use `mdc-inputchip` to represent individual values inside a multi-value input pattern: token-style inputs for recipients, tags, filters, or any list of removable items.
-- Use it when the consumer needs full control over chip removal — the chip emits `remove` and the consumer decides what to do with that signal.
+- When representing individual values inside a multi-value input pattern — token-style inputs for recipients, tags, filters, or any list of removable items — use `mdc-inputchip`.
+- When the consumer needs full control over chip removal (the chip emits `remove` and the consumer decides what to do with that signal), use `mdc-inputchip`.
 
 ### When not to use
 
-- Use `mdc-filterchip` for chips that toggle a selected/unselected state to filter a list, rather than representing a removable input value.
-- Use `mdc-chip` for static, non-removable display chips.
+- When chips toggle a selected/unselected state to filter a list rather than representing a removable input value, use `mdc-filterchip` instead.
+- When the chips are static, non-removable display chips, use `mdc-chip` instead.
 
 ## Guidelines
 
@@ -58,7 +58,6 @@ Listen for the `remove` event to react to the close button being clicked.
 - Keep the `label` short — we recommend a maximum length of 20 characters (including spaces). Longer values are visually truncated.
 - Use `icon-name` for simple iconographic prefixes; use the `prefix` slot for richer content such as avatars or presence indicators (slot content always wins over `icon-name`).
 - Set `error="true"` when the represented value fails validation; pair the chip with surrounding helper text that explains the failure.
-- Input chips are not editable — to correct a value, remove the chip and add a new one. Pair the chip pattern with a text field where users enter new values.
 
 ### Property/Attribute details
 
@@ -71,6 +70,7 @@ Listen for the `remove` event to react to the close button being clicked.
 ### Edge cases
 
 - The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serializing them when the form submits.
+- Input chips are not editable — to correct a value, remove the chip and add a new one. Pair the chip pattern with a text field where users enter new values.
 
 ## Accessibility
 
