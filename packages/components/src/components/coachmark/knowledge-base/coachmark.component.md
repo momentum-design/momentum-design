@@ -71,7 +71,7 @@ The coachmark exposes the same overlay surface as `mdc-popover` with onboarding-
 - `role` — defaults to `dialog`; override when a different role better describes the coachmark's purpose.
 - `aria-label` / `aria-labelledby` — accessible name for the coachmark surface.
 
-### Limitations
+### Edge cases
 
 - The color is always `contrast` and the arrow is always visible — coachmarks are deliberately consistent so users learn to recognise them across the product.
 - The trigger does not toggle `aria-expanded` / `aria-haspopup` by default. If multiple overlays share the same trigger and one of them should expose those attributes, leave `disable-aria-expanded` enabled on every coachmark and let the other overlay own the announcement.

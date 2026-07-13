@@ -47,7 +47,7 @@ Minimal markup example:
   - Headline: `'headline-small-light'`, `'headline-small-regular'`.
 - `tagname` (string, default `'p'`) — chooses the HTML tag the slotted content is wrapped in. Accepted values: `'h1'`, `'h2'`, `'h3'`, `'h4'`, `'h5'`, `'h6'`, `'p'`, `'small'`, `'span'`, `'div'`. Invalid values fall back to the default `'p'`. The choice of tag does not change the typography — that is driven by `type`.
 
-### Limitations
+### Edge cases
 
 - The component must be rendered inside an `mdc-themeprovider` for the colour and font tokens it relies on to be defined.
 

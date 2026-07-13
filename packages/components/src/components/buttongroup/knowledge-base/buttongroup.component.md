@@ -61,7 +61,7 @@ Minimal markup example:
 - `size` — pixel-derived height applied to every child button, overriding their individual `size`. Supported values: `24`, `28` (default), `32`, `40`.
 - `compact` — when `true`, forces every button to a fixed 24px height regardless of `size`. Useful for dense layouts. Defaults to `false`.
 
-### Limitations
+### Edge cases
 
 - The group only manages direct `mdc-button` children. Any other slotted element keeps its own styling and may visually break the segmented look.
 - `size` and `variant` on the group always override matching attributes on the slotted buttons — set those on the group, not on the individual button.

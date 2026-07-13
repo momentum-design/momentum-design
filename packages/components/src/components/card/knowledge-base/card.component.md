@@ -75,7 +75,7 @@ Minimal markup example:
 
 The header `icon-button` slot accepts up to three `mdc-button` entries. Each slotted button is automatically coerced to `variant="tertiary"` and `size="32"` so they integrate visually with the header.
 
-### Limitations
+### Edge cases
 
 - `mdc-card` is non-interactive — it has no role, focus, or activation. Use `mdc-cardbutton`, `mdc-cardcheckbox`, or `mdc-cardradio` when the whole card needs to be actionable or selectable.
 - The header `icon-button` slot enforces tertiary 32px buttons; other variants/sizes are overridden.

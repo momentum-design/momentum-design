@@ -57,7 +57,7 @@ The provider has no visible content of its own. Place form controls (or higher-l
 
 - `control-type` — `controlled` or `uncontrolled` (default). Determines how descendant controls handle user interaction.
 
-### Limitations
+### Edge cases
 
 - The provider broadcasts `control-type` once at mount; descendants do **not** react to runtime changes of the attribute. If you must switch modes after mount, remount the descendant tree (e.g. by toggling its `key` in React) so it reads the new value.
 - Only components that use the `ControlTypeMixin` consume this context — currently the combobox and other form controls that opt in. Components that have no need for the controlled/uncontrolled distinction ignore the provider.

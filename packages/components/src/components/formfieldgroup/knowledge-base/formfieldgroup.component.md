@@ -63,7 +63,7 @@ Each child checkbox/toggle continues to manage its own form value through its ow
 - `required` — when `true`, appends a required indicator (`*`) to the label. The group does not enforce required state on its own; the consumer must validate the children.
 - `toggletip-text` / `toggletip-placement` / `toggletip-strategy` / `info-icon-aria-label` — opt-in info icon button next to the label that opens an `mdc-toggletip`.
 
-### Limitations
+### Edge cases
 
 - The group does not manage form submission, validation, or selection state for its children — each child is responsible for its own value and validity. The group only provides the visible header, helper text, and ARIA grouping.
 - The group does not enforce the type of its children; placing radios inside will not produce a `radiogroup`. Use `mdc-radiogroup` for radio buttons.

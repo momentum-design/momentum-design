@@ -69,7 +69,7 @@ Use the `icon` slot to override the built-in severity icon:
 - Default slot — message content. Meaningful slotted content takes precedence over the `message` attribute.
 - `icon` slot — custom icon content. When provided, it replaces the built-in severity icon.
 
-### Limitations
+### Edge cases
 
 - The component does not set `role`, `aria-live`, or alert semantics automatically.
 - The component is not a container for long-form guidance; use concise text that can sit inline with surrounding UI.

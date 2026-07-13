@@ -56,7 +56,7 @@ Minimal markup example. The tooltip is a sibling of its target; connect it via `
 - `id` — if not set, a stable `mdc-tooltip-<uuid>` id is generated and cached so the trigger's `aria-describedby` / `aria-labelledby` remain valid across re-renders.
 - Events: `shown` (`onShown`), `hidden` (`onHidden`), `created` (`onCreated`), and `destroyed` (`onDestroyed`) fire as the tooltip opens, closes, or is added/removed from the DOM.
 
-### Limitations
+### Edge cases
 
 - The tooltip must not contain focusable or interactive content; if you need that, use `mdc-toggletip` instead.
 - `only-show-when-trigger-overflows` is implemented for `mdc-button` and `mdc-text` triggers; other trigger types always open on hover/focus.

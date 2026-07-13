@@ -74,7 +74,7 @@ The iconprovider does not render any visible UI of its own — it only acts as a
 - `cache-strategy` — `in-memory-cache` (JS in-memory) or `web-cache-api` (browser Cache API; HTTPS only). Only applies when `icon-set="custom-icons"`. Default unset (no caching).
 - `cache-name` — name of the cache used by `cache-strategy`. Required when `cache-strategy` is set; must be unique across the app's caches.
 
-### Limitations
+### Edge cases
 
 - The iconprovider has no visible UI — its only effect is broadcasting configuration to nested `mdc-icon` components. Nesting outside this contract has no effect.
 - `cache-strategy="web-cache-api"` only works in HTTPS environments (browser Cache API restriction).

@@ -110,7 +110,7 @@ Public methods:
 - The Storybook toolbar exposes a "Spatial navigation" mode that maps to the default key set.
 - With spatial navigation enabled, holding `Shift` + a navigation key renders a visual debugger overlay: a star marks the chosen next element, `#{n}` shows candidate order by distance, and `D: {distance}` shows the computed distance.
 
-### Limitations
+### Edge cases
 
 - Only one provider instance is supported per application.
 - The distance-based algorithm cannot guarantee that every element is reachable in all four directions. Isolated elements should be linked explicitly with `data-spatial-{direction}` attributes; favour stable layouts, dedicated list/menu components, and avoid heavy overlap or nested focusable elements.

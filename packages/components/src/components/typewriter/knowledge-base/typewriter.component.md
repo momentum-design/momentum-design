@@ -69,7 +69,7 @@ tw.addInstantTextChunk(' [system note]');         // appears instantly
   - `typing-complete` (`onTypingComplete`) — fires when the typewriter finishes typing all queued content. Detail: `{ finalContent: string }`.
   - `change` (`onChange`) — fires when the slotted content changes. Detail: `{ content: string, isTyping: boolean }`.
 
-### Limitations
+### Edge cases
 
 - The animation continues even when the containing tab is in the background.
 - Speed updates while the typewriter is in the middle of processing queued chunks are ignored until the queue empties; the new speed applies to subsequent animations only.

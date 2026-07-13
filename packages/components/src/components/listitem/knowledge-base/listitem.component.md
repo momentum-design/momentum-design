@@ -86,7 +86,7 @@ Slots:
 - `trailing-controls` — toggle, badge, or action at the trailing edge.
 - `content` — replaces the entire built-in layout with custom markup (use sparingly — overriding `content` discards the structured leading / trailing layout).
 
-### Limitations
+### Edge cases
 
 - The `active` attribute is purely visual. It does not set `aria-current` or any selected state; the surrounding pattern (e.g. a navigation list) must own the canonical "current item" semantics.
 - The listitem is not form-associated. Form fields placed inside the row (checkbox, toggle, radio) handle their own form values; the row itself does not submit anything.

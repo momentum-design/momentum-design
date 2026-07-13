@@ -66,7 +66,7 @@ Minimal markup example:
 - `soft-disabled` — visually disabled but still focusable and clickable. Sets `aria-disabled="true"` without removing the tab stop; consumers must suppress side-effects themselves so the button behaves as disabled.
 - `tabindex` — standard tabindex; the primitive saves and restores the consumer-provided value across `disabled` toggles.
 
-### Limitations
+### Edge cases
 
 - The component ships with no visual styling — consumers (or wrapping components) are responsible for the appearance, hover/focus indicators, and active-state visuals.
 - The form-association integration relies on `ElementInternals`; the surrounding page must run in a browser that supports it.

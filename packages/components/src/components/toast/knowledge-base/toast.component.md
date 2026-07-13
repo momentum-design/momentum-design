@@ -64,7 +64,7 @@ Listen for the `close` event on the host application to remove the toast from th
 - The `close` event (`onClose` in React) is dispatched when the user activates the close button via mouse or keyboard. The event detail includes the toast's `id`.
 - Footer slots `footer-button-primary` and `footer-button-secondary` are filtered to a single `mdc-button` each; additional instances are removed. Custom footer markup can be passed via the generic `footer` slot.
 
-### Limitations
+### Edge cases
 
 - The component does not implement auto-dismiss timing or stacking; lifecycle and positioning are owned by the consuming application.
 - Whether the header text needs the show more/less toggle is measured once on first update; later changes to `header-text` will not re-evaluate overflow.

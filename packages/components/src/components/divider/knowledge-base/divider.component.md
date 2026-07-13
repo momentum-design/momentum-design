@@ -79,7 +79,7 @@ For a grabber-button divider the component automatically applies `variant="secon
 - `arrow-direction` — direction of the arrow icon on the grabber button. `positive` (up for horizontal, right for vertical) or `negative` (down for horizontal, left for vertical). Default `negative`. Only relevant for the grabber-button divider.
 - `button-position` — position of the grabber button along the divider. `positive` (right for horizontal, top for vertical) or `negative` (left for horizontal, bottom for vertical). Default `negative`. Only relevant for the grabber-button divider.
 
-### Limitations
+### Edge cases
 
 - Vertical text dividers are not supported — combine `orientation="vertical"` with a text child and the layout will not render the label centred. Use the horizontal variant for text dividers.
 - The divider type is inferred from a single slotted child. If the slot contains more than one element or unrecognised tag names, the divider falls back to the primary type and any extra content is ignored visually.

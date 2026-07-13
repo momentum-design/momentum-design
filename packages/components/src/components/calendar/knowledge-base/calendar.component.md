@@ -76,7 +76,7 @@ Listen for `date-selected` to receive the picked value(s) and `month-changed` to
 - `locale-today-label` — visible label and accessible name for the Today button.
 - `locale-prev-month-label` / `locale-next-month-label` — accessible names for the icon-only previous/next month navigation buttons.
 
-### Limitations
+### Edge cases
 
 - Translations are not bundled. Without the `locale-*-label` props the navigation and Today button have empty accessible names.
 - Range selection always commits on the second click; there is no built-in "clear" affordance other than re-clicking to start a new range.

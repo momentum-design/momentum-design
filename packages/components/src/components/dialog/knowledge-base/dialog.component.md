@@ -101,7 +101,7 @@ When multiple dialogs are open at once, the component uses an internal depth man
 - `stack-group-name` — when set, the dialog joins the named depth-manager group; only one dialog per group is rendered on top at a time.
 - `z-index` — explicit z-index override. When not set, the depth manager computes it based on the number of stacked overlays.
 
-### Limitations
+### Edge cases
 
 - The dialog is not form-associated and does not participate in native form submission. To submit a form from within a dialog, render an `mdc-button` with `type="submit"` whose `form` attribute points at a `<form>` rendered outside the dialog (or inside the body slot).
 - `Escape` closes only the top-most dialog in the depth manager. If multiple dialogs are visible at once, `Escape` is consumed by the top dialog and does not bubble to surrounding handlers.

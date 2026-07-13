@@ -70,7 +70,7 @@ Minimal markup example:
 - `disabled` — when `true`, the card is not interactive and is removed from the tab order.
 - `soft-disabled` — when `true`, the card looks disabled and announces as disabled to assistive tech but stays focusable so screen-reader users can still discover it.
 
-### Limitations
+### Edge cases
 
 - The `active` and `size` properties from `mdc-buttonsimple` are reset on connect; the card button is not a toggle button and does not respond to button sizing.
 - Slot content must remain non-interactive. The card itself is the click target, so nested buttons/links/inputs create nested interactives and are not supported — use `mdc-card` when you need actionable children inside the surface.

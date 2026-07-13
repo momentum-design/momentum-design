@@ -65,7 +65,7 @@ Header with a leading folder icon and a trailing "see all" link:
 - `postfix-icon` — name of an icon rendered at the trailing end after the slot. Default unset; when unset, slot content is aligned to the end.
 - `disabled` — when `true`, the header is visually styled as disabled. Default `false`.
 
-### Limitations
+### Edge cases
 
 - The `disabled` flag only changes the visual style of the header itself — it does not propagate to elements inside the default slot. Disable any actionable slotted elements explicitly (e.g. set `disabled` on the slotted `mdc-button` / `mdc-link`).
 

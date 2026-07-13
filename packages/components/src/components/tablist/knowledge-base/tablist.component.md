@@ -67,7 +67,7 @@ Slots:
 
 - Default slot accepts `mdc-tab` elements. Disabled tabs are skipped during arrow-key navigation and from initial-active selection.
 
-### Limitations
+### Edge cases
 
 - A tab list with no child `mdc-tab` elements reports an error via `onerror` and skips initialization.
 - Every child tab must have a unique `tab-id`; duplicates trigger an `onerror` report.

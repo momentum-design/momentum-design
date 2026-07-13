@@ -108,7 +108,7 @@ Listen for `shown`/`hidden` to react to visibility changes, and for `created`/`d
 
 The `shown`, `hidden`, `created`, and `destroyed` events bubble and are composed. `show()` and `hide()` are public methods that respect the configured open/close delay.
 
-### Limitations
+### Edge cases
 
 - React with `append-to`: when React directly mounts/unmounts the popover and the popover moves itself to a different element, React loses track of the moved DOM node and throws a `NotFoundError`. Wrap the popover in another element (e.g. a `<div>`) so React can manage the wrapper instead. A `React.Fragment` is not sufficient.
 

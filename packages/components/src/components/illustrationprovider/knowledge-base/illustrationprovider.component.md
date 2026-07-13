@@ -70,7 +70,7 @@ The illustrationprovider does not render any visible UI of its own — it only a
 - `cache-strategy` — `in-memory-cache` (JS in-memory) or `web-cache-api` (browser Cache API; HTTPS only). Only applies when `illustration-set="custom-illustrations"`. Default unset (no caching).
 - `cache-name` — name of the cache used by `cache-strategy`. Required when `cache-strategy` is set; must be unique across the app's caches.
 
-### Limitations
+### Edge cases
 
 - The illustrationprovider has no visible UI — its only effect is broadcasting configuration to nested `mdc-illustration` components. Nesting outside this contract has no effect.
 - `cache-strategy="web-cache-api"` only works in HTTPS environments (browser Cache API restriction).

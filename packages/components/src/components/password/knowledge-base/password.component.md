@@ -62,7 +62,7 @@ The component is form-associated; placing it inside a `form` element registers i
 - Slots (inherited): `label`, `toggletip`, `help-icon`, `help-text`, `input`, `input-leading-icon`, `input-prefix-text`, `trailing-button` (overriding the built-in toggle).
 - Events: `input`, `change`, `focus`, `blur`.
 
-### Limitations
+### Edge cases
 
 - The component is form-associated through its host element. Older browsers without `ElementInternals` support will not include the value in standard form submissions and require a polyfill.
 

@@ -61,7 +61,7 @@ Minimal markup example. Each `mdc-tab` must point at its associated panel via `a
   });
   ```
 
-### Limitations
+### Edge cases
 
 - Only the `line` variant of `mdc-tab` is supported; setting another variant on a child tab has no effect because the component overrides it on insertion.
 

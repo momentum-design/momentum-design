@@ -67,7 +67,7 @@ Listen for the `remove` event to react to the close button being clicked.
 - `disabled` — when `true`, dims the chip and disables the close button so the value cannot be removed by user interaction.
 - `clear-aria-label` — accessible name for the close button. Required (the close button has no visible text).
 
-### Limitations
+### Edge cases
 
 - The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serialising them when the form submits.
 

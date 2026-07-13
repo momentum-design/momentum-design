@@ -61,7 +61,7 @@ Minimal markup example:
 - The `change` event (`onChange` in React) fires when the toggle state changes and re-dispatches the underlying input event. The `focus` event (`onFocus`) fires when the input receives focus.
 - Resetting the parent form sets `checked` back to `false`; the toggle's form state is restored from a non-empty restoration value as `checked === true`.
 
-### Limitations
+### Edge cases
 
 - Toggles are intended for immediate-effect settings, so they do not expose a `helpTextType` and do not render validation icons; only the plain helper text and the underlying form-control validity API are used.
 

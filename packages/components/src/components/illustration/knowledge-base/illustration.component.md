@@ -73,7 +73,7 @@ Listen for the `load` event to react to a successful fetch and `error` to handle
 - `aria-label` — accessible name for informative illustrations. When set (or `aria-labelledby` is set), the host receives `role="img"`. When unset, `role` is removed.
 - `aria-labelledby` — id of an element that labels the illustration. Same effect on `role` as `aria-label`.
 
-### Limitations
+### Edge cases
 
 - Colouring is baked into each illustration name — the component does not expose a way to recolour the SVG at runtime. Pick a different `name` for a different palette.
 - Default sizing is also baked into each illustration name. Use the `--mdc-illustration-size` CSS property to override the rendered size when needed.

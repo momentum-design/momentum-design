@@ -72,7 +72,7 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 - `readonly` — non-interactive but focusable; the current value is still submitted with the form.
 - `autoFocusOnMount` — when `true`, focuses the internal input element on first render.
 
-### Limitations
+### Edge cases
 
 - The form value is always either the `value` attribute (defaulting to `"on"`) when checked or `null` when unchecked. The `indeterminate` state is not submitted — choose a deterministic value before submission if it matters.
 - `indeterminate` is visual-only and is cleared automatically when the user toggles the checkbox.

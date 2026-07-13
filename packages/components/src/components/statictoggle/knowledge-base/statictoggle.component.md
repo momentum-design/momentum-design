@@ -45,7 +45,7 @@ Minimal markup example:
 - `soft-disabled` (boolean, default `false`) — applies the soft-disabled visual style. Decorative only; the element stays in the visual flow but reads as inactive.
 - `disabled` (boolean) — applies the disabled visual style. Decorative only on this component.
 
-### Limitations
+### Edge cases
 
 - The component is non-interactive: it does not emit `click`/`change` events of its own, it is not focusable by default, and it is not form-associated. Wire interaction and form participation on the parent element that hosts the static toggle.
 

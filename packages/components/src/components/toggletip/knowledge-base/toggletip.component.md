@@ -50,7 +50,7 @@ Minimal markup example. The toggletip is a sibling of its target; connect it via
 - `close-button-aria-label` — accessible name for the built-in close button (the close button is shown by default).
 - Events: `shown` (`onShown`), `hidden` (`onHidden`), `created` (`onCreated`), and `destroyed` (`onDestroyed`) fire as the toggletip is shown, hidden, added to the DOM, or removed from the DOM.
 
-### Limitations
+### Edge cases
 
 - The toggletip cannot self-position relative to a target it does not know about; the `triggerid` must resolve to an element in the same root (document or shadow root).
 

@@ -45,7 +45,7 @@ Minimal markup example:
 
 - Keep header text concise — the heading communicates the topic of the body content.
 
-### Limitations
+### Edge cases
 
 - The `shown` event fired by child elements inside the header (e.g. slotted controls) is stopped from bubbling to prevent confusion with the accordion's own `shown` event.
 - Screen readers may lose focus when toggling if the accordion is expanded by default on initial render.

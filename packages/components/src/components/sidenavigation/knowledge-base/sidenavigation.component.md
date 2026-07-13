@@ -108,7 +108,7 @@ Events dispatched by the host:
 - `toggle` — `event.detail = { expanded }`; dispatched when the grabber button is clicked.
 - `activechange` — dispatched when the active state of a nested `mdc-navmenuitem` changes.
 
-### Limitations
+### Edge cases
 
 - For `fixed-collapsed` and `fixed-expanded` variants, `expanded` is hard-set internally and cannot be changed by the user or consumer.
 - When `variant="hidden"`, no DOM is rendered for the navigation.

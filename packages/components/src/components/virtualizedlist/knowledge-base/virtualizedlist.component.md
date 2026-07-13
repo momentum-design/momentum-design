@@ -76,7 +76,7 @@ list.addEventListener('virtualitemschange', (event) => {
   - `scroll` (`onScroll`) — re-fired from the internal scroll container so consumers can react to scroll position changes.
   - `virtualitemschange` (`onVirtualItemsChange`) — fires whenever the set of visible virtual items changes. Detail includes the `virtualizer` instance and the `virtualItems` array.
 
-### Limitations
+### Edge cases
 
 - Orientation is always vertical; setting `orientation="horizontal"` is reset back to `vertical` by the component.
 - Do not apply CSS padding or margin to the top/bottom of the list or to the first/last item — it breaks the virtualization math and may produce unnecessary scrollbars. Use `paddingStart` / `paddingEnd` (and `gap` for spacing between items) on `virtualizerProps` instead.

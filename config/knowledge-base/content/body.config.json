@@ -65,11 +65,11 @@
                                 "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table - add context the table cannot express."
                             },
                             {
-                                "heading": "Limitations",
+                                "heading": "Edge cases",
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Known limitations of the component, edge cases, intentional non-goals, and behaviours that may surprise consumers."
+                                "description": "Situations the happy path does not cover — for example very long labels, right-to-left layouts, non-standard or transparent backgrounds, multiple adjacent instances, and destructive or irreversible actions. Document only edge cases that genuinely apply to this component, alongside known limitations, intentional non-goals, and behaviours that may surprise consumers."
                             },
                             {
                                 "heading": "Notes",
@@ -144,6 +144,13 @@
                             }
                         ]
                     }
+                },
+                {
+                    "heading": "Related components",
+                    "level": 2,
+                    "required": false,
+                    "recommended": false,
+                    "description": "Cross-references to components that are commonly confused with this one or are commonly used alongside it. List each related component with a single sentence that distinguishes it from this component or explains how they work together. Reference real relationships rather than guessing, and do not restate the related component's own guidelines here."
                 }
             ]
         }

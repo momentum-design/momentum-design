@@ -47,7 +47,7 @@ Minimal markup example:
 - `soft-disabled` — when `true`, applies a less prominent disabled appearance. Purely visual.
 - `readonly` — when `true`, applies the read-only appearance. Purely visual.
 
-### Limitations
+### Edge cases
 
 - Not interactive: cannot be focused, toggled, or activated by the user.
 - Not form-associated: has no `name`/`value` and is not submitted with a form. Use `mdc-checkbox` instead when form participation is needed.

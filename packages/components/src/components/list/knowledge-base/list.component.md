@@ -67,7 +67,7 @@ Horizontal list without wrap-around navigation:
 - `initial-focus` — zero-based index of the item that receives focus the first time the list is entered. Out-of-bounds values clamp to the nearest valid index. Default `0`.
 - `orientation` — `vertical` (default; Up/Down arrows navigate) or `horizontal` (Left/Right arrows navigate). Also drives the Flexbox direction.
 
-### Limitations
+### Edge cases
 
 - The list only manages listitems that match `mdc-listitem:not([disabled])`. Items with the `disabled` attribute are skipped by keyboard navigation but remain in the DOM.
 - The list does not own selection state — selection is a property of the individual listitem (or of the surrounding pattern such as a checkbox group). The list's job is grouping and navigation, not single-/multi-select semantics.

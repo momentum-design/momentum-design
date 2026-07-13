@@ -73,7 +73,7 @@ Listen for `change` to react to selection updates. `event.detail.value` is the l
 - `value` — the value of the currently selected option (single mode) or the first selected option (multi mode). Setting `value` programmatically updates the selected option to match.
 - `multiple` — when `true`, multiple options can be selected; clicking / Enter / Space toggles each option independently. Default `false`.
 
-### Limitations
+### Edge cases
 
 - The listbox is not yet form-associated. Its `value` does not participate in form submission; consumers must read `value` (or `event.detail.selectedValues`) and serialise it themselves.
 - Navigation does not loop — pressing the down arrow on the last option stays on the last option (per the WAI-ARIA listbox pattern).

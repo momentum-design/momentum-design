@@ -81,7 +81,7 @@ Listen for the `change` event to react to selection changes; the newly selected 
 - `variant` — border treatment. `border` (default), `ghost`, or `promotional`.
 - `orientation` — `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
 
-### Limitations
+### Edge cases
 
 - Slot content must remain non-interactive. The card itself is the selection target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard/assistive-technology behaviour — use `mdc-card` if the surface needs actionable children.
 - Grouping is global to the document: every `mdc-cardradio[name="…"]` is considered part of the same group regardless of where it lives in the DOM. Use distinct `name` values when multiple radio groups appear on the same page.

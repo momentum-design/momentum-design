@@ -69,7 +69,7 @@ Minimal markup example:
 - `name` / `value` — submitted with the form data when the button submits the surrounding form.
 - `role` — defaults to `button`. Override only when a different role is genuinely required for the surrounding context.
 
-### Limitations
+### Edge cases
 
 - The button does not own its accessible name when used as icon-only — the consumer must supply `aria-label`.
 - `inverted` is ignored unless the variant/color/active combination above is met.

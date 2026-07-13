@@ -90,7 +90,7 @@ Minimal markup example:
 - `soft-disabled` — appears disabled but stays focusable and activatable. Sets `aria-disabled="true"` without changing `tabindex`; consumers must suppress side-effects themselves.
 - `data-aria-label` — accessible name applied to the underlying `<a>` element via `aria-label`. Required for icon-only buttonlinks.
 
-### Limitations
+### Edge cases
 
 - Unlike `mdc-button`, the buttonlink does not expose `active`/`aria-pressed` semantics — anchors do not have a toggled state. Use `mdc-button` when the control must communicate an on/off state.
 - `size="20"` is only honoured for tertiary icon buttonlinks; other variant/size combinations fall back to the default size.

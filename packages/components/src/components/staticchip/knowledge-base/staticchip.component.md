@@ -51,7 +51,7 @@ Minimal markup example:
 - `color` — colour variant. One of `default`, `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Defaults to `default`.
 - `icon-name` — name of the icon rendered before the label. When omitted, no icon is shown.
 
-### Limitations
+### Edge cases
 
 - Not interactive: cannot be focused, clicked, or activated.
 - Not form-associated: has no `name`/`value` and is not submitted with a form.

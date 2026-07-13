@@ -67,7 +67,7 @@ Customise the colour and width with CSS custom properties:
 
 - `variant` — `solid` (default; single coloured line) or `striped` (line with diagonal stripes for higher-attention treatment).
 
-### Limitations
+### Edge cases
 
 - The marker is decorative and has no accessible name. It is invisible to screen readers and must always be accompanied by a text or icon affordance that carries the same meaning.
 

@@ -79,7 +79,7 @@ Listen for the `change` event to react to toggles; the new state is available on
 - `variant` — border treatment. `border` (default), `ghost`, or `promotional`.
 - `orientation` — `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
 
-### Limitations
+### Edge cases
 
 - Slot content must remain non-interactive. The card itself is the toggle target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard/assistive-technology behaviour — use `mdc-card` if the surface needs actionable children.
 - The card checkbox is not form-associated. To submit its state in a native form, mirror `checked` into a `<input type="hidden">` (or use `mdc-checkbox` directly) and update it from the `change` event.

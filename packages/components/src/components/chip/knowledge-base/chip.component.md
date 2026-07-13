@@ -57,7 +57,7 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 - `disabled` — when `true`, the chip is non-interactive and removed from the tab order.
 - `autoFocusOnMount` — when `true`, focuses the chip on first render.
 
-### Limitations
+### Edge cases
 
 - The chip is not a toggle: `active` and `soft-disabled` are explicitly reset on connect and should not be set. Use `mdc-filterchip` if a toggle is needed.
 - The chip has a fixed size — the underlying button size is locked to 24, so chips share the same compact height regardless of label length.
