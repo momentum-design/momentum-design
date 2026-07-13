@@ -36,7 +36,7 @@
       "tier": 3,
       "path": "packages/components/src/components/alertchip/knowledge-base/alertchip.component.md",
       "title": "Alert Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip used to represent an alert with a leading icon and label.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip that calls attention to a status with a leading icon and label.",
       "canonical": null,
       "component": "alertchip"
     },

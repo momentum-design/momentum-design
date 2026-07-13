@@ -81,63 +81,24 @@ skill is not the place to change rules.
    - AI-drafted content must still be signed off by a human reviewer
      before merge (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
-6. **Structure and write the body (Tier 3 topics only).** Follow the
-   heading hierarchy defined in
+6. **Structure and write the body.** Follow the heading hierarchy defined in
    [`body.config.json`](../../../config/knowledge-base/content/body.config.json) —
    read that file directly before drafting or editing content, and do not
    invent new section or sub-section headings without first adding them to
-   `body.config.json` and calling that out to the user. Within that
-   structure, apply these content-quality principles (adapted from the
-   `usage-guidelines` skill) so each topic *guides use* rather than
-   *describes the component*:
+   `body.config.json` and calling that out to the user. For the *quality* of
+   the prose that fills that structure — content principles and per-section
+   guidance — follow the writing guide for the tier you chose in Step 1. Each
+   guide ends with a content-quality self-check to run before validating:
 
-   - **Gather real misuse first.** Before writing, collect the misuse
-     patterns the team has actually seen. Guidance built from observed
-     mistakes prevents real ones; guidance built from abstract principle
-     addresses imaginary ones.
-   - **Write guidance, not description.** `Overview → When to use` and
-     `When not to use` must be specific, actionable conditions, each naming
-     an alternative where relevant ("Use X when …", "Do not use X for …;
-     use Y instead."). Never restate what the component's API or the
-     frontmatter `title` already makes obvious.
-   - **Make edge cases real.** Under `Guidelines → Edge cases`, document
-     only edge cases that genuinely apply (long labels, RTL, non-standard
-     backgrounds, adjacent instances, destructive/irreversible actions).
-     Skip generic filler.
-   - **Name anti-patterns with a detection cue.** For each common misuse,
-     state what happens, why it is harmful, what to do instead, and how to
-     detect it in review — the detection cue is what makes it enforceable.
-   - **Integrate accessibility throughout.** Beyond the `Accessibility`
-     section, weave a11y into `When not to use`, `Edge cases`, and content
-     guidance. Be component-specific (name the keys, roles, and focus
-     behaviour) rather than citing WCAG numbers.
-   - **Write for designers and developers.** `Developer usage` and
-     `Edge cases` especially should give implementers specific, conditional
-     language, not general principle.
-   - **Adapt content guidance to system voice/tone.** For text-bearing
-     components, `Guidelines → Content guidance` must reflect Momentum's
-     documented voice/tone/content guidelines where they exist (a Tier 1
-     content-guidelines topic, or a path declared in `.ds-ops-config.yml`).
-     If none exist, use general UX-writing principles and say so.
+   - **Tier 1 (design system):** writing guide not yet available — follow the
+     section `description`s in `body.config.json` until one lands.
+   - **Tier 2 (package):** writing guide not yet available — follow the section
+     `description`s in `body.config.json` until one lands.
+   - **Tier 3 (component):**
+     [`momentum-tier-3-writing-guide`](../momentum-tier-3-writing-guide/SKILL.md).
+     It exists so each topic *guides use* rather than *describes the component*.
 
-   Do not introduce headings that are not in `body.config.json` (for example
-   a "Quick reference" card). Cross-references to other components belong in
-   the optional `Related components` section — distinguish each related
-   component in one sentence rather than restating its guidelines.
-
-7. **Self-check content quality (Tier 3).** Before validating, confirm:
-
-   - Every `When to use` condition is specific enough to decide from.
-   - Every `When not to use` entry names an alternative.
-   - Edge cases are real for this component, not generic.
-   - Accessibility appears in context, not only in its own section.
-   - Anti-patterns are observed (or explicitly flagged as anticipated) and
-     each carries a detection cue.
-   - Content guidance matches system voice/tone where it exists.
-   - Nothing restates what the API or the frontmatter `title` already
-     conveys.
-
-8. **Validate the knowledge-base.** Run:
+7. **Validate the knowledge-base.** Run:
 
    ```bash
    yarn knowledge-base:validate
@@ -146,7 +107,7 @@ skill is not the place to change rules.
    Fix any errors before proceeding. Validation checks frontmatter fields,
    body structure, and topic-constraint adherence.
 
-9. **Regenerate the index.** Run:
+8. **Regenerate the index.** Run:
 
    ```bash
    yarn knowledge-base:index
@@ -157,11 +118,11 @@ skill is not the place to change rules.
    alongside your topic file. The generator also runs in `--check` mode in
    pre-commit and CI; a stale or invalid shard will fail the build.
 
-10. **Route through a human reviewer.** AI-drafted knowledge-base content
-    must be confirmed by a human before merge
-    (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
-    Surface the diff explicitly so the reviewer can verify both content
-    accuracy and tier placement.
+9. **Route through a human reviewer.** AI-drafted knowledge-base content
+   must be confirmed by a human before merge
+   (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
+   Surface the diff explicitly so the reviewer can verify both content
+   accuracy and tier placement.
 
 ## Updating an existing topic
 
