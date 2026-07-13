@@ -11,8 +11,8 @@ The accordion button is a vertically stacked header/body component whose entire 
 
 ### When to use
 
-- Use `mdc-accordionbutton` when the whole header should expand or collapse the panel and the header carries no other interactive elements.
-- Use it to organize independent, non-sequential content compactly, so users can scan headers and open only what they need.
+- When the whole header should expand or collapse the panel and the header carries no other interactive elements, use `mdc-accordionbutton`.
+- When organizing independent, non-sequential content compactly so users can scan headers and open only what they need, use `mdc-accordionbutton`.
 
 ### When not to use
 

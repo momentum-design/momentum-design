@@ -11,8 +11,8 @@ The accordion is a vertically stacked header/body component whose header can hol
 
 ### When to use
 
-- Use `mdc-accordion` when the header needs interactive controls (buttons, interactive chips, icons) in addition to expand/collapse, and those controls must remain independently clickable.
-- Use it to conceal secondary or independent content on information-heavy pages, so users get a high-level overview first and open only the sections they need.
+- When the header needs interactive controls (buttons, interactive chips, icons) in addition to expand/collapse, and those controls must remain independently clickable, use `mdc-accordion`.
+- When concealing secondary or independent content on information-heavy pages so users get a high-level overview first and open only the sections they need, use `mdc-accordion`.
 
 ### When not to use
 

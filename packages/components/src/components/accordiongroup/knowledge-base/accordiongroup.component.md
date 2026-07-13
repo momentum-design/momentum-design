@@ -11,11 +11,11 @@ The accordion group is a container that manages multiple `mdc-accordion` or `mdc
 
 ### When to use
 
-- Use `mdc-accordiongroup` to render two or more related accordion items that need consistent styling, spacing, and coordinated open/close behavior — for example grouped FAQs, settings sections, or multi-step content.
+- When rendering two or more related accordion items that need consistent styling, spacing, and coordinated open/close behavior — for example grouped FAQs, settings sections, or multi-step content — use `mdc-accordiongroup`.
 
 ### When not to use
 
-- Use a single `mdc-accordion` or `mdc-accordionbutton` directly when only one collapsible section is needed.
+- When only one collapsible section is needed, use a single `mdc-accordion` or `mdc-accordionbutton` directly instead.
 
 ## Guidelines
 
@@ -32,7 +32,7 @@ import { AccordionGroup } from '@momentum-design/components/dist/react';
 Minimal markup example:
 
 ```html
-<mdc-accordiongroup variant="stacked" size="small">
+<mdc-accordiongroup>
   <mdc-accordionbutton header-text="Section one">Body one</mdc-accordionbutton>
   <mdc-accordionbutton header-text="Section two">Body two</mdc-accordionbutton>
 </mdc-accordiongroup>
