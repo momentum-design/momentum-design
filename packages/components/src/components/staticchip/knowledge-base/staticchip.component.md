@@ -7,7 +7,7 @@ component: staticchip
 
 ## Overview
 
-The static chip is a small, non-interactive element used to display a short label with an optional leading icon. It is intended for displaying metadata, tags, or status, and supports a fixed set of colour variants.
+The static chip is a small, non-interactive element used to display a short label with an optional leading icon. It is intended for displaying metadata, tags, or status, and supports a fixed set of color variants.
 
 ### When to use
 
@@ -44,11 +44,12 @@ Minimal markup example:
 
 - Keep the label short. Limit to a maximum of 20 characters, including spaces, so the chip stays compact.
 - Use sentence case for the label.
+- Use the color variants for categorization or emphasis, not to signal status; reserve status coloring for `mdc-alertchip` or `mdc-badge`.
 
 ### Property/Attribute details
 
 - `label` — visible label text rendered inside the chip. Defaults to `undefined` (renders nothing if omitted).
-- `color` — colour variant. One of `default`, `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Defaults to `default`.
+- `color` — color variant. One of `default`, `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Defaults to `default`.
 - `icon-name` — name of the icon rendered before the label. When omitted, no icon is shown.
 
 ### Edge cases

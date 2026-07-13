@@ -47,7 +47,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 - Keep the `label` short — we recommend up to 20 characters including spaces.
 - Use `icon-name` only when the icon clarifies the chip; an icon-only chip is not supported (a label is required for an accessible name).
-- Pick a `color` token that matches the chip's semantic meaning in your surface; do not rely on color alone to convey meaning.
+- Pick a `color` token that matches the chip's semantic meaning in your surface; do not rely on color alone to convey meaning. The label color set is for categorization or emphasis, not status — reserve status coloring for `mdc-alertchip`.
+- If a chip needs more explanation than its label allows, attach a supportive `mdc-tooltip` as auxiliary context only; do not pair a chip with an `mdc-popover`, since chips are meant to label or itemize concisely rather than surface rich or interactive content.
 
 ### Property/Attribute details
 
@@ -68,8 +69,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 The host renders with `role="button"` and a single tab stop. The component owns keyboard activation:
 
-- `Enter` activates the chip on `keydown` (matches native button behaviour).
-- `Space` activates the chip on `keyup` (matches native button behaviour; `keydown` is suppressed so the page does not scroll).
+- `Enter` activates the chip on `keydown` (matches native button behavior).
+- `Space` activates the chip on `keyup` (matches native button behavior; `keydown` is suppressed so the page does not scroll).
 - Click activates the chip.
 
 When `disabled` is `true`, click and keyboard activation are suppressed and the host is removed from the tab order.

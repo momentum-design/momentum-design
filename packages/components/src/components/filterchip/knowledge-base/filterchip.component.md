@@ -48,15 +48,21 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 - Keep the `label` short — we recommend up to 20 characters including spaces, matching the underlying chip.
 - Phrase the label as the filter that gets applied when the chip is selected ("In stock", not "Toggle in stock"); the checkmark indicates state.
-- Group related filterchips together and place the row close to the result set they affect.
+- Group related filterchips together and place the row close to the result set they affect. Always use filterchips as part of a group, never as a single standalone chip.
 
 ### Property/Attribute details
 
 - `selected` — when `true`, the chip is in the active state, displays the checkmark icon, and sets `aria-pressed="true"`. Default `false`.
 - `label` — visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
-- `color` — fixed to the filterchip-specific colour token on connect; setting a different `color` has no effect after connect.
+- `color` — fixed to the filterchip-specific color token on connect; setting a different `color` has no effect after connect.
 - `disabled` — when `true`, the chip is non-interactive and removed from the tab order.
 - `autoFocusOnMount` — when `true`, focuses the chip on first render.
+
+### Edge cases
+
+- `color` is fixed to the filterchip-specific token on connect; setting a different `color` afterward has no effect, so the neutral and selected treatments stay consistent across a filter row.
+- Filterchips are designed for group use — a single standalone filterchip is an anti-pattern. If only one on/off choice is needed, use `mdc-toggle` or `mdc-checkbox` instead.
+- Selecting a chip adds a leading checkmark and the active background; activating it again deselects it, removes the checkmark, and returns it to rest.
 
 ## Accessibility
 
@@ -64,8 +70,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 The host renders with `role="button"` and a single tab stop. Activating the chip flips `selected` and updates `aria-pressed` accordingly, exposing the toggle state to assistive technology.
 
-- `Enter` activates the chip on `keydown` (matches native button behaviour).
-- `Space` activates the chip on `keyup` (matches native button behaviour; `keydown` is suppressed so the page does not scroll).
+- `Enter` activates the chip on `keydown` (matches native button behavior).
+- `Space` activates the chip on `keyup` (matches native button behavior; `keydown` is suppressed so the page does not scroll).
 - Click activates the chip.
 
 When `disabled` is `true`, click and keyboard activation are suppressed and the host is removed from the tab order.

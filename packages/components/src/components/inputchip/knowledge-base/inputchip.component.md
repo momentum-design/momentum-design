@@ -1,13 +1,13 @@
 ---
 title: Inputchip
-summary: Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.
+summary: Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenized input value with a leading prefix, a label, and a close button.
 tier: 3
 component: inputchip
 ---
 
 ## Overview
 
-The inputchip represents a single tokenised value: a short label with an optional leading prefix (icon name or arbitrary slotted content such as an avatar) and a close button that fires a `remove` event when activated. It is used in patterns where multiple values are collected into a list of chips (recipients, filters, tags).
+The inputchip represents a single tokenized value: a short label with an optional leading prefix (icon name or arbitrary slotted content such as an avatar) and a close button that fires a `remove` event when activated. It is used in patterns where multiple values are collected into a list of chips (recipients, filters, tags).
 
 The chip supports an `error` visual state for invalid values, a `disabled` state that also disables the close button, and a `prefix` slot that takes precedence over `icon-name` when both are provided.
 
@@ -58,6 +58,7 @@ Listen for the `remove` event to react to the close button being clicked.
 - Keep the `label` short — we recommend a maximum length of 20 characters (including spaces). Longer values are visually truncated.
 - Use `icon-name` for simple iconographic prefixes; use the `prefix` slot for richer content such as avatars or presence indicators (slot content always wins over `icon-name`).
 - Set `error="true"` when the represented value fails validation; pair the chip with surrounding helper text that explains the failure.
+- Input chips are not editable — to correct a value, remove the chip and add a new one. Pair the chip pattern with a text field where users enter new values.
 
 ### Property/Attribute details
 
@@ -69,7 +70,7 @@ Listen for the `remove` event to react to the close button being clicked.
 
 ### Edge cases
 
-- The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serialising them when the form submits.
+- The chip is not form-associated — it does not submit a value of its own. The owning input pattern is responsible for tracking which values are currently represented as chips and serializing them when the form submits.
 
 ## Accessibility
 
