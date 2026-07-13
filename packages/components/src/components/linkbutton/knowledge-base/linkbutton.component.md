@@ -9,17 +9,17 @@ component: linkbutton
 
 The linkbutton renders as a link visually but behaves as a button: activating it fires a `click` event rather than navigating to a URL. Use it for in-page actions (open a panel, copy a value, trigger a workflow) that should sit in body text or alongside other links without standing out as a button.
 
-The slotted children supply the label; an optional trailing icon can be added via `icon-name`. Three text sizes are supported, plus inline / standalone display and an inverted colour scheme for dark backgrounds.
+The slotted children supply the label; an optional trailing icon can be added via `icon-name`. Three text sizes are supported, plus inline / standalone display and an inverted color scheme for dark backgrounds.
 
 ### When to use
 
-- Use `mdc-linkbutton` for in-page actions that should visually mimic a hyperlink — for example a "Show more" toggle inside a paragraph, an undo prompt after a toast, or an action embedded in a sentence.
-- Use it when the surrounding design treats the affordance as link-styled text but the underlying behaviour is a button (no URL navigation).
+- When an in-page action should visually mimic a hyperlink — for example a "Show more" toggle inside a paragraph, an undo prompt after a toast, or an action embedded in a sentence — use `mdc-linkbutton`.
+- When the surrounding design treats the affordance as link-styled text but the underlying behavior is a button (no URL navigation), use `mdc-linkbutton`.
 
 ### When not to use
 
-- Use `mdc-link` when the affordance actually navigates to a URL — even if the URL is in-app, the user expectation is "go somewhere".
-- Use `mdc-button` when the surrounding design expects a button-shaped control.
+- When the affordance actually navigates to a URL, even an in-app one, use `mdc-link` instead — the user expectation for link-styled text is "go somewhere".
+- When the surrounding design expects a button-shaped control, use `mdc-button` instead.
 
 ## Guidelines
 
@@ -62,7 +62,7 @@ Listen for `click` to react to user activation; `keydown` / `keyup` / `focus` / 
 
 - `size` — text and icon size: `12` (`0.75rem`), `14` (`0.875rem`), or `16` (`1rem`, default).
 - `inline` — when `true`, applies inline-link styling suitable for body text. Default `false`.
-- `inverted` — when `true`, swaps the colour palette for dark backgrounds. Default `false`.
+- `inverted` — when `true`, swaps the color palette for dark backgrounds. Default `false`.
 - `icon-name` — name of an icon rendered after the label (`mdc-icon` name from the configured icon set). Default unset.
 
 Properties inherited from the underlying button:

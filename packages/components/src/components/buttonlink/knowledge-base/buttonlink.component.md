@@ -11,14 +11,14 @@ The buttonlink renders a navigational anchor (`<a>`) styled as a button. It is t
 
 ### When to use
 
-- Use `mdc-buttonlink` when the control navigates to a different URL or in-app route but the design calls for a button's visual weight (primary call-to-action, prominent toolbar entry, etc.).
-- Use it when you want native browser link affordances such as `target="_blank"`, `download`, `ping`, or `rel` while keeping the button appearance.
+- When the control navigates to a different URL or in-app route but the design calls for a button's visual weight (primary call-to-action, prominent toolbar entry), use `mdc-buttonlink`.
+- When you want native browser link affordances such as `target="_blank"`, `download`, `ping`, or `rel` while keeping the button appearance, use `mdc-buttonlink`.
 
 ### When not to use
 
-- Use `mdc-button` when the control performs an action (submitting a form, opening a dialog, running a command) and does not change the URL.
-- Use `mdc-link` when the control is a textual inline or standalone link and does not need to look like a button.
-- Use `mdc-linksimple` when you need a minimal, unstyled link primitive without button styling or icon slots.
+- When the control performs an action and does not change the URL (submitting a form, opening a dialog, running a command), use `mdc-button` instead.
+- When the control is a textual inline or standalone link that does not need to look like a button, use `mdc-link` instead.
+- When you need a minimal, unstyled link primitive without button styling or icon slots, use `mdc-linksimple` instead.
 
 ## Guidelines
 
@@ -93,7 +93,7 @@ Minimal markup example:
 ### Edge cases
 
 - Unlike `mdc-button`, the buttonlink does not expose `active`/`aria-pressed` semantics — anchors do not have a toggled state. Use `mdc-button` when the control must communicate an on/off state.
-- `size="20"` is only honoured for tertiary icon buttonlinks; other variant/size combinations fall back to the default size.
+- `size="20"` is only honored for tertiary icon buttonlinks; other variant/size combinations fall back to the default size.
 - `inverted` is purely visual; pair it with a surface that actually requires the inverted palette.
 
 ## Accessibility
@@ -102,7 +102,7 @@ Minimal markup example:
 
 The buttonlink renders a real `<a>` element inside its shadow DOM, so screen readers and the browser treat it as a link: it appears in the page's link list, supports the browser's native context menu, and respects `target`, `rel`, and `download` semantics out of the box. Focus is delegated into the shadow anchor (`delegatesFocus: true`), so consumer focus styles and keyboard navigation work on the host element.
 
-Activation works via `Enter` (the anchor's native behaviour) and on click. When `disabled` is set, the component intercepts both `click` and `keydown` to prevent navigation, marks the host `aria-disabled="true"`, and gives the anchor `tabindex="-1"` so it is removed from the tab order. `soft-disabled` only sets `aria-disabled="true"`; the anchor remains focusable and activatable so the consumer can suppress the side-effect while keeping the control discoverable.
+Activation works via `Enter` (the anchor's native behavior) and on click. When `disabled` is set, the component intercepts both `click` and `keydown` to prevent navigation, marks the host `aria-disabled="true"`, and gives the anchor `tabindex="-1"` so it is removed from the tab order. `soft-disabled` only sets `aria-disabled="true"`; the anchor remains focusable and activatable so the consumer can suppress the side-effect while keeping the control discoverable.
 
 The accessible name on the inner anchor is taken from the host's `data-aria-label` attribute and mirrored onto the anchor's `aria-label`.
 

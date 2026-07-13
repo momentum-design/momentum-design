@@ -11,15 +11,16 @@ The buttongroup arranges related `mdc-button` instances into a single segmented 
 
 ### When to use
 
-- Use `mdc-buttongroup` to cluster mutually related actions that operate on the same target (for example a toolbar of formatting actions, a zoom in/out pair, or a "select / clear" duo).
-- Use it when the visual unification of multiple buttons communicates that they belong together and share styling.
+- When clustering mutually related actions that operate on the same target (for example a toolbar of formatting actions, a zoom in/out pair, or a "select / clear" duo), use `mdc-buttongroup`.
+- When the visual unification of multiple buttons should communicate that they belong together and share styling, use `mdc-buttongroup`.
+- When you need a common grouped pattern — an icon-button toolbar (typically 2–5 related actions), a split button (a primary action plus a trigger that opens more options), a single-select segmented control (see Accessibility for the `radiogroup` semantics this requires), or an increment/pagination control that flanks a central value with previous/next actions — assemble the constituent buttons inside `mdc-buttongroup`.
 
 ### When not to use
 
-- Use a single `mdc-button` when there is only one action to present.
-- Use `mdc-tablist` with `mdc-tab` when the controls switch between panels of content — tabs carry the right semantics for that pattern.
-- Use `mdc-toggle` or `mdc-radiogroup` when the buttons represent a mutually exclusive selection that should be announced as a single form value.
-- Use `mdc-menubar` or `mdc-menupopover` when the actions belong inside a menu surface rather than a persistent toolbar.
+- When there is only one action to present, use a single `mdc-button` instead.
+- When the controls switch between panels of content, use `mdc-tablist` with `mdc-tab` instead — tabs carry the right semantics for that pattern.
+- When the buttons represent a mutually exclusive selection that should be announced as a single form value, use `mdc-toggle` or `mdc-radiogroup` instead.
+- When the actions belong inside a menu surface rather than a persistent toolbar, use `mdc-menubar` or `mdc-menupopover` instead.
 
 ## Guidelines
 
@@ -71,7 +72,7 @@ Minimal markup example:
 
 ### Built-in features
 
-The buttongroup is a presentational wrapper: it renders a generic container and does not set a role, label, or keyboard behaviour on the host. Each slotted `mdc-button` retains its own `role="button"`, tab stop, and ARIA contract.
+The buttongroup is a presentational wrapper: it renders a generic container and does not set a role, label, or keyboard behavior on the host. Each slotted `mdc-button` retains its own `role="button"`, tab stop, and ARIA contract.
 
 #### Internal ARIA managed by the component
 

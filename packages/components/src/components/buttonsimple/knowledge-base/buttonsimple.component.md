@@ -11,14 +11,14 @@ The buttonsimple is a low-level button primitive that handles keyboard activatio
 
 ### When to use
 
-- Use `mdc-buttonsimple` when you are building a custom button surface (for example a card, list item, or composite control) and need correct keyboard/ARIA semantics without inheriting the visual styling of `mdc-button`.
-- Use it inside design-system components that need to behave like buttons but render their own layout (e.g. `mdc-button`, `mdc-cardbutton`, `mdc-listitem` actions).
+- When you are building a custom button surface (for example a card, list item, or composite control) and need correct keyboard/ARIA semantics without inheriting the visual styling of `mdc-button`, use `mdc-buttonsimple`.
+- When a design-system component must behave like a button but render its own layout (for example `mdc-button`, `mdc-cardbutton`, `mdc-listitem` actions), compose it on top of `mdc-buttonsimple`.
 
 ### When not to use
 
-- Use `mdc-button` when the design calls for the standard visual treatment (variant, color, size, prefix/postfix icons).
-- Use `mdc-buttonlink` when the control is a navigation that should render as an anchor.
-- Use `mdc-toggle` or `mdc-checkbox` for binary state in forms — they expose the correct form-control semantics and labelling.
+- When the design calls for the standard visual treatment (variant, color, size, prefix/postfix icons), use `mdc-button` instead.
+- When the control is a navigation that should render as an anchor, use `mdc-buttonlink` instead.
+- When you need binary state in a form, use `mdc-toggle` or `mdc-checkbox` instead — they expose the correct form-control semantics and labeling.
 
 ## Guidelines
 
@@ -56,7 +56,7 @@ Minimal markup example:
 
 ### Property/Attribute details
 
-- `type` — native button behaviour: `button` (default, no implicit action), `submit` (calls the associated form's `requestSubmit()`), `reset` (calls `reset()`). Form association is automatic when the element is placed inside a `<form>`.
+- `type` — native button behavior: `button` (default, no implicit action), `submit` (calls the associated form's `requestSubmit()`), `reset` (calls `reset()`). Form association is automatic when the element is placed inside a `<form>`.
 - `name` / `value` — submitted as a form-data pair when this button is used to submit the form.
 - `size` — numeric size token. Defaults to `32`. Higher-level buttons (e.g. `mdc-button`) validate sizes against their own supported sets; `mdc-buttonsimple` accepts the superset and leaves visual interpretation to the consumer.
 - `active` — toggles the button between pressed and unpressed states. While set, the component writes `true`/`false` into the configured ARIA state attribute (default `aria-pressed`). Leave it `undefined` to remove the attribute entirely (i.e. not a toggle button).
@@ -76,7 +76,7 @@ Minimal markup example:
 
 ### Built-in features
 
-The host carries `role="button"` (overridable) and participates in the page's tab order via the `TabIndexMixin`. The primitive replicates native `<button>` keyboard behaviour: `Enter` activates immediately on keydown (firing `click`) and `Space` activates on keyup after a keydown — the component temporarily adds a `pressed` class during the press so consumers can style the down-state, and clears it on blur if focus is lost mid-press. The default browser action for both keys is prevented so the surrounding page does not scroll on `Space`.
+The host carries `role="button"` (overridable) and participates in the page's tab order via the `TabIndexMixin`. The primitive replicates native `<button>` keyboard behavior: `Enter` activates immediately on keydown (firing `click`) and `Space` activates on keyup after a keydown — the component temporarily adds a `pressed` class during the press so consumers can style the down-state, and clears it on blur if focus is lost mid-press. The default browser action for both keys is prevented so the surrounding page does not scroll on `Space`.
 
 `active` is mirrored into the configured ARIA state attribute(s); by default that is `aria-pressed`, but consumers can broaden it (e.g. `aria-pressed,aria-expanded`) for disclosure-style buttons. Setting `disabled` removes the element from the tab order and marks it `aria-disabled="true"`; setting `soft-disabled` keeps the tab stop but still announces the button as disabled, which is useful when you want to explain *why* the action is unavailable without hiding the control.
 
