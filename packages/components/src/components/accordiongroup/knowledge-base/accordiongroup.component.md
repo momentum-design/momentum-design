@@ -7,11 +7,11 @@ component: accordiongroup
 
 ## Overview
 
-The accordion group is a container that manages multiple accordion or accordionbutton components as a unified set. It controls the visual styling, spacing, and expansion behavior of all child accordions. The group applies consistent `variant` and `size` attributes to all children automatically. By default, expanding one accordion collapses the others (`allow-multiple` is false); set `allow-multiple` to true to allow multiple expanded items.
+The accordion group is a container that manages multiple `mdc-accordion` or `mdc-accordionbutton` components as a unified set. It applies consistent `variant` and `size` to all children automatically and coordinates their expansion: by default expanding one collapses the others (`allow-multiple` is false), and setting `allow-multiple` keeps several open at once.
 
 ### When to use
 
-- Use `mdc-accordiongroup` when you need to render two or more related `mdc-accordion` or `mdc-accordionbutton` items with consistent styling, spacing, and coordinated expansion behaviour.
+- Use `mdc-accordiongroup` to render two or more related accordion items that need consistent styling, spacing, and coordinated open/close behavior — for example grouped FAQs, settings sections, or multi-step content.
 
 ### When not to use
 
@@ -32,7 +32,7 @@ import { AccordionGroup } from '@momentum-design/components/dist/react';
 Minimal markup example:
 
 ```html
-<mdc-accordiongroup>
+<mdc-accordiongroup variant="stacked" size="small">
   <mdc-accordionbutton header-text="Section one">Body one</mdc-accordionbutton>
   <mdc-accordionbutton header-text="Section two">Body two</mdc-accordionbutton>
 </mdc-accordiongroup>
@@ -42,14 +42,34 @@ Minimal markup example:
 
 - Only `mdc-accordion` and `mdc-accordionbutton` elements are managed by the group; any other slotted elements are ignored.
 
+### Property/Attribute details
+
+- `variant` applies to every child and sets the group's visual grouping:
+  - `stacked` (default): 1.5rem gap between items, giving clear visual separation. Good for distinct-content steps (onboarding, checkout) and content-heavy layouts (settings, dashboards).
+  - `borderless`: removes borders from the group and its items. Suits minimalist or embedded contexts (forms, FAQs, dialogs, drawers) where layout already conveys hierarchy.
+  - `contained`: continuous borders with no gaps, for items that are conceptually tied together (grouped FAQs, compact modules); also conserves vertical space.
+- `size` (`small` default = 16px padding, `large` = 24px padding) is applied to all children.
+- `allow-multiple` (default `false`): when false, expanding one item collapses the others; when true, multiple items can stay open.
+- The group overrides each child's own `size` and `variant`, so set those on the group rather than the items.
+
+### Edge cases
+
+- Elements other than `mdc-accordion`/`mdc-accordionbutton` are ignored — they receive no group styling or coordination.
+- With `allow-multiple="false"`, expanding an item automatically collapses any other expanded item in the group.
+
 ## Accessibility
 
 ### Implementation requirements
 
 #### General
 
-- Set the `data-aria-level` of the child accordions to match the heading hierarchy of the surrounding page.
+- Set `data-aria-level` on the child accordions to match the heading hierarchy of the surrounding page; the group does not set it for you.
 
 ### Notes
 
-- Screen readers may lose focus when toggling if the first accordion is expanded by default on initial render.
+- Screen readers may lose focus when toggling if the first accordion is expanded by default on initial render; prefer a collapsed initial state.
+
+## Related components
+
+- `mdc-accordion` — a single multi-interactive item with extra header controls; the group coordinates several of these.
+- `mdc-accordionbutton` — a single single-interactive item whose whole header toggles; the group coordinates several of these.
