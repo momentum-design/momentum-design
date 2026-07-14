@@ -55,7 +55,7 @@
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Guidance for the content rendered inside or alongside the component - slotted text, labels, icons, helper text - covering tone, length, casing, and editorial conventions."
+                                "description": "Guidance for the visible copy rendered inside or alongside the component - slotted text, visible label text, icons, helper text - covering tone, length, casing, and editorial conventions. Covers the wording only; how the consumer supplies an accessible name (aria-label, aria-labelledby, a slotted label, or naming an icon-only control) belongs in Accessibility → Implementation requirements → Labelling."
                             },
                             {
                                 "heading": "Property/Attribute details",

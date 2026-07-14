@@ -174,15 +174,25 @@ section `description` in [`body.config.json`](../../../config/knowledge-base/con
 
 #### `Content guidance`
 
-If the component displays text that product teams write (button labels, error messages, empty state copy, tooltip content): include brief content guidelines covering the appropriate tone, length, and framing.
+Guidance for the *visible copy* a product team writes into the component — button
+labels, error messages, empty-state copy, tooltip content — covering tone,
+length, framing, and casing.
 
-These are particularly important for:
+This section is about the **words**, not accessibility labelling mechanics. How a
+consumer supplies an accessible name — `aria-label`, `aria-labelledby`, a slotted
+label element, or naming an icon-only control — belongs in
+`Accessibility → Implementation requirements → Labelling`, not here. Visible label
+text still lives here even when it doubles as the accessible name; it is the
+programmatic naming *mechanism* that moves to Labelling.
+
+Content guidance is particularly important for:
+
 - Buttons: action-oriented labels, verb-led, specific
 - Error messages: cause and resolution, not just notification
 - Empty states: context-appropriate next action, not generic "no data found"
 - Tooltips: supplementary, not required reading
 
-If content guidelines are not relevant to this component, skip this section.
+If the component displays no author-written text, skip this section.
 
 #### `Property/Attribute details`
 
@@ -280,6 +290,7 @@ Before running validation, confirm:
 - Limitations are real for this component, not generic.
 - Accessibility appears in context, not only in its own section.
 - Content guidance matches system voice/tone where it exists.
+- Content guidance covers visible copy only; accessible-name mechanics live in `Labelling`.
 - Content is written in US English spelling.
 - Nothing restates what the API, the auto-generated table, or the frontmatter
   `title` already conveys.
