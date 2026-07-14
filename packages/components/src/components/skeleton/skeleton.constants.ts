@@ -10,6 +10,7 @@ const SKELETON_VARIANTS = {
 } as const;
 
 const DEFAULTS = {
+  MOTION: false,
   VARIANT: SKELETON_VARIANTS.RECTANGULAR,
 } as const;
 
