@@ -1045,6 +1045,41 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowColor}",
             "description": "Use for skeleton component"
+          },
+          "shimmer": {
+            "0": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": "Use for skeleton component"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}",
+              "description": "Use for skeleton component"
+            },
+            "2": {
+              "type": "color",
+              "value": "{color.core.gray.80}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": "Use for skeleton component"
+            }
           }
         },
         "glass": {
