@@ -136,14 +136,17 @@ class Toast extends FooterMixin(Component) {
     this.dispatchEvent(closeEvent);
   }
 
-  private toggleDetailVisibility() {
-    this.isDetailVisible = !this.isDetailVisible;
-
-    if (this.isDetailVisible) {
+  private updateDataExpanded() {
+    if (this.isDetailVisible || !this.canRenderToggleButton()) {
       this.setAttribute('data-expanded', 'true');
     } else {
       this.removeAttribute('data-expanded');
     }
+  }
+
+  private toggleDetailVisibility() {
+    this.isDetailVisible = !this.isDetailVisible;
+    this.updateDataExpanded();
   }
 
   private updateDetailedSlotPresence() {
@@ -162,10 +165,17 @@ class Toast extends FooterMixin(Component) {
   protected override async firstUpdated(changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(changedProperties);
     this.updateDetailedSlotPresence();
+    this.updateDataExpanded();
 
     await this.updateComplete;
     if (hasOverflowMixin(this.headerTextElement)) {
       this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
+    }
+  }
+
+  protected override updated(changedProperties: PropertyValues): void {
+    if (changedProperties.has('showMoreText') || changedProperties.has('showLessText')) {
+      this.updateDataExpanded();
     }
   }
 
@@ -176,8 +186,12 @@ class Toast extends FooterMixin(Component) {
     `;
   }
 
+  private canRenderToggleButton() {
+    return !!(this.showMoreText && this.showLessText);
+  }
+
   private shouldRenderToggleButton() {
-    return (this.hasDetailedSlot || this.hasOverflowingHeaderText) && this.showMoreText && this.showLessText;
+    return this.canRenderToggleButton() && (this.hasDetailedSlot || this.hasOverflowingHeaderText);
   }
 
   private renderToggleDetailButton() {

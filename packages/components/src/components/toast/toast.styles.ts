@@ -56,7 +56,7 @@ const styles = css`
   :host::part(toast-header) {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     align-self: stretch;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -73,7 +73,7 @@ const styles = css`
   }
 
   :host([data-expanded='true'])::part(toast-header) {
-    -webkit-line-clamp: unset;
+    -webkit-line-clamp: 6;
   }
 
   :host::part(footer) {
