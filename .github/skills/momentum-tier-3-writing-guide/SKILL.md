@@ -61,10 +61,10 @@ Apply these across every section:
   rationale, and constraints they cannot express (this is why `Property/Attribute
   details` says not to repeat the API table).
 - **Integrate accessibility throughout.** Beyond the `Accessibility` section,
-  weave a11y into `When not to use`, `Edge cases`, and content guidance. Be
+  weave a11y into `When not to use`, `Limitations`, and content guidance. Be
   component-specific (name the keys, roles, and focus behavior) rather than
   citing WCAG numbers.
-- **Write for designers and developers.** `Developer usage` and `Edge cases`
+- **Write for designers and developers.** `Developer usage` and `Limitations`
   especially should give implementers specific, conditional language, not
   general principle.
 - **Adapt content guidance to system voice/tone.** For text-bearing components,
@@ -189,23 +189,34 @@ If content guidelines are not relevant to this component, skip this section.
 _Writing guidance is pending team discussion. Until it lands, follow the
 section `description` in [`body.config.json`](../../../config/knowledge-base/content/body.config.json)._
 
-#### `Edge cases`
+#### `Limitations`
 
-Edge cases are the situations the happy path documentation does not cover. They
-are the most important section for preventing real-world mistakes and the most
-commonly omitted.
+A limitation is a factual, implementation-level constraint on what the component
+can or will do — something a developer needs to know before integrating that the
+auto-generated API table and Storybook cannot express. In other words, what the
+code itself will not do for you, by design or by current constraint.
+
+Per the content-quality principles above, each limitation should be specific,
+actionable, and non-duplicative of the generated reference: state the constraint
+and the workaround or intended alternative. This is one of the most valuable
+sections for preventing real-world mistakes, and one of the most commonly
+omitted.
 
 Document (only those that genuinely apply):
 
-- What happens when the label text is very long?
-- What happens in a right-to-left layout?
-- What happens when the component is used on a non-white or non-standard
-  background?
-- What happens when multiple instances appear in close proximity?
-- What happens when the action is destructive and irreversible?
+- What input or content will the component silently not handle?
+- Which prop/attribute combinations are invalid, ignored, or mutually exclusive?
+- What is an intentional non-goal — behavior the component deliberately does not
+  implement — and what should you use instead?
+- Where does responsibility shift to the consumer because the component will not
+  do it?
+- What known behavior may surprise consumers or require a workaround today?
+- What user-facing or visual edge cases fall outside the happy path — for example
+  very long labels, right-to-left layouts, non-standard or transparent
+  backgrounds, adjacent instances, or destructive and irreversible actions?
 
-Not every component has every type of edge case. Only document the edge cases
-that are real for this component — do not produce a generic list.
+Not every component has every kind of limitation. Only document what is real for
+this component — do not produce a generic list.
 
 #### `Notes`
 
@@ -266,7 +277,7 @@ Before running validation, confirm:
   bullets recommend different variants. `When not to use` states each misuse and
   points to an alternative. Every condition is specific enough to decide from.
 - Every `When not to use` entry names an alternative.
-- Edge cases are real for this component, not generic.
+- Limitations are real for this component, not generic.
 - Accessibility appears in context, not only in its own section.
 - Content guidance matches system voice/tone where it exists.
 - Content is written in US English spelling.

@@ -59,7 +59,7 @@ Available Momentum theme classes:
 
 Descendant Lit components can read the current theme by consuming `ThemeProvider.Context`.
 
-### Edge cases
+### Limitations
 
 - The `themeclass` value must exactly match the class on the matching theme stylesheet — otherwise the CSS variables it depends on remain undefined.
 

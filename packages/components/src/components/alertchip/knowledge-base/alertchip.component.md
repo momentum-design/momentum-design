@@ -49,7 +49,7 @@ Minimal markup example:
 - `variant` selects the visual tone and drives the default leading icon. Supported values: `neutral` (default), `error`, `success`, `warning`, `informational`.
 - `icon-name` overrides the default per-variant icon when a custom icon is required.
 
-### Edge cases
+### Limitations
 
 - **No disabled state.** Unlike label and filter chips, alert chips have only rest, hover, pressed, and focused states — there is no disabled state. Do not attempt to disable an alert chip to take it out of use; remove or replace it instead. _Detect in review: any `disabled` attribute set on `mdc-alertchip`._
 - **Long labels.** Labels beyond 20 characters make the chip excessively wide; the component does not wrap text, so trim the label rather than relying on truncation.

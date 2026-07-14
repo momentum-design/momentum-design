@@ -65,11 +65,11 @@
                                 "description": "Detailed reference for the component's public properties and attributes that need extra explanation beyond the generated API table: accepted values, defaults, interaction with other properties, and intended use. Do not duplicate the auto-generated API table - add context the table cannot express."
                             },
                             {
-                                "heading": "Edge cases",
+                                "heading": "Limitations",
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Situations the happy path does not cover — for example very long labels, right-to-left layouts, non-standard or transparent backgrounds, multiple adjacent instances, and destructive or irreversible actions. Document only edge cases that genuinely apply to this component, alongside known limitations, intentional non-goals, and behaviours that may surprise consumers."
+                                "description": "A factual, implementation-level constraint on what the component can or will do that a developer needs to know before integrating — what the code will not do for you, by design or by current constraint. Cover unsupported input, invalid or mutually exclusive property combinations, intentional non-goals (with the intended alternative), responsibilities that shift to the consumer, known behaviors that may surprise consumers or need a workaround, and any user-facing or visual edge cases that fall outside the happy path (very long labels, right-to-left layouts, non-standard or transparent backgrounds, adjacent instances, destructive or irreversible actions). State each with its workaround or alternative, document only those that genuinely apply, and do not duplicate the generated API table."
                             },
                             {
                                 "heading": "Notes",
