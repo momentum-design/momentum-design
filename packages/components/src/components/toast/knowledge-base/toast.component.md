@@ -68,6 +68,7 @@ Listen for the `close` event on the host application to remove the toast from th
 
 - The component does not implement auto-dismiss timing or stacking; lifecycle and positioning are owned by the consuming application.
 - Whether the header text needs the show more/less toggle is measured once on first update; later changes to `header-text` will not re-evaluate overflow.
+- Automatic truncation is only applied to the header, and is not applied to the body slots.
 
 ## Accessibility
 

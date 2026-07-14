@@ -1,8 +1,7 @@
 import React from "react";
 import Markdown from "markdown-to-jsx";
 import { Source } from "@storybook/addon-docs/blocks";
-import Link from "@momentum-design/components/dist/react/link/index.js";
-import Text from "@momentum-design/components/dist/react/text/index.js";
+import { Link, Text } from "@momentum-design/components/react";
 
 import { AnchorHeading } from "./AnchorHeading";
 

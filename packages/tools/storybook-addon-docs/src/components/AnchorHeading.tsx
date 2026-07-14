@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import Text from "@momentum-design/components/dist/react/text/index.js";
+import { Text } from "@momentum-design/components/react";
 
 import { slugify } from "../utils/slugify";
 

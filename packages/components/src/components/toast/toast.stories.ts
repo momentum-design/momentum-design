@@ -122,9 +122,20 @@ export const LongTitle: StoryObj = {
   args: {
     variant: 'success',
     'header-tag-name': 'span',
-    'header-text': 'This is a very long toast title that should overflow and trigger the show more/less functionality',
+    'header-text':
+      'This is a very long toast title of more than 3 lines that should overflow and trigger the show more/less functionality. Once 6 lines is reached, this will truncate regardless of the length of the content to prevent the toast from taking up too much space.',
     'show-more-text': 'Show more',
     'show-less-text': 'Show less',
+    'close-button-aria-label': 'Close toast',
+  },
+};
+
+export const LongTitleWithoutToggle: StoryObj = {
+  args: {
+    variant: 'success',
+    'header-tag-name': 'span',
+    'header-text':
+      'This is a very long toast title of more than 6 lines that should overflow without the show more/less functionality. Once 6 lines is reached, this will truncate regardless of the length of the content to prevent the toast from taking up too much space.',
     'close-button-aria-label': 'Close toast',
   },
 };

@@ -92,6 +92,7 @@ import ListBox from './components/listbox';
 import Banner from './components/banner';
 import Buttonsimple from './components/buttonsimple';
 import Verticaltablist from './components/verticaltablist';
+import StatusMessage from './components/statusmessage';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -105,6 +106,7 @@ import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.t
 import type { TextType } from './components/text/text.types';
 import type { LinkButtonSize } from './components/linkbutton/linkbutton.types';
 import type { TextType as TypewriterType } from './components/typewriter/typewriter.types';
+import type { StatusMessageSeverity } from './components/statusmessage/statusmessage.types';
 import type { MenuPopoverActionEvent, MenuPopoverChangeEvent } from './components/menupopover/menupopover.types';
 import type { SelectChangeEvent, SelectInputEvent } from './components/select/select.types';
 import type { MenuSectionChangeEvent } from './components/menusection/menusection.types';
@@ -237,6 +239,7 @@ export {
   Banner,
   Buttonsimple,
   Verticaltablist,
+  StatusMessage,
 };
 
 // Types Exports
@@ -259,6 +262,7 @@ export type {
   SpinnerSize,
   SpinnerVariant,
   SliderChangeEvent,
+  StatusMessageSeverity,
   TextType,
   TypewriterType,
   InputInputEvent,

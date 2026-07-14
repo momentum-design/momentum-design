@@ -61,6 +61,16 @@ const styles = css`
     color: var(--mdc-help-text-color);
   }
 
+  mdc-statusmessage[part='help-text-container'] {
+    --mdc-statusmessage-color: var(--mdc-help-text-color);
+    --mdc-statusmessage-font-size: var(--mdc-help-text-font-size);
+    --mdc-statusmessage-font-weight: var(--mdc-help-text-font-weight);
+    --mdc-statusmessage-line-height: var(--mdc-help-text-line-height);
+    --mdc-statusmessage-gap: 0.5rem;
+
+    width: 100%;
+  }
+
   :host::part(info-icon-btn) {
     align-self: flex-start;
   }

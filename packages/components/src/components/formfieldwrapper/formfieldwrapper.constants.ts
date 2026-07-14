@@ -2,16 +2,11 @@ import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { STATUSMESSAGE_SEVERITY } from '../statusmessage/statusmessage.constants';
 
 const TAG_NAME = utils.constructTagName('formfieldwrapper');
 
-const VALIDATION = {
-  DEFAULT: 'default',
-  ERROR: 'error',
-  PRIORITY: 'priority',
-  SUCCESS: 'success',
-  WARNING: 'warning',
-} as const;
+const VALIDATION = STATUSMESSAGE_SEVERITY;
 
 const DEFAULTS = {
   VALIDATION: VALIDATION.DEFAULT,

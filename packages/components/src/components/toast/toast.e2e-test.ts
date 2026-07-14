@@ -23,6 +23,9 @@ type ToastSetupOptions = {
 
 const SHOW_MORE_TEXT = 'Show more';
 const SHOW_LESS_TEXT = 'Show less';
+const LONG_HEADER_TEXT =
+  'This is a very long, intentionally verbose title that should be clamped after three lines to prevent overflow issues in the toast layout.';
+const VERY_LONG_HEADER_TEXT = `${LONG_HEADER_TEXT} ${LONG_HEADER_TEXT}`;
 
 const setup = async (options: ToastSetupOptions) => {
   const {
@@ -74,7 +77,7 @@ test.describe('Toast Feature Scenarios', () => {
      *  VISUAL REGRESSION AND ACCESSIBILITY
      */
     await test.step('visual-regression', async () => {
-      await componentsPage.page.setViewportSize({ width: 800, height: 800 });
+      await componentsPage.page.setViewportSize({ width: 800, height: 2000 });
 
       await test.step('matches screenshot of element', async () => {
         const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
@@ -146,14 +149,15 @@ test.describe('Toast Feature Scenarios', () => {
         });
       });
 
-      await test.step('matches screenshot with clamped title', async () => {
-        await componentsPage.page.setViewportSize({ width: 800, height: 1200 });
+      await test.step('matches screenshot with clamped title with show text', async () => {
+        await componentsPage.page.setViewportSize({ width: 800, height: 2000 });
         const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
 
         toastSheet.setAttributes({
-          'header-text':
-            'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
+          'header-text': LONG_HEADER_TEXT,
           'close-button-aria-label': 'Close toast',
+          'show-less-text': SHOW_LESS_TEXT,
+          'show-more-text': SHOW_MORE_TEXT,
         });
 
         await toastSheet.createMarkupWithCombination({
@@ -163,6 +167,26 @@ test.describe('Toast Feature Scenarios', () => {
         await toastSheet.mountStickerSheet();
         const container = toastSheet.getWrapperContainer();
         await componentsPage.visualRegression.takeScreenshot('mdc-toast-long-title', {
+          element: container,
+        });
+      });
+
+      await test.step('matches screenshot with clamped title without show text ', async () => {
+        await componentsPage.page.setViewportSize({ width: 800, height: 2000 });
+        const toastSheet = new StickerSheet(componentsPage, 'mdc-toast');
+
+        toastSheet.setAttributes({
+          'header-text': VERY_LONG_HEADER_TEXT,
+          'close-button-aria-label': 'Close toast',
+        });
+
+        await toastSheet.createMarkupWithCombination({
+          'header-tag-name': VALID_TEXT_TAGS,
+        });
+
+        await toastSheet.mountStickerSheet();
+        const container = toastSheet.getWrapperContainer();
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast-long-title-without-show-text', {
           element: container,
         });
       });
@@ -454,11 +478,10 @@ test.describe('Toast Feature Scenarios', () => {
           await expect(toggleBtn).not.toBeVisible();
         });
 
-        await test.step(`Long title does not show toggle button (${title})`, async () => {
+        await test.step(`Long title does show toggle button (${title}) when show text is supplied`, async () => {
           const toast = await setup({
             componentsPage,
-            headerText:
-              'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
+            headerText: LONG_HEADER_TEXT,
             headerTagName,
             closeButtonAriaLabel: 'Close toast',
             showMoreText: SHOW_MORE_TEXT,
@@ -468,53 +491,69 @@ test.describe('Toast Feature Scenarios', () => {
           const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
           await expect(toggleBtn).toBeVisible();
         });
+
+        await test.step(`Long title does not show toggle button (${title}) when show text is not supplied`, async () => {
+          const toast = await setup({
+            componentsPage,
+            headerText: VERY_LONG_HEADER_TEXT,
+            headerTagName,
+            closeButtonAriaLabel: 'Close toast',
+          });
+
+          const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+          await expect(toggleBtn).not.toBeVisible();
+        });
       }
     });
 
-    await test.step('User expands/collapses toast title with keyboard', async () => {
-      const toast = await setup({
-        componentsPage,
-        headerText:
-          'This is a very long title that should be clamped after two lines to prevent overflow issues in the toast layout',
-        headerTagName: 'span',
-        closeButtonAriaLabel: 'Close toast',
-        showMoreText: SHOW_MORE_TEXT,
-        showLessText: SHOW_LESS_TEXT,
-        children: `
+    for (const [headerTextDescription, headerText] of [
+      ['long', LONG_HEADER_TEXT],
+      ['very-long', VERY_LONG_HEADER_TEXT],
+    ]) {
+      await test.step('User expands/collapses toast title with keyboard', async () => {
+        const toast = await setup({
+          componentsPage,
+          headerText,
+          headerTagName: 'span',
+          closeButtonAriaLabel: 'Close toast',
+          showMoreText: SHOW_MORE_TEXT,
+          showLessText: SHOW_LESS_TEXT,
+          children: `
             <mdc-text tagname="span" slot="toast-body-normal">This is normal content.</mdc-text>
             <mdc-text tagname="span" slot="toast-body-detailed">This is detailed content.</mdc-text>
           `,
+        });
+
+        const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+        const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
+
+        await toggleBtn.focus();
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+          source: 'userflow',
+          fileNameSuffix: `${headerTextDescription}-title-collapsed-view`,
+          element: toast,
+        });
+        await componentsPage.accessibility.checkForA11yViolations(`toast-collapsed-view-${headerTextDescription}`);
+
+        await toggleBtn.press('Enter'); // expand
+        await expect(detailedSlot).toBeVisible();
+        await expect(toggleBtn.locator('mdc-icon[name="arrow-up-bold"]')).toBeVisible();
+        await expect(toggleBtn).toContainText(SHOW_LESS_TEXT);
+        await expect(toggleBtn).toBeFocused();
+        await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
+          source: 'userflow',
+          fileNameSuffix: `${headerTextDescription}-title-expanded-view`,
+          element: toast,
+        });
+        await componentsPage.accessibility.checkForA11yViolations(`toast-expanded-view-${headerTextDescription}`);
+
+        await toggleBtn.press('Enter'); // collapse
+        await expect(detailedSlot).not.toBeVisible();
+        await expect(toggleBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
+        await expect(toggleBtn).toContainText(SHOW_MORE_TEXT);
+        await expect(toggleBtn).toBeFocused();
       });
-
-      const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
-      const detailedSlot = toast.locator('mdc-text[slot="toast-body-detailed"]');
-
-      await toggleBtn.focus();
-      await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
-        source: 'userflow',
-        fileNameSuffix: 'long-title-collapsed-view',
-        element: toast,
-      });
-      await componentsPage.accessibility.checkForA11yViolations('toast-collapsed-view');
-
-      await toggleBtn.press('Enter'); // expand
-      await expect(detailedSlot).toBeVisible();
-      await expect(toggleBtn.locator('mdc-icon[name="arrow-up-bold"]')).toBeVisible();
-      await expect(toggleBtn).toContainText(SHOW_LESS_TEXT);
-      await expect(toggleBtn).toBeFocused();
-      await componentsPage.visualRegression.takeScreenshot('mdc-toast', {
-        source: 'userflow',
-        fileNameSuffix: 'long-title-expanded-view',
-        element: toast,
-      });
-      await componentsPage.accessibility.checkForA11yViolations('toast-expanded-view');
-
-      await toggleBtn.press('Enter'); // collapse
-      await expect(detailedSlot).not.toBeVisible();
-      await expect(toggleBtn.locator('mdc-icon[name="arrow-down-bold"]')).toBeVisible();
-      await expect(toggleBtn).toContainText(SHOW_MORE_TEXT);
-      await expect(toggleBtn).toBeFocused();
-    });
+    }
 
     await test.step('spatial navigation', async () => {
       await setup({

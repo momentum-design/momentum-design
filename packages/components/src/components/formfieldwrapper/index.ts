@@ -1,5 +1,6 @@
 import '../button';
 import '../icon';
+import '../statusmessage';
 import '../text';
 import '../toggletip';
 import FormfieldWrapper from './formfieldwrapper.component';
