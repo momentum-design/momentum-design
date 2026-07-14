@@ -121,27 +121,36 @@ covering for an unclear component contract.
 
 Format:
 
-Name the component once in a lead-in sentence, then write each bullet as a
-condition only. Do not repeat the component name at the end of every bullet —
-when all bullets recommend the same component, the trailing "use `mdc-...`"
-becomes identical boilerplate that adds nothing after the first mention.
+Lead every bullet with the component tag, then — when the recommendation is
+specific to a variant or attribute — the token it applies to, then the condition:
 
-"Use [component name] when:" — followed by condition-only bullets.
+"Use `mdc-<tag>` [`<variant value or attribute>`] for [condition]."
 
-Repeat the component name per bullet **only** when the bullets recommend
-*different* variants of the same component. In that case the name carries
-information (it changes line to line), so each bullet leads with it, as the
-Button examples below do (primary / secondary / ghost).
+- The tag (`mdc-<tag>`) leads every bullet.
+- Include the second code span only when the bullet recommends a *specific*
+  variant or attribute. Show an enum as its value (`primary`) and a boolean
+  attribute as its name (`inverted`). Describe a usage shape that has no single
+  prop in prose rather than a code span (for example "an icon-only
+  `mdc-button`").
+- One recommendation per bullet; add at most one follow-up sentence for a
+  constraint or a concrete example.
 
-Examples (Button — the different-variant case, where each bullet names its variant):
+Examples (Button):
 
-- Use a primary button for the single most important action in a context. There
-  should be at most one primary button in any given view.
-- Use a secondary button for an action that is available but not the expected
-  next step. Secondary buttons often appear alongside primary buttons to give
-  users an alternative.
-- Use a ghost button when the action is available but should not visually
-  compete with other actions or content on the page.
+- Use `mdc-button` to trigger an action — submitting a form, opening a dialog, or
+  running a command.
+- Use `mdc-button` `primary` for the single most important or expected action in a
+  view. There should be at most one primary button in any context; when a dialog
+  offers "Save" and "Cancel", only "Save" is primary.
+- Use `mdc-button` `secondary` for actions that are available but not the expected
+  next step. More than one secondary button can appear together.
+- Use `mdc-button` `tertiary` for low-emphasis actions that should not compete for
+  attention; unlike secondary, it has no resting outline, so its footprint appears
+  only on hover or interaction.
+- Use an icon-only `mdc-button` for compact targets such as toolbars or table-row
+  controls where space is constrained and the icon's meaning is unambiguous.
+- Use `mdc-button` with `inverted` when placing a button on a dark or inverted
+  surface so the color scheme keeps the required contrast.
 
 #### `When not to use`
 
@@ -282,10 +291,10 @@ Before running validation, confirm:
 
 - `Overview` is one to three sentences, adds no `#` H1, and does not restate the
   frontmatter `title`.
-- `When to use` names the component once in a lead-in and then lists
-  condition-only bullets — repeating the component name per bullet only when the
-  bullets recommend different variants. `When not to use` states each misuse and
-  points to an alternative. Every condition is specific enough to decide from.
+- `When to use` leads every bullet with the component tag (`mdc-...`), adding the
+  specific variant value or attribute only when the recommendation is
+  variant/attribute-specific. `When not to use` states each misuse and points to
+  an alternative. Every condition is specific enough to decide from.
 - Every `When not to use` entry names an alternative.
 - Limitations are real for this component, not generic.
 - Accessibility appears in context, not only in its own section.
