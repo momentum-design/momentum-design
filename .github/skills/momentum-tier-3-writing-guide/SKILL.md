@@ -93,6 +93,21 @@ Do not introduce headings that are not in `body.config.json` (for example a
 optional `Related components` section — distinguish each related component in
 one sentence rather than restating its guidelines.
 
+## Frontmatter
+
+### `summary`
+
+One sentence, ≤200 characters (enforced by the frontmatter schema), in a fixed
+shape:
+
+"Usage, guidelines, and accessibility for the `mdc-<component>` component — <a
+short, defining description of what the component is>."
+
+Lead with "Usage, guidelines, and accessibility for the `mdc-<component>`
+component —"; after the em-dash, describe what the component *is* (its form and
+defining behavior) in a clause or two, not why to use it. Keep it factual and
+component-specific.
+
 ## Section-by-section guidance
 
 The heading levels below mirror the nesting in
@@ -203,10 +218,40 @@ Content guidance is particularly important for:
 
 If the component displays no author-written text, skip this section.
 
+Keep every bullet component-specific. Do not add a generic pointer or link to the
+system content-guidelines (for example a "Follow the design system content
+guidelines" bullet) — it adds no component-specific value and duplicates the Tier 1
+source. Reflect the relevant voice/tone rules inline instead, and treat the Tier 1
+content-guidelines topic as the canonical source rather than restating or linking
+it here.
+
 #### `Property/Attribute details`
 
-_Writing guidance is pending team discussion. Until it lands, follow the
-section `description` in [`body.config.json`](../../../config/knowledge-base/content/body.config.json)._
+For each variant or major configuration option: one sentence on what it is for and
+one sentence on when to use it. Do not repeat information already in the component
+API — this section should add intent context, not restate prop values.
+
+Only document variants that require usage judgment. If a variant is
+self-explanatory (`size` on a component that comes in `sm`, `md`, and `lg`), skip
+it or document it briefly. Spend the space on variants where misuse is plausible.
+
+Format:
+
+Present the options as a two-column table — `Option` and `Intent` — one row per
+variant or configuration option. Put the option in `Option` as a code span
+(`variant="borderless"`) and mark the default with "(default)"; put the
+what-it-is-for and when-to-use sentences in `Intent`. Add a `**Note:**` line under
+the table only for cross-component clarifications (for example, which values belong
+to a parent component).
+
+| Option | Intent |
+|---|---|
+| `variant="default"` (default) | Bordered, rounded container. Use when the accordion is a distinct object on the page. |
+| `size="large"` | 24px padding. Use when the accordion is a primary content block or touch targets need more space. |
+| `toggle-position="leading"` | Chevron at the start. Use only when layout or RTL patterns require it; trailing is the default users expect. |
+| `disabled` | Prevents toggle; hides the body even if `expanded` is set. |
+
+**Note:** `stacked`, `contained`, and group `borderless` are `mdc-accordiongroup` variants, not `mdc-accordionbutton` props.
 
 #### `Limitations`
 
@@ -233,6 +278,35 @@ Document (only those that genuinely apply):
 - What user-facing or visual edge cases fall outside the happy path — for example
   very long labels, right-to-left layouts, non-standard or transparent
   backgrounds, adjacent instances, or destructive and irreversible actions?
+
+Use those prompts only to find limitations — never as the wording of an entry.
+
+Format:
+
+Write a bullet list. Lead every bullet with a bold **1–5 word mini-assertion**
+that states the specific limitation, then an em-dash, the constraint, and the
+workaround or alternative:
+
+"**<mini-assertion>** — <the specific constraint>. <workaround or alternative>."
+
+The mini-assertion is a specific claim about this component ("Long titles don't
+truncate"), not a generic category ("Visual edge case"). Keep it sentence case.
+
+Rules:
+
+- One limitation per bullet, and always end with the workaround, alternative, or
+  consumer action.
+- Do not restate the auto-generated API table; add only what it cannot express.
+
+Examples:
+
+- **Header text won't toggle** — only the dedicated toggle button expands or
+  collapses the panel; clicking the header text does not, by design. Use
+  `mdc-accordionbutton` to make the whole header toggle.
+- **`disabled` hides the body** — the body stays hidden even when `expanded` is
+  `true`. Remove `disabled` to expose it.
+- **Initial `expanded` moves focus** — setting `expanded` on first render can move
+  screen-reader focus unexpectedly. Prefer starting collapsed.
 
 Not every component has every kind of limitation. Only document what is real for
 this component — do not produce a generic list.
@@ -281,9 +355,21 @@ section `description` in [`body.config.json`](../../../config/knowledge-base/con
 
 ### `Related components`
 
-Cross-references to components that are commonly confused with this one, or commonly used alongside it. For each:
-- Component name
-- One sentence distinguishing it from this component, or describing how they work together
+Cross-reference the components most often confused with this one or used alongside
+it. Distinguish each in one line rather than restating its guidelines, and only
+list real components in the library.
+
+Format:
+
+Present the references as a two-column table — `Component` and `Relationship` — one
+row per component. Put the component tag in `Component` as a code span
+(`mdc-accordiongroup`); in `Relationship`, say in one line how it differs from or
+works with this component.
+
+| Component | Relationship |
+|---|---|
+| `mdc-accordion` | Same visual family, extending `mdc-accordionbutton` with a separate toggle button. Use when the header needs interactive controls beside the title. |
+| `mdc-accordiongroup` | Wrapper for multiple accordion items. Owns group layout (`stacked`, `borderless`, `contained`) and `allow-multiple`. |
 
 ## Self-check before validating
 
@@ -296,9 +382,13 @@ Before running validation, confirm:
   variant/attribute-specific. `When not to use` states each misuse and points to
   an alternative. Every condition is specific enough to decide from.
 - Every `When not to use` entry names an alternative.
-- Limitations are real for this component, not generic.
+- Limitations are real for this component, not generic, and each leads with a bold
+  1–5 word mini-assertion and ends with a workaround or alternative.
 - Accessibility appears in context, not only in its own section.
-- Content guidance matches system voice/tone where it exists.
+- Content guidance matches system voice/tone where it exists, is component-specific,
+  and contains no generic content-guidelines pointer or link.
+- Property/Attribute details and Related components are formatted as tables, and the
+  `summary` frontmatter follows the fixed shape.
 - Content guidance covers visible copy only; accessible-name mechanics live in `Labelling`.
 - Content is written in US English spelling.
 - Nothing restates what the API, the auto-generated table, or the frontmatter
