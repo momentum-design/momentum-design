@@ -107,7 +107,7 @@ When a text label is slotted, the label is rendered inline through `mdc-text` an
 - Place exactly one element in the slot when using a text or grabber-button divider; multiple elements fall back to the primary type.
 - Ensure sufficient contrast between the divider line and the background — the component does not enforce a contrast ratio.
 
-#### Labelling
+#### Labeling
 
 - When using a grabber-button divider, provide an `aria-label` on the slotted `mdc-button` describing what activating it does ("Collapse panel", "Show details").
 - When the grabber button controls an expandable region, also set `aria-expanded` on the button and update it from the consumer's state machine.

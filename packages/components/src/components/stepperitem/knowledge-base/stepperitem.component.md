@@ -75,7 +75,7 @@ The component dispatches the bubbling `click`, `keydown`, and `keyup` events. Pr
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always set `aria-label` on each stepper item with the full context (position, label, status). The visible label alone is not enough for screen reader users to understand where they are in the sequence.
 - Set `aria-current="step"` on the single item representing the current step (only valid when `status` is `current` or `error-current`). Remove it from every other item.

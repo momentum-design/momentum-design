@@ -95,7 +95,7 @@ The wrapper itself does not own any role or ARIA state — the role and ARIA con
 - Extending components must set `aria-required` on their input when `required` is `true`; the wrapper only renders the visual indicator.
 - Set `shouldRenderLabel` to `false` on extending components that render the label as a heading rather than a native `<label for>` (e.g. groups like `mdc-formfieldgroup` and `mdc-radiogroup`).
 
-#### Labelling
+#### Labeling
 
 - Always provide a `label` on the extending component — without it the field has no accessible name from the wrapper, and the extending component must supply one through `data-aria-label` or `aria-labelledby`.
 - When `toggletip-text` is set, always provide `info-icon-aria-label` — the info-icon button has no visible text and otherwise has no accessible name.

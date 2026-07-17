@@ -83,11 +83,11 @@ The buttongroup is a presentational wrapper: it renders a generic container and 
 
 #### General
 
-- When the group represents a labelled toolbar of actions, wrap or annotate it with `role="toolbar"` and an `aria-label` (or `aria-labelledby`) describing what the toolbar controls. Apply this on the host, not on the inner buttons.
+- When the group represents a labeled toolbar of actions, wrap or annotate it with `role="toolbar"` and an `aria-label` (or `aria-labelledby`) describing what the toolbar controls. Apply this on the host, not on the inner buttons.
 - If the buttons in the group represent a mutually exclusive selection (radio-style segmented control), use `mdc-radiogroup` or implement `role="radiogroup"` semantics with `aria-checked` on each option — `mdc-buttongroup` alone does not convey selection state.
 - When using a `role="toolbar"` pattern, implement arrow-key navigation between the buttons (`ArrowLeft`/`ArrowRight` for horizontal, `ArrowUp`/`ArrowDown` for vertical) so users do not have to tab through each item.
 
-#### Labelling
+#### Labeling
 
 - Always label icon-only buttons inside the group with `aria-label` (e.g. `aria-label="Bold"`) — the icon glyph alone is not announced.
 - When the group as a whole represents a single function (e.g. "Text formatting"), expose that name via `aria-label` on the host so the surrounding toolbar context is clear to assistive technology users.

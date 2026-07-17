@@ -88,7 +88,7 @@ The label and prefix icon are presentational — the consumer chooses how to exp
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always set `clear-aria-label` to a value that identifies which chip will be removed (e.g. `"Remove alex@example.com"`); the close button otherwise has no accessible name.
 - When using slotted prefix content such as an avatar, do not rely on the avatar's accessible name to identify the chip — the `clear-aria-label` is the only name announced for the remove action.

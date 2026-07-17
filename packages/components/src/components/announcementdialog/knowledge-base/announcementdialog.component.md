@@ -75,12 +75,12 @@ If a `triggerId` is provided, the dialog manages focus return to that element; o
 | Host           | `role`          | `dialog` (default) or `alertdialog` when set by the consumer                           |
 | Host           | `aria-modal`    | `true` while the dialog is visible                                                     |
 | Host           | `aria-label`    | Mirrored from `header-text` when neither `aria-label` nor `aria-labelledby` is set     |
-| Host           | `aria-labelledby` | Set to `triggerID` when provided and no labelling attribute is already set           |
+| Host           | `aria-labelledby` | Set to `triggerID` when provided and no labeling attribute is already set           |
 | Close button   | `aria-label`    | Reflected from the `close-button-aria-label` attribute                                 |
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - The dialog **must** have either an `aria-label` or `aria-labelledby` attribute so screen readers announce a name when it opens.
 - Use `aria-labelledby` to reference the `id` of the element that labels the dialog when there is no visible title.

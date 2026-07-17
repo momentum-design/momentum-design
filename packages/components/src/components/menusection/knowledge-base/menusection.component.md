@@ -1,6 +1,6 @@
 ---
 title: Menusection
-summary: Usage, guidelines, and accessibility for the mdc-menusection component — a labelled grouping of menu items inside a menu or menubar.
+summary: Usage, guidelines, and accessibility for the mdc-menusection component — a labeled grouping of menu items inside a menu or menubar.
 tier: 3
 component: menusection
 ---
@@ -59,7 +59,7 @@ Minimal markup example:
 
 ### Built-in features
 
-- Sets `role="group"` on the host so assistive technology announces the items as a labelled grouping.
+- Sets `role="group"` on the host so assistive technology announces the items as a labeled grouping.
 - Mirrors `header-text` to `aria-label` automatically when no explicit label is provided.
 - When connected inside `mdc-sidenavigation`, automatically hides the visible header text while the side navigation is collapsed; the group's `aria-label` is retained.
 
@@ -79,7 +79,7 @@ Minimal markup example:
 - Place `mdc-menusection` inside `mdc-menupopover`, `mdc-menubar`, or `mdc-sidenavigation` so the surrounding menu manages roving tabindex across the contained items.
 - Only place menu items (`mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`) in the default slot.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `header-text` whenever the grouping has a visible purpose; the component will mirror it to `aria-label` automatically.
 - When the section has no visible header, set `aria-label` explicitly so the group still has an accessible name.

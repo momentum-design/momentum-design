@@ -18,7 +18,7 @@ The buttonsimple is a low-level button primitive that handles keyboard activatio
 
 - Use `mdc-button` when the design calls for the standard visual treatment (variant, color, size, prefix/postfix icons).
 - Use `mdc-buttonlink` when the control is a navigation that should render as an anchor.
-- Use `mdc-toggle` or `mdc-checkbox` for binary state in forms — they expose the correct form-control semantics and labelling.
+- Use `mdc-toggle` or `mdc-checkbox` for binary state in forms — they expose the correct form-control semantics and labeling.
 
 ## Guidelines
 
@@ -100,7 +100,7 @@ The element is form-associated (`formAssociated = true`): with `type="submit"`/`
 - When using `soft-disabled`, also convey *why* the button is unavailable (helper text, tooltip) so the announcement is actionable rather than confusing.
 - If you change `role` away from `button`, audit the resulting keyboard contract: `Enter`/`Space` handling and `aria-pressed` semantics are tuned for the button role and may not match the new role's expectations.
 
-#### Labelling
+#### Labeling
 
 - Supply an accessible name via the default slot text or `aria-label` — the primitive does not generate one.
 - For icon-only or visually empty buttons, `aria-label` is required.

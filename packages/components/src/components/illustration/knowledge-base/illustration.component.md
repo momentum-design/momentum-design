@@ -107,7 +107,7 @@ The component does not own keyboard handling or focus.
 - Mount every `mdc-illustration` inside an `mdc-illustrationprovider`; outside of one the fetch fails and the component renders nothing.
 - Use a single illustration per empty state / confirmation surface — pairing two illustrations on the same screen dilutes their visual weight.
 
-#### Labelling
+#### Labeling
 
 - Leave `aria-label`/`aria-labelledby` unset for decorative illustrations — the SVG is already hidden from screen readers.
 - For informative illustrations, provide a meaningful `aria-label` (or `aria-labelledby`) that describes what the illustration conveys to a sighted user.

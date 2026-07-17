@@ -95,7 +95,7 @@ The component renders visible message text and an optional icon, but does not ad
 - For form fields, prefer the field component's helper-text API so the component can keep its own label and helper-text ARIA wiring consistent.
 - Treat icons as supporting visuals; the message text must communicate the actual state.
 
-#### Labelling
+#### Labeling
 
 - If a custom icon carries additional meaning beyond the visible message text, provide an accessible name on the icon or include that meaning in the message text.
 - If the icon is decorative, leave it unnamed and ensure the visible message is complete on its own.

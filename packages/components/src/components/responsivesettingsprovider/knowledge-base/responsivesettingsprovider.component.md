@@ -56,4 +56,4 @@ The provider exposes a static `Context` accessor for descendants and custom cons
 
 ### Built-in features
 
-The provider is a non-visual context container — it has no interactive surface, no focusable elements, and no ARIA roles of its own. Accessibility of the affected descendant behaviour (focus management, labelling, escape handling) is owned by those descendant components.
+The provider is a non-visual context container — it has no interactive surface, no focusable elements, and no ARIA roles of its own. Accessibility of the affected descendant behaviour (focus management, labeling, escape handling) is owned by those descendant components.

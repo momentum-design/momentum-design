@@ -81,7 +81,7 @@ The banner is rendered as a generic container — it does not set any landmark o
 - Decide on the right live-region behaviour for the surrounding context: when a banner appears dynamically and conveys important state (e.g. a warning or error), wrap or set `role="status"` / `role="alert"` (or `aria-live`) on the host so assistive technologies announce it.
 - Ensure interactive controls slotted into `trailing-actions` (e.g. dismiss buttons) have accessible names — the banner does not label them.
 
-#### Labelling
+#### Labeling
 
 - The visible `label` (and `secondary-label`) act as the accessible message. Make sure the wording can stand alone without surrounding visual context.
 - When using the `content` slot to fully replace the layout, retain a clear text label inside the slot so the message remains accessible.

@@ -96,7 +96,7 @@ The component should not contain its own focusable descendants — interaction m
 - Place `mdc-menuitemcheckbox` inside an `mdc-menupopover`, `mdc-menubar`, or `mdc-menusection` so the surrounding menu manages roving tabindex and keyboard navigation.
 - Do not place focusable elements inside the item; render any visuals via the static checkbox/toggle/checkmark indicators or non-interactive content.
 
-#### Labelling
+#### Labeling
 
 - Provide an accessible name via `label`, slotted text in `leading-text-primary-label`, or `aria-label`.
 - When using `indicator="none"`, ensure the alternative visual is reflected for assistive technology (for example via `aria-label` updates).

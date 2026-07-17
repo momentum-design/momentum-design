@@ -75,6 +75,6 @@ The spinner element is rendered with `role="progressbar"`, `aria-valuemin="0"`, 
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always provide `data-aria-label` describing what is in progress (e.g. `"Loading"`, `"Uploading file"`) — without it the indicator has no accessible name.

@@ -47,4 +47,4 @@ Minimal markup example:
 
 ### Built-in features
 
-The badge is rendered with a presentational icon and an icon-specific background colour driven by the `type`. The component does not own an accessible name — labelling is the consumer's responsibility (typically via the `aria-label` on the surrounding `mdc-avatar`).
+The badge is rendered with a presentational icon and an icon-specific background colour driven by the `type`. The component does not own an accessible name — labeling is the consumer's responsibility (typically via the `aria-label` on the surrounding `mdc-avatar`).

@@ -69,6 +69,6 @@ The component manages expand/collapse state and exposes it to assistive technolo
 - Use Accordion component when you need additional interactive controls (chips, badges, buttons, icons) in the header alongside the expand/collapse behaviour.
 - Set `data-aria-level` to match the heading hierarchy of the page context where the accordion is embedded (e.g. `data-aria-level="2"` if the accordion is a second-level heading).
 
-#### Labelling
+#### Labeling
 
 - **Always** provide both `open-button-aria-label` and `close-button-aria-label`. Without these, screen reader users cannot determine what the toggle button does.

@@ -1,6 +1,6 @@
 ---
 title: Optgroup
-summary: Usage, guidelines, and accessibility for the mdc-optgroup component — a labelled grouping of mdc-option elements inside a listbox.
+summary: Usage, guidelines, and accessibility for the mdc-optgroup component — a labeled grouping of mdc-option elements inside a listbox.
 tier: 3
 component: optgroup
 ---
@@ -77,7 +77,7 @@ Minimal markup example:
 - Place `mdc-optgroup` inside an `mdc-selectlistbox` (within `mdc-select`) or another listbox-style container.
 - Only place `mdc-option` elements in the default slot.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` whenever the grouping is visible in the UI; this also supplies the accessible group name automatically.
 - When the group has no visible label, supply `data-aria-label` so assistive technology can still announce the group.

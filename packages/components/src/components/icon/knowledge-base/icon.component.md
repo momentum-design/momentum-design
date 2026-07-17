@@ -105,7 +105,7 @@ The component does not own keyboard handling. Standalone icons rely on the consu
 - Mount every `mdc-icon` inside an `mdc-iconprovider`; outside of one the fetch fails and the component renders nothing.
 - Decide the accessibility mode based on the surrounding context: an icon inside an `mdc-button` is decorative (the button has the accessible name); an icon-only button uses an `aria-label` on the **button**, not on the icon.
 
-#### Labelling
+#### Labeling
 
 - Leave `aria-label`/`aria-labelledby` unset for decorative icons — the SVG is already hidden from screen readers.
 - For informative icons, provide a meaningful `aria-label` (or `aria-labelledby`) that describes what the icon conveys.

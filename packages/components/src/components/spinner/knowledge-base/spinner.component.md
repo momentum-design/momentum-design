@@ -64,7 +64,7 @@ Minimal markup examples:
 
 Accessibility behaviour is driven entirely by `aria-label`:
 
-- When `aria-label` is set, the host is exposed as `role="img"` with the provided name and `aria-hidden="false"` — screen readers announce it as a labelled image.
+- When `aria-label` is set, the host is exposed as `role="img"` with the provided name and `aria-hidden="false"` — screen readers announce it as a labeled image.
 - When `aria-label` is omitted, the host has no role and `aria-hidden="true"` — screen readers ignore the spinner entirely.
 
 #### Internal ARIA managed by the component

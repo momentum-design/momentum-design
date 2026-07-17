@@ -64,6 +64,6 @@ On `connectedCallback` the host sets `role="listbox"` on itself. The parent `mdc
 - Always use `mdc-selectlistbox` as the direct child of `mdc-select` or `mdc-combobox`.
 - Place every `mdc-option` (and `mdc-optgroup`) inside this wrapper.
 
-#### Labelling
+#### Labeling
 
-- The parent (`mdc-select` / `mdc-combobox`) supplies the accessible name; no labelling work is required on `mdc-selectlistbox` itself.
+- The parent (`mdc-select` / `mdc-combobox`) supplies the accessible name; no labeling work is required on `mdc-selectlistbox` itself.

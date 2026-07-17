@@ -87,7 +87,7 @@ The `label` provides the accessible name. When `selected` is `true`, the leading
 - Use `disabled` (not `aria-hidden` or visual cues alone) when a filter must not be interactive — the state is then exposed to assistive technology and removed from the tab order.
 - Drive the surrounding filter state from `selected` after the user activates the chip; the component does not own the underlying filter logic.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `label` — it is the accessible name and is mandatory for screen-reader users.
 - The toggle state is announced through `aria-pressed`; do not encode the selected state in the `label` itself (e.g. avoid "In stock ✓").

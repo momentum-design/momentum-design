@@ -142,7 +142,7 @@ For the `flexible-on-hover` variant, the grabber button is only made visible (vi
 - Pair each flyout submenu pattern with `is-active-parent-tooltip-text` on the `mdc-navmenuitem` so users can tell which submenu item is currently active.
 - For dropdown submenus, the parent navmenuitem receives `aria-expanded` automatically — do not override it manually.
 
-#### Labelling
+#### Labeling
 
-- Always set `grabber-btn-aria-label` for `flexible` and `flexible-on-hover` variants; the grabber button is unlabelled otherwise.
+- Always set `grabber-btn-aria-label` for `flexible` and `flexible-on-hover` variants; the grabber button is unlabeled otherwise.
 - The host has `role="navigation"`; if multiple navigation landmarks exist on the page, add a host-level `aria-label` to distinguish them.

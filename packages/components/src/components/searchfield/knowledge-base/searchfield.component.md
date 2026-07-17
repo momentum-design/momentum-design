@@ -84,7 +84,7 @@ The searchfield uses a native `<input type="search">` so screen readers announce
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` (or `data-aria-label`) so the input has an accessible name. Without one, the search field has no announceable name.
 - Provide a `clearAriaLabel` so the trailing clear button is announced (for example "Clear search").

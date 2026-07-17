@@ -15,7 +15,7 @@ A checkbox can also be in an `indeterminate` (mixed) state — typically used wh
 
 - Use `mdc-checkbox` when the user can select **any number** of options from a list (zero, one, or many).
 - Use a single `mdc-checkbox` for a binary choice that does not need to take effect immediately (e.g. agreeing to terms before submitting a form).
-- Use it inside `mdc-formfieldgroup` when several checkboxes belong to the same labelled group.
+- Use it inside `mdc-formfieldgroup` when several checkboxes belong to the same labeled group.
 
 ### When not to use
 
@@ -112,7 +112,7 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable; the state is then exposed to assistive technology and removed from the tab order.
 - Reach for `soft-disabled` instead of `disabled` only when the option must remain discoverable by assistive technology (e.g. so a screen-reader user can still hear why it is unavailable).
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `label` — it is the default accessible name.
 - When a visible label is not appropriate, set `data-aria-label` so the control still has an accessible name.

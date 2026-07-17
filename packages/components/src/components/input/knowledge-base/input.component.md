@@ -126,7 +126,7 @@ The character-limit announcer is rendered as an `mdc-screenreaderannouncer` with
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always provide either `label` or `data-aria-label`; otherwise the input has no accessible name.
 - When `prefix-text` is set, provide `data-aria-label` so the announced name includes the prefix's meaning (e.g. `data-aria-label="Amount in US dollars"`).

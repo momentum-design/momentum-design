@@ -91,7 +91,7 @@ The close button is a tertiary `mdc-button` whose accessible name is taken from 
 - Provide `close-button-aria-label` so users of assistive technologies can identify the close action.
 - Decide on the live-region semantics at the host level: render the toast inside an element with the appropriate `role="alert"`, `role="status"`, or `aria-live` region so screen readers announce it when it appears. The component itself does not declare a live region.
 
-#### Labelling
+#### Labeling
 
 - Use `header-text` for short, human-readable titles; the heading level is controlled by `header-tag-name`.
 - When the header is omitted, set `aria-label` to describe the toast's purpose.

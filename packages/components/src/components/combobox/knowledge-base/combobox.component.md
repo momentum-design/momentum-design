@@ -155,7 +155,7 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 - When filtering is driven externally (API, server), set `filter="none"` and update slotted options as data arrives — the combobox will not filter on its own.
 - When using `control-type="controlled"`, listen to `input` and `change` and drive the `value` attribute from the parent; the combobox will not mutate its own value.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` (or `data-aria-label`) — `role="combobox"` requires an accessible name.
 - Use `help-text` with `help-text-type="error"` for validation feedback; the icon and `aria-describedby` association are wired automatically.

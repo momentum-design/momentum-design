@@ -64,7 +64,7 @@ Minimal markup example:
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide a descriptive label on the host (for example via `aria-label`) so the list is announced with a meaningful name such as "Checkout steps".
 - Set `aria-current="step"` on the single `mdc-stepperitem` representing the current step. Remove it from all other steps so only one item is announced as current at a time.

@@ -90,7 +90,7 @@ Minimal markup example:
 - Place only `mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`, or `mdc-menusection` (containing those items) as direct children.
 - Pair each item that opens a submenu with an `mdc-menupopover` whose `triggerid` matches the item's `id`.
 
-#### Labelling
+#### Labeling
 
 - The menubar itself does not render visible text; provide an `aria-label` on the host element if the surrounding context does not already describe the menu.
 - Each menu item is responsible for its own accessible name via `label`, slotted text, or `aria-label`.

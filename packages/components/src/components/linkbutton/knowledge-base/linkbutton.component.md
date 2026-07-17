@@ -90,7 +90,7 @@ The label is taken from the slotted children; the trailing icon (when `icon-name
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide descriptive label text so the accessible name conveys the action being taken; use `data-aria-label` only when the visible text would be ambiguous on its own.
 

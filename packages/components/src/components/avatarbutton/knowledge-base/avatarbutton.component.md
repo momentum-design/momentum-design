@@ -68,6 +68,6 @@ The component behaves as a button: it is keyboard-focusable, activates on Enter/
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - **Always** provide an `aria-label` describing the button's purpose (e.g. `aria-label="Open profile menu"`). Without it the button has no accessible name, since the inner avatar is hidden from assistive technologies.

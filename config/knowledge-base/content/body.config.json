@@ -51,11 +51,18 @@
                                 "description": "How developers integrate the component: package import path, the custom-element tag, framework wrappers (React etc.), required slotted children, and a minimal working markup example."
                             },
                             {
+                                "heading": "Composition",
+                                "level": 3,
+                                "required": false,
+                                "recommended": false,
+                                "description": "Structural rules for composing the component: which slots to use and what to place in them, required or expected child components, parent-child relationships, and ordering or nesting constraints. Covers how the pieces fit together - not the visible copy (Content guidance), the accessible-name mechanism (Accessibility → Implementation requirements → Labeling), or the public property reference (Property/Attribute details)."
+                            },
+                            {
                                 "heading": "Content guidance",
                                 "level": 3,
                                 "required": false,
                                 "recommended": true,
-                                "description": "Guidance for the visible copy rendered inside or alongside the component - slotted text, visible label text, icons, helper text - covering tone, length, casing, and editorial conventions. Covers the wording only; how the consumer supplies an accessible name (aria-label, aria-labelledby, a slotted label, or naming an icon-only control) belongs in Accessibility → Implementation requirements → Labelling."
+                                "description": "Guidance for the visible copy rendered inside or alongside the component - slotted text, visible label text, icons, helper text - covering tone, length, casing, and editorial conventions. Covers the wording only; how the consumer supplies an accessible name (aria-label, aria-labelledby, a slotted label, or naming an icon-only control) belongs in Accessibility → Implementation requirements → Labeling."
                             },
                             {
                                 "heading": "Property/Attribute details",
@@ -126,7 +133,7 @@
                                             "description": "General accessibility requirements that don't fit under the other sub-sections, such as ensuring passing aria related attributes to the component, etc."
                                         },
                                         {
-                                            "heading": "Labelling",
+                                            "heading": "Labeling",
                                             "level": 4,
                                             "required": false,
                                             "recommended": true,

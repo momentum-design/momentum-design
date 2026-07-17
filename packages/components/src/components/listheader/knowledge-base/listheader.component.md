@@ -87,7 +87,7 @@ Slotted actionable elements (links, buttons) keep their own accessibility semant
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Use the `header-text` attribute (rather than slotting plain text) so the header picks up the right typography and `aria-hidden` treatment.
 - For trailing actions, slot a control with its own accessible name (e.g. `<mdc-link>See all</mdc-link>`) so the action is announced when focused.

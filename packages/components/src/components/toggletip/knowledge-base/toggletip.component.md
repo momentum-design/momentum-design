@@ -81,7 +81,7 @@ Minimal markup example. The toggletip is a sibling of its target; connect it via
 - The target element identified by `triggerid` must be focusable; provide it via a button, link, or other natively focusable control so keyboard users can open the toggletip.
 - Use `screenreader-announcer-identity` when the toggletip is rendered in a context where appending a hidden announcer to the document body is undesirable (e.g. inside a portal you own).
 
-#### Labelling
+#### Labeling
 
 - If the trigger is icon-only, give it an accessible name via `aria-label` so users know what activating it does before the toggletip opens.
 - For interactive content inside the toggletip (links, buttons), provide their own accessible names.

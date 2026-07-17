@@ -12,7 +12,7 @@ The card checkbox looks like a card (image, header with icon/title/subtitle, bod
 ### When to use
 
 - Use `mdc-cardcheckbox` when each option in a multi-select group needs the visual weight of a card (image, title, supporting copy) rather than a small inline control.
-- Use it inside a labelled group container (`role="group"` + `aria-label` / `aria-labelledby`) when several card checkboxes belong to the same selection set.
+- Use it inside a labeled group container (`role="group"` + `aria-label` / `aria-labelledby`) when several card checkboxes belong to the same selection set.
 
 ### When not to use
 
@@ -118,7 +118,7 @@ The `card-title` (or `title` slot) provides the accessible name. The visual sele
 - Keep every slotted child presentational. If you need actionable content alongside the option, switch to `mdc-card` and use `mdc-checkbox` for the selection.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable, so the state is exposed to assistive technology.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is the default accessible name of the checkbox.
 - When the title alone is ambiguous (e.g. icon-driven cards, repeated titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement matches the option.

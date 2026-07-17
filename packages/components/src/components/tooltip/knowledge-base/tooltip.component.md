@@ -87,7 +87,7 @@ Minimal markup example. The tooltip is a sibling of its target; connect it via `
 - Pick `tooltip-type` based on intent: `label` when the tooltip provides the accessible name for an otherwise unlabeled trigger; `description` when it adds context to an already-labeled control; `none` when the tooltip is decorative.
 - The trigger element must be focusable so keyboard users can open the tooltip.
 
-#### Labelling
+#### Labeling
 
 - Keep tooltip content short and meaningful — it is announced as the trigger's accessible name or description.
 - If the trigger has an existing `aria-label` you don't want overridden, choose `tooltip-type="description"` (or `none`) rather than `label`.

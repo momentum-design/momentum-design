@@ -128,7 +128,7 @@ Each cell exposes its full localized date through `aria-label` (e.g. "Monday, Ju
 - When using `range`, surface the current selection in the surrounding UI (for example as visible text "Start date: …, End date: …") so screen reader users get reinforcement beyond `aria-selected` on individual cells.
 - If the consumer needs to disable arbitrary dates beyond `min`/`max`, that is not currently supported — narrow the range with `min`/`max` instead.
 
-#### Labelling
+#### Labeling
 
 - The grid is announced as `Calendar, <Month Year>` by default. If the surrounding UI already conveys the calendar's purpose (e.g. "Departure date"), wrap the calendar in an element with a more specific `aria-label`/`aria-labelledby` and rely on the grid's own label for the month/year context.
-- Day cells are labelled with the localized full date — do not override these via custom DOM; the localized form is the most accessible representation.
+- Day cells are labeled with the localized full date — do not override these via custom DOM; the localized form is the most accessible representation.

@@ -100,7 +100,7 @@ The component is form-associated; placing it inside a `form` element registers i
 - Provide a `name` attribute so the value can be retrieved from `FormData`.
 - Use `validation-message` together with `help-text-type="error"` to surface custom validation results.
 
-#### Labelling
+#### Labeling
 
 - Always set a `label` (or slot a custom one into the `label` slot) so the field has a visible accessible name.
 - Always provide `show-button-aria-label` and `hide-button-aria-label`; without them the toggle has no accessible name.

@@ -90,7 +90,7 @@ The `label` provides the accessible name. The leading icon is decorative and is 
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be interactive, so the state is exposed to assistive technology and removed from the tab order.
 - Do not rely on `color` alone to convey meaning — pair color with a label that already states the semantic.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `label` — it is the accessible name of the chip and is mandatory for screen-reader users.
 - When the chip is truncated, connect an `mdc-tooltip` (via the tooltip's `triggerid` pointing at the chip's `id`) so the full label remains discoverable.

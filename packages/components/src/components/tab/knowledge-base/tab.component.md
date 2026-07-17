@@ -90,7 +90,7 @@ Slots:
 - The corresponding content panel element must have `role="tabpanel"` and `aria-labelledby` referencing the tab's `id`.
 - If a tab opens a popup menu, set `aria-haspopup` on it to either `menu` or `true`.
 
-#### Labelling
+#### Labeling
 
 - When `text` is omitted, provide an `aria-label` on the tab so screen reader users hear a meaningful name.
 

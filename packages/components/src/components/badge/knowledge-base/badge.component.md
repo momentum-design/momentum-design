@@ -68,7 +68,7 @@ The badge is decorative by default and is not exposed to assistive technologies 
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
-- When the badge carries meaning (counter value, status), provide an `aria-label` describing it (e.g. `aria-label="5 unread"`, `aria-label="Error"`). The component then exposes itself as a labelled `img`.
+- When the badge carries meaning (counter value, status), provide an `aria-label` describing it (e.g. `aria-label="5 unread"`, `aria-label="Error"`). The component then exposes itself as a labeled `img`.
 - Leave `aria-label` unset when the badge is purely decorative or its meaning is already conveyed by adjacent text — the component stays out of the accessibility tree.

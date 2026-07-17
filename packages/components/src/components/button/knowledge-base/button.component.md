@@ -95,7 +95,7 @@ When `active` is set, the component writes the boolean state into the configured
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Text buttons get their accessible name from the slotted label — keep the label concise and self-describing.
 - Icon-only buttons (no default slot content, only `prefix-icon` or `postfix-icon`) MUST have an `aria-label` describing the action; without it, the button is announced without context.

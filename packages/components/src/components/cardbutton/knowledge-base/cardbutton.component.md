@@ -103,7 +103,7 @@ When the card participates in a form, `mdc-buttonsimple` registers it as a form-
 - Use `disabled` to prevent activation when the action is genuinely unavailable; use `soft-disabled` only when the user still needs to be able to discover the control with the keyboard or screen reader.
 - When the card sits in a list of similar tiles, wrap the collection in a real list (`<ul>`/`<li>` or `role="list"`/`role="listitem"`) so assistive technologies announce the count and position.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is the default accessible name of the button.
 - When the title is not enough on its own (e.g. icon-driven cards or repeating titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement describes the action precisely.

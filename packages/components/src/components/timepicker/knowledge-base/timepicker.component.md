@@ -138,7 +138,7 @@ Slots: `label`, `toggletip`, `help-icon`, `help-text` — for overriding the lab
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - All `locale-*` strings must be provided and translated. Without them the spinbuttons have empty `aria-label`s and screen readers cannot describe what is being edited.
 - Provide a `label` (or a slotted label) to give the field a visible name.

@@ -100,7 +100,7 @@ A custom indicator slotted into `indicator` is supported: when content is slotte
 - Group related radios with the same `name` attribute, or wrap them in `mdc-radiogroup`. Without a shared `name`, exclusive selection and arrow-key navigation do not work.
 - To show a validation message for an invalid group, wrap the radios in `mdc-radiogroup` and set its `help-text` — the radio itself does not render a visible validation message.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` on every radio describing the option. When no visible label is present, set `data-aria-label`.
 - Provide a label on the surrounding `mdc-radiogroup` describing what the group represents.

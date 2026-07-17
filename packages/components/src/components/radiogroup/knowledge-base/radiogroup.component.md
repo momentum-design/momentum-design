@@ -1,13 +1,13 @@
 ---
 title: Radiogroup
-summary: Usage, guidelines, and accessibility for the mdc-radiogroup component — a labelled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.
+summary: Usage, guidelines, and accessibility for the mdc-radiogroup component — a labeled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.
 tier: 3
 component: radiogroup
 ---
 
 ## Overview
 
-The radiogroup is a labelled wrapper that bundles related `mdc-radio` (or `mdc-cardradio`) elements together. It renders an optional header label and helper text, propagates a shared `name` and `required` state to its radio children, and exposes the wrapped controls as a `radiogroup` to assistive technologies.
+The radiogroup is a labeled wrapper that bundles related `mdc-radio` (or `mdc-cardradio`) elements together. It renders an optional header label and helper text, propagates a shared `name` and `required` state to its radio children, and exposes the wrapped controls as a `radiogroup` to assistive technologies.
 
 ### When to use
 
@@ -86,7 +86,7 @@ On first render, the group walks its assigned radio children and applies its own
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` describing what the group represents. Without a `label` and without an explicit `aria-label`, the group has no accessible name.
 - When `toggletip-text` is set, provide `info-icon-aria-label` for the info-icon button.

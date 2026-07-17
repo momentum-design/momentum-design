@@ -121,6 +121,6 @@ When `data-index` is set, the row's `aria-posinset` is set to `data-index + 1` s
 - When the row's primary label may truncate, connect an `mdc-tooltip` to the row via the tooltip's `triggerid` pointing at the row's `id`. Do not rely on the truncated label alone — the tooltip is the only way to surface the full text to screen-reader users.
 - When using `soft-disabled`, suppress unintended click / keyboard actions in your own handlers; the row only changes visuals, it does not block activation.
 
-#### Labelling
+#### Labeling
 
 - Provide `label` on every listitem; without it the row has no announced name unless the consumer slots their own text into `leading-text-primary-label`.

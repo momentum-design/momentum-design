@@ -58,7 +58,7 @@ The brandvisual renders the fetched artwork as-is and does not set any ARIA role
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - For image (PNG) assets, always set `alt-text` to a short description of what the logo represents (e.g. `alt-text="Webex"`). Leave `alt-text` empty only when the same brand name is already conveyed by adjacent visible text.
 - For SVG assets (which do not receive the `alt` attribute), provide the accessible name through the surrounding context — for example, wrap the brandvisual in an element with `aria-label`, or place visually hidden text alongside it.

@@ -94,7 +94,7 @@ Minimal markup example. Each `mdc-tab` must point at its associated panel via `a
 - Render a separate element with `role="tabpanel"` for each tab and toggle its visibility based on the selected tab.
 - Reflect the active tab's selection in the application state so the rendered panel matches the user's choice.
 
-#### Labelling
+#### Labeling
 
 - Always set `data-aria-label` so the tablist has an accessible name; otherwise screen readers cannot describe the purpose of the tab group.
 - Each tab needs an `aria-controls` attribute pointing at the id of its panel; each panel needs `aria-labelledby` pointing at its tab.

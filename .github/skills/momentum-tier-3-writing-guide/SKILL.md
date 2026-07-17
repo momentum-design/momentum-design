@@ -93,6 +93,27 @@ Do not introduce headings that are not in `body.config.json` (for example a
 optional `Related components` section — distinguish each related component in
 one sentence rather than restating its guidelines.
 
+## Where each kind of content belongs
+
+Most rework comes from putting the right content in the wrong section — usually
+`Overview` and `Content guidance` absorbing material that belongs elsewhere. Before
+validating, check each sentence against this routing table and move anything that
+matches a different row.
+
+| Content type | Correct home |
+|---|---|
+| Why the component exists / the user problem it solves | `Overview` |
+| What it looks like (anatomy, parts, layout) | Usually omit; at most a short clause in `Overview` |
+| Keyboard, focus, and pointer mechanics | `Accessibility → Built-in features` |
+| A "choose this when…" decision | `When to use` |
+| A "choose something else when…" decision (with alternative) | `When not to use` |
+| How to give it an accessible name (`aria-label`, `aria-labelledby`, slotted label) | `Accessibility → Implementation requirements → Labeling` |
+| Slot / parent–child / required-children composition | `Guidelines → Composition` |
+| Prop values, defaults, and combinations | `Guidelines → Property/Attribute details` |
+| Grouping / role requirements the consumer must satisfy | `Accessibility → Implementation requirements → General` |
+| Visible copy: label, body, helper, empty-state wording | `Guidelines → Content guidance` |
+| Factual implementation constraints and non-goals | `Guidelines → Limitations` |
+
 ## Frontmatter
 
 ### `summary`
@@ -122,8 +143,31 @@ One to three sentences (the validator allows a maximum of three). What does this
 component do and what user need does it serve? Write this as the answer to "why
 does this component exist" not "what does it look like."
 
+Keep it to purpose. Do not include:
+
+- **Anatomy** — the parts it is composed of ("image, header, body, footer") or its
+  layout. That is description, not purpose.
+- **Interaction mechanics** — keyboard, pointer, or focus behavior (`Enter`,
+  `Space`, arrow keys, "dispatches a `click`"). These live in
+  `Accessibility → Built-in features`.
+- **Directives** — "Use it when…" / "Use this for…". Those belong in `When to use`.
+
+A reliable template: "The `mdc-<component>` <does X> so <user benefit or when it
+applies>." One or two sentences in that shape is usually enough.
+
 Do not add a level-1 `#` heading anywhere in the body — the frontmatter `title`
 is the implicit H1 — and do not restate that `title` verbatim here.
+
+Example (Card button):
+
+- **Avoid** (anatomy + mechanics + directive): "The card button looks like a card
+  (image, header, body) but acts as one large button. Clicking, pressing `Enter`,
+  or pressing `Space` dispatches a `click` event. Use it when the whole tile
+  should be a single target."
+- **Prefer** (purpose): "The card button gives a whole card the behavior of a
+  single button, letting an entire content tile act as one activation target. It
+  exists for cases where the whole surface represents one action rather than a
+  container of separate controls."
 
 #### `When to use`
 
@@ -133,6 +177,13 @@ concrete enough that a designer could read it and make a decision.
 Cover the primary use case first, then secondary use cases. Three to five
 conditions is usually the right scope — more than that and the guidelines are
 covering for an unclear component contract.
+
+Each bullet must be a genuine *use decision* — a reason to choose this component
+(or a specific variant) over the alternatives. Do not list implementation
+requirements (for example, wrapping the group in `role="group"`) or configuration
+steps (for example, setting `name`/`value` to submit in a form); those belong in
+`Accessibility → Implementation requirements` and `Property/Attribute details`
+respectively.
 
 Format:
 
@@ -196,18 +247,45 @@ section's `description` — and its sub-sections' `description`s — in
 _Writing guidance is pending team discussion. Until it lands, follow the
 section `description` in [`body.config.json`](../../../config/knowledge-base/content/body.config.json)._
 
+#### `Composition`
+
+Structural rules for how the component's pieces fit together: which slots to use
+and what to place in them, required or expected child components, and any ordering
+or nesting constraints. This is the home for slot and parent–child guidance that
+would otherwise leak into `Content guidance` (which is words only) or `Developer
+usage` (which is integration and a minimal example).
+
+Use this section for container and compound components (for example a card with
+header/body/footer slots, or a list that expects specific item children). Skip it
+for leaf components with no meaningful composition.
+
+Keep it to structure, not the visible copy (→ `Content guidance`), the
+accessible-name mechanism (→ `Labeling`), or the raw property reference (→
+`Property/Attribute details`).
+
 #### `Content guidance`
 
 Guidance for the *visible copy* a product team writes into the component — button
 labels, error messages, empty-state copy, tooltip content — covering tone,
 length, framing, and casing.
 
-This section is about the **words**, not accessibility labelling mechanics. How a
+This section is about the **words**, not accessibility labeling mechanics. How a
 consumer supplies an accessible name — `aria-label`, `aria-labelledby`, a slotted
 label element, or naming an icon-only control — belongs in
-`Accessibility → Implementation requirements → Labelling`, not here. Visible label
+`Accessibility → Implementation requirements → Labeling`, not here. Visible label
 text still lives here even when it doubles as the accessible name; it is the
-programmatic naming *mechanism* that moves to Labelling.
+programmatic naming *mechanism* that moves to Labeling.
+
+Keep out of this section (move each to its home in the routing table above):
+
+- Accessible-name mechanics (`aria-label`, `aria-labelledby`, slotted label) →
+  `Labeling`.
+- Slot and composition mechanics (which slot to use, required children, parent–child
+  rules) → `Composition`.
+- Property values, defaults, and combinations → `Property/Attribute details`.
+- Keyboard, focus, or pointer behavior → `Accessibility → Built-in features`.
+
+If removing those leaves nothing author-written, omit the section entirely.
 
 Content guidance is particularly important for:
 
@@ -343,7 +421,7 @@ section `description` in [`body.config.json`](../../../config/knowledge-base/con
 _Writing guidance is pending team discussion. Until it lands, follow the
 section `description` in [`body.config.json`](../../../config/knowledge-base/content/body.config.json)._
 
-##### `Labelling`
+##### `Labeling`
 
 _Writing guidance is pending team discussion. Until it lands, follow the
 section `description` in [`body.config.json`](../../../config/knowledge-base/content/body.config.json)._
@@ -373,23 +451,50 @@ works with this component.
 
 ## Self-check before validating
 
-Before running validation, confirm:
+Run these as gates — a file that fails any item is not done; fix it and re-check
+before moving on. They are grouped by the sections that most often regress.
 
-- `Overview` is one to three sentences, adds no `#` H1, and does not restate the
-  frontmatter `title`.
+**Overview**
+
+- One to three sentences, adds no `#` H1, and does not restate the frontmatter
+  `title`.
+- Contains no anatomy, no interaction mechanics (`Enter`, `Space`, arrow keys,
+  `click`, `keydown`), and no "Use it…"/"Use this…" directive.
+
+**When to use / When not to use**
+
 - `When to use` leads every bullet with the component tag (`mdc-...`), adding the
   specific variant value or attribute only when the recommendation is
-  variant/attribute-specific. `When not to use` states each misuse and points to
-  an alternative. Every condition is specific enough to decide from.
-- Every `When not to use` entry names an alternative.
-- Limitations are real for this component, not generic, and each leads with a bold
-  1–5 word mini-assertion and ends with a workaround or alternative.
-- Accessibility appears in context, not only in its own section.
-- Content guidance matches system voice/tone where it exists, is component-specific,
-  and contains no generic content-guidelines pointer or link.
-- Property/Attribute details and Related components are formatted as tables, and the
-  `summary` frontmatter follows the fixed shape.
-- Content guidance covers visible copy only; accessible-name mechanics live in `Labelling`.
+  variant/attribute-specific.
+- Every `When to use` bullet is a genuine use decision — not an implementation
+  requirement (for example `role="group"`) or a configuration step (for example
+  `name`/`value`).
+- `When not to use` states each misuse and names an alternative. Every condition is
+  specific enough to decide from.
+
+**Content guidance**
+
+- Covers visible copy only. Contains no `aria-*` or accessible-name mechanics (→
+  `Labeling`), no slot/composition mechanics (→ `Composition`), and no prop
+  configuration (→ `Property/Attribute details`).
+- Bullets are component-specific with no generic content-guidelines pointer or link,
+  and match system voice/tone where it exists. If nothing author-written remains,
+  the section is omitted.
+
+**Property/Attribute details & Related components**
+
+- Both are formatted as tables, and nothing restates the auto-generated API table.
+
+**Limitations**
+
+- Real for this component (not generic); each leads with a bold 1–5 word
+  mini-assertion and ends with a workaround or alternative.
+
+**Whole file**
+
+- Accessibility appears in context (in `When not to use`, `Limitations`, content
+  guidance), not only in its own section.
+- The `summary` frontmatter follows the fixed shape.
 - Content is written in US English spelling.
 - Nothing restates what the API, the auto-generated table, or the frontmatter
   `title` already conveys.

@@ -154,7 +154,7 @@ The `label` (or `data-aria-label`) provides the accessible name for the field. `
 - When using the popover, set `append-to` if the datepicker is rendered inside an element with `overflow: hidden` so the calendar can escape the clip region.
 - For range or week selection, listen for `change` and read both `event.detail.value` (start) and `event.detail.endDate` (end) — or, when reading attributes back, both `value` and `end-value`.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` (or `data-aria-label`); without it, the spinbuttons and trigger have no accessible name.
 - Provide every `locale-*` label the variant uses — there is no English fallback for these.

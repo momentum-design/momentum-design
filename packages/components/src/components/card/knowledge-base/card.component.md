@@ -99,10 +99,10 @@ The card renders as a generic container — no role, label, or focus management 
 #### General
 
 - The card itself is not focusable. If the whole tile must be activatable, use `mdc-cardbutton`/`mdc-cardcheckbox`/`mdc-cardradio` instead of wiring click handlers onto `mdc-card`.
-- Each interactive child must be independently labelled. Icon-only buttons in the `icon-button`, `footer-button-primary`, or `footer-button-secondary` slots require an `aria-label` describing the action.
+- Each interactive child must be independently labeled. Icon-only buttons in the `icon-button`, `footer-button-primary`, or `footer-button-secondary` slots require an `aria-label` describing the action.
 - When the card sits inside a list of similar tiles, make the surrounding container an actual list (`<ul>`/`<li>` or `role="list"`/`role="listitem"`) so assistive technologies announce the count and position.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is what users skim when navigating between cards.
 - Always set `image-alt` for informative images. For purely decorative imagery, set `image-alt=""` so screen readers skip the image.

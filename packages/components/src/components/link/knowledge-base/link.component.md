@@ -105,7 +105,7 @@ The anchor's accessible name comes from the slotted text content by default; whe
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide descriptive link text so the link's accessible name conveys where it leads; supply `data-aria-label` only when the visible text would be ambiguous out of context.
 - For `target="_blank"` links, the icon affordance is visual — the consumer can supply a `data-aria-label` such as `"Open example.com (opens in new tab)"` if the new-tab behaviour must be conveyed to screen readers.

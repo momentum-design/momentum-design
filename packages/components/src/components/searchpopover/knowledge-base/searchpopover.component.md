@@ -96,7 +96,7 @@ The internal `<input>` is given `role="combobox"` and is wired to the popover vi
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` (or `data-aria-label`) so the input/combobox has an accessible name.
 - Provide `popover-aria-label` so the popover has an announceable name (for example "Search results" or "Suggestions").

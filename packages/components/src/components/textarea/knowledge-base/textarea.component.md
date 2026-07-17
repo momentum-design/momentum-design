@@ -120,7 +120,7 @@ Slots:
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always provide a `label` (or a slotted label) for screen readers to identify the textarea's purpose.
 - When `resizable` is enabled, provide a `resize-button-aria-label` that describes the button and mentions the Arrow Up/Down shortcuts.

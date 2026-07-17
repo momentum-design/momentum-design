@@ -82,7 +82,7 @@ The bar element is rendered with `role="progressbar"`, `aria-valuemin="0"`, `ari
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always provide `data-aria-label` describing what the progressbar represents (e.g. `"Upload progress"`) — without it the progressbar has no accessible name.
 - Use the `label` property for a visible human-readable label; pair it with `data-aria-label` for the same text when no other context is provided.

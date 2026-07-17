@@ -120,7 +120,7 @@ The accessible name on the inner anchor is taken from the host's `data-aria-labe
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Text buttonlinks get their accessible name from the slotted label — keep it destination-oriented and self-describing.
 - Icon-only buttonlinks (no default slot content, only `prefix-icon` or `postfix-icon`) MUST set `data-aria-label` so the inner anchor has an accessible name.

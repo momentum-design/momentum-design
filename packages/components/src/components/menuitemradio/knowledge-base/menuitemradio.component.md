@@ -88,7 +88,7 @@ All members of the same radio group must share the same `name` value and live in
 - Group related radios by sharing the same `name` and keeping them inside the same `mdc-menusection` or `mdc-menupopover`.
 - Do not nest focusable elements inside the item.
 
-#### Labelling
+#### Labeling
 
 - Provide an accessible name via `label`, slotted text in `leading-text-primary-label`, or `aria-label`.
 - When grouping radios inside `mdc-menusection`, give the section a `header-text` so the group has a visible heading; the section forwards it to `aria-label` automatically.

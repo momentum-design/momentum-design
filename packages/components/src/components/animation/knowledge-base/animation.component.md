@@ -1,6 +1,6 @@
 ---
 title: Animation
-summary: Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labelled animations.
+summary: Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labeled animations.
 tier: 3
 component: animation
 ---
@@ -54,11 +54,11 @@ The internal animation container is rendered with `aria-hidden="true"` so the un
 #### Internal ARIA managed by the component
 
 - When neither `aria-label` nor `aria-labelledby` is provided, the host has no role and is treated as a decorative image (skipped by assistive technologies).
-- When `aria-label` or `aria-labelledby` is set, the host receives `role="img"` so screen readers announce it as a labelled image.
+- When `aria-label` or `aria-labelledby` is set, the host receives `role="img"` so screen readers announce it as a labeled image.
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - If the animation conveys meaning (e.g. a success state), provide an `aria-label` or `aria-labelledby` describing the meaning, not the motion.
-- Leave both labelling attributes unset when the animation is purely decorative; the component will keep it out of the accessibility tree.
+- Leave both labeling attributes unset when the animation is purely decorative; the component will keep it out of the accessibility tree.

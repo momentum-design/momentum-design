@@ -104,7 +104,7 @@ Slots:
 - Each panel element must have `role="tabpanel"` and `aria-labelledby` referencing its tab.
 - If a tab opens a popup menu, set `aria-haspopup` on that tab to `menu` or `true`.
 
-#### Labelling
+#### Labeling
 
 - Provide `data-aria-label` when the tablist does not have a visible heading directly above it.
 

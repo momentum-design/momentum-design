@@ -132,7 +132,7 @@ Tooltip: the value tooltip is rendered with `aria-hidden="true"` because the sam
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide a visible `label` whenever possible — it is used as the accessible name fallback for the thumb(s).
 - For range sliders, set `start-aria-label` and `end-aria-label` so each thumb is individually identifiable (e.g. "Minimum price", "Maximum price"). Without these the same `label` value is used for both thumbs.

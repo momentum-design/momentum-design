@@ -146,7 +146,7 @@ Hover triggering uses delegated `mouseover`/`mouseout` listeners on `document` s
 - For popovers that should close on Escape, set `hide-on-escape` (the popover does not close on Escape by default).
 - When multiple popovers are wired to the same trigger, set `disable-aria-expanded` on all but one so the trigger's `aria-expanded`/`aria-haspopup` state remains coherent.
 
-#### Labelling
+#### Labeling
 
 - For interactive popovers, provide `aria-label` or `aria-labelledby` describing what the popover contains. If neither is supplied, the popover falls back to the trigger's accessible name.
 - When `close-button` is `true`, provide `close-button-aria-label` so the close button has an accessible name.

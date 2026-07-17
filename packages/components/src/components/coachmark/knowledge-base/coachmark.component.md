@@ -97,7 +97,7 @@ The bubble is high-contrast and arrow-anchored to the trigger, making the spatia
 | -------------- | ------------------ | ------------------------------------------------------------------ |
 | Host (overlay) | `role`             | `dialog` (default; override via `role`)                            |
 | Host (overlay) | `aria-modal`       | `true` when the focus trap is active                               |
-| Host (overlay) | `aria-labelledby`  | id of the labelling element, when `aria-labelledby` is set         |
+| Host (overlay) | `aria-labelledby`  | id of the labeling element, when `aria-labelledby` is set         |
 | Host (overlay) | `aria-label`       | mirrors `aria-label` when set                                      |
 | Trigger        | `aria-expanded`    | not set (suppressed by `disable-aria-expanded`)                    |
 | Trigger        | `aria-haspopup`    | not set (suppressed by `disable-aria-expanded`)                    |
@@ -110,7 +110,7 @@ The bubble is high-contrast and arrow-anchored to the trigger, making the spatia
 - Coordinate sequences from the consumer side: show one coachmark at a time, restore focus to a sensible element after dismissal, and provide a way to skip the whole flow.
 - If multiple popovers share the same trigger, keep `disable-aria-expanded` enabled on every coachmark and let exactly one overlay drive `aria-expanded` / `aria-haspopup` on the trigger.
 
-#### Labelling
+#### Labeling
 
 - Provide an `aria-label` or `aria-labelledby` so the coachmark announces a meaningful name when it opens; the default `role="dialog"` requires it.
 - If the coachmark's title is rendered inside its content, use `aria-labelledby` pointing at that element rather than repeating the text in `aria-label`.

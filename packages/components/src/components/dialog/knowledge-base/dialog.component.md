@@ -129,7 +129,7 @@ The dialog renders with `role="dialog"` and `aria-modal="true"`. While visible:
 | Host (dialog)  | `role`             | `dialog` (default; override via `role`)                                     |
 | Host (dialog)  | `aria-modal`       | `true`                                                                      |
 | Host (dialog)  | `aria-label`       | set from `header-text` when no `aria-label`/`aria-labelledby` provided      |
-| Host (dialog)  | `aria-labelledby`  | set from `triggerID` when no header text and no explicit labelling provided |
+| Host (dialog)  | `aria-labelledby`  | set from `triggerID` when no header text and no explicit labeling provided |
 | Host (dialog)  | `aria-description` | set from `description-text` when no `aria-describedby` provided             |
 | Host (dialog)  | `aria-describedby` | set from `triggerID` when no description text provided                      |
 | Close button   | `aria-label`       | mirrors `close-button-aria-label`                                           |
@@ -145,7 +145,7 @@ The dialog renders with `role="dialog"` and `aria-modal="true"`. While visible:
 - When multiple dialogs may open at once, set `stack-group-name` to coordinate stacking and avoid duplicate top-most dialogs.
 - When the dialog hosts a form, place the `<form>` outside the dialog (or inside the body slot) and connect submit buttons via the `form` attribute.
 
-#### Labelling
+#### Labeling
 
 - Provide `header-text` whenever possible — it doubles as the accessible name.
 - If the title is rendered inside the body slot instead of `header-text`, set `aria-labelledby` pointing at that element.

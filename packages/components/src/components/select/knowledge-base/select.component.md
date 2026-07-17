@@ -143,7 +143,7 @@ Disabled states: when `disabled`, `soft-disabled`, or `readonly` becomes true wh
 - Place per-option `mdc-tooltip` siblings outside `mdc-select` and connect them via `triggerid` — tooltips slotted inside the listbox break announcement and focus order.
 - For required selects, pair `required` with a meaningful `validation-message`.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` whenever possible — `role="combobox"` requires an accessible name.
 - When no visible label is shown, set `data-aria-label` on the host.

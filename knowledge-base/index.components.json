@@ -45,7 +45,7 @@
       "tier": 3,
       "path": "packages/components/src/components/animation/knowledge-base/animation.component.md",
       "title": "Animation",
-      "summary": "Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labelled animations.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labeled animations.",
       "canonical": null,
       "component": "animation"
     },
@@ -288,7 +288,7 @@
       "tier": 3,
       "path": "packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component.md",
       "title": "Formfieldgroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labeled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.",
       "canonical": null,
       "component": "formfieldgroup"
     },
@@ -477,7 +477,7 @@
       "tier": 3,
       "path": "packages/components/src/components/menusection/knowledge-base/menusection.component.md",
       "title": "Menusection",
-      "summary": "Usage, guidelines, and accessibility for the mdc-menusection component — a labelled grouping of menu items inside a menu or menubar.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menusection component — a labeled grouping of menu items inside a menu or menubar.",
       "canonical": null,
       "component": "menusection"
     },
@@ -495,7 +495,7 @@
       "tier": 3,
       "path": "packages/components/src/components/optgroup/knowledge-base/optgroup.component.md",
       "title": "Optgroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-optgroup component — a labelled grouping of mdc-option elements inside a listbox.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-optgroup component — a labeled grouping of mdc-option elements inside a listbox.",
       "canonical": null,
       "component": "optgroup"
     },
@@ -567,7 +567,7 @@
       "tier": 3,
       "path": "packages/components/src/components/radiogroup/knowledge-base/radiogroup.component.md",
       "title": "Radiogroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-radiogroup component — a labelled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-radiogroup component — a labeled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.",
       "canonical": null,
       "component": "radiogroup"
     },

@@ -113,7 +113,7 @@ The component supports three usage configurations:
 - Use `cannot-activate` for items that should behave like buttons or external links rather than navigation destinations.
 - When the navigation can be collapsed, supply `tooltip-text` so collapsed items expose their name on hover/focus.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` for the visible text; set `aria-label` explicitly only when the visible label is not descriptive enough or when the item renders icon-only without a `tooltip-text`.
 - For a parent navmenuitem whose nested child can be active, provide `is-active-parent-tooltip-text` (for example `"Messaging, contains active navmenuitem"`) so the collapsed parent still communicates the active descendant.

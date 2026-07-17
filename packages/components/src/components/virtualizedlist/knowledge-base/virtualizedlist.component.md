@@ -114,7 +114,7 @@ list.addEventListener('virtualitemschange', (event) => {
 - Provide stable `getItemKey` values; changing the key as content changes will cause scroll position and selection to shift unexpectedly.
 - For dynamic item sizes, enable `observe-size-changes` so size measurements stay accurate after content updates.
 
-#### Labelling
+#### Labeling
 
 - Set `data-aria-label` so the list has an accessible name. Without it, assistive technologies will announce an unnamed list role.
 

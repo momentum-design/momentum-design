@@ -12,7 +12,7 @@ The card radio looks like a card (image, header with icon/title/subtitle, body) 
 ### When to use
 
 - Use `mdc-cardradio` when each option in a single-select group needs the visual weight of a card (image, title, supporting copy) rather than a small inline control.
-- Use it inside a labelled radio-group container (`role="radiogroup"` + `aria-label` / `aria-labelledby`) when several card radios belong to the same selection set.
+- Use it inside a labeled radio-group container (`role="radiogroup"` + `aria-label` / `aria-labelledby`) when several card radios belong to the same selection set.
 
 ### When not to use
 
@@ -124,7 +124,7 @@ The `card-title` (or `title` slot) provides the accessible name. The `mdc-static
 - Keep every slotted child presentational. If you need actionable content alongside the option, switch to `mdc-card` and use `mdc-radio` / `mdc-radiogroup` for the selection.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable, so the state is exposed to assistive technology and arrow navigation skips it correctly.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is the default accessible name of the radio.
 - When the title alone is ambiguous (e.g. icon-driven cards, repeated titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement matches the option.

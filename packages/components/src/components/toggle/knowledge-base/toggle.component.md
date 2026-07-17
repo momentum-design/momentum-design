@@ -87,7 +87,7 @@ Minimal markup example:
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Prefer the `label` attribute (or a slotted `label` element) so users see a visible label alongside the toggle.
 - When no visible label is possible, set `data-aria-label` on the host so the underlying input has an accessible name.

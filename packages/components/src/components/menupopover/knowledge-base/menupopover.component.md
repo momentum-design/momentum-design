@@ -103,6 +103,6 @@ The `triggerid` attribute must match the `id` of the element that opens the popo
 - Wrap React renders of `mdc-menupopover` with `append-to` in a stable parent element (for example a `div`), not directly as a conditional fragment, to avoid `NotFoundError` when React tries to unmount a popover that has been moved by the `append-to` logic.
 - Submenu popovers must be siblings of their parent popover (or of the menubar), each anchored to its trigger menu item via `triggerid`.
 
-#### Labelling
+#### Labeling
 
 - Provide an `aria-label` or `aria-labelledby` on the trigger so that the trigger announces what the menu does. When the popover is interactive, set `aria-labelledby` on the popover itself if it does not inherit a usable name from the trigger.

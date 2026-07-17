@@ -1,6 +1,6 @@
 ---
 title: Formfieldgroup
-summary: Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.
+summary: Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labeled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.
 tier: 3
 component: formfieldgroup
 ---
@@ -19,7 +19,7 @@ The group is announced to screen readers as a single semantic unit via `role="gr
 ### When not to use
 
 - Use `mdc-radiogroup` for radio buttons — radios require the `radiogroup` role and arrow-key navigation, which `mdc-formfieldgroup` does not provide.
-- Use `mdc-formfieldwrapper` for a single labelled form field rather than a group.
+- Use `mdc-formfieldwrapper` for a single labeled form field rather than a group.
 
 ## Guidelines
 
@@ -91,7 +91,7 @@ Children are rendered in the default slot in DOM order and announced to screen r
 - Place only checkbox or toggle children in the default slot; radio buttons need `mdc-radiogroup` instead.
 - Validate the children's combined state from the consumer when `required` is `true` — the group does not enforce that at least one child is selected.
 
-#### Labelling
+#### Labeling
 
 - Always provide a `label` (or `data-aria-label`) — without it the group has no accessible name.
 - Use `help-text` for constraints that apply to the whole group; per-field error messages belong on each child's own `help-text`.
