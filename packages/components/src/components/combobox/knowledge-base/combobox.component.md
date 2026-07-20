@@ -7,13 +7,9 @@ component: combobox
 
 ## Overview
 
-The combobox is a text-based dropdown control that lets the user type to filter a predefined list of options, then pick one. Typing narrows the visible options based on the configured `filter` strategy; clicking the trigger button or pressing arrow keys opens the dropdown without filtering.
+The combobox is a text-based dropdown control that lets the user type to filter a predefined list of options, then pick one. Typing narrows the visible options based on the configured `filter` strategy.
 
 The component is form-associated and participates in native form submission, validation, and reset.
-
-It is designed to be used with `mdc-option` (individual options) and `mdc-optgroup` (grouped options) placed inside an `mdc-selectlistbox` slotted child — `mdc-selectlistbox` owns the `role="listbox"` and is required for correct screen-reader behaviour.
-
-When the consumer needs to drive the value externally (e.g. server-side filtering), set `control-type="controlled"` on a wrapping `mdc-controltypeprovider` (or use `filter="none"`): the combobox will emit `input` and `change` events but will not mutate its own `value` — the parent component is expected to update `value` to reflect the selection.
 
 ### When to use
 
@@ -23,10 +19,10 @@ When the consumer needs to drive the value externally (e.g. server-side filterin
 
 ### When not to use
 
-- Use `mdc-select` when the user should only pick from a fixed list without typing.
-- Use `mdc-searchfield` when the user is searching for content rather than picking a single value from a known set.
-- Use `mdc-input` when free-form text is the goal and no constrained option list applies.
-- Use `mdc-radiogroup` when there are only a handful of options and they should all be visible at once.
+- Do not use `mdc-combobox` when the user should only pick from a fixed list without typing. Use `mdc-select` instead.
+- Do not use `mdc-combobox` for searching content rather than picking a single value from a known set. Use `mdc-searchfield` instead.
+- Do not use `mdc-combobox` when free-form text is the goal and no constrained option list applies. Use `mdc-input` instead.
+- Do not use `mdc-combobox` for a handful of options that should all be visible at once. Use `mdc-radiogroup` instead.
 
 ## Guidelines
 
@@ -56,7 +52,7 @@ Listen for `change` to react to a committed selection and `input` to react to ev
 
 Structural requirements:
 
-- Slot every `mdc-option` (and `mdc-optgroup`) inside `mdc-selectlistbox`. `mdc-selectlistbox` owns the `role="listbox"` and is required for correct screen-reader behaviour; placing `mdc-option` directly inside the combobox breaks listbox semantics.
+- Slot every `mdc-option` (and `mdc-optgroup`) inside `mdc-selectlistbox`. `mdc-selectlistbox` owns the `role="listbox"` and is required for correct screen-reader behavior; placing `mdc-option` directly inside the combobox breaks listbox semantics.
 - Give every `mdc-option` a unique `value` — form submission, programmatic `value` updates, and "starts with" filtering all depend on it.
 - Place per-option `mdc-tooltip` siblings **outside** `mdc-selectlistbox` and link them via `triggerid` pointing at the option's `id`. Tooltips slotted inside the listbox break announcement and focus order.
 
@@ -66,37 +62,45 @@ Filtering modes:
 - Custom function (`filter={(option, inputValue) => boolean}`) — full control over the match logic, useful for multi-token or fuzzy matching.
 - External (`filter="none"`) — the combobox does not filter; update the slotted options as data arrives (e.g. from an API).
 
+Controlled value:
+
+- When the consumer needs to drive the value externally (e.g. server-side filtering), set `control-type="controlled"` on a wrapping `mdc-controltypeprovider` (or use `filter="none"`). The combobox then emits `input` and `change` but does not mutate its own `value` — the parent is expected to update `value` to reflect the selection.
+
 ### Content guidance
 
-- Provide a `label` describing what the user is selecting; reach for `data-aria-label` only when a visible label is not possible.
-- Set `placeholder` to a short hint about the expected input ("Start typing a country…"), not as a replacement for the label.
-- Set `no-result-text` to a short message shown when filtering excludes every option ("No matches"). When omitted, the dropdown closes silently on empty results.
-- Set `invalid-custom-value-text` to a short validation message used when the user types a value that does not match any option, leaves the field, and has never committed a value (e.g. "Pick a value from the list").
+- Write a `label` that names what the user is choosing ("Country"), not an instruction.
+- Set `placeholder` to a short hint about the expected input ("Start typing a country…"), never as a replacement for the label.
+- Set `no-result-text` to a short message shown when the filter excludes every option ("No matches"). When omitted, the dropdown closes silently on empty results.
+- Set `invalid-custom-value-text` to a short recovery message for when the user commits a value that matches no option ("Pick a value from the list").
 
 ### Property/Attribute details
 
-- `value` — the value of the selected option. Setting this attribute updates the visible selection without firing `change`.
-- `name` — form field name submitted with the form.
-- `placeholder` — placeholder text shown when no value is selected.
-- `placement` — popover placement relative to the input. `bottom-start` (default) or `top-start`.
-- `filter` — filter strategy: `match-starts-with` (default), `none` (no filtering), or a custom `(option, inputValue) => boolean` function. Only string values are reflected as the `filter` attribute.
-- `no-result-text` — text shown inside the dropdown when no options match the filter; omit to hide the dropdown silently.
-- `invalid-custom-value-text` — error message used when the user enters a value that does not match any option and the field has no previously committed value.
-- `boundary` — clipping ancestor used by the popover (`clippingAncestors` by default, or any CSS selector). Used together with `strategy` to keep the popover visible inside scrollable parents.
-- `strategy` — popover positioning strategy. `absolute` (default) or `fixed`. Use `fixed` together with a non-default `boundary` to avoid clipping inside scroll containers.
-- `popover-z-index` — z-index override for the popover.
-- `backdrop-append-to` — id of the element the popover backdrop is appended to (defaults to the combobox's parent).
-- `label` — visible label rendered above the field. Used as the accessible name when set.
-- `data-aria-label` — accessible name fallback when no visual label is rendered.
-- `help-text` — helper or validation text below the field.
-- `help-text-type` — `default`, `error`, `warning`, `success`, or `priority`. Drives the helper icon and error styling.
-- `toggletip-text` / `toggletip-placement` / `toggletip-strategy` / `info-icon-aria-label` — opt-in info icon button next to the label that opens an `mdc-toggletip`.
-- `required` — when `true`, the form is invalid unless a value is selected.
-- `validation-message` — custom validation message reported through `setCustomValidity` when the combobox is required but empty.
-- `disabled` — fully disabled; the host is removed from the tab order and the popover cannot open.
-- `readonly` — non-interactive but focusable; the popover cannot open and typing is suppressed, but the current value is still submitted.
-- `control-type` — when set to `controlled` (via `mdc-controltypeprovider`), the combobox emits `input` / `change` but does not update its own `value`; the parent must drive `value` in response.
-- `autoFocusOnMount` — when `true`, focuses the visible combobox input on first render.
+| Option | Intent |
+|---|---|
+| `value` | The selected option's value. Setting it updates the visible selection without firing `change`. |
+| `name` | Form field name submitted with the selected value. |
+| `placeholder` | Hint shown when no value is selected. |
+| `filter="match-starts-with"` (default) | How typed text narrows the list: the default shows options whose label starts with the input; `none` disables filtering (drive options externally); a `(option, inputValue) => boolean` function gives full control for fuzzy or multi-token matching. |
+| `no-result-text` | Message shown inside the dropdown when nothing matches; omit to close the dropdown silently instead. |
+| `invalid-custom-value-text` | Error shown when the user commits a value that matches no option. Set it when a typed-but-invalid value should be flagged rather than silently reverted. |
+| `help-text` + `help-text-type` | Helper or validation text below the field; the type (`default`, `error`, `warning`, `success`, `priority`) drives the icon and error styling. |
+| `required` + `validation-message` | Marks the field required and reports `validation-message` when submitted empty. |
+| `disabled` / `readonly` | `disabled` removes the input from the tab order and blocks the dropdown; `readonly` stays focusable and still submits, but the dropdown cannot open and typing is suppressed. |
+| `control-type="controlled"` | Via `mdc-controltypeprovider`, the combobox emits `input`/`change` but does not mutate its own `value`; the parent drives `value`. Use for server-side or externally managed filtering. |
+| `placement="bottom-start"` (default) | Popover side relative to the input; switch to `top-start` when space below is constrained. |
+| `strategy` + `boundary` | Popover positioning controls; pair `strategy="fixed"` with a `boundary` to avoid clipping inside scroll containers. |
+| `toggletip-text` + `info-icon-aria-label` | Opt-in info button beside the label that opens an `mdc-toggletip`; provide the aria-label when set. |
+| `auto-focus-on-mount` | Focuses the input on first render. Use sparingly — only when the combobox is the primary task on the view. |
+
+**Note:** `value`/`selected` live on `mdc-option`; grouping comes from `mdc-optgroup`. `popover-z-index` and `backdrop-append-to` match the shared popover surface.
+
+### Limitations
+
+- **No free-form custom values** — a typed value that matches no option is not kept as-is: on blur the combobox commits a highlighted or exactly-matching option, otherwise reverts to the last value or shows `invalid-custom-value-text`. There is no "allow custom value" mode.
+- **Single select only** — the combobox binds one value and has no multi-select. Use `mdc-listbox` with `multiple` when several values are needed.
+- **Listbox wrapper required** — options must sit inside `mdc-selectlistbox`; placing `mdc-option` directly in the combobox drops the listbox role and focus semantics.
+- **External filtering is manual** — with `filter="none"` or controlled mode the combobox does no filtering; you must add, remove, or update slotted options as data arrives.
+- **Popover covers help text** — the open dropdown renders directly below the input and overlaps any helper or validation text until it closes.
 
 ## Accessibility
 
@@ -113,7 +117,7 @@ Keyboard interaction:
 - `Home` / `End` clear the highlighted option (the native input then handles caret movement).
 - Typing filters the visible options according to `filter`, opens the dropdown if closed, and dispatches `input`.
 
-Blur behaviour: on blur, the combobox commits the currently highlighted option if any, otherwise the typed text if it exactly matches an option label, otherwise reverts to the last committed value, otherwise (if `invalid-custom-value-text` is set) shows the error message.
+Blur behavior: on blur, the combobox commits the currently highlighted option if any, otherwise the typed text if it exactly matches an option label, otherwise reverts to the last committed value, otherwise (if `invalid-custom-value-text` is set) shows the error message.
 
 When `disabled` is `true`, the input is removed from the tab order and the dropdown cannot open. When `readonly` is `true`, the input remains focusable, the dropdown cannot open, and the form value is still submitted.
 
@@ -160,3 +164,14 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 - Provide a `label` (or `data-aria-label`) — `role="combobox"` requires an accessible name.
 - Use `help-text` with `help-text-type="error"` for validation feedback; the icon and `aria-describedby` association are wired automatically.
 - Pair `no-result-text` and `invalid-custom-value-text` thoughtfully: the first describes "nothing matches your filter", the second describes "what you typed is not a valid option". Pick wording that helps the user recover.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-select` | Same dropdown surface without the editable input — pick from a fixed list, no typing. |
+| `mdc-selectlistbox` | Required wrapper carrying `role="listbox"` around the slotted options. |
+| `mdc-option` | A single selectable value inside the listbox. |
+| `mdc-optgroup` | Labeled grouping of options within the listbox. |
+| `mdc-searchfield` | For searching content rather than choosing one value from a known set. |
+| `mdc-controltypeprovider` | Wraps the combobox to enable `control-type="controlled"` for externally driven values. |

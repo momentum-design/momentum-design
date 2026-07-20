@@ -11,13 +11,13 @@ component: optgroup
 
 ### When to use
 
-- Use `mdc-optgroup` to organise related options inside an `mdc-selectlistbox` or `mdc-listbox` (for example, grouping countries by continent).
+- Use `mdc-optgroup` to organize related options inside an `mdc-selectlistbox` or `mdc-listbox` (for example, grouping countries by continent).
 - Use it to disable a whole set of options at once via the `disabled` attribute.
 
 ### When not to use
 
-- Do not use `mdc-optgroup` for grouping menu items — use `mdc-menusection` inside `mdc-menupopover` or `mdc-menubar`.
-- Do not nest `mdc-optgroup` inside another `mdc-optgroup`.
+- Do not use `mdc-optgroup` for grouping menu items. Use `mdc-menusection` inside `mdc-menupopover` or `mdc-menubar` instead.
+- Do not nest `mdc-optgroup` inside another `mdc-optgroup`. Keep groups to a single flat level instead.
 
 ## Guidelines
 
@@ -44,11 +44,23 @@ Minimal markup example:
 </mdc-select>
 ```
 
+### Content guidance
+
+- Write a short, descriptive group `label` in sentence case (a category name like "Europe"), and keep labels parallel across the groups in one listbox.
+
 ### Property/Attribute details
 
-- `label` — visible heading rendered above the options. When set, the heading is also referenced as the group's accessible name via `aria-labelledby`.
-- `data-aria-label` — fallback accessible name applied to the inner group element when no `label` is provided.
-- `disabled` — boolean. When toggled, the component applies or removes the `disabled` attribute on every slotted `mdc-option` child.
+| Option | Intent |
+|---|---|
+| `label` | Visible group heading, also wired as the group's accessible name via `aria-labelledby`. Use it whenever the grouping is shown. |
+| `data-aria-label` | Fallback accessible name for the group when no visible `label` is rendered. |
+| `disabled` | Cascades to every slotted `mdc-option`, disabling the whole group at once. |
+
+### Limitations
+
+- **No nesting** — an `mdc-optgroup` cannot contain another `mdc-optgroup`; keep groups to a single flat level.
+- **Options only** — the default slot is for `mdc-option` elements; other content receives no group semantics.
+- **Disabled cascades one way** — toggling `disabled` sets it on every child option, overwriting any per-option `disabled` when the group state changes.
 
 ## Accessibility
 
@@ -81,3 +93,13 @@ Minimal markup example:
 
 - Provide a `label` whenever the grouping is visible in the UI; this also supplies the accessible group name automatically.
 - When the group has no visible label, supply `data-aria-label` so assistive technology can still announce the group.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-option` | The entries grouped inside this component. |
+| `mdc-selectlistbox` | Required `role="listbox"` wrapper that holds groups and options inside select/combobox. |
+| `mdc-listbox` | Standalone listbox that can also contain grouped options. |
+| `mdc-select` / `mdc-combobox` | Dropdown controls whose options can be grouped with `mdc-optgroup`. |
+| `mdc-menusection` | The equivalent grouping for menu items rather than options. |
