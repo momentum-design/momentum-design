@@ -162,7 +162,7 @@
       "tier": 3,
       "path": "packages/components/src/components/calendar/knowledge-base/calendar.component.md",
       "title": "Calendar",
-      "summary": "Usage, guidelines, and accessibility for the mdc-calendar component — a monthly grid for selecting a single date, a week, or a date range with keyboard navigation and locale-aware formatting.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-calendar component — a month grid for selecting a single date, a week, or a date range.",
       "canonical": null,
       "component": "calendar"
     },
@@ -252,7 +252,7 @@
       "tier": 3,
       "path": "packages/components/src/components/datepicker/knowledge-base/datepicker.component.md",
       "title": "Datepicker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-datepicker component — a date input offering manual entry or a calendar popover for single, range, or week selection with locale support.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-datepicker component — a form control for entering or picking a date, range, or week with locale-aware formatting.",
       "canonical": null,
       "component": "datepicker"
     },
@@ -791,8 +791,8 @@
       "id": "tier3/packages/components/src/components/timepicker/knowledge-base/timepicker.component",
       "tier": 3,
       "path": "packages/components/src/components/timepicker/knowledge-base/timepicker.component.md",
-      "title": "Time Picker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-timepicker component — a form-associated control for entering or selecting a time in 12-hour or 24-hour format.",
+      "title": "Timepicker",
+      "summary": "Usage, guidelines, and accessibility for the mdc-timepicker component — a form control for entering or selecting a time in 12-hour or 24-hour format.",
       "canonical": null,
       "component": "timepicker"
     },
