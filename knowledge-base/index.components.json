@@ -720,7 +720,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepper/knowledge-base/stepper.component.md",
       "title": "Stepper",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepper component — the container that orchestrates a sequence of steps and their connectors.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepper component — the container that coordinates a sequence of steps and connectors into one progress indicator.",
       "canonical": null,
       "component": "stepper"
     },
@@ -729,7 +729,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepperconnector/knowledge-base/stepperconnector.component.md",
       "title": "Stepper Connector",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepperconnector component — the visual line drawn between two stepper items.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperconnector component — the progress line drawn between two steps in an mdc-stepper.",
       "canonical": null,
       "component": "stepperconnector"
     },
@@ -738,7 +738,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepperitem/knowledge-base/stepperitem.component.md",
       "title": "Stepper Item",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step inside an mdc-stepper sequence.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step within an mdc-stepper that shows its place and state in the sequence.",
       "canonical": null,
       "component": "stepperitem"
     },
