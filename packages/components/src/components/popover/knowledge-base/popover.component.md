@@ -1,6 +1,6 @@
 ---
 title: Popover
-summary: Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behaviour.
+summary: Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behavior.
 tier: 3
 component: popover
 ---
@@ -12,14 +12,14 @@ The popover is a generic overlay that can be anchored to any actionable element 
 ### When to use
 
 - Use `mdc-popover` to render contextual UI floating next to a trigger element — additional information, action menus, or interactive panels.
-- Use it when you need fine control over trigger events (click, hover, focus, manual), placement, offset, arrow, focus trap, or backdrop behaviour.
+- Use `mdc-popover` when you need fine control over trigger events (click, hover, focus, manual), placement, offset, arrow, focus trap, or backdrop behavior.
 
 ### When not to use
 
-- Use `mdc-tooltip` for short, non-interactive descriptive text shown on hover/focus.
-- Use `mdc-toggletip` for short text shown on click that does not need focus trapping.
-- Use `mdc-dialog` for modal flows that interrupt the user, render in the centre of the viewport, and own their own header/footer chrome.
-- Use `mdc-menupopover` / `mdc-coachmark` / `mdc-searchpopover` when one of those higher-level widgets already composes a popover for the use case.
+- Do not use `mdc-popover` for short, non-interactive descriptive text shown on hover/focus. Use `mdc-tooltip` instead.
+- Do not use `mdc-popover` for short text shown on click that does not need focus trapping. Use `mdc-toggletip` instead.
+- Do not use `mdc-popover` for modal flows that interrupt the user, center in the viewport, and own header/footer chrome. Use `mdc-dialog` instead.
+- Do not use `mdc-popover` when a higher-level widget already composes it for the use case. Use `mdc-menupopover`, `mdc-coachmark`, or `mdc-searchpopover` instead.
 
 ## Guidelines
 
@@ -67,50 +67,37 @@ Listen for `shown`/`hidden` to react to visibility changes, and for `created`/`d
 
 ### Property/Attribute details
 
-- `triggerid` — id of the element that owns the popover. Required; without it the popover never opens.
-- `trigger` — space-separated list of events that open the popover: `click`, `mouseenter`, `focusin`, or `manual`. When `mouseenter` is set on an interactive popover it is rewritten to `mouseenter click` (so the popover can be re-opened after closing with Escape); on a non-interactive popover it is rewritten to `mouseenter focusin` so keyboard focus also opens it. Default `click`.
-- `placement` — `top` / `top-start` / `top-end` / `bottom` / `bottom-start` / `bottom-end` / `left` / `left-start` / `left-end` / `right` / `right-start` / `right-end`. In RTL layouts, `left`/`right` placements are flipped automatically. Default `bottom`.
-- `color` — `tonal` or `contrast`. Default `tonal`.
-- `visible` — opens or closes the popover programmatically. Default `false`.
-- `offset` — distance in pixels from the trigger on the placement's main axis. Accepts a number (reflected as an attribute), an object (`{ mainAxis, crossAxis, alignmentAxis }`), or a function for full control. Default `4`.
-- `strategy` — `absolute` (positioned relative to the nearest positioned ancestor) or `fixed` (positioned relative to the viewport — use when a scrollable container clips the popover). Default `absolute`.
-- `boundary` — `clippingAncestors` or any CSS selector; describes what overflow is checked against. Default `clippingAncestors`.
-- `boundary-root` — `viewport` or `document`; the root boundary used for overflow detection. Default `viewport`.
-- `boundary-padding` — virtual padding in pixels around the boundary. Default unset.
-- `disable-flip` — when `true`, prevents the popover from flipping placement to stay in view. Default `false`.
-- `size` — when `true`, constrains the popover's max-height to the available space and adds a vertical scrollbar to the content when needed. Default `false`.
-- `inline` — when `true`, uses Floating UI's `inline` middleware so that the popover positions correctly against multi-line inline trigger elements (e.g. hyperlinks, range selections). Default `false`.
-- `animation-frame` — when `true`, repositions on every animation frame. Default `false`.
-- `show-arrow` — renders a directional arrow that points at the trigger. Default `false`.
-- `close-button` — renders a built-in close button in the corner of the popover. Default `false`.
-- `close-button-aria-label` — accessible name for the built-in close button. Required when `close-button` is `true`.
-- `interactive` — when `true`, marks the popover as containing interactive content. Required for `focus-trap`, and changes hover behaviour so the popover does not close while the pointer is over it.
-- `focus-trap` — when `true` and `interactive` is `true`, traps keyboard focus inside the popover while it is visible.
-- `element-index-to-receive-focus` — zero-based index of the focusable child that should receive focus when the popover opens with `focus-trap` enabled. Default `null` (the first focusable element).
-- `prevent-scroll` — when `true`, prevents scrolling outside the popover while it is visible. Default `false`.
-- `backdrop` — when `true`, renders a backdrop covering the rest of the page (the trigger remains visible above the backdrop). Default `false`.
-- `backdrop-append-to` — id of the element the backdrop will be appended to. Default unset.
-- `is-backdrop-invisible` — when `false`, the backdrop is dimmed instead of invisible. Default `true`.
-- `delay` — `"openMs,closeMs"` open/close delay string (e.g. `"200,300"`). Invalid values are coerced to `"0,0"`. Default `"0,0"`.
-- `hide-on-escape` — when `true`, the Escape key closes the popover. Default `false`.
-- `propagate-event-on-escape` — when `true` and `hide-on-escape` is `true`, the Escape keydown event bubbles up after closing the popover. Default `false`.
-- `hide-on-blur` — when `true`, the popover closes when focus leaves it. Default `false`.
-- `hide-on-outside-click` — when `true`, a click outside the popover (including on the backdrop) closes it. Default `false`.
-- `focus-back-to-trigger` — when `true`, focus returns to the trigger element after the popover closes. Default `false`.
-- `append-to` — id of an element the popover should be physically moved to in the DOM (used to escape clipping ancestors). The original DOM location is occupied by an internal `mdc-popoverportal` element so removal stays consistent. Default unset.
-- `z-index` — explicit z-index. When not set, an internal depth manager computes a z-index so stacked popovers layer correctly. Default computed.
-- `stack-group-name` — popovers sharing the same name are stacked as a group by the depth manager. Default `''`.
-- `role` — ARIA role applied to the popover host. Default `dialog`. When set to `dialog` or `alertdialog`, the host also gets `aria-modal="true"`; for any other role the `aria-modal` attribute is removed.
-- `aria-labelledby` — id pointing to the element that names the popover. For interactive popovers, defaults to the trigger element when no `aria-label` is provided.
-- `aria-describedby` — id pointing to descriptive text for the popover.
-- `disable-aria-expanded` — when `true`, the popover does not write `aria-expanded` or `aria-haspopup` on the trigger element. Use this when multiple popovers share the same trigger so they do not fight over the trigger's ARIA state. Default `false`.
-- `keep-connected-tooltip-open` — when `true`, a tooltip wired to the same trigger remains visible while this popover is open. When `false`, the tooltip is closed and re-enabled after the popover closes. Default `false`.
+| Option | Intent |
+|---|---|
+| `triggerid` | Id of the element that owns the popover. Required — without it the popover never opens. |
+| `trigger="click"` (default) | Space-separated events that open it: `click`, `mouseenter`, `focusin`, or `manual`. `mouseenter` is auto-expanded so keyboard focus (non-interactive) or click (interactive) also opens it. |
+| `interactive` | Marks the content as interactive: keeps the popover open while the pointer is inside, and is required before `focus-trap` works. |
+| `focus-trap` + `element-index-to-receive-focus` | Traps keyboard focus inside an `interactive` popover; the index picks which focusable child receives focus on open (default: first). |
+| `placement="bottom"` (default) | Side and alignment relative to the trigger; auto-flips unless `disable-flip` is set, and mirrors in RTL. |
+| `offset` | Gap from the trigger (default `4`). Accepts a number, `{ mainAxis, crossAxis, alignmentAxis }`, or a function. |
+| `strategy` + `boundary` + `boundary-root` + `boundary-padding` + `inline` + `animation-frame` | Floating-UI positioning controls. Reach for these only when the default clips or mispositions — e.g. `strategy="fixed"` inside a scroll container, `inline` against multi-line inline triggers. |
+| `color="tonal"` (default) | `tonal` matches the trigger surface (menus); `contrast` stands out from the page (tips, coachmarks). |
+| `show-arrow` | Renders a directional arrow pointing at the trigger; use it when the spatial link to the trigger matters. |
+| `size` | Constrains max-height to the available space and scrolls overflowing content. Enable for long content in tight viewports. |
+| `close-button` + `close-button-aria-label` | Renders a built-in close button; the aria-label is required when it is shown. |
+| `visible` | Opens or closes the popover programmatically (pair with `trigger="manual"`). |
+| `hide-on-escape` / `hide-on-outside-click` / `hide-on-blur` | Opt-in dismiss behaviors — none are on by default. `propagate-event-on-escape` lets Escape bubble after closing. |
+| `focus-back-to-trigger` | Returns focus to the trigger after closing; set it for interactive popovers. |
+| `backdrop` + `is-backdrop-invisible` + `prevent-scroll` | Adds a page backdrop (dimmed when not invisible) and can suppress background scroll while open. |
+| `delay` | `"openMs,closeMs"` open/close delay; invalid values coerce to `"0,0"`. |
+| `role="dialog"` (default) | ARIA role for the host; `dialog`/`alertdialog` also add `aria-modal="true"`. |
+| `disable-aria-expanded` | Stops the popover writing `aria-expanded`/`aria-haspopup` on the trigger — set it on all but one popover that share a trigger. |
+| `keep-connected-tooltip-open` | Keeps a tooltip wired to the same trigger visible while this popover is open, instead of closing it. |
+| `append-to` / `z-index` / `stack-group-name` | Escape clipping ancestors (`append-to`) and control stacking; a depth manager computes `z-index` and groups by `stack-group-name` when unset. |
 
-The `shown`, `hidden`, `created`, and `destroyed` events bubble and are composed. `show()` and `hide()` are public methods that respect the configured open/close delay.
+**Note:** `aria-labelledby`/`aria-describedby` name and describe the popover; for interactive popovers with neither set, it falls back to the trigger's accessible name. `show()`/`hide()` are public methods, and `shown`/`hidden`/`created`/`destroyed` events bubble and are composed.
 
 ### Limitations
 
-- React with `append-to`: when React directly mounts/unmounts the popover and the popover moves itself to a different element, React loses track of the moved DOM node and throws a `NotFoundError`. Wrap the popover in another element (e.g. a `<div>`) so React can manage the wrapper instead. A `React.Fragment` is not sufficient.
+- **React `append-to` unmount** — when React mounts/unmounts the popover and it moves itself elsewhere, React loses the moved node and throws `NotFoundError`. Wrap the popover in a real element (not a `React.Fragment`) so React manages the wrapper.
+- **No focusable content on hover** — a hover-triggered popover must not contain a close button or other focusable content; keyboard and screen-reader users cannot reach it. Use a `click`/`manual` trigger (or `mdc-toggletip`) when the content is interactive.
+- **Nested depth is capped** — popovers nest at most three levels, and the third level must not be persistent. `Escape` closes only the topmost level.
+- **Opens only with a trigger** — without a matching `triggerid` the popover never opens; there is no standalone mode.
 
 ## Accessibility
 
@@ -150,3 +137,14 @@ Hover triggering uses delegated `mouseover`/`mouseout` listeners on `document` s
 
 - For interactive popovers, provide `aria-label` or `aria-labelledby` describing what the popover contains. If neither is supplied, the popover falls back to the trigger's accessible name.
 - When `close-button` is `true`, provide `close-button-aria-label` so the close button has an accessible name.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-tooltip` | Hover/focus hint built on the popover shell; non-interactive text only. |
+| `mdc-toggletip` | Click-triggered, persistent tip built on the popover; supports interactive content. |
+| `mdc-coachmark` | Onboarding bubble built on the popover with contrast color, arrow, and close button. |
+| `mdc-menupopover` | Menu surface built on the popover for command lists. |
+| `mdc-searchpopover` | Search-and-results surface built on the popover. |
+| `mdc-dialog` | Modal, centered surface that interrupts the user instead of anchoring to a trigger. |

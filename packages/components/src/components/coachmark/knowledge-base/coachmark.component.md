@@ -13,16 +13,16 @@ It renders as a high-contrast bubble anchored to a trigger element with a visibl
 
 ### When to use
 
-- Introducing a new or complex feature when users land on a screen for the first time.
-- Drawing attention to a UI element that might otherwise be overlooked (a secondary action, a settings entry point).
-- Providing step-by-step guidance in an onboarding flow or guided tour.
+- Use `mdc-coachmark` to introduce a new or complex feature when users land on a screen for the first time.
+- Use `mdc-coachmark` to draw attention to a UI element that might otherwise be overlooked (a secondary action, a settings entry point).
+- Use `mdc-coachmark` to provide step-by-step guidance in an onboarding flow or guided tour.
 
 ### When not to use
 
-- Use `mdc-tooltip` for a short, hover-triggered hint about a control that does not need a close affordance.
-- Use `mdc-toggletip` when a small piece of contextual help should appear on click and dismiss on outside interaction without a persistent step-flow.
-- Use `mdc-popover` directly when a generic dismissible overlay is needed and the onboarding-styled contrast bubble + arrow + close button defaults are not desired.
-- Use `mdc-dialog` (or `mdc-announcementdialog`) when the message is modal, must block the rest of the UI, or is not anchored to a specific element.
+- Do not use `mdc-coachmark` for a short, hover-triggered hint about a control that needs no close affordance. Use `mdc-tooltip` instead.
+- Do not use `mdc-coachmark` when a small piece of contextual help should appear on click and dismiss on outside interaction without a persistent step-flow. Use `mdc-toggletip` instead.
+- Do not use `mdc-coachmark` when a generic dismissible overlay is needed and the onboarding-styled contrast bubble, arrow, and close-button defaults are not wanted. Use `mdc-popover` instead.
+- Do not use `mdc-coachmark` when the message is modal, must block the rest of the UI, or is not anchored to a specific element. Use `mdc-dialog` or `mdc-announcementdialog` instead.
 
 ## Guidelines
 
@@ -58,24 +58,25 @@ React-only quirk: when a coachmark uses `append-to`, the component moves itself 
 
 ### Property/Attribute details
 
-The coachmark exposes the same overlay surface as `mdc-popover` with onboarding-appropriate defaults. Key properties:
+The coachmark exposes the same overlay surface as `mdc-popover` with onboarding-appropriate defaults.
 
-- `trigger` — events that open the coachmark. `manual` (default — open via the `visible` property), `click`, `mouseenter`, `focusin`, or any space-separated combination.
-- `show-arrow` — when `true` (default), renders the anchor arrow.
-- `close-button` — when `true` (default), renders a close button inside the bubble.
-- `disable-aria-expanded` — when `true` (default), the trigger does not toggle `aria-expanded` / `aria-haspopup` when the coachmark opens.
-- `visible` — controls visibility imperatively when `trigger` is `manual`.
-- `triggerid` — id of the element the coachmark is anchored to.
-- `placement` — preferred placement around the trigger (e.g. `top`, `bottom`, `left`, `right`, and `*-start` / `*-end` variants). The component auto-flips when there is not enough room.
-- `offset`, `strategy`, `boundary` — fine-grained positioning, identical to `mdc-popover`.
-- `role` — defaults to `dialog`; override when a different role better describes the coachmark's purpose.
-- `aria-label` / `aria-labelledby` — accessible name for the coachmark surface.
+| Option | Intent |
+|---|---|
+| `triggerid` | Id of the element the coachmark is anchored to. Required — an unanchored coachmark has no element to explain. |
+| `trigger="manual"` (default) | Events that open the coachmark: `manual` (drive it via `visible`), `click`, `mouseenter`, `focusin`, or a space-separated combination. Onboarding flows normally stay `manual`. |
+| `visible` | Shows or hides the coachmark imperatively; pair it with `trigger="manual"` to drive a walkthrough step by step. |
+| `placement` | Side and alignment around the trigger (`top`/`bottom`/`left`/`right` plus `*-start`/`*-end`); auto-flips when there is not enough room. |
+| `show-arrow` (default `true`) | Renders the anchor arrow that links the bubble to its trigger. Left on by default so the spatial relationship stays clear. |
+| `close-button` (default `true`) | Renders a close button inside the bubble; keep it so every coachmark has an explicit dismiss affordance. |
+| `disable-aria-expanded` (default `true`) | Keeps the trigger's `aria-expanded`/`aria-haspopup` untouched — leave it on so coachmarks do not fight other overlays for the trigger's ARIA state. |
+| `offset` + `strategy` + `boundary` | Fine-grained positioning, identical to `mdc-popover`; adjust only when the default clips or mispositions the bubble. |
+| `role="dialog"` (default) + `aria-label` / `aria-labelledby` | ARIA role and accessible name for the surface; the default `dialog` role requires a name. |
 
 ### Limitations
 
-- The color is always `contrast` and the arrow is always visible — coachmarks are deliberately consistent so users learn to recognise them across the product.
-- The trigger does not toggle `aria-expanded` / `aria-haspopup` by default. If multiple overlays share the same trigger and one of them should expose those attributes, leave `disable-aria-expanded` enabled on every coachmark and let the other overlay own the announcement.
-- Onboarding sequences need to be coordinated by the consumer — the component does not own state for "step 2 of 5" navigation.
+- **Fixed appearance** — color is always `contrast` and the arrow is always visible, so coachmarks stay recognizable across the product.
+- **No trigger ARIA by default** — the trigger does not toggle `aria-expanded`/`aria-haspopup`. When overlays share a trigger, leave `disable-aria-expanded` on every coachmark and let one other overlay own that state.
+- **Sequences are consumer-owned** — the component does not track "step 2 of 5"; the consumer coordinates ordering, advancing, and skipping.
 
 ## Accessibility
 
@@ -114,3 +115,13 @@ The bubble is high-contrast and arrow-anchored to the trigger, making the spatia
 
 - Provide an `aria-label` or `aria-labelledby` so the coachmark announces a meaningful name when it opens; the default `role="dialog"` requires it.
 - If the coachmark's title is rendered inside its content, use `aria-labelledby` pointing at that element rather than repeating the text in `aria-label`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-popover` | Generic overlay shell the coachmark is built on, with different defaults. |
+| `mdc-tooltip` | Hover/focus hint for a control that needs no persistent bubble or close affordance. |
+| `mdc-toggletip` | Click-triggered tip for one-off contextual help without an onboarding step-flow. |
+| `mdc-dialog` | Modal surface for messages that must block the UI and are not anchored to an element. |
+| `mdc-announcementdialog` | Modal, illustration-led surface for one-off announcements and feature reveals. |

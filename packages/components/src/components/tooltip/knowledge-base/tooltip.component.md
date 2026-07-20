@@ -11,15 +11,16 @@ component: tooltip
 
 ### When to use
 
-- Reveal short, text-only context for a control whose purpose isn't fully clear from its visual presentation (e.g. icon-only buttons).
-- Provide an accessible name or description for a trigger that has no visible label.
-- Show the full text of a truncated label only when it is actually overflowing.
+- Use `mdc-tooltip` to reveal short, text-only context for a control whose purpose isn't clear from its visual presentation — for example an icon-only `mdc-button`.
+- Use `mdc-tooltip` `tooltip-type="label"` to give an otherwise unlabeled trigger its accessible name.
+- Use `mdc-tooltip` `tooltip-type="description"` to add supplementary context to an already-labeled control.
+- Use `mdc-tooltip` `only-show-when-trigger-overflows` to show the full text of a truncated label only when it actually overflows.
 
 ### When not to use
 
-- Use `mdc-toggletip` when the content needs to remain visible after activation or includes interactive elements (links, buttons).
-- Use `mdc-popover` for richer overlay content, click-triggered surfaces, or when you need explicit control over open/close behavior.
-- Avoid tooltips for critical information — users on touch devices and some assistive technologies may not surface hover-triggered content.
+- Do not use `mdc-tooltip` when the content must stay visible after activation or contains interactive elements (links, buttons). Use `mdc-toggletip` instead.
+- Do not use `mdc-tooltip` for richer overlay content, click-triggered surfaces, or when you need explicit control over open/close behavior. Use `mdc-popover` instead.
+- Do not use `mdc-tooltip` for critical information — hover/focus content is not reliably surfaced on touch devices or by some assistive technologies. Put essential information in the page or a persistent surface.
 
 ## Guidelines
 
@@ -42,24 +43,29 @@ Minimal markup example. The tooltip is a sibling of its target; connect it via `
 </mdc-tooltip>
 ```
 
+### Content guidance
+
+- Keep tooltip text to a short phrase or single sentence — it is scanned quickly and announced as the trigger's name or description.
+- Write the content so it reads correctly for its `tooltip-type`: a `label` should name the control ("Save"), a `description` should add context ("Saves the current document").
+- Do not truncate text inside a tooltip; let it wrap. The tooltip grows up to a maximum width before wrapping to additional lines.
+
 ### Property/Attribute details
 
-- `triggerid` — id of the target element the tooltip is attached to. Required.
-- `tooltip-type` — controls how the tooltip exposes itself to the trigger for assistive technologies. One of:
-  - `description` (default) — sets `aria-describedby` on the trigger, pointing at the tooltip's id.
-  - `label` — sets `aria-labelledby` on the trigger, pointing at the tooltip's id.
-  - `none` — does not set any aria attribute on the trigger.
-  Switching between types automatically removes the previously-set attribute on the trigger.
-- `only-show-when-trigger-overflows` — when `true`, the tooltip only opens if the trigger element's content is overflowing on the x-axis. Supported on `mdc-button` and `mdc-text` triggers.
-- `placement` — preferred placement relative to the trigger. One of `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `bottom-end`, `left`, `left-start`, `left-end`, `right`, `right-start`, `right-end`. Invalid values fall back to the component default.
-- `offset`, `boundary`, `boundary-root`, `boundary-padding`, `strategy` — positioning controls forwarded to the underlying Floating UI computation.
-- `id` — if not set, a stable `mdc-tooltip-<uuid>` id is generated and cached so the trigger's `aria-describedby` / `aria-labelledby` remain valid across re-renders.
-- Events: `shown` (`onShown`), `hidden` (`onHidden`), `created` (`onCreated`), and `destroyed` (`onDestroyed`) fire as the tooltip opens, closes, or is added/removed from the DOM.
+| Option | Intent |
+|---|---|
+| `triggerid` | Id of the target element the tooltip describes. Required — without it the tooltip has nothing to attach to. |
+| `tooltip-type="description"` (default) | How the tooltip exposes itself to the trigger: `description` sets `aria-describedby` (adds context to an already-labeled control), `label` sets `aria-labelledby` (names an unlabeled control), `none` sets nothing (decorative). Switching types removes the previously set attribute. |
+| `only-show-when-trigger-overflows` | Opens the tooltip only when the trigger's text is truncated — use it for truncated labels so the full text appears on demand. Supported on `mdc-button` and `mdc-text` triggers. |
+| `placement` | Side and alignment relative to the trigger; invalid values fall back to the default. |
+| `offset` + `boundary` + `boundary-root` + `boundary-padding` + `strategy` | Floating-UI positioning controls; adjust only when the default clips or mispositions the tooltip. |
+
+**Note:** if `id` is unset, a stable `mdc-tooltip-<uuid>` is generated and cached so the trigger's `aria-describedby`/`aria-labelledby` stay valid across re-renders. The `shown`/`hidden`/`created`/`destroyed` events fire as the tooltip opens, closes, or is added to/removed from the DOM.
 
 ### Limitations
 
-- The tooltip must not contain focusable or interactive content; if you need that, use `mdc-toggletip` instead.
-- `only-show-when-trigger-overflows` is implemented for `mdc-button` and `mdc-text` triggers; other trigger types always open on hover/focus.
+- **No interactive content** — the tooltip must not contain focusable or interactive elements; keyboard and screen-reader users cannot reach them. Use `mdc-toggletip` when the content is interactive.
+- **Overflow trigger is narrow** — `only-show-when-trigger-overflows` is implemented for `mdc-button` and `mdc-text` triggers; other triggers always open on hover/focus.
+- **Not touch-friendly** — hover/focus tooltips do not appear for touch users, so never rely on them for critical information.
 
 ## Accessibility
 
@@ -96,3 +102,12 @@ Minimal markup example. The tooltip is a sibling of its target; connect it via `
 
 - Because content inside the tooltip cannot be focused, screen readers will not visit it directly. All meaningful information must be reachable as plain text — interactive controls placed inside will be ignored by assistive technology.
 - Hover/focus-only triggers are typically inaccessible to touch users; ensure the same information is available through another channel for critical UI.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-toggletip` | Click-triggered, persistent tip for content that must stay open or be interactive. |
+| `mdc-popover` | Generic overlay shell the tooltip is built on; use it directly for richer or click-triggered content. |
+| `mdc-coachmark` | Persistent, onboarding-styled overlay for guiding attention to an element. |
+| `mdc-button` | Common icon-only trigger that pairs a tooltip with an accessible name. |

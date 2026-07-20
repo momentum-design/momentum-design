@@ -522,7 +522,7 @@
       "tier": 3,
       "path": "packages/components/src/components/popover/knowledge-base/popover.component.md",
       "title": "Popover",
-      "summary": "Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behaviour.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behavior.",
       "canonical": null,
       "component": "popover"
     },
