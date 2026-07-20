@@ -7,17 +7,19 @@ component: banner
 
 ## Overview
 
-The banner is an in-page message used to communicate important information to users. It supports several message variants with appropriate icons and styling, and can be customised through label, secondary label, leading icon, and trailing action slots. Banners are designed to be noticeable yet non-intrusive — visible enough to inform without interrupting the user's workflow.
+The banner communicates important, persistent information that a user should notice and act on — a system status, an account issue, or a recommended next step. Unlike a toast, it stays in place until the user resolves or dismisses it, so it suits messages that must not be missed while staying non-intrusive to the workflow.
 
 ### When to use
 
-- Use `mdc-banner` to surface important contextual information at the top of a page, section, or panel — for example service status, validation summaries, or persistent notices that should remain visible until the user acts on them.
+- Use `mdc-banner` for system-wide announcements or updates, such as maintenance notices or connection issues.
+- Use `mdc-banner` `informational`, `warning`, `error`, or `success` for a non-blocking status message that should persist until acted on.
+- Use `mdc-banner` to prompt an optional but recommended action, such as verifying an email, through the `trailing-actions` slot.
 
 ### When not to use
 
-- Use `mdc-toast` for short, transient feedback that should auto-dismiss and not occupy layout space.
-- Use `mdc-announcementdialog` or `mdc-dialog` when the message must block the rest of the UI until the user responds.
-- Use `mdc-alertchip` for a compact, interactive inline status indicator rather than a full-width message bar.
+- Do not use `mdc-banner` for a message that must block progress until acknowledged. Use `mdc-dialog` instead.
+- Do not use `mdc-banner` for brief, transient feedback that can auto-dismiss. Use `mdc-toast` instead.
+- Do not use `mdc-banner` for a compact, interactive inline status marker. Use `mdc-alertchip` instead.
 
 ## Guidelines
 
@@ -43,24 +45,34 @@ Minimal markup example:
 </mdc-banner>
 ```
 
+### Composition
+
+- Set `label` for the message and `secondary-label` for supporting detail; the secondary label renders only when `label` is present.
+- Non-custom variants inject their own leading icon; for the `custom` variant, provide one through the `leading-icon` slot or leave it iconless.
+- Put dismiss, reset, or "Learn more" controls in the `trailing-actions` slot.
+- Use `leading-text` to override the default text rendering, or the `content` slot to replace the entire layout — keep readable text inside either.
+
 ### Content guidance
 
-- Keep `label` short and action-oriented; use `secondary-label` for the supporting detail.
-- `secondary-label` is only rendered when `label` is also provided.
-- Provide dismiss or follow-up controls through the `trailing-actions` slot rather than inventing custom layouts.
+- Keep `label` short and scannable; move supporting detail into `secondary-label`.
+- Use `secondary-label` only when the extra line adds real information; for a single-line banner, use `label` alone.
+- Front-load the copy — banners are always left-aligned and may wrap to multiple lines.
 
 ### Property/Attribute details
 
-- `variant` — selects the message tone and the auto-injected leading icon. Supported values: `custom` (default, no icon), `informational`, `warning`, `error`, `success`. When `variant="custom"`, supply your own icon via the `leading-icon` slot, otherwise no icon is shown.
-- `label` — primary message text shown in the leading area.
-- `secondary-label` — supporting text rendered below `label`. Ignored when no `label` is provided.
+| Option | Intent |
+| --- | --- |
+| `variant` | `custom` (default, no icon) or `informational`/`warning`/`error`/`success`. The status variants set the tone and inject a matching leading icon; use `custom` with your own `leading-icon` for anything else. |
+| `label` | Primary message text shown in the leading area. |
+| `secondary-label` | Supporting text below the label; rendered only when `label` is set, and it promotes the label to a bold title for hierarchy. |
 
-The component also exposes slots for full layout control:
+### Limitations
 
-- `content` — completely replaces the default layout (leading icon, text, trailing actions).
-- `leading-icon` — overrides the default variant-based icon.
-- `leading-text` — overrides the label/secondary-label text rendering.
-- `trailing-actions` — slot for action controls such as dismiss or "Learn more" buttons.
+- **No built-in live region** — the banner sets no `role` or `aria-live`; add one at the host so dynamic messages are announced.
+- **No built-in dismiss** — the component renders no close control; supply one through `trailing-actions` and handle removal in the host.
+- **Secondary needs label** — `secondary-label` renders only alongside `label`, so a standalone secondary line is ignored.
+- **Left-aligned only** — banner content is always left-aligned; center alignment is not supported.
+- **No self-positioning** — the banner does not place itself; the consumer positions it below the header, panel, or modal.
 
 ## Accessibility
 
@@ -70,18 +82,26 @@ The banner is rendered as a generic container — it does not set any landmark o
 
 #### Internal ARIA managed by the component
 
-| Element | Attribute | Value                                  |
-| ------- | --------- | -------------------------------------- |
-| Host    | `role`    | None set by the component (default)    |
+| Element | Attribute | Value |
+| --- | --- | --- |
+| Host | `role` | None set by the component (default) |
 
 ### Implementation requirements
 
 #### General
 
-- Decide on the right live-region behaviour for the surrounding context: when a banner appears dynamically and conveys important state (e.g. a warning or error), wrap or set `role="status"` / `role="alert"` (or `aria-live`) on the host so assistive technologies announce it.
-- Ensure interactive controls slotted into `trailing-actions` (e.g. dismiss buttons) have accessible names — the banner does not label them.
+- Decide on the right live-region behavior for the surrounding context: when a banner appears dynamically and conveys important state (a warning or error), set `role="status"` / `role="alert"` (or `aria-live`) on the host so assistive technologies announce it.
+- Ensure interactive controls slotted into `trailing-actions` (such as dismiss buttons) have accessible names — the banner does not label them.
 
 #### Labeling
 
-- The visible `label` (and `secondary-label`) act as the accessible message. Make sure the wording can stand alone without surrounding visual context.
+- The visible `label` (and `secondary-label`) act as the accessible message; make sure the wording can stand alone without surrounding visual context.
 - When using the `content` slot to fully replace the layout, retain a clear text label inside the slot so the message remains accessible.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-toast` | For brief, transient feedback that auto-dismisses instead of persisting. |
+| `mdc-dialog` | For a message that must block progress until acknowledged. |
+| `mdc-alertchip` | For a compact, interactive inline status marker rather than a full-width bar. |
