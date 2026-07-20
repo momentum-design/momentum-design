@@ -7,18 +7,18 @@ component: brandvisual
 
 ## Overview
 
-The brandvisual renders brand artwork — logos and wordmarks — from the Momentum `brand-visuals` package. Assets are loaded dynamically by name, so the consumer only references the visual they need and the component handles fetching and inserting the SVG or image at runtime. Successful loads emit a `load` event; failed lookups emit an `error` event so the host application can react.
+The brandvisual renders official brand artwork — logos and wordmarks — from the Momentum `brand-visuals` library. Loading by name keeps brand marks centrally managed and consistent, so products reference the approved artwork instead of hand-maintaining inline copies.
 
 ### When to use
 
-- Use `mdc-brandvisual` to render product, company, or partner logos that ship with the Momentum brand library.
-- Use it when the logo asset is published in `@momentum-design/brand-visuals` and you want the design system to keep the artwork in sync rather than hard-coding inline SVG.
+- Use `mdc-brandvisual` to render product, company, or partner logos that ship in the Momentum brand library.
+- Use `mdc-brandvisual` when you want the design system to keep brand artwork in sync rather than hard-coding inline SVG.
 
 ### When not to use
 
-- Use `mdc-icon` for UI iconography (controls, status, decorative glyphs) rather than brand artwork.
-- Use `mdc-illustration` for larger illustrative imagery that is not a brand mark.
-- Use a plain `<img>` tag when the asset lives outside the Momentum brand library and you do not need the dynamic-loading or event semantics.
+- Do not use `mdc-brandvisual` for UI iconography such as controls, status, or decorative glyphs. Use `mdc-icon` instead.
+- Do not use `mdc-brandvisual` for larger illustrative imagery that is not a brand mark. Use `mdc-illustration` instead.
+- Do not use `mdc-brandvisual` for assets outside the Momentum brand library. Use a plain `<img>` tag instead.
 
 ## Guidelines
 
@@ -38,28 +38,45 @@ Minimal markup example:
 <mdc-brandvisual name="webex-logo" alt-text="Webex"></mdc-brandvisual>
 ```
 
+Listen for the `load` event to react to a successful fetch and `error` to handle a failed lookup (`event.detail.error`).
+
 ### Property/Attribute details
 
-- `name` — the filename of the brand visual to load from `@momentum-design/brand-visuals`. Changing the value triggers a new dynamic import. On success the component dispatches a `load` event; on failure it dispatches an `error` event whose `event.detail.error` carries the original error (for example, an unknown `name` or a missing asset).
-- `alt-text` — accessible alternative text. Applied to the underlying `<img>` element when the loaded asset is an image (e.g. PNG). For inline SVG artwork, provide the accessible name via the surrounding context (see Accessibility).
+| Option | Intent |
+| --- | --- |
+| `name` | Filename of the brand visual to load from `@momentum-design/brand-visuals`. Changing it triggers a new dynamic import; success fires `load`, an unknown or missing asset fires `error`. |
+| `alt-text` | Accessible alternative text applied to the underlying `<img>` when the loaded asset is an image (PNG). For inline SVG artwork, name it through surrounding context instead. |
+
+### Limitations
+
+- **Library-bound** — only assets published in `@momentum-design/brand-visuals` render; an unknown `name` fires `error` and shows nothing.
+- **Alt text is image-only** — `alt-text` reaches the DOM only for PNG assets; SVG artwork needs an accessible name from surrounding context.
+- **No sizing API** — the component exposes no size property; control the footprint through CSS and layout.
 
 ## Accessibility
 
 ### Built-in features
 
-The brandvisual renders the fetched artwork as-is and does not set any ARIA role on the host element. When the loaded asset is an image (PNG), the component forwards `alt-text` onto the `<img>`'s `alt` attribute, giving screen readers an accessible name for that image.
+The brandvisual renders the fetched artwork as-is and sets no ARIA role on the host. When the asset is a PNG, the component forwards `alt-text` onto the `<img>`'s `alt` attribute, giving screen readers an accessible name for that image.
 
 #### Internal ARIA managed by the component
 
-| Element                   | Attribute | Value                                                                |
-| ------------------------- | --------- | -------------------------------------------------------------------- |
-| Host                      | `role`    | None set by the component                                            |
-| Loaded `<img>` (PNG only) | `alt`     | Mirrors the `alt-text` attribute set by the consumer                 |
+| Element                   | Attribute | Value                                                |
+| ------------------------- | --------- | ---------------------------------------------------- |
+| Host                      | `role`    | None set by the component                            |
+| Loaded `<img>` (PNG only) | `alt`     | Mirrors the `alt-text` attribute set by the consumer |
 
 ### Implementation requirements
 
 #### Labeling
 
-- For image (PNG) assets, always set `alt-text` to a short description of what the logo represents (e.g. `alt-text="Webex"`). Leave `alt-text` empty only when the same brand name is already conveyed by adjacent visible text.
-- For SVG assets (which do not receive the `alt` attribute), provide the accessible name through the surrounding context — for example, wrap the brandvisual in an element with `aria-label`, or place visually hidden text alongside it.
-- When the brand visual is purely decorative and a non-decorative label exists nearby, mark the host with `aria-hidden="true"` so assistive technologies do not announce it twice.
+- For image (PNG) assets, set `alt-text` to a short description of what the logo represents (e.g. `alt-text="Webex"`). Leave it empty only when the same brand name is already in adjacent visible text.
+- For SVG assets (which do not receive `alt`), provide the accessible name through surrounding context — for example, wrap the brandvisual in an element with `aria-label`, or place visually hidden text alongside it.
+- When the brand visual is purely decorative and a non-decorative label sits nearby, mark the host with `aria-hidden="true"` so assistive technologies do not announce it twice.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-icon` | For UI iconography rather than brand artwork. |
+| `mdc-illustration` | For larger illustrative imagery that is not a brand mark. |

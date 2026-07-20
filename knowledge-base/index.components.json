@@ -306,7 +306,7 @@
       "tier": 3,
       "path": "packages/components/src/components/icon/knowledge-base/icon.component.md",
       "title": "Icon",
-      "summary": "Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its URL from a parent mdc-iconprovider, supporting decorative and informative roles.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its source from a parent mdc-iconprovider, supporting decorative and informative roles.",
       "canonical": null,
       "component": "icon"
     },
@@ -315,7 +315,7 @@
       "tier": 3,
       "path": "packages/components/src/components/iconprovider/knowledge-base/iconprovider.component.md",
       "title": "Iconprovider",
-      "summary": "Usage and guidelines for the mdc-iconprovider component — a context provider supplying icon source, file extension, default sizing, and optional caching to every nested mdc-icon.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-iconprovider component — a context provider that supplies icon source, sizing, and caching to every nested mdc-icon.",
       "canonical": null,
       "component": "iconprovider"
     },
@@ -324,7 +324,7 @@
       "tier": 3,
       "path": "packages/components/src/components/illustration/knowledge-base/illustration.component.md",
       "title": "Illustration",
-      "summary": "Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its URL from a parent mdc-illustrationprovider.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its source from a parent mdc-illustrationprovider.",
       "canonical": null,
       "component": "illustration"
     },
@@ -333,7 +333,7 @@
       "tier": 3,
       "path": "packages/components/src/components/illustrationprovider/knowledge-base/illustrationprovider.component.md",
       "title": "Illustrationprovider",
-      "summary": "Usage and guidelines for the mdc-illustrationprovider component — a context provider supplying illustration source, file extension, and optional caching to every nested mdc-illustration.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-illustrationprovider component — a context provider that supplies illustration source and caching to nested mdc-illustration components.",
       "canonical": null,
       "component": "illustrationprovider"
     },
