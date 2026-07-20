@@ -351,7 +351,7 @@
       "tier": 3,
       "path": "packages/components/src/components/inputchip/knowledge-base/inputchip.component.md",
       "title": "Inputchip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenized input value with a leading prefix, a label, and a close button.",
       "canonical": null,
       "component": "inputchip"
     },
