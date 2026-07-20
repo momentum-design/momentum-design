@@ -7,20 +7,20 @@ component: cardbutton
 
 ## Overview
 
-The card button looks like a card (image, header with icon/title/subtitle, body) but acts as one large button. Clicking, pressing `Enter`, or pressing `Space` anywhere on the card surface dispatches a `click` event. Use it when the entire tile should be a single activation target.
+The card button gives a whole card the behavior of a single button, letting an entire content tile act as one activation target. It exists for cases where the whole surface represents one action rather than a container of separate controls.
 
 ### When to use
 
-- Use `mdc-cardbutton` when the whole tile is a clickable target — a navigation tile, a "create new" surface, or an action card in a grid where the user expects to click anywhere on the card.
-- Use the `name` and `value` attributes when the card button needs to participate in a form submission.
+- Use `mdc-cardbutton` when the whole tile is a single clickable target — a navigation tile, a "create new" surface, or an action card in a grid where users expect to click anywhere on the card.
+- Use `mdc-cardbutton` when the action benefits from card content a plain button can't carry — an image, icon, title, and supporting line — such as a dashboard launch tile or a template picker.
 
 ### When not to use
 
-- Use `mdc-card` when the surface is a static container and only specific children are interactive.
-- Use `mdc-cardcheckbox` when the card represents a multi-select option inside a form.
-- Use `mdc-cardradio` when the card represents a single-select option inside a group.
-- Use `mdc-listitem` inside `mdc-list` when the content is a row of a scrolling list rather than a standalone tile.
-- Use `mdc-button` when the action does not warrant a card-sized surface (no image, no header, no body content).
+- Do not use `mdc-cardbutton` for a static container whose children are individually interactive. Use `mdc-card` instead.
+- Do not use `mdc-cardbutton` for a multi-select option in a form. Use `mdc-cardcheckbox` instead.
+- Do not use `mdc-cardbutton` for a single-select option in a group. Use `mdc-cardradio` instead.
+- Do not use `mdc-cardbutton` for a compact action with no card content. Use `mdc-button` instead.
+- Do not use `mdc-cardbutton` for a row of a scrolling list. Use `mdc-listitem` inside `mdc-list` instead.
 
 ## Guidelines
 
@@ -52,28 +52,25 @@ Minimal markup example:
 
 ### Content guidance
 
-- Keep slot content non-interactive. Nested buttons, links, or form controls inside the card body create overlapping click targets and break assistive technology behaviour.
-- Use the `card-title` and body to describe the single action the card performs — the entire surface activates one thing.
+- Use the `card-title` and body to describe the single action the card performs — the entire surface activates one thing, so keep the copy focused on that outcome.
+- Keep the title action-oriented and specific ("Create new project"), not a bare noun, so the button's purpose is clear from the label alone.
 
 ### Property/Attribute details
 
-- `card-title` — primary header text rendered through `mdc-text`. Ignored if the `title` slot has content.
-- `subtitle` — secondary header text. Ignored if the `subtitle` slot has content.
-- `title-tag-name` / `subtitle-tag-name` — DOM tag used for the rendered title/subtitle `mdc-text` (e.g. `h2`, `h3`, `span`). Default: `span`.
-- `image-src` — URL of the image rendered in the `image` slot region. When empty, no image is rendered.
-- `image-alt` — alt text for the image. Required for non-decorative images.
-- `icon-name` — name of the leading icon shown in the header. When empty, no icon is rendered.
-- `variant` — border treatment. `border` (default), `ghost`, or `promotional`.
-- `orientation` — `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
-- `type` — inherited from `mdc-buttonsimple`; `button` (default), `submit`, or `reset` when used inside a form.
-- `name` / `value` — form name and value submitted when the card button is inside a form. Required for form participation.
-- `disabled` — when `true`, the card is not interactive and is removed from the tab order.
-- `soft-disabled` — when `true`, the card looks disabled and announces as disabled to assistive tech but stays focusable so screen-reader users can still discover it.
+| Option | Intent |
+|---|---|
+| `type` (default `button`) | Native button type. Use `submit` or `reset` only when the card button lives in a form. |
+| `name` / `value` | Form field name and submitted value. Required for the card button to participate in form submission. |
+| `disabled` | Removes the card from the tab order and blocks activation. Use when the action is unavailable and users need no explanation. |
+| `soft-disabled` | Looks disabled and announces as disabled but stays focusable. Use when keyboard or screen-reader users should still discover the control. |
+
+**Note:** shares `mdc-card`'s content properties (`card-title`, `subtitle`, `image-src`/`image-alt`, `icon-name`, `variant`, `orientation`, and the title/subtitle tag-name props). The `active` and `size` properties inherited from `mdc-buttonsimple` are reset on connect and have no effect.
 
 ### Limitations
 
-- The `active` and `size` properties from `mdc-buttonsimple` are reset on connect; the card button is not a toggle button and does not respond to button sizing.
-- Slot content must remain non-interactive. The card itself is the click target, so nested buttons/links/inputs create nested interactives and are not supported — use `mdc-card` when you need actionable children inside the surface.
+- **Children must be presentational** — the whole surface is the click target, so nested buttons, links, or inputs create overlapping interactives and break assistive technology. Use `mdc-card` when the surface needs actionable children.
+- **Not a toggle button** — `active` and `size` from `mdc-buttonsimple` are reset on connect, so the card button neither toggles nor resizes. Use `mdc-cardcheckbox` or `mdc-cardradio` for a selectable card.
+- **One action per card** — the card represents a single command with no room for secondary actions inside it. Move any secondary action outside the card.
 
 ## Accessibility
 
@@ -109,3 +106,13 @@ When the card participates in a form, `mdc-buttonsimple` registers it as a form-
 - When the title is not enough on its own (e.g. icon-driven cards or repeating titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement describes the action precisely.
 - Set `image-alt` for informative images and `image-alt=""` for decorative ones so screen readers do not double-announce the visual.
 - Pick `title-tag-name` / `subtitle-tag-name` to match the surrounding heading outline only when the title functions as a heading; otherwise leave the default `span`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-card` | Static container. Use when only specific children are interactive. |
+| `mdc-cardcheckbox` | Multi-select card option. Use when the card toggles a selection instead of firing an action. |
+| `mdc-cardradio` | Single-select card option. Use when one card per group is chosen. |
+| `mdc-button` | Standard button. Use for compact actions that don't need a card-sized surface. |
+| `mdc-listitem` | Row within `mdc-list`. Use for scrolling lists rather than standalone tiles. |
