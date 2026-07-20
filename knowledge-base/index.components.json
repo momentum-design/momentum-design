@@ -270,7 +270,7 @@
       "tier": 3,
       "path": "packages/components/src/components/divider/knowledge-base/divider.component.md",
       "title": "Divider",
-      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can host a centered text label or an interactive grabber button.",
       "canonical": null,
       "component": "divider"
     },
@@ -423,7 +423,7 @@
       "tier": 3,
       "path": "packages/components/src/components/marker/knowledge-base/marker.component.md",
       "title": "Marker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical indicator (solid or striped) used alongside content to convey status or category.",
       "canonical": null,
       "component": "marker"
     },

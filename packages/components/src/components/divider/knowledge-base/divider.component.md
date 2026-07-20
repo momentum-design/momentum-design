@@ -1,32 +1,25 @@
 ---
 title: Divider
-summary: Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.
+summary: Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can host a centered text label or an interactive grabber button.
 tier: 3
 component: divider
 ---
 
 ## Overview
 
-The divider draws a thin separator line between sections of a layout. It supports both horizontal and vertical orientations and two visual variants — `solid` (uniform colour) and `gradient` (fades on both ends).
-
-The component infers its type from the slotted content:
-
-- **Primary** — no slotted content; renders just the line.
-- **Text** — a single `mdc-text` child; renders the line with a centred label.
-- **Grabber Button** — a single `mdc-button` child; renders the line with a centred interactive button (typically used to collapse/expand a resizable pane).
-
-If the slot contains multiple elements or unrecognised tag names, the divider falls back to the primary type.
+The divider separates regions of a layout so users can see where one section ends and the next begins. It can optionally caption the break with a short label, or act as a resize boundary when paired with a grabber button.
 
 ### When to use
 
 - Use `mdc-divider` to separate sections of content within a layout, list, or table.
-- Use a text divider to add a short caption between two visually similar sections.
-- Use a grabber-button divider to create a resizable boundary between two panes.
+- Use `mdc-divider` with an `mdc-text` child to caption the break between two visually similar sections.
+- Use `mdc-divider` with an `mdc-button` child to create a resizable or collapsible boundary between two panes.
 
 ### When not to use
 
-- Use whitespace, padding, or background-colour groupings when a visible line is not needed — a divider should add meaning, not decoration.
-- Use `mdc-list` separators rather than nesting dividers inside list items, since lists already render their own dividers.
+- Do not use `mdc-divider` purely for decoration where spacing would do. Use layout whitespace instead.
+- Do not use `mdc-divider` between items in an `mdc-list`. Use the list's own separators instead.
+- Do not use `mdc-divider` to flag or highlight a single block. Use `mdc-marker` instead.
 
 ## Guidelines
 
@@ -62,52 +55,63 @@ Grabber-button divider:
 </mdc-divider>
 ```
 
-The component sets `data-type="mdc-primary-divider"` on connect and updates it to `mdc-text-divider` or `mdc-grabber-divider` whenever the slot contents change.
+### Composition
 
-For a grabber-button divider the component automatically applies `variant="secondary"` and the correct `prefix-icon` to the slotted `mdc-button`, based on `orientation` and `arrow-direction`. The button is owned by the consumer for interactivity (e.g. `click` listeners that toggle a pane's collapsed state).
+- Leave the slot empty for a plain separator; the divider renders just the line.
+- Slot a single `mdc-text` child for a labeled divider, or a single `mdc-button` child for a grabber divider — the divider infers its type from that one child.
+- For a grabber divider, the divider owns the button's `variant="secondary"` and `prefix-icon` (derived from `orientation` and `arrow-direction`); you own the button's `click` handling and its accessible name.
+- More than one slotted child, or an unrecognized tag, falls back to the plain divider.
 
 ### Content guidance
 
-- Keep text labels short — a single word ("OR") or a brief phrase fits the centred layout best.
-- Use the grabber-button divider only when the divider itself is the resize/expand affordance; otherwise prefer a primary divider next to a separate control.
-- Pick `variant="gradient"` when the divider sits over a coloured surface and a hard solid line would feel heavy; otherwise prefer `solid`.
+- Keep a text-divider label short — a single word ("OR") or a brief phrase fits the centered layout best and survives localization and zoom.
 
 ### Property/Attribute details
 
-- `orientation` — `horizontal` (default) or `vertical`. Vertical text dividers are not currently supported.
-- `variant` — `solid` (default) or `gradient`. Drives the line's fill.
-- `arrow-direction` — direction of the arrow icon on the grabber button. `positive` (up for horizontal, right for vertical) or `negative` (down for horizontal, left for vertical). Default `negative`. Only relevant for the grabber-button divider.
-- `button-position` — position of the grabber button along the divider. `positive` (right for horizontal, top for vertical) or `negative` (left for horizontal, bottom for vertical). Default `negative`. Only relevant for the grabber-button divider.
+| Option | Intent |
+| --- | --- |
+| `orientation` | `horizontal` (default) or `vertical` line. A vertical divider cannot carry a text label. |
+| `variant` | `solid` (default) or `gradient` fill. Reserve `gradient` for colored surfaces, such as between navigation and content, where a solid line would feel heavy. |
+| `arrow-direction` | Grabber only: which way the button's arrow points — `positive` (up/right) or `negative` (down/left, default). Match it to the open or closed state of the pane it controls. |
+| `button-position` | Grabber only: where the button sits along the line — `positive` (right/top) or `negative` (left/bottom, default). |
 
 ### Limitations
 
-- Vertical text dividers are not supported — combine `orientation="vertical"` with a text child and the layout will not render the label centred. Use the horizontal variant for text dividers.
-- The divider type is inferred from a single slotted child. If the slot contains more than one element or unrecognised tag names, the divider falls back to the primary type and any extra content is ignored visually.
+- **No vertical text divider** — a `vertical` orientation cannot render a centered label; use a `horizontal` divider for labeled breaks.
+- **Single slotted child** — the type is inferred from one child; extra elements or unknown tags fall back to the plain line.
+- **Line is not interactive** — only a slotted grabber button is operable; the line has no states of its own, so wire resize or collapse behavior on the button.
+- **No enforced contrast** — the component does not guarantee a contrast ratio against its background; verify the line is perceivable.
 
 ## Accessibility
 
 ### Built-in features
 
-The divider is presentational and exposes no implicit ARIA role. When a grabber button is slotted, the button is fully focusable and keyboard-operable on its own (it is a standard `mdc-button`), and the consumer is responsible for wiring its accessibility (`aria-label`, `aria-expanded`, click handler) to the resize behaviour it controls.
-
-When a text label is slotted, the label is rendered inline through `mdc-text` and is read by screen readers in document order.
+The divider is presentational and exposes no implicit ARIA role. A slotted text label is rendered inline through `mdc-text` and read in document order. A slotted grabber button is a standard `mdc-button` — focusable and keyboard-operable on its own — and the consumer wires its accessibility to the behavior it controls.
 
 #### Internal ARIA managed by the component
 
-| Element     | Attribute   | Value                                                                                       |
-| ----------- | ----------- | ------------------------------------------------------------------------------------------- |
-| Host        | `data-type` | `mdc-primary-divider` (default), `mdc-text-divider`, or `mdc-grabber-divider` (inferred)    |
-| Slot button | `variant`   | `secondary` (auto-applied to a slotted `mdc-button`)                                        |
-| Slot button | `prefix-icon` | arrow icon derived from `orientation` and `arrow-direction`                               |
+| Element | Attribute | Value |
+| --- | --- | --- |
+| Host | `data-type` | `mdc-primary-divider` (default), `mdc-text-divider`, or `mdc-grabber-divider` (inferred from the slot) |
+| Slot button | `variant` | `secondary` (auto-applied to a slotted `mdc-button`) |
+| Slot button | `prefix-icon` | Arrow icon derived from `orientation` and `arrow-direction` |
 
 ### Implementation requirements
 
 #### General
 
-- Place exactly one element in the slot when using a text or grabber-button divider; multiple elements fall back to the primary type.
-- Ensure sufficient contrast between the divider line and the background — the component does not enforce a contrast ratio.
+- Place exactly one element in the slot for a text or grabber divider; multiple elements fall back to the plain type.
+- Ensure sufficient contrast between the line and the background — the component does not enforce a ratio.
 
 #### Labeling
 
-- When using a grabber-button divider, provide an `aria-label` on the slotted `mdc-button` describing what activating it does ("Collapse panel", "Show details").
-- When the grabber button controls an expandable region, also set `aria-expanded` on the button and update it from the consumer's state machine.
+- On a grabber divider, give the slotted `mdc-button` an `aria-label` describing what activating it does ("Collapse panel", "Show details").
+- When the grabber controls an expandable region, set `aria-expanded` on the button and keep it in sync with the consumer's state.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-marker` | For flagging or highlighting a single block rather than separating sections. |
+| `mdc-text` | Slotted as the label of a text divider. |
+| `mdc-button` | Slotted as the grabber on a resizable or collapsible divider. |
