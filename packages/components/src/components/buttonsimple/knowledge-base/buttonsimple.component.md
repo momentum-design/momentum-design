@@ -11,14 +11,14 @@ The buttonsimple is a low-level button primitive that handles keyboard activatio
 
 ### When to use
 
-- Use `mdc-buttonsimple` when you are building a custom button surface (for example a card, list item, or composite control) and need correct keyboard/ARIA semantics without inheriting the visual styling of `mdc-button`.
-- Use it inside design-system components that need to behave like buttons but render their own layout (e.g. `mdc-button`, `mdc-cardbutton`, `mdc-listitem` actions).
+- Use `mdc-buttonsimple` when building a custom button surface (a card, list item, or composite control) that needs correct keyboard and ARIA semantics without the visual styling of `mdc-button`.
+- Use `mdc-buttonsimple` inside design-system components that must behave like buttons but render their own layout, such as `mdc-button`, `mdc-cardbutton`, or list-item actions.
 
 ### When not to use
 
-- Use `mdc-button` when the design calls for the standard visual treatment (variant, color, size, prefix/postfix icons).
-- Use `mdc-buttonlink` when the control is a navigation that should render as an anchor.
-- Use `mdc-toggle` or `mdc-checkbox` for binary state in forms — they expose the correct form-control semantics and labeling.
+- Do not use `mdc-buttonsimple` when you need the standard visual treatment (variant, color, size, prefix/postfix icons). Use `mdc-button`.
+- Do not use `mdc-buttonsimple` for a navigation. Use `mdc-buttonlink`, which renders an anchor.
+- Do not use `mdc-buttonsimple` for binary state in a form. Use `mdc-toggle` or `mdc-checkbox`, which expose the correct form-control semantics and labeling.
 
 ## Guidelines
 
@@ -51,34 +51,33 @@ Minimal markup example:
 
 ### Content guidance
 
-- Always supply an accessible name (visible text in the default slot or `aria-label`) — the primitive has no built-in label.
 - Keep the slotted content focused on the button's action; do not nest focusable controls inside it.
 
 ### Property/Attribute details
 
-- `type` — native button behaviour: `button` (default, no implicit action), `submit` (calls the associated form's `requestSubmit()`), `reset` (calls `reset()`). Form association is automatic when the element is placed inside a `<form>`.
-- `name` / `value` — submitted as a form-data pair when this button is used to submit the form.
-- `size` — numeric size token. Defaults to `32`. Higher-level buttons (e.g. `mdc-button`) validate sizes against their own supported sets; `mdc-buttonsimple` accepts the superset and leaves visual interpretation to the consumer.
-- `active` — toggles the button between pressed and unpressed states. While set, the component writes `true`/`false` into the configured ARIA state attribute (default `aria-pressed`). Leave it `undefined` to remove the attribute entirely (i.e. not a toggle button).
-- `aria-state-key` — the ARIA attribute(s) toggled by `active`. Defaults to `aria-pressed`; supply a comma-separated list (e.g. `aria-pressed,aria-expanded`) to mirror the active state across multiple attributes.
-- `role` — defaults to `button`. Override only when a different role is required for the surrounding context.
-- `disabled` — fully disables the button. The host receives `aria-disabled="true"`, tab order is removed (`tabindex="-1"`, the previous value is restored when re-enabled), and click/keyboard handlers are blocked.
-- `soft-disabled` — visually disabled but still focusable and clickable. Sets `aria-disabled="true"` without removing the tab stop; consumers must suppress side-effects themselves so the button behaves as disabled.
-- `tabindex` — standard tabindex; the primitive saves and restores the consumer-provided value across `disabled` toggles.
+| Option | Intent |
+|---|---|
+| `active` + `aria-state-key` | Makes the primitive a toggle; mirrors state into `aria-pressed` by default (or the listed `aria-*` attributes). Leave `active` unset for a non-toggle button. |
+| `type="submit"` / `type="reset"` | Triggers the associated form's submit/reset. Form association is automatic inside a `<form>`; prefer these over custom handlers. |
+| `soft-disabled` | Looks disabled but stays focusable so assistive tech reaches it and you can explain why. Prefer over `disabled` when the reason matters. |
+| `role` | Defaults to `button`. Override only when the surrounding context genuinely needs a different role — then re-audit the keyboard contract. |
+| `size` | Numeric token (default `32`); the primitive accepts the superset of sizes and leaves visual interpretation to the consumer. |
+
+**Note:** `name`/`value` are submitted as a form-data pair when the primitive submits its form.
 
 ### Limitations
 
-- The component ships with no visual styling — consumers (or wrapping components) are responsible for the appearance, hover/focus indicators, and active-state visuals.
-- The form-association integration relies on `ElementInternals`; the surrounding page must run in a browser that supports it.
-- `aria-state-key` only writes attributes that start with `aria-`; non-ARIA attribute names in the list are ignored.
+- **No visual styling** — the primitive ships no appearance, hover/focus indicators, or active-state visuals; the consumer or wrapping component must supply them.
+- **Needs `ElementInternals`** — form association relies on `ElementInternals`, so the page must run in a browser that supports it.
+- **`aria-state-key` is ARIA-only** — only names starting with `aria-` are written; other attribute names in the list are ignored.
 
 ## Accessibility
 
 ### Built-in features
 
-The host carries `role="button"` (overridable) and participates in the page's tab order via the `TabIndexMixin`. The primitive replicates native `<button>` keyboard behaviour: `Enter` activates immediately on keydown (firing `click`) and `Space` activates on keyup after a keydown — the component temporarily adds a `pressed` class during the press so consumers can style the down-state, and clears it on blur if focus is lost mid-press. The default browser action for both keys is prevented so the surrounding page does not scroll on `Space`.
+The host carries `role="button"` (overridable) and participates in the page's tab order via the `TabIndexMixin`. The primitive replicates native `<button>` keyboard behavior: `Enter` activates immediately on keydown (firing `click`) and `Space` activates on keyup after a keydown — the component temporarily adds a `pressed` class during the press so consumers can style the down-state, and clears it on blur if focus is lost mid-press. The default browser action for both keys is prevented so the surrounding page does not scroll on `Space`.
 
-`active` is mirrored into the configured ARIA state attribute(s); by default that is `aria-pressed`, but consumers can broaden it (e.g. `aria-pressed,aria-expanded`) for disclosure-style buttons. Setting `disabled` removes the element from the tab order and marks it `aria-disabled="true"`; setting `soft-disabled` keeps the tab stop but still announces the button as disabled, which is useful when you want to explain *why* the action is unavailable without hiding the control.
+`active` is mirrored into the configured ARIA state attribute(s); by default that is `aria-pressed`, but consumers can broaden it (for example `aria-pressed,aria-expanded`) for disclosure-style buttons. Setting `disabled` removes the element from the tab order and marks it `aria-disabled="true"`; setting `soft-disabled` keeps the tab stop but still announces the button as disabled, which is useful when you want to explain *why* the action is unavailable without hiding the control.
 
 The element is form-associated (`formAssociated = true`): with `type="submit"`/`"reset"` it triggers `requestSubmit()` / `reset()` on the surrounding form, and `name`/`value` are sent with the form data.
 
@@ -104,4 +103,12 @@ The element is form-associated (`formAssociated = true`): with `type="submit"`/`
 
 - Supply an accessible name via the default slot text or `aria-label` — the primitive does not generate one.
 - For icon-only or visually empty buttons, `aria-label` is required.
-- When `aria-state-key` uses a non-default ARIA attribute (e.g. `aria-expanded`), make sure the visible state and the chosen attribute carry compatible meaning (`aria-pressed` for toggle, `aria-expanded` for disclosure, etc.).
+- When `aria-state-key` uses a non-default ARIA attribute (for example `aria-expanded`), make sure the visible state and the chosen attribute carry compatible meaning (`aria-pressed` for toggle, `aria-expanded` for disclosure, etc.).
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-button` | The styled button built on this primitive. Use it whenever the standard appearance is wanted. |
+| `mdc-buttonlink` | Styled navigation that renders an `<a>`. Use for navigations rather than actions. |
+| `mdc-toggle` | Form control for binary state. Use instead of a toggled primitive when the state is a form value. |

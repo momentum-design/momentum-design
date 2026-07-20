@@ -7,19 +7,19 @@ component: buttongroup
 
 ## Overview
 
-The buttongroup arranges related `mdc-button` instances into a single segmented control. It applies a shared `size` and `variant` to each slotted button so the group reads as one unit, supports horizontal or vertical layouts, and offers a compact mode for space-constrained surfaces.
+The buttongroup arranges related `mdc-button` instances into a single segmented control. It applies a shared `size` and `variant` to each slotted button so the group reads as one unit, and supports horizontal or vertical layouts plus a compact mode for space-constrained surfaces.
 
 ### When to use
 
-- Use `mdc-buttongroup` to cluster mutually related actions that operate on the same target (for example a toolbar of formatting actions, a zoom in/out pair, or a "select / clear" duo).
-- Use it when the visual unification of multiple buttons communicates that they belong together and share styling.
+- Use `mdc-buttongroup` to cluster related actions that operate on the same target, such as a formatting toolbar, a zoom in/out pair, or a "select / clear" duo.
+- Use `mdc-buttongroup` when visually unifying several `mdc-button` controls communicates that they belong together and share sizing and style.
 
 ### When not to use
 
-- Use a single `mdc-button` when there is only one action to present.
-- Use `mdc-tablist` with `mdc-tab` when the controls switch between panels of content — tabs carry the right semantics for that pattern.
-- Use `mdc-toggle` or `mdc-radiogroup` when the buttons represent a mutually exclusive selection that should be announced as a single form value.
-- Use `mdc-menubar` or `mdc-menupopover` when the actions belong inside a menu surface rather than a persistent toolbar.
+- Do not use `mdc-buttongroup` for a single action. Use a standalone `mdc-button`.
+- Do not use `mdc-buttongroup` for switching between panels of content. Use `mdc-tablist`, which carries the right tab semantics.
+- Do not use `mdc-buttongroup` for a mutually exclusive selection that should be announced as one form value. Use `mdc-radiogroup` (or a `role="radiogroup"` pattern) instead.
+- Do not use `mdc-buttongroup` for actions that belong in a menu. Use `mdc-menupopover` or `mdc-menubar`.
 
 ## Guidelines
 
@@ -47,31 +47,29 @@ Minimal markup example:
 
 - Slot only `mdc-button` elements as direct children. Other content is not styled by the group and breaks the segmented appearance.
 - Keep the buttons inside a group conceptually related. If the actions are unrelated, render them as standalone buttons.
-- Mix icon-only and pill buttons sparingly — when mixed, ensure every icon-only button has an `aria-label` so the group remains accessible.
+- Mix icon-only and pill buttons sparingly — a consistent button shape reads more clearly as a set.
 
 ### Property/Attribute details
 
-- `orientation` — layout direction of the slotted buttons.
-  - `horizontal` (default) — buttons are arranged in a row.
-  - `vertical` — buttons are stacked top-to-bottom.
-- `variant` — visual style applied to every child button, overriding their individual `variant`.
-  - `primary` (default) — solid background.
-  - `secondary` — transparent background with border.
-  - `tertiary` — text/icon only, no background or border.
-- `size` — pixel-derived height applied to every child button, overriding their individual `size`. Supported values: `24`, `28` (default), `32`, `40`.
-- `compact` — when `true`, forces every button to a fixed 24px height regardless of `size`. Useful for dense layouts. Defaults to `false`.
+| Option | Intent |
+|---|---|
+| `variant="primary"` (default) / `variant="secondary"` | Applied to every child button, overriding each button's own `variant`, so the group reads as one unit. Set the shared style here, not on the individual buttons. |
+| `orientation="horizontal"` (default) / `orientation="vertical"` | Lays the buttons in a row or a stack. Use `vertical` only when the surrounding layout is column-oriented. |
+| `compact` | Forces every button to a fixed 24px height regardless of `size`. Use for dense surfaces such as toolbars in tight headers. |
+
+**Note:** `size` (`24`/`28` (default)/`32`/`40`) is applied to every child button, overriding each button's own `size`.
 
 ### Limitations
 
-- The group only manages direct `mdc-button` children. Any other slotted element keeps its own styling and may visually break the segmented look.
-- `size` and `variant` on the group always override matching attributes on the slotted buttons — set those on the group, not on the individual button.
-- The component does not manage roving tabindex or selection state; arrow-key navigation between the grouped buttons is up to the consumer when that pattern is desired (see Accessibility).
+- **Only `mdc-button` children styled** — the group manages direct `mdc-button` children only; any other slotted element keeps its own styling and can break the segmented look. Slot buttons directly.
+- **Group overrides children** — `size` and `variant` set on the group always override the same attributes on the slotted buttons. Set them on the group, not the button.
+- **No roving focus or selection** — the group does not manage roving `tabindex` or selection state. Add `role="toolbar"` with arrow-key navigation, or use `mdc-radiogroup` for selection, when those patterns are needed.
 
 ## Accessibility
 
 ### Built-in features
 
-The buttongroup is a presentational wrapper: it renders a generic container and does not set a role, label, or keyboard behaviour on the host. Each slotted `mdc-button` retains its own `role="button"`, tab stop, and ARIA contract.
+The buttongroup is a presentational wrapper: it renders a generic container and does not set a role, label, or keyboard behavior on the host. Each slotted `mdc-button` retains its own `role="button"`, tab stop, and ARIA contract.
 
 #### Internal ARIA managed by the component
 
@@ -89,5 +87,14 @@ The buttongroup is a presentational wrapper: it renders a generic container and 
 
 #### Labeling
 
-- Always label icon-only buttons inside the group with `aria-label` (e.g. `aria-label="Bold"`) — the icon glyph alone is not announced.
-- When the group as a whole represents a single function (e.g. "Text formatting"), expose that name via `aria-label` on the host so the surrounding toolbar context is clear to assistive technology users.
+- Always label icon-only buttons inside the group with `aria-label` (for example `aria-label="Bold"`) — the icon glyph alone is not announced.
+- When the group as a whole represents a single function (for example "Text formatting"), expose that name via `aria-label` on the host so the surrounding toolbar context is clear to assistive technology users.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-button` | The child element a group arranges. Use alone when there is only one action. |
+| `mdc-radiogroup` | Announces a single selected value. Use instead when the segmented buttons are a mutually exclusive choice. |
+| `mdc-tablist` | Switches between content panels. Use instead when the group would control tabbed views. |
+| `mdc-menupopover` | Houses actions in a menu surface. Use instead of a persistent toolbar group when actions belong in a menu. |
