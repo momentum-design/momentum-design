@@ -7,18 +7,18 @@ component: verticaltablist
 
 ## Overview
 
-`mdc-verticaltablist` organises a set of tabs vertically and lets users move between them with the up/down arrow keys, Home, End, and by clicking. It manages tab selection state and the active-tab semantics while the consumer renders the corresponding `tabpanel` content elsewhere in the DOM.
+`mdc-verticaltablist` is the vertical counterpart to `mdc-tablist`, stacking `mdc-tab` elements down the side of their content so users can switch panels when horizontal space is limited. It owns selection and active-tab semantics while the consumer renders the matching `tabpanel` content elsewhere in the DOM.
 
 ### When to use
 
-- Provide vertical navigation between sibling content panels (settings categories, side-by-side detail views).
-- When horizontal space is constrained or when the related content is naturally laid out beside the tab list.
+- Use `mdc-verticaltablist` to switch between sibling content panels stacked vertically (settings categories, side-by-side detail views).
+- Use `mdc-verticaltablist` when horizontal space is constrained or the related content sits beside the tab list.
 
 ### When not to use
 
-- Use `mdc-tablist` for a horizontal arrangement of tabs.
-- Use `mdc-sidenavigation` for top-level navigation between different pages or views rather than between related panels of the same view.
-- Use `mdc-listbox` / `mdc-select` for selection of a value rather than switching between visible panels.
+- Do not use `mdc-verticaltablist` for a horizontal row of tabs. Use `mdc-tablist` instead.
+- Do not use `mdc-verticaltablist` for top-level navigation between pages or views. Use `mdc-sidenavigation` instead.
+- Do not use `mdc-verticaltablist` to pick a value rather than switch visible panels. Use `mdc-listbox` or `mdc-select` instead.
 
 ## Guidelines
 
@@ -46,24 +46,26 @@ Minimal markup example. Each `mdc-tab` must point at its associated panel via `a
 
 ### Content guidance
 
-- Place only `mdc-tab` elements in the default slot. The component sets `variant="line"` automatically on any tab that is added; only the `line` variant is supported in vertical orientation.
+- Keep the tab labels parallel — the same kind of phrase and a similar length across the set — so the group reads as one unit.
+- Keep each label to a single short line; in a vertical stack a label long enough to wrap is more disruptive than in a horizontal row. Reword an over-long label rather than truncating it.
+- Lead with the most important or most frequently used panel; when no tab is preset as active, the first enabled tab is selected by default.
 
 ### Property/Attribute details
 
-- `data-aria-label` — accessible name applied to the tablist via `aria-label`. Required for screen-reader users to understand the purpose of the tab group.
-- `initial-focus` — index of the tab that should receive focus when the component is first rendered (default `0`). Out-of-range values are clamped to a valid index.
-- `loop` — `"true"` (default) or `"false"`. When `"true"`, arrow navigation wraps around at the ends of the list; when `"false"`, navigation stops at the first or last tab.
-- The `change` event (`onChange`) is dispatched when the active tab changes. The new tab id is available on `event.detail.tabId`:
+| Option | Intent |
+|---|---|
+| `active-tab-id` | ID of the selected tab; reflects the active tab and updates as the user switches. When unset, the first enabled tab is selected by default. Set it to preselect or control the active tab. |
+| `data-aria-label` | Accessible name for the tab group, surfaced as the tablist's `aria-label`. Always set it so screen-reader users understand the group's purpose (see Labeling). |
+| `initial-focus="0"` (default) | Index of the tab focused when the component first renders; out-of-range values clamp to a valid index. Set it when the most useful starting tab is not the first. |
+| `loop="true"` (default) | Whether Up/Down arrow navigation wraps at the ends. Keep `true` for continuous cycling; set `false` when the ends should stop. |
 
-  ```ts
-  tablist.addEventListener('change', (event) => {
-    handleTabChange(event.detail.tabId);
-  });
-  ```
+The `change` event (`onChange`) fires when the active tab changes, with the new tab id on `event.detail.tabId`. Place only `mdc-tab` elements in the default slot.
 
 ### Limitations
 
-- Only the `line` variant of `mdc-tab` is supported; setting another variant on a child tab has no effect because the component overrides it on insertion.
+- **Line variant only** — the component forces `variant="line"` on every child tab on insertion, so any other variant set on a child has no effect.
+- **Vertical orientation only** — for a horizontal row of tabs use `mdc-tablist`.
+- **Consumer renders panels** — the component owns tab selection but not the panels; render a `role="tabpanel"` element per tab and toggle visibility from the selected tab.
 
 ## Accessibility
 
@@ -98,3 +100,12 @@ Minimal markup example. Each `mdc-tab` must point at its associated panel via `a
 
 - Always set `data-aria-label` so the tablist has an accessible name; otherwise screen readers cannot describe the purpose of the tab group.
 - Each tab needs an `aria-controls` attribute pointing at the id of its panel; each panel needs `aria-labelledby` pointing at its tab.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-tablist` | Horizontal counterpart for a row of tabs. |
+| `mdc-tab` | The individual tab controls placed in the default slot (line variant only). |
+| `mdc-sidenavigation` | Use for page-to-page navigation rather than in-page panel switching. |
+| `mdc-listbox` / `mdc-select` | Use to pick a value rather than switch visible panels. |

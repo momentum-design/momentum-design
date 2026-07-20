@@ -630,7 +630,7 @@
       "tier": 3,
       "path": "packages/components/src/components/sidenavigation/knowledge-base/sidenavigation.component.md",
       "title": "Side Navigation",
-      "summary": "Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behaviour and support for nested menu items.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behavior and support for nested menu items.",
       "canonical": null,
       "component": "sidenavigation"
     },
