@@ -11,13 +11,13 @@ The textarea is a form-associated multi-line text input. It renders a label, an 
 
 ### When to use
 
-- Use when users need to enter free-form text that may span multiple lines (messages, comments, descriptions).
-- Use when you want consistent label, helper-text, validation, and character-count chrome around a multi-line input.
+- Use `mdc-textarea` when users enter free-form text that may span multiple lines (messages, comments, descriptions).
+- Use `mdc-textarea` when you want consistent label, helper-text, validation, and character-count chrome around a multi-line input.
 
 ### When not to use
 
-- Do not use for short, single-line inputs — use `mdc-input` instead.
-- Do not use for structured values (email, time, password); use the dedicated form components.
+- Do not use `mdc-textarea` for short, single-line values. Use `mdc-input` instead.
+- Do not use `mdc-textarea` for structured values such as email, time, or passwords. Use the dedicated form component (`mdc-input`, `mdc-password`, or `mdc-select`) instead.
 
 ## Guidelines
 
@@ -55,44 +55,32 @@ textarea.addEventListener('limitexceeded', (e) => {
 });
 ```
 
+### Content guidance
+
+- Follow the same label, placeholder, and helper-text rules as `mdc-input`: keep the label short and always visible, and never put critical information in the placeholder.
+- Use a character or word counter (`max-character-limit`) only when there is a real limit; it shows used/total and errors when the limit is exceeded.
+
 ### Property/Attribute details
 
-- `name` (string, default `''`) — form submission key. Required for form participation.
-- `value` (string, default `''`) — current value. The initial value can also be supplied as text content inside the element; on connect, text content is trimmed and assigned to `value` if `value` is empty.
-- `placeholder` (string) — placeholder rendered when empty.
-- `rows` (number, default `5`) — visible row count of the underlying `<textarea>`. Updated by the resize button when `resizable` is enabled.
-- `cols` (number) — visible column count.
-- `wrap` (`'soft' | 'hard'`, default `'soft'`) — line-wrapping behaviour passed through to the native `<textarea>`.
-- `autocapitalize` (string, default `'off'`) — passes through to the native `<textarea>`.
-- `autocomplete` (string, default `'off'`) — passes through to the native `<textarea>`.
-- `dirname` (string) — name used to submit the input's directionality alongside the value.
-- `maxlength` / `minlength` (number) — hard character limits enforced by the native `<textarea>`.
-- `max-character-limit` (number) — soft limit that drives the character counter and the `limitexceeded` event. Independent from `maxlength`.
-- `required` (boolean, default `false`) — marks the field as required and renders the required indicator.
-- `disabled` (boolean) / `readonly` (boolean, default `false`) / `soft-disabled` (boolean, default `false`) — control interactivity. `readonly` and `disabled` block resize input as well.
-- `label` (string) — visible label rendered above the field.
-- `data-aria-label` (string) — overrides the `aria-label` on the underlying `<textarea>` when no visible label is appropriate.
-- `help-text` (string) — text rendered beneath the field. Also used as the validation message when `help-text-type` is `'error'` and the character limit is exceeded.
-- `help-text-type` (`'default' | 'error' | 'warning' | 'success' | 'priority'`, default `'default'`) — controls the helper icon and validation styling.
-- `validation-message` (string) — custom validation message used by `setCustomValidity` when the field is required and empty.
-- `toggletip-text` (string), `toggletip-placement`, `toggletip-strategy`, `info-icon-aria-label` — configure the info icon and toggletip rendered next to the label.
-- `resizable` (boolean, default `false`) — shows the resize button. When `false`, the button is hidden.
-- `resize-button-aria-label` (string, default `''`) — accessible name for the resize button. Always provide one that conveys what the button does and that Arrow Up / Arrow Down adjust the height.
-- `auto-focus-on-mount` (boolean) — when set, focuses the textarea immediately after first render.
+| Option | Intent |
+|---|---|
+| `rows="5"` (default) / `cols` | Initial visible size of the field — set a sensible default height for the expected content. `rows` is also updated by the resize button. |
+| `resizable` + `resize-button-aria-label` | Shows a keyboard/pointer resize button; always provide an aria-label that mentions Arrow Up/Down adjust the height. |
+| `max-character-limit` | Soft limit that drives the counter and `limitexceeded`; independent of the native `maxlength` hard cap. |
+| `label` / `required` | Visible label and required indicator. |
+| `help-text` + `help-text-type` | Helper or validation message; the type (`default`, `error`, `warning`, `success`, `priority`) drives the icon and error state. Keep it in sync with `limitexceeded`. |
+| `validation-message` | Custom validity text used when the field is required and empty. |
+| `toggletip-text` / `info-icon-aria-label` | Info toggletip beside the label; provide the aria-label when set. |
+| `disabled` / `readonly` / `soft-disabled` | Interaction states; `readonly` and `disabled` also block resizing. |
+| `data-aria-label` | Accessible name for the `<textarea>` when no visible label is used. |
 
-The component dispatches:
+**Note:** native attributes (`name`, `value`, `placeholder`, `wrap`, `minlength`/`maxlength`, `autocapitalize`, `autocomplete`, `dirname`) pass through to the underlying `<textarea>`; `wrap` controls line-wrapping behavior.
 
-- `input` — fires on every keystroke.
-- `change` — fires on blur after a value change. Re-dispatched from inside the shadow DOM so it bubbles out.
-- `focus` / `blur` — native DOM events with React equivalents.
-- `limitexceeded` — fires once when the character count crosses or returns under the configured `max-character-limit`. Detail: `{ currentCharacterCount, maxCharacterLimit, value }`.
+### Limitations
 
-Slots:
-
-- `label` — overrides the label rendering.
-- `toggletip` — overrides the toggletip info icon button.
-- `help-icon` — overrides the helper/validation icon.
-- `help-text` — overrides the helper/validation text element.
+- **Soft limit vs hard limit** — `max-character-limit` only warns and fires `limitexceeded`; it does not block typing. Use the native `maxlength` for a hard cap.
+- **Keep help-text in sync** — the counter and validation do not update `help-text` for you; update `help-text` / `help-text-type` on `limitexceeded` so the visible and announced messages match.
+- **Resize needs a label** — an enabled resize button with no `resize-button-aria-label` has no accessible name and hides the Arrow Up/Down affordance from assistive tech.
 
 ## Accessibility
 
@@ -130,3 +118,12 @@ Slots:
 
 - The same `help-text` value is used as the custom validation message when the character limit is exceeded with `help-text-type="error"`, so the message users see and the message form validation reports stay consistent.
 - The `change` event from the native `<textarea>` is not composed, so the component re-dispatches it. Handlers attached outside the shadow root will fire correctly.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-input` | Single-line version of the same field. Use for short values. |
+| `mdc-password` | Masked credential input with a show/hide toggle. |
+| `mdc-searchfield` | Search-styled single-line input. |
+| `mdc-formfieldwrapper` | Shared label / help-text / validation surface. |

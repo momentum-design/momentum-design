@@ -11,13 +11,13 @@ The searchpopover is a widget built on top of `mdc-searchfield` that adds a conn
 
 ### When to use
 
-- Use it when search results or suggestions appear in a popover anchored to the input and each result performs its own action.
-- Use it together with chip filters (`mdc-inputchip`, `mdc-chip`, `mdc-alertchip`) when the search query is refined by removable tokens.
+- Use `mdc-searchpopover` when search results or suggestions appear in a popover anchored to the input and each result performs its own action.
+- Use `mdc-searchpopover` with slotted chip filters (`mdc-inputchip`) when the search query is refined by removable tokens.
 
 ### When not to use
 
-- Do not use it when search results render inline on the page — use `mdc-searchfield` instead.
-- Do not use it when the popover is a list of options being filtered down by the input — use `mdc-combobox` instead.
+- Do not use `mdc-searchpopover` when search results render inline on the page. Use `mdc-searchfield` instead.
+- Do not use `mdc-searchpopover` when the popover is a list of options being filtered down to a selection. Use `mdc-combobox` instead.
 
 ## Guidelines
 
@@ -55,16 +55,28 @@ With chip filters slotted in front of the input text:
 </mdc-searchpopover>
 ```
 
+### Content guidance
+
+- Keep result and suggestion labels short and scannable; bold the characters that match the query so users can spot the match.
+- Show the popover only when there is something to display — drive `display-popover` from whether results exist, and hide it when the query is empty.
+- Give "no results" its own empty-state message inside the popover rather than leaving it blank.
+
 ### Property/Attribute details
 
-Inherits everything from `mdc-searchfield` (and through it from `mdc-input` / `mdc-formfieldwrapper`), notably `name`, `value`, `placeholder`, `readonly`, `disabled`, `soft-disabled`, `clearAriaLabel`, `label`, `data-aria-label`, `max-length`, `min-length`, `control-type` (controlled / uncontrolled chip removal), and the inline chip-filter behaviour.
+| Option | Intent |
+|---|---|
+| `display-popover` | Whether the popover is visible. Drive it from your own state (for example when results are available); it is not toggled automatically. Default `false`. |
+| `popover-aria-label` | Accessible name for the popover dialog (for example "Search results"). Required for an announceable popover. |
+| `placement` | Popover placement relative to the input: `bottom-start` (default) or `top-start`. |
+| `popover-z-index` | Override the popover z-index (default `1000`) when it must sit above other stacking contexts. |
 
-The searchpopover adds:
+**Note:** searchpopover inherits everything from `mdc-searchfield` (and through it `mdc-input` / `mdc-formfieldwrapper`), notably `name`, `value`, `placeholder`, `readonly`, `disabled`, `soft-disabled`, `clearAriaLabel`, `label`, `data-aria-label`, length constraints, `control-type` (controlled / uncontrolled chip removal), and the inline chip-filter behavior.
 
-- `display-popover` — when `true`, the popover is visible. Default `false`. Consumers drive this from their own state (for example based on whether results are available).
-- `placement` — popover placement relative to the input. `top-start` or `bottom-start`. Default `bottom-start`.
-- `popover-z-index` — z-index for the popover. Override when the popover must sit above other stacking contexts. Default `1000` (applied by the popover).
-- `popover-aria-label` — accessible name applied to the popover (for example "Search results"). Required for an announceable popover.
+### Limitations
+
+- **Popover visibility is yours** — `display-popover` is not toggled automatically; drive it from your own state or the results never appear.
+- **Popover needs a name** — without `popover-aria-label` the dialog has no accessible name; always provide one.
+- **Not a validation surface** — like `mdc-searchfield`, it inherits no help-text or validation surface; present "no results" as empty-state content inside the popover, not as field errors.
 
 ### Notes
 
@@ -101,3 +113,13 @@ The internal `<input>` is given `role="combobox"` and is wired to the popover vi
 - Provide a `label` (or `data-aria-label`) so the input/combobox has an accessible name.
 - Provide `popover-aria-label` so the popover has an announceable name (for example "Search results" or "Suggestions").
 - Provide `clearAriaLabel` so the trailing clear button is announced (for example "Clear search").
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-searchfield` | Same search input without a popover; use when results render inline on the page. |
+| `mdc-combobox` | Filter a fixed list of options down to a single selection. |
+| `mdc-popover` | The popover surface searchpopover wires to the input as a dialog. |
+| `mdc-inputchip` | Slotted inline filter tokens shown in front of the search text. |
+| `mdc-list` / `mdc-listitem` | Typical result or suggestion content placed inside the popover. |

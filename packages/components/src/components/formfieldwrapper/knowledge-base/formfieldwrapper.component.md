@@ -1,6 +1,6 @@
 ---
 title: Formfieldwrapper
-summary: Internal base component that renders the label, helper/validation text, optional toggletip info icon, and required indicator shared by every form field component.
+summary: Usage, guidelines, and accessibility for the mdc-formfieldwrapper component — the internal base that renders the shared label, helper/validation text, and toggletip for every form field.
 tier: 3
 component: formfieldwrapper
 ---
@@ -13,11 +13,11 @@ This entry documents the properties, slots, and accessibility hooks that every e
 
 ### When to use
 
-- Use the formfieldwrapper indirectly by extending it from a new form-field component that needs the standard label, required indicator, helper text, and toggletip layout.
+- Use `mdc-formfieldwrapper` indirectly, by extending it from a new form-field component that needs the standard label, required indicator, helper text, and toggletip layout.
 
 ### When not to use
 
-- Do not render `mdc-formfieldwrapper` directly in application code — pick the concrete form-field component (`mdc-input`, `mdc-textarea`, `mdc-checkbox`, etc.) instead.
+- Do not render `mdc-formfieldwrapper` directly in application code. Use the concrete form-field component (`mdc-input`, `mdc-textarea`, `mdc-checkbox`, and so on) instead.
 
 ## Guidelines
 
@@ -44,30 +44,31 @@ The wrapper provides `renderLabel()` and `renderHelperText()` helpers; subclasse
 
 ### Property/Attribute details
 
-- `label` — visible label text. Rendered either as a native `<label for>` (linked to the field's `inputId`) or as a `mdc-text` heading depending on the extending subclass's `shouldRenderLabel` flag.
-- `required` — when `true`, appends a `*` required indicator next to the label. Default `false`.
-- `help-text` — helper or validation text rendered below the field.
-- `help-text-type` — `default`, `error`, `warning`, `success`, or `priority`. Drives the helper icon rendered next to the helper text (no icon for `default`).
-- `toggletip-text` — when set, renders an info-icon button next to the label that opens an `mdc-toggletip` with this text.
-- `toggletip-placement` — placement of the toggletip popover relative to the info-icon button. Default `top`.
-- `toggletip-strategy` — popover positioning strategy for the toggletip. `absolute` (default) or `fixed`.
-- `info-icon-aria-label` — accessible label for the info-icon button. Required when `toggletip-text` is set (the button has no visible text).
-- `readonly` — when `true`, the field is non-interactive but focusable. Subclasses honour this in their own rendering.
-- `disabled` — when `true`, the field is non-interactive and removed from the tab order. The info-icon button and helper-text icon are also disabled.
-- `soft-disabled` — when `true`, the field is visually disabled but remains focusable so assistive technology can read it. Mainly used for fields where disabled state must still be discoverable.
+These are the surfaces every extending field exposes to consumers; set them on the concrete field (for example `mdc-input`), not on `mdc-formfieldwrapper`.
 
-Slots exposed to the consumer:
+| Option | Intent |
+|---|---|
+| `label` | Visible label and accessible name. Rendered as a native `<label for>` or as an `mdc-text` heading depending on the subclass's `shouldRenderLabel` flag. Always provide one. |
+| `required` | Appends a `*` indicator next to the label. Visual only — the extending component must set `aria-required` on its input. |
+| `help-text` + `help-text-type` | Helper or validation text below the field; the type (`default`, `error`, `warning`, `success`, `priority`) drives the helper icon (no icon for `default`). |
+| `toggletip-text` + `info-icon-aria-label` | Info-icon button beside the label that opens an `mdc-toggletip`. Provide the aria-label whenever `toggletip-text` is set — the button has no visible text. |
+| `toggletip-placement` / `toggletip-strategy` | Placement (default `top`) and positioning strategy (`absolute` default, or `fixed`) of the toggletip popover. |
+| `readonly` / `disabled` / `soft-disabled` | `readonly` stays focusable; `disabled` leaves the tab order and disables the info/helper icons; `soft-disabled` looks disabled but stays focusable so assistive tech can read it. |
 
-- `label` — replace the default label rendering with custom markup.
-- `toggletip` — replace the default info-icon button + toggletip with custom markup.
-- `help-icon` — replace the default helper-text icon (driven by `help-text-type`).
-- `help-text` — replace the default helper-text rendering.
+**Note:** the consumer-facing slots override each piece of the default layout — `label`, `toggletip` (info-icon button + toggletip), `help-icon` (driven by `help-text-type`), and `help-text`.
+
+### Limitations
+
+- **Internal base only** — `mdc-formfieldwrapper` is not meant to be rendered directly; extend it from a concrete field (`mdc-input`, `mdc-textarea`, and so on) instead.
+- **No role or ARIA state** — the wrapper owns no role and no input; the extending component must wire `aria-describedby` to the helper-text id and set roles/ARIA on its own control.
+- **Required is visual only** — the `*` indicator is decorative. Set `aria-required` on the input, or the required state is not announced.
+- **Label wiring is the subclass's job** — the native `<label for>` links to the subclass's `inputId`; a subclass that renders the label as a heading (`shouldRenderLabel="false"`, as with groups) must supply the accessible name itself.
 
 ## Accessibility
 
 ### Built-in features
 
-The wrapper renders the label as a native `<label for>` element linked to the form field's hidden native input via `inputId`. This produces a click-on-label-focuses-field behaviour for free, with no additional ARIA wiring required from the subclass.
+The wrapper renders the label as a native `<label for>` element linked to the form field's hidden native input via `inputId`. This produces a click-on-label-focuses-field behavior for free, with no additional ARIA wiring required from the subclass.
 
 The helper text is rendered through `mdc-text` with a stable id (`DEFAULTS.HELPER_TEXT_ID`); extending components are expected to link this id from their input element via `aria-describedby` so screen readers announce the helper text on focus.
 
@@ -99,3 +100,13 @@ The wrapper itself does not own any role or ARIA state — the role and ARIA con
 
 - Always provide a `label` on the extending component — without it the field has no accessible name from the wrapper, and the extending component must supply one through `data-aria-label` or `aria-labelledby`.
 - When `toggletip-text` is set, always provide `info-icon-aria-label` — the info-icon button has no visible text and otherwise has no accessible name.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-input` / `mdc-textarea` / `mdc-password` / `mdc-searchfield` | Text fields that extend the wrapper for their label, helper-text, and validation surface. |
+| `mdc-select` / `mdc-combobox` / `mdc-datepicker` | Choice and date fields that extend the wrapper. |
+| `mdc-checkbox` / `mdc-radio` / `mdc-toggle` | Selection controls that extend the wrapper's label and helper-text contract. |
+| `mdc-formfieldgroup` | Groups related fields; renders the label as a heading (`shouldRenderLabel="false"`) rather than a native `<label for>`. |
+| `mdc-toggletip` | Popover opened by the wrapper's info-icon button when `toggletip-text` is set. |

@@ -297,7 +297,7 @@
       "tier": 3,
       "path": "packages/components/src/components/formfieldwrapper/knowledge-base/formfieldwrapper.component.md",
       "title": "Formfieldwrapper",
-      "summary": "Internal base component that renders the label, helper/validation text, optional toggletip info icon, and required indicator shared by every form field component.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldwrapper component — the internal base that renders the shared label, helper/validation text, and toggletip for every form field.",
       "canonical": null,
       "component": "formfieldwrapper"
     },

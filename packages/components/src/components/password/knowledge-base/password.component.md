@@ -11,14 +11,14 @@ component: password
 
 ### When to use
 
-- Use `mdc-password` whenever the user needs to enter a credential or other secret string that should be visually masked.
-- Use it as the password field in sign-in, sign-up, and credential-change forms inside a `form` element.
+- Use `mdc-password` whenever the user enters a credential or other secret string that should be visually masked.
+- Use `mdc-password` as the password field in sign-in, sign-up, and credential-change forms inside a `form` element.
 
 ### When not to use
 
-- Do not use `mdc-password` for regular text — use `mdc-input` instead.
-- Do not use it for multi-line secrets — use `mdc-textarea`.
-- Do not use it for one-time codes that should be visible as the user types — use `mdc-input`.
+- Do not use `mdc-password` for regular text entry. Use `mdc-input` instead.
+- Do not use `mdc-password` for multi-line secrets. Use `mdc-textarea` instead.
+- Do not use `mdc-password` for one-time codes that should stay visible as the user types. Use `mdc-input` instead.
 
 ## Guidelines
 
@@ -47,24 +47,31 @@ Minimal markup example:
 
 The component is form-associated; placing it inside a `form` element registers its `name` / `value` pair for submission. Provide both `show-button-aria-label` and `hide-button-aria-label` so the toggle button has an accessible name in each state.
 
+### Content guidance
+
+- A password field is understood to be required, so you can omit the visible required indicator.
+- State the password criteria in `help-text` so users know what to enter. For password creation, validate in real time (drive `help-text-type` as the user types) rather than only on submit.
+- On login, do not reveal whether the username or the password was wrong — surface a single generic error above the form to reduce account enumeration.
+
 ### Property/Attribute details
 
-- `show-button-aria-label` — accessible label applied to the trailing toggle when the password is currently masked. Required for accessibility.
-- `hide-button-aria-label` — accessible label applied to the trailing toggle when the password is currently visible. Required for accessibility.
-- The trailing toggle is rendered automatically when the field has a value (or when explicitly forced). The component overrides the `trailing-button` flag from `mdc-input` to `true` on connect; the standard clear button is replaced with the show/hide button.
-- The visibility state is internal; toggling the button flips the rendered `input` between `type="password"` and `type="text"` without exposing a property.
-- All `mdc-input` attributes are available:
-  - `label`, `required`, `name`, `value`, `placeholder`, `pattern`, `minlength`, `maxlength`, `size`, `autocapitalize`, `autocomplete`, `dirname`, `list`.
-  - `help-text`, `validation-message`, `help-text-type` (`'default' | 'error' | 'warning' | 'success' | 'priority'`).
-  - `disabled`, `readonly`.
-  - `leading-icon`, `prefix-text`, `toggletip-text`.
-  - `data-aria-label`, `data-aria-describedby` — used for the inner `<input>` accessible name and description respectively.
-- Slots (inherited): `label`, `toggletip`, `help-icon`, `help-text`, `input`, `input-leading-icon`, `input-prefix-text`, `trailing-button` (overriding the built-in toggle).
-- Events: `input`, `change`, `focus`, `blur`.
+| Option | Intent |
+|---|---|
+| `show-button-aria-label` / `hide-button-aria-label` | Accessible names for the trailing toggle in its masked and visible states. Both required. |
+| `label` | Visible label and accessible name. Always provide one. |
+| `help-text` + `help-text-type` | Password criteria or validation message; drive real-time feedback via the type (`default`, `error`, `warning`, `success`, `priority`). |
+| `validation-message` | Custom validity text surfaced with `help-text-type="error"`. |
+| `leading-icon` / `prefix-text` / `toggletip-text` | Inherited `mdc-input` surfaces for context beside the field. |
+| `disabled` / `readonly` | Interaction states inherited from `mdc-input`. |
+| `data-aria-label` / `data-aria-describedby` | Accessible name/description for the inner `<input>`. |
+
+**Note:** `mdc-password` inherits the rest of the `mdc-input` API (`name`, `value`, `placeholder`, `pattern`, `minlength`/`maxlength`, `size`, `autocapitalize`, `autocomplete`, `dirname`, `list`). The trailing button is forced to the show/hide toggle on connect, replacing the standard clear button.
 
 ### Limitations
 
-- The component is form-associated through its host element. Older browsers without `ElementInternals` support will not include the value in standard form submissions and require a polyfill.
+- **Toggle needs both labels** — without `show-button-aria-label` and `hide-button-aria-label` the visibility toggle has no accessible name in one state. Provide both.
+- **No clear button** — the trailing slot is the show/hide toggle, so there is no built-in clear affordance like `mdc-input`.
+- **Form-associated via ElementInternals** — browsers without `ElementInternals` support will not include the value in standard form submissions and require a polyfill.
 
 ### Notes
 
@@ -105,3 +112,12 @@ The component is form-associated; placing it inside a `form` element registers i
 - Always set a `label` (or slot a custom one into the `label` slot) so the field has a visible accessible name.
 - Always provide `show-button-aria-label` and `hide-button-aria-label`; without them the toggle has no accessible name.
 - Use `data-aria-label` when the visible label alone is insufficient (for example, when the label is shared with another field).
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-input` | Base single-line text field password extends. Use for non-secret text. |
+| `mdc-textarea` | Multi-line free-form text entry. |
+| `mdc-searchfield` | Search-styled single-line input. |
+| `mdc-formfieldwrapper` | Shared label / help-text / validation surface. |

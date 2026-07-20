@@ -7,17 +7,17 @@ component: searchfield
 
 ## Overview
 
-The searchfield is a single-line text input tailored for search. It renders a leading search icon, a trailing clear button, and an inline area in front of the text caret where chip filters can be slotted. Chips behave like single characters in the input flow: they share the cursor with the text and can be focused, navigated, and removed with the keyboard.
+The searchfield is a single-line text input tailored for search, with a leading search icon and a trailing clear button. Filter chips can be slotted inline, ahead of the caret: they sit in the input flow like characters, sharing the cursor, and can be focused, navigated, and removed with the keyboard.
 
 ### When to use
 
-- Use it whenever the user types a query to search a list, table, or other content rendered on the same page.
-- Use it with slotted chip filters (`mdc-inputchip`, `mdc-chip`, `mdc-alertchip`) when the search query is refined by removable filter tokens that should appear inline with the input text.
+- Use `mdc-searchfield` whenever the user types a query to search a list, table, or other content rendered on the same page.
+- Use `mdc-searchfield` with slotted chip filters (`mdc-inputchip`) when the query is refined by removable filter tokens that should appear inline with the input text.
 
 ### When not to use
 
-- Do not use it for a search that opens a popover / listbox of suggestions or results. Use `mdc-searchpopover` instead — pairing this component with a Popover or Listbox is not supported.
-- Do not use it for free-form text entry that is not a search query — use `mdc-input` (or `mdc-textarea`) directly.
+- Do not use `mdc-searchfield` for a search that shows suggestions or results in a popover or listbox. Use `mdc-searchpopover` instead — pairing this component with a popover or listbox is not supported.
+- Do not use `mdc-searchfield` for free-form text entry that is not a search query. Use `mdc-input` or `mdc-textarea` instead.
 
 ## Guidelines
 
@@ -46,21 +46,31 @@ With chip filters slotted in front of the input text:
 </mdc-searchfield>
 ```
 
+### Content guidance
+
+- Give the field a visible label — either the default leading magnifying-glass icon or a text label. A leading icon alone satisfies the labeling requirement; use a text label when several search fields share a page.
+- Keep the default search leading icon unchanged so the field is recognizable as search.
+- Use `placeholder` only for hints; it disappears once the user types.
+- The clear button is required for a search field — provide `clearAriaLabel` (for example "Clear search").
+
 ### Property/Attribute details
 
-Inherited from `mdc-input` (and `mdc-formfieldwrapper`) — see those components for the full list; the ones most relevant to searchfield are:
+| Option | Intent |
+|---|---|
+| `control-type="uncontrolled"` (default) | Whether the component removes filter chips from the DOM itself (`uncontrolled`) or leaves removal to you (`controlled`). Pick `controlled` when chip rendering is state-driven. |
+| `placeholder` | Hint shown while the field is empty. |
+| `clearAriaLabel` | Accessible name for the required clear button. |
+| `label` / `data-aria-label` | Accessible name. A leading icon alone satisfies labeling, but the field still needs an announceable name. |
+| `toggletip-text` / `info-icon-aria-label` | Optional info toggletip beside the label. |
+| `readonly` / `disabled` / `soft-disabled` | Interaction states inherited from `mdc-input`. |
 
-- `name`, `value` — form-control identity and current text value.
-- `placeholder` — placeholder text displayed when empty.
-- `readonly`, `disabled`, `soft-disabled`, `autofocus` — visual / interaction states.
-- `clearAriaLabel` — accessible name for the trailing clear button.
-- `max-length`, `min-length` — input length constraints.
-- `label`, `toggletip-text`, `info-icon-aria-label` — label, optional toggletip text, and the accessible name for the info-icon button when the toggletip is enabled.
+**Note:** searchfield inherits `name`, `value`, and length constraints from `mdc-input`, but the validation/required surfaces (`help-text`, `help-text-type`, `required`, `validation-message`, `prefix-text`) are removed at connect — it is not a form-validation surface. The `leading-icon` defaults to search and `trailing-button` defaults to a clear button.
 
-The searchfield itself adds:
+### Limitations
 
-- `control-type` — `controlled` or `uncontrolled` (default). Controls how chip removal interacts with the DOM (see Notes below).
-- The `leading-icon` defaults to a search icon, the `trailing-button` defaults to a clear button, and the validation/required surfaces (`help-text`, `help-text-type`, `required`, `validation-message`, `prefix-text`) are removed at connect time so they never render — searchfield is not a form-validation surface.
+- **No popover results** — searchfield cannot host a suggestions or results popover/listbox; use `mdc-searchpopover` for that pattern.
+- **No validation or loading state** — help-text, required, and validation surfaces are stripped at connect, and there is no loading state. Handle "no results" with an empty state (not field errors), and place a spinner in the results area while loading.
+- **Chips share the caret** — slotted filter chips behave like characters in the input, and keyboard removal (`Backspace` / `Delete` / arrows) is built in. Do not add competing chip focus handling.
 
 ### Notes
 
@@ -89,3 +99,12 @@ The searchfield uses a native `<input type="search">` so screen readers announce
 - Provide a `label` (or `data-aria-label`) so the input has an accessible name. Without one, the search field has no announceable name.
 - Provide a `clearAriaLabel` so the trailing clear button is announced (for example "Clear search").
 - Search results that respond to the field must be rendered inline on the page; if results need to appear in a popover, use `mdc-searchpopover` instead — combining `mdc-searchfield` with `mdc-popover` or `mdc-listbox` is not supported.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-searchpopover` | Search with a popover/listbox of suggestions or results. |
+| `mdc-input` | Free-form single-line text entry that is not a search. |
+| `mdc-inputchip` | Slotted inline filter tokens shown in front of the search text. |
+| `mdc-textarea` | Multi-line free-form entry. |
