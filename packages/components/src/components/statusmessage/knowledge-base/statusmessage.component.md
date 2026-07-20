@@ -1,26 +1,26 @@
 ---
-title: Status Message
-summary: Usage, guidelines, and accessibility for the mdc-statusmessage component - an inline severity message with optional icon.
-status: draft
+title: Status message
+summary: Usage, guidelines, and accessibility for the mdc-statusmessage component — a compact inline severity message with an optional icon, used for helper, validation, and status text.
 tier: 3
 component: statusmessage
 ---
 
 ## Overview
 
-The status message is a compact inline message used to communicate helper, validation, or status text with an optional severity icon. It is intentionally lightweight and does not behave like an alert or live region by default.
+The status message is a compact inline message that pairs short text with an optional severity icon to communicate helper, validation, or status information next to the content it describes. It is the primitive behind form-field helper and validation text, and stays intentionally lightweight — it does not act like an alert or live region on its own.
 
 ### When to use
 
-- Use `mdc-statusmessage` for short inline messages that sit near a related control, setting, or content region.
-- Use a severity when the message needs a visual state such as error, warning, success, or priority.
-- Use the `icon` slot when a custom visual icon is required instead of the built-in severity icon.
+- Use `mdc-statusmessage` for a short inline message placed next to a related control, setting, or content region.
+- Use `mdc-statusmessage` `error`, `warning`, `success`, or `priority` to give the message a severity state with a matching icon.
 
 ### When not to use
 
-- Use `mdc-banner`, `mdc-toast`, or `mdc-announcementdialog` when the message needs more prominence, actions, dismissal, or system-level announcement behaviour.
-- Use form components' `help-text` APIs for standard field helper or validation text; those components compose `mdc-statusmessage` internally.
-- Use plain `mdc-text` when no severity styling or icon treatment is needed.
+- Do not use `mdc-statusmessage` for standard field helper or validation text authored by hand. Use the form field's `help-text` / `help-text-type` API instead, which renders `mdc-statusmessage` for you.
+- Do not use `mdc-statusmessage` when the message needs prominence, actions, or dismissal. Use `mdc-banner` instead.
+- Do not use `mdc-statusmessage` for transient, auto-dismissing feedback. Use `mdc-toast` instead.
+- Do not use `mdc-statusmessage` for a message that must block progress until acknowledged. Use `mdc-dialog` or `mdc-announcementdialog` instead.
+- Do not use `mdc-statusmessage` when no severity styling or icon is needed. Use `mdc-text` instead.
 
 ## Guidelines
 
@@ -40,7 +40,7 @@ Minimal markup example:
 <mdc-statusmessage severity="warning" message="Connection is unstable"></mdc-statusmessage>
 ```
 
-Use the default slot when the message needs markup or should not be provided through an attribute:
+Use the default slot when the message needs markup or should not come through an attribute:
 
 ```html
 <mdc-statusmessage severity="error">
@@ -48,7 +48,10 @@ Use the default slot when the message needs markup or should not be provided thr
 </mdc-statusmessage>
 ```
 
-Use the `icon` slot to override the built-in severity icon:
+### Composition
+
+- Provide the message through the default slot (when it needs markup) or the `message` attribute; slotted content takes precedence over `message`.
+- Override the built-in severity icon with the `icon` slot; the `default` severity renders no icon, so slot one in if a text-only message still needs a visual.
 
 ```html
 <mdc-statusmessage severity="priority" message="Review before publishing">
@@ -58,27 +61,28 @@ Use the `icon` slot to override the built-in severity icon:
 
 ### Content guidance
 
-- Keep messages concise and actionable.
-- Prefer direct wording that tells the user what happened or what to do next.
-- Do not rely on color or icon alone; the text should carry the meaning of the severity.
+- Keep messages short and actionable — say what happened or what to do next.
+- Write the text so it carries the meaning on its own; do not rely on color or the icon to convey the severity.
+- Keep the message inline-length; move long-form guidance to a surface built for it.
 
 ### Property/Attribute details
 
-- `severity` — controls color and the default icon. Supported values are `default`, `error`, `warning`, `success`, and `priority`. `default` renders no icon.
-- `message` — text fallback rendered when no meaningful default slot content is provided.
-- Default slot — message content. Meaningful slotted content takes precedence over the `message` attribute.
-- `icon` slot — custom icon content. When provided, it replaces the built-in severity icon.
+| Option | Intent |
+| --- | --- |
+| `severity` | Sets the color and default icon: `default` (text only, no icon), `error` (blocking problem), `warning` (caution), `success` (confirmation), `priority` (must-see notice). Match it to what the message means, not just its color. |
+| `message` | Text fallback rendered when no meaningful default-slot content is provided. |
 
 ### Limitations
 
-- The component does not set `role`, `aria-live`, or alert semantics automatically.
-- The component is not a container for long-form guidance; use concise text that can sit inline with surrounding UI.
+- **No live-region semantics** — the component sets no `role` or `aria-live`; announce it from the consuming surface if the message must be heard when it appears.
+- **Inline scale only** — it is sized for short inline text, not long-form guidance; keep the copy brief.
+- **Default is text-only** — only `error`, `warning`, `success`, and `priority` show a built-in icon; `default` renders none unless you provide one through the `icon` slot.
 
 ## Accessibility
 
 ### Built-in features
 
-The component renders visible message text and an optional icon, but does not add live-region or alert semantics on its own. This keeps it reusable for static helper text and non-urgent inline status messages.
+The component renders visible message text and an optional icon but adds no live-region or alert semantics of its own. This keeps it reusable for static helper text and non-urgent inline status, and leaves announcement behavior to the consuming surface.
 
 #### Internal ARIA managed by the component
 
@@ -92,10 +96,19 @@ The component renders visible message text and an optional icon, but does not ad
 #### General
 
 - Add `role`, `aria-live`, or `aria-describedby` on the consuming surface when the message needs to be announced or associated with another control.
-- For form fields, prefer the field component's helper-text API so the component can keep its own label and helper-text ARIA wiring consistent.
-- Treat icons as supporting visuals; the message text must communicate the actual state.
+- For form fields, prefer the field component's helper-text API so label and helper-text ARIA wiring stay consistent.
 
 #### Labeling
 
-- If a custom icon carries additional meaning beyond the visible message text, provide an accessible name on the icon or include that meaning in the message text.
-- If the icon is decorative, leave it unnamed and ensure the visible message is complete on its own.
+- If a custom icon carries meaning beyond the visible text, give the icon an accessible name or fold that meaning into the message text.
+- If the icon is decorative, leave it unnamed and make sure the visible message reads completely on its own.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-formfieldwrapper` | Composes `mdc-statusmessage` to render the helper/validation text shared by every form field. |
+| `mdc-banner` | For a prominent, persistent in-page message with actions or dismissal. |
+| `mdc-toast` | For transient, auto-dismissing feedback that needs its own surface. |
+| `mdc-text` | For plain inline text that needs no severity styling or icon. |
+| `mdc-icon` | The glyph rendered for each severity and the element you slot in to override it. |
