@@ -7,17 +7,17 @@ component: menupopover
 
 ## Overview
 
-`mdc-menupopover` is a floating overlay that hosts menu items (`mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`) optionally grouped in `mdc-menusection`. It is anchored to a trigger element via the `triggerid` attribute and provides keyboard navigation, focus trapping, dismissal, and automatic submenu behaviour when nested inside another `mdc-menupopover` or used with `mdc-menubar`.
+`mdc-menupopover` is a floating overlay that surfaces a menu of actions from a trigger, hosting menu items optionally grouped in `mdc-menusection`. It manages keyboard navigation, focus, and dismissal, including nested submenus when used with another `mdc-menupopover` or `mdc-menubar`.
 
 ### When to use
 
 - Use `mdc-menupopover` to surface a menu of actions from a trigger button or menu item.
-- Use it as a submenu by nesting it under another `mdc-menupopover` or by anchoring it to an `mdc-menuitem` inside an `mdc-menubar`.
+- Use `mdc-menupopover` as a submenu by nesting it under another `mdc-menupopover` or anchoring it to an `mdc-menuitem` inside an `mdc-menubar`.
 
 ### When not to use
 
-- Do not use `mdc-menupopover` for generic non-menu overlays — use `mdc-popover` for those.
-- Do not use it to host a single non-menu item or arbitrary form controls; the contents should be menu items.
+- Do not use `mdc-menupopover` for generic non-menu overlays. Use `mdc-popover` instead.
+- Do not use `mdc-menupopover` to host arbitrary form controls or a single non-menu row. Use `mdc-popover` for custom content instead.
 
 ## Guidelines
 
@@ -50,21 +50,30 @@ The `triggerid` attribute must match the `id` of the element that opens the popo
 
 ### Property/Attribute details
 
-- `triggerid` — required. The `id` of the trigger element (button, menu item, etc.).
-- `placement` — default `bottom`. Accepts any of `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `bottom-end`, `left`, `left-start`, `left-end`, `right`, `right-start`, `right-end`. When the popover is nested inside an `mdc-menubar`, the menubar overrides this to `right-start`.
-- `visible` — controls the open state (default `false`). Use `.show()` / `.hide()` for programmatic control.
-- `trigger` — space-separated trigger events: `click`, `mouseenter`, `focusin`, `manual`. Defaults to `click`.
-- `offset`, `boundary`, `boundary-root`, `boundary-padding` — position tuning options forwarded to the underlying floating-ui layout engine.
-- `append-to`, `strategy`, `z-index`, `disable-flip`, `size`, `inline`, `animation-frame` — positioning and stacking controls.
-- `aria-labelledby`, `aria-describedby` — label/description ids for assistive technology.
-- The following options are forced when the component connects and should not be overridden: `role="menu"`, `aria-orientation="vertical"`, `backdrop=false` (set to `true` automatically when the trigger is not a menu item), `color="tonal"`, `focus-trap=true`, `focus-back-to-trigger=true`, `hide-on-escape=true`, `hide-on-outside-click=true`, `interactive=true`, `show-arrow=false`, `close-button=false`.
-- Events: `change` (when a contained `mdc-menuitemcheckbox` or `mdc-menuitemradio` toggles), `action` (when an `mdc-menuitem` is selected and the menu closes), `shown`, `hidden`, `created`, `destroyed`.
+| Option | Intent |
+|---|---|
+| `triggerid` | Required. The `id` of the element that opens the menu. For a submenu, point it at the parent `mdc-menuitem`'s `id`. |
+| `placement="bottom"` (default) | Where the menu opens relative to its trigger. Adjust for layout fit; a menu nested in `mdc-menubar` is forced to `right-start`, so leave it unset there. |
+| `visible` | Open state (default `false`). Prefer `.show()` / `.hide()` for programmatic control over toggling the attribute. |
+| `trigger="click"` (default) | Which trigger events open the menu (`click`, `mouseenter`, `focusin`, `manual`). Keep `click` for action menus; use `manual` when you control open/close yourself. |
+| `offset` / `boundary` / `boundary-root` / `boundary-padding` | Fine-tune position and collision boundaries when the default placement overflows a container. |
+| `append-to` / `strategy` / `z-index` / `disable-flip` / `size` / `inline` / `animation-frame` | Stacking and positioning controls for tricky overflow or portal scenarios; leave at defaults unless a layout problem needs them. |
+| `aria-labelledby` / `aria-describedby` | Point assistive technology at a label/description when the trigger does not already name the menu. |
+
+**Note:** on connect the component forces `role="menu"`, `aria-orientation="vertical"`, `color="tonal"`, `focus-trap=true`, `focus-back-to-trigger=true`, `hide-on-escape=true`, `hide-on-outside-click=true`, `interactive=true`, `show-arrow=false`, and `close-button=false`; `backdrop` is off for menu-item triggers and on for other triggers. It emits `change` (contained checkbox/radio toggles), `action` (an item is selected and the menu closes), `shown`, `hidden`, `created`, and `destroyed`.
+
+### Limitations
+
+- **Menu content only** — the popover expects menu items (`mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`, optionally grouped in `mdc-menusection`), not arbitrary controls. Use `mdc-popover` for custom content.
+- **Requires a trigger in the same root** — the element referenced by `triggerid` must exist in the same document or shadow root; a missing trigger leaves the menu unopenable.
+- **Forced options can't be overridden** — role, focus trap, dismissal, and arrow/close settings are set on connect; do not try to re-enable an arrow, close button, or non-menu role.
+- **React `append-to` unmount** — when using `append-to`, wrap the render in a stable parent element so React does not throw `NotFoundError` unmounting a moved popover.
 
 ### Notes
 
-- The popover automatically switches its backdrop on when opened from a non-menu trigger (so a standalone trigger button gets a clickable backdrop), and keeps it off when opened from another menu item.
-- When the popover closes, any open submenus that it owns are closed recursively.
-- Pressing `Space` on a contained `mdc-menuitemcheckbox` or `mdc-menuitemradio` does not close the menu; pressing `Enter` on a non-trigger menu item dispatches `action` and closes all menus.
+- The popover shows a clickable backdrop when opened from a non-menu trigger (a standalone button) and hides it when opened from another menu item.
+- Closing a popover recursively closes any submenus it owns.
+- `Space` on a contained `mdc-menuitemcheckbox`/`mdc-menuitemradio` toggles state without closing; `Enter` on a non-trigger item dispatches `action` and closes all menus.
 
 ## Accessibility
 
@@ -106,3 +115,14 @@ The `triggerid` attribute must match the `id` of the element that opens the popo
 #### Labeling
 
 - Provide an `aria-label` or `aria-labelledby` on the trigger so that the trigger announces what the menu does. When the popover is interactive, set `aria-labelledby` on the popover itself if it does not inherit a usable name from the trigger.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-menuitem` | Action entry hosted inside the popover. |
+| `mdc-menuitemcheckbox` | Checkable entry for independent on/off state within the menu. |
+| `mdc-menuitemradio` | Single-select entry for mutually exclusive options within the menu. |
+| `mdc-menusection` | Labeled grouping of items inside the popover. |
+| `mdc-menubar` | Persistent menu container that anchors submenu popovers. |
+| `mdc-popover` | Generic overlay for non-menu content. |

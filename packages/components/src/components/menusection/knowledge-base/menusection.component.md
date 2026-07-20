@@ -7,7 +7,7 @@ component: menusection
 
 ## Overview
 
-`mdc-menusection` groups a set of menu items (`mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`) under an optional visible header, optional prefix icon, and optional divider. It also enforces single-selection semantics across any `mdc-menuitemradio` children that share a `name`.
+`mdc-menusection` groups related menu items under a labeled header inside a menu or menubar, so longer menus stay scannable. It also scopes single-selection for any `mdc-menuitemradio` children that share a `name`.
 
 ### When to use
 
@@ -16,8 +16,8 @@ component: menusection
 
 ### When not to use
 
-- Do not nest `mdc-menusection` inside another `mdc-menusection`; sections are flat.
-- Do not use it outside of a menu context (`mdc-menupopover`, `mdc-menubar`, `mdc-sidenavigation`).
+- Do not nest `mdc-menusection` inside another `mdc-menusection`. Use a single flat set of sections instead.
+- Do not use `mdc-menusection` outside a menu context. Use `mdc-optgroup` to group options inside `mdc-listbox`/`mdc-select` instead.
 
 ## Guidelines
 
@@ -45,15 +45,29 @@ Minimal markup example:
 </mdc-menupopover>
 ```
 
+### Content guidance
+
+- Write `header-text` as a short noun phrase that names what the group contains ("Appearance", "Notifications"), not a sentence or an instruction.
+- Keep headers in title or sentence case consistently across the sections in one menu.
+
 ### Property/Attribute details
 
-- `header-text` — visible heading rendered through an internal `mdc-listheader`. When set, it is also used as the section's `aria-label` if no explicit `aria-label` is supplied.
-- `aria-label` — accessible name for the group. Defaults to `header-text` when omitted.
-- `prefix-icon` — icon name displayed next to the header text inside the `mdc-listheader`.
-- `show-divider` — boolean. Renders an `mdc-divider` after the section content.
-- `divider-variant` — `'solid' | 'gradient'`, defaults to `'solid'`. When the section is a direct child of `mdc-menubar`, the menubar overrides this to `'gradient'`.
-- `hide-header-text` — internal flag used by `mdc-sidenavigation` to hide the header when the side navigation is collapsed; do not set this manually outside of that context.
-- Events: `change` (forwarded from any contained `mdc-menuitemcheckbox`/`mdc-menuitemradio`), `action` (forwarded from any contained `mdc-menuitem`).
+| Option | Intent |
+|---|---|
+| `header-text` | Visible group heading (via `mdc-listheader`). Set it whenever the grouping has a visible purpose; it also becomes the group's `aria-label` when no explicit label is given. |
+| `aria-label` | Accessible name for the group. Set it only when the section has no visible `header-text`; otherwise `header-text` supplies it. |
+| `prefix-icon` | Optional icon beside the header text. Use it to reinforce the group's meaning, not for decoration. |
+| `show-divider` | Renders an `mdc-divider` after the section. Use it to separate a section from the one below when the header alone is not enough. |
+| `divider-variant="solid"` (default) | Divider style; leave at `solid`. A section directly inside `mdc-menubar` is forced to `gradient`, so do not set it there. |
+
+**Note:** `hide-header-text` is an internal flag driven by `mdc-sidenavigation` to hide the header when the nav is collapsed — do not set it manually. The component forwards `change` (from contained checkbox/radio items) and `action` (from contained menu items).
+
+### Limitations
+
+- **No nesting** — sections are flat; a section cannot contain another section. Use one level of sections per menu.
+- **Menu context only** — outside `mdc-menupopover`, `mdc-menubar`, or `mdc-sidenavigation` the roving-tabindex and grouping semantics do not apply. Use `mdc-optgroup` for listbox grouping.
+- **Header is non-interactive** — the header has no hover/press/focus behavior and cannot act as a trigger or selectable row; when every item in the section is disabled, disable the section context so the header does not read as available.
+- **Items only in the default slot** — place only `mdc-menuitem`, `mdc-menuitemcheckbox`, or `mdc-menuitemradio` inside; other content is not managed by the surrounding menu.
 
 ## Accessibility
 
@@ -83,3 +97,14 @@ Minimal markup example:
 
 - Provide a meaningful `header-text` whenever the grouping has a visible purpose; the component will mirror it to `aria-label` automatically.
 - When the section has no visible header, set `aria-label` explicitly so the group still has an accessible name.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-menuitem` | Action entry placed inside the section. |
+| `mdc-menuitemcheckbox` | Checkable entry grouped inside the section. |
+| `mdc-menuitemradio` | Single-select entry whose group is scoped by the section. |
+| `mdc-menupopover` | Floating menu surface that hosts sections. |
+| `mdc-menubar` | Persistent menu container that hosts sections with a gradient divider. |
+| `mdc-optgroup` | Equivalent grouping for options inside `mdc-listbox`/`mdc-select`. |
