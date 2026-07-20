@@ -1,21 +1,26 @@
 ---
 title: Avatar
-summary: Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that displays a person or group as a photo, initials, icon, or counter.
+summary: Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that represents a person or group as a photo, initials, icon, or counter.
 tier: 3
 component: avatar
 ---
 
 ## Overview
 
-The avatar represents a person or a group. It can be rendered as a photo, initials, icon, or counter, and is non-interactive and non-focusable by default. An optional presence indicator and a typing loading state are also supported.
+The avatar represents a person or group so users can quickly recognize who or what an item belongs to. It exists as a compact identity marker and is decorative by default, letting nearby text carry the accessible name.
 
 ### When to use
 
-- Use `mdc-avatar` to visually represent a person or group inline within content (e.g. lists, cards, message rows).
+- Use `mdc-avatar` with a `src` photo, or `initials` when no photo is available, to represent a single person.
+- Use `mdc-avatar` `icon-name` to represent a role, entity, or system identity that a photo would not convey.
+- Use `mdc-avatar` `counter` to roll up a truncated user list — 2 or more additional users or entities — into a single marker.
 
 ### When not to use
 
-- Use `mdc-avatarbutton` when the avatar must be clickable or focusable (profile menu, account switcher, etc.).
+- Do not use `mdc-avatar` `counter` to represent 1 or fewer users or entities; show that person's avatar directly instead.
+- Do not use `mdc-avatar` when the avatar must be clickable or focusable. Use `mdc-avatarbutton` instead.
+- Do not use `mdc-avatar` to show a status signal on its own. Use `mdc-presence`, paired with the avatar, instead.
+- Do not use `mdc-avatar` as a generic image. Use `mdc-icon` or a plain image for non-identity graphics instead.
 
 ## Guidelines
 
@@ -37,39 +42,55 @@ Minimal markup example:
 
 ### Content guidance
 
-- **Initials** are uppercased and truncated to the first two characters automatically.
-- **Counter** values are clamped: negatives display as `0`, values above 99 display as `99+`.
+- Keep `initials` to a person's initials; the avatar uppercases them and shows only the first two characters.
+- Use `counter` for the number of additional or total users; values above 99 display as `99+` and negatives as `0`.
 
 ### Property/Attribute details
 
-When multiple display attributes are provided, the avatar picks what to render in this priority order:
+| Option | Intent |
+| --- | --- |
+| `src` | Photo URL; the highest-priority representation. While it loads, `initials` (or the default icon) show as a placeholder, and the placeholder stays on load error. |
+| `icon-name` | Icon representation used when no `src` is set (default `user-regular`). Use it for roles or entities rather than a person's photo. |
+| `initials` | Text representation used when no `src` or `icon-name` is set; renders instantly. |
+| `counter` | Group representation shown only when no other content is set; renders as the number or `99+`. |
+| `size` | Pixel size from the fixed set (`24`, `32`, `48`, `64`, `72`, `88`, `124`; default `32`). Match it to the surrounding layout density. |
+| `presence` | Overlays an `mdc-presence` indicator for the person's status; hidden for a `counter` avatar and while `is-typing`. |
+| `is-typing` | Shows a typing indicator over the content; use it in messaging contexts to signal active composition. |
 
-1. **Photo** (`src`) — highest priority. While loading, `initials` show as an instant placeholder when provided, otherwise the icon is shown (after the icon library loads). On load error, the placeholder remains visible.
-2. **Icon** (`icon-name`) — used when `src` is not provided. If both `icon-name` and `initials` are provided (without `src`), the icon wins and `initials` are ignored, which means users may briefly see nothing while the icon library loads even though initials would have rendered instantly. Defaults to `user-regular` when nothing else is available.
-3. **Initials** (`initials`) — shown when neither `src` nor `icon-name` is provided. Renders instantly.
-4. **Counter** (`counter`) — shown only when none of the above are provided.
+### Limitations
 
-Other behaviour worth knowing:
-
-- When `is-typing` is `true`, a typing loading indicator overlays the existing content.
-- The presence indicator is hidden when the avatar is rendering a counter, or when it is in the typing state.
+- **Decorative by default** — the host is `aria-hidden="true"`, so screen readers skip it unless you expose it. Pair it with visible text, or set `aria-hidden="false"` with an `aria-label`.
+- **Icon wins over initials** — when both `icon-name` and `initials` are set (no `src`), the icon renders and initials are ignored; users may see nothing until the icon library loads.
+- **Fixed size set** — only `24`, `32`, `48`, `64`, `72`, `88`, and `124` are supported; arbitrary sizes are not.
+- **Counter has no status** — a `counter` avatar never shows a presence indicator or typing state.
 
 ## Accessibility
 
 ### Built-in features
 
-The avatar is treated as decorative by default — it is hidden from assistive technologies so screen readers do not announce it when it is purely visual context.
+The avatar is decorative by default: the host carries `aria-hidden="true"` and the photo is `aria-hidden`, so assistive technologies skip it when it is purely visual context.
 
 #### Internal ARIA managed by the component
 
-| Element        | Attribute     | Value                                                                              |
-| -------------- | ------------- | ---------------------------------------------------------------------------------- |
-| Host           | `aria-hidden` | `true` by default; consumers may set `aria-hidden="false"` when the avatar conveys meaning |
-| Photo (`img`)  | `aria-hidden` | `true` (the host carries the accessible exposure)                                   |
+| Element | Attribute | Value |
+| --- | --- | --- |
+| Host | `aria-hidden` | `true` by default; consumers may set `false` when the avatar conveys meaning |
+| Photo (`img`) | `aria-hidden` | `true` (the host carries any accessible exposure) |
 
 ### Implementation requirements
 
 #### General
 
-- Override `aria-hidden="false"` only when the avatar is the sole source of identity information for the user (e.g. when no name is shown next to it). Provide an `aria-label` in that case.
-- Prefer pairing the avatar with adjacent visible text (name, group name) so the avatar can stay decorative and the text carries the accessible name.
+- Pair the avatar with adjacent visible text (name, group name) so it can stay decorative and the text carries the accessible name.
+
+#### Labeling
+
+- Set `aria-hidden="false"` and provide an `aria-label` only when the avatar is the sole source of identity (no name is shown next to it).
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-avatarbutton` | The interactive, focusable version for when the avatar must trigger an action. |
+| `mdc-presence` | The status indicator the avatar overlays when `presence` is set. |
+| `mdc-icon` | For non-identity graphics rather than a person or group. |

@@ -72,7 +72,7 @@
       "tier": 3,
       "path": "packages/components/src/components/avatar/knowledge-base/avatar.component.md",
       "title": "Avatar",
-      "summary": "Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that displays a person or group as a photo, initials, icon, or counter.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that represents a person or group as a photo, initials, icon, or counter.",
       "canonical": null,
       "component": "avatar"
     },
@@ -531,7 +531,7 @@
       "tier": 3,
       "path": "packages/components/src/components/presence/knowledge-base/presence.component.md",
       "title": "Presence",
-      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status badge that visually represents the availability or activity state of a user or entity.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status indicator that represents the availability or activity state of a user or entity.",
       "canonical": null,
       "component": "presence"
     },
