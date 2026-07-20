@@ -7,19 +7,17 @@ component: linkbutton
 
 ## Overview
 
-The linkbutton renders as a link visually but behaves as a button: activating it fires a `click` event rather than navigating to a URL. Use it for in-page actions (open a panel, copy a value, trigger a workflow) that should sit in body text or alongside other links without standing out as a button.
-
-The slotted children supply the label; an optional trailing icon can be added via `icon-name`. Three text sizes are supported, plus inline / standalone display and an inverted colour scheme for dark backgrounds.
+`mdc-linkbutton` provides a control that looks like a link but performs an in-page action rather than navigating. It exists for actions that belong in running prose or alongside other links — opening a panel, copying a value, triggering a workflow — where a full button would feel too heavy for the surrounding text.
 
 ### When to use
 
 - Use `mdc-linkbutton` for in-page actions that should visually mimic a hyperlink — for example a "Show more" toggle inside a paragraph, an undo prompt after a toast, or an action embedded in a sentence.
-- Use it when the surrounding design treats the affordance as link-styled text but the underlying behaviour is a button (no URL navigation).
+- Use `mdc-linkbutton` when the surrounding design treats the affordance as link-styled text but the underlying behavior is a button (no URL navigation).
 
 ### When not to use
 
-- Use `mdc-link` when the affordance actually navigates to a URL — even if the URL is in-app, the user expectation is "go somewhere".
-- Use `mdc-button` when the surrounding design expects a button-shaped control.
+- Do not use `mdc-linkbutton` when the affordance navigates to a URL. Use `mdc-link` — even for in-app routes, the user expectation is "go somewhere".
+- Do not use `mdc-linkbutton` when the surrounding design expects a button-shaped control. Use `mdc-button`.
 
 ## Guidelines
 
@@ -54,23 +52,30 @@ Listen for `click` to react to user activation; `keydown` / `keyup` / `focus` / 
 
 ### Content guidance
 
-- Write text that describes the action the linkbutton performs (`"Show more details"`), not the visual mechanic (`"Click here"`).
+- Write text that describes the action the linkbutton performs ("Show more details"), not the visual mechanic ("Click here").
 - Use `inline` when the linkbutton sits inside running prose so it picks up the inline-link styling; leave it unset when the linkbutton stands alone.
 - Pair the trailing icon (`icon-name`) with a directional or action-confirming glyph (arrow, external pop-out) only when the icon adds meaning — gratuitous icons add visual noise without value.
 
 ### Property/Attribute details
 
-- `size` — text and icon size: `12` (`0.75rem`), `14` (`0.875rem`), or `16` (`1rem`, default).
-- `inline` — when `true`, applies inline-link styling suitable for body text. Default `false`.
-- `inverted` — when `true`, swaps the colour palette for dark backgrounds. Default `false`.
-- `icon-name` — name of an icon rendered after the label (`mdc-icon` name from the configured icon set). Default unset.
+| Option | Intent |
+|---|---|
+| `size="16"` (default) | Text and icon size — `12`, `14`, or `16`. Match it to the surrounding text. |
+| `inline` | Applies inline-link styling for use inside body text. Leave unset for standalone. |
+| `inverted` | Swaps to the inverted palette for dark backgrounds. |
+| `icon-name` | Trailing decorative icon after the label. Add a directional or action glyph only when it adds meaning. |
+| `disabled` | Removes the control from the tab order and prevents activation. |
+| `soft-disabled` | Looks disabled but stays focusable so assistive technology can read it; suppress the action yourself. |
+| `auto-focus-on-mount` | Focuses the control on first render. Use sparingly — moving focus on mount can disorient screen-reader users. |
+| `data-aria-label` | Accessible name override. Use when the visible text alone does not describe the action. |
 
-Properties inherited from the underlying button:
+**Note:** `disabled`, `soft-disabled`, `auto-focus-on-mount`, and `data-aria-label` are inherited from the underlying button.
 
-- `disabled` — when `true`, removes the linkbutton from the tab order and prevents activation.
-- `soft-disabled` — when `true`, the linkbutton looks disabled but remains focusable so assistive technology can read it; consumers must still suppress action handling.
-- `auto-focus-on-mount` — when `true`, focuses the linkbutton on first render.
-- `data-aria-label` — accessible name override; use when the visible text alone does not describe the action.
+### Limitations
+
+- **Link role, button behavior** — announces as `role="link"` but performs an in-page action instead of navigating, so make the outcome explicit in the label ("Show more details", not "More"). Screen-reader users get no URL to infer the result from.
+- **Inline only in prose** — set `inline` only when the control sits inside running text; on a standalone control the inline underline styling looks wrong.
+- **Disabled vs soft-disabled** — `disabled` removes the control from the tab order and blocks activation; use `soft-disabled` when it must stay focusable so assistive technology can announce it while you suppress the action.
 
 ## Accessibility
 
@@ -92,8 +97,12 @@ The label is taken from the slotted children; the trailing icon (when `icon-name
 
 #### Labeling
 
-- Provide descriptive label text so the accessible name conveys the action being taken; use `data-aria-label` only when the visible text would be ambiguous on its own.
+- Provide descriptive label text so the accessible name conveys the action being taken; use `data-aria-label` only when the visible text would be ambiguous on its own. Because the linkbutton announces as `role="link"` but does not navigate, make sure the label alone makes the resulting action clear ("Show more details", not "More").
 
-### Notes
+## Related components
 
-- Because the linkbutton announces as `role="link"` but does not navigate to a URL, the destination announced to screen readers is implicit. Make sure the label text alone makes the resulting action clear (e.g. `"Show more details"`, not `"More"`).
+| Component | Relationship |
+|---|---|
+| `mdc-link` | A real navigational hyperlink. Use when the affordance changes the URL. |
+| `mdc-buttonlink` | The inverse: navigates like a link but is styled as a button. |
+| `mdc-button` | Standard button-shaped control for in-page actions that need no link styling. |
