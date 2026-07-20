@@ -11,15 +11,17 @@ component: toggle
 
 ### When to use
 
-- Binary settings where the change applies immediately (e.g. enabling a feature, switching a preference on or off).
-- Inside settings panels, preference dialogs, or forms where users need to flip a single option.
-- As a member of a group of related options grouped together via `mdc-formfieldgroup`.
+- Use `mdc-toggle` for a binary setting that applies immediately (enabling a feature, switching a preference on or off).
+- Use `mdc-toggle` in settings panels, preference dialogs, or forms where users flip a single option.
+- Use `mdc-toggle` inside `mdc-formfieldgroup` when several related on/off settings belong together.
 
 ### When not to use
 
-- Use `mdc-checkbox` for options that require an explicit submit step before they take effect, or for selecting multiple items from a list.
-- Use `mdc-radio` (with `mdc-radiogroup`) when a user must choose one of several mutually exclusive options.
-- Use `mdc-button` for one-off actions that don't represent a persistent state.
+- Do not use `mdc-toggle` for options that require an explicit submit step, or for selecting multiple items from a list. Use `mdc-checkbox` instead.
+- Do not use `mdc-toggle` when the user must choose one of several mutually exclusive options. Use `mdc-radio` (with `mdc-radiogroup`) instead.
+- Do not use `mdc-toggle` for a one-off action that does not represent a persistent state. Use `mdc-button` instead.
+- Do not use `mdc-toggle` for a purely decorative, non-interactive switch. Use `mdc-statictoggle` instead.
+- Do not nest a child `mdc-toggle` inside a parent toggle's content. Use `mdc-checkbox` or `mdc-radio` for on/off child content instead.
 
 ## Guidelines
 
@@ -43,27 +45,32 @@ Minimal markup example:
 ></mdc-toggle>
 ```
 
+### Content guidance
+
+- Labels are optional on a toggle. When you use a `label`, keep it clear and concise and about the toggle's status or impact — not a substitute for body text describing the setting. If no visible label fits, supply `data-aria-label` instead.
+- Put any fuller explanation in body text above the toggle, or in `help-text` (one line, with no validation styling); keep the label about the on/off state.
+
 ### Property/Attribute details
 
-- `checked` — boolean reflecting the current state of the toggle. Defaults to `false`. Set this to bind the toggle to your application state.
-- `size` — `default` (1.5rem height, default) or `compact` (1rem height) for space-constrained layouts. Invalid sizes fall back to `default`.
-- `name` — name submitted with the surrounding `<form>`.
-- `value` — value submitted when the toggle is checked. If omitted, the literal `isActive` is used as the form value when `checked` is `true`.
-- `required` — when `true` and the toggle is not checked, the component reports the toggle as invalid; if `validation-message` is also set, that string is used as the custom validity message.
-- `validation-message` — overrides the default browser validation message when the toggle is invalid.
-- `disabled` / `soft-disabled` / `readonly` — `disabled` removes the toggle from the tab order and prevents interaction; `soft-disabled` keeps it focusable while preventing state changes; `readonly` prevents state changes but allows focus.
-- `label` — visible label rendered next to the toggle and linked via `for`/`id`.
-- `help-text` — helper text rendered beneath the toggle.
-- `toggletip-text` — when set, renders an info button beside the label that opens an `mdc-toggletip`; `info-icon-aria-label`, `toggletip-placement`, and `toggletip-strategy` configure that toggletip.
-- `auto-focus-on-mount` — when `true`, the underlying input is focused automatically when the component is mounted.
-- `data-aria-label` — used as the input's `aria-label` when there is no visible label.
-- `control-type` — set to `controlled` to opt out of the component flipping `checked` on click; the consumer is then responsible for updating the property.
-- The `change` event (`onChange` in React) fires when the toggle state changes and re-dispatches the underlying input event. The `focus` event (`onFocus`) fires when the input receives focus.
-- Resetting the parent form sets `checked` back to `false`; the toggle's form state is restored from a non-empty restoration value as `checked === true`.
+| Option | Intent |
+|---|---|
+| `checked` | Current on/off state; bind it to your application state. |
+| `size` | `default` (1.5rem) or `compact` (1rem) for space-constrained layouts. |
+| `name` / `value` | Form submission key and the value submitted when checked (defaults to `isActive`). |
+| `required` + `validation-message` | Requires the toggle to be on for validity; `validation-message` overrides the browser message. |
+| `label` / `data-aria-label` | Optional visible label indicating status/impact, or the accessible name when no visible label is shown. |
+| `help-text` | Plain helper text beneath the toggle (no validation icon — see Limitations). |
+| `toggletip-text` + `info-icon-aria-label` | Info toggletip beside the label; provide the aria-label when set. |
+| `control-type` | Set to `controlled` to manage `checked` yourself; the component then does not flip it on click. |
+| `disabled` / `soft-disabled` / `readonly` | `disabled` removes the control from the tab order; `soft-disabled` looks disabled but stays focusable so assistive tech can still reach it; `readonly` blocks changes but stays focusable. |
+
+**Note:** `auto-focus-on-mount` focuses the control after first render. The `change` event fires on state change (re-dispatched from the inner input); `focus` fires when the input receives focus. Resetting the form sets `checked` back to `false`.
 
 ### Limitations
 
-- Toggles are intended for immediate-effect settings, so they do not expose a `helpTextType` and do not render validation icons; only the plain helper text and the underlying form-control validity API are used.
+- **No validation styling** — toggles do not expose `help-text-type` or render validation icons; only plain helper text and the form-control validity API are available.
+- **No nested toggles** — a parent toggle's child content must not contain another toggle (it is ambiguous whether the parent selects all or merely enables all). Use `mdc-checkbox` or `mdc-radio` for on/off children.
+- **Immediate effect** — changes apply instantly, with no deferred/submit semantics; use `mdc-checkbox` when a change must wait for form submission.
 
 ## Accessibility
 
@@ -96,3 +103,13 @@ Minimal markup example:
 ### Notes
 
 - The keyboard navigation mode is provided by the surrounding spatial-navigation context; when that mode is not `DEFAULT`, Enter will not request form submission.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-statictoggle` | Decorative, non-interactive toggle for read-only display. |
+| `mdc-checkbox` | Deferred multi-select, or on/off child content within a toggle group. |
+| `mdc-radio` / `mdc-radiogroup` | One choice from several mutually exclusive options. |
+| `mdc-formfieldgroup` | Groups related toggles under a shared label. |
+| `mdc-button` | One-off action that is not a persistent state. |
