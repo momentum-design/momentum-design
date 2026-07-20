@@ -11,14 +11,14 @@ component: virtualizedlist
 
 ### When to use
 
-- Render long or unbounded lists (chats, search results, logs) where mounting every item would be expensive.
-- Lists whose items change size dynamically and need accurate measurement (with `observe-size-changes`).
-- Bottom-anchored streams (e.g. chat transcripts) that should follow new content until the user scrolls away.
+- Use `mdc-virtualizedlist` for long or unbounded lists (chats, search results, logs) where mounting every item would be expensive.
+- Use `mdc-virtualizedlist` with `observe-size-changes` when items change size dynamically and need accurate measurement.
+- Use `mdc-virtualizedlist` with `revert-list` for bottom-anchored streams (such as chat transcripts) that should follow new content until the user scrolls away.
 
 ### When not to use
 
-- Use `mdc-list` when the data set is small enough to render in full — virtualization adds complexity that isn't needed.
-- Use `mdc-listbox` or `mdc-select` for selecting a single value from a list of options.
+- Do not use `mdc-virtualizedlist` when the data set is small enough to render in full. Use `mdc-list` instead to avoid the added complexity.
+- Do not use `mdc-virtualizedlist` for selecting a value from a set of options. Use `mdc-listbox` or `mdc-select` instead.
 
 ## Guidelines
 
@@ -53,35 +53,27 @@ list.addEventListener('virtualitemschange', (event) => {
 });
 ```
 
-### Content guidance
-
-- Place a `mdc-listheader` in the `list-header` slot when you need a header that scrolls with the list.
-
 ### Property/Attribute details
 
-- `virtualizerProps` — required object passed to TanStack's virtualizer. At minimum:
-  - `count` — total number of items in the dataset.
-  - `estimateSize(index)` — function returning the estimated pixel size of each item.
-  - `getItemKey(index)` — function returning a stable unique key for each item.
-  Other TanStack options (such as `paddingStart`, `paddingEnd`, `gap`, `rangeExtractor`, `isItemNavigable`) are forwarded directly.
-- `loop` — `"true"` or `"false"` (default `"false"`). When `"true"`, Up/Down arrow navigation wraps at the ends of the list.
-- `scroll-anchoring` — when `true`, the list keeps the user-anchored item in view as the dataset grows; otherwise it preserves the current scroll position.
-- `observe-size-changes` — when `true`, the list uses a `ResizeObserver` to re-measure items whose rendered size changes (use for chat bubbles with images, expandable rows, etc.).
-- `revert-list` — when `true`, items align to the bottom of the scroll container and the list anchors to the bottom until the user scrolls away.
-- `at-bottom-threshold` — pixel tolerance used when deciding whether the user is at the bottom of the list (relevant for scroll anchoring).
-- `initial-focus` — index of the item that should receive focus when the list is first rendered.
-- `data-aria-label` — accessible name applied to the inner list container via `aria-label`.
-- Imperative method `scrollToIndex(index, options?)` scrolls to the item at the given index using TanStack's scrolling options.
-- Events:
-  - `scroll` (`onScroll`) — re-fired from the internal scroll container so consumers can react to scroll position changes.
-  - `virtualitemschange` (`onVirtualItemsChange`) — fires whenever the set of visible virtual items changes. Detail includes the `virtualizer` instance and the `virtualItems` array.
+| Option | Intent |
+|---|---|
+| `virtualizerProps` (required) | Object passed to TanStack's virtualizer. At minimum set `count` (total items), `estimateSize(index)` (estimated pixel size), and `getItemKey(index)` (stable unique key). Other TanStack options (`paddingStart`, `paddingEnd`, `gap`, `rangeExtractor`, `isItemNavigable`) are forwarded directly. |
+| `loop="false"` (default) | Whether Up/Down arrow navigation wraps at the ends. Set `true` for menu-like lists where wrapping helps. |
+| `scroll-anchoring` | Keeps the user-anchored item in view as the dataset grows; otherwise the current scroll position is preserved. Use for lists that grow while the user reads. |
+| `observe-size-changes` | Re-measures items whose rendered size changes via a `ResizeObserver`. Use for chat bubbles with images, expandable rows, and other dynamic content. |
+| `revert-list` | Aligns items to the bottom and anchors to the bottom until the user scrolls away. Use for bottom-anchored streams such as chat transcripts. |
+| `at-bottom-threshold` | Pixel tolerance for deciding whether the user is at the bottom (relevant to scroll anchoring and `revert-list`). |
+| `initial-focus` | Index of the item focused when the list first renders. Set it when the most useful starting item is not the first. |
+| `data-aria-label` | Accessible name applied to the inner list container (see Accessibility). Always set it. |
+
+The imperative `scrollToIndex(index, options?)` method scrolls to a given item using TanStack's scrolling options. Two events drive rendering: `scroll` (`onScroll`) re-fires the internal scroll position, and `virtualitemschange` (`onVirtualItemsChange`) fires whenever the visible window changes, with the `virtualizer` instance and `virtualItems` array in its detail.
 
 ### Limitations
 
-- Orientation is always vertical; setting `orientation="horizontal"` is reset back to `vertical` by the component.
-- Do not apply CSS padding or margin to the top/bottom of the list or to the first/last item — it breaks the virtualization math and may produce unnecessary scrollbars. Use `paddingStart` / `paddingEnd` (and `gap` for spacing between items) on `virtualizerProps` instead.
-- The component does not render list items itself; the consumer must subscribe to `virtualitemschange` and render the visible window.
-- List updates only react to changes in `virtualizerProps`, to size changes when `observe-size-changes` is enabled, or to explicit calls to `virtualizer.measure()`.
+- **Vertical only** — `orientation="horizontal"` is reset back to `vertical`; there is no horizontal virtualized list.
+- **No edge padding on items** — CSS padding or margin on the top/bottom of the list or the first/last item breaks the virtualization math; use `paddingStart`/`paddingEnd` and `gap` on `virtualizerProps` instead.
+- **Consumer renders the rows** — the component windows the data but does not render items; subscribe to `virtualitemschange` and render the visible `mdc-listitem` elements yourself.
+- **Updates are prop-driven** — the list re-renders only on `virtualizerProps` changes, on size changes when `observe-size-changes` is on, or on an explicit `virtualizer.measure()` call.
 
 ## Accessibility
 
@@ -91,7 +83,7 @@ list.addEventListener('virtualitemschange', (event) => {
 - Each rendered item is assigned `aria-setsize` matching the total number of items in the dataset, so screen readers can report the size of the virtual list even though only a window is in the DOM.
 - Keyboard navigation: Up/Down arrow keys move focus between items (with optional wrap via `loop`), Home jumps to the first item, End scrolls to and focuses the last item.
 - Roving tabindex: only the focused item has `tabindex="0"`; the rest are `-1` so Tab moves out of the list rather than visiting every item.
-- Items just outside the visible window (the selected item plus its immediate neighbours) are kept in the DOM as "hidden" entries so focus can move smoothly while scrolling.
+- Items just outside the visible window (the selected item plus its immediate neighbors) are kept in the DOM as "hidden" entries so focus can move smoothly while scrolling.
 - Scroll anchoring keeps the focused item visible as the dataset grows or items resize, and `revert-list` keeps the latest item in view in bottom-anchored streams until the user scrolls up.
 
 #### Internal ARIA managed by the component
@@ -113,6 +105,7 @@ list.addEventListener('virtualitemschange', (event) => {
 - Set `data-index` on every rendered item to its position in the dataset; the component relies on this attribute to map between DOM nodes and the virtualized list.
 - Provide stable `getItemKey` values; changing the key as content changes will cause scroll position and selection to shift unexpectedly.
 - For dynamic item sizes, enable `observe-size-changes` so size measurements stay accurate after content updates.
+- Place an `mdc-listheader` in the `list-header` slot when the list needs a header that scrolls with the content.
 
 #### Labeling
 
@@ -120,4 +113,13 @@ list.addEventListener('virtualitemschange', (event) => {
 
 ### Notes
 
-- Because items outside the viewport are not in the DOM, screen-reader features that rely on traversing siblings (such as listing all rows) will only encounter the rendered window plus the focus-preserving neighbours. `aria-setsize` is used to communicate the true size.
+- Because items outside the viewport are not in the DOM, screen-reader features that rely on traversing siblings (such as listing all rows) will only encounter the rendered window plus the focus-preserving neighbors. `aria-setsize` is used to communicate the true size.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-list` | Non-virtualized container for small data sets. |
+| `mdc-listitem` | The row rendered inside the virtualized window. |
+| `mdc-listheader` | Header for the `list-header` slot. |
+| `mdc-listbox` / `mdc-select` | Use these for selecting a value from a set of options. |

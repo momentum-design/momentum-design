@@ -7,16 +7,17 @@ component: listheader
 
 ## Overview
 
-The listheader is a header row rendered above the items of an `mdc-list` (via the list's `list-header` slot). It displays optional prefix and postfix icons and a header text, plus a default slot for actionable content (buttons, links) aligned to the trailing end. The header itself is not interactive — interactivity comes only from elements placed in the slot.
+`mdc-listheader` is a non-interactive header row for an `mdc-list`, placed in the list's `list-header` slot to label the list or a section within it. It can carry a leading icon and trailing actions, but the header itself is not interactive — any interactivity comes from elements slotted into it.
 
 ### When to use
 
-- Use `mdc-listheader` (in the `list-header` slot of an `mdc-list`) to label a list with a heading, an optional leading icon, and optional trailing actions.
+- Use `mdc-listheader` in the `list-header` slot of an `mdc-list` to label the list with a heading, an optional leading icon, and optional trailing actions.
+- Use `mdc-listheader` to introduce a section within a longer list, paired with an `mdc-divider` between sections.
 
 ### When not to use
 
-- Do not use `mdc-listheader` as an item inside the list's default slot — it is designed for the `list-header` slot only.
-- Use a plain section title outside the list when no leading icon, trailing icon, or trailing action is needed.
+- Do not use `mdc-listheader` as a row in the list body. Use `mdc-listitem` in the default slot instead.
+- Do not use `mdc-listheader` when the list needs no leading icon, trailing icon, or trailing action. Use a plain section heading instead.
 
 ## Guidelines
 
@@ -54,20 +55,22 @@ Header with a leading folder icon and a trailing "see all" link:
 
 ### Content guidance
 
-- Keep `header-text` short and noun-style — it labels the list section, it is not an action.
-- Use the default slot for trailing actionable elements (e.g. an `mdc-link`, `mdc-button`, or `mdc-icon` rendered as a control); plain decorative text in the slot is not announced as part of the header.
-- Use `prefix-icon` to reinforce the section's meaning visually (folder icon for a folder section, star icon for favourites); leave it unset when text alone is clearer.
+- Keep `header-text` short and noun-style — it labels the list section, it is not an action or a sentence.
+- Keep header casing consistent across the sections of one list so the headers read as a set.
 
 ### Property/Attribute details
 
-- `header-text` — the text displayed in the header. Default unset (header text is not rendered).
-- `prefix-icon` — name of an icon rendered before the header text. Default unset; when unset, the text is aligned to the start.
-- `postfix-icon` — name of an icon rendered at the trailing end after the slot. Default unset; when unset, slot content is aligned to the end.
-- `disabled` — when `true`, the header is visually styled as disabled. Default `false`.
+| Option | Intent |
+|---|---|
+| `header-text` | The label shown in the header (unset by default, so nothing renders). Set it to name the list or section. |
+| `prefix-icon` | Optional leading icon. Use it to reinforce the section's meaning (a folder icon for a folder section, a star for favorites); leave it unset when text alone is clearer. |
+| `postfix-icon` | Optional icon at the trailing end after the slot. Use it sparingly for a trailing status glyph; leave it unset to align slotted actions to the end. |
+| `disabled` | Visually styles the header as disabled. Use when the whole section is unavailable — but disable any slotted actions separately (see Limitations). |
 
 ### Limitations
 
-- The `disabled` flag only changes the visual style of the header itself — it does not propagate to elements inside the default slot. Disable any actionable slotted elements explicitly (e.g. set `disabled` on the slotted `mdc-button` / `mdc-link`).
+- **Disabled is visual only** — `disabled` styles the header but does not propagate to slotted actions; set `disabled` on the slotted `mdc-button`/`mdc-link` yourself.
+- **Header slot only** — the component is built for the `list-header` slot; it is not a list row. Use `mdc-listitem` in the default slot for body content.
 
 ## Accessibility
 
@@ -91,3 +94,13 @@ Slotted actionable elements (links, buttons) keep their own accessibility semant
 
 - Use the `header-text` attribute (rather than slotting plain text) so the header picks up the right typography and `aria-hidden` treatment.
 - For trailing actions, slot a control with its own accessible name (e.g. `<mdc-link>See all</mdc-link>`) so the action is announced when focused.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-list` | Container whose `list-header` slot holds this header. |
+| `mdc-listitem` | Row for the list body, distinct from this header. |
+| `mdc-divider` | Separates sections when a list has more than one headed group. |
+| `mdc-menusection` | Equivalent labeled grouping inside menus. |
+| `mdc-virtualizedlist` | Also accepts a header in its `list-header` slot. |
