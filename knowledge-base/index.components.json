@@ -639,7 +639,7 @@
       "tier": 3,
       "path": "packages/components/src/components/skeleton/knowledge-base/skeleton.component.md",
       "title": "Skeleton",
-      "summary": "Usage, guidelines, and accessibility for the mdc-skeleton component — a grey placeholder block that signals loading content.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-skeleton component — a gray placeholder block that signals loading content.",
       "canonical": null,
       "component": "skeleton"
     },
