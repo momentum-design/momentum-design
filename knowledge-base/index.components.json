@@ -243,7 +243,7 @@
       "tier": 3,
       "path": "packages/components/src/components/controltypeprovider/knowledge-base/controltypeprovider.component.md",
       "title": "Control type provider",
-      "summary": "Usage and guidelines for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.",
       "canonical": null,
       "component": "controltypeprovider"
     },
@@ -576,7 +576,7 @@
       "tier": 3,
       "path": "packages/components/src/components/responsivesettingsprovider/knowledge-base/responsivesettingsprovider.component.md",
       "title": "Responsivesettingsprovider",
-      "summary": "Usage and guidelines for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.",
       "canonical": null,
       "component": "responsivesettingsprovider"
     },
@@ -656,8 +656,8 @@
       "id": "tier3/packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component",
       "tier": 3,
       "path": "packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component.md",
-      "title": "Spatial Navigation Provider",
-      "summary": "Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to arrow, Enter, and Escape keys.",
+      "title": "Spatialnavigationprovider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to directional input.",
       "canonical": null,
       "component": "spatialnavigationprovider"
     },

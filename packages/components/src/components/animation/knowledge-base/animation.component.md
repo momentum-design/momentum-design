@@ -7,18 +7,19 @@ component: animation
 
 ## Overview
 
-The animation component is a wrapper around the Lottie animation library. It fetches the animation data dynamically based on the provided name (or a `src` URL) and renders it. It is a display-only component with no interactive functionality and is treated as a decorative image by default.
+The animation component plays a Lottie animation inline in the UI. It is display-only and decorative by default, used to add motion to illustrations, loading states, and success or empty-state moments.
 
 ### When to use
 
-- Use `mdc-animation` to play short, looping or one-shot Lottie animations inline within UI — for example illustrations, loading indicators, or success/empty-state visuals.
+- Use `mdc-animation` to play a short looping or one-shot Lottie animation inline — an illustration, loading visual, or success/empty-state moment.
+- Use `mdc-animation` for expressive motion that a static asset cannot convey.
 
 ### When not to use
 
-- Use `mdc-icon` for a static glyph that does not need motion.
-- Use `mdc-illustration` for a non-animated illustration asset.
-- Use `mdc-progressspinner` or `mdc-progressbar` when the animation needs to communicate determinate or indeterminate progress with proper progress semantics.
-- Use `mdc-spinner` when you only need a lightweight, generic loading indicator without a dedicated Lottie asset.
+- Do not use `mdc-animation` for a static glyph. Use `mdc-icon` instead.
+- Do not use `mdc-animation` for a non-animated illustration. Use `mdc-illustration` instead.
+- Do not use `mdc-animation` to communicate task progress. Use `mdc-progressbar` or `mdc-progressspinner` instead.
+- Do not use `mdc-animation` for a generic loading indicator that needs no bespoke Lottie asset. Use `mdc-spinner` instead.
 
 ## Guidelines
 
@@ -38,27 +39,50 @@ Minimal markup example:
 <mdc-animation name="success" loop="false"></mdc-animation>
 ```
 
+Listen for the `load`, `complete`, and `error` events to react to the animation lifecycle.
+
 ### Property/Attribute details
 
-- `name` — name of a bundled animation; resolved through the shipped animation manifest.
-- `src` — URL pointing to a Lottie JSON file. When set, it takes precedence over `name`.
-- `loop` — `"true"` (infinite, default), `"false"` (no loop), or a numeric string for a fixed loop count.
-- `autoplay` — starts the animation automatically when loaded (default `true`).
+| Option | Intent |
+| --- | --- |
+| `name` | Name of a bundled animation, resolved through the shipped animation manifest. |
+| `src` | URL of a Lottie JSON file. When set, it takes precedence over `name`. |
+| `loop` | `true` (infinite, default), `false` (no loop), or a numeric string for a fixed loop count. |
+| `autoplay` | Starts the animation automatically once loaded. Default `true`. |
+| `aria-label` / `aria-labelledby` | Accessible name when the animation carries meaning; setting either gives the host `role="img"`. Leave both unset for decorative use. |
+
+### Limitations
+
+- **Reduced motion not handled** — the component does not honor `prefers-reduced-motion`; gate `autoplay` or swap in a static asset yourself for motion-sensitive users.
+- **Loop and autoplay re-create the instance** — Lottie exposes no live API for these, so changing `loop` or `autoplay` rebuilds the animation from cached data.
+- **Source required** — without a valid `name` (present in the manifest) or `src`, the component fires `error` and renders nothing.
+- **Decorative by default** — the animation is hidden from assistive technology unless you give it an accessible name.
 
 ## Accessibility
 
 ### Built-in features
 
-The internal animation container is rendered with `aria-hidden="true"` so the underlying SVG/Lottie nodes are not exposed to assistive technologies.
+The internal animation container is rendered with `aria-hidden="true"` so the underlying Lottie/SVG nodes are not exposed to assistive technologies.
 
 #### Internal ARIA managed by the component
 
-- When neither `aria-label` nor `aria-labelledby` is provided, the host has no role and is treated as a decorative image (skipped by assistive technologies).
-- When `aria-label` or `aria-labelledby` is set, the host receives `role="img"` so screen readers announce it as a labeled image.
+| Element | Attribute | Value |
+| --- | --- | --- |
+| Host | `role` | `img` when `aria-label` or `aria-labelledby` is set, otherwise none (decorative) |
+| Animation container | `aria-hidden` | `true` |
 
 ### Implementation requirements
 
 #### Labeling
 
-- If the animation conveys meaning (e.g. a success state), provide an `aria-label` or `aria-labelledby` describing the meaning, not the motion.
-- Leave both labeling attributes unset when the animation is purely decorative; the component will keep it out of the accessibility tree.
+- If the animation conveys meaning (for example a success state), provide an `aria-label` or `aria-labelledby` that describes the meaning, not the motion.
+- Leave both labeling attributes unset when the animation is purely decorative; the component keeps it out of the accessibility tree.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-icon` | For a static, single-glyph mark with no motion. |
+| `mdc-illustration` | For a non-animated illustrative graphic. |
+| `mdc-progressspinner` | For indeterminate progress with proper progress semantics. |
+| `mdc-spinner` | For a lightweight generic loading indicator without a bespoke Lottie asset. |

@@ -7,17 +7,17 @@ component: screenreaderannouncer
 
 ## Overview
 
-The screenreaderannouncer is a non-visual helper component that pushes text into a shared aria-live region in the light DOM so that screen readers announce it. It manages the live-region container, debouncing, and clean-up so consumers only need to set an `announcement` (or call the public `announce()` method) when they want a message read out.
+The screen reader announcer is a non-visual helper that pushes text into a shared aria-live region so screen readers announce it. It owns the live-region container, debouncing, and clean-up, so a consumer only sets an `announcement` (or calls `announce()`) when a message should be read out.
 
 ### When to use
 
-- Use it to surface a status update that has no visible UI counterpart — for example, "5 new messages", "Saved", or "Failed to load" — so screen-reader users hear the change.
-- Use it when a visible status message exists but is rendered outside the natural reading order or only briefly, and you want to guarantee assistive-technology announcement.
+- Use `mdc-screenreaderannouncer` to surface a status change that has no visible counterpart — for example "5 new messages", "Saved", or "Failed to load".
+- Use `mdc-screenreaderannouncer` when a visible status exists but sits outside the reading order or is too brief to be caught, and you need to guarantee the announcement.
 
 ### When not to use
 
-- Do not use it for content that is already in a visible, ARIA-live container, or for content that the screen reader will naturally announce because of focus changes.
-- Do not use it as a logging or toast surface — it is not a UI component and renders nothing visible.
+- Do not use `mdc-screenreaderannouncer` for content already inside a visible live region or announced by a focus change. Rely on that existing announcement instead.
+- Do not use `mdc-screenreaderannouncer` as a toast or logging surface. Use `mdc-toast` for a visible transient message instead.
 
 ## Guidelines
 
@@ -40,7 +40,7 @@ Declarative usage — set the `announcement` attribute whenever you want a messa
 ></mdc-screenreaderannouncer>
 ```
 
-Imperative usage — call the public `announce()` method to make ad-hoc announcements with per-call overrides:
+Imperative usage — call the public `announce()` method for ad-hoc announcements with per-call overrides:
 
 ```ts
 const announcer = document.querySelector('mdc-screenreaderannouncer');
@@ -54,19 +54,29 @@ announcer.announce({
 
 ### Property/Attribute details
 
-- `announcement` — string that triggers an announcement when set to a non-empty value. After being announced the component clears the attribute back to an empty string. Default `''`.
-- `identity` — id of the element in the light DOM that announcement containers are appended to. When empty, the component sets it to `mdc-screenreaderannouncer-identity` and creates a visually hidden `<div>` with that id; consumers can supply their own id and ensure the matching element exists in the DOM and is visually hidden. Default `''`.
-- `data-aria-live` — `polite` or `assertive`. Sets the `aria-live` value used when creating announcement containers. Default `polite`.
-- `delay` — milliseconds to wait between appending the live-region container and inserting the announcement text inside it. The live region needs to exist before its contents change for assistive technologies to react. Default `150`.
-- `timeout` — milliseconds after which the announcement container is removed from the DOM. Default `20000`.
-- `debounce-time` — milliseconds the component waits after the most recent change to `announcement` before triggering the announcement; coalesces rapid updates. Default `500`.
-- `announce(options)` — public method. `options.announcement` is required; `delay`, `timeout`, and `ariaLive` are optional and override the corresponding instance properties for that call.
+| Option | Intent |
+| --- | --- |
+| `announcement` | String that triggers an announcement when set to a non-empty value; the component clears it back to empty afterward. Default `''`. |
+| `identity` | Id of the light-DOM element announcement containers append to. When empty, the component creates a visually hidden `<div>` with id `mdc-screenreaderannouncer-identity`. Supply your own only if the element exists and is visually hidden. Default `''`. |
+| `data-aria-live` | `polite` (default) or `assertive`. Sets the `aria-live` value on created announcement containers. |
+| `delay` | Milliseconds between appending the live-region container and inserting the text, so the region exists before its contents change. Default `150`. |
+| `timeout` | Milliseconds after which the announcement container is removed. Default `20000`. |
+| `debounce-time` | Milliseconds to wait after the latest `announcement` change before announcing, coalescing rapid updates. Default `500`. |
+
+`announce(options)` is a public method; `options.announcement` is required, and `delay`, `timeout`, and `ariaLive` optionally override the instance properties for that call.
+
+### Limitations
+
+- **First instance sets aria-live** — for a shared `identity`, the first announcer fixes the live-region politeness; later `data-aria-live` changes do not update already-created containers.
+- **Delay has a floor** — lowering `delay` below the default risks assistive technologies missing the announcement, because the live region is created dynamically.
+- **Custom identity is your responsibility** — when you set your own `identity`, you must provide the element and keep it visually hidden.
+- **No visible output** — the component renders nothing, so a status that sighted users also need still requires its own visible UI.
 
 ## Accessibility
 
 ### Built-in features
 
-The component renders nothing visible. On connect it ensures a visually hidden live-region element exists at `identity` (creating one with `aria-live` set from `data-aria-live` if needed) and on disconnect it removes the live-region element if no other instance is still using the same identity. Each announcement is performed by appending a fresh `<div aria-live="…">` to the identity element, then inserting a `<p>` with the announcement text after the configured `delay` so the live region is observed by assistive technologies before the text changes. Pending timeouts and announcement nodes are cleared on disconnect.
+The component renders nothing visible. On connect it ensures a visually hidden live-region element exists at `identity` (creating one with `aria-live` from `data-aria-live` if needed); on disconnect it removes that element when no other instance still uses the same identity. Each announcement appends a fresh `<div aria-live="…">` to the identity element and inserts a `<p>` with the text after the configured `delay`, so the live region is observed before its contents change. Pending timeouts and announcement nodes are cleared on disconnect.
 
 #### Internal ARIA managed by the component
 
@@ -79,7 +89,7 @@ The component renders nothing visible. On connect it ensures a visually hidden l
 ### Notes
 
 - The default `delay` of 150 ms exists because the live region itself is created dynamically. Lowering it can cause assistive technologies to miss the announcement.
-- If several `mdc-screenreaderannouncer` instances share the same `identity`, the `aria-live` value is effectively determined by the first instance that creates an announcement for that identity. Changing `data-aria-live` on later instances does not retroactively update already-created live-region containers.
+- If several instances share the same `identity`, the `aria-live` value is effectively determined by the first instance that creates an announcement for that identity. Changing `data-aria-live` on later instances does not retroactively update already-created live-region containers.
 - When no `identity` is provided, all instances share a single `mdc-screenreaderannouncer-identity` element appended to `document.body` (or to the closest `aria-modal="true"` ancestor's shadow root when inside a modal dialog).
 - When a custom `identity` is provided, the consumer is responsible for ensuring the element exists in the DOM and is visually hidden, for example:
 
@@ -94,3 +104,10 @@ The component renders nothing visible. On connect it ensures a visually hidden l
   width: 1px;
 }
 ```
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-toast` | For a visible transient message, where the announcer is invisible and screen-reader only. |
+| `mdc-banner` | For a persistent visible message that also needs to be seen, not only heard. |
