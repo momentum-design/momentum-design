@@ -29,6 +29,7 @@ export class FocusTrapStack {
   private static removeKeydownListener() {
     if (this.currentKeydownListener) {
       document.removeEventListener('keydown', this.currentKeydownListener);
+      this.currentKeydownListener = null;
     }
   }
 

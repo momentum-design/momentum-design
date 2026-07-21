@@ -178,6 +178,14 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
       const activeElement = this.getDeepActiveElement!() as HTMLElement;
       const activeIndex = this.findElement(activeElement);
+
+      // If focus currently sits outside this trap's focusable elements (e.g. on a sibling
+      // element in the document), do not hijack Tab navigation - let the browser's default
+      // behavior move focus naturally, including into the trap.
+      if (activeIndex === -1) {
+        return;
+      }
+
       const direction = event.shiftKey;
 
       if (direction) {
