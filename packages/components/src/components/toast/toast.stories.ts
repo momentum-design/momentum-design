@@ -1,14 +1,13 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 import '.';
 import '../avatar';
 import '../spinner';
 import '../button';
-
-import { createRef, ref } from 'lit/directives/ref.js';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
