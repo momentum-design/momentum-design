@@ -1,9 +1,9 @@
 // AI-Assisted
 interface Events {
   /** Fired when the focus trap is activated (React: onFocusTrapActivated) */
-  onFocusTrapActivated: Event;
+  onFocusTrapActivatedEvent: Event;
   /** Fired when the focus trap is deactivated (React: onFocusTrapDeactivated) */
-  onFocusTrapDeactivated: Event;
+  onFocusTrapDeactivatedEvent: Event;
 }
 
 declare global {
