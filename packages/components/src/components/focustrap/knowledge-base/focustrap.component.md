@@ -30,7 +30,7 @@ FocusTrap is a container component that manages keyboard focus within a specifie
 Import and use the `<mdc-focustrap>` web component to wrap any focusable content:
 
 ```html
-<mdc-focustrap disable="false" auto-focus="false">
+<mdc-focustrap disabled="false" auto-focus="false">
   <input type="text" placeholder="First input" />
   <input type="text" placeholder="Second input" />
   <button>Submit</button>
@@ -48,7 +48,7 @@ export function MyModal() {
   return (
     isOpen && (
       <FocusTrap
-        disable={false}
+        disabled={false}
         disableRestoreFocus={false}
         autoFocus={true}
       >
@@ -66,7 +66,7 @@ export function MyModal() {
 
 ### Property/Attribute details
 
-- **`disable`** (boolean, default: `false`)  
+- **`disabled`** (boolean, default: `false`)  
   When `true`, focus trapping is disabled. When `false`, focus is trapped within the component. This is the inverse of the `contain` prop in `@react-aria/focus`.
 
 - **`disable-restore-focus` / `disableRestoreFocus`** (boolean, default: `false`)  
@@ -116,7 +116,7 @@ FocusTrap itself does not require a label. However, the container and its conten
 ```html
 <div role="dialog" aria-labelledby="dialog-title" aria-modal="true">
   <h2 id="dialog-title">Confirm Action</h2>
-  <mdc-focustrap disable="false" auto-focus="true">
+  <mdc-focustrap disabled="false" auto-focus="true">
     <p>Are you sure?</p>
     <button>Cancel</button>
     <button class="primary">Confirm</button>

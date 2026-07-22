@@ -24,11 +24,11 @@ class FocusTrap extends FocusTrapMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  disable: boolean = DEFAULTS.DISABLE;
+  disabled: boolean = DEFAULTS.DISABLED;
 
   /**
    * Implements the abstract `focusTrap` required by `FocusTrapMixin`.
-   * Kept in sync with the public `disable` property (inverted).
+   * Kept in sync with the public `disabled` property (inverted).
    * @internal
    */
   protected focusTrap: boolean = true;
@@ -44,7 +44,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
 
   /**
    * When `true`, the first focusable element inside the container receives focus
-   * automatically when focus trapping is enabled (when `disable` is `false`).
+   * automatically when focus trapping is enabled (when `disabled` is `false`).
    *
    * @default false
    */
@@ -55,7 +55,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
   private previouslyFocusedElement: HTMLElement | null = null;
 
   override disconnectedCallback() {
-    const shouldRestoreFocus = !this.disable;
+    const shouldRestoreFocus = !this.disabled;
 
     this.deactivateFocusTrap();
 
@@ -69,11 +69,11 @@ class FocusTrap extends FocusTrapMixin(Component) {
   protected override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('disable')) {
-      // Keep focusTrap in sync with disable (inverted)
-      this.focusTrap = !this.disable;
+    if (changedProperties.has('disabled')) {
+      // Keep focusTrap in sync with disabled (inverted)
+      this.focusTrap = !this.disabled;
 
-      if (!this.disable) {
+      if (!this.disabled) {
         this.previouslyFocusedElement = (document.activeElement as HTMLElement) ?? null;
         this.activateFocusTrap();
 
@@ -82,7 +82,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
           // at this point, so findFocusable() would find nothing. Defer to the next animation
           // frame, by which time all pending Lit updates have flushed.
           requestAnimationFrame(() => {
-            if (this.autoFocus && !this.disable) {
+            if (this.autoFocus && !this.disabled) {
               this.setInitialFocus();
             }
           });

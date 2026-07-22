@@ -4,7 +4,7 @@ import { KEYS } from '../../utils/keys';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  disable?: boolean;
+  disabled?: boolean;
   disableRestoreFocus?: boolean;
   autoFocus?: boolean;
   shouldFocusTrapWrap?: boolean;
@@ -19,7 +19,7 @@ const setup = async (args: SetupOptions) => {
         <button id="before-2">Before 2</button>
         <mdc-focustrap
           id="focustrap"
-          ${restArgs.disable ? 'disable' : ''}
+          ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.disableRestoreFocus ? 'disable-restore-focus' : ''}
           ${restArgs.autoFocus ? 'auto-focus' : ''}
         >
@@ -65,14 +65,14 @@ test('mdc-focustrap', async ({ componentsPage }) => {
   await test.step('attributes', async () => {
     await test.step('default properties', async () => {
       const { focustrap } = await setup({ componentsPage });
-      await expect(focustrap).not.toHaveAttribute('disable');
+      await expect(focustrap).not.toHaveAttribute('disabled');
       await expect(focustrap).not.toHaveAttribute('disable-restore-focus');
       await expect(focustrap).not.toHaveAttribute('auto-focus');
     });
 
-    await test.step('disable attribute reflects', async () => {
-      const { focustrap } = await setup({ componentsPage, disable: true });
-      await expect(focustrap).toHaveAttribute('disable', '');
+    await test.step('disabled attribute reflects', async () => {
+      const { focustrap } = await setup({ componentsPage, disabled: true });
+      await expect(focustrap).toHaveAttribute('disabled', '');
     });
   });
 
@@ -126,8 +126,8 @@ test('mdc-focustrap', async ({ componentsPage }) => {
       await expect(inside1).toBeFocused();
     });
 
-    await test.step('focus is not trapped when disable is true', async () => {
-      const { before2, inside1, after } = await setup({ componentsPage, disable: true });
+    await test.step('focus is not trapped when disabled is true', async () => {
+      const { before2, inside1, after } = await setup({ componentsPage, disabled: true });
 
       await before2.focus();
       await componentsPage.page.keyboard.press('Tab');
@@ -156,14 +156,14 @@ test('mdc-focustrap', async ({ componentsPage }) => {
 
   await test.step('restore focus', async () => {
     await test.step('focus is restored to the previously focused element when the trap is deactivated', async () => {
-      const { focustrap, before1, after } = await setup({ componentsPage, disable: true });
+      const { focustrap, before1, after } = await setup({ componentsPage, disabled: true });
 
       await before1.focus();
       await expect(before1).toBeFocused();
 
       // activating the trap captures `before1` as the previously focused element
       await focustrap.evaluate(el => {
-        el.removeAttribute('disable');
+        el.removeAttribute('disabled');
       });
 
       // simulate focus moving elsewhere while the trap is active
@@ -172,27 +172,27 @@ test('mdc-focustrap', async ({ componentsPage }) => {
 
       // deactivating the trap should restore focus back to `before1`
       await focustrap.evaluate(el => {
-        el.setAttribute('disable', '');
+        el.setAttribute('disabled', '');
       });
 
       await expect(before1).toBeFocused();
     });
 
     await test.step('focus is not restored when disableRestoreFocus is true', async () => {
-      const { focustrap, before1, after } = await setup({ componentsPage, disable: true, disableRestoreFocus: true });
+      const { focustrap, before1, after } = await setup({ componentsPage, disabled: true, disableRestoreFocus: true });
 
       await before1.focus();
       await expect(before1).toBeFocused();
 
       await focustrap.evaluate(el => {
-        el.removeAttribute('disable');
+        el.removeAttribute('disabled');
       });
 
       await after.focus();
       await expect(after).toBeFocused();
 
       await focustrap.evaluate(el => {
-        el.setAttribute('disable', '');
+        el.setAttribute('disabled', '');
       });
 
       await expect(after).toBeFocused();
@@ -201,24 +201,24 @@ test('mdc-focustrap', async ({ componentsPage }) => {
 
   await test.step('events', async () => {
     await test.step('focus-trap-activated is fired when disable becomes false', async () => {
-      const { focustrap } = await setup({ componentsPage, disable: true });
+      const { focustrap } = await setup({ componentsPage, disabled: true });
 
       const waitForActivated = await componentsPage.waitForEvent(focustrap, 'focus-trap-activated');
 
       await focustrap.evaluate(el => {
-        el.removeAttribute('disable');
+        el.removeAttribute('disabled');
       });
 
       await expect(waitForActivated).toEventEmitted();
     });
 
-    await test.step('focus-trap-deactivated is fired when disable becomes true', async () => {
+    await test.step('focus-trap-deactivated is fired when disabled becomes true', async () => {
       const { focustrap } = await setup({ componentsPage });
 
       const waitForDeactivated = await componentsPage.waitForEvent(focustrap, 'focus-trap-deactivated');
 
       await focustrap.evaluate(el => {
-        el.setAttribute('disable', '');
+        el.setAttribute('disabled', '');
       });
 
       await expect(waitForDeactivated).toEventEmitted();
@@ -227,14 +227,14 @@ test('mdc-focustrap', async ({ componentsPage }) => {
 
   await test.step('disconnect', async () => {
     await test.step('focus is restored when the component is removed from the DOM', async () => {
-      const { focustrap, before1 } = await setup({ componentsPage, disable: true });
+      const { focustrap, before1 } = await setup({ componentsPage, disabled: true });
 
       await before1.focus();
       await expect(before1).toBeFocused();
 
       // activating the trap captures `before1` as the previously focused element
       await focustrap.evaluate(el => {
-        el.removeAttribute('disable');
+        el.removeAttribute('disabled');
       });
 
       await componentsPage.page.evaluate(() => {
@@ -253,11 +253,11 @@ test('mdc-focustrap', async ({ componentsPage }) => {
       // otherwise deactivate an already-active trap without reactivating it.
       const { focustrap, before1, before2, inside1, inside2, inside3 } = await setup({
         componentsPage,
-        disable: true,
+        disabled: true,
       });
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
       await focustrap.evaluate(el => {
-        el.removeAttribute('disable');
+        el.removeAttribute('disabled');
       });
       const { keyboard } = componentsPage.page;
 
@@ -297,7 +297,7 @@ test('mdc-focustrap', async ({ componentsPage }) => {
     await test.step('arrow key navigation is not confined when the trap is disabled', async () => {
       const { before1, before2, inside1, inside2, inside3, after } = await setup({
         componentsPage,
-        disable: true,
+        disabled: true,
       });
       await componentsPage.wrapElement({ wrapperTagName: 'mdc-spatialnavigationprovider' });
       const { keyboard } = componentsPage.page;
