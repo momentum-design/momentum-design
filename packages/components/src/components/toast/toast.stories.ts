@@ -8,11 +8,15 @@ import '../avatar';
 import '../spinner';
 import '../button';
 
+import { createRef, ref } from 'lit/directives/ref.js';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 import { TOAST_VARIANT } from './toast.constants';
+
+import type Toast from '.';
 
 const render = (args: Args) => html`
   <mdc-toast
@@ -137,6 +141,42 @@ export const LongTitleWithoutToggle: StoryObj = {
     'header-text':
       'This is a very long toast title of more than 6 lines that should overflow without the show more/less functionality. Once 6 lines is reached, this will truncate regardless of the length of the content to prevent the toast from taking up too much space.',
     'close-button-aria-label': 'Close toast',
+  },
+};
+
+export const DynamicShortLongTitle: StoryObj = {
+  name: 'Dynamic Short/Long Title',
+  render: () => {
+    const longTitle =
+      'This is a very long toast title of more than 3 lines that should overflow and trigger the show more/less functionality. Once 6 lines is reached, this will truncate regardless of the length of the content to prevent the toast from taking up too much space.';
+    const shortTitle = 'Short Title';
+
+    const toastRef = createRef<Toast>();
+
+    return html`
+      <mdc-toast
+        ${ref(toastRef)}
+        variant="success"
+        header-tag-name="span"
+        header-text=${longTitle}
+        show-more-text="Show more"
+        show-less-text="Show less"
+        close-button-aria-label="Close toast"
+      >
+      </mdc-toast>
+      <mdc-button
+        @click=${() => {
+          toastRef.value?.setAttribute('header-text', shortTitle);
+        }}
+        >Short Title</mdc-button
+      >
+      <mdc-button
+        @click=${() => {
+          toastRef.value?.setAttribute('header-text', longTitle);
+        }}
+        >Long Title</mdc-button
+      >
+    `;
   },
 };
 

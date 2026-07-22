@@ -506,11 +506,34 @@ test.describe('Toast Feature Scenarios', () => {
       }
     });
 
+    await test.step('Toast updates toggle button visibility when header-text attribute changes', async () => {
+      // Start with a long title — toggle button should be visible
+      const toast = await setup({
+        componentsPage,
+        headerText: LONG_HEADER_TEXT,
+        headerTagName: 'span',
+        closeButtonAriaLabel: 'Close toast',
+        showMoreText: SHOW_MORE_TEXT,
+        showLessText: SHOW_LESS_TEXT,
+      });
+
+      const toggleBtn = toast.locator('mdc-button[part="footer-button-toggle"]');
+      await expect(toggleBtn).toBeVisible();
+
+      // Update to a short title — toggle button should be hidden
+      await toast.evaluate(el => el.setAttribute('header-text', 'Short title'));
+      await expect(toggleBtn).not.toBeVisible();
+
+      // Update back to a long title — toggle button should be visible again
+      await toast.evaluate((el, text) => el.setAttribute('header-text', text), LONG_HEADER_TEXT);
+      await expect(toggleBtn).toBeVisible();
+    });
+
     for (const [headerTextDescription, headerText] of [
       ['long', LONG_HEADER_TEXT],
       ['very-long', VERY_LONG_HEADER_TEXT],
     ]) {
-      await test.step('User expands/collapses toast title with keyboard', async () => {
+      await test.step(`User expands/collapses toast title with keyboard (${headerTextDescription})`, async () => {
         const toast = await setup({
           componentsPage,
           headerText,
