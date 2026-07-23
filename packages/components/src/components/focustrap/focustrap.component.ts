@@ -23,28 +23,28 @@ class FocusTrap extends FocusTrapMixin(Component) {
    *
    * @default false
    */
-  @property({ type: Boolean, reflect: true })
-  disabled: boolean = DEFAULTS.DISABLED;
+  @property({ type: Boolean, reflect: true, attribute: 'trap-disabled' })
+  trapDisabled: boolean = DEFAULTS.TRAP_DISABLED;
 
   /**
    * Implements the abstract `focusTrap` required by `FocusTrapMixin`.
-   * Kept in sync with the public `disabled` property (inverted).
+   * Kept in sync with the public `trapDisabled` property (inverted).
    * @internal
    */
   protected focusTrap: boolean = true;
 
   /**
    * When `true`, disables restoring focus to the previously focused element
-   * when `disable` is set to `true` or the component is disconnected from the DOM.
+   * when `trapDisabled` is set to `true` or the component is disconnected from the DOM.
    * When `false` (default), focus will be restored.
    * @default false
    */
-  @property({ type: Boolean, reflect: true, attribute: 'disable-restore-focus' })
-  disableRestoreFocus: boolean = DEFAULTS.DISABLE_RESTORE_FOCUS;
+  @property({ type: Boolean, reflect: true, attribute: 'restore-focus-disabled' })
+  restoreFocusDisabled: boolean = DEFAULTS.RESTORE_FOCUS_DISABLED;
 
   /**
    * When `true`, the first focusable element inside the container receives focus
-   * automatically when focus trapping is enabled (when `disabled` is `false`).
+   * automatically when focus trapping is enabled (when `trapDisabled` is `false`).
    *
    * @default false
    */
@@ -55,7 +55,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
   private previouslyFocusedElement: HTMLElement | null = null;
 
   override disconnectedCallback() {
-    const shouldRestoreFocus = !this.disabled;
+    const shouldRestoreFocus = !this.trapDisabled;
 
     this.deactivateFocusTrap();
 
@@ -69,11 +69,11 @@ class FocusTrap extends FocusTrapMixin(Component) {
   protected override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('disabled')) {
-      // Keep focusTrap in sync with disabled (inverted)
-      this.focusTrap = !this.disabled;
+    if (changedProperties.has('trapDisabled')) {
+      // Keep focusTrap in sync with trapDisabled (inverted)
+      this.focusTrap = !this.trapDisabled;
 
-      if (!this.disabled) {
+      if (!this.trapDisabled) {
         this.previouslyFocusedElement = (document.activeElement as HTMLElement) ?? null;
         this.activateFocusTrap();
 
@@ -82,7 +82,7 @@ class FocusTrap extends FocusTrapMixin(Component) {
           // at this point, so findFocusable() would find nothing. Defer to the next animation
           // frame, by which time all pending Lit updates have flushed.
           requestAnimationFrame(() => {
-            if (this.autoFocus && !this.disabled) {
+            if (this.autoFocus && !this.trapDisabled) {
               this.setInitialFocus();
             }
           });
@@ -99,10 +99,10 @@ class FocusTrap extends FocusTrapMixin(Component) {
 
   /**
    * Restores focus to the element that was focused before the trap was activated,
-   * if `disableRestoreFocus` is false.
+   * if `restoreFocusDisabled` is false.
    */
   private restorePreviousFocus() {
-    if (!this.disableRestoreFocus && this.previouslyFocusedElement) {
+    if (!this.restoreFocusDisabled && this.previouslyFocusedElement) {
       this.previouslyFocusedElement.focus({ preventScroll: true });
     }
     this.previouslyFocusedElement = null;

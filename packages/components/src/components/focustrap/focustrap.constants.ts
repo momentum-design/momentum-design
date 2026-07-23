@@ -4,8 +4,8 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('focustrap');
 
 const DEFAULTS = {
-  DISABLED: false,
-  DISABLE_RESTORE_FOCUS: false,
+  TRAP_DISABLED: false,
+  RESTORE_FOCUS_DISABLED: false,
   AUTO_FOCUS: false,
 };
 

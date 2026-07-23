@@ -30,7 +30,7 @@ FocusTrap is a container component that manages keyboard focus within a specifie
 Import and use the `<mdc-focustrap>` web component to wrap any focusable content:
 
 ```html
-<mdc-focustrap disabled="false" auto-focus="false">
+<mdc-focustrap trap-disabled="false" auto-focus="false">
   <input type="text" placeholder="First input" />
   <input type="text" placeholder="Second input" />
   <button>Submit</button>
@@ -48,8 +48,8 @@ export function MyModal() {
   return (
     isOpen && (
       <FocusTrap
-        disabled={false}
-        disableRestoreFocus={false}
+        trapDisabled={false}
+        restoreFocusDisabled={false}
         autoFocus={true}
       >
         <h2>Modal Title</h2>
@@ -66,10 +66,10 @@ export function MyModal() {
 
 ### Property/Attribute details
 
-- **`disabled`** (boolean, default: `false`)  
+- **`trap-disabled` / `trapDisabled`** (boolean, default: `false`)  
   When `true`, focus trapping is disabled. When `false`, focus is trapped within the component. This is the inverse of the `contain` prop in `@react-aria/focus`.
 
-- **`disable-restore-focus` / `disableRestoreFocus`** (boolean, default: `false`)  
+- **`restore-focus-disabled` / `restoreFocusDisabled`** (boolean, default: `false`)  
   When `true`, focus is not restored to the previously focused element when the trap is deactivated or the component is removed from the DOM. When `false`, focus returns to the element that had focus before the trap was activated.
 
 - **`auto-focus` / `autoFocus`** (boolean, default: `false`)  
@@ -87,7 +87,7 @@ export function MyModal() {
 
 ### Notes
 
-FocusTrap is built on the `FocusTrapMixin` utility and is designed to complement accessible overlay patterns. For complex focus scenarios (such as multiple overlays or programmatic focus control), consider pairing with higher-level patterns or frameworks. Focus restoration respects the `disableRestoreFocus` flag and is automatically triggered on component disconnect.
+FocusTrap is built on the `FocusTrapMixin` utility and is designed to complement accessible overlay patterns. For complex focus scenarios (such as multiple overlays or programmatic focus control), consider pairing with higher-level patterns or frameworks. Focus restoration respects the `restoreFocusDisabled` flag and is automatically triggered on component disconnect.
 
 ## Accessibility
 
@@ -95,7 +95,7 @@ FocusTrap is built on the `FocusTrapMixin` utility and is designed to complement
 
 - **Focus containment** – Prevents keyboard navigation from leaving the trap boundaries, ensuring users remain focused on the intended content.
 - **Focus wrapping** – By default, Tab from the last focusable element returns to the first, and vice versa, creating a continuous focus cycle.
-- **Focus restoration** – Restores focus to the previously focused element when the trap is deactivated (unless `disableRestoreFocus` is `true`), maintaining context for screen-reader users and sighted users alike.
+- **Focus restoration** – Restores focus to the previously focused element when the trap is deactivated (unless `restoreFocusDisabled` is `true`), maintaining context for screen-reader users and sighted users alike.
 
 #### Internal ARIA managed by the component
 
@@ -116,7 +116,7 @@ FocusTrap itself does not require a label. However, the container and its conten
 ```html
 <div role="dialog" aria-labelledby="dialog-title" aria-modal="true">
   <h2 id="dialog-title">Confirm Action</h2>
-  <mdc-focustrap disabled="false" auto-focus="true">
+  <mdc-focustrap trap-disabled="false" auto-focus="true">
     <p>Are you sure?</p>
     <button>Cancel</button>
     <button class="primary">Confirm</button>

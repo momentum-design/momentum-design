@@ -10,8 +10,8 @@ const render = (args: Args) => html`
     <mdc-button>Before 1</mdc-button>
     <mdc-button>Before 2</mdc-button>
     <mdc-focustrap
-      ?disabled="${args.disabled}"
-      ?disable-restore-focus="${args.disableRestoreFocus}"
+      ?trap-disabled="${args.trapDisabled}"
+      ?restore-focus-disabled="${args.restoreFocusDisabled}"
       ?auto-focus="${args.autoFocus}"
       .shouldFocusTrapWrap="${args.shouldFocusTrapWrap}"
       class="${args.class}"
@@ -39,11 +39,11 @@ const meta: Meta = {
   component: 'mdc-focustrap',
   render,
   argTypes: {
-    disabled: {
+    trapDisabled: {
       control: 'boolean',
       description: 'When true, focus trapping is disabled. When false (default), keyboard focus is trapped.',
     },
-    disableRestoreFocus: {
+    restoreFocusDisabled: {
       control: 'boolean',
       description:
         'When true, focus is NOT restored to the previously focused element when the trap is deactivated. When false (default), focus is restored.',
@@ -65,8 +65,8 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    disabled: false,
-    disableRestoreFocus: false,
+    trapDisabled: false,
+    restoreFocusDisabled: false,
     autoFocus: false,
     shouldFocusTrapWrap: true,
   },
@@ -74,8 +74,8 @@ export const Example: StoryObj = {
 
 export const WithAutoFocus: StoryObj = {
   args: {
-    disabled: false,
-    disableRestoreFocus: false,
+    trapDisabled: false,
+    restoreFocusDisabled: false,
     autoFocus: true,
     shouldFocusTrapWrap: true,
   },
@@ -83,8 +83,8 @@ export const WithAutoFocus: StoryObj = {
 
 export const WithoutWrap: StoryObj = {
   args: {
-    disabled: false,
-    disableRestoreFocus: false,
+    trapDisabled: false,
+    restoreFocusDisabled: false,
     autoFocus: false,
     shouldFocusTrapWrap: false,
   },

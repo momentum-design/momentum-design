@@ -55,9 +55,11 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: url,
-    /* On CI: Collect trace when retrying the failed test /
-    Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'retain-on-failure' : 'on',
+    /* Collect trace only for failed tests, both on CI and locally.
+    `trace: 'on'` (always record) was found to make trace export pathologically slow in
+    resource-constrained environments, causing tests to spuriously exceed the test timeout
+    with no clear underlying failure. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
   },
 
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',
