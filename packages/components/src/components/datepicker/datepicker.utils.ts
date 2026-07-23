@@ -52,12 +52,13 @@ function buildISODate(month: string, day: string, year: string): string {
 }
 
 /**
- * Gets the placeholder text for a date field based on locale order.
+ * Gets the placeholder text for a date or date range based on locale order.
  */
-function getPlaceholder(locale: string): string {
+function getPlaceholder(locale: string, isRange = false): string {
   const { order, separator } = getLocaleDateParts(locale);
   const labels: Record<string, string> = { month: 'mm', day: 'dd', year: 'yyyy' };
-  return order.map(field => labels[field]).join(` ${separator} `);
+  const placeholder = order.map(field => labels[field]).join(` ${separator} `);
+  return isRange ? `${placeholder} - ${placeholder}` : placeholder;
 }
 
 /**
