@@ -78,6 +78,19 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await expect(presence).toHaveAttribute('type', PRESENCE_TYPE.MEETING);
       await expect(presence).toHaveAttribute('size', PRESENCE_SIZE[124].toString());
     });
+
+    await test.step('should render inner icon with rem length unit and computed size', async () => {
+      const presenceWithIcon = await setup({
+        componentsPage,
+        type: PRESENCE_TYPE.DND,
+        size: PRESENCE_SIZE[32],
+      });
+      const icon = presenceWithIcon.locator('mdc-icon');
+      await icon.waitFor();
+
+      await expect(icon).toHaveAttribute('length-unit', 'rem');
+      await expect(icon).toHaveAttribute('style', '--computed-icon-size: 0.875rem;');
+    });
   });
 };
 

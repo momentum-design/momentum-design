@@ -138,6 +138,7 @@ class Presence extends Component {
           part="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
           name="${this.icon}"
           size="${getPresenceIconSize(this.size)}"
+          length-unit="rem"
           @load="${this.handleOnLoad}"
           @error="${this.handleOnError}"
         ></mdc-icon>
