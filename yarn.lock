@@ -3136,6 +3136,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@momentum-design/components-mcp@workspace:packages/tools/components-mcp":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/components-mcp@workspace:packages/tools/components-mcp"
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/components@workspace:*, @momentum-design/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@momentum-design/components@workspace:packages/components"
