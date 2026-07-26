@@ -1,4 +1,3 @@
-// AI-Assisted
 import { requireComponent } from '../utils/componentRegistry';
 import { textResponse } from '../utils/response';
 
@@ -48,4 +47,3 @@ const getComponentDocsTool: ComponentsMcpTool = {
 };
 
 export default getComponentDocsTool;
-// End AI-Assisted

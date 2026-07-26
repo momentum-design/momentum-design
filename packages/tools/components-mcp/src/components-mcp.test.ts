@@ -1,4 +1,3 @@
-// AI-Assisted
 import tools from './tools';
 import { assetsRegistry, colorTokensRegistry, componentsRegistry } from './data';
 import { getAsset, searchAssets } from './utils/assetRegistry';
@@ -1972,4 +1971,3 @@ describe('@momentum-design/components-mcp', () => {
     })).resolves.toContain('<mdc-button>Save</mdc-button>');
   });
 });
-// End AI-Assisted

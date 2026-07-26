@@ -1,4 +1,3 @@
-// AI-Assisted
 const CONSTANTS = {
   PACKAGE_NAME: '@momentum-design/components-mcp',
   SERVER_NAME: 'momentum-design-components-mcp',
@@ -8,4 +7,3 @@ const CONSTANTS = {
 } as const;
 
 export default CONSTANTS;
-// End AI-Assisted

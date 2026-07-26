@@ -1,4 +1,3 @@
-// AI-Assisted
 import { searchComponents } from '../utils/componentRegistry';
 import { formatComponentSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -47,4 +46,3 @@ const searchComponentsTool: ComponentsMcpTool = {
 };
 
 export default searchComponentsTool;
-// End AI-Assisted

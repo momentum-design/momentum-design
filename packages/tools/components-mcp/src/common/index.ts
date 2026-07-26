@@ -1,4 +1,3 @@
-// AI-Assisted
 import CONSTANTS from './constants';
 
 export type {
@@ -26,4 +25,3 @@ export type {
 export {
   CONSTANTS,
 };
-// End AI-Assisted

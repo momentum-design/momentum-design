@@ -1,4 +1,3 @@
-// AI-Assisted
 import { requireComponent } from '../utils/componentRegistry';
 import { formatProperty, formatReferenceList } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -62,4 +61,3 @@ const getComponentApiTool: ComponentsMcpTool = {
 };
 
 export default getComponentApiTool;
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 import type {
   AssetRegistryEntry,
   ColorTokenRegistryEntry,
@@ -216,4 +215,3 @@ export {
   formatValues,
   getAssetComponentName,
 };
-// End AI-Assisted

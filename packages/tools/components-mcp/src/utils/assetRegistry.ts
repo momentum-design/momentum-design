@@ -1,4 +1,3 @@
-// AI-Assisted
 import { assetsRegistry } from '../data';
 import type { AssetKind, AssetRegistryEntry } from '../common';
 
@@ -106,4 +105,3 @@ function searchAssets(query: string, filters: AssetFilters = {}, limit = 20): As
 }
 
 export { getAsset, listAssets, requireAsset, searchAssets };
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 import { searchColorTokens } from '../utils/colorRegistry';
 import { formatColorTokenSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -71,4 +70,3 @@ const searchColorTokensTool: ComponentsMcpTool = {
 };
 
 export default searchColorTokensTool;
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { McpToolResponse } from '../common';
 
 function textResponse(text: string): McpToolResponse {
@@ -20,4 +19,3 @@ function errorResponse(message: string): McpToolResponse {
 }
 
 export { errorResponse, textResponse };
-// End AI-Assisted

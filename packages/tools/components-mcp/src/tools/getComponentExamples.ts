@@ -1,4 +1,3 @@
-// AI-Assisted
 import { type Framework } from '../common';
 import { requireComponent } from '../utils/componentRegistry';
 import { defaultPropsForComponent, generateComponentCode } from '../utils/codeGeneration';
@@ -86,4 +85,3 @@ const getComponentExamplesTool: ComponentsMcpTool = {
 };
 
 export default getComponentExamplesTool;
-// End AI-Assisted

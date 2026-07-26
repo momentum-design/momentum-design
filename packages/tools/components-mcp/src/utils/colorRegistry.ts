@@ -1,4 +1,3 @@
-// AI-Assisted
 import { colorTokensRegistry } from '../data';
 import type { ColorTokenCategory, ColorTokenRegistryEntry } from '../common';
 
@@ -107,4 +106,3 @@ function searchColorTokens(query: string, filters: ColorTokenFilters = {}, limit
 }
 
 export { findColorTokens, listColorTokens, searchColorTokens };
-// End AI-Assisted

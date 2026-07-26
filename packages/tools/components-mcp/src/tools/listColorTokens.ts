@@ -1,4 +1,3 @@
-// AI-Assisted
 import { listColorTokens } from '../utils/colorRegistry';
 import { formatColorTokenSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -60,4 +59,3 @@ const listColorTokensTool: ComponentsMcpTool = {
 };
 
 export default listColorTokensTool;
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 export type Framework = 'web-component' | 'angular' | 'react';
 
 export type RegistryValue = string | number | boolean | null;
@@ -117,4 +116,3 @@ export interface McpToolResponse {
   content: McpTextContent[];
   isError?: boolean;
 }
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 import { getAsset, searchAssets } from '../utils/assetRegistry';
 import { formatAssetSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -134,4 +133,3 @@ const migrateIconNameTool: ComponentsMcpTool = {
 };
 
 export default migrateIconNameTool;
-// End AI-Assisted

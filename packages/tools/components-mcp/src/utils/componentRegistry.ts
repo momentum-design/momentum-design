@@ -1,4 +1,3 @@
-// AI-Assisted
 import { componentsRegistry } from '../data';
 import type { ComponentRegistryEntry } from '../common';
 
@@ -102,4 +101,3 @@ function searchComponents(query: string, limit = 10): ComponentRegistryEntry[] {
 }
 
 export { getComponent, listComponents, requireComponent, searchComponents };
-// End AI-Assisted

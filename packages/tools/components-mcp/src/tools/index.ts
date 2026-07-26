@@ -1,4 +1,3 @@
-// AI-Assisted
 import convertMomentumUiUsageTool from './convertMomentumUiUsage';
 import generateComponentCodeTool from './generateComponentCode';
 import getAssetInfoTool from './getAssetInfo';
@@ -34,4 +33,3 @@ const tools = [
 ];
 
 export default tools;
-// End AI-Assisted

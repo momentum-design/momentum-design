@@ -1,4 +1,3 @@
-// AI-Assisted
 import { listComponents } from '../utils/componentRegistry';
 import { formatComponentSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -46,4 +45,3 @@ const listComponentsTool: ComponentsMcpTool = {
 };
 
 export default listComponentsTool;
-// End AI-Assisted

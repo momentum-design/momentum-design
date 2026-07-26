@@ -1,4 +1,3 @@
-// AI-Assisted
 import {
   convertMomentumUiUsage,
   getComponentForMapping,
@@ -98,4 +97,3 @@ const convertMomentumUiUsageTool: ComponentsMcpTool = {
 };
 
 export default convertMomentumUiUsageTool;
-// End AI-Assisted

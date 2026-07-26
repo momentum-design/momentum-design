@@ -1,4 +1,3 @@
-// AI-Assisted
 import type {
   ComponentProps,
   ComponentProperty,
@@ -4964,4 +4963,3 @@ function validateComponentUsage(
 }
 
 export { findProperty, validateComponentUsage };
-// End AI-Assisted

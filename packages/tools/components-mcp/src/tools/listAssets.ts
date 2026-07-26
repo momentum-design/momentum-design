@@ -1,4 +1,3 @@
-// AI-Assisted
 import { listAssets } from '../utils/assetRegistry';
 import { formatAssetSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -58,4 +57,3 @@ const listAssetsTool: ComponentsMcpTool = {
 };
 
 export default listAssetsTool;
-// End AI-Assisted

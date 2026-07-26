@@ -1,4 +1,3 @@
-// AI-Assisted
 import { requireComponent } from '../utils/componentRegistry';
 import { formatIssues } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -66,4 +65,3 @@ const validateComponentUsageTool: ComponentsMcpTool = {
 };
 
 export default validateComponentUsageTool;
-// End AI-Assisted

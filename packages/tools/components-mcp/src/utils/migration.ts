@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { ComponentRegistryEntry } from '../common';
 
 import { getComponent } from './componentRegistry';
@@ -225,4 +224,3 @@ export {
   type MomentumUiComponentMapping,
   type MomentumUiConversionResult,
 };
-// End AI-Assisted

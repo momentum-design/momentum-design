@@ -1,4 +1,3 @@
-// AI-Assisted
 import { searchAssets } from '../utils/assetRegistry';
 import { formatAssetSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -71,4 +70,3 @@ const searchAssetsTool: ComponentsMcpTool = {
 };
 
 export default searchAssetsTool;
-// End AI-Assisted

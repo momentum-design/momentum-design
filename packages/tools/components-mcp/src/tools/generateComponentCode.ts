@@ -1,4 +1,3 @@
-// AI-Assisted
 import { requireComponent } from '../utils/componentRegistry';
 import { generateComponentCode } from '../utils/codeGeneration';
 import { formatIssues } from '../utils/formatters';
@@ -77,4 +76,3 @@ const generateComponentCodeTool: ComponentsMcpTool = {
 };
 
 export default generateComponentCodeTool;
-// End AI-Assisted

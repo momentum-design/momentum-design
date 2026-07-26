@@ -1,4 +1,3 @@
-// AI-Assisted
 export type {
   AssetFormat,
   AssetKind,
@@ -13,4 +12,3 @@ export type {
   ComponentSourceReference,
   RegistryValue,
 } from '../common/types';
-// End AI-Assisted

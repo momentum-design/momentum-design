@@ -1,4 +1,3 @@
-// AI-Assisted
 import { requireAsset } from '../utils/assetRegistry';
 import { formatAssetUsage, getAssetComponentName } from '../utils/formatters';
 import { textResponse } from '../utils/response';
@@ -52,4 +51,3 @@ const getAssetInfoTool: ComponentsMcpTool = {
 };
 
 export default getAssetInfoTool;
-// End AI-Assisted

@@ -1,4 +1,3 @@
-// AI-Assisted
 import {
   CONSTANTS,
   type ComponentProps,
@@ -145,4 +144,3 @@ function defaultPropsForComponent(component: ComponentRegistryEntry): ComponentP
 }
 
 export { defaultPropsForComponent, generateComponentCode };
-// End AI-Assisted

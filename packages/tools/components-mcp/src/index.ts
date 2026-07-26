@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// AI-Assisted
 /* eslint-disable import/no-unresolved, no-console */
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
@@ -76,4 +75,3 @@ if (require.main === module) {
 
 export { createServer };
 /* eslint-enable import/no-unresolved, no-console */
-// End AI-Assisted

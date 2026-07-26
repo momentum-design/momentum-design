@@ -1,4 +1,3 @@
-// AI-Assisted
 import {
   CONSTANTS,
   type AssetKind,
@@ -162,4 +161,3 @@ export {
   getStringArg,
   parsePropsFromSnippet,
 };
-// End AI-Assisted
