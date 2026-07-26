@@ -1,6 +1,13 @@
 {
   "extends": "../../../config/typescript/tsconfig.base.json",
-  "plugins": [],
+  "compilerOptions": {
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/module",
+    "rootDir": "./src"
+  },
+  "exclude": [
+    "./src/**/*.test.ts"
+  ],
   "include": [
     "./src/**/*"
   ]

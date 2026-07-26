@@ -3,13 +3,25 @@
 ## Scripts
 
 ### start
-- Run this project locally
+- Runs the built MCP server over stdio from `./dist/module/index.js`.
 
 ### build
-- Builds to ./dist for export, will run all the available build types against this package
+- Generates the component, asset, and color token registries and compiles TypeScript to `./dist`.
 
 ### test
-- Executes tests against this package
+- Generates the component, asset, and color token registries and runs unit tests.
 
 ### analyze
-- Runs linting and typescript, as well as all other static analysis scripts against this package
+- Generates the component, asset, and color token registries, runs ESLint, and runs TypeScript syntax checks.
+
+### generate:registry
+- Generates all static MCP registries from public Momentum source files.
+
+### generate:components
+- Generates `src/data/components.registry.ts` from public Momentum component source files.
+
+### generate:assets
+- Generates `src/data/assets.registry.ts` from public Momentum asset source files.
+
+### generate:colors
+- Generates `src/data/colors.registry.ts` from public Momentum token source files.
