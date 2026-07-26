@@ -4,8 +4,8 @@ import { requireComponent } from '../utils/componentRegistry';
 import { defaultPropsForComponent, generateComponentCode } from '../utils/codeGeneration';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getComponentNameArg, getFrameworkArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getComponentNameArg, getFrameworkArg, getStringArg } from '../utils/toolUtils';
 
 const FRAMEWORK_LANGUAGES: Record<Framework, string[]> = {
   angular: ['html'],

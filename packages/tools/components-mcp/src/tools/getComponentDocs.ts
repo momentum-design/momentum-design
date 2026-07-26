@@ -2,8 +2,8 @@
 import { requireComponent } from '../utils/componentRegistry';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getComponentNameArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getComponentNameArg, getStringArg } from '../utils/toolUtils';
 
 const getComponentDocsTool: ComponentsMcpTool = {
   definition: {

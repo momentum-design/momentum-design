@@ -3,8 +3,8 @@ import { listComponents } from '../utils/componentRegistry';
 import { formatComponentSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getBooleanArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getBooleanArg } from '../utils/toolUtils';
 
 const listComponentsTool: ComponentsMcpTool = {
   definition: {

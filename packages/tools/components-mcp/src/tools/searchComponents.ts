@@ -3,8 +3,8 @@ import { searchComponents } from '../utils/componentRegistry';
 import { formatComponentSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getNumberArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getNumberArg, getStringArg } from '../utils/toolUtils';
 
 const searchComponentsTool: ComponentsMcpTool = {
   definition: {

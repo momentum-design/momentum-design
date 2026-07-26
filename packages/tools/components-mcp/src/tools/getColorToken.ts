@@ -3,8 +3,8 @@ import { findColorTokens } from '../utils/colorRegistry';
 import { formatColorTokenDetails, formatColorTokenSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getColorTokenCategoryArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getColorTokenCategoryArg, getStringArg } from '../utils/toolUtils';
 
 const getColorTokenTool: ComponentsMcpTool = {
   definition: {

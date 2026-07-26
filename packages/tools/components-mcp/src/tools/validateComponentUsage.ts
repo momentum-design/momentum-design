@@ -4,13 +4,13 @@ import { formatIssues } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 import { validateComponentUsage } from '../utils/validation';
 
-import type { ComponentsMcpTool } from './toolTypes';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
 import {
   getComponentNameArg,
   getPropsArg,
   getStringArg,
   parsePropsFromSnippet,
-} from './toolUtils';
+} from '../utils/toolUtils';
 
 const validateComponentUsageTool: ComponentsMcpTool = {
   definition: {

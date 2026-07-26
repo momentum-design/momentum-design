@@ -6,8 +6,8 @@ import {
 } from '../utils/migration';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getStringArg } from '../utils/toolUtils';
 
 const convertMomentumUiUsageTool: ComponentsMcpTool = {
   definition: {

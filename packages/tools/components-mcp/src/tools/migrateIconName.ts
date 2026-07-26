@@ -3,8 +3,8 @@ import { getAsset, searchAssets } from '../utils/assetRegistry';
 import { formatAssetSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getNumberArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getNumberArg, getStringArg } from '../utils/toolUtils';
 
 const ICON_STYLES = ['bold', 'filled', 'light', 'regular'];
 

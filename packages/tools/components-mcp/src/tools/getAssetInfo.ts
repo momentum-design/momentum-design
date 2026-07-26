@@ -3,8 +3,8 @@ import { requireAsset } from '../utils/assetRegistry';
 import { formatAssetUsage, getAssetComponentName } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getAssetKindArg, getAssetNameArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getAssetKindArg, getAssetNameArg } from '../utils/toolUtils';
 
 const getAssetInfoTool: ComponentsMcpTool = {
   definition: {

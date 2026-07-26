@@ -3,8 +3,8 @@ import { requireComponent } from '../utils/componentRegistry';
 import { formatProperty, formatReferenceList } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getComponentNameArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getComponentNameArg } from '../utils/toolUtils';
 
 const getComponentApiTool: ComponentsMcpTool = {
   definition: {

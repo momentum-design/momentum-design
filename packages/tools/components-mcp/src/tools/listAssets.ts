@@ -3,8 +3,8 @@ import { listAssets } from '../utils/assetRegistry';
 import { formatAssetSummary } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
-import { getAssetKindArg, getNumberArg, getStringArg } from './toolUtils';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
+import { getAssetKindArg, getNumberArg, getStringArg } from '../utils/toolUtils';
 
 function normalizeLimit(value: number | undefined): number {
   if (value === undefined) {

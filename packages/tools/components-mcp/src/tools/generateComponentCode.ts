@@ -4,13 +4,13 @@ import { generateComponentCode } from '../utils/codeGeneration';
 import { formatIssues } from '../utils/formatters';
 import { textResponse } from '../utils/response';
 
-import type { ComponentsMcpTool } from './toolTypes';
+import type { ComponentsMcpTool } from '../utils/toolTypes';
 import {
   getComponentNameArg,
   getFrameworkArg,
   getPropsArg,
   getStringArg,
-} from './toolUtils';
+} from '../utils/toolUtils';
 
 const generateComponentCodeTool: ComponentsMcpTool = {
   definition: {
