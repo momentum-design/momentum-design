@@ -1,13 +1,13 @@
 ---
 title: Static Chip
-summary: Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.
+summary: Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading prefix (icon or avatar), used to display short metadata or status.
 tier: 3
 component: staticchip
 ---
 
 ## Overview
 
-The static chip is a small, non-interactive element used to display a short label with an optional leading icon. It is intended for displaying metadata, tags, or status, and supports a fixed set of colour variants.
+The static chip is a small, non-interactive element used to display a short label with an optional leading prefix (icon or slotted content such as an avatar). It is intended for displaying metadata, tags, or status, and supports a fixed set of colour variants.
 
 ### When to use
 
@@ -40,6 +40,14 @@ Minimal markup example:
 <mdc-staticchip label="Done" color="mint"></mdc-staticchip>
 ```
 
+With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `size="24"` on the avatar so the initials text scales appropriately for the chip height:
+
+```html
+<mdc-staticchip label="Addy Rodney">
+  <mdc-avatar slot="prefix" size="24" src="addy.jpg" initials="AR"></mdc-avatar>
+</mdc-staticchip>
+```
+
 ### Content guidance
 
 - Keep the label short. Limit to a maximum of 20 characters, including spaces, so the chip stays compact.
@@ -49,7 +57,8 @@ Minimal markup example:
 
 - `label` — visible label text rendered inside the chip. Defaults to `undefined` (renders nothing if omitted).
 - `color` — colour variant. One of `default`, `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Defaults to `default`.
-- `icon-name` — name of the icon rendered before the label. When omitted, no icon is shown.
+- `icon-name` — name of the icon rendered in the leading prefix when no `prefix` slot content is provided. Default unset.
+- `prefix` (slot) — slot for leading content such as avatars or custom icons. When provided, takes precedence over `icon-name`. Use `mdc-avatar` with `size="24"` for person/entity representations.
 
 ### Limitations
 
@@ -65,3 +74,5 @@ The component renders the label inside an `mdc-text` element and the optional ic
 ### Notes
 
 Because the component has no interactive role, ensure the surrounding context conveys what the chip represents (e.g. a label or heading describing the chip's purpose). When the chip carries semantic meaning that is not obvious from its label, include that meaning in the surrounding text.
+
+When using slotted prefix content such as an avatar, do not rely on the avatar's accessible name to identify the chip — the chip `label` is the only text announced. The avatar should remain decorative (`aria-hidden="true"`, which is the avatar default).
