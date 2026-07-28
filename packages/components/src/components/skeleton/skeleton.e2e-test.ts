@@ -10,6 +10,7 @@ import type { SkeletonVariant } from './skeleton.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
+  motion?: boolean;
   variant?: SkeletonVariant;
   withContent?: boolean;
 };
@@ -18,6 +19,7 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
 
   let html = `<mdc-skeleton ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}`;
+  html += `${restArgs.motion ? ' motion' : ''}`;
   html += '>';
 
   if (restArgs.withContent) {
@@ -73,6 +75,18 @@ test('mdc-skeleton', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    await test.step('attribute motion should not be present by default', async () => {
+      const skeleton = await setup({ componentsPage });
+
+      await expect(skeleton).not.toHaveAttribute('motion');
+    });
+
+    await test.step('attribute motion should be present when enabled', async () => {
+      const skeleton = await setup({ componentsPage, motion: true });
+
+      await expect(skeleton).toHaveAttribute('motion', '');
+    });
+
     // Test all variants
     for (const variant of Object.values(SKELETON_VARIANTS)) {
       await test.step(`attribute variant ${variant} should be present as expected`, async () => {
@@ -81,4 +95,15 @@ test('mdc-skeleton', async ({ componentsPage }) => {
       });
     }
   });
+});
+
+test('mdc-skeleton reduced motion', async ({ componentsPage }) => {
+  await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
+  const skeleton = await setup({ componentsPage, motion: true });
+
+  await expect(skeleton).toHaveCSS('animation-name', 'skeleton-shimmer');
+
+  await componentsPage.page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(skeleton).toHaveCSS('animation-name', 'none');
+  await componentsPage.page.emulateMedia({ reducedMotion: 'no-preference' });
 });
