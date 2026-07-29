@@ -115,6 +115,18 @@ deliberately — do not let product-specific one-offs quietly accumulate or
 pollute the shared library. When you notice a snowflake being copied, treat it
 as a signal to standardize, not to fork again.
 
+### Graduating to a Momentum component
+
+A pattern only graduates into the shared Momentum design system when it is
+proven to serve more than one product. The bar is:
+
+- **At least two different products use it or have asked for it.** A single
+  product's need is not enough to justify a shared design system component —
+  keep it as a recipe or snowflake in that product until a second product
+  genuinely requires the same pattern. Two or more independent product demands
+  signal that the pattern is broadly useful and worth the design system team's
+  ownership, maintenance, and accessibility guarantees.
+
 ## When in doubt, talk to the design system team
 
 If you are unsure whether something should be a Momentum component, a recipe,
