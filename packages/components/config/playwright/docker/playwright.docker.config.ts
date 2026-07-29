@@ -51,7 +51,12 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? '50%' : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] : 'html',
+  // The `line` reporter streams per-test progress/results to stdout as the run happens;
+  // `html`/`github-actions-reporter` only produce files/annotations at the end, so without
+  // `line` the CI log shows nothing between the webServer startup and job completion.
+  reporter: process.env.CI
+    ? [['line'], ['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]]
+    : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -144,12 +149,23 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
     },
     {
+      // The docker container only exposes a WebSocket endpoint (`playwright run-server`) with no
+      // HTTP request handler, so an `url`-based HTTP readiness check would hang indefinitely
+      // waiting for a response that never comes. Use a TCP `port` check instead.
+      //
+      // reuseExistingServer is intentionally always `true` (not `!process.env.CI`). In CI the
+      // container is started/stopped as an explicit workflow step (see pull-request.yml) so that
+      // its lifecycle isn't tied to this Playwright process. Previously, when Playwright itself
+      // owned the container (reuseExistingServer: false in CI), shutting it down at the end of the
+      // run could hang indefinitely with no error/timeout, causing CI jobs to run for hours before
+      // being killed by GitHub's default 6h job timeout. Locally, this still starts the container
+      // for you (and manages its teardown) if nothing is already listening on port 3000.
       command: 'yarn test:e2e:docker:serve',
-      url: 'http://localhost:3000',
+      port: 3000,
       stdout: 'pipe',
       stderr: 'pipe',
       timeout: 240 * 1000,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: true,
     },
   ],
 };

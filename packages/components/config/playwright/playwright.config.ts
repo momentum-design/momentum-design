@@ -43,16 +43,23 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? '50%' : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] : 'html',
+  // The `line` reporter streams per-test progress/results to stdout as the run happens;
+  // `html`/`github-actions-reporter` only produce files/annotations at the end, so without
+  // `line` the CI log shows nothing between the webServer startup and job completion.
+  reporter: process.env.CI
+    ? [['line'], ['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]]
+    : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: url,
-    /* On CI: Collect trace when retrying the failed test /
-    Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'retain-on-failure' : 'on',
+    /* Collect trace only for failed tests, both on CI and locally.
+    `trace: 'on'` (always record) was found to make trace export pathologically slow in
+    resource-constrained environments, causing tests to spuriously exceed the test timeout
+    with no clear underlying failure. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
   },
 
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',

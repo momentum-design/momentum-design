@@ -3,7 +3,7 @@
   "packageManager": "yarn@3.2.4",
   "version": "0.0.0",
   "engines": {
-    "node": ">=20.0.0",
+    "node": ">=24.0.0",
     "npm": ">=8.0.0"
   },
   "main": "./dist/index.js",
@@ -76,7 +76,7 @@
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs",
     "publish": "yarn publish:npmjs",
     "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
-    "publish:npmjs:prepare": "node scripts/prepareForPublish.js && yarn inject:kb-dts",
+    "publish:npmjs:prepare": "yarn inject:kb-dts && node scripts/prepareForPublish.js",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:postbuild": "yarn test:e2e:docker",
@@ -93,7 +93,10 @@
     "test:e2e:report": "yarn playwright show-report",
     "test:e2e:docker": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
     "test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0 .",
-    "test:e2e:docker:serve": "docker run --platform linux/amd64 -p 3000:3000 --rm --init --add-host=hostmachine:host-gateway ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
+    "test:e2e:docker:serve": "docker run --platform linux/amd64 -p 3000:3000 --rm --init --shm-size=1gb --add-host=hostmachine:host-gateway ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
+    "test:e2e:docker:serve:ci": "docker run -d --name mdc-pw-server --platform linux/amd64 -p 3000:3000 --rm --init --shm-size=1gb --add-host=hostmachine:host-gateway ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
+    "test:e2e:docker:wait": "timeout 60 bash -c 'until (exec 3<>/dev/tcp/localhost/3000) 2>/dev/null; do sleep 1; done'",
+    "test:e2e:docker:stop": "docker stop --time 10 mdc-pw-server",
     "test:e2e:docker:update-snapshot": "yarn test:e2e:docker --update-snapshots -- ",
     "test:e2e:docker:update-snapshot:chrome": "yarn test:e2e:docker --update-snapshots --project='chrome'",
     "test:e2e:docker:update-snapshot:firefox": "yarn test:e2e:docker --update-snapshots --project='firefox'",
@@ -104,7 +107,7 @@
     "test:e2e:docker:update-snapshot:tabletsafari": "yarn test:e2e:docker --update-snapshots --project='tablet safari'",
     "test:e2e:docker:update-snapshot:tabletchrome": "yarn test:e2e:docker --update-snapshots --project='tablet chrome'",
     "test:e2e:podman": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
-    "test:e2e:podman:serve": "podman run --platform linux/amd64 -p 3000:3000 --rm --init ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
+    "test:e2e:podman:serve": "podman run --platform linux/amd64 -p 3000:3000 --rm --init --shm-size=1gb ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0",
     "test:e2e:podman:build": "podman build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.59.0 .",
     "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js"
   },

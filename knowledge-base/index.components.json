@@ -284,6 +284,15 @@
       "component": "filterchip"
     },
     {
+      "id": "tier3/packages/components/src/components/focustrap/knowledge-base/focustrap.component",
+      "tier": 3,
+      "path": "packages/components/src/components/focustrap/knowledge-base/focustrap.component.md",
+      "title": "FocusTrap",
+      "summary": "Traps keyboard focus within a container, preventing users from tabbing outside its bounds and ensuring focus is restored when the trap is deactivated.",
+      "canonical": null,
+      "component": "focustrap"
+    },
+    {
       "id": "tier3/packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component",
       "tier": 3,
       "path": "packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component.md",
