@@ -3,5 +3,14 @@
   "_comment": "GENERATED FILE — DO NOT HAND-EDIT. Run `yarn knowledge-base:index` to regenerate.",
   "generatedFrom": "scripts/knowledge-base/generate-index.js",
   "tier": 2,
-  "topics": []
+  "topics": [
+    {
+      "id": "tier2/packages/components/knowledge-base/snowflake-components",
+      "tier": 2,
+      "path": "packages/components/knowledge-base/snowflake-components.md",
+      "title": "Snowflake Components",
+      "summary": "When it is acceptable to build a one-off \"snowflake\" component versus reusing a Momentum design system component or a recipe.",
+      "canonical": null
+    }
+  ]
 }
