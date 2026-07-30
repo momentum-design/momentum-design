@@ -40,6 +40,11 @@ Minimal markup example:
 <mdc-staticchip label="Done" color="mint"></mdc-staticchip>
 ```
 
+### Content guidance
+
+- Keep the label short. Limit to a maximum of 20 characters, including spaces, so the chip stays compact.
+- Use sentence case for the label.
+
 With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `size="24"` on the avatar so the initials text scales appropriately for the chip height:
 
 ```html
@@ -47,11 +52,6 @@ With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `s
   <mdc-avatar slot="prefix" size="24" src="addy.jpg" initials="AR"></mdc-avatar>
 </mdc-staticchip>
 ```
-
-### Content guidance
-
-- Keep the label short. Limit to a maximum of 20 characters, including spaces, so the chip stays compact.
-- Use sentence case for the label.
 
 ### Property/Attribute details
 
