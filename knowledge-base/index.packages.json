@@ -9,7 +9,7 @@
       "tier": 2,
       "path": "packages/components/knowledge-base/snowflake-components.md",
       "title": "Snowflake Components",
-      "summary": "When it is acceptable to build a one-off \"snowflake\" component versus reusing a Momentum design system component or a recipe.",
+      "summary": "When it is acceptable to build a one-off \"snowflake\" component versus reusing a Momentum component or widget.",
       "canonical": null
     }
   ]
