@@ -13,6 +13,7 @@ import { VARIANT } from './datepicker.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
+// AI-Assisted
 const render = (args: Args) => html`
   <mdc-datepicker
     @change="${action('onchange')}"
@@ -21,6 +22,7 @@ const render = (args: Args) => html`
     @blur="${action('onblur')}"
     label="${ifDefined(args.label)}"
     value="${ifDefined(args.value)}"
+    end-value="${ifDefined(args['end-value'])}"
     variant="${ifDefined(args.variant)}"
     selection-mode="${ifDefined(args['selection-mode'])}"
     locale="${ifDefined(args.locale)}"
@@ -43,6 +45,7 @@ const render = (args: Args) => html`
     backdrop-append-to="${ifDefined(args['backdrop-append-to'])}"
   ></mdc-datepicker>
 `;
+// End AI-Assisted
 
 const meta: Meta = {
   title: 'Components/datepicker',
@@ -57,6 +60,12 @@ const meta: Meta = {
       control: 'text',
       description: 'Selected date as ISO string (yyyy-mm-dd)',
     },
+    // AI-Assisted
+    'end-value': {
+      control: 'text',
+      description: 'Range end date as an ISO string (yyyy-mm-dd)',
+    },
+    // End AI-Assisted
     variant: {
       control: 'select',
       options: Object.values(VARIANT),
@@ -132,9 +141,11 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
+  // AI-Assisted
   args: {
     label: 'Start date',
     variant: VARIANT.INPUT,
+    'selection-mode': SELECTION_MODE.SINGLE,
     locale: 'en-US',
     required: true,
     'help-text': 'Helper text',
@@ -145,6 +156,7 @@ export const Example: StoryObj = {
     'locale-today-label': 'Today',
     'locale-spinbutton-description': 'Use arrow keys to change the value or type a number',
   },
+  // End AI-Assisted
 };
 
 export const InputWithValue: StoryObj = {
@@ -164,26 +176,33 @@ export const InputWithValue: StoryObj = {
 };
 
 export const DefaultVariant: StoryObj = {
+  // AI-Assisted
   args: {
     label: 'Date range',
     variant: VARIANT.DEFAULT,
+    'selection-mode': SELECTION_MODE.RANGE,
     locale: 'en-US',
     required: true,
     'help-text': 'Select a start and end date',
     'locale-today-label': 'Today',
   },
+  // End AI-Assisted
 };
 
 export const DefaultWithValue: StoryObj = {
+  // AI-Assisted
   args: {
     label: 'Date range',
     value: '2025-07-13',
+    'end-value': '2025-07-19',
     variant: VARIANT.DEFAULT,
+    'selection-mode': SELECTION_MODE.RANGE,
     locale: 'en-US',
     required: true,
     'help-text': 'Helper text',
     'locale-today-label': 'Today',
   },
+  // End AI-Assisted
 };
 
 export const WeekSelection: StoryObj = {

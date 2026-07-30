@@ -1088,8 +1088,43 @@
         "skeleton": {
           "normal": {
             "type": "color",
-            "value": "{color.core.gray.50}",
+            "value": "{color.core.gray.30}",
             "description": "Used for skeleton component"
+          },
+          "shimmer": {
+            "0": {
+              "type": "color",
+              "value": "{color.core.gray.5}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": "Use for skeleton component"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.core.gray.5}",
+              "description": "Use for skeleton component"
+            },
+            "2": {
+              "type": "color",
+              "value": "{color.core.gray.80}",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "alpha",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              },
+              "description": "Use for skeleton component"
+            }
           }
         },
         "glass": {

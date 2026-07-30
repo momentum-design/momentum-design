@@ -114,6 +114,7 @@ const clearDynamicContent = () => {
 
 const render = (args: Args) => html`
   <mdc-skeleton
+    ?motion=${args.motion}
     variant="${args.variant}"
     class="${args.class}"
     style="--mdc-skeleton-height: 100px; --mdc-skeleton-width: 100px; ${args.style}"
@@ -129,7 +130,12 @@ const renderWithContent = (args: Args) => html`
       </div>
       <div>
         <p>Skeleton wrapping content:</p>
-        <mdc-skeleton variant="${args.variant}" class="${args.class}" style="${args.style}">
+        <mdc-skeleton
+          ?motion=${args.motion}
+          variant="${args.variant}"
+          class="${args.class}"
+          style="${args.style}"
+        >
           <button style="padding: 10px 20px;">Click me</button>
         </mdc-skeleton>
       </div>
@@ -142,7 +148,12 @@ const renderResponsive = (args: Args) => html`
     <p style="position: absolute; top: -20px; left: 0; margin: 0; font-size: 12px;">
       Container (400px max-width, 200px height)
     </p>
-    <mdc-skeleton variant="${args.variant}" class="${args.class}" style="${args.style}"></mdc-skeleton>
+    <mdc-skeleton
+      ?motion=${args.motion}
+      variant="${args.variant}"
+      class="${args.class}"
+      style="${args.style}"
+    ></mdc-skeleton>
   </div>
 `;
 
@@ -156,6 +167,9 @@ const meta: Meta = {
     variant: {
       control: 'select',
       options: Object.values(SKELETON_VARIANTS),
+    },
+    motion: {
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
@@ -191,6 +205,13 @@ export const Circular: StoryObj = {
 export const Button: StoryObj = {
   args: {
     variant: SKELETON_VARIANTS.BUTTON,
+  },
+};
+
+export const Motion: StoryObj = {
+  args: {
+    motion: true,
+    variant: DEFAULTS.VARIANT,
   },
 };
 
@@ -258,6 +279,7 @@ export const DynamicContent: StoryObj = {
           <h4 style="margin: 0 0 10px 0;">Skeleton Wrapped Content:</h4>
           <mdc-skeleton
             id="dynamic-skeleton-story"
+            ?motion=${args.motion}
             variant="${args.variant}"
             class="${args.class}"
             style="${args.style}; border: 2px dashed #999;"
