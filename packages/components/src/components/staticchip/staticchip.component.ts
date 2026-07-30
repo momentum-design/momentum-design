@@ -16,6 +16,8 @@ import styles from './staticchip.styles';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @slot prefix - Slot for prefix content such as avatars. When provided, takes precedence over `icon-name`.
+ *
  * @cssproperty --mdc-chip-color - The color of the static chip.
  * @cssproperty --mdc-chip-border-color - The border color of the static chip.
  * @cssproperty --mdc-chip-background-color - The background color of the static chip.
@@ -52,17 +54,22 @@ class StaticChip extends IconNameMixin(Component) {
   @property({ type: String }) label?: string;
 
   /**
-   * Renders the icon element if available.
-   * @returns The icon element if available, otherwise nothing.
+   * Renders the prefix content, supporting both icons and slot content (e.g. avatars).
+   * Slot content takes precedence over `icon-name`.
    */
-  private renderIcon() {
-    if (!this.iconName) return nothing;
-    return html` <mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
+  private renderPrefix() {
+    return html`
+      <slot name="prefix">
+        ${this.iconName
+          ? html`<mdc-icon part="icon" name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon>`
+          : nothing}
+      </slot>
+    `;
   }
 
   public override render() {
     return html`
-      ${this.renderIcon()}
+      ${this.renderPrefix()}
       ${this.label
         ? html`<mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}"
             >${this.label}</mdc-text
