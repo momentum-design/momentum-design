@@ -24,6 +24,16 @@ const styles = css`
     flex-shrink: 0;
   }
 
+  ::slotted([slot='prefix']) {
+    flex-shrink: 0;
+  }
+
+  ::slotted(mdc-avatar[slot='prefix']) {
+    width: 1.25rem;
+    height: 1.25rem;
+    overflow: hidden;
+  }
+
   :host::part(label) {
     text-overflow: ellipsis;
     white-space: nowrap;
