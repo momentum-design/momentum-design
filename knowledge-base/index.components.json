@@ -693,7 +693,7 @@
       "tier": 3,
       "path": "packages/components/src/components/staticchip/knowledge-base/staticchip.component.md",
       "title": "Static Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading prefix (icon or avatar), used to display short metadata or status.",
       "canonical": null,
       "component": "staticchip"
     },

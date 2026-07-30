@@ -1,13 +1,13 @@
 ---
 title: Static Chip
-summary: Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading icon, used to display short metadata or status.
+summary: Usage, guidelines, and accessibility for the mdc-staticchip component — a non-interactive chip with a label and optional leading prefix (icon or avatar), used to display short metadata or status.
 tier: 3
 component: staticchip
 ---
 
 ## Overview
 
-The static chip is a small, non-interactive element used to display a short label with an optional leading icon. It is intended for metadata, tags, or status, and supports a fixed set of color variants.
+The static chip is a small, non-interactive element used to display a short label with an optional leading prefix (icon or slotted content such as an avatar). It is intended for displaying metadata, tags, or status, and supports a fixed set of colour variants.
 
 ### When to use
 
@@ -46,13 +46,20 @@ Minimal markup example:
 - Keep the label short — a maximum of 20 characters, including spaces, so the chip stays compact.
 - Use sentence case for the label.
 
+With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `size="24"` on the avatar so the initials text scales appropriately for the chip height:
+
+```html
+<mdc-staticchip label="Addy Rodney">
+  <mdc-avatar slot="prefix" size="24" src="addy.jpg" initials="AR"></mdc-avatar>
+</mdc-staticchip>
+```
+
 ### Property/Attribute details
 
-| Option | Intent |
-|---|---|
-| `label` | Visible text rendered inside the chip. Renders nothing if omitted, so always provide it. |
-| `color="default"` (default) | Color variant (`cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`). Use to categorize content; never as the only signal of meaning. |
-| `icon-name` | Optional decorative leading icon. Use only when it reinforces the label. |
+- `label` — visible label text rendered inside the chip. Defaults to `undefined` (renders nothing if omitted).
+- `color` — colour variant. One of `default`, `cobalt`, `gold`, `lime`, `mint`, `orange`, `pink`, `purple`, `slate`, `violet`. Defaults to `default`.
+- `icon-name` — name of the icon rendered in the leading prefix when no `prefix` slot content is provided. Default unset.
+- `prefix` (slot) — slot for leading content such as avatars or custom icons. When provided, takes precedence over `icon-name`. Use `mdc-avatar` with `size="24"` for person/entity representations.
 
 ### Limitations
 
