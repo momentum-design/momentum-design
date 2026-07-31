@@ -65,6 +65,10 @@ Steps for creating a PR (after [First time setup](#first-time-setup) has been do
 6. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
 7. Set the *validated* label on the PR to kick off the pipeline if you have the access rights for it.
 
+## Knowledge base
+
+See [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md) for the design-system knowledge base — tiers, folder layout, index lookup, and the contribution workflow.
+
 ## PR Reviews
 
 ### Asking for Review
