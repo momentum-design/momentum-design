@@ -13,7 +13,7 @@ const LENGTH_UNIT_SIZE = {
 
 const DEFAULTS = {
   FILE_EXTENSION: 'svg',
-  LENGTH_UNIT: 'em',
+  LENGTH_UNIT: 'rem',
   SIZE: LENGTH_UNIT_SIZE.em,
   ICON_SET: 'momentum-icons',
 } as const;
