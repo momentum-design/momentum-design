@@ -69,7 +69,7 @@ The iconprovider does not render any visible UI of its own — it only acts as a
 - `icon-set` — `momentum-icons` (default) for dynamic import from the `@momentum-design/icons` package, or `custom-icons` for fetch from `url`.
 - `url` — base URL from which icons are fetched. Required when `icon-set="custom-icons"`.
 - `file-extension` — extension appended to the icon `name` when fetching. Default `svg`. Restricted to an allow-list; invalid values fall back to the default.
-- `length-unit` — CSS length unit (`em`, `rem`, `px`, etc.) used together with `size` on every nested `mdc-icon`. Default `em`. Restricted to an allow-list; invalid values fall back to the default.
+- `length-unit` — CSS length unit (`em`, `rem`, `px`, etc.) used together with `size` on every nested `mdc-icon`. Default `rem`. Restricted to an allow-list; invalid values fall back to the default.
 - `size` — numeric default size for every nested `mdc-icon` when the icon does not set its own `size`. Default `1`.
 - `cache-strategy` — `in-memory-cache` (JS in-memory) or `web-cache-api` (browser Cache API; HTTPS only). Only applies when `icon-set="custom-icons"`. Default unset (no caching).
 - `cache-name` — name of the cache used by `cache-strategy`. Required when `cache-strategy` is set; must be unique across the app's caches.
