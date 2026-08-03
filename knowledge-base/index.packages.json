@@ -5,6 +5,14 @@
   "tier": 2,
   "topics": [
     {
+      "id": "tier2/packages/assets/fonts/knowledge-base/fonts",
+      "tier": 2,
+      "path": "packages/assets/fonts/knowledge-base/fonts.md",
+      "title": "Fonts",
+      "summary": "Install and load the Momentum typeface from @momentum-design/fonts — Inter as a variable font registered under the family name \"Momentum\" — and how it connects to typography tokens.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/components/knowledge-base/snowflake-components",
       "tier": 2,
       "path": "packages/components/knowledge-base/snowflake-components.md",
