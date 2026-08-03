@@ -87,11 +87,22 @@ skill is not the place to change rules.
    - AI-drafted content must still be signed off by a human reviewer
      before merge (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
-6. **Structure the body (Tier 3 topics only).** For component-level topics,
-   the body must follow the heading hierarchy defined in
-   [`body.config.json`](../../../config/knowledge-base/content/body.config.json).
-   Read that file directly before drafting or editing content.
-   Do not invent new section or sub-section headings without first adding them to `body.config.json` and calling that out to the user.
+6. **Structure and write the body.** Follow the heading hierarchy defined in
+   [`body.config.json`](../../../config/knowledge-base/content/body.config.json) —
+   read that file directly before drafting or editing content, and do not
+   invent new section or sub-section headings without first adding them to
+   `body.config.json` and calling that out to the user. For the *quality* of
+   the prose that fills that structure — content principles and per-section
+   guidance — follow the writing guide for the tier you chose in Step 1. Each
+   guide ends with a content-quality self-check to run before validating:
+
+   - **Tier 1 (design system):** writing guide not yet available — follow the
+     section `description`s in `body.config.json` until one lands.
+   - **Tier 2 (package):** writing guide not yet available — follow the section
+     `description`s in `body.config.json` until one lands.
+   - **Tier 3 (component):**
+     [`momentum-tier-3-writing-guide`](../momentum-tier-3-writing-guide/SKILL.md).
+     It exists so each topic *guides use* rather than *describes the component*.
 
    - In the **Content guidance** sub-section, keep copy component-specific.
      Follow [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)

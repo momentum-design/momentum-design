@@ -14,14 +14,14 @@ The label, required indicator, and helper text rendering follow the standard for
 ### When to use
 
 - Use `mdc-input` for any short, free-form text entry: names, search terms, single-line addresses, codes, or any value that fits on one line.
-- Use it when the field needs label, helper/validation text, and form integration without writing the wiring by hand.
+- Use `mdc-input` when the field needs a label, helper/validation text, and form integration without wiring it by hand.
 
 ### When not to use
 
-- Use `mdc-textarea` for multi-line input.
-- Use `mdc-password` for password entry that needs show/hide toggling.
-- Use `mdc-searchfield` for search-specific input with built-in search styling.
-- Use `mdc-select` or `mdc-combobox` when the value must be chosen from a fixed list.
+- Do not use `mdc-input` for multi-line entry such as messages or comments. Use `mdc-textarea` instead.
+- Do not use `mdc-input` for masked credentials that need a show/hide toggle. Use `mdc-password` instead.
+- Do not use `mdc-input` for search that filters page content. Use `mdc-searchfield` instead.
+- Do not use `mdc-input` when the value must be chosen from a fixed set. Use `mdc-select` or `mdc-combobox` instead.
 
 ## Guidelines
 
@@ -65,43 +65,35 @@ Listen for `input`/`change` to read the value as the user types and on blur; lis
 
 ### Content guidance
 
-- Provide a meaningful `label` on every input; without it the field has no accessible name unless a `data-aria-label` is supplied.
-- Use `placeholder` for example values or format hints (e.g. `"name@example.com"`); never use it as a substitute for the label.
-- Use `help-text` for short instructions or validation messages; pair with `help-text-type` (`default`, `error`, `warning`, `success`, `priority`) so the leading icon matches the message.
-- When `prefix-text` is set, also set `data-aria-label` on the input — the prefix is rendered `aria-hidden="true"` so screen readers do not announce it.
+- Provide a meaningful, always-visible `label`; keep it short and don't let it wrap. Truncate only in tight viewports, and pair the truncated label with a toggletip for the full text. Without a label the field has no accessible name unless `data-aria-label` is supplied.
+- Use `placeholder` only for example values or format hints (`name@example.com`); it disappears on typing, so never put critical formatting or requirements there — put those in `help-text`.
+- Use `help-text` for critical instructions or validation messages, paired with `help-text-type` so the leading icon matches. Reserve the info-icon toggletip for non-critical context.
+- Mark required fields with `required`; if most fields in a form are required, indicate the few optional ones instead.
+- Reserve the 52px minimum width for short values such as numbers; otherwise let the field span its container.
 
 ### Property/Attribute details
 
-- `placeholder` — text shown when the value is empty. Default `''`.
-- `prefix-text` — short static text rendered before the input (max 10 characters; longer values trigger a validation message and the prefix is not rendered). Default unset.
-- `leading-icon` — name of an icon rendered before the input (`mdc-icon` name from the configured icon set). Default unset.
-- `trailing-button` — when `true`, shows a clear button at the trailing edge once the value is non-empty. Default `false`.
-- `clear-aria-label` — accessible name for the trailing clear button. Required when `trailing-button` is `true`.
-- `maxlength` / `minlength` — native `maxlength` / `minlength` validation passed through to the underlying `<input>`.
-- `pattern` — regex the value must match for native form validation.
-- `list` — id of a `<datalist>` providing autocomplete suggestions.
-- `size` — native `size` attribute (CSS character width). Default unset.
-- `autocapitalize` — `off` (default), `on`, `sentences`, `words`, `characters`, `none`.
-- `autocomplete` — standard HTML `autocomplete` token. Default `off`.
-- `dirname` — submits the text directionality alongside the value.
-- `data-aria-label` — accessible name applied to the underlying `<input>`. Required when no visible label is rendered (e.g. when `prefix-text` is set or when the field is used without a label).
-- `data-aria-describedby` — id of an element that describes the input. Used as the input's `aria-describedby` when no helper text is rendered; when helper text is rendered, the helper text's id wins.
+| Option | Intent |
+|---|---|
+| `label` / `required` | Visible label and required indicator. Always label the field; `required` also sets the native `required` attribute and drives `aria-invalid` semantics. |
+| `placeholder` | Example or format hint shown while empty. Never use for critical info — it vanishes on input. |
+| `help-text` + `help-text-type` | Persistent helper or validation message; the type (`default`, `error`, `warning`, `success`, `priority`) sets the icon and error state. Prefer it over the info toggletip for critical info. |
+| `leading-icon` | Decorative icon before the value to hint the field's purpose (search, email, phone). |
+| `prefix-text` | Short static prefix (≤10 chars) such as `USD` or `https://`. Requires `data-aria-label` since it renders `aria-hidden`. |
+| `trailing-button` + `clear-aria-label` | Optional clear button shown once the value is non-empty; the aria-label is required when enabled. |
+| `toggletip-text` + `info-icon-aria-label` | Info-icon toggletip beside the label for non-critical context; provide the aria-label when set. |
+| `max-character-limit` | Renders a character counter and fires `limitexceeded`; use for soft limits with a live announcement. |
+| `readonly` / `disabled` / `soft-disabled` | `readonly` stays focusable and readable; `disabled` leaves the tab order; `soft-disabled` looks disabled but stays focusable for assistive tech. |
+| `data-aria-label` / `data-aria-describedby` | Accessible name/description for the `<input>` when no visible label or helper text is rendered. |
 
-Properties inherited from the form-field wrapper:
+**Note:** standard native attributes (`name`, `value`, `pattern`, `minlength`/`maxlength`, `size`, `list`, `autocapitalize`, `autocomplete`, `dirname`) pass through to the underlying `<input>`.
 
-- `label` — visible label text. Rendered as a `<label for>` linked to the input.
-- `required` — when `true`, appends a `*` required indicator and sets `required` on the underlying `<input>`.
-- `help-text` — helper or validation text rendered below the input.
-- `help-text-type` — `default`, `error`, `warning`, `success`, or `priority`. Drives the helper icon and the input's `aria-invalid` (`true` only for `error`).
-- `toggletip-text` — when set, renders an info-icon button next to the label that opens an `mdc-toggletip`.
-- `toggletip-placement`, `toggletip-strategy` — placement / positioning strategy for the toggletip popover.
-- `info-icon-aria-label` — accessible name for the info-icon button. Required when `toggletip-text` is set.
-- `readonly` — when `true`, the input is non-interactive but focusable.
-- `disabled` — when `true`, the input is non-interactive and removed from the tab order.
-- `soft-disabled` — when `true`, the input looks disabled but remains focusable so assistive technology can read it.
-- `name`, `value`, `validation-message` — standard form-control hooks; the host participates in form submission and validation through ElementInternals.
-- `max-character-limit` — when set, renders a character counter and dispatches `limitexceeded` when the value crosses or returns under the limit.
-- `auto-focus-on-mount` — when `true`, the underlying `<input>` is focused after first render.
+### Limitations
+
+- **One line only** — the input never wraps; overly long values scroll horizontally and appear cut off. Use `mdc-textarea` for multi-line content.
+- **Placeholder isn't a label** — placeholder text disappears on input and is not an accessible name; always supply `label` or `data-aria-label`.
+- **Prefix is not announced** — `prefix-text` renders `aria-hidden`, so set `data-aria-label` or its meaning is lost to screen readers.
+- **Prefix length capped** — a `prefix-text` beyond 10 characters is rejected with a validation message and not rendered; keep prefixes short.
 
 ## Accessibility
 
@@ -126,9 +118,19 @@ The character-limit announcer is rendered as an `mdc-screenreaderannouncer` with
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Always provide either `label` or `data-aria-label`; otherwise the input has no accessible name.
-- When `prefix-text` is set, provide `data-aria-label` so the announced name includes the prefix's meaning (e.g. `data-aria-label="Amount in US dollars"`).
+- When `prefix-text` is set, provide `data-aria-label` so the announced name includes the prefix's meaning (for example `data-aria-label="Amount in US dollars"`).
 - When `trailing-button` is `true`, provide `clear-aria-label` so the clear button has an accessible name.
 - When `toggletip-text` is set, provide `info-icon-aria-label` for the info-icon button.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-textarea` | Multi-line version of the same field. Use for long, free-form entry. |
+| `mdc-password` | Input with a built-in show/hide toggle for masked credentials. |
+| `mdc-searchfield` | Search-styled single-line input with a clear button and inline chip filters. |
+| `mdc-select` / `mdc-combobox` | Choose a value from a fixed set instead of typing free text. |
+| `mdc-formfieldwrapper` | Shared label / help-text / validation surface `mdc-input` builds on. |
