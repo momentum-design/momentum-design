@@ -4,6 +4,7 @@ import { expect } from '@playwright/test';
 
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import type { IconNames } from '../icon/icon.types';
 
 import { COLOR } from './staticchip.constants';
@@ -53,6 +54,18 @@ test('mdc-staticchip', async ({ componentsPage }) => {
     chipStickerSheet.setAttributes({ label: 'Long label', 'icon-name': 'placeholder-bold', style: 'width: 6.5rem' });
     await chipStickerSheet.createMarkupWithCombination({ color: COLOR });
 
+    chipStickerSheet.setChildren(
+      `<mdc-avatar slot="prefix" size="24" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>`,
+    );
+    chipStickerSheet.setAttributes({ label: 'Avatar' });
+    await chipStickerSheet.createMarkupWithCombination({});
+
+    chipStickerSheet.setChildren(
+      `<mdc-avatar slot="prefix" size="24" initials="LC"></mdc-avatar>`,
+    );
+    chipStickerSheet.setAttributes({ label: 'Initials' });
+    await chipStickerSheet.createMarkupWithCombination({});
+
     await chipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
     });
@@ -93,5 +106,47 @@ test('mdc-staticchip', async ({ componentsPage }) => {
         await componentsPage.removeAttribute(chip, 'color');
       });
     }
+  });
+
+  /**
+   * PREFIX SLOT
+   */
+  await test.step('prefix slot', async () => {
+    await test.step('should render slotted avatar in the prefix slot', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-staticchip label="Avatar Chip">
+            <mdc-avatar slot="prefix" size="24" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>
+          </mdc-staticchip>
+        `,
+        clearDocument: true,
+      });
+
+      const element = componentsPage.page.locator('mdc-staticchip');
+      await element.waitFor();
+
+      const avatar = element.locator('mdc-avatar[slot="prefix"]');
+      await expect(avatar).toBeVisible();
+    });
+
+    await test.step('prefix slot should take precedence over icon-name', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-staticchip label="Avatar Chip" icon-name="placeholder-bold">
+            <mdc-avatar slot="prefix" size="24" src="${imageFixtures.avatar}" initials="AP"></mdc-avatar>
+          </mdc-staticchip>
+        `,
+        clearDocument: true,
+      });
+
+      const element = componentsPage.page.locator('mdc-staticchip');
+      await element.waitFor();
+
+      const avatar = element.locator('mdc-avatar[slot="prefix"]');
+      await expect(avatar).toBeVisible();
+
+      const icon = element.locator('mdc-icon');
+      await expect(icon).toBeHidden();
+    });
   });
 });
