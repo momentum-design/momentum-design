@@ -8,7 +8,7 @@ tier: 2
 
 These are the guidelines for **designers and developers** using the Momentum typography tokens from `@momentum-design/tokens`. These tokens define the type scale, weights, line heights, and composed type styles used across Momentum products.
 
-For in-product copy standards (voice, tone, punctuation, capitalization), see [Content guidelines](../../../knowledge-base/content-guidelines.md). For font file delivery and `@font-face` setup, see [`@momentum-design/fonts`](../../fonts/README.md).
+For in-product copy standards (voice, tone, punctuation, capitalization), see [Content guidelines](../../../../knowledge-base/content-guidelines.md). For font file delivery and `@font-face` setup, see [`@momentum-design/fonts`](../../fonts/README.md).
 
 ## Overview
 
