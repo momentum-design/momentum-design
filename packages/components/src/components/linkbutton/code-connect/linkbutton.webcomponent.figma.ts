@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_LINKBUTTON_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_LINKBUTTON_URL>', {
-  props: {},
-  example: () => html`<mdc-linkbutton></mdc-linkbutton>`,
+import figma from "figma"
+
+export default {
+  id: "linkbutton",
   imports: ["import '@momentum-design/components/components/linkbutton';"],
-});
+  example: figma.code`<mdc-linkbutton></mdc-linkbutton>`,
+}
+// End AI-Assisted

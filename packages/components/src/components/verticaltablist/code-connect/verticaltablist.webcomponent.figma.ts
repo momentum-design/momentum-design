@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_VERTICALTABLIST_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_VERTICALTABLIST_URL>', {
-  props: {},
-  example: () => html`<mdc-verticaltablist></mdc-verticaltablist>`,
+import figma from "figma"
+
+export default {
+  id: "verticaltablist",
   imports: ["import '@momentum-design/components/components/verticaltablist';"],
-});
+  example: figma.code`<mdc-verticaltablist></mdc-verticaltablist>`,
+}
+// End AI-Assisted

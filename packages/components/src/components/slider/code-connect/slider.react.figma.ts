@@ -5,7 +5,7 @@ import figma from "figma"
 
 export default {
   id: "slider",
-  imports: ["import '@momentum-design/components/components/slider';"],
-  example: figma.code`<mdc-slider></mdc-slider>`,
+  imports: ["import { Slider } from '@momentum-design/components/dist/react';"],
+  example: figma.code`<Slider />`,
 }
 // End AI-Assisted
