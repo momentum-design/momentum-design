@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_COMBOBOX_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_COMBOBOX_URL>', {
-  props: {},
-  example: () => html`<mdc-combobox></mdc-combobox>`,
+import figma from "figma"
+
+export default {
+  id: "combobox",
   imports: ["import '@momentum-design/components/components/combobox';"],
-});
+  example: figma.code`<mdc-combobox></mdc-combobox>`,
+}
+// End AI-Assisted

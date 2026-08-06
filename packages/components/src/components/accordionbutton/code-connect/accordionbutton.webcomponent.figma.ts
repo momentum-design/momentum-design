@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_ACCORDIONBUTTON_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_ACCORDIONBUTTON_URL>', {
-  props: {},
-  example: () => html`<mdc-accordionbutton></mdc-accordionbutton>`,
+import figma from "figma"
+
+export default {
+  id: "accordionbutton",
   imports: ["import '@momentum-design/components/components/accordionbutton';"],
-});
+  example: figma.code`<mdc-accordionbutton></mdc-accordionbutton>`,
+}
+// End AI-Assisted
