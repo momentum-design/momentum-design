@@ -19,6 +19,12 @@ Like all tokens, elevation is consumed through a compiled CSS custom property
 - **Depth communicates hierarchy** — the higher a surface's elevation, the more
   it stands out as temporary or focal (a menu over a page, a dialog over
   everything).
+- **Low elevation grounds content** — small, subtle shadows create gentle depth
+  while keeping a surface connected to the primary content it belongs to, such as
+  content containers and resting cards.
+- **High elevation creates a focal point** — larger shadows lift transient,
+  attention-worthy surfaces clearly above the page, such as dialogs, popovers,
+  and secondary windows.
 - **A fixed scale, not free-form shadows** — there are four steps; pick the one
   that matches the surface's altitude rather than tuning offsets and blur by
   hand.
