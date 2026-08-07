@@ -109,7 +109,8 @@ Prominence: `primary` for high-emphasis body/headings, `secondary` for
 supporting text. Use sentiment variants (`error`, `success`, `warning`) only for
 matching status messaging, never for generic emphasis.
 
-Used by: `mdc-text`, form labels/helper/error text, links (`accent`).
+**Used by:** `text`, `button`, `input`, `listitem`, `dialog`, `toast`,
+`tooltip`, and more — the most broadly consumed group (45 components).
 
 ### background — `color.theme.background.*`
 
@@ -126,11 +127,17 @@ Surface fills, from transparent interaction layers to opaque canvases.
 `solid.*` are your opaque canvases; `primary.*` are the transparent layers you
 stack for hover/press feedback. `glass.*` lives in [Glass](./glass.md).
 
+**Used by:** `dialog`, `popover`, `banner`, `toast`, `listitem`, `input`,
+`chip`, and more (31 components).
+
 ### groupedbackground — `color.theme.groupedbackground.*`
 
 Layered "grouped" surfaces (primary → quaternary) for nested containers, à la
 inset/grouped lists. Light uses `gray.5`/`white`; dark steps through
 `black-alpha.100` → `gray.80`.
+
+**Used by:** no component currently consumes this group; it backs
+grouped/inset container surfaces.
 
 ### button — `color.theme.button.*`
 
@@ -148,6 +155,8 @@ Fills for actionable controls, by prominence and by action.
 `join`/`cancel` are semantic actions (accept/decline a call), not generic
 success/error — use them only for those flows.
 
+**Used by:** `button`, `tab`, `menupopover`, `navmenuitem`.
+
 ### outline — `color.theme.outline.*`
 
 Borders, dividers, and separators. 16 variants including `primary`, `secondary`,
@@ -155,6 +164,9 @@ Borders, dividers, and separators. 16 variants including `primary`, `secondary`,
 `warning`, `high-contrast`, `gradient`, `glass`, and `ai`. Choose the variant
 that matches the bordered element (e.g. `outline.input.*` for fields,
 `outline.button.*` for button borders).
+
+**Used by:** `input`, `button`, `card`, `dialog`, `checkbox`, `tab`, `divider`,
+and more (36 components).
 
 ### control — `color.theme.control.*`
 
@@ -165,16 +177,24 @@ Interactive control fills (checkboxes, radios, toggles, sliders).
 - `control.inactive.*` — the neutral "off" track.
 - `control.indicator.inactive.normal` — `gray.50` (theme-invariant).
 
+**Used by:** `checkbox`, `radio`, `toggle`, `slider`, `statictoggle`,
+`stepperitem`, `progressbar`, `progressspinner`, `spinner`, `staticcheckbox`,
+`staticradio` (11 components).
+
 ### overlay — `color.theme.overlay.*`
 
 Scrims that dim content behind modals and menus (`overlay.meetings`,
 `overlay.button`).
+
+**Used by:** `divider`, `slider`.
 
 ### indicator — `color.theme.indicator.*`
 
 Status/presence dots. Each maps to a sentiment: `stable` (green), `attention`
 (red), `caution` (yellow/orange), `secure` (blue), plus `locked` and `unstable`.
 Use the indicator that matches the state being communicated.
+
+**Used by:** `presence`, `progressbar`.
 
 ### inverted — `color.theme.inverted.*`
 
@@ -184,12 +204,19 @@ coachmarks). Provides its own `text`, `background`, `button`, `outline`, and
 `control` sub-sets. See [Theming](./theming.md#inverted-and-common) for the
 concept.
 
+**Used by:** `tooltip`, `coachmark`, `toggletip`, `popover`, `button`, `badge`,
+`input`, `link`, and more (17 components).
+
 ### common — `color.theme.common.*`
 
 Colors that stay the **same across all themes** (e.g. media touchbar, partner
 file colors, fixed overlays). Only a few components use common colors; reach for
 them only when a color must not flip with the theme. See
 [Theming](./theming.md#inverted-and-common).
+
+**Used by:** `avatar`, `avatarbutton`, `badge`, `button`, `dialog`,
+`datepicker`, `popover`, `inputchip`, `statictoggle`, `timepicker`
+(10 components).
 
 ### avatar — `color.theme.avatar.*`
 
@@ -198,10 +225,15 @@ a `glass` variant, and the named-accent set (`cobalt`, `cyan`, `gold`, `lime`,
 `mint`, `orange`, `pink`, `purple`, `slate`, `violet`, `yellow`) used to color
 people consistently. Named accents are theme-invariant (`decorative.<name>.70`).
 
+**Used by:** `avatar`, `avatarbutton`.
+
 ### illustrations — `color.theme.illustrations.*`
 
 Multi-stop palettes for spot illustrations and empty/onboarding/success/error
 states. Mostly theme-invariant decorative pairs.
+
+**Used by:** no component currently consumes this group; illustration colors are
+applied in product-level artwork.
 
 ### gradientdivider — `color.theme.gradientdivider.*`
 
@@ -209,20 +241,29 @@ Gradient separators that fade at both ends. Variants: `default`, `success`,
 `warning`, `error`, `announce`, `orange`, `purple`, and `vertical`. Light uses
 `black-alpha`; dark uses `white-alpha`.
 
+**Used by:** `divider`.
+
 ### globaltint — `color.theme.globaltint.*`
 
 App-wide tint (`normal`, `selected`) — brand blue.
+
+**Used by:** no component currently consumes this group.
 
 ### scrollbar — `color.theme.scrollbar.*`
 
 Scrollbar `button` (thumb), `arrow`, and `background`. Light `black-alpha`, dark
 `white-alpha`.
 
+**Used by:** `themeprovider` (global scrollbar styling).
+
 ### focus — `color.theme.focus.*`
 
 The focus ring (`focus.default.0/1/2` — the layered ring stops). Never restyle
 focus with another token; use this group so keyboard focus stays consistent and
 visible.
+
+**Used by:** `calendar`, `radio` directly; most components inherit the focus
+ring from shared styling (`utils/styles`).
 
 ## Prominence and sentiment
 
