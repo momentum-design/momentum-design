@@ -22,12 +22,19 @@ custom property) and never the primitive.
 
 `color.theme.text.primary.normal` resolves to:
 
-| Theme | Resolves to |
-| --- | --- |
-| Stable light | `color.core.black-alpha.95` |
-| Stable dark | `color.core.white-alpha.95` |
-| High-contrast light | `color.highcontrast.white.WindowTextColor` |
-| High-contrast dark | `color.highcontrast.black.WindowTextColor` |
+| Theme | Primitive reference | Final value |
+| --- | --- | --- |
+| Stable light | `color.core.black-alpha.95` | black at 95% alpha |
+| Stable dark | `color.core.white-alpha.95` | white at 95% alpha |
+| High-contrast light | `color.highcontrast.white.WindowTextColor` | `#000000` |
+| High-contrast dark | `color.highcontrast.black.WindowTextColor` | `#ffffff` |
+
+High-contrast modes resolve to a fixed system-color palette
+(`WindowTextColor`, `WindowColor`, `ButtonTextColor`, `HighlightColor`,
+`GrayTextColor`, `HotlightColor`…). For example, in high-contrast light
+`background.solid.primary.normal` → `color.highcontrast.white.WindowColor`
+(`#ffffff`) and `outline.primary.normal` → `WindowTextColor` (`#000000`); the
+dark palette inverts these.
 
 Because the key never changes, choosing a token by **intent** (not by its
 light-mode value) is what guarantees it stays correct in every theme.
@@ -50,9 +57,16 @@ Each mode is a source file under `packages/assets/tokens/src/`:
 | AAOS night (automotive) | `aaos/night.json` |
 
 Stable light/dark are the primary modes. High-contrast maps onto the
-`color.highcontrast.*` palette for accessibility. AAOS is a separate automotive
-theme with its own token set (`aaos/common.json` + day/night) and does not
-mirror every stable token.
+`color.highcontrast.*` system-color palette for accessibility.
+
+**AAOS (automotive) is a distinct token namespace, not a re-tint of the stable
+modes.** Instead of the stable `color.theme.text/background/button/…` groups, it
+defines its own smaller set (~39 tokens) under `color.theme.surface.*` and
+`color.theme.content.*` — for example `color.theme.surface.neutral.0.default`
+(`color.core.gray.93` in day), `color.theme.content.text.neutral.primary`
+(`#ffffffe0`), and `color.theme.content.btn.accent.default`. Components that
+target AAOS consume that namespace directly; the stable usage groups documented
+in [Color](./color.md) do not apply there.
 
 ### Brand accents (the color-identity axis)
 
@@ -80,9 +94,13 @@ The selectors and their token sources are declared in
 `packages/assets/tokens/config/tokens/core.json` and
 `config/tokens/additional-themes.json`.
 
-At runtime the `themeprovider` component applies the appropriate class, and every
-`var(--mds-color-theme-*)` beneath it resolves to that theme's values. See the
-`themeprovider` component (Tier 3) for the runtime API.
+At runtime the
+[`themeprovider`](../../../components/src/components/themeprovider/knowledge-base/themeprovider.component.md)
+component applies the appropriate class (via its `themeclass` attribute), and
+every `var(--mds-color-theme-*)` beneath it resolves to that theme's values. The
+provider currently exposes the stable Webex mode and its brand accents as
+runtime-selectable classes; high-contrast and AAOS selectors are emitted by the
+build and can be applied the same way.
 
 ## Inverted and common
 
@@ -129,4 +147,5 @@ Consequences:
 
 - [Color](./color.md) — the semantic token catalogue these themes resolve.
 - [Glass](./glass.md) — glass material/blur tokens and how they behave per theme.
-- `themeprovider` component (Tier 3) — applying a theme at runtime.
+- [`themeprovider`](../../../components/src/components/themeprovider/knowledge-base/themeprovider.component.md)
+  component (Tier 3) — applying a theme at runtime.
