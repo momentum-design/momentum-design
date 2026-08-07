@@ -25,7 +25,7 @@
       "tier": 2,
       "path": "packages/assets/illustrations/knowledge-base/illustrations.md",
       "title": "Illustrations",
-      "summary": "Guidance for Momentum's illustration library — SVG illustrations, when to use them, how to consume them via mdc-illustration and mdc-illustrationprovider, and accessibility.",
+      "summary": "Guidance for Momentum's illustration library — style principles, when to use, sizing and colour, consumption via mdc-illustration and mdc-illustrationprovider, and accessibility.",
       "canonical": null
     },
     {
