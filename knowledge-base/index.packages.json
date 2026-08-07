@@ -5,6 +5,14 @@
   "tier": 2,
   "topics": [
     {
+      "id": "tier2/packages/assets/tokens/knowledge-base/elevation",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/elevation.md",
+      "title": "Elevation",
+      "summary": "The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/components/knowledge-base/snowflake-components",
       "tier": 2,
       "path": "packages/components/knowledge-base/snowflake-components.md",
