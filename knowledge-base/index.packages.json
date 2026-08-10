@@ -5,6 +5,13 @@
   "tier": 2,
   "topics": [
     {
+      "id": "tier2/packages/assets/icons/knowledge-base/icons",
+      "tier": 2,
+      "path": "packages/assets/icons/knowledge-base/icons.md",
+      "title": "Icons",
+      "summary": "Guidance for Momentum's Custom Icon Library — icon types, naming, weights, when to use icons versus other assets, and how to consume @momentum-design/icons.",
+    },
+    {
       "id": "tier2/packages/assets/animations/knowledge-base/animations",
       "tier": 2,
       "path": "packages/assets/animations/knowledge-base/animations.md",
