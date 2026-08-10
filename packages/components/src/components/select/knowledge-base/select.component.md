@@ -13,16 +13,16 @@ The component is form-associated and participates in native form submission, val
 
 ### When to use
 
-- Use `mdc-select` when the user must pick a single value from a fixed list and typing-to-filter is not required.
-- Use it inside a form when you want native form submission and validation for the selected value.
-- Use it when options are grouped (`mdc-optgroup`) and an optional `mdc-divider` is needed between groups.
+- Use `mdc-select` when the user must pick a single value from a fixed list and typing to filter is not needed.
+- Use `mdc-select` inside a form when you need native submission, validation, and reset for the selected value.
+- Use `mdc-select` when options fall into labeled groups (`mdc-optgroup`), optionally separated by an `mdc-divider`.
 
 ### When not to use
 
-- Use `mdc-combobox` when the user benefits from typing to filter the list.
-- Use `mdc-radiogroup` when there are only a handful of options and they should all be visible at once.
-- Use `mdc-input` when free-form text is the goal.
-- Use `mdc-searchfield` when the user is searching content rather than picking a single value.
+- Do not use `mdc-select` when the user benefits from typing to filter a long list. Use `mdc-combobox` instead.
+- Do not use `mdc-select` for a handful of options that should all be visible at once. Use `mdc-radiogroup` instead.
+- Do not use `mdc-select` for free-form text entry. Use `mdc-input` instead.
+- Do not use `mdc-select` for searching content rather than picking a set value. Use `mdc-searchfield` instead.
 
 ## Guidelines
 
@@ -50,7 +50,7 @@ Minimal markup example:
 
 Structural requirements:
 
-- Wrap every `mdc-option` (and any `mdc-optgroup`) inside an `mdc-selectlistbox`. The `mdc-selectlistbox` carries `role="listbox"` and is required for correct screen-reader behaviour.
+- Wrap every `mdc-option` (and any `mdc-optgroup`) inside an `mdc-selectlistbox`. The `mdc-selectlistbox` carries `role="listbox"` and is required for correct screen-reader behavior.
 - Give every `mdc-option` a `value` attribute — form submission and value-based selection rely on it.
 - A default option can be marked with the `selected` attribute on the `mdc-option`, or by setting `value` on `mdc-select` to match an option's `value`.
 - Place per-option `mdc-tooltip` siblings outside `mdc-select` and connect them via `triggerid` pointing at the option's `id`.
@@ -60,38 +60,35 @@ Listen for `change` and `input` to react to a committed selection; both events f
 
 ### Content guidance
 
-- Provide a visible `label` describing what the user is selecting; reach for `data-aria-label` only when a visible label is not possible.
-- Use `placeholder` as a short hint about the expected selection ("Pick a country"), not as a replacement for the label.
-- Keep option labels short — they are rendered inside a fixed-width trigger control.
+- Write a `label` that names what the user is choosing ("Country"), not an instruction ("Select a country").
+- Use `placeholder` as a short hint about the expected selection ("Pick a country"), never as a replacement for the label.
+- Keep option labels short and scannable — the selected label renders inside a fixed-width trigger and truncates when it overflows.
+- When a selection is invalid, write `help-text` (with `help-text-type="error"`) that says how to fix it in one or two short sentences, not just what is wrong.
 
 ### Property/Attribute details
 
-- `value` — value of the currently selected option. Setting this attribute updates the visible selection and the form value.
-- `name` — form field name submitted with the form.
-- `placeholder` — placeholder text shown when no value is selected. When a `placeholder` is set and no option carries `selected`, the select starts with no selection; otherwise the first valid option becomes the initial selection.
-- `placement` — popover placement relative to the trigger. `bottom-start` (default) or `top-start`.
-- `boundary` — clipping ancestor used by the popover (`clippingAncestors` by default, or any CSS selector). Pair with `strategy="fixed"` to avoid clipping inside scrollable parents.
-- `strategy` — popover positioning strategy. `absolute` (default) or `fixed`.
-- `popover-z-index` — z-index override for the popover (defaults to `1000`).
-- `disable-flip` — when `true`, the dropdown does not flip its position when it hits the boundary. Defaults to `false`.
-- `backdrop-append-to` — id of the element the popover backdrop is appended to (defaults to the select's parent).
-- `label` — visible label rendered above the field; used as the accessible name when set.
-- `data-aria-label` — accessible name fallback when no visible label is rendered.
-- `help-text` — helper or validation text below the field.
-- `help-text-type` — `default`, `error`, `warning`, `success`, or `priority`. Drives the helper icon and error styling.
-- `toggletip-text` / `toggletip-placement` / `toggletip-strategy` / `info-icon-aria-label` — opt-in info icon button next to the label that opens an `mdc-toggletip`.
-- `required` — when `true`, the form is invalid unless a value is selected.
-- `validation-message` — custom validation message reported through `setCustomValidity` when the select is required but empty.
-- `disabled` — fully disabled; the host is removed from the tab order and the popover cannot open.
-- `soft-disabled` — visually disabled but focusable; the popover cannot open.
-- `readonly` — non-interactive but focusable; the popover cannot open.
-- `auto-focus-on-mount` — when `true`, focuses the select trigger on first render.
+| Option | Intent |
+|---|---|
+| `value` | The selected option's value, reflected to the form. Set it to preselect or drive the selection programmatically. |
+| `name` | Form field name submitted with the selected value. Required for form submission. |
+| `placeholder` | Hint shown when nothing is selected. With a `placeholder` and no `selected` option the select starts empty; otherwise the first valid option is selected on load. |
+| `help-text` + `help-text-type` | Helper or validation text below the field; the type (`default`, `error`, `warning`, `success`, `priority`) drives the icon and error styling. |
+| `required` + `validation-message` | Marks the field required and reports `validation-message` when it is submitted empty. Pair them so the error is meaningful. |
+| `disabled` / `soft-disabled` / `readonly` | `disabled` removes the trigger from the tab order; `soft-disabled` looks disabled but stays focusable; `readonly` is focusable but non-interactive. All three prevent the popover from opening. |
+| `placement="bottom-start"` (default) | Popover side relative to the trigger; switch to `top-start` only when space below is constrained. |
+| `strategy` + `boundary` + `disable-flip` | Popover positioning controls. Reach for these only when the default clips inside a scroll container — pair `strategy="fixed"` with a `boundary`. |
+| `toggletip-text` + `info-icon-aria-label` | Opt-in info button beside the label that opens an `mdc-toggletip`; provide the aria-label when set. |
+| `auto-focus-on-mount` | Focuses the trigger on first render. Use sparingly — only when the select is the primary task on the view. |
 
-Events dispatched by the host:
+**Note:** `value` and `selected` live on `mdc-option`; grouping and separators come from `mdc-optgroup` and `mdc-divider`. `popover-z-index` and `backdrop-append-to` match the shared popover surface.
 
-- `change` — committed selection (bubbles, composed); `event.detail = { value, label }`.
-- `input` — fires alongside `change` whenever the selection changes; `event.detail = { value, label }`.
-- `click`, `keydown`, `focus` — standard DOM events forwarded from the visual trigger.
+### Limitations
+
+- **Single select only** — `mdc-select` binds exactly one value. For multi-select use `mdc-listbox` with `multiple` and serialize the value yourself.
+- **No type-to-filter** — typing only jumps focus via typeahead; it does not filter the list. Use `mdc-combobox` for a long, filterable list.
+- **Listbox wrapper required** — options must sit inside `mdc-selectlistbox`; placing `mdc-option` directly in the select drops the listbox role and focus semantics.
+- **Popover covers help text** — the open popover renders directly below the trigger and overlaps any helper or validation text until it closes.
+- **Per-option tooltips slot outside** — an `mdc-tooltip` slotted inside the listbox breaks announcement and focus order. Place it as a sibling and wire `triggerid` to the option's `id`.
 
 ## Accessibility
 
@@ -102,7 +99,7 @@ The component implements the WAI-ARIA combobox + listbox pattern. The visible tr
 Keyboard interaction:
 
 - `ArrowDown`, `ArrowUp`, `Enter` — open the popover from the trigger (without changing the selection).
-- `Space` — opens the popover (handled on `keyup` to mirror native button behaviour); prevents page scroll.
+- `Space` — opens the popover (handled on `keyup` to mirror native button behavior); prevents page scroll.
 - `Home` — opens the popover and focuses the first option.
 - `End` — opens the popover and focuses the last option.
 - Any printable character — opens the popover and focuses the next option whose label starts with the typed string (typeahead, with a 500 ms reset between keys).
@@ -143,8 +140,19 @@ Disabled states: when `disabled`, `soft-disabled`, or `readonly` becomes true wh
 - Place per-option `mdc-tooltip` siblings outside `mdc-select` and connect them via `triggerid` — tooltips slotted inside the listbox break announcement and focus order.
 - For required selects, pair `required` with a meaningful `validation-message`.
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` whenever possible — `role="combobox"` requires an accessible name.
 - When no visible label is shown, set `data-aria-label` on the host.
 - Use `help-text` with `help-text-type="error"` for validation feedback; the icon and `aria-describedby`-equivalent wiring are handled internally.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-combobox` | Same dropdown surface with an editable input that filters the list as the user types. |
+| `mdc-selectlistbox` | Required wrapper that carries `role="listbox"` around the slotted options. |
+| `mdc-option` | A single selectable value inside the listbox. |
+| `mdc-optgroup` | Labeled grouping of options within the listbox. |
+| `mdc-listbox` | Standalone, always-visible option list with no popover and optional multi-select. |
+| `mdc-radiogroup` | Better for a few mutually exclusive options that should all stay visible. |

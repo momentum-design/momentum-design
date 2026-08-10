@@ -12,12 +12,12 @@ The static checkbox is a decorative, non-interactive checkbox used to display ch
 ### When to use
 
 - Use `mdc-staticcheckbox` to render the visual shape of a checkbox in read-only UIs such as summary screens, confirmation screens, or historical form data.
-- Use it inside lists or cards where the checkbox is part of the display, not a control.
+- Use `mdc-staticcheckbox` inside lists, cards, or tables where the checkbox is part of the display, not a control.
 
 ### When not to use
 
-- Use `mdc-checkbox` for any interactive checkbox in a form.
-- Do not use `mdc-staticcheckbox` as a replacement for `mdc-checkbox` — it cannot be focused, toggled, or submitted with a form.
+- Do not use `mdc-staticcheckbox` for an interactive checkbox in a form. Use `mdc-checkbox` instead.
+- Do not use `mdc-staticcheckbox` where the user must focus, toggle, or submit the value. Use `mdc-checkbox` instead.
 
 ## Guidelines
 
@@ -39,18 +39,22 @@ Minimal markup example:
 <mdc-staticcheckbox disabled>Unavailable option</mdc-staticcheckbox>
 ```
 
+### Content guidance
+
+- The static checkbox carries no label of its own — convey each item's meaning through the content around it, such as the list-item label when it sits in a list or listbox, or the column header when it sits in a table. It shows only the visual checked or indeterminate state, so don't rely on the check mark alone.
+
 ### Property/Attribute details
 
-- `checked` — when `true`, renders the checked check mark. Default `false`.
-- `indeterminate` — when `true`, renders the indeterminate (mixed) mark. Typically used for "partial selection" rollups. Default `false`. When both `checked` and `indeterminate` are set, the indeterminate mark wins.
-- `disabled` — when `true`, applies the standard disabled appearance. Purely visual.
-- `soft-disabled` — when `true`, applies a less prominent disabled appearance. Purely visual.
-- `readonly` — when `true`, applies the read-only appearance. Purely visual.
+| Option | Intent |
+|---|---|
+| `checked` | Renders the check mark for the selected state. |
+| `indeterminate` | Renders the mixed mark for "partial selection" rollups; wins when both `checked` and `indeterminate` are set. |
+| `disabled` / `soft-disabled` / `readonly` | Purely visual state styles; none change interaction (the control is never interactive). |
 
 ### Limitations
 
-- Not interactive: cannot be focused, toggled, or activated by the user.
-- Not form-associated: has no `name`/`value` and is not submitted with a form. Use `mdc-checkbox` instead when form participation is needed.
+- **Not interactive** — cannot be focused, toggled, or activated by the user; wire any interaction on the parent element.
+- **Not form-associated** — has no `name`/`value` and is not submitted with a form. Use `mdc-checkbox` when form participation is needed.
 
 ## Accessibility
 
@@ -58,6 +62,21 @@ Minimal markup example:
 
 The component renders the slotted label content inside its light DOM but does not expose any checkbox semantics — it has no role, no `aria-checked`, and is not focusable. Screen readers will read any slotted label as plain text.
 
+### Implementation requirements
+
+#### Labeling
+
+- The static checkbox has no accessible name or state of its own. When the checked or indeterminate state carries meaning, convey it through the interactive parent's accessible name or adjacent text, or use `mdc-checkbox`.
+
 ### Notes
 
-Because the component does not expose checkbox semantics, screen-reader users will not hear "checkbox, checked" / "unchecked" / "mixed" announcements. When the checked or indeterminate state carries meaning, include that state in the surrounding text or a hidden description (e.g. write "Newsletter subscription: enabled" instead of relying on the visual check mark alone), or use the interactive `mdc-checkbox` instead.
+Because the component does not expose checkbox semantics, screen-reader users will not hear "checkbox, checked" / "unchecked" / "mixed" announcements. When the checked or indeterminate state carries meaning, expose it through the interactive `mdc-checkbox`, or describe it in the surrounding content — do not rely on the check mark alone.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-checkbox` | Interactive, form-associated checkbox. |
+| `mdc-formfieldgroup` | Labeled group for the interactive `mdc-checkbox` controls this decorative variant mirrors. |
+| `mdc-staticradio` | Decorative radio counterpart. |
+| `mdc-statictoggle` | Decorative toggle counterpart. |
