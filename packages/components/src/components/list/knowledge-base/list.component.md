@@ -7,20 +7,18 @@ component: list
 
 ## Overview
 
-The list is a container that groups `mdc-listitem` children and provides shared keyboard navigation across them. Listitems are placed in the default slot; an optional `mdc-listheader` can be placed in the `list-header` slot. The list manages roving tabindex across items so the keyboard user only enters the list once, then moves between items with arrow keys.
-
-The list's orientation (`vertical` or `horizontal`) selects whether arrow Up/Down or Left/Right navigate; looping (`loop="true"` / `loop="false"`) chooses whether navigation wraps at the ends; `initial-focus` selects which item receives focus when the list is entered for the first time.
+`mdc-list` is a container that groups `mdc-listitem` children and gives them shared keyboard navigation through a roving tabindex, so the keyboard user enters the list once and then moves between items with arrow keys. It owns grouping and navigation only — selection state lives on the individual items or the surrounding pattern.
 
 ### When to use
 
-- Use `mdc-list` to display a related group of `mdc-listitem` elements (selection lists, navigation lists, settings lists) that should share keyboard navigation.
-- Use it whenever a list of two or more listitems is rendered — even a single listitem should be wrapped in `mdc-list` for screen-reader semantics.
+- Use `mdc-list` to display a related group of `mdc-listitem` elements (navigation lists, settings lists, content rows) that should share keyboard navigation.
+- Use `mdc-list` to wrap `mdc-listitem` elements even when there is only one, so screen readers announce the list semantics.
 
 ### When not to use
 
-- Use `mdc-listbox` for a list of selectable options that participate in single- or multi-select selection semantics (the listbox uses `role="listbox"` and `mdc-option` children rather than `mdc-listitem`).
-- Use `mdc-menubar` / `mdc-menupopover` for application menus.
-- Use `mdc-virtualizedlist` for very large lists where DOM virtualisation is needed.
+- Do not use `mdc-list` for a set of selectable options with single- or multi-select semantics. Use `mdc-listbox` with `mdc-option` instead.
+- Do not use `mdc-list` for application menus. Use `mdc-menubar` or `mdc-menupopover` instead.
+- Do not use `mdc-list` for very large or unbounded data sets where mounting every row is expensive. Use `mdc-virtualizedlist` instead.
 
 ## Guidelines
 
@@ -55,22 +53,19 @@ Horizontal list without wrap-around navigation:
 </mdc-list>
 ```
 
-### Content guidance
-
-- Place `mdc-listitem` children in the default slot; use the `list-header` slot for `mdc-listheader`.
-- Use the `vertical` orientation for column-style lists (the default) and `horizontal` only when listitems flow side-by-side and the surrounding layout truly reads left-to-right.
-- Set `loop="false"` when the ends of the list matter to the user (e.g. when item position implies progress); leave the default `loop="true"` for menus / navigation lists where wrapping feels natural.
-
 ### Property/Attribute details
 
-- `loop` — `"true"` (default) wraps navigation at both ends; `"false"` stops at the first / last item.
-- `initial-focus` — zero-based index of the item that receives focus the first time the list is entered. Out-of-bounds values clamp to the nearest valid index. Default `0`.
-- `orientation` — `vertical` (default; Up/Down arrows navigate) or `horizontal` (Left/Right arrows navigate). Also drives the Flexbox direction.
+| Option | Intent |
+|---|---|
+| `orientation="vertical"` (default) | Sets which arrow keys navigate (Up/Down for `vertical`, Left/Right for `horizontal`) and the flex direction. Use `horizontal` only when items genuinely flow side by side and the layout reads left to right. |
+| `loop="true"` (default) | Whether arrow navigation wraps at the ends. Keep `true` for menus and navigation lists where wrapping feels natural; set `false` when item position implies order or progress and the ends should stop. |
+| `initial-focus="0"` (default) | Zero-based index of the item focused the first time the list is entered; out-of-bounds values clamp to the nearest valid index. Set it when the most useful starting row is not the first. |
 
 ### Limitations
 
-- The list only manages listitems that match `mdc-listitem:not([disabled])`. Items with the `disabled` attribute are skipped by keyboard navigation but remain in the DOM.
-- The list does not own selection state — selection is a property of the individual listitem (or of the surrounding pattern such as a checkbox group). The list's job is grouping and navigation, not single-/multi-select semantics.
+- **Grouping and navigation only** — the list does not own selection; single-/multi-select state lives on the items or the surrounding pattern (such as a checkbox group).
+- **Disabled items are skipped** — navigation only visits `mdc-listitem:not([disabled])`; disabled items stay in the DOM but are unreachable by arrow keys.
+- **One list role** — the host is always `role="list"`; for selectable-option semantics use `mdc-listbox`, and for menu semantics use `mdc-menupopover`.
 
 ## Accessibility
 
@@ -95,3 +90,17 @@ When a listitem is added or removed (via the element-store life-cycle hooks), th
 - Always wrap `mdc-listitem` children in `mdc-list`, even when there is only one item, so screen readers announce the list semantics.
 - Use `mdc-listheader` (in the `list-header` slot) for any visible heading that introduces the list, instead of rendering plain text above it.
 - Match `orientation` to the visual flow of the list; mismatched orientation makes arrow-key navigation feel broken.
+
+#### Labeling
+
+- Give the list an accessible name: use an `mdc-listheader` in the `list-header` slot for a visible heading, or set `aria-label` on the `mdc-list` when there is no visible header.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-listitem` | The row placed in the list's default slot. |
+| `mdc-listheader` | Non-interactive header for the list's `list-header` slot. |
+| `mdc-virtualizedlist` | Windowed alternative for very large or unbounded data sets. |
+| `mdc-listbox` | Selectable-option container with `role="listbox"` and `mdc-option` children. |
+| `mdc-menupopover` / `mdc-menubar` | Menu containers for application menus rather than content lists. |

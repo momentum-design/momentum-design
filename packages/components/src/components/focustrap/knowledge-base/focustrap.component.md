@@ -103,7 +103,7 @@ The FocusTrap component does not apply ARIA roles or properties itself. It relie
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 FocusTrap itself does not require a label. However, the container and its content must follow standard labelling practices:
 
