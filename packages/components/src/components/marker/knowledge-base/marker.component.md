@@ -1,25 +1,24 @@
 ---
 title: Marker
-summary: Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.
+summary: Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical indicator (solid or striped) used alongside content to convey status or category.
 tier: 3
 component: marker
 ---
 
 ## Overview
 
-The marker is a thin vertical line (0.25rem wide by default) used to draw the eye to a piece of content — typically rendered alongside a list item, card, or content block to indicate status, priority, or categorisation. Two visual variants are available: `solid` (a single coloured line) and `striped` (a line with diagonal stripes for a high-attention variant).
-
-The marker is purely presentational; its meaning must be conveyed elsewhere (label, status text, icon) because it has no accessible name.
+The marker draws the eye to a piece of content — flagging a row, card, or block as having a status, priority, or category. It is presentational, so the meaning it hints at is carried by accompanying text or an icon.
 
 ### When to use
 
-- Use `mdc-marker` to draw attention to important content, signal priority, or visually categorise items inside a layout.
-- Use it as a decorative companion to a list item, card, or content block — never as the sole signal for the information.
+- Use `mdc-marker` to flag a row, card, or content block with a status, priority, or category cue.
+- Use `mdc-marker` `striped` for the highest-attention treatment; use `solid` (default) for everything else.
 
 ### When not to use
 
-- Use a label, status text, or an icon when the meaning must be announced to screen readers — the marker alone is invisible to assistive technology.
-- Use `mdc-divider` for separating content sections rather than highlighting a single block.
+- Do not use `mdc-marker` as the only signal for meaning; it has no accessible name. Pair it with text or an icon instead.
+- Do not use `mdc-marker` to separate sections of a layout. Use `mdc-divider` instead.
+- Do not use `mdc-marker` to mark items in a list. Use `mdc-bullet` instead.
 
 ## Guidelines
 
@@ -33,7 +32,7 @@ import "@momentum-design/components/dist/components/marker/index.js"; // custom 
 import { Marker } from '@momentum-design/components/dist/react';
 ```
 
-Minimal markup example (solid marker next to a card title):
+Solid marker next to a card title:
 
 ```html
 <div class="row">
@@ -42,13 +41,7 @@ Minimal markup example (solid marker next to a card title):
 </div>
 ```
 
-Striped marker for higher-attention treatment:
-
-```html
-<mdc-marker variant="striped"></mdc-marker>
-```
-
-Customise the colour and width with CSS custom properties:
+Override the fill color and width with CSS custom properties to map the marker into a theme's tokens:
 
 ```html
 <mdc-marker
@@ -57,29 +50,39 @@ Customise the colour and width with CSS custom properties:
 ></mdc-marker>
 ```
 
-### Content guidance
-
-- Always pair the marker with text or an icon that conveys the same meaning — the colour and pattern alone are not accessible.
-- Reserve the `striped` variant for the highest-priority or most urgent treatment so it retains its visual weight.
-- Use the CSS custom properties (`--mdc-marker-solid-background-color`, `--mdc-marker-striped-color`, `--mdc-marker-striped-background-color`, `--mdc-marker-width`) to map the marker into a theme's colour tokens.
-
 ### Property/Attribute details
 
-- `variant` — `solid` (default; single coloured line) or `striped` (line with diagonal stripes for higher-attention treatment).
+| Option | Intent |
+| --- | --- |
+| `variant` | `solid` (default) for a single-color line, or `striped` for a diagonal-stripe line. Reserve `striped` for the most urgent state so it keeps its visual weight. |
 
 ### Limitations
 
-- The marker is decorative and has no accessible name. It is invisible to screen readers and must always be accompanied by a text or icon affordance that carries the same meaning.
+- **No accessible name** — the marker is decorative and invisible to screen readers; adjacent text or an icon must convey its meaning.
+- **Color is meaning-free to AT** — overriding the fill to signal status only helps sighted users, so always pair it with a textual status.
+- **No enforced contrast** — verify the marker is perceivable against its background; the component does not guarantee a ratio.
 
 ## Accessibility
 
 ### Built-in features
 
-The marker has no role, no accessible name, and no keyboard or focus behaviour — it is a purely decorative bar. Screen readers skip it.
+The marker has no role, no accessible name, and no keyboard or focus behavior — it is a purely decorative bar that screen readers skip.
 
 ### Implementation requirements
 
 #### General
 
-- Always pair the marker with a text label, status string, or icon that conveys the same meaning. Do not rely on colour or pattern alone.
-- Ensure sufficient colour contrast between the marker and the surrounding background so sighted users with low vision can perceive it.
+- Pair the marker with a text label, status string, or icon that conveys the same meaning; do not rely on color or pattern alone.
+- Ensure sufficient contrast between the marker and its background so users with low vision can perceive it.
+
+#### Labeling
+
+- The marker exposes no accessible name; put the status or category into adjacent visible text so assistive technology can announce it.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-divider` | For separating sections rather than flagging a single block. |
+| `mdc-bullet` | For marking items in a list rather than flagging content. |
+| `mdc-badge` | For counts or notification status rather than a status or category cue. |
