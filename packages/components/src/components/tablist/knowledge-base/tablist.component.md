@@ -7,17 +7,18 @@ component: tablist
 
 ## Overview
 
-The tab list organises a row of `mdc-tab` elements into a horizontal container. It implements the WAI-ARIA tabs pattern: roving focus with arrow keys, click or Enter/Space activation, and automatic scroll arrow buttons when the tabs overflow their container.
+`mdc-tablist` is the container that turns a set of `mdc-tab` elements into an accessible tabs pattern, owning focus movement and selection across them. It keeps one panel selectable at a time and adds scroll controls automatically when the tabs overflow their width.
 
 ### When to use
 
-- Use to switch between several related content panels in the same view.
-- Use when one panel is visible at a time and the user can move between them.
+- Use `mdc-tablist` to switch between several related content panels in the same view.
+- Use `mdc-tablist` when one panel is visible at a time and the user can move between them.
 
 ### When not to use
 
-- Do not use for primary navigation between pages.
-- Do not use when there is only one panel or when the panels are conceptually unrelated.
+- Do not use `mdc-tablist` for primary navigation between pages. Use `mdc-sidenavigation` or `mdc-appheader` navigation instead.
+- Do not use `mdc-tablist` for a single panel or unrelated content. Show the content directly, or split it into separate pages or sections instead.
+- Do not use `mdc-tablist` when the tabs must stack vertically. Use `mdc-verticaltablist` instead.
 
 ## Guidelines
 
@@ -54,23 +55,26 @@ document.querySelector('mdc-tablist').addEventListener('change', (e) => {
 
 For each tab, set `aria-controls="<panel-id>"` and on each panel set `role="tabpanel"` and `aria-labelledby="<tab-id>"`.
 
+### Content guidance
+
+- Keep the tab labels parallel — the same kind of phrase and a similar length across the set — so the group reads as one unit.
+- Keep each label to a single short line; content must fit inside the tab without truncating or wrapping. Reword an over-long label rather than truncating it.
+- Lead with the most important or most frequently used panel; when no tab is preset as active, the first enabled tab is selected by default.
+
 ### Property/Attribute details
 
-- `data-aria-label` (string) — label for the tablist container. Used when a visible label is not present and surfaced as the `aria-label` of the inner `tablist` element.
-- Active tab is tracked internally via the child tab `tab-id`. If no tab starts active, the first non-disabled tab is activated after the first render.
+| Option | Intent |
+|---|---|
+| `active-tab-id` | ID of the selected tab; reflects the active tab and updates as the user switches. When unset, the first enabled tab is selected by default. Set it to preselect or control the active tab. |
+| `data-aria-label` | Accessible name for the tablist container, surfaced as the inner `tablist` element's `aria-label`. Set it when there is no visible heading above the tabs (see Labeling). |
 
-The component dispatches:
-
-- `change` — bubbling `CustomEvent` fired when the user changes the active tab. The new tab id is on `event.detail.tabId`.
-
-Slots:
-
-- Default slot accepts `mdc-tab` elements. Disabled tabs are skipped during arrow-key navigation and from initial-active selection.
+The active tab is tracked by `active-tab-id`; if none is set, the first non-disabled tab activates after the first render. The default slot accepts `mdc-tab` elements (disabled tabs are skipped during navigation and initial selection). The list dispatches `change` (a bubbling `CustomEvent` with the new tab id on `event.detail.tabId`) when the user switches tabs — listen to this rather than each tab's own event.
 
 ### Limitations
 
-- A tab list with no child `mdc-tab` elements reports an error via `onerror` and skips initialization.
-- Every child tab must have a unique `tab-id`; duplicates trigger an `onerror` report.
+- **Needs at least one tab** — an empty tab list reports an error via `onerror` and skips initialization.
+- **Unique tab ids required** — duplicate `tab-id` values across children trigger an `onerror` report.
+- **Horizontal only** — the list lays tabs out in a row; use `mdc-verticaltablist` when they must stack vertically.
 
 ## Accessibility
 
@@ -78,7 +82,7 @@ Slots:
 
 - The inner container exposes `role="tablist"` with `tabindex="-1"` and the `aria-label` from `data-aria-label`.
 - Arrow Left/Right move focus between tabs with roving `tabindex` (the focused tab gets `tabindex="0"`, all others `tabindex="-1"`).
-- Home/End jump to the first or last tab (handled by the shared list navigation behaviour).
+- Home/End jump to the first or last tab (handled by the shared list navigation behavior).
 - Disabled tabs are skipped during arrow-key navigation.
 - The active tab is the only one with `aria-selected="true"`; all other tabs have `aria-selected="false"` (set by `mdc-tab`).
 - Calling `.focus()` on the host forwards focus to the currently active tab rather than the shadow host. The list also uses `delegatesFocus` on its shadow root.
@@ -104,10 +108,18 @@ Slots:
 - Each panel element must have `role="tabpanel"` and `aria-labelledby` referencing its tab.
 - If a tab opens a popup menu, set `aria-haspopup` on that tab to `menu` or `true`.
 
-#### Labelling
+#### Labeling
 
 - Provide `data-aria-label` when the tablist does not have a visible heading directly above it.
 
 ### Notes
 
 - The tablist defines tabs semantics (`tablist`, `tab`, `aria-selected`) implicitly. Consumers must explicitly provide the panel semantics, the tab/panel wiring (`aria-controls` and `aria-labelledby`), and the accessible label for the list.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-tab` | The individual tab controls placed in the default slot. |
+| `mdc-verticaltablist` | Vertical counterpart for stacked tabs. |
+| `mdc-sidenavigation` | Use for page-to-page navigation rather than in-page panel switching. |
