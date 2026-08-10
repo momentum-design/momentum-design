@@ -9,7 +9,7 @@
       "tier": 3,
       "path": "packages/components/src/components/accordion/knowledge-base/accordion.component.md",
       "title": "Accordion",
-      "summary": "Usage, guidelines, and accessibility for the mdc-accordion component — a vertically stacked header/body component with dedicated expand/collapse controls.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-accordion component — a vertically stacked component whose header holds interactive controls beside a dedicated expand/collapse toggle button.",
       "canonical": null,
       "component": "accordion"
     },
@@ -27,7 +27,7 @@
       "tier": 3,
       "path": "packages/components/src/components/accordiongroup/knowledge-base/accordiongroup.component.md",
       "title": "Accordion Group",
-      "summary": "Usage, guidelines, and accessibility for the mdc-accordiongroup component — a container that manages multiple accordion or accordionbutton components as a unified set.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-accordiongroup component — a wrapper that coordinates multiple accordion items with shared sizing, variants, and single-open behavior.",
       "canonical": null,
       "component": "accordiongroup"
     },
@@ -36,7 +36,7 @@
       "tier": 3,
       "path": "packages/components/src/components/alertchip/knowledge-base/alertchip.component.md",
       "title": "Alert Chip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip used to represent an alert with a leading icon and label.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-alertchip component — an interactive chip that calls attention to a status with a leading icon and label.",
       "canonical": null,
       "component": "alertchip"
     },
@@ -45,7 +45,7 @@
       "tier": 3,
       "path": "packages/components/src/components/animation/knowledge-base/animation.component.md",
       "title": "Animation",
-      "summary": "Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labelled animations.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-animation component — a wrapper around the Lottie animation library for rendering decorative or labeled animations.",
       "canonical": null,
       "component": "animation"
     },
@@ -72,7 +72,7 @@
       "tier": 3,
       "path": "packages/components/src/components/avatar/knowledge-base/avatar.component.md",
       "title": "Avatar",
-      "summary": "Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that displays a person or group as a photo, initials, icon, or counter.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-avatar component — a non-interactive avatar that represents a person or group as a photo, initials, icon, or counter.",
       "canonical": null,
       "component": "avatar"
     },
@@ -162,7 +162,7 @@
       "tier": 3,
       "path": "packages/components/src/components/calendar/knowledge-base/calendar.component.md",
       "title": "Calendar",
-      "summary": "Usage, guidelines, and accessibility for the mdc-calendar component — a monthly grid for selecting a single date, a week, or a date range with keyboard navigation and locale-aware formatting.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-calendar component — a month grid for selecting a single date, a week, or a date range.",
       "canonical": null,
       "component": "calendar"
     },
@@ -243,7 +243,7 @@
       "tier": 3,
       "path": "packages/components/src/components/controltypeprovider/knowledge-base/controltypeprovider.component.md",
       "title": "Control type provider",
-      "summary": "Usage and guidelines for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.",
       "canonical": null,
       "component": "controltypeprovider"
     },
@@ -252,7 +252,7 @@
       "tier": 3,
       "path": "packages/components/src/components/datepicker/knowledge-base/datepicker.component.md",
       "title": "Datepicker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-datepicker component — a date input offering manual entry or a calendar popover for single, range, or week selection with locale support.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-datepicker component — a form control for entering or picking a date, range, or week with locale-aware formatting.",
       "canonical": null,
       "component": "datepicker"
     },
@@ -270,7 +270,7 @@
       "tier": 3,
       "path": "packages/components/src/components/divider/knowledge-base/divider.component.md",
       "title": "Divider",
-      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can optionally host a centered text label or an interactive grabber button.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-divider component — a thin horizontal or vertical separator that can host a centered text label or an interactive grabber button.",
       "canonical": null,
       "component": "divider"
     },
@@ -297,7 +297,7 @@
       "tier": 3,
       "path": "packages/components/src/components/formfieldgroup/knowledge-base/formfieldgroup.component.md",
       "title": "Formfieldgroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labeled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.",
       "canonical": null,
       "component": "formfieldgroup"
     },
@@ -306,7 +306,7 @@
       "tier": 3,
       "path": "packages/components/src/components/formfieldwrapper/knowledge-base/formfieldwrapper.component.md",
       "title": "Formfieldwrapper",
-      "summary": "Internal base component that renders the label, helper/validation text, optional toggletip info icon, and required indicator shared by every form field component.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-formfieldwrapper component — the internal base that renders the shared label, helper/validation text, and toggletip for every form field.",
       "canonical": null,
       "component": "formfieldwrapper"
     },
@@ -315,7 +315,7 @@
       "tier": 3,
       "path": "packages/components/src/components/icon/knowledge-base/icon.component.md",
       "title": "Icon",
-      "summary": "Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its URL from a parent mdc-iconprovider, supporting decorative and informative roles.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-icon component — a dynamically loaded SVG icon reading its source from a parent mdc-iconprovider, supporting decorative and informative roles.",
       "canonical": null,
       "component": "icon"
     },
@@ -324,7 +324,7 @@
       "tier": 3,
       "path": "packages/components/src/components/iconprovider/knowledge-base/iconprovider.component.md",
       "title": "Iconprovider",
-      "summary": "Usage and guidelines for the mdc-iconprovider component — a context provider supplying icon source, file extension, default sizing, and optional caching to every nested mdc-icon.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-iconprovider component — a context provider that supplies icon source, sizing, and caching to every nested mdc-icon.",
       "canonical": null,
       "component": "iconprovider"
     },
@@ -333,7 +333,7 @@
       "tier": 3,
       "path": "packages/components/src/components/illustration/knowledge-base/illustration.component.md",
       "title": "Illustration",
-      "summary": "Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its URL from a parent mdc-illustrationprovider.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-illustration component — a dynamically loaded SVG illustration reading its source from a parent mdc-illustrationprovider.",
       "canonical": null,
       "component": "illustration"
     },
@@ -342,7 +342,7 @@
       "tier": 3,
       "path": "packages/components/src/components/illustrationprovider/knowledge-base/illustrationprovider.component.md",
       "title": "Illustrationprovider",
-      "summary": "Usage and guidelines for the mdc-illustrationprovider component — a context provider supplying illustration source, file extension, and optional caching to every nested mdc-illustration.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-illustrationprovider component — a context provider that supplies illustration source and caching to nested mdc-illustration components.",
       "canonical": null,
       "component": "illustrationprovider"
     },
@@ -360,7 +360,7 @@
       "tier": 3,
       "path": "packages/components/src/components/inputchip/knowledge-base/inputchip.component.md",
       "title": "Inputchip",
-      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenised input value with a leading prefix, a label, and a close button.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-inputchip component — an interactive chip representing a tokenized input value with a leading prefix, a label, and a close button.",
       "canonical": null,
       "component": "inputchip"
     },
@@ -432,7 +432,7 @@
       "tier": 3,
       "path": "packages/components/src/components/marker/knowledge-base/marker.component.md",
       "title": "Marker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical visual indicator (solid or striped) used alongside list items, cards, or content blocks to convey status.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-marker component — a thin vertical indicator (solid or striped) used alongside content to convey status or category.",
       "canonical": null,
       "component": "marker"
     },
@@ -486,7 +486,7 @@
       "tier": 3,
       "path": "packages/components/src/components/menusection/knowledge-base/menusection.component.md",
       "title": "Menusection",
-      "summary": "Usage, guidelines, and accessibility for the mdc-menusection component — a labelled grouping of menu items inside a menu or menubar.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-menusection component — a labeled grouping of menu items inside a menu or menubar.",
       "canonical": null,
       "component": "menusection"
     },
@@ -504,7 +504,7 @@
       "tier": 3,
       "path": "packages/components/src/components/optgroup/knowledge-base/optgroup.component.md",
       "title": "Optgroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-optgroup component — a labelled grouping of mdc-option elements inside a listbox.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-optgroup component — a labeled grouping of mdc-option elements inside a listbox.",
       "canonical": null,
       "component": "optgroup"
     },
@@ -531,7 +531,7 @@
       "tier": 3,
       "path": "packages/components/src/components/popover/knowledge-base/popover.component.md",
       "title": "Popover",
-      "summary": "Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behaviour.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-popover component — a generic, floating overlay anchored to a trigger element with configurable trigger, placement, focus trap, and dismiss behavior.",
       "canonical": null,
       "component": "popover"
     },
@@ -540,7 +540,7 @@
       "tier": 3,
       "path": "packages/components/src/components/presence/knowledge-base/presence.component.md",
       "title": "Presence",
-      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status badge that visually represents the availability or activity state of a user or entity.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-presence component — a small status indicator that represents the availability or activity state of a user or entity.",
       "canonical": null,
       "component": "presence"
     },
@@ -576,7 +576,7 @@
       "tier": 3,
       "path": "packages/components/src/components/radiogroup/knowledge-base/radiogroup.component.md",
       "title": "Radiogroup",
-      "summary": "Usage, guidelines, and accessibility for the mdc-radiogroup component — a labelled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-radiogroup component — a labeled wrapper that groups radios, propagates name and required state, and exposes the group to assistive tech.",
       "canonical": null,
       "component": "radiogroup"
     },
@@ -585,7 +585,7 @@
       "tier": 3,
       "path": "packages/components/src/components/responsivesettingsprovider/knowledge-base/responsivesettingsprovider.component.md",
       "title": "Responsivesettingsprovider",
-      "summary": "Usage and guidelines for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-responsivesettingsprovider component — a provider supplying responsive context (media type, popover positioning, fullscreen dialog) to descendants.",
       "canonical": null,
       "component": "responsivesettingsprovider"
     },
@@ -639,7 +639,7 @@
       "tier": 3,
       "path": "packages/components/src/components/sidenavigation/knowledge-base/sidenavigation.component.md",
       "title": "Side Navigation",
-      "summary": "Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behaviour and support for nested menu items.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behavior and support for nested menu items.",
       "canonical": null,
       "component": "sidenavigation"
     },
@@ -648,7 +648,7 @@
       "tier": 3,
       "path": "packages/components/src/components/skeleton/knowledge-base/skeleton.component.md",
       "title": "Skeleton",
-      "summary": "Usage, guidelines, and accessibility for the mdc-skeleton component — a grey placeholder block that signals loading content.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-skeleton component — a gray placeholder block that signals loading content.",
       "canonical": null,
       "component": "skeleton"
     },
@@ -665,8 +665,8 @@
       "id": "tier3/packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component",
       "tier": 3,
       "path": "packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component.md",
-      "title": "Spatial Navigation Provider",
-      "summary": "Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to arrow, Enter, and Escape keys.",
+      "title": "Spatialnavigationprovider",
+      "summary": "Usage, guidelines, and accessibility for the mdc-spatialnavigationprovider component — an application-root context provider that moves focus on a 2D plane in response to directional input.",
       "canonical": null,
       "component": "spatialnavigationprovider"
     },
@@ -719,8 +719,8 @@
       "id": "tier3/packages/components/src/components/statusmessage/knowledge-base/statusmessage.component",
       "tier": 3,
       "path": "packages/components/src/components/statusmessage/knowledge-base/statusmessage.component.md",
-      "title": "Status Message",
-      "summary": "Usage, guidelines, and accessibility for the mdc-statusmessage component - an inline severity message with optional icon.",
+      "title": "Status message",
+      "summary": "Usage, guidelines, and accessibility for the mdc-statusmessage component — a compact inline severity message with an optional icon, used for helper, validation, and status text.",
       "canonical": null,
       "component": "statusmessage"
     },
@@ -729,7 +729,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepper/knowledge-base/stepper.component.md",
       "title": "Stepper",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepper component — the container that orchestrates a sequence of steps and their connectors.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepper component — the container that coordinates a sequence of steps and connectors into one progress indicator.",
       "canonical": null,
       "component": "stepper"
     },
@@ -738,7 +738,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepperconnector/knowledge-base/stepperconnector.component.md",
       "title": "Stepper Connector",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepperconnector component — the visual line drawn between two stepper items.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperconnector component — the progress line drawn between two steps in an mdc-stepper.",
       "canonical": null,
       "component": "stepperconnector"
     },
@@ -747,7 +747,7 @@
       "tier": 3,
       "path": "packages/components/src/components/stepperitem/knowledge-base/stepperitem.component.md",
       "title": "Stepper Item",
-      "summary": "Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step inside an mdc-stepper sequence.",
+      "summary": "Usage, guidelines, and accessibility for the mdc-stepperitem component — a single step within an mdc-stepper that shows its place and state in the sequence.",
       "canonical": null,
       "component": "stepperitem"
     },
@@ -800,8 +800,8 @@
       "id": "tier3/packages/components/src/components/timepicker/knowledge-base/timepicker.component",
       "tier": 3,
       "path": "packages/components/src/components/timepicker/knowledge-base/timepicker.component.md",
-      "title": "Time Picker",
-      "summary": "Usage, guidelines, and accessibility for the mdc-timepicker component — a form-associated control for entering or selecting a time in 12-hour or 24-hour format.",
+      "title": "Timepicker",
+      "summary": "Usage, guidelines, and accessibility for the mdc-timepicker component — a form control for entering or selecting a time in 12-hour or 24-hour format.",
       "canonical": null,
       "component": "timepicker"
     },
