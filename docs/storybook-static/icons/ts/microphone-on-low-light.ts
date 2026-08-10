@@ -1,0 +1,6 @@
+import { html } from 'lit';
+
+const icon = () =>
+  html`<svg aria-hidden="true" part="icon" data-name="microphone-on-low-light" xmlns="http://www.w3.org/2000/svg" width="30" height="32" viewBox="0 0 30 32"><path d="M14.996 2.5a5.5 5.5 0 0 1 5.5 5.5v10a5.5 5.5 0 0 1-4.983 5.475A5.403 5.403 0 0 0 21.01 28.5H23a.5.5 0 0 1 0 1H7a.5.5 0 0 1 0-1h10.472a6.4 6.4 0 0 1-2.502-2.996 6.4 6.4 0 0 1-.458-2.027A5.5 5.5 0 0 1 9.496 18V8a5.5 5.5 0 0 1 5.5-5.5m0 1a4.5 4.5 0 0 0-4.5 4.5v10q.002.517.113 1h8.774q.111-.483.113-1V8a4.5 4.5 0 0 0-4.5-4.5"/></svg>`;
+
+export default icon;
