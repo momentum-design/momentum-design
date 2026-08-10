@@ -6,37 +6,33 @@ tier: 2
 
 # Motion
 
-Momentum's motion language is **functional, not decorative**. Animation should
-feel snappy and professional, and guide the user's focus without distracting
-them — communicating state changes, hierarchy, and spatial relationships rather
-than ornamenting the interface.
+Motion System Strategy: "Efficient, Precise, and Responsive"
 
-Motion is delivered as tokens so that timing and easing stay consistent across
-components instead of each surface hand-tuning its own transitions.
+The motion language for Momentum needs to feel snappy and professional. It should guide the user's focus without distracting them. Animations should be functional — indicating state changes, hierarchy, and spatial relationships — rather than decorative.
 
 ## Principles
 
-- **Orientation over ornamentation** — motion should act as a map, not a
-  flourish. Moving elements along logical axes gives spatial context and reduces
-  the cognitive "jump" between views, so the user always knows where they are and
-  where they are going.
-- **Informative by intent** — every movement should carry a message about what
-  the system is doing. Use motion as a quiet narrator that surfaces just-in-time
-  status (something loading, arriving, completing) instead of reaching for a
-  pop-up or modal.
-- **Purposeful vitality** — animation should feel alive but disciplined. Favor
-  natural easing that mimics real-world physics — starting with purpose and
-  ending with grace — over mechanical, linear movement.
+**1. Orientation over Ornamentation (Navigation)**
+
+Value: Motion should serve as a map, not a decoration.  User: “I know where I am and where I want to go.”
+Animations must provide spatial context, helping users understand where they are and where they are going within the application. By moving elements along logical axes, we reduce the cognitive "jump" between different views.
+
+**2. Informative by Intent (Status)**
+
+Value: Every movement should carry a message.  User: “I understand what the system is doing right now.”
+In a collaboration environment, state changes happen constantly (e.g., a colleague joining a call, a file finishing an upload). Animation should act as a silent narrator, providing "just-in-time" information without requiring a pop-up or a modal.
+
+**3. Purposeful Vitality (Brand)**
+
+Value: Reflect the "Momentum" why of Wellbeing Intelligence.  User: “This tool feels good to use.”
+Cisco’s brand is about the flow of information and the energy of collaboration. Our animations should feel "alive" but disciplined. We avoid mechanical, linear movements in favor of natural easing that mimics real-world physics—starting with purpose and ending with grace.
 
 ## Rules of thumb
 
-- **Exits are faster than entrances** — let things leave quickly; let them
-  arrive with a little more presence.
-- **Smaller elements animate faster** — scale duration to the size and weight of
-  what is moving.
-- **User-initiated vs. system-initiated** — respond to direct user action with
-  fast feedback; slow system-initiated changes down slightly so they draw the
-  eye.
+- **Enter vs Exit:**  Exits are faster than entrances
+- **Size relationship:**  Smaller elements = faster animations
+- **User-initiated:**  Faster feedback 
+- **System-initiated:**  Slower feedback to draw attention
 
 ## Token layers
 
