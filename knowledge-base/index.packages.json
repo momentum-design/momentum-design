@@ -5,13 +5,6 @@
   "tier": 2,
   "topics": [
     {
-      "id": "tier2/packages/assets/tokens/knowledge-base/typography",
-      "tier": 2,
-      "path": "packages/assets/tokens/knowledge-base/typography.md",
-      "title": "Typography",
-      "summary": "Typography token scale, type styles, and usage guidance for products built with @momentum-design/tokens — body, heading, and headline styles.",
-    },
-    {
       "id": "tier2/packages/assets/animations/knowledge-base/animations",
       "tier": 2,
       "path": "packages/assets/animations/knowledge-base/animations.md",
@@ -28,6 +21,14 @@
       "canonical": null
     },
     {
+      "id": "tier2/packages/assets/fonts/knowledge-base/fonts",
+      "tier": 2,
+      "path": "packages/assets/fonts/knowledge-base/fonts.md",
+      "title": "Fonts",
+      "summary": "Install and load the Momentum typeface from @momentum-design/fonts — Inter as a variable font registered under the family name \"Momentum\" — and how it connects to typography tokens.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/assets/icons/knowledge-base/icons",
       "tier": 2,
       "path": "packages/assets/icons/knowledge-base/icons.md",
@@ -41,6 +42,14 @@
       "path": "packages/assets/illustrations/knowledge-base/illustrations.md",
       "title": "Illustrations",
       "summary": "Guidance for Momentum's illustration library — style principles, when to use, sizing and colour, consumption via mdc-illustration and mdc-illustrationprovider, and accessibility.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/typography",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/typography.md",
+      "title": "Typography",
+      "summary": "Typography token scale, type styles, and usage guidance for products built with @momentum-design/tokens — body, heading, and headline styles.",
       "canonical": null
     },
     {
