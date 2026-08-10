@@ -7,17 +7,17 @@ component: menubar
 
 ## Overview
 
-`mdc-menubar` is a navigational menu container that holds a fixed list of menu items and manages keyboard navigation, focus, and the opening of nested submenus. It wraps its children in an internal group so screen readers announce the menu structure correctly.
+`mdc-menubar` is a menu container that holds a set of menu items and manages keyboard navigation, focus, and nested submenus. It is the persistent root of a menu region, such as a side-navigation tree.
 
 ### When to use
 
 - Use `mdc-menubar` when grouping a set of `mdc-menuitem`, `mdc-menuitemcheckbox`, or `mdc-menuitemradio` entries that may also expose nested submenus via `mdc-menupopover`.
-- Use it as the root for a persistent menu region (for example, the navigation tree inside `mdc-sidenavigation`).
+- Use `mdc-menubar` as the root for a persistent menu region, such as the navigation tree inside `mdc-sidenavigation`.
 
 ### When not to use
 
-- Do not use `mdc-menubar` for a single overlay menu opened from a trigger button — use `mdc-menupopover` directly.
-- Do not use it for selection lists where users pick a value to submit with a form — use `mdc-listbox` with `mdc-option` (typically inside `mdc-select`).
+- Do not use `mdc-menubar` for a single overlay menu opened from a trigger button. Use `mdc-menupopover` directly instead.
+- Do not use `mdc-menubar` for a selection list where users pick a value to submit. Use `mdc-listbox` with `mdc-option` (typically inside `mdc-select`) instead.
 
 ## Guidelines
 
@@ -51,13 +51,20 @@ Minimal markup example:
 
 ### Property/Attribute details
 
-- The component reads no public attributes of its own. Navigation behaviour is driven by the keyboard handling described below and configured through the surrounding `mdc-spatialnavigationprovider` keyboard navigation mode.
-- Each direct or grouped `mdc-menuitem` is tracked as a navigable entry; items with `disabled` are skipped, items with `soft-disabled` remain focusable but do not open their submenu.
+`mdc-menubar` reads no public attributes of its own — its behavior comes from the children you place in it and the keyboard handling described below. There is nothing to configure on the host; focus the setup on the items instead.
 
-### Notes
+| Option | Intent |
+|---|---|
+| Child menu items | Each direct or grouped `mdc-menuitem`, `mdc-menuitemcheckbox`, or `mdc-menuitemradio` is tracked as a navigable entry. `disabled` items are skipped by keyboard navigation; `soft-disabled` items stay focusable but do not open their submenu. |
+| Submenu pairing | An item that opens a submenu needs a unique `id` and a sibling `mdc-menupopover` whose `triggerid` matches it; the menubar forces those popovers to `placement="right-start"`. |
+| Grouping | Wrap related items in `mdc-menusection`; a section directly inside the menubar automatically gets `divider-variant="gradient"`. |
 
-- The component automatically applies `divider-variant="gradient"` to any direct child `mdc-menusection` after mount.
-- All submenu popovers attached via `triggerid` are forced to `placement="right-start"` so nested menus open consistently.
+### Limitations
+
+- **Vertical orientation only** — the menubar is `aria-orientation="vertical"`; it is built for stacked navigation trees, not a horizontal application menu bar.
+- **Menu items only** — place only `mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`, or `mdc-menusection` as children; other content is not navigable.
+- **One open branch** — activating a top-level item closes any other open submenu, so two sibling branches cannot stay open at once.
+- **Submenus need explicit pairing** — a submenu only opens when its `mdc-menupopover` `triggerid` matches the item's `id`; without the pairing the arrow leads nowhere.
 
 ## Accessibility
 
@@ -90,7 +97,18 @@ Minimal markup example:
 - Place only `mdc-menuitem`, `mdc-menuitemcheckbox`, `mdc-menuitemradio`, or `mdc-menusection` (containing those items) as direct children.
 - Pair each item that opens a submenu with an `mdc-menupopover` whose `triggerid` matches the item's `id`.
 
-#### Labelling
+#### Labeling
 
 - The menubar itself does not render visible text; provide an `aria-label` on the host element if the surrounding context does not already describe the menu.
 - Each menu item is responsible for its own accessible name via `label`, slotted text, or `aria-label`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-menuitem` | Action entry placed directly in the menubar. |
+| `mdc-menuitemcheckbox` | Checkable entry within the menubar. |
+| `mdc-menuitemradio` | Single-select entry within the menubar. |
+| `mdc-menusection` | Labeled grouping of items inside the menubar. |
+| `mdc-menupopover` | Submenu surface anchored to a menubar item. |
+| `mdc-navmenuitem` | Navigation-styled item used when the menubar backs `mdc-sidenavigation`. |
