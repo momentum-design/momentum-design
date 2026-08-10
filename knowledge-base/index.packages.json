@@ -5,13 +5,6 @@
   "tier": 2,
   "topics": [
     {
-      "id": "tier2/packages/assets/fonts/knowledge-base/fonts",
-      "tier": 2,
-      "path": "packages/assets/fonts/knowledge-base/fonts.md",
-      "title": "Fonts",
-      "summary": "Install and load the Momentum typeface from @momentum-design/fonts — Inter as a variable font registered under the family name \"Momentum\" — and how it connects to typography tokens.",
-    },
-    {
       "id": "tier2/packages/assets/animations/knowledge-base/animations",
       "tier": 2,
       "path": "packages/assets/animations/knowledge-base/animations.md",
@@ -25,6 +18,14 @@
       "path": "packages/assets/brand-visuals/knowledge-base/brand-visuals.md",
       "title": "Brand visuals",
       "summary": "Guidance for Momentum's brand-visuals library — approved logos, wordmarks, and imagery, how to consume them via mdc-brandvisual, and the criteria for inclusion.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/fonts/knowledge-base/fonts",
+      "tier": 2,
+      "path": "packages/assets/fonts/knowledge-base/fonts.md",
+      "title": "Fonts",
+      "summary": "Install and load the Momentum typeface from @momentum-design/fonts — Inter as a variable font registered under the family name \"Momentum\" — and how it connects to typography tokens.",
       "canonical": null
     },
     {
