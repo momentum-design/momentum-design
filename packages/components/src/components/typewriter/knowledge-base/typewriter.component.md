@@ -7,19 +7,19 @@ component: typewriter
 
 ## Overview
 
-`mdc-typewriter` progressively reveals its text content character-by-character to produce a typewriter effect. It renders through `mdc-text`, so it inherits the same typography options, and exposes both a static markup mode (slotted text) and an imperative API for appending text chunks at runtime.
+The typewriter reveals text one character at a time to give content a live, in-progress feel — most useful for streamed or assistant-generated output. It renders through `mdc-text`, so it shares the same typography, and it can keep growing after first render as new content arrives.
 
 ### When to use
 
-- Stream model or assistant output where text should appear progressively rather than all at once.
-- Animate the arrival of short notifications or status messages to draw user attention.
-- Build chat-style transcripts where additional content can be appended after the initial render.
+- Use `mdc-typewriter` to stream model or assistant output so text appears progressively rather than all at once.
+- Use `mdc-typewriter` to append content after first render, building a chat-style transcript over time.
+- Use `mdc-typewriter` to animate the arrival of a short status or notification message that should draw attention.
 
 ### When not to use
 
-- Use `mdc-text` directly when content should appear immediately and never animate.
-- Use `mdc-toast`, `mdc-banner`, or another notification surface when you need a container and chrome — the typewriter only animates text.
-- Avoid for long, dense content where the animation would slow down comprehension.
+- Do not use `mdc-typewriter` for content that should appear immediately. Use `mdc-text` instead.
+- Do not use `mdc-typewriter` for long, dense content where the animation slows comprehension. Use `mdc-text` instead.
+- Do not use `mdc-typewriter` when you need a titled container or chrome around the message. Use `mdc-toast` or `mdc-banner` instead.
 
 ## Guidelines
 
@@ -49,38 +49,44 @@ tw.addTextChunk(' How are you today?');           // animated chunk
 tw.addInstantTextChunk(' [system note]');         // appears instantly
 ```
 
+### Content guidance
+
+- Keep streamed messages short and scannable; the reveal animation adds time on top of the reader's own reading time.
+- Write copy that reads correctly at every intermediate frame — avoid leading punctuation or markup that looks broken mid-reveal.
+
 ### Property/Attribute details
 
-- `type` — text style forwarded to the internal `mdc-text` component. Defaults to `body-large-regular`.
-- `tagname` — HTML tag used for the internal text element. Defaults to `p`. Accepts any tag supported by `mdc-text`.
-- `speed` — milliseconds per character; either a numeric string (e.g. `"100"`) or one of the presets:
-  - `very-slow` — 240ms per character
-  - `slow` — 120ms per character
-  - `normal` — 60ms per character (default)
-  - `fast` — 20ms per character
-  - `very-fast` — 1ms per character
-  Numeric speeds are clamped to a minimum of 10ms per character.
-- `max-queue-size` — maximum number of chunks that can be queued via `addTextChunk` / `addInstantTextChunk`. When exceeded, the oldest queued chunks are dropped. Defaults to effectively unlimited.
-- Imperative methods:
-  - `addTextChunk(text, speed?, instant?)` — append a chunk, optionally overriding `speed` for that chunk, or rendering it instantly.
-  - `addInstantTextChunk(text)` — append a chunk that appears immediately without animation.
-  - `clearQueue()` — drop any chunks waiting to be typed.
-- Events:
-  - `typing-complete` (`onTypingComplete`) — fires when the typewriter finishes typing all queued content. Detail: `{ finalContent: string }`.
-  - `change` (`onChange`) — fires when the slotted content changes. Detail: `{ content: string, isTyping: boolean }`.
+| Option | Intent |
+| --- | --- |
+| `type` | Text style forwarded to the internal `mdc-text`. Default `body-large-regular`. |
+| `tagname` | HTML tag for the internal text element. Default `p`; accepts any tag `mdc-text` supports. |
+| `speed` | Reveal pace in milliseconds per character: presets `very-slow` (240), `slow` (120), `normal` (60, default), `fast` (20), `very-fast` (1), or a numeric string clamped to a 10ms minimum. |
+| `max-queue-size` | Maximum chunks that can be queued via the imperative methods before the oldest are dropped. Default effectively unlimited. |
+
+Imperative methods:
+
+- `addTextChunk(text, speed?, instant?)` — append a chunk, optionally overriding `speed` for it or rendering it instantly.
+- `addInstantTextChunk(text)` — append a chunk that appears immediately without animation.
+- `clearQueue()` — drop any chunks still waiting to be typed.
+
+Events:
+
+- `typing-complete` (`onTypingComplete`) — fires when all queued content has been typed. Detail: `{ finalContent: string }`.
+- `change` (`onChange`) — fires when the slotted content changes. Detail: `{ content: string, isTyping: boolean }`.
 
 ### Limitations
 
-- The animation continues even when the containing tab is in the background.
-- Speed updates while the typewriter is in the middle of processing queued chunks are ignored until the queue empties; the new speed applies to subsequent animations only.
+- **Runs in background tabs** — the animation keeps typing even when its tab is not visible; pause it yourself if that matters.
+- **Speed locks during a queue** — a `speed` change mid-queue is ignored until the queue drains and applies to later chunks only.
+- **Text only** — the component animates text and provides no container or chrome; wrap it in a surface if you need one.
 
 ## Accessibility
 
 ### Built-in features
 
-- The component renders an `aria-live="polite"` region around the animated text so screen readers receive an announcement when content settles, rather than per character.
+- The component renders an `aria-live="polite"` region around the animated text so screen readers receive one announcement when content settles, rather than one per character.
 - `aria-busy` is set on the container while typing is in progress and cleared when the animation completes, letting assistive technologies know when the content is stable.
-- The internal `mdc-text` element exposes the full target text via `aria-label`, so users of assistive technologies receive the complete message instead of the partial characters drawn on screen.
+- The internal `mdc-text` exposes the full target text via `aria-label`, so assistive technology receives the complete message instead of the partial characters on screen.
 
 #### Internal ARIA managed by the component
 
@@ -94,9 +100,17 @@ tw.addInstantTextChunk(' [system note]');         // appears instantly
 
 #### General
 
-- When the typewriter is part of a larger live region or replaces existing content, ensure surrounding `aria-live` settings don't cause double announcements.
-- If the animated message is critical for understanding the UI, also expose it in a non-animated form (such as the underlying text in a transcript) so users who disable animations still receive it.
+- When the typewriter sits inside a larger live region or replaces existing content, check that surrounding `aria-live` settings don't cause double announcements.
+- If the animated message is essential to understanding the UI, also expose it in a non-animated form (such as the underlying transcript text) for users who disable animations.
 
 ### Notes
 
 - Because the visible text is animated, on-screen text and the announced text can briefly differ; the `aria-label` on the internal text element is the source of truth for assistive technology.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-text` | The static typography primitive the typewriter renders through and the right choice when no animation is needed. |
+| `mdc-toast` | For a transient message that needs its own surface and chrome. |
+| `mdc-banner` | For a persistent in-page message that needs a container. |

@@ -7,19 +7,23 @@ component: card
 
 ## Overview
 
-The card groups related content — image, title and subtitle, body text, header action icons, and footer link/buttons — into a single visually contained surface. It is a static container: it has no built-in click handler or selection state, and is laid out either vertically (default, narrow) or horizontally (wide).
+The card groups the content and actions for a single concept — a record, a gallery tile, or an information panel — into one contained, scannable surface. It is a static container, so it presents and organizes content without acting as a control itself.
 
 ### When to use
 
-- Use `mdc-card` to present a self-contained piece of content (a record, a tile in a gallery, an information panel) with consistent padding, header, body, and footer regions.
-- Use the `promotional` variant for marketing, upsell, or feature-highlight surfaces; use `ghost` when the surrounding layout already provides the visual container; otherwise keep the default `border` variant.
+- Use `mdc-card` to hold the information and actions for a single concept, object, or record on one contained surface with consistent header, body, and footer regions.
+- Use `mdc-card` to present several similar objects together — a gallery, dashboard, or grid of tiles — so users can scan and compare them quickly.
+- Use `mdc-card` `promotional` for marketing, upsell, or feature-highlight surfaces.
+- Use `mdc-card` `ghost` when the surrounding layout already provides the visual container; otherwise keep the default `border`.
 
 ### When not to use
 
-- Use `mdc-cardbutton` when the entire card should act as a single click target.
-- Use `mdc-cardcheckbox` or `mdc-cardradio` when the card represents a selectable option inside a form (multi-select / single-select).
-- Use `mdc-listitem` inside `mdc-list` when the content is a row of a scrolling list rather than a standalone tile.
-- Use `mdc-banner` or `mdc-toast` when the content is a transient or status message rather than a persistent record.
+- Do not use `mdc-card` for long-form or complex content. Keep card content simple and scannable, and move dense text or intricate relationships to a full page or a dedicated visualization instead.
+- Do not use `mdc-card` when the whole surface should be a single click target. Use `mdc-cardbutton` instead.
+- Do not use `mdc-card` for selectable options in a form. Use `mdc-cardcheckbox` (multi-select) or `mdc-cardradio` (single-select) instead.
+- Do not use `mdc-card` for a row of a scrolling list. Use `mdc-listitem` inside `mdc-list` instead.
+- Do not use `mdc-card` for transient or status messages. Use `mdc-banner` or `mdc-toast` instead.
+- Do not use `mdc-card` as a primary navigation mechanism. Use `mdc-menupopover` or `mdc-tablist` instead.
 
 ## Guidelines
 
@@ -55,37 +59,46 @@ Minimal markup example:
 </mdc-card>
 ```
 
+Composition notes:
+
+- Prefer the `title`/`subtitle` slots over the `card-title`/`subtitle` attributes when the header needs custom markup (links, icons, badges); use the attributes for plain text.
+- Use the `footer-link` slot for navigation and `footer-button-primary`/`footer-button-secondary` for actions; reserve the generic `footer` slot for layouts the standard slots cannot express.
+
 ### Content guidance
 
 - Keep the title short and scannable; let `subtitle` carry supporting metadata (time, owner, status).
-- Prefer the `title`/`subtitle` slots over `card-title`/`subtitle` attributes when the content needs custom markup (links, icons, badges) inside the header.
-- Limit `icon-button` slot entries to at most three; additional buttons cause the header to feel crowded.
-- Use the `footer-link` slot for navigation cues and `footer-button-primary` / `footer-button-secondary` for actions — only use the generic `footer` slot when the standard layout cannot express what you need.
+- Keep body copy concise — a card is a summary surface, so lead with the point rather than a paragraph of detail.
+- Write footer link labels as destinations ("View report") and footer button labels as actions ("Join"), so the footer's two roles read differently.
 
 ### Property/Attribute details
 
-- `card-title` — primary header text. Rendered through `mdc-text`; ignored if the `title` slot has content.
-- `subtitle` — secondary header text below the title. Ignored if the `subtitle` slot has content.
-- `title-tag-name` / `subtitle-tag-name` — DOM tag used for the rendered title/subtitle `mdc-text`. Accepts any tag supported by `mdc-text` (e.g. `h2`, `h3`, `span`). Default: `span`.
-- `image-src` — URL of the image rendered in the `image` slot region. When empty, no image is rendered.
-- `image-alt` — alt text for the image. Required for non-decorative images.
-- `icon-name` — name of the leading icon shown in the header. When empty, no icon is rendered.
-- `variant` — border treatment. `border` (default), `ghost` (no border), `promotional` (promotional styling that also re-themes the footer buttons).
-- `orientation` — layout direction. `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
+| Option | Intent |
+|---|---|
+| `card-title` | Primary header text, rendered through `mdc-text`. Use it as the card's scannable heading; ignored when the `title` slot has content. |
+| `subtitle` | Secondary header text below the title. Use for supporting metadata (time, owner, status); ignored when the `subtitle` slot has content. |
+| `title-tag-name` / `subtitle-tag-name` (default `span`) | DOM tag for the rendered title/subtitle. Promote to `h2`/`h3` to fit the page's heading outline; leave `span` when the title is not a section heading. |
+| `image-src` / `image-alt` | Image rendered in the `image` slot region. Give informative images meaningful `image-alt`; set `image-alt=""` for decorative images. |
+| `icon-name` | Leading header icon. Use to reinforce the card's category; omit when it adds no meaning. |
+| `variant="border"` (default) | Bordered container. Use as the standard card on a plain background. |
+| `variant="ghost"` | No border. Use when the surrounding layout already frames the card. |
+| `variant="promotional"` | Emphasized styling that also re-themes the footer buttons. Use for marketing or feature-highlight surfaces. |
+| `orientation="vertical"` (default) | Stacked layout, min-width 20rem. Use in grids of similar cards. |
+| `orientation="horizontal"` | Side-by-side layout, min-width 40rem. Use for wide media-plus-text tiles. |
 
-The header `icon-button` slot accepts up to three `mdc-button` entries. Each slotted button is automatically coerced to `variant="tertiary"` and `size="32"` so they integrate visually with the header.
+**Note:** the header `icon-button` slot accepts up to three `mdc-button` entries; each is automatically coerced to `variant="tertiary"` and `size="32"`.
 
 ### Limitations
 
-- `mdc-card` is non-interactive — it has no role, focus, or activation. Use `mdc-cardbutton`, `mdc-cardcheckbox`, or `mdc-cardradio` when the whole card needs to be actionable or selectable.
-- The header `icon-button` slot enforces tertiary 32px buttons; other variants/sizes are overridden.
-- The `footer` slot bypasses the layout for `footer-link`, `footer-button-primary`, and `footer-button-secondary` — mixing them produces an inconsistent footer.
+- **Not interactive** — `mdc-card` has no role, focus, or activation. Use `mdc-cardbutton`, `mdc-cardcheckbox`, or `mdc-cardradio` when the whole surface must be actionable or selectable.
+- **Header actions are capped** — the `icon-button` slot forces tertiary 32px buttons and accepts at most three; other variants and sizes are overridden. Keep header actions to three.
+- **Footer slot bypasses layout** — the generic `footer` slot ignores the `footer-link`/`footer-button-primary`/`footer-button-secondary` layout, so mixing them looks inconsistent. Use the dedicated footer slots unless the standard layout cannot express the need.
+- **Content stays lightweight** — the card is a summary surface, not a document. Move extensive text or complex relationships to a full page or a dedicated visualization.
 
 ## Accessibility
 
 ### Built-in features
 
-The card renders as a generic container — no role, label, or focus management is applied to the host. Interactive children (header `icon-button`, footer link, footer buttons) keep their own focus, keyboard behaviour, and ARIA contract. The card's own title is rendered through `mdc-text` with a consumer-chosen tag, so you can promote it to a real heading (`h2`/`h3`/…) when the surrounding page needs heading-level navigation.
+The card renders as a generic container — no role, label, or focus management is applied to the host. Interactive children (header `icon-button`, footer link, footer buttons) keep their own focus, keyboard behavior, and ARIA contract. The card's own title is rendered through `mdc-text` with a consumer-chosen tag, so you can promote it to a real heading (`h2`/`h3`/…) when the surrounding page needs heading-level navigation.
 
 #### Internal ARIA managed by the component
 
@@ -99,11 +112,21 @@ The card renders as a generic container — no role, label, or focus management 
 #### General
 
 - The card itself is not focusable. If the whole tile must be activatable, use `mdc-cardbutton`/`mdc-cardcheckbox`/`mdc-cardradio` instead of wiring click handlers onto `mdc-card`.
-- Each interactive child must be independently labelled. Icon-only buttons in the `icon-button`, `footer-button-primary`, or `footer-button-secondary` slots require an `aria-label` describing the action.
+- Each interactive child must be independently labeled. Icon-only buttons in the `icon-button`, `footer-button-primary`, or `footer-button-secondary` slots require an `aria-label` describing the action.
 - When the card sits inside a list of similar tiles, make the surrounding container an actual list (`<ul>`/`<li>` or `role="list"`/`role="listitem"`) so assistive technologies announce the count and position.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is what users skim when navigating between cards.
 - Always set `image-alt` for informative images. For purely decorative imagery, set `image-alt=""` so screen readers skip the image.
 - Pick `title-tag-name` / `subtitle-tag-name` to match the surrounding heading outline (e.g. `h3` if the cards live in an `h2` section). Leaving the default `span` is fine when the card's title is not a section heading in the page outline.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-cardbutton` | Card-shaped surface that acts as one large button. Use when the whole tile triggers a single action. |
+| `mdc-cardcheckbox` | Card as a multi-select option. Use when several cards in a group can be selected at once. |
+| `mdc-cardradio` | Card as a single-select option. Use when only one card per group can be selected. |
+| `mdc-listitem` | Row within `mdc-list`. Use for scrolling lists rather than standalone tiles. |
+| `mdc-banner` / `mdc-toast` | Transient or status messaging. Use for temporary notices rather than persistent records. |

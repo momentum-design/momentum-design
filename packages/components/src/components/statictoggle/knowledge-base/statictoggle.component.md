@@ -7,17 +7,17 @@ component: statictoggle
 
 ## Overview
 
-The static toggle is a decorative, non-interactive toggle switch used for visual presentation. It shares the same styling as the interactive `mdc-toggle` but does not provide user interaction or form participation.
+The static toggle is a decorative, non-interactive toggle switch used to display on/off state in read-only contexts (summary views, confirmation screens, historical form data). It supports on/off, disabled, soft-disabled, and read-only visual states but does not handle user interaction or participate in forms.
 
 ### When to use
 
-- Use to display toggle state in read-only contexts such as summary views, confirmation screens, or list rows where state is reported but not editable.
-- Use as a visual building block inside custom interactive components (e.g. composed inside a list item that handles the click).
+- Use `mdc-statictoggle` to render the visual shape of a toggle in read-only UIs such as summary screens, confirmation screens, or historical form data.
+- Use `mdc-statictoggle` inside lists, cards, or tables where the toggle is part of the display, not a control.
 
 ### When not to use
 
-- Do not use as a replacement for an interactive toggle in forms — use `mdc-toggle` instead.
-- Do not use when users need to change the value directly on this control.
+- Do not use `mdc-statictoggle` for an interactive toggle in a form. Use `mdc-toggle` instead.
+- Do not use `mdc-statictoggle` where the user must focus, toggle, or submit the value. Use `mdc-toggle` instead.
 
 ## Guidelines
 
@@ -37,21 +37,44 @@ Minimal markup example:
 <mdc-statictoggle checked size="default"></mdc-statictoggle>
 ```
 
+### Content guidance
+
+- The static toggle carries no label of its own — convey each item's meaning through the content around it, such as the list-item label when it sits in a list or listbox, or the column header when it sits in a table. It shows only the visual on/off state, so don't rely on the switch position alone.
+
 ### Property/Attribute details
 
-- `checked` (boolean, default `false`) — controls the visual state. `true` renders the "on" state with the check icon; `false` renders the "off" state.
-- `size` (`'default' | 'compact'`, default `'default'`) — `'default'` renders a 1.5rem-tall switch; `'compact'` renders a 1rem-tall switch with a smaller icon.
-- `readonly` (boolean, default `false`) — applies the read-only visual style. Decorative only.
-- `soft-disabled` (boolean, default `false`) — applies the soft-disabled visual style. Decorative only; the element stays in the visual flow but reads as inactive.
-- `disabled` (boolean) — applies the disabled visual style. Decorative only on this component.
+| Option | Intent |
+|---|---|
+| `checked` | `true` renders the "on" state with the check icon; `false` renders the "off" state. |
+| `size` | `default` (1.5rem-tall switch) or `compact` (1rem-tall switch with a smaller icon). |
+| `disabled` / `soft-disabled` / `readonly` | Purely visual state styles; none change interaction (the control is never interactive). |
 
 ### Limitations
 
-- The component is non-interactive: it does not emit `click`/`change` events of its own, it is not focusable by default, and it is not form-associated. Wire interaction and form participation on the parent element that hosts the static toggle.
+- **Not interactive** — cannot be focused, toggled, or activated by the user; wire any interaction on the parent element.
+- **Not form-associated** — has no `name`/`value` and is not submitted with a form. Use `mdc-toggle` when form participation is needed.
 
 ## Accessibility
 
+### Built-in features
+
+The component renders only the visual switch and does not expose any toggle semantics — it has no role, no `aria-checked`, and is not focusable. Assistive technologies ignore it unless an interactive parent supplies the semantics.
+
+### Implementation requirements
+
+#### Labeling
+
+- The static toggle has no accessible name or state of its own. When the on/off state carries meaning, convey it through the interactive parent's accessible name or adjacent text, or use `mdc-toggle`.
+
 ### Notes
 
-- Because the component is purely decorative, it exposes no ARIA state on its own. When embedded inside an interactive parent, that parent is responsible for setting the appropriate role (e.g. `switch`, `checkbox`) and state attributes (`aria-checked`, `aria-disabled`, etc.) so assistive technologies announce the value correctly.
-- Do not rely on this component to convey state to assistive technologies on its own.
+Because the component does not expose toggle semantics, screen-reader users will not hear "switch, on" / "off" announcements. When the on/off state carries meaning, expose it through an interactive parent that sets `role="switch"` and `aria-checked`, or describe it in the surrounding content — do not rely on the switch position alone.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-toggle` | Interactive, form-associated switch. |
+| `mdc-formfieldgroup` | Labeled group for the interactive `mdc-toggle` controls this decorative variant mirrors. |
+| `mdc-staticcheckbox` | Decorative checkbox counterpart. |
+| `mdc-staticradio` | Decorative radio counterpart. |
