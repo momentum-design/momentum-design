@@ -7,17 +7,17 @@ component: tab
 
 ## Overview
 
-The tab is the individual control rendered inside an `mdc-tablist`. It displays an optional icon, a text label, and optional postfix content (badge or chip), and reflects its active state to assistive technologies.
+`mdc-tab` is a single tab control inside an `mdc-tablist`, representing one panel of related content the user can switch to. It shows which panel is currently active, while the parent `mdc-tablist` owns focus movement and selection.
 
 ### When to use
 
-- Use inside an `mdc-tablist` to represent one panel of content the user can switch to.
-- Use to provide a compact, single-line label for content panels related to one another.
+- Use `mdc-tab` inside an `mdc-tablist` to represent one panel of related content the user can switch to.
+- Use `mdc-tab` `pill` for the primary level of tabs, and `line` for a secondary level nested within a pill-tab view.
 
 ### When not to use
 
-- Do not use tabs to navigate between unrelated pages — use a navigation pattern.
-- Do not use a tab outside of an `mdc-tablist` if the tabs pattern semantics are needed; the list owns roving focus and selection wiring.
+- Do not use `mdc-tab` to navigate between separate pages. Use `mdc-sidenavigation` or `mdc-appheader` navigation instead.
+- Do not use `mdc-tab` on its own outside an `mdc-tablist`. Place it inside `mdc-tablist` or `mdc-verticaltablist` instead, which own roving focus and selection.
 
 ## Guidelines
 
@@ -42,26 +42,32 @@ Minimal markup example:
 </mdc-tablist>
 ```
 
+### Content guidance
+
+- Keep labels short, clear, and on a single line — content must fit inside the tab without truncating or wrapping to a second line; reword an over-long label (with a content designer) rather than shortening with an ellipsis.
+- Use consistent casing across the tabs in one set so they read as a group.
+- Use icons on every tab in a set or none at all — do not add an icon to only a few tabs.
+
 ### Property/Attribute details
 
-- `tab-id` (string) — unique identifier used by `mdc-tablist` to track selection. Required and must be unique within the list; the parent list reports an error otherwise.
-- `text` (string) — label rendered inside the tab. When omitted, the tab renders only the icon and the consumer must supply an `aria-label`.
-- `icon-name` (string) — name of the regular icon to render in the prefix area. The component automatically renders the matching `-filled` icon and swaps to it when the tab becomes active.
-- `variant` (`'glass' | 'line' | 'pill'`, default `'pill'`) — controls the background and indicator styling. Unknown values fall back to `'pill'`.
-- `size` (`32 | 28`, default `32`) — `32` is 2rem; `28` is the compact 1.75rem variant. Unknown values fall back to `32`.
-- `active` (boolean, default `false`) — toggles the visual active state. The component automatically reflects this to `aria-selected` on the host (see Accessibility).
-- `disabled` (boolean) — when set, removes the tab from the tab order and marks it as `aria-disabled`. `mdc-tablist` skips disabled tabs during roving-tabindex navigation.
-- `soft-disabled` (boolean) — visually disabled but still focusable and clickable, with `aria-disabled="true"`. Consumers must ensure the tab does not perform any action while soft-disabled.
+| Option | Intent |
+|---|---|
+| `variant="pill"` (default) | Sets background and indicator styling and signals hierarchy. Use `pill` for the primary level of tabs, `line` for a secondary level nested inside a pill-tab view, and `glass` only for high-contrast surfaces where that treatment is called for. |
+| `size="32"` (default) | Row height: `32` (2rem) for standard density, `28` (1.75rem) for compact contexts. |
+| `tab-id` (required) | Unique identifier the parent `mdc-tablist` uses to track selection; duplicates make the list report an error. |
+| `text` | The visible label. When omitted, the tab shows only its icon and you must supply an `aria-label` (see Content guidance and Labeling). |
+| `icon-name` | Regular icon rendered in the prefix; the component renders the matching `-filled` icon and swaps to it when the tab is active. |
+| `active` (default `false`) | Toggles the visual active state and mirrors it to `aria-selected`. Selection is normally driven by the parent list, not set per tab. |
+| `disabled` | Removes the tab from the tab order and marks it `aria-disabled`; the parent list skips it during arrow-key navigation. |
+| `soft-disabled` | Looks disabled but stays focusable and clickable with `aria-disabled="true"`; you must prevent the action yourself. |
 
-The component dispatches:
+The tab dispatches native `click` / `keydown` / `keyup` / `focus` events, plus `activechange` (`detail: { tabId, active }`). Inside `mdc-tablist`, listen to the list's `change` event rather than `activechange`. Slots: `prefix` (defaults to the `icon-name` icon) and `postfix` (a badge or chip — see Limitations).
 
-- `click` / `keydown` / `keyup` / `focus` — native DOM events with React equivalents.
-- `activechange` — bubbling `CustomEvent` with `detail: { tabId, active }` fired when the active state changes. When the tab is used inside `mdc-tablist`, the list listens for this internally and consumers should listen for the list's `change` event instead.
+### Limitations
 
-Slots:
-
-- `prefix` — content before the text; defaults to the icon rendered from `icon-name`.
-- `postfix` — content after the text, typically `mdc-badge` or `mdc-chip`. Do not use a badge and a chip in the same tab.
+- **Needs a tablist** — a tab has no roving focus or selection wiring on its own; place it inside `mdc-tablist` or `mdc-verticaltablist`.
+- **Badge or chip, not both** — the `postfix` slot takes an `mdc-badge` or an `mdc-chip`, not both in the same tab.
+- **Selection lives on the list** — the list owns the active tab, so listen to its `change` event; the tab's own `activechange` will double-fire if you also handle it.
 
 ## Accessibility
 
@@ -90,10 +96,20 @@ Slots:
 - The corresponding content panel element must have `role="tabpanel"` and `aria-labelledby` referencing the tab's `id`.
 - If a tab opens a popup menu, set `aria-haspopup` on it to either `menu` or `true`.
 
-#### Labelling
+#### Labeling
 
 - When `text` is omitted, provide an `aria-label` on the tab so screen reader users hear a meaningful name.
 
 ### Notes
 
 - When the tab lives inside `mdc-tablist`, listen to the list's `change` event for selection changes rather than the tab's `activechange` event to avoid duplicate handlers.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-tablist` | Horizontal container that owns focus and selection for these tabs. |
+| `mdc-verticaltablist` | Vertical container for stacked tabs (line variant only). |
+| `mdc-badge` | Status indicator slotted into `postfix`. |
+| `mdc-chip` | Metadata slotted into `postfix` (not alongside a badge). |
+| `mdc-sidenavigation` | Use for page-to-page navigation instead of tabs. |

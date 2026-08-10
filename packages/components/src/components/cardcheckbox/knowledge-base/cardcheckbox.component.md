@@ -7,20 +7,20 @@ component: cardcheckbox
 
 ## Overview
 
-The card checkbox looks like a card (image, header with icon/title/subtitle, body) but behaves as a single checkbox. Clicking anywhere on the card, pressing `Enter`, or pressing `Space` toggles the `checked` state and dispatches a `change` event. Multiple card checkboxes in a group can be checked at the same time.
+The card checkbox turns a whole card into a single checkbox, letting a content-rich tile serve as one selectable option. It exists for multi-select choices that need the visual weight of a card rather than a small inline control.
 
 ### When to use
 
 - Use `mdc-cardcheckbox` when each option in a multi-select group needs the visual weight of a card (image, title, supporting copy) rather than a small inline control.
-- Use it inside a labelled group container (`role="group"` + `aria-label` / `aria-labelledby`) when several card checkboxes belong to the same selection set.
+- Use `mdc-cardcheckbox` for opt-in choices where the option is easier to recognize with a picture or icon — notification channels, feature toggles, or categories of interest.
 
 ### When not to use
 
-- Use `mdc-card` when the surface is a static container and should not toggle a selection state.
-- Use `mdc-cardbutton` when activating the card should trigger an action rather than toggle a selection.
-- Use `mdc-cardradio` when only one card in the group can be selected at a time.
-- Use `mdc-checkbox` (or `mdc-staticcheckbox`) when a plain control is enough and the card surface is unnecessary.
-- Use `mdc-listitem` inside `mdc-list` when the content is a row of a scrolling list rather than a standalone selectable tile.
+- Do not use `mdc-cardcheckbox` for a static container that should not toggle a selection. Use `mdc-card` instead.
+- Do not use `mdc-cardcheckbox` when activating the card should trigger an action rather than toggle a selection. Use `mdc-cardbutton` instead.
+- Do not use `mdc-cardcheckbox` when only one card in the group can be selected. Use `mdc-cardradio` instead.
+- Do not use `mdc-cardcheckbox` when a plain control is enough and the card surface is unnecessary. Use `mdc-checkbox` (or `mdc-staticcheckbox`) instead.
+- Do not use `mdc-cardcheckbox` for a row of a scrolling list. Use `mdc-listitem` inside `mdc-list` instead.
 
 ## Guidelines
 
@@ -61,29 +61,28 @@ Listen for the `change` event to react to toggles; the new state is available on
 
 ### Content guidance
 
-- Always provide a `card-title` — it is the accessible name of the checkbox.
+- Always give the `card-title` a clear, specific label that names the option on its own.
 - Use the body to describe the consequence of selecting the option, not to repeat the title.
-- When grouping multiple card checkboxes, wrap them in a container with `role="group"` and a label so assistive technologies announce the set.
+- Keep titles parallel across the group (all nouns, or all short phrases) so the choices scan as a set.
 
 ### Property/Attribute details
 
-- `checked` — selection state. Defaults to `false`. Reflected to the host as `aria-checked`.
-- `selection-type` — visual indicator. `check` (default) renders an `mdc-icon` that appears/changes when selected; `checkbox` renders an `mdc-staticcheckbox` that is always visible and reflects both states.
-- `disabled` — when `true`, the card cannot be toggled and is removed from the tab order. Also reflected as `aria-disabled="true"`.
-- `card-title` — primary header text rendered through `mdc-text`. Ignored if the `title` slot has content. **Required** for accessibility.
-- `subtitle` — secondary header text. Ignored if the `subtitle` slot has content.
-- `title-tag-name` / `subtitle-tag-name` — DOM tag used for the rendered title/subtitle `mdc-text` (e.g. `h2`, `h3`, `span`). Default: `span`.
-- `image-src` — URL of the image rendered above the header. When empty, no image is rendered.
-- `image-alt` — alt text for the image. Required for non-decorative images.
-- `icon-name` — name of the leading icon shown in the header. When empty, no icon is rendered.
-- `variant` — border treatment. `border` (default), `ghost`, or `promotional`.
-- `orientation` — `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
+| Option | Intent |
+|---|---|
+| `checked` | Selection state (default `false`), reflected as `aria-checked`. Set it on the option(s) that start selected. |
+| `selection-type="check"` (default) | Shows a check icon that appears when selected. Use for a lightweight selection affordance. |
+| `selection-type="checkbox"` | Shows an always-visible `mdc-staticcheckbox` reflecting both states. Use when users should see the unselected state explicitly. |
+| `disabled` | Blocks toggling and removes the card from the tab order; sets `aria-disabled="true"`. Use for options that are not currently available. |
+| `card-title` (required) | Accessible name and heading of the option. Provide meaningful text; there is no fallback if both this and the `title` slot are empty. |
+
+**Note:** shares `mdc-card`'s content properties (`subtitle`, `image-src`/`image-alt`, `icon-name`, `variant`, `orientation`, and the title/subtitle tag-name props).
 
 ### Limitations
 
-- Slot content must remain non-interactive. The card itself is the toggle target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard/assistive-technology behaviour — use `mdc-card` if the surface needs actionable children.
-- The card checkbox is not form-associated. To submit its state in a native form, mirror `checked` into a `<input type="hidden">` (or use `mdc-checkbox` directly) and update it from the `change` event.
-- `card-title` is required for an accessible name; there is no fallback if both `card-title` and the `title` slot are empty.
+- **Children must be presentational** — the card is the toggle target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard and assistive-technology behavior. Use `mdc-card` if the surface needs actionable children.
+- **Not form-associated** — the checked state is not submitted with a native form. Mirror `checked` into a hidden input from the `change` event, or use `mdc-checkbox`.
+- **No built-in group** — the component provides no group container or group label. Wrap related cards in an element with `role="group"` and a label so the set is announced.
+- **Accessible name required** — `card-title` (or the `title` slot) is the only source of the name, with no fallback. Always provide one.
 
 ## Accessibility
 
@@ -118,9 +117,19 @@ The `card-title` (or `title` slot) provides the accessible name. The visual sele
 - Keep every slotted child presentational. If you need actionable content alongside the option, switch to `mdc-card` and use `mdc-checkbox` for the selection.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable, so the state is exposed to assistive technology.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is the default accessible name of the checkbox.
 - When the title alone is ambiguous (e.g. icon-driven cards, repeated titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement matches the option.
 - Set `image-alt` for informative images and `image-alt=""` for decorative ones to avoid double-announcing the visual.
 - Pick `title-tag-name` / `subtitle-tag-name` to match the surrounding heading outline only when the title functions as a heading; otherwise leave the default `span`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-cardradio` | Single-select card. Use when only one option per group applies. |
+| `mdc-card` | Static container. Use when the surface should not toggle a selection. |
+| `mdc-cardbutton` | Action card. Use when the card triggers a command instead of a selection. |
+| `mdc-checkbox` / `mdc-staticcheckbox` | Inline or decorative checkbox. Use when the card surface is unnecessary. |
+| `mdc-formfieldgroup` | Group wrapper for inline form controls. Use to label and group `mdc-checkbox` options. |

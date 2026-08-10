@@ -7,18 +7,18 @@ component: menuitem
 
 ## Overview
 
-`mdc-menuitem` is an actionable entry placed inside a `mdc-menubar` or `mdc-menupopover`. It exposes leading and trailing slots for controls and text, supports an optional arrow indicator for items that open submenus, and emits a click event when activated by mouse, `Enter`, or `Space`.
+`mdc-menuitem` is the actionable entry inside a `mdc-menubar` or `mdc-menupopover`. It represents an individual command in a menu, including items that open a submenu.
 
 ### When to use
 
 - Use `mdc-menuitem` for the individual entries inside a menubar or menu popover that perform an action or open a submenu.
-- Use it as the trigger element for a nested `mdc-menupopover` by giving it a unique `id` and pointing the popover's `triggerid` at it.
+- Use `mdc-menuitem` as the trigger that opens a nested `mdc-menupopover` submenu.
 
 ### When not to use
 
-- Do not use `mdc-menuitem` for toggleable state — use `mdc-menuitemcheckbox` or `mdc-menuitemradio`.
-- Do not use it inside `mdc-listbox`/`mdc-select` (selection lists) — use `mdc-option` there.
-- Do not use it as a stand-alone clickable row outside of a `menu`/`menubar`/`menupopover` context; use `mdc-listitem` for generic lists.
+- Do not use `mdc-menuitem` for a toggleable on/off state. Use `mdc-menuitemcheckbox` or `mdc-menuitemradio` instead.
+- Do not use `mdc-menuitem` in a selection list where the user picks a value to submit. Use `mdc-option` inside `mdc-listbox`/`mdc-select` instead.
+- Do not use `mdc-menuitem` as a stand-alone clickable row outside a menu context. Use `mdc-listitem` for generic lists instead.
 
 ## Guidelines
 
@@ -48,30 +48,40 @@ Always place `mdc-menuitem` inside an ancestor element with `role="menu"` or `ro
 
 ### Content guidance
 
-- Use the `label` attribute (or `leading-text-primary-label` slot) for the primary text and `secondary-label`/`tertiary-label` for supporting detail.
-- Use the trailing slots (`trailing-text-side-header`, `trailing-text-subline`, `trailing-controls`) for metadata such as shortcuts, status, or badges.
-- If the item text is long enough to truncate, connect an `mdc-tooltip` via its `triggerid` to the menu item's `id` to expose the full text on hover and focus. The component does not create the tooltip automatically.
+- Keep the `label` short and action-led — verb-first for commands ("Rename", "Duplicate"); use `secondary-label`/`tertiary-label` only for genuine supporting detail, not to restate the label.
+- Keep labels parallel across a menu — the same voice and grammatical form (all verbs, or all nouns) so the set reads as one list.
+- Keep trailing metadata terse — a keyboard shortcut, a short status word, or a count, not a sentence.
+- Prefer labels short enough not to truncate; menu items do not add an overflow tooltip on their own (see Limitations).
 
 ### Property/Attribute details
 
-- `label`, `secondary-label`, `tertiary-label` — primary, secondary, and tertiary text rendered on the leading side. May be replaced by slotting custom text into `leading-text-primary-label`, `leading-text-secondary-label`, `leading-text-tertiary-label`.
-- `side-header-text`, `subline-text` — trailing text. May be replaced by slotting custom text into `trailing-text-side-header`, `trailing-text-subline`.
-- `name` — identifier used to identify the menu item when it is selected.
-- `value` — value associated with the menu item when it is selected. Especially useful for checkbox or radio variants but available on every menu item.
-- `arrow-position` — `'leading' | 'trailing'`. When set, an arrow icon is rendered on the chosen side. Defaults to no arrow.
-- `arrow-direction` — `'positive' | 'negative'`. Controls which way the arrow points. With `positive`, leading arrows point left and trailing arrows point right; with `negative`, the directions invert.
-- `disabled` — disables interaction entirely and removes the item from keyboard navigation; clicks and key presses are stopped before they bubble.
-- `soft-disabled` — appears disabled but remains focusable and reachable. Consumers must ensure that the item does not trigger unintended actions while soft-disabled.
-- `active` — visual-only flag that styles the item as active without changing focus or ARIA state.
-- `data-index` — zero-based index used by virtualized lists; mirrored to `aria-posinset`.
-- Events emitted: `click`, `keydown`, `keyup`, `focus`, `enabled`, `disabled`, `created`, `destroyed`.
+| Option | Intent |
+|---|---|
+| `label` + `secondary-label` / `tertiary-label` | Leading-side text. Use `label` for the action; add secondary/tertiary lines only for genuine supporting detail. Slot `leading-text-*` instead when you need custom markup. |
+| `side-header-text` / `subline-text` | Trailing-side text for metadata such as shortcuts or status. Slot `trailing-text-*` for custom markup. |
+| `name` / `value` | Identify the item when a selection is reported; most useful on the checkbox/radio variants but available on every item. |
+| `arrow-position="trailing"` | Renders a submenu arrow on the leading or trailing side. Set `trailing` on items that open a nested `mdc-menupopover`; omit it for plain actions. |
+| `arrow-direction="positive"` (default) | Flips which way the arrow points; keep the default unless an RTL or mirrored layout needs `negative`. |
+| `disabled` | Fully disables the item and removes it from keyboard navigation. Use for actions that are unavailable and should not be reachable. |
+| `soft-disabled` | Looks disabled but stays focusable so users can discover why it is unavailable; you must prevent it from triggering unintended actions. |
+| `active` | Visual-only active styling; does not move focus or change ARIA. Use for highlighting, not for selection state. |
+| `data-index` | Zero-based index for virtualized menus; mirrored to `aria-posinset` so position is announced correctly. |
+
+**Note:** the component emits `click`, `keydown`, `keyup`, `focus`, `enabled`, `disabled`, `created`, and `destroyed` events.
+
+### Limitations
+
+- **No built-in submenu** — `arrow-position` only draws the arrow; opening a submenu requires a sibling `mdc-menupopover` whose `triggerid` matches the item's `id`.
+- **No toggle state** — the item has no checked/selected semantics. Use `mdc-menuitemcheckbox` or `mdc-menuitemradio` when state must be conveyed.
+- **Needs a menu ancestor** — outside an element with `role="menu"`/`role="menubar"`, roving focus and arrow-key navigation do not apply. Place it in `mdc-menupopover` or `mdc-menubar`.
+- **Tooltip isn't automatic** — truncated labels do not get a tooltip on their own; wire an `mdc-tooltip` to the item's `id` to expose the full text.
 
 ## Accessibility
 
 ### Built-in features
 
 - Sets `role="menuitem"` on the host and adopts the inset-rectangle list-item visual variant.
-- `Enter` triggers a synthetic click on `keydown` (matching native behaviour); `Space` triggers the click on `keyup` and prevents page scroll.
+- `Enter` triggers a synthetic click on `keydown` (matching native behavior); `Space` triggers the click on `keyup` and prevents page scroll.
 - When `disabled` is set, the host becomes `tabindex="-1"`, `aria-disabled="true"`, and click/keyboard events are stopped before reaching consumers.
 - Any controls slotted into `leading-controls`/`trailing-controls` have their `disabled` attribute mirrored from the host while the menu item is `disabled` or `soft-disabled`.
 - `data-index` is reflected to `aria-posinset` so virtualized usages announce correct position.
@@ -92,7 +102,19 @@ Always place `mdc-menuitem` inside an ancestor element with `role="menu"` or `ro
 - Place `mdc-menuitem` inside an `mdc-menubar`, `mdc-menupopover`, or other element with `role="menu"` / `role="menubar"` so the surrounding navigation, focus management, and roving tabindex are applied.
 - For items that open submenus, give the item a unique `id`, set `arrow-position="trailing"`, and create a sibling `mdc-menupopover` whose `triggerid` matches the `id`.
 
-#### Labelling
+#### Labeling
 
 - Always provide an accessible name through `label`, slotted text in `leading-text-primary-label`, or `aria-label` on the host.
 - When the item contains only icons or non-text content, set `aria-label` explicitly.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-menuitemcheckbox` | Checkable menu item for an independent on/off state within a menu. |
+| `mdc-menuitemradio` | Single-select menu item for mutually exclusive options within a group. |
+| `mdc-menupopover` | Floating menu surface that hosts menu items and manages focus and keyboard navigation. |
+| `mdc-menubar` | Persistent menu container that hosts menu items and their submenus. |
+| `mdc-menusection` | Labeled grouping of menu items within a menu or menubar. |
+| `mdc-option` | Selectable row for value-picking lists (`mdc-select`/`mdc-listbox`), not action menus. |
+| `mdc-listitem` | Generic list row for non-menu contexts. |
