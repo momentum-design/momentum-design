@@ -5,6 +5,37 @@
   "tier": 2,
   "topics": [
     {
+      "id": "tier2/packages/assets/icons/knowledge-base/icons",
+      "tier": 2,
+      "path": "packages/assets/icons/knowledge-base/icons.md",
+      "title": "Icons",
+      "summary": "Guidance for Momentum's Custom Icon Library — icon types, naming, weights, when to use icons versus other assets, and how to consume @momentum-design/icons.",
+    },
+    {
+      "id": "tier2/packages/assets/animations/knowledge-base/animations",
+      "tier": 2,
+      "path": "packages/assets/animations/knowledge-base/animations.md",
+      "title": "Animations",
+      "summary": "Guidance for Momentum's animation assets — Lottie/SVG animations, what the library contains, how to consume them via mdc-animation, and how they differ from motion tokens.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/brand-visuals/knowledge-base/brand-visuals",
+      "tier": 2,
+      "path": "packages/assets/brand-visuals/knowledge-base/brand-visuals.md",
+      "title": "Brand visuals",
+      "summary": "Guidance for Momentum's brand-visuals library — approved logos, wordmarks, and imagery, how to consume them via mdc-brandvisual, and the criteria for inclusion.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/illustrations/knowledge-base/illustrations",
+      "tier": 2,
+      "path": "packages/assets/illustrations/knowledge-base/illustrations.md",
+      "title": "Illustrations",
+      "summary": "Guidance for Momentum's illustration library — style principles, when to use, sizing and colour, consumption via mdc-illustration and mdc-illustrationprovider, and accessibility.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/components/knowledge-base/snowflake-components",
       "tier": 2,
       "path": "packages/components/knowledge-base/snowflake-components.md",

@@ -109,6 +109,16 @@ skill is not the place to change rules.
      for general standards; link to that topic instead of duplicating voice,
      tone, or pattern rules (Rule 3).
 
+6b. **Structure the body (Tier 2 token topics).** When the chosen tier is 2
+   **and** the topic lives under `packages/assets/tokens/knowledge-base/`, read
+   and follow the
+   [`momentum-tier-2-token-writing-guide`](../momentum-tier-2-token-writing-guide/SKILL.md)
+   before drafting. It defines the token-doc skeleton, Momentum token
+   conventions, and what to link out to rather than restate.
+
+   - Tier 2 topics in other packages have no dedicated guide yet — follow the
+     schema and content guidelines directly.
+
 7. **Validate the knowledge-base.** Run:
 
    ```bash
