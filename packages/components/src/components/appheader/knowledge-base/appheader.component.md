@@ -7,15 +7,17 @@ component: appheader
 
 ## Overview
 
-The app header provides a structured layout for the top of an application with three sections: leading, center, and trailing. Each section automatically handles flex alignment — leading aligns left, center aligns center, trailing aligns right.
+`mdc-appheader` is the top-level shell bar of an application, giving branding, global search or navigation, and account controls a consistent three-section layout. It typically stays visible as the user moves between pages, so global controls remain in one predictable place.
 
 ### When to use
 
-- Use `mdc-appheader` as the top-level bar of an application to host branding, primary navigation/search, and account or action controls in a consistent layout.
+- Use `mdc-appheader` as the top-level bar of an application to host branding, primary navigation or search, and account or action controls in a consistent layout.
+- Use `mdc-appheader` for controls that should persist across pages, so they stay in a fixed location as the main view changes.
 
 ### When not to use
 
-- Use a plain `<header>` element when you only need a simple top bar without the leading/center/trailing three-section structure.
+- Do not use `mdc-appheader` for a simple top bar that needs no leading/center/trailing structure. Use a plain `<header>` element instead.
+- Do not use `mdc-appheader` for primary section-to-section navigation down the side of the page. Use `mdc-sidenavigation` instead.
 
 ## Guidelines
 
@@ -39,11 +41,20 @@ Minimal markup example:
 </mdc-appheader>
 ```
 
-### Content guidance
+### Property/Attribute details
 
-- **Leading** — typically the brand logo, brand name, or a menu/back icon.
-- **Center** — search bar, primary navigation links, or quick action controls.
-- **Trailing** — profile avatar, settings, notifications, or other account-level controls.
+The component exposes no attributes; it is configured entirely through its three slots, each with a fixed alignment.
+
+| Option | Intent |
+|---|---|
+| `leading` slot (left-aligned) | Brand identity and wayfinding — the brand logo or name, or a menu/back control. |
+| `center` slot (center-aligned) | Global search, primary navigation links, or quick action controls. |
+| `trailing` slot (right-aligned) | Account-level controls — profile avatar, settings, notifications, or actions. |
+
+### Limitations
+
+- **Layout only** — the header arranges slotted content but adds no navigation, search, or account behavior; each slotted control owns its own logic and accessible name.
+- **One per page** — use a single `mdc-appheader` at the top of the document; more than one `banner` landmark confuses assistive technologies.
 
 ## Accessibility
 
@@ -62,4 +73,17 @@ The component renders its container as a `<header>` landmark element, exposing t
 #### General
 
 - Use only one `mdc-appheader` per page; multiple `banner` landmarks confuse assistive technologies.
+
+#### Labeling
+
 - Provide accessible names for any interactive controls slotted into the header (logos, buttons, search field) — the header itself does not label its contents.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-sidenavigation` | Primary section-to-section navigation, paired with the header in the app shell. |
+| `mdc-brandvisual` | Brand logo commonly slotted into `leading`. |
+| `mdc-searchfield` | Global search commonly slotted into `center`. |
+| `mdc-avatarbutton` | Account entry point commonly slotted into `trailing`. |
+| `mdc-button` | Action and icon controls slotted across the sections. |

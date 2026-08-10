@@ -1,6 +1,6 @@
 ---
 title: Formfieldgroup
-summary: Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labelled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.
+summary: Usage, guidelines, and accessibility for the mdc-formfieldgroup component — a labeled container grouping checkbox/toggle form fields with shared header, helper text, and group semantics.
 tier: 3
 component: formfieldgroup
 ---
@@ -14,12 +14,13 @@ The group is announced to screen readers as a single semantic unit via `role="gr
 ### When to use
 
 - Use `mdc-formfieldgroup` to wrap a set of related `mdc-checkbox` controls so they share a single label and helper text.
-- Use it to wrap a set of related `mdc-toggle` controls in the same way.
+- Use `mdc-formfieldgroup` to wrap a set of related `mdc-toggle` controls in the same way.
 
 ### When not to use
 
-- Use `mdc-radiogroup` for radio buttons — radios require the `radiogroup` role and arrow-key navigation, which `mdc-formfieldgroup` does not provide.
-- Use `mdc-formfieldwrapper` for a single labelled form field rather than a group.
+- Do not use `mdc-formfieldgroup` for radio buttons. Use `mdc-radiogroup` instead — radios need the `radiogroup` role and arrow-key navigation this group does not provide.
+- Do not use `mdc-formfieldgroup` for a single labeled field. Use `mdc-formfieldwrapper` instead.
+- Do not use `mdc-formfieldgroup` for a long list of options that should not all be visible at once. Use `mdc-select` with multi-select instead.
 
 ## Guidelines
 
@@ -50,23 +51,23 @@ Each child checkbox/toggle continues to manage its own form value through its ow
 
 ### Content guidance
 
-- Provide a meaningful `label` (or `data-aria-label`) — without it the group has no accessible name and assistive technology will not announce the grouping.
-- Use `help-text` for short instructions or constraints that apply to the whole group ("Select at least one channel"); per-field validation belongs on the child fields.
-- Keep the number of children small enough to scan in one visual block; for long lists, prefer a different control such as a `mdc-select` with multi-select.
+- Provide a meaningful `label` (the group header, or `data-aria-label`) stating the grouping category or what the set is about — without it the group has no accessible name and assistive technology will not announce the grouping. Keep it short (it truncates with a tooltip when it overflows) and use headers sparingly.
+- Use `help-text` as an optional group description for short instructions or constraints that apply to the whole group ("Select at least one channel"); use it sparingly, and keep it to one line (it wraps to two). Per-field validation belongs on the child fields, and group-level validation reads below the group header.
 
 ### Property/Attribute details
 
-- `label` — visible header text rendered above the group. Used as the accessible name when no `aria-label` is provided.
-- `data-aria-label` — accessible name fallback when no visible label is rendered.
-- `help-text` — helper or validation text rendered above the children. Wired as `aria-description` on the group.
-- `help-text-type` — `default`, `error`, `warning`, `success`, or `priority`. Drives the helper icon.
-- `required` — when `true`, appends a required indicator (`*`) to the label. The group does not enforce required state on its own; the consumer must validate the children.
-- `toggletip-text` / `toggletip-placement` / `toggletip-strategy` / `info-icon-aria-label` — opt-in info icon button next to the label that opens an `mdc-toggletip`.
+| Option | Intent |
+|---|---|
+| `label` / `data-aria-label` | Visible group header (the accessible name), or the fallback name when no visible label is rendered. |
+| `help-text` + `help-text-type` | Group-level helper or validation text above the children (wired as `aria-description`); the type (`default`, `error`, `warning`, `success`, `priority`) drives the icon. |
+| `required` | Appends a required indicator (`*`) to the label. Visual only — the group does not enforce that a child is selected; validate the children yourself. |
+| `toggletip-text` + `info-icon-aria-label` | Info toggletip beside the group label; provide the aria-label when set. |
 
 ### Limitations
 
-- The group does not manage form submission, validation, or selection state for its children — each child is responsible for its own value and validity. The group only provides the visible header, helper text, and ARIA grouping.
-- The group does not enforce the type of its children; placing radios inside will not produce a `radiogroup`. Use `mdc-radiogroup` for radio buttons.
+- **No group-level state** — the group does not manage submission, validation, or selection for its children; each child owns its own value and validity. It provides only the header, helper text, and ARIA grouping.
+- **Not for radios** — placing radios inside does not produce a `radiogroup`. Use `mdc-radiogroup` for radio buttons.
+- **Required is visual only** — `required` renders the indicator but does not enforce a minimum selection; validate the combined child state in the consumer.
 
 ## Accessibility
 
@@ -90,8 +91,18 @@ Children are rendered in the default slot in DOM order and announced to screen r
 
 - Place only checkbox or toggle children in the default slot; radio buttons need `mdc-radiogroup` instead.
 - Validate the children's combined state from the consumer when `required` is `true` — the group does not enforce that at least one child is selected.
+- A checkbox group has no parent checkbox; place any indeterminate "select all" rollup in a separate `mdc-checkbox` outside the group.
 
-#### Labelling
+#### Labeling
 
 - Always provide a `label` (or `data-aria-label`) — without it the group has no accessible name.
 - Use `help-text` for constraints that apply to the whole group; per-field error messages belong on each child's own `help-text`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-checkbox` | Grouped here to form a labeled checkbox group. |
+| `mdc-toggle` | Grouped here to form a labeled toggle group. |
+| `mdc-radiogroup` | Equivalent grouping for radio buttons, with the `radiogroup` role and arrow-key navigation. |
+| `mdc-formfieldwrapper` | Single labeled field instead of a group; the base component this extends. |
