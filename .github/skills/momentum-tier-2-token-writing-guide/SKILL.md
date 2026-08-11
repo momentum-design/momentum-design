@@ -58,10 +58,16 @@ Confirm (skip what the source already answers):
 
 - The tokens to document — a category (e.g. color, elevation, motion), a tier,
   or a cross-cutting contract (e.g. theming).
-- The source files that back them, and the resolved values.
+- The source files that back them, and the resolved values (to inform accurate
+  `Use for` intent — not for publishing in the doc itself).
 - Any existing intent notes to incorporate.
-- Audience: Momentum token docs serve **both** designers and developers — include
-  the source path, the `--mds-*` custom property, and the value.
+- Audience: Momentum token docs serve **both** designers and developers —
+  include the source path so either can trace to the authoritative JSON. Do
+  **not** hardcode the compiled `--mds-*` custom property name or the resolved
+  value in a foundational-category doc (see the table convention below) —
+  those can drift from the shipped tokens and go stale in the doc. Semantic
+  (theme) tokens are the exception: their per-theme resolved values *are* the
+  documentation, per Step 2.
 
 If documenting the whole category set, start with the semantic tier — primitives
 largely document themselves.
@@ -88,9 +94,12 @@ Where most effort belongs. Per token or group document:
 ### Foundational categories (`elevation`, `typography`, `effect`, `motion`)
 
 Single core scales rather than a primitive/semantic split. Document each with the
-table convention below. `motion` additionally has an animation-recipe layer
-(`.mds-animation`) that references the core motion primitives — document the
-recipe types, not raw values.
+table convention below. `motion` additionally has a named-animation layer
+(`.mds-animation`) that composes the core motion primitives into directly
+consumable `--mds-transition-*` / `--mds-animation-*` custom properties — document
+the animation *types* (transition, transitionCompound, keyframe,
+keyframeCompound), not raw values, and be explicit that a consumer can reference
+one by name, not just an internal build detail.
 
 ### Component tokens
 
@@ -100,11 +109,20 @@ token tier.
 
 ### Table column convention
 
-| Token | Custom property | Value | Use for |
-| --- | --- | --- | --- |
+| Token | Use for |
+| --- | --- |
 
-`Token` = source path; `Custom property` = compiled `--mds-*` name; `Value` =
-resolved value; `Use for` = role-based intent (not a restatement of the value).
+`Token` = the step name (the bare name, e.g. `fast`, when the table is already
+scoped to one sub-category by its heading; the qualified path, e.g.
+`elevation.1`, when a table isn't scoped that way). `Use for` = role-based
+intent (not a restatement of a value).
+
+**Never add a `Custom property` or `Value` column.** The compiled `--mds-*`
+name and the resolved value both live in the shipped source JSON and can
+change independently of the doc — showing them invites discrepancies. Instead,
+end the table group with an `Authoritative source: <path to the JSON>` line
+(see `elevation.md` / `motion.md` for the pattern) and point readers there for
+the exact name and value.
 
 ## Step 3: Document the theming contract (if applicable)
 
@@ -175,7 +193,8 @@ Move any sentence that matches a different row before validating.
 | What the category is / the problem it solves | Intro |
 | How to think about / choose within the category | `Principles` |
 | Naming shape and `--mds-*` compilation | Token anatomy / layers |
-| A token's value and role | The scale/group table |
+| A token's identifier and role (never its compiled name or value) | The scale/group table |
+| The compiled name and resolved value | `Authoritative source:` link to the JSON — never the table |
 | How semantic tokens resolve per theme | Link to `theming.md` — do not restate |
 | Voice, tone, in-product copy rules | Link to `content-guidelines.md` |
 | Which components consume the token | `Used by` line (grep `--mds-*` usage) |
@@ -191,14 +210,20 @@ contract:
 
 - Every fenced code block needs a language (markdownlint MD040 — use `text` when
   there is no better fit).
-- Cross-check every value against the source JSON before publishing.
+- Foundational-category tables (elevation, typography, effect, motion) carry no
+  compiled name or value at all (see the table convention) — there is nothing
+  to cross-check there. For semantic (theme) tokens, which do document a
+  resolved value per theme, cross-check every one against the source JSON
+  before publishing.
 - Regenerate the index after adding/renaming; commit the shard.
 
 ## Quality checks
 
 - Every semantic token has an intent, not just a value and name.
 - Use-on and do-not-use-on are both present.
-- Values match the shipped source JSON, not Figma.
+- Semantic-token resolved values match the shipped source JSON, not Figma.
+- No foundational-category table has a `Custom property` or `Value` column —
+  it ends with an `Authoritative source:` link instead.
 - Theming behavior links to `theming.md` rather than restating it.
 - `Used by` reflects real consumption (or says so plainly when none exists).
 - The misuse reference exists and is specific.
