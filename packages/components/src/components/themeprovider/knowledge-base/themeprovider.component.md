@@ -68,6 +68,8 @@ Available Momentum theme classes:
 
 Descendant Lit components can read the current theme by consuming `ThemeProvider.Context`.
 
+For how these classes are generated, how tokens resolve per theme (modes, brand accents, inverted vs. common), and how to add a theme, see the tokens package [Theming](../../../../../assets/tokens/knowledge-base/theming.md) guide.
+
 ### Limitations
 
 - **Exact class match required** — `themeclass` must exactly match the class on the loaded theme stylesheet, or the CSS variables it depends on stay undefined.
