@@ -81,7 +81,7 @@ Everything operable with a pointer must be operable with a keyboard, in a logica
 
 - Do not attach behavior to hover or pointer events without an equivalent keyboard path.
 - Preserve a sensible tab order by ordering the DOM correctly; avoid positive `tabindex` values.
-- If you build a composite widget from primitives, implement the expected arrow-key model rather than making every child a tab stop. Momentum ships `mdc-spatialnavigationprovider` for directional (arrow-key) navigation across a region — use it instead of hand-rolling roving focus.
+- If you build a composite widget from primitives, implement the expected arrow-key model yourself — a single tab stop with roving `tabindex` moving focus between items (see [Interaction patterns](./interaction-patterns.md#moving-within-a-composite)). This "focusgroup" pattern is unrelated to `mdc-spatialnavigationprovider`: that provider is a single, app-root context for a different input modality — directional (D-pad) navigation from a TV remote or game controller — not a per-widget or per-grid arrow-key helper.
 
 ### Focus
 

@@ -31,13 +31,13 @@ Consistency here is what makes the system predictable. Follow the same conventio
 
 ### Moving within a composite
 
-Composite widgets — menus, lists, tablists, comboboxes, sliders, steppers — are a **single tab stop** with arrow keys moving between their items, not one tab stop per child. This keeps the tab sequence short and matches assistive-technology expectations.
+Composite widgets — menus, lists, tablists, comboboxes, sliders, steppers — are a **single tab stop** with arrow keys moving between their items, not one tab stop per child. This roving-focus pattern (sometimes called a "focusgroup" — see the [open-ui focusgroup explainer](https://open-ui.org/components/focusgroup-v2.explainer/)) keeps the tab sequence short and matches assistive-technology expectations.
 
-- **Arrow keys** move between items in the natural axis of the widget.
+- **Arrow keys** move between items in the natural axis of the widget — including a two-dimensional grid, where arrow keys move in all four directions within the grid itself.
 - **Home / End** jump to the first / last item where applicable.
 - **Type-ahead** selects by first characters in listbox-style widgets.
 
-When you build a custom region that needs directional navigation, use `mdc-spatialnavigationprovider` rather than making every element a tab stop.
+If you build a custom composite widget — including a grid — implement this roving-`tabindex` pattern yourself; it is what Momentum's own composite components (tabs, list, etc.) already do internally. Grid navigation built this way is still an open gap in Momentum's primitives today. Don't reach for `mdc-spatialnavigationprovider` here: that provider solves a different, app-level problem — a single instance per app giving the whole document directional (D-pad) navigation for TV, set-top-box, console, or kiosk input — not per-widget arrow-key handling (see [spatialnavigationprovider](../packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component.md)).
 
 ### Focus visibility and order
 

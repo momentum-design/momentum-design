@@ -24,7 +24,7 @@ It does **not** define spacing scales or breakpoint pixel values — Momentum do
 Momentum does **not** detect screen size for you, and it does **not** prescribe breakpoints. Instead:
 
 - **You own breakpoint detection.** Decide device class from whatever signal fits your app — CSS media queries, container queries, or device detection — and choose the breakpoint values that suit your product.
-- **Components read a shared signal.** Rather than each component re-implementing breakpoint logic, they read a shared responsive context and adapt their behavior.
+- **Components can read a shared signal, when you opt in.** For the narrow set of cases that need it (see [Shared responsive context](#shared-responsive-context) below), a shared context lets components adapt without each one re-implementing breakpoint logic. Most layouts don't need this at all — `rem`-based sizing already covers the common case.
 - **You own page layout.** Grid, columns, and spacing are yours to build with standard CSS. Use flexible, relative units so the result reflows and zooms cleanly (see below).
 
 This keeps the system framework-agnostic and lets one set of components serve products with very different layout needs.
@@ -49,7 +49,7 @@ This keeps the system framework-agnostic and lets one set of components serve pr
 
 CSS can also target the provider's attributes (for example `mdc-some-component[media="mobile"] { … }`) when you need finer styling. See the [`responsivesettingsprovider` topic](../packages/components/src/components/responsivesettingsprovider/knowledge-base/responsivesettingsprovider.component.md) for the full attribute reference.
 
-Use the provider for **shared responsive behavior across components**. It is not a general-purpose media-query helper — components that don't consume the context are unaffected, and it does not carry theme tokens (use `mdc-themeprovider`) or icon configuration (use `mdc-iconprovider`).
+**Most of an app should not use this provider at all.** Momentum's `rem`-based sizing already handles the majority of responsive needs without it. Reach for `mdc-responsivesettingsprovider` only for the narrower cases it exists for — for example, intentionally rendering a "mobile"-style presentation on a large screen, or making one specific, smaller part of the app respond differently from the rest — not as a default wrapper for general responsive behavior. It is not a general-purpose media-query helper — components that don't consume the context are unaffected, and it does not carry theme tokens (use `mdc-themeprovider`) or icon configuration (use `mdc-iconprovider`).
 
 ## Adapting overlays to small screens
 
