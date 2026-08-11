@@ -36,12 +36,12 @@ Like all tokens, elevation is consumed through a compiled CSS custom property
 Four levels, each a single drop shadow (`x y blur spread color`). Offset and blur
 grow with altitude:
 
-| Token | CSS custom property | Shadow (x, y, blur, spread, color) | Use for |
-| --- | --- | --- | --- |
-| `elevation.1` | `--mds-elevation-1` | 0, 2, 8, 0, `rgba(0,0,0,0.2)` | Subtle lift — resting cards, low-raised surfaces |
-| `elevation.2` | `--mds-elevation-2` | 0, 4, 16, 0, `rgba(0,0,0,0.2)` | Raised surfaces and hovered cards |
-| `elevation.3` | `--mds-elevation-3` | 0, 6, 24, 0, `rgba(0,0,0,0.25)` | Floating surfaces — dialogs, popovers, toasts, banners |
-| `elevation.4` | `--mds-elevation-4` | 0, 12, 48, 0, `rgba(0,0,0,0.25)` | Highest, most detached surfaces |
+| Token | Use for |
+| --- | --- |
+| `elevation.1` | Subtle lift — resting cards, low-raised surfaces |
+| `elevation.2` | Raised surfaces and hovered cards |
+| `elevation.3` | Floating surfaces — dialogs, popovers, toasts, banners |
+| `elevation.4` | Highest, most detached surfaces |
 
 Authoritative source: `packages/assets/tokens/src/core/elevation.json`.
 
