@@ -69,6 +69,14 @@
       "canonical": null
     },
     {
+      "id": "tier2/packages/assets/tokens/knowledge-base/motion",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/motion.md",
+      "title": "Motion",
+      "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/assets/tokens/knowledge-base/theming",
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/theming.md",
