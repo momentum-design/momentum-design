@@ -5,13 +5,6 @@
   "tier": 2,
   "topics": [
     {
-      "id": "tier2/packages/assets/tokens/knowledge-base/elevation",
-      "tier": 2,
-      "path": "packages/assets/tokens/knowledge-base/elevation.md",
-      "title": "Elevation",
-      "summary": "The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.",
-    },
-    {
       "id": "tier2/packages/assets/animations/knowledge-base/animations",
       "tier": 2,
       "path": "packages/assets/animations/knowledge-base/animations.md",
@@ -57,6 +50,14 @@
       "path": "packages/assets/tokens/knowledge-base/color.md",
       "title": "Color",
       "summary": "How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/elevation",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/elevation.md",
+      "title": "Elevation",
+      "summary": "The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.",
       "canonical": null
     },
     {
