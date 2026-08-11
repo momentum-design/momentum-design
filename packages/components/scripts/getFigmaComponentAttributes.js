@@ -69,7 +69,7 @@ function getReactCodeConnectFile() {
     'components',
     componentNameLc,
     'code-connect',
-    `${componentNameLc}.react.figma.tsx`,
+    `${componentNameLc}.react.figma.ts`,
   );
 }
 

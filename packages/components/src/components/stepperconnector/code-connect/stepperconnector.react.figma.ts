@@ -6,8 +6,8 @@ import figma from "figma"
 export default {
   id: "stepperconnector",
   imports: [
-    "import '@momentum-design/components/components/stepperconnector';",
+    "import { Connector } from '@momentum-design/components/dist/react';",
   ],
-  example: figma.code`<mdc-stepperconnector></mdc-stepperconnector>`,
+  example: figma.code`<Connector />`,
 }
 // End AI-Assisted

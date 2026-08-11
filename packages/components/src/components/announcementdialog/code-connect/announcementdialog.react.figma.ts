@@ -6,8 +6,8 @@ import figma from "figma"
 export default {
   id: "announcementdialog",
   imports: [
-    "import '@momentum-design/components/components/announcementdialog';",
+    "import { Announcementdialog } from '@momentum-design/components/dist/react';",
   ],
-  example: figma.code`<mdc-announcementdialog></mdc-announcementdialog>`,
+  example: figma.code`<Announcementdialog />`,
 }
 // End AI-Assisted

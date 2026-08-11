@@ -5,7 +5,7 @@ import figma from "figma"
 
 export default {
   id: "banner",
-  imports: ["import '@momentum-design/components/components/banner';"],
-  example: figma.code`<mdc-banner></mdc-banner>`,
+  imports: ["import { Banner } from '@momentum-design/components/dist/react';"],
+  example: figma.code`<Banner />`,
 }
 // End AI-Assisted

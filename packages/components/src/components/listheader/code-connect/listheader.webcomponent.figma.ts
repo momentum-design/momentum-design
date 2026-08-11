@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_LISTHEADER_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_LISTHEADER_URL>', {
-  props: {},
-  example: () => html`<mdc-listheader></mdc-listheader>`,
+import figma from "figma"
+
+export default {
+  id: "listheader",
   imports: ["import '@momentum-design/components/components/listheader';"],
-});
+  example: figma.code`<mdc-listheader></mdc-listheader>`,
+}
+// End AI-Assisted

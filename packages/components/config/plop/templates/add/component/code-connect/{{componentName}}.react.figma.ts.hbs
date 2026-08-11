@@ -1,0 +1,11 @@
+// url=<FIGMA_{{upperCase componentName}}_URL>
+// AI-Assisted
+
+import figma from "figma"
+
+export default {
+  id: "{{componentName}}",
+  imports: ["import { {{sentenceCase componentName}} } from '@momentum-design/components/dist/react';"],
+  example: figma.code`<{{sentenceCase componentName}} />`,
+}
+// End AI-Assisted

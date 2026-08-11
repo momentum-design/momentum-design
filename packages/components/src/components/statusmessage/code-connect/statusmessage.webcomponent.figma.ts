@@ -1,10 +1,11 @@
+// url=<FIGMA_STATUSMESSAGE_URL>
 // AI-Assisted
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
 
-figma.connect('<FIGMA_STATUSMESSAGE_URL>', {
-  props: {},
-  example: () => html`<mdc-statusmessage></mdc-statusmessage>`,
+import figma from "figma"
+
+export default {
+  id: "statusmessage",
   imports: ["import '@momentum-design/components/components/statusmessage';"],
-});
+  example: figma.code`<mdc-statusmessage></mdc-statusmessage>`,
+}
 // End AI-Assisted

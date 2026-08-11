@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_ACCORDIONGROUP_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_ACCORDIONGROUP_URL>', {
-  props: {},
-  example: () => html`<mdc-accordiongroup></mdc-accordiongroup>`,
+import figma from "figma"
+
+export default {
+  id: "accordiongroup",
   imports: ["import '@momentum-design/components/components/accordiongroup';"],
-});
+  example: figma.code`<mdc-accordiongroup></mdc-accordiongroup>`,
+}
+// End AI-Assisted

@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_STEPPER_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_STEPPER_URL>', {
-  props: {},
-  example: () => html`<mdc-stepper></mdc-stepper>`,
+import figma from "figma"
+
+export default {
+  id: "stepper",
   imports: ["import '@momentum-design/components/components/stepper';"],
-});
+  example: figma.code`<mdc-stepper></mdc-stepper>`,
+}
+// End AI-Assisted

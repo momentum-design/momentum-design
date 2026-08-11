@@ -1,8 +1,11 @@
-// @ts-ignore
-import figma, { html } from '@figma/code-connect/html';
+// url=<FIGMA_{{upperCase componentName}}_URL>
+// AI-Assisted
 
-figma.connect('<FIGMA_{{upperCase componentName}}_URL>', {
-  props: {},
-  example: () => html`<{{prefix}}{{separator}}{{componentName}}></{{prefix}}{{separator}}{{componentName}}>`,
+import figma from "figma"
+
+export default {
+  id: "{{componentName}}",
   imports: ["import '@momentum-design/components/components/{{componentName}}';"],
-});
+  example: figma.code`<{{prefix}}{{separator}}{{componentName}}></{{prefix}}{{separator}}{{componentName}}>`,
+}
+// End AI-Assisted
