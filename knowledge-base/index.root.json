@@ -5,11 +5,43 @@
   "tier": 1,
   "topics": [
     {
+      "id": "tier1/knowledge-base/accessibility",
+      "tier": 1,
+      "path": "knowledge-base/accessibility.md",
+      "title": "Accessibility",
+      "summary": "Cross-cutting accessibility contract for products built with Momentum — the WCAG 2.2 AA baseline, what components handle for you, and what every consumer must supply.",
+      "canonical": null
+    },
+    {
       "id": "tier1/knowledge-base/content-guidelines",
       "tier": 1,
       "path": "knowledge-base/content-guidelines.md",
       "title": "Content guidelines",
       "summary": "Product UI/UX writing standards for products built with Momentum — voice, tone, style, accessibility, inclusion, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.",
+      "canonical": null
+    },
+    {
+      "id": "tier1/knowledge-base/interaction-patterns",
+      "tier": 1,
+      "path": "knowledge-base/interaction-patterns.md",
+      "title": "Interaction patterns",
+      "summary": "The shared interaction model for Momentum — keyboard and focus behavior, overlay and dismissal rules, selection, and how to compose loading, empty, and error states.",
+      "canonical": null
+    },
+    {
+      "id": "tier1/knowledge-base/internationalization",
+      "tier": 1,
+      "path": "knowledge-base/internationalization.md",
+      "title": "Internationalization",
+      "summary": "Building Momentum UIs that work across languages and locales — bidirectional and RTL layout, text expansion, locale-aware formatting, and directional iconography.",
+      "canonical": null
+    },
+    {
+      "id": "tier1/knowledge-base/responsive-design",
+      "tier": 1,
+      "path": "knowledge-base/responsive-design.md",
+      "title": "Responsive design",
+      "summary": "How to build adaptive UIs with Momentum — the consumer-owned breakpoint model, the shared responsive context provider, and the reflow and zoom bar every layout must clear.",
       "canonical": null
     }
   ]
