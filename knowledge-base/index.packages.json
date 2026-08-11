@@ -52,6 +52,30 @@
       "canonical": null
     },
     {
+      "id": "tier2/packages/assets/tokens/knowledge-base/color",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/color.md",
+      "title": "Color",
+      "summary": "How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/glass",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/glass.md",
+      "title": "Glass",
+      "summary": "The Momentum glass aesthetic and the material, blur, and overlay tokens that build layered, translucent surfaces.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/theming",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/theming.md",
+      "title": "Theming",
+      "summary": "How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/assets/tokens/knowledge-base/typography",
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/typography.md",
