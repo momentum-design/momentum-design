@@ -31,7 +31,12 @@ This keeps the system framework-agnostic and lets one set of components serve pr
 
 ## Shared responsive context
 
-`mdc-responsivesettingsprovider` supplies a shared responsive-settings context to every descendant that consumes it. Wrap a subtree — typically near the app root — and update its attributes from **your** breakpoint logic. Descendants then adapt without each one re-detecting screen size.
+`mdc-responsivesettingsprovider` supplies a shared responsive-settings context to every descendant that consumes it. Wrap a subtree — typically near the app root — and update its attributes from **your** breakpoint logic. Descendants then adapt without each one re-detecting screen size. Consumer should add it only when for example:
+
+- They want to render "mobile" like UI on a big screen.
+- They want to render some smaller part of the app differently.
+
+Most of the app should not use it at all. The rem based design should handle most of the responsive use cases.
 
 ```html
 <mdc-responsivesettingsprovider
