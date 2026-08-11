@@ -5,13 +5,6 @@
   "tier": 2,
   "topics": [
     {
-      "id": "tier2/packages/assets/tokens/knowledge-base/motion",
-      "tier": 2,
-      "path": "packages/assets/tokens/knowledge-base/motion.md",
-      "title": "Motion",
-      "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the animation recipes built on them, and the principles for applying them.",
-    },
-    {
       "id": "tier2/packages/assets/animations/knowledge-base/animations",
       "tier": 2,
       "path": "packages/assets/animations/knowledge-base/animations.md",
@@ -49,6 +42,14 @@
       "path": "packages/assets/illustrations/knowledge-base/illustrations.md",
       "title": "Illustrations",
       "summary": "Guidance for Momentum's illustration library — style principles, when to use, sizing and colour, consumption via mdc-illustration and mdc-illustrationprovider, and accessibility.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/motion",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/motion.md",
+      "title": "Motion",
+      "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
       "canonical": null
     },
     {
