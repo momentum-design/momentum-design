@@ -45,11 +45,6 @@
       "canonical": null
     },
     {
-      "id": "tier2/packages/assets/tokens/knowledge-base/motion",
-      "tier": 2,
-      "path": "packages/assets/tokens/knowledge-base/motion.md",
-      "title": "Motion",
-      "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
       "id": "tier2/packages/assets/tokens/knowledge-base/color",
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/color.md",
@@ -63,6 +58,14 @@
       "path": "packages/assets/tokens/knowledge-base/glass.md",
       "title": "Glass",
       "summary": "The Momentum glass aesthetic and the material, blur, and overlay tokens that build layered, translucent surfaces.",
+      "canonical": null
+    },
+    {
+      "id": "tier2/packages/assets/tokens/knowledge-base/motion",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/motion.md",
+      "title": "Motion",
+      "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
       "canonical": null
     },
     {
