@@ -6,43 +6,43 @@ tier: 2
 
 # Design tokens
 
-Momentum ships design decisions as **tokens** — named values for colour, type,
+Momentum ships design decisions as **tokens** — named values for color, type,
 depth, motion, and more. A component never references a raw value; it consumes a
 compiled `--mds-*` CSS custom property whose value the system resolves. That
-indirection is what keeps products consistent, lets a single build render across
-themes, and holds the line on accessibility.
+indirection keeps products consistent, lets a single build render across themes,
+and keeps contrast and accessibility intact.
 
-This page is the orientation map for the token system: the tier model, how
-tokens are named and compiled, how they are authored, who owns them, and where to
-go for each category. It does not restate the categories themselves — each has its
-own topic, linked below.
+This page orients you to the token system: the tier model, how tokens are named
+and compiled, how they're authored, who owns them, and where to go for each
+category. It doesn't restate the categories — each has its own topic, linked from
+[Token topics](#token-topics).
 
 ## The tier model
 
-Momentum tokens fall into a small number of tiers. The rule of thumb: **consume
-the semantic tier; never reach past it to a primitive.**
+Momentum tokens fall into a small number of tiers. In short: **consume the
+semantic tier; never reach past it to a primitive.**
 
 | Tier | What it is | Consume directly? |
 | --- | --- | --- |
-| **Primitive** | The raw scales — the base palette (`color.core.*`, `color.decorative.*`) and the core value files (`core/*`). | No — referenced by semantic tokens |
-| **Semantic (theme)** | Intent-based colour that resolves per theme (`color.theme.*` → `--mds-color-theme-*`). The only tier that flips between themes. | **Yes** |
-| **Foundational categories** | Single core scales that are not a primitive/semantic split — `elevation`, `typography`, `effect`, and `motion`. Motion adds a named-animation layer on top of its core scale. | **Yes** |
+| **Primitive** | The raw scales — the base palette (`color.core.*`, `color.decorative.*`) and the core value files (`core/*`) | No — referenced by semantic tokens |
+| **Semantic (theme)** | Intent-based color that resolves per theme (`color.theme.*` → `--mds-color-theme-*`); the only tier that flips between themes | **Yes** |
+| **Foundational categories** | Single core scales, not a primitive/semantic split — `elevation`, `typography`, `effect`, and `motion`; motion adds a named-animation layer on top of its core scale | **Yes** |
 
 There is **no component-token tier.** Component-specific application (which token a
 button uses in which state) lives in component code, not in a token file.
 
-For the semantic colour catalogue see [Color](./color.md); for how semantic
-tokens resolve across themes see [Theming](./theming.md).
+For the semantic color catalog, see [Color](./color.md); for how semantic
+tokens resolve across themes, see [Theming](./theming.md).
 
 ## Naming and compilation
 
-Semantic colour tokens follow a structured name:
+Semantic color tokens follow a structured name:
 
 ```text
 color.theme.<usage>.<variant>.<state>
 ```
 
-where *usage* is where the colour applies, *variant* is the treatment
+where *usage* is where the color applies, *variant* is the treatment
 (prominence, sentiment, action, or accent), and *state* is the interaction state.
 [Color](./color.md#how-a-theme-token-is-named) breaks this down in full.
 
@@ -51,17 +51,17 @@ scope class, and consumers reference the property rather than any raw value:
 
 | Category | Selector | Custom property example |
 | --- | --- | --- |
-| Semantic colour (per theme) | `.mds-theme-*` | `--mds-color-theme-text-primary-normal` |
+| Semantic color (per theme) | `.mds-theme-*` | `--mds-color-theme-text-primary-normal` |
 | Core primitives | `.mds-core` | `--mds-color-core-blue-70` |
-| Effect (e.g. blur) | `.mds-effect` | `--mds-effect-*` |
+| Effect (blur) | `.mds-effect` | `--mds-effect-*` |
 | Elevation | `.mds-elevation` | `--mds-elevation-3` |
 | Typography | `.mds-typography` | `--mds-font-apps-body-midsize-medium-font-size` |
 | Motion primitives | `.mds-motion` | `--mds-motion-*` |
 | Named animations | `.mds-animation` | `--mds-transition-*` / `--mds-animation-*` |
 
-Semantic colour is the only category emitted **per theme** (a `--mds-theme-*`
-class per mode/accent); the others are emitted once. See [Theming](./theming.md)
-for how the theme classes are applied at runtime.
+Semantic color is the only category emitted **per theme** (a `--mds-theme-*`
+class per mode and accent); the others are emitted once. See
+[Theming](./theming.md) for how the theme classes are applied at runtime.
 
 ## Authoring format
 
@@ -69,11 +69,11 @@ Tokens are authored in **Style Dictionary + Tokens Studio JSON** (`value`/`type`
 under `packages/assets/tokens/src/**` — `core/*` (primitives and the foundational
 scales), `theme/*` (semantic per-mode values), `motion/*` (named animations),
 plus `aaos/*` and `additionaltheme/*` for the automotive namespace and brand
-accents. Composite tokens carry their shape in the `type` (for example an
-`elevation` is a `boxShadow` with `x/y/blur/spread/color`; a `motion.easing` is a
-`cubic-bezier`). This pipeline is **not** DTCG 2025.10 — there are no
-resolver/set/mode files. The source JSON is the single source of truth for names
-and values; the docs describe intent and link back to it.
+accents. Composite tokens carry their shape in the `type` (for example, an
+`elevation` is a `boxShadow` with `x/y/blur/spread/color`, and a `motion.easing`
+is a `cubic-bezier`). This pipeline is **not** DTCG 2025.10 — there are no
+resolver, set, or mode files. The source JSON is the single source of truth for
+names and values; the docs describe intent and link back to it.
 
 ## Token topics
 
@@ -82,21 +82,21 @@ values, and usage:
 
 | Topic | Covers |
 | --- | --- |
-| [Color](./color.md) | The semantic colour model — usage groups, prominence/sentiment, states, and where each colour belongs. |
-| [Theming](./theming.md) | How semantic tokens resolve across light, dark, high-contrast, AAOS, and brand accents, and how a theme is applied. |
-| [Glass](./glass.md) | The glass aesthetic — material, blur, and overlay tokens for layered, translucent surfaces. |
-| [Elevation](./elevation.md) | The four-step drop-shadow scale that conveys surface depth on the z-axis. |
-| [Motion](./motion.md) | Duration, easing, delay, and stagger scales, plus the named animations built on them. |
-| [Typography](./typography.md) | The type scale, weights, and composed `font.apps.*` styles, and how to consume them. |
+| [Color](./color.md) | The semantic color model — usage groups, prominence and sentiment, states, and where each color belongs |
+| [Theming](./theming.md) | How semantic tokens resolve across light, dark, high-contrast, AAOS, and brand accents, and how a theme is applied |
+| [Glass](./glass.md) | The glass aesthetic — material, blur, and overlay tokens for layered, translucent surfaces |
+| [Elevation](./elevation.md) | The four-step drop-shadow scale that conveys surface depth on the z-axis |
+| [Motion](./motion.md) | Duration, easing, delay, and stagger scales, plus the named animations built on them |
+| [Typography](./typography.md) | The type scale, weights, and composed `font.apps.*` styles, and how to consume them |
 
 ## Quick reference — "I need a token for…"
 
-Intent-first entry points into the topics above:
+Intent-first entry points into the token topics:
 
 | I need… | Reach for | Topic |
 | --- | --- | --- |
-| Primary body text colour | `color.theme.text.primary.normal` | [Color](./color.md) |
-| A page / card surface | `color.theme.background.solid.primary.normal` | [Color](./color.md) |
+| Primary body text color | `color.theme.text.primary.normal` | [Color](./color.md) |
+| A page or card surface | `color.theme.background.solid.primary.normal` | [Color](./color.md) |
 | A keyboard focus ring | `color.theme.focus.default.*` | [Color](./color.md) |
 | A floating-surface shadow | `elevation.3` | [Elevation](./elevation.md) |
 | A translucent, blurred panel | `background.glass.*` + `blur200` | [Glass](./glass.md) |
@@ -111,7 +111,7 @@ changed token through the design team, following the
 [package contribution guide](../CONTRIBUTING.md) and the
 [root contributing guide](../../../../CONTRIBUTING.md). The package's `config/`
 drives which build outputs are generated; the shipped output formats (CSS, SCSS,
-JSON, minimal JSON, iOS Swift, Android XML) are fixed and the engineering team is
+JSON, minimal JSON, iOS Swift, Android XML) are fixed, and the engineering team is
 not currently taking requests for additional formats. When a token changes, its
 knowledge-base topic is updated in the same change, following the
 [contributing-to-knowledge-base skill](../../../../.github/skills/momentum-contributing-to-knowledge-base/SKILL.md).
