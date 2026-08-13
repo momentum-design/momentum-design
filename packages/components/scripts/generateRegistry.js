@@ -164,8 +164,8 @@ function createComponentEntry(moduleDoc, declaration) {
     tagName: declaration.tagName,
     summary: knowledgeBaseMetadata.summary || declaration.description || '',
     imports: {
-      webComponent: `@momentum-design/components/${componentDirectory}`,
-      react: `@momentum-design/components/react/${componentName}`,
+      webComponent: [`@momentum-design/components/${componentDirectory}`],
+      react: [`@momentum-design/components/react/${componentName}`],
     },
     source: removeUndefinedProperties({
       customElementsManifest: CUSTOM_ELEMENTS_MANIFEST_REFERENCE,
