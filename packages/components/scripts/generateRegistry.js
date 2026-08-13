@@ -77,6 +77,89 @@ function removeUndefinedProperties(value) {
   return Object.fromEntries(Object.entries(value).filter(([, entryValue]) => entryValue !== undefined));
 }
 
+function normalizeInheritedFrom(inheritedFrom) {
+  if (!inheritedFrom) {
+    return undefined;
+  }
+
+  return removeUndefinedProperties({
+    name: inheritedFrom.name,
+    module: inheritedFrom.module?.replace(/^src\//, '').replace(/\.(t|j)sx?$/, '.js'),
+  });
+}
+
+function typeText(type) {
+  return type?.text;
+}
+
+function normalizeProperty(member) {
+  return removeUndefinedProperties({
+    name: member.name,
+    attribute: member.attribute,
+    type: typeText(member.type),
+    default: member.default,
+    description: member.description,
+    reflected: member.reflects,
+    inheritedFrom: normalizeInheritedFrom(member.inheritedFrom),
+  });
+}
+
+function normalizeMethod(member) {
+  return removeUndefinedProperties({
+    name: member.name,
+    description: member.description,
+    parameters: member.parameters?.map(parameter =>
+      removeUndefinedProperties({
+        name: parameter.name,
+        type: typeText(parameter.type),
+        description: parameter.description,
+        optional: parameter.optional,
+      }),
+    ),
+    return: member.return
+      ? removeUndefinedProperties({
+          type: typeText(member.return.type),
+          description: member.return.description,
+        })
+      : undefined,
+    inheritedFrom: normalizeInheritedFrom(member.inheritedFrom),
+  });
+}
+
+function normalizeEvent(event) {
+  return removeUndefinedProperties({
+    name: event.name,
+    reactName: event.reactName,
+    type: typeText(event.type),
+    description: event.description,
+    inheritedFrom: normalizeInheritedFrom(event.inheritedFrom),
+  });
+}
+
+function normalizeNamedApiItem(item) {
+  return removeUndefinedProperties({
+    name: item.name === '' ? 'default' : item.name,
+    description: item.description,
+    inheritedFrom: normalizeInheritedFrom(item.inheritedFrom),
+  });
+}
+
+function getPublicMembers(declaration, kind) {
+  return (declaration.members ?? []).filter(member => member.kind === kind && member.privacy !== 'private');
+}
+
+function createApi(declaration) {
+  return {
+    properties: getPublicMembers(declaration, 'field').map(normalizeProperty),
+    methods: getPublicMembers(declaration, 'method').map(normalizeMethod),
+    events: (declaration.events ?? []).map(normalizeEvent),
+    slots: (declaration.slots ?? []).map(normalizeNamedApiItem),
+    cssParts: (declaration.cssParts ?? []).map(normalizeNamedApiItem),
+    cssProperties: (declaration.cssProperties ?? []).map(normalizeNamedApiItem),
+    cssCustomStates: (declaration.cssCustomStates ?? []).map(normalizeNamedApiItem),
+  };
+}
+
 function getComponentDirectory(modulePath) {
   return path.posix.dirname(modulePath);
 }
@@ -101,6 +184,7 @@ function createComponentEntry(moduleDoc, declaration) {
       declarationName: declaration.name,
       knowledgeBasePath,
     }),
+    api: createApi(declaration),
   });
 }
 
