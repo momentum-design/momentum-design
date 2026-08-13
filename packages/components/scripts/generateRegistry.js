@@ -77,19 +77,12 @@ function removeUndefinedProperties(value) {
   return Object.fromEntries(Object.entries(value).filter(([, entryValue]) => entryValue !== undefined));
 }
 
-function normalizeInheritedFrom(inheritedFrom) {
-  if (!inheritedFrom) {
-    return undefined;
-  }
-
-  return removeUndefinedProperties({
-    name: inheritedFrom.name,
-    module: inheritedFrom.module?.replace(/^src\//, '').replace(/\.(t|j)sx?$/, '.js'),
-  });
-}
-
 function typeText(type) {
   return type?.text;
+}
+
+function defaultValue(value) {
+  return value === 'undefined' ? undefined : value;
 }
 
 function normalizeProperty(member) {
@@ -97,10 +90,9 @@ function normalizeProperty(member) {
     name: member.name,
     attribute: member.attribute,
     type: typeText(member.type),
-    default: member.default,
+    default: defaultValue(member.default),
     description: member.description,
     reflected: member.reflects,
-    inheritedFrom: normalizeInheritedFrom(member.inheritedFrom),
   });
 }
 
@@ -122,7 +114,6 @@ function normalizeMethod(member) {
           description: member.return.description,
         })
       : undefined,
-    inheritedFrom: normalizeInheritedFrom(member.inheritedFrom),
   });
 }
 
@@ -132,7 +123,6 @@ function normalizeEvent(event) {
     reactName: event.reactName,
     type: typeText(event.type),
     description: event.description,
-    inheritedFrom: normalizeInheritedFrom(event.inheritedFrom),
   });
 }
 
@@ -140,7 +130,6 @@ function normalizeNamedApiItem(item) {
   return removeUndefinedProperties({
     name: item.name === '' ? 'default' : item.name,
     description: item.description,
-    inheritedFrom: normalizeInheritedFrom(item.inheritedFrom),
   });
 }
 
