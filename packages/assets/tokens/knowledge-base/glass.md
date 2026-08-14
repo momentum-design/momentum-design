@@ -2,6 +2,7 @@
 title: Glass
 summary: The Momentum glass aesthetic and the material, blur, and overlay tokens that build layered, translucent surfaces.
 tier: 2
+websitePath: foundations/glass
 ---
 
 # Glass

@@ -2,6 +2,7 @@
 title: Internationalization
 summary: Building Momentum UIs that work across languages and locales — bidirectional and RTL layout, text expansion, locale-aware formatting, and directional iconography.
 tier: 1
+websitePath: guidelines/internationalization
 ---
 
 **Primary audience:** Product design and engineering.

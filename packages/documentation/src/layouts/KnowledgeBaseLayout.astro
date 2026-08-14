@@ -1,0 +1,263 @@
+---
+import HeadCommon from '../components/HeadCommon.astro';
+import HeadSEO from '../components/HeadSEO.astro';
+import Header from '../components/Header/Header.astro';
+import Footer from '../components/Footer/Footer.astro';
+import KnowledgeBaseSidebar from '../components/KnowledgeBaseSidebar.astro';
+import * as CONFIG from '../config';
+
+type Props = {
+  frontmatter: CONFIG.Frontmatter;
+  section: string;
+  sourcePath: string;
+};
+
+const { frontmatter, section, sourcePath } = Astro.props as Props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const currentPage = Astro.url.pathname;
+---
+
+<html dir={frontmatter.dir ?? 'ltr'} lang={frontmatter.lang ?? 'en-us'} class="initial">
+  <head>
+    <HeadCommon />
+    <HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
+    <title>
+      {frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
+    </title>
+    <style>
+      body {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-rows: var(--theme-navbar-height) 1fr;
+        --gutter: 0.5rem;
+        --doc-padding: 2rem;
+        /* Supply the font-family token mdc-text expects outside an mdc-themeprovider. */
+        --mdc-themeprovider-font-family: var(--font-body);
+        background-image: url('/hero-gradient.svg');
+        background-position: 50% 15%;
+        background-repeat: no-repeat;
+      }
+
+      /* Keep the providers matching the docs' own text colour/font so wrapping the
+         page in them does not shift any inherited styles. */
+      mdc-themeprovider {
+        --mdc-themeprovider-color-default: var(--theme-text);
+        --mdc-themeprovider-font-family: var(--font-body);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 15rem minmax(0, 1fr);
+        gap: 0;
+        width: min(100%, 90rem);
+        margin: 0 auto;
+        padding: 0;
+        overflow-y: auto;
+      }
+
+      .content {
+        --kb-gutter: 3rem;
+        max-width: 75rem;
+        width: 100%;
+        padding: 0 15rem 0 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .eyebrow {
+        width: 60rem;
+        max-width: 100%;
+        margin: 2.5rem 0 0.25rem;
+        padding: 0 var(--kb-gutter);
+        line-height: 1.2;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mds-color-theme-text-secondary-normal, var(--theme-text-light));
+      }
+
+      /* mdc-text sets text-transform from its type token (none); re-assert uppercase above it. */
+      mdc-text.eyebrow {
+        text-transform: uppercase;
+      }
+
+      .content-title {
+        width: 60rem;
+        max-width: 100%;
+        margin: 0;
+        padding: 0.75rem var(--kb-gutter);
+      }
+
+      /* mdc-text renders an h1 in its shadow root; drop its default UA block margins. */
+      .content-title::part(text) {
+        margin-block: 0;
+      }
+
+      /* Body copy is rendered as <mdc-text> hosts by the rehype-mdc-text plugin;
+         typography comes from each host's `type`, so these rules own layout,
+         spacing and paragraph colour only. */
+      .content > :global(mdc-text[tagname='p']),
+      .content > :global(mdc-text[tagname='h2']),
+      .content > :global(mdc-text[tagname='h3']),
+      .content > :global(mdc-text[tagname='h4']),
+      .content > :global(mdc-text[tagname='h5']),
+      .content > :global(mdc-text[tagname='h6']),
+      .content > :global(ul),
+      .content > :global(ol),
+      .content > :global(figure) {
+        width: 60rem;
+        max-width: 100%;
+        padding: 0 var(--kb-gutter);
+      }
+
+      /* mdc-text renders its tag in the shadow root; drop the UA block margins so
+         the host margins below own the vertical rhythm. */
+      .content > :global(mdc-text)::part(text) {
+        margin-block: 0;
+      }
+
+      .content > :global(mdc-text[tagname='p']) {
+        margin: 0 0 1rem;
+        color: var(--theme-text-light);
+      }
+
+      .content > :global(mdc-text[tagname='h2']) {
+        margin: 2rem 0 1rem;
+      }
+
+      /* Self-referencing anchor links on h2 headings inherit the heading colour
+         instead of the default link styling. */
+      .content :global(mdc-text[tagname='h2']) :global(a.kb-heading-anchor) {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .content :global(mdc-text[tagname='h2']) :global(a.kb-heading-anchor:hover) {
+        text-decoration: underline;
+      }
+
+      .content > :global(mdc-text[tagname='h3']) {
+        margin: 2rem 0 0.75rem;
+      }
+
+      /* An h3 directly following an h2 is a subsection of it; collapse the gap. */
+      .content > :global(mdc-text[tagname='h2'] + mdc-text[tagname='h3']) {
+        margin-top: 0.75rem;
+      }
+
+      .content > :global(mdc-text[tagname='h4']),
+      .content > :global(mdc-text[tagname='h5']),
+      .content > :global(mdc-text[tagname='h6']) {
+        margin: 1.5rem 0 0.5rem;
+      }
+
+      /* Inset list markers from the reading column's left edge. */
+      .content > :global(ul),
+      .content > :global(ol) {
+        margin: 0 0 1.5rem;
+        padding-inline-start: calc(var(--kb-gutter) + 1.75rem);
+      }
+
+      .content :global(li) {
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      /* border-collapse makes tables ignore padding, so match the text content
+         width (capped column minus both gutters) and let flex-centering align it. */
+      .content > :global(table) {
+        width: calc(min(60rem, 100%) - 2 * var(--kb-gutter));
+        max-width: 100%;
+        margin: 1rem 0;
+      }
+
+      /* Make the header row stand out from the body and zebra rows. */
+      .content :global(th) {
+        padding-block: 0.5rem;
+        background-color: var(--theme-bg-accent);
+        border-bottom: 0.125rem solid var(--theme-accent);
+      }
+
+      /* Align the code box with the text column (like tables) and give it a
+         monospace font with breathing room so tokens are easy to read. */
+      .content > :global(pre) {
+        width: calc(min(60rem, 100%) - 2 * var(--kb-gutter));
+        max-width: 100%;
+        margin: 1rem 0;
+        padding: 1rem 1.25rem;
+        font-family: var(--font-mono);
+      }
+
+      /* Match the blockquote box to the text column so its border and fill line
+         up with the rest of the content instead of bleeding past the gutter. */
+      .content > :global(blockquote) {
+        width: calc(min(60rem, 100%) - 2 * var(--kb-gutter));
+        max-width: 100%;
+      }
+
+      /* Inline text wrapped by the rehype-mdc-text plugin flows within its block element. */
+      .content :global(mdc-text[tagname='span']) {
+        display: inline;
+      }
+
+      .edit-link {
+        display: inline-flex;
+        margin-top: auto;
+        padding-top: 3rem;
+      }
+
+      /* Below the layout's max width the fixed horizontal padding squeezes the
+         reading column, so drop the left/right wrapper padding. */
+      @media (max-width: 1450px) {
+        .content {
+          --kb-gutter: 0;
+          padding-right: 0;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          padding-top: 1rem;
+        }
+
+        .content {
+          padding: 0;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body class="mds-typography mds-elevation">
+    <mdc-themeprovider id="mds-theme-provider" themeclass="mds-theme-stable-lightWebex">
+      <mdc-iconprovider icon-set="momentum-icons">
+        <Header />
+        <main class="layout">
+          <KnowledgeBaseSidebar currentPage={currentPage} section={section} />
+          <article id="article" class="content">
+            <mdc-text class="eyebrow" tagname="div" type="body-midsize-bold">{section}</mdc-text>
+            <mdc-text class="content-title" tagname="h1" type="heading-xlarge-bold">{frontmatter.title}</mdc-text>
+            <slot />
+            <a class="edit-link" href={`https://github.com/momentum-design/momentum-design/edit/main/${sourcePath}`}>
+              Edit this page on GitHub
+            </a>
+          </article>
+        </main>
+        <Footer path={sourcePath} />
+      </mdc-iconprovider>
+    </mdc-themeprovider>
+    <script is:inline>
+      // Match the theme provider to the theme already resolved on <html> so the
+      // wrapped subtree does not force a fixed (default dark) theme.
+      (function () {
+        var provider = document.getElementById('mds-theme-provider');
+        if (!provider) return;
+        var isDark = document.documentElement.classList.contains('mds-theme-stable-darkWebex');
+        provider.setAttribute('themeclass', isDark ? 'mds-theme-stable-darkWebex' : 'mds-theme-stable-lightWebex');
+      })();
+    </script>
+  </body>
+</html>

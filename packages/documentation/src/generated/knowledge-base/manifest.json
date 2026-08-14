@@ -1,0 +1,196 @@
+{
+  "sections": [
+    {
+      "slug": "foundations",
+      "title": "Foundations",
+      "index": "en/foundations/color",
+      "pages": [
+        {
+          "slug": "color",
+          "title": "Color",
+          "link": "en/foundations/color",
+          "sourcePath": "packages/assets/tokens/knowledge-base/color.md",
+          "websitePath": "foundations/color"
+        },
+        {
+          "slug": "elevation",
+          "title": "Elevation",
+          "link": "en/foundations/elevation",
+          "sourcePath": "packages/assets/tokens/knowledge-base/elevation.md",
+          "websitePath": "foundations/elevation"
+        },
+        {
+          "slug": "glass",
+          "title": "Glass",
+          "link": "en/foundations/glass",
+          "sourcePath": "packages/assets/tokens/knowledge-base/glass.md",
+          "websitePath": "foundations/glass"
+        },
+        {
+          "slug": "motion",
+          "title": "Motion",
+          "link": "en/foundations/motion",
+          "sourcePath": "packages/assets/tokens/knowledge-base/motion.md",
+          "websitePath": "foundations/motion"
+        },
+        {
+          "slug": "theming",
+          "title": "Theming",
+          "link": "en/foundations/theming",
+          "sourcePath": "packages/assets/tokens/knowledge-base/theming.md",
+          "websitePath": "foundations/theming"
+        },
+        {
+          "slug": "typography",
+          "title": "Typography",
+          "link": "en/foundations/typography",
+          "sourcePath": "packages/assets/tokens/knowledge-base/typography.md",
+          "websitePath": "foundations/typography"
+        }
+      ]
+    },
+    {
+      "slug": "guidelines",
+      "title": "Guidelines",
+      "index": "en/guidelines/accessibility",
+      "pages": [
+        {
+          "slug": "accessibility",
+          "title": "Accessibility",
+          "link": "en/guidelines/accessibility",
+          "sourcePath": "knowledge-base/accessibility.md",
+          "websitePath": "guidelines/accessibility"
+        },
+        {
+          "slug": "content-guidelines",
+          "title": "Content Guidelines",
+          "link": "en/guidelines/content-guidelines",
+          "sourcePath": "knowledge-base/content-guidelines.md",
+          "websitePath": "guidelines/content-guidelines"
+        },
+        {
+          "slug": "interaction-patterns",
+          "title": "Interaction Patterns",
+          "link": "en/guidelines/interaction-patterns",
+          "sourcePath": "knowledge-base/interaction-patterns.md",
+          "websitePath": "guidelines/interaction-patterns"
+        },
+        {
+          "slug": "internationalization",
+          "title": "Internationalization",
+          "link": "en/guidelines/internationalization",
+          "sourcePath": "knowledge-base/internationalization.md",
+          "websitePath": "guidelines/internationalization"
+        },
+        {
+          "slug": "responsive-design",
+          "title": "Responsive Design",
+          "link": "en/guidelines/responsive-design",
+          "sourcePath": "knowledge-base/responsive-design.md",
+          "websitePath": "guidelines/responsive-design"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "section": "foundations",
+      "page": "color",
+      "title": "Color",
+      "description": "How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.",
+      "path": "en/foundations/color",
+      "sourcePath": "packages/assets/tokens/knowledge-base/color.md",
+      "websitePath": "foundations/color"
+    },
+    {
+      "section": "foundations",
+      "page": "elevation",
+      "title": "Elevation",
+      "description": "The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.",
+      "path": "en/foundations/elevation",
+      "sourcePath": "packages/assets/tokens/knowledge-base/elevation.md",
+      "websitePath": "foundations/elevation"
+    },
+    {
+      "section": "foundations",
+      "page": "glass",
+      "title": "Glass",
+      "description": "The Momentum glass aesthetic and the material, blur, and overlay tokens that build layered, translucent surfaces.",
+      "path": "en/foundations/glass",
+      "sourcePath": "packages/assets/tokens/knowledge-base/glass.md",
+      "websitePath": "foundations/glass"
+    },
+    {
+      "section": "foundations",
+      "page": "motion",
+      "title": "Motion",
+      "description": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
+      "path": "en/foundations/motion",
+      "sourcePath": "packages/assets/tokens/knowledge-base/motion.md",
+      "websitePath": "foundations/motion"
+    },
+    {
+      "section": "foundations",
+      "page": "theming",
+      "title": "Theming",
+      "description": "How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.",
+      "path": "en/foundations/theming",
+      "sourcePath": "packages/assets/tokens/knowledge-base/theming.md",
+      "websitePath": "foundations/theming"
+    },
+    {
+      "section": "foundations",
+      "page": "typography",
+      "title": "Typography",
+      "description": "Typography token scale, type styles, and usage guidance for products built with @momentum-design/tokens — body, heading, and headline styles.",
+      "path": "en/foundations/typography",
+      "sourcePath": "packages/assets/tokens/knowledge-base/typography.md",
+      "websitePath": "foundations/typography"
+    },
+    {
+      "section": "guidelines",
+      "page": "accessibility",
+      "title": "Accessibility",
+      "description": "Cross-cutting accessibility contract for products built with Momentum — the WCAG 2.2 AA baseline, what components handle for you, and what every consumer must supply.",
+      "path": "en/guidelines/accessibility",
+      "sourcePath": "knowledge-base/accessibility.md",
+      "websitePath": "guidelines/accessibility"
+    },
+    {
+      "section": "guidelines",
+      "page": "content-guidelines",
+      "title": "Content guidelines",
+      "description": "Product UI/UX writing standards for products built with Momentum — voice, tone, style, accessibility, inclusion, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.",
+      "path": "en/guidelines/content-guidelines",
+      "sourcePath": "knowledge-base/content-guidelines.md",
+      "websitePath": "guidelines/content-guidelines"
+    },
+    {
+      "section": "guidelines",
+      "page": "interaction-patterns",
+      "title": "Interaction patterns",
+      "description": "The shared interaction model for Momentum — keyboard and focus behavior, overlay and dismissal rules, selection, and how to compose loading, empty, and error states.",
+      "path": "en/guidelines/interaction-patterns",
+      "sourcePath": "knowledge-base/interaction-patterns.md",
+      "websitePath": "guidelines/interaction-patterns"
+    },
+    {
+      "section": "guidelines",
+      "page": "internationalization",
+      "title": "Internationalization",
+      "description": "Building Momentum UIs that work across languages and locales — bidirectional and RTL layout, text expansion, locale-aware formatting, and directional iconography.",
+      "path": "en/guidelines/internationalization",
+      "sourcePath": "knowledge-base/internationalization.md",
+      "websitePath": "guidelines/internationalization"
+    },
+    {
+      "section": "guidelines",
+      "page": "responsive-design",
+      "title": "Responsive design",
+      "description": "How to build adaptive UIs with Momentum — the consumer-owned breakpoint model, the shared responsive context provider, and the reflow and zoom bar every layout must clear.",
+      "path": "en/guidelines/responsive-design",
+      "sourcePath": "knowledge-base/responsive-design.md",
+      "websitePath": "guidelines/responsive-design"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+<mdc-iconprovider icon-set="momentum-icons">
+  <div class="kb-tabs" data-kb-tabs></div>
+</mdc-iconprovider>
+
+<style>
+  .kb-tabs {
+    width: 100%;
+    padding: 1.5rem 3rem 0;
+  }
+
+  /* Counter the tablist's internal focus-ring padding so the first tab's left edge
+     aligns with the content gutter. Injected at runtime, so it needs :global. */
+  .kb-tabs :global(.kb-section-tabs) {
+    margin-left: calc(-1 * var(--mdc-tablist-focus-ring-outer-width));
+  }
+
+  @media (max-width: 800px) {
+    .kb-tabs {
+      padding: 1.5rem 0 0;
+    }
+  }
+</style>
+
+<script>
+  import '@momentum-design/components/dist/components/iconprovider/index.js';
+  import '@momentum-design/components/dist/components/icon/index.js';
+  import '@momentum-design/components/dist/components/tablist/index.js';
+  import '@momentum-design/components/dist/components/tab/index.js';
+  import './KnowledgeBaseSectionTabs.client.ts';
+</script>

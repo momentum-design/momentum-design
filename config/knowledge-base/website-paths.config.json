@@ -1,0 +1,96 @@
+{
+  "sections": [
+    {
+      "slug": "foundations",
+      "title": "Foundations",
+      "pages": [
+        {
+          "slug": "color",
+          "title": "Color"
+        },
+        {
+          "slug": "elevation",
+          "title": "Elevation"
+        },
+        {
+          "slug": "glass",
+          "title": "Glass"
+        },
+        {
+          "slug": "motion",
+          "title": "Motion"
+        },
+        {
+          "slug": "theming",
+          "title": "Theming"
+        },
+        {
+          "slug": "typography",
+          "title": "Typography"
+        }
+      ]
+    },
+    {
+      "slug": "components",
+      "title": "Components",
+      "pages": [
+        {
+          "slug": "snowflake-components",
+          "title": "Snowflake Components"
+        }
+      ]
+    },
+    {
+      "slug": "guidelines",
+      "title": "Guidelines",
+      "pages": [
+        {
+          "slug": "accessibility",
+          "title": "Accessibility"
+        },
+        {
+          "slug": "content-guidelines",
+          "title": "Content Guidelines"
+        },
+        {
+          "slug": "interaction-patterns",
+          "title": "Interaction Patterns"
+        },
+        {
+          "slug": "internationalization",
+          "title": "Internationalization"
+        },
+        {
+          "slug": "responsive-design",
+          "title": "Responsive Design"
+        }
+      ]
+    },
+    {
+      "slug": "resources",
+      "title": "Resources",
+      "pages": [
+        {
+          "slug": "animations",
+          "title": "Animations"
+        },
+        {
+          "slug": "brand-visuals",
+          "title": "Brand Visuals"
+        },
+        {
+          "slug": "fonts",
+          "title": "Fonts"
+        },
+        {
+          "slug": "icons",
+          "title": "Icons"
+        },
+        {
+          "slug": "illustrations",
+          "title": "Illustrations"
+        }
+      ]
+    }
+  ]
+}
