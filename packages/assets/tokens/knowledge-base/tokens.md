@@ -6,33 +6,22 @@ tier: 2
 
 # Design tokens
 
-Momentum ships design decisions as **tokens** — named values for color, type,
-depth, motion, and more. A component never references a raw value; it consumes a
-compiled `--mds-*` CSS custom property whose value the system resolves. That
-indirection keeps products consistent, lets a single build render across themes,
-and keeps contrast and accessibility intact.
+Design tokens are specific design decisions or named variables that replace hardcoded values. They store design attributes like color, type, elevation, motion, and more. A component should never reference a raw value directly, it should always consume some kind of semantic or theme token. This allows us to scale change more easily. 
 
-This page orients you to the token system: the tier model, how tokens are named
-and compiled, how they're authored, who owns them, and where to go for each
-category. It doesn't restate the categories — each has its own topic, linked from
-[Token topics](#token-topics).
+This document will help you understand what our design tokens are, how they're architected, and where to go for specific categories. 
 
 ## The tier model
 
-Momentum tokens fall into a small number of tiers. In short: **consume the
-semantic tier; never reach past it to a primitive.**
+Momentum's design tokens fall into specific tiers that build off of one another. Raw value > Core Token > Theme (or Semantic) Token.
 
 | Tier | What it is | Consume directly? |
 | --- | --- | --- |
-| **Primitive** | The raw scales — the base palette (`color.core.*`, `color.decorative.*`) and the core value files (`core/*`) | No — referenced by semantic tokens |
-| **Semantic (theme)** | Intent-based color that resolves per theme (`color.theme.*` → `--mds-color-theme-*`); the only tier that flips between themes | **Yes** |
-| **Foundational categories** | Single core scales, not a primitive/semantic split — `elevation`, `typography`, `effect`, and `motion`; motion adds a named-animation layer on top of its core scale | **Yes** |
+| **Core** | The raw value — the base palette (`color.core.*`, `color.decorative.*`) and the core value files (`core/*`) | No — referenced by semantic tokens |
+| **Theme (or Semantic)** | Intent-based token abstraction that resolves per theme (`color.theme.*` → `--mds-color-theme-*`); the only tier that flips between themes | **Yes** |
 
-There is **no component-token tier.** Component-specific application (which token a
-button uses in which state) lives in component code, not in a token file.
+There is **no component-token tier.** Component-specific application lives in component code, not in a token file.
 
-For the semantic color catalog, see [Color](./color.md); for how semantic
-tokens resolve across themes, see [Theming](./theming.md).
+For the semantic color catalog, see [Color](./color.md); for how semantic tokens resolve across themes, see [Theming](./theming.md).
 
 ## Naming and compilation
 
@@ -42,12 +31,9 @@ Semantic color tokens follow a structured name:
 color.theme.<usage>.<variant>.<state>
 ```
 
-where *usage* is where the color applies, *variant* is the treatment
-(prominence, sentiment, action, or accent), and *state* is the interaction state.
-[Color](./color.md#how-a-theme-token-is-named) breaks this down in full.
+where *usage* is where the color applies, *variant* is the treatment (prominence, sentiment, action, or accent), and *state* is the interaction state. [Color](./color.md#how-a-theme-token-is-named) breaks this down in full.
 
-At build time every token compiles to a `--mds-*` CSS custom property under a
-scope class, and consumers reference the property rather than any raw value:
+At build time every token compiles to a `--mds-*` CSS custom property under a scope class, and consumers reference the property rather than any raw value:
 
 | Category | Selector | Custom property example |
 | --- | --- | --- |
@@ -59,26 +45,15 @@ scope class, and consumers reference the property rather than any raw value:
 | Motion primitives | `.mds-motion` | `--mds-motion-*` |
 | Named animations | `.mds-animation` | `--mds-transition-*` / `--mds-animation-*` |
 
-Semantic color is the only category emitted **per theme** (a `--mds-theme-*`
-class per mode and accent); the others are emitted once. See
-[Theming](./theming.md) for how the theme classes are applied at runtime.
+Semantic color is the only category emitted **per theme** (a `--mds-theme-*` class per mode and accent); the others are emitted once. See [Theming](./theming.md) for how the theme classes are applied at runtime.
 
 ## Authoring format
 
-Tokens are authored in **Style Dictionary + Tokens Studio JSON** (`value`/`type`)
-under `packages/assets/tokens/src/**` — `core/*` (primitives and the foundational
-scales), `theme/*` (semantic per-mode values), `motion/*` (named animations),
-plus `aaos/*` and `additionaltheme/*` for the automotive namespace and brand
-accents. Composite tokens carry their shape in the `type` (for example, an
-`elevation` is a `boxShadow` with `x/y/blur/spread/color`, and a `motion.easing`
-is a `cubic-bezier`). This pipeline is **not** DTCG 2025.10 — there are no
-resolver, set, or mode files. The source JSON is the single source of truth for
-names and values; the docs describe intent and link back to it.
+Tokens are authored in **Style Dictionary + Tokens Studio JSON** (`value`/`type`) under `packages/assets/tokens/src/**` — `core/*` (primitives and the foundational scales), `theme/*` (semantic per-mode values), `motion/*` (named animations), plus `aaos/*` and `additionaltheme/*` for the automotive namespace and brand accents. Composite tokens carry their shape in the `type` (for example, an `elevation` is a `boxShadow` with `x/y/blur/spread/color`, and a `motion.easing` is a `cubic-bezier`). This pipeline is **not** DTCG 2025.10 — there are no resolver, set, or mode files. The source JSON is the single source of truth for names and values; the docs describe intent and link back to it.
 
 ## Token topics
 
-Each category has its own topic. Start here and follow the link for names,
-values, and usage:
+Each category has its own topic. Start here and follow the link for names, values, and usage:
 
 | Topic | Covers |
 | --- | --- |
