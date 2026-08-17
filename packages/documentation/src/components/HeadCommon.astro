@@ -41,15 +41,22 @@ import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 </script>
 
 <!-- Register the Momentum context providers and text component up-front so the
-     whole page upgrades in a single paint. Hiding un-upgraded providers (below)
-     avoids the flash-of-unstyled-text flicker on navigation. -->
+  whole page upgrades in a single paint. Hiding un-upgraded providers (below)
+  avoids the flash-of-unstyled-text flicker on navigation. -->
 <script>
   import '@momentum-design/components/dist/components/themeprovider/index.js';
   import '@momentum-design/components/dist/components/iconprovider/index.js';
   import '@momentum-design/components/dist/components/text/index.js';
+  import '@momentum-design/components/dist/components/link/index.js';
 </script>
 
 <style is:global>
+  /* AI-Assisted: Keep the outgoing page painted while the incoming page loads. */
+  @view-transition {
+    navigation: auto;
+  }
+  /* End AI-Assisted */
+
   /* Keep the provider wrappers layout-neutral in every state (their :host uses
      display: contents once upgraded; mirror that before upgrade too). */
   mdc-themeprovider,

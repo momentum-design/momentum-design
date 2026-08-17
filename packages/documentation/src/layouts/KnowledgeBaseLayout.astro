@@ -134,6 +134,16 @@ const currentPage = Astro.url.pathname;
         text-decoration: none;
       }
 
+      /* // AI-Assisted */
+      .content :global(mdc-text[tagname='h2']) :global(a.kb-heading-anchor > code) {
+        color: inherit;
+      }
+
+      .content :global(mdc-text[tagname='h2']) :global(a.kb-heading-anchor > code::before) {
+        display: none;
+      }
+      /* // End AI-Assisted */
+
       .content :global(mdc-text[tagname='h2']) :global(a.kb-heading-anchor:hover) {
         text-decoration: underline;
       }
@@ -253,9 +263,9 @@ const currentPage = Astro.url.pathname;
       // Match the theme provider to the theme already resolved on <html> so the
       // wrapped subtree does not force a fixed (default dark) theme.
       (function () {
-        var provider = document.getElementById('mds-theme-provider');
+        const provider = document.getElementById('mds-theme-provider');
         if (!provider) return;
-        var isDark = document.documentElement.classList.contains('mds-theme-stable-darkWebex');
+        const isDark = document.documentElement.classList.contains('mds-theme-stable-darkWebex');
         provider.setAttribute('themeclass', isDark ? 'mds-theme-stable-darkWebex' : 'mds-theme-stable-lightWebex');
       })();
     </script>
