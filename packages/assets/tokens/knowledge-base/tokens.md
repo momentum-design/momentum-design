@@ -6,9 +6,9 @@ tier: 2
 
 # Design tokens
 
-Design tokens are specific design decisions or named variables that replace hardcoded values. They store design attributes like color, type, elevation, motion, and more. A component should never reference a raw value directly, it should always consume some kind of semantic or theme token. This allows us to scale change more easily. 
+Design tokens are specific design decisions or named variables that replace hardcoded values. They store design attributes like color, type, elevation, motion, and more. A component should never reference a raw value directly, it should always consume some kind of semantic or theme token. This allows us to scale change more easily.
 
-This document will help you understand what our design tokens are, how they're architected, and where to go for specific categories. 
+This document will help you understand what our design tokens are, how they're architected, and where to go for specific categories.
 
 ## The tier model
 
