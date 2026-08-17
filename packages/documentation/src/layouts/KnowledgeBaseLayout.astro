@@ -40,13 +40,6 @@ const currentPage = Astro.url.pathname;
         background-repeat: no-repeat;
       }
 
-      /* Keep the providers matching the docs' own text colour/font so wrapping the
-         page in them does not shift any inherited styles. */
-      mdc-themeprovider {
-        --mdc-themeprovider-color-default: var(--theme-text);
-        --mdc-themeprovider-font-family: var(--font-body);
-      }
-
       .layout {
         display: grid;
         grid-template-columns: 15rem minmax(0, 1fr);
@@ -242,7 +235,7 @@ const currentPage = Astro.url.pathname;
     </style>
   </head>
   <body class="mds-typography mds-elevation">
-    <mdc-themeprovider id="mds-theme-provider" themeclass="mds-theme-stable-lightWebex">
+    <mdc-themeprovider id="mds-theme-provider" themeclass="mds-theme-stable-darkWebex">
       <mdc-iconprovider icon-set="momentum-icons">
         <Header />
         <main class="layout">
