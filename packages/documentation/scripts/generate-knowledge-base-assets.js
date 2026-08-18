@@ -92,27 +92,21 @@ function main() {
     );
   }
 
-  const publishedTopicByPath = new Map(publishedTopics.map((topic) => [topic.websitePath, topic]));
+  const routes = publishedTopics.map((topic) => ({
+    title: topic.website.pageTitle,
+    description: topic.summary,
+    path: `en/${topic.websitePath}`,
+    sourcePath: topic.path,
+  }));
+  const routeIndexByWebsitePath = new Map(publishedTopics.map((topic, index) => [topic.websitePath, index]));
   const sections = (websiteConfig.sections || [])
     .map((section) => {
       const pages = (section.pages || [])
         .map((page) => {
           const websitePath = `${section.slug}/${page.slug}`;
-          const topic = publishedTopicByPath.get(websitePath);
-
-          if (!topic) {
-            return null;
-          }
-
-          return {
-            slug: page.slug,
-            title: page.title,
-            link: `en/${section.slug}/${page.slug}`,
-            sourcePath: topic.path,
-            websitePath,
-          };
+          return routeIndexByWebsitePath.get(websitePath);
         })
-        .filter(Boolean);
+        .filter((routeIndex) => routeIndex !== undefined);
 
       if (pages.length === 0) {
         return null;
@@ -121,21 +115,11 @@ function main() {
       return {
         slug: section.slug,
         title: section.title,
-        index: pages[0].link,
+        index: pages[0],
         pages,
       };
     })
     .filter(Boolean);
-
-  const routes = publishedTopics.map((topic) => ({
-    section: topic.website.sectionSlug,
-    page: topic.website.pageSlug,
-    title: topic.title,
-    description: topic.summary,
-    path: `en/${topic.website.sectionSlug}/${topic.website.pageSlug}`,
-    sourcePath: topic.path,
-    websitePath: topic.websitePath,
-  }));
 
   ensureDir(GENERATED_ROOT);
   writeJson(MANIFEST_PATH, { sections, routes });

@@ -1,29 +1,33 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import KnowledgeBaseLayout from '../../../layouts/KnowledgeBaseLayout.astro';
 import type { Frontmatter } from '../../../config';
-import type { MarkdownHeading } from 'astro';
 import manifest from '../../../generated/knowledge-base/manifest.json';
 
 const pageModules = import.meta.glob('../../../generated/knowledge-base/content/**/*.md');
 
 export function getStaticPaths() {
-  return manifest.routes.map((route) => ({
-    params: {
-      section: route.section,
-      page: route.page,
-    },
-    props: {
-      route,
-    },
-  }));
+  return manifest.routes.map((route) => {
+    const [, section, page] = route.path.split('/');
+
+    return {
+      params: {
+        section,
+        page,
+      },
+      props: {
+        route: {...route, section, slug: page},
+      },
+    };
+  });
 }
 
 const { route } = Astro.props;
-const moduleKey = `../../../generated/knowledge-base/content/${route.section}/${route.page}.md`;
+const moduleKey = `../../../generated/knowledge-base/content/${route.section}/${route.slug}.md`;
 const loadPageModule = pageModules[moduleKey];
 
 if (!loadPageModule) {
-  throw new Error(`Missing generated knowledge-base content for ${route.websitePath}.`);
+  throw new Error(`Missing generated knowledge-base content for ${route.path}.`);
 }
 
 const pageModule = (await loadPageModule()) as {

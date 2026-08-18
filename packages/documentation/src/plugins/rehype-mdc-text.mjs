@@ -45,11 +45,13 @@ const getLinkMaps = () => {
   const sectionPageToSource = new Map();
   try {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
-    for (const route of manifest.routes ?? []) {
-      if (!route?.sourcePath || !route?.path) continue;
-      sourceToUrl.set(route.sourcePath, `/${route.path}`);
-      sectionPageToSource.set(`${route.section}/${route.page}`, route.sourcePath);
-    }
+    (manifest.routes ?? []).forEach((route) => {
+      if (route?.sourcePath && route?.path) {
+        const [, section, page] = route.path.split('/');
+        sourceToUrl.set(route.sourcePath, `/${route.path}`);
+        sectionPageToSource.set(`${section}/${page}`, route.sourcePath);
+      }
+    });
   } catch {
     // If the manifest is missing, links are left untouched.
   }

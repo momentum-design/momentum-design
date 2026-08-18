@@ -18,9 +18,10 @@ const currentSection = manifest.sections.find((item) => item.slug === section);
         <div class="nav-group">
           <mdc-text class="nav-heading" tagname="h3" type="body-midsize-bold">{currentSection.title}</mdc-text>
           <ul>
-            {currentSection.pages.map((page) => {
-              const url = `${Astro.site?.pathname}${page.link}`;
-              const isCurrent = currentPageMatch === page.link;
+            {currentSection.pages.map((routeIndex) => {
+              const page = manifest.routes[routeIndex];
+              const url = `${Astro.site?.pathname}${page.path}`;
+              const isCurrent = currentPageMatch === page.path;
 
               return (
                 <li class="nav-link">

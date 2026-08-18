@@ -65,32 +65,6 @@
           "title": "Responsive Design"
         }
       ]
-    },
-    {
-      "slug": "resources",
-      "title": "Resources",
-      "pages": [
-        {
-          "slug": "animations",
-          "title": "Animations"
-        },
-        {
-          "slug": "brand-visuals",
-          "title": "Brand Visuals"
-        },
-        {
-          "slug": "fonts",
-          "title": "Fonts"
-        },
-        {
-          "slug": "icons",
-          "title": "Icons"
-        },
-        {
-          "slug": "illustrations",
-          "title": "Illustrations"
-        }
-      ]
     }
   ]
 }

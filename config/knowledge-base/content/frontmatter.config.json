@@ -23,8 +23,7 @@
         ]
       },
       "websitePath": {
-        "type": "string",
-        "minLength": 1
+        "type": "string"
       },
       "canonical": {
         "type": "string"

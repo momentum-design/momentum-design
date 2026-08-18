@@ -24,7 +24,7 @@ const generatedMenuEntries = manifest.sections
   .filter((section) => !staticSlugs.has(section.slug))
   .map((section) => ({
     name: section.title,
-    index: section.index,
+    index: manifest.routes[section.index].path,
     slug: section.slug,
   }));
 
