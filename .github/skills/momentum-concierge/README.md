@@ -6,10 +6,6 @@ It helps designers, engineers, and product teams find documented guidance for co
 
 The skill retrieves existing Momentum guidance; it does not create or infer new Momentum policy.
 
-## Owner
-
-Morgan Bathe ([mbathe@cisco.com](mailto:mbathe@cisco.com))
-
 ## Compatibility
 
 Momentum Concierge is designed to be tool-agnostic. Its `SKILL.md` uses portable Markdown and the common `name` and `description` frontmatter fields, with no host-specific configuration.
@@ -68,7 +64,7 @@ When canonical guidance is missing or incomplete, Momentum Concierge can also pr
 ## Files
 
 - [`SKILL.md`](SKILL.md) — skill metadata, retrieval workflow, response contract, and feedback process.
-- `README.md` — overview, ownership, capabilities, and usage examples.
+- `README.md` — overview, capabilities, and usage examples.
 
 ## Prompt Fallback
 
