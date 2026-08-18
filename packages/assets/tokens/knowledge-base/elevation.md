@@ -2,6 +2,7 @@
 title: Elevation
 summary: The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.
 tier: 2
+websitePath: foundations/elevation
 ---
 
 # Elevation

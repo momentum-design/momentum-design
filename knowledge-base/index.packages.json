@@ -50,7 +50,8 @@
       "path": "packages/assets/tokens/knowledge-base/color.md",
       "title": "Color",
       "summary": "How Momentum color tokens are structured (usage, prominence, state), how they resolve across themes, and where each semantic color belongs.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/color"
     },
     {
       "id": "tier2/packages/assets/tokens/knowledge-base/elevation",
@@ -58,7 +59,8 @@
       "path": "packages/assets/tokens/knowledge-base/elevation.md",
       "title": "Elevation",
       "summary": "The Momentum elevation tokens — a four-step drop-shadow scale that conveys surface depth and layering on the z-axis.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/elevation"
     },
     {
       "id": "tier2/packages/assets/tokens/knowledge-base/glass",
@@ -66,7 +68,8 @@
       "path": "packages/assets/tokens/knowledge-base/glass.md",
       "title": "Glass",
       "summary": "The Momentum glass aesthetic and the material, blur, and overlay tokens that build layered, translucent surfaces.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/glass"
     },
     {
       "id": "tier2/packages/assets/tokens/knowledge-base/motion",
@@ -74,7 +77,8 @@
       "path": "packages/assets/tokens/knowledge-base/motion.md",
       "title": "Motion",
       "summary": "Momentum motion tokens — the duration, easing, delay, and stagger scales, the named animations built on them, and the principles for applying them.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/motion"
     },
     {
       "id": "tier2/packages/assets/tokens/knowledge-base/theming",
@@ -82,7 +86,8 @@
       "path": "packages/assets/tokens/knowledge-base/theming.md",
       "title": "Theming",
       "summary": "How Momentum semantic color tokens resolve across themes and modes, how a theme is applied, and how to add one.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/theming"
     },
     {
       "id": "tier2/packages/assets/tokens/knowledge-base/typography",
@@ -90,7 +95,8 @@
       "path": "packages/assets/tokens/knowledge-base/typography.md",
       "title": "Typography",
       "summary": "Typography token scale, type styles, and usage guidance for products built with @momentum-design/tokens — body, heading, and headline styles.",
-      "canonical": null
+      "canonical": null,
+      "websitePath": "foundations/typography"
     },
     {
       "id": "tier2/packages/components/knowledge-base/snowflake-components",

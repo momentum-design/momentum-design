@@ -2,6 +2,7 @@
 title: Content guidelines
 summary: Product UI/UX writing standards for products built with Momentum — voice, tone, style, accessibility, inclusion, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.
 tier: 1
+websitePath: guidelines/content-guidelines
 ---
 
 **Primary audience:** Product design and engineering.
