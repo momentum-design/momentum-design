@@ -44,6 +44,7 @@ const TOPIC_CONSTRAINTS_CONFIG_PATH = path.join(
   KNOWLEDGE_BASE_DIR,
   'topic-constraints.config.json',
 );
+const WEBSITE_PATHS_CONFIG_PATH = path.join(REPO_ROOT, 'config', KNOWLEDGE_BASE_DIR, 'website-paths.config.json');
 const GENERATOR_REL = `scripts/${KNOWLEDGE_BASE_DIR}/generate-index.js`;
 
 // Tier-sharded index files. Each shard contains only its own tier's topics so
@@ -154,6 +155,17 @@ function buildTierConstraints(topicConstraintsConfig) {
   );
 }
 
+function collectAllowedWebsitePaths() {
+  const raw = JSON.parse(fs.readFileSync(WEBSITE_PATHS_CONFIG_PATH, 'utf8'));
+  const sections = Array.isArray(raw.sections) ? raw.sections : [];
+
+  return new Set(
+    sections.flatMap((section) =>
+      (Array.isArray(section.pages) ? section.pages : []).map((page) => `${section.slug}/${page.slug}`),
+    ),
+  );
+}
+
 function discoverKbDirs() {
   const globOpts = { cwd: REPO_ROOT, ignore: GLOB_IGNORE };
   return Array.from(new Set(KB_DIR_GLOBS.flatMap((pattern) => glob.sync(pattern, globOpts))));
@@ -187,10 +199,12 @@ function discoverTopicFiles() {
  */
 function collectTopics({ topicConstraintsConfig }) {
   const tierConstraintsByTier = buildTierConstraints(topicConstraintsConfig);
+  const allowedWebsitePaths = collectAllowedWebsitePaths();
 
   const errors = [];
   const topics = [];
   const seenIds = new Set();
+  const seenWebsitePaths = new Map();
 
   // Detect unexpected non-asset subdirectories inside any knowledge-base folder.
   // Use targeted globs that mirror TOPIC_GLOBS rather than `**/knowledge-base/`
@@ -241,6 +255,7 @@ function collectTopics({ topicConstraintsConfig }) {
       continue;
     }
     const data = parsed.data || {};
+    const websitePath = typeof data.websitePath === 'string' ? data.websitePath.trim() : null;
 
     const constraints = tierConstraintsByTier[tierInfo.tier];
     if (constraints && constraints.allowedTopics.size > 0) {
@@ -281,6 +296,25 @@ function collectTopics({ topicConstraintsConfig }) {
     }
     seenIds.add(id);
 
+    if (websitePath) {
+      if (tierInfo.tier === 3) {
+        errors.push(`${relPosix}: websitePath is only supported for Tier 1 and Tier 2 topics.`);
+      } else if (!allowedWebsitePaths.has(websitePath)) {
+        errors.push(
+          `${relPosix}: websitePath "${websitePath}" is not defined in config/${KNOWLEDGE_BASE_DIR}/website-paths.config.json.`,
+        );
+      } else {
+        const existingPath = seenWebsitePaths.get(websitePath);
+        if (existingPath) {
+          errors.push(
+            `${relPosix}: websitePath "${websitePath}" is already used by ${existingPath}; published website paths must be unique.`,
+          );
+        } else {
+          seenWebsitePaths.set(websitePath, relPosix);
+        }
+      }
+    }
+
     const topic = {
       id,
       tier: tierInfo.tier,
@@ -289,6 +323,9 @@ function collectTopics({ topicConstraintsConfig }) {
       summary: data.summary,
       canonical: data.canonical || null,
     };
+    if (websitePath) {
+      topic.websitePath = websitePath;
+    }
     if (tierInfo.tier === 3) {
       topic.component = data.component;
     }
@@ -332,6 +369,7 @@ module.exports = {
   BODY_CONFIG_PATH,
   MARKDOWNLINT_CONFIG_PATH,
   TOPIC_CONSTRAINTS_CONFIG_PATH,
+  WEBSITE_PATHS_CONFIG_PATH,
   SHARDS,
   SHARD_TIERS,
   shardPath,

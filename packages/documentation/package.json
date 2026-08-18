@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "start": "yarn generate:knowledge-base && astro dev",
+    "build": "yarn generate:knowledge-base && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
@@ -24,7 +24,8 @@
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "convert:md:to:astro": "node ./src/utils/convert-md-astro.js"
+    "convert:md:to:astro": "node ./src/utils/convert-md-astro.js",
+    "generate:knowledge-base": "node ./scripts/generate-knowledge-base-assets.js"
   },
   "dependencies": {
     "@algolia/client-search": "^4.24.0",
@@ -34,6 +35,7 @@
     "@docsearch/css": "^3.6.1",
     "@docsearch/react": "^3.6.1",
     "@momentum-design/components": "workspace:*",
+    "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/illustrations": "workspace:^",
     "@momentum-design/token-builder": "workspace:^",

@@ -2,6 +2,7 @@
 title: Accessibility
 summary: Cross-cutting accessibility contract for products built with Momentum — the WCAG 2.2 AA baseline, what components handle for you, and what every consumer must supply.
 tier: 1
+websitePath: guidelines/accessibility
 ---
 
 **Primary audience:** Product design and engineering.
