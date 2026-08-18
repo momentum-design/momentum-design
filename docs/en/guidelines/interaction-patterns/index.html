@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-us" class="initial astro-S4A73ZVF">
+  <head>
+    <!-- Global Metadata --><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="generator" content="Astro v1.9.2">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<link rel="sitemap" href="/sitemap.xml">
+
+<!-- Preload Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Scrollable a11y code helper -->
+<script src="/make-scrollable-code-focusable.js"></script>
+
+<!-- This is intentionally inlined to avoid FOUC -->
+<script>
+  const root = document.documentElement;
+  const theme = localStorage.getItem('theme');
+
+  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.classList.add('theme-dark');
+    root.classList.add('mds-theme-stable-darkWebex');
+    root.classList.remove('mds-theme-stable-lightWebex');
+  } else {
+    root.classList.remove('theme-dark');
+    root.classList.add('mds-theme-stable-lightWebex');
+    root.classList.remove('mds-theme-stable-darkWebex');
+  }
+</script>
+
+<!-- Register the Momentum context providers and text component up-front so the
+  whole page upgrades in a single paint. Hiding un-upgraded providers (below)
+  avoids the flash-of-unstyled-text flicker on navigation. -->
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEL60V1WM9" is:inline></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TEL60V1WM9');
+</script> -->
+
+    <!-- Page Metadata --><link rel="canonical" href="https://momentum.design/en/guidelines/interaction-patterns/">
+
+<!-- OpenGraph Tags -->
+<meta property="og:title" content="Interaction patterns 🚀 Momentum">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://momentum.design/en/guidelines/interaction-patterns/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/withastro/astro/blob/main/assets/social/banner-minimal.png?raw=true">
+<meta property="og:image:alt" content="astro logo on a starry expanse of space, with a purple saturn-like planet floating in the right foreground">
+<meta name="description" property="og:description" content="The shared interaction model for Momentum — keyboard and focus behavior, overlay and dismissal rules, selection, and how to compose loading, empty, and error states.">
+<meta property="og:site_name" content="Momentum">
+
+<!-- Twitter Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="astrodotbuild">
+<meta name="twitter:title" content="Interaction patterns 🚀 Momentum">
+<meta name="twitter:description" content="The shared interaction model for Momentum — keyboard and focus behavior, overlay and dismissal rules, selection, and how to compose loading, empty, and error states.">
+<meta name="twitter:image" content="https://github.com/withastro/astro/blob/main/assets/social/banner-minimal.png?raw=true">
+<meta name="twitter:image:alt" content="astro logo on a starry expanse of space, with a purple saturn-like planet floating in the right foreground">
+
+<!--
+  TODO: Add json+ld data, maybe https://schema.org/APIReference makes sense?
+  Docs: https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data
+  https://www.npmjs.com/package/schema-dts seems like a great resource for implementing this.
+  Even better, there's a React component that integrates with `schema-dts`: https://github.com/google/react-schemaorg
+-->
+
+    <title>
+      Interaction patterns 🚀 Momentum
+    </title>
+    
+  <link rel="stylesheet" href="/assets/_tokenType_.6e467f9c.css" />
+<link rel="stylesheet" href="/assets/_page_.3fa00351.css" /><script type="module" src="/hoisted.3dd58147.js"></script></head>
+  <body class="mds-typography mds-elevation astro-S4A73ZVF">
+    <style>astro-island,astro-slot{display:contents}</style><script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()},window.dispatchEvent(new Event("astro:load"));var l;{const c={0:t=>t,1:t=>JSON.parse(t,o),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,o)),5:t=>new Set(JSON.parse(t,o)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},o=(t,s)=>{if(t===""||!Array.isArray(s))return s;const[e,n]=s;return e in c?c[e](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(l=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=()=>{if(!this.hydrator||this.parentElement&&this.parentElement.closest("astro-island[ssr]"))return;const s=this.querySelectorAll("astro-slot"),e={},n=this.querySelectorAll("template[data-astro-template]");for(const r of n){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(const r of s){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("name")||"default"]=r.innerHTML)}const a=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),o):{};this.hydrator(this)(this.Component,a,e,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),window.removeEventListener("astro:hydrate",this.hydrate),window.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((s,e)=>{e.disconnect(),this.childrenConnectedCallback()}).observe(this,{childList:!0})}async childrenConnectedCallback(){window.addEventListener("astro:hydrate",this.hydrate);let s=this.getAttribute("before-hydration-url");s&&await import(s),this.start()}start(){const s=JSON.parse(this.getAttribute("opts")),e=this.getAttribute("client");if(Astro[e]===void 0){window.addEventListener(`astro:${e}`,()=>this.start(),{once:!0});return}Astro[e](async()=>{const n=this.getAttribute("renderer-url"),[a,{default:r}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=a[i];else{this.Component=a;for(const d of i.split("."))this.Component=this.Component[d]}return this.hydrator=r,this.hydrate},s,this)}attributeChangedCallback(){this.hydrator&&this.hydrate()}},l.observedAttributes=["props"],l))}</script><script>(self.Astro=self.Astro||{}).idle=t=>{const e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)},window.dispatchEvent(new Event("astro:idle"));</script><mdc-themeprovider id="mds-theme-provider" themeclass="mds-theme-stable-darkWebex" class="astro-S4A73ZVF">
+      <mdc-iconprovider icon-set="momentum-icons" class="astro-S4A73ZVF">
+        <header class="astro-THRORX7C">
+  <a href="#article" class="sr-only focus:not-sr-only skiplink astro-5DZJJP3H"><span class="astro-5DZJJP3H">Skip to Content</span></a>
+
+
+  <nav class="nav-wrapper astro-THRORX7C" title="Top Navigation">
+    <div class="logo flex astro-THRORX7C">
+      <a href="/en" aria-label="Home" class="astro-THRORX7C">
+        <svg height="40" viewBox="0 0 500 151" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M101.499 0.143555V48.5935C129.094 49.8164 150.643 72.9099 149.985 100.554C149.327 128.198 126.704 150.238 99.0819 150.143H48.3373V101.753H0V0.143555H101.499ZM8.25077 4.98367L50.7544 47.5336L93.2481 4.98367H8.25077ZM96.7043 8.40364V48.5336H56.588L96.7043 8.40364ZM96.6651 53.4036H53.2125L53.1725 96.9135H96.6651V53.4036ZM4.83526 96.9135V8.40364L48.3378 51.9536V96.9535L4.83526 96.9135ZM53.1312 145.303H99.0411C123.589 144.815 143.416 125.094 144.063 100.524C144.709 75.9532 125.946 55.2146 101.459 53.4335V101.753H53.1312V145.303Z" fill="url(#paint0_linear_25064_10926)"></path>
+  <path d="M460.979 57.497H455.168V26.0233H459.95L460.555 29.7154C462.694 26.6488 465.781 25.1154 469.816 25.1154C474.214 25.1154 477.301 26.7698 479.076 30.0786C481.174 26.7698 484.584 25.1154 489.305 25.1154C492.816 25.1154 495.519 26.1847 497.416 28.3233C499.11 30.3005 499.958 33.004 499.958 36.4338V57.497H494.147V36.8575C494.147 32.3382 492.11 30.0786 488.034 30.0786C485.613 30.0786 483.676 31.0268 482.224 32.9233C481.053 34.4566 480.468 36.2523 480.468 38.3102V57.497H474.658V36.8575C474.658 32.3382 472.62 30.0786 468.545 30.0786C466.285 30.0786 464.409 30.9663 462.916 32.7417C461.624 34.2347 460.979 36.0303 460.979 38.1286V57.497Z" fill="white"></path>
+  <path d="M420.76 26.0233H426.571V46.6628C426.571 51.1821 428.75 53.4417 433.108 53.4417C435.771 53.4417 437.809 52.4935 439.221 50.597C440.31 49.1444 440.855 47.3488 440.855 45.2102V26.0233H446.666V57.497H441.884L441.218 53.8654C438.999 56.8917 435.852 58.4049 431.776 58.4049C428.185 58.4049 425.421 57.2952 423.484 55.0759C421.668 53.0181 420.76 50.1733 420.76 46.5417V26.0233Z" fill="white"></path>
+  <path d="M415.6 52.8365V57.7996C414.107 58.2031 412.674 58.4049 411.302 58.4049C408.397 58.4049 406.218 57.497 404.765 55.6812C403.515 54.1882 402.889 52.1909 402.889 49.6891V30.9865H398.229V26.0233H402.889L403.252 18.4575H408.7V26.0233H415.479V30.9865H408.7V49.8102C408.7 52.1505 409.809 53.3207 412.029 53.3207C413.078 53.3207 414.268 53.1593 415.6 52.8365Z" fill="white"></path>
+  <path d="M373.026 57.497H367.216V26.0233H371.998L372.663 30.018C375.004 26.7496 378.191 25.1154 382.226 25.1154C385.939 25.1154 388.784 26.2654 390.761 28.5654C392.496 30.6233 393.363 33.4277 393.363 36.9786V57.497H387.553V37.0391C387.553 32.3988 385.313 30.0786 380.834 30.0786C378.494 30.0786 376.577 30.8856 375.084 32.4996C373.712 33.9523 373.026 35.8084 373.026 38.0681V57.497Z" fill="white"></path>
+  <path d="M353.591 48.4181H359.886C358.998 51.6058 357.243 54.1075 354.62 55.9233C352.159 57.5777 349.213 58.4049 345.783 58.4049C340.82 58.4049 336.947 56.8312 334.162 53.6838C331.62 50.7382 330.349 46.7637 330.349 41.7602C330.349 36.0707 331.963 31.7531 335.191 28.8075C337.855 26.3461 341.284 25.1154 345.481 25.1154C350.404 25.1154 354.116 26.7093 356.618 29.897C359.039 32.9637 360.249 37.3417 360.249 43.0312H336.281C336.523 46.7435 337.653 49.5075 339.67 51.3233C341.325 52.7759 343.423 53.5023 345.965 53.5023C347.942 53.5023 349.657 52.9575 351.11 51.8681C352.32 50.94 353.148 49.79 353.591 48.4181ZM345.602 29.7759C343.019 29.7759 340.941 30.583 339.368 32.197C337.875 33.69 336.926 35.7681 336.523 38.4312H354.318C354.116 35.4049 353.107 33.1452 351.291 31.6523C349.839 30.4014 347.942 29.7759 345.602 29.7759Z" fill="white"></path>
+  <path d="M285.015 57.497H279.205V26.0233H283.986L284.591 29.7154C286.73 26.6488 289.817 25.1154 293.852 25.1154C298.25 25.1154 301.337 26.7698 303.112 30.0786C305.211 26.7698 308.62 25.1154 313.341 25.1154C316.852 25.1154 319.555 26.1847 321.452 28.3233C323.147 30.3005 323.994 33.004 323.994 36.4338V57.497H318.183V36.8575C318.183 32.3382 316.146 30.0786 312.07 30.0786C309.649 30.0786 307.712 31.0268 306.26 32.9233C305.09 34.4566 304.505 36.2523 304.505 38.3102V57.497H298.694V36.8575C298.694 32.3382 296.656 30.0786 292.581 30.0786C290.321 30.0786 288.445 30.9663 286.952 32.7417C285.661 34.2347 285.015 36.0303 285.015 38.1286V57.497Z" fill="white"></path>
+  <path d="M241.51 41.7602C241.51 35.99 243.225 31.6321 246.655 28.6865C249.399 26.3058 252.869 25.1154 257.066 25.1154C261.948 25.1154 265.781 26.6689 268.566 29.7759C271.229 32.6812 272.56 36.6759 272.56 41.7602C272.56 47.4496 270.886 51.7873 267.537 54.7733C264.793 57.1944 261.282 58.4049 257.005 58.4049C252.123 58.4049 248.269 56.7909 245.445 53.5628C242.822 50.6172 241.51 46.683 241.51 41.7602ZM247.563 41.7602C247.563 45.7952 248.592 48.8821 250.65 51.0207C252.345 52.7961 254.503 53.6838 257.126 53.6838C260.193 53.6838 262.553 52.5338 264.208 50.2338C265.741 48.1356 266.508 45.311 266.508 41.7602C266.508 37.6444 265.499 34.5373 263.481 32.4391C261.827 30.704 259.688 29.8365 257.066 29.8365C254.039 29.8365 251.679 30.9865 249.984 33.2865C248.37 35.3847 247.563 38.2093 247.563 41.7602Z" fill="white"></path>
+  <path d="M196.176 57.497H190.366V26.0233H195.147L195.752 29.7154C197.891 26.6488 200.978 25.1154 205.013 25.1154C209.411 25.1154 212.498 26.7698 214.273 30.0786C216.372 26.7698 219.781 25.1154 224.502 25.1154C228.013 25.1154 230.716 26.1847 232.613 28.3233C234.308 30.3005 235.155 33.004 235.155 36.4338V57.497H229.345V36.8575C229.345 32.3382 227.307 30.0786 223.231 30.0786C220.81 30.0786 218.873 31.0268 217.421 32.9233C216.251 34.4566 215.666 36.2523 215.666 38.3102V57.497H209.855V36.8575C209.855 32.3382 207.817 30.0786 203.742 30.0786C201.482 30.0786 199.606 30.9663 198.113 32.7417C196.822 34.2347 196.176 36.0303 196.176 38.1286V57.497Z" fill="white"></path>
+  <path d="M350.211 111.242H344.4V79.7682H349.182L349.848 83.763C352.188 80.4945 355.376 78.8603 359.411 78.8603C363.123 78.8603 365.968 80.0103 367.945 82.3103C369.68 84.3682 370.548 87.1726 370.548 90.7235V111.242H364.737V90.784C364.737 86.1437 362.498 83.8235 358.019 83.8235C355.678 83.8235 353.762 84.6305 352.269 86.2445C350.897 87.6972 350.211 89.5533 350.211 91.813V111.242Z" fill="white"></path>
+  <path d="M307.154 113.36H313.388C313.671 114.974 314.478 116.225 315.809 117.113C317.181 118.001 318.977 118.445 321.196 118.445C324.303 118.445 326.623 117.638 328.157 116.023C329.448 114.652 330.093 112.735 330.093 110.273V106.218C327.753 108.962 324.263 110.334 319.622 110.334C315.426 110.334 312.016 108.821 309.393 105.795C306.932 102.97 305.701 99.2981 305.701 94.7788C305.701 89.5331 307.194 85.4779 310.18 82.613C312.722 80.1112 315.991 78.8603 319.986 78.8603C324.505 78.8603 327.914 80.5551 330.214 83.9445L331.122 79.7682H335.904V110.576C335.904 114.531 334.472 117.638 331.607 119.897C329.024 121.995 325.614 123.045 321.378 123.045C316.979 123.045 313.529 122.056 311.028 120.079C308.929 118.424 307.638 116.185 307.154 113.36ZM311.754 94.8998C311.754 98.3296 312.763 101.013 314.78 102.95C316.435 104.564 318.472 105.371 320.893 105.371C324.081 105.371 326.522 104.322 328.217 102.223C329.67 100.448 330.396 98.0674 330.396 95.0814C330.396 91.2481 329.407 88.3226 327.43 86.3051C325.776 84.6507 323.597 83.8235 320.893 83.8235C317.907 83.8235 315.607 84.8524 313.993 86.9103C312.5 88.8472 311.754 91.5103 311.754 94.8998Z" fill="white"></path>
+  <path d="M299.387 74.5024H292.85V67.663H299.387V74.5024ZM299.024 111.242H293.213V79.7682H299.024V111.242Z" fill="white"></path>
+  <path d="M280.7 102.708C280.7 100.932 279.772 99.6007 277.916 98.713C276.826 98.2288 274.708 97.6235 271.56 96.8972C267.687 96.0498 264.923 94.8191 263.268 93.2051C261.896 91.8331 261.21 90.0375 261.21 87.8182C261.21 84.8726 262.401 82.613 264.781 81.0393C266.92 79.5867 269.805 78.8603 273.437 78.8603C277.189 78.8603 280.236 79.7884 282.576 81.6445C284.594 83.2586 285.844 85.3972 286.329 88.0603H280.397C279.711 84.9937 277.371 83.4603 273.376 83.4603C271.157 83.4603 269.502 83.8638 268.413 84.6709C267.525 85.3568 267.081 86.2244 267.081 87.2735C267.081 88.5647 267.566 89.5331 268.534 90.1788C269.543 90.8244 271.5 91.47 274.405 92.1156C278.844 93.084 281.93 94.2744 283.666 95.6867C285.602 97.2603 286.571 99.4595 286.571 102.284C286.571 105.431 285.28 107.913 282.697 109.729C280.357 111.343 277.27 112.15 273.437 112.15C269.24 112.15 265.911 111.141 263.45 109.123C261.311 107.348 260.121 105.048 259.879 102.223H265.81C266.456 105.774 269.018 107.55 273.497 107.55C275.918 107.55 277.794 107.025 279.126 105.976C280.175 105.129 280.7 104.039 280.7 102.708Z" fill="white"></path>
+  <path d="M248.675 102.163H254.97C254.082 105.351 252.327 107.852 249.704 109.668C247.243 111.323 244.297 112.15 240.867 112.15C235.904 112.15 232.03 110.576 229.246 107.429C226.704 104.483 225.433 100.509 225.433 95.5051C225.433 89.8156 227.047 85.4981 230.275 82.5524C232.938 80.091 236.368 78.8603 240.565 78.8603C245.487 78.8603 249.2 80.4542 251.701 83.6419C254.123 86.7086 255.333 91.0867 255.333 96.7761H231.365C231.607 100.488 232.737 103.252 234.754 105.068C236.408 106.521 238.507 107.247 241.049 107.247C243.026 107.247 244.741 106.702 246.194 105.613C247.404 104.685 248.231 103.535 248.675 102.163ZM240.686 83.5209C238.103 83.5209 236.025 84.3279 234.451 85.9419C232.958 87.4349 232.01 89.513 231.607 92.1761H249.401C249.2 89.1498 248.191 86.8902 246.375 85.3972C244.923 84.1463 243.026 83.5209 240.686 83.5209Z" fill="white"></path>
+  <path d="M218.752 111.242H213.971L212.942 106.824C210.521 110.374 207.031 112.15 202.471 112.15C198.073 112.15 194.602 110.556 192.06 107.368C189.72 104.423 188.55 100.529 188.55 95.6867C188.55 89.8358 190.043 85.4375 193.029 82.4919C195.531 80.0709 198.799 78.8603 202.834 78.8603C207.192 78.8603 210.561 80.4945 212.942 83.763V67.663H218.752V111.242ZM194.602 95.8077C194.602 99.7217 195.571 102.688 197.508 104.705C199.122 106.359 201.2 107.187 203.742 107.187C206.889 107.187 209.331 105.996 211.066 103.616C212.518 101.558 213.245 98.9753 213.245 95.8682C213.245 91.7928 212.276 88.6858 210.339 86.5472C208.685 84.7314 206.486 83.8235 203.742 83.8235C200.675 83.8235 198.355 84.9331 196.781 87.1524C195.329 89.17 194.602 92.0551 194.602 95.8077Z" fill="white"></path>
+  <defs>
+    <linearGradient id="paint0_linear_25064_10926" x1="15.4831" y1="126.143" x2="120.483" y2="21.2578" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DB1F2E"></stop>
+      <stop offset="0.120191" stop-color="#F26B1D"></stop>
+      <stop offset="0.249276" stop-color="#F2990A"></stop>
+      <stop offset="0.395641" stop-color="#73A321"></stop>
+      <stop offset="0.52483" stop-color="#00A3B5"></stop>
+      <stop offset="0.668042" stop-color="#0A78CC"></stop>
+      <stop offset="0.82762" stop-color="#643ABD"></stop>
+      <stop offset="1" stop-color="#C233C4"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+      </a>
+    </div>
+    <div class="main-menu astro-THRORX7C" style="align-items:center">
+      <li class="nav-link astro-THRORX7C">
+              <a href="/en/foundations/color" class="astro-THRORX7C">
+                Foundations
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/guidelines/accessibility" class="astro-THRORX7C">
+                Guidelines
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/tokens" class="astro-THRORX7C">
+                Tokens
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/assets" class="astro-THRORX7C">
+                Assets
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/components" class="astro-THRORX7C">
+                Components
+              </a>
+            </li>
+      <astro-island uid="2qBIco" component-url="/GitHubTool.f8cae96b.js" component-export="default" renderer-url="/client.048886a1.js" props="{}" ssr="" client="load" opts="{&quot;name&quot;:&quot;GitHubTool&quot;,&quot;value&quot;:true}" await-children=""><button class="github-tool-button " title="View Momentum design on GitHub" aria-label="View Momentum design on GitHub"><svg class="github-tool-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></button></astro-island>
+    </div>
+    <div class="search-item astro-THRORX7C">
+      <astro-island uid="Z1VUn8z" component-url="/Search.41765868.js" component-export="default" renderer-url="/client.048886a1.js" props="{}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;Search&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="search-input"><svg width="24" height="24" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Search</span></button></astro-island>
+    </div>
+  </nav>
+</header>
+
+
+
+
+        <main class="layout astro-S4A73ZVF">
+          <nav aria-label="Guidelines pages" class="astro-MVMCDSHO">
+    <ul class="nav-groups astro-MVMCDSHO">
+      <li class="astro-MVMCDSHO">
+        <div class="nav-group astro-MVMCDSHO">
+          <mdc-text class="nav-heading astro-MVMCDSHO" tagname="h3" type="body-midsize-bold">Guidelines</mdc-text>
+          <ul class="astro-MVMCDSHO">
+            <li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/accessibility" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Accessibility</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/content-guidelines" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Content Guidelines</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/interaction-patterns" aria-current="page" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-bold" class="astro-MVMCDSHO">Interaction Patterns</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/internationalization" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Internationalization</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/responsive-design" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Responsive Design</mdc-text>
+                  </a>
+                </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+
+          <article id="article" class="content astro-S4A73ZVF">
+            <mdc-text class="eyebrow astro-S4A73ZVF" tagname="div" type="body-midsize-bold">guidelines</mdc-text>
+            <mdc-text class="content-title astro-S4A73ZVF" tagname="h1" type="heading-xlarge-bold">Interaction patterns</mdc-text>
+            <mdc-text tagname="p" type="body-large-regular"><strong>Primary audience:</strong> Product design and engineering.</mdc-text>
+<mdc-text id="purpose-and-scope" tagname="h2" type="heading-midsize-bold"><a href="#purpose-and-scope" class="kb-heading-anchor">Purpose and scope</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Momentum components share a consistent interaction model so that a control learned in one place behaves the same everywhere. This topic captures that cross-cutting model — the behaviors that recur across many components — so individual component topics can focus on what is specific to them.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">It covers:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">The keyboard and focus model shared across controls</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">How overlays open, dismiss, and return focus</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Selection and activation conventions</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Composing loading, empty, and error states</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">It does <strong>not</strong> restate per-component key bindings or props (see each component’s Tier 3 topic), accessibility conformance detail (see <mdc-link href="/en/guidelines/accessibility" inline="">accessibility</mdc-link>), or the copy inside these states (see <mdc-link href="/en/guidelines/content-guidelines" inline="">content guidelines</mdc-link>).</mdc-text>
+<mdc-text id="keyboard-and-focus-model" tagname="h2" type="heading-midsize-bold"><a href="#keyboard-and-focus-model" class="kb-heading-anchor">Keyboard and focus model</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Consistency here is what makes the system predictable. Follow the same conventions whether you use a component or compose your own.</mdc-text>
+<mdc-text id="activation" tagname="h3" type="heading-small-bold">Activation</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Enter</strong> and <strong>Space</strong> activate buttons and button-like controls.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Enter</strong> follows links.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Toggle controls (<code>mdc-toggle</code>, <code>mdc-checkbox</code>, <code>mdc-radio</code>) change state on <strong>Space</strong>; radios move selection with arrow keys within their group.</mdc-text></li>
+</ul>
+<mdc-text id="moving-within-a-composite" tagname="h3" type="heading-small-bold">Moving within a composite</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Composite widgets — menus, lists, tablists, comboboxes, sliders, steppers — are a <strong>single tab stop</strong> with arrow keys moving between their items, not one tab stop per child. This roving-focus pattern (sometimes called a “focusgroup” — see the <mdc-link href="https://open-ui.org/components/focusgroup-v2.explainer/" inline="">open-ui focusgroup explainer</mdc-link>) keeps the tab sequence short and matches assistive-technology expectations.</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Arrow keys</strong> move between items in the natural axis of the widget — including a two-dimensional grid, where arrow keys move in all four directions within the grid itself.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Home / End</strong> jump to the first / last item where applicable.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Type-ahead</strong> selects by first characters in listbox-style widgets.</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">If you build a custom composite widget — including a grid — implement this roving-<code>tabindex</code> pattern yourself; it is what Momentum’s own composite components (tabs, list, etc.) already do internally. Grid navigation built this way is still an open gap in Momentum’s primitives today. Don’t reach for <code>mdc-spatialnavigationprovider</code> here: that provider solves a different, app-level problem — a single instance per app giving the whole document directional (D-pad) navigation for TV, set-top-box, console, or kiosk input — not per-widget arrow-key handling (see <mdc-link href="https://github.com/momentum-design/momentum-design/blob/main/packages/components/src/components/spatialnavigationprovider/knowledge-base/spatialnavigationprovider.component.md" inline="">spatialnavigationprovider</mdc-link>).</mdc-text>
+<mdc-text id="focus-visibility-and-order" tagname="h3" type="heading-small-bold">Focus visibility and order</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Focus must always be visible and follow the reading order. The full rules — visible indicator, logical order, not obscured by sticky layers — live in <mdc-link href="/en/guidelines/accessibility#focus" inline="">accessibility</mdc-link>. Order your DOM to match the visual layout rather than repairing it with <code>tabindex</code>.</mdc-text>
+<mdc-text id="overlays-and-dismissal" tagname="h2" type="heading-midsize-bold"><a href="#overlays-and-dismissal" class="kb-heading-anchor">Overlays and dismissal</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Momentum has a family of layered surfaces: <code>mdc-popover</code>, <code>mdc-dialog</code>, <code>mdc-menupopover</code>, <code>mdc-tooltip</code>, <code>mdc-toggletip</code>, <code>mdc-coachmark</code>, and toasts. They share one dismissal model — apply it to any custom overlay too.</mdc-text>
+<mdc-text id="opening" tagname="h3" type="heading-small-bold">Opening</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Open from an explicit trigger. The trigger and the surface are associated so assistive technology understands the relationship.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Move focus deliberately: into the surface for modal dialogs; leave it on the trigger for non-modal transient surfaces like tooltips.</mdc-text></li>
+</ul>
+<mdc-text id="dismissing" tagname="h3" type="heading-small-bold">Dismissing</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Escape</strong> closes the topmost dismissible surface.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Click or tap outside</strong> closes light-dismiss surfaces (popovers, menus).</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">On close, <strong>return focus</strong> to the element that opened the surface unless the user has intentionally moved on.</mdc-text></li>
+</ul>
+<mdc-text id="modality" tagname="h3" type="heading-small-bold">Modality</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Modal</strong> (dialogs) trap focus and make the rest of the page inert until resolved. Reserve modality for content that genuinely requires resolution.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Non-modal</strong> (popovers, menus, tooltips) let the user keep working and dismiss on outside interaction.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Content shown on hover or focus must be dismissible, hoverable, and persistent (WCAG 1.4.13) — Momentum’s tooltip and popover handle this; preserve it in custom work.</mdc-text></li>
+</ul>
+<mdc-text id="choosing-a-surface" tagname="h3" type="heading-small-bold">Choosing a surface</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Need</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Use</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">A short, non-interactive hint on hover/focus</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-tooltip</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">A small burst of interactive or dismissible info from a trigger</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-toggletip</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">A rich, anchored panel of content or controls</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-popover</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">A list of actions or options from a trigger</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-menupopover</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">A focused task that must be resolved before continuing</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-dialog</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">A transient, self-dismissing confirmation</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-toast</code></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Guided, first-run education anchored to UI</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><code>mdc-coachmark</code></mdc-text></td></tr></tbody></table>
+<mdc-text tagname="p" type="body-large-regular">When two options seem to fit, pick the least interruptive one. Escalate to modality only when the task truly blocks progress.</mdc-text>
+<mdc-text id="selection-and-input" tagname="h2" type="heading-midsize-bold"><a href="#selection-and-input" class="kb-heading-anchor">Selection and input</a></mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Single selection</strong> — radios, single-select listboxes, tabs. Selecting one item clears the previous.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Multiple selection</strong> — checkboxes, multi-select listboxes, filter chips.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Immediate vs deferred</strong> — decide whether a choice applies instantly or on an explicit <strong>Apply/Save</strong>. Be consistent within a flow, and make deferred changes obviously pending.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Disabled vs read-only</strong> — disabled removes the control from interaction and the tab order; read-only conveys a value that can’t be edited but can be focused and read. Prefer read-only when the user still needs to perceive the value.</mdc-text></li>
+</ul>
+<mdc-text id="feedback-loading-empty-and-error" tagname="h2" type="heading-midsize-bold"><a href="#feedback-loading-empty-and-error" class="kb-heading-anchor">Feedback: loading, empty, and error</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">These three states are where consistency most often breaks down. Treat them as part of the design, not an afterthought.</mdc-text>
+<mdc-text id="loading" tagname="h3" type="heading-small-bold">Loading</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Show progress that matches the wait: <code>mdc-skeleton</code> for content that is about to appear, <code>mdc-spinner</code> / <code>mdc-progressspinner</code> for indeterminate waits, <code>mdc-progressbar</code> for known-duration or step progress.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Preserve layout so content does not jump when it arrives (see <mdc-link href="/en/guidelines/responsive-design" inline="">responsive design</mdc-link>).</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Keep the trigger’s context: disable the submit control while its action is in flight rather than letting it be pressed twice.</mdc-text></li>
+</ul>
+<mdc-text id="empty" tagname="h3" type="heading-small-bold">Empty</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">An empty state is an opportunity, not a dead end. Explain what will appear here and offer the action that fills it.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Follow the empty-state voice in <mdc-link href="/en/guidelines/content-guidelines" inline="">content guidelines</mdc-link> — descriptive header, avoid “No…”, and reframe positively.</mdc-text></li>
+</ul>
+<mdc-text id="error" tagname="h3" type="heading-small-bold">Error</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">State what happened and what to do next, in text — never color alone.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Put field-level errors next to their field, associated programmatically; put flow-level errors where the user’s attention is.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">For asynchronous failures, offer a retry path and preserve the user’s input.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Error copy follows the crisis-moment tone in <mdc-link href="/en/guidelines/content-guidelines" inline="">content guidelines</mdc-link>: positive, direct, understanding, no exclamation points.</mdc-text></li>
+</ul>
+<mdc-text id="related-topics" tagname="h2" type="heading-midsize-bold"><a href="#related-topics" class="kb-heading-anchor">Related topics</a></mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><mdc-link href="/en/guidelines/accessibility" inline="">Accessibility</mdc-link> — the conformance baseline behind these behaviors.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><mdc-link href="/en/guidelines/responsive-design" inline="">Responsive design</mdc-link> — how interaction adapts across device classes.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><mdc-link href="/en/guidelines/content-guidelines" inline="">Content guidelines</mdc-link> — the words inside these states and surfaces.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Component Tier 3 topics — the authoritative key bindings and props for each control.</mdc-text></li>
+</ul>
+            <a class="edit-link astro-S4A73ZVF" href="https://github.com/momentum-design/momentum-design/edit/main/knowledge-base/interaction-patterns.md">
+              Edit this page on GitHub
+            </a>
+          </article>
+        </main>
+        <footer class="astro-VMFVMXKV">
+© 2026 Cisco and/or its affiliates. All Rights Reserved.
+</footer>
+
+
+      </mdc-iconprovider>
+    </mdc-themeprovider>
+    <script>
+      // Match the theme provider to the theme already resolved on <html> so the
+      // wrapped subtree does not force a fixed (default dark) theme.
+      (function () {
+        const provider = document.getElementById('mds-theme-provider');
+        if (!provider) return;
+        const isDark = document.documentElement.classList.contains('mds-theme-stable-darkWebex');
+        provider.setAttribute('themeclass', isDark ? 'mds-theme-stable-darkWebex' : 'mds-theme-stable-lightWebex');
+      })();
+    </script>
+  </body>
+</html>

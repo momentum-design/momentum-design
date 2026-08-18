@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-us" class="initial astro-S4A73ZVF">
+  <head>
+    <!-- Global Metadata --><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="generator" content="Astro v1.9.2">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<link rel="sitemap" href="/sitemap.xml">
+
+<!-- Preload Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Scrollable a11y code helper -->
+<script src="/make-scrollable-code-focusable.js"></script>
+
+<!-- This is intentionally inlined to avoid FOUC -->
+<script>
+  const root = document.documentElement;
+  const theme = localStorage.getItem('theme');
+
+  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.classList.add('theme-dark');
+    root.classList.add('mds-theme-stable-darkWebex');
+    root.classList.remove('mds-theme-stable-lightWebex');
+  } else {
+    root.classList.remove('theme-dark');
+    root.classList.add('mds-theme-stable-lightWebex');
+    root.classList.remove('mds-theme-stable-darkWebex');
+  }
+</script>
+
+<!-- Register the Momentum context providers and text component up-front so the
+  whole page upgrades in a single paint. Hiding un-upgraded providers (below)
+  avoids the flash-of-unstyled-text flicker on navigation. -->
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEL60V1WM9" is:inline></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TEL60V1WM9');
+</script> -->
+
+    <!-- Page Metadata --><link rel="canonical" href="https://momentum.design/en/guidelines/content-guidelines/">
+
+<!-- OpenGraph Tags -->
+<meta property="og:title" content="Content guidelines 🚀 Momentum">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://momentum.design/en/guidelines/content-guidelines/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/withastro/astro/blob/main/assets/social/banner-minimal.png?raw=true">
+<meta property="og:image:alt" content="astro logo on a starry expanse of space, with a purple saturn-like planet floating in the right foreground">
+<meta name="description" property="og:description" content="Product UI/UX writing standards for products built with Momentum — voice, tone, style, accessibility, inclusion, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.">
+<meta property="og:site_name" content="Momentum">
+
+<!-- Twitter Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="astrodotbuild">
+<meta name="twitter:title" content="Content guidelines 🚀 Momentum">
+<meta name="twitter:description" content="Product UI/UX writing standards for products built with Momentum — voice, tone, style, accessibility, inclusion, vocabulary, content patterns, examples, and evaluation criteria for in-product copy.">
+<meta name="twitter:image" content="https://github.com/withastro/astro/blob/main/assets/social/banner-minimal.png?raw=true">
+<meta name="twitter:image:alt" content="astro logo on a starry expanse of space, with a purple saturn-like planet floating in the right foreground">
+
+<!--
+  TODO: Add json+ld data, maybe https://schema.org/APIReference makes sense?
+  Docs: https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data
+  https://www.npmjs.com/package/schema-dts seems like a great resource for implementing this.
+  Even better, there's a React component that integrates with `schema-dts`: https://github.com/google/react-schemaorg
+-->
+
+    <title>
+      Content guidelines 🚀 Momentum
+    </title>
+    
+  <link rel="stylesheet" href="/assets/_tokenType_.6e467f9c.css" />
+<link rel="stylesheet" href="/assets/_page_.3fa00351.css" /><script type="module" src="/hoisted.3dd58147.js"></script></head>
+  <body class="mds-typography mds-elevation astro-S4A73ZVF">
+    <style>astro-island,astro-slot{display:contents}</style><script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()},window.dispatchEvent(new Event("astro:load"));var l;{const c={0:t=>t,1:t=>JSON.parse(t,o),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,o)),5:t=>new Set(JSON.parse(t,o)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},o=(t,s)=>{if(t===""||!Array.isArray(s))return s;const[e,n]=s;return e in c?c[e](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(l=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=()=>{if(!this.hydrator||this.parentElement&&this.parentElement.closest("astro-island[ssr]"))return;const s=this.querySelectorAll("astro-slot"),e={},n=this.querySelectorAll("template[data-astro-template]");for(const r of n){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(const r of s){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("name")||"default"]=r.innerHTML)}const a=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),o):{};this.hydrator(this)(this.Component,a,e,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),window.removeEventListener("astro:hydrate",this.hydrate),window.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((s,e)=>{e.disconnect(),this.childrenConnectedCallback()}).observe(this,{childList:!0})}async childrenConnectedCallback(){window.addEventListener("astro:hydrate",this.hydrate);let s=this.getAttribute("before-hydration-url");s&&await import(s),this.start()}start(){const s=JSON.parse(this.getAttribute("opts")),e=this.getAttribute("client");if(Astro[e]===void 0){window.addEventListener(`astro:${e}`,()=>this.start(),{once:!0});return}Astro[e](async()=>{const n=this.getAttribute("renderer-url"),[a,{default:r}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=a[i];else{this.Component=a;for(const d of i.split("."))this.Component=this.Component[d]}return this.hydrator=r,this.hydrate},s,this)}attributeChangedCallback(){this.hydrator&&this.hydrate()}},l.observedAttributes=["props"],l))}</script><script>(self.Astro=self.Astro||{}).idle=t=>{const e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)},window.dispatchEvent(new Event("astro:idle"));</script><mdc-themeprovider id="mds-theme-provider" themeclass="mds-theme-stable-darkWebex" class="astro-S4A73ZVF">
+      <mdc-iconprovider icon-set="momentum-icons" class="astro-S4A73ZVF">
+        <header class="astro-THRORX7C">
+  <a href="#article" class="sr-only focus:not-sr-only skiplink astro-5DZJJP3H"><span class="astro-5DZJJP3H">Skip to Content</span></a>
+
+
+  <nav class="nav-wrapper astro-THRORX7C" title="Top Navigation">
+    <div class="logo flex astro-THRORX7C">
+      <a href="/en" aria-label="Home" class="astro-THRORX7C">
+        <svg height="40" viewBox="0 0 500 151" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M101.499 0.143555V48.5935C129.094 49.8164 150.643 72.9099 149.985 100.554C149.327 128.198 126.704 150.238 99.0819 150.143H48.3373V101.753H0V0.143555H101.499ZM8.25077 4.98367L50.7544 47.5336L93.2481 4.98367H8.25077ZM96.7043 8.40364V48.5336H56.588L96.7043 8.40364ZM96.6651 53.4036H53.2125L53.1725 96.9135H96.6651V53.4036ZM4.83526 96.9135V8.40364L48.3378 51.9536V96.9535L4.83526 96.9135ZM53.1312 145.303H99.0411C123.589 144.815 143.416 125.094 144.063 100.524C144.709 75.9532 125.946 55.2146 101.459 53.4335V101.753H53.1312V145.303Z" fill="url(#paint0_linear_25064_10926)"></path>
+  <path d="M460.979 57.497H455.168V26.0233H459.95L460.555 29.7154C462.694 26.6488 465.781 25.1154 469.816 25.1154C474.214 25.1154 477.301 26.7698 479.076 30.0786C481.174 26.7698 484.584 25.1154 489.305 25.1154C492.816 25.1154 495.519 26.1847 497.416 28.3233C499.11 30.3005 499.958 33.004 499.958 36.4338V57.497H494.147V36.8575C494.147 32.3382 492.11 30.0786 488.034 30.0786C485.613 30.0786 483.676 31.0268 482.224 32.9233C481.053 34.4566 480.468 36.2523 480.468 38.3102V57.497H474.658V36.8575C474.658 32.3382 472.62 30.0786 468.545 30.0786C466.285 30.0786 464.409 30.9663 462.916 32.7417C461.624 34.2347 460.979 36.0303 460.979 38.1286V57.497Z" fill="white"></path>
+  <path d="M420.76 26.0233H426.571V46.6628C426.571 51.1821 428.75 53.4417 433.108 53.4417C435.771 53.4417 437.809 52.4935 439.221 50.597C440.31 49.1444 440.855 47.3488 440.855 45.2102V26.0233H446.666V57.497H441.884L441.218 53.8654C438.999 56.8917 435.852 58.4049 431.776 58.4049C428.185 58.4049 425.421 57.2952 423.484 55.0759C421.668 53.0181 420.76 50.1733 420.76 46.5417V26.0233Z" fill="white"></path>
+  <path d="M415.6 52.8365V57.7996C414.107 58.2031 412.674 58.4049 411.302 58.4049C408.397 58.4049 406.218 57.497 404.765 55.6812C403.515 54.1882 402.889 52.1909 402.889 49.6891V30.9865H398.229V26.0233H402.889L403.252 18.4575H408.7V26.0233H415.479V30.9865H408.7V49.8102C408.7 52.1505 409.809 53.3207 412.029 53.3207C413.078 53.3207 414.268 53.1593 415.6 52.8365Z" fill="white"></path>
+  <path d="M373.026 57.497H367.216V26.0233H371.998L372.663 30.018C375.004 26.7496 378.191 25.1154 382.226 25.1154C385.939 25.1154 388.784 26.2654 390.761 28.5654C392.496 30.6233 393.363 33.4277 393.363 36.9786V57.497H387.553V37.0391C387.553 32.3988 385.313 30.0786 380.834 30.0786C378.494 30.0786 376.577 30.8856 375.084 32.4996C373.712 33.9523 373.026 35.8084 373.026 38.0681V57.497Z" fill="white"></path>
+  <path d="M353.591 48.4181H359.886C358.998 51.6058 357.243 54.1075 354.62 55.9233C352.159 57.5777 349.213 58.4049 345.783 58.4049C340.82 58.4049 336.947 56.8312 334.162 53.6838C331.62 50.7382 330.349 46.7637 330.349 41.7602C330.349 36.0707 331.963 31.7531 335.191 28.8075C337.855 26.3461 341.284 25.1154 345.481 25.1154C350.404 25.1154 354.116 26.7093 356.618 29.897C359.039 32.9637 360.249 37.3417 360.249 43.0312H336.281C336.523 46.7435 337.653 49.5075 339.67 51.3233C341.325 52.7759 343.423 53.5023 345.965 53.5023C347.942 53.5023 349.657 52.9575 351.11 51.8681C352.32 50.94 353.148 49.79 353.591 48.4181ZM345.602 29.7759C343.019 29.7759 340.941 30.583 339.368 32.197C337.875 33.69 336.926 35.7681 336.523 38.4312H354.318C354.116 35.4049 353.107 33.1452 351.291 31.6523C349.839 30.4014 347.942 29.7759 345.602 29.7759Z" fill="white"></path>
+  <path d="M285.015 57.497H279.205V26.0233H283.986L284.591 29.7154C286.73 26.6488 289.817 25.1154 293.852 25.1154C298.25 25.1154 301.337 26.7698 303.112 30.0786C305.211 26.7698 308.62 25.1154 313.341 25.1154C316.852 25.1154 319.555 26.1847 321.452 28.3233C323.147 30.3005 323.994 33.004 323.994 36.4338V57.497H318.183V36.8575C318.183 32.3382 316.146 30.0786 312.07 30.0786C309.649 30.0786 307.712 31.0268 306.26 32.9233C305.09 34.4566 304.505 36.2523 304.505 38.3102V57.497H298.694V36.8575C298.694 32.3382 296.656 30.0786 292.581 30.0786C290.321 30.0786 288.445 30.9663 286.952 32.7417C285.661 34.2347 285.015 36.0303 285.015 38.1286V57.497Z" fill="white"></path>
+  <path d="M241.51 41.7602C241.51 35.99 243.225 31.6321 246.655 28.6865C249.399 26.3058 252.869 25.1154 257.066 25.1154C261.948 25.1154 265.781 26.6689 268.566 29.7759C271.229 32.6812 272.56 36.6759 272.56 41.7602C272.56 47.4496 270.886 51.7873 267.537 54.7733C264.793 57.1944 261.282 58.4049 257.005 58.4049C252.123 58.4049 248.269 56.7909 245.445 53.5628C242.822 50.6172 241.51 46.683 241.51 41.7602ZM247.563 41.7602C247.563 45.7952 248.592 48.8821 250.65 51.0207C252.345 52.7961 254.503 53.6838 257.126 53.6838C260.193 53.6838 262.553 52.5338 264.208 50.2338C265.741 48.1356 266.508 45.311 266.508 41.7602C266.508 37.6444 265.499 34.5373 263.481 32.4391C261.827 30.704 259.688 29.8365 257.066 29.8365C254.039 29.8365 251.679 30.9865 249.984 33.2865C248.37 35.3847 247.563 38.2093 247.563 41.7602Z" fill="white"></path>
+  <path d="M196.176 57.497H190.366V26.0233H195.147L195.752 29.7154C197.891 26.6488 200.978 25.1154 205.013 25.1154C209.411 25.1154 212.498 26.7698 214.273 30.0786C216.372 26.7698 219.781 25.1154 224.502 25.1154C228.013 25.1154 230.716 26.1847 232.613 28.3233C234.308 30.3005 235.155 33.004 235.155 36.4338V57.497H229.345V36.8575C229.345 32.3382 227.307 30.0786 223.231 30.0786C220.81 30.0786 218.873 31.0268 217.421 32.9233C216.251 34.4566 215.666 36.2523 215.666 38.3102V57.497H209.855V36.8575C209.855 32.3382 207.817 30.0786 203.742 30.0786C201.482 30.0786 199.606 30.9663 198.113 32.7417C196.822 34.2347 196.176 36.0303 196.176 38.1286V57.497Z" fill="white"></path>
+  <path d="M350.211 111.242H344.4V79.7682H349.182L349.848 83.763C352.188 80.4945 355.376 78.8603 359.411 78.8603C363.123 78.8603 365.968 80.0103 367.945 82.3103C369.68 84.3682 370.548 87.1726 370.548 90.7235V111.242H364.737V90.784C364.737 86.1437 362.498 83.8235 358.019 83.8235C355.678 83.8235 353.762 84.6305 352.269 86.2445C350.897 87.6972 350.211 89.5533 350.211 91.813V111.242Z" fill="white"></path>
+  <path d="M307.154 113.36H313.388C313.671 114.974 314.478 116.225 315.809 117.113C317.181 118.001 318.977 118.445 321.196 118.445C324.303 118.445 326.623 117.638 328.157 116.023C329.448 114.652 330.093 112.735 330.093 110.273V106.218C327.753 108.962 324.263 110.334 319.622 110.334C315.426 110.334 312.016 108.821 309.393 105.795C306.932 102.97 305.701 99.2981 305.701 94.7788C305.701 89.5331 307.194 85.4779 310.18 82.613C312.722 80.1112 315.991 78.8603 319.986 78.8603C324.505 78.8603 327.914 80.5551 330.214 83.9445L331.122 79.7682H335.904V110.576C335.904 114.531 334.472 117.638 331.607 119.897C329.024 121.995 325.614 123.045 321.378 123.045C316.979 123.045 313.529 122.056 311.028 120.079C308.929 118.424 307.638 116.185 307.154 113.36ZM311.754 94.8998C311.754 98.3296 312.763 101.013 314.78 102.95C316.435 104.564 318.472 105.371 320.893 105.371C324.081 105.371 326.522 104.322 328.217 102.223C329.67 100.448 330.396 98.0674 330.396 95.0814C330.396 91.2481 329.407 88.3226 327.43 86.3051C325.776 84.6507 323.597 83.8235 320.893 83.8235C317.907 83.8235 315.607 84.8524 313.993 86.9103C312.5 88.8472 311.754 91.5103 311.754 94.8998Z" fill="white"></path>
+  <path d="M299.387 74.5024H292.85V67.663H299.387V74.5024ZM299.024 111.242H293.213V79.7682H299.024V111.242Z" fill="white"></path>
+  <path d="M280.7 102.708C280.7 100.932 279.772 99.6007 277.916 98.713C276.826 98.2288 274.708 97.6235 271.56 96.8972C267.687 96.0498 264.923 94.8191 263.268 93.2051C261.896 91.8331 261.21 90.0375 261.21 87.8182C261.21 84.8726 262.401 82.613 264.781 81.0393C266.92 79.5867 269.805 78.8603 273.437 78.8603C277.189 78.8603 280.236 79.7884 282.576 81.6445C284.594 83.2586 285.844 85.3972 286.329 88.0603H280.397C279.711 84.9937 277.371 83.4603 273.376 83.4603C271.157 83.4603 269.502 83.8638 268.413 84.6709C267.525 85.3568 267.081 86.2244 267.081 87.2735C267.081 88.5647 267.566 89.5331 268.534 90.1788C269.543 90.8244 271.5 91.47 274.405 92.1156C278.844 93.084 281.93 94.2744 283.666 95.6867C285.602 97.2603 286.571 99.4595 286.571 102.284C286.571 105.431 285.28 107.913 282.697 109.729C280.357 111.343 277.27 112.15 273.437 112.15C269.24 112.15 265.911 111.141 263.45 109.123C261.311 107.348 260.121 105.048 259.879 102.223H265.81C266.456 105.774 269.018 107.55 273.497 107.55C275.918 107.55 277.794 107.025 279.126 105.976C280.175 105.129 280.7 104.039 280.7 102.708Z" fill="white"></path>
+  <path d="M248.675 102.163H254.97C254.082 105.351 252.327 107.852 249.704 109.668C247.243 111.323 244.297 112.15 240.867 112.15C235.904 112.15 232.03 110.576 229.246 107.429C226.704 104.483 225.433 100.509 225.433 95.5051C225.433 89.8156 227.047 85.4981 230.275 82.5524C232.938 80.091 236.368 78.8603 240.565 78.8603C245.487 78.8603 249.2 80.4542 251.701 83.6419C254.123 86.7086 255.333 91.0867 255.333 96.7761H231.365C231.607 100.488 232.737 103.252 234.754 105.068C236.408 106.521 238.507 107.247 241.049 107.247C243.026 107.247 244.741 106.702 246.194 105.613C247.404 104.685 248.231 103.535 248.675 102.163ZM240.686 83.5209C238.103 83.5209 236.025 84.3279 234.451 85.9419C232.958 87.4349 232.01 89.513 231.607 92.1761H249.401C249.2 89.1498 248.191 86.8902 246.375 85.3972C244.923 84.1463 243.026 83.5209 240.686 83.5209Z" fill="white"></path>
+  <path d="M218.752 111.242H213.971L212.942 106.824C210.521 110.374 207.031 112.15 202.471 112.15C198.073 112.15 194.602 110.556 192.06 107.368C189.72 104.423 188.55 100.529 188.55 95.6867C188.55 89.8358 190.043 85.4375 193.029 82.4919C195.531 80.0709 198.799 78.8603 202.834 78.8603C207.192 78.8603 210.561 80.4945 212.942 83.763V67.663H218.752V111.242ZM194.602 95.8077C194.602 99.7217 195.571 102.688 197.508 104.705C199.122 106.359 201.2 107.187 203.742 107.187C206.889 107.187 209.331 105.996 211.066 103.616C212.518 101.558 213.245 98.9753 213.245 95.8682C213.245 91.7928 212.276 88.6858 210.339 86.5472C208.685 84.7314 206.486 83.8235 203.742 83.8235C200.675 83.8235 198.355 84.9331 196.781 87.1524C195.329 89.17 194.602 92.0551 194.602 95.8077Z" fill="white"></path>
+  <defs>
+    <linearGradient id="paint0_linear_25064_10926" x1="15.4831" y1="126.143" x2="120.483" y2="21.2578" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DB1F2E"></stop>
+      <stop offset="0.120191" stop-color="#F26B1D"></stop>
+      <stop offset="0.249276" stop-color="#F2990A"></stop>
+      <stop offset="0.395641" stop-color="#73A321"></stop>
+      <stop offset="0.52483" stop-color="#00A3B5"></stop>
+      <stop offset="0.668042" stop-color="#0A78CC"></stop>
+      <stop offset="0.82762" stop-color="#643ABD"></stop>
+      <stop offset="1" stop-color="#C233C4"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+      </a>
+    </div>
+    <div class="main-menu astro-THRORX7C" style="align-items:center">
+      <li class="nav-link astro-THRORX7C">
+              <a href="/en/foundations/color" class="astro-THRORX7C">
+                Foundations
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/guidelines/accessibility" class="astro-THRORX7C">
+                Guidelines
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/tokens" class="astro-THRORX7C">
+                Tokens
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/assets" class="astro-THRORX7C">
+                Assets
+              </a>
+            </li><li class="nav-link astro-THRORX7C">
+              <a href="/en/components" class="astro-THRORX7C">
+                Components
+              </a>
+            </li>
+      <astro-island uid="2qBIco" component-url="/GitHubTool.f8cae96b.js" component-export="default" renderer-url="/client.048886a1.js" props="{}" ssr="" client="load" opts="{&quot;name&quot;:&quot;GitHubTool&quot;,&quot;value&quot;:true}" await-children=""><button class="github-tool-button " title="View Momentum design on GitHub" aria-label="View Momentum design on GitHub"><svg class="github-tool-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></button></astro-island>
+    </div>
+    <div class="search-item astro-THRORX7C">
+      <astro-island uid="Z1VUn8z" component-url="/Search.41765868.js" component-export="default" renderer-url="/client.048886a1.js" props="{}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;Search&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="search-input"><svg width="24" height="24" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Search</span></button></astro-island>
+    </div>
+  </nav>
+</header>
+
+
+
+
+        <main class="layout astro-S4A73ZVF">
+          <nav aria-label="Guidelines pages" class="astro-MVMCDSHO">
+    <ul class="nav-groups astro-MVMCDSHO">
+      <li class="astro-MVMCDSHO">
+        <div class="nav-group astro-MVMCDSHO">
+          <mdc-text class="nav-heading astro-MVMCDSHO" tagname="h3" type="body-midsize-bold">Guidelines</mdc-text>
+          <ul class="astro-MVMCDSHO">
+            <li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/accessibility" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Accessibility</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/content-guidelines" aria-current="page" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-bold" class="astro-MVMCDSHO">Content Guidelines</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/interaction-patterns" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Interaction Patterns</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/internationalization" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Internationalization</mdc-text>
+                  </a>
+                </li><li class="nav-link astro-MVMCDSHO">
+                  <a href="/en/guidelines/responsive-design" class="astro-MVMCDSHO">
+                    <mdc-text tagname="span" type="body-large-medium" class="astro-MVMCDSHO">Responsive Design</mdc-text>
+                  </a>
+                </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+
+          <article id="article" class="content astro-S4A73ZVF">
+            <mdc-text class="eyebrow astro-S4A73ZVF" tagname="div" type="body-midsize-bold">guidelines</mdc-text>
+            <mdc-text class="content-title astro-S4A73ZVF" tagname="h1" type="heading-xlarge-bold">Content guidelines</mdc-text>
+            <mdc-text tagname="p" type="body-large-regular"><strong>Primary audience:</strong> Product design and engineering.</mdc-text>
+<mdc-text id="purpose-and-scope" tagname="h2" type="heading-midsize-bold"><a href="#purpose-and-scope" class="kb-heading-anchor">Purpose and scope</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">In-product content connects people and transforms how they communicate and collaborate. In product UI, our voice is human — welcoming, grounded, empathetic, and enthusiastic — while tone adapts to the moment.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">This guide covers:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Voice and tone principles for in-product copy</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Style mechanics (capitalization, punctuation, emphasis, formats, emojis)</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Accessibility, inclusion, and localization</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Vocabulary and terminology</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Reusable content patterns and before/after examples</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Evaluation criteria</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">Product teams should prioritize <strong>Spirited</strong>, <strong>Diligent</strong>, and <strong>Thoughtful</strong> in UI/UX copy.</mdc-text>
+<mdc-text id="voice" tagname="h2" type="heading-midsize-bold"><a href="#voice" class="kb-heading-anchor">Voice</a></mdc-text>
+<mdc-text id="voice-vs-tone" tagname="h3" type="heading-small-bold">Voice vs tone</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>Voice isn’t what we write. It’s how we write.</strong></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Voice is the consistent character across products. Tone is delivery — how that character adapts to context and situation.</mdc-text>
+<mdc-text id="product-characteristics" tagname="h3" type="heading-small-bold">Product characteristics</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Dial up these three in UI/UX copy:</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Characteristic</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Description</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">TL;DR</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Spirited</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Enthusiastic. Energetic. Positive. Our voice is never static. Sure, we’re a touchstone for industry knowledge and innovation, but that doesn’t mean we can’t have a laugh. We tell uplifting stories with relatable examples and wry humor. We’re excited about what we do and share that spirit.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">If the moment is exciting, share it. Use dynamic language. Sneak in wry humor if it feels right. <strong>Write with passion.</strong></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Diligent</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">We speak with intention; every word serves a purpose. We’re consistent with terms and use research to make informed choices. Our language is clear and actionable, informative without being verbose. We know the stakes, so our approach is never careless.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Make every word count. Ensure users don’t get lost. Use clear, actionable language. <strong>Write with intention.</strong></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Thoughtful</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">We listen and learn. Customer needs and goals are a priority, and we strive to create an effortless experience. This means our voice is thoughtful, understanding, and inclusive. Our audience is global and diverse, so we use plain, everyday language, sticking to simple concepts and descriptions.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Use everyday words. Think about next steps. <strong>Write like chatting with a friend.</strong></mdc-text></td></tr></tbody></table>
+<mdc-text id="voice-contrasts" tagname="h3" type="heading-small-bold">Voice contrasts</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Our voice is:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Confident</strong> but not condescending</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Intelligent</strong> but not erudite</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Wry</strong> and <strong>cheeky</strong> but never goofy or obnoxious</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Empathetic</strong> rather than emotional</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Straightforward</strong> but not without personality</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Informative</strong> but not rambling</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Enthusiastic</strong> but not bubbly</mdc-text></li>
+</ul>
+<mdc-text id="writing-rules" tagname="h3" type="heading-small-bold">Writing rules</mdc-text>
+<ol>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Vary sentence structure</strong> — Mix short and long sentences; avoid monotonous rhythm.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Choose active voice</strong> — “The dog took the ball” not “The ball was taken by the dog.”</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Simplify</strong> — Cut filler ruthlessly. Kill your darlings.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Remove jargon</strong> — When you’re part of an industry, it’s easy to forget not everyone understands, or cares about, the jargon you use daily. The best writing is understandable to anyone. No matter the topic, there’s almost always a simpler way to say it—find it.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Think about story</strong> — Even when writing a few sentences, think about the journey you’re taking readers on. Strive to build arcs. Does where you land make sense considering where you took off? Writing toward a bigger picture or story will make your copy easier to digest.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Mobile-first content thinking</strong> — Just like mobile-first design, content should also be crafted with small screens in mind. Designing content for smaller screens first encourages removing anything unnecessary, making the experience cleaner, simpler, and easier to navigate.</mdc-text></li>
+</ol>
+<mdc-text id="tone" tagname="h2" type="heading-midsize-bold"><a href="#tone" class="kb-heading-anchor">Tone</a></mdc-text>
+<mdc-text id="tone-is-all-about-delivery" tagname="h3" type="heading-small-bold">Tone is all about delivery</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">While our voice is unchanging, our tone changes across the experience. It adapts to the context and the situation—to the moment. So imagine throwing confetti during a complete system failure…<em>Your system is broken. All is lost 🎉</em>… or greeting new users with one-word responses… <em>Sup</em>… Doesn’t quite feel right.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">And since we’re not mind readers, pinpointing a user’s emotional state is a wild goose chase. Instead, it’s best to think deeply about what’s happening around them. Is the moment sensitive? Speak with an extra bit of compassion (that’s being thoughtful) and precision (that’s being diligent).</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>It’s more art than science.</strong></mdc-text>
+<mdc-text id="moment-matrix" tagname="h3" type="heading-small-bold">Moment matrix</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Every message contains all characteristics, but delivery shifts by context. Use the moment to decide which to dial up.</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Product moment</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Message delivery</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Spirited</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Diligent</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Thoughtful</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Example</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Impression</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Enthusiastic, clear, welcoming</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">High</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Low</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Hi there. So great you’re here. We’ll do some amazing work together!</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Crisis</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Positive, direct, understanding</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Low</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">High</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium–high</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Your trial ends <strong>Nov 14, 2023</strong>. After that, you’ll switch to a monthly subscription, but no worries, you can easily cancel or make changes anytime.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Instructional</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Exciting, simple, conversational</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">High</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium–high</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Copy the link to share your Registration page, or click <strong>Continue</strong> if you’re not ready to spread the word just yet.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Achievement</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Vibrant, open, supportive</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium–high</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Medium–high</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Great job! Over 80% of your users met your goal. Ready to take it up a notch?</mdc-text></td></tr></tbody></table>
+<mdc-text id="tone-is-more-than-words" tagname="h3" type="heading-small-bold">Tone is more than words</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Use illustration, color, type, sound, animation, and flow to convey tone — not words alone.</mdc-text>
+<mdc-text id="not-us" tagname="h4" type="body-large-bold">Not us</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>CPU overheating. Meeting performance has slowed.</strong></mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">To ensure a smooth experience, please close any background applications that are not essential for your meeting.</mdc-text></li>
+</ul>
+<mdc-text id="this-is-us" tagname="h4" type="body-large-bold">This is us</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Your computer’s working overtime</strong></mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Close unneeded apps to keep your meeting running smoothly.</mdc-text></li>
+</ul>
+<mdc-text id="empty-state-tone" tagname="h3" type="heading-small-bold">Empty state tone</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Two approaches, depending on need:</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Type</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">When to use</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Dial up</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Guidance</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Informative</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Most often</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Diligent, empathetic</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Avoid negatives (“No…” or “You don’t have…”). Use descriptive headers. Explain the screen simply, like to a friend. Offer guidance or actions when possible.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Timely</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Occasionally</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Spirited, always improving</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">When guidance isn’t needed, create encouragement or excitement. Headers can be more abstract and punchy. Always tie back to the user’s context.</mdc-text></td></tr></tbody></table>
+<mdc-text id="style-mechanics" tagname="h2" type="heading-midsize-bold"><a href="#style-mechanics" class="kb-heading-anchor">Style mechanics</a></mdc-text>
+<mdc-text id="capitalization" tagname="h3" type="heading-small-bold">Capitalization</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>Sentence case</strong> is the default casing for all products and platforms (Desktop, Mobile, Web, Room). Capitalize only the first word and proper nouns.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>Exception:</strong> When using native Apple components, follow Apple capitalization standards, which use sentence, title, and all caps casing.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>Note:</strong> With Material 3, Android has moved to all sentence case. Android components will reflect this change as they get updated.</mdc-text>
+<mdc-text id="punctuation" tagname="h3" type="heading-small-bold">Punctuation</mdc-text>
+<mdc-text id="periods" tagname="h4" type="body-large-bold">Periods</mdc-text>
+<ul>
+<li>
+<mdc-text tagname="p" type="body-large-regular"><strong>Do:</strong> use periods at the end of full sentences in banner text, body text, linked text, URLs, errors, dialogs, tooltips, and field labels.</mdc-text>
+</li>
+<li>
+<mdc-text tagname="p" type="body-large-regular"><strong>Don’t:</strong> use periods in titles, headers, subtitles, subheaders, bullet points, checkboxes, radio buttons, hint text, or any text that is not a full sentence.</mdc-text>
+</li>
+</ul>
+<mdc-text id="ellipses" tagname="h4" type="body-large-bold">Ellipses</mdc-text>
+<ul>
+<li>
+<mdc-text tagname="p" type="body-large-regular"><strong>Do:</strong> use ellipses to indicate in-process states, truncate when space is limited, or show that a menu option opens further choices (only when the copy does not include a verb).</mdc-text>
+</li>
+<li>
+<mdc-text tagname="p" type="body-large-regular"><strong>Don’t:</strong> use ellipses in tooltips, buttons, hyperlinks, or menu options that take immediate action.</mdc-text>
+</li>
+</ul>
+<mdc-text id="exclamation-points" tagname="h4" type="body-large-bold">Exclamation points</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Use sparingly — <strong>one per flow</strong>. Appropriate for onboarding and updates. Avoid in error messages, tooltips, and alerts.</mdc-text>
+<mdc-text id="apostrophes" tagname="h4" type="body-large-bold">Apostrophes</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Do:</strong> use for possession.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> use for plurality (e.g. “API’s”). Contractions are encouraged — they sound friendly and informal.</mdc-text></li>
+</ul>
+<mdc-text id="commas" tagname="h4" type="body-large-bold">Commas</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Use commas in body-copy lists. For lists of three or more items, use the serial (Oxford) comma. If a sentence needs too many commas, split it into shorter sentences.</mdc-text>
+<mdc-text id="colons" tagname="h4" type="body-large-bold">Colons</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Use colons to format time, introduce lists of items or steps, and label elements (<code>Contact info: +xxx-xxx-xxx</code>). Capitalize the word after a colon in a list on a separate line; in running sentences, capitalize only proper nouns after the colon.</mdc-text>
+<mdc-text id="emphasis" tagname="h3" type="heading-small-bold">Emphasis</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Emphasis uses formatting and type symbols to add personality and clarity.</mdc-text>
+<mdc-text id="bold" tagname="h4" type="body-large-bold">Bold</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Do:</strong> highlight key points and refer to labels or directions without quotation marks.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> overuse bold or rely on bold alone to convey meaning — the message must be clear without it.</mdc-text></li>
+</ul>
+<mdc-text id="emojis" tagname="h3" type="heading-small-bold">Emojis</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Emojis are small, digital expressions representing many things, including objects, people, actions, and ideas. Emojis are now a widely recognized aspect of digital language. When used correctly, they can:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Support message meaning</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Set a playful tone</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Be enjoyable to users</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">In product UI, use emojis deliberately, intentionally, and sparingly. An emoji’s tone and meaning are always changing and subjective, so use them wisely. Your words should do the talking. Emojis are just visual aids.</mdc-text>
+<mdc-text id="when-to-consider-an-emoji" tagname="h4" type="body-large-bold">When to consider an emoji</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Well, it really depends on the context and moment your message is in. Emojis immediately make messages more playful, even quirky. Using an emoji should be a last resort to enhance a message.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">A situation where an emoji may be appropriate to consider is if the tone of voice is <strong>Spirited</strong>. Use Spirited voice only when the moment and tone is celebratory, like in:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Onboarding</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">New feature or product announcements</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Successes or accomplishments</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">Before using an emoji, confirm you can firmly answer <strong>yes</strong> to all of the following:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Does the situation call for a Spirited tone — is it uplifting and celebratory?</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Does the situation limit the use of other expressive brand elements like illustration, icons, or more descriptive writing?</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Will the clarity and meaning of the message be enhanced with an emoji?</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">If yes to all, you’re in emoji territory. Follow the rules below.</mdc-text>
+<mdc-text id="emoji-rules" tagname="h4" type="body-large-bold">Emoji rules</mdc-text>
+<ol>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Use emojis in headlines only</strong> — Never in descriptive text or buttons. Place emojis at the end of the headline.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Do:</strong> Your calendar is completely free 🎉</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> 🎉 Your calendar is completely free</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t use punctuation with emojis</strong> — The emoji is your punctuation.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Never use emojis to replace words</strong> — This will make your message inaccessible for everyone.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> Your 📆 is completely free</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Use only popular and widely accepted emojis</strong> — Emojis can have multiple meanings depending on culture, region, and age. Examples: 🙏 = High-five (in the US) or Prayer (in India); 💩 = Being silly or sarcastic (in the US) or Good luck (in Japan). See recommended emojis below.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t use repeated or multiple emojis</strong> — Using more than one emoji repeatedly can be tedious to people using a screen reader.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> File uploaded 👏👏👏 (Screen reader: File uploaded clapping hands clapping hands clapping hands)</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Use emojis that work in dark and light mode</strong> — Use the default yellow skin tone for people and hands.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Do:</strong> 👋</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> 👋🏻👋🏼👋🏽👋🏾👋🏿</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t use emojis if another visual element is used</strong> — If there are icons or illustration being used in the same message, don’t use an emoji.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Use emojis, never emoticons</strong> — Emojis have built-in alt text descriptions and can be read as text by a screen reader. Emoticons are punctuation and will be read out as punctuation.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Do:</strong> 😎</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Don’t:</strong> 8-)</mdc-text></li>
+</ul>
+</li>
+</ol>
+<mdc-text id="recommended-emojis" tagname="h4" type="body-large-bold">Recommended emojis</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">You’re not limited to these emojis, but these are commonly understood and play well with our Spirited tone of voice:</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Emoji</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Name</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">👍</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Thumbs up</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🙌</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Hands raised (Celebration)</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">👋</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Waving hand</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">👏</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Clapping hands</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">💪</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Flexed bicep</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">😄</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Grinning face</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🤩</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Face with starry eyes</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🥳</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Party face</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🫅</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Person with crown</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🦸</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Superhero</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">❤️</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Heart</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🎁</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Present</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🎉</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Party popper</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🏆</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Trophy</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">🔮</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Crystal ball</mdc-text></td></tr></tbody></table>
+<mdc-text id="formats" tagname="h3" type="heading-small-bold">Formats</mdc-text>
+<mdc-text id="date-and-time" tagname="h4" type="body-large-bold">Date and time</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Type</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Format</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Example</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">Date (full)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Day, Month DD, YYYY at HH:MM:SS XM</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Tuesday, May 15, 2023, at 10:22:13 AM</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Date (constrained)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">3-character month abbreviation</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Mar 15, 2023</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Date (very constrained)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">MM/DD/YY</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">12/25/21</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Time (12-hour)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">H:MM XM</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">7:20 AM</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Time (24-hour)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">HH:MM</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">07:20</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Duration (≤24h)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">HH:MM:SS</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">01:15:30</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Duration (>24h)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Xh Xm Xs</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">135h 28m 15s</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Duration (labels)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">X seconds; X min X sec</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">13 seconds; 20 min 11 sec</mdc-text></td></tr></tbody></table>
+<mdc-text id="numbers-and-ranges" tagname="h4" type="body-large-bold">Numbers and ranges</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Use en dashes for ranges: <code>10 AM – 11 AM</code></mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">No leading zeros; never spell out standalone numbers</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Use commas in large numbers: <code>8,888,000</code></mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Phone (international): <code>+XX-XXX-XXX-XXXX</code></mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Phone (US): <code>(XXX) XXX-XXXX</code></mdc-text></li>
+</ul>
+<mdc-text id="menu-paths" tagname="h4" type="body-large-bold">Menu paths</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Embed paths in a sentence when possible. Use <code>></code> as the separator.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Example: Go to Settings > Preferences > Personal Room > Host PIN</mdc-text>
+<mdc-text id="accessibility-and-inclusion" tagname="h2" type="heading-midsize-bold"><a href="#accessibility-and-inclusion" class="kb-heading-anchor">Accessibility and inclusion</a></mdc-text>
+<mdc-text id="writing-for-accessibility" tagname="h3" type="heading-small-bold">Writing for accessibility</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Language is an extremely powerful way to promote inclusivity. We write for a diverse audience that interacts with our content in different ways. We aim to make our content accessible to anyone using a screen reader, keyboard navigation, Braille interface, and users of all cognitive capabilities.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">As you write, think about the following:</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Does this language make sense to someone who doesn’t work here?</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Can someone quickly scan this and understand the material?</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">If someone can’t see the colors, images, or video, is the message still clear?</mdc-text></li>
+</ul>
+<mdc-text tagname="p" type="body-large-regular">Always try to write from more than one perspective and limit assumptions or biases. If you can’t think of an alternate term, find another way to write what you want to say.</mdc-text>
+<mdc-text id="best-practices" tagname="h3" type="heading-small-bold">Best practices</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Use neutral, precise, relevant descriptions — include personal qualities only when essential.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Choose words carefully; beware of historical significance and appropriation from marginalized communities.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Avoid terms that assign value to racial characteristics (e.g. “dark pattern”). Color terms like “dark mode” or “light theme” are acceptable when they refer to brightness, not value.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Avoid proxy statements and stereotypes. Communicate from equality and consider worst-case interpretation.</mdc-text></li>
+</ul>
+<mdc-text id="readability" tagname="h3" type="heading-small-bold">Readability</mdc-text>
+<mdc-text tagname="p" type="body-large-regular"><strong>Target: 5th to 8th grade reading level.</strong> Simple copy helps all users and makes localization easier. More than 20% of US residents don’t speak English at home.</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Write short sentences. Avoid unnecessary adverbs and adjectives.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Use simple verb tenses and active voice.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Prefer common words: Buy over Purchase, Help over Assist, Like over Such as.</mdc-text></li>
+</ul>
+<mdc-text id="writing-about-disabilities" tagname="h3" type="heading-small-bold">Writing about disabilities</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Avoid ableist language — including metaphors and euphemisms (e.g. “fall on deaf ears”). Center the person, not the ability.</mdc-text>
+<mdc-text id="writing-about-gender" tagname="h3" type="heading-small-bold">Writing about gender</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Avoid gendered assumptions and stereotypes. When gender-neutral phrasing is possible, use it — even if slightly longer. Prefer <strong>you</strong> over third-person <strong>she/he</strong>. If gender must be referenced, choose the most understandable expression.</mdc-text>
+<mdc-text id="terms-to-avoid" tagname="h3" type="heading-small-bold">Terms to avoid</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">This list is not exhaustive. When uncertain, choose the inclusive alternative.</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Avoid</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Use instead</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">Differently abled; the disabled</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Disabled person; person with disabilities</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Tone-deaf</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Inconsiderate</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Dummy</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Placeholder</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Whitelist</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Allowlist</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Blacklist</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Blocklist</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Master or slave</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Primary / main or secondary</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Native</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Operating system or built-in</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Businessman</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Businessperson</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">What are your preferred pronouns?</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">What are your pronouns?</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Other (as a gender option)</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Prefer to self-describe; Prefer not to respond</mdc-text></td></tr></tbody></table>
+<mdc-text id="tips-when-writing" tagname="h3" type="heading-small-bold">Tips when writing</mdc-text>
+<ol>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Links</strong> — Describe what the link does.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> For the best experience, download our desktop app.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Our desktop app provides the best experience. Learn more.</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Front-loading</strong> — Put essential information first.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> To annotate, tap the pencil icon.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Tap the pencil icon to begin annotating.</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Directional language</strong> — Avoid location-dependent wording.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> Select from these options.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Select from the options below.</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Plain language</strong>
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> The password you entered is incorrect.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Credentials you provided can’t be determined to be authentic.</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Button labels</strong> — Describe the action.
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> Send logs</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Submit</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Logical order</strong>
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> Search bar → Search tips → Search results</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Search bar → Search results → Search tips</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Concise permission copy</strong>
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> The app uses ultrasound to pair with nearby devices. Allow access to your microphone?</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> Long technical explanation before the ask.</mdc-text></li>
+</ul>
+</li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Form labels before fields</strong>
+</mdc-text><ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>This is us</strong> Password required → [Input field]</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Not us</strong> [Input field] → Password required</mdc-text></li>
+</ul>
+</li>
+</ol>
+<mdc-text id="localization" tagname="h2" type="heading-midsize-bold"><a href="#localization" class="kb-heading-anchor">Localization</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Products are localized into 20+ languages. Write for a global audience and for non-native English speakers.</mdc-text>
+<mdc-text id="tips-when-writing-1" tagname="h3" type="heading-small-bold">Tips when writing</mdc-text>
+<ol>
+<li><mdc-text tagname="span" type="body-large-regular">Include articles when space allows (a, the, this, that).</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Write in the active voice.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Be careful with words that have multiple meanings (has, right, left).</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Use descriptive labels and feature names.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Use descriptive subjects — avoid <strong>this</strong>, <strong>it</strong>, and <strong>that</strong> after a specific subject.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Don’t rely on idioms, metaphors, slang, humor, cultural references, or uncommon foreign words for critical information.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Don’t use unnecessary abbreviations (e.g., e.g., i.e., etc.).</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Don’t embed text within images.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Don’t create sentences that depend on UI element placement.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Plan for text expansion — English often expands 20–30% in German or Russian.</mdc-text></li>
+</ol>
+<mdc-text id="vocabulary" tagname="h2" type="heading-midsize-bold"><a href="#vocabulary" class="kb-heading-anchor">Vocabulary</a></mdc-text>
+<mdc-text id="preferred-terms" tagname="h3" type="heading-small-bold">Preferred terms</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Use</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Not</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Context</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">Sign in</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Log in</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Authentication</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Select</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Choose</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">UI controls</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">There aren’t any [items]</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">No [items]</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Empty states</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Do you want to continue?</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Are you sure</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Confirmations</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Enter your email to continue</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Oops</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Error recovery</mdc-text></td></tr></tbody></table>
+<mdc-text id="prohibited-or-discouraged-terms" tagname="h3" type="heading-small-bold">Prohibited or discouraged terms</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Avoid</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Reason</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Use instead</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">Please</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Implies the system is asking a favour</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Avoid; rare exceptions for high-effort actions</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Sorry</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Focus on moving forward</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">State what happened and next step</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">No</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Negative, stark</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Reframe positively (“There aren’t any drafts”)</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Oops</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Too casual for errors</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Direct, actionable message</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Are you sure</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Vague, repetitive</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Specific confirmation title + consequence</mdc-text></td></tr></tbody></table>
+<mdc-text id="please-sorry-and-no" tagname="h3" type="heading-small-bold">Please, sorry, and no</mdc-text>
+<mdc-text id="please" tagname="h4" type="body-large-bold">Please</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">We try to avoid using “please” as it’s often unnecessary and can be annoying to users if used often. Only consider using it if you’re asking a user to do an action that requires significant effort or time.</mdc-text>
+<mdc-text id="sorry" tagname="h4" type="body-large-bold">Sorry</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">We don’t use the word “sorry” in any of our product writing.</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Saying sorry can seem insincere to users or imply we’re to blame for a problem. It’s not really important who is to blame. Instead, to align closer to our voice, we try to move the user forward with language and experience.</mdc-text>
+<mdc-text id="no" tagname="h4" type="body-large-bold">No</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">We don’t use the word “no” in any of our product writing. Write around it.</mdc-text>
+<mdc-text id="writing-for-empty-states" tagname="h4" type="body-large-bold">Writing for empty states</mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Sometimes, there may not be much to say or share. You often see empty states with “No new messages” or something similar.</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Instead of saying “No BLANK” say: “There aren’t any BLANK” or “You can find BLANK here” or something similar.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Consider using this moment to play with language or highlight our voice. Like instead of “No meetings” say “Meetings free” or “The day is yours.” Use your best judgement.</mdc-text></li>
+</ul>
+<mdc-text id="pronouns-and-determiners" tagname="h3" type="heading-small-bold">Pronouns and determiners</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Pronoun</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Usage</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>I, me</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Sometimes in buttons (“I agree”)</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>You</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">When speaking directly to the user</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>We, us</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">When the product is speaking</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>My</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">User-owned feature names (e.g. “My Personal Room”) — capitalize per product terminology</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Articles</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Use in longer messages; omit in buttons/CTAs when meaning is obvious (“Upload file” not “Upload the file”)</mdc-text></td></tr></tbody></table>
+<mdc-text id="terminology-glossary" tagname="h3" type="heading-small-bold">Terminology glossary</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><mdc-text tagname="span" type="body-large-bold">Term</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Definition</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">Usage notes</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular">Space</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">A persistent collaboration area for a team, project, or topic</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Capitalize when referring to the product feature; use specific name in delete confirmations (“Delete Spring Campaign”)</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Meeting</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">A scheduled or ad hoc audio/video session</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Prefer “meet” as verb in casual copy (“meet face-to-face”)</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Personal Room</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">A user’s persistent meeting room</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Always capitalize; use “My Personal Room” in navigation paths</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">Studio</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Studio product or feature context</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Use in status/sign-off copy when contextually appropriate</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular">App name</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">The client application</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Prefer “[App name] would like to…” over “[App name] Needs to…” for permissions</mdc-text></td></tr></tbody></table>
+<mdc-text id="content-patterns" tagname="h2" type="heading-midsize-bold"><a href="#content-patterns" class="kb-heading-anchor">Content patterns</a></mdc-text>
+<mdc-text id="button-labels" tagname="h3" type="heading-small-bold">Button labels</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Verb + noun when the noun adds clarity</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Case:</strong> Sentence case</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Length:</strong> Aim for 25 characters or fewer when possible</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Examples:</strong> Save changes, Create project, Delete, Cancel, Continue, I agree</mdc-text></li>
+</ul>
+<mdc-text id="error-messages" tagname="h3" type="heading-small-bold">Error messages</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> What happened + what to do next</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Tone:</strong> Crisis moment — positive, direct, understanding. No exclamation points.</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Example:</strong> You don’t have access to this page. Ask your admin for permission.</mdc-text></li>
+</ul>
+<mdc-text id="empty-states" tagname="h3" type="heading-small-bold">Empty states</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Descriptive header + brief purpose or encouragement + optional action</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Tone:</strong> Informative (most) or Timely (occasional). Avoid “No [thing].”</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Example:</strong> Spaces — <em>When you start or join a space, it’ll appear here. Spaces are great for collaborating on specific topics or projects.</em></mdc-text></li>
+</ul>
+<mdc-text id="confirmation-dialogs" tagname="h3" type="heading-small-bold">Confirmation dialogs</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Title:</strong> Name the specific item or action (“Delete Spring Campaign” not “Delete space?“)</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Body:</strong> State the consequence plainly; use contractions; avoid asking the same question twice</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Example:</strong> Once deleted, all content and history in this space will be gone forever.</mdc-text></li>
+</ul>
+<mdc-text id="permission-prompts" tagname="h3" type="heading-small-bold">Permission prompts</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Title:</strong> Inviting, not commanding (“[App name] would like to access your camera”)</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Body:</strong> Benefit-led, warm (“This is so you can show your smiling face in meetings.“)</mdc-text></li>
+</ul>
+<mdc-text id="status-and-system-messages" tagname="h3" type="heading-small-bold">Status and system messages</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Personal, plain language + optional peppy sign-off</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Example:</strong> Your network strength and CPU are doing great. Enjoy the Studio!</mdc-text></li>
+</ul>
+<mdc-text id="multi-step-flows" tagname="h3" type="heading-small-bold">Multi-step flows</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Set honest expectations upfront; acknowledge friction with warmth</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Example:</strong> Connecting %App% to your account may take a few steps — <em>Depending on the platform, a code might need to be entered multiple times. Usually, it’s just once. Don’t worry, we’ll guide you through every step.</em></mdc-text></li>
+</ul>
+<mdc-text id="onboarding" tagname="h3" type="heading-small-bold">Onboarding</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Tone:</strong> Dial up Spirited and Diligent</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Descriptive headers + benefit-led body + clear next action</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Examples:</strong> “Stay close with your team”, “Be ready before the curtain rises”, “A space for all your magic”</mdc-text></li>
+</ul>
+<mdc-text id="alerts-and-in-meeting-notifications" tagname="h3" type="heading-small-bold">Alerts and in-meeting notifications</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Tone:</strong> Dial up always improving and empathetic</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Explain what’s happening onscreen and what the product is doing to help — conversational, short, and direct</mdc-text></li>
+</ul>
+<mdc-text id="dialogs" tagname="h3" type="heading-small-bold">Dialogs</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Tone:</strong> Dial up Diligent and empathetic</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular"><strong>Format:</strong> Descriptive headers; explain purpose simply, like to a friend; offer guidance or actions when possible</mdc-text></li>
+</ul>
+<mdc-text id="tooltips-and-helper-text" tagname="h3" type="heading-small-bold">Tooltips and helper text</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Brief, instructional tone</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Use periods on full-sentence tooltips</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">No ellipses in tooltips</mdc-text></li>
+</ul>
+<mdc-text id="placeholder-text" tagname="h3" type="heading-small-bold">Placeholder text</mdc-text>
+<ul>
+<li><mdc-text tagname="span" type="body-large-regular">Never use: Lorem ipsum, Sample text, Placeholder, TODO copy</mdc-text></li>
+<li><mdc-text tagname="span" type="body-large-regular">Write real, on-brand copy that serves the user</mdc-text></li>
+</ul>
+<mdc-text id="examples-in-action" tagname="h2" type="heading-midsize-bold"><a href="#examples-in-action" class="kb-heading-anchor">Examples in action</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">These examples show how to dial up voice principles and adapt tone across the user journey.</mdc-text>
+<mdc-text id="high-cpu-usage" tagname="h3" type="heading-small-bold">High CPU usage</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">CPU overheating. Meeting performance has slowed.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Your computer’s working overtime</strong> — Close unneeded apps to keep your meeting running smoothly.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Clinical and system-centric.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Uses metaphor, explains the issue, and gives a clear next step. Dials up Spirited, Empathetic.</mdc-text></td></tr></tbody></table>
+<mdc-text id="in-meeting-video-off" tagname="h3" type="heading-small-bold">In-meeting video off</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Video disconnected due to poor network signal.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Weak internet connection</strong> — We shut off videos to keep you in the meeting. Other folks are still here.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Technical and detached.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Explains what’s happening and what we did to help. Conversational phrases like “shut off” and “folks” (use sparingly). Dials up Diligent, Empathetic.</mdc-text></td></tr></tbody></table>
+<mdc-text id="in-meeting-video-quality-lowered" tagname="h3" type="heading-small-bold">In-meeting video quality lowered</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Video quality lost due to poor network signal.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Weak internet connection</strong> — We lowered video quality to keep you in the meeting.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Jargon-heavy.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Plain language, short, and reassuring. Dials up Diligent, Empathetic.</mdc-text></td></tr></tbody></table>
+<mdc-text id="spaces-empty-state" tagname="h3" type="heading-small-bold">Spaces empty state</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>No spaces</strong> — You don’t have any spaces. Use the plus button to create a space.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Spaces</strong> — When you start or join a space, it’ll appear here. Spaces are great for collaborating on specific topics or projects.</mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Negative header and tone.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Descriptive, conversational, and helpful. Dials up Spirited, Diligent.</mdc-text></td></tr></tbody></table>
+<mdc-text id="drafts-empty-state" tagname="h3" type="heading-small-bold">Drafts empty state</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">No drafts — <em>Come here to find all your draft messages. You can start composing your thoughts here, and they’ll be saved as drafts for later.</em></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Drafts — <em>This is where your unfinished messages await their finishing touch.</em></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Uses negative “No.” Bland and obvious. Passive voice (“be saved”). Sounds copied from another app.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Avoids negative language. Wondrous, helpful tone. “Await the finishing touch” adds whimsy. Clear and encourages action.</mdc-text></td></tr></tbody></table>
+<mdc-text id="delete-space-confirmation" tagname="h3" type="heading-small-bold">Delete space confirmation</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Delete space?</strong> — <em>Deleting a space will erase all data. This can not be undo. Are you sure you want to delete this space?</em></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><strong>Delete Spring Campaign</strong> — <em>Once deleted, all content and history in this space will be gone forever.</em></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Lacks energy and clarity. Wordy, repetitive. No contractions — formal and harsh. Passive and weak. Ambiguous buttons.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Direct, specific title. Plain consequence. “Gone forever” adds wry humor while communicating permanence.</mdc-text></td></tr></tbody></table>
+<mdc-text id="network-status" tagname="h3" type="heading-small-bold">Network status</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><em>Network strength and CPU usage are within acceptable operating parameters.</em></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular"><em>Your network strength and CPU are doing great. Enjoy the Studio!</em></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Cold, clinical. Wordy, complex. “Acceptable” isn’t reassuring.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Upbeat, personal. Simple wording. Peppy sign-off reduces worry.</mdc-text></td></tr></tbody></table>
+<mdc-text id="camera-permission" tagname="h3" type="heading-small-bold">Camera permission</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">[App Name] Needs to Access Your Camera — <em>Make your camera available so you can meet face-to-face.</em></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">[App Name] would like to access your camera — <em>This is so you can show your smiling face in meetings.</em></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Generic, command-like. Lacks engaging language. Unclear buttons.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Inviting tone. Benefit-led. Warm personality (“smiling face”). Clearer actions.</mdc-text></td></tr></tbody></table>
+<mdc-text id="account-connect" tagname="h3" type="heading-small-bold">Account connect</mdc-text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th><mdc-text tagname="span" type="body-large-bold">Not us</mdc-text></th><th><mdc-text tagname="span" type="body-large-bold">This is us</mdc-text></th></tr></thead><tbody><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Copy</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Connect %App% account with [App Name] — <em>Want connect your %App% account to [App Name] in just three simple steps?</em></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Connecting %App% to [App Name] may take a few steps — <em>Depending on the platform, a code might need to be entered multiple times. Usually, it’s just once. Don’t worry, we’ll guide you through every step.</em></mdc-text></td></tr><tr><td><mdc-text tagname="span" type="body-large-regular"><strong>Why?</strong></mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Generic, oversimplified (“just three simple steps”). Redundant. Hides technical limitations.</mdc-text></td><td><mdc-text tagname="span" type="body-large-regular">Conversational, empathetic. Sets honest expectations. Acknowledges friction with warmth.</mdc-text></td></tr></tbody></table>
+<mdc-text id="evaluation-checklist" tagname="h2" type="heading-midsize-bold"><a href="#evaluation-checklist" class="kb-heading-anchor">Evaluation checklist</a></mdc-text>
+<mdc-text tagname="p" type="body-large-regular">Before shipping any user-facing copy, verify:</mdc-text>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Message alignment</strong> — Matches intended message, context, and goal</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>User enablement</strong> — Helps user move to next step or complete a task</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Accuracy</strong> — All facts and logic correct</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Spelling and grammar</strong> — No errors</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Simplicity</strong> — No jargon; simple, clear language</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Voice characteristics</strong> — Spirited (dynamic, subtle humor), Diligent (precise, intentional), Thoughtful (inclusive, empathetic)</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Moment fit</strong> — Tone matches Impression, Crisis, Instructional, or Achievement context</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Accessibility and inclusion</strong> — Plain language, inclusive terms, no directional-only instructions</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Localization readiness</strong> — Active voice, no idioms or unnecessary abbreviations; room for expansion</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Forward momentum</strong> — Always provide a next step; no dead ends</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Style alignment</strong> — Sentence case, correct date/time formats, punctuation rules</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>No placeholder copy</strong> — Never Lorem ipsum, Sample text, Placeholder, or TODO copy</li>
+</ul>
+            <a class="edit-link astro-S4A73ZVF" href="https://github.com/momentum-design/momentum-design/edit/main/knowledge-base/content-guidelines.md">
+              Edit this page on GitHub
+            </a>
+          </article>
+        </main>
+        <footer class="astro-VMFVMXKV">
+© 2026 Cisco and/or its affiliates. All Rights Reserved.
+</footer>
+
+
+      </mdc-iconprovider>
+    </mdc-themeprovider>
+    <script>
+      // Match the theme provider to the theme already resolved on <html> so the
+      // wrapped subtree does not force a fixed (default dark) theme.
+      (function () {
+        const provider = document.getElementById('mds-theme-provider');
+        if (!provider) return;
+        const isDark = document.documentElement.classList.contains('mds-theme-stable-darkWebex');
+        provider.setAttribute('themeclass', isDark ? 'mds-theme-stable-darkWebex' : 'mds-theme-stable-lightWebex');
+      })();
+    </script>
+  </body>
+</html>
