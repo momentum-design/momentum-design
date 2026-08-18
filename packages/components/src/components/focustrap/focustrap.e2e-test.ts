@@ -1,4 +1,3 @@
-// AI-Assisted
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import { KEYS } from '../../utils/keys';
 
@@ -323,4 +322,3 @@ test('mdc-focustrap', async ({ componentsPage }) => {
     });
   });
 });
-// End AI-Assisted

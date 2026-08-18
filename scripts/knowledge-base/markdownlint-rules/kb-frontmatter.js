@@ -1,4 +1,3 @@
-// AI-Assisted
 'use strict';
 
 /**
@@ -99,4 +98,3 @@ module.exports = {
     }
   },
 };
-// End AI-Assisted

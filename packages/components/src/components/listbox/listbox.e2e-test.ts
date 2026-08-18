@@ -43,7 +43,6 @@ const setup = async (args: SetupOptions) => {
   return listbox;
 };
 
-// AI-Assisted
 /**
  * Registers a one-time change listener on the listbox element.
  * Must be awaited before performing the action that triggers the event
@@ -61,7 +60,6 @@ const setupChangeListener = async (listbox: Locator): Promise<void> => {
 /** Retrieves the event detail captured by a previously registered change listener. */
 const getChangeDetail = (listbox: Locator): Promise<ListBoxChangeEventDetail> =>
   listbox.evaluate((el: any) => el.pendingChangeDetail);
-// End AI-Assisted
 
 test('mdc-listbox', async ({ componentsPage }) => {
   /**

@@ -1,4 +1,3 @@
-// AI-Assisted
 /**
  * Rehype plugin that renders knowledge-base body copy with the Momentum text
  * component. Block elements whose tag is a valid <mdc-text> `tagname`
@@ -295,4 +294,3 @@ export default function rehypeMdcText() {
     walk(tree, new Map(), rewriteHref);
   };
 }
-// End AI-Assisted
