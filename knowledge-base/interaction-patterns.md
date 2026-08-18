@@ -2,6 +2,7 @@
 title: Interaction patterns
 summary: The shared interaction model for Momentum — keyboard and focus behavior, overlay and dismissal rules, selection, and how to compose loading, empty, and error states.
 tier: 1
+websitePath: guidelines/interaction-patterns
 ---
 
 **Primary audience:** Product design and engineering.

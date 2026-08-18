@@ -1,6 +1,10 @@
 ---
 import '../styles/theme.css';
 import '../styles/index.css';
+import '@momentum-design/fonts/dist/css/fonts.css';
+import '@momentum-design/tokens/dist/css/typography/complete.css';
+import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
+import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 ---
 
 <!-- Global Metadata -->
@@ -24,12 +28,48 @@ import '../styles/index.css';
 <script is:inline>
   const root = document.documentElement;
   const theme = localStorage.getItem('theme');
+
   if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     root.classList.add('theme-dark');
+    root.classList.add('mds-theme-stable-darkWebex');
+    root.classList.remove('mds-theme-stable-lightWebex');
   } else {
     root.classList.remove('theme-dark');
+    root.classList.add('mds-theme-stable-lightWebex');
+    root.classList.remove('mds-theme-stable-darkWebex');
   }
 </script>
+
+<!-- Register the Momentum context providers and text component up-front so the
+  whole page upgrades in a single paint. Hiding un-upgraded providers (below)
+  avoids the flash-of-unstyled-text flicker on navigation. -->
+<script>
+  import '@momentum-design/components/dist/components/themeprovider/index.js';
+  import '@momentum-design/components/dist/components/iconprovider/index.js';
+  import '@momentum-design/components/dist/components/text/index.js';
+  import '@momentum-design/components/dist/components/link/index.js';
+</script>
+
+<style is:global>
+  /* AI-Assisted: Keep the outgoing page painted while the incoming page loads. */
+  @view-transition {
+    navigation: auto;
+  }
+  /* End AI-Assisted */
+
+  /* Keep the provider wrappers layout-neutral in every state (their :host uses
+     display: contents once upgraded; mirror that before upgrade too). */
+  mdc-themeprovider,
+  mdc-iconprovider {
+    display: contents;
+  }
+
+  /* Hide the themed subtree until the providers upgrade so text never paints
+     in a fallback font first. Theme colours already come from the <html> class. */
+  mdc-themeprovider:not(:defined) {
+    visibility: hidden;
+  }
+</style>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEL60V1WM9" is:inline></script>

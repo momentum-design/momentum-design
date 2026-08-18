@@ -15,10 +15,16 @@
 const path = require('path');
 const matter = require('gray-matter');
 const Ajv = require('ajv');
-const { REPO_ROOT, FRONTMATTER_CONFIG_PATH, tierForFile } = require('../lib');
+const { REPO_ROOT, FRONTMATTER_CONFIG_PATH, WEBSITE_PATHS_CONFIG_PATH, tierForFile } = require('../lib');
 
 const frontmatterConfig = require(FRONTMATTER_CONFIG_PATH);
+const websitePathsConfig = require(WEBSITE_PATHS_CONFIG_PATH);
 const ajv = new Ajv({ allErrors: true, strict: false });
+const allowedWebsitePaths = new Set(
+  (websitePathsConfig.sections || []).flatMap((section) =>
+    (section.pages || []).map((page) => `${section.slug}/${page.slug}`),
+  ),
+);
 
 /** Compose a JSON Schema for a given tier by merging default + tier overrides. */
 function composeSchema(tier) {
@@ -76,6 +82,20 @@ module.exports = {
         lineNumber: 1,
         detail: `frontmatter component ("${data.component}") does not match parent folder ("${tierInfo.component}")`,
       });
+    }
+
+    if (data.websitePath !== undefined) {
+      if (tierInfo.tier === 3) {
+        onError({
+          lineNumber: 1,
+          detail: 'frontmatter websitePath is only supported for Tier 1 and Tier 2 topics',
+        });
+      } else if (!allowedWebsitePaths.has(data.websitePath)) {
+        onError({
+          lineNumber: 1,
+          detail: `frontmatter websitePath ("${data.websitePath}") is not defined in config/knowledge-base/website-paths.config.json`,
+        });
+      }
     }
   },
 };

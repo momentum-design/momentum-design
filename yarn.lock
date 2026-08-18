@@ -3204,6 +3204,7 @@ __metadata:
     "@docsearch/css": ^3.6.1
     "@docsearch/react": ^3.6.1
     "@momentum-design/components": "workspace:*"
+    "@momentum-design/fonts": "workspace:*"
     "@momentum-design/icons": "workspace:*"
     "@momentum-design/illustrations": "workspace:^"
     "@momentum-design/token-builder": "workspace:^"
