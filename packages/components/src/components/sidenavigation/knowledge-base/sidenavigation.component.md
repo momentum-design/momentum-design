@@ -1,25 +1,25 @@
 ---
 title: Side Navigation
-summary: Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behaviour and support for nested menu items.
+summary: Usage, guidelines, and accessibility for the mdc-sidenavigation component — a vertically stacked navigation landmark with expand/collapse behavior and support for nested menu items.
 tier: 3
 component: sidenavigation
 ---
 
 ## Overview
 
-The side navigation is a vertically stacked navigation landmark, typically used as a persistent or collapsible sidebar. It supports five layout variants, toggleable expand/collapse behaviour, an optional brand logo, an optional footer text, and acts as a context provider for nested `mdc-menubar` and `mdc-navmenuitem` elements.
+`mdc-sidenavigation` is the primary in-app navigation landmark, letting users move between the main sections of a product from a persistent sidebar. It can expand to show labels or collapse to icons, and hosts the nested `mdc-menubar` and `mdc-navmenuitem` content that forms the navigation tree.
 
 ### When to use
 
 - Use `mdc-sidenavigation` for primary, persistent in-app navigation rendered alongside the main content area.
-- Use it when you need an expandable/collapsible sidebar with icon-only and icon-plus-label modes.
-- Use it as the host of nested `mdc-menubar` and `mdc-navmenuitem` content (with optional submenus via `mdc-menupopover`).
+- Use `mdc-sidenavigation` when the sidebar needs to switch between icon-only and icon-plus-label modes.
+- Use `mdc-sidenavigation` to host nested `mdc-menubar` and `mdc-navmenuitem` content, with optional submenus via `mdc-menupopover`.
 
 ### When not to use
 
-- Use `mdc-appheader` for top-of-page navigation.
-- Use `mdc-menubar` on its own when no expand/collapse, branding, or fixed footer area is needed.
-- Use `mdc-tablist` when navigation is scoped to switching between sibling views inside a single page.
+- Do not use `mdc-sidenavigation` for top-of-page controls and branding. Use `mdc-appheader` instead.
+- Do not use `mdc-sidenavigation` when no expand/collapse, branding, or fixed footer area is needed. Use `mdc-menubar` on its own instead.
+- Do not use `mdc-sidenavigation` for switching between sibling views inside a single page. Use `mdc-tablist` or `mdc-verticaltablist` instead.
 
 ## Guidelines
 
@@ -81,39 +81,37 @@ NavMenuItem patterns:
 
 Listen for `toggle` to react to user-driven expand/collapse and `activechange` to react to the active nav item changing.
 
+Composition guidance:
+
+- Show the active state on only one item at a time — the active child when its group is expanded, or the parent when the group is collapsed, never both together.
+- Use icons on parent navmenuitems only; give submenu items (flyout or dropdown) plain text labels for readability.
+- Separate grouped sections with an `mdc-divider` (`variant="gradient"`), and keep the information architecture flat enough that a tertiary level is rarely needed.
+
 ### Content guidance
 
-- Use `mdc-text` for section headers.
-- Use `mdc-divider` with `variant="gradient"` to separate sections.
-- Use an informative icon for the brand logo slot (refer to the Momentum Informative Icons set).
-- Use icons for parent navmenuitems only. For submenu items (in both flyouts and dropdowns), use text labels without icons to ensure readability.
+- Keep section header labels short and descriptive so the group's purpose is clear; the label is hidden in the icon-only (collapsed) mode, so never rely on it alone to convey meaning.
+- Keep `footer-text` to a short product or organization name — it is a label for the footer area, not a sentence.
 
 ### Property/Attribute details
 
-- `variant` — layout variant. One of:
-  - `fixed-collapsed` — icons only, fixed width (4.5 rem); `expanded` is locked to `false`.
-  - `fixed-expanded` — icons and labels, fixed width (15 rem); `expanded` is locked to `true`.
-  - `flexible` — user-togglable; the grabber button is always visible.
-  - `flexible-on-hover` — user-togglable; the grabber button only appears on hover or keyboard focus.
-  - `hidden` — the component renders nothing.
-  - Default: `flexible`.
-- `expanded` — whether the navigation is expanded. For `fixed-*` variants this is forced; for `flexible` and `flexible-on-hover` it can be set or toggled by the user (defaults to `true` on first render).
-- `footer-text` — text rendered in the bottom brand-logo area. When empty, the entire brand-logo container (including the `brand-logo` slot) is not rendered.
-- `grabber-btn-aria-label` — accessible name applied to the expand/collapse grabber button.
-- `hide-fixed-section-divider` — when `true`, hides the divider between the scrollable and fixed sections. Default `false`.
-- `submenu-type` — controls how child submenu items are presented on a parent navmenuitem. Set to `"dropdown"` to render an inline dropdown in expanded mode. In collapsed mode the component automatically promotes a dropdown to a flyout. Omit or leave unset for flyout-only submenus using `mdc-menupopover`.
+| Option | Intent |
+|---|---|
+| `variant="flexible"` (default) | Sets the layout and who controls expand/collapse. Use `flexible` (grabber always visible) or `flexible-on-hover` (grabber appears on hover/focus) when the user can toggle the sidebar; use `fixed-expanded` (icons + labels, locked open) or `fixed-collapsed` (icons only, locked closed) when the product fixes the mode; `hidden` renders nothing. |
+| `expanded` | Whether the sidebar shows labels. Toggleable for the `flexible*` variants (defaults to `true` on first render); forced for the `fixed-*` variants (see Limitations). |
+| `footer-text` | Text in the bottom brand area. When empty, the whole brand-logo container (including the `brand-logo` slot) is not rendered, so set it when you need the logo/footer. |
+| `grabber-btn-aria-label` | Accessible name for the expand/collapse grabber button. Always set it for the `flexible*` variants (see Labeling). |
+| `hide-fixed-section-divider` (default `false`) | Hides the divider between the scrollable and fixed sections. Set `true` when the visual split is unwanted. |
+| `submenu-type` | How a parent navmenuitem presents its children. Set `"dropdown"` for an inline accordion in expanded mode; leave unset for flyout submenus via `mdc-menupopover`. Dropdowns auto-promote to flyouts when collapsed. |
 
-Events dispatched by the host:
-
-- `toggle` — `event.detail = { expanded }`; dispatched when the grabber button is clicked.
-- `activechange` — dispatched when the active state of a nested `mdc-navmenuitem` changes.
+The host dispatches `toggle` (`event.detail = { expanded }`) when the grabber is clicked, and `activechange` when a nested `mdc-navmenuitem`'s active state changes.
 
 ### Limitations
 
-- For `fixed-collapsed` and `fixed-expanded` variants, `expanded` is hard-set internally and cannot be changed by the user or consumer.
-- When `variant="hidden"`, no DOM is rendered for the navigation.
-- Dropdown submenus support only one level of nesting. For multi-level navigation use flyout menus (`mdc-menupopover`) instead.
-- Dropdown submenu items do not render when the navigation is collapsed; they are automatically promoted to flyout menus in that state and revert to dropdowns when expanded again.
+- **Fixed variants lock expansion** — for `fixed-collapsed` and `fixed-expanded`, `expanded` is hard-set internally and cannot be changed by the user or consumer.
+- **Hidden renders nothing** — `variant="hidden"` outputs no DOM for the navigation.
+- **One dropdown level** — dropdown submenus nest only one level deep; use flyout menus (`mdc-menupopover`) for multi-level navigation.
+- **Dropdowns collapse to flyouts** — dropdown items do not render while the navigation is collapsed; they are promoted to flyouts in that state and revert when expanded.
+- **Don't mix submenu styles** — within one navigation, use either dropdown (accordion) or flyout children throughout, not both; when using dropdowns, all nested items must be dropdowns.
 
 ## Accessibility
 
@@ -142,7 +140,17 @@ For the `flexible-on-hover` variant, the grabber button is only made visible (vi
 - Pair each flyout submenu pattern with `is-active-parent-tooltip-text` on the `mdc-navmenuitem` so users can tell which submenu item is currently active.
 - For dropdown submenus, the parent navmenuitem receives `aria-expanded` automatically — do not override it manually.
 
-#### Labelling
+#### Labeling
 
-- Always set `grabber-btn-aria-label` for `flexible` and `flexible-on-hover` variants; the grabber button is unlabelled otherwise.
+- Always set `grabber-btn-aria-label` for `flexible` and `flexible-on-hover` variants; the grabber button is unlabeled otherwise.
 - The host has `role="navigation"`; if multiple navigation landmarks exist on the page, add a host-level `aria-label` to distinguish them.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-appheader` | Top-of-page shell bar paired with the sidebar. |
+| `mdc-menubar` | Container for the navigation items, slotted into the scrollable/fixed sections. |
+| `mdc-navmenuitem` | Individual navigation entry rendered inside the menubar. |
+| `mdc-menupopover` | Flyout submenu surface for a parent navmenuitem. |
+| `mdc-tablist` / `mdc-verticaltablist` | In-page panel switching rather than section-to-section navigation. |

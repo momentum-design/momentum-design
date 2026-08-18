@@ -12,14 +12,16 @@ The radio is a single, form-associated radio button that lets the user pick exac
 ### When to use
 
 - Use `mdc-radio` (typically inside `mdc-radiogroup`) when the user must pick exactly one option from a short, mutually exclusive list.
-- Use it in forms, surveys, and settings where every option needs to be visible at once.
+- Use `mdc-radio` in forms, surveys, and settings where every option should be visible at once.
+- Use a standalone `mdc-radio` for per-row selection in tables or cards, where the surrounding context supplies the meaning.
 
 ### When not to use
 
-- Use `mdc-checkbox` when the user can pick zero, one, or more options.
-- Use `mdc-select` or `mdc-combobox` when the list of options is long or should be revealed on demand.
-- Use `mdc-cardradio` when each option should render as a larger, card-shaped surface.
-- Use `mdc-toggle` for an on/off binary control.
+- Do not use `mdc-radio` when the user can select more than one option. Use `mdc-checkbox` instead.
+- Do not use `mdc-radio` for a long or on-demand list of options. Use `mdc-select` or `mdc-combobox` instead.
+- Do not use `mdc-radio` when each option needs a larger card surface. Use `mdc-cardradio` instead.
+- Do not use `mdc-radio` for a binary on/off setting that applies immediately. Use `mdc-toggle` instead.
+- Do not use `mdc-radio` for a purely decorative, non-interactive selected dot. Use `mdc-staticradio` instead.
 
 ## Guidelines
 
@@ -52,26 +54,31 @@ Standalone radios that share a `name` attribute behave as a group even without `
 
 Listen for `change`/`input` to react when the selected option changes; the host emits both events in the same order as the native radio input.
 
+### Content guidance
+
+- Write a clear, concise `label` that is explicit about what selecting the option does; the label always trails the radio input. If a visible label cannot be shown (for example one radio per table row), supply `data-aria-label` instead.
+- Keep radio labels short — fewer than four words and never truncated; move extra detail into `help-text` rather than lengthening the label.
+- Use `help-text` (one line, around 90 characters) when the choice is complex and needs more explanation, and reserve the info-icon toggletip for non-critical context. If several options would each run past two lines, use a hyperlink or info button to reduce what shows at once.
+
 ### Property/Attribute details
 
-- `checked` — whether this radio is the selected option in its group. Only one radio per group (`name`) can be checked at a time; the component unchecks the others automatically on selection. Default `false`.
-- `name` — groups radios together. Radios with the same `name` form one radiogroup; navigation and exclusive selection are scoped to the group. Required for group behaviour.
-- `value` — value submitted under `name` when this radio is the checked one in the group. If checked and no `value` is set, the form value is `'on'`.
-- `label` — visible label text rendered next to the radio.
-- `required` — when `true`, at least one radio in the group must be checked for the form to be considered valid. Note: no red asterisk is rendered next to a required radio.
-- `disabled` — when `true`, the radio is non-interactive and removed from the tab order.
-- `readonly` — when `true`, the radio is non-interactive but remains focusable (Space and Enter are suppressed).
-- `soft-disabled` — when `true`, the radio looks disabled but remains focusable so assistive technology can read it.
-- `data-aria-label` — accessible name. Falls back to the `label` property; only required when no visible label is present.
-- `auto-focus-on-mount` — when `true`, the radio is focused after first render.
-- `validation-message` — custom validation message used by native form validation. When set and the radio is required-but-unchecked, the message is shown in a native tooltip on submit (radios do not render a visible validation message themselves — for that, wrap the group in `mdc-radiogroup` and use its `help-text`).
-- `name`, `value`, `validation-message` participate in form submission through ElementInternals; `formResetCallback` unchecks every radio in the group, and `formStateRestoreCallback` rechecks the radio whose `value` matches the restored state.
+| Option | Intent |
+|---|---|
+| `checked` | Marks this radio as the selected option in its group; the component unchecks the others automatically. Pre-select a sensible default where one exists. |
+| `name` | Groups radios — those sharing a `name` form one radiogroup with exclusive selection and arrow-key navigation. Required for group behavior. |
+| `value` | Value submitted under `name` when this radio is the checked one (defaults to `'on'`). |
+| `label` / `data-aria-label` | Visible label beside the radio, or the accessible name when no visible label is shown (for example table rows). |
+| `required` | At least one radio in the group must be checked for validity. No red asterisk is rendered on radios. |
+| `disabled` / `soft-disabled` / `readonly` | `disabled` removes the control from the tab order; `soft-disabled` looks disabled but stays focusable so assistive tech can still reach it; `readonly` blocks changes but stays focusable. |
+| `validation-message` | Custom validity shown in a native tooltip on submit; for an inline group message, use `mdc-radiogroup` `help-text`. |
 
-Events:
+**Note:** `name`, `value`, and `validation-message` participate in form submission via ElementInternals (`formResetCallback` unchecks the group; `formStateRestoreCallback` rechecks the matching value). A custom indicator can be slotted into `indicator`. Events: `input`, `change`, `focus`.
 
-- `input` (React: `onInput`) — fires when the selection changes (before `change`).
-- `change` (React: `onChange`) — fires when the selection changes (after `input`).
-- `focus` (React: `onFocus`) — fires when the radio receives focus.
+### Limitations
+
+- **No required asterisk** — a `required` radio renders no visible indicator, even though native validation still applies; convey "required" in the group label or `help-text`.
+- **No inline validation message** — a single radio does not render a visible validation message; wrap the group in `mdc-radiogroup` and use its `help-text`.
+- **Group needs a shared name** — without a shared `name` (or an `mdc-radiogroup`), exclusive selection and arrow-key navigation do not work.
 
 ## Accessibility
 
@@ -99,13 +106,20 @@ A custom indicator slotted into `indicator` is supported: when content is slotte
 
 - Group related radios with the same `name` attribute, or wrap them in `mdc-radiogroup`. Without a shared `name`, exclusive selection and arrow-key navigation do not work.
 - To show a validation message for an invalid group, wrap the radios in `mdc-radiogroup` and set its `help-text` — the radio itself does not render a visible validation message.
+- Pre-select a sensible default radio in a group when a common or recommended choice exists — it speeds up the task and avoids empty-submission errors. Skip the default only when there is no obvious answer (for example table-row selections).
 
-#### Labelling
+#### Labeling
 
 - Provide a `label` on every radio describing the option. When no visible label is present, set `data-aria-label`.
 - Provide a label on the surrounding `mdc-radiogroup` describing what the group represents.
 
-### Notes
+## Related components
 
-- `required` does not render the standard red-asterisk required indicator on radios, even though the native required validation still applies.
-- The `validation-message` set on a radio appears in a native browser tooltip when the radio is invalid on submit; it is not rendered inline by the component.
+| Component | Relationship |
+|---|---|
+| `mdc-radiogroup` | Labeled wrapper that groups radios and carries the group label, `name`, and validation. |
+| `mdc-staticradio` | Decorative, non-interactive radio for read-only display. |
+| `mdc-checkbox` | Select any number of options instead of exactly one. |
+| `mdc-cardradio` | Radio rendered as a larger card surface. |
+| `mdc-toggle` | Binary on/off control that applies immediately. |
+| `mdc-select` / `mdc-combobox` | Pick one option from a long or on-demand list. |
