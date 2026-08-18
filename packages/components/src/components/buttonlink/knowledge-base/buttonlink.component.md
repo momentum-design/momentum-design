@@ -7,18 +7,18 @@ component: buttonlink
 
 ## Overview
 
-The buttonlink renders a navigational anchor (`<a>`) styled as a button. It is the right choice when the visual treatment should match a button but the action is navigation — the underlying element carries link semantics, so right-click, middle-click, and "open in new tab" all work as users expect.
+`mdc-buttonlink` provides a navigational anchor (`<a>`) styled as a button. It exists for cases where an action navigates to a new location but should carry a button's visual weight, while keeping native link semantics intact.
 
 ### When to use
 
-- Use `mdc-buttonlink` when the control navigates to a different URL or in-app route but the design calls for a button's visual weight (primary call-to-action, prominent toolbar entry, etc.).
-- Use it when you want native browser link affordances such as `target="_blank"`, `download`, `ping`, or `rel` while keeping the button appearance.
+- Use `mdc-buttonlink` when the control navigates to a URL or in-app route but the design calls for a button's visual weight, such as a prominent call-to-action.
+- Use `mdc-buttonlink` when you need native link affordances — `target="_blank"`, `download`, `ping`, or `rel` — while keeping the button appearance.
 
 ### When not to use
 
-- Use `mdc-button` when the control performs an action (submitting a form, opening a dialog, running a command) and does not change the URL.
-- Use `mdc-link` when the control is a textual inline or standalone link and does not need to look like a button.
-- Use `mdc-linksimple` when you need a minimal, unstyled link primitive without button styling or icon slots.
+- Do not use `mdc-buttonlink` for an action that does not change the URL (submitting a form, opening a dialog, running a command). Use `mdc-button`.
+- Do not use `mdc-buttonlink` for an inline or standalone text link. Use `mdc-link`.
+- Do not use `mdc-buttonlink` when you need a minimal, unstyled link primitive without button styling or icon slots. Use `mdc-linksimple`.
 
 ## Guidelines
 
@@ -60,41 +60,30 @@ Minimal markup example:
 
 ### Content guidance
 
-- Use destination-oriented labels (e.g. "View documentation", "Open release notes") rather than verbs like "Click here".
-- For icon-only buttonlinks, set `data-aria-label` to describe the destination — the icon alone is not announced.
-- When `target="_blank"`, indicate that the link opens in a new tab in the visible label or accessible name, and include `rel="noopener"` (or `noreferrer`) for safety.
+- Use destination-oriented labels (for example "View documentation", "Open release notes") rather than verbs like "Click here".
+- When `target="_blank"`, indicate that the link opens in a new tab in the visible label or accessible name.
 
 ### Property/Attribute details
 
-- `href` — destination URL. Required for the link to be activatable.
-- `target` — anchor target window: `_self` (default), `_blank`, `_parent`, `_top`, or `_unfencedTop`.
-- `rel` — space-separated relationship tokens (e.g. `noopener`, `noreferrer`); pair with `target="_blank"`.
-- `download` — when set, instructs the browser to download the linked resource. An empty string lets the browser pick the filename; any other string is used as the suggested filename.
-- `ping` — space-separated list of URLs notified when the link is followed.
-- `hreflang` — language hint for the linked resource.
-- `type` — MIME type hint for the linked resource.
-- `referrerpolicy` — controls the Referer header sent when following the link.
-- `variant` — visual style applied through `ButtonComponentMixin`.
-  - `primary` (default) — solid background.
-  - `secondary` — transparent background with border.
-  - `tertiary` — text/icon only, no background or border.
-- `color` — semantic color. `default` (default), `positive`, `negative`, `accent`, `promotional`. Tertiary buttonlinks only support `default`, `accent`, and `negative`; other values fall back to `default`.
-- `size` — pixel-derived sizing matched against the inferred button type:
-  - Pill / pill-with-icon: `40`, `32` (default), `28`, `24`.
-  - Icon: `64`, `52`, `40`, `32` (default), `28`, `24`. `20` is only valid when `variant="tertiary"`.
-  - Invalid combinations fall back to the default (`32`).
-- `prefix-icon` / `postfix-icon` — icon name rendered before/after the slotted label. Supplying an icon without a default slot label produces an icon-only buttonlink.
-- `inline` — when `true`, the buttonlink flows inline with surrounding text rather than as a standalone block. Defaults to `false`.
-- `inverted` — flips the color scheme for use on dark/inverted surfaces.
-- `disabled` — disables navigation. Sets `aria-disabled="true"`, makes the anchor unfocusable (`tabindex="-1"`), and suppresses click/keydown navigation.
-- `soft-disabled` — appears disabled but stays focusable and activatable. Sets `aria-disabled="true"` without changing `tabindex`; consumers must suppress side-effects themselves.
-- `data-aria-label` — accessible name applied to the underlying `<a>` element via `aria-label`. Required for icon-only buttonlinks.
+| Option | Intent |
+|---|---|
+| `href` | Destination URL. Required — without it the anchor is not activatable. |
+| `target="_blank"` | Opens the destination in a new tab. Pair with `rel="noopener"` and signal "opens in a new tab" in the label or `data-aria-label`. |
+| `download` | Downloads the linked resource instead of navigating. Provide a filename string to suggest a name, and label the file or format so the action is clear. |
+| `variant` / `color` | Same styling surface as `mdc-button` (via `ButtonComponentMixin`). Choose the emphasis the destination deserves; tertiary supports only `default`, `accent`, and `negative` colors. |
+| `prefix-icon` / `postfix-icon` | Leading or trailing icon. An icon with no label makes an icon-only buttonlink — set `data-aria-label`. |
+| `inline` | Flows the buttonlink inline with surrounding text rather than as a block. Use inside running copy. |
+| `data-aria-label` | Accessible name mirrored onto the inner `<a>`. Required for icon-only buttonlinks. |
+| `soft-disabled` | Looks disabled but stays focusable so the reason can be conveyed. Prefer over `disabled` when discoverability matters. |
+
+**Note:** `size` follows the same rules as `mdc-button` — pill `40`/`32` (default)/`28`/`24`; icon adds `64`/`52` and `20` (tertiary only). Invalid combinations fall back to `32`.
 
 ### Limitations
 
-- Unlike `mdc-button`, the buttonlink does not expose `active`/`aria-pressed` semantics — anchors do not have a toggled state. Use `mdc-button` when the control must communicate an on/off state.
-- `size="20"` is only honoured for tertiary icon buttonlinks; other variant/size combinations fall back to the default size.
-- `inverted` is purely visual; pair it with a surface that actually requires the inverted palette.
+- **No toggle state** — unlike `mdc-button`, an anchor has no `active`/`aria-pressed` state. Use `mdc-button` when the control must communicate on/off state.
+- **`size="20"` is tertiary-only** — other variant/size combinations fall back to the default `32`.
+- **`inverted` is visual only** — it changes the palette but not behavior; use it only on a surface that actually needs the inverted colors.
+- **Icon-only needs `data-aria-label`** — the inner anchor has no accessible name from an icon alone; set `data-aria-label` describing the destination.
 
 ## Accessibility
 
@@ -102,7 +91,7 @@ Minimal markup example:
 
 The buttonlink renders a real `<a>` element inside its shadow DOM, so screen readers and the browser treat it as a link: it appears in the page's link list, supports the browser's native context menu, and respects `target`, `rel`, and `download` semantics out of the box. Focus is delegated into the shadow anchor (`delegatesFocus: true`), so consumer focus styles and keyboard navigation work on the host element.
 
-Activation works via `Enter` (the anchor's native behaviour) and on click. When `disabled` is set, the component intercepts both `click` and `keydown` to prevent navigation, marks the host `aria-disabled="true"`, and gives the anchor `tabindex="-1"` so it is removed from the tab order. `soft-disabled` only sets `aria-disabled="true"`; the anchor remains focusable and activatable so the consumer can suppress the side-effect while keeping the control discoverable.
+Activation works via `Enter` (the anchor's native behavior) and on click. When `disabled` is set, the component intercepts both `click` and `keydown` to prevent navigation, marks the host `aria-disabled="true"`, and gives the anchor `tabindex="-1"` so it is removed from the tab order. `soft-disabled` only sets `aria-disabled="true"`; the anchor remains focusable and activatable so the consumer can suppress the side-effect while keeping the control discoverable.
 
 The accessible name on the inner anchor is taken from the host's `data-aria-label` attribute and mirrored onto the anchor's `aria-label`.
 
@@ -120,9 +109,18 @@ The accessible name on the inner anchor is taken from the host's `data-aria-labe
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Text buttonlinks get their accessible name from the slotted label — keep it destination-oriented and self-describing.
 - Icon-only buttonlinks (no default slot content, only `prefix-icon` or `postfix-icon`) MUST set `data-aria-label` so the inner anchor has an accessible name.
 - When `target="_blank"`, surface the "opens in a new tab" hint in the label or `data-aria-label`, and add `rel="noopener"` (and `noreferrer` when appropriate) to avoid window-opener leaks.
-- For downloads, prefer a label that names the file or format (e.g. "Download PDF report") so the action is obvious before the user activates it.
+- For downloads, prefer a label that names the file or format (for example "Download PDF report") so the action is obvious before the user activates it.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-button` | Triggers an action and renders a `<button>`. Use when the control does not change the URL. |
+| `mdc-link` | Standard text link. Use for inline or standalone navigation that should look like a link. |
+| `mdc-linksimple` | Minimal, unstyled link primitive. Use when you need link semantics without button styling or icon slots. |
+| `mdc-buttonsimple` | Unstyled button primitive. Use when building a custom actionable surface rather than a navigation. |

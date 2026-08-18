@@ -19,6 +19,13 @@ import type { SkeletonVariant } from './skeleton.types';
  */
 class Skeleton extends Component {
   /**
+   * When true, displays the skeleton with motion applied.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  motion?: boolean = DEFAULTS.MOTION;
+
+  /**
    * The variant of skeleton to display
    * - **rectangular**: Default rectangular shape with 0.25rem border radius
    * - **rounded**: Rounded rectangle with 0.5rem border radius

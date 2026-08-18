@@ -12,6 +12,35 @@ const styles = css`
     width: var(--mdc-skeleton-width);
   }
 
+  :host([motion]) {
+    background-image: linear-gradient(
+      90deg,
+      var(--mds-color-theme-background-skeleton-shimmer-0) 0%,
+      var(--mds-color-theme-background-skeleton-shimmer-1) 50%,
+      var(--mds-color-theme-background-skeleton-shimmer-2) 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 2s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host([motion]) {
+      animation: none;
+      background-position: 50% 0;
+    }
+  }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
   :host([variant='rectangular']) {
     border-radius: 0.25rem;
   }

@@ -7,19 +7,17 @@ component: link
 
 ## Overview
 
-The link renders a navigational hyperlink. The slotted children supply the link text; setting `icon-name` adds a trailing icon (commonly used for "opens external site" or "download" affordances). Three sizes are available (`small`, `midsize`, `large`), and the link supports inline / standalone display and an inverted colour scheme for dark backgrounds.
-
-Like a native `<a>`, the link supports `href`, `target`, `rel`, `download`, `ping`, `hreflang`, `type`, and `referrerpolicy`. When `disabled`, navigation is suppressed and the link is removed from the tab order.
+`mdc-link` provides a navigational hyperlink that reads as link text within surrounding content. It exists for taking users to another page, view, or resource — including external destinations and downloads — with inline or standalone styling to fit the context.
 
 ### When to use
 
-- Use `mdc-link` for navigation: routing within the application, opening an external URL, launching an email client (`mailto:`), or a phone dialler (`tel:`).
-- Use it when the destination is a URL — that is, when the user expectation is "go somewhere", not "perform an action".
+- Use `mdc-link` to navigate: routing within the app, opening an external URL, jumping to an element on the same page, or launching an email (`mailto:`) or phone (`tel:`) handler.
+- Use `mdc-link` when the user expectation is "go somewhere" — the destination is a URL — rather than "perform an action".
 
 ### When not to use
 
-- Use `mdc-button` (or `mdc-linkbutton` when a link's visual treatment is required) for in-page actions that do not change the URL.
-- Use `mdc-linksimple` when no default size, no trailing icon, or a custom child layout (e.g. an icon as the entire content) is required.
+- Do not use `mdc-link` for an in-page action that changes data, state, or how content is displayed without changing the URL. Use `mdc-button`, or `mdc-linkbutton` when the affordance must read as link-styled text.
+- Do not use `mdc-link` when you need non-text child content such as an icon-only link, or no default sizing. Use `mdc-linksimple`.
 
 ## Guidelines
 
@@ -67,24 +65,33 @@ Listen for `click`, `keydown`, `focus`, and `blur` to react to user interaction 
 
 ### Content guidance
 
-- Write link text that describes the destination (`"View invoice #1234"`), not the mechanic (`"Click here"`); the link text is the screen-reader-announced name.
-- When the target is external or opens in a new tab, add the trailing icon (`icon-name="pop-out-bold"` or similar) so sighted users see the affordance, and include `rel="noopener noreferrer"` with `target="_blank"`.
-- Use `inline` when the link sits inside running prose; leave it unset when the link stands alone (a card action, a navigation item) so the standalone styling applies.
+- Write link text that describes the destination ("View invoice #1234"), not the mechanic ("Click here"); the text is the screen-reader-announced name.
+- Use `inline` only when the link sits inside running prose; leave it unset for standalone links (a card action, a navigation item). Use inline links sparingly — too many clutter the text and obscure the next step.
+- For external or new-tab destinations, add a trailing pop-out icon (`icon-name="pop-out-bold"` or similar) and set `rel="noopener noreferrer"` with `target="_blank"`.
+- Match `size` to the text the link sits with, and use `inverted` only on inverted surfaces such as `mdc-coachmark`.
 
 ### Property/Attribute details
 
-- `href` — the URL the link points to. When unset, the rendered `<a>` has no `href` (acts as a placeholder).
-- `target` — `_self` (default), `_blank`, `_parent`, `_top`, or `_unfencedTop`.
-- `rel` — space-separated link types (`noopener`, `noreferrer`, `nofollow`, etc.). Pair with `target="_blank"`.
-- `download` — when set, the browser downloads the resource. Empty string lets the browser pick the filename; a string overrides it.
-- `ping` — space-separated list of URLs notified when the link is followed.
-- `hreflang`, `type`, `referrerpolicy` — standard anchor attributes passed through.
-- `size` — `small` (`0.75rem`), `midsize` (`0.875rem`), or `large` (`1rem`, default). Also drives the trailing icon's size.
-- `icon-name` — name of an icon rendered after the link text (`mdc-icon` name from the configured icon set). Default unset.
-- `inline` — when `true`, the link uses inline styling suitable for flow inside body text. Default `false`.
-- `inverted` — when `true`, swaps the colour palette for use on dark backgrounds. Default `false`.
-- `disabled` — when `true`, sets `aria-disabled="true"` on the anchor, removes it from the tab order, and suppresses navigation on click or keyboard activation.
-- `data-aria-label` — accessible name applied to the rendered anchor. Use when the visible text alone does not describe the destination.
+| Option | Intent |
+|---|---|
+| `href` | Destination URL. When unset, the anchor renders without `href` and acts as a placeholder. |
+| `size="large"` (default) | Text and trailing-icon size — `small`, `midsize`, or `large`. Match it to the surrounding text size. |
+| `icon-name` | Trailing decorative icon after the text. Use a pop-out for external links or a download glyph; omit otherwise. |
+| `inline` | Applies inline styling (underlined in flow) for links inside prose. Leave unset for standalone links. |
+| `inverted` | Swaps to the inverted palette for dark surfaces such as coachmarks. |
+| `target` | `_self` (default), `_blank`, `_parent`, `_top`, `_unfencedTop`. Pair `_blank` with `rel="noopener noreferrer"`. |
+| `rel` | Space-separated link types (`noopener`, `noreferrer`, `nofollow`, …). |
+| `download` | Downloads the resource; an empty string lets the browser name the file, a string overrides it. |
+| `disabled` | Sets `aria-disabled`, removes the link from the tab order, and suppresses navigation. |
+| `data-aria-label` | Accessible name for the anchor. Use when the visible text alone does not describe the destination. |
+
+**Note:** `ping`, `hreflang`, `type`, and `referrerpolicy` are passed through to the anchor unchanged.
+
+### Limitations
+
+- **Navigation only** — the link is for URL destinations, not actions. Do not wire it to state changes such as save or delete; use `mdc-linkbutton` or `mdc-button`.
+- **Placeholder without `href`** — with no `href` the anchor has no destination yet still reads as a link. Set `href`, or choose a button for actions.
+- **Text child only** — `mdc-link` applies the standard text + trailing-icon treatment. For icon-only or custom child layouts, use `mdc-linksimple`.
 
 ## Accessibility
 
@@ -105,7 +112,17 @@ The anchor's accessible name comes from the slotted text content by default; whe
 
 ### Implementation requirements
 
-#### Labelling
+#### Labeling
 
 - Provide descriptive link text so the link's accessible name conveys where it leads; supply `data-aria-label` only when the visible text would be ambiguous out of context.
-- For `target="_blank"` links, the icon affordance is visual — the consumer can supply a `data-aria-label` such as `"Open example.com (opens in new tab)"` if the new-tab behaviour must be conveyed to screen readers.
+- For `target="_blank"` links, the icon affordance is visual — the consumer can supply a `data-aria-label` such as `"Open example.com (opens in new tab)"` if the new-tab behavior must be conveyed to screen readers.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-linksimple` | Minimal hyperlink `mdc-link` builds on. Use for icon-only or custom child content with no default size. |
+| `mdc-linkbutton` | Looks like a link but behaves as a button. Use for in-page actions styled as links. |
+| `mdc-buttonlink` | Looks like a button but navigates like a link. Use for navigation that needs button prominence. |
+| `mdc-button` | Standard action control for in-page actions that need no link styling. |
+| `mdc-coachmark` | Inverted surface where `inverted` links are appropriate. |
