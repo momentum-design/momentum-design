@@ -70,7 +70,7 @@ const styles = css`
     display: contents;
   }
 
-  /* AI-Assisted: range fill is rendered via a ::before pseudo aligned to the
+  /* Range fill is rendered via a ::before pseudo aligned to the
      day-circle (1.75rem) instead of filling the full grid column, so the rounded
      ends line up with the today/selected circle. */
   .calendar-day-wrapper {
@@ -115,7 +115,6 @@ const styles = css`
     border-end-end-radius: 0.875rem;
     border-inline-end: 1px solid var(--mdc-calendar-day-selected-bg);
   }
-  /* End AI-Assisted */
 
   .calendar-day {
     display: flex;

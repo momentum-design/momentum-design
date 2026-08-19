@@ -74,6 +74,55 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
   });
 };
 
+// AI-Assisted: Cover initial non-default context, direct child overrides, and subsequent provider updates.
+test('should keep non-default context authoritative and remain responsive to updates', async ({
+  componentsPage,
+}) => {
+  const children = `
+    <mdc-stepperitem label="Step 1"></mdc-stepperitem>
+    <mdc-stepperconnector></mdc-stepperconnector>
+    <mdc-stepperitem label="Step 2"></mdc-stepperitem>
+  `;
+  const stepper = await setup(componentsPage, {
+    children,
+    orientation: ORIENTATION.VERTICAL,
+    variant: VARIANT.STACKED,
+  });
+  const items = componentsPage.page.locator('mdc-stepperitem');
+  const connector = componentsPage.page.locator('mdc-stepperconnector');
+
+  await expect(items.nth(0)).toHaveAttribute('variant', VARIANT.STACKED);
+  await expect(items.nth(1)).toHaveAttribute('variant', VARIANT.STACKED);
+  await expect(connector).toHaveAttribute('orientation', ORIENTATION.VERTICAL);
+
+  const [itemUpdatedInSingleCycle, connectorUpdatedInSingleCycle] = await Promise.all([
+    items.nth(0).evaluate((element, variant) => {
+      element.setAttribute('variant', variant);
+      return (element as HTMLElement & { updateComplete: Promise<boolean> }).updateComplete;
+    }, VARIANT.INLINE),
+    connector.evaluate((element, orientation) => {
+      element.setAttribute('orientation', orientation);
+      return (element as HTMLElement & { updateComplete: Promise<boolean> }).updateComplete;
+    }, ORIENTATION.HORIZONTAL),
+  ]);
+
+  expect(itemUpdatedInSingleCycle).toBe(true);
+  expect(connectorUpdatedInSingleCycle).toBe(true);
+
+  await expect(items.nth(0)).toHaveAttribute('variant', VARIANT.STACKED);
+  await expect(connector).toHaveAttribute('orientation', ORIENTATION.VERTICAL);
+
+  await componentsPage.setAttributes(stepper, {
+    orientation: ORIENTATION.HORIZONTAL,
+    variant: VARIANT.INLINE,
+  });
+
+  await expect(items.nth(0)).toHaveAttribute('variant', VARIANT.INLINE);
+  await expect(items.nth(1)).toHaveAttribute('variant', VARIANT.INLINE);
+  await expect(connector).toHaveAttribute('orientation', ORIENTATION.HORIZONTAL);
+});
+// End AI-Assisted
+
 test('mdc-stepper', async ({ componentsPage }) => {
   const children = `
       <mdc-stepperitem label="Step 1" status="completed"></mdc-stepperitem>

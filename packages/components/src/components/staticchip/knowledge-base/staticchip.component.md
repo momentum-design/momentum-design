@@ -11,15 +11,16 @@ The static chip is a small, non-interactive element used to display a short labe
 
 ### When to use
 
-- Use `mdc-staticchip` to display a short label or status that the user cannot interact with (e.g. a tag, category, or read-only attribute).
-- Use it inside lists, cards, or summary rows where the chip is purely informational.
+- Use `mdc-staticchip` to display a short label or status that the user cannot interact with (a tag, category, or read-only attribute).
+- Use `mdc-staticchip` inside lists, cards, or summary rows where the chip is purely informational.
 
 ### When not to use
 
-- Use `mdc-chip` when the chip should respond to user interaction (click, selection).
-- Use `mdc-filterchip` for chips that toggle on/off as filters.
-- Use `mdc-inputchip` for editable, removable chips inside an input.
-- Use `mdc-badge` when you need a smaller, status-only indicator (especially for counts or notifications).
+- Do not use `mdc-staticchip` when the chip should respond to user interaction such as click or selection. Use `mdc-chip`.
+- Do not use `mdc-staticchip` for a chip that toggles on and off as a filter. Use `mdc-filterchip`.
+- Do not use `mdc-staticchip` for an editable, removable value inside an input. Use `mdc-inputchip`.
+- Do not use `mdc-staticchip` for a status that needs the reserved status color set. Use `mdc-alertchip`.
+- Do not use `mdc-staticchip` when you need a smaller, status-only indicator, especially for counts or notifications. Use `mdc-badge`.
 
 ## Guidelines
 
@@ -42,7 +43,7 @@ Minimal markup example:
 
 ### Content guidance
 
-- Keep the label short. Limit to a maximum of 20 characters, including spaces, so the chip stays compact.
+- Keep the label short — a maximum of 20 characters, including spaces, so the chip stays compact.
 - Use sentence case for the label.
 
 With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `size="24"` on the avatar so the initials text scales appropriately for the chip height:
@@ -62,8 +63,9 @@ With an avatar slotted as the prefix (takes precedence over `icon-name`). Use `s
 
 ### Limitations
 
-- Not interactive: cannot be focused, clicked, or activated.
-- Not form-associated: has no `name`/`value` and is not submitted with a form.
+- **Not interactive** — the chip cannot be focused, clicked, or activated. Use `mdc-chip` when interaction is needed.
+- **Not form-associated** — it has no `name`/`value` and is not submitted with a form.
+- **Single-line label** — the chip does not wrap; keep the label under 20 characters so it stays compact.
 
 ## Accessibility
 
@@ -73,6 +75,14 @@ The component renders the label inside an `mdc-text` element and the optional ic
 
 ### Notes
 
-Because the component has no interactive role, ensure the surrounding context conveys what the chip represents (e.g. a label or heading describing the chip's purpose). When the chip carries semantic meaning that is not obvious from its label, include that meaning in the surrounding text.
+Because the component has no interactive role, ensure the surrounding context conveys what the chip represents (for example a label or heading describing the chip's purpose). When the chip carries semantic meaning that is not obvious from its label, include that meaning in the surrounding text.
 
-When using slotted prefix content such as an avatar, do not rely on the avatar's accessible name to identify the chip — the chip `label` is the only text announced. The avatar should remain decorative (`aria-hidden="true"`, which is the avatar default).
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-chip` | Interactive version of the same label chip; use when the chip must respond to click or selection. |
+| `mdc-filterchip` | Selectable chip that toggles a filter on and off. |
+| `mdc-inputchip` | Editable, removable chip inside an input. |
+| `mdc-alertchip` | Status chip with a reserved color set for validation states. |
+| `mdc-badge` | Smaller status-only indicator, especially for counts or notifications. |

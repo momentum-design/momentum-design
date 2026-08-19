@@ -7,7 +7,7 @@ component: listbox
 
 ## Overview
 
-The listbox presents a list of `mdc-option` elements (optionally grouped by `mdc-optgroup`) and lets the user pick one option (default) or multiple options (`multiple`). Clicking an option, or pressing `Enter` / `Space` while it is focused, toggles selection in multi mode and replaces the selection in single mode.
+The listbox presents a list of `mdc-option` elements (optionally grouped by `mdc-optgroup`) and lets the user pick one option (default) or multiple options (`multiple`).
 
 The listbox emits a `change` event whenever the selection changes, with `value` (the most recently selected option's `value`) and `selectedValues` (all currently selected `value`s) in the event detail. It is not yet a form control — wire its `value` into a form manually if form submission is needed.
 
@@ -18,9 +18,9 @@ The listbox emits a `change` event whenever the selection changes, with `value` 
 
 ### When not to use
 
-- Use `mdc-select` (with `mdc-selectlistbox` inside) for a form-control select that opens a popover — the standalone `mdc-listbox` is the visible-options-only variant.
-- Use `mdc-menupopover` for application menus (commands), not for selection.
-- Use `mdc-list` with `mdc-listitem` for a navigable list that does not have selection semantics.
+- Do not use `mdc-listbox` for a form-control select that opens a popover. Use `mdc-select` (with `mdc-selectlistbox`) instead.
+- Do not use `mdc-listbox` for application menus or commands. Use `mdc-menupopover` instead.
+- Do not use `mdc-listbox` for a navigable list without selection semantics. Use `mdc-list` with `mdc-listitem` instead.
 
 ## Guidelines
 
@@ -61,22 +61,18 @@ Multi-select listbox with grouped options:
 
 Listen for `change` to react to selection updates. `event.detail.value` is the last-selected option's value; `event.detail.selectedValues` is the full array (useful in multi mode).
 
-### Content guidance
-
-- Give every `mdc-option` a unique `value`; the listbox uses `value` to sync its own `value` property with the currently selected option.
-- Use `mdc-optgroup` to label related options when the list is long enough that scanning would benefit from section headers.
-- Keep `multiple` false unless multi-select is genuinely needed; multi-select listboxes are easy to use incorrectly (consumers expect single select by default).
-
 ### Property/Attribute details
 
-- `name` — identifier for the listbox. Currently informational (the listbox is not yet form-associated); useful when serialising the value manually.
-- `value` — the value of the currently selected option (single mode) or the first selected option (multi mode). Setting `value` programmatically updates the selected option to match.
-- `multiple` — when `true`, multiple options can be selected; clicking / Enter / Space toggles each option independently. Default `false`.
+| Option | Intent |
+|---|---|
+| `value` | The selected option's value (single mode) or the first selected value (multi mode). Set it to preselect; the matching option updates to selected. |
+| `multiple` | Allows more than one option to be selected, each toggled independently by click/Enter/Space. Leave it off for the common single-select case. |
+| `name` | Informational identifier only — the listbox is not yet form-associated, so it matters only when you serialize the value yourself. |
 
 ### Limitations
 
-- The listbox is not yet form-associated. Its `value` does not participate in form submission; consumers must read `value` (or `event.detail.selectedValues`) and serialise it themselves.
-- Navigation does not loop — pressing the down arrow on the last option stays on the last option (per the WAI-ARIA listbox pattern).
+- **Not form-associated** — the listbox does not participate in form submission; read `value` (or `event.detail.selectedValues`) and serialize it yourself.
+- **Focus doesn't loop** — arrowing past the last option stays on the last option, per the WAI-ARIA listbox pattern; there is no wraparound.
 
 ## Accessibility
 
@@ -102,5 +98,21 @@ Whenever the selection changes — by click, keyboard, or programmatic `value` u
 #### General
 
 - Place options in the default slot (optionally wrapped in `mdc-optgroup`); only `mdc-option:not([disabled])` participates in keyboard navigation and selection.
+- Give every `mdc-option` a unique `value`; the listbox syncs its own `value` to the selected option through it.
 - Wire the `change` event to your own state and re-render — the listbox tracks selection internally but the consumer typically owns the canonical value.
 - When `multiple` is `true`, communicate the multi-select affordance in the surrounding UI (header text, helper text) so users know to pick more than one option.
+
+#### Labeling
+
+- Give the listbox an accessible name with `aria-label`, or `aria-labelledby` pointing at a visible heading, so screen readers announce what the list is for.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-select` | Form-associated dropdown that opens a popover and wraps options in `mdc-selectlistbox`. |
+| `mdc-combobox` | Editable, filterable dropdown variant of the select surface. |
+| `mdc-selectlistbox` | The `role="listbox"` wrapper used inside select/combobox, not standalone. |
+| `mdc-option` | The selectable entries inside the listbox. |
+| `mdc-optgroup` | Labeled grouping of options within the listbox. |
+| `mdc-menupopover` | Menu of commands rather than a selection list. |

@@ -1,30 +1,23 @@
 ---
 title: Control type provider
-summary: Usage and guidelines for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.
+summary: Usage, guidelines, and accessibility for the mdc-controltypeprovider component — a context provider setting whether descendant form controls behave as controlled or uncontrolled.
 tier: 3
 component: controltypeprovider
 ---
 
 ## Overview
 
-The control type provider is a context provider used to set whether descendant form controls operate as **controlled** or **uncontrolled** components.
-
-- `uncontrolled` (default) — each control manages its own state. Toggling a checkbox, picking a combobox option, or moving a slider updates the control's internal value and dispatches a `change` event.
-- `controlled` — each control delegates state to its parent. The control emits `input` and `change` with the requested new value but does not update its own value; the parent component is expected to update the control's `value` attribute in response.
-
-This mirrors the React controlled/uncontrolled pattern at the web-component level so the same component can be embedded in either consumer style without forking the API.
-
-It is rendered as a transparent wrapper — the provider does not produce any visible UI.
+The control type provider sets whether the form controls beneath it behave as controlled or uncontrolled, mirroring the React controlled/uncontrolled pattern at the web-component level. It lets the same controls integrate with a parent-owned state model or manage their own state without forking their API.
 
 ### When to use
 
-- Wrap a tree of form controls (combobox, select, checkbox, etc.) in `mdc-controltypeprovider control-type="controlled"` when the parent owns the canonical state and the controls must always reflect what the parent passes in.
-- Use it when integrating with state-management libraries (React, Redux, signals, etc.) that need every user interaction to flow through the consumer's update cycle.
+- Use `mdc-controltypeprovider` `control-type="controlled"` to make descendant form controls defer their state to a parent that owns the canonical value.
+- Use `mdc-controltypeprovider` when integrating with a state library (React, Redux, signals) that must see every interaction flow through its update cycle.
 
 ### When not to use
 
-- Leave the provider out (or rely on the default `uncontrolled`) when each control should own its own state and the consumer just listens to `change`.
-- Do not nest providers to switch modes mid-tree unless absolutely necessary — descendant controls subscribe to the context once and do not re-subscribe when the value changes.
+- Do not use `mdc-controltypeprovider` when each control should own its own state. Rely on the default uncontrolled behavior instead.
+- Do not use `mdc-controltypeprovider` to switch modes mid-tree at runtime. Remount the descendant tree instead, since descendants read the context once.
 
 ## Guidelines
 
@@ -49,34 +42,40 @@ Minimal markup example:
 
 In controlled mode, listen for `input` / `change` on each form control and drive its `value` (or `checked`) attribute from the parent state.
 
-### Content guidance
+### Composition
 
-The provider has no visible content of its own. Place form controls (or higher-level layouts) inside it. Avoid using it as a generic layout wrapper — its only purpose is to broadcast `control-type` to the descendants that consume it.
+- Wrap the form controls (or a higher-level layout) that should share one control mode; the provider renders no UI of its own.
+- Only controls that consume the control-type context via `ControlTypeMixin` are affected; other components ignore the provider.
 
 ### Property/Attribute details
 
-- `control-type` — `controlled` or `uncontrolled` (default). Determines how descendant controls handle user interaction.
+| Option | Intent |
+| --- | --- |
+| `control-type` | `uncontrolled` (default) — each control manages its own state and dispatches `change` on interaction. `controlled` — each control emits `input`/`change` with the requested value but does not update its own value; the parent must set `value` (or `checked`) in response. |
 
 ### Limitations
 
-- The provider broadcasts `control-type` once at mount; descendants do **not** react to runtime changes of the attribute. If you must switch modes after mount, remount the descendant tree (e.g. by toggling its `key` in React) so it reads the new value.
-- Only components that use the `ControlTypeMixin` consume this context — currently the combobox and other form controls that opt in. Components that have no need for the controlled/uncontrolled distinction ignore the provider.
+- **Set once at mount** — descendants do not react to runtime `control-type` changes; remount the tree (for example by toggling its `key` in React) to switch modes.
+- **Opt-in consumers only** — only controls using `ControlTypeMixin` read the context; components with no controlled/uncontrolled distinction ignore the provider.
+- **Controlled mode needs wiring** — in `controlled` mode a control will not update its own value, so unhandled `input`/`change` events leave it looking unresponsive.
 
 ## Accessibility
 
 ### Built-in features
 
-The provider does not render any visible content or accept focus. It does not set ARIA attributes on itself or its descendants and therefore has no direct accessibility surface.
-
-The provider does affect the **behaviour** of consuming form controls — in controlled mode, a control will not update its own `value` in response to user interaction, so the consumer must drive the value through the parent. If the parent forgets to update the value, the control will appear unresponsive to keyboard and pointer input, which is an accessibility regression. Always wire the `input` / `change` handlers when using `control-type="controlled"`.
-
-#### Internal ARIA managed by the component
-
-The provider does not manage any ARIA attributes.
+The provider renders nothing visible, takes no focus, and sets no ARIA on itself or its descendants, so it has no direct accessibility surface. It does change the behavior of consuming controls: in controlled mode a control will not update its own value on interaction, so a parent that fails to update the value makes the control appear unresponsive to keyboard and pointer users.
 
 ### Implementation requirements
 
 #### General
 
 - Place the provider as high in the tree as the controlled/uncontrolled decision applies; nesting two providers with different `control-type` values is supported but rarely needed.
-- In controlled mode, always handle `input` and `change` events from descendant form controls and update their `value` (or `checked`) attribute — otherwise the controls will look broken to assistive technology users.
+- In controlled mode, always handle `input` and `change` from descendant controls and update their `value` (or `checked`) — otherwise the controls look broken to assistive technology users.
+
+## Related components
+
+| Component | Relationship |
+| --- | --- |
+| `mdc-combobox` | A form control that consumes this context to run in controlled or uncontrolled mode. |
+| `mdc-toggle` | A form control that consumes this context to run in controlled or uncontrolled mode. |
+| `mdc-searchfield` | A form control that consumes this context to run in controlled or uncontrolled mode. |

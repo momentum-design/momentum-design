@@ -1,4 +1,3 @@
-// Start AI-Assisted
 import { html, nothing, PropertyValues, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -219,4 +218,3 @@ declare global {
     ['mdc-virtualizedlist-e2e']: VirtualizedListE2E;
   }
 }
-// End AI-Assisted

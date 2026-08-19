@@ -1,4 +1,3 @@
-// AI-Assisted
 import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('focustrap');
@@ -10,4 +9,3 @@ const DEFAULTS = {
 };
 
 export { TAG_NAME, DEFAULTS };
-// End AI-Assisted

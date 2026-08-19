@@ -7,20 +7,20 @@ component: cardradio
 
 ## Overview
 
-The card radio looks like a card (image, header with icon/title/subtitle, body) but behaves as a single radio option. Cards sharing the same `name` form a group: clicking, pressing `Enter`, or pressing `Space` on one card selects it and clears the others. Arrow keys move focus and selection between enabled cards in the group.
+The card radio turns a whole card into a single radio option, letting a content-rich tile serve as one choice within a mutually exclusive group. It exists for single-select choices that need the visual weight of a card rather than a small inline control.
 
 ### When to use
 
 - Use `mdc-cardradio` when each option in a single-select group needs the visual weight of a card (image, title, supporting copy) rather than a small inline control.
-- Use it inside a labelled radio-group container (`role="radiogroup"` + `aria-label` / `aria-labelledby`) when several card radios belong to the same selection set.
+- Use `mdc-cardradio` for choosing one option from a small set where each choice benefits from a picture or supporting detail — plan tiers, delivery speeds, or theme options.
 
 ### When not to use
 
-- Use `mdc-card` when the surface is a static container and should not represent a selection.
-- Use `mdc-cardbutton` when activating the card should trigger an action rather than select an option.
-- Use `mdc-cardcheckbox` when more than one card in the group can be selected at the same time.
-- Use `mdc-radio` (or `mdc-radiogroup`) when a plain control is enough and the card surface is unnecessary.
-- Use `mdc-listitem` inside `mdc-list` when the content is a row of a scrolling list rather than a standalone selectable tile.
+- Do not use `mdc-cardradio` for a static container that should not represent a selection. Use `mdc-card` instead.
+- Do not use `mdc-cardradio` when activating the card should trigger an action rather than select an option. Use `mdc-cardbutton` instead.
+- Do not use `mdc-cardradio` when more than one card in the group can be selected at the same time. Use `mdc-cardcheckbox` instead.
+- Do not use `mdc-cardradio` when a plain control is enough and the card surface is unnecessary. Use `mdc-radio` (or `mdc-radiogroup`) instead.
+- Do not use `mdc-cardradio` for a row of a scrolling list. Use `mdc-listitem` inside `mdc-list` instead.
 
 ## Guidelines
 
@@ -63,30 +63,27 @@ Listen for the `change` event to react to selection changes; the newly selected 
 
 ### Content guidance
 
-- Always provide a `card-title` — it is the accessible name of the radio.
+- Always give the `card-title` a clear, specific label that names the option on its own.
 - Use the body to differentiate the option from its siblings (price, speed, capacity), not to repeat the title.
-- Group related card radios visually inside one container with `role="radiogroup"` and a label so assistive technologies announce the option set.
+- Keep titles parallel across the group (all nouns, or all short phrases) so the choices scan as a set.
 
 ### Property/Attribute details
 
-- `checked` — selection state. Defaults to `false`. Reflected on the host as `aria-checked`.
-- `name` — radio-group name. All `mdc-cardradio` elements in the document that share the same `name` form one mutually-exclusive group. **Required**.
-- `disabled` — when `true`, the card cannot be selected and is removed from both the tab order and the arrow-key navigation. Reflected as `aria-disabled="true"`.
-- `card-title` — primary header text rendered through `mdc-text`. Ignored if the `title` slot has content. **Required** for accessibility.
-- `subtitle` — secondary header text. Ignored if the `subtitle` slot has content.
-- `title-tag-name` / `subtitle-tag-name` — DOM tag used for the rendered title/subtitle `mdc-text` (e.g. `h2`, `h3`, `span`). Default: `span`.
-- `image-src` — URL of the image rendered above the header. When empty, no image is rendered.
-- `image-alt` — alt text for the image. Required for non-decorative images.
-- `icon-name` — name of the leading icon shown in the header. When empty, no icon is rendered.
-- `variant` — border treatment. `border` (default), `ghost`, or `promotional`.
-- `orientation` — `vertical` (default, min-width 20rem) or `horizontal` (min-width 40rem).
+| Option | Intent |
+|---|---|
+| `checked` | Selection state (default `false`), reflected as `aria-checked`. Set it on the option that starts selected. |
+| `name` (required) | Radio-group name. Cards sharing a `name` form one mutually exclusive group; selecting one clears the rest. |
+| `disabled` | Removes the card from the tab order and arrow-key navigation; sets `aria-disabled="true"`. Use for options that are not currently available. |
+| `card-title` (required) | Accessible name and heading of the option. Provide meaningful text; there is no fallback if both this and the `title` slot are empty. |
+
+**Note:** shares `mdc-card`'s content properties (`subtitle`, `image-src`/`image-alt`, `icon-name`, `variant`, `orientation`, and the title/subtitle tag-name props). `mdc-cardradio` always shows an `mdc-staticradio` indicator — there is no `selection-type` choice.
 
 ### Limitations
 
-- Slot content must remain non-interactive. The card itself is the selection target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard/assistive-technology behaviour — use `mdc-card` if the surface needs actionable children.
-- Grouping is global to the document: every `mdc-cardradio[name="…"]` is considered part of the same group regardless of where it lives in the DOM. Use distinct `name` values when multiple radio groups appear on the same page.
-- The card radio is not form-associated. To submit the selected value in a native form, mirror the selected card's identifier into a `<input type="hidden">` (or use `mdc-radiogroup` directly) and update it from the `change` event.
-- `card-title` is required for an accessible name; there is no fallback if both `card-title` and the `title` slot are empty.
+- **Children must be presentational** — the card is the selection target, so nested buttons, links, or form controls create overlapping interactive regions and break keyboard and assistive-technology behavior. Use `mdc-card` if the surface needs actionable children.
+- **Grouping is document-global** — every `mdc-cardradio` with the same `name` joins one group regardless of DOM location. Use distinct `name` values for unrelated groups on the same page.
+- **Not form-associated** — the selected value is not submitted with a native form. Mirror the selection into a hidden input from the `change` event, or use `mdc-radiogroup`.
+- **Accessible name required** — `card-title` (or the `title` slot) is the only source of the name, with no fallback. Always provide one.
 
 ## Accessibility
 
@@ -124,9 +121,19 @@ The `card-title` (or `title` slot) provides the accessible name. The `mdc-static
 - Keep every slotted child presentational. If you need actionable content alongside the option, switch to `mdc-card` and use `mdc-radio` / `mdc-radiogroup` for the selection.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable, so the state is exposed to assistive technology and arrow navigation skips it correctly.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `card-title` (or `title` slot) — it is the default accessible name of the radio.
 - When the title alone is ambiguous (e.g. icon-driven cards, repeated titles disambiguated by context), set `aria-label` (or `aria-labelledby`) on the host so the announcement matches the option.
 - Set `image-alt` for informative images and `image-alt=""` for decorative ones to avoid double-announcing the visual.
 - Pick `title-tag-name` / `subtitle-tag-name` to match the surrounding heading outline only when the title functions as a heading; otherwise leave the default `span`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-cardcheckbox` | Multi-select card. Use when several options per group can be selected. |
+| `mdc-card` | Static container. Use when the surface should not represent a selection. |
+| `mdc-cardbutton` | Action card. Use when the card triggers a command instead of a selection. |
+| `mdc-radio` / `mdc-radiogroup` | Inline radio control or group. Use when the card surface is unnecessary. |
+| `mdc-listitem` | Row within `mdc-list`. Use for scrolling lists rather than standalone tiles. |

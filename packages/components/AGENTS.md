@@ -12,8 +12,6 @@ repository managed by Yarn Workspaces and is published to npm at
 ## General Guidelines
 
 - Use [TypeScript](https://www.typescriptlang.org/) for all code.
-- Start all AI-generated code with `// AI-Assisted` and end with
-  `// End AI-Assisted`.
 - Follow the coding conventions in `packages/components/conventions/*.md`.
 - Prefer existing mixins in `packages/components/src/utils/mixins/` to extend
   functionality.
