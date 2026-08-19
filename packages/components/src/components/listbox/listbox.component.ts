@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
