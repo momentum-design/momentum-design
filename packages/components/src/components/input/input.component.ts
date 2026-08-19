@@ -403,6 +403,7 @@ class Input
       ?readonly="${this.readonly}"
       ?required="${this.required}"
       type="${type}"
+      aria-labelledby="${DEFAULTS.HEADING_ID}"
       aria-describedby="${ifDefined(
         this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : (this.dataAriaDescribedby ?? ''),
       )}"
