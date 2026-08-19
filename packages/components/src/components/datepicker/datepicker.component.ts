@@ -275,13 +275,13 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     return buildISODate(this.internalMonth, this.internalDay, this.internalYear);
   }
 
-  // AI-Assisted: keep input spinbuttons aligned with valid min/max date boundaries.
+  // Keep input spinbuttons aligned with valid min/max date boundaries.
   private getParsedMin(): Date | undefined {
-    return this.min ? parseISO(this.min) ?? undefined : undefined;
+    return this.min ? (parseISO(this.min) ?? undefined) : undefined;
   }
 
   private getParsedMax(): Date | undefined {
-    return this.max ? parseISO(this.max) ?? undefined : undefined;
+    return this.max ? (parseISO(this.max) ?? undefined) : undefined;
   }
 
   private clampValueToRange(value: string): string {
@@ -314,18 +314,10 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
       if (minDt && currentYear === minDt.getFullYear()) min = Math.max(min, minDt.getMonth() + 1);
       if (maxDt && currentYear === maxDt.getFullYear()) max = Math.min(max, maxDt.getMonth() + 1);
     } else if (field === 'day' && currentMonth && currentYear) {
-      if (
-        minDt &&
-        currentYear === minDt.getFullYear() &&
-        currentMonth === minDt.getMonth() + 1
-      ) {
+      if (minDt && currentYear === minDt.getFullYear() && currentMonth === minDt.getMonth() + 1) {
         min = Math.max(min, minDt.getDate());
       }
-      if (
-        maxDt &&
-        currentYear === maxDt.getFullYear() &&
-        currentMonth === maxDt.getMonth() + 1
-      ) {
+      if (maxDt && currentYear === maxDt.getFullYear() && currentMonth === maxDt.getMonth() + 1) {
         max = Math.min(max, maxDt.getDate());
       }
     }
@@ -357,7 +349,6 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (currentValue <= range.min) return range.isMinConstrained ? range.min : range.max;
     return currentValue - 1;
   }
-  // End AI-Assisted
 
   private syncFormValue(): void {
     const val = this.value || this.internalToValue();
@@ -796,7 +787,11 @@ class DatePicker extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   private renderDefaultVariant() {
     const displayText = this.getDisplayText();
-    const placeholderText = getPlaceholder(this.locale);
+    const selectionMode = this.effectiveSelectionMode;
+    const placeholderText = getPlaceholder(
+      this.locale,
+      selectionMode === SELECTION_MODE.RANGE || selectionMode === SELECTION_MODE.WEEK,
+    );
 
     return html`
       <div

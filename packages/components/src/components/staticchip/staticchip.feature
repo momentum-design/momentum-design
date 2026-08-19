@@ -8,6 +8,7 @@ Feature: StaticChip Accessibility, Appearance, and User Interaction
       | ---------------- | -------------------- | -------- |
       | Label            | "Label"              | Normal   |
       | Icon Name        | "icon-name"          | Optional |
+      | Prefix Slot      | e.g. mdc-avatar      | Optional |
       | Color            | default/cobalt/...   | Optional |
 
   Rule: ✅ Rendering and Visual States
@@ -29,6 +30,20 @@ Feature: StaticChip Accessibility, Appearance, and User Interaction
       And the staticchip has icon-name set
       When the staticchip is rendered
       Then the icon should be visible and the text should be styled with ellipsis if it overflows
+
+    Scenario: Render staticchip with prefix slot (avatar)
+      Given the staticchip has a label "Person"
+      And the staticchip has an mdc-avatar slotted into the prefix slot
+      When the staticchip is rendered
+      Then the avatar should be visible before the label
+      And the avatar should be sized to fit within the chip height
+
+    Scenario: Prefix slot takes precedence over icon-name
+      Given the staticchip has icon-name set
+      And the staticchip has an mdc-avatar slotted into the prefix slot
+      When the staticchip is rendered
+      Then the avatar should be visible
+      And the icon should not be visible
 
     Scenario: Render staticchip with different colors
       Given the staticchip has color attribute set to each supported value

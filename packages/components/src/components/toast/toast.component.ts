@@ -166,16 +166,18 @@ class Toast extends FooterMixin(Component) {
     super.firstUpdated(changedProperties);
     this.updateDetailedSlotPresence();
     this.updateDataExpanded();
-
-    await this.updateComplete;
-    if (hasOverflowMixin(this.headerTextElement)) {
-      this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
-    }
   }
 
-  protected override updated(changedProperties: PropertyValues): void {
+  protected override async updated(changedProperties: PropertyValues): Promise<void> {
     if (changedProperties.has('showMoreText') || changedProperties.has('showLessText')) {
       this.updateDataExpanded();
+    }
+
+    if (changedProperties.has('headerText')) {
+      await this.updateComplete;
+      if (hasOverflowMixin(this.headerTextElement)) {
+        this.hasOverflowingHeaderText = this.headerTextElement.isHeightOverflowing();
+      }
     }
   }
 

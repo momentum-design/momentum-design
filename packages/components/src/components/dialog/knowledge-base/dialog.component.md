@@ -9,22 +9,18 @@ component: dialog
 
 A dialog is a modal surface that interrupts the user to display information, confirm a destructive action, or collect input. It blocks interaction with the rest of the application until it is closed.
 
-The dialog is a controlled component: the consumer drives visibility through the `visible` property and listens to the `close` event to react to the user dismissing the dialog. Visibility is not toggled internally.
-
-Five sizes are available: `small` (432px), `medium` (656px), `large` (992px), `xlarge` (90% viewport), and `fullscreen` (100% viewport). Two visual variants are available: `default` and `promotional`. When the surrounding `mdc-responsivesettingsprovider` has `forceFullscreenDialog` enabled, every dialog is rendered as `fullscreen` regardless of its `size`.
-
 ### When to use
 
 - Use `mdc-dialog` to confirm a destructive action (e.g. deleting an item) before it happens.
-- Use it to collect a short input that should block the underlying flow until completed.
-- Use it for messages that demand the user's attention and cannot be deferred to a banner or toast.
+- Use `mdc-dialog` to collect a short input that should block the underlying flow until it is completed.
+- Use `mdc-dialog` for messages that demand the user's attention and cannot be deferred to a banner or toast.
 
 ### When not to use
 
-- Use `mdc-announcementdialog` when the surface is a curated marketing/announcement layout with a fixed structure.
-- Use `mdc-popover` or `mdc-coachmark` for non-modal overlays anchored to a trigger.
-- Use `mdc-toast` for transient, dismissable notifications that should not block interaction.
-- Use `mdc-banner` for persistent in-page messages.
+- Do not use `mdc-dialog` for a curated marketing or announcement layout with a fixed illustration-led structure. Use `mdc-announcementdialog` instead.
+- Do not use `mdc-dialog` for non-modal overlays anchored to a trigger. Use `mdc-popover` or `mdc-coachmark` instead.
+- Do not use `mdc-dialog` for transient, dismissable notifications that should not block interaction. Use `mdc-toast` instead.
+- Do not use `mdc-dialog` for persistent in-page messages that belong in the flow. Use `mdc-banner` instead.
 
 ## Guidelines
 
@@ -79,32 +75,34 @@ When multiple dialogs are open at once, the component uses an internal depth man
 - Keep `header-text` short and action-oriented — it doubles as the accessible name when no explicit `aria-label` is provided.
 - Use `description-text` for one or two sentences of context; longer content belongs in the body slot.
 - Use `close-button-aria-label` to describe what closing the dialog does (e.g. "Close delete confirmation"); a generic "Close" is acceptable when the header already conveys context.
-- Pair primary and secondary footer buttons clearly: the destructive or confirming action is the primary, the cancel/back action is the secondary.
+- Give the dialog at least one action. The confirming or destructive action is the primary (`footer-button-primary`), the cancel or back action is the secondary (`footer-button-secondary`), and a tertiary action can sit in `footer-link`.
+- For a step flow, label the forward action as the primary ("Next") and the back action as the secondary ("Back"). For a save flow, keep a "Cancel" secondary even though the close button is redundant.
+- For a destructive confirmation, write an unambiguous primary label ("Delete") rather than "OK", and use the button's negative styling so the consequence is clear.
+- An informational dialog can ship with a single "Dismiss" action.
 
 ### Property/Attribute details
 
-- `visible` — controls the dialog's visibility. Default `false`. The component does not manage this internally.
-- `triggerID` — id of the element that opened the dialog. Focus returns here on close, and `aria-expanded` / `aria-haspopup="dialog"` are managed on it while the dialog is open.
-- `size` — `small` (default), `medium`, `large`, `xlarge`, or `fullscreen`. Overridden to `fullscreen` when the responsive settings provider has `forceFullscreenDialog` enabled.
-- `variant` — `default` or `promotional`. Drives the visual treatment and the footer button colours.
-- `header-text` — title rendered inside the header section. Used as the accessible name when `aria-label`/`aria-labelledby` are not set.
-- `description-text` — descriptive text rendered below the header.
-- `header-tag-name` / `description-tag-name` — HTML tag (`h1`–`h6`, `p`, etc.) used to render the header/description text. Default `header-tag-name="h2"`.
-- `close-button-aria-label` — accessible label for the built-in close button. Provide a meaningful value; the close button has no visible text.
-- `aria-label` — accessible name for the dialog when `header-text` is not used (or when a different name is needed).
-- `aria-labelledby` — id of an element that labels the dialog. Use this when the title is rendered inside the body slot rather than via `header-text`.
-- `aria-describedby` / `aria-description` — accessible description, set automatically from `description-text` and `triggerID` when not provided.
-- `role` — defaults to `dialog`. Override (e.g. to `alertdialog`) when a different role better describes the surface.
-- `disable-aria-haspopup` — when `true`, suppresses setting `aria-haspopup="dialog"` on the trigger. Default `false`. Set to `true` when the trigger already exposes a different `aria-haspopup`.
-- `focus-trap` — when `true` (default), focus is restricted to elements inside the dialog while it is open. Disable only in very rare cases — a modal dialog should normally trap focus.
-- `hide-backdrop` — when `true`, no backdrop is rendered. Default `false`.
-- `stack-group-name` — when set, the dialog joins the named depth-manager group; only one dialog per group is rendered on top at a time.
-- `z-index` — explicit z-index override. When not set, the depth manager computes it based on the number of stacked overlays.
+| Option | Intent |
+|---|---|
+| `visible` | Drives the dialog's visibility. Required — the component never toggles this itself; set it from consumer state. |
+| `triggerID` | Id of the element that opened the dialog. Set it so focus returns there on close and the trigger's `aria-expanded`/`aria-haspopup="dialog"` stay accurate. |
+| `size="small"` (default) | `small`, `medium`, `large`, `xlarge`, or `fullscreen`; size to the content. Forced to `fullscreen` when the responsive settings provider has `forceFullscreenDialog` enabled. |
+| `variant="default"` | `default` for standard modals; `promotional` for a heavier, marketing-style treatment with matching footer button colors. |
+| `header-text` + `description-text` | Title and one- or two-sentence context rendered in the header; `header-text` doubles as the accessible name. Put longer content in the `dialog-body` slot. |
+| `header-tag-name` / `description-tag-name` | HTML tag used to render the header/description (`h1`–`h6`, `p`, …); default `header-tag-name="h2"`. Adjust to fit the page's heading outline. |
+| `close-button-aria-label` | Accessible name for the built-in close button, which has no visible text. Always provide it. |
+| `role="dialog"` (default) | Override to `alertdialog` for urgent confirmations that need the assertive role. |
+| `focus-trap` (default `true`) | Keeps focus inside the dialog while open; leave it on — a modal dialog should trap focus except in rare cases. |
+| `hide-backdrop` | Removes the backdrop; leave it off so the dialog reads as modal and blocks the page. |
+| `aria-label` / `aria-labelledby` / `aria-describedby` / `aria-description` | Explicit labeling/description, wired automatically from `header-text`/`description-text`/`triggerID` when omitted. Use `aria-labelledby` when the title lives in the body slot. |
+| `disable-aria-haspopup` | Suppresses `aria-haspopup="dialog"` on the trigger; set it only when the trigger already exposes a different `aria-haspopup`. |
+| `stack-group-name` / `z-index` | Coordinate stacking when multiple dialogs can open at once; a depth manager computes `z-index` when unset. |
 
 ### Limitations
 
-- The dialog is not form-associated and does not participate in native form submission. To submit a form from within a dialog, render an `mdc-button` with `type="submit"` whose `form` attribute points at a `<form>` rendered outside the dialog (or inside the body slot).
-- `Escape` closes only the top-most dialog in the depth manager. If multiple dialogs are visible at once, `Escape` is consumed by the top dialog and does not bubble to surrounding handlers.
+- **Not form-associated** — the dialog does not participate in native form submission. Render an `mdc-button` with `type="submit"` whose `form` attribute points at a `<form>` outside the dialog (or in the body slot).
+- **Escape closes the top dialog only** — when several dialogs are open, `Escape` is consumed by the top-most one and does not bubble to surrounding handlers.
+- **Dismissal is consumer-controlled** — because `visible` is external, closing on outside click or Escape only fires `close`; the consumer must react. Withhold that response for critical confirmations that need an explicit choice.
 
 ## Accessibility
 
@@ -129,7 +127,7 @@ The dialog renders with `role="dialog"` and `aria-modal="true"`. While visible:
 | Host (dialog)  | `role`             | `dialog` (default; override via `role`)                                     |
 | Host (dialog)  | `aria-modal`       | `true`                                                                      |
 | Host (dialog)  | `aria-label`       | set from `header-text` when no `aria-label`/`aria-labelledby` provided      |
-| Host (dialog)  | `aria-labelledby`  | set from `triggerID` when no header text and no explicit labelling provided |
+| Host (dialog)  | `aria-labelledby`  | set from `triggerID` when no header text and no explicit labeling provided |
 | Host (dialog)  | `aria-description` | set from `description-text` when no `aria-describedby` provided             |
 | Host (dialog)  | `aria-describedby` | set from `triggerID` when no description text provided                      |
 | Close button   | `aria-label`       | mirrors `close-button-aria-label`                                           |
@@ -145,8 +143,19 @@ The dialog renders with `role="dialog"` and `aria-modal="true"`. While visible:
 - When multiple dialogs may open at once, set `stack-group-name` to coordinate stacking and avoid duplicate top-most dialogs.
 - When the dialog hosts a form, place the `<form>` outside the dialog (or inside the body slot) and connect submit buttons via the `form` attribute.
 
-#### Labelling
+#### Labeling
 
 - Provide `header-text` whenever possible — it doubles as the accessible name.
 - If the title is rendered inside the body slot instead of `header-text`, set `aria-labelledby` pointing at that element.
 - Always set `close-button-aria-label` — the close button has no visible text and otherwise has no accessible name.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-announcementdialog` | Modal dialog with a fixed illustration-led layout for announcements and reveals. |
+| `mdc-popover` | Non-modal overlay anchored to a trigger, for content that should not block the page. |
+| `mdc-coachmark` | Non-modal, anchored onboarding overlay for guiding attention to an element. |
+| `mdc-toast` | Transient, non-blocking notification for low-priority feedback. |
+| `mdc-banner` | Persistent in-page message that sits within the flow rather than interrupting it. |
+| `mdc-button` | Renders the footer primary/secondary actions inside the dialog. |

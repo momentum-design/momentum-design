@@ -67,6 +67,9 @@
         "summary": {
           "$ref": "./content/frontmatter.config.json#/default/properties/summary"
         },
+        "websitePath": {
+          "$ref": "./content/frontmatter.config.json#/default/properties/websitePath"
+        },
         "component": {
           "$ref": "./content/frontmatter.config.json#/tiers/3/properties/component"
         }

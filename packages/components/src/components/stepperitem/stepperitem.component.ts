@@ -78,18 +78,21 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
   @property({ type: Number, reflect: true, attribute: 'step-number' })
   stepNumber?: number;
 
+  // AI-Assisted: Synchronize inherited configuration before rendering while keeping the provider authoritative.
   /**
    * @internal
    */
   private readonly stepperContext = providerUtils.consume({ host: this, context: Stepper.Context });
 
-  override updated(changedProperties: Map<string, unknown>): void {
-    super.updated(changedProperties);
+  override willUpdate(changedProperties: Map<string, unknown>): void {
+    super.willUpdate(changedProperties);
 
     const context = this.stepperContext?.value;
-    if (!context || !context.variant) return;
-    this.variant = context.variant;
+    if (context?.variant && this.variant !== context.variant) {
+      this.variant = context.variant;
+    }
   }
+  // End AI-Assisted
 
   override connectedCallback(): void {
     super.connectedCallback();

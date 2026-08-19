@@ -248,7 +248,6 @@ export const findFocusable = (
     if (isHidden(element) || isDisabled(element)) return 'stop';
 
     if (stopAtNonTabbable && !(element instanceof HTMLSlotElement) && element.getAttribute('tabindex') === '-1') {
-      // AI-Assisted
       // Do not stop traversal for elements inside a shadow root with delegatesFocus: true.
       // Components like mdc-searchfield use delegatesFocus and have internal container divs
       // with tabindex="-1" that should not block finding the actual focusable element (e.g., input).
@@ -256,7 +255,6 @@ export const findFocusable = (
       if (!(rootNode instanceof ShadowRoot && rootNode.delegatesFocus)) {
         return 'stop';
       }
-      // End AI-Assisted
     }
 
     return isMatchAny(element, includeSelectors) || (isTabbable(element) && isInteractiveElement(element))

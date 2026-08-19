@@ -7,20 +7,18 @@ component: listitem
 
 ## Overview
 
-The listitem is a single row inside an `mdc-list`. It supports a leading control (radio, checkbox, avatar, icon), a trailing control (toggle, badge, icon), three leading text slots (primary / secondary / tertiary label), and two trailing text slots (side header, subline). The listitem is focusable, activates on click, `Enter`, or `Space` (dispatching a `click` event), and exposes life-cycle events (`enabled`, `disabled`, `created`, `destroyed`) that the surrounding list uses to track its items.
-
-Three visual variants are available: `full-width` (default), `rectangle`, and `pill`. The `active` flag is a visual-only state that bolds the primary label; the canonical active / selected state belongs to the parent list pattern.
+`mdc-listitem` is the row primitive for an `mdc-list` — a single focusable entry that presents one piece of repeated content and lets the user act on it. The parent `mdc-list` manages navigation between rows, so each item only has to represent its own content and behavior.
 
 ### When to use
 
-- Use `mdc-listitem` as a row inside an `mdc-list`. Even a single listitem should be wrapped in `mdc-list` for screen-reader semantics.
-- Use it whenever a row needs to combine an icon / avatar / control with a label and optional trailing content.
+- Use `mdc-listitem` as a row inside an `mdc-list`, even when there is only one row, so screen readers announce the list semantics.
+- Use `mdc-listitem` when a row needs to combine an icon, avatar, or control with a label and optional trailing content.
 
 ### When not to use
 
-- Use `mdc-option` inside `mdc-listbox` / `mdc-selectlistbox` when the row represents a selectable option in a listbox pattern.
-- Use `mdc-menuitem`, `mdc-menuitemcheckbox`, or `mdc-menuitemradio` inside menu patterns rather than `mdc-listitem`.
-- Use `mdc-navmenuitem` when the row is a navigation entry inside `mdc-sidenavigation`.
+- Do not use `mdc-listitem` for a selectable option in a listbox. Use `mdc-option` inside `mdc-listbox`/`mdc-selectlistbox` instead.
+- Do not use `mdc-listitem` inside menu patterns. Use `mdc-menuitem`, `mdc-menuitemcheckbox`, or `mdc-menuitemradio` instead.
+- Do not use `mdc-listitem` for a navigation entry in `mdc-sidenavigation`. Use `mdc-navmenuitem` instead.
 
 ## Guidelines
 
@@ -59,37 +57,35 @@ Long-text listitem with an attached tooltip (rendered as a sibling, not a wrappe
 <mdc-tooltip triggerid="long-row">A very long file name that may not fit</mdc-tooltip>
 ```
 
-Listen for `click`, `keydown`, `keyup`, and `focus` to react to user interaction; listen for `enabled` / `disabled` / `created` / `destroyed` if your code needs to mirror the list's life-cycle (e.g. when synchronising with a virtualised store).
+Listen for `click`, `keydown`, `keyup`, and `focus` to react to user interaction; listen for `enabled` / `disabled` / `created` / `destroyed` if your code needs to mirror the list's life-cycle (e.g. when synchronizing with a virtualized store).
 
 ### Content guidance
 
-- Use `label` for the primary, scannable text; `secondary-label` for supporting context (e.g. count, status); `tertiary-label` for low-priority metadata.
-- Use `side-header-text` and `subline-text` for trailing-side text that belongs to the row (e.g. a timestamp and a status line).
-- Use `leading-controls` for radios, checkboxes, avatars, or icons that identify the row; use `trailing-controls` for toggles, badges, or actions that affect the row.
-- When the primary label may be too long to fit, connect an `mdc-tooltip` to the listitem via the tooltip's `triggerid` attribute pointing at the listitem's `id`, and let the tooltip render the full text on hover / focus.
+- Keep `label` short and scannable — it is the primary text a user reads to identify the row.
+- Use `secondary-label` for supporting context (a count or status) and `tertiary-label` for low-priority metadata; never use a secondary or tertiary label without a primary `label`.
+- Keep trailing text (`side-header-text`, `subline-text`) supplementary — a timestamp, count, or status — not a substitute for the primary label.
+- Keep rows in one list consistent: use the same combination of leading and trailing content across items rather than mixing layouts row to row.
 
 ### Property/Attribute details
 
-- `variant` — `full-width` (default), `rectangle`, or `pill`. Controls the row's visual treatment.
-- `label`, `secondary-label`, `tertiary-label` — the three leading-side text slots. Each is also exposed as a slot (`leading-text-primary-label`, `leading-text-secondary-label`, `leading-text-tertiary-label`) for custom markup.
-- `side-header-text`, `subline-text` — the two trailing-side text slots. Slot equivalents are `trailing-text-side-header` and `trailing-text-subline`.
-- `disabled` — when `true`, the row is removed from the tab order, its `aria-disabled` is set to `true`, click is suppressed, and slotted controls are disabled.
-- `soft-disabled` — when `true`, the row looks disabled but remains focusable so assistive technology can read it; click and keyboard actions still pass through (consumers must suppress unintended actions themselves).
-- `data-index` — zero-based index used by virtualised lists. When set, the row's `aria-posinset` is updated so screen readers announce the correct position even when items are not sequentially rendered.
-- `active` — visual-only state that bolds the primary label. It does not affect behaviour or accessibility; use it to highlight the current row (e.g. the selected route) when the canonical state lives elsewhere.
+| Option | Intent |
+|---|---|
+| `variant="full-width"` (default) | Sets the row's shape. Use `full-width` (no border radius) in large content areas that span the container; use `rectangle` (inset, 8px radius) inside a container such as a menu or card; `pill` is the fully rounded treatment for compact, chip-like rows. |
+| `label` / `secondary-label` / `tertiary-label` | The three leading text lines. Set `label` at minimum; add the others only for supporting context (see Content guidance). Each also has a slot (`leading-text-*-label`) for custom markup. |
+| `side-header-text` / `subline-text` | The two trailing text lines (slots `trailing-text-side-header` / `trailing-text-subline`). Use for supplementary trailing content such as a timestamp and status. |
+| `disabled` | Removes the row from the tab order, sets `aria-disabled`, suppresses click, and disables slotted controls. Use for a row that is currently unavailable. |
+| `soft-disabled` | Looks disabled but stays focusable so assistive tech can still read it; you must suppress unintended actions in your own handlers. Use when the row must remain announceable. |
+| `active` | Visual-only state that bolds the primary label. Use to highlight the current row when the canonical selected/current state lives on the surrounding pattern (see Limitations). |
+| `data-index` | Zero-based dataset index used by virtualized lists; drives `aria-posinset` so the position is announced correctly even when rows are windowed. |
 
-Slots:
-
-- `leading-controls` — radio, checkbox, avatar, or icon at the leading edge.
-- `leading-text-primary-label`, `leading-text-secondary-label`, `leading-text-tertiary-label` — override the default text rendering for each leading label.
-- `trailing-text-side-header`, `trailing-text-subline` — override the default trailing text rendering.
-- `trailing-controls` — toggle, badge, or action at the trailing edge.
-- `content` — replaces the entire built-in layout with custom markup (use sparingly — overriding `content` discards the structured leading / trailing layout).
+Slots follow the same leading/trailing structure: put a radio, checkbox, avatar, or icon in `leading-controls`; put a toggle, badge, or action button in `trailing-controls`. Overriding the `content` slot replaces the entire built-in layout, so use it sparingly.
 
 ### Limitations
 
-- The `active` attribute is purely visual. It does not set `aria-current` or any selected state; the surrounding pattern (e.g. a navigation list) must own the canonical "current item" semantics.
-- The listitem is not form-associated. Form fields placed inside the row (checkbox, toggle, radio) handle their own form values; the row itself does not submit anything.
+- **Active is visual only** — `active` bolds the label but sets no `aria-current` or selected state; the surrounding pattern must own the canonical "current item" semantics.
+- **Not form-associated** — controls inside the row (checkbox, toggle, radio) own their own form values; the row itself submits nothing.
+- **Leading icon is not a checkmark** — do not put a selection checkmark in the leading icon slot; show selection with a trailing check and, when the label bolds on selection, use the filled icon variant.
+- **Controls have a fixed side** — place checkboxes and radios in `leading-controls` and toggles in `trailing-controls`; do not swap sides.
 
 ## Accessibility
 
@@ -101,7 +97,7 @@ Activation follows the button pattern: `Enter` fires `click` on keydown; `Space`
 
 When `disabled` is set, the host's `aria-disabled` is set to `true`, the row's `tabindex` becomes `-1`, click is prevented, and any slotted controls in the leading / trailing slots are disabled too. The component dispatches a `disabled` (or `enabled`) life-cycle event so the parent list can update its item store.
 
-When `data-index` is set, the row's `aria-posinset` is set to `data-index + 1` so virtualised lists report the correct position to screen readers.
+When `data-index` is set, the row's `aria-posinset` is set to `data-index + 1` so virtualized lists report the correct position to screen readers.
 
 #### Internal ARIA managed by the component
 
@@ -117,10 +113,21 @@ When `data-index` is set, the row's `aria-posinset` is set to `data-index + 1` s
 #### General
 
 - Always wrap listitems in `mdc-list` so screen readers announce the list semantics, even when there is only one row.
-- For virtualised lists, set `data-index` on every row so `aria-posinset` reflects the row's true position, not its position in the rendered window.
+- For virtualized lists, set `data-index` on every row so `aria-posinset` reflects the row's true position, not its position in the rendered window.
 - When the row's primary label may truncate, connect an `mdc-tooltip` to the row via the tooltip's `triggerid` pointing at the row's `id`. Do not rely on the truncated label alone — the tooltip is the only way to surface the full text to screen-reader users.
 - When using `soft-disabled`, suppress unintended click / keyboard actions in your own handlers; the row only changes visuals, it does not block activation.
 
-#### Labelling
+#### Labeling
 
 - Provide `label` on every listitem; without it the row has no announced name unless the consumer slots their own text into `leading-text-primary-label`.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-list` | Container that wraps and navigates these rows. |
+| `mdc-listheader` | Non-interactive header for a list or a section of rows. |
+| `mdc-virtualizedlist` | Renders these rows in a windowed list for very large data sets. |
+| `mdc-option` | Selectable-option equivalent inside `mdc-listbox`/`mdc-selectlistbox`. |
+| `mdc-menuitem` | Actionable row equivalent inside menu patterns. |
+| `mdc-navmenuitem` | Navigation-entry equivalent inside `mdc-sidenavigation`. |

@@ -9,14 +9,16 @@ This skill is the step-by-step workflow for **adding new** or **updating existin
 topic files in the Momentum Design knowledge base.
 
 It does **not** restate structural rules, tiers, frontmatter fields,
-allowed topic names, or body heading conventions. Those are defined once in
-the [Knowledge Base Schema](../../../config/knowledge-base/SCHEMA.md) and
+allowed topic names, body heading conventions, or user-facing copy standards.
+Those are defined once in the [Knowledge Base Schema](../../../config/knowledge-base/SCHEMA.md),
 the config files it references
 ([`frontmatter.config.json`](../../../config/knowledge-base/content/frontmatter.config.json),
 [`body.config.json`](../../../config/knowledge-base/content/body.config.json),
-[`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json)).
-Always consult the schema and its sibling config files before and during the
-steps below.
+[`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json)),
+and [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
+for product voice, tone, and in-product copy.
+Always consult the schema, its sibling config files, and the content guidelines
+before and during the steps below.
 
 ## When to use this skill
 
@@ -63,6 +65,10 @@ skill is not the place to change rules.
 
 4. **Create or update `knowledge-base/<topic>.md`** at the chosen level.
 
+   - Before drafting user-facing prose, read
+     [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
+     and apply its voice, tone, vocabulary, and content-pattern rules (see
+     [Content and copy standards](#content-and-copy-standards)).
    - For Tier 3 (component) topics, the file name **must** appear in
      [`topic-constraints.config.json`](../../../config/knowledge-base/topic-constraints.config.json).
      Do not invent new Tier 3 topic names; if a new one is genuinely
@@ -81,11 +87,37 @@ skill is not the place to change rules.
    - AI-drafted content must still be signed off by a human reviewer
      before merge (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
 
-6. **Structure the body (Tier 3 topics only).** For component-level topics,
-   the body must follow the heading hierarchy defined in
-   [`body.config.json`](../../../config/knowledge-base/content/body.config.json).
-   Read that file directly before drafting or editing content.
-   Do not invent new section or sub-section headings without first adding them to `body.config.json` and calling that out to the user.
+6. **Structure and write the body.** Follow the heading hierarchy defined in
+   [`body.config.json`](../../../config/knowledge-base/content/body.config.json) —
+   read that file directly before drafting or editing content, and do not
+   invent new section or sub-section headings without first adding them to
+   `body.config.json` and calling that out to the user. For the *quality* of
+   the prose that fills that structure — content principles and per-section
+   guidance — follow the writing guide for the tier you chose in Step 1. Each
+   guide ends with a content-quality self-check to run before validating:
+
+   - **Tier 1 (design system):** writing guide not yet available — follow the
+     section `description`s in `body.config.json` until one lands.
+   - **Tier 2 (package):** writing guide not yet available — follow the section
+     `description`s in `body.config.json` until one lands.
+   - **Tier 3 (component):**
+     [`momentum-tier-3-writing-guide`](../momentum-tier-3-writing-guide/SKILL.md).
+     It exists so each topic *guides use* rather than *describes the component*.
+
+   - In the **Content guidance** sub-section, keep copy component-specific.
+     Follow [`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
+     for general standards; link to that topic instead of duplicating voice,
+     tone, or pattern rules (Rule 3).
+
+6b. **Structure the body (Tier 2 token topics).** When the chosen tier is 2
+   **and** the topic lives under `packages/assets/tokens/knowledge-base/`, read
+   and follow the
+   [`momentum-tier-2-token-writing-guide`](../momentum-tier-2-token-writing-guide/SKILL.md)
+   before drafting. It defines the token-doc skeleton, Momentum token
+   conventions, and what to link out to rather than restate.
+
+   - Tier 2 topics in other packages have no dedicated guide yet — follow the
+     schema and content guidelines directly.
 
 7. **Validate the knowledge-base.** Run:
 
@@ -112,6 +144,19 @@ skill is not the place to change rules.
    (see [Rule 5 of the schema](../../../config/knowledge-base/SCHEMA.md#rules)).
    Surface the diff explicitly so the reviewer can verify both content
    accuracy and tier placement.
+
+## Content and copy standards
+
+When drafting or editing user-facing prose in any topic file, read
+[`knowledge-base/content-guidelines.md`](../../../knowledge-base/content-guidelines.md)
+first. It is the canonical Tier 1 source for product UI/UX writing standards.
+
+- Apply its rules to labels, helper text, error messages, empty states,
+  button copy, and other in-product text you author in topic files.
+- Keep topic files scoped to their tier and subject; link to the content
+  guidelines for general voice, tone, and pattern rules rather than copying
+  them (Rule 3).
+- Do not restate the full content guidelines in this skill or in topic files.
 
 ## Updating an existing topic
 

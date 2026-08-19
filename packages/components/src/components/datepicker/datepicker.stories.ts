@@ -21,6 +21,7 @@ const render = (args: Args) => html`
     @blur="${action('onblur')}"
     label="${ifDefined(args.label)}"
     value="${ifDefined(args.value)}"
+    end-value="${ifDefined(args['end-value'])}"
     variant="${ifDefined(args.variant)}"
     selection-mode="${ifDefined(args['selection-mode'])}"
     locale="${ifDefined(args.locale)}"
@@ -56,6 +57,10 @@ const meta: Meta = {
     value: {
       control: 'text',
       description: 'Selected date as ISO string (yyyy-mm-dd)',
+    },
+    'end-value': {
+      control: 'text',
+      description: 'Range end date as an ISO string (yyyy-mm-dd)',
     },
     variant: {
       control: 'select',
@@ -135,6 +140,7 @@ export const Example: StoryObj = {
   args: {
     label: 'Start date',
     variant: VARIANT.INPUT,
+    'selection-mode': SELECTION_MODE.SINGLE,
     locale: 'en-US',
     required: true,
     'help-text': 'Helper text',
@@ -167,6 +173,7 @@ export const DefaultVariant: StoryObj = {
   args: {
     label: 'Date range',
     variant: VARIANT.DEFAULT,
+    'selection-mode': SELECTION_MODE.RANGE,
     locale: 'en-US',
     required: true,
     'help-text': 'Select a start and end date',
@@ -178,7 +185,9 @@ export const DefaultWithValue: StoryObj = {
   args: {
     label: 'Date range',
     value: '2025-07-13',
+    'end-value': '2025-07-19',
     variant: VARIANT.DEFAULT,
+    'selection-mode': SELECTION_MODE.RANGE,
     locale: 'en-US',
     required: true,
     'help-text': 'Helper text',

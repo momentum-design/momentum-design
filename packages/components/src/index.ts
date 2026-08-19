@@ -93,6 +93,7 @@ import Banner from './components/banner';
 import Buttonsimple from './components/buttonsimple';
 import Verticaltablist from './components/verticaltablist';
 import StatusMessage from './components/statusmessage';
+import FocusTrap from './components/focustrap';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -240,6 +241,7 @@ export {
   Buttonsimple,
   Verticaltablist,
   StatusMessage,
+  FocusTrap,
 };
 
 // Types Exports

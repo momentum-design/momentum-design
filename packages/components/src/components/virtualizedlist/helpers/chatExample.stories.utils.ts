@@ -137,7 +137,6 @@ export class ChatExampleStoriesUtils extends Component {
     getItemKey: index => this.listItems[index],
   };
 
-  // Start AI-Assisted
   @state()
   textareaValue: string = '';
 
@@ -174,7 +173,6 @@ export class ChatExampleStoriesUtils extends Component {
     'Frank Miller',
     'Grace Lee',
   ];
-  // End AI-Assisted
 
   private getOrderedMessageKeys(): string[] {
     const allKeys = Object.keys(this.chatMessages);
@@ -195,7 +193,6 @@ export class ChatExampleStoriesUtils extends Component {
     return orderedKeys;
   }
 
-  // Start AI-Assisted
   override connectedCallback(): void {
     super.connectedCallback();
     this.startRandomMessageTimer();
@@ -284,7 +281,6 @@ export class ChatExampleStoriesUtils extends Component {
       }
     }
   }
-  // End AI-Assisted
 
   protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -344,7 +340,6 @@ export class ChatExampleStoriesUtils extends Component {
         >
           ${repeat(this.virtualData.virtualItems, ({ key }) => key, this.generateListItem.bind(this))}
         </mdc-virtualizedlist>
-        <!-- Start AI-Assisted -->
         <div class="chat-input-container">
           <mdc-textarea
             ${ref(this.textareaRef)}
@@ -359,7 +354,6 @@ export class ChatExampleStoriesUtils extends Component {
             Send
           </mdc-button>
         </div>
-        <!-- End AI-Assisted -->
       </div>
       <style>
         mdc-virtualizedlist-chat-example {
@@ -375,7 +369,6 @@ export class ChatExampleStoriesUtils extends Component {
           flex-direction: column;
         }
 
-        /* Start AI-Assisted */
         .chat-input-container {
           display: flex;
           gap: 0.5rem;
@@ -387,7 +380,6 @@ export class ChatExampleStoriesUtils extends Component {
         .chat-input-container mdc-textarea {
           flex: 1;
         }
-        /* End AI-Assisted */
       </style>
     `;
   }
