@@ -67,7 +67,7 @@ Custom icons (fetched over HTTP from a URL the consumer hosts):
 | `icon-set` | `momentum-icons` (default, dynamic import from the package) or `custom-icons` (fetched from `url`). Pick `custom-icons` when icons live in your own asset bundle. |
 | `url` | Base URL icons are fetched from. Required when `icon-set="custom-icons"`. |
 | `file-extension` | Extension appended to the icon `name` when fetching. Default `svg`; allow-listed, invalid values fall back to the default. |
-| `length-unit` | CSS length unit (`em`, `rem`, `px`, `%`) applied with `size` on every nested icon. Default `em`; allow-listed. |
+| `length-unit` | CSS length unit (`em`, `rem`, `px`, `%`) applied with `size` on every nested icon. Default `rem`; allow-listed. |
 | `size` | Default numeric size for nested icons that do not set their own. Default `1`. |
 | `cache-strategy` | `in-memory-cache` or `web-cache-api` (HTTPS only). Applies only to `custom-icons`. Default off. |
 | `cache-name` | Cache name used by `cache-strategy`; required when it is set and must be unique across the app's caches. |
