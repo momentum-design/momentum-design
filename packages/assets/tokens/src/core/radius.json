@@ -1,0 +1,47 @@
+{
+  "radius-0": {
+    "value": "0",
+    "type": "borderRadius",
+    "description": "0"
+  },
+  "radius-2": {
+    "value": "2",
+    "type": "borderRadius",
+    "description": "2px — checkbox, datepicker sm, timepicker sm"
+  },
+  "radius-4": {
+    "value": "4",
+    "type": "borderRadius",
+    "description": "4px — chips, icon, inputchip, skeleton sm"
+  },
+  "radius-8": {
+    "value": "8",
+    "type": "borderRadius",
+    "description": "8px — default component corners (card, input, dialog, list)"
+  },
+  "radius-20": {
+    "value": "20",
+    "type": "borderRadius",
+    "description": "20px — pill buttons, nav, sidenav"
+  },
+  "radius-12": {
+    "value": "12",
+    "type": "borderRadius",
+    "description": "12px — static toggle"
+  },
+  "radius-14": {
+    "value": "14",
+    "type": "borderRadius",
+    "description": "14px — calendar corner cells "
+  },
+  "radius-50": {
+    "value": "50",
+    "type": "borderRadius",
+    "description": "50px — listitem large pill "
+  },
+  "radius-100": {
+    "value": "100",
+    "type": "borderRadius",
+    "description": "100px — badge pill, button capsule "
+  }
+}

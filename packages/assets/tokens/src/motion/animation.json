@@ -1,121 +1,344 @@
 {
   "animation": {
     "buttonBackground": {
-      "description": "Button background color transition on hover/press",
-      "type": "transition",
-      "properties": ["background-color"],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "description": {
+        "value": "Button background color transition on hover/press",
+        "type": "other"
+      },
+      "properties": {
+        "0": {
+          "value": "background-color",
+          "type": "other"
+        }
+      },
+      "duration": {
+        "value": "{motion.duration.instant}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "buttonBorder": {
-      "description": "Button border and shadow transition on focus",
-      "type": "transition",
-      "properties": ["border-color", "box-shadow"],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "description": {
+        "value": "Button border and shadow transition on focus",
+        "type": "other"
+      },
+      "properties": {
+        "0": {
+          "value": "border-color",
+          "type": "other"
+        },
+        "1": {
+          "value": "box-shadow",
+          "type": "other"
+        }
+      },
+      "duration": {
+        "value": "{motion.duration.instant}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "buttonIcon": {
-      "description": "Button icon color and transform transition",
-      "type": "transition",
-      "properties": ["color", "transform"],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "description": {
+        "value": "Button icon color and transform transition",
+        "type": "other"
+      },
+      "properties": {
+        "0": {
+          "value": "color",
+          "type": "other"
+        },
+        "1": {
+          "value": "transform",
+          "type": "other"
+        }
+      },
+      "duration": {
+        "value": "{motion.duration.fast}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "buttonFocusRing": {
-      "description": "Button focus ring appearance",
-      "type": "transition",
-      "properties": ["box-shadow", "outline"],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "description": {
+        "value": "Button focus ring appearance",
+        "type": "other"
+      },
+      "properties": {
+        "0": {
+          "value": "box-shadow",
+          "type": "other"
+        },
+        "1": {
+          "value": "outline",
+          "type": "other"
+        }
+      },
+      "duration": {
+        "value": "{motion.duration.instant}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "buttonPress": {
-      "description": "Button press effect combining background and icon transitions",
-      "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonIcon"],
-      "composition": "parallel"
+      "description": {
+        "value": "Button press effect combining background and icon transitions",
+        "type": "other"
+      },
+      "animations": {
+        "0": {
+          "value": "buttonBackground",
+          "type": "other"
+        },
+        "1": {
+          "value": "buttonIcon",
+          "type": "other"
+        }
+      },
+      "composition": {
+        "value": "parallel",
+        "type": "other"
+      }
     },
     "buttonHover": {
-      "description": "Button hover effect combining background and border transitions",
-      "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonBorder"],
-      "composition": "parallel"
+      "description": {
+        "value": "Button hover effect combining background and border transitions",
+        "type": "other"
+      },
+      "animations": {
+        "0": {
+          "value": "buttonBackground",
+          "type": "other"
+        },
+        "1": {
+          "value": "buttonBorder",
+          "type": "other"
+        }
+      },
+      "composition": {
+        "value": "parallel",
+        "type": "other"
+      }
     },
     "buttonLoadingSpin": {
-      "description": "Button loading spinner - continuous rotation for button loading states",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "transform",
-          "from": "rotate(0deg)",
-          "to": "rotate(360deg)"
+      "description": {
+        "value": "Button loading spinner - continuous rotation for button loading states",
+        "type": "other"
+      },
+      "keyframes": {
+        "0": {
+          "propertyName": {
+            "value": "transform",
+            "type": "other"
+          },
+          "from": {
+            "value": "rotate(0deg)",
+            "type": "other"
+          },
+          "to": {
+            "value": "rotate(360deg)",
+            "type": "other"
+          }
         }
-      ],
-      "duration": "{motion.duration.slow}",
-      "easing": "{motion.easing.linear}",
-      "delay": "{motion.delay.none}",
-      "iterationCount": "infinite"
+      },
+      "duration": {
+        "value": "{motion.duration.slow}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.linear}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      },
+      "iterationCount": {
+        "value": "infinite",
+        "type": "other"
+      }
     },
     "buttonLoadingPulse": {
-      "description": "Button loading pulse - opacity animation for button skeleton/loading state",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "opacity",
-          "from": "1",
-          "to": "0.4"
+      "description": {
+        "value": "Button loading pulse - opacity animation for button skeleton/loading state",
+        "type": "other"
+      },
+      "keyframes": {
+        "0": {
+          "propertyName": {
+            "value": "opacity",
+            "type": "other"
+          },
+          "from": {
+            "value": "1",
+            "type": "other"
+          },
+          "to": {
+            "value": "0.4",
+            "type": "other"
+          }
         }
-      ],
-      "duration": "{motion.duration.slow}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}",
-      "iterationCount": "infinite"
+      },
+      "duration": {
+        "value": "{motion.duration.slow}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      },
+      "iterationCount": {
+        "value": "infinite",
+        "type": "other"
+      }
     },
     "buttonLoadingSpinPulse": {
-      "description": "Button loading state combining spin and pulse keyframe animations",
-      "type": "keyframeCompound",
-      "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
-      "composition": "parallel"
+      "description": {
+        "value": "Button loading state combining spin and pulse keyframe animations",
+        "type": "other"
+      },
+      "animations": {
+        "0": {
+          "value": "buttonLoadingSpin",
+          "type": "other"
+        },
+        "1": {
+          "value": "buttonLoadingPulse",
+          "type": "other"
+        }
+      },
+      "composition": {
+        "value": "parallel",
+        "type": "other"
+      }
     },
     "checkboxDefault": {
-      "description": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
-      "type": "transition",
-      "properties": ["background-color", "border-color"],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      "description": {
+        "value": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
+        "type": "other"
+      },
+      "properties": {
+        "0": {
+          "value": "background-color",
+          "type": "other"
+        },
+        "1": {
+          "value": "border-color",
+          "type": "other"
+        }
+      },
+      "duration": {
+        "value": "{motion.duration.instant}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "checkboxChecked": {
-      "description": "Checkbox checked state animation — scale-in effect applied when the checkbox becomes checked",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "transform",
-          "from": "scale(0.8)",
-          "to": "scale(1)"
+      "description": {
+        "value": "Checkbox checked state animation — scale-in effect applied when the checkbox becomes checked",
+        "type": "other"
+      },
+      "keyframes": {
+        "0": {
+          "propertyName": {
+            "value": "transform",
+            "type": "other"
+          },
+          "from": {
+            "value": "scale(0.8)",
+            "type": "other"
+          },
+          "to": {
+            "value": "scale(1)",
+            "type": "other"
+          }
         }
-      ],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      },
+      "duration": {
+        "value": "{motion.duration.fast}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     },
     "checkboxCheckedIcon": {
-      "description": "Checkmark icon draw-in animation when the checkbox becomes checked",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "opacity",
-          "from": "0",
-          "to": "1"
+      "description": {
+        "value": "Checkmark icon draw-in animation when the checkbox becomes checked",
+        "type": "other"
+      },
+      "keyframes": {
+        "0": {
+          "propertyName": {
+            "value": "opacity",
+            "type": "other"
+          },
+          "from": {
+            "value": "0",
+            "type": "other"
+          },
+          "to": {
+            "value": "1",
+            "type": "other"
+          }
         }
-      ],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}"
+      },
+      "duration": {
+        "value": "{motion.duration.fast}",
+        "type": "other"
+      },
+      "easing": {
+        "value": "{motion.easing.standard}",
+        "type": "other"
+      },
+      "delay": {
+        "value": "{motion.delay.none}",
+        "type": "other"
+      }
     }
   }
 }
-
