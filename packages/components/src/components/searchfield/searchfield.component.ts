@@ -1,4 +1,3 @@
-// AI-Assisted
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -517,4 +516,3 @@ class Searchfield extends ControlTypeMixin(KeyDownHandledMixin(Input)) {
 }
 
 export default Searchfield;
-// End AI-Assisted

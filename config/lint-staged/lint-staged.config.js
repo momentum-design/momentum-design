@@ -1,4 +1,3 @@
-// AI-Assisted
 // Keep the docs `src/generated/knowledge-base` artifacts (and the root index
 // shards) in sync with knowledge-base sources on commit. The chain regenerates
 // the index BEFORE validating because `knowledge-base:validate` fails if the
@@ -16,4 +15,3 @@ const KNOWLEDGE_BASE_SYNC = [
 ];
 
 module.exports = (stagedFiles) => (stagedFiles.some(isKnowledgeBaseSource) ? KNOWLEDGE_BASE_SYNC : []);
-// End AI-Assisted
