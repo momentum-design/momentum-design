@@ -48,17 +48,6 @@ const styles = css`
     padding: 0.25rem 0.5rem;
   }
 
-  :host([variant='stacked'])::part(label-container) {
-    width: 8.75rem;
-  }
-
-  :host([variant='stacked'])::part(label),
-  :host([variant='stacked'])::part(help-text) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   :host([status='error-current']),
   :host([status='error-incomplete']) {
     --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-normal);
@@ -160,4 +149,72 @@ const styles = css`
   }
 `;
 
-export default [hostFitContentStyles, styles, ...hostFocusRingStyles()];
+// AI-Assisted: Use intrinsic width first, then clamp constrained stacked copy to two lines.
+const stackedTextStyles = css`
+  :host([variant='stacked']) {
+    min-inline-size: 0;
+  }
+
+  :host([variant='stacked'])::part(label-container) {
+    inline-size: max-content;
+    max-inline-size: 100%;
+  }
+
+  :host([variant='stacked'])::part(label),
+  :host([variant='stacked'])::part(help-text) {
+    display: -webkit-box;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+`;
+// End AI-Assisted
+
+// AI-Assisted: Present disabled steps as unavailable and suppress interactive visual states.
+const disabledStyles = css`
+  :host([disabled]),
+  :host([disabled]:hover),
+  :host([disabled]:active) {
+    cursor: default;
+    user-select: none;
+
+    --mdc-stepperitem-label-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-stepperitem-label-container-background: transparent;
+  }
+
+  :host([disabled])::part(status-container),
+  :host([disabled]:hover)::part(status-container),
+  :host([disabled]:active)::part(status-container) {
+    --mdc-stepperitem-status-container-background: transparent;
+    --mdc-stepperitem-status-container-border-color: var(--mds-color-theme-outline-primary-disabled);
+  }
+
+  :host([disabled])::part(status-icon),
+  :host([disabled]:hover)::part(status-icon),
+  :host([disabled]:active)::part(status-icon),
+  :host([disabled])::part(help-icon),
+  :host([disabled]:hover)::part(help-icon),
+  :host([disabled]:active)::part(help-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
+  }
+
+  :host([disabled][status='completed'])::part(status-container),
+  :host([disabled][status='completed']:hover)::part(status-container),
+  :host([disabled][status='completed']:active)::part(status-container) {
+    --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-disabled);
+    --mdc-stepperitem-status-container-border-color: transparent;
+  }
+
+  :host([disabled][status='completed'])::part(status-icon) {
+    --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-disabled);
+  }
+`;
+// End AI-Assisted
+
+export default [hostFitContentStyles, styles, stackedTextStyles, disabledStyles, ...hostFocusRingStyles()];

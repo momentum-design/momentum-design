@@ -13,6 +13,7 @@ type SetupOptions = {
   'step-number'?: string;
   'aria-label'?: string;
   'aria-current'?: string;
+  disabled?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -25,6 +26,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs['step-number'] ? `step-number="${restArgs['step-number']}"` : ''}
       ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
       ${restArgs['aria-current'] ? `aria-current="${restArgs['aria-current']}"` : ''}
+      ${restArgs.disabled ? 'disabled' : ''}
     ></mdc-stepperitem>
   `;
   await componentsPage.mount({ html, clearDocument: true });
@@ -152,6 +154,35 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     await expect(waitForClick).toEventEmitted();
   });
 
+  // AI-Assisted: Verify unavailable steps cannot be focused or activated.
+  await test.step('should prevent focus and activation when disabled', async () => {
+    const { stepperitem } = await setup({
+      componentsPage,
+      label: 'Future step',
+      status: 'not-started',
+      'step-number': '4',
+      disabled: true,
+    });
+
+    await expect(stepperitem).toHaveAttribute('disabled', '');
+    await expect(stepperitem).toHaveAttribute('aria-disabled', 'true');
+    await expect(stepperitem).toHaveAttribute('tabindex', '-1');
+
+    await componentsPage.actionability.pressTab();
+    await expect(stepperitem).not.toBeFocused();
+
+    const waitForPointerClick = await componentsPage.waitForEvent(stepperitem, 'click');
+    await stepperitem.click();
+    await expect(waitForPointerClick).not.toEventEmitted();
+
+    await stepperitem.focus();
+    const waitForKeyboardClick = await componentsPage.waitForEvent(stepperitem, 'click');
+    await componentsPage.page.keyboard.press('Enter');
+    await componentsPage.page.keyboard.press('Space');
+    await expect(waitForKeyboardClick).not.toEventEmitted();
+  });
+  // End AI-Assisted
+
   /**
    * ARIA & ACCESSIBILITY
    */
@@ -225,3 +256,19 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     });
   });
 });
+
+// AI-Assisted: Cover the disabled appearance in a focused visual baseline.
+test('should match disabled visual regression screenshot', async ({ componentsPage }) => {
+  const { stepperitem } = await setup({
+    componentsPage,
+    label: 'Future step',
+    status: STATUS.NOT_STARTED,
+    'step-number': '4',
+    disabled: true,
+  });
+
+  await componentsPage.visualRegression.takeScreenshot('mdc-stepperitem-disabled', {
+    element: stepperitem,
+  });
+});
+// End AI-Assisted

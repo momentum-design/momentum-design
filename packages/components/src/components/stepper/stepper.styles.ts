@@ -41,4 +41,23 @@ const styles = css`
   }
 `;
 
-export default [hostFitContentStyles, styles];
+// AI-Assisted: Let stacked steps share constrained space without collapsing connectors into adjacent items.
+const adaptiveStackedStyles = css`
+  :host([orientation='horizontal'][variant='stacked']) {
+    gap: 0.25rem;
+  }
+
+  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperitem) {
+    flex-shrink: 1;
+    min-inline-size: 6rem;
+  }
+
+  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
+    flex-basis: 6rem;
+    flex-grow: 1;
+    min-inline-size: 6rem;
+  }
+`;
+// End AI-Assisted
+
+export default [hostFitContentStyles, styles, adaptiveStackedStyles];

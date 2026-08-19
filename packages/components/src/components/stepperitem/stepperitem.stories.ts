@@ -18,6 +18,7 @@ const render = (args: Args) =>
     label=${args.label}
     step-number=${args['step-number']}
     aria-label=${args['aria-label']}
+    ?disabled=${args.disabled}
     class=${args.class}
     style=${args.style}
   ></mdc-stepperitem>`;
@@ -48,6 +49,9 @@ const meta: Meta = {
     },
     'aria-label': {
       control: { type: 'text' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
     },
     ...classArgType,
     ...styleArgType,
@@ -97,6 +101,19 @@ export const Error: StoryObj = {
     'aria-label': 'Step 1: Label, error, Error message',
   },
 };
+
+// AI-Assisted: Demonstrate an unreachable item in a linear progression.
+export const Disabled: StoryObj = {
+  args: {
+    variant: VARIANT.STACKED,
+    status: STATUS.NOT_STARTED,
+    label: 'Future step',
+    'step-number': '4',
+    'aria-label': 'Step 4: Future step, unavailable',
+    disabled: true,
+  },
+};
+// End AI-Assisted
 
 export const LongText: StoryObj = {
   args: {

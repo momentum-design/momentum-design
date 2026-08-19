@@ -1,4 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
+import type { PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { Component } from '../../models';
@@ -9,6 +10,7 @@ import providerUtils from '../../utils/provider';
 import Stepper from '../stepper/stepper.component';
 import { ACTIONS, KeyToActionMixin } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 import styles from './stepperitem.styles';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
@@ -39,7 +41,7 @@ import type { StatusType, VariantType } from './stepperitem.types';
  * @cssproperty --mdc-stepperitem-help-text-color - The color of the optional label text.
  * @cssproperty --mdc-stepperitem-label-container-background - The background color of the label container.
  */
-class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Component))) {
+class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(DisabledMixin(Component)))) {
   /**
    * The variant of the stepper item, which can be `inline` or `stacked`.
    * @default 'inline'
@@ -101,9 +103,24 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
 
   constructor() {
     super();
+    this.addEventListener('click', this.handleClick.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
+
+  // AI-Assisted: Enforce the disabled interaction contract for this custom element.
+  /**
+   * Prevents pointer and programmatic click events from activating a disabled step.
+   *
+   * @param event - The click event dispatched on the stepper item.
+   */
+  private handleClick(event: MouseEvent): void {
+    if (!this.disabled) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+  // End AI-Assisted
 
   /**
    * Handles the keydown event on the stepperitem.
@@ -114,6 +131,8 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
+    if (this.disabled) return;
+
     const action = this.getActionForKeyEvent(event);
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
       this.classList.add('pressed');
@@ -146,6 +165,8 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
+    if (this.disabled) return;
+
     const action = this.getActionForKeyEvent(event);
 
     if (action === ACTIONS.ENTER || action === ACTIONS.SPACE) {
@@ -204,6 +225,23 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Com
     }
     return helpTextContent;
   }
+
+  // AI-Assisted: Keep focus and ARIA semantics synchronized with disabled state changes.
+  public override update(changedProperties: PropertyValues<StepperItem>): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.tabIndex = this.disabled ? -1 : 0;
+      this.classList.remove('pressed');
+
+      if (this.disabled) {
+        this.setAttribute('aria-disabled', 'true');
+      } else {
+        this.removeAttribute('aria-disabled');
+      }
+    }
+  }
+  // End AI-Assisted
 
   public override render() {
     return html` <div part="status-container">${this.renderStatusIcon()}</div>
