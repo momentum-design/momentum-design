@@ -113,7 +113,9 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
     ></mdc-stepperitem>`);
 
   await sheet.createMarkupWithCombination({ variant: VARIANT });
-  await sheet.mountStickerSheet();
+  await sheet.mountStickerSheet({
+    wrapperStyle: 'background: var(--mds-color-theme-background-gradient-primary-normal);',
+  });
   await componentsPage.visualRegression.takeScreenshot(`mdc-stepper-${orientation}`, {
     element: sheet.getWrapperContainer(),
   });
