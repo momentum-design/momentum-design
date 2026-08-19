@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
@@ -9,7 +10,7 @@ import { CaptureDestroyEventForChildElement } from '../../utils/mixins/lifecycle
 import { ListNavigationMixin } from '../../utils/mixins/ListNavigationMixin';
 import { Component } from '../../models';
 import { LifeCycleModifiedEvent } from '../../utils/mixins/lifecycle/LifeCycleModifiedEvent';
-import { ElementStore } from '../../utils/controllers/ElementStore';
+import { ElementStore, ElementStoreChangeTypes } from '../../utils/controllers/ElementStore';
 
 import styles from './listbox.styles';
 
@@ -60,6 +61,7 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   /** @internal */
   private itemsStore = new ElementStore<Option>(this, {
     isValidItem: this.isValidItem,
+    onStoreUpdate: this.onElementStoreUpdate.bind(this),
   });
 
   constructor() {
@@ -120,6 +122,26 @@ class ListBox extends ListNavigationMixin(CaptureDestroyEventForChildElement(Com
   private handleDestroyEvent = () => {
     this.handleNoSelection();
   };
+
+  /** @internal */
+  protected onElementStoreUpdate(item: Option, changeType: ElementStoreChangeTypes, index: number): void {
+    if (changeType === 'added') {
+      // Keep the single tab stop: new options are not tabbable, the first option is.
+      item.tabIndex = -1;
+      if (this.navItems.length === 0) {
+        item.tabIndex = 0;
+      }
+    } else if (changeType === 'removed' && item.tabIndex === 0) {
+      // The focusable option is being removed: move tabindex="0" to a neighbour so the
+      // listbox stays keyboard reachable. Runs before the store update, so offset from index.
+      let newIndex = index + 1;
+      if (newIndex >= this.navItems.length) {
+        newIndex = index - 1;
+      }
+
+      this.resetTabIndexes(newIndex, false);
+    }
+  }
 
   /** @internal */
   protected get navItems(): HTMLElement[] {
