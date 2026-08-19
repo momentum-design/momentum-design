@@ -51,11 +51,10 @@ import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 </script>
 
 <style is:global>
-  /* AI-Assisted: Keep the outgoing page painted while the incoming page loads. */
+  /* Keep the outgoing page painted while the incoming page loads. */
   @view-transition {
     navigation: auto;
   }
-  /* End AI-Assisted */
 
   /* Keep the provider wrappers layout-neutral in every state (their :host uses
      display: contents once upgraded; mirror that before upgrade too). */

@@ -1,4 +1,3 @@
-// AI-Assisted
 import { html } from 'lit';
 import { state, property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -112,4 +111,3 @@ declare global {
     ['mdc-virtualizedwrapperwithheaders']: VirtualizedWrapperWithHeadersStoriesUtils;
   }
 }
-// End AI-Assisted

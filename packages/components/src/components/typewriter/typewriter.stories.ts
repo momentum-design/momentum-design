@@ -1,4 +1,3 @@
-// AI-Assisted
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -625,4 +624,3 @@ export const RapidUpdatesDemo: StoryObj = {
     </div>
   `,
 };
-// End AI-Assisted
