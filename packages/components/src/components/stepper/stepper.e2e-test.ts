@@ -1,3 +1,5 @@
+import type { Locator } from '@playwright/test';
+
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { ORIENTATION } from '../stepperconnector/stepperconnector.constants';
@@ -10,14 +12,16 @@ type Args = {
   orientation?: OrientationType;
   variant?: VariantType;
   children?: string;
+  style?: string;
 };
 
 const setup = async (componentsPage: ComponentsPage, args: Args) => {
-  const { orientation, variant, children = '' } = args;
+  const { orientation, variant, children = '', style } = args;
   const html = `
     <mdc-stepper 
     ${orientation ? `orientation="${orientation}"` : ''}
     ${variant ? `variant="${variant}"` : ''}
+    ${style ? `style="${style}"` : ''}
     >
       ${children}
     </mdc-stepper>
@@ -26,6 +30,45 @@ const setup = async (componentsPage: ComponentsPage, args: Args) => {
   const stepper = componentsPage.page.locator('mdc-stepper');
   await stepper.waitFor();
   return stepper;
+};
+
+const responsiveStackedChildren = `
+  <mdc-stepperitem label="Work group details" status="completed"></mdc-stepperitem>
+  <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+  <mdc-stepperitem label="Scheduling policy" status="completed" help-text="Policy selected"></mdc-stepperitem>
+  <mdc-stepperconnector status="complete"></mdc-stepperconnector>
+  <mdc-stepperitem label="Shift template configuration details" status="current" help-text="Choose a shift template for this work group"></mdc-stepperitem>
+  <mdc-stepperconnector></mdc-stepperconnector>
+  <mdc-stepperitem label="Adherence policy" status="error-incomplete" step-number="4" help-text="Select a policy to continue"></mdc-stepperitem>
+  <mdc-stepperconnector></mdc-stepperconnector>
+  <mdc-stepperitem label="Review" status="not-started" step-number="5"></mdc-stepperitem>
+`;
+
+const getTextLayout = async (element: Locator) =>
+  element.evaluate((node) => {
+    const { lineHeight } = getComputedStyle(node);
+    const visibleHeight = node.getBoundingClientRect().height;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return {
+      isTruncated: node.scrollHeight > node.clientHeight || range.getBoundingClientRect().height > visibleHeight + 0.5,
+      visibleLineCount: Math.round(visibleHeight / Number.parseFloat(lineHeight)),
+    };
+  });
+
+const expectLabelsNotToOverlap = async (items: Locator) => {
+  const labelContainerRects = await items.locator('[part="label-container"]').evaluateAll((elements) =>
+    elements
+      .map((element) => {
+        const { left, right } = element.getBoundingClientRect();
+        return { left, right };
+      })
+      .sort((first, second) => first.left - second.left),
+  );
+
+  for (let index = 0; index < labelContainerRects.length - 1; index += 1) {
+    expect(labelContainerRects[index].right).toBeLessThanOrEqual(labelContainerRects[index + 1].left);
+  }
 };
 
 const takeScreenshot = async (componentsPage: ComponentsPage, orientation: OrientationType) => {
@@ -68,13 +111,14 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
     ></mdc-stepperitem>`);
 
   await sheet.createMarkupWithCombination({ variant: VARIANT });
-  await sheet.mountStickerSheet();
+  await sheet.mountStickerSheet({
+    wrapperStyle: 'background: var(--mds-color-theme-background-gradient-primary-normal);',
+  });
   await componentsPage.visualRegression.takeScreenshot(`mdc-stepper-${orientation}`, {
     element: sheet.getWrapperContainer(),
   });
 };
 
-// AI-Assisted: Cover initial non-default context, direct child overrides, and subsequent provider updates.
 test('should keep non-default context authoritative and remain responsive to updates', async ({
   componentsPage,
 }) => {
@@ -121,7 +165,56 @@ test('should keep non-default context authoritative and remain responsive to upd
   await expect(items.nth(1)).toHaveAttribute('variant', VARIANT.INLINE);
   await expect(connector).toHaveAttribute('orientation', ORIENTATION.HORIZONTAL);
 });
-// End AI-Assisted
+
+test('should use available width before clamping stacked content without overlap', async ({ componentsPage }) => {
+  await componentsPage.page.setViewportSize({ width: 1400, height: 700 });
+  await setup(componentsPage, {
+    children: responsiveStackedChildren,
+    orientation: ORIENTATION.HORIZONTAL,
+    variant: VARIANT.STACKED,
+    style: 'width: 75rem;',
+  });
+
+  const items = componentsPage.page.locator('mdc-stepperitem');
+  const firstLabel = items.nth(0).locator('[part="label"]');
+  const wideLongLabel = items.nth(2).locator('[part="label"]');
+
+  await expect.poll(() => getTextLayout(firstLabel)).toEqual({ isTruncated: false, visibleLineCount: 1 });
+  await expect.poll(() => getTextLayout(wideLongLabel)).toEqual({ isTruncated: false, visibleLineCount: 1 });
+  expect(await firstLabel.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+
+  await setup(componentsPage, {
+    children: responsiveStackedChildren,
+    orientation: ORIENTATION.HORIZONTAL,
+    variant: VARIANT.STACKED,
+    style: 'width: 32rem;',
+  });
+
+  const constrainedItems = componentsPage.page.locator('mdc-stepperitem');
+  const constrainedLabel = constrainedItems.nth(2).locator('[part="label"]');
+  const constrainedHelpText = constrainedItems.nth(2).locator('[part="help-text"]');
+  const constrainedErrorText = constrainedItems.nth(3).locator('[part="help-text"]');
+
+  await expect.poll(() => getTextLayout(constrainedLabel)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await expect.poll(() => getTextLayout(constrainedHelpText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await expect.poll(() => getTextLayout(constrainedErrorText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await expect(constrainedLabel).toHaveText('Shift template configuration details');
+  await expect(constrainedHelpText).toHaveText('Choose a shift template for this work group');
+  await expect(constrainedErrorText).toHaveText('Select a policy to continue');
+
+  await expectLabelsNotToOverlap(constrainedItems);
+
+  await componentsPage.page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
+  await expectLabelsNotToOverlap(constrainedItems);
+  await expect.poll(() => getTextLayout(constrainedLabel)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await expect.poll(() => getTextLayout(constrainedHelpText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await expect.poll(() => getTextLayout(constrainedErrorText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
+  await componentsPage.page.evaluate(() => document.documentElement.setAttribute('dir', 'ltr'));
+
+  await componentsPage.visualRegression.takeScreenshot('mdc-stepper-stacked-constrained', {
+    element: componentsPage.page.locator('mdc-stepper'),
+  });
+});
 
 test('mdc-stepper', async ({ componentsPage }) => {
   const children = `
