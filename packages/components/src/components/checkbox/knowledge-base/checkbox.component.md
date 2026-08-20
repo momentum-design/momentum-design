@@ -14,15 +14,15 @@ A checkbox can also be in an `indeterminate` (mixed) state — typically used wh
 ### When to use
 
 - Use `mdc-checkbox` when the user can select **any number** of options from a list (zero, one, or many).
-- Use a single `mdc-checkbox` for a binary choice that does not need to take effect immediately (e.g. agreeing to terms before submitting a form).
-- Use it inside `mdc-formfieldgroup` when several checkboxes belong to the same labelled group.
+- Use a single `mdc-checkbox` for a binary choice that does not need to take effect immediately (for example agreeing to terms before submitting a form).
+- Use `mdc-checkbox` inside `mdc-formfieldgroup` when several checkboxes belong to the same labeled group.
 
 ### When not to use
 
-- Use `mdc-radio` (or `mdc-radiogroup`) when **only one** option in a set can be selected.
-- Use `mdc-toggle` for a binary on/off setting that takes effect immediately.
-- Use `mdc-cardcheckbox` when each option needs the visual weight of a card surface (image, title, supporting copy).
-- Use `mdc-staticcheckbox` when the visual is purely decorative and not user-interactive (e.g. inside a list item that owns the click target).
+- Do not use `mdc-checkbox` when only one option in a set can be selected. Use `mdc-radio` (or `mdc-radiogroup`) instead.
+- Do not use `mdc-checkbox` for a binary setting that takes effect immediately. Use `mdc-toggle` instead.
+- Do not use `mdc-checkbox` when each option needs the visual weight of a card surface. Use `mdc-cardcheckbox` instead.
+- Do not use `mdc-checkbox` for a purely decorative, non-interactive checkmark. Use `mdc-staticcheckbox` instead.
 
 ## Guidelines
 
@@ -50,32 +50,30 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 
 ### Content guidance
 
-- Provide a `label` that clearly describes what the checkbox controls. If the visual label cannot be set (e.g. compact tables), supply `data-aria-label` instead.
-- Use `help-text` to explain consequences, requirements, or validation errors — not to repeat the label.
-- When several checkboxes belong together, group them with `mdc-formfieldgroup` and give the group a label so assistive technologies announce the set.
+- Write a clear, concise `label` that is explicit about what happens when the checkbox is selected; the label always trails the checkbox input. If a visible label cannot be shown (for example compact tables), supply `data-aria-label` instead.
+- Keep labels to roughly 4–8 words and never truncate them; when an option needs more context, move it into `help-text` rather than lengthening the label.
+- `help-text` is optional (as are the info button and toggletip) and should be 1–2 short sentences. It sits under the field and explains consequences or requirements rather than repeating the label; a validation message (`help-text-type="error"`) replaces it while shown.
 
 ### Property/Attribute details
 
-- `checked` — selection state. Defaults to `false`. Reflected to the host.
-- `indeterminate` — mixed state. Defaults to `false`. Reflected to the host. Setting `checked` clears `indeterminate`.
-- `name` — form field name submitted with the form.
-- `value` — form field value. When the checkbox is checked and no `value` is set, the form receives `"on"` (matches native `<input type="checkbox">`).
-- `label` — visible label rendered through `mdc-text`. Used as the accessible name.
-- `data-aria-label` — accessible name fallback when no visual label is rendered.
-- `help-text` — helper or validation message shown below the label.
-- `help-text-type` — `default` (helper) or `error` (validation). When set to `error`, the validation icon is shown next to the help text.
-- `toggletip-text` / `toggletip-placement` / `toggletip-strategy` / `info-icon-aria-label` — opt-in info icon button next to the label that opens an `mdc-toggletip` with extra context.
-- `required` — when `true`, an asterisk is appended to the label and the form is invalid unless the checkbox is checked.
-- `validation-message` — custom message reported through `setCustomValidity` when the checkbox is required but not checked.
-- `disabled` — fully disabled; the host is removed from the tab order and the form value is not submitted.
-- `soft-disabled` — visually disabled but still focusable; suppresses `Space` activation while keeping the control discoverable by assistive technology.
-- `readonly` — non-interactive but focusable; the current value is still submitted with the form.
-- `autoFocusOnMount` — when `true`, focuses the internal input element on first render.
+| Option | Intent |
+|---|---|
+| `checked` | Selection state, reflected to the host. |
+| `indeterminate` | Mixed state for a parent that summarizes a nested checklist; setting `checked` clears it. Not an ordinary state. |
+| `name` / `value` | Form key and value; a checked checkbox with no `value` submits `"on"` (matches native `<input type="checkbox">`). |
+| `label` / `data-aria-label` | Visible label (the accessible name), or the fallback name when no visible label is rendered. |
+| `help-text` + `help-text-type` | Helper or validation message below the label; `error` shows the validation icon (only `default` and `error` are supported). |
+| `toggletip-text` + `info-icon-aria-label` | Info toggletip beside the label; provide the aria-label when set. |
+| `required` + `validation-message` | Appends an asterisk and requires the box to be checked; `validation-message` is reported via `setCustomValidity`. |
+| `disabled` / `soft-disabled` / `readonly` | `disabled` removes the control from the tab order; `soft-disabled` looks disabled but stays focusable so assistive tech can still reach it; `readonly` blocks changes but stays focusable. |
+
+**Note:** `autoFocusOnMount` focuses the internal input on first render.
 
 ### Limitations
 
-- The form value is always either the `value` attribute (defaulting to `"on"`) when checked or `null` when unchecked. The `indeterminate` state is not submitted — choose a deterministic value before submission if it matters.
-- `indeterminate` is visual-only and is cleared automatically when the user toggles the checkbox.
+- **Indeterminate isn't submitted** — the form value is the `value` (default `"on"`) when checked or `null` when unchecked; `indeterminate` has no submitted value, so resolve it before submission if it matters.
+- **Indeterminate is visual-only** — it is cleared automatically when the user toggles the checkbox, and is meant for parent rollups rather than an ordinary state.
+- **No inline group validation** — a single checkbox shows only an error state; group and tree validation belong on the surrounding `mdc-formfieldgroup`, below the group label.
 
 ## Accessibility
 
@@ -86,7 +84,7 @@ The component renders a native `<input type="checkbox">` inside the shadow root,
 Keyboard interaction follows the native checkbox pattern:
 
 - `Space` toggles the checked state and dispatches a `change` event.
-- `Enter` submits the surrounding form (default browser behaviour).
+- `Enter` submits the surrounding form (default browser behavior).
 - `Tab` / `Shift+Tab` moves focus to/from the checkbox.
 
 When `disabled` is `true`, the input is removed from the tab order and the form value is not submitted. When `soft-disabled` is `true`, the input remains focusable but `Space` is suppressed, so assistive technologies can still discover the option. When `readonly` is `true`, toggling is suppressed but the current value is still submitted.
@@ -109,11 +107,22 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 #### General
 
 - Group related checkboxes inside `mdc-formfieldgroup` (or a container with `role="group"` and a label) so assistive technologies announce the option set.
+- When composing a nested checkbox tree, keep it to about three levels deep so it stays usable on small screens; a checkbox group has no parent checkbox, so use a separate parent `mdc-checkbox` in the `indeterminate` state to roll up each nested checklist.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable; the state is then exposed to assistive technology and removed from the tab order.
 - Reach for `soft-disabled` instead of `disabled` only when the option must remain discoverable by assistive technology (e.g. so a screen-reader user can still hear why it is unavailable).
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `label` — it is the default accessible name.
 - When a visible label is not appropriate, set `data-aria-label` so the control still has an accessible name.
 - Use `help-text` with `help-text-type="error"` to communicate validation errors; the error icon and `aria-describedby` association are wired automatically.
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-staticcheckbox` | Decorative, non-interactive checkbox for read-only display. |
+| `mdc-radio` / `mdc-radiogroup` | Exactly one choice from a set instead of any number. |
+| `mdc-toggle` | Immediate binary on/off setting. |
+| `mdc-cardcheckbox` | Checkbox rendered as a card surface. |
+| `mdc-formfieldgroup` | Groups related checkboxes under a shared label with group validation. |

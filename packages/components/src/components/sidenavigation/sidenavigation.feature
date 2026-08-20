@@ -245,7 +245,6 @@ Feature: SideNavigation Accessibility and User Interaction
       And focus reaches sidenavigation back again
       Then VoiceOver announces: "end of navigation"
 
-  # AI-Assisted
   Rule: Dropdown SideNavigation (submenu-type dropdown)
 
     Background:
@@ -336,6 +335,3 @@ Feature: SideNavigation Accessibility and User Interaction
       When I press Escape
       Then the dropdown closes
       And focus returns to the parent trigger navmenuitem
-
-
-# End AI-Assisted

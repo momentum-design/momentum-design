@@ -9,19 +9,17 @@ component: filterchip
 
 The filterchip is a compact, togglable chip used to represent a single filter in a list, table, or search context. Activating the chip flips its `selected` state and the component swaps its leading icon to a checkmark to indicate the active filter.
 
-Filterchips are typically rendered in a horizontal row next to a result set; users toggle them on and off to narrow the set.
-
 ### When to use
 
 - Use `mdc-filterchip` when each chip toggles a single filter that can be applied or removed independently.
-- Use it inside a row of filters where the selected state should be visually obvious at a glance.
+- Use `mdc-filterchip` inside a row or group of filters where the selected state should be obvious at a glance; filter chips are used in groups, not as a lone chip.
 
 ### When not to use
 
-- Use `mdc-chip` when the chip triggers an action rather than a toggle.
-- Use `mdc-alertchip` when the chip communicates a status (information, warning, error) rather than a togglable filter.
-- Use `mdc-staticchip` when the chip is purely decorative and should not be interactive.
-- Use `mdc-checkbox` or `mdc-radio` when the control should appear inside a form field group rather than as a compact filter row.
+- Do not use `mdc-filterchip` for a chip that triggers an action rather than a toggle. Use `mdc-chip`.
+- Do not use `mdc-filterchip` to communicate a status such as information, warning, or error. Use `mdc-alertchip`.
+- Do not use `mdc-filterchip` for a purely decorative, non-interactive chip. Use `mdc-staticchip`.
+- Do not use `mdc-filterchip` when the control belongs inside a form field group. Use `mdc-checkbox` or `mdc-radio`.
 
 ## Guidelines
 
@@ -46,17 +44,25 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 ### Content guidance
 
-- Keep the `label` short — we recommend up to 20 characters including spaces, matching the underlying chip.
+- Keep the `label` short — up to 20 characters including spaces, matching the underlying chip.
 - Phrase the label as the filter that gets applied when the chip is selected ("In stock", not "Toggle in stock"); the checkmark indicates state.
 - Group related filterchips together and place the row close to the result set they affect.
 
 ### Property/Attribute details
 
-- `selected` — when `true`, the chip is in the active state, displays the checkmark icon, and sets `aria-pressed="true"`. Default `false`.
-- `label` — visible label text rendered through `mdc-text`. Used as the accessible name. Recommended max length 20 characters.
-- `color` — fixed to the filterchip-specific colour token on connect; setting a different `color` has no effect after connect.
-- `disabled` — when `true`, the chip is non-interactive and removed from the tab order.
-- `autoFocusOnMount` — when `true`, focuses the chip on first render.
+| Option | Intent |
+|---|---|
+| `selected` | Toggles the active state; shows the checkmark and sets `aria-pressed="true"`. Read it after activation to drive the surrounding filter. Default `false`. |
+| `label` | Visible text and accessible name. Phrase it as the filter applied ("In stock"), not the toggle action. |
+| `disabled` | Makes the chip non-interactive and removes it from the tab order. Use so the state reaches assistive technology. |
+
+**Note:** `color` is fixed to the filter-chip token on connect; setting a different `color` has no effect.
+
+### Limitations
+
+- **Color is fixed** — the neutral filter-chip color is applied on connect and cannot be overridden. Do not set `color` expecting a custom value.
+- **State lives in `selected`** — the component flips `selected` and `aria-pressed` but does not own the filter logic. Drive the result set from `selected` yourself.
+- **Meant for groups** — a lone filter chip reads ambiguously; render filter chips together next to the results they affect.
 
 ## Accessibility
 
@@ -64,8 +70,8 @@ Listen for the `click` event (or `keydown`/`keyup` for keyboard activation) to r
 
 The host renders with `role="button"` and a single tab stop. Activating the chip flips `selected` and updates `aria-pressed` accordingly, exposing the toggle state to assistive technology.
 
-- `Enter` activates the chip on `keydown` (matches native button behaviour).
-- `Space` activates the chip on `keyup` (matches native button behaviour; `keydown` is suppressed so the page does not scroll).
+- `Enter` activates the chip on `keydown` (matches native button behavior).
+- `Space` activates the chip on `keyup` (matches native button behavior; `keydown` is suppressed so the page does not scroll).
 - Click activates the chip.
 
 When `disabled` is `true`, click and keyboard activation are suppressed and the host is removed from the tab order.
@@ -87,7 +93,16 @@ The `label` provides the accessible name. When `selected` is `true`, the leading
 - Use `disabled` (not `aria-hidden` or visual cues alone) when a filter must not be interactive — the state is then exposed to assistive technology and removed from the tab order.
 - Drive the surrounding filter state from `selected` after the user activates the chip; the component does not own the underlying filter logic.
 
-#### Labelling
+#### Labeling
 
 - Provide a meaningful `label` — it is the accessible name and is mandatory for screen-reader users.
-- The toggle state is announced through `aria-pressed`; do not encode the selected state in the `label` itself (e.g. avoid "In stock ✓").
+- The toggle state is announced through `aria-pressed`; do not encode the selected state in the `label` itself (for example avoid "In stock ✓").
+
+## Related components
+
+| Component | Relationship |
+|---|---|
+| `mdc-chip` | Interactive chip that triggers an action instead of toggling a filter. |
+| `mdc-alertchip` | Status chip with a reserved color set. Use to convey status, not a filter. |
+| `mdc-staticchip` | Non-interactive label chip. Use when the chip should not respond to input. |
+| `mdc-checkbox` / `mdc-radio` | Form controls for selection inside a field group rather than a compact filter row. |
