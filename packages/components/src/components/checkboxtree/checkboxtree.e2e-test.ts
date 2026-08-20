@@ -347,6 +347,41 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await expect(mover).toHaveAttribute('aria-label', 'Custom label');
   });
 
+  await test.step('changing label while fully detached does not clobber a cached explicit aria-label', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-checkboxtree id="mover" aria-label="Custom label">
+            <mdc-checkbox id="mover-child" label="Child"></mdc-checkbox>
+          </mdc-checkboxtree>
+          <mdc-checkbox id="owner" label="Owner"></mdc-checkbox>
+          <mdc-checkboxtree id="host-tree">
+            <mdc-checkbox id="host-child" label="Host child"></mdc-checkbox>
+          </mdc-checkboxtree>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const mover = componentsPage.page.locator('#mover');
+    await mover.waitFor();
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
+
+    await mover.evaluate(element => document.getElementById('host-tree')!.append(element));
+    await expect(mover).not.toHaveAttribute('aria-label');
+
+    // Fully removed (not merely reparented) while a `label` change is pending: `isNested` reads
+    // as false for a parentless element the same as a root would, so this exercises the
+    // isConnected handling in update() rather than the reparenting path above.
+    await mover.evaluate(async (element: any) => {
+      const checkboxTree = element;
+      checkboxTree.remove();
+      checkboxTree.label = 'Detached label change';
+      await checkboxTree.updateComplete;
+      document.querySelector('#root')!.append(checkboxTree);
+    });
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
+  });
+
   await test.step('removing the active checkbox moves the tab stop to a neighbor, not the first item', async () => {
     const tree = await setup({
       componentsPage,
@@ -369,6 +404,33 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await expect(tree.locator('#fourth')).toHaveAttribute('tabindex', '0');
     await expect(tree.locator('#first')).toHaveAttribute('tabindex', '-1');
     await expect(tree.locator('#second')).toHaveAttribute('tabindex', '-1');
+  });
+
+  await test.step('spatial-navigation entry updates tab-stop tracking for a later removal', async () => {
+    const tree = await setup({
+      componentsPage,
+      children: `
+        <mdc-checkbox id="first" label="First"></mdc-checkbox>
+        <mdc-checkbox id="second" label="Second"></mdc-checkbox>
+        <mdc-checkbox id="third" label="Third"></mdc-checkbox>
+        <mdc-checkbox id="fourth" label="Fourth"></mdc-checkbox>
+      `,
+    });
+
+    // Simulates a spatial-navigation provider moving focus into the tree from outside, landing
+    // directly on a non-first item. This reaches ListNavigationMixin.handleNavBeforeFocus ->
+    // resetTabIndexes(), a different tab-stop-moving path than resetTabIndexAndSetFocus().
+    await tree.evaluate(() => {
+      const third = document.querySelector('#third') as HTMLElement;
+      const event = new Event('navbeforefocus', { bubbles: true, cancelable: true, composed: true });
+      Object.defineProperty(event, 'relatedTarget', { value: third });
+      document.dispatchEvent(event);
+    });
+    await expect(tree.locator('#third')).toHaveAttribute('tabindex', '0');
+
+    await tree.locator('#third').evaluate(element => element.remove());
+    await expect(tree.locator('#fourth')).toHaveAttribute('tabindex', '0');
+    await expect(tree.locator('#first')).toHaveAttribute('tabindex', '-1');
   });
 
   await test.step('--mdc-checkboxtree-indent set on the outer tree reaches nested levels', async () => {
