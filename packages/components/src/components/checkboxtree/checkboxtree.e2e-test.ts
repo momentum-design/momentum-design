@@ -297,7 +297,10 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await mover.evaluate(element => document.getElementById('other-tree')!.append(element));
     await expect(mover).not.toHaveAttribute('aria-label');
 
-    await mover.evaluate(element => document.body.append(element));
+    // Moved back into #root (the mount container clearDocument clears), not document.body: a
+    // stray body-level element would otherwise outlive this step and collide with a later step
+    // that mounts another element sharing this id.
+    await mover.evaluate(element => document.querySelector('#root')!.append(element));
     await expect(mover).toHaveAttribute('aria-label', 'Custom label');
   });
 
@@ -309,6 +312,107 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await ironMan.evaluate(checkbox => document.body.append(checkbox));
     await expect(componentsPage.page.locator('body > #iron-man')).not.toHaveAttribute('tabindex');
     await expect(componentsPage.page.locator('body > #iron-man').locator('input')).toHaveAttribute('tabindex', '0');
+  });
+
+  await test.step('explicit aria-label survives a nested-to-nested move before returning to root', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-checkboxtree id="mover" aria-label="Custom label">
+            <mdc-checkbox id="mover-child" label="Child"></mdc-checkbox>
+          </mdc-checkboxtree>
+          <mdc-checkbox id="a-owner" label="A owner"></mdc-checkbox>
+          <mdc-checkboxtree id="tree-a">
+            <mdc-checkbox id="a-child" label="A child"></mdc-checkbox>
+          </mdc-checkboxtree>
+          <mdc-checkbox id="b-owner" label="B owner"></mdc-checkbox>
+          <mdc-checkboxtree id="tree-b">
+            <mdc-checkbox id="b-child" label="B child"></mdc-checkbox>
+          </mdc-checkboxtree>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const mover = componentsPage.page.locator('#mover');
+    await mover.waitFor();
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
+
+    await mover.evaluate(element => document.getElementById('tree-a')!.append(element));
+    await expect(mover).not.toHaveAttribute('aria-label');
+
+    await mover.evaluate(element => document.getElementById('tree-b')!.append(element));
+    await expect(mover).not.toHaveAttribute('aria-label');
+
+    await mover.evaluate(element => document.querySelector('#root')!.append(element));
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
+  });
+
+  await test.step('removing the active checkbox moves the tab stop to a neighbor, not the first item', async () => {
+    const tree = await setup({
+      componentsPage,
+      children: `
+        <mdc-checkbox id="first" label="First"></mdc-checkbox>
+        <mdc-checkbox id="second" label="Second"></mdc-checkbox>
+        <mdc-checkbox id="third" label="Third"></mdc-checkbox>
+        <mdc-checkbox id="fourth" label="Fourth"></mdc-checkbox>
+      `,
+    });
+
+    await componentsPage.page.locator('#before-tree').focus();
+    await componentsPage.actionability.pressTab();
+    await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+    await componentsPage.page.keyboard.press(KEYS.ARROW_DOWN);
+    await expect(tree.locator('#third')).toBeFocused();
+    await expect(tree.locator('#third')).toHaveAttribute('tabindex', '0');
+
+    await tree.locator('#third').evaluate(element => element.remove());
+    await expect(tree.locator('#fourth')).toHaveAttribute('tabindex', '0');
+    await expect(tree.locator('#first')).toHaveAttribute('tabindex', '-1');
+    await expect(tree.locator('#second')).toHaveAttribute('tabindex', '-1');
+  });
+
+  await test.step('--mdc-checkboxtree-indent set on the outer tree reaches nested levels', async () => {
+    const tree = await setup({ componentsPage });
+    await tree.evaluate(element => element.style.setProperty('--mdc-checkboxtree-indent', '40px'));
+
+    const nestedTreeIndent = await tree
+      .locator('#avengers-tree')
+      .evaluate(element => getComputedStyle(element).paddingInlineStart);
+    const doubleNestedTreeIndent = await tree
+      .locator('#captain-america-tree')
+      .evaluate(element => getComputedStyle(element).paddingInlineStart);
+
+    expect(nestedTreeIndent).toBe('40px');
+    expect(doubleNestedTreeIndent).toBe('40px');
+  });
+
+  await test.step('reconnecting the outer tree between root and nested re-renders its header', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-checkboxtree id="mover" label="Mover label">
+            <mdc-checkbox id="mover-child" label="Child"></mdc-checkbox>
+          </mdc-checkboxtree>
+          <mdc-checkbox id="owner" label="Owner"></mdc-checkbox>
+          <mdc-checkboxtree id="host-tree">
+            <mdc-checkbox id="host-child" label="Host child"></mdc-checkbox>
+          </mdc-checkboxtree>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const mover = componentsPage.page.locator('#mover');
+    await mover.waitFor();
+    await expect(mover.locator('[part="group-header"]')).toBeVisible();
+    await expect(mover).toHaveAttribute('role', 'group');
+
+    await mover.evaluate(element => document.getElementById('host-tree')!.append(element));
+    await expect(mover.locator('[part="group-header"]')).not.toBeVisible();
+    await expect(mover).not.toHaveAttribute('role');
+
+    await mover.evaluate(element => document.querySelector('#root')!.append(element));
+    await expect(mover.locator('[part="group-header"]')).toBeVisible();
+    await expect(mover).toHaveAttribute('role', 'group');
   });
 
   await test.step('visual regression', async () => {
