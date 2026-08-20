@@ -129,7 +129,8 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
    * Tracks the roving tab stop's index so synchronizeTabIndexes() can fall back to a neighbor,
    * not the first checkbox in the tree, if that item is later removed. Arrow-key and click
    * navigation move the tab stop through this mixin method directly, without going through
-   * synchronizeTabIndexes(), so this is the only point that sees every successful move.
+   * synchronizeTabIndexes(), so this is one of two points that see every successful move (the
+   * other being resetTabIndexes() below, used by boundary navigation and spatial-navigation entry).
    * @internal
    */
   protected override resetTabIndexAndSetFocus(
@@ -143,6 +144,19 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
       this.lastActiveIndex = newIndex;
     }
     return handled;
+  }
+
+  /**
+   * Also tracks the roving tab stop's index for the two call sites that move it through
+   * resetTabIndexes() instead of resetTabIndexAndSetFocus(): the start-of-navigation reset in
+   * handleNavigationKeyDown, and spatial-navigation entry in handleNavBeforeFocus.
+   * @internal
+   */
+  protected override resetTabIndexes(index: number, focusElement?: boolean): void {
+    super.resetTabIndexes(index, focusElement);
+    if (this.navItems.length > 0) {
+      this.lastActiveIndex = this.navItems.at(index) ? index : 0;
+    }
   }
 
   /** @internal */
@@ -317,6 +331,19 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
     // permanently desyncing after the first label change.
     const ariaLabelBeforeUpdate = this.getAttribute('aria-label');
     super.update(changedProperties);
+    if (!this.isConnected) {
+      // A fully detached element (removed from the DOM, not merely reparented) has no parent, so
+      // `isNested` reads as false the same as a root would, and FormfieldGroup.update() above
+      // still auto-syncs aria-label from label unconditionally on its own. Undo that write and
+      // leave aria-label exactly as it was: reconnecting is what decides root vs. nested, and
+      // that decision (including restoring a cached explicit value) belongs to connectedCallback.
+      if (ariaLabelBeforeUpdate === null) {
+        this.removeAttribute('aria-label');
+      } else {
+        this.setAttribute('aria-label', ariaLabelBeforeUpdate);
+      }
+      return;
+    }
     if (!this.isNested && (ariaLabelBeforeUpdate === null || ariaLabelBeforeUpdate === this.generatedAriaLabel)) {
       this.generatedAriaLabel = this.label ?? '';
       this.setAttribute('aria-label', this.generatedAriaLabel);
