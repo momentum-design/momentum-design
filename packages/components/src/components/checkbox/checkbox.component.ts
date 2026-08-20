@@ -26,6 +26,8 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  *
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
+ * @event modified - Lifecycle event dispatched when checked, disabled, indeterminate, readonly or
+ * softDisabled changes. For internal use by parent components such as mdc-checkboxtree.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -153,16 +155,23 @@ class Checkbox
    * the checked property is toggled and the indeterminate property is set to false.
    * @internal
    */
-  private toggleState(): void {
+  private toggleState(): boolean {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
       this.checked = !this.checked;
       this.indeterminate = false;
+      return true;
     }
+    return false;
   }
 
   override click() {
     super.click();
-    this.toggleState();
+    if (this.toggleState()) {
+      // Unlike the native input's own 'change' event (relayed by handleChange), a direct call to the
+      // host's click() never touches the input, so the toggle must dispatch its own 'change' for
+      // ancestors (e.g. mdc-checkboxtree) that cascade state through it.
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
   }
 
   /**
@@ -186,7 +195,9 @@ class Checkbox
     }
     if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
       if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
-        this.toggleState();
+        if (this.toggleState()) {
+          this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+        }
         this.keyDownEventHandled();
       }
     }
