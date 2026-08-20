@@ -36,13 +36,13 @@ const styles = css`
   }
 
   :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
+    flex-basis: 6rem;
+    flex-grow: 1;
+    min-inline-size: 6rem;
     padding-top: 0.9375rem;
     margin: 0 -3rem;
   }
-`;
 
-// AI-Assisted: Let stacked steps share constrained space without collapsing connectors into adjacent items.
-const adaptiveStackedStyles = css`
   :host([orientation='horizontal'][variant='stacked']) {
     gap: 0.25rem;
   }
@@ -51,13 +51,6 @@ const adaptiveStackedStyles = css`
     flex-shrink: 1;
     min-inline-size: 6rem;
   }
-
-  :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
-    flex-basis: 6rem;
-    flex-grow: 1;
-    min-inline-size: 6rem;
-  }
 `;
-// End AI-Assisted
 
-export default [hostFitContentStyles, styles, adaptiveStackedStyles];
+export default [hostFitContentStyles, styles];

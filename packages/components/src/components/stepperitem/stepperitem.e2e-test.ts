@@ -154,7 +154,6 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     await expect(waitForClick).toEventEmitted();
   });
 
-  // AI-Assisted: Verify unavailable steps cannot be focused or activated.
   await test.step('should prevent focus and activation when disabled', async () => {
     const { stepperitem } = await setup({
       componentsPage,
@@ -181,7 +180,6 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
     await componentsPage.page.keyboard.press('Space');
     await expect(waitForKeyboardClick).not.toEventEmitted();
   });
-  // End AI-Assisted
 
   /**
    * ARIA & ACCESSIBILITY
@@ -257,7 +255,6 @@ test('mdc-stepperitem', async ({ componentsPage }) => {
   });
 });
 
-// AI-Assisted: Cover the disabled appearance in a focused visual baseline.
 test('should match disabled visual regression screenshot', async ({ componentsPage }) => {
   const { stepperitem } = await setup({
     componentsPage,
@@ -271,4 +268,3 @@ test('should match disabled visual regression screenshot', async ({ componentsPa
     element: stepperitem,
   });
 });
-// End AI-Assisted

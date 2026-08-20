@@ -102,7 +102,6 @@ export const Error: StoryObj = {
   },
 };
 
-// AI-Assisted: Demonstrate an unreachable item in a linear progression.
 export const Disabled: StoryObj = {
   args: {
     variant: VARIANT.STACKED,
@@ -113,7 +112,6 @@ export const Disabled: StoryObj = {
     disabled: true,
   },
 };
-// End AI-Assisted
 
 export const LongText: StoryObj = {
   args: {

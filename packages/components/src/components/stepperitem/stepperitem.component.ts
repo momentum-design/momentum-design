@@ -80,7 +80,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
   @property({ type: Number, reflect: true, attribute: 'step-number' })
   stepNumber?: number;
 
-  // AI-Assisted: Synchronize inherited configuration before rendering while keeping the provider authoritative.
   /**
    * @internal
    */
@@ -94,7 +93,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
       this.variant = context.variant;
     }
   }
-  // End AI-Assisted
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -108,7 +106,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
-  // AI-Assisted: Enforce the disabled interaction contract for this custom element.
   /**
    * Prevents pointer and programmatic click events from activating a disabled step.
    *
@@ -120,7 +117,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
     event.preventDefault();
     event.stopImmediatePropagation();
   }
-  // End AI-Assisted
 
   /**
    * Handles the keydown event on the stepperitem.
@@ -226,7 +222,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
     return helpTextContent;
   }
 
-  // AI-Assisted: Keep focus and ARIA semantics synchronized with disabled state changes.
   public override update(changedProperties: PropertyValues<StepperItem>): void {
     super.update(changedProperties);
 
@@ -241,7 +236,6 @@ class StepperItem extends KeyDownHandledMixin(KeyToActionMixin(TabIndexMixin(Dis
       }
     }
   }
-  // End AI-Assisted
 
   public override render() {
     return html` <div part="status-container">${this.renderStatusIcon()}</div>

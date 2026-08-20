@@ -32,7 +32,6 @@ const setup = async (componentsPage: ComponentsPage, args: Args) => {
   return stepper;
 };
 
-// AI-Assisted: Exercise realistic stacked copy at wide and constrained widths.
 const responsiveStackedChildren = `
   <mdc-stepperitem label="Work group details" status="completed"></mdc-stepperitem>
   <mdc-stepperconnector status="complete"></mdc-stepperconnector>
@@ -71,7 +70,6 @@ const expectLabelsNotToOverlap = async (items: Locator) => {
     expect(labelContainerRects[index].right).toBeLessThanOrEqual(labelContainerRects[index + 1].left);
   }
 };
-// End AI-Assisted
 
 const takeScreenshot = async (componentsPage: ComponentsPage, orientation: OrientationType) => {
   // Move mouse away to prevent accidental hover on any stepperitem after previous interactions
@@ -121,7 +119,6 @@ const takeScreenshot = async (componentsPage: ComponentsPage, orientation: Orien
   });
 };
 
-// AI-Assisted: Cover initial non-default context, direct child overrides, and subsequent provider updates.
 test('should keep non-default context authoritative and remain responsive to updates', async ({
   componentsPage,
 }) => {
@@ -168,9 +165,7 @@ test('should keep non-default context authoritative and remain responsive to upd
   await expect(items.nth(1)).toHaveAttribute('variant', VARIANT.INLINE);
   await expect(connector).toHaveAttribute('orientation', ORIENTATION.HORIZONTAL);
 });
-// End AI-Assisted
 
-// AI-Assisted: Guard intrinsic sizing, two-line clamping, and collision-free horizontal stacked layout.
 test('should use available width before clamping stacked content without overlap', async ({ componentsPage }) => {
   await componentsPage.page.setViewportSize({ width: 1400, height: 700 });
   await setup(componentsPage, {
@@ -220,7 +215,6 @@ test('should use available width before clamping stacked content without overlap
     element: componentsPage.page.locator('mdc-stepper'),
   });
 });
-// End AI-Assisted
 
 test('mdc-stepper', async ({ componentsPage }) => {
   const children = `

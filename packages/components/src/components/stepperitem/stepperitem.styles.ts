@@ -17,6 +17,7 @@ const styles = css`
 
   :host([variant='stacked']) {
     flex-direction: column;
+    min-inline-size: 0;
     text-align: center;
   }
 
@@ -147,13 +148,6 @@ const styles = css`
   :host([status='error-incomplete']:active) {
     --mdc-stepperitem-help-text-color: var(--mds-color-theme-text-error-active);
   }
-`;
-
-// AI-Assisted: Use intrinsic width first, then clamp constrained stacked copy to two lines.
-const stackedTextStyles = css`
-  :host([variant='stacked']) {
-    min-inline-size: 0;
-  }
 
   :host([variant='stacked'])::part(label-container) {
     inline-size: max-content;
@@ -172,11 +166,7 @@ const stackedTextStyles = css`
     text-overflow: ellipsis;
     white-space: normal;
   }
-`;
-// End AI-Assisted
 
-// AI-Assisted: Present disabled steps as unavailable and suppress interactive visual states.
-const disabledStyles = css`
   :host([disabled]),
   :host([disabled]:hover),
   :host([disabled]:active) {
@@ -215,6 +205,5 @@ const disabledStyles = css`
     --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 `;
-// End AI-Assisted
 
-export default [hostFitContentStyles, styles, stackedTextStyles, disabledStyles, ...hostFocusRingStyles()];
+export default [hostFitContentStyles, styles, ...hostFocusRingStyles()];
