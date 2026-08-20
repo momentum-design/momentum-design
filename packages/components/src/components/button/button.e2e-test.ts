@@ -779,7 +779,7 @@ test.describe.parallel('mdc-button', () => {
               <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
             </div>
             <div slot="postfix">
-              <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+              <mdc-brandvisual name="webex-app-icon-color-container" style="width: 1.25rem;"></mdc-brandvisual>
             </div>
           </mdc-button>
           <mdc-tooltip show-arrow triggerid="button-with-tooltip" placement="top">Tooltip text</mdc-tooltip>
@@ -790,7 +790,7 @@ test.describe.parallel('mdc-button', () => {
     const button = componentsPage.page.locator('#button-with-tooltip');
     const tooltip = componentsPage.page.locator('mdc-tooltip');
     const prefixIcon = button.locator('div[slot="prefix"] mdc-icon');
-    const postfixIcon = button.locator('div[slot="postfix"] mdc-icon');
+    const postfixIcon = button.locator('div[slot="postfix"] mdc-brandvisual');
 
     await expect(tooltip).not.toBeVisible();
 
@@ -804,7 +804,7 @@ test.describe.parallel('mdc-button', () => {
       await expect(tooltip).toBeVisible();
     });
 
-    await test.step('hovering over the postfix icon keeps the tooltip visible', async () => {
+    await test.step('hovering over the postfix brandvisual keeps the tooltip visible', async () => {
       await postfixIcon.hover();
       await expect(tooltip).toBeVisible();
     });

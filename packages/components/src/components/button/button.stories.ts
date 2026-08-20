@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../spinner';
 import '../animation';
+import '../brandvisual';
 import iconsManifest from '@momentum-design/icons/dist/manifest.json';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
@@ -313,7 +314,7 @@ export const ButtonWithTooltip: StoryObj = {
           <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
         </div>
         <div slot="postfix">
-          <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+          <mdc-brandvisual name="webex-app-icon-color-container" style="width: 1.25rem;"></mdc-brandvisual>
         </div>
       </mdc-button>
       <mdc-tooltip show-arrow="true" triggerID="button" position="top">Tooltip text</mdc-tooltip>`,
