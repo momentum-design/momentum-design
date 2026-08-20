@@ -47,6 +47,9 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   private managedTabIndexes = new Map<Checkbox, string | null>();
 
   /** @internal */
+  private lastActiveIndex = 0;
+
+  /** @internal */
   private generatedAriaLabel?: string;
 
   /**
@@ -67,10 +70,13 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   }
 
   override connectedCallback(): void {
+    // Only clear the cache once actually restored: a tree can reconnect while staying nested
+    // (moving from one nested position to another) without ever passing through this branch, and
+    // unconditionally clearing here would drop the cached value before it's ever used.
     if (!this.isNested && this.explicitAriaLabel !== undefined && !this.hasAttribute('aria-label')) {
       this.setAttribute('aria-label', this.explicitAriaLabel);
+      this.explicitAriaLabel = undefined;
     }
-    this.explicitAriaLabel = undefined;
 
     const ariaLabelBeforeConnection = this.getAttribute('aria-label');
     super.connectedCallback();
@@ -117,6 +123,26 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   protected override setInitialFocus(): void {
     if (this.isNested) return;
     this.synchronizeTabIndexes();
+  }
+
+  /**
+   * Tracks the roving tab stop's index so synchronizeTabIndexes() can fall back to a neighbor,
+   * not the first checkbox in the tree, if that item is later removed. Arrow-key and click
+   * navigation move the tab stop through this mixin method directly, without going through
+   * synchronizeTabIndexes(), so this is the only point that sees every successful move.
+   * @internal
+   */
+  protected override resetTabIndexAndSetFocus(
+    newIndex: number,
+    oldIndex?: number,
+    focusNewItem?: boolean,
+    scrollToNewItem?: boolean,
+  ): boolean {
+    const handled = super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
+    if (handled) {
+      this.lastActiveIndex = newIndex;
+    }
+    return handled;
   }
 
   /** @internal */
@@ -229,7 +255,16 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
 
     const focusedCheckbox = navigableCheckboxes.find(checkbox => checkbox.matches(':focus-within'));
     const currentCheckbox = navigableCheckboxes.find(checkbox => checkbox.getAttribute('tabindex') === '0');
-    const activeCheckbox = focusedCheckbox ?? currentCheckbox ?? navigableCheckboxes[0];
+    // The checkbox that held tabindex="0" can be gone (removed from the tree) with nothing
+    // focused either; falling back to the first checkbox in the whole tree would jump the roving
+    // tab stop away from where the user was. Falling back to the same index instead lands on the
+    // neighbor that shifted into the removed item's place, or the new last item if it was that.
+    const neighborCheckbox = navigableCheckboxes[Math.min(this.lastActiveIndex, navigableCheckboxes.length - 1)];
+    const activeCheckbox = focusedCheckbox ?? currentCheckbox ?? neighborCheckbox ?? navigableCheckboxes[0];
+
+    if (activeCheckbox) {
+      this.lastActiveIndex = navigableCheckboxes.indexOf(activeCheckbox);
+    }
 
     checkboxes.forEach(checkbox => {
       checkbox.setAttribute('tabindex', checkbox === activeCheckbox ? '0' : '-1');
