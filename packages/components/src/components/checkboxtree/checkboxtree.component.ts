@@ -49,6 +49,14 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   private generatedAriaLabel?: string;
 
+  /**
+   * A consumer-supplied aria-label captured while this tree is nested (nested hosts have their
+   * aria-label removed), so it can be restored verbatim if this tree becomes a root again instead
+   * of being replaced by one generated from `label`.
+   * @internal
+   */
+  private explicitAriaLabel?: string;
+
   /** @internal */
   private pendingSynchronization = false;
 
@@ -59,6 +67,11 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   }
 
   override connectedCallback(): void {
+    if (!this.isNested && this.explicitAriaLabel !== undefined && !this.hasAttribute('aria-label')) {
+      this.setAttribute('aria-label', this.explicitAriaLabel);
+    }
+    this.explicitAriaLabel = undefined;
+
     const ariaLabelBeforeConnection = this.getAttribute('aria-label');
     super.connectedCallback();
     if (this.generatedAriaLabel === undefined && ariaLabelBeforeConnection === null) {
@@ -241,6 +254,10 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   private synchronizeContext(): void {
     if (this.isNested) {
+      const currentAriaLabel = this.getAttribute('aria-label');
+      if (currentAriaLabel !== null && currentAriaLabel !== this.generatedAriaLabel) {
+        this.explicitAriaLabel = currentAriaLabel;
+      }
       this.removeAttribute('aria-description');
       this.removeAttribute('aria-invalid');
       this.removeAttribute('aria-label');
