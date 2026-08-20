@@ -4,16 +4,7 @@ import type { LitElement } from 'lit';
 import type { Constructor } from '../index.types';
 
 import { LIFE_CYCLE_EVENTS } from './lifecycle.contants';
-import { ModifiedEventMixin } from './ModifiedEventMixin';
-
-export declare class LifeCycleMixinInterface {
-  /**
-   * Dispatches a lifecycle `modified` event for the passed change type.
-   *
-   * @param change - The type of change that occurred.
-   */
-  protected dispatchModifiedEvent(change: string): void;
-}
+import { ModifiedEventMixin, ModifiedEventMixinInterface } from './ModifiedEventMixin';
 
 /**
  * Mixin to create Lifecycle Manager compatible events for the component.
@@ -66,5 +57,5 @@ export const LifeCycleMixin = <T extends Constructor<LitElement>>(superClass: T)
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as unknown as Constructor<LifeCycleMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<ModifiedEventMixinInterface> & T;
 };
