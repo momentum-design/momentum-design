@@ -49,6 +49,9 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   private generatedAriaLabel?: string;
 
+  /** @internal */
+  private pendingSynchronization = false;
+
   constructor() {
     super();
     this.addEventListener('change', this.handleCheckboxChange);
@@ -62,6 +65,9 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
       this.generatedAriaLabel = this.label ?? '';
     }
     this.synchronizeContext();
+    // A reparented tree keeps rendering its previous root/nested layout otherwise, because
+    // `isNested` is a live DOM lookup that Lit has no reactive-property signal to re-render for.
+    this.requestUpdate();
 
     if (!this.isNested) {
       this.synchronizeTree();
@@ -113,8 +119,24 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   private handleCheckboxModified = (event: Event): void => {
     if (this.isNested || !(event.target instanceof HTMLElement) || !event.target.matches(CHECKBOX_TAG_NAME)) return;
-    this.synchronizeTree();
+    this.scheduleSynchronizeTree();
   };
+
+  /**
+   * Coalesces `modified` events from every checkbox in the tree into a single synchronization.
+   * A change to one checkbox (e.g. toggling a branch) can change `checked`/`indeterminate` on many
+   * descendants in the same batch, each dispatching its own `modified` event; synchronizing once per
+   * event would scan and rewrite the whole tree once per descendant instead of once per batch.
+   * @internal
+   */
+  private scheduleSynchronizeTree(): void {
+    if (this.pendingSynchronization) return;
+    this.pendingSynchronization = true;
+    queueMicrotask(() => {
+      this.pendingSynchronization = false;
+      this.synchronizeTree();
+    });
+  }
 
   /** @internal */
   private handleCheckboxChange = (event: Event): void => {
@@ -228,15 +250,24 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
 
     this.role = ROLE.GROUP;
     this.ariaDescription = this.helpText ?? '';
-    const ariaLabel = this.getAttribute('aria-label');
-    if (ariaLabel === null || ariaLabel === this.generatedAriaLabel) {
-      this.generatedAriaLabel = this.label ?? '';
-      this.setAttribute('aria-label', this.generatedAriaLabel);
-    }
     if (this.helpTextType === VALIDATION.ERROR) {
       this.setAttribute('aria-invalid', 'true');
     } else {
       this.removeAttribute('aria-invalid');
+    }
+  }
+
+  public override update(changedProperties: PropertyValues): void {
+    // Captured before super.update(), because FormfieldGroup.update() independently auto-syncs
+    // aria-label from label too (guarded by its own, differently-tracked "not explicitly set"
+    // check). Deciding ownership from the pre-update value keeps this override authoritative
+    // regardless of what the superclass just did, instead of the two sync mechanisms racing and
+    // permanently desyncing after the first label change.
+    const ariaLabelBeforeUpdate = this.getAttribute('aria-label');
+    super.update(changedProperties);
+    if (!this.isNested && (ariaLabelBeforeUpdate === null || ariaLabelBeforeUpdate === this.generatedAriaLabel)) {
+      this.generatedAriaLabel = this.label ?? '';
+      this.setAttribute('aria-label', this.generatedAriaLabel);
     }
   }
 
