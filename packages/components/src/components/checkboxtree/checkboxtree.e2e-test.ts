@@ -240,6 +240,39 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await expect(tree.locator('#last')).toBeFocused();
   });
 
+  await test.step('programmatic click() on a parent cascades to its descendants', async () => {
+    const tree = await setup({
+      componentsPage,
+      children: `
+        <mdc-checkbox id="parent" label="Parent"></mdc-checkbox>
+        <mdc-checkboxtree>
+          <mdc-checkbox id="child-one" label="Child one"></mdc-checkbox>
+          <mdc-checkbox id="child-two" label="Child two"></mdc-checkbox>
+        </mdc-checkboxtree>
+      `,
+    });
+    const parent = tree.locator('#parent');
+
+    await parent.evaluate((checkbox: any) => checkbox.click());
+    await expect(parent).toHaveAttribute('checked', '');
+    await expect(tree.locator('#child-one')).toHaveAttribute('checked', '');
+    await expect(tree.locator('#child-two')).toHaveAttribute('checked', '');
+  });
+
+  await test.step('aria-label keeps tracking label after more than one change', async () => {
+    const tree = await setup({ componentsPage, label: '' });
+
+    await expect(tree).toHaveAttribute('aria-label', '');
+    await tree.evaluate((element: any) => {
+      element.label = 'Select your Avengers team';
+    });
+    await expect(tree).toHaveAttribute('aria-label', 'Select your Avengers team');
+    await tree.evaluate((element: any) => {
+      element.label = 'Select your Guardians team';
+    });
+    await expect(tree).toHaveAttribute('aria-label', 'Select your Guardians team');
+  });
+
   await test.step('tabindex ownership is released when a checkbox leaves the tree', async () => {
     const tree = await setup({ componentsPage });
     const ironMan = tree.locator('#iron-man');
