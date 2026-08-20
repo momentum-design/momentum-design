@@ -264,13 +264,41 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
 
     await expect(tree).toHaveAttribute('aria-label', '');
     await tree.evaluate((element: any) => {
-      element.label = 'Select your Avengers team';
+      const checkboxTree = element;
+      checkboxTree.label = 'Select your Avengers team';
     });
     await expect(tree).toHaveAttribute('aria-label', 'Select your Avengers team');
     await tree.evaluate((element: any) => {
-      element.label = 'Select your Guardians team';
+      const checkboxTree = element;
+      checkboxTree.label = 'Select your Guardians team';
     });
     await expect(tree).toHaveAttribute('aria-label', 'Select your Guardians team');
+  });
+
+  await test.step('explicit aria-label survives a root-nested-root move', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-checkboxtree id="mover" aria-label="Custom label">
+            <mdc-checkbox id="mover-child" label="Child"></mdc-checkbox>
+          </mdc-checkboxtree>
+          <mdc-checkbox id="other-owner" label="Other owner"></mdc-checkbox>
+          <mdc-checkboxtree id="other-tree">
+            <mdc-checkbox id="other-child" label="Other child"></mdc-checkbox>
+          </mdc-checkboxtree>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const mover = componentsPage.page.locator('#mover');
+    await mover.waitFor();
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
+
+    await mover.evaluate(element => document.getElementById('other-tree')!.append(element));
+    await expect(mover).not.toHaveAttribute('aria-label');
+
+    await mover.evaluate(element => document.body.append(element));
+    await expect(mover).toHaveAttribute('aria-label', 'Custom label');
   });
 
   await test.step('tabindex ownership is released when a checkbox leaves the tree', async () => {
