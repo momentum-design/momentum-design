@@ -73,7 +73,7 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 
 - **Indeterminate isn't submitted** — the form value is the `value` (default `"on"`) when checked or `null` when unchecked; `indeterminate` has no submitted value, so resolve it before submission if it matters.
 - **Indeterminate is visual-only** — it is cleared automatically when the user toggles the checkbox, and is meant for parent rollups rather than an ordinary state.
-- **No inline group validation** — a single checkbox shows only an error state; group and tree validation belong on the surrounding `mdc-formfieldgroup`, below the group label.
+- **No inline group validation** — a single checkbox shows only its own error state. Use `mdc-formfieldgroup` for a flat group or [`mdc-checkboxtree`](../../checkboxtree/knowledge-base/checkboxtree.component.md) for a hierarchical group with shared validation text.
 
 ## Accessibility
 
@@ -107,7 +107,7 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 #### General
 
 - Group related checkboxes inside `mdc-formfieldgroup` (or a container with `role="group"` and a label) so assistive technologies announce the option set.
-- When composing a nested checkbox tree, keep it to about three levels deep so it stays usable on small screens; a checkbox group has no parent checkbox, so use a separate parent `mdc-checkbox` in the `indeterminate` state to roll up each nested checklist.
+- Use [`mdc-checkboxtree`](../../checkboxtree/knowledge-base/checkboxtree.component.md) when checkboxes form a hierarchy that needs parent selection, mixed-state rollups, and arrow-key navigation.
 - Use `disabled` (not `aria-hidden` or visual cues alone) when an option must not be selectable; the state is then exposed to assistive technology and removed from the tab order.
 - Reach for `soft-disabled` instead of `disabled` only when the option must remain discoverable by assistive technology (e.g. so a screen-reader user can still hear why it is unavailable).
 
@@ -126,3 +126,4 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 | `mdc-toggle` | Immediate binary on/off setting. |
 | `mdc-cardcheckbox` | Checkbox rendered as a card surface. |
 | `mdc-formfieldgroup` | Groups related checkboxes under a shared label with group validation. |
+| `mdc-checkboxtree` | Composes checkboxes recursively with parent selection, mixed-state rollups, and roving keyboard focus. |

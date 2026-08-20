@@ -47,6 +47,17 @@ class Checkbox
   implements AssociatedFormControl
 {
   /**
+   * Controls the tab order of the native checkbox input.
+   * @default 0
+   */
+  @property({
+    converter: {
+      fromAttribute: value => (value === null ? 0 : Number(value)),
+    },
+  })
+  override tabIndex = 0;
+
+  /**
    * Determines whether the checkbox is checked (selected) or unchecked.
    * @default false
    */
@@ -232,7 +243,7 @@ class Checkbox
           .disabled="${this.disabled}"
           ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          tabindex="${this.disabled ? -1 : 0}"
+          tabindex="${this.disabled ? -1 : this.tabIndex}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
