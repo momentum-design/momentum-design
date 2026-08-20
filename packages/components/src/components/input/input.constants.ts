@@ -1,6 +1,6 @@
 import utils from '../../utils/tag-name';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
-import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { VALIDATION, DEFAULTS as FFW_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -32,6 +32,7 @@ const PREFIX_TEXT_OPTIONS = {
 };
 
 const DEFAULTS = {
+  HEADING_ID: FFW_DEFAULTS.HEADING_ID,
   VALIDATION: VALIDATION.DEFAULT,
   ICON_SIZE_VALUE: 1,
   ICON_SIZE_UNIT: 'rem',

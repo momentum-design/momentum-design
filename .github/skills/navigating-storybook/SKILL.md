@@ -1,6 +1,6 @@
 ---
 name: navigating-storybook
-description: "Navigate and inspect Momentum Design components in Storybook using Chrome DevTools MCP. Use for viewing rendered stories, testing interactions, and debugging memory leaks in the browser. Applies to packages/components only."
+description: 'Navigate and inspect Momentum Design components in Storybook using Chrome DevTools MCP. Use for viewing rendered stories, testing interactions, and debugging memory leaks in the browser. Applies to packages/components only.'
 ---
 
 # Navigating Storybook with Chrome DevTools MCP
@@ -66,6 +66,29 @@ http://localhost:6006/iframe.html?id=components-textarea--example
 
 The iframe URL loads only the story content (no Storybook chrome), which is ideal for inspecting components.
 
+Use the full Storybook URL when validation depends on manager controls such as direction or theme:
+
+```text
+http://localhost:6006/?path=/story/{story-id}
+```
+
+## Exercise global direction
+
+Validate the same story in both directions through the Storybook direction toolbar. Do not depend on a hard-coded
+`dir="rtl"` wrapper because that bypasses the integration consumers use in Storybook.
+
+For deterministic navigation or browser automation, set the `storybook-addon-rtl` global in the full story URL:
+
+```text
+http://localhost:6006/?path=/story/components-textarea--example&globals=addonRtl:rtl
+http://localhost:6006/?path=/story/components-textarea--example&globals=addonRtl:ltr
+```
+
+In each direction, inspect logical layout, directional icons, keyboard behavior, focus order, wrapping, and overflow that
+apply to the component. Use the canonical
+[Storybook convention](../../../packages/components/conventions/component-storybook.md#exercise-direction-through-storybook)
+for story-authoring decisions.
+
 ## Fallback: Querying the Story Index
 
 If you cannot determine the story ID from the source (e.g., dynamically generated stories), fetch the index:
@@ -76,7 +99,7 @@ If you cannot determine the story ID from the source (e.g., dynamically generate
    () => {
      const json = JSON.parse(document.body.innerText);
      const keys = Object.keys(json.entries || {});
-     return keys.filter((k) => k.includes("textarea"));
+     return keys.filter((k) => k.includes('textarea'));
    };
    ```
 3. Use the returned ID in the iframe URL.
@@ -93,7 +116,7 @@ Use `mcp_io_github_chr_evaluate_script` to inspect DOM state:
 
 ```javascript
 () => {
-  const component = document.querySelector("mdc-textarea");
+  const component = document.querySelector('mdc-textarea');
   return {
     tagName: component?.tagName,
     shadowChildren: component?.shadowRoot?.children.length,
@@ -120,13 +143,13 @@ filePath: "scratch/heap-before.heapsnapshot"
 
 ```javascript
 async () => {
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   document.body.appendChild(container);
 
   // Mount components
   for (let i = 0; i < 50; i++) {
-    const el = document.createElement("mdc-textarea");
-    el.setAttribute("label", `Test ${i}`);
+    const el = document.createElement('mdc-textarea');
+    el.setAttribute('label', `Test ${i}`);
     container.appendChild(el);
   }
   await new Promise((r) => setTimeout(r, 500));
@@ -148,6 +171,9 @@ async () => {
 2. Navigate: `mcp_io_github_chr_navigate_page` → iframe URL
 3. Snapshot: `mcp_io_github_chr_take_snapshot`
 4. Optionally screenshot: `mcp_io_github_chr_take_screenshot`
+
+When direction or another toolbar-owned global is in scope, repeat the workflow through the full Storybook URL with each
+required global value.
 
 ### Test Component Interaction
 
