@@ -56,7 +56,7 @@ Minimal markup example:
 ### Content guidance
 
 - Keep step labels parallel across the sequence — the same part of speech and tense — so the set reads as one coherent process.
-- Keep each label short (one or two words); the layout reserves limited room per step and long labels wrap.
+- Keep each label concise and distinct. Stacked steps use the label's natural width when space is available, then wrap labels and helper text to a maximum of two lines before showing an ellipsis.
 
 ### Property/Attribute details
 
@@ -68,8 +68,8 @@ Minimal markup example:
 ### Limitations
 
 - **No focus management** — the stepper does not move focus between steps or manage a roving tabindex. Wire step focus and keyboard flow in the consuming app.
-- **No flow enforcement** — it renders state but does not block navigation or validate order; linear versus non-linear behavior is the consumer's responsibility.
-- **Fixed stacked width** — `stacked` steps use a fixed width, so long labels wrap. Keep labels to one or two words.
+- **No flow enforcement** — it renders state but does not determine which destinations are reachable; for a linear flow, set `disabled` on each unavailable `mdc-stepperitem` and update it as the user progresses.
+- **Long stacked copy truncates** — `stacked` labels and helper text wrap to a maximum of two lines before showing an ellipsis. Shorten the copy or use `vertical` orientation when the complete text must remain visible.
 
 ## Accessibility
 
