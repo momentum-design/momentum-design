@@ -283,3 +283,44 @@ export const PillWithPostfixSlot: StoryObj = {
     children: 'Wow',
   },
 };
+
+export const ButtonWithTooltip: StoryObj = {
+  render: args =>
+    html`<mdc-button
+        @click="${action('onclick')}"
+        @keydown="${action('onkeydown')}"
+        @keyup="${action('onkeyup')}"
+        @focus="${action('onfocus')}"
+        ?active="${args.active}"
+        ?disabled="${args.disabled}"
+        ?soft-disabled="${args['soft-disabled']}"
+        variant="${ifDefined(args.variant)}"
+        size="${ifDefined(args.size)}"
+        color="${ifDefined(args.color)}"
+        type="${ifDefined(args.type)}"
+        role="${ifDefined(args.role)}"
+        tabIndex="${ifDefined(args.tabIndex)}"
+        aria-label="${ifDefined(args['aria-label'])}"
+        ariaStateKey="${ifDefined(args.ariaStateKey)}"
+        ?inverted="${args.inverted}"
+        style="${ifDefined(args.style)}"
+        ?auto-focus-on-mount="${args['auto-focus-on-mount']}"
+        id="button"
+      >
+        ${args.children}
+
+        <div slot="prefix">
+          <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+        </div>
+        <div slot="postfix">
+          <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+        </div>
+      </mdc-button>
+      <mdc-tooltip show-arrow="true" triggerID="button" position="top">Tooltip text</mdc-tooltip>`,
+  args: {
+    ...Example.args,
+    'prefix-icon': 'placeholder-bold',
+    'postfix-icon': 'placeholder-bold',
+    children: 'Hover me',
+  },
+};

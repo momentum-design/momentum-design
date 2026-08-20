@@ -768,4 +768,50 @@ test.describe.parallel('mdc-button', () => {
       await expect(waitForClick).toEventEmitted();
     });
   });
+
+  test('mdc-button with tooltip stays visible when hovering over prefix/postfix icons', async ({ componentsPage }) => {
+    await componentsPage.mount({
+      html: `
+        <div id="wrapper">
+          <mdc-button id="button-with-tooltip">
+            Hover me
+            <div slot="prefix">
+              <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+            </div>
+            <div slot="postfix">
+              <mdc-icon name="placeholder-bold" size="small"></mdc-icon>
+            </div>
+          </mdc-button>
+          <mdc-tooltip show-arrow triggerid="button-with-tooltip" placement="top">Tooltip text</mdc-tooltip>
+        </div>`,
+      clearDocument: true,
+    });
+
+    const button = componentsPage.page.locator('#button-with-tooltip');
+    const tooltip = componentsPage.page.locator('mdc-tooltip');
+    const prefixIcon = button.locator('div[slot="prefix"] mdc-icon');
+    const postfixIcon = button.locator('div[slot="postfix"] mdc-icon');
+
+    await expect(tooltip).not.toBeVisible();
+
+    await test.step('hovering over the button shows the tooltip', async () => {
+      await button.hover();
+      await expect(tooltip).toBeVisible();
+    });
+
+    await test.step('hovering over the prefix icon keeps the tooltip visible', async () => {
+      await prefixIcon.hover();
+      await expect(tooltip).toBeVisible();
+    });
+
+    await test.step('hovering over the postfix icon keeps the tooltip visible', async () => {
+      await postfixIcon.hover();
+      await expect(tooltip).toBeVisible();
+    });
+
+    await test.step('moving the mouse away hides the tooltip', async () => {
+      await componentsPage.page.mouse.move(1000, 1000);
+      await expect(tooltip).not.toBeVisible();
+    });
+  });
 });
