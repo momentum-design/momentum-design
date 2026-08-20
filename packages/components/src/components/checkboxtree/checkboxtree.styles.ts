@@ -19,9 +19,7 @@ const styles = css`
   }
 
   ::slotted(mdc-checkboxtree) {
-    /* Declared as a fallback here instead of set on :host, so a value the consumer sets on the
-       outermost tree inherits down through every nested level instead of being reset back to the
-       default by each nested host's own :host rule. */
+    /* Keep the fallback here so consumer overrides inherit through nested trees. */
     padding-inline-start: var(--mdc-checkboxtree-indent, 1.5rem);
   }
 `;

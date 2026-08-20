@@ -26,8 +26,7 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  *
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
- * @event modified - Lifecycle event dispatched when checked, disabled, indeterminate, readonly or
- * softDisabled changes. For internal use by parent components such as mdc-checkboxtree.
+ * @event modified - Internal lifecycle event dispatched when checkbox state changes.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
@@ -167,9 +166,7 @@ class Checkbox
   override click() {
     super.click();
     if (this.toggleState()) {
-      // Unlike the native input's own 'change' event (relayed by handleChange), a direct call to the
-      // host's click() never touches the input, so the toggle must dispatch its own 'change' for
-      // ancestors (e.g. mdc-checkboxtree) that cascade state through it.
+      // Host clicks bypass the native input, so dispatch the equivalent change event.
       this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     }
   }

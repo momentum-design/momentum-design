@@ -297,9 +297,7 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await mover.evaluate(element => document.getElementById('other-tree')!.append(element));
     await expect(mover).not.toHaveAttribute('aria-label');
 
-    // Moved back into #root (the mount container clearDocument clears), not document.body: a
-    // stray body-level element would otherwise outlive this step and collide with a later step
-    // that mounts another element sharing this id.
+    // Return to the mount root so clearDocument cleans up this fixture.
     await mover.evaluate(element => document.querySelector('#root')!.append(element));
     await expect(mover).toHaveAttribute('aria-label', 'Custom label');
   });
@@ -369,9 +367,6 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
     await mover.evaluate(element => document.getElementById('host-tree')!.append(element));
     await expect(mover).not.toHaveAttribute('aria-label');
 
-    // Fully removed (not merely reparented) while a `label` change is pending: `isNested` reads
-    // as false for a parentless element the same as a root would, so this exercises the
-    // isConnected handling in update() rather than the reparenting path above.
     await mover.evaluate(async (element: any) => {
       const checkboxTree = element;
       checkboxTree.remove();
@@ -417,9 +412,7 @@ test('mdc-checkboxtree', async ({ componentsPage }) => {
       `,
     });
 
-    // Simulates a spatial-navigation provider moving focus into the tree from outside, landing
-    // directly on a non-first item. This reaches ListNavigationMixin.handleNavBeforeFocus ->
-    // resetTabIndexes(), a different tab-stop-moving path than resetTabIndexAndSetFocus().
+    // Enter spatial navigation on a non-first item through resetTabIndexes().
     await tree.evaluate(() => {
       const third = document.querySelector('#third') as HTMLElement;
       const event = new Event('navbeforefocus', { bubbles: true, cancelable: true, composed: true });
