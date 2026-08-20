@@ -9,6 +9,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ModifiedEventMixin } from '../../utils/mixins/lifecycle/ModifiedEventMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -42,7 +43,9 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  */
 class Checkbox
   extends KeyDownHandledMixin(
-    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ModifiedEventMixin(FormfieldWrapper)))),
+    ),
   )
   implements AssociatedFormControl
 {
@@ -210,6 +213,16 @@ class Checkbox
       } else {
         this.internals.states.delete('checked');
       }
+    }
+
+    if (
+      changedProperties.has('checked') ||
+      changedProperties.has('disabled') ||
+      changedProperties.has('indeterminate') ||
+      changedProperties.has('readonly') ||
+      changedProperties.has('softDisabled')
+    ) {
+      this.dispatchModifiedEvent('state');
     }
   }
 

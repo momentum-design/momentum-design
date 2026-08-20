@@ -43,13 +43,6 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   protected override loop: 'true' | 'false' = 'false';
 
-  /**
-   * Programmatic checkbox property changes are reflected to attributes but do not emit `change`.
-   * Observe only the reflected state needed to keep ancestor state and roving focus synchronized.
-   * @internal
-   */
-  private stateObserver?: MutationObserver;
-
   /** @internal */
   private managedTabIndexes = new Map<Checkbox, string | null>();
 
@@ -59,6 +52,7 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   constructor() {
     super();
     this.addEventListener('change', this.handleCheckboxChange);
+    this.addEventListener('modified', this.handleCheckboxModified);
   }
 
   override connectedCallback(): void {
@@ -70,14 +64,11 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
     this.synchronizeContext();
 
     if (!this.isNested) {
-      this.observeCheckboxState();
       this.synchronizeTree();
     }
   }
 
   override disconnectedCallback(): void {
-    this.stateObserver?.disconnect();
-    this.stateObserver = undefined;
     this.releaseManagedTabIndexes();
     super.disconnectedCallback();
   }
@@ -115,23 +106,14 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   }
 
   /** @internal */
-  private observeCheckboxState(): void {
-    this.stateObserver?.disconnect();
-    this.stateObserver = new MutationObserver(mutations => {
-      if (!mutations.some(mutation => mutation.target instanceof Element && mutation.target.matches(CHECKBOX_TAG_NAME)))
-        return;
-      this.synchronizeTree();
-    });
-    this.stateObserver.observe(this, {
-      attributeFilter: ['checked', 'disabled', 'indeterminate', 'readonly', 'soft-disabled'],
-      attributes: true,
-      subtree: true,
-    });
-  }
-
-  /** @internal */
   private handleSlotChange = (): void => {
     this.rootTree.synchronizeTree();
+  };
+
+  /** @internal */
+  private handleCheckboxModified = (event: Event): void => {
+    if (this.isNested || !(event.target instanceof HTMLElement) || !event.target.matches(CHECKBOX_TAG_NAME)) return;
+    this.synchronizeTree();
   };
 
   /** @internal */

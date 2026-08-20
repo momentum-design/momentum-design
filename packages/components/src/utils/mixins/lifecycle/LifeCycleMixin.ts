@@ -4,12 +4,13 @@ import type { LitElement } from 'lit';
 import type { Constructor } from '../index.types';
 
 import { LIFE_CYCLE_EVENTS } from './lifecycle.contants';
+import { ModifiedEventMixin } from './ModifiedEventMixin';
 
 export declare class LifeCycleMixinInterface {
   /**
-   * Dispatches a 'LifeCycleModifiedEvent' event for the passed changed type.
+   * Dispatches a lifecycle `modified` event for the passed change type.
    *
-   * @param change - The type of change that occurred, e.g., 'disabled'.
+   * @param change - The type of change that occurred.
    */
   protected dispatchModifiedEvent(change: string): void;
 }
@@ -37,7 +38,7 @@ export declare class LifeCycleMixinInterface {
  * ```
  */
 export const LifeCycleMixin = <T extends Constructor<LitElement>>(superClass: T) => {
-  class InnerMixinClass extends superClass {
+  class InnerMixinClass extends ModifiedEventMixin(superClass) {
     override connectedCallback(): void {
       super.connectedCallback();
 
@@ -61,17 +62,6 @@ export const LifeCycleMixin = <T extends Constructor<LitElement>>(superClass: T)
       super.disconnectedCallback();
       this.dispatchEvent(
         new CustomEvent(LIFE_CYCLE_EVENTS.DESTROYED, { bubbles: true, composed: true, detail: { lifecycle: true } }),
-      );
-    }
-
-    /** @see LifeCycleMixinInterface.dispatchModifiedEvent */
-    protected dispatchModifiedEvent(change: string): void {
-      this.dispatchEvent(
-        new CustomEvent(LIFE_CYCLE_EVENTS.MODIFIED, {
-          detail: { change, lifecycle: true },
-          bubbles: true,
-          composed: true,
-        }),
       );
     }
   }
