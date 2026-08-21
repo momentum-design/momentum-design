@@ -73,9 +73,9 @@ export const ThemedDocsContainer: React.FC<React.PropsWithChildren<DocsContainer
     if (!body) return undefined;
     const prev = Array.from(body.classList).filter((c) => c.startsWith("mds-theme-stable-"));
     prev.forEach((c) => body.classList.remove(c));
-    body.classList.add(themeClass, "mds-typography", "mds-elevation", "mds-animation", "mds-motion");
+    body.classList.add(themeClass, "mds-typography", "mds-elevation", "mds-motion","mds-animation");
     return () => {
-      body.classList.remove(themeClass, "mds-typography", "mds-elevation", "mds-animation", "mds-motion");
+      body.classList.remove(themeClass, "mds-typography", "mds-elevation", "mds-motion","mds-animation");
     };
   }, [themeClass]);
 
