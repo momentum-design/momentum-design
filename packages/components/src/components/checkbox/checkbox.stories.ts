@@ -1,20 +1,27 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from 'storybook/actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import '../avatar';
 import '../button';
 import { POPOVER_PLACEMENT, STRATEGY } from '../popover/popover.constants';
+import { PRESENCE_TYPE } from '../presence/presence.constants';
 
 import type Checkbox from './checkbox.component';
 import { CHECKBOX_VALIDATION } from './checkbox.constants';
+
+type CheckboxElement = Checkbox & HTMLElement;
 
 const render = (args: Args) => html`
   <div role="main">
     <mdc-checkbox
       label="${args.label}"
+      supporting-text=${ifDefined(args['supporting-text'])}
       help-text="${args['help-text']}"
       help-text-type="${args['help-text-type']}"
       ?checked="${args.checked}"
@@ -53,6 +60,9 @@ const meta: Meta = {
       control: 'text',
     },
     'help-text': {
+      control: 'text',
+    },
+    'supporting-text': {
       control: 'text',
     },
     'help-text-type': {
@@ -149,6 +159,33 @@ export const Indeterminate: StoryObj = {
   },
 };
 
+export const LobbyParticipant: StoryObj = {
+  render: () => html`
+    <mdc-checkbox checked>
+      <mdc-avatar
+        slot="leading-visual"
+        size="32"
+        src=${imageFixtures.avatar}
+        presence=${PRESENCE_TYPE.ON_DEVICE}
+      ></mdc-avatar>
+      <span slot="label">Alex Example</span>
+      <span slot="supporting-text">example.com</span>
+      <mdc-button
+        slot="toggletip"
+        id="lobby-participant-info-trigger"
+        prefix-icon="info-circle-regular"
+        aria-label="About Alex Example"
+        variant="tertiary"
+        size="20"
+      ></mdc-button>
+      <mdc-toggletip slot="toggletip" triggerid="lobby-participant-info-trigger" placement="top" show-arrow>
+        This participant is connected from a video device.
+      </mdc-toggletip>
+    </mdc-checkbox>
+  `,
+  ...hideAllControls(),
+};
+
 export const DisabledVariants: StoryObj = {
   render: () =>
     html` <div role="main">
@@ -177,22 +214,22 @@ export const FormField: StoryObj = {
         <form @submit=${handleSubmit}>
           <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
             <legend>Select your super hero power</legend>
-          <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
-          <mdc-checkbox
-            label="Mind Control"
-            value="mind-control"
-            name="super-power"
-            required
-            validation-message="This selection is necessary"
-          ></mdc-checkbox>
-          <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
-          <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
-          <div style="display: flex; gap: 0.25rem;">
-            <mdc-button type="submit" size="24">Submit</mdc-button>
-            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
-          </div>
-        </fieldset>
-      </form>
+            <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+            <mdc-checkbox
+              label="Mind Control"
+              value="mind-control"
+              name="super-power"
+              required
+              validation-message="This selection is necessary"
+            ></mdc-checkbox>
+            <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
+            <div style="display: flex; gap: 0.25rem;">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </fieldset>
+        </form>
       </div>
     `;
   },
@@ -202,7 +239,7 @@ export const FormField: StoryObj = {
 export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
   render: args => {
     const validateCheckboxGroup = (form: HTMLFormElement): boolean => {
-      const checkboxes = Array.from(form.querySelectorAll('mdc-checkbox[name="super-power"]')) as Checkbox[];
+      const checkboxes = Array.from(form.querySelectorAll<CheckboxElement>('mdc-checkbox[name="super-power"]'));
 
       const requiredBox = checkboxes.find(cb => cb.hasAttribute('required'));
       if (!requiredBox) return true;
@@ -231,7 +268,7 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
 
     const handleReset = (event: Event) => {
       const form = event.target as HTMLFormElement;
-      const requiredBox = form.querySelector('mdc-checkbox[name="super-power"][required]') as Checkbox;
+      const requiredBox = form.querySelector<CheckboxElement>('mdc-checkbox[name="super-power"][required]');
       if (requiredBox) {
         requiredBox.setAttribute('help-text', args['help-text'] || '');
         requiredBox.setAttribute('help-text-type', args['help-text-type'] || 'default');
@@ -243,16 +280,16 @@ export const FormFieldCheckboxWithHelpTextValidation: StoryObj = {
         <form @submit=${handleSubmit} @reset=${handleReset} novalidate>
           <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
             <legend>Select your super hero power (with validation)</legend>
-          <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
-          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
-          <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
-          <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
-          <div style="display: flex; gap: 0.25rem;">
-            <mdc-button type="submit" size="24">Submit</mdc-button>
-            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
-          </div>
-        </fieldset>
-      </form>
+            <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Mind Control" value="mind-control" name="super-power" required></mdc-checkbox>
+            <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
+            <div style="display: flex; gap: 0.25rem;">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </fieldset>
+        </form>
       </div>
     `;
   },
