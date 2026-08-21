@@ -181,40 +181,49 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   }
 
   /**
+   * Renders the toggletip slot or the default info button and toggletip.
+   *
+   * @internal
+   */
+  protected renderToggletip() {
+    const triggerId = `toggletip-trigger-${uuidv4()}`;
+    const shouldDisableToggletip = this.disabled || this.softDisabled;
+
+    return html`<slot name="toggletip">
+      ${this.toggletipText
+        ? html` <mdc-button
+              part="info-icon-btn"
+              prefix-icon="${DEFAULTS.INFO_ICON}"
+              size="${DEFAULTS.ICON_SIZE}"
+              variant="${BUTTON_VARIANTS.TERTIARY}"
+              aria-label="${ifDefined(this.infoIconAriaLabel)}"
+              ?disabled="${shouldDisableToggletip}"
+              ?soft-disabled="${this.softDisabled}"
+              id="${triggerId}"
+            ></mdc-button>
+            <mdc-toggletip
+              part="label-toggletip"
+              triggerid="${triggerId}"
+              id="label-toggletip-id"
+              placement="${this.toggletipPlacement}"
+              strategy="${this.toggletipStrategy}"
+              show-arrow
+              >${this.toggletipText}</mdc-toggletip
+            >`
+        : nothing}
+    </slot>`;
+  }
+
+  /**
    * renders the label container that contains the label and labelInfoToggleTip.
    * @returns void
    */
   protected renderLabel() {
     if (!this.label) return nothing;
-    const triggerId = `toggletip-trigger-${uuidv4()}`;
-    const shouldDisableToggletip = this.disabled || this.softDisabled;
 
     return html`<div part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
-      ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      <slot name="toggletip">
-        ${this.toggletipText
-          ? html` <mdc-button
-                part="info-icon-btn"
-                prefix-icon="${DEFAULTS.INFO_ICON}"
-                size="${DEFAULTS.ICON_SIZE}"
-                variant="${BUTTON_VARIANTS.TERTIARY}"
-                aria-label="${ifDefined(this.infoIconAriaLabel)}"
-                ?disabled="${shouldDisableToggletip}"
-                ?soft-disabled="${this.softDisabled}"
-                id="${triggerId}"
-              ></mdc-button>
-              <mdc-toggletip
-                part="label-toggletip"
-                triggerid="${triggerId}"
-                id="label-toggletip-id"
-                placement="${this.toggletipPlacement}"
-                strategy="${this.toggletipStrategy}"
-                show-arrow
-                >${this.toggletipText}</mdc-toggletip
-              >`
-          : nothing}
-      </slot>
+      ${this.required ? html`<span part="required-indicator">*</span>` : nothing} ${this.renderToggletip()}
     </div>`;
   }
 

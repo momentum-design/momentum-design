@@ -1,4 +1,5 @@
 import { ComponentsPage, test, expect } from '../../../config/playwright/setup';
+import { imageFixtures } from '../../../config/playwright/setup/utils/imageFixtures';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 
@@ -7,6 +8,7 @@ type SetupOptions = {
   name?: string;
   value?: string;
   label?: string;
+  'supporting-text'?: string;
   'help-text'?: string;
   'help-text-type'?: string;
   readonly?: boolean;
@@ -25,6 +27,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.name ? `name="${restArgs.name}"` : ''}
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
+        ${restArgs['supporting-text'] ? `supporting-text="${restArgs['supporting-text']}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
         ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
         ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
@@ -177,6 +180,32 @@ test('mdc-checkbox', async ({ componentsPage }) => {
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
+    checkboxStickerSheet.setAttributes({
+      checked: true,
+    });
+    checkboxStickerSheet.setChildren(`
+      <mdc-avatar
+        slot="leading-visual"
+        size="32"
+        src="${imageFixtures.avatar}"
+        presence="on-device"
+      ></mdc-avatar>
+      <span slot="label">Alex Example</span>
+      <span slot="supporting-text">example.com</span>
+      <mdc-button
+        slot="toggletip"
+        id="visual-participant-info-trigger"
+        prefix-icon="info-circle-regular"
+        aria-label="About Alex Example"
+        variant="tertiary"
+        size="20"
+      ></mdc-button>
+      <mdc-toggletip slot="toggletip" triggerid="visual-participant-info-trigger">
+        This participant is connected from a video device.
+      </mdc-toggletip>
+    `);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
+
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
@@ -191,6 +220,18 @@ test('mdc-checkbox', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('checkbox-default');
+
+    await componentsPage.mount({
+      html: `
+        <div role="group" aria-label="Meeting participants">
+          <mdc-checkbox label="Alex Example" supporting-text="example.com">
+            <span slot="leading-visual" aria-hidden="true">AE</span>
+          </mdc-checkbox>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    await componentsPage.accessibility.checkForA11yViolations('checkbox-rich-content');
   });
 
   /**
@@ -208,6 +249,18 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(checkbox, { label: 'Checkbox label' });
       const label = componentsPage.page.locator('label');
       await expect(label).toHaveText('Checkbox label');
+    });
+
+    await test.step('should include supporting text in the accessible name', async () => {
+      await componentsPage.setAttributes(checkbox, {
+        label: 'Alex Example',
+        'supporting-text': 'example.com',
+      });
+      const input = checkbox.locator('input[type="checkbox"]');
+      await expect(input).toHaveAccessibleName('Alex Example example.com');
+
+      await componentsPage.removeAttribute(checkbox, 'supporting-text');
+      await expect(input).toHaveAccessibleName('Alex Example');
     });
 
     await test.step('should have mdc-text element when the help-text attribute is passed', async () => {
@@ -256,6 +309,22 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await componentsPage.setAttributes(checkbox, { 'soft-disabled': '' });
       await expect(checkbox).toHaveAttribute('soft-disabled', '');
       await componentsPage.removeAttribute(checkbox, 'soft-disabled');
+    });
+
+    await test.step('should use slotted primary and supporting text as the accessible name', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-checkbox>
+            <span slot="label">Example Device</span>
+            <span slot="supporting-text">example.com</span>
+          </mdc-checkbox>
+        `,
+        clearDocument: true,
+      });
+      const slottedCheckbox = componentsPage.page.locator('mdc-checkbox');
+      await expect(slottedCheckbox.locator('input[type="checkbox"]')).toHaveAccessibleName(
+        'Example Device example.com',
+      );
     });
   });
 
@@ -310,6 +379,64 @@ test('mdc-checkbox', async ({ componentsPage }) => {
 
       await checkbox.click();
       await expect(checkbox.locator('input[type="checkbox"]')).not.toBeChecked();
+    });
+
+    await test.step('rich label content should toggle the checkbox once', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-checkbox>
+            <span slot="leading-visual" data-testid="leading-visual" aria-hidden="true">AE</span>
+            <span slot="label">Alex Example</span>
+            <span slot="supporting-text" data-testid="supporting-text">example.com</span>
+          </mdc-checkbox>
+        `,
+        clearDocument: true,
+      });
+      const checkbox = componentsPage.page.locator('mdc-checkbox');
+      const input = checkbox.locator('input[type="checkbox"]');
+
+      await checkbox.evaluate(element => {
+        const checkboxWithCounter = element as HTMLElement & { changeEventCount: number };
+        checkboxWithCounter.changeEventCount = 0;
+        checkboxWithCounter.addEventListener('change', () => {
+          checkboxWithCounter.changeEventCount += 1;
+        });
+      });
+
+      await checkbox.getByTestId('leading-visual').click();
+      await expect(input).toBeChecked();
+      expect(
+        await checkbox.evaluate(element => (element as HTMLElement & { changeEventCount: number }).changeEventCount),
+      ).toBe(1);
+
+      await checkbox.getByTestId('supporting-text').click();
+      await expect(input).not.toBeChecked();
+    });
+
+    await test.step('toggletip trigger should not toggle the checkbox', async () => {
+      await componentsPage.mount({
+        html: `
+          <mdc-checkbox label="Alex Example" supporting-text="example.com">
+            <mdc-button
+              slot="toggletip"
+              id="participant-info-trigger"
+              prefix-icon="info-circle-regular"
+              aria-label="About Alex Example"
+              variant="tertiary"
+              size="20"
+            ></mdc-button>
+            <mdc-toggletip slot="toggletip" triggerid="participant-info-trigger">
+              This participant is connected from a video device.
+            </mdc-toggletip>
+          </mdc-checkbox>
+        `,
+        clearDocument: true,
+      });
+      const checkbox = componentsPage.page.locator('mdc-checkbox');
+      const input = checkbox.locator('input[type="checkbox"]');
+
+      await checkbox.locator('mdc-button[slot="toggletip"]').click();
+      await expect(input).not.toBeChecked();
     });
 
     await test.step('checkbox should be focused but not change state when readonly', async () => {

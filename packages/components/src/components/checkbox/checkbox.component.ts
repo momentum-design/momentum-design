@@ -1,5 +1,5 @@
 import { CSSResult, html, nothing, PropertyValueMap, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { AutoFocusOnMountMixin } from '../../utils/mixins/AutoFocusOnMountMixin';
@@ -26,8 +26,15 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
+ * @slot leading-visual - A decorative visual, such as an avatar or icon, displayed between the checkbox and label text.
+ * @slot label - Rich primary label content. Slotted content replaces the `label` property and remains associated with the native checkbox.
+ * @slot supporting-text - Supporting label content. Slotted content replaces the `supporting-text` property.
+ * @slot toggletip - Custom toggletip trigger and content displayed separately from the checkbox label target.
+ *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.
+ * @csspart label-content - The container for the primary label and supporting text.
+ * @csspart supporting-text - The supporting label text element.
  * @csspart required-indicator - The required indicator element that is displayed next to the label when the `required` property is set to true.
  * @csspart info-icon-btn - The info icon button element that is displayed next to the label when the `toggletip-text` property is set.
  * @csspart label-toggletip - The toggletip element that is displayed when the info icon button is clicked.
@@ -38,7 +45,16 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  * @csspart text-container - The container for the label and helper text elements.
  * @csspart static-checkbox - The staticcheckbox that provides the visual checkbox appearance.
  *
+ * @cssproperty --mdc-checkbox-gap - Gap between the checkbox control and its text container.
+ * @cssproperty --mdc-checkbox-label-gap - Gap between the leading visual and label content.
+ * @cssproperty --mdc-checkbox-label-content-gap - Gap between the primary label and supporting text.
+ * @cssproperty --mdc-checkbox-supporting-text-font-size - Font size for supporting text.
+ * @cssproperty --mdc-checkbox-supporting-text-font-weight - Font weight for supporting text.
+ * @cssproperty --mdc-checkbox-supporting-text-line-height - Line height for supporting text.
+ * @cssproperty --mdc-checkbox-supporting-text-color - Color for supporting text.
+ *
  * @cssstate checked - Active when the checkbox is checked.
+ * @cssstate rich-label - Active when the checkbox has a leading visual or supporting text.
  */
 class Checkbox
   extends KeyDownHandledMixin(
@@ -60,6 +76,17 @@ class Checkbox
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
+
+  /**
+   * Supporting text that identifies or qualifies the checkbox option. It is part of the checkbox label target.
+   */
+  @property({ type: String, reflect: true, attribute: 'supporting-text' }) supportingText?: string;
+
+  /** @internal */
+  @state() private hasSlottedLabelContent = false;
+
+  /** @internal */
+  @state() private hasSlottedRichLabelContent = false;
 
   /**
    * Determines the visual style of the helper text.
@@ -200,12 +227,51 @@ class Checkbox
         this.internals.states.delete('checked');
       }
     }
+
+    if (changedProperties.has('supportingText') || changedProperties.has('hasSlottedRichLabelContent')) {
+      if (this.supportingText || this.hasSlottedRichLabelContent) {
+        this.internals.states.add('rich-label');
+      } else {
+        this.internals.states.delete('rich-label');
+      }
+    }
+  }
+
+  /** @internal */
+  private handleLabelContentSlotChange(): void {
+    const slots = this.shadowRoot?.querySelectorAll<HTMLSlotElement>(
+      'slot[name="leading-visual"], slot[name="label"], slot[name="supporting-text"]',
+    );
+
+    const assignedSlots = Array.from(slots ?? []).filter(slot => slot.assignedElements({ flatten: true }).length > 0);
+
+    this.hasSlottedLabelContent = assignedSlots.length > 0;
+    this.hasSlottedRichLabelContent = assignedSlots.some(slot => slot.name !== 'label');
+  }
+
+  /** @internal */
+  private renderCheckboxLabel() {
+    return html`<div part="label-text">
+      <label for="${this.inputId}" id="${FORMFIELD_DEFAULTS.HEADING_ID}" part="label">
+        <slot name="leading-visual" @slotchange=${this.handleLabelContentSlotChange}></slot>
+        <span part="label-content">
+          <slot name="label" @slotchange=${this.handleLabelContentSlotChange}>${this.label}</slot>
+          <span part="supporting-text">
+            <slot name="supporting-text" @slotchange=${this.handleLabelContentSlotChange}>${this.supportingText}</slot>
+          </span>
+        </span>
+      </label>
+      ${this.required ? html`<span part="required-indicator">*</span>` : nothing} ${this.renderToggletip()}
+    </div>`;
   }
 
   /** @internal */
   private renderLabelAndHelperText = () => {
-    if (!this.label) return nothing;
-    return html`<div part="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
+    const hasLabelContent = Boolean(this.label || this.supportingText || this.hasSlottedLabelContent);
+
+    return html`<div part="text-container" ?hidden=${!hasLabelContent}>
+      ${this.renderCheckboxLabel()} ${this.renderHelperText()}
+    </div>`;
   };
 
   public override render() {
@@ -231,9 +297,9 @@ class Checkbox
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           ?readonly="${this.readonly}"
-          aria-label="${this.dataAriaLabel ?? ''}"
+          aria-label=${ifDefined(this.dataAriaLabel)}
           tabindex="${this.disabled ? -1 : 0}"
-          aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+          aria-describedby=${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : undefined)}
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />

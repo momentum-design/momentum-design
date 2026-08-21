@@ -16,6 +16,7 @@ A checkbox can also be in an `indeterminate` (mixed) state — typically used wh
 - Use `mdc-checkbox` when the user can select **any number** of options from a list (zero, one, or many).
 - Use a single `mdc-checkbox` for a binary choice that does not need to take effect immediately (for example agreeing to terms before submitting a form).
 - Use `mdc-checkbox` inside `mdc-formfieldgroup` when several checkboxes belong to the same labeled group.
+- Use `mdc-checkbox` with a leading visual and supporting text when an option needs identifying context, such as a participant avatar and organization.
 
 ### When not to use
 
@@ -48,10 +49,24 @@ Minimal markup example:
 
 Listen for the `change` event to react to toggles; the new state is on `event.target.checked`.
 
+### Composition
+
+Use the `leading-visual` slot for a noninteractive avatar or icon. Use the `label` slot when the primary label needs structured markup, and use `supporting-text` or its matching slot for short identifying metadata. All three regions belong to the native label activation target.
+
+When a leading visual or supporting text is present, the component automatically applies the rich-label spacing, primary-label typography, and control alignment. Consumers do not need feature-specific CSS for this composition.
+
+```html
+<mdc-checkbox label="Alex Example" supporting-text="example.com">
+  <mdc-avatar slot="leading-visual" size="32"></mdc-avatar>
+</mdc-checkbox>
+```
+
+Keep links, buttons, and other interactive elements out of these label slots. Use the `toggletip` slot for a separate information action.
+
 ### Content guidance
 
 - Write a clear, concise `label` that is explicit about what happens when the checkbox is selected; the label always trails the checkbox input. If a visible label cannot be shown (for example compact tables), supply `data-aria-label` instead.
-- Keep labels to roughly 4–8 words and never truncate them; when an option needs more context, move it into `help-text` rather than lengthening the label.
+- Keep labels to roughly 4–8 words and never truncate them. Use `supporting-text` for short identifying metadata such as a domain, device type, or account name.
 - `help-text` is optional (as are the info button and toggletip) and should be 1–2 short sentences. It sits under the field and explains consequences or requirements rather than repeating the label; a validation message (`help-text-type="error"`) replaces it while shown.
 
 ### Property/Attribute details
@@ -62,6 +77,7 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 | `indeterminate` | Mixed state for a parent that summarizes a nested checklist; setting `checked` clears it. Not an ordinary state. |
 | `name` / `value` | Form key and value; a checked checkbox with no `value` submits `"on"` (matches native `<input type="checkbox">`). |
 | `label` / `data-aria-label` | Visible label (the accessible name), or the fallback name when no visible label is rendered. |
+| `supporting-text` | Identifying metadata that belongs to the option and accessible name. Use `help-text` instead for instructions or validation. |
 | `help-text` + `help-text-type` | Helper or validation message below the label; `error` shows the validation icon (only `default` and `error` are supported). |
 | `toggletip-text` + `info-icon-aria-label` | Info toggletip beside the label; provide the aria-label when set. |
 | `required` + `validation-message` | Appends an asterisk and requires the box to be checked; `validation-message` is reported via `setCustomValidity`. |
@@ -74,6 +90,8 @@ Listen for the `change` event to react to toggles; the new state is on `event.ta
 - **Indeterminate isn't submitted** — the form value is the `value` (default `"on"`) when checked or `null` when unchecked; `indeterminate` has no submitted value, so resolve it before submission if it matters.
 - **Indeterminate is visual-only** — it is cleared automatically when the user toggles the checkbox, and is meant for parent rollups rather than an ordinary state.
 - **No inline group validation** — a single checkbox shows only an error state; group and tree validation belong on the surrounding `mdc-formfieldgroup`, below the group label.
+- **Rich slots are noninteractive** — content in `leading-visual`, `label`, and `supporting-text` is part of the native label target. Put a separate action in the `toggletip` slot or outside the checkbox.
+- **Supporting text joins the name** — assistive technologies announce supporting text as part of the checkbox's accessible name. Use `help-text` for supplementary instructions that should be announced as a description.
 
 ## Accessibility
 
@@ -89,7 +107,7 @@ Keyboard interaction follows the native checkbox pattern:
 
 When `disabled` is `true`, the input is removed from the tab order and the form value is not submitted. When `soft-disabled` is `true`, the input remains focusable but `Space` is suppressed, so assistive technologies can still discover the option. When `readonly` is `true`, toggling is suppressed but the current value is still submitted.
 
-The `label` (or `data-aria-label`) provides the accessible name. `help-text` is linked via `aria-describedby` so it is announced after the name.
+The `label`, slotted label content, and supporting text provide the accessible name. The entire rich label region toggles the native checkbox, while the toggletip remains an independent control. `help-text` is linked via `aria-describedby` so it is announced after the name.
 
 #### Internal ARIA managed by the component
 
@@ -101,6 +119,7 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 | Native input  | `aria-describedby` | id of the help text element when `help-text` is set                    |
 | Native input  | `tabindex`         | `0` when enabled; `-1` when `disabled`                                 |
 | Host          | `:state(checked)`  | added when `checked` is `true`, for CSS targeting via `:state(checked)`|
+| Host          | `:state(rich-label)` | added when a leading visual or supporting text is present            |
 
 ### Implementation requirements
 
@@ -114,6 +133,8 @@ The `label` (or `data-aria-label`) provides the accessible name. `help-text` is 
 #### Labeling
 
 - Provide a meaningful `label` — it is the default accessible name.
+- Slotted `label` and `supporting-text` content becomes the accessible name without requiring duplicate hidden text.
+- Keep the `leading-visual` content decorative; do not give an avatar or icon a redundant accessible name when the adjacent label identifies the option.
 - When a visible label is not appropriate, set `data-aria-label` so the control still has an accessible name.
 - Use `help-text` with `help-text-type="error"` to communicate validation errors; the error icon and `aria-describedby` association are wired automatically.
 
