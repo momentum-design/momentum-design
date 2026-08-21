@@ -244,7 +244,11 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
     await buttonSheet.createMarkupWithCombination({
-      variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
+      variant: {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      },
       size,
       color: BUTTON_COLORS,
     });

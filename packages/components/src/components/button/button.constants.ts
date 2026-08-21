@@ -6,6 +6,7 @@ const TAG_NAME = utils.constructTagName('button');
 const BUTTON_VARIANTS = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
+  OVERLAY: 'overlay',
   TERTIARY: 'tertiary',
 } as const;
 
