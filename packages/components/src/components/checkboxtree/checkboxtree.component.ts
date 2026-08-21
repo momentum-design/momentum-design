@@ -44,16 +44,7 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   protected override loop: 'true' | 'false' = 'false';
 
   /** @internal */
-  private managedTabIndexes = new Map<Checkbox, string | null>();
-
-  /** @internal */
   private generatedAriaLabel?: string;
-
-  /**
-   * Consumer aria-label cached while nested and restored when root.
-   * @internal
-   */
-  private explicitAriaLabel?: string;
 
   private pendingSynchronization = false;
 
@@ -64,28 +55,16 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   }
 
   override connectedCallback(): void {
-    if (!this.isNested && this.explicitAriaLabel !== undefined && !this.hasAttribute('aria-label')) {
-      this.setAttribute('aria-label', this.explicitAriaLabel);
-      this.explicitAriaLabel = undefined;
-    }
-
     const ariaLabelBeforeConnection = this.getAttribute('aria-label');
     super.connectedCallback();
     if (this.generatedAriaLabel === undefined && ariaLabelBeforeConnection === null) {
       this.generatedAriaLabel = this.label ?? '';
     }
     this.synchronizeContext();
-    // Reparenting changes isNested without changing a reactive property.
-    this.requestUpdate();
 
     if (!this.isNested) {
       this.synchronizeTree();
     }
-  }
-
-  override disconnectedCallback(): void {
-    this.releaseManagedTabIndexes();
-    super.disconnectedCallback();
   }
 
   /** @internal */
@@ -205,18 +184,6 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
     const checkboxes = this.getCheckboxes();
     const navigableCheckboxes = checkboxes.filter(checkbox => !checkbox.disabled);
 
-    this.managedTabIndexes.forEach((tabIndex, checkbox) => {
-      if (checkboxes.includes(checkbox)) return;
-      this.restoreTabIndex(checkbox, tabIndex);
-      this.managedTabIndexes.delete(checkbox);
-    });
-
-    checkboxes.forEach(checkbox => {
-      if (!this.managedTabIndexes.has(checkbox)) {
-        this.managedTabIndexes.set(checkbox, checkbox.getAttribute('tabindex'));
-      }
-    });
-
     const focusedCheckbox = navigableCheckboxes.find(checkbox => checkbox.matches(':focus-within'));
     const currentCheckbox = navigableCheckboxes.find(checkbox => checkbox.getAttribute('tabindex') === '0');
     const activeCheckbox = focusedCheckbox ?? currentCheckbox ?? navigableCheckboxes[0];
@@ -227,27 +194,8 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   }
 
   /** @internal */
-  private releaseManagedTabIndexes(): void {
-    this.managedTabIndexes.forEach((tabIndex, checkbox) => this.restoreTabIndex(checkbox, tabIndex));
-    this.managedTabIndexes.clear();
-  }
-
-  /** @internal */
-  private restoreTabIndex(checkbox: Checkbox, tabIndex: string | null): void {
-    if (tabIndex === null) {
-      checkbox.removeAttribute('tabindex');
-    } else {
-      checkbox.setAttribute('tabindex', tabIndex);
-    }
-  }
-
-  /** @internal */
   private synchronizeContext(): void {
     if (this.isNested) {
-      const currentAriaLabel = this.getAttribute('aria-label');
-      if (currentAriaLabel !== null && currentAriaLabel !== this.generatedAriaLabel) {
-        this.explicitAriaLabel = currentAriaLabel;
-      }
       this.removeAttribute('aria-description');
       this.removeAttribute('aria-invalid');
       this.removeAttribute('aria-label');
