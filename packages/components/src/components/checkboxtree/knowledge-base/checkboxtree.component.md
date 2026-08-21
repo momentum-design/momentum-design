@@ -25,8 +25,6 @@ their descendants. It supports hierarchical choice sets that would be difficult 
   children instead.
 - Do not use a checkbox tree when exactly one option can be selected. Use `mdc-radiogroup` with `mdc-radio` children
   instead.
-- Do not use a checkbox tree when branches must collapse or expand. Use an application-specific tree view that
-  implements the complete disclosure and keyboard contract instead.
 - Do not use a deeply nested checkbox tree when the hierarchy can be split into smaller steps or filtered lists.
   Shallower choices are easier to scan and use on small screens.
 
@@ -71,8 +69,7 @@ Listen for the bubbling `change` event from the affected `mdc-checkbox`. Read `e
   contain more nested trees.
 - Put the visible `label`, helper text, required indicator, validation state, and optional information toggletip on the
   outermost tree. Nested trees are structural and do not render separate headers.
-- Aim for no more than three levels of nesting so labels and controls remain usable on small screens. The component does
-  not enforce a maximum depth.
+- Aim for no more than three levels of nesting so labels and controls remain usable on small screens.
 
 ### Content guidance
 
@@ -86,26 +83,17 @@ Listen for the bubbling `change` event from the affected `mdc-checkbox`. Read `e
 
 | Option                      | Intent                                                                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `label`                     | Names the complete choice set and is announced when focus enters the checkbox collection. Set it on the outer tree.                                    |
-| `help-text`                 | Adds supplementary instructions or the current validation message to the outer group's accessible description.                                         |
-| `help-text-type="error"`    | Marks the outer group invalid and presents the helper text as an error. Use it only while the group has a validation problem.                          |
 | `--mdc-checkboxtree-indent` | Changes the logical indentation added at every nested level. Keep the default unless the surrounding layout requires a coordinated spacing adjustment. |
 
 ### Limitations
 
-- **Branches stay visible** — the component does not collapse or expand branches, and `ArrowLeft` and `ArrowRight` do
-  not change the hierarchy. Use a complete tree-view implementation when disclosure is required.
-- **Adjacency defines ownership** — a nested tree belongs only to the checkbox immediately before it. Keep those
-  elements as direct siblings and use another nested tree for every additional level.
 - **Parent state is derived** — programmatic leaf changes recalculate their ancestors, while parent checked and mixed
   states are derived from descendants. Update descendant checkboxes when applying a branch selection programmatically.
 - **Immutable choices stay unchanged** — parent activation skips disabled, read-only, and soft-disabled descendants, so
   the parent can remain mixed. Set immutable descendant state explicitly when the branch must resolve to one state.
-- **Depth is not constrained** — recursive composition accepts any depth, although more than three levels can become
-  difficult to scan or fit on small screens. Split deeper structures into smaller flows.
 - **The tree is not submitted** — each `mdc-checkbox` remains its own form control and the tree has no aggregate form
   value. Set checkbox `name` and `value` attributes and perform group validation in the consuming form.
-- **`required` is presentational** — the outer tree displays the required indicator but does not require one descendant
+- **`required` does not validate** — the outer tree displays the required indicator but does not require one descendant
   automatically. Validate the selection in the consuming form and expose the result with `help-text-type="error"`.
 
 ## Accessibility
@@ -114,8 +102,8 @@ Listen for the bubbling `change` event from the affected `mdc-checkbox`. Read `e
 
 The checkbox collection uses one roving tab stop. `Tab` enters at the current item and then leaves the collection,
 `ArrowUp` and `ArrowDown` move through enabled checkboxes without wrapping, `Home` and `End` move to the first and last
-enabled checkbox, and `Space` uses the focused checkbox's built-in toggle behavior. `ArrowLeft` and `ArrowRight` do
-nothing because branches cannot collapse or expand. An optional information button remains a separate tab stop.
+enabled checkbox, and `Space` uses the focused checkbox's built-in toggle behavior. An optional information button
+remains a separate tab stop.
 
 The outer tree exposes a labeled and described group. Nested trees stay out of the accessibility tree as separate
 groups, preventing repeated announcements while every `mdc-checkbox` keeps its built-in checkbox role, accessible name,
@@ -133,18 +121,14 @@ their state can still be discovered, but they cannot be changed.
 | Outermost host                | `aria-description` | Mirrors `help-text` when provided                                                 |
 | Outermost host                | `aria-invalid`     | `true` while `help-text-type="error"`; otherwise omitted                          |
 | Nested hosts                  | Group attributes   | Removed so nested structure does not create redundant group announcements         |
-| Child checkbox input          | `aria-checked`     | `true`, `false`, or `mixed`, managed by `mdc-checkbox`                            |
 | Child checkbox host and input | `tabindex`         | One enabled checkbox uses `0`; the remaining tree checkboxes use `-1`             |
 
 ### Implementation requirements
 
 #### General
 
-- Preserve the direct checkbox-then-tree sibling structure so selection propagation, mixed states, logical indentation,
-  and keyboard order all describe the same hierarchy.
-- Do not add `role="tree"` or `role="treeitem"`. This widget intentionally exposes native checkboxes inside a labeled
-  group and does not implement expand or collapse behavior.
-- Supply distinct `name` and `value` attributes when descendant selections must be submitted with a form.
+- Do not replace the group and checkbox roles with `tree` and `treeitem`; doing so would announce interactions that the
+  component does not provide.
 - Keep the logical reading order meaningful without indentation; assistive technologies encounter checkboxes in DOM
   order.
 
