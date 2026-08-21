@@ -71,6 +71,27 @@ const expectLabelsNotToOverlap = async (items: Locator) => {
   }
 };
 
+const expectConnectorsBetweenIndicators = async (items: Locator, connectors: Locator) => {
+  const getSortedHorizontalBounds = (elements: Locator) =>
+    elements.evaluateAll((nodes) =>
+      nodes
+        .map((node) => {
+          const { left, right } = node.getBoundingClientRect();
+          return { left, right };
+        })
+        .sort((first, second) => first.left - second.left),
+    );
+
+  const indicatorBounds = await getSortedHorizontalBounds(items.locator('[part="status-container"]'));
+  const connectorBounds = await getSortedHorizontalBounds(connectors.locator('[part="connector"]'));
+
+  expect(connectorBounds).toHaveLength(indicatorBounds.length - 1);
+  for (let index = 0; index < connectorBounds.length; index += 1) {
+    expect(connectorBounds[index].left).toBeGreaterThanOrEqual(indicatorBounds[index].right);
+    expect(connectorBounds[index].right).toBeLessThanOrEqual(indicatorBounds[index + 1].left);
+  }
+};
+
 const takeScreenshot = async (componentsPage: ComponentsPage, orientation: OrientationType) => {
   // Move mouse away to prevent accidental hover on any stepperitem after previous interactions
   await componentsPage.page.mouse.move(0, 0);
@@ -168,7 +189,7 @@ test('should keep non-default context authoritative and remain responsive to upd
 
 test('should use available width before clamping stacked content without overlap', async ({ componentsPage }) => {
   await componentsPage.page.setViewportSize({ width: 1400, height: 700 });
-  await setup(componentsPage, {
+  const wideStepper = await setup(componentsPage, {
     children: responsiveStackedChildren,
     orientation: ORIENTATION.HORIZONTAL,
     variant: VARIANT.STACKED,
@@ -176,14 +197,17 @@ test('should use available width before clamping stacked content without overlap
   });
 
   const items = componentsPage.page.locator('mdc-stepperitem');
+  const connectors = componentsPage.page.locator('mdc-stepperconnector');
   const firstLabel = items.nth(0).locator('[part="label"]');
   const wideLongLabel = items.nth(2).locator('[part="label"]');
 
   await expect.poll(() => getTextLayout(firstLabel)).toEqual({ isTruncated: false, visibleLineCount: 1 });
   await expect.poll(() => getTextLayout(wideLongLabel)).toEqual({ isTruncated: false, visibleLineCount: 1 });
   expect(await firstLabel.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await expectConnectorsBetweenIndicators(items, connectors);
+  expect(await wideStepper.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 
-  await setup(componentsPage, {
+  const constrainedStepper = await setup(componentsPage, {
     children: responsiveStackedChildren,
     orientation: ORIENTATION.HORIZONTAL,
     variant: VARIANT.STACKED,
@@ -203,9 +227,13 @@ test('should use available width before clamping stacked content without overlap
   await expect(constrainedErrorText).toHaveText('Select a policy to continue');
 
   await expectLabelsNotToOverlap(constrainedItems);
+  await expectConnectorsBetweenIndicators(constrainedItems, connectors);
+  expect(await constrainedStepper.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 
   await componentsPage.page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
   await expectLabelsNotToOverlap(constrainedItems);
+  await expectConnectorsBetweenIndicators(constrainedItems, connectors);
+  expect(await constrainedStepper.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
   await expect.poll(() => getTextLayout(constrainedLabel)).toEqual({ isTruncated: true, visibleLineCount: 2 });
   await expect.poll(() => getTextLayout(constrainedHelpText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
   await expect.poll(() => getTextLayout(constrainedErrorText)).toEqual({ isTruncated: true, visibleLineCount: 2 });
