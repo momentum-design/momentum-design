@@ -93,6 +93,37 @@ export const Example: StoryObj = {
   },
 };
 
+export const CheckboxStates: StoryObj = {
+  args: {
+    label: 'Notification preferences',
+    'help-text': 'Choose which work notifications you receive.',
+    'help-text-type': VALIDATION.DEFAULT,
+    children: html`
+      <mdc-checkbox
+        label="Work notifications"
+        readonly
+        help-text="Update each notification separately."
+      ></mdc-checkbox>
+      <mdc-checkboxtree>
+        <mdc-checkbox checked label="Meeting reminders"></mdc-checkbox>
+        <mdc-checkbox label="Direct messages"></mdc-checkbox>
+        <mdc-checkbox checked readonly label="Security alerts" help-text="Required for your account."></mdc-checkbox>
+        <mdc-checkbox
+          disabled
+          label="SMS notifications"
+          help-text="Add a phone number to enable SMS notifications."
+        ></mdc-checkbox>
+        <mdc-checkbox
+          checked
+          soft-disabled
+          label="Service updates"
+          help-text="Managed by your organization."
+        ></mdc-checkbox>
+      </mdc-checkboxtree>
+    `,
+  },
+};
+
 export const Error: StoryObj = {
   args: {
     ...Example.args,
