@@ -22,6 +22,9 @@ const effects = glob.sync(path.posix.join(distCSSFolder, "/effect/*.css"));
 const elevation = glob.sync(path.posix.join(distCSSFolder, "/elevation/*.css"));
 const typography = glob.sync(path.posix.join(distCSSFolder, "/typography/*.css"));
 
+const motion = glob.sync(path.posix.join(distCSSFolder, "/motion/*.css"));
+const animation = glob.sync(path.posix.join(distCSSFolder, "/animation/*.css"));
+
 const tokens = [
   ...darkTheme,
   ...darkBronzeTheme,
@@ -38,6 +41,8 @@ const tokens = [
   ...typography,
   ...effects,
   ...elevation,
+  ...motion,
+  ...animation,
 ];
 
 const allTokens = tokens.reduce((acc, token) => {
