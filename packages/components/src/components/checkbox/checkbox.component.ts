@@ -26,7 +26,6 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  *
  * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
- * @event modified - Internal lifecycle event dispatched when checkbox state changes.
  *
  * @csspart label - The label element.
  * @csspart label-text - The container for the label and required indicator elements.

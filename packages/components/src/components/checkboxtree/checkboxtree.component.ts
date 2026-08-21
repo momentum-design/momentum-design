@@ -46,12 +46,6 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   /** @internal */
   private managedTabIndexes = new Map<Checkbox, string | null>();
 
-  /**
-   * Last roving tab-stop index, retained to choose a fallback after removal.
-   * @internal
-   */
-  private lastActiveIndex = 0;
-
   /** @internal */
   private generatedAriaLabel?: string;
 
@@ -119,26 +113,6 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
   protected override setInitialFocus(): void {
     if (this.isNested) return;
     this.synchronizeTabIndexes();
-  }
-
-  protected override resetTabIndexAndSetFocus(
-    newIndex: number,
-    oldIndex?: number,
-    focusNewItem?: boolean,
-    scrollToNewItem?: boolean,
-  ): boolean {
-    const handled = super.resetTabIndexAndSetFocus(newIndex, oldIndex, focusNewItem, scrollToNewItem);
-    if (handled) {
-      this.lastActiveIndex = newIndex;
-    }
-    return handled;
-  }
-
-  protected override resetTabIndexes(index: number, focusElement?: boolean): void {
-    super.resetTabIndexes(index, focusElement);
-    if (this.navItems.length > 0) {
-      this.lastActiveIndex = this.navItems.at(index) ? index : 0;
-    }
   }
 
   /** @internal */
@@ -245,12 +219,7 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
 
     const focusedCheckbox = navigableCheckboxes.find(checkbox => checkbox.matches(':focus-within'));
     const currentCheckbox = navigableCheckboxes.find(checkbox => checkbox.getAttribute('tabindex') === '0');
-    const neighborCheckbox = navigableCheckboxes[Math.min(this.lastActiveIndex, navigableCheckboxes.length - 1)];
-    const activeCheckbox = focusedCheckbox ?? currentCheckbox ?? neighborCheckbox ?? navigableCheckboxes[0];
-
-    if (activeCheckbox) {
-      this.lastActiveIndex = navigableCheckboxes.indexOf(activeCheckbox);
-    }
+    const activeCheckbox = focusedCheckbox ?? currentCheckbox ?? navigableCheckboxes[0];
 
     checkboxes.forEach(checkbox => {
       checkbox.setAttribute('tabindex', checkbox === activeCheckbox ? '0' : '-1');
@@ -299,15 +268,6 @@ class CheckboxTree extends ListNavigationMixin(FormfieldGroup) {
     // Capture before FormfieldGroup may regenerate aria-label from label.
     const ariaLabelBeforeUpdate = this.getAttribute('aria-label');
     super.update(changedProperties);
-    if (!this.isConnected) {
-      // Nesting is unknown while detached; defer label synchronization until reconnection.
-      if (ariaLabelBeforeUpdate === null) {
-        this.removeAttribute('aria-label');
-      } else {
-        this.setAttribute('aria-label', ariaLabelBeforeUpdate);
-      }
-      return;
-    }
     if (!this.isNested && (ariaLabelBeforeUpdate === null || ariaLabelBeforeUpdate === this.generatedAriaLabel)) {
       this.generatedAriaLabel = this.label ?? '';
       this.setAttribute('aria-label', this.generatedAriaLabel);
