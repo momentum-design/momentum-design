@@ -94,6 +94,7 @@ import Buttonsimple from './components/buttonsimple';
 import Verticaltablist from './components/verticaltablist';
 import StatusMessage from './components/statusmessage';
 import FocusTrap from './components/focustrap';
+import CheckboxTree from './components/checkboxtree';
 
 // Types Imports
 import type { AvatarSize } from './components/avatar/avatar.types';
@@ -242,6 +243,7 @@ export {
   Verticaltablist,
   StatusMessage,
   FocusTrap,
+  CheckboxTree,
 };
 
 // Types Exports
