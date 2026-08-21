@@ -244,7 +244,11 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
     await buttonSheet.createMarkupWithCombination({
-      variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
+      variant: {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      },
       size,
       color: BUTTON_COLORS,
     });
@@ -302,7 +306,11 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '' });
-      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      const subVariants = {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      };
       await buttonSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: subVariants,
@@ -372,7 +380,11 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
-      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      const subVariants = {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      };
       await buttonSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: subVariants,
@@ -442,7 +454,11 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
-      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      const subVariants = {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      };
       await buttonSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: subVariants,
@@ -516,7 +532,11 @@ test.describe.parallel('mdc-button', () => {
 
       // active
       buttonSheet.setAttributes({ active: '' });
-      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      const subVariants = {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      };
       await buttonSheet.createMarkupWithCombination({
         size: PILL_BUTTON_SIZES,
         variant: subVariants,
@@ -585,7 +605,11 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
-      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      const subVariants = {
+        primary: BUTTON_VARIANTS.PRIMARY,
+        secondary: BUTTON_VARIANTS.SECONDARY,
+        overlay: BUTTON_VARIANTS.OVERLAY,
+      };
       await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
       // tertiary active
       buttonSheet.setAttributes({
@@ -732,7 +756,7 @@ test.describe.parallel('mdc-button', () => {
 
   test('soft-disabled button with color should not change background on hover', async ({ componentsPage }) => {
     for (const color of Object.values(BUTTON_COLORS).filter(c => c !== BUTTON_COLORS.DEFAULT)) {
-      for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.SECONDARY]) {
+      for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.SECONDARY, BUTTON_VARIANTS.OVERLAY]) {
         await test.step(`color="${color}" variant="${variant}" soft-disabled hover should use disabled style`, async () => {
           const button = await setup({
             componentsPage,

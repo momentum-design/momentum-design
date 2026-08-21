@@ -64,6 +64,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(superClas
      * The visual style variant of the button.
      * - `primary`: Solid background color
      * - `secondary`: Transparent background with solid border
+    * - `overlay`: Solid surface background with solid border
      * - `tertiary`: No background or border, text-only appearance
      * @default primary
      */
