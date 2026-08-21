@@ -5,6 +5,9 @@
     "core/elevation",
     "core/motion",
     "core/effect",
+    "core/radius",
+    "core/border-width",
+    "core/spacing",
     "theme/stable/dark",
     "theme/stable/light",
     "theme/stable/highcontrast/hc_dark",
@@ -20,6 +23,7 @@
     "additionaltheme/light/indigo",
     "additionaltheme/light/jade",
     "additionaltheme/light/lavender",
-    "additionaltheme/light/rose"
+    "additionaltheme/light/rose",
+    "motion/animation"
   ]
 }

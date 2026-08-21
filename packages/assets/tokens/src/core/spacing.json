@@ -1,0 +1,145 @@
+{
+  "spacing-4": {
+    "value": 4,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "4px — tight gap (icon to label, chip)"
+  },
+  "spacing-8": {
+    "value": 8,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "8px — default control gap, list padding"
+  },
+  "spacing-6": {
+    "value": 6,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": true
+    },
+    "description": "6px — compact button gap"
+  },
+  "spacing-12": {
+    "value": 12,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "12px — medium padding, form groups"
+  },
+  "spacing-14": {
+    "value": 14,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "14px — calendar padding edge"
+  },
+  "spacing-16": {
+    "value": 16,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": true
+    },
+    "description": "16px — section gap, container padding"
+  },
+  "spacing-20": {
+    "value": 20,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "20px — button height tier"
+  },
+  "spacing-24": {
+    "value": 24,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "24px — large padding, accordion"
+  },
+  "spacing-28": {
+    "value": 28,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "28px — tab, calendar cell"
+  },
+  "spacing-32": {
+    "value": 32,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "32px — dialog context, large sections"
+  },
+  "spacing-40": {
+    "value": 40,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "40px — nav item"
+  },
+  "spacing-64": {
+    "value": 64,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "64px — app header"
+  },
+  "spacing-240": {
+    "value": 240,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "GAP"
+      ],
+      "com.figma.hiddenFromPublishing": true
+    },
+    "description": "240px — timepicker listbox"
+  }
+}

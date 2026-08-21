@@ -2413,5 +2413,51 @@
       "color.theme.border.decorative.gradient.device.2": "de3b13a2eb568b59c444a4d4c1f76ad8f06ec6fe"
     },
     "group": "theme/aaos"
+  },
+  {
+    "id": "radius-mode 1",
+    "name": "Mode 1",
+    "group": "radius",
+    "selectedTokenSets": {},
+    "$figmaStyleReferences": {},
+    "$figmaVariableReferences": {
+      "radius-50": "017f637b837d6963a4aa4c99ed1f3e8d331c1b9b",
+      "radius-20": "a2068c129da024498069aceb18edcb705c3f5c88",
+      "radius-12": "c04f926ec1d1d7bca1031565ae6b02b90ccfada1",
+      "radius-4": "63c175cea09790379d44c5381883a8d390a75137",
+      "radius-8": "13d2895a267d2a98703da2239f56df6952b11591",
+      "radius-2": "6705b458ad26637be2043068542902465e288294",
+      "radius-100": "d2d028b99f9bbe7afceb3e28d9e20d69f1373832",
+      "radius-14": "d4b7544e11b94c2e91b388469f77866959de10ae",
+      "radius-0": "ab9cb40184ee474a4d236097a446d40cf959b015"
+    },
+    "$figmaModeId": "22175:1",
+    "$figmaCollectionId": "VariableCollectionId:22175:7998"
+  },
+  {
+    "id": "spacing-mode 1",
+    "name": "Mode 1",
+    "group": "spacing",
+    "selectedTokenSets": {
+      "core/spacing": "enabled"
+    },
+    "$figmaStyleReferences": {},
+    "$figmaVariableReferences": {
+      "spacing-8": "dc7f75234e142fa04bf5266298209ce2731fb81b",
+      "spacing-14": "9532c38f208323bf391c76b3d73d87f349c74ef7",
+      "spacing-6": "f71c8a1ea7305143b529e756cc97ea468aafe869",
+      "spacing-240": "eedc0f12fbff3f707b97c5f4c42cd1321a794607",
+      "spacing-16": "1c1147b3a245df6f351dd3e405425de8ef95ff07",
+      "spacing-64": "d0b263f46a11fd5c0eb1d301c9da9812b023cf27",
+      "spacing-40": "9a6537829b59b92e5055cab44faec2e0ec14d43c",
+      "spacing-32": "98d8b94739ac9731029e6a8c0bec772508fbe397",
+      "spacing-4": "0871822836f309fcdeeeca89d3ab0e8e8e2433a7",
+      "spacing-20": "eb158edf10b0bc0a7e93d9809ea0489331c7143c",
+      "spacing-28": "403b635290822999f16269908fa28b934d8d50ce",
+      "spacing-12": "1852d3786ab9b42a41390862eb4015549728bc37",
+      "spacing-24": "61283266062a6a52315aa8caa492266ab61d51cc"
+    },
+    "$figmaModeId": "22175:2",
+    "$figmaCollectionId": "VariableCollectionId:22175:8029"
   }
 ]
