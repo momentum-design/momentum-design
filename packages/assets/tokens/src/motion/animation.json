@@ -139,20 +139,15 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
-    "slideIn": {
-      "description": "Slide-in entrance — element moves from off-screen right to its natural position",
-      "type": "keyframe",
-      "keyframes": [
-        {
-          "propertyName": "transform",
-          "from": "translateX(100%)",
-          "to": "translateX(0)"
-        }
+    "fadeInOut": {
+      "description": "Dialog entrance — fades in when appearing",
+      "type": "transition",
+      "properties": [
+        "opacity"
       ],
-      "duration": "{motion.duration.normal}",
+      "duration": "{motion.duration.relaxed}",
       "easing": "{motion.easing.standard}",
-      "delay": "{motion.delay.none}",
-      "fillMode": "forwards"
+      "delay": "{motion.delay.none}"
     }
   }
 }
