@@ -25,6 +25,16 @@
         "value": "600ms",
         "type": "duration",
         "description": "Deliberate slow reveals — onboarding sequences, hero sections"
+      },
+      "sustained": {
+        "value": "1200ms",
+        "type": "duration",
+        "description": "Long, environmental change rather than a UI event"
+      },
+      "extended": {
+        "value": "2400ms",
+        "type": "duration",
+        "description": "Twice the duration of sustained motion because the distance is roughly twice as far"
       }
     },
     "easing": {

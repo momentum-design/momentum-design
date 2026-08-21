@@ -20,6 +20,8 @@ const styles = [
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       height: var(--mdc-button-height);
       outline: none;
+
+      transition: var(--mds-transition-button-hover);
     }
 
     :host([disabled]),

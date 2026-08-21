@@ -3,15 +3,20 @@
     "buttonBackground": {
       "description": "Button background color transition on hover/press",
       "type": "transition",
-      "properties": ["background-color"],
-      "duration": "{motion.duration.instant}",
+      "properties": [
+        "background-color"
+      ],
+      "duration": "{motion.duration.normal}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
     "buttonBorder": {
       "description": "Button border and shadow transition on focus",
       "type": "transition",
-      "properties": ["border-color", "box-shadow"],
+      "properties": [
+        "border-color",
+        "box-shadow"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -19,7 +24,10 @@
     "buttonIcon": {
       "description": "Button icon color and transform transition",
       "type": "transition",
-      "properties": ["color", "transform"],
+      "properties": [
+        "color",
+        "transform"
+      ],
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -27,7 +35,10 @@
     "buttonFocusRing": {
       "description": "Button focus ring appearance",
       "type": "transition",
-      "properties": ["box-shadow", "outline"],
+      "properties": [
+        "box-shadow",
+        "outline"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -35,13 +46,19 @@
     "buttonPress": {
       "description": "Button press effect combining background and icon transitions",
       "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonIcon"],
+      "animations": [
+        "buttonBackground",
+        "buttonIcon"
+      ],
       "composition": "parallel"
     },
     "buttonHover": {
       "description": "Button hover effect combining background and border transitions",
       "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonBorder"],
+      "animations": [
+        "buttonBackground",
+        "buttonBorder"
+      ],
       "composition": "parallel"
     },
     "buttonLoadingSpin": {
@@ -77,13 +94,19 @@
     "buttonLoadingSpinPulse": {
       "description": "Button loading state combining spin and pulse keyframe animations",
       "type": "keyframeCompound",
-      "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
+      "animations": [
+        "buttonLoadingSpin",
+        "buttonLoadingPulse"
+      ],
       "composition": "parallel"
     },
     "checkboxDefault": {
       "description": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
       "type": "transition",
-      "properties": ["background-color", "border-color"],
+      "properties": [
+        "background-color",
+        "border-color"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -115,7 +138,21 @@
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
+    },
+    "slideIn": {
+      "description": "Slide-in entrance — element moves from off-screen right to its natural position",
+      "type": "keyframe",
+      "keyframes": [
+        {
+          "propertyName": "transform",
+          "from": "translateX(100%)",
+          "to": "translateX(0)"
+        }
+      ],
+      "duration": "{motion.duration.normal}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}",
+      "fillMode": "forwards"
     }
   }
 }
-
