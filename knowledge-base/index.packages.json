@@ -90,6 +90,14 @@
       "websitePath": "foundations/theming"
     },
     {
+      "id": "tier2/packages/assets/tokens/knowledge-base/tokens",
+      "tier": 2,
+      "path": "packages/assets/tokens/knowledge-base/tokens.md",
+      "title": "Design tokens",
+      "summary": "Overview of the Momentum token system — the tier model, naming and --mds-* compilation, authoring format, governance, and links to every token topic.",
+      "canonical": null
+    },
+    {
       "id": "tier2/packages/assets/tokens/knowledge-base/typography",
       "tier": 2,
       "path": "packages/assets/tokens/knowledge-base/typography.md",
