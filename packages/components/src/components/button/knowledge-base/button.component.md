@@ -79,7 +79,7 @@ Minimal markup example:
 
 - **Icon-only needs a label** — an icon-only button has no accessible name of its own; set `aria-label` describing the action or it is announced without context.
 - **`inverted` is conditional** — it is ignored unless `variant="primary"`, `color="default"`, and the button is not `active`. Match the surface and variant.
-- **`overlay` does not inspect its background** — the component uses a fixed set of overlay tokens and does not adapt to the image or video beneath it. Check contrast against the actual content, and use `secondary` on standard application surfaces.
+- **`overlay` cannot guarantee contrast on every background** — it uses fixed colors and does not adjust to the image or video beneath it.
 - **`size="20"` is tertiary-only** — other variants fall back to the default `32`. Use `variant="tertiary"` if you need the 20px icon button.
 - **No built-in busy state** — the button does not manage a loading or pending state. Disable it and show your own spinner while an action is in flight.
 
