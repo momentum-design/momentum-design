@@ -38,9 +38,9 @@ const styles = css`
   :host([orientation='horizontal'][variant='stacked']) ::slotted(mdc-stepperconnector) {
     flex-basis: 6rem;
     flex-grow: 1;
-    min-inline-size: 6rem;
+    min-inline-size: 3.25rem;
     padding-top: 0.9375rem;
-    margin: 0 -3rem;
+    margin: 0 -1.625rem;
   }
 
   :host([orientation='horizontal'][variant='stacked']) {
