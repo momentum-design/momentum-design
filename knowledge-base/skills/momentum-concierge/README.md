@@ -1,6 +1,13 @@
+---
+title: Momentum Concierge
+summary: Portable agent instructions for answering Momentum Design questions from canonical knowledge-base guidance, including retrieval, response, and feedback rules.
+tier: 1
+websitePath: skills/momentum-concierge
+---
+
 # Momentum Concierge
 
-Momentum Concierge is an agent skill for answering design-system questions using canonical guidance from the Momentum Design knowledge base.
+Momentum Concierge is a portable agent skill for answering design-system questions using canonical guidance from the Momentum Design knowledge base.
 
 It helps designers, engineers, and product teams find documented guidance for components, assets, tokens, accessibility, content, interaction patterns, internationalization, and responsive behavior.
 
@@ -8,11 +15,11 @@ The skill retrieves existing Momentum guidance; it does not create or infer new 
 
 ## Compatibility
 
-Momentum Concierge is designed to be tool-agnostic. Its `SKILL.md` uses portable Markdown and the common `name` and `description` frontmatter fields, with no host-specific configuration.
+Momentum Concierge is designed to be tool-agnostic. Its [`skill.md`](skill.md) file uses portable Markdown and common `name` and `description` frontmatter fields, with no host-specific configuration.
 
-Automatic discovery and activation depend on the AI tool. Tools that support agent skills can use the `momentum-concierge` directory directly or install it in their documented skills location. Other tools can use the prompt fallback below.
+Automatic discovery and activation depend on the AI tool. Tools that support agent skills can use the `knowledge-base/skills/momentum-concierge` directory directly or install it in their documented skills location. Other tools can use the prompt fallback below.
 
-## Required Capabilities
+## Required capabilities
 
 For the complete workflow, the AI tool needs:
 
@@ -22,7 +29,7 @@ For the complete workflow, the AI tool needs:
 
 The core guidance lookup works without GitHub issue creation. If HTTP access fails, the skill can use a verified local checkout while warning that its freshness could not be confirmed. If neither source is available, it reports a retrieval failure instead of inventing Momentum guidance.
 
-## What It Does
+## What it does
 
 - Answers questions about named Momentum components and their behavior.
 - Helps teams choose components using documented usage guidance.
@@ -32,14 +39,13 @@ The core guidance lookup works without GitHub issue creation. If HTTP access fai
 - Identifies missing, unclear, stale, or conflicting knowledge-base coverage.
 - Prepares approval-gated GitHub issue drafts for knowledge-base gaps.
 
-## Source of Truth
+## Source of truth
 
-Repository Markdown in `momentum-design/momentum-design` is authoritative.
-Retired Figma documentation is not used as a source of truth.
+Repository Markdown in `momentum-design/momentum-design` is authoritative. Retired Figma documentation is not used as a source of truth.
 
 The skill retrieves the public knowledge base from the repository's published `main` branch first so answers use the latest published guidance. A verified local checkout is used only when remote retrieval fails, and the skill discloses that the local content's freshness could not be confirmed. It never pulls or otherwise modifies the user's checkout.
 
-## Knowledge Retrieval
+## Knowledge retrieval
 
 Momentum Concierge uses generated knowledge-base indexes to locate the smallest relevant source:
 
@@ -50,7 +56,7 @@ Momentum Concierge uses generated knowledge-base indexes to locate the smallest 
 
 If an index does not contain the requested topic, the skill expands the search only to the next relevant tier.
 
-## Share Feedback
+## Share feedback
 
 Help us improve Momentum Concierge by [creating an issue](https://github.com/momentum-design/momentum-design/issues/new) in the Momentum Design repository. Use issues to alert us to missing guidance, unclear expectations, stale information, conflicting documentation, or problems with the skill itself.
 
@@ -63,12 +69,12 @@ When canonical guidance is missing or incomplete, Momentum Concierge can also pr
 
 ## Files
 
-- [`SKILL.md`](SKILL.md) — skill metadata, retrieval workflow, response contract, and feedback process.
-- `README.md` — overview, capabilities, and usage examples.
+- [`skill.md`](skill.md) contains the skill metadata, retrieval workflow, response contract, and feedback process.
+- `README.md` contains the overview, capabilities, and usage examples.
 
-## Prompt Fallback
+## Prompt fallback
 
-For AI tools that do not support agent skills, attach or provide `SKILL.md`, then use:
+For AI tools that do not support agent skills, attach or provide [`skill.md`](skill.md), then use:
 
 ```text
 Follow the attached Momentum Concierge instructions to answer this Momentum Design question. Use documented Momentum guidance only, distinguish any general recommendation, and identify coverage gaps instead of inventing policy.
@@ -76,7 +82,7 @@ Follow the attached Momentum Concierge instructions to answer this Momentum Desi
 Question: <your Momentum Design question>
 ```
 
-## Example Prompts
+## Example prompts
 
 ```text
 Use Momentum Concierge to explain when to use an accordion.

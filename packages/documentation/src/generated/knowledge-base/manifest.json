@@ -24,6 +24,14 @@
         9,
         10
       ]
+    },
+    {
+      "slug": "skills",
+      "title": "Skills",
+      "index": 11,
+      "pages": [
+        11
+      ]
     }
   ],
   "routes": [
@@ -92,6 +100,12 @@
       "description": "How to build adaptive UIs with Momentum — the consumer-owned breakpoint model, the shared responsive context provider, and the reflow and zoom bar every layout must clear.",
       "path": "en/guidelines/responsive-design",
       "sourcePath": "knowledge-base/responsive-design.md"
+    },
+    {
+      "title": "Momentum Concierge",
+      "description": "Portable agent instructions for answering Momentum Design questions from canonical knowledge-base guidance, including retrieval, response, and feedback rules.",
+      "path": "en/skills/momentum-concierge",
+      "sourcePath": "knowledge-base/skills/momentum-concierge/README.md"
     }
   ]
 }

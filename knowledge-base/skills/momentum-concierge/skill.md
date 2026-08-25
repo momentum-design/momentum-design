@@ -35,13 +35,13 @@ If neither remote retrieval nor a verified local checkout is available, report a
 ## Retrieval workflow
 
 1. Classify the request:
-   - A named component or component behavior → start with the component index.
-   - An asset, token, or package question → start with the package index.
-   - A cross-cutting topic such as content or accessibility → start with the root index.
+   - A named component or component behavior starts with the component index.
+   - An asset, token, or package question starts with the package index.
+   - A cross-cutting topic such as content or accessibility starts with the root index.
 2. Read only the selected index and find the most relevant topic. Use exact `component` or `owner` fields when they are present; otherwise match the canonical topic's title or ID.
 3. If the index misses, escalate only as needed:
-   - component → package → root
-   - package → root
+   - component to package to root
+   - package to root
 4. Read the canonical topic file at the matching entry's `path`.
 5. Answer from that file. Do not treat an index summary as the full source when the topic is available.
 
@@ -126,7 +126,7 @@ Do not create the issue without approval. Do not create it in another repository
 
 ## Examples
 
-- “Use Momentum guidance to choose a component for a destructive confirmation.”
-- “Review this form against Momentum accessibility guidance.”
-- “What does Momentum recommend for icon-only button labels?”
-- “Find the Momentum guidance for product UI copy.”
+- Use Momentum guidance to choose a component for a destructive confirmation.
+- Review this form against Momentum accessibility guidance.
+- What does Momentum recommend for icon-only button labels?
+- Find the Momentum guidance for product UI copy.

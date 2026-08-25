@@ -65,6 +65,16 @@
           "title": "Responsive Design"
         }
       ]
+    },
+    {
+      "slug": "skills",
+      "title": "Skills",
+      "pages": [
+        {
+          "slug": "momentum-concierge",
+          "title": "Momentum Concierge"
+        }
+      ]
     }
   ]
 }
