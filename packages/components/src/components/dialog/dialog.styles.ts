@@ -69,9 +69,6 @@ const styles = css`
     display: flex;
     opacity: 1;
 
-    --mdc-backdrop-mixin-transition: var(--mds-transition-fade-in-out);
-
-
     // Animating Dialog
     transition: var(--mds-transition-fade-in-out);
     transition-behavior: allow-discrete;
