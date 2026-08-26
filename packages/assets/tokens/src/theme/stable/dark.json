@@ -2808,5 +2808,37 @@
         }
       }
     }
+  },
+  "spacing": {
+    "spacing": {
+      "parent": "theme/stable/dark",
+      "type": "dimension",
+      "value": "{spacing.8}",
+      "description": "Momentum default spacing role — Figma: spacing/spacing"
+    }
+  },
+  "radius": {
+    "radius": {
+      "parent": "theme/stable/dark",
+      "type": "dimension",
+      "value": "{radius.4}",
+      "description": "Momentum default radius role — Figma: radius/radius"
+    }
+  },
+  "border": {
+    "border-width": {
+      "parent": "theme/stable/dark",
+      "type": "dimension",
+      "value": "{border.width.1}",
+      "description": "Momentum default border width role — Figma: border/border-width"
+    }
+  },
+  "size": {
+    "avatar": {
+      "parent": "theme/stable/dark",
+      "type": "dimension",
+      "value": "{size.32}",
+      "description": "Momentum default avatar size — Figma: size/avatar"
+    }
   }
 }

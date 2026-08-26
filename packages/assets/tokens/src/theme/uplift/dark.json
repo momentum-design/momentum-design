@@ -1,0 +1,24 @@
+{
+  "color": {
+    "theme": {
+      "text": {
+        "accent": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.core.blue.60}",
+            "description": "Uplift accent text override (test extended collection)"
+          }
+        }
+      }
+    }
+  },
+  "border": {
+    "border-width": {
+      "parent": "theme/stable/dark",
+      "type": "dimension",
+      "value": "{border.width.2}",
+      "description": "Uplift border width override — Figma: border/border-width → border/2"
+    }
+  }
+}
