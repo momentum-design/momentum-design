@@ -8,6 +8,7 @@
     "core/radius",
     "core/border-width",
     "core/spacing",
+    "core/size",
     "theme/stable/dark",
     "theme/stable/light",
     "theme/stable/highcontrast/hc_dark",

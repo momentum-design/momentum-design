@@ -1,0 +1,156 @@
+{
+  "size-1": {
+    "value": 1,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "1px — stepper connector"
+  },
+  "size-4": {
+    "value": 4,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "4px — nav menu indicator"
+  },
+  "size-16": {
+    "value": 16,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "16px — badge, popover, static radio"
+  },
+  "size-20": {
+    "value": 20,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "20px — divider, chip, timepicker"
+  },
+  "size-24": {
+    "value": 24,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "24px — alertchip height, avatar sm, chip"
+  },
+  "size-28": {
+    "value": 28,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "28px — buttongroup, calendar, stepper item"
+  },
+  "size-32": {
+    "value": 32,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "32px — input height, tab, slider, avatar md"
+  },
+  "size-40": {
+    "value": 40,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "40px — buttongroup, datepicker, nav item"
+  },
+  "size-52": {
+    "value": 52,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "52px — input min-width"
+  },
+  "size-64": {
+    "value": 64,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "64px — app header, searchfield, avatar lg"
+  },
+  "size-72": {
+    "value": 72,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "72px — avatar"
+  },
+  "size-88": {
+    "value": 88,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "88px — avatar"
+  },
+  "size-100": {
+    "value": 100,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "100px — textarea min-height"
+  },
+  "size-124": {
+    "value": 124,
+    "type": "number",
+    "$extensions": {
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.hiddenFromPublishing": false
+    },
+    "description": "124px — avatar xl"
+  }
+}
