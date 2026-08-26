@@ -1,0 +1,21 @@
+{
+  "border": {
+    "width": {
+      "half": {
+        "value": "0.5px",
+        "type": "dimension",
+        "description": "0.5px — progressbar only. Figma: border/width/half"
+      },
+      "1": {
+        "value": "1px",
+        "type": "dimension",
+        "description": "1px — default stroke (chip, banner, static controls)"
+      },
+      "2": {
+        "value": "2px",
+        "type": "dimension",
+        "description": "2px — selected filterchip, emphasis stroke"
+      }
+    }
+  }
+}
