@@ -865,6 +865,7 @@ class Popover
 
       // cleanup floating-ui on closing the popover
       this.floatingUICleanupFunction?.();
+      this.removeAttribute('data-floating-side');
 
       if (this.backdrop) {
         this.moveElementBackAfterBackdropRemoval(triggerElement);
@@ -1173,6 +1174,7 @@ class Popover
         });
 
         this.utils.updatePopoverStyle(x, y);
+        this.setAttribute('data-floating-side', placement.split('-')[0]);
         if (middlewareData.arrow && this.arrowElement) {
           this.utils.updateArrowStyle(middlewareData.arrow, placement);
         }

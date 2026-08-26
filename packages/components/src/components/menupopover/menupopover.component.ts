@@ -14,7 +14,7 @@ import { ACTIONS } from '../../utils/mixins/KeyToActionMixin';
 
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
-import { isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
+import { calculateSubmenuOffset, isValidMenuItem, isValidMenuPopover } from './menupopover.utils';
 
 /**
  * @tagname mdc-menupopover
@@ -111,6 +111,23 @@ class MenuPopover extends Popover {
     return subMenus;
   }
 
+  /**
+   * Applies a panel-to-panel gap for nested submenus anchored to a parent menu item.
+   * Skipped when `offset` is set explicitly on the element.
+   * @internal
+   */
+  private updateSubmenuOffset(): void {
+    if (this.hasAttribute('offset')) return;
+
+    const { triggerElement } = this;
+    if (!triggerElement) return;
+
+    const submenuOffset = calculateSubmenuOffset(triggerElement, this.adjustPlacementForRtl(this.placement));
+    if (submenuOffset !== null) {
+      this.offset = submenuOffset;
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -140,6 +157,7 @@ class MenuPopover extends Popover {
       this.backdrop = ![MENUITEM_TAGNAME, NAVMENUITEM_TAGNAME].includes(
         this.triggerElement.tagName.toLowerCase() as any,
       );
+      this.updateSubmenuOffset();
     }
 
     // if the current menupopover is closed, close all submenus
@@ -160,8 +178,17 @@ class MenuPopover extends Popover {
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
 
+    this.updateSubmenuOffset();
     this.collectMenuItems();
     this.resetTabIndexes(0);
+  }
+
+  protected override async updated(changedProperties: PropertyValues): Promise<void> {
+    await super.updated(changedProperties);
+
+    if (changedProperties.has('placement')) {
+      this.updateSubmenuOffset();
+    }
   }
 
   /**
