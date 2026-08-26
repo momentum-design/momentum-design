@@ -139,6 +139,27 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
+    "growShrink": {
+      "description": "Scale along the inline axis — transform transition for grow-in effects",
+      "type": "transition",
+      "properties": [
+        "transform"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "textChange": {
+      "description": "Text emphasis transition — color and font-weight between inactive and active states",
+      "type": "transition",
+      "properties": [
+        "color",
+        "font-weight"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
     "fadeInOut": {
       "description": "Dialog entrance — fades in when appearing",
       "type": "transition",
