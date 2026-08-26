@@ -149,6 +149,54 @@
       "duration": "{motion.duration.relaxed}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
+    },
+    "slideDown": {
+      "description": "Slide-down entrance — transform, opacity, and display for overlays entering from above",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideUp": {
+      "description": "Slide-up entrance — transform, opacity, and display for overlays entering from below",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideLeft": {
+      "description": "Slide-left entrance — transform, opacity, and display for overlays entering from the right",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideRight": {
+      "description": "Slide-right entrance — transform, opacity, and display for overlays entering from the left",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
     }
   }
 }
