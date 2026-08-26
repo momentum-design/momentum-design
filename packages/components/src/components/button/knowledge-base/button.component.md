@@ -14,7 +14,7 @@ The button triggers user actions such as submitting a form, opening a dialog, or
 - Use `mdc-button` to trigger an action — submitting a form, opening a dialog, or running a command.
 - Use `mdc-button` `primary` for the single most important action in a view. Keep at most one primary button per context; when a dialog offers "Save" and "Cancel", only "Save" is primary.
 - Use `mdc-button` `secondary` for actions that are available but not the expected next step. More than one secondary button can appear together.
-- Use `mdc-button` `overlay` for actions placed directly over images, video, or other visually variable content. Its dedicated overlay background keeps the control distinct from the content beneath it.
+- Use `mdc-button` `overlay` for actions placed directly over images, video, or other non-uniform backgrounds. Its dedicated overlay background helps maintain visual separation from the underlying content, though contrast should still be verified in context.
 - Use `mdc-button` `tertiary` for low-emphasis actions that should not compete for attention; unlike secondary, it has no resting outline, so its footprint appears only on hover or interaction.
 - Use an icon-only `mdc-button` for compact targets such as toolbars or table-row controls where space is constrained and the icon's meaning is unambiguous.
 - Use `mdc-button` with `inverted` on a dark or inverted surface so the color scheme keeps the required contrast.
@@ -62,7 +62,7 @@ Minimal markup example:
 |---|---|
 | `variant="primary"` (default) | Solid, high-emphasis style. Use for the single most important action in a context. |
 | `variant="secondary"` | Outlined, medium-emphasis style. Use for supporting actions; several can coexist. |
-| `variant="overlay"` | Medium-emphasis style with a dedicated overlay background. Use over images, video, or other visually variable content; supports all `color` values. |
+| `variant="overlay"` | Medium-emphasis style with a dedicated overlay background. Use over images, video, or other non-uniform backgrounds. The overlay background helps maintain visual separation, but contrast should still be verified in context. |
 | `variant="tertiary"` | No resting outline, low-emphasis style. Use to reduce noise; supports only `default`, `accent`, and `negative` colors. |
 | `color="default"` (default) | Neutral color. Use unless the action carries positive, destructive, accent, or promotional meaning. |
 | `color="negative"` | Signals a destructive or irreversible action such as delete or remove. Pair high-risk actions with a confirmation. |
