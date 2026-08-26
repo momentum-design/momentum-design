@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "radius-0": {
     "value": "0",
     "type": "borderRadius",
@@ -44,60 +43,10 @@
     "value": "100",
     "type": "borderRadius",
     "description": "100px — badge pill, button capsule "
+  },
+  "radius-full": {
+    "value": "50%",
+    "type": "borderRadius",
+    "description": "Circle / fully rounded (avatar, radio, slider thumb)"
   }
 }
-=======
-  "radius": {
-    "0": {
-      "value": "0",
-      "type": "dimension",
-      "description": "Square corners; flat edges in mixed-radius layouts (accordion, combobox, nav)"
-    },
-    "2": {
-      "value": "0.125rem",
-      "type": "dimension",
-      "description": "2px — checkbox, datepicker sm, timepicker sm"
-    },
-    "4": {
-      "value": "0.25rem",
-      "type": "dimension",
-      "description": "4px — chips, icon, inputchip, skeleton sm"
-    },
-    "8": {
-      "value": "0.5rem",
-      "type": "dimension",
-      "description": "8px — default component corners (card, input, dialog, list)"
-    },
-    "12": {
-      "value": "0.75rem",
-      "type": "dimension",
-      "description": "12px — statictoggle (P1)"
-    },
-    "14": {
-      "value": "0.875rem",
-      "type": "dimension",
-      "description": "14px — calendar corner cells (P1)"
-    },
-    "20": {
-      "value": "1.25rem",
-      "type": "dimension",
-      "description": "20px — pill buttons, nav, sidenav"
-    },
-    "50": {
-      "value": "3.125rem",
-      "type": "dimension",
-      "description": "50px — listitem large pill (P1)"
-    },
-    "100": {
-      "value": "6.25rem",
-      "type": "dimension",
-      "description": "100px — badge pill, button capsule (P1)"
-    },
-    "full": {
-      "value": "50%",
-      "type": "dimension",
-      "description": "Circle / fully rounded (avatar, radio, slider thumb)"
-    }
-  }
-}
->>>>>>> 5feb10f10e0 (feat(tokens): add core dimension token sets for test sync)
