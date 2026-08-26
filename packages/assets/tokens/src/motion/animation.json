@@ -179,8 +179,20 @@
         "opacity",
         "display"
       ],
-      "duration": "{motion.duration.relaxed}",
-      "easing": "{motion.easing.standard}",
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideDownExit": {
+      "description": "Slide-down exit — transform, opacity, and display for overlays leaving downward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
       "delay": "{motion.delay.none}"
     },
     "slideUp": {
@@ -191,8 +203,20 @@
         "opacity",
         "display"
       ],
-      "duration": "{motion.duration.relaxed}",
-      "easing": "{motion.easing.standard}",
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideUpExit": {
+      "description": "Slide-up exit — transform, opacity, and display for overlays leaving upward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
       "delay": "{motion.delay.none}"
     },
     "slideLeft": {
@@ -203,8 +227,20 @@
         "opacity",
         "display"
       ],
-      "duration": "{motion.duration.relaxed}",
-      "easing": "{motion.easing.standard}",
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideLeftExit": {
+      "description": "Slide-left exit — transform, opacity, and display for overlays leaving leftward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
       "delay": "{motion.delay.none}"
     },
     "slideRight": {
@@ -215,8 +251,20 @@
         "opacity",
         "display"
       ],
-      "duration": "{motion.duration.relaxed}",
-      "easing": "{motion.easing.standard}",
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideRightExit": {
+      "description": "Slide-right exit — transform, opacity, and display for overlays leaving rightward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
       "delay": "{motion.delay.none}"
     }
   }
