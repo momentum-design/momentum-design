@@ -36,7 +36,8 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, 'bodyOverride');
   applyStyle(body, 'mds-typography');
   applyStyle(body, 'mds-elevation');
-
+  applyStyle(body, 'mds-motion');
+  applyStyle(body, 'mds-animation');
   // Mirror the active theme onto <body> so non-story chrome (e.g. the
   // knowledge-base Docs page rendered by `@momentum-design/storybook-addon-docs`)
   // can resolve `--mds-*` tokens.

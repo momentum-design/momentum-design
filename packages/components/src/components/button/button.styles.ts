@@ -35,10 +35,12 @@ const styles = css`
   /* Apply icon size for prefix and postfix icons */
   :host::part(prefix-icon) {
     --mdc-icon-size: var(--mdc-button-prefix-icon-size);
+    transition: var(--mds-transition-button-icon);
   }
 
   :host::part(postfix-icon) {
     --mdc-icon-size: var(--mdc-button-postfix-icon-size);
+    transition: var(--mds-transition-button-icon);
   }
 
   :host([active]) {

@@ -3,15 +3,20 @@
     "buttonBackground": {
       "description": "Button background color transition on hover/press",
       "type": "transition",
-      "properties": ["background-color"],
-      "duration": "{motion.duration.instant}",
+      "properties": [
+        "background-color"
+      ],
+      "duration": "{motion.duration.normal}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
     "buttonBorder": {
       "description": "Button border and shadow transition on focus",
       "type": "transition",
-      "properties": ["border-color", "box-shadow"],
+      "properties": [
+        "border-color",
+        "box-shadow"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -19,7 +24,10 @@
     "buttonIcon": {
       "description": "Button icon color and transform transition",
       "type": "transition",
-      "properties": ["color", "transform"],
+      "properties": [
+        "color",
+        "transform"
+      ],
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -27,7 +35,10 @@
     "buttonFocusRing": {
       "description": "Button focus ring appearance",
       "type": "transition",
-      "properties": ["box-shadow", "outline"],
+      "properties": [
+        "box-shadow",
+        "outline"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -35,13 +46,19 @@
     "buttonPress": {
       "description": "Button press effect combining background and icon transitions",
       "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonIcon"],
+      "animations": [
+        "buttonBackground",
+        "buttonIcon"
+      ],
       "composition": "parallel"
     },
     "buttonHover": {
       "description": "Button hover effect combining background and border transitions",
       "type": "transitionCompound",
-      "animations": ["buttonBackground", "buttonBorder"],
+      "animations": [
+        "buttonBackground",
+        "buttonBorder"
+      ],
       "composition": "parallel"
     },
     "buttonLoadingSpin": {
@@ -77,13 +94,19 @@
     "buttonLoadingSpinPulse": {
       "description": "Button loading state combining spin and pulse keyframe animations",
       "type": "keyframeCompound",
-      "animations": ["buttonLoadingSpin", "buttonLoadingPulse"],
+      "animations": [
+        "buttonLoadingSpin",
+        "buttonLoadingPulse"
+      ],
       "composition": "parallel"
     },
     "checkboxDefault": {
       "description": "Checkbox default transition applied in all states (e.g. background-color, border-color)",
       "type": "transition",
-      "properties": ["background-color", "border-color"],
+      "properties": [
+        "background-color",
+        "border-color"
+      ],
       "duration": "{motion.duration.instant}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
@@ -115,7 +138,134 @@
       "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
+    },
+    "growShrink": {
+      "description": "Scale along the inline axis — transform transition for grow-in effects",
+      "type": "transition",
+      "properties": [
+        "transform"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "textChange": {
+      "description": "Text emphasis transition — color and font-weight between inactive and active states",
+      "type": "transition",
+      "properties": [
+        "color",
+        "font-weight"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "fadeInOut": {
+      "description": "Dialog entrance — fades in when appearing",
+      "type": "transition",
+      "properties": [
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.relaxed}",
+      "easing": "{motion.easing.standard}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideDown": {
+      "description": "Slide-down entrance — transform, opacity, and display for overlays entering from above",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideDownExit": {
+      "description": "Slide-down exit — transform, opacity, and display for overlays leaving downward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideUp": {
+      "description": "Slide-up entrance — transform, opacity, and display for overlays entering from below",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideUpExit": {
+      "description": "Slide-up exit — transform, opacity, and display for overlays leaving upward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideLeft": {
+      "description": "Slide-left entrance — transform, opacity, and display for overlays entering from the right",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideLeftExit": {
+      "description": "Slide-left exit — transform, opacity, and display for overlays leaving leftward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideRight": {
+      "description": "Slide-right entrance — transform, opacity, and display for overlays entering from the left",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.fast}",
+      "easing": "{motion.easing.entrance}",
+      "delay": "{motion.delay.none}"
+    },
+    "slideRightExit": {
+      "description": "Slide-right exit — transform, opacity, and display for overlays leaving rightward",
+      "type": "transition",
+      "properties": [
+        "transform",
+        "opacity",
+        "display"
+      ],
+      "duration": "{motion.duration.instant}",
+      "easing": "{motion.easing.exit}",
+      "delay": "{motion.delay.none}"
     }
   }
 }
-

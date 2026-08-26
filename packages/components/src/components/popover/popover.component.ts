@@ -15,7 +15,6 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
-import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -865,6 +864,7 @@ class Popover
 
       // cleanup floating-ui on closing the popover
       this.floatingUICleanupFunction?.();
+      this.removeAttribute('data-floating-side');
 
       if (this.backdrop) {
         this.moveElementBackAfterBackdropRemoval(triggerElement);
@@ -917,8 +917,13 @@ class Popover
   private isHoverWithinTrigger = (event: Event): boolean => {
     const { triggerElement } = this;
     const { relatedTarget } = event as MouseEvent;
+
     if (triggerElement && relatedTarget instanceof Element) {
-      return getHostComposePath(relatedTarget).includes(triggerElement);
+      return (
+        triggerElement === relatedTarget ||
+        // eslint-disable-next-line no-bitwise
+        !!(triggerElement.compareDocumentPosition(relatedTarget) & Node.DOCUMENT_POSITION_CONTAINED_BY)
+      );
     }
     return false;
   };
@@ -1173,6 +1178,7 @@ class Popover
         });
 
         this.utils.updatePopoverStyle(x, y);
+        this.setAttribute('data-floating-side', placement.split('-')[0]);
         if (middlewareData.arrow && this.arrowElement) {
           this.utils.updateArrowStyle(middlewareData.arrow, placement);
         }
