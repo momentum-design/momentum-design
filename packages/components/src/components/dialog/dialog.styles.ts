@@ -17,7 +17,6 @@ const styles = css`
     border: 0.0625rem solid var(--mdc-dialog-border-color);
     border-radius: 0.5rem;
     filter: var(--mdc-dialog-elevation-3);
-    display: none;
     padding: var(--mdc-dialog-padding);
     flex-direction: column;
     justify-content: center;
@@ -26,6 +25,15 @@ const styles = css`
     right: 50%;
     bottom: 50%;
     transform: translateX(50%) translateY(50%);
+
+    // Animation Backdrop
+    --mdc-backdrop-mixin-transition: var(--mds-transition-fade-in-out);
+
+    // Animating Dialog
+    display: none;
+    opacity: 0;
+    transition: var(--mds-transition-fade-in-out);
+    transition-behavior: allow-discrete;
   }
 
   @supports (transform: translateX(round(to-zero, 1px, 1px))) {
@@ -59,6 +67,21 @@ const styles = css`
 
   :host([visible]) {
     display: flex;
+    opacity: 1;
+
+    --mdc-backdrop-mixin-transition: var(--mds-transition-fade-in-out);
+
+
+    // Animating Dialog
+    transition: var(--mds-transition-fade-in-out);
+    transition-behavior: allow-discrete;
+  }
+
+  @starting-style {
+    :host([visible]) {
+      // Animating Dialog; needed for overcoming display: none; issue
+      opacity: 0;
+    }
   }
 
   :host([size='medium']) {
