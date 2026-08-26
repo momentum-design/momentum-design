@@ -812,7 +812,12 @@
     },
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/dark": "enabled"
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/dark": "enabled",
+      "theme/momentum/dark": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:1",
@@ -1189,7 +1194,12 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/light": "enabled"
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/light": "enabled",
+      "theme/momentum/light": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:2",
@@ -2459,5 +2469,69 @@
     },
     "$figmaModeId": "22175:2",
     "$figmaCollectionId": "VariableCollectionId:22175:8029"
+  },
+  {
+    "id": "a1b2c3d4e5f6789012345678extendedupliftdark",
+    "name": "dark",
+    "group": "extended/uplift",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/dark": "source",
+      "theme/momentum/dark": "source",
+      "extended/uplift/dark": "enabled"
+    }
+  },
+  {
+    "id": "a1b2c3d4e5f6789012345678extendedupliftlight",
+    "name": "light",
+    "group": "extended/uplift",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/light": "source",
+      "theme/momentum/light": "source",
+      "extended/uplift/light": "enabled"
+    }
+  },
+  {
+    "id": "a1b2c3d4e5f6789012345678extendedproductbdark",
+    "name": "dark",
+    "group": "extended/product-b",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/dark": "source",
+      "theme/momentum/dark": "source",
+      "extended/product-b/dark": "enabled"
+    }
+  },
+  {
+    "id": "a1b2c3d4e5f6789012345678extendedproductblight",
+    "name": "light",
+    "group": "extended/product-b",
+    "$figmaStyleReferences": {},
+    "selectedTokenSets": {
+      "core/value": "source",
+      "core/spacing": "source",
+      "core/border": "source",
+      "core/radius": "source",
+      "core/size": "source",
+      "theme/stable/light": "source",
+      "theme/momentum/light": "source",
+      "extended/product-b/light": "enabled"
+    }
   }
 ]

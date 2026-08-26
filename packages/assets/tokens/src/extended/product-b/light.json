@@ -1,0 +1,32 @@
+{
+  "color": {
+    "theme": {
+      "text": {
+        "accent": {
+          "normal": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.green.50}",
+            "description": "Product B accent text override (test extended collection)"
+          }
+        }
+      }
+    }
+  },
+  "radius": {
+    "radius": {
+      "parent": "theme/momentum/light",
+      "type": "dimension",
+      "value": "{radius.8}",
+      "description": "Product B radius override — Figma: radius/radius → radius/8"
+    }
+  },
+  "size": {
+    "avatar": {
+      "parent": "theme/momentum/light",
+      "type": "dimension",
+      "value": "{size.40}",
+      "description": "Product B avatar size override — Figma: size/avatar → size/40"
+    }
+  }
+}
