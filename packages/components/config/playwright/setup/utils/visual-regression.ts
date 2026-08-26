@@ -70,14 +70,22 @@ class VisualRegression {
   }
 
   /**
-   * Takes a screenshot of the whole page, with the passed in options
-   * If options.element is provided, it will take a screenshot of that element instead of the whole page.
+   * Captures visual-regression snapshots of the page, or of `options.element` when provided.
    *
-   * @param name - name of the screenshot, file extension will be appended automatically!
-   * @param options - An object that contains the
-   * - element to take screenshot from
-   * - assertion after switching direction
-   * - type of screenshot - stickersheet or userflow
+   * The default `stickersheet` source captures `<name>-high-contrast` on Chromium-based browsers,
+   * followed by `<name>-ltr` and `<name>-rtl`. Forced-colors mode and document direction are managed
+   * and reset internally, so call this method only once per fixture and do not set `forcedColors`
+   * around it. The `userflow` source captures one LTR snapshot named
+   * `<name>-userflow-<fileNameSuffix>`.
+   *
+   * Snapshot capture is skipped when `E2E_SKIP_SNAPSHOT` is `true`. Pending icon requests and browser
+   * paints are awaited before snapshots are compared. For `stickersheet` captures,
+   * `options.assertionAfterSwitchingDirection` is invoked after each direction change and before the
+   * corresponding snapshot is captured.
+   *
+   * @param name - Base snapshot name. Capture-specific suffixes and the file extension are added automatically.
+   * @param options - Playwright screenshot options plus the target element, capture source, user-flow filename
+   * suffix, and direction-change callback configuration.
    */
   async takeScreenshot(name: string, options?: ScreenShotOptions): Promise<void> {
     const elementToTakeScreenShotFrom = options?.element || this.page;

@@ -15,7 +15,6 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { Component } from '../../models';
-import { getHostComposePath } from '../../utils/dom';
 import { BackdropMixin } from '../../utils/mixins/BackdropMixin';
 import { FocusTrapMixin } from '../../utils/mixins/focus/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
@@ -917,8 +916,13 @@ class Popover
   private isHoverWithinTrigger = (event: Event): boolean => {
     const { triggerElement } = this;
     const { relatedTarget } = event as MouseEvent;
+
     if (triggerElement && relatedTarget instanceof Element) {
-      return getHostComposePath(relatedTarget).includes(triggerElement);
+      return (
+        triggerElement === relatedTarget ||
+        // eslint-disable-next-line no-bitwise
+        !!(triggerElement.compareDocumentPosition(relatedTarget) & Node.DOCUMENT_POSITION_CONTAINED_BY)
+      );
     }
     return false;
   };
