@@ -241,6 +241,15 @@ test('mdc-checkbox', async ({ componentsPage }) => {
       await expect(icon).toHaveAttribute('name', 'check-bold');
     });
 
+    await test.step('should apply the host tabindex to the native input', async () => {
+      const input = checkbox.locator('input[type="checkbox"]');
+      await componentsPage.setAttributes(checkbox, { tabindex: '-1' });
+      await expect(input).toHaveAttribute('tabindex', '-1');
+
+      await componentsPage.removeAttribute(checkbox, 'tabindex');
+      await expect(input).toHaveAttribute('tabindex', '0');
+    });
+
     await test.step('should have disabled attribute when the disabled attribute is passed', async () => {
       await componentsPage.setAttributes(checkbox, { disabled: '' });
       await expect(checkbox.locator('input[type="checkbox"]')).toBeDisabled();
