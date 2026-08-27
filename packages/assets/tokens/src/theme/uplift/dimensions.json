@@ -1,0 +1,270 @@
+{
+  "spacing": {
+    "theme": {
+      "none": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.0}",
+        "description": "Theme spacing step none"
+      },
+      "xxs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.2}",
+        "description": "Theme spacing step xxs"
+      },
+      "xs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.4}",
+        "description": "Theme spacing step xs"
+      },
+      "sm": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.6}",
+        "description": "Theme spacing step sm"
+      },
+      "md": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.8}",
+        "description": "Theme spacing step md — default 8px"
+      },
+      "lg": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.12}",
+        "description": "Theme spacing step lg"
+      },
+      "xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.14}",
+        "description": "Theme spacing step xl"
+      },
+      "2xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.16}",
+        "description": "Theme spacing step 2xl"
+      },
+      "3xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.20}",
+        "description": "Theme spacing step 3xl"
+      },
+      "4xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.24}",
+        "description": "Theme spacing step 4xl"
+      },
+      "5xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.28}",
+        "description": "Theme spacing step 5xl"
+      },
+      "6xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.32}",
+        "description": "Theme spacing step 6xl"
+      },
+      "7xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.40}",
+        "description": "Theme spacing step 7xl"
+      },
+      "8xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{spacing.64}",
+        "description": "Theme spacing step 8xl"
+      }
+    }
+  },
+  "radius": {
+    "theme": {
+      "none": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.0}",
+        "description": "Theme radius step none"
+      },
+      "xxs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.2}",
+        "description": "Theme radius step xxs"
+      },
+      "xs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.4}",
+        "description": "Theme radius step xs"
+      },
+      "sm": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.8}",
+        "description": "Theme radius step sm — default 8px"
+      },
+      "md": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.12}",
+        "description": "Theme radius step md"
+      },
+      "lg": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.14}",
+        "description": "Theme radius step lg"
+      },
+      "xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.20}",
+        "description": "Theme radius step xl"
+      },
+      "2xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.50}",
+        "description": "Theme radius step 2xl"
+      },
+      "3xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.100}",
+        "description": "Theme radius step 3xl"
+      },
+      "full": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{radius.full}",
+        "description": "Theme radius step full"
+      }
+    }
+  },
+  "border": {
+    "theme": {
+      "sm": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{border.width.1}",
+        "description": "Theme border width sm — 1px"
+      },
+      "md": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{border.width.2}",
+        "description": "Theme border width md — 2px"
+      }
+    }
+  },
+  "size": {
+    "theme": {
+      "xxs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.4}",
+        "description": "Theme size step xxs"
+      },
+      "xs": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.8}",
+        "description": "Theme size step xs"
+      },
+      "sm": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.12}",
+        "description": "Theme size step sm"
+      },
+      "md": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.14}",
+        "description": "Theme size step md"
+      },
+      "lg": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.16}",
+        "description": "Theme size step lg"
+      },
+      "xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.20}",
+        "description": "Theme size step xl"
+      },
+      "2xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.24}",
+        "description": "Theme size step 2xl"
+      },
+      "3xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.28}",
+        "description": "Theme size step 3xl"
+      },
+      "4xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.32}",
+        "description": "Theme size step 4xl — default 32px"
+      },
+      "5xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.40}",
+        "description": "Theme size step 5xl"
+      },
+      "6xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.52}",
+        "description": "Theme size step 6xl"
+      },
+      "7xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.64}",
+        "description": "Theme size step 7xl"
+      },
+      "8xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.72}",
+        "description": "Theme size step 8xl"
+      },
+      "9xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.88}",
+        "description": "Theme size step 9xl"
+      },
+      "10xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.100}",
+        "description": "Theme size step 10xl"
+      },
+      "11xl": {
+        "parent": "theme/uplift/dimensions",
+        "type": "dimension",
+        "value": "{size.124}",
+        "description": "Theme size step 11xl"
+      }
+    }
+  }
+}

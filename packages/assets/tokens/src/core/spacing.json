@@ -1,145 +1,79 @@
 {
-  "spacing-4": {
-    "value": 4,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+  "spacing": {
+    "0": {
+      "value": "0",
+      "type": "dimension",
+      "description": "0px — reset, collapsed gaps"
     },
-    "description": "4px — tight gap (icon to label, chip)"
-  },
-  "spacing-8": {
-    "value": 8,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "2": {
+      "value": "0.125rem",
+      "type": "dimension",
+      "description": "2px — hairline gaps, tab indicator offset"
     },
-    "description": "8px — default control gap, list padding"
-  },
-  "spacing-6": {
-    "value": 6,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": true
+    "4": {
+      "value": "0.25rem",
+      "type": "dimension",
+      "description": "4px — tight gap (icon to label, chip)"
     },
-    "description": "6px — compact button gap"
-  },
-  "spacing-12": {
-    "value": 12,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "6": {
+      "value": "0.375rem",
+      "type": "dimension",
+      "description": "6px — compact button gap"
     },
-    "description": "12px — medium padding, form groups"
-  },
-  "spacing-14": {
-    "value": 14,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "8": {
+      "value": "0.5rem",
+      "type": "dimension",
+      "description": "8px — default control gap, list padding"
     },
-    "description": "14px — calendar padding edge"
-  },
-  "spacing-16": {
-    "value": 16,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": true
+    "12": {
+      "value": "0.75rem",
+      "type": "dimension",
+      "description": "12px — medium padding, form groups"
     },
-    "description": "16px — section gap, container padding"
-  },
-  "spacing-20": {
-    "value": 20,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "14": {
+      "value": "0.875rem",
+      "type": "dimension",
+      "description": "14px — calendar padding edge"
     },
-    "description": "20px — button height tier"
-  },
-  "spacing-24": {
-    "value": 24,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "16": {
+      "value": "1rem",
+      "type": "dimension",
+      "description": "16px — section gap, container padding"
     },
-    "description": "24px — large padding, accordion"
-  },
-  "spacing-28": {
-    "value": 28,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "20": {
+      "value": "1.25rem",
+      "type": "dimension",
+      "description": "20px — button height tier"
     },
-    "description": "28px — tab, calendar cell"
-  },
-  "spacing-32": {
-    "value": 32,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "24": {
+      "value": "1.5rem",
+      "type": "dimension",
+      "description": "24px — large padding, accordion"
     },
-    "description": "32px — dialog context, large sections"
-  },
-  "spacing-40": {
-    "value": 40,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "28": {
+      "value": "1.75rem",
+      "type": "dimension",
+      "description": "28px — tab, calendar cell"
     },
-    "description": "40px — nav item"
-  },
-  "spacing-64": {
-    "value": 64,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": false
+    "32": {
+      "value": "2rem",
+      "type": "dimension",
+      "description": "32px — dialog context, large sections"
     },
-    "description": "64px — app header"
-  },
-  "spacing-240": {
-    "value": 240,
-    "type": "number",
-    "$extensions": {
-      "com.figma.scopes": [
-        "GAP"
-      ],
-      "com.figma.hiddenFromPublishing": true
+    "40": {
+      "value": "2.5rem",
+      "type": "dimension",
+      "description": "40px — nav item"
     },
-    "description": "240px — timepicker listbox"
+    "64": {
+      "value": "4rem",
+      "type": "dimension",
+      "description": "64px — app header"
+    },
+    "240": {
+      "value": "15rem",
+      "type": "dimension",
+      "description": "240px — timepicker listbox"
+    }
   }
 }
