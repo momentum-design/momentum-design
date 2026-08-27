@@ -1,0 +1,26 @@
+layer,priority,category,token,value,figma_variable,css_variable,component_count,used_components
+core,P0,spacing,spacing.2,0.125rem (2px),spacing/2,--mds-spacing-2,4,accordion; calendar; statictoggle; tab
+core,P0,spacing,spacing.4,0.25rem (4px),spacing/4,--mds-spacing-4,24,accordionbutton; alertchip; button; calendar; card; checkbox; datepicker; dialog; formfieldgroup; input; inputchip; linkbutton; listbox; progressbar; searchfield; searchpopover; sidenavigation; staticchip; statictoggle; stepperitem; textarea; timepicker; toast; toggle
+core,P0,spacing,spacing.6,0.375rem (6px),spacing/6,--mds-spacing-6,3,button; input; select
+core,P0,spacing,spacing.8,0.5rem (8px),spacing/8,--mds-spacing-8,24,accordionbutton; banner; button; calendar; card; combobox; datepicker; dialog; formfieldwrapper; listheader; navmenuitem; progressbar; radio; searchfield; select; sidenavigation; slider; statusmessage; stepper; stepperitem; tab; tablist; timepicker; verticaltablist
+core,P0,spacing,spacing.12,0.75rem (12px),spacing/12,--mds-spacing-12,11,badge; calendar; card; formfieldgroup; listitem; option; popover; sidenavigation; slider; toast; toggle
+core,P1,spacing,spacing.14,0.875rem (14px),spacing/14,--mds-spacing-14,2,navmenuitem; stepper
+core,P0,spacing,spacing.16,1rem (16px),spacing/16,--mds-spacing-16,7,accordionbutton; appheader; card; dialog; navmenuitem; statictoggle; toast
+core,P1,spacing,spacing.20,1.25rem (20px),spacing/20,--mds-spacing-20,1,buttonsimple
+core,P0,spacing,spacing.24,1.5rem (24px),spacing/24,--mds-spacing-24,5,accordionbutton; accordiongroup; buttonsimple; card; statictoggle
+core,P1,spacing,spacing.28,1.75rem (28px),spacing/28,--mds-spacing-28,2,buttonsimple; tab
+core,P0,spacing,spacing.32,2rem (32px),spacing/32,--mds-spacing-32,10,announcementdialog; buttonsimple; combobox; datepicker; input; select; slider; tab; timepicker; toggletip
+core,P1,spacing,spacing.40,2.5rem (40px),spacing/40,--mds-spacing-40,1,buttonsimple
+core,P1,spacing,spacing.64,4rem (64px),spacing/64,--mds-spacing-64,2,appheader; buttonsimple
+core,P1,spacing,spacing.240,15rem (240px),spacing/240,--mds-spacing-240,1,timepicker
+core,P0,radius,radius.full,50%,radius/full,--mds-radius-full,12,avatar; avatarbutton; badge; bullet; calendar; presence; skeleton; slider; staticradio; statictoggle; stepperitem; textarea
+core,P1,radius,radius.100,6.25rem (100px),radius/100,--mds-radius-100,4,badge; button; datepicker; timepicker
+core,P1,radius,radius.12,0.75rem (12px),radius/12,--mds-radius-12,1,statictoggle
+core,P1,radius,radius.14,0.875rem (14px),radius/14,--mds-radius-14,1,calendar
+core,P0,radius,radius.2,0.125rem (2px),radius/2,--mds-radius-2,4,checkbox; datepicker; staticcheckbox; timepicker
+core,P0,radius,radius.20,1.25rem (20px),radius/20,--mds-radius-20,5,button; buttongroup; navmenuitem; sidenavigation; skeleton
+core,P0,radius,radius.4,0.25rem (4px),radius/4,--mds-radius-4,12,alertchip; avatarbutton; icon; inputchip; linksimple; navmenuitem; skeleton; slider; staticchip; stepperitem; tab; verticaltablist
+core,P1,radius,radius.50,3.125rem (50px),radius/50,--mds-radius-50,1,listitem
+core,P0,radius,radius.8,0.5rem (8px),radius/8,--mds-radius-8,22,accordionbutton; accordiongroup; banner; calendar; card; combobox; datepicker; dialog; divider; input; listitem; navmenuitem; popover; select; skeleton; slider; statictoggle; stepperitem; tab; textarea; timepicker; toast
+core,P0,border,border.width.1,1px,border/width/1,--mds-border-width-1,10,alertchip; banner; buttongroup; buttonlink; divider; inputchip; progressbar; staticchip; statictoggle; stepperconnector
+core,P0,border,border.width.2,2px,border/width/2,--mds-border-width-2,1,filterchip

@@ -1,0 +1,10 @@
+{
+  "comment": "Insert these entries into packages/assets/tokens/src/$metadata.json tokenSetOrder after core/effect",
+  "tokenSetOrderInsertAfter": "core/effect",
+  "tokenSetOrderEntries": [
+    "core/spacing",
+    "core/border",
+    "core/radius",
+    "core/size"
+  ]
+}

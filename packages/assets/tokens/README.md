@@ -15,6 +15,12 @@ This package contains Momentum Design Tokens as JSON, distributed in the followi
 
 At this time, the Momentum Design Engineering team is not taking external requests for additional formats.
 
+## Token expansion docs
+
+Dimension token spec, component audit, and token lists for the MWL tokenization effort:
+
+* [**docs/**](./docs/) — start at [docs/README.md](./docs/README.md)
+
 ## Consumption
 
 This package distributes transformed token assets for direct consumption within various formats and platforms. The way these are consumed can vary based on the format. Inspect the distributed contents to determine the best way to consume the artifacts based on your use case.

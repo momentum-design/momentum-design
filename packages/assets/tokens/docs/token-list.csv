@@ -1,0 +1,45 @@
+category,token_name,value,priority,used_components
+Spacing,spacing.0,0 (0px),P0,—
+Spacing,spacing.2,0.125rem (2px),P0,accordion; calendar; statictoggle; tab
+Spacing,spacing.4,0.25rem (4px),P0,accordionbutton; alertchip; button; calendar; card; checkbox; datepicker; dialog; formfieldgroup; input; inputchip; linkbutton; listbox; progressbar; searchfield; searchpopover; sidenavigation; staticchip; statictoggle; stepperitem; textarea; timepicker; toast; toggle
+Spacing,spacing.6,0.375rem (6px),P0,button; input; select
+Spacing,spacing.8,0.5rem (8px),P0,accordionbutton; banner; button; calendar; card; combobox; datepicker; dialog; formfieldwrapper; listheader; navmenuitem; progressbar; radio; searchfield; select; sidenavigation; slider; statusmessage; stepper; stepperitem; tab; tablist; timepicker; verticaltablist
+Spacing,spacing.12,0.75rem (12px),P0,badge; calendar; card; formfieldgroup; listitem; option; popover; sidenavigation; slider; toast; toggle
+Spacing,spacing.14,0.875rem (14px),P1,navmenuitem; stepper
+Spacing,spacing.16,1rem (16px),P0,accordionbutton; appheader; card; dialog; navmenuitem; statictoggle; toast
+Spacing,spacing.20,1.25rem (20px),P1,buttonsimple
+Spacing,spacing.24,1.5rem (24px),P0,accordionbutton; accordiongroup; buttonsimple; card; statictoggle
+Spacing,spacing.28,1.75rem (28px),P1,buttonsimple; tab
+Spacing,spacing.32,2rem (32px),P0,announcementdialog; buttonsimple; combobox; datepicker; input; select; slider; tab; timepicker; toggletip
+Spacing,spacing.40,2.5rem (40px),P1,buttonsimple
+Spacing,spacing.64,4rem (64px),P1,appheader; buttonsimple
+Spacing,spacing.240,15rem (240px),P1,timepicker
+Radius,radius.0,0 (0px),P0,—
+Radius,radius.2,0.125rem (2px),P0,checkbox; datepicker; staticcheckbox; timepicker
+Radius,radius.4,0.25rem (4px),P0,alertchip; avatarbutton; icon; inputchip; linksimple; navmenuitem; skeleton; slider; staticchip; stepperitem; tab; verticaltablist
+Radius,radius.8,0.5rem (8px),P0,accordionbutton; accordiongroup; banner; calendar; card; combobox; datepicker; dialog; divider; input; listitem; navmenuitem; popover; select; skeleton; slider; statictoggle; stepperitem; tab; textarea; timepicker; toast
+Radius,radius.12,0.75rem (12px),P1,statictoggle
+Radius,radius.14,0.875rem (14px),P1,calendar
+Radius,radius.20,1.25rem (20px),P0,button; buttongroup; navmenuitem; sidenavigation; skeleton
+Radius,radius.50,3.125rem (50px),P1,listitem
+Radius,radius.100,6.25rem (100px),P1,badge; button; datepicker; timepicker
+Radius,radius.full,50%,P0,avatar; avatarbutton; badge; bullet; calendar; presence; skeleton; slider; staticradio; statictoggle; stepperitem; textarea
+Border,border.width.1,1px,P0,alertchip; banner; buttongroup; buttonlink; divider; inputchip; progressbar; staticchip; statictoggle; stepperconnector
+Border,border.width.2,2px,P0,filterchip
+Size,size.4,0.25rem (4px),P2,navmenuitem
+Size,size.16,1.0rem (16px),P2,avatar; badge; navmenuitem; popover; staticradio
+Size,size.20,1.25rem (20px),P2,divider; inputchip; staticchip; timepicker
+Size,size.24,1.5rem (24px),P1,alertchip; avatar; buttongroup; chip; datepicker; inputchip; sidenavigation; staticchip; timepicker
+Size,size.28,1.75rem (28px),P2,buttongroup; calendar; presence; stepperitem
+Size,size.32,2.0rem (32px),P0,avatar; buttonsimple; combobox; datepicker; input; select; slider; tab; timepicker; buttongroup
+Size,size.40,2.5rem (40px),P1,buttongroup; datepicker; divider; navmenuitem
+Size,size.52,3.25rem (52px),P1,input
+Size,size.64,4.0rem (64px),P1,avatar; searchfield
+Size,size.72,4.5rem (72px),P1,avatar
+Size,size.88,5.5rem (88px),P1,avatar
+Size,size.100,6.25rem (100px),P2,textarea
+Size,size.124,7.75rem (124px),P2,avatar
+Other,focus.ring.width.1,1px,P2,—
+Other,focus.ring.width.2,2px,P2,—
+Other,opacity.state.disabled,0.1%,P2,checkbox; select; toggle (0.1% in audit)
+Other,spacing.theme.*,—,P2,—
