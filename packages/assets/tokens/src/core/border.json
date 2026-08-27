@@ -1,11 +1,6 @@
 {
   "border": {
     "width": {
-      "half": {
-        "value": "0.5px",
-        "type": "dimension",
-        "description": "0.5px — progressbar only. Figma: border/width/half"
-      },
       "1": {
         "value": "1px",
         "type": "dimension",

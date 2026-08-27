@@ -1,10 +1,5 @@
 {
   "size": {
-    "1": {
-      "value": "0.0625rem",
-      "type": "dimension",
-      "description": "1px — stepper connector"
-    },
     "4": {
       "value": "0.25rem",
       "type": "dimension",
