@@ -145,7 +145,7 @@
       "properties": [
         "transform"
       ],
-      "duration": "{motion.duration.relaxed}",
+      "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
@@ -156,7 +156,7 @@
         "color",
         "font-weight"
       ],
-      "duration": "{motion.duration.relaxed}",
+      "duration": "{motion.duration.fast}",
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
