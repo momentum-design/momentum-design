@@ -1,4 +1,4 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Meta, StoryObj, StoryFn } from '@storybook/web-components';
 import { action } from 'storybook/actions';
 import '.';
 import { html } from 'lit';
@@ -12,9 +12,12 @@ import '../button';
 import '../popover';
 import { ROLE } from '../../utils/roles';
 
-const render = (args: Args) =>
+const render: StoryFn = (args, { updateArgs }) =>
   html` <mdc-tablist
-      @change="${action('onchange')}"
+      @change="${(event: CustomEvent<{ tabId: string }>) => {
+        action('onchange')(event);
+        updateArgs({ 'active-tab-id': event.detail.tabId });
+      }}"
       active-tab-id="${args['active-tab-id']}"
       data-aria-label=${args['data-aria-label']}
     >

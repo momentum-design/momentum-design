@@ -3,7 +3,12 @@ import type { PropertyValues } from 'lit';
 
 import type { Component } from '../../models';
 import Tab from '../../components/tab';
-import { findTab } from '../../components/tablist/tablist.utils';
+import { TAB_VARIANTS } from '../../components/tab/tab.constants';
+import {
+  findTab,
+  getActiveTab,
+  resolveIndicatorOrigins,
+} from '../../components/tablist/tablist.utils';
 import type { BaseArray } from '../virtualIndexArray';
 
 import type { Constructor } from './index.types';
@@ -26,6 +31,18 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
      */
     @property({ type: String, attribute: 'active-tab-id', reflect: true })
     activeTabId?: string;
+
+    /**
+     * Tracks whether the initial line-tab indicator origin has been applied.
+     * @internal
+     */
+    private initialIndicatorOriginApplied = false;
+
+    /**
+     * Last selected tab id used for direction-aware indicator animation.
+     * @internal
+     */
+    private lastActiveTabId?: string;
 
     constructor(...rest: any[]) {
       super(...rest);
@@ -59,7 +76,7 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
           return;
         }
 
-        this.setActiveTab(newTab);
+        this.setActiveTab(newTab, changedProperties.get('activeTabId') as string | undefined);
 
         // Only fire the change event if activeTabId was previously set (not the initial assignment).
         // On first render, old value is undefined by default, which means it's being set for the first time.
@@ -75,7 +92,20 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
      * @param newTab - The new active tab.
      * @internal
      */
-    private setActiveTab(newTab: Tab): void {
+    private setActiveTab(newTab: Tab, previousActiveTabId?: string): void {
+      const resolvedPreviousTabId =
+        previousActiveTabId && previousActiveTabId !== newTab.tabId ? previousActiveTabId : this.lastActiveTabId;
+      const previousTab = this.resolvePreviousTab(newTab, resolvedPreviousTabId);
+
+      if (previousTab === newTab && this.initialIndicatorOriginApplied) {
+        return;
+      }
+
+      if (this.shouldApplyDirectionalIndicator(newTab)) {
+        this.applyIndicatorOrigins(newTab, previousTab, resolvedPreviousTabId);
+        this.initialIndicatorOriginApplied = true;
+      }
+
       this.navItems?.forEach(tab => {
         if (tab === newTab) {
           tab.setAttribute('active', '');
@@ -83,6 +113,61 @@ export const TabListComponentMixin = <T extends Constructor<Component>>(superCla
           tab.removeAttribute('active');
         }
       });
+
+      this.lastActiveTabId = newTab.tabId;
+    }
+
+    /**
+     * @internal
+     */
+    private resolvePreviousTab(newTab: Tab, previousActiveTabId?: string): Tab | undefined {
+      if (previousActiveTabId && previousActiveTabId !== newTab.tabId && this.navItems) {
+        const tabFromId = findTab(this.navItems, previousActiveTabId);
+        if (tabFromId instanceof Tab) {
+          return tabFromId;
+        }
+      }
+
+      return getActiveTab(this.navItems);
+    }
+
+    /**
+     * @internal
+     */
+    private shouldApplyDirectionalIndicator(newTab: Tab): boolean {
+      return this.tagName === 'MDC-TABLIST' && newTab.getAttribute('variant') === TAB_VARIANTS.LINE;
+    }
+
+    /**
+     * @internal
+     */
+    private applyIndicatorOrigins(newTab: Tab, previousTab: Tab | undefined, previousActiveTabId?: string): void {
+      if (!this.navItems) {
+        return;
+      }
+
+      const newIndex = this.navItems.findIndex(tab => tab === newTab);
+      let previousIndex: number | undefined;
+
+      if (previousActiveTabId && previousActiveTabId !== newTab.tabId && previousTab) {
+        previousIndex = this.navItems.findIndex(tab => tab === previousTab);
+      } else if (previousTab && previousTab !== newTab) {
+        previousIndex = this.navItems.findIndex(tab => tab === previousTab);
+      }
+
+      const origins = resolveIndicatorOrigins(previousIndex, newIndex);
+
+      if (!origins) {
+        return;
+      }
+
+      if (previousTab && origins.outgoing) {
+        previousTab.setIndicatorTransformOrigin(origins.outgoing);
+        void previousTab.offsetWidth;
+      }
+
+      newTab.setIndicatorTransformOrigin(origins.incoming);
+      void newTab.offsetWidth;
     }
 
     /**

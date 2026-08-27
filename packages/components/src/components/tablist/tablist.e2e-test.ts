@@ -8,6 +8,7 @@ type SetupOptionsType = {
   componentsPage: ComponentsPage;
   'active-tab-id'?: string;
   'data-aria-label'?: string;
+  variant?: Variant;
 };
 
 const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `<mdc-tab
@@ -52,16 +53,19 @@ const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `
   </mdc-tab>`;
 
 const setup = async (args: SetupOptionsType) => {
-  const { componentsPage, ...restArgs } = args;
+  const { componentsPage, variant = TAB_VARIANTS.PILL, ...restArgs } = args;
+  const activeTabIdAttr = restArgs['active-tab-id'] ? `active-tab-id="${restArgs['active-tab-id']}"` : '';
+  const ariaLabelAttr = restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : '';
+
   await componentsPage.mount({
     html: `
     <div id="mdc-tablist-example">
       <mdc-tablist
-        active-tab-id=${restArgs['active-tab-id']}
-        data-aria-label=${restArgs['data-aria-label']}
+        ${activeTabIdAttr}
+        ${ariaLabelAttr}
         id="tablist-component"
       >
-        ${renderTabs()}
+        ${renderTabs(variant)}
       </mdc-tablist>
 
       <!-- The following is an example of the markup for the tab panels.
@@ -181,6 +185,30 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(mdcTablist).toHaveAttribute('active-tab-id', 'videos-tab');
       await expect(tabs.nth(0)).not.toHaveAttribute('active');
       await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'false');
+    });
+
+    await test.step('line tab indicator uses direction-aware transform origins', async () => {
+      await setup({ componentsPage, variant: TAB_VARIANTS.LINE });
+      const lineTabs = mdcTablist.getByRole('tab');
+
+      await test.step('initial active tab grows from center', async () => {
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'calls-tab');
+        await expect(lineTabs.first()).toHaveAttribute('data-indicator-origin', 'center');
+      });
+
+      await test.step('forward selection grows from inline-start and shrinks outgoing toward inline-end', async () => {
+        await lineTabs.nth(2).click();
+        await expect(lineTabs.nth(2)).toHaveAttribute('active');
+        await expect(lineTabs.nth(2)).toHaveAttribute('data-indicator-origin', 'inline-start');
+        await expect(lineTabs.first()).toHaveAttribute('data-indicator-origin', 'inline-end');
+      });
+
+      await test.step('backward selection reverses indicator origins', async () => {
+        await lineTabs.first().click();
+        await expect(lineTabs.first()).toHaveAttribute('active');
+        await expect(lineTabs.first()).toHaveAttribute('data-indicator-origin', 'inline-end');
+        await expect(lineTabs.nth(2)).toHaveAttribute('data-indicator-origin', 'inline-start');
+      });
     });
 
     await test.step('component should change active tab on pressing space/enter', async () => {
