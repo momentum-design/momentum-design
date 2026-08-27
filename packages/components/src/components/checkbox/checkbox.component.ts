@@ -164,7 +164,8 @@ class Checkbox
 
   override click() {
     super.click();
-    if (this.toggleState()) {
+    const hasBeenToggled = this.toggleState();
+    if (hasBeenToggled) {
       // Host clicks bypass the native input, so dispatch the equivalent change event.
       this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     }
@@ -191,7 +192,8 @@ class Checkbox
     }
     if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
       if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
-        if (this.toggleState()) {
+        const hasBeenToggled = this.toggleState();
+        if (hasBeenToggled) {
           this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
         }
         this.keyDownEventHandled();

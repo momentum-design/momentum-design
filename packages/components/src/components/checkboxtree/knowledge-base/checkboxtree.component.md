@@ -79,12 +79,6 @@ Listen for the bubbling `change` event from the affected `mdc-checkbox`. Read `e
 - Keep helper text brief and explain a requirement or consequence instead of repeating the group label.
 - State errors with the action needed to continue, such as “Select at least one team member.”
 
-### Property/Attribute details
-
-| Option                      | Intent                                                                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--mdc-checkboxtree-indent` | Changes the logical indentation added at every nested level. Keep the default unless the surrounding layout requires a coordinated spacing adjustment. |
-
 ### Limitations
 
 - **Parent state is derived** — programmatic leaf changes recalculate their ancestors, while parent checked and mixed
