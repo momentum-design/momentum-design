@@ -171,8 +171,8 @@
       "easing": "{motion.easing.standard}",
       "delay": "{motion.delay.none}"
     },
-    "slideDown": {
-      "description": "Slide-down entrance — transform, opacity, and display for overlays entering from above",
+    "slideEntrance": {
+      "description": "Overlay slide entrance — transform, opacity, and display; direction is set by the consuming component",
       "type": "transition",
       "properties": [
         "transform",
@@ -183,80 +183,8 @@
       "easing": "{motion.easing.entrance}",
       "delay": "{motion.delay.none}"
     },
-    "slideDownExit": {
-      "description": "Slide-down exit — transform, opacity, and display for overlays leaving downward",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.exit}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideUp": {
-      "description": "Slide-up entrance — transform, opacity, and display for overlays entering from below",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.entrance}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideUpExit": {
-      "description": "Slide-up exit — transform, opacity, and display for overlays leaving upward",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.exit}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideLeft": {
-      "description": "Slide-left entrance — transform, opacity, and display for overlays entering from the right",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.entrance}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideLeftExit": {
-      "description": "Slide-left exit — transform, opacity, and display for overlays leaving leftward",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.instant}",
-      "easing": "{motion.easing.exit}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideRight": {
-      "description": "Slide-right entrance — transform, opacity, and display for overlays entering from the left",
-      "type": "transition",
-      "properties": [
-        "transform",
-        "opacity",
-        "display"
-      ],
-      "duration": "{motion.duration.fast}",
-      "easing": "{motion.easing.entrance}",
-      "delay": "{motion.delay.none}"
-    },
-    "slideRightExit": {
-      "description": "Slide-right exit — transform, opacity, and display for overlays leaving rightward",
+    "slideExit": {
+      "description": "Overlay slide exit — transform, opacity, and display; direction is set by the consuming component",
       "type": "transition",
       "properties": [
         "transform",
