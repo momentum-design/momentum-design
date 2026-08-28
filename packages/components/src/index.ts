@@ -5,6 +5,7 @@ import AccordionGroup from './components/accordiongroup';
 import AccordionButton from './components/accordionbutton';
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';
+import AnimatedBackground from './components/animatedbackground';
 import AnnouncementDialog from './components/announcementdialog';
 import Appheader from './components/appheader';
 import Avatar from './components/avatar';
@@ -154,6 +155,7 @@ export {
   AccordionGroup,
   AlertChip,
   Animation,
+  AnimatedBackground,
   AnnouncementDialog,
   Appheader,
   Avatar,

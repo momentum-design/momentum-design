@@ -128,6 +128,14 @@ Surface fills, from transparent interaction layers to opaque canvases.
 `solid.*` are your opaque canvases; `primary.*` are the transparent layers you
 stack for hover/press feedback. `glass.*` lives in [Glass](./glass.md).
 
+`gradient.uplift.*` — individual stop colors for the uplift animated background
+(`mdc-animatedbackground`): semantic layers `ambient`, `midtone`, and
+`expressive`, plus `base` for the canvas clear. Each stop resolves to a single
+color (not a `linear-gradient` string). Do not confuse with
+`gradient.primary` / `gradient.secondary` (two-stop page chrome). Stable light
+theme currently duplicates dark uplift aliases as placeholders — remap to
+light-appropriate core references in a follow-up.
+
 **Used by:** `dialog`, `popover`, `banner`, `toast`, `listitem`, `input`,
 `chip`, and more (31 components).
 

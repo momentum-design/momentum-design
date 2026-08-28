@@ -1076,6 +1076,80 @@
               "value": "linear-gradient(180deg, {color.gradient.default.light.secondary.0} 0%, {color.gradient.default.light.secondary.1} 100%)",
               "description": "linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%)"
             }
+          },
+          "uplift": {
+            "base": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.core.black-alpha.100}",
+              "description": "Uplift animated background canvas clear color. TODO: remap for light theme — currently duplicated from dark."
+            },
+            "ambient": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.cobalt.30}",
+                "description": "Uplift animated background — ambient layer stop 0. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "Uplift animated background — ambient layer stop 1. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.blue.90}",
+                "description": "Uplift animated background — ambient layer stop 2. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "3": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.100}",
+                "description": "Uplift animated background — ambient layer stop 3. TODO: remap for light theme — currently duplicated from dark."
+              }
+            },
+            "midtone": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.blue.60}",
+                "description": "Uplift animated background — midtone layer stop 0. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.gray.55}",
+                "description": "Uplift animated background — midtone layer stop 1 (RGB; 50% alpha applied by mdc-animatedbackground). TODO: remap for light theme — currently duplicated from dark."
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.lime.50}",
+                "description": "Uplift animated background — midtone layer stop 2. TODO: remap for light theme — currently duplicated from dark."
+              }
+            },
+            "expressive": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.lime.30}",
+                "description": "Uplift animated background — expressive layer stop 0. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.orange.50}",
+                "description": "Uplift animated background — expressive layer stop 1. TODO: remap for light theme — currently duplicated from dark."
+              },
+              "2": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": "Uplift animated background — expressive layer stop 2. TODO: remap for light theme — currently duplicated from dark."
+              }
+            }
           }
         },
         "reaction": {

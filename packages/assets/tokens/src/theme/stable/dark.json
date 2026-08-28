@@ -1076,6 +1076,80 @@
               "value": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)",
               "description": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)"
             }
+          },
+          "uplift": {
+            "base": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.black-alpha.100}",
+              "description": "Uplift animated background canvas clear color"
+            },
+            "ambient": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.cobalt.30}",
+                "description": "Uplift animated background — ambient layer stop 0"
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.40}",
+                "description": "Uplift animated background — ambient layer stop 1"
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.90}",
+                "description": "Uplift animated background — ambient layer stop 2"
+              },
+              "3": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.100}",
+                "description": "Uplift animated background — ambient layer stop 3"
+              }
+            },
+            "midtone": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.blue.60}",
+                "description": "Uplift animated background — midtone layer stop 0"
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.gray.55}",
+                "description": "Uplift animated background — midtone layer stop 1 (RGB; 50% alpha applied by mdc-animatedbackground)"
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.50}",
+                "description": "Uplift animated background — midtone layer stop 2"
+              }
+            },
+            "expressive": {
+              "0": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.lime.30}",
+                "description": "Uplift animated background — expressive layer stop 0"
+              },
+              "1": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.orange.50}",
+                "description": "Uplift animated background — expressive layer stop 1"
+              },
+              "2": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.decorative.purple.80}",
+                "description": "Uplift animated background — expressive layer stop 2"
+              }
+            }
           }
         },
         "reaction": {
