@@ -9,6 +9,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { KeyToActionMixin, ACTIONS, NAV_MODES } from '../../utils/mixins/KeyToActionMixin';
 import { KeyDownHandledMixin } from '../../utils/mixins/KeyDownHandledMixin';
+import { ModifiedEventMixin } from '../../utils/mixins/lifecycle/ModifiedEventMixin';
 
 import styles from './checkbox.styles';
 import type { CheckboxValidationType } from './checkbox.types';
@@ -42,10 +43,23 @@ import { CHECKBOX_VALIDATION } from './checkbox.constants';
  */
 class Checkbox
   extends KeyDownHandledMixin(
-    KeyToActionMixin(AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)))),
+    KeyToActionMixin(
+      AutoFocusOnMountMixin(FormInternalsMixin(DataAriaLabelMixin(ModifiedEventMixin(FormfieldWrapper)))),
+    ),
   )
   implements AssociatedFormControl
 {
+  /**
+   * Controls the tab order of the native checkbox input.
+   * @default 0
+   */
+  @property({
+    converter: {
+      fromAttribute: value => (value === null ? 0 : Number(value)),
+    },
+  })
+  override tabIndex = 0;
+
   /**
    * Determines whether the checkbox is checked (selected) or unchecked.
    * @default false
@@ -139,16 +153,22 @@ class Checkbox
    * the checked property is toggled and the indeterminate property is set to false.
    * @internal
    */
-  private toggleState(): void {
+  private toggleState(): boolean {
     if (!this.disabled && !this.softDisabled && !this.readonly) {
       this.checked = !this.checked;
       this.indeterminate = false;
+      return true;
     }
+    return false;
   }
 
   override click() {
     super.click();
-    this.toggleState();
+    const hasBeenToggled = this.toggleState();
+    if (hasBeenToggled) {
+      // Host clicks bypass the native input, so dispatch the equivalent change event.
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    }
   }
 
   /**
@@ -172,7 +192,10 @@ class Checkbox
     }
     if (this.getKeyboardNavMode() === NAV_MODES.SPATIAL) {
       if (!(this.readonly || this.softDisabled) && action === ACTIONS.ENTER) {
-        this.toggleState();
+        const hasBeenToggled = this.toggleState();
+        if (hasBeenToggled) {
+          this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+        }
         this.keyDownEventHandled();
       }
     }
@@ -199,6 +222,16 @@ class Checkbox
       } else {
         this.internals.states.delete('checked');
       }
+    }
+
+    if (
+      changedProperties.has('checked') ||
+      changedProperties.has('disabled') ||
+      changedProperties.has('indeterminate') ||
+      changedProperties.has('readonly') ||
+      changedProperties.has('softDisabled')
+    ) {
+      this.dispatchModifiedEvent('state');
     }
   }
 
@@ -232,7 +265,7 @@ class Checkbox
           .disabled="${this.disabled}"
           ?readonly="${this.readonly}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          tabindex="${this.disabled ? -1 : 0}"
+          tabindex="${this.disabled ? -1 : this.tabIndex}"
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
