@@ -216,10 +216,16 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const buttonlinkSheet = new StickerSheet(componentsPage, 'mdc-buttonlink');
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
-    buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.PRIMARY });
-    await buttonlinkSheet.createMarkupWithCombination({ size, color: PRIMARY_BUTTON_COLORS });
-    buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.SECONDARY });
-    await buttonlinkSheet.createMarkupWithCombination({ size, color: BUTTON_COLORS });
+    await buttonlinkSheet.createMarkupWithCombination({
+      variant: { primary: BUTTON_VARIANTS.PRIMARY },
+      size,
+      color: PRIMARY_BUTTON_COLORS,
+    });
+    await buttonlinkSheet.createMarkupWithCombination({
+      variant: { secondary: BUTTON_VARIANTS.SECONDARY },
+      size,
+      color: BUTTON_COLORS,
+    });
   };
   return { buttonlinkSheet, commonMount };
 };
