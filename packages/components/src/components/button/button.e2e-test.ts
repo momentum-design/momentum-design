@@ -11,6 +11,7 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
+  PRIMARY_BUTTON_COLORS,
   TERTIARY_BUTTON_COLORS,
 } from './button.constants';
 
@@ -222,12 +223,25 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
       ...props,
     });
 
-    for (const color of Object.values(BUTTON_COLORS)) {
+    for (const color of Object.values(PRIMARY_BUTTON_COLORS)) {
       await test.step(`attribute color="${color}" should be present on ${buttonType} button`, async () => {
         await componentsPage.setAttributes(button, { color });
         await expect(button).toHaveAttribute('color', color);
       });
     }
+
+    await test.step(`attribute color="overlay" should only be supported on secondary ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        variant: BUTTON_VARIANTS.SECONDARY,
+        color: BUTTON_COLORS.OVERLAY,
+      });
+      await expect(button).toHaveAttribute('color', BUTTON_COLORS.OVERLAY);
+
+      for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.TERTIARY]) {
+        await componentsPage.setAttributes(button, { variant, color: BUTTON_COLORS.OVERLAY });
+        await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
+      }
+    });
 
     for (const variant of Object.values(BUTTON_VARIANTS)) {
       await test.step(`attribute variant="${variant}" should be present on ${buttonType} button`, async () => {
@@ -243,21 +257,16 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const buttonSheet = new StickerSheet(componentsPage, 'mdc-button');
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
-    await buttonSheet.createMarkupWithCombination({
-      variant: {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      },
-      size,
-      color: BUTTON_COLORS,
-    });
+    buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.PRIMARY });
+    await buttonSheet.createMarkupWithCombination({ size, color: PRIMARY_BUTTON_COLORS });
+    buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.SECONDARY });
+    await buttonSheet.createMarkupWithCombination({ size, color: BUTTON_COLORS });
   };
   return { buttonSheet, commonMount };
 };
 
 test.describe.parallel('mdc-button', () => {
-  test.use({ viewport: { width: 800, height: 2700 } });
+  test.use({ viewport: { width: 800, height: 3500 } });
 
   test('visual regression for mdc-button with long text ellipsis', async ({ componentsPage }) => {
     await componentsPage.mount({
@@ -306,16 +315,7 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '' });
-      const subVariants = {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      };
-      await buttonSheet.createMarkupWithCombination({
-        size: PILL_BUTTON_SIZES,
-        variant: subVariants,
-        color: BUTTON_COLORS,
-      });
+      await commonMount();
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
@@ -380,16 +380,7 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
-      const subVariants = {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      };
-      await buttonSheet.createMarkupWithCombination({
-        size: PILL_BUTTON_SIZES,
-        variant: subVariants,
-        color: BUTTON_COLORS,
-      });
+      await commonMount();
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
@@ -454,16 +445,7 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
-      const subVariants = {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      };
-      await buttonSheet.createMarkupWithCombination({
-        size: PILL_BUTTON_SIZES,
-        variant: subVariants,
-        color: BUTTON_COLORS,
-      });
+      await commonMount();
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, color: TERTIARY_BUTTON_COLORS });
@@ -532,16 +514,7 @@ test.describe.parallel('mdc-button', () => {
 
       // active
       buttonSheet.setAttributes({ active: '' });
-      const subVariants = {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      };
-      await buttonSheet.createMarkupWithCombination({
-        size: PILL_BUTTON_SIZES,
-        variant: subVariants,
-        color: BUTTON_COLORS,
-      });
+      await commonMount();
 
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
@@ -605,12 +578,7 @@ test.describe.parallel('mdc-button', () => {
       );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
-      const subVariants = {
-        primary: BUTTON_VARIANTS.PRIMARY,
-        secondary: BUTTON_VARIANTS.SECONDARY,
-        overlay: BUTTON_VARIANTS.OVERLAY,
-      };
-      await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      await commonMount(true);
       // tertiary active
       buttonSheet.setAttributes({
         active: '',
@@ -755,8 +723,13 @@ test.describe.parallel('mdc-button', () => {
   });
 
   test('soft-disabled button with color should not change background on hover', async ({ componentsPage }) => {
-    for (const color of Object.values(BUTTON_COLORS).filter(c => c !== BUTTON_COLORS.DEFAULT)) {
-      for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.SECONDARY, BUTTON_VARIANTS.OVERLAY]) {
+    const variantColorCombinations = [
+      { variant: BUTTON_VARIANTS.PRIMARY, colors: Object.values(PRIMARY_BUTTON_COLORS) },
+      { variant: BUTTON_VARIANTS.SECONDARY, colors: Object.values(BUTTON_COLORS) },
+    ];
+
+    for (const { variant, colors } of variantColorCombinations) {
+      for (const color of colors.filter(value => value !== BUTTON_COLORS.DEFAULT)) {
         await test.step(`color="${color}" variant="${variant}" soft-disabled hover should use disabled style`, async () => {
           const button = await setup({
             componentsPage,

@@ -8,6 +8,7 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
+  PRIMARY_BUTTON_COLORS,
 } from '../button/button.constants';
 import { KEYS } from '../../utils/keys';
 
@@ -174,12 +175,28 @@ const testForCombinations = async (args: SetupOptions, buttonlinkType: string) =
       ...props,
     });
 
-    for (const color of Object.values(BUTTON_COLORS)) {
+    for (const color of Object.values(PRIMARY_BUTTON_COLORS)) {
       await test.step(`attribute color="${color}" should be present on ${buttonlinkType} buttonlink`, async () => {
         await componentsPage.setAttributes(buttonlink, { color });
         await expect(buttonlink).toHaveAttribute('color', color);
       });
     }
+
+    await test.step(
+      `attribute color="overlay" should only be supported on secondary ${buttonlinkType} buttonlink`,
+      async () => {
+        await componentsPage.setAttributes(buttonlink, {
+          variant: BUTTON_VARIANTS.SECONDARY,
+          color: BUTTON_COLORS.OVERLAY,
+        });
+        await expect(buttonlink).toHaveAttribute('color', BUTTON_COLORS.OVERLAY);
+
+        for (const variant of [BUTTON_VARIANTS.PRIMARY, BUTTON_VARIANTS.TERTIARY]) {
+          await componentsPage.setAttributes(buttonlink, { variant, color: BUTTON_COLORS.OVERLAY });
+          await expect(buttonlink).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
+        }
+      },
+    );
 
     for (const variant of Object.values(BUTTON_VARIANTS)) {
       await test.step(`attribute variant="${variant}" should be present on ${buttonlinkType} buttonlink`, async () => {
@@ -199,11 +216,10 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const buttonlinkSheet = new StickerSheet(componentsPage, 'mdc-buttonlink');
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
-    await buttonlinkSheet.createMarkupWithCombination({
-      variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
-      size,
-      color: BUTTON_COLORS,
-    });
+    buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.PRIMARY });
+    await buttonlinkSheet.createMarkupWithCombination({ size, color: PRIMARY_BUTTON_COLORS });
+    buttonlinkSheet.setAttributes({ variant: BUTTON_VARIANTS.SECONDARY });
+    await buttonlinkSheet.createMarkupWithCombination({ size, color: BUTTON_COLORS });
   };
   return { buttonlinkSheet, commonMount };
 };

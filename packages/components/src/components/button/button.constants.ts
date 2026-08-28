@@ -6,7 +6,6 @@ const TAG_NAME = utils.constructTagName('button');
 const BUTTON_VARIANTS = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
-  OVERLAY: 'overlay',
   TERTIARY: 'tertiary',
 } as const;
 
@@ -29,6 +28,7 @@ const BUTTON_COLORS = {
   NEGATIVE: 'negative',
   ACCENT: 'accent',
   PROMOTIONAL: 'promotional',
+  OVERLAY: 'overlay',
   DEFAULT: 'default',
 } as const;
 
@@ -36,6 +36,14 @@ const BUTTON_TYPE_INTERNAL = {
   PILL: 'pill',
   ICON: 'icon',
   PILL_WITH_ICON: 'pill-with-icon',
+} as const;
+
+const PRIMARY_BUTTON_COLORS = {
+  POSITIVE: BUTTON_COLORS.POSITIVE,
+  NEGATIVE: BUTTON_COLORS.NEGATIVE,
+  ACCENT: BUTTON_COLORS.ACCENT,
+  PROMOTIONAL: BUTTON_COLORS.PROMOTIONAL,
+  DEFAULT: BUTTON_COLORS.DEFAULT,
 } as const;
 
 const TERTIARY_BUTTON_COLORS = {
@@ -60,6 +68,7 @@ export {
   PILL_BUTTON_SIZES,
   ICON_BUTTON_SIZES,
   BUTTON_COLORS,
+  PRIMARY_BUTTON_COLORS,
   TERTIARY_BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
   BUTTON_TYPE,

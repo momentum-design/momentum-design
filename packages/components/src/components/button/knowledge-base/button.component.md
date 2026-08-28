@@ -14,7 +14,7 @@ The button triggers user actions such as submitting a form, opening a dialog, or
 - Use `mdc-button` to trigger an action — submitting a form, opening a dialog, or running a command.
 - Use `mdc-button` `primary` for the single most important action in a view. Keep at most one primary button per context; when a dialog offers "Save" and "Cancel", only "Save" is primary.
 - Use `mdc-button` `secondary` for actions that are available but not the expected next step. More than one secondary button can appear together.
-- Use `mdc-button` `overlay` for actions placed directly over images, video, or other non-uniform backgrounds. Its dedicated overlay background helps maintain visual separation from the underlying content, though contrast should still be verified in context.
+- Use `mdc-button` with `variant="secondary"` and `color="overlay"` for actions placed directly over images, video, or other non-uniform backgrounds. Its dedicated background and border maintain visual separation and contrast against the underlying content.
 - Use `mdc-button` `tertiary` for low-emphasis actions that should not compete for attention; unlike secondary, it has no resting outline, so its footprint appears only on hover or interaction.
 - Use an icon-only `mdc-button` for compact targets such as toolbars or table-row controls where space is constrained and the icon's meaning is unambiguous.
 - Use `mdc-button` with `inverted` on a dark or inverted surface so the color scheme keeps the required contrast.
@@ -46,7 +46,7 @@ Minimal markup example:
 
 <mdc-button variant="secondary" prefix-icon="download-bold" size="32">Download</mdc-button>
 
-<mdc-button variant="overlay" prefix-icon="more-bold" size="32">More options</mdc-button>
+<mdc-button variant="secondary" color="overlay" prefix-icon="more-bold" size="32">More options</mdc-button>
 
 <mdc-button variant="tertiary" prefix-icon="more-bold" size="32" aria-label="More options"></mdc-button>
 ```
@@ -62,9 +62,9 @@ Minimal markup example:
 |---|---|
 | `variant="primary"` (default) | Solid, high-emphasis style. Use for the single most important action in a context. |
 | `variant="secondary"` | Outlined, medium-emphasis style. Use for supporting actions; several can coexist. |
-| `variant="overlay"` | Medium-emphasis style with a dedicated overlay background. Use over images, video, or other non-uniform backgrounds. The overlay background helps maintain visual separation, but contrast should still be verified in context. |
 | `variant="tertiary"` | No resting outline, low-emphasis style. Use to reduce noise; supports only `default`, `accent`, and `negative` colors. |
 | `color="default"` (default) | Neutral color. Use unless the action carries positive, destructive, accent, or promotional meaning. |
+| `color="overlay"` | Dedicated background and border for use over images, video, or other non-uniform backgrounds. Supported only with `variant="secondary"`. |
 | `color="negative"` | Signals a destructive or irreversible action such as delete or remove. Pair high-risk actions with a confirmation. |
 | `color="positive"` / `color="accent"` / `color="promotional"` | Reserve for success/affirmative, emphasized, and marketing actions respectively; do not apply color purely for decoration. |
 | `prefix-icon` / `postfix-icon` | Adds a leading or trailing icon. An icon with no label produces an icon-only button — set `aria-label`. Avoid icons on both sides at once. |
@@ -79,7 +79,7 @@ Minimal markup example:
 
 - **Icon-only needs a label** — an icon-only button has no accessible name of its own; set `aria-label` describing the action or it is announced without context.
 - **`inverted` is conditional** — it is ignored unless `variant="primary"`, `color="default"`, and the button is not `active`. Match the surface and variant.
-- **`overlay` cannot guarantee contrast on every background** — it uses fixed colors and does not adjust to the image or video beneath it.
+- **`color="overlay"` is secondary-only** — primary and tertiary buttons fall back to `color="default"`. Use it with `variant="secondary"`.
 - **`size="20"` is tertiary-only** — other variants fall back to the default `32`. Use `variant="tertiary"` if you need the 20px icon button.
 - **No built-in busy state** — the button does not manage a loading or pending state. Disable it and show your own spinner while an action is in flight.
 
